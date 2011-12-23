@@ -24,15 +24,17 @@ public class FeedHandler {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 	
-	public Feed parseFeed(String file) throws ParserConfigurationException, SAXException {
+	public Feed parseFeed(Feed feed) {
 		SAXParserFactory factory =  SAXParserFactory.newInstance();
 		SAXParser saxParser = factory.newSAXParser();
-		RSSHandler handler = new RSSHandler();
+		RSSHandler handler = new RSSHandler(feed);
 		try {
-			saxParser.parse(new File(file), handler);
+			saxParser.parse(new File(feed.file_url), handler);
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			e.printStackTrace();
+		} catch(ParserConfigurationException e) {
 			e.printStackTrace();
 		}
 		

@@ -63,7 +63,7 @@ public class DownloadRequester {
 	}
 	public void downloadFeed(Context context, Feed feed) {
 		download(context, feeds, feed.download_url, 
-				new File(context.getExternalFilesDir(FEED_DOWNLOADPATH), "feed-" + feed.id),
+				new File(getFeedfilePath(id), getFeedfileName(id)),
 				true, ACTION_FEED_DOWNLOAD_COMPLETED, feed.id);
 	}
 	
@@ -127,5 +127,13 @@ public class DownloadRequester {
 			}
 		}
 		return null;
+	}
+
+	public String getFeedfilePath() {
+		return context.getExternalFilesDir(FEED_DOWNLOADPATH);	
+	}
+
+	public String getFeedfileName(long id) {
+		return "feed-" + id;
 	}
 }

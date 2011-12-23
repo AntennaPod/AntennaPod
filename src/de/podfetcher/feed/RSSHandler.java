@@ -21,6 +21,11 @@ public class RSSHandler extends DefaultHandler {
 	public String active_root_element; // channel or item or image
 	public String active_sub_element; // Not channel or item
 
+	public RSSHandler(Feed f) {
+		super();
+		this.feed = f;
+	}
+
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
@@ -86,7 +91,9 @@ public class RSSHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		if (qName.equalsIgnoreCase(FeedHandler.CHANNEL)) {
-			feed = new Feed();
+			if(feed == null) {
+				feed = new Feed();
+			}
 			active_root_element = qName;
 		} else if (qName.equalsIgnoreCase(FeedHandler.ITEM)) {
 			currentItem = new FeedItem();

@@ -42,11 +42,28 @@ public class FeedManager {
 		// TODO Check if URL is correct
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		Feed feed = new Feed(url);
+		feed.download_url = url;
 		feed.id = adapter.setFeed(feed);
 		
 		DownloadRequester req = DownloadRequester.getInstance();
 		req.downloadFeed(context, feed);
 		
+	}
+
+	/** Updates Information of an existing Feed */
+	public void setFeed(Context context, Feed feed) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.setFeed(feed);
+	}
+
+	/** Get a Feed by its id */
+	public Feed getFeed(long id) {
+		for(Feed f : feeds) {
+			if(f.id == id) {
+				return f;
+			}
+		}
+		return null;
 	}
 	
 	/** Reads the database */
