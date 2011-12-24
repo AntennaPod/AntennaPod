@@ -8,15 +8,20 @@ package de.podfetcher.service;
 
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.lang.Runtime;
+import java.util.concurrent.TimeUnit;
 
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.storage.DownloadService;
+
 
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.BroadcastReceiver;
 import android.os.IBinder;
 import android.content.Context;
+
 
 public class FeedSyncService extends Service {
 	
@@ -29,12 +34,18 @@ public class FeedSyncService extends Service {
 		executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 2);
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
+		registerReceiver(allFeedsDownloaded, new IntentFilter(DownloadService.ACTION_ALL_FEED_DOWNLOADS_COMPLETED));
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		return null;
 	} 
+
+	@Override
+	public void onDestroy() {
+		unregisterReceiver(allFeedsDownloaded);
+	}
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
@@ -48,6 +59,30 @@ public class FeedSyncService extends Service {
 		feed.file_url = requester.getFeedfilePath(this) + requester.getFeedfileName(feed.id);
 		return feed;
 	}
+
+	/** Prepares itself for stopping */
+	private void initiateShutdown() {
+		// Wait until PoolExecutor is done
+		Thread waiter = new Thread() {
+			@Override
+			public void run() {
+				executor.shutdown();
+				try {
+					executor.awaitTermination(20, TimeUnit.SECONDS);
+					stopSelf();
+				}catch(InterruptedException e) {
+					e.printStackTrace();
+				}
+			}
+		};
+	}
+
+	BroadcastReceiver allFeedsDownloaded = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			initiateShutdown();	
+		}
+	};
 
 	/** Takes a single Feed, parses the corresponding file and refreshes information in the manager */
 	class FeedSyncThread implements Runnable {

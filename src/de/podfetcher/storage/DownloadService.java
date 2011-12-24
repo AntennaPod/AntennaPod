@@ -16,6 +16,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 
 public class DownloadService extends Service {
+
+	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	
 	private DownloadRequester requester;
 	private FeedManager manager;
@@ -53,6 +55,11 @@ public class DownloadService extends Service {
 			String action = item_intent.getAction();
 			if(action.equals(DownloadRequester.ACTION_FEED_DOWNLOAD_COMPLETED)) {
 				handleCompletedFeedDownload(context, intent);
+				// Notify FeedSyncService about the new Feed
+				sendBroadcast(item_intent);
+				if(requester.getNumberOfFeedDownloads() == 0) {
+					sendBroadcast(new Intent(ACTION_ALL_FEED_DOWNLOADS_COMPLETED));
+				}
 			} else if(action.equals(DownloadRequester.ACTION_MEDIA_DOWNLOAD_COMPLETED)) {
 				requester.removeMediaByID(item_intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 			} else if(action.equals(DownloadRequester.ACTION_IMAGE_DOWNLOAD_COMPLETED)) {
@@ -63,7 +70,6 @@ public class DownloadService extends Service {
 			if(requester.getNumberOfDownloads() == 0) {
 				stopSelf();
 			}
-			//PodcastApp.getInstance().getApplicationContext().sendBroadcast(item_intent);		
 		}
 	};
 
