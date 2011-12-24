@@ -22,8 +22,6 @@ public class DownloadService extends Service {
 
 	@Override
 	public void onCreate() {
-		receiver = new DownloadReceiver();
-		
 		registerReceiver(receiver, createIntentFilter());
 	}
 

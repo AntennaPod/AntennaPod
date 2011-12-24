@@ -69,7 +69,7 @@ public class DownloadRequester {
 	
 	public void downloadImage(Context context, FeedImage image) {
 		download(context, images, image.download_url,
-				new File(getImagefilePath, getImagefileName(image.id)),
+				new File(getImagefilePath(context), getImagefileName(image.id)),
 				true, ACTION_IMAGE_DOWNLOAD_COMPLETED, image.id);
 	}
 	

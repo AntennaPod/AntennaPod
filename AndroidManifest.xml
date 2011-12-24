@@ -23,6 +23,11 @@
             </intent-filter>
         </activity>
 		<service android:enabled="true" android:name=".DownloadService" />
+		<service android:enabled="true" android:name=".FeedSyncService" 
+			<intent-filter>
+				<action android:name="action.de.podfetcher.storage.feed_download_completed"></action>
+			</intent-filter>
+		</service>
     </application>
 
 </manifest>
