@@ -69,7 +69,7 @@ public class DownloadRequester {
 	
 	public void downloadImage(Context context, FeedImage image) {
 		download(context, images, image.download_url,
-				new File(context.getExternalFilesDir(IMAGE_DOWNLOADPATH), "image-" + image.id),
+				new File(getImagefilePath, getImagefileName(image.id)),
 				true, ACTION_IMAGE_DOWNLOAD_COMPLETED, image.id);
 	}
 	
@@ -144,5 +144,13 @@ public class DownloadRequester {
 
 	public String getFeedfileName(long id) {
 		return "feed-" + id;
+	}
+
+	public String getImagefilePath(Context context) {
+		return context.getExternalFilesDir(IMAGE_DOWNLOADPATH).toString();
+	}
+
+	public String getImagefileName(long id) {
+		return "image-" + id;
 	}
 }
