@@ -56,18 +56,17 @@ public class FeedManager {
 		
 	}
 
-	/** Adds a new Feeditem if its not in the list
-	 *  This Method is only called if the downloaded Feed was already in the feedlist
-	 * */
+	/** Adds a new Feeditem if its not in the list */
 	public void addFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		// Search list for feeditem
 		Feed foundFeed = searchFeedByLink(item.link);
-		FeedItem foundItem = searchFeedItemByLink(foundFeed, item.link)
+		FeedItem foundItem = searchFeedItemByLink(foundFeed, item.link);
 		if(foundItem != null) {
-			// Update Information, mark as read
+			// Update Information
 			item.id = foundItem.id;
-			foundItem = item
+			foundItem = item;
+			item.read = foundItem.read;
 			adapter.setFeedItem(item);
 		} else {
 			foundFeed.items.add(item);	
@@ -75,6 +74,7 @@ public class FeedManager {
 		}
 	}
 
+	/** Get a Feed by its link */
 	private Feed searchFeedByLink(String link) {
 		for(Feed feed : feeds) {
 			if(feed.link.equals(link)) {
@@ -84,6 +84,7 @@ public class FeedManager {
 		return null;
 	}
 
+	/** Get a FeedItem by its link */
 	private FeedItem searchFeedItemByLink(Feed feed, String link) {
 		for(FeedItem item : feed.items) {
 			if(item.link.equals(link)) {
