@@ -1,6 +1,7 @@
 package de.podfetcher.storage;
 
 import de.podfetcher.PodcastApp;
+import de.podfetcher.feed.*;
 import android.app.DownloadManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -29,19 +30,19 @@ public class DownloadReceiver extends BroadcastReceiver {
 
 	/** Is called whenever a Feed is Downloaded */
 	private void handleCompletedFeedDownload(Context context, Intent intent) {
-		RSSHandler handler = new RSSHandler();
+		FeedHandler handler = new FeedHandler();
 		
-		requester.removeFeedByID(item_intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
+		requester.removeFeedByID(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 		// Get Feed Information
 		Feed feed = manager.getFeed(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-		feed.file_url = DownloadRequester.getFeedfilePath() + DownloadRequester.getFeedfileName(feed.id);
+		feed.file_url = requester.getFeedfilePath(context) + requester.getFeedfileName(feed.id);
 		feed = handler.parseFeed(feed);
 		// Download Feed Image if provided
 		if(feed.image != null) {
 			requester.downloadImage(context, feed.image);
 		}
 		// Update Information in Database
-		manager.setFeed(feed);
+		manager.setFeed(context, feed);
 	}
 
 }

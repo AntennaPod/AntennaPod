@@ -25,10 +25,10 @@ public class FeedHandler {
 	public final static String ENC_TYPE = "type";
 	
 	public Feed parseFeed(Feed feed) {
-		SAXParserFactory factory =  SAXParserFactory.newInstance();
-		SAXParser saxParser = factory.newSAXParser();
 		RSSHandler handler = new RSSHandler(feed);
 		try {
+			SAXParserFactory factory =  SAXParserFactory.newInstance();
+			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(new File(feed.file_url), handler);
 		} catch (SAXException e) {
 			e.printStackTrace();

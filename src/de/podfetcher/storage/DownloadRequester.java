@@ -63,7 +63,7 @@ public class DownloadRequester {
 	}
 	public void downloadFeed(Context context, Feed feed) {
 		download(context, feeds, feed.download_url, 
-				new File(getFeedfilePath(id), getFeedfileName(id)),
+				new File(getFeedfilePath(context), getFeedfileName(feed.id)),
 				true, ACTION_FEED_DOWNLOAD_COMPLETED, feed.id);
 	}
 	
@@ -129,8 +129,17 @@ public class DownloadRequester {
 		return null;
 	}
 
-	public String getFeedfilePath() {
-		return context.getExternalFilesDir(FEED_DOWNLOADPATH);	
+	/** Get the number of uncompleted Downloads */
+	public int getNumberOfDownloads() {
+		return feeds.size() + images.size() + media.size();
+	}
+
+	public int getNumberOfFeedDownloads() {
+		return feeds.size();
+	}
+
+	public String getFeedfilePath(Context context) {
+		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString();	
 	}
 
 	public String getFeedfileName(long id) {
