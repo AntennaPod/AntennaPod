@@ -11,12 +11,12 @@ import java.util.ArrayList;
  *
  */
 public class Feed extends FeedFile{
-	public String title;
-	public String link;
-	public String description;
-	public FeedImage image;
-	public FeedCategory category;
-	public ArrayList<FeedItem> items;
+	private String title;
+	private String link;
+	private String description;
+	private FeedImage image;
+	private FeedCategory category;
+	private ArrayList<FeedItem> items;
 	
 	
 	public Feed() {
@@ -37,6 +37,58 @@ public class Feed extends FeedFile{
 		this.category = category;
 		items = new ArrayList<FeedItem>();
 	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public String getLink() {
+		return link;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
+	}
+
+	public String getDescription() {
+		return description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
+	public FeedImage getImage() {
+		return image;
+	}
+
+	public void setImage(FeedImage image) {
+		this.image = image;
+	}
+
+	public FeedCategory getCategory() {
+		return category;
+	}
+
+	public void setCategory(FeedCategory category) {
+		this.category = category;
+	}
+
+	public ArrayList<FeedItem> getItems() {
+		return items;
+	}
+
+	public void setItems(ArrayList<FeedItem> items) {
+		this.items = items;
+	}
+
+	
+
+	
 	
 	
 	

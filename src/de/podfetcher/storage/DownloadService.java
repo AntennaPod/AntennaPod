@@ -81,11 +81,11 @@ public class DownloadService extends Service {
 		requester.removeFeedByID(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 		// Get Feed Information
 		Feed feed = manager.getFeed(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-		feed.file_url = requester.getFeedfilePath(context) + requester.getFeedfileName(feed.id);
+		feed.setFile_url(requester.getFeedfilePath(context) + requester.getFeedfileName(feed.getId()));
 		feed = handler.parseFeed(feed);
 		// Download Feed Image if provided
-		if(feed.image != null) {
-			requester.downloadImage(context, feed.image);
+		if(feed.getImage() != null) {
+			requester.downloadImage(context, feed.getImage());
 		}
 		// Update Information in Database
 		manager.setFeed(context, feed);

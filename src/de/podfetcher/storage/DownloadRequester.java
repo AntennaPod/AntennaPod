@@ -62,21 +62,21 @@ public class DownloadRequester {
 		
 	}
 	public void downloadFeed(Context context, Feed feed) {
-		download(context, feeds, feed.download_url, 
-				new File(getFeedfilePath(context), getFeedfileName(feed.id)),
-				true, ACTION_FEED_DOWNLOAD_COMPLETED, feed.id);
+		download(context, feeds, feed.getDownload_url(), 
+				new File(getFeedfilePath(context), getFeedfileName(feed.getId())),
+				true, ACTION_FEED_DOWNLOAD_COMPLETED, feed.getId());
 	}
 	
 	public void downloadImage(Context context, FeedImage image) {
-		download(context, images, image.download_url,
-				new File(getImagefilePath(context), getImagefileName(image.id)),
-				true, ACTION_IMAGE_DOWNLOAD_COMPLETED, image.id);
+		download(context, images, image.getDownload_url(),
+				new File(getImagefilePath(context), getImagefileName(image.getId())),
+				true, ACTION_IMAGE_DOWNLOAD_COMPLETED, image.getId());
 	}
 	
 	public void downloadMedia(Context context, FeedMedia feedmedia) {
-		download(context, media, feedmedia.download_url,
-				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + feedmedia.id),
-				true, ACTION_MEDIA_DOWNLOAD_COMPLETED, feedmedia.id);
+		download(context, media, feedmedia.getDownload_url(),
+				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + feedmedia.getId()),
+				true, ACTION_MEDIA_DOWNLOAD_COMPLETED, feedmedia.getId());
 	}
 	
 	public void removeFeedByID(long id) {

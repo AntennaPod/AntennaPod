@@ -108,34 +108,34 @@ public class PodDBAdapter {
 	public long setFeed(Feed feed) {
 	        open();
 		ContentValues values = new ContentValues();
-		values.put(KEY_TITLE, feed.title);
-		values.put(KEY_LINK, feed.link);
-		values.put(KEY_DESCRIPTION, feed.description);
-		if (feed.image != null) {
-			if (feed.image.id == 0) {
-				setImage(feed.image);
+		values.put(KEY_TITLE, feed.getTitle());
+		values.put(KEY_LINK, feed.getLink());
+		values.put(KEY_DESCRIPTION, feed.getDescription());
+		if (feed.getImage() != null) {
+			if (feed.getImage().getId() == 0) {
+				setImage(feed.getImage());
 			}
-			values.put(KEY_IMAGE, feed.image.id);
+			values.put(KEY_IMAGE, feed.getImage().getId());
 		}
-		if(feed.category != null) {
-			if(feed.category.id == 0) {
-				setCategory(feed.category);
+		if(feed.getCategory() != null) {
+			if(feed.getCategory().getId() == 0) {
+				setCategory(feed.getCategory());
 			}
-			values.put(KEY_CATEGORY, feed.category.id);
+			values.put(KEY_CATEGORY, feed.getCategory().getId());
 		}
-		if(feed.file_url != null) {
-			values.put(KEY_FILE_URL, feed.file_url);
+		if(feed.getFile_url() != null) {
+			values.put(KEY_FILE_URL, feed.getFile_url());
 		}
-		values.put(KEY_DOWNLOAD_URL, feed.download_url);
+		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		
-		if(feed.id == 0) {
+		if(feed.getId() == 0) {
 			// Create new entry
-			feed.id = db.insert(TABLE_NAME_FEEDS, null, values);
+			feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
 		} else {
-			db.update(TABLE_NAME_FEEDS, values, KEY_ID+"=?", new String[]{String.valueOf(feed.id)});
+			db.update(TABLE_NAME_FEEDS, values, KEY_ID+"=?", new String[]{String.valueOf(feed.getId())});
 		}
 		close();
-		return feed.id;
+		return feed.getId();
 	}
 
 	/** Inserts or updates a category entry 
@@ -144,13 +144,13 @@ public class PodDBAdapter {
 	public long setCategory(FeedCategory category) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME, category.name);
-		if(category.id == 0) {
-			category.id = db.insert(TABLE_NAME_FEED_CATEGORIES, null, values);
+		if(category.getId() == 0) {
+			category.setId(db.insert(TABLE_NAME_FEED_CATEGORIES, null, values));
 		} else {
-			db.update(TABLE_NAME_FEED_CATEGORIES, values, KEY_ID+"=?", new String[]{String.valueOf(category.id)});
+			db.update(TABLE_NAME_FEED_CATEGORIES, values, KEY_ID+"=?", new String[]{String.valueOf(category.getId())});
 			
 		}
-		return category.id;
+		return category.getId();
 	}
 
 	/** 
@@ -160,16 +160,16 @@ public class PodDBAdapter {
 	public long setImage(FeedImage image) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, image.title);
-		values.put(KEY_DOWNLOAD_URL, image.download_url);
-		if(image.file_url != null) {
-			values.put(KEY_FILE_URL, image.file_url);
+		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
+		if(image.getFile_url() != null) {
+			values.put(KEY_FILE_URL, image.getFile_url());
 		}
-		if(image.id == 0) {
-			image.id = db.insert(TABLE_NAME_FEED_IMAGES, null, values);
+		if(image.getId() == 0) {
+			image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
 		} else {
-			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID+"=?", new String[]{String.valueOf(image.id)});
+			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID+"=?", new String[]{String.valueOf(image.getId())});
 		}
-		return image.id;
+		return image.getId();
 	}
 	
 	/**
@@ -182,16 +182,16 @@ public class PodDBAdapter {
 		values.put(KEY_POSITION, media.position);
 		values.put(KEY_SIZE, media.size);
 		values.put(KEY_MIME_TYPE, media.mime_type);
-		values.put(KEY_DOWNLOAD_URL, media.download_url);
-		if(media.file_url != null) {
-			values.put(KEY_FILE_URL, media.file_url);
+		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
+		if(media.getFile_url() != null) {
+			values.put(KEY_FILE_URL, media.getFile_url());
 		}
-		if(media.id == 0) {
-			media.id = db.insert(TABLE_NAME_FEED_MEDIA, null, values);
+		if(media.getId() == 0) {
+			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));
 		} else {
-			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID+"=?", new String[]{String.valueOf(media.id)});
+			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID+"=?", new String[]{String.valueOf(media.getId())});
 		}
-		return media.id;
+		return media.getId();
 	}
 	
 	/**
@@ -205,17 +205,17 @@ public class PodDBAdapter {
 		values.put(KEY_DESCRIPTION, item.description);
 		values.put(KEY_PUBDATE, item.pubDate);
 		if(item.media != null) {
-			if(item.media.id == 0) {
+			if(item.media.getId() == 0) {
 				setMedia(item.media);
 			}
-			values.put(KEY_MEDIA, item.media.id);
+			values.put(KEY_MEDIA, item.media.getId());
 		}
-		if(item.feed.id == 0) {
+		if(item.feed.getId() == 0) {
 			setFeed(item.feed);
 		}
-		values.put(KEY_FEED, item.feed.id);
+		values.put(KEY_FEED, item.feed.getId());
 		values.put(KEY_READ, (item.read) ? 1 : 0);
-		return item.id;
+		return item.getId();
 	}
 	
 	public Cursor getAllCategoriesCursor() {
@@ -227,15 +227,15 @@ public class PodDBAdapter {
 	}
 	
 	public Cursor getAllItemsOfFeedCursor(Feed feed) {
-		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED+"=?", new String[]{String.valueOf(feed.id)}, null, null, null);
+		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED+"=?", new String[]{String.valueOf(feed.getId())}, null, null, null);
 	}
 	
 	public Cursor getFeedMediaOfItemCursor(FeedItem item) {
-		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.media.id)}, null, null, null);
+		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.media.getId())}, null, null, null);
 	}
 	
 	public Cursor getImageOfFeedCursor(Feed feed) {
-		return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID+"=?", new String[]{String.valueOf(feed.image.id)}, null, null, null);
+		return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID+"=?", new String[]{String.valueOf(feed.getImage().getId())}, null, null, null);
 	}
 	
 	public FeedMedia getFeedMedia(long row_index) throws SQLException{
@@ -258,10 +258,10 @@ public class PodDBAdapter {
 	public FeedImage getFeedImage(Feed feed) throws SQLException {
 		Cursor cursor = this.getImageOfFeedCursor(feed);
 		if((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedImage found at index: "+ feed.image.id);
+			throw new SQLException("No FeedImage found at index: "+ feed.getImage().getId());
 		}
 		
-		return new FeedImage(feed.image.id, cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
+		return new FeedImage(feed.getImage().getId(), cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
 				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),
 				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
 	}

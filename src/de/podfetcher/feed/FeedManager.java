@@ -18,8 +18,8 @@ public class FeedManager {
 	
 	private static FeedManager singleton;
 	
-	public ArrayList<Feed> feeds;
-	public ArrayList<FeedCategory> categories;
+	private ArrayList<Feed> feeds;
+	private ArrayList<FeedCategory> categories;
 	
 	Cursor feedlistCursor;
 
@@ -69,7 +69,7 @@ public class FeedManager {
 			item.read = foundItem.read;
 			adapter.setFeedItem(item);
 		} else {
-			foundFeed.items.add(item);	
+			foundFeed.getItems().add(item);	
 			item.id = adapter.setFeedItem(item);
 		}
 	}
@@ -77,7 +77,7 @@ public class FeedManager {
 	/** Get a Feed by its link */
 	private Feed searchFeedByLink(String link) {
 		for(Feed feed : feeds) {
-			if(feed.link.equals(link)) {
+			if(feed.getLink().equals(link)) {
 				return feed;
 			}
 		}
@@ -86,7 +86,7 @@ public class FeedManager {
 
 	/** Get a FeedItem by its link */
 	private FeedItem searchFeedItemByLink(Feed feed, String link) {
-		for(FeedItem item : feed.items) {
+		for(FeedItem item : feed.getItems()) {
 			if(item.link.equals(link)) {
 				return item;
 			}
@@ -133,16 +133,16 @@ public class FeedManager {
 				Feed feed = new Feed();
 				
 				feed.id = feedlistCursor.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_ID));
-				feed.title = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE));
-				feed.link = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK));
-				feed.description = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION));
-				feed.image = adapter.getFeedImage(feed);
+				feed.setTitle(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+				feed.setLink(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
+				feed.setDescription(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
+				feed.setImage(adapter.getFeedImage(feed));
 				feed.file_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL));
 				feed.download_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL));
 				
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
-				feed.items = extractFeedItemsFromCursor(context, itemlistCursor);
+				feed.setItems(extractFeedItemsFromCursor(context, itemlistCursor));
 				
 				feeds.add(feed);
 			}while(feedlistCursor.moveToNext());

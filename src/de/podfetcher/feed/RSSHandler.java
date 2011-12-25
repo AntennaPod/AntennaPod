@@ -36,7 +36,7 @@ public class RSSHandler extends DefaultHandler {
 
 	@Override
 	public void endDocument() throws SAXException {
-		feed.items = items;
+		feed.setItems(items);
 	}
 
 	@Override
@@ -47,21 +47,21 @@ public class RSSHandler extends DefaultHandler {
 			items.add(currentItem);
 		} else if (qName.equalsIgnoreCase(FeedHandler.TITLE)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
-				feed.title = strBuilder.toString();
+				feed.setTitle(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)) {
 				currentItem.title = strBuilder.toString();
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
-				feed.image.title = strBuilder.toString();
+				feed.getImage().title = strBuilder.toString();
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.DESCR)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
-				feed.description = strBuilder.toString();
+				feed.setDescription(strBuilder.toString());
 			} else {
 				currentItem.description = strBuilder.toString();
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.LINK)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
-				feed.link = strBuilder.toString();
+				feed.setLink(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)){
 				currentItem.link = strBuilder.toString();
 			} 
@@ -71,7 +71,7 @@ public class RSSHandler extends DefaultHandler {
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.URL)) {
 			if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
-				feed.image.download_url = strBuilder.toString();
+				feed.getImage().download_url = strBuilder.toString();
 			}
 		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
 			active_root_element = FeedHandler.CHANNEL;
@@ -112,7 +112,7 @@ public class RSSHandler extends DefaultHandler {
 											  Long.parseLong(attributes.getValue(FeedHandler.ENC_LEN)),
 											  attributes.getValue(FeedHandler.ENC_TYPE));
 		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
-			feed.image = new FeedImage();
+			feed.setImage(new FeedImage());
 			active_root_element = qName;
 		} else if(qName.equalsIgnoreCase(FeedHandler.URL)) {
 			active_sub_element = qName;

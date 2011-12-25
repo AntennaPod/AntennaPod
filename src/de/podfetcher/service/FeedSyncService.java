@@ -14,7 +14,6 @@ import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.storage.DownloadService;
 
-
 import android.app.Service;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -56,7 +55,7 @@ public class FeedSyncService extends Service {
 	/** Extracts a Feed object from the given Intent */
 	private Feed handleIntent(Intent intent) {
 		Feed feed = manager.getFeed(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-		feed.file_url = requester.getFeedfilePath(this) + requester.getFeedfileName(feed.id);
+		feed.setFile_url(requester.getFeedfilePath(this) + requester.getFeedfileName(feed.getId()));
 		return feed;
 	}
 
@@ -101,7 +100,7 @@ public class FeedSyncService extends Service {
 			
 			feed = handler.parseFeed(feed);
 			// Add Feeditems to the database
-			for(FeedItem item : feed.items) {
+			for(FeedItem item : feed.getItems()) {
 				manager.addFeedItem(service, item);
 			}
 		}
