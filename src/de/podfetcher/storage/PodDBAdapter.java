@@ -143,7 +143,7 @@ public class PodDBAdapter {
 	 * */
 	public long setCategory(FeedCategory category) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_NAME, category.name);
+		values.put(KEY_NAME, category.getName());
 		if(category.getId() == 0) {
 			category.setId(db.insert(TABLE_NAME_FEED_CATEGORIES, null, values));
 		} else {
@@ -159,7 +159,7 @@ public class PodDBAdapter {
 	 * */
 	public long setImage(FeedImage image) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_TITLE, image.title);
+		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
 		if(image.getFile_url() != null) {
 			values.put(KEY_FILE_URL, image.getFile_url());
@@ -178,10 +178,10 @@ public class PodDBAdapter {
 	 */
 	public long setMedia(FeedMedia media) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_LENGTH, media.length);
-		values.put(KEY_POSITION, media.position);
-		values.put(KEY_SIZE, media.size);
-		values.put(KEY_MIME_TYPE, media.mime_type);
+		values.put(KEY_LENGTH, media.getLength());
+		values.put(KEY_POSITION, media.getPosition());
+		values.put(KEY_SIZE, media.getSize());
+		values.put(KEY_MIME_TYPE, media.getMime_type());
 		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
 		if(media.getFile_url() != null) {
 			values.put(KEY_FILE_URL, media.getFile_url());
@@ -200,21 +200,21 @@ public class PodDBAdapter {
 	 */
 	public long setFeedItem(FeedItem item) {
 		ContentValues values = new ContentValues();
-		values.put(KEY_TITLE, item.title);
-		values.put(KEY_LINK, item.link);
-		values.put(KEY_DESCRIPTION, item.description);
-		values.put(KEY_PUBDATE, item.pubDate);
-		if(item.media != null) {
-			if(item.media.getId() == 0) {
-				setMedia(item.media);
+		values.put(KEY_TITLE, item.getTitle());
+		values.put(KEY_LINK, item.getLink());
+		values.put(KEY_DESCRIPTION, item.getDescription());
+		values.put(KEY_PUBDATE, item.getPubDate());
+		if(item.getMedia() != null) {
+			if(item.getMedia().getId() == 0) {
+				setMedia(item.getMedia());
 			}
-			values.put(KEY_MEDIA, item.media.getId());
+			values.put(KEY_MEDIA, item.getMedia().getId());
 		}
-		if(item.feed.getId() == 0) {
-			setFeed(item.feed);
+		if(item.getFeed().getId() == 0) {
+			setFeed(item.getFeed());
 		}
-		values.put(KEY_FEED, item.feed.getId());
-		values.put(KEY_READ, (item.read) ? 1 : 0);
+		values.put(KEY_FEED, item.getFeed().getId());
+		values.put(KEY_READ, (item.isRead()) ? 1 : 0);
 		return item.getId();
 	}
 	
@@ -231,7 +231,7 @@ public class PodDBAdapter {
 	}
 	
 	public Cursor getFeedMediaOfItemCursor(FeedItem item) {
-		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.media.getId())}, null, null, null);
+		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
 	}
 	
 	public Cursor getImageOfFeedCursor(Feed feed) {

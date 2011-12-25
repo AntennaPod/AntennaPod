@@ -60,13 +60,13 @@ public class FeedManager {
 	public void addFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		// Search list for feeditem
-		Feed foundFeed = searchFeedByLink(item.link);
-		FeedItem foundItem = searchFeedItemByLink(foundFeed, item.link);
+		Feed foundFeed = searchFeedByLink(item.getLink());
+		FeedItem foundItem = searchFeedItemByLink(foundFeed, item.getLink());
 		if(foundItem != null) {
 			// Update Information
 			item.id = foundItem.id;
 			foundItem = item;
-			item.read = foundItem.read;
+			item.setRead(foundItem.isRead());
 			adapter.setFeedItem(item);
 		} else {
 			foundFeed.getItems().add(item);	
@@ -87,7 +87,7 @@ public class FeedManager {
 	/** Get a FeedItem by its link */
 	private FeedItem searchFeedItemByLink(Feed feed, String link) {
 		for(FeedItem item : feed.getItems()) {
-			if(item.link.equals(link)) {
+			if(item.getLink().equals(link)) {
 				return item;
 			}
 		}
@@ -158,12 +158,12 @@ public class FeedManager {
 				FeedItem item = new FeedItem();
 				
 				item.id = itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_ID));
-				item.title = itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE));
-				item.link = itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK));
-				item.description = itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION));
-				item.pubDate = itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE));
-				item.media = adapter.getFeedMedia(itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_MEDIA)));
-				item.read = (itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true : false;
+				item.setTitle(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+				item.setLink(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
+				item.setDescription(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
+				item.setPubDate(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE)));
+				item.setMedia(adapter.getFeedMedia(itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_MEDIA))));
+				item.setRead((itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true : false);
 				
 				items.add(item);
 			} while(itemlistCursor.moveToNext());

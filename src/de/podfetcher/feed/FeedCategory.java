@@ -1,12 +1,20 @@
 package de.podfetcher.feed;
 
 public class FeedCategory extends FeedComponent{
-	public String name;
+	protected String name;
 
 	public FeedCategory(String name) {
 		super();
 		this.name = name;
 	}
+
+	public String getName() {
+		return name;
+	}
+
+	
+	
+	
 	
 	
 }

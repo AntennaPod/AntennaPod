@@ -43,13 +43,13 @@ public class RSSHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		if (qName.equalsIgnoreCase(FeedHandler.ITEM)) {
-			currentItem.feed = feed;
+			currentItem.setFeed(feed);
 			items.add(currentItem);
 		} else if (qName.equalsIgnoreCase(FeedHandler.TITLE)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
 				feed.setTitle(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)) {
-				currentItem.title = strBuilder.toString();
+				currentItem.setTitle(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
 				feed.getImage().title = strBuilder.toString();
 			}
@@ -57,17 +57,17 @@ public class RSSHandler extends DefaultHandler {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
 				feed.setDescription(strBuilder.toString());
 			} else {
-				currentItem.description = strBuilder.toString();
+				currentItem.setDescription(strBuilder.toString());
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.LINK)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
 				feed.setLink(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)){
-				currentItem.link = strBuilder.toString();
+				currentItem.setLink(strBuilder.toString());
 			} 
 		} else if (qName.equalsIgnoreCase(FeedHandler.PUBDATE)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.ITEM)) {
-				currentItem.pubDate = strBuilder.toString();
+				currentItem.setPubDate(strBuilder.toString());
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.URL)) {
 			if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
@@ -107,10 +107,10 @@ public class RSSHandler extends DefaultHandler {
 		} else if (qName.equalsIgnoreCase(FeedHandler.PUBDATE)) {
 			active_sub_element = qName;
 		} else if (qName.equalsIgnoreCase(FeedHandler.ENCLOSURE)) {
-			currentItem.media = new FeedMedia(currentItem,
+			currentItem.setMedia(new FeedMedia(currentItem,
 											  attributes.getValue(FeedHandler.ENC_URL),
 											  Long.parseLong(attributes.getValue(FeedHandler.ENC_LEN)),
-											  attributes.getValue(FeedHandler.ENC_TYPE));
+											  attributes.getValue(FeedHandler.ENC_TYPE)));
 		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
 			feed.setImage(new FeedImage());
 			active_root_element = qName;

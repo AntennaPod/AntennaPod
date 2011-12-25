@@ -17,3 +17,7 @@ local.properties
 
 # Backup files
 *~
+
+# Eclipse project files
+.classpath
+.project

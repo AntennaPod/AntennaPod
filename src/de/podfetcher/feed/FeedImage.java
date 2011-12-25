@@ -1,7 +1,7 @@
 package de.podfetcher.feed;
 
 public class FeedImage extends FeedFile {
-	public String title;
+	protected String title;
 
 	public FeedImage(String download_url, String title) {
 		super();
@@ -19,6 +19,12 @@ public class FeedImage extends FeedFile {
 	public FeedImage() {
 		
 	}
+
+	public String getTitle() {
+		return title;
+	}
+	
+	
 	
 	
 	
