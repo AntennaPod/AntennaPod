@@ -1,9 +1,11 @@
 package de.podfetcher;
 
 import de.podfetcher.feed.FeedManager;
+import de.podfetcher.FeedlistActivity;
 import android.app.Application;
+import greendroid.app.GDApplication;
 
-public class PodcastApp extends Application {
+public class PodcastApp extends GDApplication {
 
 	private static PodcastApp singleton;
 	
@@ -11,13 +13,17 @@ public class PodcastApp extends Application {
 		return singleton;
 	}
 
+	public Class<?> getHomeActivityClass() {
+		return PodfetcherActivity.class;
+	}
+
 	@Override
 	public void onCreate() {
 		super.onCreate();
 		singleton = this;
 		
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
+		//FeedManager manager = FeedManager.getInstance();
+		//manager.loadDBData(getApplicationContext());
 	}
 	
 	

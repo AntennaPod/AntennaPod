@@ -1,0 +1,3 @@
+[submodule "libs/GreenDroid"]
+	path = libs/GreenDroid
+	url = https://github.com/cyrilmottier/GreenDroid.git
