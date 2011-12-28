@@ -1,4 +1,4 @@
-package de.podfetcher.gui;
+package de.podfetcher.activity;
 
 import android.app.Activity;
 import android.os.Bundle;

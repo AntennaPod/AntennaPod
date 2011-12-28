@@ -17,17 +17,17 @@
 		android:name=".PodcastApp">
         <activity
             android:label="@string/app_name"
-			android:name=".PodfetcherActivity" >
+			android:name="de.podfetcher.activity.PodfetcherActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name=".FeedlistActivity"/>
-		<activity android:name="de.podfetcher.gui.AddFeedActivity"/>
+		<activity android:name="de.podfetcher.activity.FeedlistActivity"/>
+		<activity android:name="de.podfetcher.activity.AddFeedActivity"/>
 		
-		<service android:enabled="true" android:name=".DownloadService" />
-		<service android:enabled="true" android:name=".FeedSyncService" > 
+		<service android:enabled="true" android:name="de.podfetcher.service.DownloadService" />
+		<service android:enabled="true" android:name="de.podfetcher.service.FeedSyncService" > 
 			<intent-filter>
 				<action android:name="action.de.podfetcher.storage.feed_download_completed"></action>
 			</intent-filter>

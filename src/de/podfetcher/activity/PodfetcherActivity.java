@@ -1,9 +1,10 @@
-package de.podfetcher;
+package de.podfetcher.activity;
 
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
+import de.podfetcher.R;
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
 import greendroid.app.GDListActivity;

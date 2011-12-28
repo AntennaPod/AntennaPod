@@ -1,7 +1,6 @@
 package de.podfetcher;
 
-import de.podfetcher.feed.FeedManager;
-import de.podfetcher.FeedlistActivity;
+import de.podfetcher.activity.PodfetcherActivity;
 import android.app.Application;
 import greendroid.app.GDApplication;
 

@@ -4,9 +4,10 @@
  * */
 
 
-package de.podfetcher.storage;
+package de.podfetcher.service;
 
 import de.podfetcher.feed.*;
+import de.podfetcher.storage.DownloadRequester;
 import android.app.Service;
 import android.app.DownloadManager;
 import android.content.Intent;
@@ -85,16 +86,16 @@ public class DownloadService extends Service {
 			requester.downloadImage(context, feed.getImage());
 		}
 			// Notify FeedSyncService about the new Feed
-			sendBroadcast(item_intent);
+			sendBroadcast(intent);
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
-	private void handleCompletedImageDownload(Context contex, Intent intent) {
-			requester.removeImageByID(item_intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-			FeedImage image = manager.getFeedImage(item_intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
+	private void handleCompletedImageDownload(Context context, Intent intent) {
+			requester.removeImageByID(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
+			FeedImage image = manager.getFeedImage(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 			image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
-			sendBroadcast(item_intent);
+			sendBroadcast(intent);
 
 	}
 }

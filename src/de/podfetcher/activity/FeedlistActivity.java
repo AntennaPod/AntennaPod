@@ -1,6 +1,6 @@
-package de.podfetcher;
+package de.podfetcher.activity;
 
-import de.podfetcher.gui.AddFeedActivity;
+import de.podfetcher.R;
 import greendroid.app.GDListActivity;
 import android.os.Bundle;
 import android.view.View;
