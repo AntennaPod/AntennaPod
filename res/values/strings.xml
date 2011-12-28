@@ -1,8 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+	<!-- Activitiy titles-->
     <string name="app_name">Podfetcher</string>
 	<string name="feeds_label">Feeds</string>
 	<string name="settings_label">Settings</string>
+
+	<!-- 				-->
+	<string name="confirm_label">Confirm</string>
 
 </resources>

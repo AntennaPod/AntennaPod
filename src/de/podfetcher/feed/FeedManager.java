@@ -109,6 +109,17 @@ public class FeedManager {
 		}
 		return null;
 	}
+
+	/** Get a Feed Image by its id */
+	public FeedImage getFeedImage(long id) {
+		for(Feed f : feeds) {
+			FeedImage image = f.getImage();
+			if(image != null && image.getId() == id) {
+				return image;
+			}
+		}
+		return null;
+	}
 	
 	/** Reads the database */
 	public void loadDBData(Context context) {

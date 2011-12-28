@@ -23,6 +23,8 @@ import android.content.Context;
 
 
 public class FeedSyncService extends Service {
+
+	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
 	
 	private volatile ScheduledThreadPoolExecutor executor;
 	private FeedManager manager;

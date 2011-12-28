@@ -23,8 +23,9 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity
-			android:name=".FeedlistActivity"/>
+		<activity android:name=".FeedlistActivity"/>
+		<activity android:name="de.podfetcher.gui.AddFeedActivity"/>
+		
 		<service android:enabled="true" android:name=".DownloadService" />
 		<service android:enabled="true" android:name=".FeedSyncService" > 
 			<intent-filter>
