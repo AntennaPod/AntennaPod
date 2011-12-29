@@ -27,10 +27,5 @@
 		<activity android:name="de.podfetcher.activity.AddFeedActivity"/>
 		
 		<service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
-		<service android:enabled="true" android:name="de.podfetcher.service.FeedSyncService" > 
-			<intent-filter>
-				<action android:name="action.de.podfetcher.storage.feed_download_completed"></action>
-			</intent-filter>
-		</service>
     </application>
 </manifest>

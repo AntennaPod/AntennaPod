@@ -3,11 +3,10 @@ package de.podfetcher.storage;
 import java.util.ArrayList;
 import java.io.File;
 
-import de.podfetcher.feed.Feed;
-import de.podfetcher.feed.FeedImage;
-import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.feed.*;
 import de.podfetcher.service.DownloadService;
 
+import android.util.Log;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
@@ -30,14 +29,14 @@ public class DownloadRequester {
 	
 	private static DownloadRequester downloader;
 	
-	public ArrayList<Intent> feeds;
-	public ArrayList<Intent> images;
-	public ArrayList<Intent> media;
+	public ArrayList<FeedFile> feeds;
+	public ArrayList<FeedFile> images;
+	public ArrayList<FeedFile> media;
 	
 	private DownloadRequester(){
-		feeds = new ArrayList<Intent>();
-		images = new ArrayList<Intent>();
-		media = new ArrayList<Intent>();
+		feeds = new ArrayList<FeedFile>();
+		images = new ArrayList<FeedFile>();
+		media = new ArrayList<FeedFile>();
 		
 	}
 	
@@ -48,88 +47,80 @@ public class DownloadRequester {
 		return downloader;
 	}
 	
-	private void download(Context context, ArrayList<Intent> type, String str_uri, File dest, boolean visibleInUI, String action, long id) {
-		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(str_uri));
+	private void download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
+		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(item.getDownload_url()));
 		//request.allowScanningByMediaScanner();
 
 		request.setDestinationUri(Uri.fromFile(dest));
 		request.setVisibleInDownloadsUi(visibleInUI);
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-		Intent i = new Intent(action);
 		context.startService(new Intent(context, DownloadService.class));
-		i.putExtra(EXTRA_DOWNLOAD_ID, manager.enqueue(request));
-		i.putExtra(EXTRA_ITEM_ID, id);
-		type.add(i);
+		item.setDownloadId(manager.enqueue(request));
+		type.add(item);
 		
 	}
 	public void downloadFeed(Context context, Feed feed) {
-		download(context, feeds, feed.getDownload_url(), 
+		download(context, feeds, feed, 
 				new File(getFeedfilePath(context), getFeedfileName(feed.getId())),
-				true, ACTION_FEED_DOWNLOAD_COMPLETED, feed.getId());
+				true);
 	}
 	
 	public void downloadImage(Context context, FeedImage image) {
-		download(context, images, image.getDownload_url(),
+		download(context, images, image, 
 				new File(getImagefilePath(context), getImagefileName(image.getId())),
-				true, ACTION_IMAGE_DOWNLOAD_COMPLETED, image.getId());
+				true);
 	}
 	
 	public void downloadMedia(Context context, FeedMedia feedmedia) {
-		download(context, media, feedmedia.getDownload_url(),
+		download(context, media, feedmedia,
 				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + feedmedia.getId()),
-				true, ACTION_MEDIA_DOWNLOAD_COMPLETED, feedmedia.getId());
+				true);
 	}
-	
-	public void removeFeedByID(long id) {
-		int len = feeds.size();
-		for(int x = 0; x < len; x++) {
-			if(feeds.get(x).getLongExtra(EXTRA_ITEM_ID, -1) == id) {
-				feeds.remove(x);
-				break;
-			}
-		}
-	}
-	
-	public void removeMediaByID(long id) {
-		int len = media.size();
-		for(int x = 0; x < len; x++) {
-			if(media.get(x).getLongExtra(EXTRA_ITEM_ID, -1) == id) {
-				media.remove(x);
-				break;
-			}
-		}
-	}
-	
-	public void removeImageByID(long id) {
-		int len = images.size();
-		for(int x = 0; x < len; x++) {
-			if(images.get(x).getLongExtra(EXTRA_ITEM_ID, -1) == id) {
-				images.remove(x);
-				break;
-			}
-		}
-	}
-	
-	/* Returns the stored intent by looking for the right download id */
-	public Intent getItemIntent(long id) {
-		for(Intent i : feeds) {
-			if(i.getLongExtra(EXTRA_DOWNLOAD_ID, -1) == id) {
-				return i;
-			}
-		}
-		for(Intent i : media) {
-			if(i.getLongExtra(EXTRA_DOWNLOAD_ID, -1) == id) {
-				return i;
-			}
-		}
-		for(Intent i : images) {
-			if(i.getLongExtra(EXTRA_DOWNLOAD_ID, -1) == id) {
-				return i;
+
+	/** Get a Feed by its download id */
+	public Feed getFeed(long id) {
+		for(FeedFile f: feeds) {
+			if(f.getDownloadId() == id) {
+				return (Feed) f;
 			}
 		}
 		return null;
 	}
+
+	/** Get a FeedImage by its download id */
+	public FeedImage getFeedImage(long id) {
+		for(FeedFile f: images) {
+			if(f.getDownloadId() == id) {
+				return (FeedImage) f;
+			}
+		}
+		return null;
+	}
+	
+
+	/** Get media by its download id */
+	public FeedMedia getFeedMedia(long id) {
+		for(FeedFile f: media) {
+			if(f.getDownloadId() == id) {
+				return (FeedMedia) f;
+			}
+		}
+		return null;
+	}
+
+	public void removeFeed(Feed f) {
+		feeds.remove(f);	
+	}
+	
+	public void removeFeedMedia(FeedMedia m) {
+		media.remove(m);
+	}
+	
+	public void removeFeedImage(FeedImage fi) {
+		images.remove(fi);
+	}
+	
 
 	/** Get the number of uncompleted Downloads */
 	public int getNumberOfDownloads() {

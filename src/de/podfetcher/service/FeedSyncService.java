@@ -65,6 +65,7 @@ public class FeedSyncService extends Service {
 
 	/** Prepares itself for stopping */
 	private void initiateShutdown() {
+		Log.d(this.toString(), "Initiating shutdown");
 		// Wait until PoolExecutor is done
 		Thread waiter = new Thread() {
 			@Override
