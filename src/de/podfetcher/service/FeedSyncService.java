@@ -19,6 +19,7 @@ import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.os.IBinder;
 import android.content.Context;
+import android.util.Log;
 
 
 public class FeedSyncService extends Service {
@@ -31,6 +32,7 @@ public class FeedSyncService extends Service {
 
 	@Override
 	public void onCreate() {
+		Log.d(this.toString(), "Service started");
 		executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 2);
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
@@ -44,6 +46,7 @@ public class FeedSyncService extends Service {
 
 	@Override
 	public void onDestroy() {
+		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		unregisterReceiver(allFeedsDownloaded);
 	}
 
@@ -100,6 +103,7 @@ public class FeedSyncService extends Service {
 			FeedHandler handler = new FeedHandler();
 			
 			feed = handler.parseFeed(feed);
+			Log.d(this.toString(), feed.getTitle() + " parsed");
 			// Add Feeditems to the database
 			for(FeedItem item : feed.getItems()) {
 				manager.addFeedItem(service, item);

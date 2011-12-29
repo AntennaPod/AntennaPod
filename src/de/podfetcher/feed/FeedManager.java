@@ -181,6 +181,10 @@ public class FeedManager {
 		}
 		return items;
 	}
+
+	public ArrayList<Feed> getFeeds() {
+		return feeds;
+	}
 	
 	 
 	

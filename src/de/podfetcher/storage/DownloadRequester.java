@@ -6,6 +6,7 @@ import java.io.File;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.service.DownloadService;
 
 import android.app.DownloadManager;
 import android.content.Context;
@@ -22,9 +23,9 @@ public class DownloadRequester {
 	public static String ACTION_IMAGE_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.image_download_completed";
 	
 	private static boolean STORE_ON_SD = true;
-	public static String IMAGE_DOWNLOADPATH = "images";
-	public static String FEED_DOWNLOADPATH = "cache";
-	public static String MEDIA_DOWNLOADPATH = "media";
+	public static String IMAGE_DOWNLOADPATH = "images/";
+	public static String FEED_DOWNLOADPATH = "cache/";
+	public static String MEDIA_DOWNLOADPATH = "media/";
 	
 	
 	private static DownloadRequester downloader;
@@ -56,6 +57,7 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 		Intent i = new Intent(action);
+		context.startService(new Intent(context, DownloadService.class));
 		i.putExtra(EXTRA_DOWNLOAD_ID, manager.enqueue(request));
 		i.putExtra(EXTRA_ITEM_ID, id);
 		type.add(i);
@@ -139,7 +141,7 @@ public class DownloadRequester {
 	}
 
 	public String getFeedfilePath(Context context) {
-		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString();	
+		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString() + "/";	
 	}
 
 	public String getFeedfileName(long id) {
@@ -147,7 +149,7 @@ public class DownloadRequester {
 	}
 
 	public String getImagefilePath(Context context) {
-		return context.getExternalFilesDir(IMAGE_DOWNLOADPATH).toString();
+		return context.getExternalFilesDir(IMAGE_DOWNLOADPATH).toString() + "/";
 	}
 
 	public String getImagefileName(long id) {

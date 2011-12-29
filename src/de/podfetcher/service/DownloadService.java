@@ -6,6 +6,7 @@
 
 package de.podfetcher.service;
 
+import java.io.File;
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
 import android.app.Service;
@@ -15,6 +16,7 @@ import android.content.IntentFilter;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.util.Log;
 
 public class DownloadService extends Service {
 
@@ -25,6 +27,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public void onCreate() {
+		Log.d(this.toString(), "Service started");
 		registerReceiver(receiver, createIntentFilter());
 	}
 
@@ -78,15 +81,14 @@ public class DownloadService extends Service {
 		requester.removeFeedByID(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 		// Get Feed Information
 		Feed feed = manager.getFeed(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-		feed.setFile_url(requester.getFeedfilePath(context) + requester.getFeedfileName(feed.getId()));
+		feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
 		// Update Information in Database
 		manager.setFeed(context, feed);
 		// Download Feed Image if provided
 		if(feed.getImage() != null) {
 			requester.downloadImage(context, feed.getImage());
 		}
-			// Notify FeedSyncService about the new Feed
-			sendBroadcast(intent);
+		context.startService(intent);
 
 	}
 
@@ -95,7 +97,6 @@ public class DownloadService extends Service {
 			requester.removeImageByID(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 			FeedImage image = manager.getFeedImage(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
 			image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
-			sendBroadcast(intent);
 
 	}
 }
