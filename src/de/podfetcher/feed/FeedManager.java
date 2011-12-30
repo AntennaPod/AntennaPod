@@ -60,8 +60,8 @@ public class FeedManager {
 	public void addFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		// Search list for feeditem
-		Feed foundFeed = searchFeedByLink(item.getLink());
-		FeedItem foundItem = searchFeedItemByLink(foundFeed, item.getLink());
+		Feed feed = item.getFeed();
+		FeedItem foundItem = searchFeedItemByLink(feed, item.getLink());
 		if(foundItem != null) {
 			// Update Information
 			item.id = foundItem.id;
@@ -69,7 +69,7 @@ public class FeedManager {
 			item.setRead(foundItem.isRead());
 			adapter.setFeedItem(item);
 		} else {
-			foundFeed.getItems().add(item);	
+			feed.getItems().add(item);	
 			item.id = adapter.setFeedItem(item);
 		}
 	}

@@ -106,7 +106,7 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setFeed(Feed feed) {
-	        open();
+		open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, feed.getTitle());
 		values.put(KEY_LINK, feed.getLink());
@@ -130,9 +130,11 @@ public class PodDBAdapter {
 		
 		if(feed.getId() == 0) {
 			// Create new entry
+			Log.d(this.toString(), "Inserting new Feed into db");
 			feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
 		} else {
-			db.update(TABLE_NAME_FEEDS, values, KEY_ID+"=?", new String[]{String.valueOf(feed.getId())});
+			Log.d(this.toString(), "Updating existing Feed in db");
+			db.update(TABLE_NAME_FEEDS, values, KEY_ID+"=?", new String[]{Long.toString(feed.getId())});
 		}
 		close();
 		return feed.getId();

@@ -7,7 +7,8 @@
 package de.podfetcher.service;
 
 import java.io.File;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
@@ -25,7 +26,7 @@ public class DownloadService extends Service {
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
 
-	private volatile ScheduledThreadPoolExecutor syncExecutor;
+	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
 
@@ -33,7 +34,7 @@ public class DownloadService extends Service {
 	public void onCreate() {
 		Log.d(this.toString(), "Service started");
 		registerReceiver(downloadReceiver, createIntentFilter());
-		syncExecutor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 2);
+		syncExecutor = Executors.newSingleThreadExecutor();
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 	}
@@ -64,7 +65,10 @@ public class DownloadService extends Service {
 			public void run() {
 				syncExecutor.shutdown();
 				try {
-					syncExecutor.awaitTermination(20, TimeUnit.SECONDS);
+					Log.d(this.toString(), "Starting to wait for termination");
+					boolean b = syncExecutor.awaitTermination(20L, TimeUnit.SECONDS);
+					Log.d(this.toString(), "Stopping waiting for termination; Result : "+ b);
+
 					stopSelf();
 				}catch(InterruptedException e) {
 					e.printStackTrace();
@@ -106,9 +110,10 @@ public class DownloadService extends Service {
 		manager.setFeed(context, feed);
 		// Download Feed Image if provided
 		if(feed.getImage() != null) {
+			Log.d(this.toString(), "Feed has image; Downloading....");
 			requester.downloadImage(context, feed.getImage());
 		}
-		syncExecutor.submit(new FeedSyncThread(feed, this));
+		syncExecutor.execute(new FeedSyncThread(feed, this));
 
 	}
 
@@ -136,10 +141,15 @@ public class DownloadService extends Service {
 			
 			feed = handler.parseFeed(feed);
 			Log.d(this.toString(), feed.getTitle() + " parsed");
+			// Save information of feed in DB
+			Log.d(this.toString(), "Passing new Feed to DB");
+			manager.setFeed(service, feed);
 			// Add Feeditems to the database
+			Log.d(this.toString(), "Walking through " + feed.getItems().size() + " feeditems");
 			for(FeedItem item : feed.getItems()) {
 				manager.addFeedItem(service, item);
 			}
+			Log.d(this.toString(), "Done.");
 		}
 		
 	}
