@@ -106,8 +106,6 @@ public class DownloadService extends Service {
 		requester.removeFeed(feed);
 		// Get Feed Information
 		feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
-		// Update Information in Database
-		manager.setFeed(context, feed);
 		// Download Feed Image if provided
 		if(feed.getImage() != null) {
 			Log.d(this.toString(), "Feed has image; Downloading....");
@@ -142,13 +140,8 @@ public class DownloadService extends Service {
 			feed = handler.parseFeed(feed);
 			Log.d(this.toString(), feed.getTitle() + " parsed");
 			// Save information of feed in DB
-			Log.d(this.toString(), "Passing new Feed to DB");
-			manager.setFeed(service, feed);
-			// Add Feeditems to the database
+			manager.updateFeed(service, feed);
 			Log.d(this.toString(), "Walking through " + feed.getItems().size() + " feeditems");
-			for(FeedItem item : feed.getItems()) {
-				manager.addFeedItem(service, item);
-			}
 			Log.d(this.toString(), "Done.");
 		}
 		

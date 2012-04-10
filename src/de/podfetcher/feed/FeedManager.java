@@ -37,24 +37,14 @@ public class FeedManager {
 		return singleton;		
 	}
 
-	/** Add and Download a new Feed */
-	public void addFeed(Context context, String url) {
-		// TODO Check if URL is correct
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		Feed feed = new Feed(url);
-		feed.download_url = url;
-		feed.id = adapter.setFeed(feed);
-		// Add Feed to Feedlist if not available
-		Feed foundFeed = getFeed(feed.id);
-		if(foundFeed == null) {
-			feeds.add(feed);
-		}else {
-			feed = foundFeed;
+	private void addNewFeed(Context context, Feed feed) {
+		feeds.add(feed);
+		feed.setId(setFeed(context, feed));
+		for(FeedItem item : feed.getItems()) {
+			setFeedItem(context, item);
 		}
-		DownloadRequester req = DownloadRequester.getInstance();
-		req.downloadFeed(context, feed);
-		
-	}
+	}	
+	
 
 	/** Adds a new Feeditem if its not in the list */
 	public void addFeedItem(Context context, FeedItem item) {
@@ -72,6 +62,30 @@ public class FeedManager {
 			feed.getItems().add(item);	
 			item.id = adapter.setFeedItem(item);
 		}
+	}
+
+	public void updateFeed(Context context, Feed newFeed) {
+		// Look up feed in the feedslist
+		Feed savedFeed = searchFeedByLink(newFeed.getLink());
+		if(savedFeed == null) {
+			// Add a new Feed
+			addNewFeed(context, newFeed);
+		}else {
+			// Look for new or updated Items
+			for(FeedItem item : newFeed.getItems()) {
+				FeedItem oldItem = searchFeedItemByLink(savedFeed, item.getLink());
+				if(oldItem != null) {
+					FeedItem newItem = searchFeedItemByLink(newFeed, item.getLink());
+					if(newItem != null) {
+						newItem.setRead(oldItem.isRead());
+					}
+				}
+			}
+			newFeed.setId(savedFeed.getId());
+			savedFeed = newFeed;
+			setFeed(context, newFeed);	
+		}
+
 	}
 
 	/** Get a Feed by its link */
@@ -95,9 +109,14 @@ public class FeedManager {
 	}
 
 	/** Updates Information of an existing Feed */
-	public void setFeed(Context context, Feed feed) {
+	public long setFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.setFeed(feed);
+		return adapter.setFeed(feed);
+	}
+
+	public long setFeedItem(Context context, FeedItem item) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		return adapter.setFeedItem(item);
 	}
 
 	/** Get a Feed by its id */

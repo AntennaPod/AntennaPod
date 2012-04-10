@@ -6,22 +6,20 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
 import de.podfetcher.R;
-import de.podfetcher.feed.FeedManager;
+import de.podfetcher.feed.Feed;
+import de.podfetcher.storage.DownloadRequester;
 
 /** Activity for adding/editing a Feed */
 public class AddFeedActivity extends Activity {
 
 	private EditText etxtFeedurl;
 	private Button butConfirm;
-	private FeedManager manager;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addfeed);
 
-		manager = FeedManager.getInstance();
-		
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 
@@ -38,7 +36,9 @@ public class AddFeedActivity extends Activity {
 
 	private void addNewFeed() {
 		String url = etxtFeedurl.getText().toString();	
-		manager.addFeed(this, url);
+		Feed feed = new Feed(url);
+		DownloadRequester req = DownloadRequester.getInstance();
+		req.downloadFeed(this, feed);
 
 
 	}
