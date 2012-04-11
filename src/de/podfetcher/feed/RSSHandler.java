@@ -48,7 +48,7 @@ public class RSSHandler extends DefaultHandler {
 		} else if (qName.equalsIgnoreCase(FeedHandler.TITLE)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
 				feed.setTitle(strBuilder.toString());
-			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)) {
+			} else if(active_root_element.equalsIgnoreCase(FeedHandler.ITEM)) {
 				currentItem.setTitle(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
 				feed.getImage().title = strBuilder.toString();
@@ -62,7 +62,7 @@ public class RSSHandler extends DefaultHandler {
 		} else if (qName.equalsIgnoreCase(FeedHandler.LINK)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
 				feed.setLink(strBuilder.toString());
-			} else if(active_root_element.equalsIgnoreCase(FeedHandler.TITLE)){
+			} else if(active_root_element.equalsIgnoreCase(FeedHandler.ITEM)){
 				currentItem.setLink(strBuilder.toString());
 			} 
 		} else if (qName.equalsIgnoreCase(FeedHandler.PUBDATE)) {
