@@ -90,10 +90,12 @@ public class PodDBAdapter {
 	}
 
 	public PodDBAdapter open() {
-		try {
-			db = helper.getWritableDatabase();
-		} catch (SQLException ex) {
-			db = helper.getReadableDatabase();
+		if(db == null || !db.isOpen() || db.isReadOnly()) {
+		    try {
+			    db = helper.getWritableDatabase();
+		    } catch (SQLException ex) {
+			    db = helper.getReadableDatabase();
+		    }
 		}
 		return this;
 	}
@@ -105,8 +107,7 @@ public class PodDBAdapter {
 	/** Inserts or updates a feed entry 
 	 * @return the id of the entry
 	 * */
-	public long setFeed(Feed feed) {
-		open();
+	public long setFeed(Feed feed) {		
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, feed.getTitle());
 		values.put(KEY_LINK, feed.getLink());
@@ -128,6 +129,7 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		
+		open();
 		if(feed.getId() == 0) {
 			// Create new entry
 			Log.d(this.toString(), "Inserting new Feed into db");
@@ -144,6 +146,7 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setCategory(FeedCategory category) {
+	    open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME, category.getName());
 		if(category.getId() == 0) {
@@ -152,6 +155,7 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_CATEGORIES, values, KEY_ID+"=?", new String[]{String.valueOf(category.getId())});
 			
 		}
+		close();
 		return category.getId();
 	}
 
@@ -160,6 +164,7 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setImage(FeedImage image) {
+	    open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
@@ -171,6 +176,7 @@ public class PodDBAdapter {
 		} else {
 			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID+"=?", new String[]{String.valueOf(image.getId())});
 		}
+		close();
 		return image.getId();
 	}
 	
@@ -179,6 +185,7 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 */
 	public long setMedia(FeedMedia media) {
+	    open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_LENGTH, media.getLength());
 		values.put(KEY_POSITION, media.getPosition());
@@ -193,6 +200,7 @@ public class PodDBAdapter {
 		} else {
 			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID+"=?", new String[]{String.valueOf(media.getId())});
 		}
+		close();
 		return media.getId();
 	}
 	
@@ -217,6 +225,14 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, (item.isRead()) ? 1 : 0);
+		
+		open();
+		if(item.getId() == 0) {
+		    item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
+		} else {
+		    db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID+"=?", new String[]{String.valueOf(item.getId())});
+		}
+		close();
 		return item.getId();
 	}
 	

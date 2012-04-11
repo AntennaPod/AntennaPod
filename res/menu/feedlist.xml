@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/add_feed"
+        android:title="Add Feed"
+        android:icon="@android:drawable/ic_menu_add"
+        android:showAsAction="ifRoom">
+   </item>
+   <item
+        android:id="@+id/all_feed_refresh"
+        android:title="Refresh"
+        android:icon="@android:drawable/ic_menu_rotate"
+        android:showAsAction="ifRoom">
+   </item>
+</menu>

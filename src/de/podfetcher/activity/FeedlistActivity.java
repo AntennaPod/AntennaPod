@@ -5,18 +5,19 @@ import de.podfetcher.feed.FeedManager;
 import de.podfetcher.gui.FeedlistAdapter;
 import de.podfetcher.service.FeedSyncService;
 import de.podfetcher.storage.DownloadRequester;
-import greendroid.app.GDListActivity;
 import android.os.Bundle;
 import android.view.View;
-import greendroid.widget.ActionBarItem.Type;
-import greendroid.widget.ActionBarItem;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 
-public class FeedlistActivity extends GDListActivity {
+public class FeedlistActivity extends SherlockListActivity {
 	
 	private FeedManager manager;
 	private FeedlistAdapter fla;
@@ -29,9 +30,24 @@ public class FeedlistActivity extends GDListActivity {
 		fla = new FeedlistAdapter(this, R.layout.feedlist_item, 0, manager.getFeeds());
 		setListAdapter(fla);
 
-		addActionBarItem(Type.Add, R.id.action_bar_add);
-		addActionBarItem(Type.Refresh, R.id.action_bar_refresh);
-
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+	    MenuInflater inflater = getSupportMenuInflater();
+	    inflater.inflate(R.menu.feedlist, menu);
+	    return true;
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch(item.getItemId()) {
+	        case R.id.add_feed:
+	            startActivity(new Intent(this, AddFeedActivity.class));
+				return true;
+			default:
+			    return super.onOptionsItemSelected(item);
+	    }
 	}
 
 	@Override
@@ -48,17 +64,6 @@ public class FeedlistActivity extends GDListActivity {
 	protected void onPause() {
 		super.onPause();
 		unregisterReceiver(contentUpdate);
-	}
-
-	@Override
-	public boolean onHandleActionBarItemClick(ActionBarItem item, int position) {
-		switch(item.getItemId()) {
-			case R.id.action_bar_add:
-				startActivity(new Intent(this, AddFeedActivity.class));
-				return true;
-			default:
-				return super.onHandleActionBarItemClick(item, position);
-		}
 	}
 
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {

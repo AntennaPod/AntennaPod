@@ -2,18 +2,13 @@ package de.podfetcher;
 
 import de.podfetcher.activity.PodfetcherActivity;
 import android.app.Application;
-import greendroid.app.GDApplication;
 
-public class PodcastApp extends GDApplication {
+public class PodcastApp extends Application {
 
 	private static PodcastApp singleton;
 	
 	public static PodcastApp getInstance() {
 		return singleton;
-	}
-
-	public Class<?> getHomeActivityClass() {
-		return PodfetcherActivity.class;
 	}
 
 	@Override
