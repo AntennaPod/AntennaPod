@@ -5,6 +5,7 @@ import java.io.File;
 
 import de.podfetcher.feed.*;
 import de.podfetcher.service.DownloadService;
+import de.podfetcher.util.NumberGenerator;
 
 import android.util.Log;
 import android.app.DownloadManager;
@@ -57,17 +58,18 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 		context.startService(new Intent(context, DownloadService.class));
-		item.setDownloadId(manager.enqueue(request));	
+		item.setDownloadId(manager.enqueue(request));
+		item.setFile_url(dest.toString());	
 	}
 	public void downloadFeed(Context context, Feed feed) {
 		download(context, feeds, feed, 
-				new File(getFeedfilePath(context), getFeedfileName(feeds.size())),
+				new File(getFeedfilePath(context), getFeedfileName(feed)),
 				true);
 	}
 	
 	public void downloadImage(Context context, FeedImage image) {
 		download(context, images, image, 
-				new File(getImagefilePath(context), getImagefileName(images.size())),
+				new File(getImagefilePath(context), getImagefileName(image)),
 				true);
 	}
 	
@@ -134,15 +136,15 @@ public class DownloadRequester {
 		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString() + "/";	
 	}
 
-	public String getFeedfileName(long id) {
-		return "feed-" + id;
+	public String getFeedfileName(Feed feed) {
+		return "feed-" + NumberGenerator.generateLong(feed.getDownload_url());
 	}
 
 	public String getImagefilePath(Context context) {
 		return context.getExternalFilesDir(IMAGE_DOWNLOADPATH).toString() + "/";
 	}
 
-	public String getImagefileName(long id) {
-		return "image-" + id;
+	public String getImagefileName(FeedImage image) {
+		return "image-" + NumberGenerator.generateLong(image.getDownload_url());
 	}
 }

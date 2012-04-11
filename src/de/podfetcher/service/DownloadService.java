@@ -105,7 +105,7 @@ public class DownloadService extends Service {
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
 	    Log.d(this.toString(), "Handling completed Feed Download");
 		// Get Feed Information
-		feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
+		//feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
 		
 		syncExecutor.execute(new FeedSyncThread(feed, this, requester));
 
@@ -115,7 +115,7 @@ public class DownloadService extends Service {
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
 	        Log.d(this.toString(), "Handling completed Image Download");
 			requester.removeFeedImage(image);
-			image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
+			//image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
             manager.setFeedImage(this, image);
 	}
 

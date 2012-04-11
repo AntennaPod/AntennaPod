@@ -59,7 +59,7 @@ public class FeedSyncService extends Service {
 	/** Extracts a Feed object from the given Intent */
 	private Feed handleIntent(Intent intent) {
 		Feed feed = manager.getFeed(intent.getLongExtra(DownloadRequester.EXTRA_ITEM_ID, -1));
-		feed.setFile_url(requester.getFeedfilePath(this) + requester.getFeedfileName(feed.getId()));
+		//feed.setFile_url(requester.getFeedfilePath(this) + requester.getFeedfileName(feed.getId()));
 		return feed;
 	}
 
