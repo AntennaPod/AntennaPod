@@ -25,6 +25,7 @@
         </activity>
 		<activity android:name="de.podfetcher.activity.FeedlistActivity"/>
 		<activity android:name="de.podfetcher.activity.AddFeedActivity"/>
+		<activity android:name="de.podfetcher.activity.FeedItemlistActivity"/>
 		
 		<service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
     </application>
