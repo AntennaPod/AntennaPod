@@ -103,23 +103,20 @@ public class DownloadService extends Service {
 
 	/** Is called whenever a Feed is downloaded */
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
-		requester.removeFeed(feed);
+	    Log.d(this.toString(), "Handling completed Feed Download");
 		// Get Feed Information
 		feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
-		// Download Feed Image if provided
-		if(feed.getImage() != null) {
-			Log.d(this.toString(), "Feed has image; Downloading....");
-			requester.downloadImage(context, feed.getImage());
-		}
-		syncExecutor.execute(new FeedSyncThread(feed, this));
+		
+		syncExecutor.execute(new FeedSyncThread(feed, this, requester));
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
+	        Log.d(this.toString(), "Handling completed Image Download");
 			requester.removeFeedImage(image);
 			image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
-
+            manager.setFeedImage(this, image);
 	}
 
 	/** Takes a single Feed, parses the corresponding file and refreshes information in the manager */
@@ -127,10 +124,12 @@ public class DownloadService extends Service {
 
 		private Feed feed;
 		private DownloadService service;
+		private DownloadRequester requester;
 
-		public FeedSyncThread(Feed feed, DownloadService service) {
+		public FeedSyncThread(Feed feed, DownloadService service, DownloadRequester requester) {
 			this.feed = feed;
 			this.service = service;
+			this.requester = requester;
 		}
 
 		public void run() {
@@ -139,6 +138,12 @@ public class DownloadService extends Service {
 			
 			feed = handler.parseFeed(feed);
 			Log.d(this.toString(), feed.getTitle() + " parsed");
+			// Download Feed Image if provided
+		    if(feed.getImage() != null) {
+			    Log.d(this.toString(), "Feed has image; Downloading....");
+			    requester.downloadImage(service, feed.getImage());
+		    }
+		    requester.removeFeed(feed);
 			// Save information of feed in DB
 			manager.updateFeed(service, feed);
 			Log.d(this.toString(), "Walking through " + feed.getItems().size() + " feeditems");

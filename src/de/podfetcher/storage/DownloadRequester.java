@@ -48,6 +48,7 @@ public class DownloadRequester {
 	}
 	
 	private void download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
+		type.add(item);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(item.getDownload_url()));
 		//request.allowScanningByMediaScanner();
 
@@ -56,25 +57,23 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 		context.startService(new Intent(context, DownloadService.class));
-		item.setDownloadId(manager.enqueue(request));
-		type.add(item);
-		
+		item.setDownloadId(manager.enqueue(request));	
 	}
 	public void downloadFeed(Context context, Feed feed) {
 		download(context, feeds, feed, 
-				new File(getFeedfilePath(context), getFeedfileName(feed.getId())),
+				new File(getFeedfilePath(context), getFeedfileName(feeds.size())),
 				true);
 	}
 	
 	public void downloadImage(Context context, FeedImage image) {
 		download(context, images, image, 
-				new File(getImagefilePath(context), getImagefileName(image.getId())),
+				new File(getImagefilePath(context), getImagefileName(images.size())),
 				true);
 	}
 	
 	public void downloadMedia(Context context, FeedMedia feedmedia) {
 		download(context, media, feedmedia,
-				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + feedmedia.getId()),
+				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + media.size()),
 				true);
 	}
 
