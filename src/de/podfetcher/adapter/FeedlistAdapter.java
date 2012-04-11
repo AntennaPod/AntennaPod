@@ -1,4 +1,4 @@
-package de.podfetcher.gui;
+package de.podfetcher.adapter;
 
 import java.io.File;
 import java.util.List;
