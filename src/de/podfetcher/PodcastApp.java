@@ -1,6 +1,7 @@
 package de.podfetcher;
 
 import de.podfetcher.activity.PodfetcherActivity;
+import de.podfetcher.feed.FeedManager;
 import android.app.Application;
 
 public class PodcastApp extends Application {
@@ -17,8 +18,8 @@ public class PodcastApp extends Application {
 		super.onCreate();
 		singleton = this;
 		
-		//FeedManager manager = FeedManager.getInstance();
-		//manager.loadDBData(getApplicationContext());
+		FeedManager manager = FeedManager.getInstance();
+		manager.loadDBData(getApplicationContext());
 	}
 	
 	

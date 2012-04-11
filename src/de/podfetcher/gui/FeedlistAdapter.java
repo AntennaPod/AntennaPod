@@ -48,7 +48,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		TextView txtvFeedname = (TextView)feedlistView.findViewById(R.id.txtvFeedname);
 		TextView txtvNewEpisodes = (TextView)feedlistView.findViewById(R.id.txtvNewEpisodes);
 		if(feed.getImage() != null) {	
-			imageView.setImageURI(Uri.fromFile(new File(feed.getFile_url())));	// TODO select default picture when no image downloaded
+			imageView.setImageURI(Uri.fromFile(new File(feed.getImage().getFile_url())));	// TODO select default picture when no image downloaded
 		}
 		txtvFeedname.setText(feed.getTitle());
 		// TODO find new Episodes txtvNewEpisodes.setText(feed)

@@ -237,51 +237,65 @@ public class PodDBAdapter {
 	}
 	
 	public Cursor getAllCategoriesCursor() {
-		return db.query(TABLE_NAME_FEED_CATEGORIES, null, null, null, null, null, null);
+	    open();
+	    Cursor c = db.query(TABLE_NAME_FEED_CATEGORIES, null, null, null, null, null, null);
+		return c;
 	}
 	
 	public Cursor getAllFeedsCursor() {
-		return db.query(TABLE_NAME_FEEDS, null, null, null, null, null, null);
+	    open();
+	    Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null, null);
+		return c;
 	}
 	
 	public Cursor getAllItemsOfFeedCursor(Feed feed) {
-		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED+"=?", new String[]{String.valueOf(feed.getId())}, null, null, null);
+	    open();
+	    Cursor c = db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED+"=?", new String[]{String.valueOf(feed.getId())}, null, null, null);
+		return c;
 	}
 	
 	public Cursor getFeedMediaOfItemCursor(FeedItem item) {
-		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
+	    open();
+	    Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
+		return c;
 	}
 	
-	public Cursor getImageOfFeedCursor(Feed feed) {
-		return db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID+"=?", new String[]{String.valueOf(feed.getImage().getId())}, null, null, null);
+	public Cursor getImageOfFeedCursor(long id) {
+	    open();
+	    Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
+		return c;
 	}
 	
 	public FeedMedia getFeedMedia(long row_index) throws SQLException{
+	    open();
 		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(row_index)}, null, null, null);
 		
 		if((cursor.getCount() == 0) || !cursor.moveToFirst()) {
 			throw new SQLException("No FeedMedia found at index: "+ row_index);
 		}
-		
-		return new FeedMedia(row_index, 
+		FeedMedia media = new FeedMedia(row_index, 
 				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)), 
 				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)), 
 				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)), 
 				cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)), 
 				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)), 
 				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
+		close();
+		return media;
 		
 	}
 	
-	public FeedImage getFeedImage(Feed feed) throws SQLException {
-		Cursor cursor = this.getImageOfFeedCursor(feed);
+	public FeedImage getFeedImage(long id) throws SQLException {
+	    open();
+		Cursor cursor = this.getImageOfFeedCursor(id);
 		if((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedImage found at index: "+ feed.getImage().getId());
+			throw new SQLException("No FeedImage found at index: "+ id);
 		}
-		
-		return new FeedImage(feed.getImage().getId(), cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
+		FeedImage image = new FeedImage(id, cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
 				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),
 				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
+		close();
+		return image;
 	}
 
 	private static class PodDBHelper extends SQLiteOpenHelper {

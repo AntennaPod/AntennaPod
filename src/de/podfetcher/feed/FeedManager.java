@@ -22,7 +22,6 @@ public class FeedManager {
 	private ArrayList<Feed> feeds;
 	private ArrayList<FeedCategory> categories;
 	
-	Cursor feedlistCursor;
 
 	
 	private FeedManager() {
@@ -150,14 +149,11 @@ public class FeedManager {
 	/** Reads the database */
 	public void loadDBData(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		feedlistCursor = adapter.getAllFeedsCursor();
 		updateArrays(context);
 	}
 	
 	
 	public void updateArrays(Context context) {
-		feedlistCursor.requery();
-		PodDBAdapter adapter = new PodDBAdapter(context);
 		feeds.clear();
 		categories.clear();
 		extractFeedlistFromCursor(context);		
@@ -165,6 +161,8 @@ public class FeedManager {
 	
 	private void extractFeedlistFromCursor(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if(feedlistCursor.moveToFirst()) {
 			do {
 				Feed feed = new Feed();
@@ -173,7 +171,7 @@ public class FeedManager {
 				feed.setTitle(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 				feed.setLink(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				feed.setDescription(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
-				feed.setImage(adapter.getFeedImage(feed));
+				feed.setImage(adapter.getFeedImage(feedlistCursor.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_IMAGE))));
 				feed.file_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL));
 				feed.download_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL));
 				
@@ -184,12 +182,13 @@ public class FeedManager {
 				feeds.add(feed);
 			}while(feedlistCursor.moveToNext());
 		}
+		adapter.close();
 	}
 	
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context, Cursor itemlistCursor) {
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		
+		adapter.open();
 		if(itemlistCursor.moveToFirst()) {
 			do {
 				FeedItem item = new FeedItem();
@@ -205,6 +204,7 @@ public class FeedManager {
 				items.add(item);
 			} while(itemlistCursor.moveToNext());
 		}
+		adapter.close();
 		return items;
 	}
 
