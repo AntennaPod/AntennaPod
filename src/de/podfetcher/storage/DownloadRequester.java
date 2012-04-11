@@ -15,6 +15,8 @@ import android.net.Uri;
 
 
 public class DownloadRequester {
+    private static final String TAG = "DownloadRequester";
+
 	public static String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.storage.download_id";
 	public static String EXTRA_ITEM_ID = "extra.de.podfetcher.storage.item_id";
 	

@@ -23,7 +23,8 @@ import android.util.Log;
 
 
 public class FeedSyncService extends Service {
-
+    private static final String TAG = "FeedSyncService";
+    
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
 	
 	private volatile ScheduledThreadPoolExecutor executor;
@@ -32,7 +33,7 @@ public class FeedSyncService extends Service {
 
 	@Override
 	public void onCreate() {
-		Log.d(this.toString(), "Service started");
+		Log.d(TAG, "Service started");
 		executor = new ScheduledThreadPoolExecutor(Runtime.getRuntime().availableProcessors() + 2);
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
@@ -65,7 +66,7 @@ public class FeedSyncService extends Service {
 
 	/** Prepares itself for stopping */
 	private void initiateShutdown() {
-		Log.d(this.toString(), "Initiating shutdown");
+		Log.d(TAG, "Initiating shutdown");
 		// Wait until PoolExecutor is done
 		Thread waiter = new Thread() {
 			@Override
@@ -104,7 +105,7 @@ public class FeedSyncService extends Service {
 			FeedHandler handler = new FeedHandler();
 			
 			feed = handler.parseFeed(feed);
-			Log.d(this.toString(), feed.getTitle() + " parsed");
+			Log.d(TAG, feed.getTitle() + " parsed");
 			// Add Feeditems to the database
 			for(FeedItem item : feed.getItems()) {
 				manager.addFeedItem(service, item);

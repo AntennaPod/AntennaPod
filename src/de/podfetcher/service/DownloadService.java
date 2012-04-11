@@ -22,6 +22,7 @@ import android.content.Context;
 import android.util.Log;
 
 public class DownloadService extends Service {
+    private static final String TAG = "DownloadService";
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
@@ -32,7 +33,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public void onCreate() {
-		Log.d(this.toString(), "Service started");
+		Log.d(TAG, "Service started");
 		registerReceiver(downloadReceiver, createIntentFilter());
 		syncExecutor = Executors.newSingleThreadExecutor();
 		manager = FeedManager.getInstance();
@@ -46,7 +47,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public void onDestroy() {
-		Log.d(this.toString(), "Service shutting down");
+		Log.d(TAG, "Service shutting down");
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 	}
 
@@ -58,16 +59,16 @@ public class DownloadService extends Service {
 
 	/** Shuts down Executor service and prepares for shutdown */
 	private void initiateShutdown() {
-		Log.d(this.toString(), "Initiating shutdown");
+		Log.d(TAG, "Initiating shutdown");
 		// Wait until PoolExecutor is done
 		Thread waiter = new Thread() {
 			@Override
 			public void run() {
 				syncExecutor.shutdown();
 				try {
-					Log.d(this.toString(), "Starting to wait for termination");
+					Log.d(TAG, "Starting to wait for termination");
 					boolean b = syncExecutor.awaitTermination(20L, TimeUnit.SECONDS);
-					Log.d(this.toString(), "Stopping waiting for termination; Result : "+ b);
+					Log.d(TAG, "Stopping waiting for termination; Result : "+ b);
 
 					stopSelf();
 				}catch(InterruptedException e) {
@@ -103,7 +104,7 @@ public class DownloadService extends Service {
 
 	/** Is called whenever a Feed is downloaded */
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
-	    Log.d(this.toString(), "Handling completed Feed Download");
+	    Log.d(TAG, "Handling completed Feed Download");
 		// Get Feed Information
 		//feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
 		
@@ -113,7 +114,7 @@ public class DownloadService extends Service {
 
 	/** Is called whenever a Feed-Image is downloaded */
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
-	        Log.d(this.toString(), "Handling completed Image Download");
+	        Log.d(TAG, "Handling completed Image Download");
 			requester.removeFeedImage(image);
 			//image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
             manager.setFeedImage(this, image);
@@ -137,17 +138,17 @@ public class DownloadService extends Service {
 			FeedHandler handler = new FeedHandler();
 			
 			feed = handler.parseFeed(feed);
-			Log.d(this.toString(), feed.getTitle() + " parsed");
+			Log.d(TAG, feed.getTitle() + " parsed");
 			// Download Feed Image if provided
 		    if(feed.getImage() != null) {
-			    Log.d(this.toString(), "Feed has image; Downloading....");
+			    Log.d(TAG, "Feed has image; Downloading....");
 			    requester.downloadImage(service, feed.getImage());
 		    }
 		    requester.removeFeed(feed);
 			// Save information of feed in DB
 			manager.updateFeed(service, feed);
-			Log.d(this.toString(), "Walking through " + feed.getItems().size() + " feeditems");
-			Log.d(this.toString(), "Done.");
+			Log.d(TAG, "Walking through " + feed.getItems().size() + " feeditems");
+			Log.d(TAG, "Done.");
 		}
 		
 	}

@@ -15,6 +15,7 @@ import android.database.Cursor;
  *
  *  */
 public class FeedManager {
+	private static final String TAG = "FeedManager";
 	
 	private static FeedManager singleton;
 	

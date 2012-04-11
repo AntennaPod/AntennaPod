@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 
 public class FeedlistActivity extends SherlockListActivity {
+	private static final String TAG = "FeedlistActivity";
 	
 	private FeedManager manager;
 	private FeedlistAdapter fla;

@@ -19,6 +19,8 @@ import com.actionbarsherlock.app.SherlockListActivity;
     
 
 public class PodfetcherActivity extends SherlockListActivity {
+    private static final String TAG = "PodfetcherActivity";
+    
     private final String[] ITEMS = {"Feeds", "Settings"};
 	
     @Override

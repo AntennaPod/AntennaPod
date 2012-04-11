@@ -11,7 +11,8 @@ import de.podfetcher.storage.DownloadRequester;
 
 /** Activity for adding/editing a Feed */
 public class AddFeedActivity extends Activity {
-
+    private static final String TAG = "AddFeedActivity";
+    
 	private EditText etxtFeedurl;
 	private Button butConfirm;
 
