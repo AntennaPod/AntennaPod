@@ -13,7 +13,7 @@
     <application
         android:icon="@drawable/ic_launcher"
 		android:label="@string/app_name"
-		android:theme="@style/Theme.Sherlock"
+		android:theme="@style/Theme.Sherlock.Light"
 		android:name=".PodcastApp">
         <activity
             android:label="@string/app_name"
@@ -23,8 +23,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name="de.podfetcher.activity.FeedlistActivity"/>
-		<activity android:name="de.podfetcher.activity.AddFeedActivity"/>
+		<activity android:name="de.podfetcher.activity.FeedlistActivity"
+				  android:label="@string/feeds_label"/>
+		<activity android:name="de.podfetcher.activity.AddFeedActivity"
+				  android:label="@string/add_new_feed_label"/>
 		<activity android:name="de.podfetcher.activity.FeedItemlistActivity"/>
 		
 		<service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 

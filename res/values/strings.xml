@@ -5,6 +5,7 @@
     <string name="app_name">Podfetcher</string>
 	<string name="feeds_label">Feeds</string>
 	<string name="settings_label">Settings</string>
+	<string name="add_new_feed_label">Add a new Feed</string>
 
 	<!-- 				-->
 	<string name="confirm_label">Confirm</string>

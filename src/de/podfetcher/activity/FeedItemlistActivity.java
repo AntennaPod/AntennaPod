@@ -26,9 +26,11 @@ public class FeedItemlistActivity extends SherlockListActivity {
 		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
-
+		
 		fila = new FeedItemlistAdapter(this, 0, feed.getItems());
 		setListAdapter(fila);
+
+		setTitle(feed.getTitle());
 	}
 
 	@Override

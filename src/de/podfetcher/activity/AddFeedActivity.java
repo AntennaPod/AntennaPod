@@ -1,6 +1,5 @@
 package de.podfetcher.activity;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
@@ -8,9 +7,13 @@ import android.view.View;
 import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
+import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 /** Activity for adding/editing a Feed */
-public class AddFeedActivity extends Activity {
+public class AddFeedActivity extends SherlockActivity {
     private static final String TAG = "AddFeedActivity";
     
 	private EditText etxtFeedurl;
