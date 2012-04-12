@@ -1,7 +1,7 @@
 package de.podfetcher.activity;
 
 import de.podfetcher.R;
-import de.podfetcher.feed.FeedManager;
+import de.podfetcher.feed.*;
 import de.podfetcher.adapter.FeedlistAdapter;
 import de.podfetcher.service.FeedSyncService;
 import de.podfetcher.storage.DownloadRequester;
@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.widget.ListView;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -19,6 +20,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 public class FeedlistActivity extends SherlockListActivity {
 	private static final String TAG = "FeedlistActivity";
+	public static final String EXTRA_SELECTED_FEED = "extra.de.podfetcher.activity.selected_feed";
 	
 	private FeedManager manager;
 	private FeedlistAdapter fla;
@@ -73,4 +75,13 @@ public class FeedlistActivity extends SherlockListActivity {
 			fla.notifyDataSetChanged();
 		}
 	};
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		Feed selection = fla.getItem(position);
+		Intent showFeed = new Intent(this, FeedItemlistActivity.class);
+		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
+
+		startActivity(showFeed);
+	}
 }
