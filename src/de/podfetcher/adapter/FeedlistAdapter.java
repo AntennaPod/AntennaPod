@@ -18,12 +18,9 @@ import android.widget.TextView;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
-	int resource;
-	
-	public FeedlistAdapter(Context context, int resource,
+	public FeedlistAdapter(Context context,
 			int textViewResourceId, List<Feed> objects) {
-		super(context, resource, textViewResourceId, objects);
-		this.resource = resource;
+		super(context, textViewResourceId, objects);
 	}
 
 	

@@ -30,7 +30,7 @@ public class FeedlistActivity extends SherlockListActivity {
 		super.onCreate(savedInstanceState);
 		
 		manager = FeedManager.getInstance();
-		fla = new FeedlistAdapter(this, R.layout.feedlist_item, 0, manager.getFeeds());
+		fla = new FeedlistAdapter(this, 0, manager.getFeeds());
 		setListAdapter(fla);
 
 	}
