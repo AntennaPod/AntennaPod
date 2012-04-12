@@ -30,31 +30,34 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		LinearLayout feedlistView;
-		
-		
+		Holder holder;	
 		Feed feed = getItem(position);
+
 		// Inflate Layout
 		if (convertView == null) {
-			feedlistView = new LinearLayout(getContext());
-		      String inflater = Context.LAYOUT_INFLATER_SERVICE;
-		      LayoutInflater vi = (LayoutInflater)getContext().getSystemService(inflater);
-		      vi.inflate(resource, feedlistView, true);
+			holder = new Holder();
+		      LayoutInflater inflater = (LayoutInflater)getContext().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+			  convertView = inflater.inflate(R.layout.feedlist_item, null);
+			  holder.title = (TextView) convertView.findViewById(R.id.txtvFeedname);
+			  holder.image = (ImageView) convertView.findViewById(R.id.imgvFeedimage);
+
+			  convertView.setTag(holder);
 		    } else {
-		    	feedlistView = (LinearLayout) convertView;
+				holder = (Holder) convertView.getTag();
 		    }
 		
-		ImageView imageView = (ImageView)feedlistView.findViewById(R.id.imgvFeedimage);	
-		TextView txtvFeedname = (TextView)feedlistView.findViewById(R.id.txtvFeedname);
-		TextView txtvNewEpisodes = (TextView)feedlistView.findViewById(R.id.txtvNewEpisodes);
+		holder.title.setText(feed.getTitle());
 		if(feed.getImage() != null) {	
-			imageView.setImageURI(Uri.fromFile(new File(feed.getImage().getFile_url())));	// TODO select default picture when no image downloaded
+			holder.image.setImageURI(Uri.fromFile(new File(feed.getImage().getFile_url())));	// TODO select default picture when no image downloaded
 		}
-		txtvFeedname.setText(feed.getTitle());
 		// TODO find new Episodes txtvNewEpisodes.setText(feed)
-		return feedlistView;
+		return convertView;
 	}
-	
-	
+
+	static class Holder {
+		TextView title;
+		ImageView image;
+	}
 
 }
