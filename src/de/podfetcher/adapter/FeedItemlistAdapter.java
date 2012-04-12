@@ -5,6 +5,9 @@ import java.util.List;
 import de.podfetcher.feed.FeedItem;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import android.view.View;
+import android.view.ViewGroup;
+import android.content.Context;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	
@@ -18,6 +21,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
+		return null;
 	
 	}
 }

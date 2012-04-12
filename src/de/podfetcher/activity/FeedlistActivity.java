@@ -2,7 +2,7 @@ package de.podfetcher.activity;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
-import de.podfetcher.gui.FeedlistAdapter;
+import de.podfetcher.adapter.FeedlistAdapter;
 import de.podfetcher.service.FeedSyncService;
 import de.podfetcher.storage.DownloadRequester;
 import android.os.Bundle;

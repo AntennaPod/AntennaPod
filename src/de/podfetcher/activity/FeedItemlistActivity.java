@@ -1,6 +1,10 @@
 package de.podfetcher.activity;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import android.view.View;
+import android.widget.ListView;
+import android.os.Bundle;
+import de.podfetcher.feed.*;
 
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockListActivity {
