@@ -58,7 +58,6 @@ public class FeedlistActivity extends SherlockListActivity {
 		super.onResume();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(FeedSyncService.ACTION_FEED_SYNC_COMPLETED);
-		filter.addAction(DownloadRequester.ACTION_IMAGE_DOWNLOAD_COMPLETED);
 
 		registerReceiver(contentUpdate, filter);
 	}

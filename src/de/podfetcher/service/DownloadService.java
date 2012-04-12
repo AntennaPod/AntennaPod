@@ -122,6 +122,7 @@ public class DownloadService extends Service {
 
 	/** Takes a single Feed, parses the corresponding file and refreshes information in the manager */
 	class FeedSyncThread implements Runnable {
+		private static final String TAG = "FeedSyncThread";
 
 		private Feed feed;
 		private DownloadService service;
@@ -145,10 +146,18 @@ public class DownloadService extends Service {
 			    requester.downloadImage(service, feed.getImage());
 		    }
 		    requester.removeFeed(feed);
+			
+			cleanup();
+
 			// Save information of feed in DB
 			manager.updateFeed(service, feed);
-			Log.d(TAG, "Walking through " + feed.getItems().size() + " feeditems");
-			Log.d(TAG, "Done.");
+		}
+
+		/** Delete files that aren't needed anymore */
+		private void cleanup() {
+			if(new File(feed.getFile_url()).delete()) 
+				Log.d(TAG, "Successfully deleted cache file."); else Log.e(TAG, "Failed to delete cache file.");	
+			feed.setFile_url(null);
 		}
 		
 	}
