@@ -48,6 +48,9 @@ public class FeedlistActivity extends SherlockListActivity {
 	        case R.id.add_feed:
 	            startActivity(new Intent(this, AddFeedActivity.class));
 				return true;
+			case R.id.all_feed_refresh:
+				manager.refreshAllFeeds(this);
+				return true;
 			default:
 			    return super.onOptionsItemSelected(item);
 	    }

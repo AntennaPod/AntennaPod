@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import de.podfetcher.storage.*;
 import android.content.Context;
 import android.database.Cursor;
+import android.util.Log;
 
 
 /**
@@ -21,12 +22,13 @@ public class FeedManager {
 	
 	private ArrayList<Feed> feeds;
 	private ArrayList<FeedCategory> categories;
-	
+	private DownloadRequester requester;	
 
 	
 	private FeedManager() {
 		feeds = new ArrayList<Feed>();
 		categories = new ArrayList<FeedCategory>();
+		requester = DownloadRequester.getInstance();
 
 	}
 	
@@ -35,6 +37,13 @@ public class FeedManager {
 			singleton = new FeedManager();
 		}
 		return singleton;		
+	}
+
+	public void refreshAllFeeds(Context context) {
+		Log.d(TAG, "Refreshing all feeds.");
+		for(Feed feed : feeds) {
+			requester.downloadFeed(context, feed);
+		}
 	}
 
 	private void addNewFeed(Context context, Feed feed) {
@@ -68,9 +77,11 @@ public class FeedManager {
 		// Look up feed in the feedslist
 		Feed savedFeed = searchFeedByLink(newFeed.getLink());
 		if(savedFeed == null) {
+			Log.d(TAG, "Found no existing Feed with title " +  newFeed.getTitle() + ". Adding as new one.");
 			// Add a new Feed
 			addNewFeed(context, newFeed);
 		}else {
+			Log.d(TAG, "Feed with title " + newFeed.getTitle() + " already exists. Syncing new with existing one.");
 			// Look for new or updated Items
 			for(FeedItem item : newFeed.getItems()) {
 				FeedItem oldItem = searchFeedItemByLink(savedFeed, item.getLink());

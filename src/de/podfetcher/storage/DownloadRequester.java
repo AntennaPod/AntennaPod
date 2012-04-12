@@ -51,6 +51,7 @@ public class DownloadRequester {
 	}
 	
 	private void download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
+		Log.d(TAG, "Requesting download of url "+ item.getDownload_url());
 		type.add(item);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(item.getDownload_url()));
 		//request.allowScanningByMediaScanner();
