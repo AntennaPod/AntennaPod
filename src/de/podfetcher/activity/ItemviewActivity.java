@@ -24,6 +24,7 @@ public class ItemviewActivity extends SherlockActivity {
 	// Widgets
 	private ImageView imgvImage;
 	private TextView txtvTitle;
+	private TextView txtvPublished;
 	private Button butPlay;
 	private Button butDownload;
 	private Button butRemove;
@@ -50,6 +51,7 @@ public class ItemviewActivity extends SherlockActivity {
 	private void populateUI() {
 		setContentView(R.layout.feeditemview);	
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
+		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
 		imgvImage = (ImageView) findViewById(R.id.imgvFeedimage);
 		butPlay = (Button) findViewById(R.id.butPlay);
 		butDownload = (Button) findViewById(R.id.butDownload);
@@ -57,6 +59,7 @@ public class ItemviewActivity extends SherlockActivity {
 
 		setTitle(item.getFeed().getTitle());
 
+		txtvPublished.setText(item.getPubDate());
 		txtvTitle.setText(item.getTitle());
 		if(item.getFeed().getImage() != null) {
 			imgvImage.setImageURI(Uri.fromFile(new File(item.getFeed().getImage().getFile_url())));
