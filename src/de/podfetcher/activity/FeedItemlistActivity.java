@@ -4,6 +4,7 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import android.view.View;
 import android.widget.ListView;
 import android.os.Bundle;
+import android.content.Intent;
 import de.podfetcher.feed.*;
 import de.podfetcher.adapter.FeedItemlistAdapter;
 import android.util.Log;
@@ -11,6 +12,7 @@ import android.util.Log;
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockListActivity {
 	private static final String TAG = "FeedItemlistActivity";
+	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
 
 	private FeedItemlistAdapter fila;
 	private FeedManager manager;
@@ -35,6 +37,11 @@ public class FeedItemlistActivity extends SherlockListActivity {
 
 	@Override
 	protected void onListItemClick(ListView l, View v, int position, long id) {
-	
+		FeedItem selection = fila.getItem(position);
+		Intent showItem = new Intent(this, ItemviewActivity.class);
+		showItem.putExtra(FeedlistActivity.EXTRA_SELECTED_FEED, feed.getId());
+		showItem.putExtra(EXTRA_SELECTED_FEEDITEM, selection.getId());
+
+		startActivity(showItem);
 	}
 }

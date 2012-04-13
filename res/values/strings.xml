@@ -10,4 +10,10 @@
 	<!-- 				-->
 	<string name="confirm_label">Confirm</string>
 
+	<!-- Feeditemview labels-->
+	<string name="download_label">Download</string>
+	<string name="play_label">Play</string>
+	<string name="description_label">Description</string>
+	<string name="remove_label">Remove</string>
+
 </resources>

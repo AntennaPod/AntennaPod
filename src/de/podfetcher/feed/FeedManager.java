@@ -156,6 +156,17 @@ public class FeedManager {
 		}
 		return null;
 	}
+
+	/** Get a Feed Item by its id and its feed*/
+	public FeedItem getFeedItem(long id, Feed feed) {
+			for(FeedItem item : feed.getItems()) {
+				if(item.getId() == id) {
+					return item;
+				}
+			}
+		Log.w(TAG, "Couldn't find FeedItem with id " + id);
+		return null;
+	}
 	
 	/** Reads the database */
 	public void loadDBData(Context context) {
