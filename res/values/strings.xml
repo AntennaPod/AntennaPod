@@ -9,6 +9,10 @@
 
 	<!-- 				-->
 	<string name="confirm_label">Confirm</string>
+	<string name="cancel_label">Cancel</string>
+
+	<!-- AddFeed Activity labels -->
+	<string name="feedurl_label">Feed URL</string>
 
 	<!-- Feeditemview labels-->
 	<string name="download_label">Download</string>

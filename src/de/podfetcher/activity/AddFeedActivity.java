@@ -7,6 +7,7 @@ import android.view.View;
 import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.util.URLChecker;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -18,6 +19,7 @@ public class AddFeedActivity extends SherlockActivity {
     
 	private EditText etxtFeedurl;
 	private Button butConfirm;
+	private Button butCancel;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -26,25 +28,38 @@ public class AddFeedActivity extends SherlockActivity {
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
+		butCancel = (Button) findViewById(R.id.butCancel);
 
 		butConfirm.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				addNewFeed();		
+			}
+		});
+
+		butCancel.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				setResult(RESULT_CANCELED);
 				finish();
 			}
 		});
+
 
 		
 	}
 
 	private void addNewFeed() {
 		String url = etxtFeedurl.getText().toString();	
-		Feed feed = new Feed(url);
-		DownloadRequester req = DownloadRequester.getInstance();
-		req.downloadFeed(this, feed);
+		url = URLChecker.prepareURL(url);
 
-
+		if(url != null) {
+			Feed feed = new Feed(url);
+			DownloadRequester req = DownloadRequester.getInstance();
+			req.downloadFeed(this, feed);
+			setResult(RESULT_OK);
+			finish();
+		}
 	}
 	
 	
