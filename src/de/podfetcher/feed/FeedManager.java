@@ -199,7 +199,7 @@ public class FeedManager {
 				
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
-				feed.setItems(extractFeedItemsFromCursor(context, itemlistCursor));
+				feed.setItems(extractFeedItemsFromCursor(context, feed, itemlistCursor));
 				
 				feeds.add(feed);
 			}while(feedlistCursor.moveToNext());
@@ -207,7 +207,7 @@ public class FeedManager {
 		adapter.close();
 	}
 	
-	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context, Cursor itemlistCursor) {
+	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context, Feed feed, Cursor itemlistCursor) {
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -216,6 +216,7 @@ public class FeedManager {
 				FeedItem item = new FeedItem();
 				
 				item.id = itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_ID));
+				item.setFeed(feed);
 				item.setTitle(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 				item.setLink(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				item.setDescription(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));

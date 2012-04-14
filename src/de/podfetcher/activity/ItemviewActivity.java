@@ -46,6 +46,8 @@ public class ItemviewActivity extends SherlockActivity {
 		}
 		Feed feed = manager.getFeed(feedId);
 		item = manager.getFeedItem(itemId, feed);
+		Log.d(TAG, "Title of item is " + item.getTitle());
+		Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
 	}
 
 	private void populateUI() {
