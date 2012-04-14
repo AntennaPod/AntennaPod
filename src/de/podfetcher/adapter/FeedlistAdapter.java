@@ -14,6 +14,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.graphics.BitmapFactory;
 
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
@@ -46,7 +47,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		
 		holder.title.setText(feed.getTitle());
 		if(feed.getImage() != null) {	
-			holder.image.setImageURI(Uri.fromFile(new File(feed.getImage().getFile_url())));	// TODO select default picture when no image downloaded
+			holder.image.setImageBitmap(BitmapFactory.decodeFile(feed.getImage().getFile_url()));	// TODO select default picture when no image downloaded
 		}
 		// TODO find new Episodes txtvNewEpisodes.setText(feed)
 		return convertView;

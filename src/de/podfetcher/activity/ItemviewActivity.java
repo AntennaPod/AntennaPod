@@ -2,6 +2,7 @@ package de.podfetcher.activity;
 
 import java.io.File;
 import android.net.Uri;
+import android.graphics.BitmapFactory;
 import com.actionbarsherlock.app.SherlockActivity;
 import android.view.View;
 import android.widget.ListView;
@@ -64,7 +65,7 @@ public class ItemviewActivity extends SherlockActivity {
 		txtvPublished.setText(item.getPubDate());
 		txtvTitle.setText(item.getTitle());
 		if(item.getFeed().getImage() != null) {
-			imgvImage.setImageURI(Uri.fromFile(new File(item.getFeed().getImage().getFile_url())));
+			imgvImage.setImageBitmap(BitmapFactory.decodeFile(item.getFeed().getImage().getFile_url()));
 		}
 	}
 }
