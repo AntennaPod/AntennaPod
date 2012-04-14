@@ -3,8 +3,8 @@ package de.podfetcher.activity;
 import de.podfetcher.R;
 import de.podfetcher.feed.*;
 import de.podfetcher.adapter.FeedlistAdapter;
-import de.podfetcher.service.FeedSyncService;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.service.DownloadService;
 import android.os.Bundle;
 import android.view.View;
 import android.content.Intent;
@@ -60,7 +60,7 @@ public class FeedlistActivity extends SherlockListActivity {
 	protected void onResume() {
 		super.onResume();
 		IntentFilter filter = new IntentFilter();
-		filter.addAction(FeedSyncService.ACTION_FEED_SYNC_COMPLETED);
+		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
 
 		registerReceiver(contentUpdate, filter);
 	}
