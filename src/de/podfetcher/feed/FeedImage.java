@@ -1,7 +1,11 @@
 package de.podfetcher.feed;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+
 public class FeedImage extends FeedFile {
 	protected String title;
+	protected Bitmap image_bitmap;
 
 	public FeedImage(String download_url, String title) {
 		super();
@@ -22,6 +26,13 @@ public class FeedImage extends FeedFile {
 
 	public String getTitle() {
 		return title;
+	}
+
+	public Bitmap getImageBitmap() {
+		if(image_bitmap == null) {
+			image_bitmap = BitmapFactory.decodeFile(getFile_url());	
+		}
+		return image_bitmap;
 	}
 	
 	

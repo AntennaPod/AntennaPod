@@ -65,7 +65,7 @@ public class ItemviewActivity extends SherlockActivity {
 		txtvPublished.setText(item.getPubDate());
 		txtvTitle.setText(item.getTitle());
 		if(item.getFeed().getImage() != null) {
-			imgvImage.setImageBitmap(BitmapFactory.decodeFile(item.getFeed().getImage().getFile_url()));
+			imgvImage.setImageBitmap(item.getFeed().getImage().getImageBitmap());
 		}
 	}
 }
