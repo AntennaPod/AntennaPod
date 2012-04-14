@@ -33,17 +33,20 @@
 		<Button
 			android:id="@+id/butPlay"
 			android:text="@string/play_label"
-			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_width="0px"
 			android:layout_height="wrap_content"/>
 		<Button
 			android:id="@+id/butDownload"
 			android:text="@string/download_label"
-			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_width="0px"
 			android:layout_height="wrap_content"/>
 		<Button
 			android:id="@+id/butRemove"
 			android:text="@string/remove_label"
-			android:layout_width="wrap_content"
+			android:layout_weight="1"
+			android:layout_width="0px"
 			android:layout_height="wrap_content"/>
 	</LinearLayout>
 </LinearLayout>
