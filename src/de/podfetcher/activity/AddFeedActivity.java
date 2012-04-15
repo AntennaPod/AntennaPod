@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
+import android.app.ProgressDialog;
 import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
@@ -12,14 +13,16 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import java.util.concurrent.Callable;
 
 /** Activity for adding/editing a Feed */
 public class AddFeedActivity extends SherlockActivity {
-    private static final String TAG = "AddFeedActivity";
-    
+	private static final String TAG = "AddFeedActivity";
+
 	private EditText etxtFeedurl;
 	private Button butConfirm;
 	private Button butCancel;
+
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +49,7 @@ public class AddFeedActivity extends SherlockActivity {
 		});
 
 
-		
+
 	}
 
 	private void addNewFeed() {
@@ -57,10 +60,34 @@ public class AddFeedActivity extends SherlockActivity {
 			Feed feed = new Feed(url);
 			DownloadRequester req = DownloadRequester.getInstance();
 			req.downloadFeed(this, feed);
-			setResult(RESULT_OK);
-			finish();
+			observeDownload(feed);
 		}
 	}
-	
-	
+
+	private void observeDownload(Feed feed) {
+		final ProgressDialog dialog;
+		final Callable client;
+		
+		dialog = new ProgressDialog(this);
+
+		final DownloadRequester.DownloadObserver observer = new DownloadRequester.DownloadObserver(
+				feed.getDownloadId(), this);	
+		client = new Callable() {
+			public Object call() {
+				if(observer.getDone()) {
+					dialog.dismiss();
+					finish();
+				}else {
+					dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()));	
+				}
+				return null;
+			}
+		};
+		observer.setClient(client);
+		dialog.show();
+		observer.start();
+	}
+
+
+
 }

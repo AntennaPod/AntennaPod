@@ -40,7 +40,7 @@ public class DownloadService extends Service {
 	private final Messenger mMessenger = new Messenger(new IncomingHandler());
 
 	// Message codes
-	public static final int MSG_QUERY_DOWNLOADS = 1;
+	public static final int MSG_QUERY_DOWNLOADS_LEFT = 1;
 
 	@Override
 	public void onCreate() {
@@ -135,7 +135,7 @@ public class DownloadService extends Service {
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "Received new Message.");
 			switch(msg.what) {
-				case MSG_QUERY_DOWNLOADS:
+				case MSG_QUERY_DOWNLOADS_LEFT:
 					queryDownloads();
 					break;
 				default:

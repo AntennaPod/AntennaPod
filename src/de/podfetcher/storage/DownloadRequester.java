@@ -2,54 +2,63 @@ package de.podfetcher.storage;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.util.concurrent.Callable;
 
 import de.podfetcher.feed.*;
 import de.podfetcher.service.DownloadService;
 import de.podfetcher.util.NumberGenerator;
+import de.podfetcher.R;
 
 import android.util.Log;
+import android.database.Cursor;
 import android.app.DownloadManager;
 import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
-
+import android.os.Messenger;
+import android.content.ServiceConnection;
+import android.os.IBinder;
+import android.content.ComponentName;
+import android.os.Message;
+import android.os.RemoteException;
+import android.content.Intent;
 
 public class DownloadRequester {
-    private static final String TAG = "DownloadRequester";
+	private static final String TAG = "DownloadRequester";
 
 	public static String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.storage.download_id";
 	public static String EXTRA_ITEM_ID = "extra.de.podfetcher.storage.item_id";
-	
+
 	public static String ACTION_FEED_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.feed_download_completed";
 	public static String ACTION_MEDIA_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.media_download_completed";
 	public static String ACTION_IMAGE_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.image_download_completed";
-	
+
 	private static boolean STORE_ON_SD = true;
 	public static String IMAGE_DOWNLOADPATH = "images/";
 	public static String FEED_DOWNLOADPATH = "cache/";
 	public static String MEDIA_DOWNLOADPATH = "media/";
-	
-	
+
+
 	private static DownloadRequester downloader;
-	
+	private DownloadManager manager; 
+
 	public ArrayList<FeedFile> feeds;
 	public ArrayList<FeedFile> images;
 	public ArrayList<FeedFile> media;
-	
+
 	private DownloadRequester(){
 		feeds = new ArrayList<FeedFile>();
 		images = new ArrayList<FeedFile>();
 		media = new ArrayList<FeedFile>();
-		
+
 	}
-	
+
 	public static DownloadRequester getInstance() {
 		if(downloader == null) {
 			downloader = new DownloadRequester();
 		}
 		return downloader;
 	}
-	
+
 	private void download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
 		Log.d(TAG, "Requesting download of url "+ item.getDownload_url());
 		type.add(item);
@@ -69,13 +78,13 @@ public class DownloadRequester {
 				new File(getFeedfilePath(context), getFeedfileName(feed)),
 				true);
 	}
-	
+
 	public void downloadImage(Context context, FeedImage image) {
 		download(context, images, image, 
 				new File(getImagefilePath(context), getImagefileName(image)),
 				true);
 	}
-	
+
 	public void downloadMedia(Context context, FeedMedia feedmedia) {
 		download(context, media, feedmedia,
 				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + media.size()),
@@ -101,7 +110,7 @@ public class DownloadRequester {
 		}
 		return null;
 	}
-	
+
 
 	/** Get media by its download id */
 	public FeedMedia getFeedMedia(long id) {
@@ -116,15 +125,15 @@ public class DownloadRequester {
 	public void removeFeed(Feed f) {
 		feeds.remove(f);	
 	}
-	
+
 	public void removeFeedMedia(FeedMedia m) {
 		media.remove(m);
 	}
-	
+
 	public void removeFeedImage(FeedImage fi) {
 		images.remove(fi);
 	}
-	
+
 
 	/** Get the number of uncompleted Downloads */
 	public int getNumberOfDownloads() {
@@ -149,5 +158,140 @@ public class DownloadRequester {
 
 	public String getImagefileName(FeedImage image) {
 		return "image-" + NumberGenerator.generateLong(image.getDownload_url());
+	}
+
+	/* ------------ Methods for communicating with the DownloadManager ------------- */
+
+
+	/** observes the status of a specific Download */
+	public static class DownloadObserver extends Thread {
+		private static final String TAG = "DownloadObserver";
+		long id;
+		Context context;
+		Callable client;
+		long waiting_intervall;
+		private volatile int result;
+		private volatile boolean done;
+		private Cursor cursor;
+		private final long DEFAULT_WAITING_INTERVALL = 500L;
+		private DownloadRequester requester;
+
+		public DownloadObserver(long id, Context c) {
+			this.id = id;
+			this.context = c;
+			this.client = client;
+			this.waiting_intervall = DEFAULT_WAITING_INTERVALL;
+			done = false;
+			requester = DownloadRequester.getInstance();
+		}
+
+		public void run() {
+			Log.d(TAG, "Thread started.");
+			while(!isInterrupted()) {
+				cursor = getDownloadCursor();
+				int status = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
+				switch(status) {
+					case DownloadManager.STATUS_SUCCESSFUL:
+						Log.d(TAG, "Download was successful.");
+						done = true;
+						result = R.string.download_successful;
+						break;
+					case DownloadManager.STATUS_RUNNING:
+						Log.d(TAG, "Download is running.");
+						result = getDownloadStatus(cursor, DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+						break;
+					case DownloadManager.STATUS_FAILED:
+						Log.d(TAG, "Download failed.");
+						result = R.string.download_failed;
+						done = true;
+						requester.notifyDownloadService(context);
+						break;
+					case DownloadManager.STATUS_PENDING:
+						Log.d(TAG, "Download pending.");
+						result = R.string.download_pending;
+						break;
+					
+				}
+				try {
+				client.call();
+				}catch (Exception e) {
+				}
+
+				if(done) {
+					break;
+				} else {
+					try {
+						sleep(waiting_intervall);
+					}catch (InterruptedException e) {}
+				}
+			}
+			Log.d(TAG, "Thread stopped.");
+		}
+	
+		public void setClient(Callable callable) {
+			this.client = callable;
+		}
+
+		public Cursor getDownloadCursor() {
+			DownloadManager.Query query = buildQuery(id);
+			DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+
+			Cursor result = manager.query(query);
+			return result;
+		}
+		public int getDownloadStatus(Cursor c, String column) {
+			if(c.moveToFirst()) {
+				int status = c.getInt(c.getColumnIndex(column));
+				return status;	
+			} else {
+				return -1;
+			}
+		}
+
+		private DownloadManager.Query buildQuery(long id) {
+			DownloadManager.Query query = new DownloadManager.Query();
+			query.setFilterById(id);
+			return query;
+		}
+
+		public int getResult() {
+			return result;
+		}
+
+		public boolean getDone() {
+			return done;
+		}
+	}
+
+	/* ------------ Methods for communicating with the DownloadService ------------- */
+	private Messenger mService = null;
+	boolean mIsBound;
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			mService = new Messenger(service);
+
+			try {
+				Message msg = Message.obtain(null, DownloadService.MSG_QUERY_DOWNLOADS_LEFT);
+				Log.d(TAG, "Sending message to DownloadService.");
+				mService.send(msg);
+			} catch(RemoteException e) {
+				Log.e(TAG, "An Exception happened while communication with the DownloadService");
+			}
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			mService = null;
+			Log.i(TAG, "Closed connection with DownloadService.");
+		}
+	};
+
+
+	/** Notifies the DownloadService to check if there are any Downloads left */
+	public void notifyDownloadService(Context context) {
+		context.bindService(new Intent(context, DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
+		mIsBound = true;
+		context.unbindService(mConnection);
+		mIsBound = false;
 	}
 }
