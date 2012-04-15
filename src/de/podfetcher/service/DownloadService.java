@@ -20,9 +20,13 @@ import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.util.Log;
+import android.app.NotificationManager;
+import android.os.Handler;
+import android.os.Message;
+import android.os.Messenger;
 
 public class DownloadService extends Service {
-    private static final String TAG = "DownloadService";
+	private static final String TAG = "DownloadService";
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
@@ -30,6 +34,13 @@ public class DownloadService extends Service {
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
+
+
+	// Objects for communication
+	private final Messenger mMessenger = new Messenger(new IncomingHandler());
+
+	// Message codes
+	public static final int MSG_QUERY_DOWNLOADS = 1;
 
 	@Override
 	public void onCreate() {
@@ -42,7 +53,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return null;
+		return mMessenger.getBinder();
 	}
 
 	@Override
@@ -92,32 +103,45 @@ public class DownloadService extends Service {
 					handleCompletedImageDownload(context, image);
 				}
 			}
-
-			// Check if there's something else to download, otherwise stop
-			if(requester.getNumberOfDownloads() == 0) {
-				unregisterReceiver(downloadReceiver);
-				initiateShutdown();
-			}
+			queryDownloads();
 		}
 	};
+
+	/** Check if there's something else to download, otherwise stop */
+	private void queryDownloads() {
+		if(requester.getNumberOfDownloads() == 0) {
+			unregisterReceiver(downloadReceiver);
+			initiateShutdown();
+		}
+	}
 
 
 	/** Is called whenever a Feed is downloaded */
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
-	    Log.d(TAG, "Handling completed Feed Download");
-		// Get Feed Information
-		//feed.setFile_url((new File(requester.getFeedfilePath(context), requester.getFeedfileName(feed.getId()))).toString());
-		
+		Log.d(TAG, "Handling completed Feed Download");
 		syncExecutor.execute(new FeedSyncThread(feed, this, requester));
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
-	        Log.d(TAG, "Handling completed Image Download");
-			requester.removeFeedImage(image);
-			//image.setFile_url(requester.getImagefilePath(context) + requester.getImagefileName(image.getId()));
-            manager.setFeedImage(this, image);
+		Log.d(TAG, "Handling completed Image Download");
+		requester.removeFeedImage(image);
+		manager.setFeedImage(this, image);
+	}
+
+	class IncomingHandler extends Handler {
+		@Override
+		public void handleMessage(Message msg) {
+			Log.d(TAG, "Received new Message.");
+			switch(msg.what) {
+				case MSG_QUERY_DOWNLOADS:
+					queryDownloads();
+					break;
+				default:
+					super.handleMessage(msg);
+			}
+		}
 	}
 
 	/** Takes a single Feed, parses the corresponding file and refreshes information in the manager */
@@ -137,16 +161,16 @@ public class DownloadService extends Service {
 		public void run() {
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
-			
+
 			feed = handler.parseFeed(feed);
 			Log.d(TAG, feed.getTitle() + " parsed");
 			// Download Feed Image if provided
-		    if(feed.getImage() != null) {
-			    Log.d(TAG, "Feed has image; Downloading....");
-			    requester.downloadImage(service, feed.getImage());
-		    }
-		    requester.removeFeed(feed);
-			
+			if(feed.getImage() != null) {
+				Log.d(TAG, "Feed has image; Downloading....");
+				requester.downloadImage(service, feed.getImage());
+			}
+			requester.removeFeed(feed);
+
 			cleanup();
 
 			// Save information of feed in DB
@@ -159,6 +183,6 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Successfully deleted cache file."); else Log.e(TAG, "Failed to delete cache file.");	
 			feed.setFile_url(null);
 		}
-		
+
 	}
 }
