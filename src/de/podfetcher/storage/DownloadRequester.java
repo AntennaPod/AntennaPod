@@ -198,7 +198,7 @@ public class DownloadRequester {
 						break;
 					case DownloadManager.STATUS_RUNNING:
 						Log.d(TAG, "Download is running.");
-						result = getDownloadStatus(cursor, DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR);
+						result = R.string.download_running;
 						break;
 					case DownloadManager.STATUS_FAILED:
 						Log.d(TAG, "Download failed.");
@@ -210,11 +210,12 @@ public class DownloadRequester {
 						Log.d(TAG, "Download pending.");
 						result = R.string.download_pending;
 						break;
-					
+
 				}
 				try {
-				client.call();
+					client.call();
 				}catch (Exception e) {
+					Log.e(TAG, "Error happened when calling client: " + e.getMessage());
 				}
 
 				if(done) {
@@ -222,12 +223,14 @@ public class DownloadRequester {
 				} else {
 					try {
 						sleep(waiting_intervall);
-					}catch (InterruptedException e) {}
+					}catch (InterruptedException e) {
+						Log.w(TAG, "Thread was interrupted while waiting.");
+					}
 				}
 			}
 			Log.d(TAG, "Thread stopped.");
 		}
-	
+
 		public void setClient(Callable callable) {
 			this.client = callable;
 		}

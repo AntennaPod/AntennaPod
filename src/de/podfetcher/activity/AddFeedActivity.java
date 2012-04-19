@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.view.View;
 import android.app.ProgressDialog;
+import android.util.Log;
 import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
@@ -78,6 +79,7 @@ public class AddFeedActivity extends SherlockActivity {
 					dialog.dismiss();
 					finish();
 				}else {
+					Log.d(TAG, "Changing message of dialog.");
 					dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()));	
 				}
 				return null;

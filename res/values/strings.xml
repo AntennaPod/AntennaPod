@@ -24,6 +24,7 @@
 	<string name="download_successful">Download successful</string>
 	<string name="download_failed">Download failed</string>
 	<string name="download_pending">Download pending</string>
+	<string name="download_running">Download running</string>
 
 
 </resources>
