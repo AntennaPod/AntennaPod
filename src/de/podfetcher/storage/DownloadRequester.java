@@ -91,6 +91,29 @@ public class DownloadRequester {
 				true);
 	}
 
+	public void cancelDownload(final Context context, final long id) {
+		Log.d(TAG, "Cancelling download with id " + id);
+		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+		int removed = manager.remove(id);	
+		if (removed > 0) {
+			// Delete downloads in lists
+			Feed feed = getFeed(id);
+			if (feed != null) {
+				feeds.remove(feed);
+			} else {
+				FeedImage image = getFeedImage(id);
+				if (image != null) {
+					images.remove(image);
+				} else {
+					FeedMedia m = getFeedMedia(id);
+					if (media != null) {
+						media.remove(m);
+					}
+				}
+			}
+		}
+	}
+
 	/** Get a Feed by its download id */
 	public Feed getFeed(long id) {
 		for(FeedFile f: feeds) {

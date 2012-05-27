@@ -87,7 +87,7 @@ public class DownloadObserver extends Thread {
 							}catch (Exception e) {
 								Log.e(TAG, "Error happened when calling client: " + e.getMessage());
 							}
-							cancelDownload();
+							requester.cancelDownload(context, id);
 						}
 					}
 				}catch (InterruptedException e) {
@@ -101,8 +101,6 @@ public class DownloadObserver extends Thread {
 	public void setClient(Callable callable) {
 		this.client = callable;
 	}
-
-	private void cancelDownload() {}
 
 	public Cursor getDownloadCursor() {
 		DownloadManager.Query query = buildQuery(id);
