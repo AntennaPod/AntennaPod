@@ -250,63 +250,84 @@ public class PodDBAdapter {
 	
 	public Cursor getAllItemsOfFeedCursor(Feed feed) {
 	    open();
-	    Cursor c = db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED+"=?", new String[]{String.valueOf(feed.getId())}, null, null, null);
+	    Cursor c = db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED + "=?",
+				new String[]{String.valueOf(feed.getId())}, null, null, null);
 		return c;
 	}
 	
 	public Cursor getFeedMediaOfItemCursor(FeedItem item) {
 	    open();
-	    Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
+	    Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
+				new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
 		return c;
 	}
 	
 	public Cursor getImageOfFeedCursor(long id) {
 	    open();
-	    Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID+"=?", new String[]{String.valueOf(id)}, null, null, null);
+	    Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
+				new String[]{String.valueOf(id)}, null, null, null);
 		return c;
 	}
 	
 	public FeedMedia getFeedMedia(long row_index) throws SQLException{
 	    open();
-		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID+"=?", new String[]{String.valueOf(row_index)}, null, null, null);
+		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
+				new String[]{String.valueOf(row_index)}, null, null, null);
 		
-		if((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedMedia found at index: "+ row_index);
+		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
+			throw new SQLException("No FeedMedia found at index: " + row_index);
 		}
-		FeedMedia media = new FeedMedia(row_index, 
-				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)), 
-				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)), 
-				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)), 
-				cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)), 
-				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)), 
+		FeedMedia media = new FeedMedia(row_index,
+				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)),
+				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)),
+				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)),
+				cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)),
+				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),
 				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
 		close();
 		return media;
-		
+
 	}
-	
-	public FeedImage getFeedImage(long id) throws SQLException {
+
+	/** Searches the DB for a FeedImage of the given id.
+	 *	@param id The id of the object
+	 *	@return The found object
+	 * */
+	public FeedImage getFeedImage(final long id) throws SQLException {
 	    open();
 		Cursor cursor = this.getImageOfFeedCursor(id);
-		if((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedImage found at index: "+ id);
+		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
+			throw new SQLException("No FeedImage found at index: " + id);
 		}
-		FeedImage image = new FeedImage(id, cursor.getString(cursor.getColumnIndex(KEY_TITLE)),
-				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),
-				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
+		FeedImage image = new FeedImage(id,
+				cursor.getString(
+				cursor.getColumnIndex(KEY_TITLE)),
+				cursor.getString(
+				cursor.getColumnIndex(KEY_FILE_URL)),
+				cursor.getString(
+				cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
 		close();
 		return image;
 	}
 
+	/** Helper class for opening the Podfetcher database. */
 	private static class PodDBHelper extends SQLiteOpenHelper {
 
-		public PodDBHelper(Context context, String name, CursorFactory factory,
-				int version) {
+		/** Constructor.
+		 * 	@param context Context to use
+		 *	@param name Name of the database
+		 *	@param factory to use for creating cursor objects
+		 *	@param version number of the database
+		 *
+		 * */
+		public PodDBHelper(final Context context,
+				final String name, final CursorFactory factory,
+				final int version) {
 			super(context, name, factory, version);
 		}
 
 		@Override
-		public void onCreate(SQLiteDatabase db) {
+		public void onCreate(final SQLiteDatabase db) {
 			db.execSQL(CREATE_TABLE_FEEDS);
 			db.execSQL(CREATE_TABLE_FEED_ITEMS);
 			db.execSQL(CREATE_TABLE_FEED_CATEGORIES);
@@ -316,8 +337,10 @@ public class PodDBAdapter {
 		}
 
 		@Override
-		public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-			Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
+		public void onUpgrade(final SQLiteDatabase db,
+				final int oldVersion, final int newVersion) {
+			Log.w("DBAdapter", "Upgrading from version "
+					+ oldVersion + " to "
 					+ newVersion + ".");
 			// TODO delete Database
 
