@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Podfetcher" default="help">
 
+
+	<taskdef resource="checkstyletask.properties"
+		classpath="/home/daniel/bin/checkstyle/checkstyle-5.5-all.jar"/>
+
+	<checkstyle config="/home/daniel/bin/checkstyle/sun_checks.xml">
+		<fileset dir="src" includes="**/*.java"/>
+	</checkstyle>
+
     <!-- The local.properties file is created and updated by the 'android' tool.
          It contains the path to the SDK. It should *NOT* be checked into
          Version Control Systems. -->
