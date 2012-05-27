@@ -93,6 +93,7 @@ public class DownloadService extends Service {
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received 'Download Complete' - message.");
 			long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
 			Feed feed = requester.getFeed(downloadId);
 			if(feed != null) {

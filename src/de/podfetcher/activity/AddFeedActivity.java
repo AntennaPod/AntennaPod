@@ -10,6 +10,7 @@ import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.URLChecker;
+import de.podfetcher.service.DownloadObserver;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -71,20 +72,29 @@ public class AddFeedActivity extends SherlockActivity {
 		
 		dialog = new ProgressDialog(this);
 
-		final DownloadRequester.DownloadObserver observer = new DownloadRequester.DownloadObserver(
-				feed.getDownloadId(), this);	
+		final DownloadObserver observer = new DownloadObserver(
+				feed.getDownloadId(), this, 10000);	
+
 		client = new Callable() {
 			public Object call() {
-				if(observer.getDone()) {
-					dialog.dismiss();
-					finish();
-				}else {
-					Log.d(TAG, "Changing message of dialog.");
-					dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()));	
-				}
+				runOnUiThread(new Runnable() {
+					public void run() {
+						if(observer.isTimedOut()) {
+							dialog.dismiss();
+							finish();
+						}
+
+						if(observer.getDone()) {
+							dialog.dismiss();
+							finish();
+						}else {
+							Log.d(TAG, "Changing message of dialog.");
+							dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()));	
+						}
+					}});
+
 				return null;
-			}
-		};
+			}};
 		observer.setClient(client);
 		dialog.show();
 		observer.start();
