@@ -88,8 +88,7 @@ public class AddFeedActivity extends SherlockActivity {
 							dialog.dismiss();
 							finish();
 						}else {
-							Log.d(TAG, "Changing message of dialog.");
-							dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()));	
+							dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()) + ": " + observer.getProgressPercent() + "%");	
 						}
 					}});
 

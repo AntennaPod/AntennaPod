@@ -18,6 +18,7 @@ public class DownloadObserver extends Thread {
 	long waiting_intervall;
 	private volatile int result;
 	private volatile boolean done;
+	private int progressPercent;
 	private Cursor cursor;
 	private final long DEFAULT_WAITING_INTERVALL = 500L;
 	private DownloadRequester requester;
@@ -44,6 +45,7 @@ public class DownloadObserver extends Thread {
 		while(!isInterrupted() && !timedOut) {
 			cursor = getDownloadCursor();
 			int status = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
+			int progressPercent = getDownloadProgress(cursor);
 			switch(status) {
 				case DownloadManager.STATUS_SUCCESSFUL:
 					Log.d(TAG, "Download was successful.");
@@ -118,6 +120,18 @@ public class DownloadObserver extends Thread {
 		}
 	}
 
+	private int getDownloadProgress(Cursor c) {
+		if (c.moveToFirst()) {
+			long size = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+			long soFar = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+			int progress = (int) ((soFar / size) * 100);
+			Log.d(TAG, "Setting progress to " + progress);
+			return progress;
+		} else {
+			return -1;
+		}
+	}
+
 	private DownloadManager.Query buildQuery(long id) {
 		DownloadManager.Query query = new DownloadManager.Query();
 		query.setFilterById(id);
@@ -130,6 +144,10 @@ public class DownloadObserver extends Thread {
 
 	public boolean getDone() {
 		return done;
+	}
+
+	public int getProgressPercent() {
+		return progressPercent;
 	}
 
 	public boolean isTimedOut() {
