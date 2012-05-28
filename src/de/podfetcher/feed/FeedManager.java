@@ -227,7 +227,9 @@ public class FeedManager {
 				item.setLink(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				item.setDescription(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
 				item.setPubDate(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE)));
-				item.setMedia(adapter.getFeedMedia(itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_MEDIA))));
+				item.setMedia(adapter.getFeedMedia(
+							itemlistCursor.getLong(
+								itemlistCursor.getColumnIndex(PodDBAdapter.KEY_MEDIA)), item));
 				item.setRead((itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true : false);
 				
 				items.add(item);

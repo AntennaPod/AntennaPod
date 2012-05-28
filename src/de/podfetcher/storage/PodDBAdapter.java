@@ -269,7 +269,7 @@ public class PodDBAdapter {
 		return c;
 	}
 	
-	public FeedMedia getFeedMedia(long row_index) throws SQLException{
+	public FeedMedia getFeedMedia(long row_index, FeedItem owner) throws SQLException{
 	    open();
 		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
 				new String[]{String.valueOf(row_index)}, null, null, null);
@@ -278,6 +278,7 @@ public class PodDBAdapter {
 			throw new SQLException("No FeedMedia found at index: " + row_index);
 		}
 		FeedMedia media = new FeedMedia(row_index,
+				owner,
 				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)),
 				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)),
 				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)),

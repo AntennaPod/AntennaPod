@@ -5,8 +5,7 @@ public class FeedMedia extends FeedFile{
 	private long position;
 	private long size;	// File size in Byte
 	private String mime_type;
-	
-	private FeedItem item; // TODO remove
+	private FeedItem item;
 
 	public FeedMedia(FeedItem i, String download_url, long size, String mime_type) {
 		this.item = i;
@@ -15,10 +14,11 @@ public class FeedMedia extends FeedFile{
 		this.mime_type = mime_type;
 	}
 
-	public FeedMedia(long id, long length, long position, long size, String mime_type,
+	public FeedMedia(long id, FeedItem item, long length, long position, long size, String mime_type,
 			String file_url, String download_url) {
 		super();
 		this.id = id;
+		this.item = item;
 		this.length = length;
 		this.position = position;
 		this.size = size;
