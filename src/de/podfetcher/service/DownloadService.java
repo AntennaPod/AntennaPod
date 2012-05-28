@@ -102,6 +102,11 @@ public class DownloadService extends Service {
 				FeedImage image = requester.getFeedImage(downloadId);
 				if(image != null) {
 					handleCompletedImageDownload(context, image);
+				} else {
+					FeedMedia media = requester.getFeedMedia(downloadId);
+					if (media != null) {
+						handleCompletedFeedMediaDownload(context, media);
+					}
 				}
 			}
 			queryDownloads();
@@ -129,6 +134,13 @@ public class DownloadService extends Service {
 		Log.d(TAG, "Handling completed Image Download");
 		requester.removeFeedImage(image);
 		manager.setFeedImage(this, image);
+	}
+
+	/** Is called whenever a FeedMedia is downloaded. */
+	private void handleCompletedFeedMediaDownload(Context context, FeedMedia media) {
+		Log.d(TAG, "Handling completed FeedMedia Download");
+		requester.removeFeedMedia(media);
+		manager.setFeedMedia(this, media);
 	}
 
 	class IncomingHandler extends Handler {

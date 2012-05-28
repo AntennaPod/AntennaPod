@@ -87,7 +87,7 @@ public class DownloadRequester {
 
 	public void downloadMedia(Context context, FeedMedia feedmedia) {
 		download(context, media, feedmedia,
-				new File(context.getExternalFilesDir(MEDIA_DOWNLOADPATH), "media-" + media.size()),
+				new File(getMediafilePath(context, feedmedia), getMediafilename(feedmedia)),
 				true);
 	}
 
@@ -181,6 +181,14 @@ public class DownloadRequester {
 
 	public String getImagefileName(FeedImage image) {
 		return "image-" + NumberGenerator.generateLong(image.getDownload_url());
+	}
+
+	public String getMediafilePath(Context context, FeedMedia media) {
+		return context.getExternalFilesDir(MEDIA_DOWNLOADPATH).toString() + "/";
+	}
+
+	public String getMediafilename(FeedMedia media) {
+		return "media-" + NumberGenerator.generateLong(media.getDownload_url());	
 	}
 
 

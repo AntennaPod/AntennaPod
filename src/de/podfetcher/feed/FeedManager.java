@@ -136,6 +136,12 @@ public class FeedManager {
 	    return adapter.setImage(image);
 	}
 
+	/** Updates information of an existing FeedMedia object. */
+	public long setFeedMedia(Context context, FeedMedia media) {
+	    PodDBAdapter adapter = new PodDBAdapter(context);
+		return adapter.setMedia(media);	
+	}
+
 	/** Get a Feed by its id */
 	public Feed getFeed(long id) {
 		for(Feed f : feeds) {
