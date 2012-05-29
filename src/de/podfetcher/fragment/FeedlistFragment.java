@@ -1,55 +1,71 @@
-package de.podfetcher.activity;
+package de.podfetcher.fragment;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.*;
+import de.podfetcher.activity.*;
 import de.podfetcher.adapter.FeedlistAdapter;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.service.DownloadService;
 import android.os.Bundle;
+import android.app.Activity;
 import android.view.View;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.widget.ListView;
-import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import android.util.Log;
 
 
-public class FeedlistActivity extends SherlockListActivity {
+public class FeedlistFragment extends SherlockListFragment {
 	private static final String TAG = "FeedlistActivity";
 	public static final String EXTRA_SELECTED_FEED = "extra.de.podfetcher.activity.selected_feed";
 	
 	private FeedManager manager;
 	private FeedlistAdapter fla;
+	private SherlockFragmentActivity pActivity;
+
 
 	@Override
-	protected void onCreate(Bundle savedInstanceState) {
+	public void onAttach(Activity activity) {
+		super.onAttach(activity);
+		pActivity = (SherlockFragmentActivity) activity;
+	}
+
+	@Override
+	public void onDetach() {
+		super.onDetach();
+		pActivity = null;
+	}
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+		Log.d(TAG, "Creating");	
+		setHasOptionsMenu(true);
 		manager = FeedManager.getInstance();
-		fla = new FeedlistAdapter(this, 0, manager.getFeeds());
+		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
 
 	}
 	
 	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-	    MenuInflater inflater = getSupportMenuInflater();
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 	    inflater.inflate(R.menu.feedlist, menu);
-	    return true;
 	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 	    switch(item.getItemId()) {
 	        case R.id.add_feed:
-	            startActivity(new Intent(this, AddFeedActivity.class));
+	            startActivity(new Intent(pActivity, AddFeedActivity.class));
 				return true;
 			case R.id.all_feed_refresh:
-				manager.refreshAllFeeds(this);
+				manager.refreshAllFeeds(pActivity);
 				return true;
 			default:
 			    return super.onOptionsItemSelected(item);
@@ -57,18 +73,18 @@ public class FeedlistActivity extends SherlockListActivity {
 	}
 
 	@Override
-	protected void onResume() {
+	public void onResume() {
 		super.onResume();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
 
-		registerReceiver(contentUpdate, filter);
+		pActivity.registerReceiver(contentUpdate, filter);
 	}
 
 	@Override
-	protected void onPause() {
+	public void onPause() {
 		super.onPause();
-		unregisterReceiver(contentUpdate);
+		pActivity.unregisterReceiver(contentUpdate);
 	}
 
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
@@ -79,11 +95,11 @@ public class FeedlistActivity extends SherlockListActivity {
 	};
 
 	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
+	public void onListItemClick(ListView l, View v, int position, long id) {
 		Feed selection = fla.getItem(position);
-		Intent showFeed = new Intent(this, FeedItemlistActivity.class);
+		Intent showFeed = new Intent(pActivity, FeedItemlistActivity.class);
 		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
 
-		startActivity(showFeed);
+		pActivity.startActivity(showFeed);
 	}
 }

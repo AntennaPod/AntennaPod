@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import de.podfetcher.R;
 import de.podfetcher.service.DownloadObserver;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.fragment.FeedlistFragment;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockActivity {
@@ -56,7 +57,7 @@ public class ItemviewActivity extends SherlockActivity {
 	/** Extracts FeedItem object the activity is supposed to display */
 	private void extractFeeditem() {
 		long itemId = getIntent().getLongExtra(FeedItemlistActivity.EXTRA_SELECTED_FEEDITEM, -1);
-		long feedId = getIntent().getLongExtra(FeedlistActivity.EXTRA_SELECTED_FEED, -1);
+		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
 		if(itemId == -1 || feedId == -1) {
 			Log.e(TAG, "Received invalid selection of either feeditem or feed.");
 		}

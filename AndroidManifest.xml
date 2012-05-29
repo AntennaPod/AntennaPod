@@ -23,8 +23,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-		<activity android:name="de.podfetcher.activity.FeedlistActivity"
-				  android:label="@string/feeds_label"/>
 		<activity android:name="de.podfetcher.activity.AddFeedActivity"
 				  android:label="@string/add_new_feed_label"/>
 		<activity android:name="de.podfetcher.activity.FeedItemlistActivity"/>

@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.content.Intent;
 import de.podfetcher.feed.*;
 import de.podfetcher.adapter.FeedItemlistAdapter;
+import de.podfetcher.fragment.FeedlistFragment;
 import android.util.Log;
 
 /** Displays a List of FeedItems */
@@ -24,7 +25,7 @@ public class FeedItemlistActivity extends SherlockListActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
-		long feedId = getIntent().getLongExtra(FeedlistActivity.EXTRA_SELECTED_FEED, -1);
+		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
 		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
@@ -39,7 +40,7 @@ public class FeedItemlistActivity extends SherlockListActivity {
 	protected void onListItemClick(ListView l, View v, int position, long id) {
 		FeedItem selection = fila.getItem(position);
 		Intent showItem = new Intent(this, ItemviewActivity.class);
-		showItem.putExtra(FeedlistActivity.EXTRA_SELECTED_FEED, feed.getId());
+		showItem.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, feed.getId());
 		showItem.putExtra(EXTRA_SELECTED_FEEDITEM, selection.getId());
 
 		startActivity(showItem);
