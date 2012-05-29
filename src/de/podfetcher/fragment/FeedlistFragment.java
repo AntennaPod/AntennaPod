@@ -9,6 +9,8 @@ import de.podfetcher.service.DownloadService;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.view.LayoutInflater;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
@@ -45,12 +47,19 @@ public class FeedlistFragment extends SherlockListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "Creating");	
 		setHasOptionsMenu(true);
+		Log.d(TAG, "Creating");	
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
 
+	}
+
+	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		super.onCreateView(inflater, container, savedInstanceState);
+		return inflater.inflate(R.layout.feedlist, container, false);
 	}
 	
 	@Override

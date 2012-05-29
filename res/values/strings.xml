@@ -26,5 +26,8 @@
 	<string name="download_pending">Download pending</string>
 	<string name="download_running">Download running</string>
 
+	<!-- other messages -->
+	<string name="nofeeds_msg">No feeds added yet.</string>
+
 
 </resources>
