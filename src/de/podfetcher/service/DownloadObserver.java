@@ -60,20 +60,16 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 			int progressPercent = getDownloadProgress(cursor);
 			switch(status) {
 				case DownloadManager.STATUS_SUCCESSFUL:
-					Log.d(TAG, "Download was successful.");
 					statusMsg = R.string.download_successful;
 					return Boolean.valueOf(true);
 				case DownloadManager.STATUS_RUNNING:
-					Log.d(TAG, "Download is running.");
 					statusMsg = R.string.download_running;
 					break;
 				case DownloadManager.STATUS_FAILED:
-					Log.d(TAG, "Download failed.");
 					statusMsg = R.string.download_failed;
 					requester.notifyDownloadService(context);
 					return Boolean.valueOf(false);
 				case DownloadManager.STATUS_PENDING:
-					Log.d(TAG, "Download pending.");
 					statusMsg = R.string.download_pending;
 					break;
 
@@ -109,7 +105,7 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 		if (c.moveToFirst()) {
 			long size = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
 			long soFar = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-			int progress = (int) ((soFar / size) * 100);
+			int progress = (int) (((double) soFar / (double) size) * 100);
 			Log.d(TAG, "Setting progress to " + progress);
 			return progress;
 		} else {
