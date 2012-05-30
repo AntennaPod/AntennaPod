@@ -67,38 +67,22 @@ public class AddFeedActivity extends SherlockActivity {
 	}
 
 	private void observeDownload(Feed feed) {
-		final ProgressDialog dialog;
-		final Callable client;
-		
-		dialog = new ProgressDialog(this);
-
-		final DownloadObserver observer = new DownloadObserver(
-				feed.getDownloadId(), this, 10000);	
-
-		client = new Callable() {
-			public Object call() {
-				runOnUiThread(new Runnable() {
-					public void run() {
-						if(observer.isTimedOut()) {
-							dialog.dismiss();
-							finish();
-						}
-
-						if(observer.getDone()) {
-							dialog.dismiss();
-							finish();
-						}else {
-							dialog.setMessage(AddFeedActivity.this.getString(observer.getResult()) + ": " + observer.getProgressPercent() + "%");	
-						}
-					}});
-
-				return null;
-			}};
-		observer.setClient(client);
+		final ProgressDialog dialog = new ProgressDialog(this);
+		final DownloadObserver observer = new DownloadObserver(this) {
+			@Override
+			protected void onPostExecute(Boolean result) {
+				dialog.dismiss();
+				finish();
+			}
+			@Override
+			protected void onProgressUpdate(Integer... values) {
+				Integer progr = values[0];
+				dialog.setMessage(getContext().getString(getStatusMsg())
+						+ " (" + progr.toString() + "%)");
+			}
+		};
 		dialog.show();
-		observer.start();
+		observer.execute(feed);
 	}
-
-
 
 }

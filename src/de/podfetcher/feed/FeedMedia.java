@@ -8,6 +8,7 @@ public class FeedMedia extends FeedFile{
 	private FeedItem item;
 
 	public FeedMedia(FeedItem i, String download_url, long size, String mime_type) {
+		super();
 		this.item = i;
 		this.download_url = download_url;
 		this.size = size;

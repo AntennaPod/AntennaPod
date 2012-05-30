@@ -24,6 +24,7 @@ public class Feed extends FeedFile{
 	}
 	
 	public Feed(String url) {
+		super();
 		this.download_url = url;
 	}
 	

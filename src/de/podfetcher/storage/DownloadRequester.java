@@ -193,6 +193,29 @@ public class DownloadRequester {
 		return URLUtil.guessFileName(media.getDownload_url(), null, media.getMime_type());
 	}
 
+	public boolean isDownloaded(Feed feed) {
+		return feed.getFile_url() != null && !feeds.contains(feed);
+	}
+
+	public boolean isDownloaded(FeedImage image) {
+		return image.getFile_url() != null && !images.contains(image);
+	}
+
+	public boolean isDownloaded(FeedMedia m) {
+		return m.getFile_url() != null && media.contains(m);
+	}
+
+	public boolean isDownloading(Feed feed) {
+		return feed.getFile_url() != null && feeds.contains(feed);
+	}
+
+	public boolean isDownloading(FeedImage image) {
+		return image.getFile_url() != null && images.contains(image);
+	}
+
+	public boolean isDownloading(FeedMedia m) {
+		return m.getFile_url() != null && media.contains(m);
+	}
 
 	/* ------------ Methods for communicating with the DownloadService ------------- */
 	private Messenger mService = null;

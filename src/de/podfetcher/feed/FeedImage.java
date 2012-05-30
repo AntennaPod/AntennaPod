@@ -14,6 +14,7 @@ public class FeedImage extends FeedFile {
 	}
 	
 	public FeedImage(long id, String title, String file_url, String download_url) {
+		super();
 		this.id = id;
 		this.title = title;
 		this.file_url = file_url;

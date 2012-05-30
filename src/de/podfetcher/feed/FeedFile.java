@@ -5,6 +5,10 @@ public abstract class FeedFile extends FeedComponent {
 	protected String file_url;
 	protected String download_url;
 	protected long downloadId;		// temporary id given by the Android DownloadManager
+
+	public FeedFile() {
+		downloadId = -1;
+	}
 	
 	public String getFile_url() {
 		return file_url;
@@ -25,5 +29,13 @@ public abstract class FeedFile extends FeedComponent {
 
 	public void setDownloadId(long downloadId) {
 		this.downloadId = downloadId;
+	}
+
+	public boolean isDownloaded() {
+		return downloadId == -1 && file_url != null;
+	}
+
+	public boolean isDownloading() {
+		return downloadId != -1 && file_url != null;
 	}
 }

@@ -97,13 +97,14 @@ public class ItemviewActivity extends SherlockActivity {
 	}
 
 	private void getDownloadStatus() {
+		/*
 		if(item.getMedia().getFile_url() == null) {
 			butPlay.setEnabled(false);
 			butDownload.setEnabled(true);
 			butRemove.setEnabled(false);
 		} else {
 			final DownloadObserver observer = new DownloadObserver(
-					item.getMedia().getDownloadId(), this);
+					item.getMedia().getDownloadId(), DownloadObserver.TYPE_MEDIA, this);
 
 			final Callable client = new Callable() {
 				public Object call() {
@@ -129,6 +130,7 @@ public class ItemviewActivity extends SherlockActivity {
 			observer.setClient(client);
 			observer.start();
 		}
+		*/
 	}
 }
 

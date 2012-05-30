@@ -1,111 +1,96 @@
 package de.podfetcher.service;
 
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.feed.*;
 import de.podfetcher.R;
 import android.content.Context;
 import android.app.DownloadManager;
 import android.util.Log;
 import android.database.Cursor;
 import java.util.concurrent.Callable;
+import android.os.AsyncTask;
 
 /** Observes the status of a specific Download */
-public class DownloadObserver extends Thread {
+public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 	private static final String TAG = "DownloadObserver";
-	/* Download ID*/
-	long id;
-	Context context;
-	Callable client;
-	long waiting_intervall;
-	private volatile int result;
-	private volatile boolean done;
+
+	/** Types of downloads to observe. */
+	public static final int TYPE_FEED = 0;
+	public static final int TYPE_IMAGE = 1;
+	public static final int TYPE_MEDIA = 2;
+
+	/** Error codes */
+	public static final int ALREADY_DOWNLOADED = 1;
+	public static final int NO_DOWNLOAD_FOUND = 2;
+
+	private final long DEFAULT_WAITING_INTERVALL = 1000L;
+
 	private int progressPercent;
-	private Cursor cursor;
-	private final long DEFAULT_WAITING_INTERVALL = 500L;
+	private int statusMsg;
+
+	private int reason;
+
 	private DownloadRequester requester;
-	private long time_passed;
-	private long timeout;
-	private boolean timedOut = false;
+	private FeedFile feedfile;
+	private Context context;
 
-	public DownloadObserver(long id, Context c) {
-		this.id = id;
-		this.context = c;
-		this.client = client;
-		this.waiting_intervall = DEFAULT_WAITING_INTERVALL;
-		done = false;
-		requester = DownloadRequester.getInstance();
+	public DownloadObserver(Context context) {
+		super();
+		this.context = context;
 	}
 
-	public DownloadObserver(long id, Context c, long timeout) {
-		this(id, c);
-		this.timeout = timeout;
-	}
 
-	public void run() {
-		Log.d(TAG, "Thread started.");
-		while(!isInterrupted() && !timedOut) {
-			cursor = getDownloadCursor();
+	protected Boolean doInBackground(FeedFile... files) {
+		Log.d(TAG, "Background Task started.");
+
+		feedfile = files[0];
+		if (feedfile.getFile_url() == null) {
+			reason = NO_DOWNLOAD_FOUND;
+			return Boolean.valueOf(false);
+		}
+
+		if (feedfile.isDownloaded()) {
+			reason = ALREADY_DOWNLOADED;
+			return Boolean.valueOf(false);
+		}
+
+		while(true) {
+			Cursor cursor = getDownloadCursor();
 			int status = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
 			int progressPercent = getDownloadProgress(cursor);
 			switch(status) {
 				case DownloadManager.STATUS_SUCCESSFUL:
 					Log.d(TAG, "Download was successful.");
-					done = true;
-					result = R.string.download_successful;
-					break;
+					statusMsg = R.string.download_successful;
+					return Boolean.valueOf(true);
 				case DownloadManager.STATUS_RUNNING:
 					Log.d(TAG, "Download is running.");
-					result = R.string.download_running;
+					statusMsg = R.string.download_running;
 					break;
 				case DownloadManager.STATUS_FAILED:
 					Log.d(TAG, "Download failed.");
-					result = R.string.download_failed;
-					done = true;
+					statusMsg = R.string.download_failed;
 					requester.notifyDownloadService(context);
-					break;
+					return Boolean.valueOf(false);
 				case DownloadManager.STATUS_PENDING:
 					Log.d(TAG, "Download pending.");
-					result = R.string.download_pending;
+					statusMsg = R.string.download_pending;
 					break;
 
 			}
-			try {
-				client.call();
-			}catch (Exception e) {
-				Log.e(TAG, "Error happened when calling client: " + e.getMessage());
-			}
 
-			if(done) {
-				break;
-			} else {
-				try {
-					sleep(waiting_intervall);
-					if (timeout > 0) {
-						time_passed += waiting_intervall;
-						if(time_passed >= timeout) {
-							Log.e(TAG, "Download timed out.");
-							timedOut = true;
-							try {
-								client.call();
-							}catch (Exception e) {
-								Log.e(TAG, "Error happened when calling client: " + e.getMessage());
-							}
-							requester.cancelDownload(context, id);
-						}
-					}
-				}catch (InterruptedException e) {
-					Log.w(TAG, "Thread was interrupted while waiting.");
-				}
+			publishProgress(progressPercent);
+
+			try {
+				Thread.sleep(DEFAULT_WAITING_INTERVALL);
+			} catch (InterruptedException e) {
+				Log.w(TAG, "Thread was interrupted while waiting.");
 			}
 		}
-		Log.d(TAG, "Thread stopped.");
-	}
-
-	public void setClient(Callable callable) {
-		this.client = callable;
 	}
 
 	public Cursor getDownloadCursor() {
-		DownloadManager.Query query = buildQuery(id);
+		DownloadManager.Query query = buildQuery(feedfile.getDownloadId());
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
 		Cursor result = manager.query(query);
@@ -138,19 +123,15 @@ public class DownloadObserver extends Thread {
 		return query;
 	}
 
-	public int getResult() {
-		return result;
-	}
-
-	public boolean getDone() {
-		return done;
-	}
-
 	public int getProgressPercent() {
 		return progressPercent;
 	}
 
-	public boolean isTimedOut() {
-		return timedOut;
+	public int getStatusMsg() {
+		return statusMsg;
+	}
+
+	public Context getContext() {
+		return context;
 	}
 }
