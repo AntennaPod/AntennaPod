@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.ImageView;
 import de.podfetcher.R;
 import de.podfetcher.service.DownloadObserver;
+import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.fragment.FeedlistFragment;
 
@@ -50,6 +51,16 @@ public class ItemviewActivity extends SherlockActivity {
 				requester = DownloadRequester.getInstance();
 				requester.downloadMedia(v.getContext(), item.getMedia());
 				getDownloadStatus();
+			}
+		});
+
+		butPlay.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				Intent launchIntent = new Intent(v.getContext(), PlaybackService.class);
+				launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, item.getMedia().getId());
+				launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, item.getFeed().getId());
+				v.getContext().startService(launchIntent);
 			}
 		});
 	}

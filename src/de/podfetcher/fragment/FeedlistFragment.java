@@ -25,7 +25,7 @@ import android.util.Log;
 
 
 public class FeedlistFragment extends SherlockListFragment {
-	private static final String TAG = "FeedlistActivity";
+	private static final String TAG = "FeedlistFragment";
 	public static final String EXTRA_SELECTED_FEED = "extra.de.podfetcher.activity.selected_feed";
 	
 	private FeedManager manager;

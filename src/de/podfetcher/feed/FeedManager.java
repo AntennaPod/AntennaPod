@@ -17,21 +17,21 @@ import android.util.Log;
  *  */
 public class FeedManager {
 	private static final String TAG = "FeedManager";
-	
+
 	private static FeedManager singleton;
-	
+
 	private ArrayList<Feed> feeds;
 	private ArrayList<FeedCategory> categories;
 	private DownloadRequester requester;	
 
-	
+
 	private FeedManager() {
 		feeds = new ArrayList<Feed>();
 		categories = new ArrayList<FeedCategory>();
 		requester = DownloadRequester.getInstance();
 
 	}
-	
+
 	public static FeedManager getInstance(){
 		if(singleton == null) {
 			singleton = new FeedManager();
@@ -53,7 +53,7 @@ public class FeedManager {
 			setFeedItem(context, item);
 		}
 	}	
-	
+
 
 	/** Adds a new Feeditem if its not in the list */
 	public void addFeedItem(Context context, FeedItem item) {
@@ -129,16 +129,16 @@ public class FeedManager {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		return adapter.setFeedItem(item);
 	}
-	
+
 	/** Updates information of an existing FeedImage */
 	public long setFeedImage(Context context, FeedImage image) {
-	    PodDBAdapter adapter = new PodDBAdapter(context);
-	    return adapter.setImage(image);
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		return adapter.setImage(image);
 	}
 
 	/** Updates information of an existing FeedMedia object. */
 	public long setFeedMedia(Context context, FeedMedia media) {
-	    PodDBAdapter adapter = new PodDBAdapter(context);
+		PodDBAdapter adapter = new PodDBAdapter(context);
 		return adapter.setMedia(media);	
 	}
 
@@ -165,28 +165,39 @@ public class FeedManager {
 
 	/** Get a Feed Item by its id and its feed*/
 	public FeedItem getFeedItem(long id, Feed feed) {
-			for(FeedItem item : feed.getItems()) {
-				if(item.getId() == id) {
-					return item;
-				}
+		for(FeedItem item : feed.getItems()) {
+			if(item.getId() == id) {
+				return item;
 			}
-		Log.w(TAG, "Couldn't find FeedItem with id " + id);
+		}
+		Log.e(TAG, "Couldn't find FeedItem with id " + id);
 		return null;
 	}
-	
+
+	/** Get a FeedMedia object by the id of the Media object and the feed object */
+	public FeedMedia getFeedMedia(long id, Feed feed) {
+		for (FeedItem item : feed.getItems()) {
+			if(item.getMedia().getId() == id) {
+				return item.getMedia();
+			}
+		}
+		Log.e(TAG, "Couldn't find FeedMedia with id " + id);
+		return null;
+	}
+
 	/** Reads the database */
 	public void loadDBData(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		updateArrays(context);
 	}
-	
-	
+
+
 	public void updateArrays(Context context) {
 		feeds.clear();
 		categories.clear();
 		extractFeedlistFromCursor(context);		
 	}
-	
+
 	private void extractFeedlistFromCursor(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -194,7 +205,7 @@ public class FeedManager {
 		if(feedlistCursor.moveToFirst()) {
 			do {
 				Feed feed = new Feed();
-				
+
 				feed.id = feedlistCursor.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_ID));
 				feed.setTitle(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 				feed.setLink(feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_LINK)));
@@ -202,17 +213,17 @@ public class FeedManager {
 				feed.setImage(adapter.getFeedImage(feedlistCursor.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_IMAGE))));
 				feed.file_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL));
 				feed.download_url = feedlistCursor.getString(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL));
-				
+
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed, itemlistCursor));
-				
+
 				feeds.add(feed);
 			}while(feedlistCursor.moveToNext());
 		}
 		adapter.close();
 	}
-	
+
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context, Feed feed, Cursor itemlistCursor) {
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
 		PodDBAdapter adapter = new PodDBAdapter(context);
@@ -220,7 +231,7 @@ public class FeedManager {
 		if(itemlistCursor.moveToFirst()) {
 			do {
 				FeedItem item = new FeedItem();
-				
+
 				item.id = itemlistCursor.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_ID));
 				item.setFeed(feed);
 				item.setTitle(itemlistCursor.getString(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
@@ -231,7 +242,7 @@ public class FeedManager {
 							itemlistCursor.getLong(
 								itemlistCursor.getColumnIndex(PodDBAdapter.KEY_MEDIA)), item));
 				item.setRead((itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true : false);
-				
+
 				items.add(item);
 			} while(itemlistCursor.moveToNext());
 		}
@@ -242,8 +253,8 @@ public class FeedManager {
 	public ArrayList<Feed> getFeeds() {
 		return feeds;
 	}
-	
-	 
-	
+
+
+
 
 }

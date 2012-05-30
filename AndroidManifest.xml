@@ -29,5 +29,6 @@
 		<activity android:name="de.podfetcher.activity.ItemviewActivity"/>
 		
 		<service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
+		<service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" /> 
     </application>
 </manifest>
