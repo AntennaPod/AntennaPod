@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import android.os.AsyncTask;
 
 /** Observes the status of a specific Download */
-public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
+public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.DownloadStatus, Boolean> {
 	private static final String TAG = "DownloadObserver";
 
 	/** Types of downloads to observe. */
@@ -25,14 +25,10 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 
 	private final long DEFAULT_WAITING_INTERVALL = 1000L;
 
-	private int progressPercent;
-	private int statusMsg;
-
-	private int reason;
 
 	private DownloadRequester requester;
-	private FeedFile feedfile;
 	private Context context;
+    private DownloadStatus[] statusList;
 
 	public DownloadObserver(Context context) {
 		super();
@@ -42,40 +38,52 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 
 	protected Boolean doInBackground(FeedFile... files) {
 		Log.d(TAG, "Background Task started.");
+        statusList = new DownloadStatus[files.length];
+        for (int i = 0; i < files.length; i++) {
+            FeedFile feedfile = files[i];
+            statusList[i] = new DownloadStatus(feedfile);
 
-		feedfile = files[0];
-		if (feedfile.getFile_url() == null) {
-			reason = NO_DOWNLOAD_FOUND;
-			return Boolean.valueOf(false);
-		}
+            if (feedfile.getFile_url() == null) {
+                statusList[i].reason = NO_DOWNLOAD_FOUND;
+                statusList[i].successful = false;
+                statusList[i].done = true;
+            }
 
-		if (feedfile.isDownloaded()) {
-			reason = ALREADY_DOWNLOADED;
-			return Boolean.valueOf(false);
-		}
+            if (feedfile.isDownloaded()) {
+                statusList[i].reason = ALREADY_DOWNLOADED;
+                statusList[i].successful = false;
+                statusList[i].done = true;
+            }
+        }
 
-		while(true) {
-			Cursor cursor = getDownloadCursor();
-			int status = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
-			int progressPercent = getDownloadProgress(cursor);
-			switch(status) {
-				case DownloadManager.STATUS_SUCCESSFUL:
-					statusMsg = R.string.download_successful;
-					return Boolean.valueOf(true);
-				case DownloadManager.STATUS_RUNNING:
-					statusMsg = R.string.download_running;
-					break;
-				case DownloadManager.STATUS_FAILED:
-					statusMsg = R.string.download_failed;
-					requester.notifyDownloadService(context);
-					return Boolean.valueOf(false);
-				case DownloadManager.STATUS_PENDING:
-					statusMsg = R.string.download_pending;
-					break;
 
-			}
+		while(downloadsLeft()) {
+            for (DownloadStatus status : statusList) {
+                if (status.done == false) {
+                    Cursor cursor = getDownloadCursor(status.feedfile);
+                    int statusId = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
+                    status.progressPercent = getDownloadProgress(cursor);
+                    switch(statusId) {
+                        case DownloadManager.STATUS_SUCCESSFUL:
+                            status.statusMsg = R.string.download_successful;
+                            status.successful = true;
+                            status.done = true;
+                        case DownloadManager.STATUS_RUNNING:
+                            status.statusMsg = R.string.download_running;
+                            break;
+                        case DownloadManager.STATUS_FAILED:
+                            status.statusMsg = R.string.download_failed;
+                            requester.notifyDownloadService(context);
+                            status.successful = Boolean.valueOf(false);
+                            status.done = true;
+                        case DownloadManager.STATUS_PENDING:
+                            status.statusMsg = R.string.download_pending;
+                            break;
+                    }
+                }
+            }
 
-			publishProgress(progressPercent);
+			publishProgress(statusList);
 
 			try {
 				Thread.sleep(DEFAULT_WAITING_INTERVALL);
@@ -83,9 +91,10 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 				Log.w(TAG, "Thread was interrupted while waiting.");
 			}
 		}
+        return Boolean.valueOf(true);
 	}
 
-	public Cursor getDownloadCursor() {
+	public Cursor getDownloadCursor(FeedFile feedfile) {
 		DownloadManager.Query query = buildQuery(feedfile.getDownloadId());
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 
@@ -119,15 +128,66 @@ public class DownloadObserver extends AsyncTask<FeedFile, Integer, Boolean> {
 		return query;
 	}
 
-	public int getProgressPercent() {
-		return progressPercent;
-	}
-
-	public int getStatusMsg() {
-		return statusMsg;
-	}
-
 	public Context getContext() {
 		return context;
 	}
+
+    public DownloadStatus[] getStatusList() {
+        return statusList;
+    }
+
+    private boolean downloadsLeft() {
+        boolean result = false;
+        for (int i = 0; i < statusList.length; i++) {
+            if (statusList[i].done == false) {
+                return true;
+            }
+        }
+        return result;
+    }
+
+    /** Contains status attributes for one download*/
+    public class DownloadStatus {
+
+        protected FeedFile feedfile;
+        protected int progressPercent;
+        protected long soFar;
+        protected long size;
+        protected int statusMsg;
+        protected int reason;
+        protected boolean successful;
+        protected boolean done;
+
+        public DownloadStatus(FeedFile feedfile) {
+            this.feedfile = feedfile;
+        }
+
+        public FeedFile getFeedFile() {
+            return feedfile;
+        }
+
+        public int getProgressPercent() {
+            return progressPercent;
+        }
+
+        public long getSoFar() {
+            return soFar;
+        }
+
+        public long getSize() {
+            return size;
+        }
+
+        public int getStatusMsg() {
+            return statusMsg;
+        }
+
+        public int getReason() {
+            return reason;
+        }
+
+        public boolean isSuccessful() {
+            return successful;
+        }
+    }
 }

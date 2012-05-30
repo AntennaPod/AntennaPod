@@ -74,11 +74,12 @@ public class AddFeedActivity extends SherlockActivity {
 				dialog.dismiss();
 				finish();
 			}
+
 			@Override
-			protected void onProgressUpdate(Integer... values) {
-				Integer progr = values[0];
-				dialog.setMessage(getContext().getString(getStatusMsg())
-						+ " (" + progr.toString() + "%)");
+			protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
+				DownloadObserver.DownloadStatus progr = values[0];
+				dialog.setMessage(getContext().getString(progr.getStatusMsg())
+						+ " (" + progr.getProgressPercent() + "%)");
 			}
 		};
 		dialog.show();

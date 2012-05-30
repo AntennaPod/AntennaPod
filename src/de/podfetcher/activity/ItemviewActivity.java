@@ -111,13 +111,13 @@ public class ItemviewActivity extends SherlockActivity {
 
 	final DownloadObserver downloadObserver = new DownloadObserver(this) {
 		@Override
-		protected void onProgressUpdate(Integer... values) {
+		protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
 		
 		}
 
 		@Override
 		protected void onPostExecute(Boolean result) {
-			boolean r = result.booleanValue();
+			boolean r = getStatusList()[0].isSuccessful();
 			if (r) {
 				setDownloadedState();
 			} else {
