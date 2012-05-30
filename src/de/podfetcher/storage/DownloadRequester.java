@@ -21,6 +21,7 @@ import android.content.ComponentName;
 import android.os.Message;
 import android.os.RemoteException;
 import android.content.Intent;
+import android.webkit.URLUtil;
 
 public class DownloadRequester {
 	private static final String TAG = "DownloadRequester";
@@ -184,11 +185,12 @@ public class DownloadRequester {
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media) {
-		return context.getExternalFilesDir(MEDIA_DOWNLOADPATH).toString() + "/";
+		return context.getExternalFilesDir(MEDIA_DOWNLOADPATH
+			+ media.getItem().getFeed().getTitle() + "/").toString();
 	}
 
 	public String getMediafilename(FeedMedia media) {
-		return "media-" + NumberGenerator.generateLong(media.getDownload_url());	
+		return URLUtil.guessFileName(media.getDownload_url(), null, media.getMime_type());
 	}
 
 
