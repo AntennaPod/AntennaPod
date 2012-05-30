@@ -97,40 +97,52 @@ public class ItemviewActivity extends SherlockActivity {
 	}
 
 	private void getDownloadStatus() {
-		/*
-		if(item.getMedia().getFile_url() == null) {
-			butPlay.setEnabled(false);
-			butDownload.setEnabled(true);
-			butRemove.setEnabled(false);
+		FeedMedia media = item.getMedia();
+		if (media.getFile_url() == null) {
+			setNotDownloadedState();
+		} else if (media.isDownloaded()) {
+			setDownloadedState();
 		} else {
-			final DownloadObserver observer = new DownloadObserver(
-					item.getMedia().getDownloadId(), DownloadObserver.TYPE_MEDIA, this);
+			// observe
+			setDownloadingState();
+			downloadObserver.execute(media);
+		}		
+	}
 
-			final Callable client = new Callable() {
-				public Object call() {
-					runOnUiThread(new Runnable() {
-						public void run() {
-							if(observer.getDone() && 
-								// Download successful
-								observer.getResult() == R.string.download_successful) {
-								butDownload.setEnabled(false);
-								butPlay.setEnabled(true);
-								butRemove.setEnabled(true);
-							} else {
-								// Download running
-								butDownload.setEnabled(false);
-								butPlay.setEnabled(false);
-								butRemove.setEnabled(false);
-							} 
-						}	
-					});	
-					return null;
-				}
-			};	
-			observer.setClient(client);
-			observer.start();
+	final DownloadObserver downloadObserver = new DownloadObserver(this) {
+		@Override
+		protected void onProgressUpdate(Integer... values) {
+		
 		}
-		*/
+
+		@Override
+		protected void onPostExecute(Boolean result) {
+			boolean r = result.booleanValue();
+			if (r) {
+				setDownloadedState();
+			} else {
+				setNotDownloadedState();
+			}
+		}
+	};
+
+
+	private void setDownloadingState() {
+		butDownload.setEnabled(false);
+		butPlay.setEnabled(false);
+		butRemove.setEnabled(false);
+	}
+
+	private void setDownloadedState() {
+		butDownload.setEnabled(false);
+		butPlay.setEnabled(true);
+		butRemove.setEnabled(true);
+	}
+
+	private void setNotDownloadedState() {
+		butPlay.setEnabled(false);
+		butDownload.setEnabled(true);
+		butRemove.setEnabled(false);
 	}
 }
 
