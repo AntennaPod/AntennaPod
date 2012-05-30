@@ -174,7 +174,7 @@ public class PodDBAdapter {
 		if(image.getId() == 0) {
 			image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
 		} else {
-			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID+"=?", new String[]{String.valueOf(image.getId())});
+			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?", new String[]{String.valueOf(image.getId())});
 		}
 		close();
 		return image.getId();
@@ -198,7 +198,7 @@ public class PodDBAdapter {
 		if(media.getId() == 0) {
 			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));
 		} else {
-			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID+"=?", new String[]{String.valueOf(media.getId())});
+			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(media.getId())});
 		}
 		close();
 		return media.getId();
@@ -214,70 +214,95 @@ public class PodDBAdapter {
 		values.put(KEY_LINK, item.getLink());
 		values.put(KEY_DESCRIPTION, item.getDescription());
 		values.put(KEY_PUBDATE, item.getPubDate());
-		if(item.getMedia() != null) {
+		if (item.getMedia() != null) {
 			if(item.getMedia().getId() == 0) {
 				setMedia(item.getMedia());
 			}
 			values.put(KEY_MEDIA, item.getMedia().getId());
 		}
-		if(item.getFeed().getId() == 0) {
+		if (item.getFeed().getId() == 0) {
 			setFeed(item.getFeed());
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, (item.isRead()) ? 1 : 0);
-		
+
 		open();
-		if(item.getId() == 0) {
+		if (item.getId() == 0) {
 		    item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
-		    db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID+"=?", new String[]{String.valueOf(item.getId())});
+		    db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(item.getId())});
 		}
 		close();
 		return item.getId();
 	}
-	
-	public Cursor getAllCategoriesCursor() {
+
+    /** Get all Categories from the Categories Table.
+     *  @return The cursor of the query
+     * */
+	public final Cursor getAllCategoriesCursor() {
 	    open();
 	    Cursor c = db.query(TABLE_NAME_FEED_CATEGORIES, null, null, null, null, null, null);
 		return c;
 	}
-	
-	public Cursor getAllFeedsCursor() {
+
+    /** Get all Feeds from the Feed Table.
+     *  @return The cursor of the query
+     * */
+	public final Cursor getAllFeedsCursor() {
 	    open();
 	    Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null, null);
 		return c;
 	}
-	
-	public Cursor getAllItemsOfFeedCursor(Feed feed) {
+
+    /** Returns a cursor with all FeedItems of a Feed.
+     *  @param feed The feed you want to get the FeedItems from.
+     *  @return The cursor of the query
+     * */
+	public final Cursor getAllItemsOfFeedCursor(final Feed feed) {
 	    open();
 	    Cursor c = db.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED + "=?",
 				new String[]{String.valueOf(feed.getId())}, null, null, null);
 		return c;
 	}
-	
-	public Cursor getFeedMediaOfItemCursor(FeedItem item) {
+
+    /** Returns a cursor for a DB query in the FeedMedia table for a given ID.
+     *  @param item The item you want to get the FeedMedia from
+     *  @return The cursor of the query
+     * */
+	public final Cursor getFeedMediaOfItemCursor(final FeedItem item) {
 	    open();
 	    Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
-				new String[]{String.valueOf(item.getMedia().getId())}, null, null, null);
+				new String[]{String.valueOf(item.getMedia().getId())},
+                null, null, null);
 		return c;
 	}
-	
-	public Cursor getImageOfFeedCursor(long id) {
+
+    /** Returns a cursor for a DB query in the FeedImages table for a given ID.
+     *  @param id ID of the FeedImage
+     *  @return The cursor of the query
+     * */
+	public final Cursor getImageOfFeedCursor(final long id) {
 	    open();
 	    Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
 				new String[]{String.valueOf(id)}, null, null, null);
 		return c;
 	}
-	
-	public FeedMedia getFeedMedia(long row_index, FeedItem owner) throws SQLException{
+
+    /** Get a FeedMedia object from the Database.
+     *  @param rowIndex DB Index of Media object
+     *  @param owner FeedItem the Media object belongs to
+     *  @return A newly created FeedMedia object
+     * */
+	public final FeedMedia getFeedMedia(final long rowIndex, final FeedItem owner)
+        throws SQLException {
 	    open();
 		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
-				new String[]{String.valueOf(row_index)}, null, null, null);
-		
+                new String[]{String.valueOf(rowIndex)}, null, null, null);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedMedia found at index: " + row_index);
+			throw new SQLException("No FeedMedia found at index: " + rowIndex);
 		}
-		FeedMedia media = new FeedMedia(row_index,
+		FeedMedia media = new FeedMedia(rowIndex,
 				owner,
 				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)),
 				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)),
@@ -287,14 +312,13 @@ public class PodDBAdapter {
 				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
 		close();
 		return media;
-
 	}
 
 	/** Searches the DB for a FeedImage of the given id.
 	 *	@param id The id of the object
 	 *	@return The found object
 	 * */
-	public FeedImage getFeedImage(final long id) throws SQLException {
+	public final FeedImage getFeedImage(final long id) throws SQLException {
 	    open();
 		Cursor cursor = this.getImageOfFeedCursor(id);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
@@ -319,7 +343,6 @@ public class PodDBAdapter {
 		 *	@param name Name of the database
 		 *	@param factory to use for creating cursor objects
 		 *	@param version number of the database
-		 *
 		 * */
 		public PodDBHelper(final Context context,
 				final String name, final CursorFactory factory,
@@ -334,7 +357,6 @@ public class PodDBAdapter {
 			db.execSQL(CREATE_TABLE_FEED_CATEGORIES);
 			db.execSQL(CREATE_TABLE_FEED_IMAGES);
 			db.execSQL(CREATE_TABLE_FEED_MEDIA);
-
 		}
 
 		@Override
@@ -344,8 +366,6 @@ public class PodDBAdapter {
 					+ oldVersion + " to "
 					+ newVersion + ".");
 			// TODO delete Database
-
 		}
-
 	}
 }
