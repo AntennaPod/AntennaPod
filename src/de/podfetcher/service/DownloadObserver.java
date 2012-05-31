@@ -35,6 +35,10 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
 		this.context = context;
 	}
 
+    @Override
+    protected void onCancelled(Boolean result) {
+        Log.d(TAG, "Task was cancelled.");
+    }
 
 	protected Boolean doInBackground(FeedFile... files) {
 		Log.d(TAG, "Background Task started.");
