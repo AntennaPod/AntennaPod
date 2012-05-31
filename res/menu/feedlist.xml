@@ -5,11 +5,17 @@
         android:title="Add Feed"
         android:icon="@drawable/content_new"
         android:showAsAction="ifRoom">
-   </item>
-   <item
+    </item>
+    <item
         android:id="@+id/all_feed_refresh"
         android:title="Refresh"
         android:icon="@drawable/navigation_refresh"
         android:showAsAction="ifRoom">
-   </item>
+    </item>
+    <item
+        android:id="@+id/show_downloads"
+        android:title="Downloads"
+        android:icon="@drawable/av_download"
+        android:showAsAction="ifRoom">
+    </item>
 </menu>

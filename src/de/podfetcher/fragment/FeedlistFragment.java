@@ -76,6 +76,9 @@ public class FeedlistFragment extends SherlockListFragment {
 			case R.id.all_feed_refresh:
 				manager.refreshAllFeeds(pActivity);
 				return true;
+            case R.id.show_downloads:
+                startActivity(new Intent(pActivity, DownloadActivity.class));
+                return true;
 			default:
 			    return super.onOptionsItemSelected(item);
 	    }

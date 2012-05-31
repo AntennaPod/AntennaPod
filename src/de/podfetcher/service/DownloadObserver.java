@@ -62,7 +62,7 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
                 if (status.done == false) {
                     Cursor cursor = getDownloadCursor(status.feedfile);
                     int statusId = getDownloadStatus(cursor, DownloadManager.COLUMN_STATUS);
-                    status.progressPercent = getDownloadProgress(cursor);
+                    getDownloadProgress(cursor, status);
                     switch(statusId) {
                         case DownloadManager.STATUS_SUCCESSFUL:
                             status.statusMsg = R.string.download_successful;
@@ -91,6 +91,7 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
 				Log.w(TAG, "Thread was interrupted while waiting.");
 			}
 		}
+        Log.d(TAG, "Background Task finished.");
         return Boolean.valueOf(true);
 	}
 
@@ -110,17 +111,16 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
 		}
 	}
 
-	private int getDownloadProgress(Cursor c) {
-		if (c.moveToFirst()) {
-			long size = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
-			long soFar = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
-			int progress = (int) (((double) soFar / (double) size) * 100);
-			Log.d(TAG, "Setting progress to " + progress);
-			return progress;
-		} else {
-			return -1;
-		}
-	}
+	private void getDownloadProgress(Cursor c, DownloadStatus status) {
+        if (c.moveToFirst()) {
+            status.size = c.getLong(c.getColumnIndex(DownloadManager.COLUMN_TOTAL_SIZE_BYTES));
+            status.soFar = c.getLong(c.getColumnIndex(
+                        DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
+            status.progressPercent = (int) ((
+                        (double) status.soFar / (double) status.size) * 100);
+            Log.d(TAG, "Setting progress to " + status.progressPercent);
+        }
+    }
 
 	private DownloadManager.Query buildQuery(long id) {
 		DownloadManager.Query query = new DownloadManager.Query();

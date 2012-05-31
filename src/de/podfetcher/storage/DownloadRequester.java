@@ -158,6 +158,9 @@ public class DownloadRequester {
 		images.remove(fi);
 	}
 
+    public ArrayList<FeedFile> getMediaDownloads() {
+        return media;
+    }
 
 	/** Get the number of uncompleted Downloads */
 	public int getNumberOfDownloads() {
