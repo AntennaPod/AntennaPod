@@ -91,6 +91,7 @@ public class FeedlistFragment extends SherlockListFragment {
 		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
 
 		pActivity.registerReceiver(contentUpdate, filter);
+        fla.notifyDataSetChanged();
 	}
 
 	@Override
@@ -102,6 +103,7 @@ public class FeedlistFragment extends SherlockListFragment {
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+            Log.d(TAG, "Received contentUpdate Intent.");
 			fla.notifyDataSetChanged();
 		}
 	};
