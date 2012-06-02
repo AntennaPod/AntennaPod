@@ -21,16 +21,37 @@ import java.util.concurrent.Callable;
 public class AddFeedActivity extends SherlockActivity {
 	private static final String TAG = "AddFeedActivity";
 
+	private DownloadRequester requester;
+	
 	private EditText etxtFeedurl;
 	private Button butConfirm;
 	private Button butCancel;
+	private long downloadId;
 
-
+	
+	private DownloadObserver observer;
+	
+	private  ProgressDialog progDialog;
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.addfeed);
 
+		requester = DownloadRequester.getInstance();
+		
+		createObserver();
+		progDialog = new ProgressDialog(this) {
+			@Override
+			public void onBackPressed() {
+				requester.cancelDownload(getContext(), downloadId);
+				observer.cancel(true);
+				createObserver();
+				dismiss();
+			}
+			
+		};
+		
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
@@ -49,9 +70,30 @@ public class AddFeedActivity extends SherlockActivity {
 				finish();
 			}
 		});
+	}
+	
+	private void createObserver() {
+		observer = new DownloadObserver(this) {
+			@Override
+			protected void onPostExecute(Boolean result) {
+				progDialog.dismiss();
+				finish();
+			}
 
-
-
+			@Override
+			protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
+				DownloadObserver.DownloadStatus progr = values[0];
+				progDialog.setMessage(getContext().getString(progr.getStatusMsg())
+						+ " (" + progr.getProgressPercent() + "%)");
+			}
+		};
+	}
+	
+	@Override
+	protected void onStop() {
+		super.onStop();
+		Log.d(TAG, "Stopping Activity");
+		observer.cancel(true);
 	}
 
 	private void addNewFeed() {
@@ -60,29 +102,13 @@ public class AddFeedActivity extends SherlockActivity {
 
 		if(url != null) {
 			Feed feed = new Feed(url);
-			DownloadRequester req = DownloadRequester.getInstance();
-			req.downloadFeed(this, feed);
+			downloadId = requester.downloadFeed(this, feed);
 			observeDownload(feed);
 		}
 	}
 
 	private void observeDownload(Feed feed) {
-		final ProgressDialog dialog = new ProgressDialog(this);
-		final DownloadObserver observer = new DownloadObserver(this) {
-			@Override
-			protected void onPostExecute(Boolean result) {
-				dialog.dismiss();
-				finish();
-			}
-
-			@Override
-			protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
-				DownloadObserver.DownloadStatus progr = values[0];
-				dialog.setMessage(getContext().getString(progr.getStatusMsg())
-						+ " (" + progr.getProgressPercent() + "%)");
-			}
-		};
-		dialog.show();
+		progDialog.show();
 		observer.execute(feed);
 	}
 

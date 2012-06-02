@@ -60,7 +60,7 @@ public class DownloadRequester {
 		return downloader;
 	}
 
-	private void download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
+	private long download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
 		Log.d(TAG, "Requesting download of url "+ item.getDownload_url());
 		type.add(item);
 		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(item.getDownload_url()));
@@ -71,27 +71,33 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
 		context.startService(new Intent(context, DownloadService.class));
-		item.setDownloadId(manager.enqueue(request));
-		item.setFile_url(dest.toString());	
+		long downloadId = manager.enqueue(request);
+		item.setDownloadId(downloadId);
+		item.setFile_url(dest.toString());
+		return downloadId;
 	}
-	public void downloadFeed(Context context, Feed feed) {
-		download(context, feeds, feed, 
+	public long downloadFeed(Context context, Feed feed) {
+		return download(context, feeds, feed, 
 				new File(getFeedfilePath(context), getFeedfileName(feed)),
 				true);
 	}
 
-	public void downloadImage(Context context, FeedImage image) {
-		download(context, images, image, 
+	public long downloadImage(Context context, FeedImage image) {
+		return download(context, images, image, 
 				new File(getImagefilePath(context), getImagefileName(image)),
 				true);
 	}
 
-	public void downloadMedia(Context context, FeedMedia feedmedia) {
-		download(context, media, feedmedia,
+	public long downloadMedia(Context context, FeedMedia feedmedia) {
+		return download(context, media, feedmedia,
 				new File(getMediafilePath(context, feedmedia), getMediafilename(feedmedia)),
 				true);
 	}
-
+	
+	/** Cancels a running download. 
+	 * 	@param context A context needed to get the DownloadManager service
+	 * 	@param id ID of the download to cancel
+	 * */
 	public void cancelDownload(final Context context, final long id) {
 		Log.d(TAG, "Cancelling download with id " + id);
 		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);

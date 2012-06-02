@@ -9,6 +9,7 @@ import de.podfetcher.feed.FeedFile;
 import com.actionbarsherlock.app.SherlockListActivity;
 
 import android.os.Bundle;
+import android.util.Log;
 
 public class DownloadActivity extends SherlockListActivity {
     private static final String TAG = "DownloadActivity"; 
@@ -24,6 +25,13 @@ public class DownloadActivity extends SherlockListActivity {
         observer.execute(requester.getMediaDownloads().toArray(
                     new FeedFile[requester.getMediaDownloads().size()]));
 
+    }
+    
+    @Override
+    protected void onStop()  {
+    	super.onStop();
+    	Log.d(TAG, "Stopping Activity");
+    	observer.cancel(true);
     }
 
     private final DownloadObserver observer = new DownloadObserver(this) {

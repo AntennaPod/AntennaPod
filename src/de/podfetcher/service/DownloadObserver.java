@@ -61,7 +61,7 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
         }
 
 
-		while(downloadsLeft()) {
+		while(downloadsLeft() && !isCancelled()) {
             for (DownloadStatus status : statusList) {
                 if (status.done == false) {
                     Cursor cursor = getDownloadCursor(status.feedfile);

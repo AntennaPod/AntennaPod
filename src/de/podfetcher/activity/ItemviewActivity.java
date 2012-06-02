@@ -64,6 +64,13 @@ public class ItemviewActivity extends SherlockActivity {
 			}
 		});
 	}
+	
+	@Override
+	public void onStop() {
+		super.onStop();
+		Log.d(TAG, "Stopping Activity");
+		downloadObserver.cancel(true);
+	}
 
 	/** Extracts FeedItem object the activity is supposed to display */
 	private void extractFeeditem() {

@@ -14,7 +14,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Sherlock.Light"
-        android:name=".PodcastApp">
+        android:name="de.podfetcher.PodcastApp">
         <activity
             android:label="@string/app_name"
             android:name="de.podfetcher.activity.PodfetcherActivity" >
