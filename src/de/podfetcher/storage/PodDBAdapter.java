@@ -32,7 +32,7 @@ public class PodDBAdapter {
 	public static final String KEY_DOWNLOAD_URL = "download_url";
 	public static final String KEY_PUBDATE = "pubDate";
 	public static final String KEY_READ = "read";
-	public static final String KEY_LENGTH = "length";
+	public static final String KEY_DURATION = "duration";
 	public static final String KEY_POSITION = "position";
 	public static final String KEY_SIZE = "filesize";
 	public static final String KEY_MIME_TYPE = "mime_type";
@@ -75,7 +75,7 @@ public class PodDBAdapter {
 			+ KEY_DOWNLOAD_URL + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
-			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_LENGTH
+			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
 			+ " INTEGER," + KEY_POSITION + " INTEGER,"
 			+ KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
 			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT)";
@@ -187,7 +187,7 @@ public class PodDBAdapter {
 	public long setMedia(FeedMedia media) {
 	    open();
 		ContentValues values = new ContentValues();
-		values.put(KEY_LENGTH, media.getLength());
+		values.put(KEY_DURATION, media.getDuration());
 		values.put(KEY_POSITION, media.getPosition());
 		values.put(KEY_SIZE, media.getSize());
 		values.put(KEY_MIME_TYPE, media.getMime_type());
@@ -304,8 +304,8 @@ public class PodDBAdapter {
 		}
 		FeedMedia media = new FeedMedia(rowIndex,
 				owner,
-				cursor.getLong(cursor.getColumnIndex(KEY_LENGTH)),
-				cursor.getLong(cursor.getColumnIndex(KEY_POSITION)),
+				cursor.getInt(cursor.getColumnIndex(KEY_DURATION)),
+				cursor.getInt(cursor.getColumnIndex(KEY_POSITION)),
 				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)),
 				cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)),
 				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),

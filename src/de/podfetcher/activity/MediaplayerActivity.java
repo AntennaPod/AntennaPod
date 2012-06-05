@@ -218,7 +218,7 @@ public class MediaplayerActivity extends SherlockActivity {
 		private void getProgress() {
 			FeedMedia media = service.getMedia();
 			position = media.getPosition();
-			length = media.getLength();
+			length = media.getDuration();
 		}
 	}
 	

@@ -1,8 +1,8 @@
 package de.podfetcher.feed;
 
 public class FeedMedia extends FeedFile{
-	private long length;
-	private long position;
+	private int duration;
+	private int position;	// Current position in file
 	private long size;	// File size in Byte
 	private String mime_type;
 	private FeedItem item;
@@ -15,12 +15,12 @@ public class FeedMedia extends FeedFile{
 		this.mime_type = mime_type;
 	}
 
-	public FeedMedia(long id, FeedItem item, long length, long position, long size, String mime_type,
+	public FeedMedia(long id, FeedItem item, int duration, int position, long size, String mime_type,
 			String file_url, String download_url) {
 		super();
 		this.id = id;
 		this.item = item;
-		this.length = length;
+		this.duration = duration;
 		this.position = position;
 		this.size = size;
 		this.mime_type = mime_type;
@@ -28,19 +28,19 @@ public class FeedMedia extends FeedFile{
 		this.download_url = download_url;
 	}
 
-	public long getLength() {
-		return length;
+	public long getDuration() {
+		return duration;
 	}
 
-	public void setLength(long length) {
-		this.length = length;
+	public void setDuration(int duration) {
+		this.duration = duration;
 	}
 
 	public long getPosition() {
 		return position;
 	}
 
-	public void setPosition(long position) {
+	public void setPosition(int position) {
 		this.position = position;
 	}
 
