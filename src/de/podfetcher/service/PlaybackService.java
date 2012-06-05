@@ -10,6 +10,7 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.net.Uri;
 import android.os.Binder;
@@ -33,7 +34,7 @@ public class PlaybackService extends Service {
 			"action.de.podfetcher.service.playerStatusChanged";
 	
 	private static final int NOTIFICATION_ID = 1;
-	private Notification.Builder notificationBuilder;
+	private NotificationCompat.Builder notificationBuilder;
 	
 	private Notification notification;
 	private MediaPlayer player;
@@ -105,7 +106,7 @@ public class PlaybackService extends Service {
 				this, 0, new Intent(this, MediaplayerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
 		
 		Bitmap icon = BitmapFactory.decodeResource(null, R.drawable.stat_notify_sdcard);
-		notificationBuilder = new Notification.Builder(this)
+		notificationBuilder = new NotificationCompat.Builder(this)
 			.setContentTitle("Mediaplayer Service")
 			.setContentInfo("Click here for more info")
 			.setOngoing(true)
