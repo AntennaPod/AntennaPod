@@ -117,7 +117,7 @@ public class MediaplayerActivity extends SherlockActivity {
 				protected void onProgressUpdate(Long... values) {
 					super.onProgressUpdate(values);
 					txtvPosition.setText(
-							Integer.toString(playbackService.getPlayer().getCurrentPosition()));
+							Converter.getDurationStringLong(playbackService.getPlayer().getCurrentPosition()));
 				}
 				
 			};
@@ -136,8 +136,8 @@ public class MediaplayerActivity extends SherlockActivity {
 			imgvCover.setImageBitmap(
 					media.getItem().getFeed().getImage().getImageBitmap());
 			
-			txtvPosition.setText(Integer.toString(player.getCurrentPosition()));
-			txtvLength.setText(Integer.toString(player.getDuration()));
+			txtvPosition.setText(Converter.getDurationStringLong((player.getCurrentPosition())));
+			txtvLength.setText(Converter.getDurationStringLong(player.getDuration()));
 		}
 	}
 	
