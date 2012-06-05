@@ -57,10 +57,15 @@ public class ItemviewActivity extends SherlockActivity {
 		butPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
+				// Start playback Service
 				Intent launchIntent = new Intent(v.getContext(), PlaybackService.class);
 				launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, item.getMedia().getId());
 				launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, item.getFeed().getId());
 				v.getContext().startService(launchIntent);
+				
+				// Launch Mediaplayer
+				Intent playerIntent = new Intent(v.getContext(), MediaplayerActivity.class);
+				v.getContext().startActivity(playerIntent);
 			}
 		});
 	}

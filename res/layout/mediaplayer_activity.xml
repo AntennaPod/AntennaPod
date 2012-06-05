@@ -6,7 +6,7 @@
     android:orientation="vertical" >
 
     <ImageView
-        android:id="@+id/imageView1"
+        android:id="@+id/imgvCover"
         android:layout_width="match_parent"
         android:layout_height="283dp"
         android:layout_weight="0.02"
@@ -18,24 +18,33 @@
         android:layout_height="wrap_content" >
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/txtvPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:text="left" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/txtvLength"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="right" />
 
+        <TextView
+            android:id="@+id/txtvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:text="TextView"
+            android:visibility="invisible" />
+
     </RelativeLayout>
 
     <SeekBar
-        android:id="@+id/seekBar1"
+        android:id="@+id/sbPosition"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
