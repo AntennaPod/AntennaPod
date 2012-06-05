@@ -2,14 +2,20 @@ package de.podfetcher.service;
 
 import java.io.File;
 
+import android.R;
+import android.app.Notification;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.util.Log;
 import android.net.Uri;
 import android.os.Binder;
 import android.os.IBinder;
 
+import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
@@ -26,6 +32,10 @@ public class PlaybackService extends Service {
 	public static final String ACTION_PLAYER_STATUS_CHANGED =
 			"action.de.podfetcher.service.playerStatusChanged";
 	
+	private static final int NOTIFICATION_ID = 1;
+	private Notification.Builder notificationBuilder;
+	
+	private Notification notification;
 	private MediaPlayer player;
 	private FeedMedia media;
 	private Feed feed;
@@ -72,7 +82,8 @@ public class PlaybackService extends Service {
 			Log.d(TAG, "Preparing to play file");
 			//player.prepareAsync();
 		}
-		return Service.START_NOT_STICKY;
+		setupNotification();
+		return Service.START_STICKY;
 	}
 
 	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
@@ -88,6 +99,25 @@ public class PlaybackService extends Service {
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 	}
+	
+	private void setupNotification() {
+		PendingIntent pIntent = PendingIntent.getActivity(
+				this, 0, new Intent(this, MediaplayerActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+		
+		Bitmap icon = BitmapFactory.decodeResource(null, R.drawable.stat_notify_sdcard);
+		notificationBuilder = new Notification.Builder(this)
+			.setContentTitle("Mediaplayer Service")
+			.setContentInfo("Click here for more info")
+			.setOngoing(true)
+			.setContentIntent(pIntent)
+			.setLargeIcon(icon)
+			.setSmallIcon(R.drawable.stat_notify_sdcard);
+			
+					
+		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
+		Log.d(TAG, "Notification set up");
+	}
+	
 	
 	public PlayerStatus getStatus() {
 		return status;
