@@ -7,6 +7,7 @@
 package de.podfetcher.service;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -16,6 +17,7 @@ import android.app.Service;
 import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -34,6 +36,9 @@ public class DownloadService extends Service {
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
+	
+	/** Needed to determine the duration of a media file */
+	private MediaPlayer mediaplayer;
 
 
 	// Objects for communication
@@ -49,6 +54,7 @@ public class DownloadService extends Service {
 		syncExecutor = Executors.newSingleThreadExecutor();
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
+		mediaplayer = new MediaPlayer();
 	}
 
 	@Override
@@ -60,6 +66,7 @@ public class DownloadService extends Service {
 	public void onDestroy() {
 		Log.d(TAG, "Service shutting down");
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
+		mediaplayer.release();
 	}
 
 	private IntentFilter createIntentFilter() {
@@ -140,6 +147,16 @@ public class DownloadService extends Service {
 	private void handleCompletedFeedMediaDownload(Context context, FeedMedia media) {
 		Log.d(TAG, "Handling completed FeedMedia Download");
 		requester.removeFeedMedia(media);
+		// Get duration
+		try {
+			mediaplayer.setDataSource(media.getFile_url());
+			mediaplayer.prepare();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		media.setDuration(mediaplayer.getDuration());
+		Log.d(TAG, "Duration of file is " + media.getDuration());
+		mediaplayer.reset();
 		manager.setFeedMedia(this, media);
 	}
 
