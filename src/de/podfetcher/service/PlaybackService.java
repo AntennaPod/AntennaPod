@@ -13,6 +13,7 @@ import android.media.MediaPlayer;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
@@ -42,6 +43,7 @@ public class PlaybackService extends Service {
 	private Feed feed;
 	private FeedManager manager;
 	private PlayerStatus status;
+	private PositionSaver positionSaver;
 
 	private final IBinder mBinder = new LocalBinder();
 	
@@ -81,18 +83,36 @@ public class PlaybackService extends Service {
 			setStatus(PlayerStatus.PREPARING);
 			player.setOnPreparedListener(preparedListener);
 			Log.d(TAG, "Preparing to play file");
-			//player.prepareAsync();
 		}
 		setupNotification();
 		return Service.START_STICKY;
+	}
+	
+	private void setupPositionSaver() {
+		if (positionSaver == null) {
+			positionSaver = new PositionSaver() {
+				@Override
+				protected void onCancelled(Void result) {
+					super.onCancelled(result);
+					positionSaver = null;
+				}
+
+				@Override
+				protected void onPostExecute(Void result) {
+					super.onPostExecute(result);
+					positionSaver = null;
+				}				
+			};
+			positionSaver.execute();
+		}
 	}
 
 	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
 		@Override
 		public void onPrepared(MediaPlayer mp) {
 			Log.d(TAG, "Resource prepared");
-			mp.start();
-			setStatus(PlayerStatus.PLAYING);
+			setStatus(PlayerStatus.PREPARED);
+			play();
 		}
 	};
 	
@@ -100,15 +120,17 @@ public class PlaybackService extends Service {
 		if (player.isPlaying()) {
 			Log.d(TAG, "Pausing playback.");
 			player.pause();
+			saveCurrentPosition();
 			setStatus(PlayerStatus.PAUSED);
 		}
 	}
 	
 	public void play() {
-		if (status == PlayerStatus.PAUSED) {
-			Log.d(TAG, "Resuming playback");
+		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
+			Log.d(TAG, "Resuming/Starting playback");
 			player.start();
 			setStatus(PlayerStatus.PLAYING);
+			setupPositionSaver();
 		} else if (status == PlayerStatus.STOPPED) {
 			
 		}
@@ -146,7 +168,15 @@ public class PlaybackService extends Service {
 	
 	public void seek(int i) {
 		Log.d(TAG, "Seeking position " + i);
-		player.seekTo(i);	
+		player.seekTo(i);
+		saveCurrentPosition();
+	}
+	
+	/** Saves the current position of the media file to the DB */
+	private synchronized void saveCurrentPosition() {
+		Log.d(TAG, "Saving current position to " + player.getCurrentPosition());
+		media.setPosition(player.getCurrentPosition());
+		manager.setFeedMedia(this, media);
 	}
 	
 	public PlayerStatus getStatus() {
@@ -159,6 +189,26 @@ public class PlaybackService extends Service {
 	
 	public MediaPlayer getPlayer() {
 		return player;
+	}
+	
+	/** Periodically saves the position of the media file */
+	class PositionSaver extends AsyncTask<Void, Void, Void> {
+		private static final int WAITING_INTERVALL = 5000;
+		
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (!isCancelled() && player.isPlaying()) {
+				try {
+					Thread.sleep(WAITING_INTERVALL);
+				} catch (InterruptedException e) {
+					Log.d(TAG, "Thread was interrupted while waiting. Finishing now...");
+					return null;
+				}
+				saveCurrentPosition();
+			}
+			return null;
+		}
+		
 	}
 
 }
