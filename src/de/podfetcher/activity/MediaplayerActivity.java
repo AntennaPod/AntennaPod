@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
@@ -34,8 +36,6 @@ public class MediaplayerActivity extends SherlockActivity {
 	
 	private FeedMedia media;
 	private PlayerStatus status;
-	
-	private boolean guiSetup;
 	
 	
 	// Widgets
@@ -64,20 +64,33 @@ public class MediaplayerActivity extends SherlockActivity {
 		// TODO Auto-generated method stub
 		return super.onCreateOptionsMenu(menu);
 	}
+	
+	
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "Resuming Activity");
+		bindToService();
+		registerReceiver(statusUpdate, new IntentFilter(PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		Log.d(TAG, "Creating Activity");
 		this.setContentView(R.layout.mediaplayer_activity);
 		
-		guiSetup = false;
 		setupGUI();
+		bindToService();
+		registerReceiver(statusUpdate, new IntentFilter(PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+	}
+	
+	private void bindToService() {
 		if(!bindService(new Intent(this, PlaybackService.class), mConnection, 0)) {
 			status = PlayerStatus.STOPPED;
 			handleStatus();
 		}
-		IntentFilter filter = new IntentFilter(PlaybackService.ACTION_PLAYER_STATUS_CHANGED);
-		registerReceiver(statusUpdate, filter);
 	}
 	
 	private void handleStatus() {
@@ -90,11 +103,17 @@ public class MediaplayerActivity extends SherlockActivity {
 		case PAUSED:
 			setStatusMsg(R.string.player_paused_msg, View.VISIBLE);
 			loadMediaInfo();
+			if (positionObserver != null) {
+				positionObserver.cancel(true);
+				positionObserver = null;
+			}
+			butPlay.setImageResource(android.R.drawable.ic_media_play);
 			break;
 		case PLAYING:
 			setStatusMsg(0, View.INVISIBLE);
 			loadMediaInfo();
 			setupPositionObserver();
+			butPlay.setImageResource(android.R.drawable.ic_media_pause);
 			break;
 		case PREPARING:
 			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
@@ -114,14 +133,17 @@ public class MediaplayerActivity extends SherlockActivity {
 			positionObserver = new MediaPositionObserver() {
 
 				@Override
-				protected void onProgressUpdate(Long... values) {
+				protected void onProgressUpdate(Integer... values) {
 					super.onProgressUpdate(values);
 					txtvPosition.setText(
-							Converter.getDurationStringLong(playbackService.getPlayer().getCurrentPosition()));
+							Converter.getDurationStringLong(values[0]));
+					
+					float progress = ((float) values[0]) / getDuration();
+					sbPosition.setProgress((int) (progress * 100));
 				}
 				
 			};
-			positionObserver.execute(playbackService);
+			positionObserver.execute(playbackService.getPlayer());
 		}
 	}
 	
@@ -151,7 +173,47 @@ public class MediaplayerActivity extends SherlockActivity {
 		butRev = (ImageButton) findViewById(R.id.butRev);
 		butFF = (ImageButton) findViewById(R.id.butFF);
 		
-		this.guiSetup = true;
+		sbPosition.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+			int duration;
+			float prog;
+			
+			@Override
+			public void onProgressChanged(SeekBar seekBar, int progress,
+					boolean fromUser) {
+				if (fromUser) {
+					prog = progress / 100.0f;
+					duration = playbackService.getPlayer().getDuration();
+					txtvPosition.setText(Converter.getDurationStringLong((int) (prog * duration)));
+				}
+				
+			}
+			
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar) {
+				// interrupt position Observer, restart later
+				if (positionObserver != null) {
+					positionObserver.cancel(true);
+					positionObserver = null;
+				}
+			}
+			
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar) {
+				playbackService.seek((int) (prog * duration));
+				setupPositionObserver();
+			}
+		});
+		
+		butPlay.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (status == PlayerStatus.PLAYING) {
+					playbackService.pause();
+				} else if (status == PlayerStatus.PAUSED) {
+					playbackService.play();
+				}
+			}	
+		});
 	}
 	
 	
@@ -181,44 +243,43 @@ public class MediaplayerActivity extends SherlockActivity {
 		public void onReceive(Context context, Intent intent) {
             Log.d(TAG, "Received statusUpdate Intent.");
 			status = playbackService.getStatus();
+			handleStatus();
 		}
 	};
 	
-	
-	public class MediaPositionObserver extends AsyncTask<PlaybackService, Long, Long> {
+	/** Refreshes the current position of the media file that is playing. */
+	public class MediaPositionObserver extends AsyncTask<MediaPlayer, Integer, Boolean> {
 		
 		private static final int WAITING_INTERVALL = 1000;
-		private long position;
-		private long length;
-		private PlaybackService service;
+		private MediaPlayer player;
+		private int duration;
 		
 		@Override
-		protected void onCancelled(Long result) {
+		protected void onCancelled(Boolean result) {
 			Log.d(TAG, "Task was cancelled");
 		}
-				
-		protected Long doInBackground(PlaybackService... services) {
+		
+		@Override
+		protected Boolean doInBackground(MediaPlayer... p) {
 			Log.d(TAG, "Background Task started");
-			service = services[0];
-			getProgress();
-			while(!isCancelled()) {
+			player = p[0];
+			duration = player.getDuration();
+			
+			while(player.isPlaying() && !isCancelled()) {
 				try {
 					Thread.sleep(WAITING_INTERVALL);
 				} catch(InterruptedException e) {
-					Log.d(TAG, "Thread was interrupted while waiting");
+					Log.d(TAG, "Thread was interrupted while waiting. Finishing now");
+					return false;
 				}
-				
-				getProgress();
-				publishProgress(position);
+				publishProgress(player.getCurrentPosition());
 			}
 			Log.d(TAG, "Background Task finished");
-			return Long.valueOf(position);
+			return true;
 		}
 		
-		private void getProgress() {
-			FeedMedia media = service.getMedia();
-			position = media.getPosition();
-			length = media.getDuration();
+		public int getDuration() {
+			return duration;
 		}
 	}
 	

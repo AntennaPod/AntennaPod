@@ -60,7 +60,7 @@ public final class Converter {
     }
     
     /** Converts milliseconds to a string containing hours, minutes and seconds */
-    public static String getDurationStringLong(int duration) {   	
+    public static String getDurationStringLong(int duration) {	
     	int h = duration / HOURS_MIL;
     	int rest = duration - h * HOURS_MIL;
     	int m = rest / MINUTES_MIL;

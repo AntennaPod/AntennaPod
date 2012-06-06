@@ -96,6 +96,24 @@ public class PlaybackService extends Service {
 		}
 	};
 	
+	public void pause() {
+		if (player.isPlaying()) {
+			Log.d(TAG, "Pausing playback.");
+			player.pause();
+			setStatus(PlayerStatus.PAUSED);
+		}
+	}
+	
+	public void play() {
+		if (status == PlayerStatus.PAUSED) {
+			Log.d(TAG, "Resuming playback");
+			player.start();
+			setStatus(PlayerStatus.PLAYING);
+		} else if (status == PlayerStatus.STOPPED) {
+			
+		}
+	}
+	
 	private void setStatus(PlayerStatus newStatus) {
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
@@ -130,6 +148,11 @@ public class PlaybackService extends Service {
 	
 	public MediaPlayer getPlayer() {
 		return player;
+	}
+
+	public void seek(int i) {
+		Log.d(TAG, "Seeking position " + i);
+		player.seekTo(i);		
 	}
 
 }
