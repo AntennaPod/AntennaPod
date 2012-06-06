@@ -31,6 +31,8 @@ import de.podfetcher.util.Converter;
 public class MediaplayerActivity extends SherlockActivity {
 	private final String TAG = "MediaplayerActivity";
 	
+	private static final int DEFAULT_SEEK_DELTA = 30000;	// Seek-Delta to use when using FF or Rev Buttons
+	
 	private PlaybackService playbackService;
 	private MediaPositionObserver positionObserver;
 	
@@ -213,6 +215,24 @@ public class MediaplayerActivity extends SherlockActivity {
 					playbackService.play();
 				}
 			}	
+		});
+		
+		butFF.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (status == PlayerStatus.PLAYING) {
+					playbackService.seekDelta(DEFAULT_SEEK_DELTA);
+				}
+			}
+		});
+		
+		butRev.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (status == PlayerStatus.PLAYING) {
+					playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+				}
+			}
 		});
 	}
 	

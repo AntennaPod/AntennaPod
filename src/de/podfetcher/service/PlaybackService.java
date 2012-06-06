@@ -137,6 +137,17 @@ public class PlaybackService extends Service {
 		Log.d(TAG, "Notification set up");
 	}
 	
+	/** Seek a specific position from the current position
+	 * 	@param delta offset from current position (positive or negative)
+	 * */
+	public void seekDelta(int delta) {
+		seek(player.getCurrentPosition() + delta);
+	}
+	
+	public void seek(int i) {
+		Log.d(TAG, "Seeking position " + i);
+		player.seekTo(i);	
+	}
 	
 	public PlayerStatus getStatus() {
 		return status;
@@ -148,11 +159,6 @@ public class PlaybackService extends Service {
 	
 	public MediaPlayer getPlayer() {
 		return player;
-	}
-
-	public void seek(int i) {
-		Log.d(TAG, "Seeking position " + i);
-		player.seekTo(i);		
 	}
 
 }
