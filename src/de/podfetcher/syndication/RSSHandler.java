@@ -1,7 +1,11 @@
-package de.podfetcher.feed;
+package de.podfetcher.syndication;
 
 import java.util.ArrayList;
-import de.podfetcher.feed.FeedHandler;
+
+import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedImage;
+import de.podfetcher.feed.FeedItem;
+import de.podfetcher.feed.FeedMedia;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -51,7 +55,7 @@ public class RSSHandler extends DefaultHandler {
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.ITEM)) {
 				currentItem.setTitle(strBuilder.toString());
 			} else if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
-				feed.getImage().title = strBuilder.toString();
+				feed.getImage().setTitle(strBuilder.toString());
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.DESCR)) {
 			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
@@ -71,7 +75,7 @@ public class RSSHandler extends DefaultHandler {
 			}
 		} else if (qName.equalsIgnoreCase(FeedHandler.URL)) {
 			if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
-				feed.getImage().download_url = strBuilder.toString();
+				feed.getImage().setDownload_url(strBuilder.toString());
 			}
 		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
 			active_root_element = FeedHandler.CHANNEL;

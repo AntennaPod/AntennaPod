@@ -1,4 +1,4 @@
-package de.podfetcher.feed;
+package de.podfetcher.syndication;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,6 +8,8 @@ import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 
 import org.xml.sax.SAXException;
+
+import de.podfetcher.feed.Feed;
 
 public class FeedHandler {
 	public final static String CHANNEL = "channel";
@@ -29,7 +31,7 @@ public class FeedHandler {
 		try {
 			SAXParserFactory factory =  SAXParserFactory.newInstance();
 			SAXParser saxParser = factory.newSAXParser();
-			saxParser.parse(new File(feed.file_url), handler);
+			saxParser.parse(new File(feed.getFile_url()), handler);
 		} catch (SAXException e) {
 			e.printStackTrace();
 		} catch (IOException e) {

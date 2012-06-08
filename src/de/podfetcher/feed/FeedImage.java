@@ -28,6 +28,11 @@ public class FeedImage extends FeedFile {
 	public String getTitle() {
 		return title;
 	}
+	
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
 
 	public Bitmap getImageBitmap() {
 		if(image_bitmap == null) {

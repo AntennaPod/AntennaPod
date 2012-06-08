@@ -13,6 +13,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.syndication.FeedHandler;
 import android.app.Service;
 import android.app.DownloadManager;
 import android.content.Intent;
