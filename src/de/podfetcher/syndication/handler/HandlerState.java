@@ -1,6 +1,7 @@
 package de.podfetcher.syndication.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Stack;
 
 import de.podfetcher.syndication.namespace.Namespace;
@@ -14,7 +15,14 @@ public class HandlerState {
 	protected FeedItem currentItem;
 	protected Stack<String> tagstack;
 	/** Namespaces that have been defined so far. */
-	protected ArrayList<Namespace> namespaces;
+	protected HashMap<String, Namespace> namespaces;
+	
+	public HandlerState() {
+		feed = new Feed();
+		tagstack = new Stack<String>();
+		namespaces = new HashMap<String, Namespace>();
+	}
+	
 	
 	public Feed getFeed() {
 		return feed;

@@ -17,7 +17,21 @@ import org.xml.sax.helpers.DefaultHandler;
  * @author daniel
  * 
  */
-public class RSSHandler extends DefaultHandler {
+public class RSSHandler extends SyndHandler {
+	public final static String CHANNEL = "channel";
+	public final static String ITEM = "item";
+	public final static String TITLE = "title";
+	public final static String LINK = "link";
+	public final static String DESCR = "description";
+	public final static String PUBDATE = "pubDate";
+	public final static String ENCLOSURE = "enclosure";
+	public final static String IMAGE = "image";
+	public final static String URL = "url";
+	
+	public final static String ENC_URL = "url";
+	public final static String ENC_LEN = "length";
+	public final static String ENC_TYPE = "type";
+	
 	public ArrayList<FeedItem> items;
 	public FeedItem currentItem;
 	public StringBuilder strBuilder;
@@ -39,89 +53,79 @@ public class RSSHandler extends DefaultHandler {
 	}
 
 	@Override
-	public void endDocument() throws SAXException {
-		feed.setItems(items);
-	}
-
-	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		if (qName.equalsIgnoreCase(FeedHandler.ITEM)) {
+		if (localName.equals(ITEM)) {
 			currentItem.setFeed(feed);
 			items.add(currentItem);
-		} else if (qName.equalsIgnoreCase(FeedHandler.TITLE)) {
-			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
+		} else if (localName.equals(TITLE)) {
+			if (active_root_element.equals(CHANNEL)) {
 				feed.setTitle(strBuilder.toString());
-			} else if(active_root_element.equalsIgnoreCase(FeedHandler.ITEM)) {
+			} else if(active_root_element.equals(ITEM)) {
 				currentItem.setTitle(strBuilder.toString());
-			} else if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
+			} else if(active_root_element.equals(IMAGE)) {
 				feed.getImage().setTitle(strBuilder.toString());
 			}
-		} else if (qName.equalsIgnoreCase(FeedHandler.DESCR)) {
-			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
+		} else if (localName.equals(DESCR)) {
+			if (active_root_element.equals(CHANNEL)) {
 				feed.setDescription(strBuilder.toString());
 			} else {
 				currentItem.setDescription(strBuilder.toString());
 			}
-		} else if (qName.equalsIgnoreCase(FeedHandler.LINK)) {
-			if (active_root_element.equalsIgnoreCase(FeedHandler.CHANNEL)) {
+		} else if (localName.equals(LINK)) {
+			if (active_root_element.equals(CHANNEL)) {
 				feed.setLink(strBuilder.toString());
-			} else if(active_root_element.equalsIgnoreCase(FeedHandler.ITEM)){
+			} else if(active_root_element.equals(ITEM)){
 				currentItem.setLink(strBuilder.toString());
 			} 
-		} else if (qName.equalsIgnoreCase(FeedHandler.PUBDATE)) {
-			if (active_root_element.equalsIgnoreCase(FeedHandler.ITEM)) {
+		} else if (localName.equals(PUBDATE)) {
+			if (active_root_element.equals(ITEM)) {
 				currentItem.setPubDate(strBuilder.toString());
 			}
-		} else if (qName.equalsIgnoreCase(FeedHandler.URL)) {
-			if(active_root_element.equalsIgnoreCase(FeedHandler.IMAGE)) {
+		} else if (localName.equals(URL)) {
+			if(active_root_element.equals(IMAGE)) {
 				feed.getImage().setDownload_url(strBuilder.toString());
 			}
-		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
-			active_root_element = FeedHandler.CHANNEL;
+		} else if(localName.equals(IMAGE)) {
+			active_root_element = CHANNEL;
 		}
 		active_sub_element = null;
 		strBuilder = new StringBuilder();
 	}
 
-	@Override
-	public void startDocument() throws SAXException {
-		items = new ArrayList<FeedItem>();
-		strBuilder = new StringBuilder();
-
-	}
 
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		if (qName.equalsIgnoreCase(FeedHandler.CHANNEL)) {
+		if (localName.equals(CHANNEL)) {
 			if(feed == null) {
 				feed = new Feed();
 			}
-			active_root_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.ITEM)) {
+			active_root_element = localName;
+		} else if (localName.equals(ITEM)) {
 			currentItem = new FeedItem();
-			active_root_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.TITLE)) {
-			active_sub_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.DESCR)) {
-			active_sub_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.LINK)) {
-			active_sub_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.PUBDATE)) {
-			active_sub_element = qName;
-		} else if (qName.equalsIgnoreCase(FeedHandler.ENCLOSURE)) {
+			active_root_element = localName;
+		} else if (localName.equals(TITLE)) {
+			active_sub_element = localName;
+		} else if (localName.equals(DESCR)) {
+			active_sub_element = localName;
+		} else if (localName.equals(LINK)) {
+			active_sub_element = localName;
+		} else if (localName.equals(PUBDATE)) {
+			active_sub_element = localName;
+		} else if (localName.equals(ENCLOSURE)) {
 			currentItem.setMedia(new FeedMedia(currentItem,
-											  attributes.getValue(FeedHandler.ENC_URL),
-											  Long.parseLong(attributes.getValue(FeedHandler.ENC_LEN)),
-											  attributes.getValue(FeedHandler.ENC_TYPE)));
-		} else if(qName.equalsIgnoreCase(FeedHandler.IMAGE)) {
+											  attributes.getValue(ENC_URL),
+											  Long.parseLong(attributes.getValue(ENC_LEN)),
+											  attributes.getValue(ENC_TYPE)));
+		} else if(localName.equals(IMAGE)) {
 			feed.setImage(new FeedImage());
-			active_root_element = qName;
-		} else if(qName.equalsIgnoreCase(FeedHandler.URL)) {
+			active_root_element = localName;
+		} else if(localName.equals(URL)) {
 			active_sub_element = qName;
 		}
-
+		super.startElement(uri, localName, qName, attributes);
 	}
+	
 
 }
