@@ -20,11 +20,12 @@ public class Feed extends FeedFile{
 	
 	
 	public Feed() {
+		super();
 		items = new ArrayList<FeedItem>();
 	}
 	
 	public Feed(String url) {
-		super();
+		this();
 		this.download_url = url;
 	}
 	

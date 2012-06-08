@@ -17,8 +17,8 @@ public class HandlerState {
 	/** Namespaces that have been defined so far. */
 	protected HashMap<String, Namespace> namespaces;
 	
-	public HandlerState() {
-		feed = new Feed();
+	public HandlerState(Feed feed) {
+		this.feed = feed;
 		tagstack = new Stack<String>();
 		namespaces = new HashMap<String, Namespace>();
 	}

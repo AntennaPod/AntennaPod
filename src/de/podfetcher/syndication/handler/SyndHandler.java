@@ -4,14 +4,20 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
+
+import de.podfetcher.feed.Feed;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
 public abstract class SyndHandler extends DefaultHandler{
+	private static final String TAG = "SyndHandler";
 	protected HandlerState state;
 
-	
+	public SyndHandler(Feed feed) {
+		state = new HandlerState(feed);
+	}
 	
 	@Override
 	public void startElement(String uri, String localName, String qName,
@@ -45,22 +51,11 @@ public abstract class SyndHandler extends DefaultHandler{
 	@Override
 	public void startPrefixMapping(String prefix, String uri)
 			throws SAXException {
+		Log.d(TAG, "Found Prefix Mapping with prefix " + prefix + " and uri " + uri);
 		// Find the right namespace
 		if (prefix.equals(NSAtom.NSTAG) || uri.equals(NSAtom.NSURI)) {
 			state.namespaces.put(prefix, new NSAtom());
 		}
-	}
-
-
-
-	@Override
-	public void endDocument() throws SAXException {
-		super.endDocument();
-	}
-
-	@Override
-	public void startDocument() throws SAXException {
-		state = new HandlerState();
 	}
 
 	public HandlerState getState() {

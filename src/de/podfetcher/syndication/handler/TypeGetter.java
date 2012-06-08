@@ -14,7 +14,7 @@ import android.util.Log;
 
 import de.podfetcher.feed.Feed;
 
-/** Gets the type of a specific feed. */
+/** Gets the type of a specific feed by reading the root element. */
 public class TypeGetter {
 	private static final String TAG = "TypeGetter";
 	
@@ -33,6 +33,7 @@ public class TypeGetter {
 			XmlPullParser xpp = factory.newPullParser();
 			xpp.setInput(createReader(feed));
 			int eventType = xpp.getEventType();
+			
 			while (eventType != XmlPullParser.END_DOCUMENT) {
 				if (eventType == XmlPullParser.START_TAG) {
 					String tag = xpp.getName();
