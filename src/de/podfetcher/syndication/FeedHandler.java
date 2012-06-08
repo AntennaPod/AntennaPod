@@ -27,6 +27,8 @@ public class FeedHandler {
 	public final static String ENC_TYPE = "type";
 	
 	public Feed parseFeed(Feed feed) {
+		TypeGetter tg = new TypeGetter();
+		tg.getType(feed);
 		RSSHandler handler = new RSSHandler(feed);
 		try {
 			SAXParserFactory factory =  SAXParserFactory.newInstance();
