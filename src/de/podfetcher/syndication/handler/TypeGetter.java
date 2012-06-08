@@ -1,4 +1,4 @@
-package de.podfetcher.syndication;
+package de.podfetcher.syndication.handler;
 
 import java.io.File;
 import java.io.FileNotFoundException;
