@@ -25,7 +25,11 @@ public abstract class SyndHandler extends DefaultHandler{
 		state.tagstack.push(qName);
 		
 		String[] parts = qName.split(":");
-		Namespace handler = state.namespaces.get(parts[0]);
+		String prefix = "";
+		if (parts.length >= 2) {
+			prefix = parts[0];
+		}
+		Namespace handler = state.namespaces.get(prefix);
 		if (handler != null) {
 			handler.handleElement(localName, state, attributes);
 		}

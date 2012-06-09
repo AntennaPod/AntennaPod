@@ -20,6 +20,7 @@ public class FeedHandler {
 		RSSHandler handler = new RSSHandler(feed);
 		try {
 			SAXParserFactory factory =  SAXParserFactory.newInstance();
+			factory.setNamespaceAware(true);
 			SAXParser saxParser = factory.newSAXParser();
 			saxParser.parse(new File(feed.getFile_url()), handler);
 		} catch (SAXException e) {
