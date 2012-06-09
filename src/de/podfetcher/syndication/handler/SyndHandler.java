@@ -25,12 +25,8 @@ public abstract class SyndHandler extends DefaultHandler{
 			Attributes attributes) throws SAXException {
 		state.tagstack.push(new SyndElement(qName));
 		
-		String[] parts = qName.split(":");
-		String prefix = "";
-		if (parts.length >= 2) {
-			prefix = parts[0];
-		}
-		Namespace handler = state.namespaces.get(prefix);
+		
+		Namespace handler = state.namespaces.get(uri);
 		if (handler != null) {
 			handler.handleElement(localName, state, attributes);
 		}
@@ -48,7 +44,7 @@ public abstract class SyndHandler extends DefaultHandler{
 
 	@Override
 	public void endPrefixMapping(String prefix) throws SAXException {
-		state.namespaces.remove(prefix);
+		// TODO remove Namespace
 	}
 
 
@@ -59,7 +55,7 @@ public abstract class SyndHandler extends DefaultHandler{
 		Log.d(TAG, "Found Prefix Mapping with prefix " + prefix + " and uri " + uri);
 		// Find the right namespace
 		if (prefix.equals(NSAtom.NSTAG) || uri.equals(NSAtom.NSURI)) {
-			state.namespaces.put(prefix, new NSAtom());
+			state.namespaces.put(uri, new NSAtom());
 		}
 	}
 
