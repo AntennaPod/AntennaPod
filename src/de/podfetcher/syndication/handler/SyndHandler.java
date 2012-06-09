@@ -12,15 +12,18 @@ import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
 
-// TODO implement default namespace
+
 /** Superclass for all SAX Handlers which process Syndication formats */
 public class SyndHandler extends DefaultHandler {
 	private static final String TAG = "SyndHandler";
+	private static final String DEFAULT_PREFIX = "";
 	protected HandlerState state;
 
-	public SyndHandler(Feed feed) {
+	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);
-		state.namespaces.put("", new NSRSS20()); // TODO remove later
+		if (type == TypeGetter.Type.RSS20) {
+			state.defaultNamespaces.push(new NSRSS20());
+		}
 	}
 
 	@Override
@@ -28,6 +31,9 @@ public class SyndHandler extends DefaultHandler {
 			Attributes attributes) throws SAXException {
 
 		Namespace handler = state.namespaces.get(uri);
+		if (handler == null &&  uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
+			handler = state.defaultNamespaces.peek();
+		}
 		if (handler != null) {
 			handler.handleElementStart(localName, state, attributes);
 			state.tagstack.push(new SyndElement(localName, handler));
@@ -50,6 +56,9 @@ public class SyndHandler extends DefaultHandler {
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
 		Namespace handler = state.namespaces.get(uri);
+		if (handler == null && uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
+			handler = state.defaultNamespaces.peek();
+		}
 		if (handler != null) {
 			handler.handleElementEnd(localName, state);
 			state.tagstack.pop();
@@ -69,8 +78,12 @@ public class SyndHandler extends DefaultHandler {
 		Log.d(TAG, "Found Prefix Mapping with prefix " + prefix + " and uri "
 				+ uri);
 		// Find the right namespace
-		if (prefix.equals(NSAtom.NSTAG) || uri.equals(NSAtom.NSURI)) {
-			state.namespaces.put(uri, new NSAtom());
+		if (uri.equals(NSAtom.NSURI)) {
+			if (prefix.equals(DEFAULT_PREFIX)) {
+				state.defaultNamespaces.push(new NSAtom());
+			} else if (prefix.equals(NSAtom.NSTAG)) {
+				state.namespaces.put(uri, new NSAtom());
+			}
 		}
 	}
 

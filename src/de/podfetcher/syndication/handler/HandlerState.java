@@ -17,11 +17,13 @@ public class HandlerState {
 	protected Stack<SyndElement> tagstack;
 	/** Namespaces that have been defined so far. */
 	protected HashMap<String, Namespace> namespaces;
+	protected Stack<Namespace> defaultNamespaces;
 	
 	public HandlerState(Feed feed) {
 		this.feed = feed;
 		tagstack = new Stack<SyndElement>();
 		namespaces = new HashMap<String, Namespace>();
+		defaultNamespaces = new Stack<Namespace>();
 	}
 	
 	
