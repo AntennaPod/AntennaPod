@@ -8,6 +8,7 @@ import android.util.Log;
 
 import de.podfetcher.feed.Feed;
 import de.podfetcher.syndication.namespace.Namespace;
+import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
@@ -22,7 +23,7 @@ public abstract class SyndHandler extends DefaultHandler{
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		state.tagstack.push(qName);
+		state.tagstack.push(new SyndElement(qName));
 		
 		String[] parts = qName.split(":");
 		String prefix = "";

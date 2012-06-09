@@ -6,6 +6,7 @@ import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.syndication.namespace.SyndElement;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
@@ -42,9 +43,10 @@ public class RSSHandler extends SyndHandler {
 			throws SAXException {
 		if (state.tagstack.size() >= 2) {
 			String content = new String(ch, start, length);
-			String top = state.tagstack.pop();
-			String second = state.tagstack.peek();
-			state.tagstack.push(top);
+			SyndElement topElement = state.tagstack.pop();
+			String top = topElement.getName();
+			String second = state.tagstack.peek().getName();
+			state.tagstack.push(topElement);
 			if (top.equals(TITLE)) {
 				if (second.equals(ITEM)) {
 					state.currentItem.setTitle(content);

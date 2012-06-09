@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Stack;
 
 import de.podfetcher.syndication.namespace.Namespace;
+import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 
@@ -13,13 +14,13 @@ public class HandlerState {
 	/** Feed that the Handler is currently processing. */
 	protected Feed feed;
 	protected FeedItem currentItem;
-	protected Stack<String> tagstack;
+	protected Stack<SyndElement> tagstack;
 	/** Namespaces that have been defined so far. */
 	protected HashMap<String, Namespace> namespaces;
 	
 	public HandlerState(Feed feed) {
 		this.feed = feed;
-		tagstack = new Stack<String>();
+		tagstack = new Stack<SyndElement>();
 		namespaces = new HashMap<String, Namespace>();
 	}
 	
@@ -30,7 +31,7 @@ public class HandlerState {
 	public FeedItem getCurrentItem() {
 		return currentItem;
 	}
-	public Stack<String> getTagstack() {
+	public Stack<SyndElement> getTagstack() {
 		return tagstack;
 	}
 	
