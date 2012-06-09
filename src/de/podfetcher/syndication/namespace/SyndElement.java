@@ -6,12 +6,12 @@ public class SyndElement {
 	protected Namespace namespace;
 	
 	public SyndElement(String name, Namespace namespace) {
-		super();
 		this.name = name;
+		this.namespace = namespace;
 	}
 	
 	public Namespace getNamespace() {
-		return null;
+		return namespace;
 	}
 
 	public String getName() {

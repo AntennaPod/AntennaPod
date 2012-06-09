@@ -17,7 +17,7 @@ public class FeedHandler {
 	public Feed parseFeed(Feed feed) {
 		TypeGetter tg = new TypeGetter();
 		tg.getType(feed);
-		RSSHandler handler = new RSSHandler(feed);
+		SyndHandler handler = new SyndHandler(feed);
 		try {
 			SAXParserFactory factory =  SAXParserFactory.newInstance();
 			factory.setNamespaceAware(true);

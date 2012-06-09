@@ -34,6 +34,18 @@ public class HandlerState {
 	public Stack<SyndElement> getTagstack() {
 		return tagstack;
 	}
+
+
+	public void setFeed(Feed feed) {
+		this.feed = feed;
+	}
+
+
+	public void setCurrentItem(FeedItem currentItem) {
+		this.currentItem = currentItem;
+	}
+	
+	
 	
 	
 }
