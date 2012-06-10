@@ -40,7 +40,7 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_TYPE = "type";
 
 	@Override
-	public void handleElementStart(String localName, HandlerState state,
+	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
 		if (localName.equals(ITEM)) {
 			state.setCurrentItem(new FeedItem());
@@ -55,6 +55,7 @@ public class NSRSS20 extends Namespace {
 		} else if (localName.equals(IMAGE)) {
 			state.getFeed().setImage(new FeedImage());
 		}
+		return new SyndElement(localName, this);
 	}
 
 	@Override

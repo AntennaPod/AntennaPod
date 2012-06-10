@@ -11,9 +11,9 @@ public abstract class Namespace {
 	public static final String NSURI = null;
 	
 	/** Called by a Feedhandler when in startElement and it detects a namespace element 
-	 * 	@return true if namespace handled the element, false if it ignored it
+	 * 	@return The SyndElement to push onto the stack
 	 * */
-	public abstract void handleElementStart(String localName, HandlerState state, Attributes attributes);
+	public abstract SyndElement handleElementStart(String localName, HandlerState state, Attributes attributes);
 	
 	/** Called by a Feedhandler when in characters and it detects a namespace element */
 	public abstract void handleCharacters(HandlerState state, char ch[], int start, int length);

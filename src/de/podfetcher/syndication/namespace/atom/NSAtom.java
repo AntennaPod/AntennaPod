@@ -5,6 +5,7 @@ import org.xml.sax.Attributes;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.syndication.handler.HandlerState;
 import de.podfetcher.syndication.namespace.Namespace;
+import de.podfetcher.syndication.namespace.SyndElement;
 
 public class NSAtom extends Namespace {
 	public static final String NSTAG = "atom";
@@ -16,11 +17,12 @@ public class NSAtom extends Namespace {
 	private static final String AUTHOR = "author";
 
 	@Override
-	public void handleElementStart(String localName, HandlerState state,
+	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
 		if (localName.equals(TITLE)) {
 
 		}
+		return null;
 	}
 
 	@Override

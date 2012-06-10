@@ -32,8 +32,8 @@ public class SyndHandler extends DefaultHandler {
 
 		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
-			handler.handleElementStart(localName, state, attributes);
-			state.tagstack.push(new SyndElement(localName, handler));
+			SyndElement element = handler.handleElementStart(localName, state, attributes);
+			state.tagstack.push(element);
 			
 		}
 	}
@@ -46,7 +46,6 @@ public class SyndHandler extends DefaultHandler {
 		if (top.getNamespace() != null) {
 			top.getNamespace().handleCharacters(state, ch, start, length);
 		}
-		// ignore element otherwise
 	}
 
 	@Override
