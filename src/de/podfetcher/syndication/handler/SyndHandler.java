@@ -30,10 +30,7 @@ public class SyndHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 
-		Namespace handler = state.namespaces.get(uri);
-		if (handler == null &&  uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
-			handler = state.defaultNamespaces.peek();
-		}
+		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
 			handler.handleElementStart(localName, state, attributes);
 			state.tagstack.push(new SyndElement(localName, handler));
@@ -55,10 +52,7 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
-			handler = state.defaultNamespaces.peek();
-		}
+		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
 			handler.handleElementEnd(localName, state);
 			state.tagstack.pop();
@@ -75,8 +69,6 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void startPrefixMapping(String prefix, String uri)
 			throws SAXException {
-		Log.d(TAG, "Found Prefix Mapping with prefix " + prefix + " and uri "
-				+ uri);
 		// Find the right namespace
 		if (uri.equals(NSAtom.NSURI)) {
 			if (prefix.equals(DEFAULT_PREFIX)) {
@@ -85,6 +77,14 @@ public class SyndHandler extends DefaultHandler {
 				state.namespaces.put(uri, new NSAtom());
 			}
 		}
+	}
+	
+	private Namespace getHandlingNamespace(String uri) {
+		Namespace handler = state.namespaces.get(uri);
+		if (handler == null &&  uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
+			handler = state.defaultNamespaces.peek();
+		}
+		return handler;
 	}
 
 	public HandlerState getState() {
