@@ -12,6 +12,7 @@ import java.util.ArrayList;
  */
 public class Feed extends FeedFile{
 	private String title;
+	/** Link to the website. */
 	private String link;
 	private String description;
 	private FeedImage image;
