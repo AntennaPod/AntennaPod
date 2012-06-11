@@ -46,6 +46,14 @@ public class HandlerState {
 	public void setCurrentItem(FeedItem currentItem) {
 		this.currentItem = currentItem;
 	}
+
+	/** Returns the SyndElement that comes after the top element of the tagstack. */
+	public SyndElement getSecondTag() {
+		SyndElement top = tagstack.pop();
+		SyndElement second = tagstack.peek();
+		tagstack.push(top);
+		return second;
+	}
 	
 	
 	

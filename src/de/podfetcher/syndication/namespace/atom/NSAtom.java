@@ -3,6 +3,7 @@ package de.podfetcher.syndication.namespace.atom;
 import org.xml.sax.Attributes;
 
 import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.syndication.handler.HandlerState;
@@ -20,7 +21,10 @@ public class NSAtom extends Namespace {
 	private static final String UPDATED = "updated";
 	private static final String AUTHOR = "author";
 	private static final String CONTENT = "content";
-
+	private static final String IMAGE = "logo";
+	private static final String SUBTITLE = "subtitle";
+	private static final String PUBLISHED = "published";
+	
 	private static final String TEXT_TYPE = "type";
 	// Link
 	private static final String LINK_HREF = "href";
@@ -33,7 +37,9 @@ public class NSAtom extends Namespace {
 	private static final String LINK_REL_ENCLOSURE = "enclosure";
 	private static final String LINK_REL_RELATED = "related";
 	private static final String LINK_REL_SELF = "self";
-
+	
+	/** Regexp to test whether an Element is a Text Element. */
+	private static final String isText = TITLE + "|" + CONTENT + "|" + "|" + SUBTITLE;
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -41,29 +47,29 @@ public class NSAtom extends Namespace {
 			state.setCurrentItem(new FeedItem());
 			state.getFeed().getItems().add(state.getCurrentItem());
 			state.getCurrentItem().setFeed(state.getFeed());
-		} else if (localName.equals(TITLE) || localName.equals(CONTENT)) {
-			String type = attributes.getValue(null, TEXT_TYPE);
+		} else if (localName.matches(isText)) {
+			String type = attributes.getValue(TEXT_TYPE);
 			return new AtomText(localName, this, type);
 		} else if (localName.equals(LINK)) {
-			String href = attributes.getValue(null, LINK_HREF);
-			String rel = attributes.getValue(null, LINK_REL);
+			String href = attributes.getValue(LINK_HREF);
+			String rel = attributes.getValue(LINK_REL);
 			SyndElement parent = state.getTagstack().peek();
 			if (parent.getName().equals(ENTRY)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
 					state.getCurrentItem().setLink(href);
 				} else if (rel.equals(LINK_REL_ENCLOSURE)) {
-					long size = Long.parseLong(attributes.getValue(null,
-							LINK_LENGTH));
-					String type = attributes.getValue(null, LINK_TYPE);
-					String download_url = attributes.getValue(null,
-							LINK_REL_ENCLOSURE);
+					String strSize = attributes.getValue(LINK_LENGTH);
+					long size = 0;
+					if (strSize != null) size = Long.parseLong(strSize);
+					String type = attributes.getValue(LINK_TYPE);
+					String download_url = attributes.getValue(LINK_REL_ENCLOSURE);
 					state.getCurrentItem().setMedia(
 							new FeedMedia(state.getCurrentItem(), download_url,
 									size, type));
 				}
 			} else if (parent.getName().equals(FEED)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
-					state.getCurrentItem().setLink(href);
+					state.getFeed().setLink(href);
 				}
 			}
 		}
@@ -73,12 +79,50 @@ public class NSAtom extends Namespace {
 	@Override
 	public void handleCharacters(HandlerState state, char[] ch, int start,
 			int length) {
-
+		if (state.getTagstack().size() >= 2) {
+			AtomText textElement = null;
+			String content = new String(ch, start, length);
+			SyndElement topElement = state.getTagstack().peek();
+			String top = topElement.getName();
+			SyndElement secondElement = state.getSecondTag();
+			String second = secondElement.getName();
+			
+			if (top.matches(isText)) {
+				textElement = (AtomText) topElement;
+				textElement.setContent(content);
+			}
+			
+			if (top.equals(TITLE)) {
+				
+				if (second.equals(FEED)) {
+					state.getFeed().setTitle(textElement.getProcessedContent());
+				} else if (second.equals(ENTRY)) {
+					state.getCurrentItem().setTitle(textElement.getProcessedContent());
+				}
+			} else if (top.equals(SUBTITLE)) {
+				if (second.equals(FEED)) {
+					state.getFeed().setDescription(textElement.getProcessedContent());
+				}
+			} else if (top.equals(CONTENT)) {
+				if (second.equals(ENTRY)) {
+					state.getCurrentItem().setDescription(textElement.getProcessedContent());
+				}
+			} else if (top.equals(PUBLISHED)) {
+				if (second.equals(ENTRY)) {
+					state.getCurrentItem().setPubDate(content);
+				}
+			} else if (top.equals(IMAGE)) {
+				state.getFeed().setImage(new FeedImage(content, null));
+			}
+			
+		}
 	}
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
-		// TODO Auto-generated method stub
+		if (localName.equals(ENTRY)) {
+			state.setCurrentItem(null);
+		}
 	}
 
 }

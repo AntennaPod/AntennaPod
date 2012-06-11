@@ -63,10 +63,10 @@ public class NSRSS20 extends Namespace {
 			int length) {
 		if (state.getTagstack().size() >= 2) {
 			String content = new String(ch, start, length);
-			SyndElement topElement = state.getTagstack().pop();
+			SyndElement topElement = state.getTagstack().peek();
 			String top = topElement.getName();
-			String second = state.getTagstack().peek().getName();
-			state.getTagstack().push(topElement);
+			SyndElement secondElement = state.getSecondTag();
+			String second = secondElement.getName();
 			if (top.equals(TITLE)) {
 				if (second.equals(ITEM)) {
 					state.getCurrentItem().setTitle(content);

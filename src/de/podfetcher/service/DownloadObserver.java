@@ -33,6 +33,7 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
 	public DownloadObserver(Context context) {
 		super();
 		this.context = context;
+		requester = DownloadRequester.getInstance();
 	}
 
     @Override

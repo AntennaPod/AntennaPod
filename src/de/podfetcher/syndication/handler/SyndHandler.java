@@ -12,7 +12,6 @@ import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
 
-
 /** Superclass for all SAX Handlers which process Syndication formats */
 public class SyndHandler extends DefaultHandler {
 	private static final String TAG = "SyndHandler";
@@ -32,19 +31,21 @@ public class SyndHandler extends DefaultHandler {
 
 		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
-			SyndElement element = handler.handleElementStart(localName, state, attributes);
+			SyndElement element = handler.handleElementStart(localName, state,
+					attributes);
 			state.tagstack.push(element);
-			
+
 		}
 	}
 
 	@Override
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
-
-		SyndElement top = state.tagstack.peek();
-		if (top.getNamespace() != null) {
-			top.getNamespace().handleCharacters(state, ch, start, length);
+		if (!state.tagstack.empty()) {
+			SyndElement top = state.tagstack.peek();
+			if (top.getNamespace() != null) {
+				top.getNamespace().handleCharacters(state, ch, start, length);
+			}
 		}
 	}
 
@@ -55,9 +56,9 @@ public class SyndHandler extends DefaultHandler {
 		if (handler != null) {
 			handler.handleElementEnd(localName, state);
 			state.tagstack.pop();
-			
+
 		}
-		
+
 	}
 
 	@Override
@@ -77,10 +78,10 @@ public class SyndHandler extends DefaultHandler {
 			}
 		}
 	}
-	
+
 	private Namespace getHandlingNamespace(String uri) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null &&  uri.equals(DEFAULT_PREFIX) && !state.defaultNamespaces.empty()) {
+		if (handler == null && !state.defaultNamespaces.empty()) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;

@@ -7,6 +7,7 @@ public class HtmlUnescaper {
 	private static HashMap<String, String> symbols;
 	
 	static {
+		symbols = new HashMap<String, String>();
 		symbols.put("&nbsp", " ");
 		symbols.put("&quot", "\"");
 		symbols.put("&amp", "&");

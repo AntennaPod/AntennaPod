@@ -38,7 +38,7 @@ public class TypeGetter {
 				if (eventType == XmlPullParser.START_TAG) {
 					String tag = xpp.getName();
 					if (tag.equals(ATOM_ROOT)) {
-						Log.d(TAG, "Recongnized type Atom");
+						Log.d(TAG, "Recognized type Atom");
 						return Type.ATOM;
 					} else if (tag.equals(RSS_ROOT)
 							&& (xpp.getAttributeValue(null, "version")
@@ -46,6 +46,7 @@ public class TypeGetter {
 						Log.d(TAG, "Recognized type RSS 2.0");
 						return Type.RSS20;
 					} else {
+						Log.d(TAG, "Type is invalid");
 						return Type.INVALID;
 					}
 				} else {
@@ -58,6 +59,7 @@ public class TypeGetter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		Log.d(TAG, "Type is invalid");
 		return Type.INVALID;
 	}
 
