@@ -28,7 +28,7 @@ public class FeedMedia extends FeedFile{
 		this.download_url = download_url;
 	}
 
-	public long getDuration() {
+	public int getDuration() {
 		return duration;
 	}
 
@@ -36,7 +36,7 @@ public class FeedMedia extends FeedFile{
 		this.duration = duration;
 	}
 
-	public long getPosition() {
+	public int getPosition() {
 		return position;
 	}
 

@@ -153,8 +153,8 @@ public class MediaplayerActivity extends SherlockActivity {
 		if (media != null) {
 			MediaPlayer player = playbackService.getPlayer();
 			
-			getSupportActionBar().setTitle(media.getItem().getTitle());
-			getSupportActionBar().setSubtitle(
+			getSupportActionBar().setSubtitle(media.getItem().getTitle());
+			getSupportActionBar().setTitle(
 					media.getItem().getFeed().getTitle());
 			
 			imgvCover.setImageBitmap(

@@ -129,6 +129,7 @@ public class PlaybackService extends Service {
 		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
 			Log.d(TAG, "Resuming/Starting playback");
 			player.start();
+			player.seekTo((int) media.getPosition());
 			setStatus(PlayerStatus.PLAYING);
 			setupPositionSaver();
 		} else if (status == PlayerStatus.STOPPED) {
