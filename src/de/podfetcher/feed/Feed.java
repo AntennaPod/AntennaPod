@@ -29,17 +29,6 @@ public class Feed extends FeedFile{
 		this();
 		this.download_url = url;
 	}
-	
-	public Feed(String title, String link, String description, String download_url,
-			 FeedCategory category) {
-		super();
-		this.title = title;
-		this.link = link;
-		this.description = description;
-		this.download_url = download_url;
-		this.category = category;
-		items = new ArrayList<FeedItem>();
-	}
 
 	public String getTitle() {
 		return title;

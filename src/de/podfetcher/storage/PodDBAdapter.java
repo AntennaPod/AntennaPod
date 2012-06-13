@@ -40,6 +40,7 @@ public class PodDBAdapter {
 	public static final String KEY_CATEGORY = "category";
 	public static final String KEY_FEED = "feed";
 	public static final String KEY_MEDIA = "media";
+	public static final String KEY_DOWNLOADED = "downloaded";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -56,7 +57,7 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION
 			+ " TEXT," + KEY_IMAGE + " INTEGER," + KEY_CATEGORY
 			+ " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
-			+ " TEXT)";
+			+ " TEXT," + KEY_DOWNLOADED + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -72,13 +73,13 @@ public class PodDBAdapter {
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
 			+ " TEXT," + KEY_FILE_URL + " TEXT,"
-			+ KEY_DOWNLOAD_URL + " TEXT)";
+			+ KEY_DOWNLOAD_URL + " TEXT," + KEY_DOWNLOADED + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
 			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
 			+ " INTEGER," + KEY_POSITION + " INTEGER,"
 			+ KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
-			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT)";
+			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT," + KEY_DOWNLOADED + " INTEGER)";
 
 	private SQLiteDatabase db;
 	private final Context context;
@@ -128,7 +129,7 @@ public class PodDBAdapter {
 			values.put(KEY_FILE_URL, feed.getFile_url());
 		}
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
-		
+		values.put(KEY_DOWNLOADED, feed.isDownloaded());
 		open();
 		if(feed.getId() == 0) {
 			// Create new entry
@@ -168,6 +169,7 @@ public class PodDBAdapter {
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
+		values.put(KEY_DOWNLOADED, image.isDownloaded());
 		if(image.getFile_url() != null) {
 			values.put(KEY_FILE_URL, image.getFile_url());
 		}
@@ -192,6 +194,7 @@ public class PodDBAdapter {
 		values.put(KEY_SIZE, media.getSize());
 		values.put(KEY_MIME_TYPE, media.getMime_type());
 		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
+		values.put(KEY_DOWNLOADED, media.isDownloaded());
 		if(media.getFile_url() != null) {
 			values.put(KEY_FILE_URL, media.getFile_url());
 		}
@@ -309,7 +312,8 @@ public class PodDBAdapter {
 				cursor.getLong(cursor.getColumnIndex(KEY_SIZE)),
 				cursor.getString(cursor.getColumnIndex(KEY_MIME_TYPE)),
 				cursor.getString(cursor.getColumnIndex(KEY_FILE_URL)),
-				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
+				cursor.getString(cursor.getColumnIndex(KEY_DOWNLOAD_URL)),
+				cursor.getInt(cursor.getColumnIndex(KEY_DOWNLOADED)) > 0);
 		close();
 		return media;
 	}
@@ -330,7 +334,8 @@ public class PodDBAdapter {
 				cursor.getString(
 				cursor.getColumnIndex(KEY_FILE_URL)),
 				cursor.getString(
-				cursor.getColumnIndex(KEY_DOWNLOAD_URL)));
+				cursor.getColumnIndex(KEY_DOWNLOAD_URL)),
+				cursor.getInt(cursor.getColumnIndex(KEY_DOWNLOADED)) > 0);
 		close();
 		return image;
 	}

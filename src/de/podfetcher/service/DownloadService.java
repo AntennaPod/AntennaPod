@@ -181,7 +181,7 @@ public class DownloadService extends Service {
 		public void run() {
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
-
+			feed.setDownloaded(true);
 			feed = handler.parseFeed(feed);
 			Log.d(TAG, feed.getTitle() + " parsed");
 			// Download Feed Image if provided
@@ -220,6 +220,7 @@ public class DownloadService extends Service {
 
 		@Override
 		public void run() {
+			image.setDownloaded(true);
 			requester.removeFeedImage(image);
 			manager.setFeedImage(service, image);
 		}
@@ -239,6 +240,7 @@ public class DownloadService extends Service {
 		@Override
 		public void run() {
 			requester.removeFeedMedia(media);
+			media.setDownloaded(true);
 			// Get duration
 			try {
 				mediaplayer.setDataSource(media.getFile_url());

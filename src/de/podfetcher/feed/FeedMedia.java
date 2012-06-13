@@ -8,24 +8,21 @@ public class FeedMedia extends FeedFile{
 	private FeedItem item;
 
 	public FeedMedia(FeedItem i, String download_url, long size, String mime_type) {
-		super();
+		super(null, download_url, false);
 		this.item = i;
-		this.download_url = download_url;
 		this.size = size;
 		this.mime_type = mime_type;
 	}
 
 	public FeedMedia(long id, FeedItem item, int duration, int position, long size, String mime_type,
-			String file_url, String download_url) {
-		super();
+			String file_url, String download_url, boolean downloaded) {
+		super(file_url, download_url, downloaded);
 		this.id = id;
 		this.item = item;
 		this.duration = duration;
 		this.position = position;
 		this.size = size;
 		this.mime_type = mime_type;
-		this.file_url = file_url;
-		this.download_url = download_url;
 	}
 
 	public int getDuration() {

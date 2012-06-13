@@ -8,21 +8,19 @@ public class FeedImage extends FeedFile {
 	protected Bitmap image_bitmap;
 
 	public FeedImage(String download_url, String title) {
-		super();
+		super(null, download_url, false);
 		this.download_url = download_url;
 		this.title = title;
 	}
 	
-	public FeedImage(long id, String title, String file_url, String download_url) {
-		super();
+	public FeedImage(long id, String title, String file_url, String download_url, boolean downloaded) {
+		super(file_url, download_url, downloaded);
 		this.id = id;
 		this.title = title;
-		this.file_url = file_url;
-		this.download_url = download_url;
 	}
 
 	public FeedImage() {
-		
+		super();
 	}
 
 	public String getTitle() {
