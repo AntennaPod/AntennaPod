@@ -9,15 +9,15 @@ import android.util.Log;
 /** Parses several date formats. */
 public class SyndDateUtils {
 	private static final String TAG = "DateUtils";
-	private static final String RFC822 = "dd MMM yyyy HH:mm:ss Z";
+	public static final String RFC822 = "dd MMM yyyy HH:mm:ss Z";
 	/** RFC 822 date format with day of the week. */
-	private static final String RFC822DAY = "EEE, " + RFC822;
+	public static final String RFC822DAY = "EEE, " + RFC822;
 	
 	/** RFC 3339 date format for UTC dates. */
-	private static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
+	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 	
 	/** RFC 3339 date format for localtime dates with offset. */
-	private static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
+	public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
 	
 	
 	public static Date parseRFC822Date(final String date) {
