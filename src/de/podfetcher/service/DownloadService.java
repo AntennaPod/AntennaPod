@@ -3,7 +3,6 @@
  * to complete, then stops
  * */
 
-
 package de.podfetcher.service;
 
 import java.io.File;
@@ -23,7 +22,6 @@ import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.util.Log;
-import android.app.NotificationManager;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -37,10 +35,9 @@ public class DownloadService extends Service {
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
-	
+
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
-
 
 	// Objects for communication
 	private final Messenger mMessenger = new Messenger(new IncomingHandler());
@@ -86,11 +83,13 @@ public class DownloadService extends Service {
 				syncExecutor.shutdown();
 				try {
 					Log.d(TAG, "Starting to wait for termination");
-					boolean b = syncExecutor.awaitTermination(20L, TimeUnit.SECONDS);
-					Log.d(TAG, "Stopping waiting for termination; Result : "+ b);
+					boolean b = syncExecutor.awaitTermination(20L,
+							TimeUnit.SECONDS);
+					Log.d(TAG, "Stopping waiting for termination; Result : "
+							+ b);
 
 					stopSelf();
-				}catch(InterruptedException e) {
+				} catch (InterruptedException e) {
 					e.printStackTrace();
 				}
 			}
@@ -102,13 +101,14 @@ public class DownloadService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Received 'Download Complete' - message.");
-			long downloadId = intent.getLongExtra(DownloadManager.EXTRA_DOWNLOAD_ID, 0);
+			long downloadId = intent.getLongExtra(
+					DownloadManager.EXTRA_DOWNLOAD_ID, 0);
 			Feed feed = requester.getFeed(downloadId);
-			if(feed != null) {
+			if (feed != null) {
 				handleCompletedFeedDownload(context, feed);
-			}else {
+			} else {
 				FeedImage image = requester.getFeedImage(downloadId);
-				if(image != null) {
+				if (image != null) {
 					handleCompletedImageDownload(context, image);
 				} else {
 					FeedMedia media = requester.getFeedMedia(downloadId);
@@ -123,70 +123,59 @@ public class DownloadService extends Service {
 
 	/** Check if there's something else to download, otherwise stop */
 	private void queryDownloads() {
-		if(requester.getNumberOfDownloads() == 0) {
+		if (requester.getNumberOfDownloads() == 0) {
 			unregisterReceiver(downloadReceiver);
 			initiateShutdown();
 		}
 	}
 
-
 	/** Is called whenever a Feed is downloaded */
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
 		Log.d(TAG, "Handling completed Feed Download");
-		syncExecutor.execute(new FeedSyncThread(feed, this, requester));
+		syncExecutor.execute(new FeedSyncThread(feed, this));
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
 		Log.d(TAG, "Handling completed Image Download");
-		requester.removeFeedImage(image);
-		manager.setFeedImage(this, image);
+		syncExecutor.execute(new ImageHandlerThread(image, this));
 	}
 
 	/** Is called whenever a FeedMedia is downloaded. */
-	private void handleCompletedFeedMediaDownload(Context context, FeedMedia media) {
+	private void handleCompletedFeedMediaDownload(Context context,
+			FeedMedia media) {
 		Log.d(TAG, "Handling completed FeedMedia Download");
-		requester.removeFeedMedia(media);
-		// Get duration
-		try {
-			mediaplayer.setDataSource(media.getFile_url());
-			mediaplayer.prepare();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		media.setDuration(mediaplayer.getDuration());
-		Log.d(TAG, "Duration of file is " + media.getDuration());
-		mediaplayer.reset();
-		manager.setFeedMedia(this, media);
+		syncExecutor.execute(new MediaHandlerThread(media, this));
 	}
 
 	class IncomingHandler extends Handler {
 		@Override
 		public void handleMessage(Message msg) {
 			Log.d(TAG, "Received new Message.");
-			switch(msg.what) {
-				case MSG_QUERY_DOWNLOADS_LEFT:
-					queryDownloads();
-					break;
-				default:
-					super.handleMessage(msg);
+			switch (msg.what) {
+			case MSG_QUERY_DOWNLOADS_LEFT:
+				queryDownloads();
+				break;
+			default:
+				super.handleMessage(msg);
 			}
 		}
 	}
 
-	/** Takes a single Feed, parses the corresponding file and refreshes information in the manager */
+	/**
+	 * Takes a single Feed, parses the corresponding file and refreshes
+	 * information in the manager
+	 */
 	class FeedSyncThread implements Runnable {
 		private static final String TAG = "FeedSyncThread";
 
 		private Feed feed;
 		private DownloadService service;
-		private DownloadRequester requester;
 
-		public FeedSyncThread(Feed feed, DownloadService service, DownloadRequester requester) {
+		public FeedSyncThread(Feed feed, DownloadService service) {
 			this.feed = feed;
 			this.service = service;
-			this.requester = requester;
 		}
 
 		public void run() {
@@ -196,7 +185,7 @@ public class DownloadService extends Service {
 			feed = handler.parseFeed(feed);
 			Log.d(TAG, feed.getTitle() + " parsed");
 			// Download Feed Image if provided
-			if(feed.getImage() != null) {
+			if (feed.getImage() != null) {
 				Log.d(TAG, "Feed has image; Downloading....");
 				requester.downloadImage(service, feed.getImage());
 			}
@@ -210,10 +199,57 @@ public class DownloadService extends Service {
 
 		/** Delete files that aren't needed anymore */
 		private void cleanup() {
-			if(new File(feed.getFile_url()).delete()) 
-				Log.d(TAG, "Successfully deleted cache file."); else Log.e(TAG, "Failed to delete cache file.");	
+			if (new File(feed.getFile_url()).delete())
+				Log.d(TAG, "Successfully deleted cache file.");
+			else
+				Log.e(TAG, "Failed to delete cache file.");
 			feed.setFile_url(null);
 		}
 
+	}
+
+	/** Handles a completed image download. */
+	class ImageHandlerThread implements Runnable {
+		private FeedImage image;
+		private DownloadService service;
+
+		public ImageHandlerThread(FeedImage image, DownloadService service) {
+			this.image = image;
+			this.service = service;
+		}
+
+		@Override
+		public void run() {
+			requester.removeFeedImage(image);
+			manager.setFeedImage(service, image);
+		}
+	}
+
+	/** Handles a completed media download. */
+	class MediaHandlerThread implements Runnable {
+		private FeedMedia media;
+		private DownloadService service;
+
+		public MediaHandlerThread(FeedMedia media, DownloadService service) {
+			super();
+			this.media = media;
+			this.service = service;
+		}
+
+		@Override
+		public void run() {
+			requester.removeFeedMedia(media);
+			// Get duration
+			try {
+				mediaplayer.setDataSource(media.getFile_url());
+				mediaplayer.prepare();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			media.setDuration(mediaplayer.getDuration());
+			Log.d(TAG, "Duration of file is " + media.getDuration());
+			mediaplayer.reset();
+			manager.setFeedMedia(service, media);
+		}
 	}
 }

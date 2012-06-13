@@ -1,6 +1,7 @@
 package de.podfetcher.service;
 
 import java.io.File;
+import java.io.IOException;
 
 import android.R;
 import android.app.Notification;
@@ -68,21 +69,40 @@ public class PlaybackService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (player != null) {
-			player.stop();
-		}
 		long mediaId = intent.getLongExtra(EXTRA_MEDIA_ID, -1);
 		long feedId = intent.getLongExtra(EXTRA_FEED_ID, -1);
 		if (mediaId == -1 || feedId == -1) {
 			Log.e(TAG, "Media ID or Feed ID wasn't provided to the Service.");
 		} else {
-			feed = manager.getFeed(feedId);
-			media = manager.getFeedMedia(mediaId, feed);
+			Feed newFeed = manager.getFeed(feedId);
+			FeedMedia newMedia = manager.getFeedMedia(mediaId, newFeed);
+			if (media != null && media != newMedia) {
+				pause();
+				player.reset();
+				try {
+					player.setDataSource(newMedia.getFile_url());
+					player.prepare();
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				} catch (SecurityException e) {
+					e.printStackTrace();
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				media = newMedia;
+				feed = newFeed;
+				
+			} else if (media == null) {
+				media = newMedia;
+				feed = newFeed;
+				player = MediaPlayer.create(this, Uri.fromFile(new File(media.getFile_url())));
+				setStatus(PlayerStatus.PREPARING);
+				player.setOnPreparedListener(preparedListener);
+				Log.d(TAG, "Preparing to play file");
+			}
 			
-			player = MediaPlayer.create(this, Uri.fromFile(new File(media.getFile_url())));
-			setStatus(PlayerStatus.PREPARING);
-			player.setOnPreparedListener(preparedListener);
-			Log.d(TAG, "Preparing to play file");
 		}
 		setupNotification();
 		return Service.START_STICKY;
