@@ -1,6 +1,7 @@
 package de.podfetcher.syndication.namespace.rss20;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedImage;
@@ -10,6 +11,7 @@ import de.podfetcher.syndication.handler.HandlerState;
 import de.podfetcher.syndication.handler.SyndHandler;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
+import de.podfetcher.syndication.util.SyndDateUtils;
 
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
