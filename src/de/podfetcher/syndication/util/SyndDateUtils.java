@@ -49,7 +49,12 @@ public class SyndDateUtils {
 		Date result = null;
 		SimpleDateFormat format = null;
 		if (date.endsWith("Z")) {
-			format = new SimpleDateFormat(RFC3339UTC);	
+			format = new SimpleDateFormat(RFC3339UTC);
+			try {
+				result = format.parse(date);	
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
 		} else {
 			format = new SimpleDateFormat(RFC3339LOCAL);
 			// remove last colon
@@ -58,13 +63,15 @@ public class SyndDateUtils {
 			for (int x = 0; x < date.length(); x++) {
 				if (x != colonIdx) buf.append(date.charAt(x));
 			}
-			String bufStr = buf.toString();		
+			String bufStr = buf.toString();
+			try {
+				result = format.parse(bufStr);	
+			} catch (ParseException e) {
+				e.printStackTrace();
+			}
+			
 		}
-		try {
-			result = format.parse(date);	
-		} catch (ParseException e) {
-			e.printStackTrace();
-		}
+		
 		return result;
 		
 	}

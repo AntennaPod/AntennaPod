@@ -62,7 +62,7 @@ public class PodDBAdapter {
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION
-			+ " TEXT," + KEY_PUBDATE + " TEXT," + KEY_MEDIA
+			+ " TEXT," + KEY_PUBDATE + " INTEGER," + KEY_MEDIA
 			+ " INTEGER," + KEY_FEED + " INTEGER," + KEY_READ
 			+ " INTEGER)";
 
@@ -216,7 +216,7 @@ public class PodDBAdapter {
 		values.put(KEY_TITLE, item.getTitle());
 		values.put(KEY_LINK, item.getLink());
 		values.put(KEY_DESCRIPTION, item.getDescription());
-		values.put(KEY_PUBDATE, item.getPubDate());
+		values.put(KEY_PUBDATE, item.getPubDate().getTime());
 		if (item.getMedia() != null) {
 			if(item.getMedia().getId() == 0) {
 				setMedia(item.getMedia());

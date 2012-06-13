@@ -1,5 +1,7 @@
 package de.podfetcher.util;
 
+import java.util.Date;
+
 import android.util.Log;
 
 /** Provides methods for converting various units. */
@@ -77,5 +79,10 @@ public final class Converter {
     	int m = rest / MINUTES_MIL;
     	
     	return String.format("%02d:%02d", h, m);
+    }
+    
+    /** Returns string that is supposed to be shown in the GUI. */
+    public static String getDateString(Date date) {
+    	return null;
     }
 }

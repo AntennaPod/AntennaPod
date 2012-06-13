@@ -1,5 +1,7 @@
 package de.podfetcher.feed;
 
+import java.util.Date;
+
 
 /**
  * Data Object for a XML message
@@ -10,7 +12,7 @@ public class FeedItem extends FeedComponent{
 	private String title;
 	private String description;
 	private String link;
-	private String pubDate;
+	private Date pubDate;
 	private FeedMedia media;
 	private Feed feed;
 	private boolean read;
@@ -20,7 +22,7 @@ public class FeedItem extends FeedComponent{
 	}
 	
 	public FeedItem(String title, String description, String link,
-			String pubDate, FeedMedia media, Feed feed) {
+			Date pubDate, FeedMedia media, Feed feed) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -55,11 +57,11 @@ public class FeedItem extends FeedComponent{
 		this.link = link;
 	}
 
-	public String getPubDate() {
+	public Date getPubDate() {
 		return pubDate;
 	}
 
-	public void setPubDate(String pubDate) {
+	public void setPubDate(Date pubDate) {
 		this.pubDate = pubDate;
 	}
 

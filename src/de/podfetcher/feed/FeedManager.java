@@ -1,6 +1,7 @@
 package de.podfetcher.feed;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 import de.podfetcher.storage.*;
 import android.content.Context;
@@ -251,8 +252,8 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				item.setDescription(itemlistCursor.getString(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
-				item.setPubDate(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_PUBDATE)));
+				item.setPubDate(new Date(itemlistCursor.getLong(itemlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_PUBDATE))));
 				item.setMedia(adapter.getFeedMedia(itemlistCursor
 						.getLong(itemlistCursor
 								.getColumnIndex(PodDBAdapter.KEY_MEDIA)), item));

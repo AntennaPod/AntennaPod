@@ -90,7 +90,7 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setLink(content);
 				}
 			} else if (top.equals(PUBDATE) && second.equals(ITEM)) {
-				state.getCurrentItem().setPubDate(content);
+				state.getCurrentItem().setPubDate(SyndDateUtils.parseRFC822Date(content));
 			} else if (top.equals(URL) && second.equals(IMAGE)) {
 				state.getFeed().getImage().setDownload_url(content);
 			}

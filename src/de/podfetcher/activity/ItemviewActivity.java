@@ -101,7 +101,7 @@ public class ItemviewActivity extends SherlockActivity {
 
 		setTitle(item.getFeed().getTitle());
 
-		txtvPublished.setText(item.getPubDate());
+		//txtvPublished.setText(item.getPubDate()); TODO fix
 		txtvTitle.setText(item.getTitle());
 		if(item.getFeed().getImage() != null) {
 			imgvImage.setImageBitmap(item.getFeed().getImage().getImageBitmap());

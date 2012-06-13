@@ -9,6 +9,7 @@ import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.syndication.handler.HandlerState;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
+import de.podfetcher.syndication.util.SyndDateUtils;
 
 public class NSAtom extends Namespace {
 	public static final String NSTAG = "atom";
@@ -109,7 +110,7 @@ public class NSAtom extends Namespace {
 				}
 			} else if (top.equals(PUBLISHED)) {
 				if (second.equals(ENTRY)) {
-					state.getCurrentItem().setPubDate(content);
+					state.getCurrentItem().setPubDate(SyndDateUtils.parseRFC3339Date(content));
 				}
 			} else if (top.equals(IMAGE)) {
 				state.getFeed().setImage(new FeedImage(content, null));
