@@ -1,25 +1,27 @@
 package de.podfetcher.activity;
 
-import java.io.File;
-import java.util.concurrent.Callable;
-import android.net.Uri;
-import android.graphics.BitmapFactory;
-import com.actionbarsherlock.app.SherlockActivity;
-import android.view.View;
-import android.widget.ListView;
-import android.os.Bundle;
-import de.podfetcher.feed.*;
-import android.util.Log;
+import java.text.DateFormat;
+
 import android.content.Intent;
-import android.content.Context;
+import android.os.Bundle;
+import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockActivity;
+
 import de.podfetcher.R;
+import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedItem;
+import de.podfetcher.feed.FeedManager;
+import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.service.DownloadObserver;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
-import de.podfetcher.fragment.FeedlistFragment;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockActivity {
@@ -58,18 +60,22 @@ public class ItemviewActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				// Start playback Service
-				Intent launchIntent = new Intent(v.getContext(), PlaybackService.class);
-				launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, item.getMedia().getId());
-				launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, item.getFeed().getId());
+				Intent launchIntent = new Intent(v.getContext(),
+						PlaybackService.class);
+				launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, item
+						.getMedia().getId());
+				launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, item
+						.getFeed().getId());
 				v.getContext().startService(launchIntent);
-				
+
 				// Launch Mediaplayer
-				Intent playerIntent = new Intent(v.getContext(), MediaplayerActivity.class);
+				Intent playerIntent = new Intent(v.getContext(),
+						MediaplayerActivity.class);
 				v.getContext().startActivity(playerIntent);
 			}
 		});
 	}
-	
+
 	@Override
 	public void onStop() {
 		super.onStop();
@@ -79,9 +85,11 @@ public class ItemviewActivity extends SherlockActivity {
 
 	/** Extracts FeedItem object the activity is supposed to display */
 	private void extractFeeditem() {
-		long itemId = getIntent().getLongExtra(FeedItemlistActivity.EXTRA_SELECTED_FEEDITEM, -1);
-		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
-		if(itemId == -1 || feedId == -1) {
+		long itemId = getIntent().getLongExtra(
+				FeedItemlistActivity.EXTRA_SELECTED_FEEDITEM, -1);
+		long feedId = getIntent().getLongExtra(
+				FeedlistFragment.EXTRA_SELECTED_FEED, -1);
+		if (itemId == -1 || feedId == -1) {
 			Log.e(TAG, "Received invalid selection of either feeditem or feed.");
 		}
 		Feed feed = manager.getFeed(feedId);
@@ -91,7 +99,7 @@ public class ItemviewActivity extends SherlockActivity {
 	}
 
 	private void populateUI() {
-		setContentView(R.layout.feeditemview);	
+		setContentView(R.layout.feeditemview);
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
 		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
 		imgvImage = (ImageView) findViewById(R.id.imgvFeedimage);
@@ -101,10 +109,13 @@ public class ItemviewActivity extends SherlockActivity {
 
 		setTitle(item.getFeed().getTitle());
 
-		//txtvPublished.setText(item.getPubDate()); TODO fix
+		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
+				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
+				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		if(item.getFeed().getImage() != null) {
-			imgvImage.setImageBitmap(item.getFeed().getImage().getImageBitmap());
+		if (item.getFeed().getImage() != null) {
+			imgvImage
+					.setImageBitmap(item.getFeed().getImage().getImageBitmap());
 		}
 	}
 
@@ -118,13 +129,14 @@ public class ItemviewActivity extends SherlockActivity {
 			// observe
 			setDownloadingState();
 			downloadObserver.execute(media);
-		}		
+		}
 	}
 
 	final DownloadObserver downloadObserver = new DownloadObserver(this) {
 		@Override
-		protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
-		
+		protected void onProgressUpdate(
+				DownloadObserver.DownloadStatus... values) {
+
 		}
 
 		@Override
@@ -137,7 +149,6 @@ public class ItemviewActivity extends SherlockActivity {
 			}
 		}
 	};
-
 
 	private void setDownloadingState() {
 		butDownload.setEnabled(false);
@@ -157,5 +168,3 @@ public class ItemviewActivity extends SherlockActivity {
 		butRemove.setEnabled(false);
 	}
 }
-
-
