@@ -1,16 +1,15 @@
 package de.podfetcher.feed;
 
 import java.util.ArrayList;
-
-
-
+import java.util.Date;
 
 /**
  * Data Object for a whole feed
+ * 
  * @author daniel
- *
+ * 
  */
-public class Feed extends FeedFile{
+public class Feed extends FeedFile {
 	private String title;
 	/** Link to the website. */
 	private String link;
@@ -18,15 +17,17 @@ public class Feed extends FeedFile{
 	private FeedImage image;
 	private FeedCategory category;
 	private ArrayList<FeedItem> items;
-	
-	
-	public Feed() {
+	/** Date of last refresh. */
+	private Date lastUpdate;
+
+	public Feed(Date lastUpdate) {
 		super();
 		items = new ArrayList<FeedItem>();
+		this.lastUpdate = lastUpdate;
 	}
-	
-	public Feed(String url) {
-		this();
+
+	public Feed(String url, Date lastUpdate) {
+		this(lastUpdate);
 		this.download_url = url;
 	}
 
@@ -78,12 +79,12 @@ public class Feed extends FeedFile{
 		this.items = items;
 	}
 
-	
+	public Date getLastUpdate() {
+		return lastUpdate;
+	}
 
-	
-	
-	
-	
-	
+	public void setLastUpdate(Date lastUpdate) {
+		this.lastUpdate = lastUpdate;
+	}
 
 }

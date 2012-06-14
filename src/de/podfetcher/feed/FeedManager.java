@@ -204,7 +204,10 @@ public class FeedManager {
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if (feedlistCursor.moveToFirst()) {
 			do {
-				Feed feed = new Feed();
+				Date lastUpdate = new Date(
+						feedlistCursor.getLong(feedlistCursor
+								.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE)));
+				Feed feed = new Feed(lastUpdate);
 
 				feed.id = feedlistCursor.getLong(feedlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_ID));

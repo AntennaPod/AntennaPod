@@ -15,6 +15,8 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+
+import java.util.Date;
 import java.util.concurrent.Callable;
 
 /** Activity for adding/editing a Feed */
@@ -101,7 +103,7 @@ public class AddFeedActivity extends SherlockActivity {
 		url = URLChecker.prepareURL(url);
 
 		if(url != null) {
-			Feed feed = new Feed(url);
+			Feed feed = new Feed(url, new Date());
 			downloadId = requester.downloadFeed(this, feed);
 			observeDownload(feed);
 		}
