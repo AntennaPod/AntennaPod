@@ -12,14 +12,13 @@ public class SyndDateUtils {
 	public static final String RFC822 = "dd MMM yyyy HH:mm:ss Z";
 	/** RFC 822 date format with day of the week. */
 	public static final String RFC822DAY = "EEE, " + RFC822;
-	
+
 	/** RFC 3339 date format for UTC dates. */
 	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-	
+
 	/** RFC 3339 date format for localtime dates with offset. */
 	public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
-	
-	
+
 	public static Date parseRFC822Date(final String date) {
 		Date result = null;
 		SimpleDateFormat format = new SimpleDateFormat(RFC822DAY);
@@ -33,25 +32,17 @@ public class SyndDateUtils {
 				e1.printStackTrace();
 			}
 		}
-		if (result != null) {
-			Log.d(TAG, "Day is " + result.getDay());
-			Log.d(TAG, "Hours is " + result.getHours());
-			Log.d(TAG, "Minutes is " + result.getMinutes());
-			Log.d(TAG, "Seconds is" + result.getSeconds());
-			Log.d(TAG, "Month is " + result.getMonth());
-			Log.d(TAG, "Year is " + result.getYear());
-			Log.d(TAG, format.format(result));
-		}
+
 		return result;
 	}
-	
+
 	public static Date parseRFC3339Date(final String date) {
 		Date result = null;
 		SimpleDateFormat format = null;
 		if (date.endsWith("Z")) {
 			format = new SimpleDateFormat(RFC3339UTC);
 			try {
-				result = format.parse(date);	
+				result = format.parse(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
@@ -61,18 +52,19 @@ public class SyndDateUtils {
 			StringBuffer buf = new StringBuffer(date.length() - 1);
 			int colonIdx = date.lastIndexOf(':');
 			for (int x = 0; x < date.length(); x++) {
-				if (x != colonIdx) buf.append(date.charAt(x));
+				if (x != colonIdx)
+					buf.append(date.charAt(x));
 			}
 			String bufStr = buf.toString();
 			try {
-				result = format.parse(bufStr);	
+				result = format.parse(bufStr);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
-			
+
 		}
-		
+
 		return result;
-		
+
 	}
 }
