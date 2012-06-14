@@ -195,6 +195,7 @@ public class DownloadService extends Service {
 
 			// Save information of feed in DB
 			manager.updateFeed(service, feed);
+			queryDownloads();
 		}
 
 		/** Delete files that aren't needed anymore */
@@ -223,6 +224,7 @@ public class DownloadService extends Service {
 			image.setDownloaded(true);
 			requester.removeFeedImage(image);
 			manager.setFeedImage(service, image);
+			queryDownloads();
 		}
 	}
 
@@ -252,6 +254,7 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 			manager.setFeedMedia(service, media);
+			queryDownloads();
 		}
 	}
 }
