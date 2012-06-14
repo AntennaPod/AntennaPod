@@ -1,5 +1,6 @@
 package de.podfetcher.feed;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -36,10 +37,27 @@ public class FeedManager {
 		return singleton;
 	}
 
+	/** Remove media item that has been downloaded. */
+	public boolean deleteFeedMedia(Context context, FeedMedia media) {
+		boolean result = false;
+		if (media.isDownloaded()) {
+			File mediaFile = new File(media.file_url);
+			if (mediaFile.exists()) {
+				result = mediaFile.delete();
+			}
+			media.setDownloaded(false);
+			media.setFile_url("");
+			setFeedMedia(context, media);			
+		}
+		Log.d(TAG, "Deleting File. Result: " + result);
+		return result;
+	}
+
 	public void refreshAllFeeds(Context context) {
 		Log.d(TAG, "Refreshing all feeds.");
 		for (Feed feed : feeds) {
-			requester.downloadFeed(context, new Feed(feed.getDownload_url(), new Date()));
+			requester.downloadFeed(context, new Feed(feed.getDownload_url(),
+					new Date()));
 		}
 	}
 

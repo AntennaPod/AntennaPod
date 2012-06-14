@@ -74,6 +74,17 @@ public class ItemviewActivity extends SherlockActivity {
 				v.getContext().startActivity(playerIntent);
 			}
 		});
+		
+		butRemove.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				if (manager.deleteFeedMedia(v.getContext(), item.getMedia())) {
+					setNotDownloadedState();
+				}
+				
+			}
+		});
 	}
 
 	@Override
