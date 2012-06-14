@@ -39,7 +39,7 @@ public class FeedManager {
 	public void refreshAllFeeds(Context context) {
 		Log.d(TAG, "Refreshing all feeds.");
 		for (Feed feed : feeds) {
-			requester.downloadFeed(context, feed);
+			requester.downloadFeed(context, new Feed(feed.getDownload_url(), new Date()));
 		}
 	}
 
@@ -85,17 +85,13 @@ public class FeedManager {
 			for (FeedItem item : newFeed.getItems()) {
 				FeedItem oldItem = searchFeedItemByLink(savedFeed,
 						item.getLink());
-				if (oldItem != null) {
-					FeedItem newItem = searchFeedItemByLink(newFeed,
-							item.getLink());
-					if (newItem != null) {
-						newItem.setRead(oldItem.isRead());
-					}
+				if (oldItem == null) {
+					// item is new
+					savedFeed.getItems().add(item);
 				}
 			}
-			newFeed.setId(savedFeed.getId());
-			savedFeed = newFeed;
-			setFeed(context, newFeed);
+			savedFeed.setLastUpdate(newFeed.getLastUpdate());
+			setFeed(context, savedFeed);
 		}
 
 	}
