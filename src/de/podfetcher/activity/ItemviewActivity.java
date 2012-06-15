@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.view.View;
+import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -38,6 +39,7 @@ public class ItemviewActivity extends SherlockActivity {
 	private Button butPlay;
 	private Button butDownload;
 	private Button butRemove;
+	private WebView webvDescription;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -117,7 +119,7 @@ public class ItemviewActivity extends SherlockActivity {
 		butPlay = (Button) findViewById(R.id.butPlay);
 		butDownload = (Button) findViewById(R.id.butDownload);
 		butRemove = (Button) findViewById(R.id.butRemove);
-
+		webvDescription = (WebView) findViewById(R.id.webvDescription);
 		setTitle(item.getFeed().getTitle());
 
 		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
@@ -128,6 +130,7 @@ public class ItemviewActivity extends SherlockActivity {
 			imgvImage
 					.setImageBitmap(item.getFeed().getImage().getImageBitmap());
 		}
+		webvDescription.loadData(item.getDescription(), "text/html", null);
 	}
 
 	private void getDownloadStatus() {
