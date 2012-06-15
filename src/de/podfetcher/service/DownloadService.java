@@ -10,9 +10,14 @@ import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
+
+import de.podfetcher.activity.DownloadActivity;
+import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.feed.*;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.syndication.handler.FeedHandler;
+import android.R;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.app.DownloadManager;
 import android.content.Intent;
@@ -21,6 +26,9 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.os.Handler;
 import android.os.Message;
@@ -35,7 +43,8 @@ public class DownloadService extends Service {
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
-
+	private NotificationCompat.Builder notificationBuilder;
+	private int NOTIFICATION_ID = 2;
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
 
@@ -53,6 +62,7 @@ public class DownloadService extends Service {
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
+		setupNotification();
 	}
 
 	@Override
@@ -95,6 +105,23 @@ public class DownloadService extends Service {
 			}
 		};
 		waiter.start();
+	}
+
+	private void setupNotification() {
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
+				this, DownloadActivity.class),
+				PendingIntent.FLAG_UPDATE_CURRENT);
+
+		Bitmap icon = BitmapFactory.decodeResource(null,
+				R.drawable.stat_notify_sync_noanim);
+		notificationBuilder = new NotificationCompat.Builder(this)
+				.setContentTitle("Downloading Podcast data")
+				.setContentText(requester.getNumberOfDownloads() + " Downloads left").setOngoing(true)
+				.setContentIntent(pIntent).setLargeIcon(icon)
+				.setSmallIcon(R.drawable.stat_notify_sync_noanim);
+
+		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
+		Log.d(TAG, "Notification set up");
 	}
 
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
