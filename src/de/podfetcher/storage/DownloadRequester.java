@@ -62,6 +62,10 @@ public class DownloadRequester {
 
 	private long download(Context context, ArrayList<FeedFile> type,
 			FeedFile item, File dest) {
+		if (dest.exists()) {
+			Log.d(TAG, "File already exists. Deleting !");
+			dest.delete();
+		}
 		Log.d(TAG, "Requesting download of url " + item.getDownload_url());
 		type.add(item);
 		DownloadManager.Request request = new DownloadManager.Request(
@@ -82,6 +86,8 @@ public class DownloadRequester {
 		long downloadId = manager.enqueue(request);
 		item.setDownloadId(downloadId);
 		item.setFile_url(dest.toString());
+		
+		notifyDownloadService(context);
 		return downloadId;
 	}
 
@@ -245,22 +251,14 @@ public class DownloadRequester {
 	 * ------------ Methods for communicating with the DownloadService
 	 * -------------
 	 */
-	private Messenger mService = null;
+	private DownloadService mService = null;
 	boolean mIsBound;
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			mService = new Messenger(service);
-
-			try {
-				Message msg = Message.obtain(null,
-						DownloadService.MSG_QUERY_DOWNLOADS_LEFT);
-				Log.d(TAG, "Sending message to DownloadService.");
-				mService.send(msg);
-			} catch (RemoteException e) {
-				Log.e(TAG,
-						"An Exception happened while communication with the DownloadService");
-			}
+			mService = ((DownloadService.LocalBinder)service).getService();
+			Log.d(TAG, "Connection to service established");
+			mService.queryDownloads();
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
@@ -274,6 +272,7 @@ public class DownloadRequester {
 		context.bindService(new Intent(context, DownloadService.class),
 				mConnection, Context.BIND_AUTO_CREATE);
 		mIsBound = true;
+		
 		context.unbindService(mConnection);
 		mIsBound = false;
 	}

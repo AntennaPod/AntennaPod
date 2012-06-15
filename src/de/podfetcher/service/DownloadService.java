@@ -14,9 +14,11 @@ import java.util.concurrent.TimeUnit;
 import de.podfetcher.activity.DownloadActivity;
 import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.feed.*;
+import de.podfetcher.service.PlaybackService.LocalBinder;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.syndication.handler.FeedHandler;
 import android.R;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.app.DownloadManager;
@@ -31,6 +33,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -49,14 +52,16 @@ public class DownloadService extends Service {
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
 	private DownloadManager downloadManager;
-	
+
 	private volatile boolean shutdownInitiated = false;
 
-	// Objects for communication
-	private final Messenger mMessenger = new Messenger(new IncomingHandler());
+	private final IBinder mBinder = new LocalBinder();
 
-	// Message codes
-	public static final int MSG_QUERY_DOWNLOADS_LEFT = 1;
+	public class LocalBinder extends Binder {
+		public DownloadService getService() {
+			return DownloadService.this;
+		}
+	}
 
 	@Override
 	public void onCreate() {
@@ -72,7 +77,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
-		return mMessenger.getBinder();
+		return mBinder;
 	}
 
 	@Override
@@ -165,22 +170,28 @@ public class DownloadService extends Service {
 				}
 				queryDownloads();
 			} else if (status == DownloadManager.STATUS_FAILED) {
-				int reason = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
+				int reason = c.getInt(c
+						.getColumnIndex(DownloadManager.COLUMN_REASON));
 				Log.d(TAG, "reason code is " + reason);
-				
+
 			}
-			
+
 			c.close();
 		}
 
-		
 	};
 
 	/** Check if there's something else to download, otherwise stop */
-	private synchronized void queryDownloads() {
-		if (!shutdownInitiated && requester.getNumberOfDownloads() == 0) {
+	public synchronized void queryDownloads() {
+		int numOfDownloads = requester.getNumberOfDownloads();
+		if (!shutdownInitiated && numOfDownloads == 0) {
 			shutdownInitiated = true;
 			initiateShutdown();
+		} else {
+			// update notification
+			notificationBuilder.setContentText(numOfDownloads + " Downloads left");
+			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.notify(NOTIFICATION_ID, notificationBuilder.getNotification());
 		}
 	}
 
@@ -202,20 +213,6 @@ public class DownloadService extends Service {
 			FeedMedia media) {
 		Log.d(TAG, "Handling completed FeedMedia Download");
 		syncExecutor.execute(new MediaHandlerThread(media, this));
-	}
-
-	class IncomingHandler extends Handler {
-		@Override
-		public void handleMessage(Message msg) {
-			Log.d(TAG, "Received new Message.");
-			switch (msg.what) {
-			case MSG_QUERY_DOWNLOADS_LEFT:
-				queryDownloads();
-				break;
-			default:
-				super.handleMessage(msg);
-			}
-		}
 	}
 
 	/**
