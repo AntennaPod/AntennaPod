@@ -26,6 +26,7 @@ import android.media.MediaPlayer;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
@@ -47,6 +48,9 @@ public class DownloadService extends Service {
 	private int NOTIFICATION_ID = 2;
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
+	private DownloadManager downloadManager;
+	
+	private volatile boolean shutdownInitiated = false;
 
 	// Objects for communication
 	private final Messenger mMessenger = new Messenger(new IncomingHandler());
@@ -62,6 +66,7 @@ public class DownloadService extends Service {
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
+		downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 		setupNotification();
 	}
 
@@ -75,6 +80,7 @@ public class DownloadService extends Service {
 		Log.d(TAG, "Service shutting down");
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		mediaplayer.release();
+		unregisterReceiver(downloadReceiver);
 	}
 
 	private IntentFilter createIntentFilter() {
@@ -116,8 +122,9 @@ public class DownloadService extends Service {
 				R.drawable.stat_notify_sync_noanim);
 		notificationBuilder = new NotificationCompat.Builder(this)
 				.setContentTitle("Downloading Podcast data")
-				.setContentText(requester.getNumberOfDownloads() + " Downloads left").setOngoing(true)
-				.setContentIntent(pIntent).setLargeIcon(icon)
+				.setContentText(
+						requester.getNumberOfDownloads() + " Downloads left")
+				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
 				.setSmallIcon(R.drawable.stat_notify_sync_noanim);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
@@ -127,31 +134,52 @@ public class DownloadService extends Service {
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			int status = -1;
+
 			Log.d(TAG, "Received 'Download Complete' - message.");
 			long downloadId = intent.getLongExtra(
 					DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-			Feed feed = requester.getFeed(downloadId);
-			if (feed != null) {
-				handleCompletedFeedDownload(context, feed);
-			} else {
-				FeedImage image = requester.getFeedImage(downloadId);
-				if (image != null) {
-					handleCompletedImageDownload(context, image);
+			// get status
+			DownloadManager.Query q = new DownloadManager.Query();
+			q.setFilterById(downloadId);
+			Cursor c = downloadManager.query(q);
+			if (c.moveToFirst()) {
+				status = c.getInt(c
+						.getColumnIndex(DownloadManager.COLUMN_STATUS));
+			}
+
+			if (status == DownloadManager.STATUS_SUCCESSFUL) {
+				Feed feed = requester.getFeed(downloadId);
+				if (feed != null) {
+					handleCompletedFeedDownload(context, feed);
 				} else {
-					FeedMedia media = requester.getFeedMedia(downloadId);
-					if (media != null) {
-						handleCompletedFeedMediaDownload(context, media);
+					FeedImage image = requester.getFeedImage(downloadId);
+					if (image != null) {
+						handleCompletedImageDownload(context, image);
+					} else {
+						FeedMedia media = requester.getFeedMedia(downloadId);
+						if (media != null) {
+							handleCompletedFeedMediaDownload(context, media);
+						}
 					}
 				}
+				queryDownloads();
+			} else if (status == DownloadManager.STATUS_FAILED) {
+				int reason = c.getInt(c.getColumnIndex(DownloadManager.COLUMN_REASON));
+				Log.d(TAG, "reason code is " + reason);
+				
 			}
-			queryDownloads();
+			
+			c.close();
 		}
+
+		
 	};
 
 	/** Check if there's something else to download, otherwise stop */
-	private void queryDownloads() {
-		if (requester.getNumberOfDownloads() == 0) {
-			unregisterReceiver(downloadReceiver);
+	private synchronized void queryDownloads() {
+		if (!shutdownInitiated && requester.getNumberOfDownloads() == 0) {
+			shutdownInitiated = true;
 			initiateShutdown();
 		}
 	}

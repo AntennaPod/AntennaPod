@@ -25,6 +25,7 @@ import android.webkit.URLUtil;
 
 public class DownloadRequester {
 	private static final String TAG = "DownloadRequester";
+	private static final int currentApi = android.os.Build.VERSION.SDK_INT;
 
 	public static String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.storage.download_id";
 	public static String EXTRA_ITEM_ID = "extra.de.podfetcher.storage.item_id";
@@ -32,21 +33,20 @@ public class DownloadRequester {
 	public static String ACTION_FEED_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.feed_download_completed";
 	public static String ACTION_MEDIA_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.media_download_completed";
 	public static String ACTION_IMAGE_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.image_download_completed";
-
+	
 	private static boolean STORE_ON_SD = true;
 	public static String IMAGE_DOWNLOADPATH = "images/";
 	public static String FEED_DOWNLOADPATH = "cache/";
 	public static String MEDIA_DOWNLOADPATH = "media/";
 
-
 	private static DownloadRequester downloader;
-	private DownloadManager manager; 
+	private DownloadManager manager;
 
 	public ArrayList<FeedFile> feeds;
 	public ArrayList<FeedFile> images;
 	public ArrayList<FeedFile> media;
 
-	private DownloadRequester(){
+	private DownloadRequester() {
 		feeds = new ArrayList<FeedFile>();
 		images = new ArrayList<FeedFile>();
 		media = new ArrayList<FeedFile>();
@@ -54,54 +54,66 @@ public class DownloadRequester {
 	}
 
 	public static DownloadRequester getInstance() {
-		if(downloader == null) {
+		if (downloader == null) {
 			downloader = new DownloadRequester();
 		}
 		return downloader;
 	}
 
-	private long download(Context context, ArrayList<FeedFile> type, FeedFile item, File dest, boolean visibleInUI) {
-		Log.d(TAG, "Requesting download of url "+ item.getDownload_url());
+	private long download(Context context, ArrayList<FeedFile> type,
+			FeedFile item, File dest) {
+		Log.d(TAG, "Requesting download of url " + item.getDownload_url());
 		type.add(item);
-		DownloadManager.Request request = new DownloadManager.Request(Uri.parse(item.getDownload_url()));
-		//request.allowScanningByMediaScanner();
-
-		request.setDestinationUri(Uri.fromFile(dest));
-		request.setVisibleInDownloadsUi(visibleInUI);
+		DownloadManager.Request request = new DownloadManager.Request(
+				Uri.parse(item.getDownload_url()))
+		.setDestinationUri(Uri.fromFile(dest));
+		Log.d(TAG, "Version is " + currentApi);
+		if (currentApi >= 11) {
+			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+		} else {
+			request.setVisibleInDownloadsUi(false);
+			request.setShowRunningNotification(false);
+		}
+		
 		// TODO Set Allowed Network Types
-		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
+		DownloadManager manager = (DownloadManager) context
+				.getSystemService(Context.DOWNLOAD_SERVICE);
 		context.startService(new Intent(context, DownloadService.class));
 		long downloadId = manager.enqueue(request);
 		item.setDownloadId(downloadId);
 		item.setFile_url(dest.toString());
 		return downloadId;
 	}
+
 	public long downloadFeed(Context context, Feed feed) {
-		return download(context, feeds, feed, 
-				new File(getFeedfilePath(context), getFeedfileName(feed)),
-				true);
+		return download(context, feeds, feed, new File(
+				getFeedfilePath(context), getFeedfileName(feed)));
 	}
 
 	public long downloadImage(Context context, FeedImage image) {
-		return download(context, images, image, 
-				new File(getImagefilePath(context), getImagefileName(image)),
-				true);
+		return download(context, images, image, new File(
+				getImagefilePath(context), getImagefileName(image)));
 	}
 
 	public long downloadMedia(Context context, FeedMedia feedmedia) {
 		return download(context, media, feedmedia,
-				new File(getMediafilePath(context, feedmedia), getMediafilename(feedmedia)),
-				true);
+				new File(getMediafilePath(context, feedmedia),
+						getMediafilename(feedmedia)));
 	}
-	
-	/** Cancels a running download. 
-	 * 	@param context A context needed to get the DownloadManager service
-	 * 	@param id ID of the download to cancel
+
+	/**
+	 * Cancels a running download.
+	 * 
+	 * @param context
+	 *            A context needed to get the DownloadManager service
+	 * @param id
+	 *            ID of the download to cancel
 	 * */
 	public void cancelDownload(final Context context, final long id) {
 		Log.d(TAG, "Cancelling download with id " + id);
-		DownloadManager manager = (DownloadManager) context.getSystemService(Context.DOWNLOAD_SERVICE);
-		int removed = manager.remove(id);	
+		DownloadManager manager = (DownloadManager) context
+				.getSystemService(Context.DOWNLOAD_SERVICE);
+		int removed = manager.remove(id);
 		if (removed > 0) {
 			// Delete downloads in lists
 			Feed feed = getFeed(id);
@@ -123,8 +135,8 @@ public class DownloadRequester {
 
 	/** Get a Feed by its download id */
 	public Feed getFeed(long id) {
-		for(FeedFile f: feeds) {
-			if(f.getDownloadId() == id) {
+		for (FeedFile f : feeds) {
+			if (f.getDownloadId() == id) {
 				return (Feed) f;
 			}
 		}
@@ -133,19 +145,18 @@ public class DownloadRequester {
 
 	/** Get a FeedImage by its download id */
 	public FeedImage getFeedImage(long id) {
-		for(FeedFile f: images) {
-			if(f.getDownloadId() == id) {
+		for (FeedFile f : images) {
+			if (f.getDownloadId() == id) {
 				return (FeedImage) f;
 			}
 		}
 		return null;
 	}
 
-
 	/** Get media by its download id */
 	public FeedMedia getFeedMedia(long id) {
-		for(FeedFile f: media) {
-			if(f.getDownloadId() == id) {
+		for (FeedFile f : media) {
+			if (f.getDownloadId() == id) {
 				return (FeedMedia) f;
 			}
 		}
@@ -153,7 +164,7 @@ public class DownloadRequester {
 	}
 
 	public void removeFeed(Feed f) {
-		feeds.remove(f);	
+		feeds.remove(f);
 	}
 
 	public void removeFeedMedia(FeedMedia m) {
@@ -164,9 +175,9 @@ public class DownloadRequester {
 		images.remove(fi);
 	}
 
-    public ArrayList<FeedFile> getMediaDownloads() {
-        return media;
-    }
+	public ArrayList<FeedFile> getMediaDownloads() {
+		return media;
+	}
 
 	/** Get the number of uncompleted Downloads */
 	public int getNumberOfDownloads() {
@@ -178,7 +189,7 @@ public class DownloadRequester {
 	}
 
 	public String getFeedfilePath(Context context) {
-		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString() + "/";	
+		return context.getExternalFilesDir(FEED_DOWNLOADPATH).toString() + "/";
 	}
 
 	public String getFeedfileName(Feed feed) {
@@ -194,12 +205,16 @@ public class DownloadRequester {
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media) {
-		return context.getExternalFilesDir(MEDIA_DOWNLOADPATH
-			+ media.getItem().getFeed().getTitle() + "/").toString();
+		return context
+				.getExternalFilesDir(
+						MEDIA_DOWNLOADPATH
+								+ media.getItem().getFeed().getTitle() + "/")
+				.toString();
 	}
 
 	public String getMediafilename(FeedMedia media) {
-		return URLUtil.guessFileName(media.getDownload_url(), null, media.getMime_type());
+		return URLUtil.guessFileName(media.getDownload_url(), null,
+				media.getMime_type());
 	}
 
 	public boolean isDownloaded(Feed feed) {
@@ -226,7 +241,10 @@ public class DownloadRequester {
 		return m.getFile_url() != null && media.contains(m);
 	}
 
-	/* ------------ Methods for communicating with the DownloadService ------------- */
+	/*
+	 * ------------ Methods for communicating with the DownloadService
+	 * -------------
+	 */
 	private Messenger mService = null;
 	boolean mIsBound;
 
@@ -235,11 +253,13 @@ public class DownloadRequester {
 			mService = new Messenger(service);
 
 			try {
-				Message msg = Message.obtain(null, DownloadService.MSG_QUERY_DOWNLOADS_LEFT);
+				Message msg = Message.obtain(null,
+						DownloadService.MSG_QUERY_DOWNLOADS_LEFT);
 				Log.d(TAG, "Sending message to DownloadService.");
 				mService.send(msg);
-			} catch(RemoteException e) {
-				Log.e(TAG, "An Exception happened while communication with the DownloadService");
+			} catch (RemoteException e) {
+				Log.e(TAG,
+						"An Exception happened while communication with the DownloadService");
 			}
 		}
 
@@ -249,10 +269,10 @@ public class DownloadRequester {
 		}
 	};
 
-
 	/** Notifies the DownloadService to check if there are any Downloads left */
 	public void notifyDownloadService(Context context) {
-		context.bindService(new Intent(context, DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
+		context.bindService(new Intent(context, DownloadService.class),
+				mConnection, Context.BIND_AUTO_CREATE);
 		mIsBound = true;
 		context.unbindService(mConnection);
 		mIsBound = false;
