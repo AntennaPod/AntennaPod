@@ -1,49 +1,48 @@
 package de.podfetcher.activity;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-import android.view.View;
-import android.widget.ListView;
+
 import android.os.Bundle;
-import android.content.Intent;
-import de.podfetcher.feed.*;
-import de.podfetcher.adapter.FeedItemlistAdapter;
-import de.podfetcher.fragment.FeedlistFragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
+import android.view.View;
+
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import de.podfetcher.R;
+import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedManager;
+import de.podfetcher.fragment.FeedItemlistFragment;
+import de.podfetcher.fragment.FeedlistFragment;
 
 /** Displays a List of FeedItems */
-public class FeedItemlistActivity extends SherlockListActivity {
+public class FeedItemlistActivity extends SherlockFragmentActivity {
 	private static final String TAG = "FeedItemlistActivity";
-	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
 
-	private FeedItemlistAdapter fila;
 	private FeedManager manager;
 
 	/** The feed which the activity displays */
 	private Feed feed;
+	private FeedItemlistFragment filf;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		this.setContentView(R.layout.feeditemlist_activity);
 		manager = FeedManager.getInstance();
 		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
 		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
-		
-		fila = new FeedItemlistAdapter(this, 0, feed.getItems());
-		setListAdapter(fila);
 
 		setTitle(feed.getTitle());
-	}
-
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		FeedItem selection = fila.getItem(position);
-		Intent showItem = new Intent(this, ItemviewActivity.class);
-		showItem.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, feed.getId());
-		showItem.putExtra(EXTRA_SELECTED_FEEDITEM, selection.getId());
-
-		startActivity(showItem);
+		
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fT = fragmentManager.beginTransaction();
+		filf = new FeedItemlistFragment(feed.getItems());
+		fT.add(R.id.feeditemlistFragment, filf);
+		fT.commit();
+		
 	}
 	
 	public void onButActionClicked(View v) {
