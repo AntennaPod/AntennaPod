@@ -76,12 +76,11 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
-		context.startService(new Intent(context, DownloadService.class));
+		
 		long downloadId = manager.enqueue(request);
 		item.setDownloadId(downloadId);
 		item.setFile_url(dest.toString());
-
-		notifyDownloadService(context);
+		context.startService(new Intent(context, DownloadService.class));
 		return downloadId;
 	}
 

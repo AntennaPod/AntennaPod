@@ -63,6 +63,14 @@ public class DownloadService extends Service {
 		}
 	}
 
+	
+	
+	@Override
+	public int onStartCommand(Intent intent, int flags, int startId) {
+		queryDownloads();
+		return super.onStartCommand(intent, flags, startId);
+	}
+
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "Service started");
