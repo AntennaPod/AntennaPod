@@ -3,6 +3,7 @@ package de.podfetcher.syndication.util;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import android.util.Log;
 
@@ -21,11 +22,12 @@ public class SyndDateUtils {
 
 	public static Date parseRFC822Date(final String date) {
 		Date result = null;
-		SimpleDateFormat format = new SimpleDateFormat(RFC822DAY);
+		SimpleDateFormat format = new SimpleDateFormat(RFC822DAY, Locale.US);
 		try {
 			result = format.parse(date);
 		} catch (ParseException e) {
-			format = new SimpleDateFormat(RFC822);
+			e.printStackTrace();
+			format = new SimpleDateFormat(RFC822, Locale.US);
 			try {
 				result = format.parse(date);
 			} catch (ParseException e1) {
@@ -40,14 +42,14 @@ public class SyndDateUtils {
 		Date result = null;
 		SimpleDateFormat format = null;
 		if (date.endsWith("Z")) {
-			format = new SimpleDateFormat(RFC3339UTC);
+			format = new SimpleDateFormat(RFC3339UTC, Locale.US);
 			try {
 				result = format.parse(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		} else {
-			format = new SimpleDateFormat(RFC3339LOCAL);
+			format = new SimpleDateFormat(RFC3339LOCAL, Locale.US);
 			// remove last colon
 			StringBuffer buf = new StringBuffer(date.length() - 1);
 			int colonIdx = date.lastIndexOf(':');
