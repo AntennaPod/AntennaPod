@@ -17,6 +17,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
@@ -39,6 +40,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView = inflater.inflate(R.layout.feedlist_item, null);
 			holder.title = (TextView) convertView
 					.findViewById(R.id.txtvFeedname);
+			holder.newEpisodes = (TextView) convertView.findViewById(R.id.txtvNewEpisodes);
 			holder.image = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.lastUpdate = (TextView) convertView
@@ -52,6 +54,19 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		holder.lastUpdate.setText(DateUtils.formatSameDayTime(feed
 				.getLastUpdate().getTime(), System.currentTimeMillis(),
 				DateFormat.SHORT, DateFormat.SHORT));
+		
+		int newItems = feed.getNumOfNewItems();
+		if (newItems > 0) {
+			holder.newEpisodes.setTextColor(Color.parseColor("red"));
+			if (newItems == 1) {
+				holder.newEpisodes.setText(newItems + " new Episode");
+			} else {
+				holder.newEpisodes.setText(newItems + " new Episodes");
+			}
+		} else {
+			holder.newEpisodes.setTextColor(Color.parseColor("gray"));
+			holder.newEpisodes.setText("No new episodes");
+		}
 		if (feed.getImage() != null) {
 			holder.image.setImageBitmap(feed.getImage().getImageBitmap()); // TODO
 																			// select
@@ -69,6 +84,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	static class Holder {
 		TextView title;
 		TextView lastUpdate;
+		TextView newEpisodes;
 		ImageView image;
 	}
 

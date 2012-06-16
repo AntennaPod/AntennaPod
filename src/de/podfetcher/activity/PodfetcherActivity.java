@@ -1,28 +1,16 @@
 package de.podfetcher.activity;
 
-import javax.xml.parsers.ParserConfigurationException;
-
-import org.xml.sax.SAXException;
-
-import de.podfetcher.R;
-import de.podfetcher.feed.*;
-import de.podfetcher.storage.DownloadRequester;
-import de.podfetcher.fragment.FeedlistFragment;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ListView;
-import android.widget.ArrayAdapter;
-import android.os.Bundle;
-import android.content.Intent;
 import android.app.Activity;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
+
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
+
+import de.podfetcher.R;
+import de.podfetcher.fragment.FeedlistFragment;
 
     
 

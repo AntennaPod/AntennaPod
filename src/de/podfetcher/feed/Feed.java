@@ -30,6 +30,17 @@ public class Feed extends FeedFile {
 		this(lastUpdate);
 		this.download_url = url;
 	}
+	
+	/** Returns the number of FeedItems where 'read' is false. */
+	public int getNumOfNewItems() {
+		int count = 0;
+		for (FeedItem item : items) {
+			if (!item.isRead()) {
+				count++;
+			} 
+		}
+		return count;
+	}
 
 	public String getTitle() {
 		return title;
