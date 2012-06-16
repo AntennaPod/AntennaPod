@@ -117,6 +117,7 @@ public class DownloadRequester {
 			FeedFile f = getFeedFile(id);
 			if (f != null) {
 				downloads.remove(f);
+				f.setFile_url(null);
 			}
 		}
 	}

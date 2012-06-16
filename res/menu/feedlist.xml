@@ -4,18 +4,18 @@
         android:id="@+id/add_feed"
         android:title="Add Feed"
         android:icon="@drawable/content_new"
-        android:showAsAction="ifRoom">
+        android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/all_feed_refresh"
         android:title="Refresh"
         android:icon="@drawable/navigation_refresh"
-        android:showAsAction="ifRoom">
+        android:showAsAction="ifRoom|collapseActionView">
     </item>
     <item
         android:id="@+id/show_downloads"
         android:title="Downloads"
         android:icon="@drawable/av_download"
-        android:showAsAction="ifRoom">
+        android:showAsAction="ifRoom|collapseActionView">
     </item>
 </menu>
