@@ -44,8 +44,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		fT.commit();
 		
 	}
-	
+	/*
 	public void onButActionClicked(View v) {
 		Log.d(TAG, "Button clicked");
-	}
+	}*/
 }

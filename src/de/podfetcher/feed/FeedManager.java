@@ -4,8 +4,11 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.*;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
@@ -35,6 +38,21 @@ public class FeedManager {
 			singleton = new FeedManager();
 		}
 		return singleton;
+	}
+	
+	/** Play FeedMedia and start the playback service + launch Mediaplayer Activity. */
+	public void playMedia(Context context, FeedMedia media) {
+		// Start playback Service
+		Intent launchIntent = new Intent(context,
+				PlaybackService.class);
+		launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
+		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem().getFeed().getId());
+		context.startService(launchIntent);
+
+		// Launch Mediaplayer
+		Intent playerIntent = new Intent(context,
+				MediaplayerActivity.class);
+		context.startActivity(playerIntent);
 	}
 
 	/** Remove media item that has been downloaded. */

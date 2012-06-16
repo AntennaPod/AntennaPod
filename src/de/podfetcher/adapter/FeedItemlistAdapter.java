@@ -6,18 +6,21 @@ import de.podfetcher.feed.FeedItem;
 import de.podfetcher.util.Converter;
 import de.podfetcher.R;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.content.Context;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
-	
+	private OnClickListener onButActionClicked;
 
 	public FeedItemlistAdapter(Context context,
-			int textViewResourceId, List<FeedItem> objects) {
+			int textViewResourceId, List<FeedItem> objects, OnClickListener onButActionClicked) {
 		super(context, textViewResourceId, objects);
+		this.onButActionClicked = onButActionClicked;
 	}
 
 	@Override
@@ -31,7 +34,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			convertView = inflater.inflate(R.layout.feeditemlist_item, null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvItemname);
 			holder.size = (TextView) convertView.findViewById(R.id.txtvItemsize);
-
+			holder.butAction = (Button) convertView.findViewById(R.id.butAction);
+			
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();	
@@ -39,6 +43,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 
 		holder.title.setText(item.getTitle());
 		holder.size.setText(Converter.byteToString(item.getMedia().getSize()));
+		holder.butAction.setOnClickListener(onButActionClicked);
 		return convertView;
 	
 	}
@@ -46,5 +51,6 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	static class Holder {
 		TextView title;
 		TextView size;
+		Button butAction;
 	}
 }

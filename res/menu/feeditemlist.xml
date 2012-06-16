@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/download_item" android:icon="@drawable/av_download" android:visible="false" android:title="@string/download_label"></item>
+    <item android:id="@+id/remove_item" android:icon="@drawable/content_discard" android:title="@string/remove_label" android:visible="false"></item>
+    <item android:id="@+id/play_item" android:title="@string/play_label" android:visible="false" android:icon="@drawable/av_play"></item>
+    <item android:id="@+id/cancel_download_item" android:icon="@drawable/navigation_cancel" android:title="@string/cancel_download_label" android:visible="false"></item>
+    
+
+</menu>

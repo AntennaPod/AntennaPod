@@ -8,6 +8,7 @@
 	<string name="settings_label">Settings</string>
 	<string name="add_new_feed_label">Add a new Feed</string>
     <string name="downloads_label">Downloads</string>
+    <string name="cancel_download_label">Cancel Download</string>
 
 	<!-- 				-->
 	<string name="confirm_label">Confirm</string>
