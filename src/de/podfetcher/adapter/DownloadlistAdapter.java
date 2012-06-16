@@ -9,6 +9,9 @@ import android.content.Context;
 
 import de.podfetcher.R;
 import de.podfetcher.util.Converter;
+import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedFile;
+import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.service.DownloadObserver;
 
@@ -23,7 +26,7 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadObserver.DownloadS
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         DownloadObserver.DownloadStatus status = getItem(position);
-
+        FeedFile feedFile = status.getFeedFile();
         // Inflate layout
         if (convertView == null) {
             holder = new Holder();
@@ -38,8 +41,16 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadObserver.DownloadS
         } else {
             holder = (Holder) convertView.getTag();
         }
-
-        holder.title.setText( ((FeedMedia) status.getFeedFile()).getItem().getTitle());
+        
+        String titleText = null;
+        if (feedFile.getClass() == FeedMedia.class) {
+        	titleText = ((FeedMedia) feedFile).getItem().getTitle();
+        } else if (feedFile.getClass() == Feed.class) {
+        	titleText = ((Feed) feedFile).getTitle();
+        } else if (feedFile.getClass() == FeedImage.class) {
+        	titleText = "[Image] " + ((FeedImage) feedFile).getTitle();
+        }
+        holder.title.setText(titleText);
         holder.downloaded.setText(Converter.byteToString(status.getSoFar()) + " / "
                 + Converter.byteToString(status.getSize()));
         holder.percent.setText(status.getProgressPercent() + "%");

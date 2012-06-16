@@ -154,18 +154,16 @@ public class DownloadService extends Service {
 			}
 
 			if (status == DownloadManager.STATUS_SUCCESSFUL) {
-				Feed feed = requester.getFeed(downloadId);
-				if (feed != null) {
-					handleCompletedFeedDownload(context, feed);
-				} else {
-					FeedImage image = requester.getFeedImage(downloadId);
-					if (image != null) {
-						handleCompletedImageDownload(context, image);
-					} else {
-						FeedMedia media = requester.getFeedMedia(downloadId);
-						if (media != null) {
-							handleCompletedFeedMediaDownload(context, media);
-						}
+				FeedFile download = requester.getFeedFile(downloadId);
+				if (download != null) {
+					if (download.getClass() == Feed.class) {
+						handleCompletedFeedDownload(context, (Feed) download);
+					} else if (download.getClass() == FeedImage.class) {
+						handleCompletedImageDownload(context,
+								(FeedImage) download);
+					} else if (download.getClass() == FeedMedia.class) {
+						handleCompletedFeedMediaDownload(context,
+								(FeedMedia) download);
 					}
 				}
 				queryDownloads();
@@ -189,7 +187,8 @@ public class DownloadService extends Service {
 			initiateShutdown();
 		} else {
 			// update notification
-			notificationBuilder.setContentText(numOfDownloads + " Downloads left");
+			notificationBuilder.setContentText(numOfDownloads
+					+ " Downloads left");
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(NOTIFICATION_ID, notificationBuilder.getNotification());
 		}
@@ -241,7 +240,7 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Feed has image; Downloading....");
 				requester.downloadImage(service, feed.getImage());
 			}
-			requester.removeFeed(feed);
+			requester.removeDownload(feed);
 
 			cleanup();
 
@@ -274,7 +273,7 @@ public class DownloadService extends Service {
 		@Override
 		public void run() {
 			image.setDownloaded(true);
-			requester.removeFeedImage(image);
+			requester.removeDownload(image);
 			manager.setFeedImage(service, image);
 			queryDownloads();
 		}
@@ -293,7 +292,7 @@ public class DownloadService extends Service {
 
 		@Override
 		public void run() {
-			requester.removeFeedMedia(media);
+			requester.removeDownload(media);
 			media.setDownloaded(true);
 			// Get duration
 			try {

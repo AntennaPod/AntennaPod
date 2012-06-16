@@ -22,8 +22,8 @@ public class DownloadActivity extends SherlockListActivity {
         super.onCreate(savedInstanceState);
 
         requester = DownloadRequester.getInstance();
-        observer.execute(requester.getMediaDownloads().toArray(
-                    new FeedFile[requester.getMediaDownloads().size()]));
+        observer.execute(requester.getDownloads().toArray(
+                    new FeedFile[requester.getDownloads().size()]));
 
     }
     
