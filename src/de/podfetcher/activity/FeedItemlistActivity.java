@@ -45,4 +45,8 @@ public class FeedItemlistActivity extends SherlockListActivity {
 
 		startActivity(showItem);
 	}
+	
+	public void onButActionClicked(View v) {
+		Log.d(TAG, "Button clicked");
+	}
 }

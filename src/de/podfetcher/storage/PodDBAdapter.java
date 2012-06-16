@@ -239,7 +239,7 @@ public class PodDBAdapter {
 			setFeed(item.getFeed());
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
-		values.put(KEY_READ, (item.isRead()) ? 1 : 0);
+		values.put(KEY_READ, item.isRead());
 
 		open();
 		if (item.getId() == 0) {

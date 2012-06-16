@@ -48,9 +48,9 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		
 		actionBar.addTab(tab);
 		tab = actionBar.newTab()
-				.setText("Playlist")
+				.setText(getText(R.string.new_label).toString())
 				.setTabListener(new TabListener<FeedlistFragment>(
-							this, "Playlist", FeedlistFragment.class));
+							this, getText(R.string.new_label).toString(), FeedlistFragment.class));
 		actionBar.addTab(tab);
     }
 

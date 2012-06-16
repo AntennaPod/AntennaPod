@@ -18,7 +18,7 @@ public class FeedItem extends FeedComponent{
 	private boolean read;
 
 	public FeedItem() {
-			this.read = false;
+			this.read = true;
 	}
 	
 	public FeedItem(String title, String description, String link,
@@ -30,7 +30,7 @@ public class FeedItem extends FeedComponent{
 		this.pubDate = pubDate;
 		this.media = media;
 		this.feed = feed;
-		this.read = false;
+		this.read = true;
 	}
 
 	public String getTitle() {
