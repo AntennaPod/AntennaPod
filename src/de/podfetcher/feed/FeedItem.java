@@ -8,7 +8,7 @@ import java.util.Date;
  * @author daniel
  *
  */
-public class FeedItem extends FeedComponent implements Comparable<FeedItem>{
+public class FeedItem extends FeedComponent{
 	private String title;
 	private String description;
 	private String link;
@@ -85,11 +85,4 @@ public class FeedItem extends FeedComponent implements Comparable<FeedItem>{
 		return read;
 	}
 
-	@Override
-	public int compareTo(FeedItem another) {
-		long diff = pubDate.getTime() - another.getPubDate().getTime();
-		return (int) Math.signum(diff);
-	}
-	
-	
 }
