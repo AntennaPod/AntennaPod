@@ -26,7 +26,7 @@
         </activity>
         <activity android:name="de.podfetcher.activity.AddFeedActivity"
             android:label="@string/add_new_feed_label"/>
-        <activity android:name="de.podfetcher.activity.FeedItemlistActivity"/>
+        <activity android:name="de.podfetcher.activity.FeedItemlistActivity" android:configChanges="orientation|screenSize"/>
         <activity android:name="de.podfetcher.activity.ItemviewActivity"/>
         <activity android:name="de.podfetcher.activity.DownloadActivity"
             android:label="@string/downloads_label"/>
