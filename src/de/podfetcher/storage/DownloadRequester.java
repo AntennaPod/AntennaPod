@@ -119,6 +119,7 @@ public class DownloadRequester {
 				downloads.remove(f);
 				f.setFile_url(null);
 			}
+			notifyDownloadService(context);
 		}
 	}
 
@@ -180,6 +181,7 @@ public class DownloadRequester {
 	 * -------------
 	 */
 	private DownloadService mService = null;
+	private Context mContext = null;
 	boolean mIsBound;
 
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -187,10 +189,13 @@ public class DownloadRequester {
 			mService = ((DownloadService.LocalBinder) service).getService();
 			Log.d(TAG, "Connection to service established");
 			mService.queryDownloads();
+			mContext.unbindService(mConnection);
 		}
 
 		public void onServiceDisconnected(ComponentName className) {
 			mService = null;
+			mIsBound = false;
+			mContext = null;
 			Log.i(TAG, "Closed connection with DownloadService.");
 		}
 	};
@@ -199,9 +204,7 @@ public class DownloadRequester {
 	public void notifyDownloadService(Context context) {
 		context.bindService(new Intent(context, DownloadService.class),
 				mConnection, Context.BIND_AUTO_CREATE);
+		mContext = context;
 		mIsBound = true;
-
-		context.unbindService(mConnection);
-		mIsBound = false;
 	}
 }
