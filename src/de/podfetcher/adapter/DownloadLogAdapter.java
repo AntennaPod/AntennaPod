@@ -17,6 +17,7 @@ import de.podfetcher.feed.FeedFile;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.service.DownloadStatus;
+import de.podfetcher.util.DownloadError;
 
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
@@ -65,6 +66,7 @@ public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 			} else {
 				holder.successful.setTextColor(Color.parseColor("red"));
 				holder.successful.setText("Download failed");
+				holder.reason.setText(DownloadError.getErrorString(getContext(), status.getReason()));
 			}
 		} else {
 			holder = (Holder) convertView.getTag();

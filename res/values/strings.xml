@@ -43,4 +43,9 @@
 	<string name="other_pref">Other</string>
 	<string name="about_pref">About</string>
 	<string name="show_download_log">Show Log</string>
+	<string name="download_error_device_not_found">Storage device not found</string>
+	<string name="download_error_insufficient_space">Insufficient space</string>
+	<string name="download_error_file_error">File error</string>
+	<string name="download_error_http_data_error">HTTP Data Error</string>
+	<string name="download_error_error_unknown">Unknown Error</string>
 </resources>
