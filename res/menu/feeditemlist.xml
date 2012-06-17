@@ -4,6 +4,8 @@
     <item android:id="@+id/remove_item" android:icon="@drawable/content_discard" android:title="@string/remove_label" android:visible="false"></item>
     <item android:id="@+id/play_item" android:title="@string/play_label" android:visible="false" android:icon="@drawable/av_play"></item>
     <item android:id="@+id/cancel_download_item" android:icon="@drawable/navigation_cancel" android:title="@string/cancel_download_label" android:visible="false"></item>
+    <item android:id="@+id/mark_read_item" android:title="@string/mark_read_label" android:showAsAction="collapseActionView" android:visible="false"></item>
+    <item android:id="@+id/mark_unread_item" android:title="@string/mark_unread_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     
 
 </menu>

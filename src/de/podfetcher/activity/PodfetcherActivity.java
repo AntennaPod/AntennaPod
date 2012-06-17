@@ -12,48 +12,63 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import de.podfetcher.R;
 import de.podfetcher.fragment.FeedlistFragment;
 
-    
-
 public class PodfetcherActivity extends SherlockFragmentActivity {
-    private static final String TAG = "PodfetcherActivity";
-    
+	private static final String TAG = "PodfetcherActivity";
+
 	private FeedlistFragment feedlist;
-	
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+
+	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-		
+
 		// Set up tabs
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(false);
 
-		Tab tab = actionBar.newTab()
+		Tab tab = actionBar
+				.newTab()
 				.setText(getText(R.string.feeds_label).toString())
-				.setTabListener(new TabListener<FeedlistFragment>(
-							this, getText(R.string.feeds_label).toString(), FeedlistFragment.class));
-		
-		actionBar.addTab(tab);
-		tab = actionBar.newTab()
-				.setText(getText(R.string.new_label).toString())
-				.setTabListener(new TabListener<FeedlistFragment>(
-							this, getText(R.string.new_label).toString(), FeedlistFragment.class));
-		actionBar.addTab(tab);
-    }
+				.setTabListener(
+						new TabListener<FeedlistFragment>(this, getText(
+								R.string.feeds_label).toString(),
+								FeedlistFragment.class));
 
+		actionBar.addTab(tab);
+		tab = actionBar
+				.newTab()
+				.setText(getText(R.string.new_label).toString())
+				.setTabListener(
+						new TabListener<FeedlistFragment>(this, getText(
+								R.string.new_label).toString(),
+								FeedlistFragment.class));
+		actionBar.addTab(tab);
+	}
 
 	/** TabListener for navigating between the main lists. */
-	private class TabListener<T extends Fragment> implements ActionBar.TabListener {
+	private class TabListener<T extends Fragment> implements
+			ActionBar.TabListener {
 
 		private final Activity activity;
 		private final String tag;
 		private final Class<T> fClass;
 		private Fragment fragment;
-		
+		private boolean attachedOnce = false;
+
 		public TabListener(Activity activity, String tag, Class<T> fClass) {
 			this.activity = activity;
 			this.tag = tag;
+			this.fClass = fClass;
+		}
+
+		@SuppressWarnings("unused")
+		public TabListener(Activity activity, String tag, Fragment fragment,
+				Class<T> fClass) {
+			super();
+			this.activity = activity;
+			this.tag = tag;
+			this.fragment = fragment;
 			this.fClass = fClass;
 		}
 
@@ -61,6 +76,10 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 			if (fragment == null) {
 				fragment = Fragment.instantiate(activity, fClass.getName());
 				ft.replace(R.id.main_fragment, fragment);
+				attachedOnce = true;
+			} else if (!attachedOnce) {
+				ft.replace(R.id.main_fragment, fragment);
+				attachedOnce = true;
 			} else {
 				ft.attach(fragment);
 			}
@@ -73,7 +92,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		}
 
 		public void onTabReselected(Tab tab, FragmentTransaction ft) {
-			// Do nothing	
+			// Do nothing
 		}
 	}
 }

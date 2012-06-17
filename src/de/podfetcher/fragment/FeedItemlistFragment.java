@@ -119,6 +119,12 @@ public class FeedItemlistFragment extends SherlockListFragment {
 			} else {
 				menu.findItem(R.id.cancel_download_item).setVisible(true);
 			}
+			
+			if (selectedItem.isRead()) {
+				menu.findItem(R.id.mark_unread_item).setVisible(true);
+			} else {
+				menu.findItem(R.id.mark_read_item).setVisible(true);
+			}
 
 			return true;
 
@@ -143,8 +149,15 @@ public class FeedItemlistFragment extends SherlockListFragment {
 				requester.cancelDownload(getSherlockActivity(), selectedItem
 						.getMedia().getDownloadId());
 				break;
+			case R.id.mark_read_item:
+				selectedItem.setRead(true);
+				break;
+			case R.id.mark_unread_item:
+				selectedItem.setRead(false);
+				break;
 
 			}
+			fila.notifyDataSetChanged();
 			mode.finish();
 			return true;
 		}

@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.content.Context;
+import android.graphics.Typeface;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
@@ -42,6 +43,11 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		}
 
 		holder.title.setText(item.getTitle());
+		if (!item.isRead()) {
+			holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+		} else {
+			holder.title.setTypeface(Typeface.DEFAULT);
+		}
 		holder.size.setText(Converter.byteToString(item.getMedia().getSize()));
 		holder.butAction.setOnClickListener(onButActionClicked);
 		return convertView;

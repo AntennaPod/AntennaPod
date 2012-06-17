@@ -37,4 +37,6 @@
 	<string name="player_error_msg">Error!</string>
 	<string name="player_stopped_msg">Stopped</string>
 	<string name="player_preparing_msg">Preparing...</string>
+	<string name="mark_read_label">Mark read</string>
+	<string name="mark_unread_label">Mark unread</string>
 </resources>
