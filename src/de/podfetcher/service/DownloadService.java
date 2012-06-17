@@ -63,8 +63,6 @@ public class DownloadService extends Service {
 		}
 	}
 
-	
-	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		queryDownloads();
@@ -148,7 +146,8 @@ public class DownloadService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			int status = -1;
-
+			boolean successful = false;
+			int reason = 0;
 			Log.d(TAG, "Received 'Download Complete' - message.");
 			long downloadId = intent.getLongExtra(
 					DownloadManager.EXTRA_DOWNLOAD_ID, 0);
@@ -160,10 +159,10 @@ public class DownloadService extends Service {
 				status = c.getInt(c
 						.getColumnIndex(DownloadManager.COLUMN_STATUS));
 			}
+			FeedFile download = requester.getFeedFile(downloadId);
+			if (download != null) {
+				if (status == DownloadManager.STATUS_SUCCESSFUL) {
 
-			if (status == DownloadManager.STATUS_SUCCESSFUL) {
-				FeedFile download = requester.getFeedFile(downloadId);
-				if (download != null) {
 					if (download.getClass() == Feed.class) {
 						handleCompletedFeedDownload(context, (Feed) download);
 					} else if (download.getClass() == FeedImage.class) {
@@ -173,16 +172,18 @@ public class DownloadService extends Service {
 						handleCompletedFeedMediaDownload(context,
 								(FeedMedia) download);
 					}
+					successful = true;
+					queryDownloads();
+				} else if (status == DownloadManager.STATUS_FAILED) {
+					reason = c.getInt(c
+							.getColumnIndex(DownloadManager.COLUMN_REASON));
+					Log.d(TAG, "reason code is " + reason);
+					successful = false;
 				}
-				queryDownloads();
-			} else if (status == DownloadManager.STATUS_FAILED) {
-				int reason = c.getInt(c
-						.getColumnIndex(DownloadManager.COLUMN_REASON));
-				Log.d(TAG, "reason code is " + reason);
-
+				manager.addDownloadStatus(context, new DownloadStatus(download,
+						reason, successful));
+				c.close();
 			}
-
-			c.close();
 		}
 
 	};

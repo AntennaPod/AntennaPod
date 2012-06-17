@@ -5,6 +5,7 @@ import de.podfetcher.feed.FeedCategory;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.service.DownloadStatus;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -42,13 +43,18 @@ public class PodDBAdapter {
 	public static final String KEY_MEDIA = "media";
 	public static final String KEY_DOWNLOADED = "downloaded";
 	public static final String KEY_LASTUPDATE = "last_update";
-
+	public static final String KEY_FEEDFILE = "feedfile";
+	public static final String KEY_REASON = "reason";
+	public static final String KEY_SUCCESSFUL = "successful";
+	public static final String KEY_FEEDFILETYPE = "feedfile_type";
+	public static final String KEY_COMPLETION_DATE = "completion_date";
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
 	public static final String TABLE_NAME_FEED_CATEGORIES = "FeedCategories";
 	public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
 	public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
+	public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
 
 	// SQL Statements for creating new tables
 	private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -80,6 +86,20 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_POSITION + " INTEGER," + KEY_SIZE + " INTEGER,"
 			+ KEY_MIME_TYPE + " TEXT," + KEY_FILE_URL + " TEXT,"
 			+ KEY_DOWNLOAD_URL + " TEXT," + KEY_DOWNLOADED + " INTEGER)";
+
+	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
+			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
+			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
+			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
+			+ " INTEGER)";
+
+	/**
+	 * Used for storing download status entries to determine the type of the
+	 * Feedfile.
+	 */
+	public static final int FEEDFILETYPE_FEED = 0;
+	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
+	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
 
 	private SQLiteDatabase db;
 	private final Context context;
@@ -247,6 +267,41 @@ public class PodDBAdapter {
 	}
 
 	/**
+	 * Inserts or updates a download status.
+	 * */
+	public long setDownloadStatus(DownloadStatus status) {
+		ContentValues values = new ContentValues();
+		values.put(KEY_FEEDFILE, status.getFeedFile().getId());
+		if (status.getFeedFile().getClass() == Feed.class) {
+			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEED);
+		} else if (status.getFeedFile().getClass() == FeedImage.class) {
+			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDIMAGE);
+		} else if (status.getFeedFile().getClass() == FeedMedia.class) {
+			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDMEDIA);
+		}
+
+		values.put(KEY_REASON, status.getReason());
+		values.put(KEY_SUCCESSFUL, status.isSuccessful());
+		values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
+		open();
+		if (status.getId() == 0) {
+			status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
+		} else {
+			db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
+					new String[] { String.valueOf(status.getId()) });
+		}
+		close();
+		return status.getId();
+	}
+
+	public void removeDownloadStatus(DownloadStatus remove) {
+		open();
+		db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_ID + "=?",
+				new String[] { String.valueOf(remove.getId()) });
+		close();
+	}
+
+	/**
 	 * Get all Categories from the Categories Table.
 	 * 
 	 * @return The cursor of the query
@@ -312,6 +367,13 @@ public class PodDBAdapter {
 		open();
 		Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
 				new String[] { String.valueOf(id) }, null, null, null);
+		return c;
+	}
+
+	public final Cursor getDownloadLogCursor() {
+		open();
+		Cursor c = db.query(TABLE_NAME_DOWNLOAD_LOG, null, null, null, null,
+				null, null);
 		return c;
 	}
 
@@ -393,6 +455,7 @@ public class PodDBAdapter {
 			db.execSQL(CREATE_TABLE_FEED_CATEGORIES);
 			db.execSQL(CREATE_TABLE_FEED_IMAGES);
 			db.execSQL(CREATE_TABLE_FEED_MEDIA);
+			db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
 		}
 
 		@Override
@@ -403,4 +466,5 @@ public class PodDBAdapter {
 			// TODO delete Database
 		}
 	}
+
 }

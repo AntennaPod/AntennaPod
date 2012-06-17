@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.service.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.*;
 import android.content.Context;
@@ -20,6 +21,9 @@ import android.util.Log;
 public class FeedManager {
 	private static final String TAG = "FeedManager";
 
+	/** Number of completed Download status entries to store. */
+	private static final int DOWNLOAD_LOG_SIZE = 25;
+
 	private static FeedManager singleton;
 
 	private ArrayList<Feed> feeds;
@@ -27,6 +31,10 @@ public class FeedManager {
 
 	/** Contains all items where 'read' is false */
 	private ArrayList<FeedItem> unreadItems;
+
+	/** Contains completed Download status entries */
+	private ArrayList<DownloadStatus> downloadLog;
+
 	private DownloadRequester requester;
 
 	private FeedManager() {
@@ -34,7 +42,7 @@ public class FeedManager {
 		categories = new ArrayList<FeedCategory>();
 		unreadItems = new ArrayList<FeedItem>();
 		requester = DownloadRequester.getInstance();
-
+		downloadLog = new ArrayList<DownloadStatus>();
 	}
 
 	public static FeedManager getInstance() {
@@ -98,6 +106,15 @@ public class FeedManager {
 					new Date()));
 		}
 	}
+	
+	public long addDownloadStatus(Context context, DownloadStatus status) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		downloadLog.add(status);
+		if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
+			adapter.removeDownloadStatus(downloadLog.remove(0));
+		}
+		return adapter.setDownloadStatus(status);
+	}
 
 	private void addNewFeed(Context context, Feed feed) {
 		feeds.add(feed);
@@ -106,25 +123,18 @@ public class FeedManager {
 			setFeedItem(context, item);
 		}
 	}
-/* TODO Decide if still useful
-	
-	public void addFeedItem(Context context, FeedItem item) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		// Search list for feeditem
-		Feed feed = item.getFeed();
-		FeedItem foundItem = searchFeedItemByLink(feed, item.getLink());
-		if (foundItem != null) {
-			// Update Information
-			item.id = foundItem.id;
-			foundItem = item;
-			item.setRead(foundItem.isRead());
-			adapter.setFeedItem(item);
-		} else {
-			feed.getItems().add(item);
-			item.id = adapter.setFeedItem(item);
-		}
-	}
-*/
+
+	/*
+	 * TODO Decide if still useful
+	 * 
+	 * public void addFeedItem(Context context, FeedItem item) { PodDBAdapter
+	 * adapter = new PodDBAdapter(context); // Search list for feeditem Feed
+	 * feed = item.getFeed(); FeedItem foundItem = searchFeedItemByLink(feed,
+	 * item.getLink()); if (foundItem != null) { // Update Information item.id =
+	 * foundItem.id; foundItem = item; item.setRead(foundItem.isRead());
+	 * adapter.setFeedItem(item); } else { feed.getItems().add(item); item.id =
+	 * adapter.setFeedItem(item); } }
+	 */
 	public void updateFeed(Context context, Feed newFeed) {
 		// Look up feed in the feedslist
 		Feed savedFeed = searchFeedByLink(newFeed.getLink());
@@ -240,6 +250,19 @@ public class FeedManager {
 		return null;
 	}
 
+	/** Get a FeedMedia object by the id of the Media object. */
+	public FeedMedia getFeedMedia(long id) {
+		for (Feed feed : feeds) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.getMedia().getId() == id) {
+					return item.getMedia();
+				}
+			}
+		}
+		Log.w(TAG, "Couldn't find FeedMedia with id " + id);
+		return null;
+	}
+
 	/** Reads the database */
 	public void loadDBData(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
@@ -327,6 +350,40 @@ public class FeedManager {
 		return items;
 	}
 
+	private void extractDownloadLogFromCursor(Context context) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		Cursor logCursor = adapter.getDownloadLogCursor();
+		if (logCursor.moveToFirst()) {
+			do {
+				long id = logCursor.getLong(logCursor
+						.getColumnIndex(PodDBAdapter.KEY_ID));
+				long feedfileId = logCursor.getLong(logCursor
+						.getColumnIndex(PodDBAdapter.KEY_FEEDFILE));
+				int feedfileType = logCursor.getInt(logCursor
+						.getColumnIndex(PodDBAdapter.KEY_FEEDFILETYPE));
+				FeedFile feedfile = null;
+				switch (feedfileType) {
+				case PodDBAdapter.FEEDFILETYPE_FEED:
+					feedfile = getFeed(feedfileId);
+					break;
+				case PodDBAdapter.FEEDFILETYPE_FEEDIMAGE:
+					feedfile = getFeedImage(feedfileId);
+					break;
+				case PodDBAdapter.FEEDFILETYPE_FEEDMEDIA:
+					feedfile = getFeedMedia(feedfileId);
+				}
+				if (feedfile != null) { // otherwise ignore status
+					boolean successful = logCursor.getInt(logCursor.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL)) > 0;
+					int reason = logCursor.getInt(logCursor.getColumnIndex(PodDBAdapter.KEY_REASON));
+					Date completionDate = new Date(logCursor.getLong(logCursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE)));
+					downloadLog.add(new DownloadStatus(id, feedfile, successful, reason, completionDate));
+				}
+
+			} while (logCursor.moveToNext());
+		}
+	}
+
 	public ArrayList<Feed> getFeeds() {
 		return feeds;
 	}
@@ -334,7 +391,5 @@ public class FeedManager {
 	public ArrayList<FeedItem> getUnreadItems() {
 		return unreadItems;
 	}
-	
-	
 
 }
