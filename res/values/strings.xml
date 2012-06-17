@@ -39,4 +39,7 @@
 	<string name="player_preparing_msg">Preparing...</string>
 	<string name="mark_read_label">Mark read</string>
 	<string name="mark_unread_label">Mark unread</string>
+	<string name="version_pref">Version</string>
+	<string name="other_pref">Other</string>
+	<string name="about_pref">About</string>
 </resources>

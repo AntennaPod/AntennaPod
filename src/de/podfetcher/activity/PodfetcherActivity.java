@@ -1,15 +1,23 @@
 package de.podfetcher.activity;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
+import de.podfetcher.feed.FeedManager;
 import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
@@ -17,6 +25,8 @@ import de.podfetcher.fragment.UnreadItemlistFragment;
 public class PodfetcherActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PodfetcherActivity";
 
+	private FeedManager manager;
+	
 	private FeedlistFragment feedlist;
 	FeedItemlistFragment unreadList;
 	
@@ -24,6 +34,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		manager = FeedManager.getInstance();
 		setContentView(R.layout.main);
 		// Set up tabs
 		ActionBar actionBar = getSupportActionBar();
@@ -48,6 +59,33 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 								R.string.new_label).toString(),
 								UnreadItemlistFragment.class));
 		actionBar.addTab(tab);
+	}
+	
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+	    switch(item.getItemId()) {
+	        case R.id.add_feed:
+	            startActivity(new Intent(this, AddFeedActivity.class));
+				return true;
+			case R.id.all_feed_refresh:
+				manager.refreshAllFeeds(this);
+				return true;
+            case R.id.show_downloads:
+                startActivity(new Intent(this, DownloadActivity.class));
+                return true;
+            case R.id.show_preferences:
+            	startActivity(new Intent(this, PreferenceActivity.class));
+            	return true;
+			default:
+			    return super.onOptionsItemSelected(item);
+	    }
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = new MenuInflater(this);
+	    inflater.inflate(R.menu.podfetcher, menu);
+	    return true;
 	}
 
 	/** TabListener for navigating between the main lists. */

@@ -47,41 +47,17 @@ public class FeedlistFragment extends SherlockListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setHasOptionsMenu(true);
 		Log.d(TAG, "Creating");	
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
 
 	}
-
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.feedlist, container, false);
-	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-	    inflater.inflate(R.menu.feedlist, menu);
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-	    switch(item.getItemId()) {
-	        case R.id.add_feed:
-	            startActivity(new Intent(pActivity, AddFeedActivity.class));
-				return true;
-			case R.id.all_feed_refresh:
-				manager.refreshAllFeeds(pActivity);
-				return true;
-            case R.id.show_downloads:
-                startActivity(new Intent(pActivity, DownloadActivity.class));
-                return true;
-			default:
-			    return super.onOptionsItemSelected(item);
-	    }
 	}
 
 	@Override

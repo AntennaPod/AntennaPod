@@ -33,6 +33,7 @@
         <activity android:name="de.podfetcher.activity.MediaplayerActivity" android:launchMode="singleTask"/>
 
         <service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
-        <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" /> 
+        <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" />
+        <activity android:name=".activity.PreferenceActivity"></activity> 
     </application>
 </manifest>
