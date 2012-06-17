@@ -127,9 +127,7 @@ public class PodDBAdapter {
 			}
 			values.put(KEY_CATEGORY, feed.getCategory().getId());
 		}
-		if (feed.getFile_url() != null) {
-			values.put(KEY_FILE_URL, feed.getFile_url());
-		}
+		values.put(KEY_FILE_URL, feed.getFile_url());
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		values.put(KEY_DOWNLOADED, feed.isDownloaded());
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
@@ -178,9 +176,7 @@ public class PodDBAdapter {
 		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
 		values.put(KEY_DOWNLOADED, image.isDownloaded());
-		if (image.getFile_url() != null) {
-			values.put(KEY_FILE_URL, image.getFile_url());
-		}
+		values.put(KEY_FILE_URL, image.getFile_url());
 		if (image.getId() == 0) {
 			image.setId(db.insert(TABLE_NAME_FEED_IMAGES, null, values));
 		} else {
@@ -205,9 +201,7 @@ public class PodDBAdapter {
 		values.put(KEY_MIME_TYPE, media.getMime_type());
 		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
 		values.put(KEY_DOWNLOADED, media.isDownloaded());
-		if (media.getFile_url() != null) {
-			values.put(KEY_FILE_URL, media.getFile_url());
-		}
+		values.put(KEY_FILE_URL, media.getFile_url());
 		if (media.getId() == 0) {
 			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));
 		} else {
