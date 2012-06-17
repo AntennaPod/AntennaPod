@@ -11,6 +11,8 @@ import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.URLChecker;
 import de.podfetcher.service.DownloadObserver;
+import de.podfetcher.service.DownloadStatus;
+
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -83,8 +85,8 @@ public class AddFeedActivity extends SherlockActivity {
 			}
 
 			@Override
-			protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
-				DownloadObserver.DownloadStatus progr = values[0];
+			protected void onProgressUpdate(DownloadStatus... values) {
+				DownloadStatus progr = values[0];
 				progDialog.setMessage(getContext().getString(progr.getStatusMsg())
 						+ " (" + progr.getProgressPercent() + "%)");
 			}

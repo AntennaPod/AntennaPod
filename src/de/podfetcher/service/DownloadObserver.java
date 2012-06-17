@@ -11,7 +11,7 @@ import java.util.concurrent.Callable;
 import android.os.AsyncTask;
 
 /** Observes the status of a specific Download */
-public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.DownloadStatus, Boolean> {
+public class DownloadObserver extends AsyncTask<FeedFile, DownloadStatus, Boolean> {
 	private static final String TAG = "DownloadObserver";
 
 	/** Types of downloads to observe. */
@@ -79,8 +79,9 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
                         case DownloadManager.STATUS_FAILED:
                             status.statusMsg = R.string.download_failed;
                             requester.notifyDownloadService(context);
-                            status.successful = Boolean.valueOf(false);
+                            status.successful = false;
                             status.done = true;
+                            status.reason = getDownloadStatus(cursor, DownloadManager.COLUMN_REASON);
                         case DownloadManager.STATUS_PENDING:
                             status.statusMsg = R.string.download_pending;
                             break;
@@ -151,48 +152,5 @@ public class DownloadObserver extends AsyncTask<FeedFile, DownloadObserver.Downl
         return result;
     }
 
-    /** Contains status attributes for one download*/
-    public class DownloadStatus {
-
-        protected FeedFile feedfile;
-        protected int progressPercent;
-        protected long soFar;
-        protected long size;
-        protected int statusMsg;
-        protected int reason;
-        protected boolean successful;
-        protected boolean done;
-
-        public DownloadStatus(FeedFile feedfile) {
-            this.feedfile = feedfile;
-        }
-
-        public FeedFile getFeedFile() {
-            return feedfile;
-        }
-
-        public int getProgressPercent() {
-            return progressPercent;
-        }
-
-        public long getSoFar() {
-            return soFar;
-        }
-
-        public long getSize() {
-            return size;
-        }
-
-        public int getStatusMsg() {
-            return statusMsg;
-        }
-
-        public int getReason() {
-            return reason;
-        }
-
-        public boolean isSuccessful() {
-            return successful;
-        }
-    }
+    
 }

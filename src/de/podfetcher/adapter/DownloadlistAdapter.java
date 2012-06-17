@@ -14,10 +14,11 @@ import de.podfetcher.feed.FeedFile;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.service.DownloadObserver;
+import de.podfetcher.service.DownloadStatus;
 
-public class DownloadlistAdapter extends ArrayAdapter<DownloadObserver.DownloadStatus> {
+public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
     public DownloadlistAdapter(Context context,
-            int textViewResourceId, DownloadObserver.DownloadStatus[] objects) {
+            int textViewResourceId, DownloadStatus[] objects) {
         super(context, textViewResourceId, objects);
     }
 
@@ -25,7 +26,7 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadObserver.DownloadS
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
-        DownloadObserver.DownloadStatus status = getItem(position);
+        DownloadStatus status = getItem(position);
         FeedFile feedFile = status.getFeedFile();
         // Inflate layout
         if (convertView == null) {

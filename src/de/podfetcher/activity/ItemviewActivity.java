@@ -22,6 +22,7 @@ import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.service.DownloadObserver;
+import de.podfetcher.service.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
 
@@ -138,7 +139,7 @@ public class ItemviewActivity extends SherlockActivity {
 	final DownloadObserver downloadObserver = new DownloadObserver(this) {
 		@Override
 		protected void onProgressUpdate(
-				DownloadObserver.DownloadStatus... values) {
+				DownloadStatus... values) {
 
 		}
 

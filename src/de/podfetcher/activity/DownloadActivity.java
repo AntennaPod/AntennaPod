@@ -4,6 +4,7 @@ package de.podfetcher.activity;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.adapter.DownloadlistAdapter;
 import de.podfetcher.service.DownloadObserver;
+import de.podfetcher.service.DownloadStatus;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.FeedFile;
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -36,7 +37,7 @@ public class DownloadActivity extends SherlockListActivity {
 
     private final DownloadObserver observer = new DownloadObserver(this) {
         @Override
-        protected void onProgressUpdate(DownloadObserver.DownloadStatus... values) {
+        protected void onProgressUpdate(DownloadStatus... values) {
             if (dla != null) {
                 dla.notifyDataSetChanged();
             } else {
