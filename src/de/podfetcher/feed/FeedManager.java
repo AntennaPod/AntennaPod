@@ -24,11 +24,15 @@ public class FeedManager {
 
 	private ArrayList<Feed> feeds;
 	private ArrayList<FeedCategory> categories;
+
+	/** Contains all items where 'read' is false */
+	private ArrayList<FeedItem> unreadItems;
 	private DownloadRequester requester;
 
 	private FeedManager() {
 		feeds = new ArrayList<Feed>();
 		categories = new ArrayList<FeedCategory>();
+		unreadItems = new ArrayList<FeedItem>();
 		requester = DownloadRequester.getInstance();
 
 	}
@@ -39,19 +43,21 @@ public class FeedManager {
 		}
 		return singleton;
 	}
-	
-	/** Play FeedMedia and start the playback service + launch Mediaplayer Activity. */
+
+	/**
+	 * Play FeedMedia and start the playback service + launch Mediaplayer
+	 * Activity.
+	 */
 	public void playMedia(Context context, FeedMedia media) {
 		// Start playback Service
-		Intent launchIntent = new Intent(context,
-				PlaybackService.class);
+		Intent launchIntent = new Intent(context, PlaybackService.class);
 		launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
-		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem().getFeed().getId());
+		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem()
+				.getFeed().getId());
 		context.startService(launchIntent);
 
 		// Launch Mediaplayer
-		Intent playerIntent = new Intent(context,
-				MediaplayerActivity.class);
+		Intent playerIntent = new Intent(context, MediaplayerActivity.class);
 		context.startActivity(playerIntent);
 	}
 
@@ -65,10 +71,24 @@ public class FeedManager {
 			}
 			media.setDownloaded(false);
 			media.setFile_url("");
-			setFeedMedia(context, media);			
+			setFeedMedia(context, media);
 		}
 		Log.d(TAG, "Deleting File. Result: " + result);
 		return result;
+	}
+
+	/**
+	 * Sets the 'read'-attribute of a FeedItem. Should be used by all Classes
+	 * instead of the setters of FeedItem.
+	 */
+	public void markItemRead(Context context, FeedItem item, boolean read) {
+		item.read = read;
+		setFeedItem(context, item);
+		if (read == true) {
+			unreadItems.remove(item);
+		} else {
+			unreadItems.add(item);
+		}
 	}
 
 	public void refreshAllFeeds(Context context) {
@@ -86,8 +106,8 @@ public class FeedManager {
 			setFeedItem(context, item);
 		}
 	}
-
-	/** Adds a new Feeditem if its not in the list */
+/* TODO Decide if still useful
+	
 	public void addFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		// Search list for feeditem
@@ -104,7 +124,7 @@ public class FeedManager {
 			item.id = adapter.setFeedItem(item);
 		}
 	}
-
+*/
 	public void updateFeed(Context context, Feed newFeed) {
 		// Look up feed in the feedslist
 		Feed savedFeed = searchFeedByLink(newFeed.getLink());
@@ -113,7 +133,7 @@ public class FeedManager {
 					"Found no existing Feed with title " + newFeed.getTitle()
 							+ ". Adding as new one.");
 			// Add a new Feed
-			newFeed.getItems().get(0).setRead(false);
+			markItemRead(context, newFeed.getItems().get(0), false);
 			addNewFeed(context, newFeed);
 		} else {
 			Log.d(TAG, "Feed with title " + newFeed.getTitle()
@@ -125,6 +145,7 @@ public class FeedManager {
 				if (oldItem == null) {
 					// item is new
 					savedFeed.getItems().add(item);
+					markItemRead(context, item, false);
 				}
 			}
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
@@ -293,10 +314,12 @@ public class FeedManager {
 				item.setMedia(adapter.getFeedMedia(itemlistCursor
 						.getLong(itemlistCursor
 								.getColumnIndex(PodDBAdapter.KEY_MEDIA)), item));
-				item.setRead((itemlistCursor.getInt(itemlistCursor
+				item.read = (itemlistCursor.getInt(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true
-						: false);
-
+						: false;
+				if (!item.read) {
+					unreadItems.add(item);
+				}
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}
@@ -307,5 +330,11 @@ public class FeedManager {
 	public ArrayList<Feed> getFeeds() {
 		return feeds;
 	}
+
+	public ArrayList<FeedItem> getUnreadItems() {
+		return unreadItems;
+	}
+	
+	
 
 }

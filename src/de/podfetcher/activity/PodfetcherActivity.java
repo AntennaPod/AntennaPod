@@ -10,18 +10,21 @@ import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import de.podfetcher.R;
+import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
+import de.podfetcher.fragment.UnreadItemlistFragment;
 
 public class PodfetcherActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PodfetcherActivity";
 
 	private FeedlistFragment feedlist;
+	FeedItemlistFragment unreadList;
+	
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.main);
-
 		// Set up tabs
 		ActionBar actionBar = getSupportActionBar();
 		actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
@@ -36,13 +39,14 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 								FeedlistFragment.class));
 
 		actionBar.addTab(tab);
+		
 		tab = actionBar
 				.newTab()
 				.setText(getText(R.string.new_label).toString())
 				.setTabListener(
-						new TabListener<FeedlistFragment>(this, getText(
+						new TabListener<UnreadItemlistFragment>(this, getText(
 								R.string.new_label).toString(),
-								FeedlistFragment.class));
+								UnreadItemlistFragment.class));
 		actionBar.addTab(tab);
 	}
 
@@ -54,7 +58,6 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		private final String tag;
 		private final Class<T> fClass;
 		private Fragment fragment;
-		private boolean attachedOnce = false;
 
 		public TabListener(Activity activity, String tag, Class<T> fClass) {
 			this.activity = activity;
@@ -76,10 +79,6 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 			if (fragment == null) {
 				fragment = Fragment.instantiate(activity, fClass.getName());
 				ft.replace(R.id.main_fragment, fragment);
-				attachedOnce = true;
-			} else if (!attachedOnce) {
-				ft.replace(R.id.main_fragment, fragment);
-				attachedOnce = true;
 			} else {
 				ft.attach(fragment);
 			}

@@ -26,15 +26,15 @@ public class FeedItemlistFragment extends SherlockListFragment {
 	private static final String TAG = "FeedItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
 
-	private FeedItemlistAdapter fila;
-	private FeedManager manager;
-	private DownloadRequester requester;
+	protected FeedItemlistAdapter fila;
+	protected FeedManager manager;
+	protected DownloadRequester requester;
 
 	/** The feed which the activity displays */
-	private ArrayList<FeedItem> items;
+	protected ArrayList<FeedItem> items;
 
-	private FeedItem selectedItem;
-	private ActionMode mActionMode;
+	protected FeedItem selectedItem;
+	protected ActionMode mActionMode;
 
 	public FeedItemlistFragment(ArrayList<FeedItem> items) {
 		super();
@@ -150,10 +150,10 @@ public class FeedItemlistFragment extends SherlockListFragment {
 						.getMedia().getDownloadId());
 				break;
 			case R.id.mark_read_item:
-				selectedItem.setRead(true);
+				manager.markItemRead(getSherlockActivity(), selectedItem, true);
 				break;
 			case R.id.mark_unread_item:
-				selectedItem.setRead(false);
+				manager.markItemRead(getSherlockActivity(), selectedItem, false);
 				break;
 
 			}
