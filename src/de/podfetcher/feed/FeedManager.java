@@ -273,6 +273,7 @@ public class FeedManager {
 		feeds.clear();
 		categories.clear();
 		extractFeedlistFromCursor(context);
+		extractDownloadLogFromCursor(context);
 	}
 
 	private void extractFeedlistFromCursor(Context context) {
@@ -390,6 +391,10 @@ public class FeedManager {
 
 	public ArrayList<FeedItem> getUnreadItems() {
 		return unreadItems;
+	}
+
+	public ArrayList<DownloadStatus> getDownloadLog() {
+		return downloadLog;
 	}
 
 }

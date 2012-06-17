@@ -21,9 +21,9 @@ import de.podfetcher.service.DownloadStatus;
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 
-	public DownloadLogAdapter(Context context, int resource,
+	public DownloadLogAdapter(Context context,
 			int textViewResourceId, List<DownloadStatus> objects) {
-		super(context, resource, textViewResourceId, objects);
+		super(context, textViewResourceId, objects);
 	}
 
 	@Override
@@ -61,6 +61,7 @@ public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 			if (status.isSuccessful()) {
 				holder.successful.setTextColor(Color.parseColor("green"));
 				holder.successful.setText("Download succeeded");
+				holder.reason.setVisibility(View.GONE);
 			} else {
 				holder.successful.setTextColor(Color.parseColor("red"));
 				holder.successful.setText("Download failed");

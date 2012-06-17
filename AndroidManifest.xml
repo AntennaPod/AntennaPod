@@ -34,6 +34,7 @@
 
         <service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
         <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" />
-        <activity android:name=".activity.PreferenceActivity"></activity> 
+        <activity android:name=".activity.PreferenceActivity"></activity>
+        <activity android:name=".activity.DownloadLogActivity"></activity> 
     </application>
 </manifest>

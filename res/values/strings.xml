@@ -42,4 +42,5 @@
 	<string name="version_pref">Version</string>
 	<string name="other_pref">Other</string>
 	<string name="about_pref">About</string>
+	<string name="show_download_log">Show Log</string>
 </resources>
