@@ -43,6 +43,15 @@ public class DownloadService extends Service {
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
+	
+	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.podfetcher.service.download_handled";
+	/** True if handled feed has an image. */
+	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.podfetcher.service.feed_has_image";
+	/** ID of DownloadStatus. */
+	public static final String EXTRA_STATUS_ID = "extra.de.podfetcher.service.feedfile_id";
+	public static final String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.service.download_id";
+	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.podfetcher.service.image_download_id";
+	
 
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
@@ -179,14 +188,29 @@ public class DownloadService extends Service {
 							.getColumnIndex(DownloadManager.COLUMN_REASON));
 					Log.d(TAG, "reason code is " + reason);
 					successful = false;
+					long statusId = manager.addDownloadStatus(context, new DownloadStatus(download,
+							reason, successful));
+					sendDownloadHandledIntent(download.getDownloadId(), statusId, false, 0);
+					download.setDownloadId(0);
+					
 				}
-				manager.addDownloadStatus(context, new DownloadStatus(download,
-						reason, successful));
+				
 				c.close();
 			}
 		}
 
 	};
+	
+	private void sendDownloadHandledIntent(long downloadId, long statusId, boolean feedHasImage, long imageDownloadId) {
+		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
+		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
+		intent.putExtra(EXTRA_STATUS_ID, statusId);
+		intent.putExtra(EXTRA_FEED_HAS_IMAGE, feedHasImage);
+		if (feedHasImage) {
+			intent.putExtra(EXTRA_IMAGE_DOWNLOAD_ID, imageDownloadId);
+		}
+		sendBroadcast(intent);
+	}
 
 	/** Check if there's something else to download, otherwise stop */
 	public synchronized void queryDownloads() {
@@ -239,6 +263,9 @@ public class DownloadService extends Service {
 		}
 
 		public void run() {
+			long imageId = 0;
+			boolean hasImage = false;
+			
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
 			feed.setDownloaded(true);
@@ -247,12 +274,15 @@ public class DownloadService extends Service {
 			// Download Feed Image if provided
 			if (feed.getImage() != null) {
 				Log.d(TAG, "Feed has image; Downloading....");
-				requester.downloadImage(service, feed.getImage());
+				imageId = requester.downloadImage(service, feed.getImage());
+				hasImage = true;
 			}
 			requester.removeDownload(feed);
 
 			cleanup();
-
+			long statusId = manager.addDownloadStatus(service, new DownloadStatus(feed, 0, true));
+			sendDownloadHandledIntent(feed.getDownloadId(), statusId, hasImage, imageId);
+			feed.setDownloadId(0);
 			// Save information of feed in DB
 			manager.updateFeed(service, feed);
 			queryDownloads();
@@ -283,6 +313,11 @@ public class DownloadService extends Service {
 		public void run() {
 			image.setDownloaded(true);
 			requester.removeDownload(image);
+			
+			long statusId = manager.addDownloadStatus(service, new DownloadStatus(image, 0, true));
+			sendDownloadHandledIntent(image.getDownloadId(), statusId, false, 0);
+			image.setDownloadId(0);
+			
 			manager.setFeedImage(service, image);
 			queryDownloads();
 		}
@@ -313,6 +348,9 @@ public class DownloadService extends Service {
 			media.setDuration(mediaplayer.getDuration());
 			Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
+			long statusId = manager.addDownloadStatus(service, new DownloadStatus(media, 0, true));
+			sendDownloadHandledIntent(media.getDownloadId(), statusId, false, 0);
+			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
 			queryDownloads();
 		}

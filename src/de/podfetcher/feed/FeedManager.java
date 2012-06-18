@@ -106,7 +106,7 @@ public class FeedManager {
 					new Date()));
 		}
 	}
-	
+
 	public long addDownloadStatus(Context context, DownloadStatus status) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		downloadLog.add(status);
@@ -263,6 +263,15 @@ public class FeedManager {
 		return null;
 	}
 
+	public DownloadStatus getDownloadStatus(long statusId) {
+		for (DownloadStatus status : downloadLog) {
+			if (status.getId() == statusId) {
+				return status;
+			}
+		}
+		return null;
+	}
+
 	/** Reads the database */
 	public void loadDBData(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
@@ -375,10 +384,14 @@ public class FeedManager {
 					feedfile = getFeedMedia(feedfileId);
 				}
 				if (feedfile != null) { // otherwise ignore status
-					boolean successful = logCursor.getInt(logCursor.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL)) > 0;
-					int reason = logCursor.getInt(logCursor.getColumnIndex(PodDBAdapter.KEY_REASON));
-					Date completionDate = new Date(logCursor.getLong(logCursor.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE)));
-					downloadLog.add(new DownloadStatus(id, feedfile, successful, reason, completionDate));
+					boolean successful = logCursor.getInt(logCursor
+							.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL)) > 0;
+					int reason = logCursor.getInt(logCursor
+							.getColumnIndex(PodDBAdapter.KEY_REASON));
+					Date completionDate = new Date(logCursor.getLong(logCursor
+							.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE)));
+					downloadLog.add(new DownloadStatus(id, feedfile,
+							successful, reason, completionDate));
 				}
 
 			} while (logCursor.moveToNext());
