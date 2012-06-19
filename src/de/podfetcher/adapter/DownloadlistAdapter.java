@@ -9,12 +9,12 @@ import android.content.Context;
 
 import de.podfetcher.R;
 import de.podfetcher.util.Converter;
+import de.podfetcher.asynctask.DownloadObserver;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedFile;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
-import de.podfetcher.service.DownloadObserver;
-import de.podfetcher.service.DownloadStatus;
 
 public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
     public DownloadlistAdapter(Context context,

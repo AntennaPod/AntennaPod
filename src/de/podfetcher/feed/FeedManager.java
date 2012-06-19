@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import de.podfetcher.activity.MediaplayerActivity;
-import de.podfetcher.service.DownloadStatus;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.*;
 import android.content.Context;

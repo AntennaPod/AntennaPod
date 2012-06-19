@@ -15,14 +15,14 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.podfetcher.R;
+import de.podfetcher.asynctask.DownloadObserver;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
-import de.podfetcher.service.DownloadObserver;
-import de.podfetcher.service.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
 

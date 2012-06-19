@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 
 import de.podfetcher.activity.DownloadActivity;
 import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.*;
 import de.podfetcher.service.PlaybackService.LocalBinder;
 import de.podfetcher.storage.DownloadRequester;

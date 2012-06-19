@@ -12,11 +12,11 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.podfetcher.R;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedFile;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedMedia;
-import de.podfetcher.service.DownloadStatus;
 import de.podfetcher.util.DownloadError;
 
 /** Displays a list of DownloadStatus entries. */

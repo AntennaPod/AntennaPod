@@ -11,13 +11,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
 import de.podfetcher.R;
+import de.podfetcher.asynctask.DownloadObserver;
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.URLChecker;
-import de.podfetcher.service.DownloadObserver;
 import de.podfetcher.service.DownloadService;
-import de.podfetcher.service.DownloadStatus;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;

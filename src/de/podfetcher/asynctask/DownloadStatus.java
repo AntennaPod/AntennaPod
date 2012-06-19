@@ -1,4 +1,4 @@
-package de.podfetcher.service;
+package de.podfetcher.asynctask;
 
 import java.util.Date;
 

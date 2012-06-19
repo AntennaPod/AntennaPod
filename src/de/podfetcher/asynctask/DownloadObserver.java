@@ -1,4 +1,4 @@
-package de.podfetcher.service;
+package de.podfetcher.asynctask;
 
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.feed.*;

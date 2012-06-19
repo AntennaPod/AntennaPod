@@ -1,11 +1,11 @@
 package de.podfetcher.storage;
 
+import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedCategory;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
-import de.podfetcher.service.DownloadStatus;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
