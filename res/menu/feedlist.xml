@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/remove_item" android:title="@string/remove_label" android:icon="@drawable/content_discard" android:visible="true"></item>
+    
+
+</menu>

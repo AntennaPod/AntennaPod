@@ -293,6 +293,41 @@ public class PodDBAdapter {
 		close();
 		return status.getId();
 	}
+	
+	public void removeFeedMedia(FeedMedia media) {
+		open();
+		db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?", new String[] {String.valueOf(media.getId())});
+		close();
+	}
+	
+	public void removeFeedImage(FeedImage image) {
+		open();
+		db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?", new String[] {String.valueOf(image.getId())});
+		close();
+	}
+	
+	/** Remove a FeedItem and its FeedMedia entry. */
+	public void removeFeedItem(FeedItem item) {
+		if (item.getMedia() != null) {
+			removeFeedMedia(item.getMedia());
+		}	
+		open();
+		db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?", new String[] {String.valueOf(item.getId())});
+		close();
+	}
+	
+	/** Remove a feed with all its FeedItems and Media entries. */
+	public void removeFeed(Feed feed) {
+		if (feed.getImage() != null) {
+			removeFeedImage(feed.getImage());
+		}
+		for (FeedItem item : feed.getItems()) {
+			removeFeedItem(item);
+		}	
+		open();
+		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?", new String[] {String.valueOf(feed.getId())});
+		close();
+	}
 
 	public void removeDownloadStatus(DownloadStatus remove) {
 		open();

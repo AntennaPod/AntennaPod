@@ -84,6 +84,32 @@ public class FeedManager {
 		Log.d(TAG, "Deleting File. Result: " + result);
 		return result;
 	}
+	
+	/** Remove a feed with all its items and media files and its image. */
+	public boolean deleteFeed(Context context, Feed feed) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		
+		// delete image file
+		if (feed.getImage() != null) {
+			if (feed.getImage().isDownloaded() && feed.getImage().getFile_url() == null) {
+				File imageFile = new File(feed.getImage().getFile_url());
+				imageFile.delete();
+			}
+		}
+		// delete stored media files and mark them as read
+		for (FeedItem item : feed.getItems()) {
+			if (!item.isRead()) {
+				unreadItems.remove(item);
+			}
+			if (item.getMedia() != null && item.getMedia().isDownloaded()) {
+				File mediaFile = new File(item.getMedia().getFile_url());
+				mediaFile.delete();
+			}
+		}
+		adapter.removeFeed(feed);
+		return feeds.remove(feed);
+		
+	}
 
 	/**
 	 * Sets the 'read'-attribute of a FeedItem. Should be used by all Classes
