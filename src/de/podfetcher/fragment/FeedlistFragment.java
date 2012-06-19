@@ -4,6 +4,7 @@ import de.podfetcher.R;
 import de.podfetcher.feed.*;
 import de.podfetcher.activity.*;
 import de.podfetcher.adapter.FeedlistAdapter;
+import de.podfetcher.asynctask.FeedRemover;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.service.DownloadService;
 import android.os.Bundle;
@@ -148,8 +149,14 @@ public class FeedlistFragment extends SherlockListFragment {
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 			switch (item.getItemId()) {
 			case R.id.remove_item:
-				manager.deleteFeed(getSherlockActivity(), selectedFeed);
-				fla.notifyDataSetChanged();
+				FeedRemover remover = new FeedRemover(getSherlockActivity()){
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						fla.notifyDataSetChanged();
+					}
+				};
+				remover.execute(selectedFeed);
 				break;
 			}
 			mode.finish();
