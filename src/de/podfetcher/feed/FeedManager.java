@@ -78,7 +78,7 @@ public class FeedManager {
 				result = mediaFile.delete();
 			}
 			media.setDownloaded(false);
-			media.setFile_url("");
+			media.setFile_url(null);
 			setFeedMedia(context, media);
 		}
 		Log.d(TAG, "Deleting File. Result: " + result);
