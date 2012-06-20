@@ -48,4 +48,5 @@
 	<string name="download_error_file_error">File error</string>
 	<string name="download_error_http_data_error">HTTP Data Error</string>
 	<string name="download_error_error_unknown">Unknown Error</string>
+	<string name="show_player_label">Show player</string>
 </resources>

@@ -76,6 +76,9 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
             case R.id.show_preferences:
             	startActivity(new Intent(this, PreferenceActivity.class));
             	return true;
+            case R.id.show_player:
+            	startActivity(new Intent(this, MediaplayerActivity.class));
+            	return true;
 			default:
 			    return super.onOptionsItemSelected(item);
 	    }
