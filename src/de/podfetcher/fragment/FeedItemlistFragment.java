@@ -21,6 +21,7 @@ import de.podfetcher.adapter.FeedItemlistAdapter;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.syndication.util.FeedItemMenuHandler;
 
 public class FeedItemlistFragment extends SherlockListFragment {
 	private static final String TAG = "FeedItemlistFragment";
@@ -96,7 +97,7 @@ public class FeedItemlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
+			return FeedItemMenuHandler.onPrepareMenu(menu, selectedItem);
 		}
 
 		@Override
@@ -107,67 +108,13 @@ public class FeedItemlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.feeditemlist, menu);
-			mode.setTitle(selectedItem.getTitle());
-
-			if (selectedItem.getMedia().isDownloaded()) {
-				menu.findItem(R.id.play_item).setVisible(true);
-				menu.findItem(R.id.remove_item).setVisible(true);
-			} else if (selectedItem.getMedia().getFile_url() == null) {
-				menu.findItem(R.id.download_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.cancel_download_item).setVisible(true);
-			}
-			
-			if (selectedItem.isRead()) {
-				menu.findItem(R.id.mark_unread_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.mark_read_item).setVisible(true);
-			}
-			
-			if (manager.isInQueue(selectedItem)) {
-				menu.findItem(R.id.remove_from_queue_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.add_to_queue_item).setVisible(true);
-			}
-			
-			return true;
+			return FeedItemMenuHandler.onCreateMenu(mode.getMenuInflater(), menu);
 
 		}
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.download_item:
-				requester.downloadMedia(getSherlockActivity(),
-						selectedItem.getMedia());
-				break;
-			case R.id.play_item:
-				manager.playMedia(getSherlockActivity(),
-						selectedItem.getMedia());
-				break;
-			case R.id.remove_item:
-				manager.deleteFeedMedia(getSherlockActivity(),
-						selectedItem.getMedia());
-				break;
-			case R.id.cancel_download_item:
-				requester.cancelDownload(getSherlockActivity(), selectedItem
-						.getMedia().getDownloadId());
-				break;
-			case R.id.mark_read_item:
-				manager.markItemRead(getSherlockActivity(), selectedItem, true);
-				break;
-			case R.id.mark_unread_item:
-				manager.markItemRead(getSherlockActivity(), selectedItem, false);
-				break;
-			case R.id.add_to_queue_item:
-				manager.addQueueItem(getSherlockActivity(), selectedItem);
-				break;
-			case R.id.remove_from_queue_item:
-				manager.removeQueueItem(getSherlockActivity(), selectedItem);
-				break;
-			}
+			FeedItemMenuHandler.onMenuItemClicked(getSherlockActivity(), item, selectedItem);
 			fila.notifyDataSetChanged();
 			mode.finish();
 			return true;

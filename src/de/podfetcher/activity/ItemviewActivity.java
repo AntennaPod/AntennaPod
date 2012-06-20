@@ -28,6 +28,7 @@ import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.syndication.util.FeedItemMenuHandler;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockActivity {
@@ -158,20 +159,22 @@ public class ItemviewActivity extends SherlockActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = new MenuInflater(this);
-	    inflater.inflate(R.menu.feeditemlist, menu);
-	    getDownloadStatus(menu);
-	    return true;
+		return FeedItemMenuHandler.onCreateMenu(new MenuInflater(this), menu);
 	}
 	
 	
 
 	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		// TODO Auto-generated method stub
-		return super.onOptionsItemSelected(item);
+	public boolean onOptionsItemSelected(MenuItem menuItem) {
+		FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item);
+		invalidateOptionsMenu();
+		return true;
 	}
-
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return FeedItemMenuHandler.onPrepareMenu(menu, item);
+	}
 	
 	private void setDownloadingState(Menu menu) {
 		
