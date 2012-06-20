@@ -13,14 +13,25 @@
 		android:layout_height="wrap_content"
 		android:layout_below="@id/txtvItemname"
 		/>
-	<Button 
+	<ImageButton 
 	    android:id="@+id/butAction"
 	    android:layout_width="wrap_content"
 	    android:layout_height="match_parent"
-	    android:text="More"
+	    android:padding="8dp"
+	    android:src="@drawable/navigation_expand"
 	    android:background="@drawable/borderless_button"
 	    android:layout_alignParentRight="true"
 	    android:focusable="false"
+	    android:focusableInTouchMode="false"
+	    android:clickable="false"
 	    />
+	<ImageView 
+	    android:layout_height="match_parent"
+	    android:layout_width="wrap_content"
+	    android:src="@drawable/vertical_divider"
+	    android:layout_alignParentRight="true"
+	    android:layout_centerVertical="true"
+	    android:layout_marginRight="28dp"
+	    android:focusable="false"/>
 	
 </RelativeLayout>

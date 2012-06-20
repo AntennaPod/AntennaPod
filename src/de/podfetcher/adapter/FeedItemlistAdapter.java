@@ -7,6 +7,7 @@ import de.podfetcher.util.Converter;
 import de.podfetcher.R;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,7 +36,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			convertView = inflater.inflate(R.layout.feeditemlist_item, null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvItemname);
 			holder.size = (TextView) convertView.findViewById(R.id.txtvItemsize);
-			holder.butAction = (Button) convertView.findViewById(R.id.butAction);
+			holder.butAction = (ImageButton) convertView.findViewById(R.id.butAction);
 			
 			convertView.setTag(holder);
 		} else {
@@ -49,6 +50,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.title.setTypeface(Typeface.DEFAULT);
 		}
 		holder.size.setText(Converter.byteToString(item.getMedia().getSize()));
+		holder.butAction.setFocusable(false);
 		holder.butAction.setOnClickListener(onButActionClicked);
 		return convertView;
 	
@@ -57,6 +59,6 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	static class Holder {
 		TextView title;
 		TextView size;
-		Button butAction;
+		ImageButton butAction;
 	}
 }

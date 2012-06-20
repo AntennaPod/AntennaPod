@@ -24,6 +24,11 @@ import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.syndication.util.FeedItemMenuHandler;
 
 public class FeedItemlistFragment extends SherlockListFragment {
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		this.getListView().setItemsCanFocus(true);
+	}
+
 	private static final String TAG = "FeedItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
 
@@ -59,6 +64,8 @@ public class FeedItemlistFragment extends SherlockListFragment {
 			mActionMode.finish();
 		}
 	}
+	
+	
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
