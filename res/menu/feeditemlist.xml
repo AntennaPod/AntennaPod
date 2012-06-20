@@ -6,6 +6,8 @@
     <item android:id="@+id/cancel_download_item" android:icon="@drawable/navigation_cancel" android:title="@string/cancel_download_label" android:visible="false"></item>
     <item android:id="@+id/mark_read_item" android:title="@string/mark_read_label" android:showAsAction="collapseActionView" android:visible="false"></item>
     <item android:id="@+id/mark_unread_item" android:title="@string/mark_unread_label" android:visible="false" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/add_to_queue_item" android:title="@string/add_to_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/remove_from_queue_item" android:title="@string/remove_from_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     
 
 </menu>

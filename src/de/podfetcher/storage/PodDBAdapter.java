@@ -1,5 +1,7 @@
 package de.podfetcher.storage;
 
+import java.util.ArrayList;
+
 import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedCategory;
@@ -48,6 +50,8 @@ public class PodDBAdapter {
 	public static final String KEY_SUCCESSFUL = "successful";
 	public static final String KEY_FEEDFILETYPE = "feedfile_type";
 	public static final String KEY_COMPLETION_DATE = "completion_date";
+	public static final String KEY_FEEDITEM = "feeditem";
+	
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
@@ -55,6 +59,7 @@ public class PodDBAdapter {
 	public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
 	public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
 	public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
+	public static final String TABLE_NAME_QUEUE = "Queue";
 
 	// SQL Statements for creating new tables
 	private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -92,6 +97,11 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
 			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
 			+ " INTEGER)";
+	
+	private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
+			+ TABLE_NAME_QUEUE + "(" +  KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_FEEDITEM + " INTEGER,"
+			+ KEY_FEED + " INTEGER)";
 
 	/**
 	 * Used for storing download status entries to determine the type of the
@@ -115,6 +125,7 @@ public class PodDBAdapter {
 			try {
 				db = helper.getWritableDatabase();
 			} catch (SQLException ex) {
+				ex.printStackTrace();
 				db = helper.getReadableDatabase();
 			}
 		}
@@ -294,6 +305,20 @@ public class PodDBAdapter {
 		return status.getId();
 	}
 	
+	public void setQueue(ArrayList<FeedItem> queue) {
+		ContentValues values = new ContentValues();
+		open();
+		db.delete(TABLE_NAME_QUEUE, null, null);
+		for (int i = 0; i < queue.size(); i++) {
+			FeedItem item = queue.get(i);
+			values.put(KEY_ID, i);
+			values.put(KEY_FEEDITEM, item.getId());
+			values.put(KEY_FEED, item.getFeed().getId());
+			db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+		}
+		close();
+	}
+	
 	public void removeFeedMedia(FeedMedia media) {
 		open();
 		db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?", new String[] {String.valueOf(media.getId())});
@@ -411,6 +436,12 @@ public class PodDBAdapter {
 				null, null);
 		return c;
 	}
+	
+	public final Cursor getQueueCursor() {
+		open();
+		Cursor c = db.query(TABLE_NAME_QUEUE, null, null, null, null, null, null);
+		return c;
+	}
 
 	/**
 	 * Get a FeedMedia object from the Database.
@@ -491,6 +522,7 @@ public class PodDBAdapter {
 			db.execSQL(CREATE_TABLE_FEED_IMAGES);
 			db.execSQL(CREATE_TABLE_FEED_MEDIA);
 			db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
+			db.execSQL(CREATE_TABLE_QUEUE);
 		}
 
 		@Override

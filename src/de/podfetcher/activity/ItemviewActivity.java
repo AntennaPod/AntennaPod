@@ -13,6 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
 import de.podfetcher.asynctask.DownloadObserver;
@@ -49,14 +52,13 @@ public class ItemviewActivity extends SherlockActivity {
 		manager = FeedManager.getInstance();
 		extractFeeditem();
 		populateUI();
-		getDownloadStatus();
 
 		butDownload.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				requester = DownloadRequester.getInstance();
 				requester.downloadMedia(v.getContext(), item.getMedia());
-				getDownloadStatus();
+				//getDownloadStatus();
 			}
 		});
 
@@ -72,7 +74,7 @@ public class ItemviewActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				if (manager.deleteFeedMedia(v.getContext(), item.getMedia())) {
-					setNotDownloadedState();
+					//setNotDownloadedState();
 				}
 				
 			}
@@ -123,16 +125,16 @@ public class ItemviewActivity extends SherlockActivity {
 		webvDescription.loadData(item.getDescription(), "text/html", null);
 	}
 
-	private void getDownloadStatus() {
+	private void getDownloadStatus(Menu menu) {
 		FeedMedia media = item.getMedia();
 		if (media.getFile_url() == null) {
-			setNotDownloadedState();
+			setNotDownloadedState(menu);
 		} else if (media.isDownloaded()) {
-			setDownloadedState();
+			setDownloadedState(menu);
 		} else {
 			// observe
-			setDownloadingState();
-			downloadObserver.execute(media);
+			setDownloadingState(menu);
+			//downloadObserver.execute(media);
 		}
 	}
 
@@ -147,26 +149,44 @@ public class ItemviewActivity extends SherlockActivity {
 		protected void onPostExecute(Boolean result) {
 			boolean r = getStatusList()[0].isSuccessful();
 			if (r) {
-				setDownloadedState();
+				//setDownloadedState();
 			} else {
-				setNotDownloadedState();
+				//setNotDownloadedState();
 			}
 		}
 	};
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = new MenuInflater(this);
+	    inflater.inflate(R.menu.feeditemlist, menu);
+	    getDownloadStatus(menu);
+	    return true;
+	}
+	
+	
 
-	private void setDownloadingState() {
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		// TODO Auto-generated method stub
+		return super.onOptionsItemSelected(item);
+	}
+
+	
+	private void setDownloadingState(Menu menu) {
+		
 		butDownload.setEnabled(false);
 		butPlay.setEnabled(false);
 		butRemove.setEnabled(false);
 	}
 
-	private void setDownloadedState() {
+	private void setDownloadedState(Menu menu) {
 		butDownload.setEnabled(false);
 		butPlay.setEnabled(true);
 		butRemove.setEnabled(true);
 	}
 
-	private void setNotDownloadedState() {
+	private void setNotDownloadedState(Menu menu) {
 		butPlay.setEnabled(false);
 		butDownload.setEnabled(true);
 		butRemove.setEnabled(false);

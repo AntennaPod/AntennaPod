@@ -125,7 +125,13 @@ public class FeedItemlistFragment extends SherlockListFragment {
 			} else {
 				menu.findItem(R.id.mark_read_item).setVisible(true);
 			}
-
+			
+			if (manager.isInQueue(selectedItem)) {
+				menu.findItem(R.id.remove_from_queue_item).setVisible(true);
+			} else {
+				menu.findItem(R.id.add_to_queue_item).setVisible(true);
+			}
+			
 			return true;
 
 		}
@@ -155,7 +161,12 @@ public class FeedItemlistFragment extends SherlockListFragment {
 			case R.id.mark_unread_item:
 				manager.markItemRead(getSherlockActivity(), selectedItem, false);
 				break;
-
+			case R.id.add_to_queue_item:
+				manager.addQueueItem(getSherlockActivity(), selectedItem);
+				break;
+			case R.id.remove_from_queue_item:
+				manager.removeQueueItem(getSherlockActivity(), selectedItem);
+				break;
 			}
 			fila.notifyDataSetChanged();
 			mode.finish();

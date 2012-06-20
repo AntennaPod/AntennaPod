@@ -49,4 +49,6 @@
 	<string name="download_error_http_data_error">HTTP Data Error</string>
 	<string name="download_error_error_unknown">Unknown Error</string>
 	<string name="show_player_label">Show player</string>
+	<string name="add_to_queue_label">Add to Queue</string>
+	<string name="remove_from_queue_label">Remove from Queue</string>
 </resources>

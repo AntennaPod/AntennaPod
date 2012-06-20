@@ -34,6 +34,9 @@ public class FeedManager {
 
 	/** Contains completed Download status entries */
 	private ArrayList<DownloadStatus> downloadLog;
+	
+	/** Contains the queue of items to be played. */
+	private ArrayList<FeedItem> queue;
 
 	private DownloadRequester requester;
 
@@ -43,6 +46,7 @@ public class FeedManager {
 		unreadItems = new ArrayList<FeedItem>();
 		requester = DownloadRequester.getInstance();
 		downloadLog = new ArrayList<DownloadStatus>();
+		queue = new ArrayList<FeedItem>();
 	}
 
 	public static FeedManager getInstance() {
@@ -140,6 +144,24 @@ public class FeedManager {
 			adapter.removeDownloadStatus(downloadLog.remove(0));
 		}
 		return adapter.setDownloadStatus(status);
+	}
+	
+	public void addQueueItem(Context context, FeedItem item) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		queue.add(item);
+		adapter.setQueue(queue);
+	}
+	
+	public void removeQueueItem(Context context, FeedItem item) {
+		boolean removed = queue.remove(item);
+		if (removed) {
+			PodDBAdapter adapter = new PodDBAdapter(context);
+			adapter.setQueue(queue);
+		}
+	}
+	
+	public boolean isInQueue(FeedItem item) {
+		return queue.contains(item);
 	}
 
 	private void addNewFeed(Context context, Feed feed) {
@@ -300,7 +322,6 @@ public class FeedManager {
 
 	/** Reads the database */
 	public void loadDBData(Context context) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
 		updateArrays(context);
 	}
 
@@ -309,6 +330,7 @@ public class FeedManager {
 		categories.clear();
 		extractFeedlistFromCursor(context);
 		extractDownloadLogFromCursor(context);
+		extractQueueFromCursor(context);
 	}
 
 	private void extractFeedlistFromCursor(Context context) {
@@ -421,6 +443,20 @@ public class FeedManager {
 				}
 
 			} while (logCursor.moveToNext());
+		}
+	}
+	
+	private void extractQueueFromCursor(Context context) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		Cursor cursor = adapter.getQueueCursor();
+		if (cursor.moveToFirst()) {
+			do {
+				int index = cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_ID));
+				Feed feed = getFeed(cursor.getColumnIndex(PodDBAdapter.KEY_FEED));
+				FeedItem item = getFeedItem(cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
+				queue.add(index, item);
+			} while (cursor.moveToNext());
 		}
 	}
 
