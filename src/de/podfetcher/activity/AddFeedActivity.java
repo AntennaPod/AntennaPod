@@ -56,7 +56,12 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog = new ProgressDialog(this) {
 			@Override
 			public void onBackPressed() {
-				requester.cancelDownload(getContext(), downloadId);
+				if (isWaitingForImage) {
+					requester.cancelDownload(getContext(), imageDownloadId);
+				} else {
+					requester.cancelDownload(getContext(), downloadId);
+				}
+				
 				unregisterReceiver(downloadCompleted);
 				dismiss();
 			}
@@ -88,6 +93,18 @@ public class AddFeedActivity extends SherlockActivity {
 		super.onStop();
 		Log.d(TAG, "Stopping Activity");
 	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		try {
+			unregisterReceiver(downloadCompleted);
+		} catch (IllegalArgumentException e) {
+			// ignore
+		}
+		
+	}
+
 
 	private void addNewFeed() {
 		String url = etxtFeedurl.getText().toString();
