@@ -262,6 +262,7 @@ public class FeedManager {
 				return f;
 			}
 		}
+		Log.e(TAG, "Couldn't find Feed with id " + id);
 		return null;
 	}
 
@@ -444,6 +445,7 @@ public class FeedManager {
 
 			} while (logCursor.moveToNext());
 		}
+		adapter.close();
 	}
 	
 	private void extractQueueFromCursor(Context context) {
@@ -453,11 +455,12 @@ public class FeedManager {
 		if (cursor.moveToFirst()) {
 			do {
 				int index = cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_ID));
-				Feed feed = getFeed(cursor.getColumnIndex(PodDBAdapter.KEY_FEED));
+				Feed feed = getFeed(cursor.getLong(cursor.getColumnIndex(PodDBAdapter.KEY_FEED)));
 				FeedItem item = getFeedItem(cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
 				queue.add(index, item);
 			} while (cursor.moveToNext());
 		}
+		adapter.close();
 	}
 
 	public ArrayList<Feed> getFeeds() {
