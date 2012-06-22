@@ -40,33 +40,32 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView = inflater.inflate(R.layout.feedlist_item, null);
 			holder.title = (TextView) convertView
 					.findViewById(R.id.txtvFeedname);
-			holder.newEpisodes = (TextView) convertView.findViewById(R.id.txtvNewEpisodes);
+			
+			holder.newEpisodes = (TextView) convertView.findViewById(R.id.txtvNewEps);
 			holder.image = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.lastUpdate = (TextView) convertView
 					.findViewById(R.id.txtvLastUpdate);
+			holder.numberOfEpisodes = (TextView) convertView.findViewById(R.id.txtvNumEpisodes);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 
 		holder.title.setText(feed.getTitle());
-		holder.lastUpdate.setText(DateUtils.formatSameDayTime(feed
+		holder.lastUpdate.setText("Last Update: " + DateUtils.formatSameDayTime(feed
 				.getLastUpdate().getTime(), System.currentTimeMillis(),
 				DateFormat.SHORT, DateFormat.SHORT));
+		holder.numberOfEpisodes.setText(feed.getItems().size() + " Episodes");
 		
 		int newItems = feed.getNumOfNewItems();
 		if (newItems > 0) {
-			holder.newEpisodes.setTextColor(Color.parseColor("red"));
-			if (newItems == 1) {
-				holder.newEpisodes.setText(newItems + " new Episode");
-			} else {
-				holder.newEpisodes.setText(newItems + " new Episodes");
-			}
+			holder.newEpisodes.setText(Integer.toString(newItems));
+			holder.newEpisodes.setVisibility(View.VISIBLE);	
 		} else {
-			holder.newEpisodes.setTextColor(Color.parseColor("gray"));
-			holder.newEpisodes.setText("No new episodes");
+			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
+		
 		if (feed.getImage() != null) {
 			holder.image.setImageBitmap(feed.getImage().getImageBitmap()); // TODO
 																			// select
@@ -84,6 +83,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	static class Holder {
 		TextView title;
 		TextView lastUpdate;
+		TextView numberOfEpisodes;
 		TextView newEpisodes;
 		ImageView image;
 	}
