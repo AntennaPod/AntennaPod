@@ -8,6 +8,7 @@
     <item android:id="@+id/mark_unread_item" android:title="@string/mark_unread_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/add_to_queue_item" android:title="@string/add_to_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/remove_from_queue_item" android:title="@string/remove_from_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/stream_item" android:title="@string/stream_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     
 
 </menu>

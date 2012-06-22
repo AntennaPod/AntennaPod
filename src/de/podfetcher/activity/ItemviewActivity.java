@@ -66,7 +66,7 @@ public class ItemviewActivity extends SherlockActivity {
 		butPlay.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				manager.playMedia(v.getContext(), item.getMedia());
+				//manager.playMedia(v.getContext(), item.getMedia());
 			}
 		});
 		

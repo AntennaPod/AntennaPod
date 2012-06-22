@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -21,6 +22,7 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 
+import de.podfetcher.PodcastApp;
 import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.Feed;
@@ -28,22 +30,46 @@ import de.podfetcher.feed.FeedManager;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
+
 	/** Logging tag */
 	private static final String TAG = "PlaybackService";
+
+	/** Contains the id of the media that was played last. */
+	public static final String PREF_LAST_PLAYED_ID = "de.podfetcher.preferences.lastPlayedId";
+	/** Contains the feed id of the last played item. */
+	public static final String PREF_LAST_PLAYED_FEED_ID = "de.podfetcher.preferences.lastPlayedFeedId";
+	/** True if last played media was streamed. */
+	public static final String PREF_LAST_IS_STREAM = "de.podfetcher.preferences.lastIsStream";
+	
+	
 	/** Contains the id of the FeedMedia object. */
 	public static final String EXTRA_MEDIA_ID = "extra.de.podfetcher.service.mediaId";
 	/** Contains the id of the Feed object of the FeedMedia. */
 	public static final String EXTRA_FEED_ID = "extra.de.podfetcher.service.feedId";
+	/** True if media should be streamed. */
+	public static final String EXTRA_SHOULD_STREAM = "extra.de.podfetcher.service.shouldStream";
+	/**
+	 * True if playback should be started immediately after media has been
+	 * prepared.
+	 */
+	public static final String EXTRA_START_WHEN_PREPARED = "extra.de.podfetcher.service.startWhenPrepared";
 
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.podfetcher.service.playerStatusChanged";
+
+	/** Is true if service is running. */
+	public static boolean isRunning = false;
 
 	private static final int NOTIFICATION_ID = 1;
 	private NotificationCompat.Builder notificationBuilder;
 
 	private AudioManager audioManager;
 	private MediaPlayer player;
+
 	private FeedMedia media;
 	private Feed feed;
+	/** True if media should be streamed (Extracted from Intent Extra) . */
+	private boolean shouldStream;
+	private boolean startWhenPrepared;
 	private FeedManager manager;
 	private PlayerStatus status;
 	private PositionSaver positionSaver;
@@ -59,18 +85,28 @@ public class PlaybackService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		isRunning = true;
+		status = PlayerStatus.STOPPED;
 		Log.d(TAG, "Service created.");
-
+		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		manager = FeedManager.getInstance();
+		player = new MediaPlayer();
+		player.setOnPreparedListener(preparedListener);
+		player.setOnCompletionListener(completionListener);
+	}
+
+	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		isRunning = false;
+		Log.d(TAG, "Service is about to be destroyed");
+		audioManager.abandonAudioFocus(audioFocusChangeListener);
+		player.release();
 	}
 
 	@Override
 	public IBinder onBind(Intent intent) {
 		return mBinder;
-	}
-
-	private void setupAudioManager() {
-		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 	}
 
 	private final OnAudioFocusChangeListener audioFocusChangeListener = new OnAudioFocusChangeListener() {
@@ -89,7 +125,8 @@ public class PlaybackService extends Service {
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
 				Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-				audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_LOWER, 0);
+				audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+						AudioManager.ADJUST_LOWER, 0);
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
 				Log.d(TAG, "Lost audio focus temporarily. Pausing...");
@@ -102,21 +139,39 @@ public class PlaybackService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		long mediaId = intent.getLongExtra(EXTRA_MEDIA_ID, -1);
 		long feedId = intent.getLongExtra(EXTRA_FEED_ID, -1);
+		boolean playbackType = intent
+				.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
 		if (mediaId == -1 || feedId == -1) {
 			Log.e(TAG, "Media ID or Feed ID wasn't provided to the Service.");
-		} else {
-			// Intent values appear to be valid
-			if (audioManager == null) {
-				setupAudioManager();
+			if (media == null || feed == null) {
+				stopSelf();
 			}
-			Feed newFeed = manager.getFeed(feedId);
-			FeedMedia newMedia = manager.getFeedMedia(mediaId, newFeed);
-			if (media != null && media != newMedia) {
-				pause();
-				player.reset();
+			// Intent values appear to be valid
+			// check if already playing and playbackType is the same
+		} else if (media == null || mediaId != media.getId()
+				|| playbackType != shouldStream) {
+			pause();
+			player.reset();
+			if (media == null || mediaId != media.getId()) {
+				feed = manager.getFeed(feedId);
+				media = manager.getFeedMedia(mediaId, feed);
+			}
+
+			if (media != null) {
+				shouldStream = playbackType;
+				startWhenPrepared = intent.getBooleanExtra(
+						EXTRA_START_WHEN_PREPARED, false);
 				try {
-					player.setDataSource(newMedia.getFile_url());
-					player.prepare();
+					if (shouldStream) {
+						player.setDataSource(media.getDownload_url());
+						setStatus(PlayerStatus.PREPARING);
+						player.prepareAsync();
+					} else {
+						player.setDataSource(media.getFile_url());
+						setStatus(PlayerStatus.PREPARING);
+						player.prepare();
+					}
+
 				} catch (IllegalArgumentException e) {
 					e.printStackTrace();
 				} catch (SecurityException e) {
@@ -126,19 +181,16 @@ public class PlaybackService extends Service {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
-				media = newMedia;
-				feed = newFeed;
 
-			} else if (media == null) {
-				media = newMedia;
-				feed = newFeed;
-				player = MediaPlayer.create(this,
-						Uri.fromFile(new File(media.getFile_url())));
-				setStatus(PlayerStatus.PREPARING);
-				player.setOnPreparedListener(preparedListener);
-				Log.d(TAG, "Preparing to play file");
+			} else {
+				Log.e(TAG, "Media is null");
 			}
 
+		} else if (media != null && status != PlayerStatus.PLAYING) {
+			play();
+		} else {
+			Log.w(TAG, "Something went wrong. Shutting down...");
+			stopSelf();
 		}
 		setupNotification();
 		return Service.START_STICKY;
@@ -168,15 +220,27 @@ public class PlaybackService extends Service {
 		public void onPrepared(MediaPlayer mp) {
 			Log.d(TAG, "Resource prepared");
 			setStatus(PlayerStatus.PREPARED);
-			int focusGained = audioManager.requestAudioFocus(
-					audioFocusChangeListener, AudioManager.STREAM_MUSIC,
-					AudioManager.AUDIOFOCUS_GAIN);
-			if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-				Log.d(TAG, "Audiofocus successfully requested");
+			if (startWhenPrepared) {
 				play();
-			} else {
-				Log.d(TAG, "Failed to request Audiofocus");
 			}
+		}
+	};
+
+	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+
+		@Override
+		public void onCompletion(MediaPlayer mp) {
+			Log.d(TAG, "Playback completed");
+			positionSaver.cancel(true);
+			media.setPosition(0);
+			manager.markItemRead(PlaybackService.this, media.getItem(), true);
+			if (manager.isInQueue(media.getItem())) {
+				manager.removeQueueItem(PlaybackService.this, media.getItem());
+			}
+			manager.setFeedMedia(PlaybackService.this, media);
+			setStatus(PlayerStatus.STOPPED);
+			stopForeground(true);
+
 		}
 	};
 
@@ -186,22 +250,41 @@ public class PlaybackService extends Service {
 			player.pause();
 			saveCurrentPosition();
 			setStatus(PlayerStatus.PAUSED);
+			stopForeground(true);
 		}
 	}
 
 	public void play() {
-		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
-			Log.d(TAG, "Resuming/Starting playback");
-			player.start();
-			player.seekTo((int) media.getPosition());
-			setStatus(PlayerStatus.PLAYING);
-			setupPositionSaver();
-		} else if (status == PlayerStatus.STOPPED) {
+		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED
+				|| status == PlayerStatus.STOPPED) {
+			int focusGained = audioManager.requestAudioFocus(
+					audioFocusChangeListener, AudioManager.STREAM_MUSIC,
+					AudioManager.AUDIOFOCUS_GAIN);
 
+			if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+				Log.d(TAG, "Audiofocus successfully requested");
+
+				Log.d(TAG, "Resuming/Starting playback");
+				SharedPreferences.Editor editor = getApplicationContext()
+						.getSharedPreferences(PodcastApp.PREF_NAME, 0).edit();
+				editor.putLong(PREF_LAST_PLAYED_ID, media.getId());
+				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
+				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);
+				editor.commit();
+
+				player.start();
+				player.seekTo((int) media.getPosition());
+				setStatus(PlayerStatus.PLAYING);
+				setupPositionSaver();
+				setupNotification();
+			} else {
+				Log.d(TAG, "Failed to request Audiofocus");
+			}
 		}
 	}
 
 	private void setStatus(PlayerStatus newStatus) {
+		Log.d(TAG, "Setting status to " + newStatus);
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 	}
@@ -277,6 +360,10 @@ public class PlaybackService extends Service {
 			return null;
 		}
 
+	}
+
+	public boolean isShouldStream() {
+		return shouldStream;
 	}
 
 }

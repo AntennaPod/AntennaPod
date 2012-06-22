@@ -35,7 +35,7 @@
 	<!-- Mediaplayer status Messages -->
 	<string name="player_paused_msg">Paused</string>
 	<string name="player_error_msg">Error!</string>
-	<string name="player_stopped_msg">Stopped</string>
+	<string name="player_stopped_msg">No media playing</string>
 	<string name="player_preparing_msg">Preparing...</string>
 	<string name="mark_read_label">Mark read</string>
 	<string name="mark_unread_label">Mark unread</string>
@@ -51,4 +51,6 @@
 	<string name="show_player_label">Show player</string>
 	<string name="add_to_queue_label">Add to Queue</string>
 	<string name="remove_from_queue_label">Remove from Queue</string>
+	<string name="player_ready_msg">Ready</string>
+	<string name="stream_label">Stream</string>
 </resources>

@@ -6,6 +6,8 @@ import android.app.Application;
 
 public class PodcastApp extends Application {
     private static final String TAG = "PodcastApp";
+    public static final String PREF_NAME = "PodfetcherPrefs";
+    
     
 	private static PodcastApp singleton;
 	

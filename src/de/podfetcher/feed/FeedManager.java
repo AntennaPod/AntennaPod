@@ -34,7 +34,7 @@ public class FeedManager {
 
 	/** Contains completed Download status entries */
 	private ArrayList<DownloadStatus> downloadLog;
-	
+
 	/** Contains the queue of items to be played. */
 	private ArrayList<FeedItem> queue;
 
@@ -59,18 +59,31 @@ public class FeedManager {
 	/**
 	 * Play FeedMedia and start the playback service + launch Mediaplayer
 	 * Activity.
+	 * 
+	 * @param context
+	 *            for starting the playbackservice
+	 * @param media
+	 *            that shall be played
+	 * @param showPlayer
+	 *            if Mediaplayer activity shall be started
+	 * @param startWhenPrepared
+	 *            if Mediaplayer shall be started after it has been prepared
 	 */
-	public void playMedia(Context context, FeedMedia media) {
+	public void playMedia(Context context, FeedMedia media, boolean showPlayer,
+			boolean startWhenPrepared, boolean shouldStream) {
 		// Start playback Service
 		Intent launchIntent = new Intent(context, PlaybackService.class);
 		launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
 		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem()
 				.getFeed().getId());
+		launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
+		launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
 		context.startService(launchIntent);
-
-		// Launch Mediaplayer
-		Intent playerIntent = new Intent(context, MediaplayerActivity.class);
-		context.startActivity(playerIntent);
+		if (showPlayer) {
+			// Launch Mediaplayer
+			Intent playerIntent = new Intent(context, MediaplayerActivity.class);
+			context.startActivity(playerIntent);
+		}
 	}
 
 	/** Remove media item that has been downloaded. */
@@ -88,14 +101,15 @@ public class FeedManager {
 		Log.d(TAG, "Deleting File. Result: " + result);
 		return result;
 	}
-	
+
 	/** Remove a feed with all its items and media files and its image. */
 	public boolean deleteFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		
+
 		// delete image file
 		if (feed.getImage() != null) {
-			if (feed.getImage().isDownloaded() && feed.getImage().getFile_url() == null) {
+			if (feed.getImage().isDownloaded()
+					&& feed.getImage().getFile_url() == null) {
 				File imageFile = new File(feed.getImage().getFile_url());
 				imageFile.delete();
 			}
@@ -112,7 +126,7 @@ public class FeedManager {
 		}
 		adapter.removeFeed(feed);
 		return feeds.remove(feed);
-		
+
 	}
 
 	/**
@@ -145,13 +159,13 @@ public class FeedManager {
 		}
 		return adapter.setDownloadStatus(status);
 	}
-	
+
 	public void addQueueItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		queue.add(item);
 		adapter.setQueue(queue);
 	}
-	
+
 	public void removeQueueItem(Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
@@ -159,9 +173,13 @@ public class FeedManager {
 			adapter.setQueue(queue);
 		}
 	}
-	
+
 	public boolean isInQueue(FeedItem item) {
 		return queue.contains(item);
+	}
+
+	public FeedItem getFirstQueueItem() {
+		return queue.get(0);
 	}
 
 	private void addNewFeed(Context context, Feed feed) {
@@ -447,16 +465,19 @@ public class FeedManager {
 		}
 		adapter.close();
 	}
-	
+
 	private void extractQueueFromCursor(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
-				int index = cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_ID));
-				Feed feed = getFeed(cursor.getLong(cursor.getColumnIndex(PodDBAdapter.KEY_FEED)));
-				FeedItem item = getFeedItem(cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
+				int index = cursor.getInt(cursor
+						.getColumnIndex(PodDBAdapter.KEY_ID));
+				Feed feed = getFeed(cursor.getLong(cursor
+						.getColumnIndex(PodDBAdapter.KEY_FEED)));
+				FeedItem item = getFeedItem(
+						cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
 				queue.add(index, item);
 			} while (cursor.moveToNext());
 		}

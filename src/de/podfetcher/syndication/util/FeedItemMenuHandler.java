@@ -25,6 +25,7 @@ public class FeedItemMenuHandler {
 			menu.findItem(R.id.remove_item).setVisible(true);
 		} else if (selectedItem.getMedia().getFile_url() == null) {
 			menu.findItem(R.id.download_item).setVisible(true);
+			menu.findItem(R.id.stream_item).setVisible(true);
 		} else {
 			menu.findItem(R.id.cancel_download_item).setVisible(true);
 		}
@@ -53,7 +54,7 @@ public class FeedItemMenuHandler {
 			break;
 		case R.id.play_item:
 			manager.playMedia(context,
-					selectedItem.getMedia());
+					selectedItem.getMedia(), true, true, false);
 			break;
 		case R.id.remove_item:
 			manager.deleteFeedMedia(context,
@@ -75,6 +76,8 @@ public class FeedItemMenuHandler {
 		case R.id.remove_from_queue_item:
 			manager.removeQueueItem(context, selectedItem);
 			break;
+		case R.id.stream_item:
+			manager.playMedia(context, selectedItem.getMedia(), true, true, true);
 		}
 		// Refresh menu state
 		
