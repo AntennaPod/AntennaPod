@@ -53,4 +53,6 @@
 	<string name="remove_from_queue_label">Remove from Queue</string>
 	<string name="player_ready_msg">Ready</string>
 	<string name="stream_label">Stream</string>
+	<string name="player_seeking_msg">Seeking</string>
+	<string name="player_playing_msg"></string>
 </resources>

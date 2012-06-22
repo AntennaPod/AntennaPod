@@ -74,6 +74,8 @@ public class PlaybackService extends Service {
 	private PlayerStatus status;
 	private PositionSaver positionSaver;
 
+	private PlayerStatus statusBeforeSeek;
+	
 	private final IBinder mBinder = new LocalBinder();
 
 	public class LocalBinder extends Binder {
@@ -93,6 +95,7 @@ public class PlaybackService extends Service {
 		player = new MediaPlayer();
 		player.setOnPreparedListener(preparedListener);
 		player.setOnCompletionListener(completionListener);
+		player.setOnSeekCompleteListener(onSeekCompleteListener);
 	}
 
 	@Override
@@ -219,13 +222,25 @@ public class PlaybackService extends Service {
 		@Override
 		public void onPrepared(MediaPlayer mp) {
 			Log.d(TAG, "Resource prepared");
+			mp.seekTo(media.getPosition());
 			setStatus(PlayerStatus.PREPARED);
 			if (startWhenPrepared) {
 				play();
 			}
 		}
 	};
-
+	
+	private MediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new MediaPlayer.OnSeekCompleteListener() {
+		
+		@Override
+		public void onSeekComplete(MediaPlayer mp) {
+			if (status == PlayerStatus.SEEKING) {
+				setStatus(statusBeforeSeek);
+			}
+			
+		}
+	};
+	
 	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
 
 		@Override
@@ -318,6 +333,10 @@ public class PlaybackService extends Service {
 
 	public void seek(int i) {
 		Log.d(TAG, "Seeking position " + i);
+		if (shouldStream) {
+			statusBeforeSeek = status;
+			setStatus(PlayerStatus.SEEKING);
+		}
 		player.seekTo(i);
 		saveCurrentPosition();
 	}

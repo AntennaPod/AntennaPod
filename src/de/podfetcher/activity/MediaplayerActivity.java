@@ -140,7 +140,7 @@ public class MediaplayerActivity extends SherlockActivity {
 			butPlay.setImageResource(android.R.drawable.ic_media_play);
 			break;
 		case PLAYING:
-			setStatusMsg(0, View.INVISIBLE);
+			setStatusMsg(R.string.player_playing_msg, View.INVISIBLE);
 			loadMediaInfo();
 			setupPositionObserver();
 			butPlay.setImageResource(android.R.drawable.ic_media_pause);
@@ -156,6 +156,9 @@ public class MediaplayerActivity extends SherlockActivity {
 			loadMediaInfo();
 			setStatusMsg(R.string.player_ready_msg, View.VISIBLE);
 			butPlay.setImageResource(android.R.drawable.ic_media_play);
+			break;
+		case SEEKING:
+			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);	
 		}
 	}
 
