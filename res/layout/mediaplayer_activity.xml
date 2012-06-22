@@ -2,7 +2,7 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="5dp"
+    
     android:orientation="vertical" >
 
     <ImageView
@@ -14,7 +14,7 @@
 
     <RelativeLayout
         android:id="@+id/playtime_layout"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content" >
 
         <TextView
@@ -38,9 +38,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:text="TextView"
             android:visibility="invisible" />
-
     </RelativeLayout>
 
     <SeekBar
@@ -48,34 +46,54 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:scaleType="fitXY"
+        android:padding="5dp"
+        android:src="@drawable/horizontal_divider" />
+
     <LinearLayout
         android:id="@+id/player_control"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.02" >
+        android:layout_weight="0.015" >
 
         <ImageButton
             android:id="@+id/butRev"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="0.02"
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_rew" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/vertical_divider" />
 
         <ImageButton
             android:id="@+id/butPlay"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_weight="8"
+            android:layout_weight="0.14"
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_pause" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:scaleType="fitXY"
+            android:src="@drawable/vertical_divider" />
 
         <ImageButton
             android:id="@+id/butFF"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_weight="0.02"
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_ff" />
-
     </LinearLayout>
 
 </LinearLayout>

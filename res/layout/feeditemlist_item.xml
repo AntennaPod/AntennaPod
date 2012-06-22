@@ -29,9 +29,8 @@
 	    android:layout_height="match_parent"
 	    android:layout_width="wrap_content"
 	    android:src="@drawable/vertical_divider"
-	    android:layout_alignParentRight="true"
 	    android:layout_centerVertical="true"
-	    android:layout_marginRight="28dp"
+	    android:layout_toLeftOf="@id/butAction"
 	    android:focusable="false"/>
 	
 </RelativeLayout>
