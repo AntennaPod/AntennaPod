@@ -35,16 +35,11 @@ public class ItemviewActivity extends SherlockActivity {
 	private static final String TAG = "ItemviewActivity";
 
 	private FeedManager manager;
-	private DownloadRequester requester;
 	private FeedItem item;
 
 	// Widgets
-	private ImageView imgvImage;
 	private TextView txtvTitle;
 	private TextView txtvPublished;
-	private Button butPlay;
-	private Button butDownload;
-	private Button butRemove;
 	private WebView webvDescription;
 
 	@Override
@@ -54,39 +49,12 @@ public class ItemviewActivity extends SherlockActivity {
 		extractFeeditem();
 		populateUI();
 
-		butDownload.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				requester = DownloadRequester.getInstance();
-				requester.downloadMedia(v.getContext(), item.getMedia());
-				//getDownloadStatus();
-			}
-		});
-
-		butPlay.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				//manager.playMedia(v.getContext(), item.getMedia());
-			}
-		});
-		
-		butRemove.setOnClickListener(new View.OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				if (manager.deleteFeedMedia(v.getContext(), item.getMedia())) {
-					//setNotDownloadedState();
-				}
-				
-			}
-		});
 	}
 
 	@Override
 	public void onStop() {
 		super.onStop();
 		Log.d(TAG, "Stopping Activity");
-		downloadObserver.cancel(true);
 	}
 
 	/** Extracts FeedItem object the activity is supposed to display */
@@ -108,10 +76,6 @@ public class ItemviewActivity extends SherlockActivity {
 		setContentView(R.layout.feeditemview);
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
 		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
-		imgvImage = (ImageView) findViewById(R.id.imgvFeedimage);
-		butPlay = (Button) findViewById(R.id.butPlay);
-		butDownload = (Button) findViewById(R.id.butDownload);
-		butRemove = (Button) findViewById(R.id.butRemove);
 		webvDescription = (WebView) findViewById(R.id.webvDescription);
 		setTitle(item.getFeed().getTitle());
 
@@ -119,26 +83,10 @@ public class ItemviewActivity extends SherlockActivity {
 				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
 				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		if (item.getFeed().getImage() != null) {
-			imgvImage
-					.setImageBitmap(item.getFeed().getImage().getImageBitmap());
-		}
 		webvDescription.loadData(item.getDescription(), "text/html", null);
 	}
-
-	private void getDownloadStatus(Menu menu) {
-		FeedMedia media = item.getMedia();
-		if (media.getFile_url() == null) {
-			setNotDownloadedState(menu);
-		} else if (media.isDownloaded()) {
-			setDownloadedState(menu);
-		} else {
-			// observe
-			setDownloadingState(menu);
-			//downloadObserver.execute(media);
-		}
-	}
-
+	
+/* TODO implement
 	final DownloadObserver downloadObserver = new DownloadObserver(this) {
 		@Override
 		protected void onProgressUpdate(
@@ -156,7 +104,7 @@ public class ItemviewActivity extends SherlockActivity {
 			}
 		}
 	};
-	
+	*/
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onCreateMenu(new MenuInflater(this), menu);
@@ -174,24 +122,5 @@ public class ItemviewActivity extends SherlockActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onPrepareMenu(menu, item);
-	}
-	
-	private void setDownloadingState(Menu menu) {
-		
-		butDownload.setEnabled(false);
-		butPlay.setEnabled(false);
-		butRemove.setEnabled(false);
-	}
-
-	private void setDownloadedState(Menu menu) {
-		butDownload.setEnabled(false);
-		butPlay.setEnabled(true);
-		butRemove.setEnabled(true);
-	}
-
-	private void setNotDownloadedState(Menu menu) {
-		butPlay.setEnabled(false);
-		butDownload.setEnabled(true);
-		butRemove.setEnabled(false);
 	}
 }
