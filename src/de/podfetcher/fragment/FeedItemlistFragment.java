@@ -21,7 +21,7 @@ import de.podfetcher.adapter.FeedItemlistAdapter;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.storage.DownloadRequester;
-import de.podfetcher.syndication.util.FeedItemMenuHandler;
+import de.podfetcher.util.FeedItemMenuHandler;
 
 public class FeedItemlistFragment extends SherlockListFragment {
 	@Override

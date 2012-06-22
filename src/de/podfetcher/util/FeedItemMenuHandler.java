@@ -1,4 +1,4 @@
-package de.podfetcher.syndication.util;
+package de.podfetcher.util;
 
 import android.content.Context;
 

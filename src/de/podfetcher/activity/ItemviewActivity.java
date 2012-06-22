@@ -28,7 +28,7 @@ import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
-import de.podfetcher.syndication.util.FeedItemMenuHandler;
+import de.podfetcher.util.FeedItemMenuHandler;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockActivity {
