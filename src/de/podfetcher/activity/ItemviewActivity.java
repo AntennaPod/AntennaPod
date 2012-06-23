@@ -83,7 +83,7 @@ public class ItemviewActivity extends SherlockActivity {
 				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
 				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		webvDescription.loadData(item.getDescription(), "text/html", null);
+		webvDescription.loadData(item.getContentEncoded(), "text/html", null);
 	}
 	
 /* TODO implement

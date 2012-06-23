@@ -10,6 +10,7 @@ import de.podfetcher.feed.Feed;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
+import de.podfetcher.syndication.namespace.content.NSContent;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
@@ -77,13 +78,18 @@ public class SyndHandler extends DefaultHandler {
 				state.defaultNamespaces.push(new NSAtom());
 			} else if (prefix.equals(NSAtom.NSTAG)) {
 				state.namespaces.put(uri, new NSAtom());
+				Log.d(TAG, "Recognized Atom namespace");
 			}
+		} else if (uri.equals(NSContent.NSURI) && prefix.equals(NSContent.NSTAG)) {
+			state.namespaces.put(uri, new NSContent());
+			Log.d(TAG, "Recognized Content namespace");
 		}
 	}
 
 	private Namespace getHandlingNamespace(String uri) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && uri.equals(DEFAULT_PREFIX) &&!state.defaultNamespaces.empty()) {
+		if (handler == null && uri.equals(DEFAULT_PREFIX)
+				&& !state.defaultNamespaces.empty()) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;

@@ -76,8 +76,10 @@ public class FeedManager {
 		launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
 		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem()
 				.getFeed().getId());
-		launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED, startWhenPrepared);
-		launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
+		launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+				startWhenPrepared);
+		launchIntent
+				.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
 		context.startService(launchIntent);
 		if (showPlayer) {
 			// Launch Mediaplayer
@@ -409,6 +411,8 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				item.setDescription(itemlistCursor.getString(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
+				item.setContentEncoded(itemlistCursor.getString(itemlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED)));
 				item.setPubDate(new Date(itemlistCursor.getLong(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_PUBDATE))));
 				item.setMedia(adapter.getFeedMedia(itemlistCursor

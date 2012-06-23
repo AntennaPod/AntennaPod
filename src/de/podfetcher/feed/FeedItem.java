@@ -11,6 +11,7 @@ import java.util.Date;
 public class FeedItem extends FeedComponent{
 	private String title;
 	private String description;
+	private String contentEncoded;
 	private String link;
 	private Date pubDate;
 	private FeedMedia media;
@@ -84,5 +85,14 @@ public class FeedItem extends FeedComponent{
 	public boolean isRead() {
 		return read;
 	}
+	
+	public String getContentEncoded() {
+		return contentEncoded;
+	}
+
+	public void setContentEncoded(String contentEncoded) {
+		this.contentEncoded = contentEncoded;
+	}
+
 
 }
