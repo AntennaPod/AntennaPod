@@ -415,9 +415,11 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED)));
 				item.setPubDate(new Date(itemlistCursor.getLong(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_PUBDATE))));
-				item.setMedia(adapter.getFeedMedia(itemlistCursor
-						.getLong(itemlistCursor
-								.getColumnIndex(PodDBAdapter.KEY_MEDIA)), item));
+				long mediaId = itemlistCursor.getLong(itemlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_MEDIA));
+				if (mediaId != 0) {
+					item.setMedia(adapter.getFeedMedia(mediaId, item));
+				}
 				item.read = (itemlistCursor.getInt(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true
 						: false;

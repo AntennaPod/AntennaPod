@@ -16,7 +16,7 @@ public class FeedItemMenuHandler {
 	private FeedItemMenuHandler() {
 		
 	}
-	
+	// TODO Fix crash when media is null
 	public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
 		FeedManager manager = FeedManager.getInstance();
 		
