@@ -1,8 +1,9 @@
 package de.podfetcher.syndication.namespace.atom;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
-import de.podfetcher.syndication.util.HtmlUnescaper;
 
 /** Represents Atom Element which contains text (content, title, summary). */
 public class AtomText extends SyndElement {
@@ -21,7 +22,7 @@ public class AtomText extends SyndElement {
 	/** Processes the content according to the type and returns it. */
 	public String getProcessedContent() {
 		if (type.equals(TYPE_HTML)) {
-			return HtmlUnescaper.unescape(content);
+			return StringEscapeUtils.unescapeHtml4(content);
 		} else if (type.equals(TYPE_XHTML)) {
 			return content;
 		} else {	// Handle as text by default

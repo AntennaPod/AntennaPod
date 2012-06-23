@@ -6,6 +6,7 @@ import de.podfetcher.syndication.handler.HandlerState;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 public class NSContent extends Namespace {
 	public static final String NSTAG = "content";
@@ -43,7 +44,7 @@ public class NSContent extends Namespace {
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ENCODED)) {
-			state.getCurrentItem().setContentEncoded(encoded.toString());
+			state.getCurrentItem().setContentEncoded(StringEscapeUtils.unescapeHtml4(encoded.toString()));
 			encoded = null;
 		}
 	}

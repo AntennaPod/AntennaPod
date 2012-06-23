@@ -1,5 +1,7 @@
 package de.podfetcher.activity;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.text.DateFormat;
 
 import android.content.Intent;
@@ -83,34 +85,35 @@ public class ItemviewActivity extends SherlockActivity {
 				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
 				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		webvDescription.loadData(item.getContentEncoded(), "text/html", null);
+		String url = "";
+		try {
+			url = URLEncoder.encode(item.getContentEncoded(), "utf-8")
+					.replaceAll("\\+", " ");
+		} catch (UnsupportedEncodingException e) {
+			url = "Page could not be loaded";
+			e.printStackTrace();
+		}
+
+		webvDescription.loadData(url, "text/html", "utf-8");
+
 	}
-	
-/* TODO implement
-	final DownloadObserver downloadObserver = new DownloadObserver(this) {
-		@Override
-		protected void onProgressUpdate(
-				DownloadStatus... values) {
 
-		}
-
-		@Override
-		protected void onPostExecute(Boolean result) {
-			boolean r = getStatusList()[0].isSuccessful();
-			if (r) {
-				//setDownloadedState();
-			} else {
-				//setNotDownloadedState();
-			}
-		}
-	};
-	*/
+	/*
+	 * TODO implement final DownloadObserver downloadObserver = new
+	 * DownloadObserver(this) {
+	 * 
+	 * @Override protected void onProgressUpdate( DownloadStatus... values) {
+	 * 
+	 * }
+	 * 
+	 * @Override protected void onPostExecute(Boolean result) { boolean r =
+	 * getStatusList()[0].isSuccessful(); if (r) { //setDownloadedState(); }
+	 * else { //setNotDownloadedState(); } } };
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onCreateMenu(new MenuInflater(this), menu);
 	}
-	
-	
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
@@ -118,7 +121,7 @@ public class ItemviewActivity extends SherlockActivity {
 		invalidateOptionsMenu();
 		return true;
 	}
-	
+
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onPrepareMenu(menu, item);
