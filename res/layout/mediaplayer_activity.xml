@@ -2,7 +2,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    
     android:orientation="vertical" >
 
     <ImageView
@@ -44,13 +43,14 @@
     <SeekBar
         android:id="@+id/sbPosition"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:max="500" />
 
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:scaleType="fitXY"
         android:padding="5dp"
+        android:scaleType="fitXY"
         android:src="@drawable/horizontal_divider" />
 
     <LinearLayout
@@ -95,5 +95,12 @@
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_ff" />
     </LinearLayout>
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/horizontal_divider" />
 
 </LinearLayout>

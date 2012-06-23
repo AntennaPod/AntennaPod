@@ -1,36 +1,86 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent" >
-	<TextView
-		android:id="@+id/txtvItemname"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
-	<TextView
-		android:id="@+id/txtvItemsize"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		android:layout_below="@id/txtvItemname"
-		/>
-	<ImageButton 
-	    android:id="@+id/butAction"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent"
-	    android:padding="8dp"
-	    android:src="@drawable/navigation_expand"
-	    android:background="@drawable/borderless_button"
-	    android:layout_alignParentRight="true"
-	    android:focusable="false"
-	    android:focusableInTouchMode="false"
-	    android:clickable="false"
-	    />
-	<ImageView 
-	    android:layout_height="match_parent"
-	    android:layout_width="wrap_content"
-	    android:src="@drawable/vertical_divider"
-	    android:layout_centerVertical="true"
-	    android:layout_toLeftOf="@id/butAction"
-	    android:focusable="false"/>
-	
+    android:layout_height="fill_parent"
+    android:layout_marginBottom="4dp"
+    android:layout_marginLeft="1dp"
+    android:layout_marginTop="4dp" >
+
+    <ImageButton
+        android:id="@+id/butAction"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:background="@drawable/borderless_button"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:padding="8dp"
+        android:scaleType="fitXY"
+        android:src="@drawable/navigation_expand" />
+
+    <ImageView
+        android:id="@+id/divider"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:layout_toLeftOf="@id/butAction"
+        android:focusable="false"
+        android:scaleType="fitXY"
+        android:src="@drawable/vertical_divider" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentLeft="true"
+        android:layout_toLeftOf="@id/divider"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtvItemname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textSize="16dp" />
+
+        <TextView
+            android:id="@+id/txtvPublished"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/gray" />
+
+        <RelativeLayout
+            android:id="@+id/enc_info"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/txtvLenSize"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_alignParentLeft="true" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBottom="@id/txtvLenSize"
+                android:layout_alignParentRight="true"
+                android:layout_alignTop="@id/txtvLenSize"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/imgvType"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent" />
+
+                <ImageView
+                    android:id="@+id/imgvDownloaded"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/av_download"
+                    android:visibility="gone" />
+            </LinearLayout>
+        </RelativeLayout>
+    </LinearLayout>
+
 </RelativeLayout>
