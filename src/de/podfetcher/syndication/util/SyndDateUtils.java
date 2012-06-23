@@ -19,15 +19,31 @@ public class SyndDateUtils {
 
 	/** RFC 3339 date format for localtime dates with offset. */
 	public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
+	
+	private static ThreadLocal<SimpleDateFormat> RFC822Formatter = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {			
+			return new SimpleDateFormat(RFC822DAY, Locale.US);
+		}
+		
+	};
+	
+	private static ThreadLocal<SimpleDateFormat> RFC3339Formatter = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {			
+			return new SimpleDateFormat(RFC3339UTC, Locale.US);
+		}
+		
+	};
 
 	public static Date parseRFC822Date(final String date) {
 		Date result = null;
-		SimpleDateFormat format = new SimpleDateFormat(RFC822DAY, Locale.US);
+		SimpleDateFormat format = RFC822Formatter.get();
 		try {
 			result = format.parse(date);
 		} catch (ParseException e) {
 			e.printStackTrace();
-			format = new SimpleDateFormat(RFC822, Locale.US);
+			format.applyPattern(RFC822);
 			try {
 				result = format.parse(date);
 			} catch (ParseException e1) {
@@ -40,16 +56,15 @@ public class SyndDateUtils {
 
 	public static Date parseRFC3339Date(final String date) {
 		Date result = null;
-		SimpleDateFormat format = null;
+		SimpleDateFormat format = RFC3339Formatter.get();
 		if (date.endsWith("Z")) {
-			format = new SimpleDateFormat(RFC3339UTC, Locale.US);
 			try {
 				result = format.parse(date);
 			} catch (ParseException e) {
 				e.printStackTrace();
 			}
 		} else {
-			format = new SimpleDateFormat(RFC3339LOCAL, Locale.US);
+			format.applyPattern(RFC3339LOCAL);
 			// remove last colon
 			StringBuffer buf = new StringBuffer(date.length() - 1);
 			int colonIdx = date.lastIndexOf(':');

@@ -28,7 +28,9 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-
+		if (localName.equals("image") || qName.equals("image")) {
+			Log.d(TAG, "Found image");
+		}
 		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
 			SyndElement element = handler.handleElementStart(localName, state,
@@ -81,7 +83,7 @@ public class SyndHandler extends DefaultHandler {
 
 	private Namespace getHandlingNamespace(String uri) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && !state.defaultNamespaces.empty()) {
+		if (handler == null && uri.equals(DEFAULT_PREFIX) &&!state.defaultNamespaces.empty()) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;
