@@ -55,4 +55,7 @@
 	<string name="stream_label">Stream</string>
 	<string name="player_seeking_msg">Seeking</string>
 	<string name="player_playing_msg"></string>
+	<string name="mark_all_read_label">Mark all read</string>
+	<string name="show_info_label">Show information</string>
+	<string name="remove_feed_label">Remove Feed</string>
 </resources>

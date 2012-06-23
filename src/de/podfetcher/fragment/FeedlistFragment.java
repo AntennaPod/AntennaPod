@@ -111,6 +111,9 @@ public class FeedlistFragment extends SherlockListFragment {
 	public void onPause() {
 		super.onPause();
 		pActivity.unregisterReceiver(contentUpdate);
+		if (mActionMode != null) {
+			mActionMode.finish();
+		}
 	}
 
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
@@ -157,6 +160,12 @@ public class FeedlistFragment extends SherlockListFragment {
 					}
 				};
 				remover.execute(selectedFeed);
+				break;
+			case R.id.mark_all_read_item:
+				for (FeedItem feeditem : selectedFeed.getItems()) {
+					manager.markItemRead(getSherlockActivity(), feeditem, true);
+				}
+				fla.notifyDataSetChanged();
 				break;
 			}
 			mode.finish();
