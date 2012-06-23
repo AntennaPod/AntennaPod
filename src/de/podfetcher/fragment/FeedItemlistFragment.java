@@ -24,6 +24,7 @@ import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.FeedItemMenuHandler;
 
 public class FeedItemlistFragment extends SherlockListFragment {
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		this.getListView().setItemsCanFocus(true);
@@ -127,5 +128,10 @@ public class FeedItemlistFragment extends SherlockListFragment {
 			return true;
 		}
 	};
+	
+	public FeedItemlistAdapter getListAdapter() {
+		return fila;
+	}
+	
 
 }

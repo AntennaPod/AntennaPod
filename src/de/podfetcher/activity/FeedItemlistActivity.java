@@ -8,12 +8,17 @@ import android.util.Log;
 import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
+import de.podfetcher.asynctask.FeedRemover;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
+import de.podfetcher.util.FeedMenuHandler;
 
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockFragmentActivity {
@@ -44,8 +49,36 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		fT.commit();
 		
 	}
-	/*
-	public void onButActionClicked(View v) {
-		Log.d(TAG, "Button clicked");
-	}*/
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return FeedMenuHandler.onCreateOptionsMenu(new MenuInflater(this), menu);
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		return FeedMenuHandler.onPrepareOptionsMenu(menu);
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
+			filf.getListAdapter().notifyDataSetChanged();
+		} else {
+			switch(item.getItemId()) {
+			case R.id.remove_item:
+				FeedRemover remover = new FeedRemover(this) {
+					@Override
+					protected void onPostExecute(Void result) {
+						super.onPostExecute(result);
+						finish();
+					}
+				};
+				remover.execute(feed);
+				break;
+			}
+		}
+		return true;
+	}
+	
 }

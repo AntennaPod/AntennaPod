@@ -7,6 +7,7 @@ import de.podfetcher.adapter.FeedlistAdapter;
 import de.podfetcher.asynctask.FeedRemover;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.service.DownloadService;
+import de.podfetcher.util.FeedMenuHandler;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -57,20 +58,17 @@ public class FeedlistFragment extends SherlockListFragment {
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
-		
 
 	}
 
-	
-	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.feedlist, container, false);
-		
+
 	}
-	
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -89,7 +87,6 @@ public class FeedlistFragment extends SherlockListFragment {
 					mActionMode = getSherlockActivity().startActionMode(
 							mActionModeCallback);
 
-					
 				}
 				return true;
 			}
@@ -137,8 +134,7 @@ public class FeedlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			MenuInflater inflater = mode.getMenuInflater();
-			inflater.inflate(R.menu.feedlist, menu);
+			FeedMenuHandler.onCreateOptionsMenu(mode.getMenuInflater(), menu);
 			mode.setTitle(selectedFeed.getTitle());
 			return true;
 		}
@@ -150,23 +146,22 @@ public class FeedlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			switch (item.getItemId()) {
-			case R.id.remove_item:
-				FeedRemover remover = new FeedRemover(getSherlockActivity()){
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						fla.notifyDataSetChanged();
-					}
-				};
-				remover.execute(selectedFeed);
-				break;
-			case R.id.mark_all_read_item:
-				for (FeedItem feeditem : selectedFeed.getItems()) {
-					manager.markItemRead(getSherlockActivity(), feeditem, true);
-				}
+			if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(),
+					item, selectedFeed)) {
 				fla.notifyDataSetChanged();
-				break;
+			} else {
+				switch (item.getItemId()) {
+				case R.id.remove_item:
+					FeedRemover remover = new FeedRemover(getSherlockActivity()) {
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							fla.notifyDataSetChanged();
+						}
+					};
+					remover.execute(selectedFeed);
+					break;
+				}
 			}
 			mode.finish();
 			return true;
