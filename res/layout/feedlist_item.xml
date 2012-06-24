@@ -12,6 +12,7 @@
         android:id="@+id/imgvFeedimage"
         android:layout_width="55dip"
         android:layout_height="55dip"
+        android:layout_centerVertical="true"
         android:layout_alignParentLeft="true"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="4dip"
@@ -26,6 +27,7 @@
 
         <TextView
             android:id="@+id/txtvFeedname"
+            android:maxLines="2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textStyle="bold" />
