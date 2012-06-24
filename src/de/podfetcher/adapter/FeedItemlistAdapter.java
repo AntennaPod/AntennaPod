@@ -73,6 +73,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		if (item.getMedia() == null) {
 			holder.encInfo.setVisibility(View.GONE);
 		} else {
+			holder.encInfo.setVisibility(View.VISIBLE);
 			if (item.getMedia().isDownloaded()) {
 				holder.lenSize.setText(Converter.getDurationStringShort(item
 						.getMedia().getDuration()));

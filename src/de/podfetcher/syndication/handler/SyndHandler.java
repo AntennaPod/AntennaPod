@@ -11,6 +11,7 @@ import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
 import de.podfetcher.syndication.namespace.atom.NSAtom;
 import de.podfetcher.syndication.namespace.content.NSContent;
+import de.podfetcher.syndication.namespace.itunes.NSITunes;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
@@ -29,9 +30,6 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
-		if (localName.equals("image") || qName.equals("image")) {
-			Log.d(TAG, "Found image");
-		}
 		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
 			SyndElement element = handler.handleElementStart(localName, state,
@@ -83,6 +81,9 @@ public class SyndHandler extends DefaultHandler {
 		} else if (uri.equals(NSContent.NSURI) && prefix.equals(NSContent.NSTAG)) {
 			state.namespaces.put(uri, new NSContent());
 			Log.d(TAG, "Recognized Content namespace");
+		} else if (uri.equals(NSITunes.NSURI) && prefix.equals(NSITunes.NSTAG)) {
+			state.namespaces.put(uri, new NSITunes());
+			Log.d(TAG, "Recognized ITunes namespace");
 		}
 	}
 

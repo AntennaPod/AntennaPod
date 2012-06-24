@@ -87,8 +87,14 @@ public class ItemviewActivity extends SherlockActivity {
 		txtvTitle.setText(item.getTitle());
 		String url = "";
 		try {
-			url = URLEncoder.encode(item.getContentEncoded(), "utf-8")
-					.replaceAll("\\+", " ");
+			if (item.getContentEncoded() == null) {
+				url = URLEncoder.encode(item.getDescription(), "utf-8")
+						.replaceAll("\\+", " ");
+			} else {
+				url = URLEncoder.encode(item.getContentEncoded(), "utf-8")
+						.replaceAll("\\+", " ");
+			}
+			
 		} catch (UnsupportedEncodingException e) {
 			url = "Page could not be loaded";
 			e.printStackTrace();
