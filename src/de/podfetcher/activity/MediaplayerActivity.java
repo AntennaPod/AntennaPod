@@ -59,8 +59,16 @@ public class MediaplayerActivity extends SherlockActivity {
 	protected void onStop() {
 		super.onStop();
 		Log.d(TAG, "Activity stopped");
-		unregisterReceiver(statusUpdate);
-		unbindService(mConnection);
+		try {
+			unregisterReceiver(statusUpdate);
+		} catch (IllegalArgumentException e) {
+			// ignore
+		}
+		try {
+			unbindService(mConnection);
+		} catch (IllegalArgumentException e) {
+			// ignore
+		}	
 		if (positionObserver != null) {
 			positionObserver.cancel(true);
 		}
@@ -158,7 +166,7 @@ public class MediaplayerActivity extends SherlockActivity {
 			butPlay.setImageResource(android.R.drawable.ic_media_play);
 			break;
 		case SEEKING:
-			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);	
+			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
 		}
 	}
 

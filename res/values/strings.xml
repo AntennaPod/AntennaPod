@@ -58,4 +58,5 @@
 	<string name="mark_all_read_label">Mark all read</string>
 	<string name="show_info_label">Show information</string>
 	<string name="remove_feed_label">Remove Feed</string>
+	<string name="position_default_label">00:00:00</string>
 </resources>

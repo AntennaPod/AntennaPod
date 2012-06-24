@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="left" />
+            android:text="@string/position_default_label" />
 
         <TextView
             android:id="@+id/txtvLength"
@@ -29,7 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="right" />
+            android:text="@string/position_default_label" />
 
         <TextView
             android:id="@+id/txtvStatus"
