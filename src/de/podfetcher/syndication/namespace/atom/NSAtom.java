@@ -25,7 +25,7 @@ public class NSAtom extends Namespace {
 	private static final String IMAGE = "logo";
 	private static final String SUBTITLE = "subtitle";
 	private static final String PUBLISHED = "published";
-	
+
 	private static final String TEXT_TYPE = "type";
 	// Link
 	private static final String LINK_HREF = "href";
@@ -38,9 +38,11 @@ public class NSAtom extends Namespace {
 	private static final String LINK_REL_ENCLOSURE = "enclosure";
 	private static final String LINK_REL_RELATED = "related";
 	private static final String LINK_REL_SELF = "self";
-	
+
 	/** Regexp to test whether an Element is a Text Element. */
-	private static final String isText = TITLE + "|" + CONTENT + "|" + "|" + SUBTITLE;
+	private static final String isText = TITLE + "|" + CONTENT + "|" + "|"
+			+ SUBTITLE;
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -61,9 +63,11 @@ public class NSAtom extends Namespace {
 				} else if (rel.equals(LINK_REL_ENCLOSURE)) {
 					String strSize = attributes.getValue(LINK_LENGTH);
 					long size = 0;
-					if (strSize != null) size = Long.parseLong(strSize);
+					if (strSize != null)
+						size = Long.parseLong(strSize);
 					String type = attributes.getValue(LINK_TYPE);
-					String download_url = attributes.getValue(LINK_REL_ENCLOSURE);
+					String download_url = attributes
+							.getValue(LINK_REL_ENCLOSURE);
 					state.getCurrentItem().setMedia(
 							new FeedMedia(state.getCurrentItem(), download_url,
 									size, type));
@@ -80,49 +84,55 @@ public class NSAtom extends Namespace {
 	@Override
 	public void handleCharacters(HandlerState state, char[] ch, int start,
 			int length) {
-		if (state.getTagstack().size() >= 2) {
-			AtomText textElement = null;
-			String content = new String(ch, start, length);
-			SyndElement topElement = state.getTagstack().peek();
-			String top = topElement.getName();
-			SyndElement secondElement = state.getSecondTag();
-			String second = secondElement.getName();
-			
-			if (top.matches(isText)) {
-				textElement = (AtomText) topElement;
-				textElement.setContent(content);
-			}
-			
-			if (top.equals(TITLE)) {
-				
-				if (second.equals(FEED)) {
-					state.getFeed().setTitle(textElement.getProcessedContent());
-				} else if (second.equals(ENTRY)) {
-					state.getCurrentItem().setTitle(textElement.getProcessedContent());
-				}
-			} else if (top.equals(SUBTITLE)) {
-				if (second.equals(FEED)) {
-					state.getFeed().setDescription(textElement.getProcessedContent());
-				}
-			} else if (top.equals(CONTENT)) {
-				if (second.equals(ENTRY)) {
-					state.getCurrentItem().setDescription(textElement.getProcessedContent());
-				}
-			} else if (top.equals(PUBLISHED)) {
-				if (second.equals(ENTRY)) {
-					state.getCurrentItem().setPubDate(SyndDateUtils.parseRFC3339Date(content));
-				}
-			} else if (top.equals(IMAGE)) {
-				state.getFeed().setImage(new FeedImage(content, null));
-			}
-			
-		}
+
 	}
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ENTRY)) {
 			state.setCurrentItem(null);
+		}
+
+		if (state.getTagstack().size() >= 2) {
+			AtomText textElement = null;
+			String content = state.getContentBuf().toString();
+			SyndElement topElement = state.getTagstack().peek();
+			String top = topElement.getName();
+			SyndElement secondElement = state.getSecondTag();
+			String second = secondElement.getName();
+
+			if (top.matches(isText)) {
+				textElement = (AtomText) topElement;
+				textElement.setContent(content);
+			}
+
+			if (top.equals(TITLE)) {
+
+				if (second.equals(FEED)) {
+					state.getFeed().setTitle(textElement.getProcessedContent());
+				} else if (second.equals(ENTRY)) {
+					state.getCurrentItem().setTitle(
+							textElement.getProcessedContent());
+				}
+			} else if (top.equals(SUBTITLE)) {
+				if (second.equals(FEED)) {
+					state.getFeed().setDescription(
+							textElement.getProcessedContent());
+				}
+			} else if (top.equals(CONTENT)) {
+				if (second.equals(ENTRY)) {
+					state.getCurrentItem().setDescription(
+							textElement.getProcessedContent());
+				}
+			} else if (top.equals(PUBLISHED)) {
+				if (second.equals(ENTRY)) {
+					state.getCurrentItem().setPubDate(
+							SyndDateUtils.parseRFC3339Date(content));
+				}
+			} else if (top.equals(IMAGE)) {
+				state.getFeed().setImage(new FeedImage(content, null));
+			}
+
 		}
 	}
 

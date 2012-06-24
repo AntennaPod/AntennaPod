@@ -26,7 +26,7 @@ import org.xml.sax.helpers.DefaultHandler;
 public class NSRSS20 extends Namespace {
 	public static final String NSTAG = "rss";
 	public static final String NSURI = "";
-	
+
 	public final static String CHANNEL = "channel";
 	public final static String ITEM = "item";
 	public final static String TITLE = "title";
@@ -41,8 +41,6 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 
-	private StringBuffer descriptionBuf;
-	
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -53,13 +51,13 @@ public class NSRSS20 extends Namespace {
 
 		} else if (localName.equals(ENCLOSURE)) {
 			state.getCurrentItem()
-					.setMedia(new FeedMedia(state.getCurrentItem(), attributes
-							.getValue(ENC_URL), Long.parseLong(attributes
-							.getValue(ENC_LEN)), attributes.getValue(ENC_TYPE)));
+					.setMedia(
+							new FeedMedia(state.getCurrentItem(), attributes
+									.getValue(ENC_URL), Long
+									.parseLong(attributes.getValue(ENC_LEN)),
+									attributes.getValue(ENC_TYPE)));
 		} else if (localName.equals(IMAGE)) {
 			state.getFeed().setImage(new FeedImage());
-		} else if (localName.equals(DESCR)) {
-			descriptionBuf = new StringBuffer();
 		}
 		return new SyndElement(localName, this);
 	}
@@ -67,8 +65,14 @@ public class NSRSS20 extends Namespace {
 	@Override
 	public void handleCharacters(HandlerState state, char[] ch, int start,
 			int length) {
-		if (state.getTagstack().size() >= 2) {
-			String content = new String(ch, start, length);
+	}
+
+	@Override
+	public void handleElementEnd(String localName, HandlerState state) {
+		if (localName.equals(ITEM)) {
+			state.setCurrentItem(null);
+		} else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
+			String content = state.getContentBuf().toString();
 			SyndElement topElement = state.getTagstack().peek();
 			String top = topElement.getName();
 			SyndElement secondElement = state.getSecondTag();
@@ -81,8 +85,6 @@ public class NSRSS20 extends Namespace {
 				} else if (second.equals(IMAGE)) {
 					state.getFeed().getImage().setTitle(IMAGE);
 				}
-			} else if (top.equals(DESCR)) {
-				descriptionBuf.append(content);
 			} else if (top.equals(LINK)) {
 				if (second.equals(CHANNEL)) {
 					state.getFeed().setLink(content);
@@ -90,27 +92,18 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setLink(content);
 				}
 			} else if (top.equals(PUBDATE) && second.equals(ITEM)) {
-				state.getCurrentItem().setPubDate(SyndDateUtils.parseRFC822Date(content));
+				state.getCurrentItem().setPubDate(
+						SyndDateUtils.parseRFC822Date(content));
 			} else if (top.equals(URL) && second.equals(IMAGE)) {
 				state.getFeed().getImage().setDownload_url(content);
-			}
-		}
-		
-	}
+			} else if (localName.equals(DESCR)) {
+				if (second.equals(CHANNEL)) {
+					state.getFeed().setDescription(content);
+				} else {
+					state.getCurrentItem().setDescription(content);
+				}
 
-	@Override
-	public void handleElementEnd(String localName, HandlerState state) {
-		if (localName.equals(ITEM)) {
-			state.setCurrentItem(null);
-		} else if (localName.equals(DESCR)) {
-			SyndElement secondElement = state.getSecondTag();
-			String second = secondElement.getName();
-			if (second.equals(CHANNEL)) {
-				state.getFeed().setDescription(descriptionBuf.toString());
-			} else {
-				state.getCurrentItem().setDescription(descriptionBuf.toString());
 			}
-			descriptionBuf = null;
 		}
 	}
 

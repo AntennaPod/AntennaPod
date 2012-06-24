@@ -20,6 +20,7 @@ public class SyndHandler extends DefaultHandler {
 	private static final String DEFAULT_PREFIX = "";
 	protected HandlerState state;
 
+	
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);
 		if (type == TypeGetter.Type.RSS20) {
@@ -30,6 +31,7 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
+		state.contentBuf = new StringBuffer();
 		Namespace handler = getHandlingNamespace(uri);
 		if (handler != null) {
 			SyndElement element = handler.handleElementStart(localName, state,
@@ -43,6 +45,12 @@ public class SyndHandler extends DefaultHandler {
 	public void characters(char[] ch, int start, int length)
 			throws SAXException {
 		if (!state.tagstack.empty()) {
+			if (state.getTagstack().size() >= 2) {
+				if (state.contentBuf != null) {
+				String content = new String(ch, start, length);
+				state.contentBuf.append(content);
+				}
+			}
 			SyndElement top = state.tagstack.peek();
 			if (top.getNamespace() != null) {
 				top.getNamespace().handleCharacters(state, ch, start, length);
@@ -59,6 +67,7 @@ public class SyndHandler extends DefaultHandler {
 			state.tagstack.pop();
 
 		}
+		state.contentBuf = null;
 
 	}
 

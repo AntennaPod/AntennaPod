@@ -11,6 +11,7 @@ import de.podfetcher.feed.FeedItem;
 
 /** Contains all relevant information to describe the current state of a SyndHandler.*/
 public class HandlerState {
+	
 	/** Feed that the Handler is currently processing. */
 	protected Feed feed;
 	protected FeedItem currentItem;
@@ -18,6 +19,8 @@ public class HandlerState {
 	/** Namespaces that have been defined so far. */
 	protected HashMap<String, Namespace> namespaces;
 	protected Stack<Namespace> defaultNamespaces;
+	/** Buffer for saving characters. */
+	protected StringBuffer contentBuf;
 	
 	public HandlerState(Feed feed) {
 		this.feed = feed;
@@ -54,6 +57,11 @@ public class HandlerState {
 		tagstack.push(top);
 		return second;
 	}
+	
+	public StringBuffer getContentBuf() {
+		return contentBuf;
+	}
+
 	
 	
 	
