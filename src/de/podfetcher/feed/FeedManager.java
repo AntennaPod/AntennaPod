@@ -502,4 +502,8 @@ public class FeedManager {
 		return downloadLog;
 	}
 
+	public ArrayList<FeedItem> getQueue() {
+		return queue;
+	}
+
 }

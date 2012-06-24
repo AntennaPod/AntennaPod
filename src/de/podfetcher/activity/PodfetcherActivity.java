@@ -20,6 +20,7 @@ import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.fragment.FeedItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
+import de.podfetcher.fragment.QueueFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
 
 public class PodfetcherActivity extends SherlockFragmentActivity {
@@ -58,6 +59,15 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 						new TabListener<UnreadItemlistFragment>(this, getText(
 								R.string.new_label).toString(),
 								UnreadItemlistFragment.class));
+		actionBar.addTab(tab);
+		
+		tab = actionBar
+				.newTab()
+				.setText(getText(R.string.queue_label).toString())
+				.setTabListener(
+						new TabListener<QueueFragment>(this, getText(
+								R.string.queue_label).toString(),
+								QueueFragment.class));
 		actionBar.addTab(tab);
 	}
 	
