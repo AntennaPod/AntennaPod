@@ -30,9 +30,8 @@ public class DownloadRequester {
 	public static String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.storage.download_id";
 	public static String EXTRA_ITEM_ID = "extra.de.podfetcher.storage.item_id";
 
-	public static String ACTION_FEED_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.feed_download_completed";
-	public static String ACTION_MEDIA_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.media_download_completed";
-	public static String ACTION_IMAGE_DOWNLOAD_COMPLETED = "action.de.podfetcher.storage.image_download_completed";
+	public static String ACTION_DOWNLOAD_QUEUED = "action.de.podfetcher.storage.downloadQueued";
+	
 
 	private static boolean STORE_ON_SD = true;
 	public static String IMAGE_DOWNLOADPATH = "images/";
@@ -81,6 +80,7 @@ public class DownloadRequester {
 		item.setDownloadId(downloadId);
 		item.setFile_url(dest.toString());
 		context.startService(new Intent(context, DownloadService.class));
+		context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
 		return downloadId;
 	}
 
@@ -118,6 +118,7 @@ public class DownloadRequester {
 			if (f != null) {
 				downloads.remove(f);
 				f.setFile_url(null);
+				f.setDownloadId(0);
 			}
 			notifyDownloadService(context);
 		}

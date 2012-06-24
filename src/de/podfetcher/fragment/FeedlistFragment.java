@@ -98,7 +98,9 @@ public class FeedlistFragment extends SherlockListFragment {
 	public void onResume() {
 		super.onResume();
 		IntentFilter filter = new IntentFilter();
+		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
+		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
 
 		pActivity.registerReceiver(contentUpdate, filter);
 		fla.notifyDataSetChanged();

@@ -2,7 +2,10 @@ package de.podfetcher.fragment;
 
 import java.util.ArrayList;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -20,16 +23,12 @@ import de.podfetcher.activity.ItemviewActivity;
 import de.podfetcher.adapter.FeedItemlistAdapter;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
+import de.podfetcher.service.DownloadService;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.FeedItemMenuHandler;
 
 /** Displays a list of FeedItems. */
 public class ItemlistFragment extends SherlockListFragment {
-	
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		this.getListView().setItemsCanFocus(true);
-	}
 
 	private static final String TAG = "FeedItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
@@ -77,12 +76,22 @@ public class ItemlistFragment extends SherlockListFragment {
 	@Override
 	public void onPause() {
 		super.onPause();
+		getActivity().unregisterReceiver(contentUpdate);
 		if (mActionMode != null) {
 			mActionMode.finish();
 		}
 	}
 	
-	
+	@Override
+	public void onResume() {
+		super.onResume();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
+		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
+
+		getActivity().registerReceiver(contentUpdate, filter);
+	}
+
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
@@ -94,6 +103,14 @@ public class ItemlistFragment extends SherlockListFragment {
 
 		startActivity(showItem);
 	}
+	
+	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received contentUpdate Intent.");
+			fila.notifyDataSetChanged();
+		}
+	};
 
 	private final OnClickListener onButActionClicked = new OnClickListener() {
 		@Override
@@ -117,6 +134,11 @@ public class ItemlistFragment extends SherlockListFragment {
 		}
 	};
 
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		this.getListView().setItemsCanFocus(true);
+	}
+	
 	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
 		@Override

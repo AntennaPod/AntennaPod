@@ -50,6 +50,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.downloaded = (ImageView) convertView
 					.findViewById(R.id.imgvDownloaded);
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
+			holder.downloading = (ImageView) convertView
+					.findViewById(R.id.imgvDownloading);
 			holder.encInfo = (RelativeLayout) convertView
 					.findViewById(R.id.enc_info);
 
@@ -82,6 +84,13 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.lenSize.setText(Converter.byteToString(item.getMedia()
 						.getSize()));
 			}
+			
+			if (item.getMedia().isDownloading()) {
+				holder.downloading.setVisibility(View.VISIBLE);
+			} else {
+				holder.downloading.setVisibility(View.GONE);
+			}
+			
 			String type = item.getMedia().getMime_type()
 					.substring(0, item.getMedia().getMime_type().indexOf('/'));
 			if (type.equals("audio")) {
@@ -103,6 +112,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		TextView lenSize;
 		ImageView downloaded;
 		ImageView type;
+		ImageView downloading;
 		ImageButton butAction;
 		RelativeLayout encInfo;
 	}

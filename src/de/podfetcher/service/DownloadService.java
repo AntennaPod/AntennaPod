@@ -280,13 +280,12 @@ public class DownloadService extends Service {
 			}
 			requester.removeDownload(feed);
 
-			cleanup();		
-			// Save information of feed in DB
-			manager.updateFeed(service, feed);
+			cleanup();	
 			long statusId = manager.addDownloadStatus(service, new DownloadStatus(feed, 0, true));
 			sendDownloadHandledIntent(feed.getDownloadId(), statusId, hasImage, imageId);
 			feed.setDownloadId(0);
-			manager.setFeed(service, feed);
+			// Save information of feed in DB
+			manager.updateFeed(service, feed);	
 			queryDownloads();
 		}
 

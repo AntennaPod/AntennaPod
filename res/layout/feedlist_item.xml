@@ -53,6 +53,16 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:textSize="20dp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:visibility="gone" />
+    
+    <ImageView
+        android:id="@+id/imgvRefreshing"
+        android:src="@drawable/navigation_refresh"
+       android:layout_width="55dip"
+        android:layout_height="55dip"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        android:visibility="gone" />
 
 </RelativeLayout>

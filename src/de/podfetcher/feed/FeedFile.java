@@ -48,7 +48,7 @@ public abstract class FeedFile extends FeedComponent {
 	}
 
 	public boolean isDownloading() {
-		return downloaded == false && file_url != null;
+		return downloadId != 0;
 	}
 	
 	

@@ -6,9 +6,11 @@ import java.util.List;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.Feed;
+import de.podfetcher.storage.DownloadRequester;
 import android.content.Context;
 import android.net.Uri;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,7 +22,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
-
+	private static final String TAG = "FeedlistAdapter";
+	
 	public FeedlistAdapter(Context context, int textViewResourceId,
 			List<Feed> objects) {
 		super(context, textViewResourceId, objects);
@@ -48,6 +51,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 					.findViewById(R.id.txtvLastUpdate);
 			holder.numberOfEpisodes = (TextView) convertView.findViewById(R.id.txtvNumEpisodes);
 			convertView.setTag(holder);
+			holder.refreshing = (ImageView) convertView.findViewById(R.id.imgvRefreshing);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
@@ -58,14 +62,20 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 				DateFormat.SHORT, DateFormat.SHORT));
 		holder.numberOfEpisodes.setText(feed.getItems().size() + " Episodes");
 		
-		int newItems = feed.getNumOfNewItems();
-		if (newItems > 0) {
-			holder.newEpisodes.setText(Integer.toString(newItems));
-			holder.newEpisodes.setVisibility(View.VISIBLE);	
+		if (DownloadRequester.getInstance().downloads.contains(feed)) {
+			Log.d(TAG, "Feed is downloading");
+			holder.newEpisodes.setVisibility(View.GONE);
+			holder.refreshing.setVisibility(View.VISIBLE);
 		} else {
-			holder.newEpisodes.setVisibility(View.INVISIBLE);
+			int newItems = feed.getNumOfNewItems();
+			if (newItems > 0) {
+				holder.newEpisodes.setText(Integer.toString(newItems));
+				holder.newEpisodes.setVisibility(View.VISIBLE);	
+			} else {
+				holder.newEpisodes.setVisibility(View.INVISIBLE);
+			}
 		}
-		
+			
 		if (feed.getImage() != null) {
 			holder.image.setImageBitmap(feed.getImage().getImageBitmap()); // TODO
 																			// select
@@ -86,6 +96,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		TextView numberOfEpisodes;
 		TextView newEpisodes;
 		ImageView image;
+		ImageView refreshing;
 	}
 
 }
