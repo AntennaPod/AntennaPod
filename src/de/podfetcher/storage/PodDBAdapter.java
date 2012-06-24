@@ -21,7 +21,7 @@ import android.util.Log;
  * Implements methods for accessing the database
  * */
 public class PodDBAdapter {
-
+	private static final String TAG = "PodDBAdapter";
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "Podfetcher.db";
 
@@ -124,6 +124,7 @@ public class PodDBAdapter {
 
 	public PodDBAdapter open() {
 		if (db == null || !db.isOpen() || db.isReadOnly()) {
+			Log.d(TAG, "Opening DB");
 			try {
 				db = helper.getWritableDatabase();
 			} catch (SQLException ex) {
@@ -135,6 +136,7 @@ public class PodDBAdapter {
 	}
 
 	public void close() {
+		Log.d(TAG, "Closing DB");
 		db.close();
 	}
 
@@ -457,7 +459,6 @@ public class PodDBAdapter {
 	 * */
 	public final FeedMedia getFeedMedia(final long rowIndex,
 			final FeedItem owner) throws SQLException {
-		open();
 		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
 				new String[] { String.valueOf(rowIndex) }, null, null, null);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
@@ -471,7 +472,6 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
 				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
-		close();
 		return media;
 	}
 
@@ -483,7 +483,6 @@ public class PodDBAdapter {
 	 * @return The found object
 	 * */
 	public final FeedImage getFeedImage(final long id) throws SQLException {
-		open();
 		Cursor cursor = this.getImageOfFeedCursor(id);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
 			throw new SQLException("No FeedImage found at index: " + id);
@@ -493,7 +492,6 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
 				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
-		close();
 		return image;
 	}
 

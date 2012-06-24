@@ -23,8 +23,9 @@ import de.podfetcher.feed.FeedManager;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.FeedItemMenuHandler;
 
-public class FeedItemlistFragment extends SherlockListFragment {
-
+/** Displays a list of FeedItems. */
+public class ItemlistFragment extends SherlockListFragment {
+	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		this.getListView().setItemsCanFocus(true);
@@ -32,7 +33,7 @@ public class FeedItemlistFragment extends SherlockListFragment {
 
 	private static final String TAG = "FeedItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
-
+	public static final String ARGUMENT_FEED_ID = "argument.de.podfetcher.feed_id";
 	protected FeedItemlistAdapter fila;
 	protected FeedManager manager;
 	protected DownloadRequester requester;
@@ -43,16 +44,31 @@ public class FeedItemlistFragment extends SherlockListFragment {
 	protected FeedItem selectedItem;
 	protected ActionMode mActionMode;
 
-	public FeedItemlistFragment(ArrayList<FeedItem> items) {
+	public ItemlistFragment(ArrayList<FeedItem> items) {
 		super();
 		this.items = items;
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 	}
 
+	public ItemlistFragment() {
+	}
+
+	public static ItemlistFragment newInstance(long feedId) {
+		ItemlistFragment i = new ItemlistFragment();
+		Bundle b = new Bundle();
+		b.putLong(ARGUMENT_FEED_ID, feedId);
+		i.setArguments(b);
+		return i;
+	}
+	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (items == null) {
+			long feedId = getArguments().getLong(ARGUMENT_FEED_ID);
+			items = FeedManager.getInstance().getFeed(feedId).getItems();
+		}
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
 				onButActionClicked);
 		setListAdapter(fila);

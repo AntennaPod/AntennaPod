@@ -18,7 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
-import de.podfetcher.fragment.FeedItemlistFragment;
+import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.fragment.QueueFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
@@ -29,7 +29,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	private FeedManager manager;
 	
 	private FeedlistFragment feedlist;
-	FeedItemlistFragment unreadList;
+	ItemlistFragment unreadList;
 	
 
 	@Override

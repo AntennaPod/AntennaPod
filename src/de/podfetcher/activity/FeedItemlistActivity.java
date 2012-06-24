@@ -16,7 +16,7 @@ import de.podfetcher.R;
 import de.podfetcher.asynctask.FeedRemover;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
-import de.podfetcher.fragment.FeedItemlistFragment;
+import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.util.FeedMenuHandler;
 
@@ -28,7 +28,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	/** The feed which the activity displays */
 	private Feed feed;
-	private FeedItemlistFragment filf;
+	private ItemlistFragment filf;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -44,7 +44,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fT = fragmentManager.beginTransaction();
-		filf = new FeedItemlistFragment(feed.getItems());
+	
+		filf = ItemlistFragment.newInstance(feed.getId());
 		fT.add(R.id.feeditemlistFragment, filf);
 		fT.commit();
 		

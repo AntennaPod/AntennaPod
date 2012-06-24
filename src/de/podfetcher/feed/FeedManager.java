@@ -11,6 +11,7 @@ import de.podfetcher.storage.*;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Debug;
 import android.util.Log;
 
 /**
@@ -349,14 +350,16 @@ public class FeedManager {
 	public void updateArrays(Context context) {
 		feeds.clear();
 		categories.clear();
-		extractFeedlistFromCursor(context);
-		extractDownloadLogFromCursor(context);
-		extractQueueFromCursor(context);
-	}
-
-	private void extractFeedlistFromCursor(Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
+		extractFeedlistFromCursor(context, adapter);
+		extractDownloadLogFromCursor(context, adapter);
+		extractQueueFromCursor(context, adapter);
+		adapter.close();
+	}
+
+	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
+		
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if (feedlistCursor.moveToFirst()) {
 			do {
@@ -385,19 +388,17 @@ public class FeedManager {
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed,
-						itemlistCursor));
+						itemlistCursor, adapter));
 
 				feeds.add(feed);
 			} while (feedlistCursor.moveToNext());
 		}
-		adapter.close();
+		
 	}
 
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
-			Feed feed, Cursor itemlistCursor) {
+			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
 		if (itemlistCursor.moveToFirst()) {
 			do {
 				FeedItem item = new FeedItem();
@@ -429,13 +430,10 @@ public class FeedManager {
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}
-		adapter.close();
 		return items;
 	}
 
-	private void extractDownloadLogFromCursor(Context context) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
+	private void extractDownloadLogFromCursor(Context context, PodDBAdapter adapter) {
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {
@@ -468,13 +466,10 @@ public class FeedManager {
 				}
 
 			} while (logCursor.moveToNext());
-		}
-		adapter.close();
+		}	
 	}
 
-	private void extractQueueFromCursor(Context context) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
+	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
@@ -487,7 +482,6 @@ public class FeedManager {
 				queue.add(index, item);
 			} while (cursor.moveToNext());
 		}
-		adapter.close();
 	}
 
 	public ArrayList<Feed> getFeeds() {

@@ -26,7 +26,7 @@ import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.feed.FeedMedia;
-import de.podfetcher.fragment.FeedItemlistFragment;
+import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.DownloadRequester;
@@ -62,7 +62,7 @@ public class ItemviewActivity extends SherlockActivity {
 	/** Extracts FeedItem object the activity is supposed to display */
 	private void extractFeeditem() {
 		long itemId = getIntent().getLongExtra(
-				FeedItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
+				ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
 		long feedId = getIntent().getLongExtra(
 				FeedlistFragment.EXTRA_SELECTED_FEED, -1);
 		if (itemId == -1 || feedId == -1) {
