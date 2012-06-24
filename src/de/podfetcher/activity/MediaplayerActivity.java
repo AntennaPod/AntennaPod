@@ -244,7 +244,7 @@ public class MediaplayerActivity extends SherlockActivity {
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
 				if (fromUser) {
-					prog = progress / 100.0f;
+					prog = progress / ((float) seekBar.getMax());
 					duration = playbackService.getPlayer().getDuration();
 					txtvPosition.setText(Converter
 							.getDurationStringLong((int) (prog * duration)));
