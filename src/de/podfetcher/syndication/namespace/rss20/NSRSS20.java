@@ -41,6 +41,8 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 
+	private StringBuffer descriptionBuf;
+	
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -56,6 +58,8 @@ public class NSRSS20 extends Namespace {
 							.getValue(ENC_LEN)), attributes.getValue(ENC_TYPE)));
 		} else if (localName.equals(IMAGE)) {
 			state.getFeed().setImage(new FeedImage());
+		} else if (localName.equals(DESCR)) {
+			descriptionBuf = new StringBuffer();
 		}
 		return new SyndElement(localName, this);
 	}
@@ -78,11 +82,7 @@ public class NSRSS20 extends Namespace {
 					state.getFeed().getImage().setTitle(IMAGE);
 				}
 			} else if (top.equals(DESCR)) {
-				if (second.equals(CHANNEL)) {
-					state.getFeed().setDescription(content);
-				} else if (second.equals(ITEM)) {
-					state.getCurrentItem().setDescription(content);
-				}
+				descriptionBuf.append(content);
 			} else if (top.equals(LINK)) {
 				if (second.equals(CHANNEL)) {
 					state.getFeed().setLink(content);
@@ -102,6 +102,15 @@ public class NSRSS20 extends Namespace {
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ITEM)) {
 			state.setCurrentItem(null);
+		} else if (localName.equals(DESCR)) {
+			SyndElement secondElement = state.getSecondTag();
+			String second = secondElement.getName();
+			if (second.equals(CHANNEL)) {
+				state.getFeed().setDescription(descriptionBuf.toString());
+			} else {
+				state.getCurrentItem().setDescription(descriptionBuf.toString());
+			}
+			descriptionBuf = null;
 		}
 	}
 
