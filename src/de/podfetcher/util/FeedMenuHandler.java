@@ -31,10 +31,7 @@ public class FeedMenuHandler {
 		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {	
 		case R.id.mark_all_read_item:
-			for (FeedItem feeditem : selectedFeed.getItems()) {
-				manager.markItemRead(context, feeditem, true);
-			}
-			
+			manager.markFeedRead(context, selectedFeed);
 			break;
 		default:
 			return false;

@@ -85,6 +85,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		fila.notifyDataSetChanged();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);

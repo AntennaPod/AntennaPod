@@ -145,6 +145,18 @@ public class FeedManager {
 			unreadItems.add(item);
 		}
 	}
+	
+	/** 
+	 * Sets the 'read' attribute of all FeedItems of a specific feed to true
+	 * @param context
+	 */
+	public void markFeedRead(Context context, Feed feed) {
+		for (FeedItem item : feed.getItems()) {
+			if (unreadItems.contains(item)) {
+				markItemRead(context, item, true);
+			}
+		}
+	}
 
 	public void refreshAllFeeds(Context context) {
 		Log.d(TAG, "Refreshing all feeds.");
