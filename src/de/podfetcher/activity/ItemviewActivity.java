@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 
 import de.podfetcher.R;
 import de.podfetcher.asynctask.DownloadObserver;
@@ -50,9 +52,9 @@ public class ItemviewActivity extends SherlockActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		extractFeeditem();
 		populateUI();
-
 	}
 
 	@Override
@@ -87,22 +89,8 @@ public class ItemviewActivity extends SherlockActivity {
 				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
 				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		String url = "";
-		try {
-			if (item.getContentEncoded() == null) {
-				url = URLEncoder.encode(item.getDescription(), "utf-8")
-						.replaceAll("\\+", " ");
-			} else {
-				url = URLEncoder.encode(StringEscapeUtils.unescapeHtml4(item.getContentEncoded()), "utf-8")
-						.replaceAll("\\+", " ");
-			}
-			
-		} catch (UnsupportedEncodingException e) {
-			url = "Page could not be loaded";
-			e.printStackTrace();
-		}
-
-		webvDescription.loadData(url, "text/html", "utf-8");
+		
+		webViewLoader.execute();
 
 	}
 
@@ -134,4 +122,46 @@ public class ItemviewActivity extends SherlockActivity {
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onPrepareMenu(menu, item);
 	}
+
+	private AsyncTask<Void, Void, Void> webViewLoader = new AsyncTask<Void, Void, Void>() {
+		String url;
+		
+		@Override
+		protected void onPostExecute(Void result) {
+			super.onPostExecute(result);
+			webvDescription.loadData(url, "text/html", "utf-8");
+			setSupportProgressBarIndeterminateVisibility(false);
+			Log.d(TAG, "Webview loaded");
+		}
+
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			setSupportProgressBarIndeterminateVisibility(true);
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			Log.d(TAG, "Loading Webview");
+			url = "";
+			try {
+				if (item.getContentEncoded() == null) {
+					url = URLEncoder.encode(item.getDescription(), "utf-8")
+							.replaceAll("\\+", " ");
+				} else {
+					url = URLEncoder.encode(
+							StringEscapeUtils.unescapeHtml4(item
+									.getContentEncoded()), "utf-8").replaceAll(
+							"\\+", " ");
+				}
+
+			} catch (UnsupportedEncodingException e) {
+				url = "Page could not be loaded";
+				e.printStackTrace();
+			}		
+				
+			return null;
+		}
+
+	};
 }
