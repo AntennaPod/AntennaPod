@@ -155,6 +155,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+			mode.setTitle(selectedItem.getTitle());
 			return FeedItemMenuHandler.onCreateMenu(mode.getMenuInflater(), menu);
 
 		}

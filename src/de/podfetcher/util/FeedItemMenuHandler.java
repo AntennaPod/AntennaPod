@@ -81,6 +81,9 @@ public class FeedItemMenuHandler {
 		case R.id.stream_item:
 			manager.playMedia(context, selectedItem.getMedia(), true, true,
 					true);
+			break;
+		default:
+			return false;
 		}
 		// Refresh menu state
 

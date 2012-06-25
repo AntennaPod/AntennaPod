@@ -20,21 +20,12 @@
         android:scaleType="fitXY"
         android:src="@drawable/navigation_expand" />
 
-    <ImageView
-        android:id="@+id/divider"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toLeftOf="@id/butAction"
-        android:focusable="false"
-        android:scaleType="fitXY"
-        android:src="@drawable/vertical_divider" />
 
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/divider"
+        android:layout_toLeftOf="@id/butAction"
         android:orientation="vertical" >
 
         <TextView

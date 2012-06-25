@@ -7,6 +7,7 @@ import java.text.DateFormat;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.content.Intent;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -79,7 +80,9 @@ public class ItemviewActivity extends SherlockActivity {
 	}
 
 	private void populateUI() {
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.feeditemview);
+		getSupportActionBar().setLogo(new BitmapDrawable(item.getFeed().getImage().getImageBitmap()));
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
 		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
 		webvDescription = (WebView) findViewById(R.id.webvDescription);
@@ -113,7 +116,13 @@ public class ItemviewActivity extends SherlockActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item);
+		if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
+			switch(menuItem.getItemId()) {
+			case android.R.id.home:
+				finish();
+				break;
+			}
+		}
 		invalidateOptionsMenu();
 		return true;
 	}

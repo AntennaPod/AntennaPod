@@ -1,6 +1,7 @@
 package de.podfetcher.activity;
 
 
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -33,13 +34,15 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		this.setContentView(R.layout.feeditemlist_activity);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		setContentView(R.layout.feeditemlist_activity);
+		
 		manager = FeedManager.getInstance();
 		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
 		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
-
+		getSupportActionBar().setLogo(new BitmapDrawable(feed.getImage().getImageBitmap()));
 		setTitle(feed.getTitle());
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();
@@ -77,6 +80,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 				};
 				remover.execute(feed);
 				break;
+			case android.R.id.home:
+				finish();
 			}
 		}
 		return true;
