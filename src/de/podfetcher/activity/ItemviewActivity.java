@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.text.DateFormat;
 
+import org.apache.commons.lang3.StringEscapeUtils;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.text.format.DateUtils;
@@ -91,7 +93,7 @@ public class ItemviewActivity extends SherlockActivity {
 				url = URLEncoder.encode(item.getDescription(), "utf-8")
 						.replaceAll("\\+", " ");
 			} else {
-				url = URLEncoder.encode(item.getContentEncoded(), "utf-8")
+				url = URLEncoder.encode(StringEscapeUtils.unescapeHtml4(item.getContentEncoded()), "utf-8")
 						.replaceAll("\\+", " ");
 			}
 			

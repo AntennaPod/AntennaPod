@@ -29,7 +29,7 @@ public class NSContent extends Namespace {
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ENCODED)) {
-			state.getCurrentItem().setContentEncoded(StringEscapeUtils.unescapeHtml4(state.getContentBuf().toString()));
+			state.getCurrentItem().setContentEncoded(state.getContentBuf().toString());
 		}
 	}
 

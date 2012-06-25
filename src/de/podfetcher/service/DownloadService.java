@@ -35,6 +35,7 @@ import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.os.Binder;
+import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
@@ -270,7 +271,6 @@ public class DownloadService extends Service {
 		public void run() {
 			long imageId = 0;
 			boolean hasImage = false;
-			
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
 			feed.setDownloaded(true);
