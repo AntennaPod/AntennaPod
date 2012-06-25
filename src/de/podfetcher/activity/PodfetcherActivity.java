@@ -1,13 +1,18 @@
 package de.podfetcher.activity;
 
 import android.app.Activity;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import com.actionbarsherlock.view.Window;
 
 import com.actionbarsherlock.app.ActionBar;
 import com.actionbarsherlock.app.ActionBar.Tab;
@@ -22,6 +27,8 @@ import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.fragment.QueueFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
+import de.podfetcher.service.DownloadService;
+import de.podfetcher.storage.DownloadRequester;
 
 public class PodfetcherActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PodfetcherActivity";
@@ -36,6 +43,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
 		// Set up tabs
 		ActionBar actionBar = getSupportActionBar();
@@ -69,6 +77,38 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 								R.string.queue_label).toString(),
 								QueueFragment.class));
 		actionBar.addTab(tab);
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unregisterReceiver(contentUpdate);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		updateProgressBarVisibility();
+		IntentFilter filter = new IntentFilter();
+		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
+		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
+		registerReceiver(contentUpdate, filter);
+	}
+	
+	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received contentUpdate Intent.");
+			updateProgressBarVisibility();
+		}
+	};
+	
+	private void updateProgressBarVisibility() {
+		if (DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds()) {
+			setSupportProgressBarIndeterminateVisibility(true);
+		} else {
+			setSupportProgressBarIndeterminateVisibility(false);
+		}
 	}
 	
 	@Override

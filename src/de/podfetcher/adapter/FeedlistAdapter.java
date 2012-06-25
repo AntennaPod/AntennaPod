@@ -23,7 +23,7 @@ import android.graphics.Color;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	private static final String TAG = "FeedlistAdapter";
-	
+
 	public FeedlistAdapter(Context context, int textViewResourceId,
 			List<Feed> objects) {
 		super(context, textViewResourceId, objects);
@@ -43,39 +43,34 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView = inflater.inflate(R.layout.feedlist_item, null);
 			holder.title = (TextView) convertView
 					.findViewById(R.id.txtvFeedname);
-			
-			holder.newEpisodes = (TextView) convertView.findViewById(R.id.txtvNewEps);
+
+			holder.newEpisodes = (TextView) convertView
+					.findViewById(R.id.txtvNewEps);
 			holder.image = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.lastUpdate = (TextView) convertView
 					.findViewById(R.id.txtvLastUpdate);
-			holder.numberOfEpisodes = (TextView) convertView.findViewById(R.id.txtvNumEpisodes);
+			holder.numberOfEpisodes = (TextView) convertView
+					.findViewById(R.id.txtvNumEpisodes);
 			convertView.setTag(holder);
-			holder.refreshing = (ImageView) convertView.findViewById(R.id.imgvRefreshing);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 
 		holder.title.setText(feed.getTitle());
-		holder.lastUpdate.setText("Last Update: " + DateUtils.formatSameDayTime(feed
-				.getLastUpdate().getTime(), System.currentTimeMillis(),
-				DateFormat.SHORT, DateFormat.SHORT));
+		holder.lastUpdate.setText("Last Update: "
+				+ DateUtils.formatSameDayTime(feed.getLastUpdate().getTime(),
+						System.currentTimeMillis(), DateFormat.SHORT,
+						DateFormat.SHORT));
 		holder.numberOfEpisodes.setText(feed.getItems().size() + " Episodes");
-		
-		if (DownloadRequester.getInstance().downloads.contains(feed)) {
-			Log.d(TAG, "Feed is downloading");
-			holder.newEpisodes.setVisibility(View.GONE);
-			holder.refreshing.setVisibility(View.VISIBLE);
+		int newItems = feed.getNumOfNewItems();
+		if (newItems > 0) {
+			holder.newEpisodes.setText(Integer.toString(newItems));
+			holder.newEpisodes.setVisibility(View.VISIBLE);
 		} else {
-			int newItems = feed.getNumOfNewItems();
-			if (newItems > 0) {
-				holder.newEpisodes.setText(Integer.toString(newItems));
-				holder.newEpisodes.setVisibility(View.VISIBLE);	
-			} else {
-				holder.newEpisodes.setVisibility(View.INVISIBLE);
-			}
+			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
-			
+
 		if (feed.getImage() != null) {
 			holder.image.setImageBitmap(feed.getImage().getImageBitmap()); // TODO
 																			// select
@@ -96,7 +91,6 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		TextView numberOfEpisodes;
 		TextView newEpisodes;
 		ImageView image;
-		ImageView refreshing;
 	}
 
 }

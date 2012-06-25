@@ -64,6 +64,8 @@ public class DownloadService extends Service {
 	private DownloadManager downloadManager;
 
 	private volatile boolean shutdownInitiated = false;
+	/** True if service is running. */
+	public static boolean isRunning = false;
 
 	private final IBinder mBinder = new LocalBinder();
 
@@ -82,6 +84,7 @@ public class DownloadService extends Service {
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "Service started");
+		isRunning = true;
 		registerReceiver(downloadReceiver, createIntentFilter());
 		syncExecutor = Executors.newSingleThreadExecutor();
 		manager = FeedManager.getInstance();
@@ -99,6 +102,7 @@ public class DownloadService extends Service {
 	@Override
 	public void onDestroy() {
 		Log.d(TAG, "Service shutting down");
+		isRunning = false;
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);

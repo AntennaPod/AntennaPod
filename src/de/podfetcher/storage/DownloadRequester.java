@@ -133,6 +133,16 @@ public class DownloadRequester {
 		}
 		return null;
 	}
+	
+	/** Returns true if there is at least one Feed in the downloads queue. */
+	public boolean isDownloadingFeeds() {
+		for (FeedFile f : downloads) {
+			if (f.getClass() == Feed.class) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/** Remove an object from the downloads-list of the requester. */
 	public void removeDownload(FeedFile f) {
