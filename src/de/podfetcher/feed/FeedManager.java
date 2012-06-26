@@ -401,10 +401,12 @@ public class FeedManager {
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed,
 						itemlistCursor, adapter));
+				itemlistCursor.close();
 
 				feeds.add(feed);
 			} while (feedlistCursor.moveToNext());
 		}
+		feedlistCursor.close();
 		
 	}
 
@@ -478,7 +480,8 @@ public class FeedManager {
 				}
 
 			} while (logCursor.moveToNext());
-		}	
+		}
+		logCursor.close();
 	}
 
 	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
@@ -494,6 +497,7 @@ public class FeedManager {
 				queue.add(index, item);
 			} while (cursor.moveToNext());
 		}
+		cursor.close();
 	}
 
 	public ArrayList<Feed> getFeeds() {
