@@ -109,6 +109,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		} else {
 			setSupportProgressBarIndeterminateVisibility(false);
 		}
+		invalidateOptionsMenu();
 	}
 	
 	@Override
@@ -132,6 +133,17 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 			default:
 			    return super.onOptionsItemSelected(item);
 	    }
+	}
+	
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		MenuItem refreshAll = menu.findItem(R.id.all_feed_refresh);
+		if (DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds()) {
+			refreshAll.setVisible(false);
+		} else {
+			refreshAll.setVisible(true);
+		}
+		return true;
 	}
 	
 	@Override
