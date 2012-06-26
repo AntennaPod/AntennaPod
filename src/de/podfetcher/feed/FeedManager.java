@@ -145,9 +145,10 @@ public class FeedManager {
 			unreadItems.add(item);
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Sets the 'read' attribute of all FeedItems of a specific feed to true
+	 * 
 	 * @param context
 	 */
 	public void markFeedRead(Context context, Feed feed) {
@@ -323,12 +324,15 @@ public class FeedManager {
 
 	/** Get a FeedMedia object by the id of the Media object and the feed object */
 	public FeedMedia getFeedMedia(long id, Feed feed) {
-		for (FeedItem item : feed.getItems()) {
-			if (item.getMedia().getId() == id) {
-				return item.getMedia();
+		if (feed != null) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.getMedia().getId() == id) {
+					return item.getMedia();
+				}
 			}
 		}
 		Log.e(TAG, "Couldn't find FeedMedia with id " + id);
+		if (feed == null) Log.e(TAG, "Feed was null");
 		return null;
 	}
 
@@ -371,7 +375,7 @@ public class FeedManager {
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
-		
+
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if (feedlistCursor.moveToFirst()) {
 			do {
@@ -407,7 +411,7 @@ public class FeedManager {
 			} while (feedlistCursor.moveToNext());
 		}
 		feedlistCursor.close();
-		
+
 	}
 
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
@@ -447,7 +451,8 @@ public class FeedManager {
 		return items;
 	}
 
-	private void extractDownloadLogFromCursor(Context context, PodDBAdapter adapter) {
+	private void extractDownloadLogFromCursor(Context context,
+			PodDBAdapter adapter) {
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {

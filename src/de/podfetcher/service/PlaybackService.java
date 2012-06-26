@@ -187,6 +187,7 @@ public class PlaybackService extends Service {
 
 			} else {
 				Log.e(TAG, "Media is null");
+				stopSelf();
 			}
 
 		} else if (media != null && status != PlayerStatus.PLAYING) {
