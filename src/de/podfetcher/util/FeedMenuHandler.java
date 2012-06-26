@@ -22,7 +22,10 @@ public class FeedMenuHandler {
 		return true;
 	}
 
-	public static boolean onPrepareOptionsMenu(Menu menu) {
+	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
+		if (selectedFeed.getPaymentLink() != null) {
+			menu.findItem(R.id.support_item).setVisible(true);
+		}
 		return true;
 	}
 
@@ -37,6 +40,10 @@ public class FeedMenuHandler {
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedFeed.getLink());
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+			break;
+		case R.id.support_item:
+			Uri supportUri = Uri.parse(selectedFeed.getPaymentLink());
+			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
 			break;
 		default:
 			return false;

@@ -49,7 +49,11 @@ public class FeedItemMenuHandler {
 		if (selectedItem.getLink() != null) {
 			menu.findItem(R.id.visit_website_item).setVisible(true);
 		}
-
+		
+		if (selectedItem.getPaymentLink() != null) {
+			menu.findItem(R.id.support_item).setVisible(true);
+		}
+		
 		return true;
 	}
 
@@ -91,6 +95,10 @@ public class FeedItemMenuHandler {
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedItem.getLink());
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+			break;
+		case R.id.support_item:
+			Uri supportUri = Uri.parse(selectedItem.getPaymentLink());
+			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
 			break;
 		default:
 			return false;

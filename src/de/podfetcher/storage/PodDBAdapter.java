@@ -52,6 +52,7 @@ public class PodDBAdapter {
 	public static final String KEY_COMPLETION_DATE = "completion_date";
 	public static final String KEY_FEEDITEM = "feeditem";
 	public static final String KEY_CONTENT_ENCODED = "content_encoded";
+	public static final String KEY_PAYMENT_LINK = "payment_link";
 	
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -70,14 +71,16 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
 			+ KEY_IMAGE + " INTEGER," + KEY_CATEGORY + " INTEGER,"
 			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-			+ KEY_DOWNLOADED + " INTEGER," + KEY_LASTUPDATE + " TEXT)";
+			+ KEY_DOWNLOADED + " INTEGER," + KEY_LASTUPDATE + " TEXT,"
+			+ KEY_PAYMENT_LINK + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
 			+ KEY_CONTENT_ENCODED + " TEXT,"
 			+ KEY_PUBDATE + " INTEGER," + KEY_MEDIA + " INTEGER," + KEY_FEED
-			+ " INTEGER," + KEY_READ + " INTEGER)";
+			+ " INTEGER," + KEY_READ + " INTEGER,"
+			+ KEY_PAYMENT_LINK + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_CATEGORIES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_CATEGORIES + " (" + TABLE_PRIMARY_KEY + KEY_NAME
@@ -150,6 +153,7 @@ public class PodDBAdapter {
 		values.put(KEY_TITLE, feed.getTitle());
 		values.put(KEY_LINK, feed.getLink());
 		values.put(KEY_DESCRIPTION, feed.getDescription());
+		values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
 		if (feed.getImage() != null) {
 			if (feed.getImage().getId() == 0) {
 				setImage(feed.getImage());
@@ -259,6 +263,7 @@ public class PodDBAdapter {
 		values.put(KEY_DESCRIPTION, item.getDescription());
 		values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
 		values.put(KEY_PUBDATE, item.getPubDate().getTime());
+		values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
 		if (item.getMedia() != null) {
 			if (item.getMedia().getId() == 0) {
 				setMedia(item.getMedia());

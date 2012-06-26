@@ -9,6 +9,7 @@ import java.util.Date;
  *
  */
 public class FeedItem extends FeedComponent{
+
 	private String title;
 	private String description;
 	private String contentEncoded;
@@ -17,6 +18,7 @@ public class FeedItem extends FeedComponent{
 	private FeedMedia media;
 	private Feed feed;
 	protected boolean read;
+	private String paymentLink;
 
 	public FeedItem() {
 			this.read = true;
@@ -92,6 +94,14 @@ public class FeedItem extends FeedComponent{
 
 	public void setContentEncoded(String contentEncoded) {
 		this.contentEncoded = contentEncoded;
+	}
+	
+	public String getPaymentLink() {
+		return paymentLink;
+	}
+
+	public void setPaymentLink(String paymentLink) {
+		this.paymentLink = paymentLink;
 	}
 
 

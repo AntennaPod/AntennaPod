@@ -61,7 +61,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		return FeedMenuHandler.onPrepareOptionsMenu(menu);
+		return FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
 	}
 
 	@Override

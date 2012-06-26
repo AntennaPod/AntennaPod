@@ -143,7 +143,7 @@ public class FeedlistFragment extends SherlockListFragment {
 
 		@Override
 		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return false;
+			return FeedMenuHandler.onPrepareOptionsMenu(menu, selectedFeed);
 		}
 
 		@Override

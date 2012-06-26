@@ -19,6 +19,7 @@ public class Feed extends FeedFile {
 	private ArrayList<FeedItem> items;
 	/** Date of last refresh. */
 	private Date lastUpdate;
+	private String paymentLink;
 
 	public Feed(Date lastUpdate) {
 		super();
@@ -96,6 +97,14 @@ public class Feed extends FeedFile {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+	
+	public String getPaymentLink() {
+		return paymentLink;
+	}
+
+	public void setPaymentLink(String paymentLink) {
+		this.paymentLink = paymentLink;
 	}
 
 }

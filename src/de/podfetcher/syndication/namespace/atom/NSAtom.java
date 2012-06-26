@@ -2,6 +2,8 @@ package de.podfetcher.syndication.namespace.atom;
 
 import org.xml.sax.Attributes;
 
+import android.util.Log;
+
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
@@ -9,9 +11,11 @@ import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.syndication.handler.HandlerState;
 import de.podfetcher.syndication.namespace.Namespace;
 import de.podfetcher.syndication.namespace.SyndElement;
+import de.podfetcher.syndication.namespace.rss20.NSRSS20;
 import de.podfetcher.syndication.util.SyndDateUtils;
 
 public class NSAtom extends Namespace {
+	private static final String TAG = "NSAtom";
 	public static final String NSTAG = "atom";
 	public static final String NSURI = "http://www.w3.org/2005/Atom";
 
@@ -36,6 +40,7 @@ public class NSAtom extends Namespace {
 	// rel-values
 	private static final String LINK_REL_ALTERNATE = "alternate";
 	private static final String LINK_REL_ENCLOSURE = "enclosure";
+	private static final String LINK_REL_PAYMENT = "payment";
 	private static final String LINK_REL_RELATED = "related";
 	private static final String LINK_REL_SELF = "self";
 
@@ -43,6 +48,9 @@ public class NSAtom extends Namespace {
 	private static final String isText = TITLE + "|" + CONTENT + "|" + "|"
 			+ SUBTITLE;
 
+	public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
+	public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
+	
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -57,7 +65,7 @@ public class NSAtom extends Namespace {
 			String href = attributes.getValue(LINK_HREF);
 			String rel = attributes.getValue(LINK_REL);
 			SyndElement parent = state.getTagstack().peek();
-			if (parent.getName().equals(ENTRY)) {
+			if (parent.getName().matches(isFeedItem)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
 					state.getCurrentItem().setLink(href);
 				} else if (rel.equals(LINK_REL_ENCLOSURE)) {
@@ -71,10 +79,16 @@ public class NSAtom extends Namespace {
 					state.getCurrentItem().setMedia(
 							new FeedMedia(state.getCurrentItem(), download_url,
 									size, type));
+				} else if (rel.equals(LINK_REL_PAYMENT)) {
+					Log.d(TAG, "Found payment item link");
+					state.getCurrentItem().setPaymentLink(href);
 				}
-			} else if (parent.getName().equals(FEED)) {
+			} else if (parent.getName().matches(isFeed)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
 					state.getFeed().setLink(href);
+				} else if (rel.equals(LINK_REL_PAYMENT)) {
+					Log.d(TAG, "Found payment link");
+					state.getFeed().setPaymentLink(href);
 				}
 			}
 		}

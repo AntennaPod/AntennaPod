@@ -61,4 +61,5 @@
 	<string name="position_default_label">00:00:00</string>
 	<string name="queue_label">Queue</string>
 	<string name="visit_website_label">Visit Website</string>
+	<string name="support_label">Support</string>
 </resources>

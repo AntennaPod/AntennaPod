@@ -335,7 +335,8 @@ public class FeedManager {
 			}
 		}
 		Log.e(TAG, "Couldn't find FeedMedia with id " + id);
-		if (feed == null) Log.e(TAG, "Feed was null");
+		if (feed == null)
+			Log.e(TAG, "Feed was null");
 		return null;
 	}
 
@@ -395,6 +396,8 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_LINK)));
 				feed.setDescription(feedlistCursor.getString(feedlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
+				feed.setPaymentLink(feedlistCursor.getString(feedlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK)));
 				feed.setImage(adapter.getFeedImage(feedlistCursor
 						.getLong(feedlistCursor
 								.getColumnIndex(PodDBAdapter.KEY_IMAGE))));
@@ -438,6 +441,8 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED)));
 				item.setPubDate(new Date(itemlistCursor.getLong(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_PUBDATE))));
+				item.setPaymentLink(itemlistCursor.getString(itemlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK)));
 				long mediaId = itemlistCursor.getLong(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_MEDIA));
 				if (mediaId != 0) {
@@ -505,13 +510,13 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_FEED)));
 				if (feed != null) {
 					FeedItem item = getFeedItem(
-							cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
+							cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM),
+							feed);
 					if (item != null) {
 						queue.add(index, item);
 					}
 				}
-				
-				
+
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
