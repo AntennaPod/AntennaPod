@@ -122,6 +122,9 @@ public class FeedManager {
 			if (!item.isRead()) {
 				unreadItems.remove(item);
 			}
+			if (queue.contains(item)) {
+				removeQueueItem(context, item);
+			}
 			if (item.getMedia() != null && item.getMedia().isDownloaded()) {
 				File mediaFile = new File(item.getMedia().getFile_url());
 				mediaFile.delete();
@@ -375,7 +378,7 @@ public class FeedManager {
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
-
+		Log.d(TAG, "Extracting Feedlist");
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if (feedlistCursor.moveToFirst()) {
 			do {
@@ -416,6 +419,7 @@ public class FeedManager {
 
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
 			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
+		Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
 		if (itemlistCursor.moveToFirst()) {
 			do {
@@ -453,6 +457,7 @@ public class FeedManager {
 
 	private void extractDownloadLogFromCursor(Context context,
 			PodDBAdapter adapter) {
+		Log.d(TAG, "Extracting DownloadLog");
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {
@@ -490,6 +495,7 @@ public class FeedManager {
 	}
 
 	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
+		Log.d(TAG, "Extracting Downloadqueue");
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
@@ -497,9 +503,15 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_ID));
 				Feed feed = getFeed(cursor.getLong(cursor
 						.getColumnIndex(PodDBAdapter.KEY_FEED)));
-				FeedItem item = getFeedItem(
-						cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
-				queue.add(index, item);
+				if (feed != null) {
+					FeedItem item = getFeedItem(
+							cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM), feed);
+					if (item != null) {
+						queue.add(index, item);
+					}
+				}
+				
+				
 			} while (cursor.moveToNext());
 		}
 		cursor.close();

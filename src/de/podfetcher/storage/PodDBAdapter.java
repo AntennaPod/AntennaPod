@@ -472,6 +472,7 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
 				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
+		cursor.close();
 		return media;
 	}
 
@@ -492,6 +493,7 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
 				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
+		cursor.close();
 		return image;
 	}
 
