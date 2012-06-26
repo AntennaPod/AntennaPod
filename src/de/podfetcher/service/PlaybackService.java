@@ -196,7 +196,6 @@ public class PlaybackService extends Service {
 			Log.w(TAG, "Something went wrong. Shutting down...");
 			stopSelf();
 		}
-		setupNotification();
 		return Service.START_STICKY;
 	}
 
@@ -305,6 +304,7 @@ public class PlaybackService extends Service {
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 	}
 
+	/** Prepares notification and starts the service in the foreground. */
 	private void setupNotification() {
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
 				this, MediaplayerActivity.class),
