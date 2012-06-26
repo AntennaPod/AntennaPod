@@ -472,7 +472,7 @@ public class PodDBAdapter {
 	public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
 		open();
 		Cursor c = db
-				.query(CREATE_TABLE_SIMPLECHAPTERS, null, KEY_ID + "=?",
+				.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_ID + "=?",
 						new String[] { String.valueOf(item.getId()) }, null,
 						null, null);
 		return c;
