@@ -454,6 +454,19 @@ public class FeedManager {
 				if (!item.read) {
 					unreadItems.add(item);
 				}
+				
+				// extract chapters
+				Cursor chapterCursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
+				if (chapterCursor.moveToFirst()) {
+					item.setSimpleChapters(new ArrayList<SimpleChapter>());
+					do {
+						SimpleChapter chapter = new SimpleChapter(chapterCursor.getLong(chapterCursor.getColumnIndex(PodDBAdapter.KEY_START)),
+								chapterCursor.getString(chapterCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+						item.getSimpleChapters().add(chapter);
+					} while (chapterCursor.moveToNext());
+				}
+				chapterCursor.close();
+				
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}

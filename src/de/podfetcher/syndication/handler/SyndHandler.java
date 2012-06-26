@@ -13,6 +13,7 @@ import de.podfetcher.syndication.namespace.atom.NSAtom;
 import de.podfetcher.syndication.namespace.content.NSContent;
 import de.podfetcher.syndication.namespace.itunes.NSITunes;
 import de.podfetcher.syndication.namespace.rss20.NSRSS20;
+import de.podfetcher.syndication.namespace.simplechapters.NSSimpleChapters;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
 public class SyndHandler extends DefaultHandler {
@@ -89,6 +90,9 @@ public class SyndHandler extends DefaultHandler {
 		} else if (uri.equals(NSITunes.NSURI) && prefix.equals(NSITunes.NSTAG)) {
 			state.namespaces.put(uri, new NSITunes());
 			Log.d(TAG, "Recognized ITunes namespace");
+		} else if (uri.equals(NSSimpleChapters.NSURI) && prefix.equals(NSSimpleChapters.NSTAG)) {
+			state.namespaces.put(uri, new NSSimpleChapters());
+			Log.d(TAG, "Recognized SimpleChapters namespace");
 		}
 	}
 

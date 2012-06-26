@@ -8,6 +8,7 @@ import de.podfetcher.feed.FeedCategory;
 import de.podfetcher.feed.FeedImage;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.feed.SimpleChapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -53,7 +54,8 @@ public class PodDBAdapter {
 	public static final String KEY_FEEDITEM = "feeditem";
 	public static final String KEY_CONTENT_ENCODED = "content_encoded";
 	public static final String KEY_PAYMENT_LINK = "payment_link";
-	
+	public static final String KEY_START = "start";
+
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
@@ -62,6 +64,7 @@ public class PodDBAdapter {
 	public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
 	public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
 	public static final String TABLE_NAME_QUEUE = "Queue";
+	public static final String TABLE_NAME_SIMPLECHAPTERS = "SimpleChapters";
 
 	// SQL Statements for creating new tables
 	private static final String TABLE_PRIMARY_KEY = KEY_ID
@@ -77,10 +80,9 @@ public class PodDBAdapter {
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
-			+ KEY_CONTENT_ENCODED + " TEXT,"
-			+ KEY_PUBDATE + " INTEGER," + KEY_MEDIA + " INTEGER," + KEY_FEED
-			+ " INTEGER," + KEY_READ + " INTEGER,"
-			+ KEY_PAYMENT_LINK + " TEXT)";
+			+ KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE + " INTEGER,"
+			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER," + KEY_READ
+			+ " INTEGER," + KEY_PAYMENT_LINK + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_CATEGORIES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_CATEGORIES + " (" + TABLE_PRIMARY_KEY + KEY_NAME
@@ -102,11 +104,14 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
 			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
 			+ " INTEGER)";
-	
+
 	private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
-			+ TABLE_NAME_QUEUE + "(" +  KEY_ID + " INTEGER PRIMARY KEY,"
-			+ KEY_FEEDITEM + " INTEGER,"
-			+ KEY_FEED + " INTEGER)";
+			+ TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
+			+ KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
+
+	private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
+			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+			+ " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER)";
 
 	/**
 	 * Used for storing download status entries to determine the type of the
@@ -283,8 +288,27 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
 					new String[] { String.valueOf(item.getId()) });
 		}
+		if (item.getSimpleChapters() != null) {
+			setSimpleChapters(item);
+		}	
 		close();
 		return item.getId();
+	}
+
+	public void setSimpleChapters(FeedItem item) {
+		ContentValues values = new ContentValues();
+		for (SimpleChapter chapter : item.getSimpleChapters()) {
+			values.put(KEY_TITLE, chapter.getTitle());
+			values.put(KEY_START, chapter.getStart());
+			values.put(KEY_FEEDITEM, item.getId());
+			if (chapter.getId() == 0) {
+				chapter.setId(db
+						.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
+			} else {
+				db.update(TABLE_NAME_SIMPLECHAPTERS, values, KEY_ID + "=?",
+						new String[] { String.valueOf(chapter.getId()) });
+			}
+		}
 	}
 
 	/**
@@ -314,7 +338,7 @@ public class PodDBAdapter {
 		close();
 		return status.getId();
 	}
-	
+
 	public void setQueue(ArrayList<FeedItem> queue) {
 		ContentValues values = new ContentValues();
 		open();
@@ -324,33 +348,37 @@ public class PodDBAdapter {
 			values.put(KEY_ID, i);
 			values.put(KEY_FEEDITEM, item.getId());
 			values.put(KEY_FEED, item.getFeed().getId());
-			db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
+			db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values,
+					SQLiteDatabase.CONFLICT_REPLACE);
 		}
 		close();
 	}
-	
+
 	public void removeFeedMedia(FeedMedia media) {
 		open();
-		db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?", new String[] {String.valueOf(media.getId())});
+		db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?",
+				new String[] { String.valueOf(media.getId()) });
 		close();
 	}
-	
+
 	public void removeFeedImage(FeedImage image) {
 		open();
-		db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?", new String[] {String.valueOf(image.getId())});
+		db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?",
+				new String[] { String.valueOf(image.getId()) });
 		close();
 	}
-	
+
 	/** Remove a FeedItem and its FeedMedia entry. */
 	public void removeFeedItem(FeedItem item) {
 		if (item.getMedia() != null) {
 			removeFeedMedia(item.getMedia());
-		}	
+		}
 		open();
-		db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?", new String[] {String.valueOf(item.getId())});
+		db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
+				new String[] { String.valueOf(item.getId()) });
 		close();
 	}
-	
+
 	/** Remove a feed with all its FeedItems and Media entries. */
 	public void removeFeed(Feed feed) {
 		if (feed.getImage() != null) {
@@ -358,9 +386,10 @@ public class PodDBAdapter {
 		}
 		for (FeedItem item : feed.getItems()) {
 			removeFeedItem(item);
-		}	
+		}
 		open();
-		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?", new String[] {String.valueOf(feed.getId())});
+		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
+				new String[] { String.valueOf(feed.getId()) });
 		close();
 	}
 
@@ -440,16 +469,26 @@ public class PodDBAdapter {
 		return c;
 	}
 
+	public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
+		open();
+		Cursor c = db
+				.query(CREATE_TABLE_SIMPLECHAPTERS, null, KEY_ID + "=?",
+						new String[] { String.valueOf(item.getId()) }, null,
+						null, null);
+		return c;
+	}
+
 	public final Cursor getDownloadLogCursor() {
 		open();
 		Cursor c = db.query(TABLE_NAME_DOWNLOAD_LOG, null, null, null, null,
 				null, null);
 		return c;
 	}
-	
+
 	public final Cursor getQueueCursor() {
 		open();
-		Cursor c = db.query(TABLE_NAME_QUEUE, null, null, null, null, null, null);
+		Cursor c = db.query(TABLE_NAME_QUEUE, null, null, null, null, null,
+				null);
 		return c;
 	}
 
@@ -531,6 +570,7 @@ public class PodDBAdapter {
 			db.execSQL(CREATE_TABLE_FEED_MEDIA);
 			db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
 			db.execSQL(CREATE_TABLE_QUEUE);
+			db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
 		}
 
 		@Override

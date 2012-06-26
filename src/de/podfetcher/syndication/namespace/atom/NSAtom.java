@@ -80,14 +80,12 @@ public class NSAtom extends Namespace {
 							new FeedMedia(state.getCurrentItem(), download_url,
 									size, type));
 				} else if (rel.equals(LINK_REL_PAYMENT)) {
-					Log.d(TAG, "Found payment item link");
 					state.getCurrentItem().setPaymentLink(href);
 				}
 			} else if (parent.getName().matches(isFeed)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
 					state.getFeed().setLink(href);
 				} else if (rel.equals(LINK_REL_PAYMENT)) {
-					Log.d(TAG, "Found payment link");
 					state.getFeed().setPaymentLink(href);
 				}
 			}

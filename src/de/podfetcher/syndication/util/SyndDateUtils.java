@@ -84,4 +84,19 @@ public class SyndDateUtils {
 		return result;
 
 	}
+	/** Takes a string of the form [HH:]MM:SS[.mmm] and converts it to milliseconds. */
+	public static long parseTimeString(final String time) {
+		String[] parts = time.split(":");
+		long result = 0;
+		int idx = 0;
+		if (parts.length == 3) {
+			// string has hours
+			result += Integer.valueOf(parts[idx]) * 3600000;
+			idx++;
+		}
+		result += Integer.valueOf(parts[idx]) * 60000;
+		idx++;
+		result += ( Float.valueOf(parts[idx])) * 1000;
+		return result;
+	}
 }

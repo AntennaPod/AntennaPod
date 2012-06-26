@@ -1,5 +1,6 @@
 package de.podfetcher.feed;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 
@@ -19,6 +20,7 @@ public class FeedItem extends FeedComponent{
 	private Feed feed;
 	protected boolean read;
 	private String paymentLink;
+	private ArrayList<SimpleChapter> simpleChapters;
 
 	public FeedItem() {
 			this.read = true;
@@ -104,5 +106,12 @@ public class FeedItem extends FeedComponent{
 		this.paymentLink = paymentLink;
 	}
 
+	public ArrayList<SimpleChapter> getSimpleChapters() {
+		return simpleChapters;
+	}
+
+	public void setSimpleChapters(ArrayList<SimpleChapter> simpleChapters) {
+		this.simpleChapters = simpleChapters;
+	}
 
 }
