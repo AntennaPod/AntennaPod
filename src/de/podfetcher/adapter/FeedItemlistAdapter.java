@@ -91,11 +91,11 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.downloading.setVisibility(View.GONE);
 			}
 			
-			String type = item.getMedia().getMime_type()
-					.substring(0, item.getMedia().getMime_type().indexOf('/'));
-			if (type.equals("audio")) {
+			String type = item.getMedia().getMime_type();
+					
+			if (type.startsWith("audio")) {
 				holder.type.setImageResource(R.drawable.type_audio);
-			} else if (type.equals("video")) {
+			} else if (type.startsWith("video")) {
 				holder.type.setImageResource(R.drawable.type_video);
 			}
 		}
