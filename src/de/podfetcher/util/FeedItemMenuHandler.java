@@ -1,6 +1,8 @@
 package de.podfetcher.util;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -44,6 +46,10 @@ public class FeedItemMenuHandler {
 			menu.findItem(R.id.mark_read_item).setVisible(true);
 		}
 
+		if (selectedItem.getLink() != null) {
+			menu.findItem(R.id.visit_website_item).setVisible(true);
+		}
+
 		return true;
 	}
 
@@ -81,6 +87,10 @@ public class FeedItemMenuHandler {
 		case R.id.stream_item:
 			manager.playMedia(context, selectedItem.getMedia(), true, true,
 					true);
+			break;
+		case R.id.visit_website_item:
+			Uri uri = Uri.parse(selectedItem.getLink());
+			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		default:
 			return false;
