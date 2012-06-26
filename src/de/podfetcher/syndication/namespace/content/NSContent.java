@@ -21,12 +21,6 @@ public class NSContent extends Namespace {
 	}
 
 	@Override
-	public void handleCharacters(HandlerState state, char[] ch, int start,
-			int length) {
-
-	}
-
-	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ENCODED)) {
 			state.getCurrentItem().setContentEncoded(state.getContentBuf().toString());

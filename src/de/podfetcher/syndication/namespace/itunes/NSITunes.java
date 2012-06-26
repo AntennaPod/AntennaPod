@@ -30,13 +30,6 @@ public class NSITunes extends Namespace{
 	}
 
 	@Override
-	public void handleCharacters(HandlerState state, char[] ch, int start,
-			int length) {
-		
-		
-	}
-
-	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		
 		

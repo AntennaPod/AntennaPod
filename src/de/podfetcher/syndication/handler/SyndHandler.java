@@ -51,10 +51,6 @@ public class SyndHandler extends DefaultHandler {
 				state.contentBuf.append(content);
 				}
 			}
-			SyndElement top = state.tagstack.peek();
-			if (top.getNamespace() != null) {
-				top.getNamespace().handleCharacters(state, ch, start, length);
-			}
 		}
 	}
 

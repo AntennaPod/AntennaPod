@@ -63,11 +63,6 @@ public class NSRSS20 extends Namespace {
 	}
 
 	@Override
-	public void handleCharacters(HandlerState state, char[] ch, int start,
-			int length) {
-	}
-
-	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ITEM)) {
 			state.setCurrentItem(null);
