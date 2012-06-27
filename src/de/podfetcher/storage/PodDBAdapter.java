@@ -175,7 +175,6 @@ public class PodDBAdapter {
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		values.put(KEY_DOWNLOADED, feed.isDownloaded());
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
-		open();
 		if (feed.getId() == 0) {
 			// Create new entry
 			Log.d(this.toString(), "Inserting new Feed into db");
@@ -185,7 +184,6 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
 					new String[] { Long.toString(feed.getId()) });
 		}
-		close();
 		return feed.getId();
 	}
 
@@ -195,7 +193,6 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setCategory(FeedCategory category) {
-		open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_NAME, category.getName());
 		if (category.getId() == 0) {
@@ -205,7 +202,6 @@ public class PodDBAdapter {
 					new String[] { String.valueOf(category.getId()) });
 
 		}
-		close();
 		return category.getId();
 	}
 
@@ -215,7 +211,6 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setImage(FeedImage image) {
-		open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
@@ -227,7 +222,6 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
 					new String[] { String.valueOf(image.getId()) });
 		}
-		close();
 		return image.getId();
 	}
 
@@ -237,7 +231,6 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 */
 	public long setMedia(FeedMedia media) {
-		open();
 		ContentValues values = new ContentValues();
 		values.put(KEY_DURATION, media.getDuration());
 		values.put(KEY_POSITION, media.getPosition());
@@ -251,8 +244,7 @@ public class PodDBAdapter {
 		} else {
 			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
 					new String[] { String.valueOf(media.getId()) });
-		}
-		close();
+		}	
 		return media.getId();
 	}
 
@@ -280,8 +272,7 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
-
-		open();
+	
 		if (item.getId() == 0) {
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
@@ -291,7 +282,6 @@ public class PodDBAdapter {
 		if (item.getSimpleChapters() != null) {
 			setSimpleChapters(item);
 		}	
-		close();
 		return item.getId();
 	}
 
@@ -328,20 +318,17 @@ public class PodDBAdapter {
 		values.put(KEY_REASON, status.getReason());
 		values.put(KEY_SUCCESSFUL, status.isSuccessful());
 		values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
-		open();
 		if (status.getId() == 0) {
 			status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
 		} else {
 			db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
 					new String[] { String.valueOf(status.getId()) });
 		}
-		close();
 		return status.getId();
 	}
 
 	public void setQueue(ArrayList<FeedItem> queue) {
 		ContentValues values = new ContentValues();
-		open();
 		db.delete(TABLE_NAME_QUEUE, null, null);
 		for (int i = 0; i < queue.size(); i++) {
 			FeedItem item = queue.get(i);
@@ -351,21 +338,16 @@ public class PodDBAdapter {
 			db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values,
 					SQLiteDatabase.CONFLICT_REPLACE);
 		}
-		close();
 	}
 
 	public void removeFeedMedia(FeedMedia media) {
-		open();
 		db.delete(TABLE_NAME_FEED_MEDIA, KEY_ID + "=?",
 				new String[] { String.valueOf(media.getId()) });
-		close();
 	}
 
 	public void removeFeedImage(FeedImage image) {
-		open();
 		db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?",
 				new String[] { String.valueOf(image.getId()) });
-		close();
 	}
 
 	/** Remove a FeedItem and its FeedMedia entry. */
@@ -373,10 +355,8 @@ public class PodDBAdapter {
 		if (item.getMedia() != null) {
 			removeFeedMedia(item.getMedia());
 		}
-		open();
 		db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
 				new String[] { String.valueOf(item.getId()) });
-		close();
 	}
 
 	/** Remove a feed with all its FeedItems and Media entries. */
@@ -387,17 +367,13 @@ public class PodDBAdapter {
 		for (FeedItem item : feed.getItems()) {
 			removeFeedItem(item);
 		}
-		open();
 		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
 				new String[] { String.valueOf(feed.getId()) });
-		close();
 	}
 
 	public void removeDownloadStatus(DownloadStatus remove) {
-		open();
 		db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_ID + "=?",
 				new String[] { String.valueOf(remove.getId()) });
-		close();
 	}
 
 	/**

@@ -108,7 +108,7 @@ public class FeedManager {
 	/** Remove a feed with all its items and media files and its image. */
 	public boolean deleteFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-
+		adapter.open();
 		// delete image file
 		if (feed.getImage() != null) {
 			if (feed.getImage().isDownloaded()
@@ -123,14 +123,16 @@ public class FeedManager {
 				unreadItems.remove(item);
 			}
 			if (queue.contains(item)) {
-				removeQueueItem(context, item);
+				removeQueueItem(item, adapter);
 			}
 			if (item.getMedia() != null && item.getMedia().isDownloaded()) {
 				File mediaFile = new File(item.getMedia().getFile_url());
 				mediaFile.delete();
 			}
 		}
+		
 		adapter.removeFeed(feed);
+		adapter.close();
 		return feeds.remove(feed);
 
 	}
@@ -176,15 +178,29 @@ public class FeedManager {
 		if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
 			adapter.removeDownloadStatus(downloadLog.remove(0));
 		}
-		return adapter.setDownloadStatus(status);
+		adapter.open();
+		long result = adapter.setDownloadStatus(status);
+		adapter.close();
+		return result;
 	}
 
 	public void addQueueItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		queue.add(item);
+		adapter.open();
 		adapter.setQueue(queue);
+		adapter.close();
+	}
+	
+	/** Uses external adapter. */
+	public void removeQueueItem(FeedItem item, PodDBAdapter adapter) {
+		boolean removed = queue.remove(item);
+		if (removed) {
+			adapter.setQueue(queue);
+		}
 	}
 
+	/** Uses its own adapter. */
 	public void removeQueueItem(Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
@@ -203,10 +219,13 @@ public class FeedManager {
 
 	private void addNewFeed(Context context, Feed feed) {
 		feeds.add(feed);
-		feed.setId(setFeed(context, feed));
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		feed.setId(setFeed(feed, adapter));
 		for (FeedItem item : feed.getItems()) {
-			setFeedItem(context, item);
+			setFeedItem(item, adapter);
 		}
+		adapter.close();
 	}
 
 	/*
@@ -269,27 +288,79 @@ public class FeedManager {
 		return null;
 	}
 
-	/** Updates Information of an existing Feed */
+	/** Updates Information of an existing Feed. Uses external adapter. */
+	public long setFeed(Feed feed, PodDBAdapter adapter) {
+		if (adapter != null) {
+			return adapter.setFeed(feed);
+		} else {
+			Log.w(TAG, "Adapter in setFeed was null");
+			return 0;
+		}
+	}
+	
+	/** Updates Information of an existing Feeditem. Uses external adapter. */
+	public long setFeedItem(FeedItem item, PodDBAdapter adapter) {
+		if (adapter != null) {
+			return adapter.setFeedItem(item);
+		} else {
+			Log.w(TAG, "Adapter in setFeedItem was null");
+			return 0;
+		}
+	}
+	
+	/** Updates Information of an existing Feedimage. Uses external adapter. */
+	public long setFeedImage(FeedImage image, PodDBAdapter adapter) {
+		if (adapter != null) {
+			return adapter.setImage(image);
+		} else {
+			Log.w(TAG, "Adapter in setFeedImage was null");
+			return 0;
+		}
+	}
+	
+	/** Updates Information of an existing Feedmedia object. Uses external adapter. */
+	public long setFeedImage(FeedMedia media, PodDBAdapter adapter) {
+		if (adapter != null) {
+			return adapter.setMedia(media);
+		} else {
+			Log.w(TAG, "Adapter in setFeedMedia was null");
+			return 0;
+		}
+	}
+	
+	/** Updates Information of an existing Feed. Creates and opens its own adapter. */
 	public long setFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		return adapter.setFeed(feed);
+		adapter.open();
+		long result = adapter.setFeed(feed);
+		adapter.close();
+		return result;
 	}
 
+	/** Updates information of an existing FeedItem. Creates and opens its own adapter.*/
 	public long setFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		return adapter.setFeedItem(item);
+		adapter.open();
+		long result = adapter.setFeedItem(item);
+		adapter.close();
+		return result;
 	}
 
-	/** Updates information of an existing FeedImage */
+	/** Updates information of an existing FeedImage. Creates and opens its own adapter. */
 	public long setFeedImage(Context context, FeedImage image) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		return adapter.setImage(image);
+		adapter.open();
+		long result = adapter.setImage(image);
+		adapter.close();
+		return result;
 	}
 
-	/** Updates information of an existing FeedMedia object. */
+	/** Updates information of an existing FeedMedia object. Creates and opens its own adapter. */
 	public long setFeedMedia(Context context, FeedMedia media) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		return adapter.setMedia(media);
+		adapter.open();
+		long result = adapter.setMedia(media);
+		return result;
 	}
 
 	/** Get a Feed by its id */

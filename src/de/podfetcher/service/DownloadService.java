@@ -289,8 +289,8 @@ public class DownloadService extends Service {
 			sendDownloadHandledIntent(feed.getDownloadId(), statusId, hasImage, imageId);
 			feed.setDownloadId(0);
 			// Save information of feed in DB
-			manager.updateFeed(service, feed);	
-			queryDownloads();
+			manager.updateFeed(service, feed);
+			queryDownloads();	
 		}
 
 		/** Delete files that aren't needed anymore */
