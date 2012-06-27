@@ -17,6 +17,7 @@ import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Binder;
@@ -30,7 +31,6 @@ import de.podfetcher.feed.FeedManager;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
-
 	/** Logging tag */
 	private static final String TAG = "PlaybackService";
 
@@ -40,8 +40,7 @@ public class PlaybackService extends Service {
 	public static final String PREF_LAST_PLAYED_FEED_ID = "de.podfetcher.preferences.lastPlayedFeedId";
 	/** True if last played media was streamed. */
 	public static final String PREF_LAST_IS_STREAM = "de.podfetcher.preferences.lastIsStream";
-	
-	
+
 	/** Contains the id of the FeedMedia object. */
 	public static final String EXTRA_MEDIA_ID = "extra.de.podfetcher.service.mediaId";
 	/** Contains the id of the Feed object of the FeedMedia. */
@@ -70,12 +69,13 @@ public class PlaybackService extends Service {
 	/** True if media should be streamed (Extracted from Intent Extra) . */
 	private boolean shouldStream;
 	private boolean startWhenPrepared;
+	private boolean playingVideo;
 	private FeedManager manager;
 	private PlayerStatus status;
 	private PositionSaver positionSaver;
 
 	private PlayerStatus statusBeforeSeek;
-	
+
 	private final IBinder mBinder = new LocalBinder();
 
 	public class LocalBinder extends Binder {
@@ -164,26 +164,7 @@ public class PlaybackService extends Service {
 				shouldStream = playbackType;
 				startWhenPrepared = intent.getBooleanExtra(
 						EXTRA_START_WHEN_PREPARED, false);
-				try {
-					if (shouldStream) {
-						player.setDataSource(media.getDownload_url());
-						setStatus(PlayerStatus.PREPARING);
-						player.prepareAsync();
-					} else {
-						player.setDataSource(media.getFile_url());
-						setStatus(PlayerStatus.PREPARING);
-						player.prepare();
-					}
-
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				} catch (SecurityException e) {
-					e.printStackTrace();
-				} catch (IllegalStateException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
+				setupMediaplayer();
 
 			} else {
 				Log.e(TAG, "Media is null");
@@ -197,6 +178,64 @@ public class PlaybackService extends Service {
 			stopSelf();
 		}
 		return Service.START_STICKY;
+	}
+
+	/**
+	 * Called by a mediaplayer Activity as soon as it has prepared its
+	 * mediaplayer.
+	 */
+	public void setVideoSurface(SurfaceHolder sh) {
+		player.setDisplay(sh);
+		try {
+			if (shouldStream) {
+				player.setDataSource(media.getDownload_url());
+				setStatus(PlayerStatus.PREPARING);
+				player.prepareAsync();
+			} else {
+				player.setDataSource(media.getFile_url());
+				setStatus(PlayerStatus.PREPARING);
+				player.prepare();
+			}
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/** Called after service has extracted the media it is supposed to play. */
+	private void setupMediaplayer() {
+		try {
+			if (media.getMime_type().startsWith("audio")) {
+				playingVideo = false;
+				if (shouldStream) {
+					player.setDataSource(media.getDownload_url());
+					setStatus(PlayerStatus.PREPARING);
+					player.prepareAsync();
+				} else {
+					player.setDataSource(media.getFile_url());
+					setStatus(PlayerStatus.PREPARING);
+					player.prepare();
+				}
+			} else if (media.getMime_type().startsWith("video")) {
+				playingVideo = true;
+				setStatus(PlayerStatus.AWAITING_VIDEO_SURFACE);
+			}
+
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (IllegalStateException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setupPositionSaver() {
@@ -229,18 +268,18 @@ public class PlaybackService extends Service {
 			}
 		}
 	};
-	
+
 	private MediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new MediaPlayer.OnSeekCompleteListener() {
-		
+
 		@Override
 		public void onSeekComplete(MediaPlayer mp) {
 			if (status == PlayerStatus.SEEKING) {
 				setStatus(statusBeforeSeek);
 			}
-			
+
 		}
 	};
-	
+
 	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
 
 		@Override
@@ -382,6 +421,10 @@ public class PlaybackService extends Service {
 
 	}
 
+	public boolean isPlayingVideo() {
+		return playingVideo;
+	}
+	
 	public boolean isShouldStream() {
 		return shouldStream;
 	}

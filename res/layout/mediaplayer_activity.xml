@@ -4,12 +4,23 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <ImageView
-        android:id="@+id/imgvCover"
+    <ViewSwitcher
+        android:id="@+id/viewswitcher"
         android:layout_width="match_parent"
         android:layout_height="283dp"
-        android:layout_weight="0.02"
-        android:src="@drawable/navigation_cancel" />
+        android:layout_weight="0.02" >
+
+        <ImageView
+            android:id="@+id/imgvCover"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/navigation_cancel" />
+
+        <VideoView
+            android:id="@+id/videoview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+    </ViewSwitcher>
 
     <RelativeLayout
         android:id="@+id/playtime_layout"

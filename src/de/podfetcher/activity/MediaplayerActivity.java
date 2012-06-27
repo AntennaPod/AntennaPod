@@ -7,11 +7,14 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
@@ -19,6 +22,8 @@ import android.widget.ImageView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.VideoView;
+import android.widget.ViewSwitcher;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -31,7 +36,8 @@ import de.podfetcher.service.PlaybackService;
 import de.podfetcher.service.PlayerStatus;
 import de.podfetcher.util.Converter;
 
-public class MediaplayerActivity extends SherlockActivity {
+public class MediaplayerActivity extends SherlockActivity implements
+		SurfaceHolder.Callback {
 	private final String TAG = "MediaplayerActivity";
 
 	private static final int DEFAULT_SEEK_DELTA = 30000; // Seek-Delta to use
@@ -46,7 +52,9 @@ public class MediaplayerActivity extends SherlockActivity {
 	private FeedManager manager;
 
 	// Widgets
+	private ViewSwitcher viewswitcher;
 	private ImageView imgvCover;
+	private VideoView videoview;
 	private TextView txtvStatus;
 	private TextView txtvPosition;
 	private TextView txtvLength;
@@ -68,7 +76,7 @@ public class MediaplayerActivity extends SherlockActivity {
 			unbindService(mConnection);
 		} catch (IllegalArgumentException e) {
 			// ignore
-		}	
+		}
 		if (positionObserver != null) {
 			positionObserver.cancel(true);
 		}
@@ -89,9 +97,19 @@ public class MediaplayerActivity extends SherlockActivity {
 	}
 
 	@Override
+	protected void onPause() {
+		super.onPause();
+		if (playbackService.isRunning && playbackService != null
+				&& playbackService.isPlayingVideo()) {
+			playbackService.pause();
+		}
+	}
+
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
+		getWindow().setFormat(PixelFormat.TRANSPARENT);
 		this.setContentView(R.layout.mediaplayer_activity);
 		manager = FeedManager.getInstance();
 		setupGUI();
@@ -167,6 +185,12 @@ public class MediaplayerActivity extends SherlockActivity {
 			break;
 		case SEEKING:
 			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
+			break;
+		case AWAITING_VIDEO_SURFACE:
+			Log.d(TAG, "Preparing video playback");
+			SurfaceHolder holder = videoview.getHolder();
+			holder.addCallback(this);
+			viewswitcher.showNext();
 		}
 	}
 
@@ -227,7 +251,9 @@ public class MediaplayerActivity extends SherlockActivity {
 	}
 
 	private void setupGUI() {
+		viewswitcher = (ViewSwitcher) findViewById(R.id.viewswitcher);
 		imgvCover = (ImageView) findViewById(R.id.imgvCover);
+		videoview = (VideoView) findViewById(R.id.videoview);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
 		txtvStatus = (TextView) findViewById(R.id.txtvStatus);
@@ -361,6 +387,26 @@ public class MediaplayerActivity extends SherlockActivity {
 			Log.d(TAG, "Background Task finished");
 			return null;
 		}
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		Log.d(TAG, "Videoview holder created");
+		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+			playbackService.setVideoSurface(holder);
+		}
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+
 	}
 
 }
