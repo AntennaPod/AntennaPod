@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
@@ -105,19 +106,16 @@ public class MediaplayerActivity extends SherlockActivity implements
 		super.onConfigurationChanged(newConfig);
 		Log.d(TAG, "Configuration changed");
 		orientation = newConfig.orientation;
-		positionObserver.cancel(true);
+		if (positionObserver != null) {
+			positionObserver.cancel(true);
+		}
 		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
 			setContentView(R.layout.mediaplayer_activity);
 		} else {
 			setContentView(R.layout.mediaplayer_activity);
 		}
 		setupGUI();
-		if (playbackService != null && playbackService.isPlayingVideo()) {
-			playbackService.resetVideoSurface();
-			if (!videoview.isShown()) {
-				viewswitcher.showNext();
-			}
-		}
+		
 	}
 
 	@Override
@@ -219,14 +217,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 			break;
 		case AWAITING_VIDEO_SURFACE:
 			Log.d(TAG, "Preparing video playback");
-			SurfaceHolder holder = videoview.getHolder();
-			playbackService.setVideoSurface(holder);
-			holder.addCallback(this);
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				if (!videoview.isShown()) {
-					viewswitcher.showNext();
-				}
-			}
+			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 	}
 
@@ -294,7 +285,6 @@ public class MediaplayerActivity extends SherlockActivity implements
 	private void setupGUI() {
 		viewswitcher = (ViewSwitcher) findViewById(R.id.viewswitcher);
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
-		videoview = (VideoView) findViewById(R.id.videoview);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
 
@@ -358,6 +348,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 			});
 		} else {
 			setTheme(R.style.Theme_Sherlock_Light_NoActionBar);
+			videoview = (VideoView) findViewById(R.id.videoview);
+			videoview.getHolder().addCallback(this);
 			videoview.setOnClickListener(playbuttonListener);
 		}
 	}
@@ -386,6 +378,11 @@ public class MediaplayerActivity extends SherlockActivity implements
 			media = playbackService.getMedia();
 			registerReceiver(statusUpdate, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+			if (playbackService.isPlayingVideo()) {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			} else {
+				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+			}
 			handleStatus();
 			Log.d(TAG, "Connection to Service established");
 		}
