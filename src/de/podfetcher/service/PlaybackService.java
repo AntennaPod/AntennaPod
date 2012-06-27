@@ -188,27 +188,46 @@ public class PlaybackService extends Service {
 	 * mediaplayer.
 	 */
 	public void setVideoSurface(SurfaceHolder sh) {
+		Log.d(TAG, "Setting display");
+		player.setDisplay(null);
 		player.setDisplay(sh);
-		try {
-			if (shouldStream) {
-				player.setDataSource(media.getDownload_url());
-				setStatus(PlayerStatus.PREPARING);
-				player.prepareAsync();
-			} else {
-				player.setDataSource(media.getFile_url());
-				setStatus(PlayerStatus.PREPARING);
-				player.prepare();
+		if (status == PlayerStatus.STOPPED
+				|| status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+			try {
+				if (shouldStream) {
+					player.setDataSource(media.getDownload_url());
+					setStatus(PlayerStatus.PREPARING);
+					player.prepareAsync();
+				} else {
+					player.setDataSource(media.getFile_url());
+					setStatus(PlayerStatus.PREPARING);
+					player.prepare();
+				}
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			} catch (SecurityException e) {
+				e.printStackTrace();
+			} catch (IllegalStateException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
 			}
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 
+	}
+	
+	/** Called when the surface holder of the mediaplayer has to be changed. */
+	public void resetVideoSurface() {
+		positionSaver.cancel(true);
+		player.setDisplay(null);
+		player.reset();
+		player.release();
+		player = new MediaPlayer();
+		player.setOnPreparedListener(preparedListener);
+		player.setOnCompletionListener(completionListener);
+		player.setOnSeekCompleteListener(onSeekCompleteListener);
+		status = PlayerStatus.STOPPED;
+		setupMediaplayer();
 	}
 
 	/** Called after service has extracted the media it is supposed to play. */
@@ -228,6 +247,7 @@ public class PlaybackService extends Service {
 			} else if (media.getMime_type().startsWith("video")) {
 				playingVideo = true;
 				setStatus(PlayerStatus.AWAITING_VIDEO_SURFACE);
+				player.setScreenOnWhilePlaying(true);
 			}
 
 		} catch (IllegalArgumentException e) {

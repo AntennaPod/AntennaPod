@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -38,11 +39,14 @@ import de.podfetcher.util.Converter;
 
 public class MediaplayerActivity extends SherlockActivity implements
 		SurfaceHolder.Callback {
+
 	private final String TAG = "MediaplayerActivity";
 
 	private static final int DEFAULT_SEEK_DELTA = 30000; // Seek-Delta to use
 															// when using FF or
 															// Rev Buttons
+
+	private int orientation;
 
 	private PlaybackService playbackService;
 	private MediaPositionObserver positionObserver;
@@ -97,6 +101,26 @@ public class MediaplayerActivity extends SherlockActivity implements
 	}
 
 	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		Log.d(TAG, "Configuration changed");
+		orientation = newConfig.orientation;
+		positionObserver.cancel(true);
+		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			setContentView(R.layout.mediaplayer_activity);
+		} else {
+			setContentView(R.layout.mediaplayer_activity);
+		}
+		setupGUI();
+		if (playbackService != null && playbackService.isPlayingVideo()) {
+			playbackService.resetVideoSurface();
+			if (!videoview.isShown()) {
+				viewswitcher.showNext();
+			}
+		}
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if (playbackService.isRunning && playbackService != null
@@ -109,6 +133,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
+		orientation = getResources().getConfiguration().orientation;
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
 		this.setContentView(R.layout.mediaplayer_activity);
 		manager = FeedManager.getInstance();
@@ -163,13 +188,17 @@ public class MediaplayerActivity extends SherlockActivity implements
 				positionObserver.cancel(true);
 				positionObserver = null;
 			}
-			butPlay.setImageResource(android.R.drawable.ic_media_play);
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				butPlay.setImageResource(android.R.drawable.ic_media_play);
+			}
 			break;
 		case PLAYING:
 			setStatusMsg(R.string.player_playing_msg, View.INVISIBLE);
 			loadMediaInfo();
 			setupPositionObserver();
-			butPlay.setImageResource(android.R.drawable.ic_media_pause);
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				butPlay.setImageResource(android.R.drawable.ic_media_pause);
+			}
 			break;
 		case PREPARING:
 			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
@@ -181,7 +210,9 @@ public class MediaplayerActivity extends SherlockActivity implements
 		case PREPARED:
 			loadMediaInfo();
 			setStatusMsg(R.string.player_ready_msg, View.VISIBLE);
-			butPlay.setImageResource(android.R.drawable.ic_media_play);
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				butPlay.setImageResource(android.R.drawable.ic_media_play);
+			}
 			break;
 		case SEEKING:
 			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
@@ -189,16 +220,23 @@ public class MediaplayerActivity extends SherlockActivity implements
 		case AWAITING_VIDEO_SURFACE:
 			Log.d(TAG, "Preparing video playback");
 			SurfaceHolder holder = videoview.getHolder();
+			playbackService.setVideoSurface(holder);
 			holder.addCallback(this);
-			viewswitcher.showNext();
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				if (!videoview.isShown()) {
+					viewswitcher.showNext();
+				}
+			}
 		}
 	}
 
 	private void setStatusMsg(int resId, int visibility) {
-		if (visibility == View.VISIBLE) {
-			txtvStatus.setText(resId);
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			if (visibility == View.VISIBLE) {
+				txtvStatus.setText(resId);
+			}
+			txtvStatus.setVisibility(visibility);
 		}
-		txtvStatus.setVisibility(visibility);
 	}
 
 	private void setupPositionObserver() {
@@ -221,6 +259,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 	}
 
 	private void updateProgressbarPosition() {
+		Log.d(TAG, "Updating progressbar info");
 		MediaPlayer player = playbackService.getPlayer();
 		float progress = ((float) player.getCurrentPosition())
 				/ player.getDuration();
@@ -228,15 +267,17 @@ public class MediaplayerActivity extends SherlockActivity implements
 	}
 
 	private void loadMediaInfo() {
+		Log.d(TAG, "Loading media info");
 		if (media != null) {
 			MediaPlayer player = playbackService.getPlayer();
 
-			getSupportActionBar().setSubtitle(media.getItem().getTitle());
-			getSupportActionBar()
-					.setTitle(media.getItem().getFeed().getTitle());
-
-			imgvCover.setImageBitmap(media.getItem().getFeed().getImage()
-					.getImageBitmap());
+			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+				getSupportActionBar().setSubtitle(media.getItem().getTitle());
+				getSupportActionBar().setTitle(
+						media.getItem().getFeed().getTitle());
+				imgvCover.setImageBitmap(media.getItem().getFeed().getImage()
+						.getImageBitmap());
+			}
 
 			txtvPosition.setText(Converter.getDurationStringLong((player
 					.getCurrentPosition())));
@@ -252,15 +293,10 @@ public class MediaplayerActivity extends SherlockActivity implements
 
 	private void setupGUI() {
 		viewswitcher = (ViewSwitcher) findViewById(R.id.viewswitcher);
-		imgvCover = (ImageView) findViewById(R.id.imgvCover);
+		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		videoview = (VideoView) findViewById(R.id.videoview);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
-		txtvStatus = (TextView) findViewById(R.id.txtvStatus);
-		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
-		butPlay = (ImageButton) findViewById(R.id.butPlay);
-		butRev = (ImageButton) findViewById(R.id.butRev);
-		butFF = (ImageButton) findViewById(R.id.butFF);
 
 		sbPosition.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int duration;
@@ -294,36 +330,49 @@ public class MediaplayerActivity extends SherlockActivity implements
 			}
 		});
 
-		butPlay.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (status == PlayerStatus.PLAYING) {
-					playbackService.pause();
-				} else if (status == PlayerStatus.PAUSED
-						|| status == PlayerStatus.PREPARED) {
-					playbackService.play();
-				}
-			}
-		});
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			imgvCover = (ImageView) findViewById(R.id.imgvCover);
+			txtvStatus = (TextView) findViewById(R.id.txtvStatus);
+			butPlay = (ImageButton) findViewById(R.id.butPlay);
+			butRev = (ImageButton) findViewById(R.id.butRev);
+			butFF = (ImageButton) findViewById(R.id.butFF);
 
-		butFF.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (status == PlayerStatus.PLAYING) {
-					playbackService.seekDelta(DEFAULT_SEEK_DELTA);
-				}
-			}
-		});
+			butPlay.setOnClickListener(playbuttonListener);
 
-		butRev.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				if (status == PlayerStatus.PLAYING) {
-					playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+			butFF.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (status == PlayerStatus.PLAYING) {
+						playbackService.seekDelta(DEFAULT_SEEK_DELTA);
+					}
 				}
-			}
-		});
+			});
+
+			butRev.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					if (status == PlayerStatus.PLAYING) {
+						playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+					}
+				}
+			});
+		} else {
+			setTheme(R.style.Theme_Sherlock_Light_NoActionBar);
+			videoview.setOnClickListener(playbuttonListener);
+		}
 	}
+
+	private OnClickListener playbuttonListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (status == PlayerStatus.PLAYING) {
+				playbackService.pause();
+			} else if (status == PlayerStatus.PAUSED
+					|| status == PlayerStatus.PREPARED) {
+				playbackService.play();
+			}
+		}
+	};
 
 	private void handleError() {
 		// TODO implement
@@ -381,6 +430,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 				} catch (InterruptedException e) {
 					Log.d(TAG,
 							"Thread was interrupted while waiting. Finishing now");
+					return null;
 				}
 				publishProgress();
 			}
@@ -389,14 +439,17 @@ public class MediaplayerActivity extends SherlockActivity implements
 		}
 	}
 
+	private boolean holderCreated;
+
 	@Override
 	public void surfaceChanged(SurfaceHolder holder, int format, int width,
 			int height) {
-
+		holder.setFixedSize(width, height);
 	}
 
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
+		holderCreated = true;
 		Log.d(TAG, "Videoview holder created");
 		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
 			playbackService.setVideoSurface(holder);
@@ -406,7 +459,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
-
+		holderCreated = false;
 	}
 
 }
