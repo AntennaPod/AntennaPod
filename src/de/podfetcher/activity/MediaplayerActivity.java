@@ -116,7 +116,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 			setContentView(R.layout.mediaplayer_activity);
 		}
 		setupGUI();
-		
+
 	}
 
 	@Override
@@ -187,17 +187,13 @@ public class MediaplayerActivity extends SherlockActivity implements
 				positionObserver.cancel(true);
 				positionObserver = null;
 			}
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				butPlay.setImageResource(android.R.drawable.ic_media_play);
-			}
+			butPlay.setImageResource(android.R.drawable.ic_media_play);
 			break;
 		case PLAYING:
 			setStatusMsg(R.string.player_playing_msg, View.INVISIBLE);
 			loadMediaInfo();
 			setupPositionObserver();
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				butPlay.setImageResource(android.R.drawable.ic_media_pause);
-			}
+			butPlay.setImageResource(android.R.drawable.ic_media_pause);
 			break;
 		case PREPARING:
 			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
@@ -209,9 +205,7 @@ public class MediaplayerActivity extends SherlockActivity implements
 		case PREPARED:
 			loadMediaInfo();
 			setStatusMsg(R.string.player_ready_msg, View.VISIBLE);
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				butPlay.setImageResource(android.R.drawable.ic_media_play);
-			}
+			butPlay.setImageResource(android.R.drawable.ic_media_play);
 			break;
 		case SEEKING:
 			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
@@ -289,6 +283,9 @@ public class MediaplayerActivity extends SherlockActivity implements
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
+		butPlay = (ImageButton) findViewById(R.id.butPlay);
+		butRev = (ImageButton) findViewById(R.id.butRev);
+		butFF = (ImageButton) findViewById(R.id.butFF);
 
 		sbPosition.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int duration;
@@ -322,34 +319,32 @@ public class MediaplayerActivity extends SherlockActivity implements
 			}
 		});
 
+		butPlay.setOnClickListener(playbuttonListener);
+
+		butFF.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (status == PlayerStatus.PLAYING) {
+					playbackService.seekDelta(DEFAULT_SEEK_DELTA);
+				}
+			}
+		});
+
+		butRev.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				if (status == PlayerStatus.PLAYING) {
+					playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+				}
+			}
+		});
+
 		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
 			imgvCover = (ImageView) findViewById(R.id.imgvCover);
 			txtvStatus = (TextView) findViewById(R.id.txtvStatus);
-			butPlay = (ImageButton) findViewById(R.id.butPlay);
-			butRev = (ImageButton) findViewById(R.id.butRev);
-			butFF = (ImageButton) findViewById(R.id.butFF);
 			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 			txtvFeed = (TextView) findViewById(R.id.txtvFeed);
 
-			butPlay.setOnClickListener(playbuttonListener);
-
-			butFF.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (status == PlayerStatus.PLAYING) {
-						playbackService.seekDelta(DEFAULT_SEEK_DELTA);
-					}
-				}
-			});
-
-			butRev.setOnClickListener(new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					if (status == PlayerStatus.PLAYING) {
-						playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
-					}
-				}
-			});
 		} else {
 			setTheme(R.style.Theme_Sherlock_Light_NoActionBar);
 			videoview = (VideoView) findViewById(R.id.videoview);
