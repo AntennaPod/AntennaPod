@@ -57,7 +57,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 	private FeedManager manager;
 
 	// Widgets
-	private ViewSwitcher viewswitcher;
+	private TextView txtvTitle;
+	private TextView txtvFeed;
 	private ImageView imgvCover;
 	private VideoView videoview;
 	private TextView txtvStatus;
@@ -268,6 +269,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 						media.getItem().getFeed().getTitle());
 				imgvCover.setImageBitmap(media.getItem().getFeed().getImage()
 						.getImageBitmap());
+				txtvTitle.setText(media.getItem().getTitle());
+				txtvFeed.setText(media.getItem().getFeed().getTitle());
 			}
 
 			txtvPosition.setText(Converter.getDurationStringLong((player
@@ -283,7 +286,6 @@ public class MediaplayerActivity extends SherlockActivity implements
 	}
 
 	private void setupGUI() {
-		viewswitcher = (ViewSwitcher) findViewById(R.id.viewswitcher);
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
@@ -326,6 +328,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 			butPlay = (ImageButton) findViewById(R.id.butPlay);
 			butRev = (ImageButton) findViewById(R.id.butRev);
 			butFF = (ImageButton) findViewById(R.id.butFF);
+			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
+			txtvFeed = (TextView) findViewById(R.id.txtvFeed);
 
 			butPlay.setOnClickListener(playbuttonListener);
 
