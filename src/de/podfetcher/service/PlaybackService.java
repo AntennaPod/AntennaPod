@@ -171,8 +171,11 @@ public class PlaybackService extends Service {
 				stopSelf();
 			}
 
-		} else if (media != null && status != PlayerStatus.PLAYING) {
-			play();
+		} else if (media != null) {
+			if (status == PlayerStatus.PAUSED) {
+				play();
+			}
+
 		} else {
 			Log.w(TAG, "Something went wrong. Shutting down...");
 			stopSelf();
@@ -424,7 +427,7 @@ public class PlaybackService extends Service {
 	public boolean isPlayingVideo() {
 		return playingVideo;
 	}
-	
+
 	public boolean isShouldStream() {
 		return shouldStream;
 	}

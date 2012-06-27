@@ -360,6 +360,7 @@ public class FeedManager {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		long result = adapter.setMedia(media);
+		adapter.close();
 		return result;
 	}
 
