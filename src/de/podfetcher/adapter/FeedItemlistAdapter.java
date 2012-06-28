@@ -98,6 +98,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.type.setImageResource(R.drawable.type_audio);
 			} else if (type.startsWith("video")) {
 				holder.type.setImageResource(R.drawable.type_video);
+			} else {
+				holder.type.setImageBitmap(null);
 			}
 		}
 
