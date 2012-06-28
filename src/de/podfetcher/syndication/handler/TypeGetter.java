@@ -25,7 +25,7 @@ public class TypeGetter {
 	private static final String ATOM_ROOT = "feed";
 	private static final String RSS_ROOT = "rss";
 
-	public Type getType(Feed feed) {
+	public Type getType(Feed feed) throws UnsupportedFeedtypeException {
 		XmlPullParserFactory factory;
 		try {
 			factory = XmlPullParserFactory.newInstance();
@@ -47,7 +47,7 @@ public class TypeGetter {
 						return Type.RSS20;
 					} else {
 						Log.d(TAG, "Type is invalid");
-						return Type.INVALID;
+						throw new UnsupportedFeedtypeException(Type.INVALID);
 					}
 				} else {
 					eventType = xpp.next();
@@ -60,7 +60,7 @@ public class TypeGetter {
 			e.printStackTrace();
 		}
 		Log.d(TAG, "Type is invalid");
-		return Type.INVALID;
+		throw new UnsupportedFeedtypeException(Type.INVALID);
 	}
 
 	private Reader createReader(Feed feed) {

@@ -12,25 +12,18 @@ import org.xml.sax.SAXException;
 import de.podfetcher.feed.Feed;
 
 public class FeedHandler {
-	
-	
-	public Feed parseFeed(Feed feed) {
+
+	public Feed parseFeed(Feed feed) throws SAXException, IOException,
+			ParserConfigurationException, UnsupportedFeedtypeException {
 		TypeGetter tg = new TypeGetter();
 		TypeGetter.Type type = tg.getType(feed);
 		SyndHandler handler = new SyndHandler(feed, type);
-		try {
-			SAXParserFactory factory =  SAXParserFactory.newInstance();
-			factory.setNamespaceAware(true);
-			SAXParser saxParser = factory.newSAXParser();
-			saxParser.parse(new File(feed.getFile_url()), handler);
-		} catch (SAXException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} catch(ParserConfigurationException e) {
-			e.printStackTrace();
-		}
-		
+
+		SAXParserFactory factory = SAXParserFactory.newInstance();
+		factory.setNamespaceAware(true);
+		SAXParser saxParser = factory.newSAXParser();
+		saxParser.parse(new File(feed.getFile_url()), handler);
+
 		return handler.state.feed;
 	}
 }

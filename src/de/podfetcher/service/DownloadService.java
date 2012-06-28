@@ -11,6 +11,10 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
+import javax.xml.parsers.ParserConfigurationException;
+
+import org.xml.sax.SAXException;
+
 import de.podfetcher.activity.DownloadActivity;
 import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.asynctask.DownloadStatus;
@@ -18,6 +22,8 @@ import de.podfetcher.feed.*;
 import de.podfetcher.service.PlaybackService.LocalBinder;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.syndication.handler.FeedHandler;
+import de.podfetcher.syndication.handler.UnsupportedFeedtypeException;
+import de.podfetcher.util.DownloadError;
 import android.R;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -188,19 +194,21 @@ public class DownloadService extends Service {
 								(FeedMedia) download);
 					}
 					successful = true;
-					queryDownloads();
+					
 				} else if (status == DownloadManager.STATUS_FAILED) {
 					reason = c.getInt(c
 							.getColumnIndex(DownloadManager.COLUMN_REASON));
-					Log.d(TAG, "reason code is " + reason);
+					Log.e(TAG, "Download failed");
+					Log.e(TAG, "reason code is " + reason);
 					successful = false;
 					long statusId = manager.addDownloadStatus(context, new DownloadStatus(download,
 							reason, successful));
+					requester.removeDownload(download);
 					sendDownloadHandledIntent(download.getDownloadId(), statusId, false, 0);
 					download.setDownloadId(0);
 					
 				}
-				
+				queryDownloads();
 				c.close();
 			}
 		}
@@ -271,25 +279,48 @@ public class DownloadService extends Service {
 		public void run() {
 			long imageId = 0;
 			boolean hasImage = false;
+			long downloadId = feed.getDownloadId();
+			int reason = 0;
+			boolean successful = true;
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
 			feed.setDownloaded(true);
-			feed = handler.parseFeed(feed);
-			Log.d(TAG, feed.getTitle() + " parsed");
-			// Download Feed Image if provided
-			if (feed.getImage() != null) {
-				Log.d(TAG, "Feed has image; Downloading....");
-				imageId = requester.downloadImage(service, feed.getImage());
-				hasImage = true;
+			
+			try {
+				feed = handler.parseFeed(feed);
+				Log.d(TAG, feed.getTitle() + " parsed");
+				// Download Feed Image if provided
+				if (feed.getImage() != null) {
+					Log.d(TAG, "Feed has image; Downloading....");
+					imageId = requester.downloadImage(service, feed.getImage());
+					hasImage = true;
+				}
+				
+				feed.setDownloadId(0);
+				// Save information of feed in DB
+				manager.updateFeed(service, feed);
+			} catch (SAXException e) {
+				successful = false;
+				e.printStackTrace();
+				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+			} catch (IOException e) {
+				successful = false;
+				e.printStackTrace();
+				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+			} catch (ParserConfigurationException e) {
+				successful = false;
+				e.printStackTrace();
+				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+			} catch (UnsupportedFeedtypeException e) {
+				e.printStackTrace();
+				successful = false;
+				reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
 			}
+			
 			requester.removeDownload(feed);
-
 			cleanup();	
-			long statusId = manager.addDownloadStatus(service, new DownloadStatus(feed, 0, true));
-			sendDownloadHandledIntent(feed.getDownloadId(), statusId, hasImage, imageId);
-			feed.setDownloadId(0);
-			// Save information of feed in DB
-			manager.updateFeed(service, feed);
+			long statusId = manager.addDownloadStatus(service, new DownloadStatus(feed, reason, successful));
+			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();	
 		}
 

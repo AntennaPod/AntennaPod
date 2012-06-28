@@ -1,65 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<!-- Activitiy titles-->
+    <!-- Activitiy titles -->
     <string name="app_name">Podfetcher</string>
-	<string name="feeds_label">Feeds</string>
-	<string name="new_label">New</string>
-	<string name="settings_label">Settings</string>
-	<string name="add_new_feed_label">Add a new Feed</string>
+    <string name="feeds_label">Feeds</string>
+    <string name="new_label">New</string>
+    <string name="settings_label">Settings</string>
+    <string name="add_new_feed_label">Add a new Feed</string>
     <string name="downloads_label">Downloads</string>
     <string name="cancel_download_label">Cancel Download</string>
 
-	<!-- 				-->
-	<string name="confirm_label">Confirm</string>
-	<string name="cancel_label">Cancel</string>
+    <!--  -->
+    <string name="confirm_label">Confirm</string>
+    <string name="cancel_label">Cancel</string>
 
-	<!-- AddFeed Activity labels -->
-	<string name="feedurl_label">Feed URL</string>
+    <!-- AddFeed Activity labels -->
+    <string name="feedurl_label">Feed URL</string>
 
-	<!-- Feeditemview labels-->
-	<string name="download_label">Download</string>
-	<string name="play_label">Play</string>
-	<string name="description_label">Description</string>
-	<string name="remove_label">Remove</string>
+    <!-- Feeditemview labels -->
+    <string name="download_label">Download</string>
+    <string name="play_label">Play</string>
+    <string name="description_label">Description</string>
+    <string name="remove_label">Remove</string>
 
-	<!-- DownloadObserver Messages -->
-	<string name="download_successful">Download successful</string>
-	<string name="download_failed">Download failed</string>
-	<string name="download_pending">Download pending</string>
-	<string name="download_running">Download running</string>
+    <!-- DownloadObserver Messages -->
+    <string name="download_successful">Download successful</string>
+    <string name="download_failed">Download failed</string>
+    <string name="download_pending">Download pending</string>
+    <string name="download_running">Download running</string>
 
-	<!-- other messages -->
-	<string name="nofeeds_msg">No feeds added yet.</string>
+    <!-- other messages -->
+    <string name="nofeeds_msg">No feeds added yet.</string>
 
-	<!-- Mediaplayer status Messages -->
-	<string name="player_paused_msg">Paused</string>
-	<string name="player_error_msg">Error!</string>
-	<string name="player_stopped_msg">No media playing</string>
-	<string name="player_preparing_msg">Preparing...</string>
-	<string name="mark_read_label">Mark read</string>
-	<string name="mark_unread_label">Mark unread</string>
-	<string name="version_pref">Version</string>
-	<string name="other_pref">Other</string>
-	<string name="about_pref">About</string>
-	<string name="show_download_log">Show Log</string>
-	<string name="download_error_device_not_found">Storage device not found</string>
-	<string name="download_error_insufficient_space">Insufficient space</string>
-	<string name="download_error_file_error">File error</string>
-	<string name="download_error_http_data_error">HTTP Data Error</string>
-	<string name="download_error_error_unknown">Unknown Error</string>
-	<string name="show_player_label">Show player</string>
-	<string name="add_to_queue_label">Add to Queue</string>
-	<string name="remove_from_queue_label">Remove from Queue</string>
-	<string name="player_ready_msg">Ready</string>
-	<string name="stream_label">Stream</string>
-	<string name="player_seeking_msg">Seeking</string>
-	<string name="player_playing_msg"></string>
-	<string name="mark_all_read_label">Mark all read</string>
-	<string name="show_info_label">Show information</string>
-	<string name="remove_feed_label">Remove Feed</string>
-	<string name="position_default_label">00:00:00</string>
-	<string name="queue_label">Queue</string>
-	<string name="visit_website_label">Visit Website</string>
-	<string name="support_label">Support</string>
+    <!-- Mediaplayer status Messages -->
+    <string name="player_paused_msg">Paused</string>
+    <string name="player_error_msg">Error!</string>
+    <string name="player_stopped_msg">No media playing</string>
+    <string name="player_preparing_msg">Preparing...</string>
+    <string name="mark_read_label">Mark read</string>
+    <string name="mark_unread_label">Mark unread</string>
+    <string name="version_pref">Version</string>
+    <string name="other_pref">Other</string>
+    <string name="about_pref">About</string>
+    <string name="show_download_log">Show Log</string>
+    <string name="download_error_device_not_found">Storage device not found</string>
+    <string name="download_error_insufficient_space">Insufficient space</string>
+    <string name="download_error_file_error">File error</string>
+    <string name="download_error_http_data_error">HTTP Data Error</string>
+    <string name="download_error_error_unknown">Unknown Error</string>
+    <string name="show_player_label">Show player</string>
+    <string name="add_to_queue_label">Add to Queue</string>
+    <string name="remove_from_queue_label">Remove from Queue</string>
+    <string name="player_ready_msg">Ready</string>
+    <string name="stream_label">Stream</string>
+    <string name="player_seeking_msg">Seeking</string>
+    <string name="player_playing_msg"></string>
+    <string name="mark_all_read_label">Mark all read</string>
+    <string name="show_info_label">Show information</string>
+    <string name="remove_feed_label">Remove Feed</string>
+    <string name="position_default_label">00:00:00</string>
+    <string name="queue_label">Queue</string>
+    <string name="visit_website_label">Visit Website</string>
+    <string name="support_label">Support</string>
+    <string name="download_error_parser_exception">Parser Exception</string>
+    <string name="download_error_unsupported_type">Unsupported Feed type</string>
+    <string name="error_label">Error</string>
+    <string name="error_msg_prefix">An error occured:</string>
+    <string name="download_error_connection_error">Connection error</string>
+
 </resources>
