@@ -1,32 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	android:layout_width="fill_parent"
-	android:layout_height="fill_parent"
-	android:orientation="vertical" >
-	<TextView
-		android:id="@+id/txtvFeedurl"
-		android:text="@string/feedurl_label"
-		android:layout_width="fill_parent"
-		android:layout_height="wrap_content"
-		/>
-	<EditText android:id="@+id/etxtFeedurl"
-		android:layout_width="fill_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical" >
+
+    <TextView
+        android:id="@+id/txtvFeedurl"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:autoText="false"
-        android:capitalize="none"/>
-	<LinearLayout
-		android:layout_width="match_parent"
-		android:layout_height="wrap_content"
-		android:orientation="horizontal">
-		<Button android:id="@+id/butConfirm"
-			android:text="@string/confirm_label"
-			android:layout_width="0px"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"/>
-		<Button android:id="@+id/butCancel"
-			android:layout_width="0px"
-			android:layout_height="wrap_content"
-			android:layout_weight="1"
-			android:text="@string/cancel_label"/>
-	</LinearLayout>
-</LinearLayout>
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:text="@string/txtvfeedurl_label" />
+
+    <EditText
+        android:id="@+id/etxtFeedurl"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvFeedurl"
+        android:layout_margin="8dp"
+        android:hint="@string/feedurl_label"
+        android:inputType="textUri" />
+
+    <LinearLayout
+        android:id="@+id/footer"
+        style="@android:style/ButtonBar"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/butConfirm"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/confirm_label" />
+
+        <Button
+            android:id="@+id/butCancel"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cancel_label" />
+    </LinearLayout>
+
+</RelativeLayout>

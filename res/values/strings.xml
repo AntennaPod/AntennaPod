@@ -67,5 +67,6 @@
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occured:</string>
     <string name="download_error_connection_error">Connection error</string>
+    <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
 
 </resources>
