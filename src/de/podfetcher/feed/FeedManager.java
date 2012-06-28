@@ -2,12 +2,14 @@ package de.podfetcher.feed;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 
 import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.*;
+import de.podfetcher.util.FeedtitleComparator;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -130,7 +132,7 @@ public class FeedManager {
 				mediaFile.delete();
 			}
 		}
-		
+
 		adapter.removeFeed(feed);
 		adapter.close();
 		return feeds.remove(feed);
@@ -148,6 +150,7 @@ public class FeedManager {
 			unreadItems.remove(item);
 		} else {
 			unreadItems.add(item);
+			Collections.sort(unreadItems, new FeedItemPubdateComparator());
 		}
 	}
 
@@ -191,7 +194,7 @@ public class FeedManager {
 		adapter.setQueue(queue);
 		adapter.close();
 	}
-	
+
 	/** Uses external adapter. */
 	public void removeQueueItem(FeedItem item, PodDBAdapter adapter) {
 		boolean removed = queue.remove(item);
@@ -219,6 +222,7 @@ public class FeedManager {
 
 	private void addNewFeed(Context context, Feed feed) {
 		feeds.add(feed);
+		Collections.sort(feeds, new FeedtitleComparator());
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		feed.setId(setFeed(feed, adapter));
@@ -297,7 +301,7 @@ public class FeedManager {
 			return 0;
 		}
 	}
-	
+
 	/** Updates Information of an existing Feeditem. Uses external adapter. */
 	public long setFeedItem(FeedItem item, PodDBAdapter adapter) {
 		if (adapter != null) {
@@ -307,7 +311,7 @@ public class FeedManager {
 			return 0;
 		}
 	}
-	
+
 	/** Updates Information of an existing Feedimage. Uses external adapter. */
 	public long setFeedImage(FeedImage image, PodDBAdapter adapter) {
 		if (adapter != null) {
@@ -317,8 +321,11 @@ public class FeedManager {
 			return 0;
 		}
 	}
-	
-	/** Updates Information of an existing Feedmedia object. Uses external adapter. */
+
+	/**
+	 * Updates Information of an existing Feedmedia object. Uses external
+	 * adapter.
+	 */
 	public long setFeedImage(FeedMedia media, PodDBAdapter adapter) {
 		if (adapter != null) {
 			return adapter.setMedia(media);
@@ -327,8 +334,11 @@ public class FeedManager {
 			return 0;
 		}
 	}
-	
-	/** Updates Information of an existing Feed. Creates and opens its own adapter. */
+
+	/**
+	 * Updates Information of an existing Feed. Creates and opens its own
+	 * adapter.
+	 */
 	public long setFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -337,7 +347,10 @@ public class FeedManager {
 		return result;
 	}
 
-	/** Updates information of an existing FeedItem. Creates and opens its own adapter.*/
+	/**
+	 * Updates information of an existing FeedItem. Creates and opens its own
+	 * adapter.
+	 */
 	public long setFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -346,7 +359,10 @@ public class FeedManager {
 		return result;
 	}
 
-	/** Updates information of an existing FeedImage. Creates and opens its own adapter. */
+	/**
+	 * Updates information of an existing FeedImage. Creates and opens its own
+	 * adapter.
+	 */
 	public long setFeedImage(Context context, FeedImage image) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -355,7 +371,10 @@ public class FeedManager {
 		return result;
 	}
 
-	/** Updates information of an existing FeedMedia object. Creates and opens its own adapter. */
+	/**
+	 * Updates information of an existing FeedMedia object. Creates and opens
+	 * its own adapter.
+	 */
 	public long setFeedMedia(Context context, FeedMedia media) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
@@ -448,6 +467,8 @@ public class FeedManager {
 		extractDownloadLogFromCursor(context, adapter);
 		extractQueueFromCursor(context, adapter);
 		adapter.close();
+		Collections.sort(feeds, new FeedtitleComparator());
+		Collections.sort(unreadItems, new FeedItemPubdateComparator());
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
@@ -526,19 +547,24 @@ public class FeedManager {
 				if (!item.read) {
 					unreadItems.add(item);
 				}
-				
+
 				// extract chapters
-				Cursor chapterCursor = adapter.getSimpleChaptersOfFeedItemCursor(item);
+				Cursor chapterCursor = adapter
+						.getSimpleChaptersOfFeedItemCursor(item);
 				if (chapterCursor.moveToFirst()) {
 					item.setSimpleChapters(new ArrayList<SimpleChapter>());
 					do {
-						SimpleChapter chapter = new SimpleChapter(chapterCursor.getLong(chapterCursor.getColumnIndex(PodDBAdapter.KEY_START)),
-								chapterCursor.getString(chapterCursor.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+						SimpleChapter chapter = new SimpleChapter(
+								chapterCursor
+										.getLong(chapterCursor
+												.getColumnIndex(PodDBAdapter.KEY_START)),
+								chapterCursor.getString(chapterCursor
+										.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 						item.getSimpleChapters().add(chapter);
 					} while (chapterCursor.moveToNext());
 				}
 				chapterCursor.close();
-				
+
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}
@@ -585,7 +611,7 @@ public class FeedManager {
 	}
 
 	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
-		Log.d(TAG, "Extracting Downloadqueue");
+		Log.d(TAG, "Extracting Queue");
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
@@ -594,9 +620,8 @@ public class FeedManager {
 				Feed feed = getFeed(cursor.getLong(cursor
 						.getColumnIndex(PodDBAdapter.KEY_FEED)));
 				if (feed != null) {
-					FeedItem item = getFeedItem(
-							cursor.getColumnIndex(PodDBAdapter.KEY_FEEDITEM),
-							feed);
+					FeedItem item = getFeedItem(cursor.getLong(cursor
+							.getColumnIndex(PodDBAdapter.KEY_FEEDITEM)), feed);
 					if (item != null) {
 						queue.add(index, item);
 					}
