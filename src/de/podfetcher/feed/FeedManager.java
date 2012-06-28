@@ -435,7 +435,7 @@ public class FeedManager {
 	public FeedMedia getFeedMedia(long id) {
 		for (Feed feed : feeds) {
 			for (FeedItem item : feed.getItems()) {
-				if (item.getMedia().getId() == id) {
+				if (item.getMedia() != null && item.getMedia().getId() == id) {
 					return item.getMedia();
 				}
 			}

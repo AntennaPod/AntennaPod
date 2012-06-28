@@ -83,6 +83,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			} else {
 				holder.lenSize.setText(Converter.byteToString(item.getMedia()
 						.getSize()));
+				holder.downloaded.setVisibility(View.GONE);
 			}
 			
 			if (item.getMedia().isDownloading()) {
