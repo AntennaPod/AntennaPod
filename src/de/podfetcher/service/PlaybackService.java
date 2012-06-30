@@ -7,6 +7,7 @@ import android.R;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -17,6 +18,7 @@ import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -62,6 +64,8 @@ public class PlaybackService extends Service {
 	private NotificationCompat.Builder notificationBuilder;
 
 	private AudioManager audioManager;
+	private ComponentName mediaButtonReceiver;
+
 	private MediaPlayer player;
 
 	private FeedMedia media;
@@ -96,6 +100,10 @@ public class PlaybackService extends Service {
 		player.setOnPreparedListener(preparedListener);
 		player.setOnCompletionListener(completionListener);
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
+		mediaButtonReceiver = new ComponentName(getPackageName(),
+				MediaButtonReceiver.class.getName());
+		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
+
 	}
 
 	@Override
@@ -103,6 +111,7 @@ public class PlaybackService extends Service {
 		super.onDestroy();
 		isRunning = false;
 		Log.d(TAG, "Service is about to be destroyed");
+		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
 		player.release();
 	}
@@ -140,47 +149,78 @@ public class PlaybackService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		long mediaId = intent.getLongExtra(EXTRA_MEDIA_ID, -1);
-		long feedId = intent.getLongExtra(EXTRA_FEED_ID, -1);
-		boolean playbackType = intent
-				.getBooleanExtra(EXTRA_SHOULD_STREAM, true);
-		if (mediaId == -1 || feedId == -1) {
-			Log.e(TAG, "Media ID or Feed ID wasn't provided to the Service.");
-			if (media == null || feed == null) {
-				stopSelf();
-			}
-			// Intent values appear to be valid
-			// check if already playing and playbackType is the same
-		} else if (media == null || mediaId != media.getId()
-				|| playbackType != shouldStream) {
-			pause();
-			player.reset();
-			if (media == null || mediaId != media.getId()) {
-				feed = manager.getFeed(feedId);
-				media = manager.getFeedMedia(mediaId, feed);
-			}
+		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+		if (keycode != -1) {
+			Log.d(TAG, "Received media button event");
+			handleKeycode(keycode);
+		} else {
 
-			if (media != null) {
-				shouldStream = playbackType;
-				startWhenPrepared = intent.getBooleanExtra(
-						EXTRA_START_WHEN_PREPARED, false);
-				setupMediaplayer();
+			long mediaId = intent.getLongExtra(EXTRA_MEDIA_ID, -1);
+			long feedId = intent.getLongExtra(EXTRA_FEED_ID, -1);
+			boolean playbackType = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
+					true);
+			if (mediaId == -1 || feedId == -1) {
+				Log.e(TAG,
+						"Media ID or Feed ID wasn't provided to the Service.");
+				if (media == null || feed == null) {
+					stopSelf();
+				}
+				// Intent values appear to be valid
+				// check if already playing and playbackType is the same
+			} else if (media == null || mediaId != media.getId()
+					|| playbackType != shouldStream) {
+				pause();
+				player.reset();
+				if (media == null || mediaId != media.getId()) {
+					feed = manager.getFeed(feedId);
+					media = manager.getFeedMedia(mediaId, feed);
+				}
+
+				if (media != null) {
+					shouldStream = playbackType;
+					startWhenPrepared = intent.getBooleanExtra(
+							EXTRA_START_WHEN_PREPARED, false);
+					setupMediaplayer();
+
+				} else {
+					Log.e(TAG, "Media is null");
+					stopSelf();
+				}
+
+			} else if (media != null) {
+				if (status == PlayerStatus.PAUSED) {
+					play();
+				}
 
 			} else {
-				Log.e(TAG, "Media is null");
+				Log.w(TAG, "Something went wrong. Shutting down...");
 				stopSelf();
 			}
+		}
+		return Service.START_NOT_STICKY;
+	}
 
-		} else if (media != null) {
+	/** Handles media button events */
+	private void handleKeycode(int keycode) {
+		switch (keycode) {
+		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+			if (status == PlayerStatus.PLAYING) {
+				pause();
+			} else if (status == PlayerStatus.PAUSED) {
+				play();
+			}
+			break;
+		case KeyEvent.KEYCODE_MEDIA_PLAY:
 			if (status == PlayerStatus.PAUSED) {
 				play();
 			}
-
-		} else {
-			Log.w(TAG, "Something went wrong. Shutting down...");
-			stopSelf();
+			break;
+		case KeyEvent.KEYCODE_MEDIA_PAUSE:
+			if (status == PlayerStatus.PLAYING) {
+				pause();
+			}
+			break;
 		}
-		return Service.START_NOT_STICKY;
 	}
 
 	/**
@@ -215,7 +255,7 @@ public class PlaybackService extends Service {
 		}
 
 	}
-	
+
 	/** Called when the surface holder of the mediaplayer has to be changed. */
 	public void resetVideoSurface() {
 		positionSaver.cancel(true);
@@ -343,7 +383,6 @@ public class PlaybackService extends Service {
 
 			if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
 				Log.d(TAG, "Audiofocus successfully requested");
-
 				Log.d(TAG, "Resuming/Starting playback");
 				SharedPreferences.Editor editor = getApplicationContext()
 						.getSharedPreferences(PodcastApp.PREF_NAME, 0).edit();

@@ -33,8 +33,14 @@
         <activity android:name="de.podfetcher.activity.MediaplayerActivity" android:launchMode="singleTask" android:configChanges="orientation"/>
 
         <service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
-        <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" />
+        <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" >
+        </service>
         <activity android:name=".activity.PreferenceActivity"></activity>
-        <activity android:name=".activity.DownloadLogActivity"></activity> 
+        <activity android:name=".activity.DownloadLogActivity"></activity>
+        <receiver android:name=".service.MediaButtonReceiver">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+            </intent-filter>
+        </receiver> 
     </application>
 </manifest>
