@@ -325,6 +325,9 @@ public class PlaybackService extends Service {
 		if (player.isPlaying()) {
 			Log.d(TAG, "Pausing playback.");
 			player.pause();
+			if (positionSaver != null) {
+				positionSaver.cancel(true);
+			}
 			saveCurrentPosition();
 			setStatus(PlayerStatus.PAUSED);
 			stopForeground(true);
