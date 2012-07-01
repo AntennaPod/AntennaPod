@@ -20,12 +20,15 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.WindowManager;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -35,6 +38,7 @@ import android.widget.ViewSwitcher;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
 import de.podfetcher.PodcastApp;
@@ -55,11 +59,15 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	private static final int DEFAULT_SEEK_DELTA = 30000; // Seek-Delta to use
 															// when using FF or
 															// Rev Buttons
-
+	/** Current screen orientation. */
 	private int orientation;
+
+	/** True if video controls are currently visible. */
+	private boolean videoControlsShowing = true;
 
 	private PlaybackService playbackService;
 	private MediaPositionObserver positionObserver;
+	private VideoControlsHider videoControlsToggler;
 
 	private FeedMedia media;
 	private PlayerStatus status;
@@ -79,6 +87,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	private ImageButton butPlay;
 	private ImageButton butRev;
 	private ImageButton butFF;
+	private LinearLayout videoOverlay;
 
 	@Override
 	protected void onStop() {
@@ -136,14 +145,21 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		super.onPause();
 		if (playbackService.isRunning && playbackService != null
 				&& playbackService.isPlayingVideo()) {
-			playbackService.pause();
+			playbackService.stop();
 		}
+		if (videoControlsToggler != null) {
+			videoControlsToggler.cancel(true);
+		}
+		finish();
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
+		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
@@ -364,10 +380,12 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			viewpager.setAdapter(pagerAdapter);
 			tabs.setViewPager(viewpager);
 		} else {
-			setTheme(R.style.Theme_Sherlock_Light_NoActionBar);
+			videoOverlay = (LinearLayout) findViewById(R.id.overlay);
 			videoview = (VideoView) findViewById(R.id.videoview);
 			videoview.getHolder().addCallback(this);
 			videoview.setOnClickListener(playbuttonListener);
+			videoview.setOnTouchListener(onVideoviewTouched);
+			setupVideoControlsToggler();
 		}
 	}
 
@@ -382,6 +400,43 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			}
 		}
 	};
+
+	private View.OnTouchListener onVideoviewTouched = new View.OnTouchListener() {
+
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (event.getAction() == MotionEvent.ACTION_DOWN) {
+				if (videoControlsToggler != null) {
+					videoControlsToggler.cancel(true);
+				}
+				toggleVideoControlsVisibility();
+				setupVideoControlsToggler();
+
+				return true;
+			} else {
+				return false;
+			}
+		}
+	};
+
+	private void setupVideoControlsToggler() {
+		if (videoControlsToggler != null) {
+			videoControlsToggler.cancel(true);
+		}
+		videoControlsToggler = new VideoControlsHider();
+		videoControlsToggler.execute();
+	}
+
+	private void toggleVideoControlsVisibility() {
+		if (videoControlsShowing) {
+			getSupportActionBar().hide();
+			videoOverlay.setVisibility(View.GONE);
+		} else {
+			getSupportActionBar().show();
+			videoOverlay.setVisibility(View.VISIBLE);
+		}
+		videoControlsShowing = !videoControlsShowing;
+	}
 
 	private void handleError() {
 		// TODO implement
@@ -409,9 +464,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				Log.d(TAG, "Orientation correct");
 				handleStatus();
 			} else {
-				Log.d(TAG, "Orientation incorrect, waiting for orientation change");
+				Log.d(TAG,
+						"Orientation incorrect, waiting for orientation change");
 			}
-			
+
 			Log.d(TAG, "Connection to Service established");
 		}
 
@@ -462,6 +518,46 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			Log.d(TAG, "Background Task finished");
 			return null;
 		}
+	}
+
+	/** Hides the videocontrols after a certain period of time. */
+	public class VideoControlsHider extends AsyncTask<Void, Void, Void> {
+		@Override
+		protected void onCancelled() {
+			videoControlsToggler = null;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			videoControlsToggler = null;
+		}
+
+		private static final int WAITING_INTERVALL = 3000;
+		private static final String TAG = "VideoControlsToggler";
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			if (videoControlsShowing) {
+				Log.d(TAG, "Hiding video controls");
+				getSupportActionBar().hide();
+				videoOverlay.setVisibility(View.GONE);
+				videoControlsShowing = false;
+			}
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (!isCancelled()) {
+				try {
+					Thread.sleep(WAITING_INTERVALL);
+				} catch (InterruptedException e) {
+					return null;
+				}
+				publishProgress();
+			}
+			return null;
+		}
+
 	}
 
 	private boolean holderCreated;

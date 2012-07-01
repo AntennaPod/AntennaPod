@@ -373,6 +373,12 @@ public class PlaybackService extends Service {
 			stopForeground(true);
 		}
 	}
+	
+	/** Pauses playback and destroys service. Recommended for video playback. */
+	public void stop() {
+		pause();
+		stopSelf();
+	}
 
 	public void play() {
 		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED
