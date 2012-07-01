@@ -157,9 +157,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
-		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-				WindowManager.LayoutParams.FLAG_FULLSCREEN);
+		
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
@@ -386,6 +384,9 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			videoview.setOnClickListener(playbuttonListener);
 			videoview.setOnTouchListener(onVideoviewTouched);
 			setupVideoControlsToggler();
+			requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
+					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
 	}
 
