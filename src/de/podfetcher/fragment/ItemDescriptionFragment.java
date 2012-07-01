@@ -22,16 +22,16 @@ import de.podfetcher.feed.FeedManager;
 
 /** Displays the description of a FeedItem in a Webview. */
 public class ItemDescriptionFragment extends SherlockFragment {
-	
+
 	private static final String TAG = "ItemDescriptionFragment";
 	private static final String ARG_FEED_ID = "arg.feedId";
 	private static final String ARG_FEEDITEM_ID = "arg.feedItemId";
-	
+
 	private WebView webvDescription;
 	private FeedItem item;
-	
+
 	private AsyncTask<Void, Void, Void> webViewLoader;
-	
+
 	public static ItemDescriptionFragment newInstance(FeedItem item) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
@@ -40,7 +40,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		f.setArguments(args);
 		return f;
 	}
-	
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -48,7 +48,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		return webvDescription;
 	}
 
-	
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
@@ -65,7 +64,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			webViewLoader.cancel(true);
 		}
 	}
-	
+
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -87,25 +86,29 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		} else {
 			Log.e(TAG, TAG + " was called with invalid arguments");
 		}
-	
+
 	}
-	
+
 	private AsyncTask<Void, Void, Void> createLoader() {
 		return new AsyncTask<Void, Void, Void>() {
 			@Override
 			protected void onCancelled() {
 				super.onCancelled();
-				getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+				if (getSherlockActivity() != null) {
+					getSherlockActivity()
+							.setSupportProgressBarIndeterminateVisibility(false);
+				}
 				webViewLoader = null;
 			}
 
 			String url;
-			
+
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				webvDescription.loadData(url, "text/html", "utf-8");
-				getSherlockActivity().setSupportProgressBarIndeterminateVisibility(false);
+				getSherlockActivity()
+						.setSupportProgressBarIndeterminateVisibility(false);
 				Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
 			}
@@ -113,7 +116,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				getSherlockActivity().setSupportProgressBarIndeterminateVisibility(true);
+				getSherlockActivity()
+						.setSupportProgressBarIndeterminateVisibility(true);
 			}
 
 			@Override
@@ -127,15 +131,15 @@ public class ItemDescriptionFragment extends SherlockFragment {
 					} else {
 						url = URLEncoder.encode(
 								StringEscapeUtils.unescapeHtml4(item
-										.getContentEncoded()), "utf-8").replaceAll(
-								"\\+", " ");
+										.getContentEncoded()), "utf-8")
+								.replaceAll("\\+", " ");
 					}
 
 				} catch (UnsupportedEncodingException e) {
 					url = "Page could not be loaded";
 					e.printStackTrace();
-				}		
-					
+				}
+
 				return null;
 			}
 

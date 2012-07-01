@@ -127,6 +127,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			setContentView(R.layout.mediaplayer_activity);
 		}
 		setupGUI();
+		handleStatus();
 
 	}
 
@@ -144,9 +145,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
 		orientation = getResources().getConfiguration().orientation;
+		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
 		this.setContentView(R.layout.mediaplayer_activity);
-		manager = FeedManager.getInstance();
+
 		setupGUI();
 		bindToService();
 	}
@@ -272,7 +274,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				getSupportActionBar().setTitle(
 						media.getItem().getFeed().getTitle());
 				pagerAdapter.notifyDataSetChanged();
-				
+
 			}
 
 			txtvPosition.setText(Converter.getDurationStringLong((player
@@ -389,16 +391,27 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
+			int requestedOrientation;
 			status = playbackService.getStatus();
 			media = playbackService.getMedia();
 			registerReceiver(statusUpdate, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 			if (playbackService.isPlayingVideo()) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
 			} else {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
 			}
-			handleStatus();
+			// check if orientation is correct
+			if ((requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE && orientation == Configuration.ORIENTATION_LANDSCAPE)
+					|| (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && orientation == Configuration.ORIENTATION_PORTRAIT)) {
+				Log.d(TAG, "Orientation correct");
+				handleStatus();
+			} else {
+				Log.d(TAG, "Orientation incorrect, waiting for orientation change");
+			}
+			
 			Log.d(TAG, "Connection to Service established");
 		}
 
@@ -474,7 +487,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		holderCreated = false;
 	}
 
-	public static class MediaPlayerPagerAdapter extends FragmentStatePagerAdapter {
+	public static class MediaPlayerPagerAdapter extends
+			FragmentStatePagerAdapter {
 		private int numItems;
 		private MediaplayerActivity activity;
 
@@ -494,7 +508,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			if (activity.media != null) {
 				switch (position) {
 				case POS_COVER:
-					activity.coverFragment = CoverFragment.newInstance(activity.media.getItem());
+					activity.coverFragment = CoverFragment
+							.newInstance(activity.media.getItem());
 					return activity.coverFragment;
 				case POS_DESCR:
 					activity.descriptionFragment = ItemDescriptionFragment
@@ -524,10 +539,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		public int getCount() {
 			return numItems;
 		}
-		
+
 		@Override
 		public int getItemPosition(Object object) {
-		    return POSITION_NONE;
+			return POSITION_NONE;
 		}
 
 	}
