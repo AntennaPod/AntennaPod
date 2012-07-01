@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <style name="PodTheme" parent="@style/Theme.Sherlock.Light.ForceOverflow">
+        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+    </style>
+    
+    <style name="StyledIndicators" parent="PodTheme">
+            <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+            <item name="android:textColor">@color/black</item>
+        </style>
+    
+
+</resources>

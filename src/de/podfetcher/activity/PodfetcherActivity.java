@@ -23,6 +23,7 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.viewpagerindicator.TabPageIndicator;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
@@ -39,6 +40,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	private FeedManager manager;
 	private ViewPager viewpager;
 	private MainPagerAdapter pagerAdapter;
+	private TabPageIndicator tabs;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -46,13 +48,15 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
-		// Set up tabs
 		ActionBar actionBar = getSupportActionBar();
-		//actionBar.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		actionBar.setDisplayShowTitleEnabled(false);
-		pagerAdapter = new MainPagerAdapter(getSupportFragmentManager());
+		pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
+		
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
+		tabs = (TabPageIndicator) findViewById(R.id.tabs);
+		
 		viewpager.setAdapter(pagerAdapter);
+		tabs.setViewPager(viewpager);
 	}
 
 	@Override
@@ -137,9 +141,12 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		private static final int POS_FEEDLIST = 0;
 		private static final int POS_NEW_ITEMS = 1;
 		private static final int POS_QUEUE = 2;
+		
+		private Context context;
 
-		public MainPagerAdapter(FragmentManager fm) {
+		public MainPagerAdapter(FragmentManager fm, Context context) {
 			super(fm);
+			this.context = context;
 		}
 
 		@Override
@@ -159,6 +166,20 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		@Override
 		public int getCount() {
 			return NUM_ITEMS;
+		}
+		
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case POS_FEEDLIST:
+				return context.getString(R.string.feeds_label);
+			case POS_NEW_ITEMS:
+				return context.getString(R.string.new_label);
+			case POS_QUEUE:
+				return context.getString(R.string.queue_label);
+			default:
+				return null;
+			}
 		}
 
 	}

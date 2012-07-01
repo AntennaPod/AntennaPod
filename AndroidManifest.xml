@@ -18,7 +18,7 @@
         android:name="de.podfetcher.PodcastApp">
         <activity
             android:label="@string/app_name"
-            android:name="de.podfetcher.activity.PodfetcherActivity" >
+            android:name="de.podfetcher.activity.PodfetcherActivity" android:theme="@style/StyledIndicators">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
