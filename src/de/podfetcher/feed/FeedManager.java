@@ -9,6 +9,7 @@ import de.podfetcher.activity.MediaplayerActivity;
 import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.storage.*;
+import de.podfetcher.util.FeedItemPubdateComparator;
 import de.podfetcher.util.FeedtitleComparator;
 import android.content.Context;
 import android.content.Intent;
@@ -243,9 +244,9 @@ public class FeedManager {
 	 * adapter.setFeedItem(item); } else { feed.getItems().add(item); item.id =
 	 * adapter.setFeedItem(item); } }
 	 */
-	public void updateFeed(Context context, Feed newFeed) {
+	public void updateFeed(Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
-		Feed savedFeed = searchFeedByLink(newFeed.getLink());
+		final Feed savedFeed = searchFeedByLink(newFeed.getLink());
 		if (savedFeed == null) {
 			Log.d(TAG,
 					"Found no existing Feed with title " + newFeed.getTitle()
@@ -257,17 +258,20 @@ public class FeedManager {
 			Log.d(TAG, "Feed with title " + newFeed.getTitle()
 					+ " already exists. Syncing new with existing one.");
 			// Look for new or updated Items
-			for (FeedItem item : newFeed.getItems()) {
+			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
+				FeedItem item = newFeed.getItems().get(idx);
 				FeedItem oldItem = searchFeedItemByLink(savedFeed,
 						item.getLink());
 				if (oldItem == null) {
 					// item is new
-					savedFeed.getItems().add(item);
+					item.setFeed(savedFeed);
+					savedFeed.getItems().add(idx, item);
 					markItemRead(context, item, false);
 				}
 			}
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			setFeed(context, savedFeed);
+
 		}
 
 	}
@@ -568,6 +572,7 @@ public class FeedManager {
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}
+		Collections.sort(items, new FeedItemPubdateComparator());
 		return items;
 	}
 
