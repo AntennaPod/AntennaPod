@@ -4,16 +4,11 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txtvTitle"
-        android:layout_width="match_parent"
+    <com.viewpagerindicator.TabPageIndicator
+        android:id="@+id/tabs"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="20dp"
-        android:gravity="center_horizontal"
-        android:textSize="18dp"
-        android:textStyle="bold" >
-    </TextView>
+        android:layout_alignParentTop="true" />
 
     <LinearLayout
         android:id="@+id/player_control"
@@ -71,9 +66,11 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/sbPosition"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:padding="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/horizontal_divider" android:layout_marginBottom="5dp" android:layout_marginTop="5dp"/>
+        android:src="@drawable/horizontal_divider" />
 
     <RelativeLayout
         android:id="@+id/playtime_layout"
@@ -106,36 +103,23 @@
             android:visibility="invisible" />
     </RelativeLayout>
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_above="@id/playtime_layout"
+        android:layout_below="@id/tabs" >
+    </android.support.v4.view.ViewPager>
+
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_alignParentLeft="true"
+        android:layout_marginBottom="5dp"
+        android:layout_marginTop="5dp"
         android:padding="5dp"
         android:scaleType="fitXY"
-        android:src="@drawable/horizontal_divider" android:layout_marginTop="5dp" android:layout_marginBottom="5dp"/>
-
-    <TextView
-        android:id="@+id/txtvFeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/txtvTitle"
-        android:gravity="center_horizontal"/>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_above="@id/playtime_layout"
-        android:layout_below="@id/txtvFeed" >
-
-        <ImageView
-            android:id="@+id/imgvCover"
-            android:layout_width="200dp"
-            android:layout_height="200dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:gravity="center" />
-    </LinearLayout>
+        android:src="@drawable/horizontal_divider" />
 
 </RelativeLayout>

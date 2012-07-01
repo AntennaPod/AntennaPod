@@ -14,6 +14,11 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.SurfaceView;
@@ -28,17 +33,21 @@ import android.widget.VideoView;
 import android.widget.ViewSwitcher;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.viewpagerindicator.TabPageIndicator;
 
 import de.podfetcher.PodcastApp;
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.feed.FeedMedia;
+import de.podfetcher.fragment.CoverFragment;
+import de.podfetcher.fragment.ItemDescriptionFragment;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.service.PlayerStatus;
 import de.podfetcher.util.Converter;
 
-public class MediaplayerActivity extends SherlockActivity implements
+public class MediaplayerActivity extends SherlockFragmentActivity implements
 		SurfaceHolder.Callback {
 
 	private final String TAG = "MediaplayerActivity";
@@ -57,9 +66,11 @@ public class MediaplayerActivity extends SherlockActivity implements
 	private FeedManager manager;
 
 	// Widgets
-	private TextView txtvTitle;
-	private TextView txtvFeed;
-	private ImageView imgvCover;
+	private CoverFragment coverFragment;
+	private ItemDescriptionFragment descriptionFragment;
+	private ViewPager viewpager;
+	private TabPageIndicator tabs;
+	private MediaPlayerPagerAdapter pagerAdapter;
 	private VideoView videoview;
 	private TextView txtvStatus;
 	private TextView txtvPosition;
@@ -200,7 +211,6 @@ public class MediaplayerActivity extends SherlockActivity implements
 			break;
 		case STOPPED:
 			setStatusMsg(R.string.player_stopped_msg, View.VISIBLE);
-			imgvCover.setImageBitmap(null);
 			break;
 		case PREPARED:
 			loadMediaInfo();
@@ -261,10 +271,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 				getSupportActionBar().setSubtitle(media.getItem().getTitle());
 				getSupportActionBar().setTitle(
 						media.getItem().getFeed().getTitle());
-				imgvCover.setImageBitmap(media.getItem().getFeed().getImage()
-						.getImageBitmap());
-				txtvTitle.setText(media.getItem().getTitle());
-				txtvFeed.setText(media.getItem().getFeed().getTitle());
+				pagerAdapter.notifyDataSetChanged();
+				
 			}
 
 			txtvPosition.setText(Converter.getDurationStringLong((player
@@ -286,6 +294,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 		butPlay = (ImageButton) findViewById(R.id.butPlay);
 		butRev = (ImageButton) findViewById(R.id.butRev);
 		butFF = (ImageButton) findViewById(R.id.butFF);
+
+		// SEEKBAR SETUP
 
 		sbPosition.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
 			int duration;
@@ -319,6 +329,8 @@ public class MediaplayerActivity extends SherlockActivity implements
 			}
 		});
 
+		// BUTTON SETUP
+
 		butPlay.setOnClickListener(playbuttonListener);
 
 		butFF.setOnClickListener(new OnClickListener() {
@@ -339,12 +351,16 @@ public class MediaplayerActivity extends SherlockActivity implements
 			}
 		});
 
-		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			imgvCover = (ImageView) findViewById(R.id.imgvCover);
-			txtvStatus = (TextView) findViewById(R.id.txtvStatus);
-			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-			txtvFeed = (TextView) findViewById(R.id.txtvFeed);
+		// PORTRAIT ORIENTATION SETUP
 
+		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+			txtvStatus = (TextView) findViewById(R.id.txtvStatus);
+			viewpager = (ViewPager) findViewById(R.id.viewpager);
+			tabs = (TabPageIndicator) findViewById(R.id.tabs);
+			pagerAdapter = new MediaPlayerPagerAdapter(
+					getSupportFragmentManager(), 2, this);
+			viewpager.setAdapter(pagerAdapter);
+			tabs.setViewPager(viewpager);
 		} else {
 			setTheme(R.style.Theme_Sherlock_Light_NoActionBar);
 			videoview = (VideoView) findViewById(R.id.videoview);
@@ -456,6 +472,64 @@ public class MediaplayerActivity extends SherlockActivity implements
 	@Override
 	public void surfaceDestroyed(SurfaceHolder holder) {
 		holderCreated = false;
+	}
+
+	public static class MediaPlayerPagerAdapter extends FragmentStatePagerAdapter {
+		private int numItems;
+		private MediaplayerActivity activity;
+
+		private static final int POS_COVER = 0;
+		private static final int POS_DESCR = 1;
+		private static final int POS_CHAPTERS = 2;
+
+		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
+				MediaplayerActivity activity) {
+			super(fm);
+			this.numItems = numItems;
+			this.activity = activity;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			if (activity.media != null) {
+				switch (position) {
+				case POS_COVER:
+					activity.coverFragment = CoverFragment.newInstance(activity.media.getItem());
+					return activity.coverFragment;
+				case POS_DESCR:
+					activity.descriptionFragment = ItemDescriptionFragment
+							.newInstance(activity.media.getItem());
+					return activity.descriptionFragment;
+				default:
+					return CoverFragment.newInstance(null);
+				}
+			} else {
+				return CoverFragment.newInstance(null);
+			}
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case POS_COVER:
+				return activity.getString(R.string.cover_label);
+			case POS_DESCR:
+				return activity.getString(R.string.description_label);
+			default:
+				return super.getPageTitle(position);
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return numItems;
+		}
+		
+		@Override
+		public int getItemPosition(Object object) {
+		    return POSITION_NONE;
+		}
+
 	}
 
 }
