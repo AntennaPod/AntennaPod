@@ -31,10 +31,11 @@
 	    android:textStyle="bold"
 	    android:gravity="center_horizontal"
 	    android:text="@string/description_label"/>
-	
-    <WebView
-        android:id="@+id/webvDescription"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+
+	<FrameLayout
+	    android:id="@+id/description_fragment"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content" >
+	</FrameLayout>
 
 </LinearLayout>

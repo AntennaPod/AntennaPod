@@ -1,44 +1,32 @@
 package de.podfetcher.activity;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.text.DateFormat;
 
-import org.apache.commons.lang3.StringEscapeUtils;
-
-import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateUtils;
 import android.util.Log;
-import android.view.View;
-import android.webkit.WebView;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import de.podfetcher.R;
-import de.podfetcher.asynctask.DownloadObserver;
-import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
-import de.podfetcher.feed.FeedMedia;
-import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
-import de.podfetcher.service.PlaybackService;
-import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.fragment.ItemDescriptionFragment;
+import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.util.FeedItemMenuHandler;
 
 /** Displays a single FeedItem and provides various actions */
-public class ItemviewActivity extends SherlockActivity {
+public class ItemviewActivity extends SherlockFragmentActivity {
 	private static final String TAG = "ItemviewActivity";
 
 	private FeedManager manager;
@@ -47,7 +35,6 @@ public class ItemviewActivity extends SherlockActivity {
 	// Widgets
 	private TextView txtvTitle;
 	private TextView txtvPublished;
-	private WebView webvDescription;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -82,33 +69,25 @@ public class ItemviewActivity extends SherlockActivity {
 	private void populateUI() {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.feeditemview);
-		getSupportActionBar().setLogo(new BitmapDrawable(item.getFeed().getImage().getImageBitmap()));
+		getSupportActionBar().setLogo(
+				new BitmapDrawable(item.getFeed().getImage().getImageBitmap()));
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
 		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
-		webvDescription = (WebView) findViewById(R.id.webvDescription);
 		setTitle(item.getFeed().getTitle());
 
 		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
 				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
 				DateFormat.SHORT));
 		txtvTitle.setText(item.getTitle());
-		
-		webViewLoader.execute();
 
+		FragmentManager fragmentManager = getSupportFragmentManager();
+		FragmentTransaction fragmentTransaction = fragmentManager
+				.beginTransaction();
+		ItemDescriptionFragment fragment = ItemDescriptionFragment.newInstance(item);
+		fragmentTransaction.add(R.id.description_fragment, fragment);
+		fragmentTransaction.commit();
 	}
 
-	/*
-	 * TODO implement final DownloadObserver downloadObserver = new
-	 * DownloadObserver(this) {
-	 * 
-	 * @Override protected void onProgressUpdate( DownloadStatus... values) {
-	 * 
-	 * }
-	 * 
-	 * @Override protected void onPostExecute(Boolean result) { boolean r =
-	 * getStatusList()[0].isSuccessful(); if (r) { //setDownloadedState(); }
-	 * else { //setNotDownloadedState(); } } };
-	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return FeedItemMenuHandler.onCreateMenu(new MenuInflater(this), menu);
@@ -117,7 +96,7 @@ public class ItemviewActivity extends SherlockActivity {
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
-			switch(menuItem.getItemId()) {
+			switch (menuItem.getItemId()) {
 			case android.R.id.home:
 				finish();
 				break;
@@ -132,45 +111,4 @@ public class ItemviewActivity extends SherlockActivity {
 		return FeedItemMenuHandler.onPrepareMenu(menu, item);
 	}
 
-	private AsyncTask<Void, Void, Void> webViewLoader = new AsyncTask<Void, Void, Void>() {
-		String url;
-		
-		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			webvDescription.loadData(url, "text/html", "utf-8");
-			setSupportProgressBarIndeterminateVisibility(false);
-			Log.d(TAG, "Webview loaded");
-		}
-
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			setSupportProgressBarIndeterminateVisibility(true);
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			Log.d(TAG, "Loading Webview");
-			url = "";
-			try {
-				if (item.getContentEncoded() == null) {
-					url = URLEncoder.encode(item.getDescription(), "utf-8")
-							.replaceAll("\\+", " ");
-				} else {
-					url = URLEncoder.encode(
-							StringEscapeUtils.unescapeHtml4(item
-									.getContentEncoded()), "utf-8").replaceAll(
-							"\\+", " ");
-				}
-
-			} catch (UnsupportedEncodingException e) {
-				url = "Page could not be loaded";
-				e.printStackTrace();
-			}		
-				
-			return null;
-		}
-
-	};
 }
