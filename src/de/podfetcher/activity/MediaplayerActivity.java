@@ -1,8 +1,10 @@
 package de.podfetcher.activity;
 
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
@@ -50,6 +52,8 @@ import de.podfetcher.fragment.ItemDescriptionFragment;
 import de.podfetcher.service.PlaybackService;
 import de.podfetcher.service.PlayerStatus;
 import de.podfetcher.util.Converter;
+import de.podfetcher.util.DownloadError;
+import de.podfetcher.util.MediaPlayerError;
 
 public class MediaplayerActivity extends SherlockFragmentActivity implements
 		SurfaceHolder.Callback {
@@ -100,6 +104,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		} catch (IllegalArgumentException e) {
 			// ignore
 		}
+
+		try {
+			unregisterReceiver(notificationReceiver);
+		} catch (IllegalArgumentException e) {
+			// ignore
+		}
+
 		try {
 			unbindService(mConnection);
 		} catch (IllegalArgumentException e) {
@@ -207,7 +218,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 		case ERROR:
 			setStatusMsg(R.string.player_error_msg, View.VISIBLE);
-			handleError();
 			break;
 		case PAUSED:
 			setStatusMsg(R.string.player_paused_msg, View.VISIBLE);
@@ -264,7 +274,9 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					txtvPosition.setText(Converter
 							.getDurationStringLong(playbackService.getPlayer()
 									.getCurrentPosition()));
-
+					txtvLength.setText(Converter
+							.getDurationStringLong(playbackService.getPlayer()
+									.getDuration()));
 					updateProgressbarPosition();
 				}
 
@@ -447,8 +459,19 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		videoControlsShowing = !videoControlsShowing;
 	}
 
-	private void handleError() {
-		// TODO implement
+	private void handleError(int errorCode) {
+		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
+		errorDialog.setTitle(R.string.error_label);
+		errorDialog
+				.setMessage(MediaPlayerError.getErrorString(this, errorCode));
+		errorDialog.setButton("OK", new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				errorDialog.dismiss();
+				finish();
+			}
+		});
+		errorDialog.show();
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -458,8 +481,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			int requestedOrientation;
 			status = playbackService.getStatus();
 			media = playbackService.getMedia();
+
 			registerReceiver(statusUpdate, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+
+			registerReceiver(notificationReceiver, new IntentFilter(
+					PlaybackService.ACTION_PLAYER_NOTIFICATION));
+
 			if (playbackService.isPlayingVideo()) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
@@ -495,6 +523,27 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			status = playbackService.getStatus();
 			handleStatus();
 		}
+	};
+
+	private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			Log.d(TAG, "Received notification intent");
+			int type = intent.getIntExtra(
+					PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
+			int code = intent.getIntExtra(
+					PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
+			if (code != -1 && type != -1) {
+				if (type == PlaybackService.NOTIFICATION_TYPE_ERROR) {
+					handleError(code);
+				}
+			} else {
+				Log.d(TAG, "Bad arguments. Won't handle intent");
+			}
+
+		}
+
 	};
 
 	/** Refreshes the current position of the media file that is playing. */

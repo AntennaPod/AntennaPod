@@ -69,5 +69,7 @@
     <string name="download_error_connection_error">Connection error</string>
     <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
     <string name="cover_label">Cover</string>
+    <string name="playback_error_server_died">Server died</string>
+    <string name="playback_error_unknown">Unknown Error</string>
 
 </resources>

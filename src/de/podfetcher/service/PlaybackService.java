@@ -56,6 +56,15 @@ public class PlaybackService extends Service {
 	public static final String EXTRA_START_WHEN_PREPARED = "extra.de.podfetcher.service.startWhenPrepared";
 
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.podfetcher.service.playerStatusChanged";
+	
+	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.podfetcher.service.playerNotification";
+	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.podfetcher.service.notificationCode";
+	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.podfetcher.service.notificationType";
+	
+	public static final int NOTIFICATION_TYPE_ERROR = 0;
+	public static final int NOTIFICATION_TYPE_INFO = 1;
+	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
+
 
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
@@ -100,6 +109,7 @@ public class PlaybackService extends Service {
 		player.setOnPreparedListener(preparedListener);
 		player.setOnCompletionListener(completionListener);
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
+		player.setOnErrorListener(onErrorListener);
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
@@ -266,6 +276,7 @@ public class PlaybackService extends Service {
 		player.setOnPreparedListener(preparedListener);
 		player.setOnCompletionListener(completionListener);
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
+		player.setOnErrorListener(onErrorListener);
 		status = PlayerStatus.STOPPED;
 		setupMediaplayer();
 	}
@@ -342,6 +353,20 @@ public class PlaybackService extends Service {
 
 		}
 	};
+	
+	private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
+		private static final String TAG = "PlaybackService.onErrorListener";
+		@Override
+		public boolean onError(MediaPlayer mp, int what, int extra) {
+			Log.w(TAG, "An error has occured: " + what);
+			if (mp.isPlaying()) {
+				pause();
+			}
+			sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
+			stopSelf();
+			return true;
+		}
+	};
 
 	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
 
@@ -412,6 +437,13 @@ public class PlaybackService extends Service {
 		Log.d(TAG, "Setting status to " + newStatus);
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
+	}
+	
+	private void sendNotificationBroadcast(int type, int code) {
+		Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
+		intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
+		intent.putExtra(EXTRA_NOTIFICATION_CODE, code);
+		sendBroadcast(intent);
 	}
 
 	/** Prepares notification and starts the service in the foreground. */
