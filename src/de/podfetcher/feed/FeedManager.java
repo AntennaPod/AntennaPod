@@ -233,18 +233,9 @@ public class FeedManager {
 		adapter.close();
 	}
 
-	/*
-	 * TODO Decide if still useful
-	 * 
-	 * public void addFeedItem(Context context, FeedItem item) { PodDBAdapter
-	 * adapter = new PodDBAdapter(context); // Search list for feeditem Feed
-	 * feed = item.getFeed(); FeedItem foundItem = searchFeedItemByLink(feed,
-	 * item.getLink()); if (foundItem != null) { // Update Information item.id =
-	 * foundItem.id; foundItem = item; item.setRead(foundItem.isRead());
-	 * adapter.setFeedItem(item); } else { feed.getItems().add(item); item.id =
-	 * adapter.setFeedItem(item); } }
-	 */
-	public void updateFeed(Context context, final Feed newFeed) {
+	/** Updates an existing feed or adds it as a new one if it doesn't exist.
+	 * @return The saved Feed with a database ID*/
+	public Feed updateFeed(Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
 		final Feed savedFeed = searchFeedByLink(newFeed.getLink());
 		if (savedFeed == null) {
@@ -254,6 +245,7 @@ public class FeedManager {
 			// Add a new Feed
 			markItemRead(context, newFeed.getItems().get(0), false);
 			addNewFeed(context, newFeed);
+			return newFeed;
 		} else {
 			Log.d(TAG, "Feed with title " + newFeed.getTitle()
 					+ " already exists. Syncing new with existing one.");
@@ -271,7 +263,7 @@ public class FeedManager {
 			}
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			setFeed(context, savedFeed);
-
+			return savedFeed;
 		}
 
 	}

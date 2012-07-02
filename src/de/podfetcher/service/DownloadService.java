@@ -277,6 +277,7 @@ public class DownloadService extends Service {
 		}
 
 		public void run() {
+			Feed savedFeed = null;
 			long imageId = 0;
 			boolean hasImage = false;
 			long downloadId = feed.getDownloadId();
@@ -298,7 +299,7 @@ public class DownloadService extends Service {
 				
 				feed.setDownloadId(0);
 				// Save information of feed in DB
-				manager.updateFeed(service, feed);
+				savedFeed = manager.updateFeed(service, feed);
 			} catch (SAXException e) {
 				successful = false;
 				e.printStackTrace();
@@ -319,7 +320,7 @@ public class DownloadService extends Service {
 			
 			requester.removeDownload(feed);
 			cleanup();	
-			long statusId = manager.addDownloadStatus(service, new DownloadStatus(feed, reason, successful));
+			long statusId = manager.addDownloadStatus(service, new DownloadStatus(savedFeed, reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();	
 		}
