@@ -523,12 +523,16 @@ public class PlaybackService extends Service {
 			while (!isCancelled() && player.isPlaying()) {
 				try {
 					Thread.sleep(WAITING_INTERVALL);
+					saveCurrentPosition();
 				} catch (InterruptedException e) {
 					Log.d(TAG,
 							"Thread was interrupted while waiting. Finishing now...");
 					return null;
+				} catch (IllegalStateException e) {
+					Log.d(TAG, "Player is in illegal state. Finishing now");
+					return null;
 				}
-				saveCurrentPosition();
+				
 			}
 			return null;
 		}

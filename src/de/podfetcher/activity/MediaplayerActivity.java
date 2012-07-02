@@ -559,6 +559,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	public class MediaPositionObserver extends
 			AsyncTask<MediaPlayer, Void, Void> {
 
+		private static final String TAG = "MediaPositionObserver";
 		private static final int WAITING_INTERVALL = 1000;
 		private MediaPlayer player;
 
@@ -579,6 +580,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					Log.d(TAG,
 							"Thread was interrupted while waiting. Finishing now");
 					return null;
+				} catch (IllegalStateException e) {
+					Log.d(TAG, "player is in illegal state, exiting now");
 				}
 				publishProgress();
 			}
