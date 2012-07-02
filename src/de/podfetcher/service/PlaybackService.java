@@ -110,6 +110,7 @@ public class PlaybackService extends Service {
 		player.setOnCompletionListener(completionListener);
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
 		player.setOnErrorListener(onErrorListener);
+		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
@@ -277,6 +278,7 @@ public class PlaybackService extends Service {
 		player.setOnCompletionListener(completionListener);
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
 		player.setOnErrorListener(onErrorListener);
+		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
 		status = PlayerStatus.STOPPED;
 		setupMediaplayer();
 	}
@@ -383,6 +385,15 @@ public class PlaybackService extends Service {
 			setStatus(PlayerStatus.STOPPED);
 			stopForeground(true);
 
+		}
+	};
+	
+	private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
+		
+		@Override
+		public void onBufferingUpdate(MediaPlayer mp, int percent) {
+			sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
+			
 		}
 	};
 

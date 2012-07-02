@@ -529,15 +529,24 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Received notification intent");
 			int type = intent.getIntExtra(
 					PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
 			int code = intent.getIntExtra(
 					PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
 			if (code != -1 && type != -1) {
-				if (type == PlaybackService.NOTIFICATION_TYPE_ERROR) {
+				switch (type) {
+				case PlaybackService.NOTIFICATION_TYPE_ERROR:
 					handleError(code);
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
+					if (sbPosition != null) {
+						float progress = ((float) code) / 100;
+						sbPosition.setSecondaryProgress((int) progress
+								* sbPosition.getMax());
+					}
+					break;
 				}
+
 			} else {
 				Log.d(TAG, "Bad arguments. Won't handle intent");
 			}
