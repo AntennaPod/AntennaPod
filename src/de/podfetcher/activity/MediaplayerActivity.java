@@ -64,6 +64,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	/** True if video controls are currently visible. */
 	private boolean videoControlsShowing = true;
+	/** True if media information was loaded. */
+	private boolean mediaInfoLoaded = false;
 
 	private PlaybackService playbackService;
 	private MediaPositionObserver positionObserver;
@@ -157,7 +159,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
-		
+
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
@@ -224,6 +226,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			break;
 		case PREPARING:
 			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
+			loadMediaInfo();
 			break;
 		case STOPPED:
 			setStatusMsg(R.string.player_stopped_msg, View.VISIBLE);
@@ -279,27 +282,32 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	}
 
 	private void loadMediaInfo() {
-		Log.d(TAG, "Loading media info");
-		if (media != null) {
-			MediaPlayer player = playbackService.getPlayer();
+		if (!mediaInfoLoaded) {
+			Log.d(TAG, "Loading media info");
+			if (media != null) {
 
-			if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-				getSupportActionBar().setSubtitle(media.getItem().getTitle());
-				getSupportActionBar().setTitle(
-						media.getItem().getFeed().getTitle());
-				pagerAdapter.notifyDataSetChanged();
+				if (orientation == Configuration.ORIENTATION_PORTRAIT) {
+					getSupportActionBar().setSubtitle(
+							media.getItem().getTitle());
+					getSupportActionBar().setTitle(
+							media.getItem().getFeed().getTitle());
+					pagerAdapter.notifyDataSetChanged();
 
+				}
+
+				txtvPosition.setText(Converter.getDurationStringLong((media
+						.getPosition())));
+
+				if (!playbackService.isShouldStream()) {
+					txtvLength.setText(Converter.getDurationStringLong(media
+							.getDuration()));
+					float progress = ((float) media.getPosition())
+							/ media.getDuration();
+					sbPosition.setProgress((int) (progress * sbPosition
+							.getMax()));
+				}
 			}
-
-			txtvPosition.setText(Converter.getDurationStringLong((player
-					.getCurrentPosition())));
-			txtvLength.setText(Converter.getDurationStringLong(player
-					.getDuration()));
-			if (playbackService != null) {
-				updateProgressbarPosition();
-			} else {
-				sbPosition.setProgress(0);
-			}
+			mediaInfoLoaded = true;
 		}
 	}
 
