@@ -27,6 +27,7 @@ import android.os.IBinder;
 
 import de.podfetcher.PodcastApp;
 import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
@@ -64,6 +65,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_ERROR = 0;
 	public static final int NOTIFICATION_TYPE_INFO = 1;
 	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
+	public static final int NOTIFICATION_TYPE_RELOAD = 3;
 
 
 	/** Is true if service is running. */
@@ -382,8 +384,21 @@ public class PlaybackService extends Service {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
 			manager.setFeedMedia(PlaybackService.this, media);
-			setStatus(PlayerStatus.STOPPED);
-			stopForeground(true);
+			
+			FeedItem nextItem = manager.getFirstQueueItem();
+			if (nextItem == null) {
+				Log.d(TAG, "No more items in queue");
+				setStatus(PlayerStatus.STOPPED);
+				stopForeground(true);
+			} else {
+				Log.d(TAG, "Loading next item in queue");
+				media = nextItem.getMedia();
+				feed = nextItem.getFeed();
+				shouldStream = !media.isDownloaded();
+				resetVideoSurface();
+				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+			}
+			
 
 		}
 	};

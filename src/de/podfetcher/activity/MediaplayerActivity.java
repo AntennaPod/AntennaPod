@@ -546,6 +546,15 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 								* sbPosition.getMax());
 					}
 					break;
+				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
+					unbindService(mConnection);
+					if (positionObserver != null) {
+						positionObserver.cancel(true);
+						positionObserver = null;
+					}
+					mediaInfoLoaded = false;
+					bindToService();
+					break;
 				}
 
 			} else {
@@ -573,18 +582,20 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		protected Void doInBackground(MediaPlayer... p) {
 			Log.d(TAG, "Background Task started");
 			player = p[0];
+			try {
+				while (player.isPlaying() && !isCancelled()) {
+					try {
+						Thread.sleep(WAITING_INTERVALL);
+					} catch (InterruptedException e) {
+						Log.d(TAG,
+								"Thread was interrupted while waiting. Finishing now");
+						return null;
+					}
+					publishProgress();
 
-			while (player.isPlaying() && !isCancelled()) {
-				try {
-					Thread.sleep(WAITING_INTERVALL);
-				} catch (InterruptedException e) {
-					Log.d(TAG,
-							"Thread was interrupted while waiting. Finishing now");
-					return null;
-				} catch (IllegalStateException e) {
-					Log.d(TAG, "player is in illegal state, exiting now");
 				}
-				publishProgress();
+			} catch (IllegalStateException e) {
+				Log.d(TAG, "player is in illegal state, exiting now");
 			}
 			Log.d(TAG, "Background Task finished");
 			return null;

@@ -209,7 +209,9 @@ public class FeedManager {
 		boolean removed = queue.remove(item);
 		if (removed) {
 			PodDBAdapter adapter = new PodDBAdapter(context);
+			adapter.open();
 			adapter.setQueue(queue);
+			adapter.close();
 		}
 	}
 
@@ -218,7 +220,11 @@ public class FeedManager {
 	}
 
 	public FeedItem getFirstQueueItem() {
-		return queue.get(0);
+		if (queue.isEmpty()) {
+			return null;
+		} else {
+			return queue.get(0);
+		}
 	}
 
 	private void addNewFeed(Context context, Feed feed) {
