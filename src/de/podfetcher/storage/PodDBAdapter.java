@@ -244,7 +244,7 @@ public class PodDBAdapter {
 		} else {
 			db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
 					new String[] { String.valueOf(media.getId()) });
-		}	
+		}
 		return media.getId();
 	}
 
@@ -272,7 +272,7 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
-	
+
 		if (item.getId() == 0) {
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
@@ -281,7 +281,7 @@ public class PodDBAdapter {
 		}
 		if (item.getSimpleChapters() != null) {
 			setSimpleChapters(item);
-		}	
+		}
 		return item.getId();
 	}
 
@@ -305,24 +305,28 @@ public class PodDBAdapter {
 	 * Inserts or updates a download status.
 	 * */
 	public long setDownloadStatus(DownloadStatus status) {
-		ContentValues values = new ContentValues();
-		values.put(KEY_FEEDFILE, status.getFeedFile().getId());
-		if (status.getFeedFile().getClass() == Feed.class) {
-			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEED);
-		} else if (status.getFeedFile().getClass() == FeedImage.class) {
-			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDIMAGE);
-		} else if (status.getFeedFile().getClass() == FeedMedia.class) {
-			values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDMEDIA);
-		}
+		// Don't save failed downloads
+		if (status.getFeedFile() != null) {
+			ContentValues values = new ContentValues();
+			values.put(KEY_FEEDFILE, status.getFeedFile().getId());
+			if (status.getFeedFile().getClass() == Feed.class) {
+				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEED);
+			} else if (status.getFeedFile().getClass() == FeedImage.class) {
+				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDIMAGE);
+			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
+				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDMEDIA);
+			}
 
-		values.put(KEY_REASON, status.getReason());
-		values.put(KEY_SUCCESSFUL, status.isSuccessful());
-		values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
-		if (status.getId() == 0) {
-			status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
-		} else {
-			db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
-					new String[] { String.valueOf(status.getId()) });
+			values.put(KEY_REASON, status.getReason());
+			values.put(KEY_SUCCESSFUL, status.isSuccessful());
+			values.put(KEY_COMPLETION_DATE, status.getCompletionDate()
+					.getTime());
+			if (status.getId() == 0) {
+				status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
+			} else {
+				db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
+						new String[] { String.valueOf(status.getId()) });
+			}
 		}
 		return status.getId();
 	}

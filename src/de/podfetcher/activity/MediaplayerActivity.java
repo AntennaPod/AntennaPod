@@ -404,7 +404,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			videoview.setOnClickListener(playbuttonListener);
 			videoview.setOnTouchListener(onVideoviewTouched);
 			setupVideoControlsToggler();
-			requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 					WindowManager.LayoutParams.FLAG_FULLSCREEN);
 		}
@@ -431,7 +430,9 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					videoControlsToggler.cancel(true);
 				}
 				toggleVideoControlsVisibility();
-				setupVideoControlsToggler();
+				if (videoControlsShowing) {
+					setupVideoControlsToggler();
+				}
 
 				return true;
 			} else {
@@ -602,7 +603,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			videoControlsToggler = null;
 		}
 
-		private static final int WAITING_INTERVALL = 3000;
+		private static final int WAITING_INTERVALL = 5000;
 		private static final String TAG = "VideoControlsToggler";
 
 		@Override
@@ -617,14 +618,12 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 		@Override
 		protected Void doInBackground(Void... params) {
-			while (!isCancelled()) {
-				try {
-					Thread.sleep(WAITING_INTERVALL);
-				} catch (InterruptedException e) {
-					return null;
-				}
-				publishProgress();
+			try {
+				Thread.sleep(WAITING_INTERVALL);
+			} catch (InterruptedException e) {
+				return null;
 			}
+			publishProgress();
 			return null;
 		}
 

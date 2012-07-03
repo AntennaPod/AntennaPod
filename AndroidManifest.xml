@@ -30,7 +30,7 @@
         <activity android:name="de.podfetcher.activity.ItemviewActivity"/>
         <activity android:name="de.podfetcher.activity.DownloadActivity"
             android:label="@string/downloads_label"/>
-        <activity android:name="de.podfetcher.activity.MediaplayerActivity" android:launchMode="singleTask" android:configChanges="orientation" android:theme="@style/StyledIndicators"/>
+        <activity android:name="de.podfetcher.activity.MediaplayerActivity" android:launchMode="singleTask" android:configChanges="orientation" android:theme="@style/Theme.MediaPlayer"/>
 
         <service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
         <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" >

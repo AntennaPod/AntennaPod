@@ -9,6 +9,5 @@
             <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
             <item name="android:textColor">@color/black</item>
         </style>
-    
-
+        
 </resources>
