@@ -18,6 +18,9 @@ local.properties
 # Backup files
 *~
 
+#eclipse project files
+.project
+.classpath
 # other
 *.odg#
 Docs/todo
