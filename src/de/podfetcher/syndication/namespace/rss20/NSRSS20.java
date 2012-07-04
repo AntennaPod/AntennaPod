@@ -41,6 +41,8 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 
+	public final static String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*";
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -50,12 +52,16 @@ public class NSRSS20 extends Namespace {
 			state.getCurrentItem().setFeed(state.getFeed());
 
 		} else if (localName.equals(ENCLOSURE)) {
-			state.getCurrentItem()
-					.setMedia(
-							new FeedMedia(state.getCurrentItem(), attributes
-									.getValue(ENC_URL), Long
-									.parseLong(attributes.getValue(ENC_LEN)),
-									attributes.getValue(ENC_TYPE)));
+			String type = attributes.getValue(ENC_TYPE);
+			if (state.getCurrentItem().getMedia() == null
+					&& (type.matches(VALID_MIMETYPE))) {
+				state.getCurrentItem().setMedia(
+						new FeedMedia(state.getCurrentItem(), attributes
+								.getValue(ENC_URL), Long.parseLong(attributes
+								.getValue(ENC_LEN)), attributes
+								.getValue(ENC_TYPE)));
+			}
+
 		} else if (localName.equals(IMAGE)) {
 			state.getFeed().setImage(new FeedImage());
 		}
@@ -66,7 +72,8 @@ public class NSRSS20 extends Namespace {
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ITEM)) {
 			state.setCurrentItem(null);
-		} else if (state.getTagstack().size() >= 2 && state.getContentBuf() != null) {
+		} else if (state.getTagstack().size() >= 2
+				&& state.getContentBuf() != null) {
 			String content = state.getContentBuf().toString();
 			SyndElement topElement = state.getTagstack().peek();
 			String top = topElement.getName();
