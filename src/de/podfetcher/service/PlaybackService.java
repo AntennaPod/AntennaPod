@@ -57,16 +57,15 @@ public class PlaybackService extends Service {
 	public static final String EXTRA_START_WHEN_PREPARED = "extra.de.podfetcher.service.startWhenPrepared";
 
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.podfetcher.service.playerStatusChanged";
-	
+
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.podfetcher.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.podfetcher.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.podfetcher.service.notificationType";
-	
+
 	public static final int NOTIFICATION_TYPE_ERROR = 0;
 	public static final int NOTIFICATION_TYPE_INFO = 1;
 	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 	public static final int NOTIFICATION_TYPE_RELOAD = 3;
-
 
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
@@ -91,6 +90,9 @@ public class PlaybackService extends Service {
 
 	private PlayerStatus statusBeforeSeek;
 
+	/** True if mediaplayer was paused because it lost audio focus temporarily */
+	private boolean pausedBecauseOfTransientAudiofocusLoss;
+
 	private final IBinder mBinder = new LocalBinder();
 
 	public class LocalBinder extends Binder {
@@ -103,6 +105,7 @@ public class PlaybackService extends Service {
 	public void onCreate() {
 		super.onCreate();
 		isRunning = true;
+		pausedBecauseOfTransientAudiofocusLoss = false;
 		status = PlayerStatus.STOPPED;
 		Log.d(TAG, "Service created.");
 		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
@@ -141,21 +144,25 @@ public class PlaybackService extends Service {
 			switch (focusChange) {
 			case AudioManager.AUDIOFOCUS_LOSS:
 				Log.d(TAG, "Lost audio focus");
-				pause();
+				pause(true);
 				stopSelf();
 				break;
 			case AudioManager.AUDIOFOCUS_GAIN:
 				Log.d(TAG, "Gained audio focus");
-				play();
+				if (pausedBecauseOfTransientAudiofocusLoss) {
+					play();
+				}
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
 				Log.d(TAG, "Lost audio focus temporarily. Ducking...");
 				audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
 						AudioManager.ADJUST_LOWER, 0);
+				pausedBecauseOfTransientAudiofocusLoss = true;
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
 				Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-				pause();
+				pause(false);
+				pausedBecauseOfTransientAudiofocusLoss = true;
 			}
 		}
 	};
@@ -182,7 +189,7 @@ public class PlaybackService extends Service {
 				// check if already playing and playbackType is the same
 			} else if (media == null || mediaId != media.getId()
 					|| playbackType != shouldStream) {
-				pause();
+				pause(true);
 				player.reset();
 				if (media == null || mediaId != media.getId()) {
 					feed = manager.getFeed(feedId);
@@ -218,7 +225,7 @@ public class PlaybackService extends Service {
 		switch (keycode) {
 		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause();
+				pause(true);
 			} else if (status == PlayerStatus.PAUSED) {
 				play();
 			}
@@ -230,7 +237,7 @@ public class PlaybackService extends Service {
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause();
+				pause(true);
 			}
 			break;
 		}
@@ -357,14 +364,15 @@ public class PlaybackService extends Service {
 
 		}
 	};
-	
+
 	private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
 		private static final String TAG = "PlaybackService.onErrorListener";
+
 		@Override
 		public boolean onError(MediaPlayer mp, int what, int extra) {
 			Log.w(TAG, "An error has occured: " + what);
 			if (mp.isPlaying()) {
-				pause();
+				pause(true);
 			}
 			sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
 			stopSelf();
@@ -384,7 +392,7 @@ public class PlaybackService extends Service {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
 			manager.setFeedMedia(PlaybackService.this, media);
-			
+
 			FeedItem nextItem = manager.getFirstQueueItem();
 			if (nextItem == null) {
 				Log.d(TAG, "No more items in queue");
@@ -398,24 +406,26 @@ public class PlaybackService extends Service {
 				resetVideoSurface();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 			}
-			
 
 		}
 	};
-	
+
 	private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
-		
+
 		@Override
 		public void onBufferingUpdate(MediaPlayer mp, int percent) {
 			sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
-			
+
 		}
 	};
 
-	public void pause() {
+	public void pause(boolean abandonFocus) {
 		if (player.isPlaying()) {
 			Log.d(TAG, "Pausing playback.");
 			player.pause();
+			if (abandonFocus) {
+				audioManager.abandonAudioFocus(audioFocusChangeListener);
+			}
 			if (positionSaver != null) {
 				positionSaver.cancel(true);
 			}
@@ -424,10 +434,10 @@ public class PlaybackService extends Service {
 			stopForeground(true);
 		}
 	}
-	
+
 	/** Pauses playback and destroys service. Recommended for video playback. */
 	public void stop() {
-		pause();
+		pause(true);
 		stopSelf();
 	}
 
@@ -453,6 +463,7 @@ public class PlaybackService extends Service {
 				setStatus(PlayerStatus.PLAYING);
 				setupPositionSaver();
 				setupNotification();
+				pausedBecauseOfTransientAudiofocusLoss = false;
 			} else {
 				Log.d(TAG, "Failed to request Audiofocus");
 			}
@@ -464,7 +475,7 @@ public class PlaybackService extends Service {
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 	}
-	
+
 	private void sendNotificationBroadcast(int type, int code) {
 		Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
 		intent.putExtra(EXTRA_NOTIFICATION_TYPE, type);
@@ -547,7 +558,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Player is in illegal state. Finishing now");
 					return null;
 				}
-				
+
 			}
 			return null;
 		}

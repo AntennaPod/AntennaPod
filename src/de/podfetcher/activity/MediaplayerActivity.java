@@ -413,7 +413,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		@Override
 		public void onClick(View v) {
 			if (status == PlayerStatus.PLAYING) {
-				playbackService.pause();
+				playbackService.pause(true);
 			} else if (status == PlayerStatus.PAUSED
 					|| status == PlayerStatus.PREPARED) {
 				playbackService.play();
