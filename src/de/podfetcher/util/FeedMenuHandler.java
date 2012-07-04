@@ -10,6 +10,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
+import de.podfetcher.activity.FeedInfoActivity;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
@@ -34,6 +35,11 @@ public class FeedMenuHandler {
 			Feed selectedFeed) {
 		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {
+		case R.id.show_info_item:
+			Intent startIntent = new Intent(context, FeedInfoActivity.class);
+			startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID, selectedFeed.getId());
+			context.startActivity(startIntent);
+			break;
 		case R.id.mark_all_read_item:
 			manager.markFeedRead(context, selectedFeed);
 			break;

@@ -17,5 +17,6 @@
     <color name="blue">#0000FF</color>
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
+    <color name="bright_blue">#33B5E5</color>
 
 </resources>

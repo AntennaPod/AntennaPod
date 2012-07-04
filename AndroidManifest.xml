@@ -15,7 +15,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/Theme.Sherlock.Light.ForceOverflow"
-        android:name="de.podfetcher.PodcastApp">
+        android:name="de.podfetcher.PodcastApp" android:logo="@drawable/ic_launcher">
         <activity
             android:label="@string/app_name"
             android:name="de.podfetcher.activity.PodfetcherActivity" android:theme="@style/StyledIndicators">
@@ -41,6 +41,7 @@
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
-        </receiver> 
+        </receiver>
+        <activity android:name=".activity.FeedInfoActivity"></activity> 
     </application>
 </manifest>
