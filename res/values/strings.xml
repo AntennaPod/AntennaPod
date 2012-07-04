@@ -71,5 +71,7 @@
     <string name="cover_label">Cover</string>
     <string name="playback_error_server_died">Server died</string>
     <string name="playback_error_unknown">Unknown Error</string>
+    <string name="author_label">Author</string>
+    <string name="language_label">Language</string>
 
 </resources>

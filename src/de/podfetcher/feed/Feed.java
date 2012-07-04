@@ -14,6 +14,9 @@ public class Feed extends FeedFile {
 	/** Link to the website. */
 	private String link;
 	private String description;
+	private String language;
+	/** Name of the author */
+	private String author;
 	private FeedImage image;
 	private FeedCategory category;
 	private ArrayList<FeedItem> items;
@@ -105,6 +108,22 @@ public class Feed extends FeedFile {
 
 	public void setPaymentLink(String paymentLink) {
 		this.paymentLink = paymentLink;
+	}
+
+	public String getLanguage() {
+		return language;
+	}
+
+	public void setLanguage(String language) {
+		this.language = language;
+	}
+
+	public String getAuthor() {
+		return author;
+	}
+
+	public void setAuthor(String author) {
+		this.author = author;
 	}
 
 }

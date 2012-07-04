@@ -15,6 +15,8 @@ public class NSITunes extends Namespace{
 	private static final String IMAGE_TITLE = "image";
 	private static final String IMAGE_HREF = "href";
 	
+	private static final String AUTHOR = "author";
+	
 	
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
@@ -31,7 +33,9 @@ public class NSITunes extends Namespace{
 
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
-		
+		if (localName.equals(AUTHOR)) {
+			state.getFeed().setAuthor(state.getContentBuf().toString());
+		}
 		
 	}
 

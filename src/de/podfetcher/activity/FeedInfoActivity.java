@@ -22,6 +22,8 @@ public class FeedInfoActivity extends SherlockActivity {
 	private ImageView imgvCover;
 	private TextView txtvTitle;
 	private TextView txtvDescription;
+	private TextView txtvLanguage;
+	private TextView txtvAuthor;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -32,13 +34,23 @@ public class FeedInfoActivity extends SherlockActivity {
 		FeedManager manager = FeedManager.getInstance();
 		Feed feed = manager.getFeed(feedId);
 		if (feed != null) {
+			Log.d(TAG, "Language is " + feed.getLanguage());
+			Log.d(TAG, "Author is " + feed.getAuthor());
 			imgvCover = (ImageView) findViewById(R.id.imgvCover);
 			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);
-
+			txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
+			txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+			
 			imgvCover.setImageBitmap(feed.getImage().getImageBitmap());
 			txtvTitle.setText(feed.getTitle());
 			txtvDescription.setText(feed.getDescription());
+			if (feed.getAuthor() != null) {
+				txtvAuthor.setText(feed.getAuthor());
+			}
+			if (feed.getLanguage() != null) {
+				txtvLanguage.setText(feed.getLanguage());
+			}
 		} else {
 			Log.e(TAG, "Activity was started with invalid arguments");
 		}

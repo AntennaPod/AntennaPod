@@ -36,6 +36,7 @@ public class NSRSS20 extends Namespace {
 	public final static String ENCLOSURE = "enclosure";
 	public final static String IMAGE = "image";
 	public final static String URL = "url";
+	public final static String LANGUAGE = "language";
 
 	public final static String ENC_URL = "url";
 	public final static String ENC_LEN = "length";
@@ -105,6 +106,8 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setDescription(content);
 				}
 
+			} else if (localName.equals(LANGUAGE)) {
+				state.getFeed().setLanguage(content.toLowerCase());
 			}
 		}
 	}

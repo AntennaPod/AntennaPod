@@ -239,8 +239,11 @@ public class FeedManager {
 		adapter.close();
 	}
 
-	/** Updates an existing feed or adds it as a new one if it doesn't exist.
-	 * @return The saved Feed with a database ID*/
+	/**
+	 * Updates an existing feed or adds it as a new one if it doesn't exist.
+	 * 
+	 * @return The saved Feed with a database ID
+	 */
 	public Feed updateFeed(Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
 		final Feed savedFeed = searchFeedByLink(newFeed.getLink());
@@ -493,6 +496,10 @@ public class FeedManager {
 						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
 				feed.setPaymentLink(feedlistCursor.getString(feedlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK)));
+				feed.setAuthor(feedlistCursor.getString(feedlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_AUTHOR)));
+				feed.setLanguage(feedlistCursor.getString(feedlistCursor
+						.getColumnIndex(PodDBAdapter.KEY_LANGUAGE)));
 				feed.setImage(adapter.getFeedImage(feedlistCursor
 						.getLong(feedlistCursor
 								.getColumnIndex(PodDBAdapter.KEY_IMAGE))));

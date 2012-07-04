@@ -55,6 +55,8 @@ public class PodDBAdapter {
 	public static final String KEY_CONTENT_ENCODED = "content_encoded";
 	public static final String KEY_PAYMENT_LINK = "payment_link";
 	public static final String KEY_START = "start";
+	public static final String KEY_LANGUAGE = "language";
+	public static final String KEY_AUTHOR = "author";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -75,7 +77,8 @@ public class PodDBAdapter {
 			+ KEY_IMAGE + " INTEGER," + KEY_CATEGORY + " INTEGER,"
 			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
 			+ KEY_DOWNLOADED + " INTEGER," + KEY_LASTUPDATE + " TEXT,"
-			+ KEY_PAYMENT_LINK + " TEXT)";
+			+ KEY_PAYMENT_LINK + " TEXT," + KEY_LANGUAGE + " TEXT,"
+			+ KEY_AUTHOR + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -159,6 +162,8 @@ public class PodDBAdapter {
 		values.put(KEY_LINK, feed.getLink());
 		values.put(KEY_DESCRIPTION, feed.getDescription());
 		values.put(KEY_PAYMENT_LINK, feed.getPaymentLink());
+		values.put(KEY_AUTHOR, feed.getAuthor());
+		values.put(KEY_LANGUAGE, feed.getLanguage());
 		if (feed.getImage() != null) {
 			if (feed.getImage().getId() == 0) {
 				setImage(feed.getImage());
