@@ -75,5 +75,7 @@
     <string name="language_label">Language</string>
     <string name="move_up_label">Move up</string>
     <string name="move_down_label">Move down</string>
+    <string name="cancel_all_downloads_label">Cancel all downloads</string>
+    <string name="download_cancelled_msg">Download cancelled</string>
 
 </resources>

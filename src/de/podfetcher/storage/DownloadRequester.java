@@ -123,6 +123,20 @@ public class DownloadRequester {
 			notifyDownloadService(context);
 		}
 	}
+	
+	/** Cancels all running downloads */
+	public void cancelAllDownloads(Context context) {
+		Log.d(TAG, "Cancelling all running downloads");
+		DownloadManager dm = (DownloadManager) context
+				.getSystemService(Context.DOWNLOAD_SERVICE);
+		for (FeedFile f : downloads) {
+			dm.remove(f.getDownloadId());
+			f.setFile_url(null);
+			f.setDownloadId(0);
+		}
+		downloads.clear();
+		notifyDownloadService(context);
+	}
 
 	/** Get a feedfile by its download id */
 	public FeedFile getFeedFile(long id) {
