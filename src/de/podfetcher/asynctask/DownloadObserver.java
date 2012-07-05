@@ -115,7 +115,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	/** Request a cursor with all running Feedfile downloads */
-	public Cursor getDownloadCursor() {
+	private Cursor getDownloadCursor() {
 		// Collect download ids
 		int numDownloads = requester.getNumberOfDownloads();
 		long ids[] = new long[numDownloads];
@@ -131,7 +131,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		return result;
 	}
 
-	public int getDownloadStatus(Cursor c, String column) {
+	/** Return value of a specific column */
+	private int getDownloadStatus(Cursor c, String column) {
 		int status = c.getInt(c.getColumnIndex(column));
 		return status;
 	}
@@ -150,6 +151,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		return context;
 	}
 
+	/** Find a DownloadStatus entry by its FeedFile */
 	public DownloadStatus findDownloadStatus(FeedFile f) {
 		for (DownloadStatus status : statusList) {
 			if (status.feedfile == f) {
