@@ -6,7 +6,7 @@ import de.podfetcher.feed.FeedManager;
 public class UnreadItemlistFragment extends ItemlistFragment {
 
 	public UnreadItemlistFragment() {
-		super(FeedManager.getInstance().getUnreadItems());
+		super(FeedManager.getInstance().getUnreadItems(), true);
 		
 	}
 

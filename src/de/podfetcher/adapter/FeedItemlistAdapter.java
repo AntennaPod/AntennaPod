@@ -22,11 +22,13 @@ import android.graphics.Typeface;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
-
+	private boolean showFeedtitle;
+	
 	public FeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects, OnClickListener onButActionClicked) {
+			List<FeedItem> objects, OnClickListener onButActionClicked, boolean showFeedtitle) {
 		super(context, textViewResourceId, objects);
 		this.onButActionClicked = onButActionClicked;
+		this.showFeedtitle = showFeedtitle;
 	}
 
 	@Override
@@ -54,13 +56,20 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 					.findViewById(R.id.imgvDownloading);
 			holder.encInfo = (RelativeLayout) convertView
 					.findViewById(R.id.enc_info);
-
+			if (showFeedtitle) {
+				holder.feedtitle = (TextView) convertView.findViewById(R.id.txtvFeedname);
+			}
+			
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
 
 		holder.title.setText(item.getTitle());
+		if (showFeedtitle) {
+			holder.feedtitle.setVisibility(View.VISIBLE);
+			holder.feedtitle.setText(item.getFeed().getTitle());
+		}
 		if (!item.isRead()) {
 			holder.title.setTypeface(Typeface.DEFAULT_BOLD);
 		} else {
@@ -111,6 +120,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 
 	static class Holder {
 		TextView title;
+		TextView feedtitle;
 		TextView published;
 		TextView lenSize;
 		ImageView downloaded;

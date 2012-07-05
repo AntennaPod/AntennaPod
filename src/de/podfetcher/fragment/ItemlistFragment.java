@@ -42,10 +42,14 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	protected FeedItem selectedItem;
 	protected ActionMode mActionMode;
+	
+	/** Argument for FeeditemlistAdapter */
+	protected boolean showFeedtitle;
 
-	public ItemlistFragment(ArrayList<FeedItem> items) {
+	public ItemlistFragment(ArrayList<FeedItem> items, boolean showFeedtitle) {
 		super();
 		this.items = items;
+		this.showFeedtitle = showFeedtitle;
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 	}
@@ -53,8 +57,14 @@ public class ItemlistFragment extends SherlockListFragment {
 	public ItemlistFragment() {
 	}
 
+	/** Creates new ItemlistFragment which shows the Feeditems of a specific feed.
+	 * Sets 'showFeedtitle' to false
+	 * @param feedId The id of the feed to show
+	 * @return the newly created instance of an ItemlistFragment
+	 */
 	public static ItemlistFragment newInstance(long feedId) {
 		ItemlistFragment i = new ItemlistFragment();
+		i.showFeedtitle = false;
 		Bundle b = new Bundle();
 		b.putLong(ARGUMENT_FEED_ID, feedId);
 		i.setArguments(b);
@@ -69,7 +79,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			items = FeedManager.getInstance().getFeed(feedId).getItems();
 		}
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
-				onButActionClicked);
+				onButActionClicked, showFeedtitle);
 		setListAdapter(fila);
 	}
 
