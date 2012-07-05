@@ -10,6 +10,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
+import de.podfetcher.asynctask.FeedImageLoader;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
 
@@ -41,8 +42,8 @@ public class FeedInfoActivity extends SherlockActivity {
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);
 			txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
 			txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+			FeedImageLoader.getInstance().loadBitmap(feed.getImage(), imgvCover);
 			
-			imgvCover.setImageBitmap(feed.getImage().getImageBitmap());
 			txtvTitle.setText(feed.getTitle());
 			txtvDescription.setText(feed.getDescription());
 			if (feed.getAuthor() != null) {

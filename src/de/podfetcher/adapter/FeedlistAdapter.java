@@ -5,6 +5,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 import de.podfetcher.R;
+import de.podfetcher.asynctask.FeedImageLoader;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.storage.DownloadRequester;
 import android.content.Context;
@@ -25,12 +26,14 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	private static final String TAG = "FeedlistAdapter";
 
 	private int selectedItemIndex;
+	private FeedImageLoader imageLoader;
 	public static final int SELECTION_NONE = -1;
 
 	public FeedlistAdapter(Context context, int textViewResourceId,
 			List<Feed> objects) {
 		super(context, textViewResourceId, objects);
 		selectedItemIndex = SELECTION_NONE;
+		imageLoader = FeedImageLoader.getInstance();
 	}
 
 	@Override
@@ -82,16 +85,8 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
 
-		if (feed.getImage() != null) {
-			holder.image.setImageBitmap(feed.getImage().getImageBitmap()); // TODO
-																			// select
-																			// default
-																			// picture
-																			// when
-																			// no
-																			// image
-																			// downloaded
-		}
+		imageLoader.loadBitmap(feed.getImage(), holder.image);
+
 		// TODO find new Episodes txtvNewEpisodes.setText(feed)
 		return convertView;
 	}

@@ -42,7 +42,6 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
-		getSupportActionBar().setLogo(new BitmapDrawable(feed.getImage().getImageBitmap()));
 		setTitle(feed.getTitle());
 		
 		FragmentManager fragmentManager = getSupportFragmentManager();

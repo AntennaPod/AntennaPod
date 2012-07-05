@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.podfetcher.R;
+import de.podfetcher.asynctask.FeedImageLoader;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
@@ -42,7 +43,7 @@ public class CoverFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		
+
 		FeedManager manager = FeedManager.getInstance();
 		FeedItem item = null;
 		Bundle args = getArguments();
@@ -68,7 +69,7 @@ public class CoverFragment extends SherlockFragment {
 		imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
 		return root;
 	}
-	
+
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -80,8 +81,8 @@ public class CoverFragment extends SherlockFragment {
 	}
 
 	private void loadMediaInfo() {
-		imgvCover.setImageBitmap(media.getItem().getFeed().getImage()
-				.getImageBitmap());
+		FeedImageLoader.getInstance().loadBitmap(
+				media.getItem().getFeed().getImage(), imgvCover);
 		txtvTitle.setText(media.getItem().getTitle());
 		txtvFeed.setText(media.getItem().getFeed().getTitle());
 	}

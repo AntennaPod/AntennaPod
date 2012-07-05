@@ -69,8 +69,6 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 	private void populateUI() {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.feeditemview);
-		getSupportActionBar().setLogo(
-				new BitmapDrawable(item.getFeed().getImage().getImageBitmap()));
 		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
 		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
 		setTitle(item.getFeed().getTitle());
