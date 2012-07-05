@@ -1,6 +1,8 @@
 <resources>
 
-	<item type="id" name="action_bar_refresh" />
-	<item type="id" name="action_bar_add" />
+    <item name="action_bar_refresh" type="id"/>
+    <item name="action_bar_add" type="id"/>
+    <item name="move_up_item" type="id"/>
+    <item name="move_down_item" type="id"/>
 
 </resources>

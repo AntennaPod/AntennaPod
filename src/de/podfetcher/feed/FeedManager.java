@@ -214,6 +214,20 @@ public class FeedManager {
 			adapter.close();
 		}
 	}
+	
+	public void moveQueueItem(Context context, FeedItem item, int delta) {
+		Log.d(TAG, "Moving queue item");
+		int itemIndex = queue.indexOf(item);
+		int newIndex = itemIndex + delta;
+		if (newIndex >= 0 && newIndex < queue.size()) {
+			FeedItem oldItem = queue.set(newIndex, item);
+			queue.set(itemIndex, oldItem);
+			PodDBAdapter adapter = new PodDBAdapter(context);
+			adapter.open();
+			adapter.setQueue(queue);
+			adapter.close();
+		}
+	}
 
 	public boolean isInQueue(FeedItem item) {
 		return queue.contains(item);

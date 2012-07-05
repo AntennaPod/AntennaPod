@@ -28,7 +28,8 @@ import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.FeedItemMenuHandler;
 
 /** Displays a list of FeedItems. */
-public class ItemlistFragment extends SherlockListFragment {
+public class ItemlistFragment extends SherlockListFragment implements
+		ActionMode.Callback {
 
 	private static final String TAG = "FeedItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
@@ -42,7 +43,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	protected FeedItem selectedItem;
 	protected ActionMode mActionMode;
-	
+
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
@@ -57,9 +58,12 @@ public class ItemlistFragment extends SherlockListFragment {
 	public ItemlistFragment() {
 	}
 
-	/** Creates new ItemlistFragment which shows the Feeditems of a specific feed.
-	 * Sets 'showFeedtitle' to false
-	 * @param feedId The id of the feed to show
+	/**
+	 * Creates new ItemlistFragment which shows the Feeditems of a specific
+	 * feed. Sets 'showFeedtitle' to false
+	 * 
+	 * @param feedId
+	 *            The id of the feed to show
 	 * @return the newly created instance of an ItemlistFragment
 	 */
 	public static ItemlistFragment newInstance(long feedId) {
@@ -70,7 +74,7 @@ public class ItemlistFragment extends SherlockListFragment {
 		i.setArguments(b);
 		return i;
 	}
-	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -91,7 +95,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			mActionMode.finish();
 		}
 	}
-	
+
 	@Override
 	public void onResume() {
 		super.onResume();
@@ -103,7 +107,6 @@ public class ItemlistFragment extends SherlockListFragment {
 		getActivity().registerReceiver(contentUpdate, filter);
 	}
 
-
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		FeedItem selection = fila.getItem(position);
@@ -114,7 +117,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 		startActivity(showItem);
 	}
-	
+
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -136,7 +139,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 					selectedItem = newSelectedItem;
 					mActionMode = getSherlockActivity().startActionMode(
-							mActionModeCallback);
+							ItemlistFragment.this);
 				} else {
 					mActionMode.finish();
 				}
@@ -149,39 +152,38 @@ public class ItemlistFragment extends SherlockListFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		this.getListView().setItemsCanFocus(true);
 	}
-	
-	private ActionMode.Callback mActionModeCallback = new ActionMode.Callback() {
 
-		@Override
-		public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-			return FeedItemMenuHandler.onPrepareMenu(menu, selectedItem);
-		}
+	@Override
+	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
+		return FeedItemMenuHandler.onPrepareMenu(menu, selectedItem);
+	}
 
-		@Override
-		public void onDestroyActionMode(ActionMode mode) {
-			mActionMode = null;
-			selectedItem = null;
-		}
+	@Override
+	public void onDestroyActionMode(ActionMode mode) {
+		mActionMode = null;
+		selectedItem = null;
+	}
 
-		@Override
-		public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-			mode.setTitle(selectedItem.getTitle());
-			return FeedItemMenuHandler.onCreateMenu(mode.getMenuInflater(), menu);
+	@Override
+	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
+		mode.setTitle(selectedItem.getTitle());
+		return FeedItemMenuHandler.onCreateMenu(mode.getMenuInflater(), menu);
 
-		}
+	}
 
-		@Override
-		public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-			FeedItemMenuHandler.onMenuItemClicked(getSherlockActivity(), item, selectedItem);
+	@Override
+	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+		boolean handled = FeedItemMenuHandler.onMenuItemClicked(
+				getSherlockActivity(), item, selectedItem);
+		if (handled) {
 			fila.notifyDataSetChanged();
-			mode.finish();
-			return true;
 		}
-	};
-	
+		mode.finish();
+		return handled;
+	}
+
 	public FeedItemlistAdapter getListAdapter() {
 		return fila;
 	}
-	
 
 }

@@ -73,5 +73,7 @@
     <string name="playback_error_unknown">Unknown Error</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
+    <string name="move_up_label">Move up</string>
+    <string name="move_down_label">Move down</string>
 
 </resources>
