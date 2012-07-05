@@ -140,6 +140,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 					selectedItem = newSelectedItem;
 					mActionMode = getSherlockActivity().startActionMode(
 							ItemlistFragment.this);
+					fila.setSelectedItemIndex(index);
 				} else {
 					mActionMode.finish();
 				}
@@ -151,6 +152,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		this.getListView().setItemsCanFocus(true);
+		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 	}
 
 	@Override
@@ -162,6 +164,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	public void onDestroyActionMode(ActionMode mode) {
 		mActionMode = null;
 		selectedItem = null;
+		fila.setSelectedItemIndex(FeedItemlistAdapter.SELECTION_NONE);
 	}
 
 	@Override

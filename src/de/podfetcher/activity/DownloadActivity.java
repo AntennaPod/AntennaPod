@@ -73,6 +73,7 @@ public class DownloadActivity extends SherlockListActivity implements
 				if (selection != null && mActionMode != null) {
 					mActionMode.finish();
 				}
+				dla.setSelectedItemIndex(position);
 				selectedDownload = selection;
 				mActionMode = startActionMode(DownloadActivity.this);
 				return true;
@@ -138,5 +139,6 @@ public class DownloadActivity extends SherlockListActivity implements
 	public void onDestroyActionMode(ActionMode mode) {
 		mActionMode = null;
 		selectedDownload = null;
+		dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
 	}
 }

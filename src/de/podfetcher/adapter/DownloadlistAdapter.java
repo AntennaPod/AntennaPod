@@ -16,9 +16,14 @@ import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.util.Converter;
 
 public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
+	private int selectedItemIndex;
+
+	public static final int SELECTION_NONE = -1;
+
 	public DownloadlistAdapter(Context context, int textViewResourceId,
 			DownloadStatus[] objects) {
 		super(context, textViewResourceId, objects);
+		selectedItemIndex = SELECTION_NONE;
 	}
 
 	@Override
@@ -47,6 +52,13 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 			holder = (Holder) convertView.getTag();
 		}
 
+		if (position == selectedItemIndex) {
+			convertView.setBackgroundColor(convertView.getResources().getColor(
+					R.color.selection_background));
+		} else {
+			convertView.setBackgroundResource(0);
+		}
+
 		String titleText = null;
 		if (feedFile.getClass() == FeedMedia.class) {
 			titleText = ((FeedMedia) feedFile).getItem().getTitle();
@@ -72,4 +84,14 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 		TextView percent;
 		ProgressBar progbar;
 	}
+
+	public int getSelectedItemIndex() {
+		return selectedItemIndex;
+	}
+
+	public void setSelectedItemIndex(int selectedItemIndex) {
+		this.selectedItemIndex = selectedItemIndex;
+		notifyDataSetChanged();
+	}
+
 }

@@ -24,9 +24,13 @@ import android.graphics.Color;
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	private static final String TAG = "FeedlistAdapter";
 
+	private int selectedItemIndex;
+	public static final int SELECTION_NONE = -1;
+
 	public FeedlistAdapter(Context context, int textViewResourceId,
 			List<Feed> objects) {
 		super(context, textViewResourceId, objects);
+		selectedItemIndex = SELECTION_NONE;
 	}
 
 	@Override
@@ -55,6 +59,13 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
+		}
+
+		if (position == selectedItemIndex) {
+			convertView.setBackgroundColor(convertView.getResources().getColor(
+					R.color.selection_background));
+		} else {
+			convertView.setBackgroundResource(0);
 		}
 
 		holder.title.setText(feed.getTitle());
@@ -91,6 +102,15 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		TextView numberOfEpisodes;
 		TextView newEpisodes;
 		ImageView image;
+	}
+
+	public int getSelectedItemIndex() {
+		return selectedItemIndex;
+	}
+
+	public void setSelectedItemIndex(int selectedItemIndex) {
+		this.selectedItemIndex = selectedItemIndex;
+		notifyDataSetChanged();
 	}
 
 }

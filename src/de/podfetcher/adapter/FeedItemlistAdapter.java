@@ -18,17 +18,23 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.Typeface;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
 	private boolean showFeedtitle;
-	
+	private int selectedItemIndex;
+
+	public static final int SELECTION_NONE = -1;
+
 	public FeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects, OnClickListener onButActionClicked, boolean showFeedtitle) {
+			List<FeedItem> objects, OnClickListener onButActionClicked,
+			boolean showFeedtitle) {
 		super(context, textViewResourceId, objects);
 		this.onButActionClicked = onButActionClicked;
 		this.showFeedtitle = showFeedtitle;
+		this.selectedItemIndex = SELECTION_NONE;
 	}
 
 	@Override
@@ -57,12 +63,20 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.encInfo = (RelativeLayout) convertView
 					.findViewById(R.id.enc_info);
 			if (showFeedtitle) {
-				holder.feedtitle = (TextView) convertView.findViewById(R.id.txtvFeedname);
+				holder.feedtitle = (TextView) convertView
+						.findViewById(R.id.txtvFeedname);
 			}
-			
+
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
+		}
+
+		if (position == selectedItemIndex) {
+			convertView.setBackgroundColor(convertView.getResources().getColor(
+					R.color.selection_background));
+		} else {
+			convertView.setBackgroundResource(0);
 		}
 
 		holder.title.setText(item.getTitle());
@@ -94,15 +108,15 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 						.getSize()));
 				holder.downloaded.setVisibility(View.GONE);
 			}
-			
+
 			if (item.getMedia().isDownloading()) {
 				holder.downloading.setVisibility(View.VISIBLE);
 			} else {
 				holder.downloading.setVisibility(View.GONE);
 			}
-			
+
 			String type = item.getMedia().getMime_type();
-					
+
 			if (type.startsWith("audio")) {
 				holder.type.setImageResource(R.drawable.type_audio);
 			} else if (type.startsWith("video")) {
@@ -114,6 +128,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 
 		holder.butAction.setFocusable(false);
 		holder.butAction.setOnClickListener(onButActionClicked);
+
 		return convertView;
 
 	}
@@ -129,4 +144,14 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		ImageButton butAction;
 		RelativeLayout encInfo;
 	}
+
+	public int getSelectedItemIndex() {
+		return selectedItemIndex;
+	}
+
+	public void setSelectedItemIndex(int selectedItemIndex) {
+		this.selectedItemIndex = selectedItemIndex;
+		notifyDataSetChanged();
+	}
+
 }
