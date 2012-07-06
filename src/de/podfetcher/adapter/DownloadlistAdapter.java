@@ -1,5 +1,7 @@
 package de.podfetcher.adapter;
 
+import java.util.List;
+
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,10 +23,12 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 	public static final int SELECTION_NONE = -1;
 
 	public DownloadlistAdapter(Context context, int textViewResourceId,
-			DownloadStatus[] objects) {
+			List<DownloadStatus> objects) {
 		super(context, textViewResourceId, objects);
-		selectedItemIndex = SELECTION_NONE;
+		this.selectedItemIndex = SELECTION_NONE;
 	}
+
+
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {

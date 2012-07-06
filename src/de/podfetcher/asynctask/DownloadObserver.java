@@ -45,6 +45,21 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onCancelled() {
 		Log.d(TAG, "Task was cancelled.");
+		statusList.clear();
+		for (DownloadObserver.Callback callback : observer) {
+			callback.onFinish();
+		}
+	}
+	
+	
+
+	@Override
+	protected void onPostExecute(Void result) {
+		Log.d(TAG, "Background task has finished");
+		statusList.clear();
+		for (DownloadObserver.Callback callback : observer) {
+			callback.onFinish();
+		}
 	}
 
 	protected Void doInBackground(Void... params) {
@@ -70,6 +85,9 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	private void refreshStatuslist() {
+		ArrayList<DownloadStatus> unhandledItems = new ArrayList<DownloadStatus>(
+				statusList);
+
 		Cursor cursor = getDownloadCursor();
 		if (cursor.moveToFirst()) {
 			do {
@@ -80,6 +98,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 				if (status == null) {
 					status = new DownloadStatus(feedFile);
 					statusList.add(status);
+				} else {
+					unhandledItems.remove(status);
 				}
 
 				// refresh status
@@ -112,6 +132,11 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
+
+		// remove unhandled items from statuslist
+		for (DownloadStatus status : unhandledItems) {
+			statusList.remove(status);
+		}
 	}
 
 	/** Request a cursor with all running Feedfile downloads */
@@ -144,7 +169,6 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 				.getLong(c
 						.getColumnIndex(DownloadManager.COLUMN_BYTES_DOWNLOADED_SO_FAR));
 		status.progressPercent = (int) (((double) status.soFar / (double) status.size) * 100);
-		Log.d(TAG, "Setting progress to " + status.progressPercent);
 	}
 
 	public Context getContext() {
@@ -166,12 +190,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	private boolean downloadsLeft() {
-		for (DownloadStatus status : statusList) {
-			if (status.done == false) {
-				return true;
-			}
-		}
-		return false;
+		return !requester.downloads.isEmpty();
 	}
 
 	public void registerCallback(DownloadObserver.Callback callback) {
@@ -184,6 +203,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	public interface Callback {
 		public void onProgressUpdate();
+		public void onFinish();
 	}
 
 }

@@ -1,6 +1,7 @@
 package de.podfetcher.activity;
 
 import de.podfetcher.R;
+import de.podfetcher.service.DownloadService;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.adapter.DownloadlistAdapter;
 import de.podfetcher.asynctask.DownloadObserver;
@@ -12,8 +13,12 @@ import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -22,7 +27,7 @@ import android.widget.AdapterView.OnItemLongClickListener;
 
 /** Shows all running downloads in a list */
 public class DownloadActivity extends SherlockListActivity implements
-		ActionMode.Callback {
+		ActionMode.Callback, DownloadObserver.Callback {
 
 	private static final String TAG = "DownloadActivity";
 	private static final int MENU_SHOW_LOG = 0;
@@ -32,34 +37,37 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	private ActionMode mActionMode;
 	private DownloadStatus selectedDownload;
+	private DownloadObserver downloadObserver;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
-		observer.execute(requester.getDownloads().toArray(
-				new FeedFile[requester.getDownloads().size()]));
 
+	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		unbindService(mConnection);
+		if (downloadObserver != null) {
+			downloadObserver.unregisterCallback(DownloadActivity.this);
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		Log.d(TAG, "Trying to bind service");
+		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
 		Log.d(TAG, "Stopping Activity");
-		observer.cancel(true);
 	}
-
-	private final DownloadObserver observer = new DownloadObserver(this) {
-		@Override
-		protected void onProgressUpdate(DownloadStatus... values) {
-
-			dla = new DownloadlistAdapter(getContext(), 0, getStatusList());
-			setListAdapter(dla);
-			dla.notifyDataSetChanged();
-
-		}
-	};
 
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
@@ -140,5 +148,38 @@ public class DownloadActivity extends SherlockListActivity implements
 		mActionMode = null;
 		selectedDownload = null;
 		dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
+	}
+
+	private DownloadService downloadService = null;
+	boolean mIsBound;
+
+	private ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			downloadService = ((DownloadService.LocalBinder) service)
+					.getService();
+			Log.d(TAG, "Connection to service established");
+			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
+					downloadService.getDownloadObserver().getStatusList());
+			setListAdapter(dla);
+			downloadObserver = downloadService.getDownloadObserver();
+			downloadObserver.registerCallback(DownloadActivity.this);
+		}
+
+		public void onServiceDisconnected(ComponentName className) {
+			downloadService = null;
+			mIsBound = false;
+			Log.i(TAG, "Closed connection with DownloadService.");
+		}
+	};
+
+	@Override
+	public void onProgressUpdate() {
+		dla.notifyDataSetChanged();
+	}
+
+	@Override
+	public void onFinish() {
+		dla.clear();
+		dla.notifyDataSetChanged();
 	}
 }

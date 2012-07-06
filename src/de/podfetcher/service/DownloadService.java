@@ -17,6 +17,7 @@ import org.xml.sax.SAXException;
 
 import de.podfetcher.activity.DownloadActivity;
 import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.asynctask.DownloadObserver;
 import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.*;
 import de.podfetcher.service.PlaybackService.LocalBinder;
@@ -51,7 +52,7 @@ public class DownloadService extends Service {
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.podfetcher.storage.all_feed_downloads_completed";
 	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.podfetcher.service.feed_sync_completed";
-	
+
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.podfetcher.service.download_handled";
 	/** True if handled feed has an image. */
 	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.podfetcher.service.feed_has_image";
@@ -59,7 +60,6 @@ public class DownloadService extends Service {
 	public static final String EXTRA_STATUS_ID = "extra.de.podfetcher.service.feedfile_id";
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.service.download_id";
 	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.podfetcher.service.image_download_id";
-	
 
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
@@ -69,6 +69,8 @@ public class DownloadService extends Service {
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
 	private DownloadManager downloadManager;
+
+	private DownloadObserver downloadObserver;
 
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
@@ -98,7 +100,9 @@ public class DownloadService extends Service {
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
 		downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
+		downloadObserver = new DownloadObserver(this);
 		setupNotification();
+		downloadObserver.execute();
 	}
 
 	@Override
@@ -113,6 +117,7 @@ public class DownloadService extends Service {
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);
+		downloadObserver.cancel(true);
 	}
 
 	private IntentFilter createIntentFilter() {
@@ -194,19 +199,20 @@ public class DownloadService extends Service {
 								(FeedMedia) download);
 					}
 					successful = true;
-					
+
 				} else if (status == DownloadManager.STATUS_FAILED) {
 					reason = c.getInt(c
 							.getColumnIndex(DownloadManager.COLUMN_REASON));
 					Log.e(TAG, "Download failed");
 					Log.e(TAG, "reason code is " + reason);
 					successful = false;
-					long statusId = manager.addDownloadStatus(context, new DownloadStatus(download,
-							reason, successful));
+					long statusId = manager.addDownloadStatus(context,
+							new DownloadStatus(download, reason, successful));
 					requester.removeDownload(download);
-					sendDownloadHandledIntent(download.getDownloadId(), statusId, false, 0);
+					sendDownloadHandledIntent(download.getDownloadId(),
+							statusId, false, 0);
 					download.setDownloadId(0);
-					
+
 				}
 				queryDownloads();
 				c.close();
@@ -214,8 +220,9 @@ public class DownloadService extends Service {
 		}
 
 	};
-	
-	private void sendDownloadHandledIntent(long downloadId, long statusId, boolean feedHasImage, long imageDownloadId) {
+
+	private void sendDownloadHandledIntent(long downloadId, long statusId,
+			boolean feedHasImage, long imageDownloadId) {
 		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
 		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
 		intent.putExtra(EXTRA_STATUS_ID, statusId);
@@ -286,7 +293,7 @@ public class DownloadService extends Service {
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
 			feed.setDownloaded(true);
-			
+
 			try {
 				feed = handler.parseFeed(feed);
 				Log.d(TAG, feed.getTitle() + " parsed");
@@ -296,7 +303,7 @@ public class DownloadService extends Service {
 					imageId = requester.downloadImage(service, feed.getImage());
 					hasImage = true;
 				}
-				
+
 				feed.setDownloadId(0);
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
@@ -317,12 +324,13 @@ public class DownloadService extends Service {
 				successful = false;
 				reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
 			}
-			
+
 			requester.removeDownload(feed);
-			cleanup();	
-			long statusId = manager.addDownloadStatus(service, new DownloadStatus(savedFeed, reason, successful));
+			cleanup();
+			long statusId = manager.addDownloadStatus(service,
+					new DownloadStatus(savedFeed, reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
-			queryDownloads();	
+			queryDownloads();
 		}
 
 		/** Delete files that aren't needed anymore */
@@ -350,11 +358,12 @@ public class DownloadService extends Service {
 		public void run() {
 			image.setDownloaded(true);
 			requester.removeDownload(image);
-			
-			long statusId = manager.addDownloadStatus(service, new DownloadStatus(image, 0, true));
+
+			long statusId = manager.addDownloadStatus(service,
+					new DownloadStatus(image, 0, true));
 			sendDownloadHandledIntent(image.getDownloadId(), statusId, false, 0);
 			image.setDownloadId(0);
-			
+
 			manager.setFeedImage(service, image);
 			queryDownloads();
 		}
@@ -385,11 +394,17 @@ public class DownloadService extends Service {
 			media.setDuration(mediaplayer.getDuration());
 			Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
-			long statusId = manager.addDownloadStatus(service, new DownloadStatus(media, 0, true));
+			long statusId = manager.addDownloadStatus(service,
+					new DownloadStatus(media, 0, true));
 			sendDownloadHandledIntent(media.getDownloadId(), statusId, false, 0);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
 			queryDownloads();
 		}
 	}
+
+	public DownloadObserver getDownloadObserver() {
+		return downloadObserver;
+	}
+
 }
