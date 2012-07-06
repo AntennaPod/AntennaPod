@@ -76,7 +76,7 @@ public class FeedImageLoader {
 	public void wipeImageCache() {
 		imageCache.evictAll();
 	}
-	
+
 	public boolean isInCache(FeedImage image) {
 		return imageCache.get(image.getId()) != null;
 	}
@@ -86,9 +86,13 @@ public class FeedImageLoader {
 	}
 
 	class BitmapWorkerTask extends AsyncTask<FeedImage, Void, Void> {
+		/** The preferred width and height of a bitmap. */
+		private static final int PREFERRED_LENGTH = 300;
+
 		private static final String TAG = "BitmapWorkerTask";
 		private ImageView target;
 		private Bitmap bitmap;
+		private Bitmap decodedBitmap;
 
 		public BitmapWorkerTask(ImageView target) {
 			super();
@@ -101,10 +105,43 @@ public class FeedImageLoader {
 			target.setImageBitmap(bitmap);
 		}
 
+		private int calculateSampleSize(int width, int height) {
+			int max = Math.max(width, height);
+			if (max < PREFERRED_LENGTH) {
+				return max;
+			} else {
+				// find first sample size where max / sampleSize <
+				// PREFERRED_LENGTH
+				for (int sampleSize = 1, power = 0;; power++, sampleSize = (int) Math
+						.pow(2, power)) {
+					int newLength = max / sampleSize;
+					if (newLength <= PREFERRED_LENGTH) {
+						if (newLength > 0) {
+							return sampleSize;
+						} else {
+							return sampleSize - 1;
+						}
+					}
+				}
+			}
+		}
+
 		@Override
 		protected Void doInBackground(FeedImage... params) {
 			if (params[0].getFile_url() != null) {
-				bitmap = BitmapFactory.decodeFile(params[0].getFile_url());
+				BitmapFactory.Options options = new BitmapFactory.Options();
+				options.inJustDecodeBounds = true;
+				BitmapFactory.decodeFile(params[0].getFile_url(), options);
+				int sampleSize = calculateSampleSize(options.outWidth,
+						options.outHeight);
+				
+				options.inJustDecodeBounds = false;
+				options.inSampleSize = sampleSize;
+				decodedBitmap = BitmapFactory.decodeFile(
+						params[0].getFile_url(), options);
+				bitmap = Bitmap.createScaledBitmap(decodedBitmap,
+						PREFERRED_LENGTH, PREFERRED_LENGTH, false);
+
 				addBitmapToCache(params[0].getId(), bitmap);
 				Log.d(TAG, "Finished loading bitmaps");
 			} else {
