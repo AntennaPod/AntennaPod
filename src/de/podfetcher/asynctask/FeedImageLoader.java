@@ -108,7 +108,7 @@ public class FeedImageLoader {
 		private int calculateSampleSize(int width, int height) {
 			int max = Math.max(width, height);
 			if (max < PREFERRED_LENGTH) {
-				return max;
+				return 1;
 			} else {
 				// find first sample size where max / sampleSize <
 				// PREFERRED_LENGTH
