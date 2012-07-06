@@ -179,10 +179,10 @@ public class FeedManager {
 	public long addDownloadStatus(Context context, DownloadStatus status) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		downloadLog.add(status);
+		adapter.open();
 		if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
 			adapter.removeDownloadStatus(downloadLog.remove(0));
 		}
-		adapter.open();
 		long result = adapter.setDownloadStatus(status);
 		adapter.close();
 		return result;

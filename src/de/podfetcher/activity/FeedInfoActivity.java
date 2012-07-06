@@ -58,6 +58,8 @@ public class FeedInfoActivity extends SherlockActivity {
 
 	}
 
+	
+	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;

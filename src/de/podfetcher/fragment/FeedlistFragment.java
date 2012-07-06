@@ -52,6 +52,8 @@ public class FeedlistFragment extends SherlockListFragment implements
 		pActivity = null;
 	}
 
+	
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -175,4 +177,5 @@ public class FeedlistFragment extends SherlockListFragment implements
 		selectedFeed = null;
 		fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
 	}
+		
 }

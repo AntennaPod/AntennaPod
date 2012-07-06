@@ -1,8 +1,9 @@
 package de.podfetcher;
 
-import de.podfetcher.activity.PodfetcherActivity;
-import de.podfetcher.feed.FeedManager;
 import android.app.Application;
+import android.util.Log;
+import de.podfetcher.asynctask.FeedImageLoader;
+import de.podfetcher.feed.FeedManager;
 
 public class PodcastApp extends Application {
     private static final String TAG = "PodcastApp";
@@ -22,6 +23,13 @@ public class PodcastApp extends Application {
 		
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
+	}
+
+	@Override
+	public void onLowMemory() {
+		super.onLowMemory();
+		Log.w(TAG, "Received onLowOnMemory warning. Cleaning image cache...");
+		FeedImageLoader.getInstance().wipeImageCache();
 	}
 	
 	

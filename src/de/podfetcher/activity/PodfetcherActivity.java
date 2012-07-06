@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -135,7 +136,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		return true;
 	}
 
-	public static class MainPagerAdapter extends FragmentPagerAdapter {
+	public static class MainPagerAdapter extends FragmentStatePagerAdapter {
 		private static final int NUM_ITEMS = 3;
 
 		private static final int POS_FEEDLIST = 0;

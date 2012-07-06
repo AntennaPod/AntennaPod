@@ -297,16 +297,17 @@ public class DownloadService extends Service {
 			try {
 				feed = handler.parseFeed(feed);
 				Log.d(TAG, feed.getTitle() + " parsed");
-				// Download Feed Image if provided
-				if (feed.getImage() != null) {
+				
+				feed.setDownloadId(0);
+				// Save information of feed in DB
+				savedFeed = manager.updateFeed(service, feed);
+				// Download Feed Image if provided and not downloaded
+				if (savedFeed.getImage().isDownloaded() == false) {
 					Log.d(TAG, "Feed has image; Downloading....");
 					imageId = requester.downloadImage(service, feed.getImage());
 					hasImage = true;
 				}
 
-				feed.setDownloadId(0);
-				// Save information of feed in DB
-				savedFeed = manager.updateFeed(service, feed);
 			} catch (SAXException e) {
 				successful = false;
 				e.printStackTrace();

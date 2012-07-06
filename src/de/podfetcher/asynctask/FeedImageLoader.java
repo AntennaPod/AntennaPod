@@ -1,8 +1,11 @@
 package de.podfetcher.asynctask;
 
+import de.podfetcher.PodcastApp;
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedImage;
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
@@ -12,17 +15,24 @@ import android.widget.ImageView;
 
 /** Caches and loads FeedImage bitmaps in the background */
 public class FeedImageLoader {
+	private static final String TAG = "FeedImageLoader";
 	private static FeedImageLoader singleton;
 
 	/**
 	 * Stores references to loaded bitmaps. Bitmaps can be accessed by the id of
 	 * the FeedImage the bitmap belongs to.
 	 */
+
+	final int memClass = ((ActivityManager) PodcastApp.getInstance()
+			.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
+
+	// Use 1/8th of the available memory for this memory cache.
+	final int cacheSize = 1024 * 1024 * memClass / 8;
 	private LruCache<Long, Bitmap> imageCache;
-	private static final int CACHE_SIZE = 4 * 1024 * 1024;
 
 	private FeedImageLoader() {
-		imageCache = new LruCache<Long, Bitmap>(CACHE_SIZE) {
+		Log.d(TAG, "Creating cache with size " + cacheSize);
+		imageCache = new LruCache<Long, Bitmap>(cacheSize) {
 
 			@SuppressLint("NewApi")
 			@Override
@@ -61,6 +71,14 @@ public class FeedImageLoader {
 
 	public void addBitmapToCache(long id, Bitmap bitmap) {
 		imageCache.put(id, bitmap);
+	}
+
+	public void wipeImageCache() {
+		imageCache.evictAll();
+	}
+	
+	public boolean isInCache(FeedImage image) {
+		return imageCache.get(image.getId()) != null;
 	}
 
 	public Bitmap getBitmapFromCache(long id) {
