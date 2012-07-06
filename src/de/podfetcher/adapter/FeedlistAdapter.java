@@ -62,11 +62,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
-			// Recycle images which are no longer in the cache
-			if (!FeedImageLoader.getInstance().isInCache(feed.getImage())) {
-				Log.d(TAG, "Deleting reference to uncached bitmap");
-				holder.image.setImageBitmap(null);
-			}
+			
 		}
 
 		if (position == selectedItemIndex) {
