@@ -252,13 +252,32 @@ public class PodDBAdapter {
 		}
 		return media.getId();
 	}
+	
+	/** Insert all FeedItems of a feed and the feed object itself in a single transaction */
+	public void setCompleteFeed(Feed feed) {
+		db.beginTransaction();
+		setFeed(feed);
+		for (FeedItem item : feed.getItems()) {
+			setFeedItem(item);
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
+	
+	public long setSingleFeedItem(FeedItem item) {
+		db.beginTransaction();
+		long result = setFeedItem(item);
+		db.setTransactionSuccessful();
+		db.endTransaction();
+		return result;
+	}
 
 	/**
 	 * Inserts or updates a feeditem entry
 	 * 
 	 * @return the id of the entry
 	 */
-	public long setFeedItem(FeedItem item) {
+	private long setFeedItem(FeedItem item) {
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, item.getTitle());
 		values.put(KEY_LINK, item.getLink());
@@ -279,8 +298,10 @@ public class PodDBAdapter {
 		values.put(KEY_READ, item.isRead());
 
 		if (item.getId() == 0) {
+			Log.d(TAG, "inserting new feeditem into db");
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
+			Log.d(TAG, "updating existing feeditem in db");
 			db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
 					new String[] { String.valueOf(item.getId()) });
 		}

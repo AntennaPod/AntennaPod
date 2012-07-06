@@ -66,7 +66,11 @@ public class AddFeedActivity extends SherlockActivity {
 					requester.cancelDownload(getContext(), downloadId);
 				}
 
-				unregisterReceiver(downloadCompleted);
+				try {
+					unregisterReceiver(downloadCompleted);
+				} catch (IllegalArgumentException e) {
+					// ignore
+				}
 				dismiss();
 			}
 
@@ -131,9 +135,12 @@ public class AddFeedActivity extends SherlockActivity {
 							long statusId = manager.addDownloadStatus(
 									AddFeedActivity.this, new DownloadStatus(
 											feed, reason, false));
-							Intent intent = new Intent(DownloadService.ACTION_DOWNLOAD_HANDLED);
-							intent.putExtra(DownloadService.EXTRA_DOWNLOAD_ID, downloadId);
-							intent.putExtra(DownloadService.EXTRA_STATUS_ID, statusId);
+							Intent intent = new Intent(
+									DownloadService.ACTION_DOWNLOAD_HANDLED);
+							intent.putExtra(DownloadService.EXTRA_DOWNLOAD_ID,
+									downloadId);
+							intent.putExtra(DownloadService.EXTRA_STATUS_ID,
+									statusId);
 							AddFeedActivity.this.sendBroadcast(intent);
 						}
 					});

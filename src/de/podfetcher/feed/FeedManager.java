@@ -145,6 +145,7 @@ public class FeedManager {
 	 * instead of the setters of FeedItem.
 	 */
 	public void markItemRead(Context context, FeedItem item, boolean read) {
+		Log.d(TAG, "Setting item with title " + item.getTitle() + " as read/unread");
 		item.read = read;
 		setFeedItem(context, item);
 		if (read == true) {
@@ -246,10 +247,7 @@ public class FeedManager {
 		Collections.sort(feeds, new FeedtitleComparator());
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		feed.setId(setFeed(feed, adapter));
-		for (FeedItem item : feed.getItems()) {
-			setFeedItem(item, adapter);
-		}
+		adapter.setCompleteFeed(feed);
 		adapter.close();
 	}
 
@@ -266,7 +264,7 @@ public class FeedManager {
 					"Found no existing Feed with title " + newFeed.getTitle()
 							+ ". Adding as new one.");
 			// Add a new Feed
-			markItemRead(context, newFeed.getItems().get(0), false);
+			newFeed.getItems().get(0).read = false;
 			addNewFeed(context, newFeed);
 			return newFeed;
 		} else {
@@ -275,8 +273,8 @@ public class FeedManager {
 			// Look for new or updated Items
 			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
 				FeedItem item = newFeed.getItems().get(idx);
-				FeedItem oldItem = searchFeedItemByLink(savedFeed,
-						item.getLink());
+				FeedItem oldItem = searchFeedItemByTitle(savedFeed,
+						item.getTitle());
 				if (oldItem == null) {
 					// item is new
 					item.setFeed(savedFeed);
@@ -302,9 +300,9 @@ public class FeedManager {
 	}
 
 	/** Get a FeedItem by its link */
-	private FeedItem searchFeedItemByLink(Feed feed, String link) {
+	private FeedItem searchFeedItemByTitle(Feed feed, String title) {
 		for (FeedItem item : feed.getItems()) {
-			if (item.getLink().equals(link)) {
+			if (item.getTitle().equals(title)) {
 				return item;
 			}
 		}
@@ -324,7 +322,7 @@ public class FeedManager {
 	/** Updates Information of an existing Feeditem. Uses external adapter. */
 	public long setFeedItem(FeedItem item, PodDBAdapter adapter) {
 		if (adapter != null) {
-			return adapter.setFeedItem(item);
+			return adapter.setSingleFeedItem(item);
 		} else {
 			Log.w(TAG, "Adapter in setFeedItem was null");
 			return 0;
@@ -373,7 +371,7 @@ public class FeedManager {
 	public long setFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		long result = adapter.setFeedItem(item);
+		long result = adapter.setSingleFeedItem(item);
 		adapter.close();
 		return result;
 	}
