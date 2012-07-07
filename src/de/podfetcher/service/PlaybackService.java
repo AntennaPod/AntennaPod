@@ -31,6 +31,7 @@ import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedManager;
+import de.podfetcher.receiver.MediaButtonReceiver;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {

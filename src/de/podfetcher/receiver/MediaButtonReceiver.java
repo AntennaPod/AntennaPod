@@ -1,5 +1,6 @@
-package de.podfetcher.service;
+package de.podfetcher.receiver;
 
+import de.podfetcher.service.PlaybackService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;

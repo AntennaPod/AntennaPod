@@ -9,39 +9,77 @@
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-sdk android:minSdkVersion="10" />
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION"/>
+
+    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
+        android:name="de.podfetcher.PodcastApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:theme="@style/Theme.Sherlock.Light.ForceOverflow"
-        android:name="de.podfetcher.PodcastApp" android:logo="@drawable/ic_launcher">
+        android:logo="@drawable/ic_launcher"
+        android:theme="@style/Theme.Sherlock.Light.ForceOverflow" >
         <activity
+            android:name="de.podfetcher.activity.PodfetcherActivity"
             android:label="@string/app_name"
-            android:name="de.podfetcher.activity.PodfetcherActivity" android:theme="@style/StyledIndicators">
+            android:theme="@style/StyledIndicators" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="de.podfetcher.activity.AddFeedActivity"
-            android:label="@string/add_new_feed_label"/>
-        <activity android:name="de.podfetcher.activity.FeedItemlistActivity" android:configChanges="orientation|screenSize"/>
-        <activity android:name="de.podfetcher.activity.ItemviewActivity"/>
-        <activity android:name="de.podfetcher.activity.DownloadActivity"
-            android:label="@string/downloads_label"/>
-        <activity android:name="de.podfetcher.activity.MediaplayerActivity" android:launchMode="singleTask" android:configChanges="orientation" android:theme="@style/Theme.MediaPlayer"/>
+        <activity
+            android:name="de.podfetcher.activity.AddFeedActivity"
+            android:label="@string/add_new_feed_label" />
+        <activity
+            android:name="de.podfetcher.activity.FeedItemlistActivity"
+            android:configChanges="orientation|screenSize" />
+        <activity android:name="de.podfetcher.activity.ItemviewActivity" />
+        <activity
+            android:name="de.podfetcher.activity.DownloadActivity"
+            android:label="@string/downloads_label" />
+        <activity
+            android:name="de.podfetcher.activity.MediaplayerActivity"
+            android:configChanges="orientation"
+            android:launchMode="singleTask"
+            android:theme="@style/Theme.MediaPlayer" />
 
-        <service android:enabled="true" android:name="de.podfetcher.service.DownloadService" /> 
-        <service android:enabled="true" android:name="de.podfetcher.service.PlaybackService" >
+        <service
+            android:name="de.podfetcher.service.DownloadService"
+            android:enabled="true" />
+        <service
+            android:name="de.podfetcher.service.PlaybackService"
+            android:enabled="true" >
         </service>
-        <activity android:name=".activity.PreferenceActivity"></activity>
-        <activity android:name=".activity.DownloadLogActivity"></activity>
-        <receiver android:name=".service.MediaButtonReceiver">
+
+        <activity android:name=".activity.PreferenceActivity" >
+        </activity>
+        <activity android:name=".activity.DownloadLogActivity" >
+        </activity>
+
+        <receiver android:name=".receiver.MediaButtonReceiver" >
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
         </receiver>
-        <activity android:name=".activity.FeedInfoActivity"></activity> 
+
+        <activity android:name=".activity.FeedInfoActivity" >
+        </activity>
+
+        <service
+            android:name=".service.PlayerWidgetService"
+            android:enabled="true"
+            android:exported="false" >
+        </service>
+        <receiver android:name=".receiver.PlayerWidget">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="de.podfetcher.FORCE_WIDGET_UPDATE"/>
+            </intent-filter>
+            <meta-data android:resource="@xml/player_widget_info" android:name="android.appwidget.provider"/>
+        </receiver>
     </application>
+
 </manifest>
