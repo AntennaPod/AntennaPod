@@ -1,40 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
     android:padding="@dimen/widget_margin" >
 
-    <ImageButton
-        android:id="@+id/butPlay"
-        android:layout_width="56dp"
+    <RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_margin="12dp"
-        android:background="@drawable/borderless_button"
-        android:src="@drawable/av_play" />
+        android:background="@color/white" >
 
-    <LinearLayout
-        android:id="@+id/layout_left"
-        android:layout_width="0dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/butPlay"
-        android:orientation="vertical" >
+        <ImageButton
+            android:id="@+id/butPlay"
+            android:layout_width="56dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_margin="12dp"
+            android:background="@drawable/borderless_button"
+            android:src="@drawable/av_play" />
 
-        <TextView
-            android:id="@+id/txtvTitle"
-            android:textColor="@color/black"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:textStyle="bold" />
+        <LinearLayout
+            android:id="@+id/layout_left"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:layout_toLeftOf="@id/butPlay"
+            android:background="@drawable/borderless_button"
+            android:gravity="center_vertical"
+            android:orientation="vertical" >
 
-        <TextView
-            android:id="@+id/txtvProgress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_margin="8dp" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/txtvTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:maxLines="1"
+                android:text="@string/no_media_playing_label"
+                android:textColor="@color/black"
+                android:textSize="18dp"
+                android:textStyle="bold" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/txtvProgress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:textColor="@color/ics_gray" />
+        </LinearLayout>
+    </RelativeLayout>
+
+</FrameLayout>
