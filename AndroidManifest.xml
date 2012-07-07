@@ -61,6 +61,9 @@
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="de.podfetcher.NOTIFY_BUTTON_RECEIVER"/>
+            </intent-filter>
         </receiver>
 
         <activity android:name=".activity.FeedInfoActivity" >

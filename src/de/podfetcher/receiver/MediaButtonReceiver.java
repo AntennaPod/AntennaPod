@@ -15,6 +15,8 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 	private static final String TAG = "MediaButtonReceiver";
 	public static final String EXTRA_KEYCODE = "de.podfetcher.service.extra.MediaButtonReceiver.KEYCODE";
 
+	public static final String NOTIFY_BUTTON_RECEIVER = "de.podfetcher.NOTIFY_BUTTON_RECEIVER";
+
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		Log.d(TAG, "Received intent");

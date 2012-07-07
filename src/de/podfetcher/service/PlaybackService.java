@@ -1,10 +1,8 @@
 package de.podfetcher.service;
 
-import java.io.File;
 import java.io.IOException;
 
 import android.R;
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ComponentName;
@@ -16,22 +14,21 @@ import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
 import android.media.MediaPlayer;
+import android.os.AsyncTask;
+import android.os.Binder;
+import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import android.net.Uri;
-import android.os.AsyncTask;
-import android.os.Binder;
-import android.os.IBinder;
-
 import de.podfetcher.PodcastApp;
 import de.podfetcher.activity.MediaplayerActivity;
-import de.podfetcher.feed.FeedItem;
-import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.feed.Feed;
+import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
+import de.podfetcher.feed.FeedMedia;
 import de.podfetcher.receiver.MediaButtonReceiver;
+import de.podfetcher.receiver.PlayerWidget;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
@@ -475,6 +472,7 @@ public class PlaybackService extends Service {
 		Log.d(TAG, "Setting status to " + newStatus);
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
+		sendBroadcast(new Intent(PlayerWidget.FORCE_WIDGET_UPDATE));
 	}
 
 	private void sendNotificationBroadcast(int type, int code) {

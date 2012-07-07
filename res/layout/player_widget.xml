@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="294dp"
-    android:layout_height="74dp" >
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="@dimen/widget_margin" >
 
     <ImageButton
         android:id="@+id/butPlay"
@@ -12,37 +14,27 @@
         android:background="@drawable/borderless_button"
         android:src="@drawable/av_play" />
 
-    <View
-        android:id="@+id/divider"
-        android:layout_width="1dp"
-        android:layout_height="match_parent"
-        android:layout_marginBottom="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/butPlay"
-        android:background="@color/gray" />
-
     <LinearLayout
         android:id="@+id/layout_left"
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/divider"
+        android:layout_toLeftOf="@id/butPlay"
         android:orientation="vertical" >
 
         <TextView
             android:id="@+id/txtvTitle"
+            android:textColor="@color/black"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:text="Test Titel"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtvProgress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"
-            android:text="Test progress" />
+            android:layout_margin="8dp" />
     </LinearLayout>
 
 </RelativeLayout>

@@ -77,5 +77,6 @@
     <string name="move_down_label">Move down</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_cancelled_msg">Download cancelled</string>
+    <string name="no_media_playing_label">No media playing</string>
 
 </resources>
