@@ -547,7 +547,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					}
 					break;
 				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-					unbindService(mConnection);
+					try {
+						unbindService(mConnection);
+					} catch (IllegalArgumentException e) {
+						e.printStackTrace();
+					}
 					if (positionObserver != null) {
 						positionObserver.cancel(true);
 						positionObserver = null;
