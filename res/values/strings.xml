@@ -78,5 +78,16 @@
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_cancelled_msg">Download cancelled</string>
     <string name="no_media_playing_label">No media playing</string>
+    <string name="general_pref">General</string>
+    <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headset is disconnected</string>
+    <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
+    <string name="playback_pref">Playback</string>
+    <string name="network_pref">Network</string>
+    <string name="pref_autoUpdateIntervall_title">Update intervall</string>
+    <string name="pref_autoUpdateIntervall_sum">Specify an intervall in which the feeds are refreshed automatically or disable it</string>
+    <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
+    <string name="pref_followQueue_title">Follow queue</string>
+    <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headset disconnect</string>
 
 </resources>
