@@ -85,6 +85,7 @@ public class PlaybackService extends Service {
 	private FeedManager manager;
 	private PlayerStatus status;
 	private PositionSaver positionSaver;
+	private WidgetUpdateWorker widgetUpdater;
 
 	private PlayerStatus statusBeforeSeek;
 
@@ -128,6 +129,8 @@ public class PlaybackService extends Service {
 		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
 		player.release();
+		stopWidgetUpdater();
+		updateWidget();
 	}
 
 	@Override
@@ -394,6 +397,7 @@ public class PlaybackService extends Service {
 			FeedItem nextItem = manager.getFirstQueueItem();
 			if (nextItem == null) {
 				Log.d(TAG, "No more items in queue");
+				stopWidgetUpdater();
 				setStatus(PlayerStatus.STOPPED);
 				stopForeground(true);
 			} else {
@@ -428,6 +432,7 @@ public class PlaybackService extends Service {
 				positionSaver.cancel(true);
 			}
 			saveCurrentPosition();
+			stopWidgetUpdater();
 			setStatus(PlayerStatus.PAUSED);
 			stopForeground(true);
 		}
@@ -460,6 +465,7 @@ public class PlaybackService extends Service {
 				player.seekTo((int) media.getPosition());
 				setStatus(PlayerStatus.PLAYING);
 				setupPositionSaver();
+				setupWidgetUpdater();
 				setupNotification();
 				pausedBecauseOfTransientAudiofocusLoss = false;
 			} else {
@@ -472,7 +478,7 @@ public class PlaybackService extends Service {
 		Log.d(TAG, "Setting status to " + newStatus);
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
-		sendBroadcast(new Intent(PlayerWidget.FORCE_WIDGET_UPDATE));
+		updateWidget();
 	}
 
 	private void sendNotificationBroadcast(int type, int code) {
@@ -526,6 +532,24 @@ public class PlaybackService extends Service {
 		media.setPosition(player.getCurrentPosition());
 		manager.setFeedMedia(this, media);
 	}
+	
+	private void stopWidgetUpdater() {
+		if (widgetUpdater != null) {
+			widgetUpdater.cancel(true);
+		}
+	}
+	
+	private void setupWidgetUpdater() {
+		if (widgetUpdater == null || widgetUpdater.isCancelled()) {
+			widgetUpdater = new WidgetUpdateWorker();
+			widgetUpdater.execute();
+		}
+	}
+	
+	private void updateWidget() {
+		Log.d(TAG, "Sending widget update request");
+		PlaybackService.this.sendBroadcast(new Intent(PlayerWidget.FORCE_WIDGET_UPDATE));
+	}
 
 	public PlayerStatus getStatus() {
 		return status;
@@ -558,6 +582,31 @@ public class PlaybackService extends Service {
 					return null;
 				}
 
+			}
+			return null;
+		}
+
+	}
+
+	/** Notifies the player widget in the specified intervall */
+	class WidgetUpdateWorker extends AsyncTask<Void, Void, Void> {
+		private static final String TAG = "WidgetUpdateWorker";
+		private static final int NOTIFICATION_INTERVALL = 2000;
+
+		@Override
+		protected void onProgressUpdate(Void... values) {
+			updateWidget();
+		}
+
+		@Override
+		protected Void doInBackground(Void... params) {
+			while (PlaybackService.isRunning && !isCancelled()) {
+				publishProgress();
+				try {
+					Thread.sleep(NOTIFICATION_INTERVALL);
+				} catch (InterruptedException e) {
+					return null;
+				}
 			}
 			return null;
 		}
