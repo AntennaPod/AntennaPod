@@ -5,9 +5,11 @@ import java.io.IOException;
 import android.R;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -17,6 +19,7 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -118,6 +121,8 @@ public class PlaybackService extends Service {
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
+		registerReceiver(headsetDisconnected, new IntentFilter(
+				Intent.ACTION_HEADSET_PLUG));
 
 	}
 
@@ -125,6 +130,7 @@ public class PlaybackService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		isRunning = false;
+		unregisterReceiver(headsetDisconnected);
 		Log.d(TAG, "Service is about to be destroyed");
 		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -421,6 +427,12 @@ public class PlaybackService extends Service {
 		}
 	};
 
+	/**
+	 * Saves the current position and pauses playback
+	 * 
+	 * @param abandonFocus
+	 *            is true if the service should release audio focus
+	 */
 	public void pause(boolean abandonFocus) {
 		if (player.isPlaying()) {
 			Log.d(TAG, "Pausing playback.");
@@ -532,36 +544,60 @@ public class PlaybackService extends Service {
 		media.setPosition(player.getCurrentPosition());
 		manager.setFeedMedia(this, media);
 	}
-	
+
 	private void stopWidgetUpdater() {
 		if (widgetUpdater != null) {
 			widgetUpdater.cancel(true);
 		}
 	}
-	
+
 	private void setupWidgetUpdater() {
 		if (widgetUpdater == null || widgetUpdater.isCancelled()) {
 			widgetUpdater = new WidgetUpdateWorker();
 			widgetUpdater.execute();
 		}
 	}
-	
+
 	private void updateWidget() {
 		Log.d(TAG, "Sending widget update request");
-		PlaybackService.this.sendBroadcast(new Intent(PlayerWidget.FORCE_WIDGET_UPDATE));
+		PlaybackService.this.sendBroadcast(new Intent(
+				PlayerWidget.FORCE_WIDGET_UPDATE));
 	}
 
-	public PlayerStatus getStatus() {
-		return status;
-	}
+	/**
+	 * Pauses playback when the headset is disconnected and the preference is
+	 * set
+	 */
+	private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
+		private static final String TAG = "headsetDisconnected";
+		private static final int UNPLUGGED = 0;
 
-	public FeedMedia getMedia() {
-		return media;
-	}
-
-	public MediaPlayer getPlayer() {
-		return player;
-	}
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+				int state = intent.getIntExtra("state", -1);
+				if (state != -1) {
+					Log.d(TAG, "Headset plug event. State is " + state);
+					boolean pauseOnDisconnect = PreferenceManager
+							.getDefaultSharedPreferences(
+									getApplicationContext())
+							.getBoolean(
+									PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT,
+									false);
+					Log.d(TAG, "pauseOnDisconnect preference is "
+							+ pauseOnDisconnect);
+					if (state == UNPLUGGED && pauseOnDisconnect
+							&& status == PlayerStatus.PLAYING) {
+						Log.d(TAG,
+								"Pausing playback because headset was disconnected");
+						pause(true);
+					}
+				} else {
+					Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+				}
+			}
+		}
+	};
 
 	/** Periodically saves the position of the media file */
 	class PositionSaver extends AsyncTask<Void, Void, Void> {
@@ -619,6 +655,18 @@ public class PlaybackService extends Service {
 
 	public boolean isShouldStream() {
 		return shouldStream;
+	}
+
+	public PlayerStatus getStatus() {
+		return status;
+	}
+
+	public FeedMedia getMedia() {
+		return media;
+	}
+
+	public MediaPlayer getPlayer() {
+		return player;
 	}
 
 }
