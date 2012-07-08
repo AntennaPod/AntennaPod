@@ -392,27 +392,33 @@ public class PlaybackService extends Service {
 		@Override
 		public void onCompletion(MediaPlayer mp) {
 			Log.d(TAG, "Playback completed");
+			// Save state
 			positionSaver.cancel(true);
 			media.setPosition(0);
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
-			if (manager.isInQueue(media.getItem())) {
+			boolean isInQueue = manager.isInQueue(media.getItem());
+			if (isInQueue) {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
 			manager.setFeedMedia(PlaybackService.this, media);
 
+			// Prepare for playing next item
+			boolean followQueue = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext())
+					.getBoolean(PodcastApp.PREF_FOLLOW_QUEUE, false);
 			FeedItem nextItem = manager.getFirstQueueItem();
-			if (nextItem == null) {
-				Log.d(TAG, "No more items in queue");
-				stopWidgetUpdater();
-				setStatus(PlayerStatus.STOPPED);
-				stopForeground(true);
-			} else {
+			if (isInQueue && followQueue && nextItem != null) {
 				Log.d(TAG, "Loading next item in queue");
 				media = nextItem.getMedia();
 				feed = nextItem.getFeed();
 				shouldStream = !media.isDownloaded();
 				resetVideoSurface();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+			} else {
+				Log.d(TAG, "Stopping playback");
+				stopWidgetUpdater();
+				setStatus(PlayerStatus.STOPPED);
+				stopForeground(true);
 			}
 
 		}
