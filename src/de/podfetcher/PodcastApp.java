@@ -1,11 +1,22 @@
 package de.podfetcher;
 
+import java.util.concurrent.TimeUnit;
+
+import android.app.AlarmManager;
 import android.app.Application;
+import android.app.PendingIntent;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import de.podfetcher.asynctask.FeedImageLoader;
 import de.podfetcher.feed.FeedManager;
+import de.podfetcher.receiver.FeedUpdateReceiver;
 
-public class PodcastApp extends Application {
+public class PodcastApp extends Application implements
+		SharedPreferences.OnSharedPreferenceChangeListener {
+
 	private static final String TAG = "PodcastApp";
 	public static final String PREF_NAME = "PodfetcherPrefs";
 
@@ -13,7 +24,7 @@ public class PodcastApp extends Application {
 	public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
-	
+
 	private static PodcastApp singleton;
 
 	public static PodcastApp getInstance() {
@@ -24,7 +35,9 @@ public class PodcastApp extends Application {
 	public void onCreate() {
 		super.onCreate();
 		singleton = this;
-
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(this);
+		prefs.registerOnSharedPreferenceChangeListener(this);
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
 	}
@@ -36,4 +49,26 @@ public class PodcastApp extends Application {
 		FeedImageLoader.getInstance().wipeImageCache();
 	}
 
+	@Override
+	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
+			String key) {
+		Log.d(TAG, "Registered change of application preferences");
+		if (key.equals(PREF_UPDATE_INTERVALL)) {
+			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+			int hours = Integer.parseInt(sharedPreferences.getString(
+					PREF_UPDATE_INTERVALL, "0"));
+			PendingIntent updateIntent = PendingIntent.getBroadcast(this, 0,
+					new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
+			alarmManager.cancel(updateIntent);
+			if (hours != 0) {
+				long newIntervall = TimeUnit.HOURS.toMillis(hours);
+				alarmManager.setRepeating(
+						AlarmManager.RTC_WAKEUP, newIntervall,
+						newIntervall, updateIntent);
+				Log.d(TAG, "Changed alarm to new intervall");
+			} else {
+				Log.d(TAG, "Automatic update was deactivated");
+			}
+		}
+	}
 }

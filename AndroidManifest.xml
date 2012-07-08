@@ -83,6 +83,11 @@
             </intent-filter>
             <meta-data android:resource="@xml/player_widget_info" android:name="android.appwidget.provider"/>
         </receiver>
+        <receiver android:name=".receiver.FeedUpdateReceiver">
+            <intent-filter>
+                <action android:name="de.podfetcher.feedupdatereceiver.refreshFeeds"/>
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>
