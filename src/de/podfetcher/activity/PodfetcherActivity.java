@@ -34,6 +34,7 @@ import de.podfetcher.fragment.QueueFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
 import de.podfetcher.service.DownloadService;
 import de.podfetcher.storage.DownloadRequester;
+import de.podfetcher.util.StorageUtils;
 
 public class PodfetcherActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PodfetcherActivity";
@@ -46,6 +47,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
@@ -69,6 +71,7 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
+		StorageUtils.checkStorageAvailability(this);
 		updateProgressBarVisibility();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);

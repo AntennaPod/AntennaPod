@@ -24,6 +24,7 @@ import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.fragment.ItemDescriptionFragment;
 import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.util.FeedItemMenuHandler;
+import de.podfetcher.util.StorageUtils;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockFragmentActivity {
@@ -39,10 +40,18 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		extractFeeditem();
 		populateUI();
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		StorageUtils.checkStorageAvailability(this);
+
 	}
 
 	@Override
@@ -81,7 +90,8 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		ItemDescriptionFragment fragment = ItemDescriptionFragment.newInstance(item);
+		ItemDescriptionFragment fragment = ItemDescriptionFragment
+				.newInstance(item);
 		fragmentTransaction.add(R.id.description_fragment, fragment);
 		fragmentTransaction.commit();
 	}

@@ -20,6 +20,7 @@ import de.podfetcher.feed.FeedManager;
 import de.podfetcher.storage.DownloadRequester;
 import de.podfetcher.util.ConnectionTester;
 import de.podfetcher.util.DownloadError;
+import de.podfetcher.util.StorageUtils;
 import de.podfetcher.util.URLChecker;
 import de.podfetcher.service.DownloadService;
 
@@ -52,6 +53,7 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		StorageUtils.checkStorageAvailability(this);
 		setContentView(R.layout.addfeed);
 
 		requester = DownloadRequester.getInstance();
@@ -94,6 +96,13 @@ public class AddFeedActivity extends SherlockActivity {
 				finish();
 			}
 		});
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		StorageUtils.checkStorageAvailability(this);
+
 	}
 
 	@Override

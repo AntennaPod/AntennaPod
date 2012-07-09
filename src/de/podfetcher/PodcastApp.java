@@ -13,6 +13,7 @@ import android.util.Log;
 import de.podfetcher.asynctask.FeedImageLoader;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.receiver.FeedUpdateReceiver;
+import de.podfetcher.util.StorageUtils;
 
 public class PodcastApp extends Application implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
@@ -39,8 +40,10 @@ public class PodcastApp extends Application implements
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
+		if (StorageUtils.storageAvailable()) {
+			FeedManager manager = FeedManager.getInstance();
+			manager.loadDBData(getApplicationContext());
+		}
 	}
 
 	@Override
@@ -63,9 +66,8 @@ public class PodcastApp extends Application implements
 			alarmManager.cancel(updateIntent);
 			if (hours != 0) {
 				long newIntervall = TimeUnit.HOURS.toMillis(hours);
-				alarmManager.setRepeating(
-						AlarmManager.RTC_WAKEUP, newIntervall,
-						newIntervall, updateIntent);
+				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+						newIntervall, newIntervall, updateIntent);
 				Log.d(TAG, "Changed alarm to new intervall");
 			} else {
 				Log.d(TAG, "Automatic update was deactivated");

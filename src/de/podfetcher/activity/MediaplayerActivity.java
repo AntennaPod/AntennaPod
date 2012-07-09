@@ -54,6 +54,7 @@ import de.podfetcher.service.PlayerStatus;
 import de.podfetcher.util.Converter;
 import de.podfetcher.util.DownloadError;
 import de.podfetcher.util.MediaPlayerError;
+import de.podfetcher.util.StorageUtils;
 
 public class MediaplayerActivity extends SherlockFragmentActivity implements
 		SurfaceHolder.Callback {
@@ -131,6 +132,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	protected void onResume() {
 		super.onResume();
 		Log.d(TAG, "Resuming Activity");
+		StorageUtils.checkStorageAvailability(this);
 		bindToService();
 
 	}
@@ -170,6 +172,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
+		StorageUtils.checkStorageAvailability(this);
 
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();

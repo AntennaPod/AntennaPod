@@ -1,6 +1,5 @@
 package de.podfetcher.activity;
 
-
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +20,7 @@ import de.podfetcher.feed.FeedManager;
 import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.util.FeedMenuHandler;
+import de.podfetcher.util.StorageUtils;
 
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockFragmentActivity {
@@ -35,30 +35,40 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		StorageUtils.checkStorageAvailability(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.feeditemlist_activity);
-		
+
 		manager = FeedManager.getInstance();
-		long feedId = getIntent().getLongExtra(FeedlistFragment.EXTRA_SELECTED_FEED, -1);
-		if(feedId == -1) Log.e(TAG, "Received invalid feed selection.");
+		long feedId = getIntent().getLongExtra(
+				FeedlistFragment.EXTRA_SELECTED_FEED, -1);
+		if (feedId == -1)
+			Log.e(TAG, "Received invalid feed selection.");
 
 		feed = manager.getFeed(feedId);
 		setTitle(feed.getTitle());
-		
+
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fT = fragmentManager.beginTransaction();
-	
+
 		filf = ItemlistFragment.newInstance(feed.getId());
 		fT.add(R.id.feeditemlistFragment, filf);
 		fT.commit();
-		
+
 	}
-	
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		StorageUtils.checkStorageAvailability(this);
+	}
+
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return FeedMenuHandler.onCreateOptionsMenu(new MenuInflater(this), menu);
+		return FeedMenuHandler
+				.onCreateOptionsMenu(new MenuInflater(this), menu);
 	}
 
 	@Override
@@ -71,7 +81,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
 			filf.getListAdapter().notifyDataSetChanged();
 		} else {
-			switch(item.getItemId()) {
+			switch (item.getItemId()) {
 			case R.id.remove_item:
 				FeedRemover remover = new FeedRemover(this) {
 					@Override
@@ -88,5 +98,5 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		}
 		return true;
 	}
-	
+
 }
