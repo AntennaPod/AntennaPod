@@ -7,6 +7,7 @@ package de.podfetcher.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -17,6 +18,7 @@ import org.xml.sax.SAXException;
 
 import de.podfetcher.activity.DownloadActivity;
 import de.podfetcher.activity.MediaplayerActivity;
+import de.podfetcher.activity.PodfetcherActivity;
 import de.podfetcher.asynctask.DownloadObserver;
 import de.podfetcher.asynctask.DownloadStatus;
 import de.podfetcher.feed.*;
@@ -26,6 +28,7 @@ import de.podfetcher.syndication.handler.FeedHandler;
 import de.podfetcher.syndication.handler.UnsupportedFeedtypeException;
 import de.podfetcher.util.DownloadError;
 import android.R;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -61,11 +64,14 @@ public class DownloadService extends Service {
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.podfetcher.service.download_id";
 	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.podfetcher.service.image_download_id";
 
+	private ArrayList<DownloadStatus> completedDownloads;
+
 	private ExecutorService syncExecutor;
 	private DownloadRequester requester;
 	private FeedManager manager;
 	private NotificationCompat.Builder notificationBuilder;
 	private int NOTIFICATION_ID = 2;
+	private int REPORT_ID = 3;
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
 	private DownloadManager downloadManager;
@@ -94,6 +100,7 @@ public class DownloadService extends Service {
 	public void onCreate() {
 		Log.d(TAG, "Service started");
 		isRunning = true;
+		completedDownloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
 		syncExecutor = Executors.newSingleThreadExecutor();
 		manager = FeedManager.getInstance();
@@ -118,6 +125,7 @@ public class DownloadService extends Service {
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);
 		downloadObserver.cancel(true);
+		createReport();
 	}
 
 	private IntentFilter createIntentFilter() {
@@ -206,8 +214,8 @@ public class DownloadService extends Service {
 					Log.e(TAG, "Download failed");
 					Log.e(TAG, "reason code is " + reason);
 					successful = false;
-					long statusId = manager.addDownloadStatus(context,
-							new DownloadStatus(download, reason, successful));
+					long statusId = saveDownloadStatus(new DownloadStatus(
+							download, reason, successful));
 					requester.removeDownload(download);
 					sendDownloadHandledIntent(download.getDownloadId(),
 							statusId, false, 0);
@@ -221,6 +229,18 @@ public class DownloadService extends Service {
 
 	};
 
+	/**
+	 * Adds a new DownloadStatus object to the list of completed downloads and
+	 * saves it in the database
+	 * 
+	 * @param status
+	 *            the download that is going to be saved
+	 */
+	private long saveDownloadStatus(DownloadStatus status) {
+		completedDownloads.add(status);
+		return manager.addDownloadStatus(this, status);
+	}
+
 	private void sendDownloadHandledIntent(long downloadId, long statusId,
 			boolean feedHasImage, long imageDownloadId) {
 		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
@@ -231,6 +251,64 @@ public class DownloadService extends Service {
 			intent.putExtra(EXTRA_IMAGE_DOWNLOAD_ID, imageDownloadId);
 		}
 		sendBroadcast(intent);
+	}
+
+	/**
+	 * Creates a notification at the end of the service lifecycle to notify the
+	 * user about the number of completed downloads. A report will only be
+	 * created if the number of feeds is > 1 or if at least one media file was
+	 * downloaded.
+	 */
+	private void createReport() {
+		// check if report should be created
+		boolean createReport = false;
+		int feedCount = 0;
+		for (DownloadStatus status : completedDownloads) {
+			if (status.getFeedFile().getClass() == Feed.class) {
+				feedCount++;
+				if (feedCount > 1) {
+					createReport = true;
+					break;
+				}
+			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
+				createReport = true;
+				break;
+			}
+		}
+		if (createReport) {
+			Log.d(TAG, "Creating report");
+			int successfulDownloads = 0;
+			int failedDownloads = 0;
+			for (DownloadStatus status : completedDownloads) {
+				if (status.isSuccessful()) {
+					successfulDownloads++;
+				} else {
+					failedDownloads++;
+				}
+			}
+			// create notification object
+			Notification notification = new NotificationCompat.Builder(this)
+					.setTicker(
+							getString(de.podfetcher.R.string.download_report_title))
+					.setContentTitle(
+							getString(de.podfetcher.R.string.download_report_title))
+					.setContentText(
+							successfulDownloads + " Downloads succeeded, "
+									+ failedDownloads + " failed")
+					.setSmallIcon(R.drawable.stat_notify_sync)
+					.setLargeIcon(
+							BitmapFactory.decodeResource(null,
+									R.drawable.stat_notify_sync))
+					.setContentIntent(
+							PendingIntent.getActivity(this, 0, new Intent(this,
+									PodfetcherActivity.class), 0))
+					.setAutoCancel(true).getNotification();
+			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+			nm.notify(REPORT_ID, notification);
+
+		} else {
+			Log.d(TAG, "No report is created");
+		}
 	}
 
 	/** Check if there's something else to download, otherwise stop */
@@ -297,7 +375,7 @@ public class DownloadService extends Service {
 			try {
 				feed = handler.parseFeed(feed);
 				Log.d(TAG, feed.getTitle() + " parsed");
-				
+
 				feed.setDownloadId(0);
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
@@ -328,8 +406,8 @@ public class DownloadService extends Service {
 
 			requester.removeDownload(feed);
 			cleanup();
-			long statusId = manager.addDownloadStatus(service,
-					new DownloadStatus(savedFeed, reason, successful));
+			long statusId = saveDownloadStatus(new DownloadStatus(savedFeed,
+					reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();
 		}
@@ -360,8 +438,8 @@ public class DownloadService extends Service {
 			image.setDownloaded(true);
 			requester.removeDownload(image);
 
-			long statusId = manager.addDownloadStatus(service,
-					new DownloadStatus(image, 0, true));
+			long statusId = saveDownloadStatus(new DownloadStatus(image, 0,
+					true));
 			sendDownloadHandledIntent(image.getDownloadId(), statusId, false, 0);
 			image.setDownloadId(0);
 
@@ -395,8 +473,8 @@ public class DownloadService extends Service {
 			media.setDuration(mediaplayer.getDuration());
 			Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
-			long statusId = manager.addDownloadStatus(service,
-					new DownloadStatus(media, 0, true));
+			long statusId = saveDownloadStatus(new DownloadStatus(media, 0,
+					true));
 			sendDownloadHandledIntent(media.getDownloadId(), statusId, false, 0);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);

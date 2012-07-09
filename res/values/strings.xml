@@ -91,5 +91,6 @@
     <string name="pref_pauseOnHeadsetDisconnect_title">Headset disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
+    <string name="download_report_title">All downloads completed</string>
 
 </resources>
