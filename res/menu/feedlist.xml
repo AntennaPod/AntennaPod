@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/mark_all_read_item" android:title="@string/mark_all_read_label" android:showAsAction="ifRoom|withText"></item><item android:id="@+id/show_info_item" android:icon="@drawable/action_about" android:title="@string/show_info_label" android:showAsAction="always"></item><item android:id="@+id/remove_item" android:title="@string/remove_feed_label" android:icon="@drawable/content_discard" android:visible="true" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/refresh_item" android:title="@string/refresh_label" android:showAsAction="collapseActionView"></item><item android:id="@+id/mark_all_read_item" android:title="@string/mark_all_read_label" android:showAsAction="ifRoom|withText"></item><item android:id="@+id/show_info_item" android:icon="@drawable/action_about" android:title="@string/show_info_label" android:showAsAction="always"></item><item android:id="@+id/remove_item" android:title="@string/remove_feed_label" android:icon="@drawable/content_discard" android:visible="true" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/visit_website_item" android:showAsAction="ifRoom|collapseActionView" android:icon="@drawable/location_web_site" android:title="@string/visit_website_label" android:visible="true"></item>
     <item android:id="@+id/support_item" android:title="@string/support_label" android:showAsAction="collapseActionView" android:visible="false"></item>
+    
     
     
     

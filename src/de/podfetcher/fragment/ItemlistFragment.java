@@ -21,6 +21,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.podfetcher.R;
 import de.podfetcher.activity.ItemviewActivity;
 import de.podfetcher.adapter.FeedItemlistAdapter;
+import de.podfetcher.feed.Feed;
 import de.podfetcher.feed.FeedItem;
 import de.podfetcher.feed.FeedManager;
 import de.podfetcher.service.DownloadService;
@@ -31,7 +32,7 @@ import de.podfetcher.util.FeedItemMenuHandler;
 public class ItemlistFragment extends SherlockListFragment implements
 		ActionMode.Callback {
 
-	private static final String TAG = "FeedItemlistFragment";
+	private static final String TAG = "ItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.podfetcher.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.podfetcher.feed_id";
 	protected FeedItemlistAdapter fila;
@@ -40,6 +41,11 @@ public class ItemlistFragment extends SherlockListFragment implements
 
 	/** The feed which the activity displays */
 	protected ArrayList<FeedItem> items;
+	/**
+	 * This is only not null if the fragment displays the items of a specific
+	 * feed
+	 */
+	protected Feed feed;
 
 	protected FeedItem selectedItem;
 	protected ActionMode mActionMode;
@@ -80,7 +86,8 @@ public class ItemlistFragment extends SherlockListFragment implements
 		super.onCreate(savedInstanceState);
 		if (items == null) {
 			long feedId = getArguments().getLong(ARGUMENT_FEED_ID);
-			items = FeedManager.getInstance().getFeed(feedId).getItems();
+			feed = FeedManager.getInstance().getFeed(feedId);
+			items = feed.getItems();
 		}
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
 				onButActionClicked, showFeedtitle);
@@ -100,6 +107,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	public void onResume() {
 		super.onResume();
 		fila.notifyDataSetChanged();
+		updateProgressBarVisibility();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
@@ -123,8 +131,23 @@ public class ItemlistFragment extends SherlockListFragment implements
 		public void onReceive(Context context, Intent intent) {
 			Log.d(TAG, "Received contentUpdate Intent.");
 			fila.notifyDataSetChanged();
+			updateProgressBarVisibility();
 		}
 	};
+
+	private void updateProgressBarVisibility() {
+		if (feed != null) {
+			if (DownloadService.isRunning
+					&& DownloadRequester.getInstance().isDownloadingFile(feed)) {
+				getSherlockActivity()
+						.setSupportProgressBarIndeterminateVisibility(true);
+			} else {
+				getSherlockActivity()
+						.setSupportProgressBarIndeterminateVisibility(false);
+			}
+			getSherlockActivity().invalidateOptionsMenu();
+		}
+	}
 
 	private final OnClickListener onButActionClicked = new OnClickListener() {
 		@Override

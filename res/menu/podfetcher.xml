@@ -8,7 +8,7 @@
     </item>
     <item
         android:id="@+id/all_feed_refresh"
-        android:title="Refresh"
+        android:title="@string/refresh_label"
         android:icon="@drawable/navigation_refresh"
         android:showAsAction="ifRoom|collapseActionView">
     </item>

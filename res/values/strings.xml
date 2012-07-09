@@ -92,5 +92,6 @@
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="download_report_title">All downloads completed</string>
+    <string name="refresh_label">Refresh</string>
 
 </resources>

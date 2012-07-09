@@ -11,6 +11,7 @@ import de.podfetcher.R;
 
 import android.util.Log;
 import android.database.Cursor;
+import android.annotation.SuppressLint;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.net.Uri;
@@ -54,6 +55,7 @@ public class DownloadRequester {
 		return downloader;
 	}
 
+	@SuppressLint("NewApi")
 	private long download(Context context, FeedFile item, File dest) {
 		if (dest.exists()) {
 			Log.d(TAG, "File already exists. Deleting !");
@@ -152,6 +154,16 @@ public class DownloadRequester {
 	public boolean isDownloadingFeeds() {
 		for (FeedFile f : downloads) {
 			if (f.getClass() == Feed.class) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/** Checks if feedfile is in the downloads list */
+	public boolean isDownloadingFile(FeedFile item) {
+		for (FeedFile f : downloads) {
+			if (f.getDownload_url().equals(item.getDownload_url())) {
 				return true;
 			}
 		}

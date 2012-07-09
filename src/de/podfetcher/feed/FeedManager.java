@@ -172,9 +172,13 @@ public class FeedManager {
 	public void refreshAllFeeds(Context context) {
 		Log.d(TAG, "Refreshing all feeds.");
 		for (Feed feed : feeds) {
-			requester.downloadFeed(context, new Feed(feed.getDownload_url(),
-					new Date()));
+			refreshFeed(context, feed);
 		}
+	}
+	
+	public void refreshFeed(Context context, Feed feed) {
+		requester.downloadFeed(context, new Feed(feed.getDownload_url(),
+				new Date()));
 	}
 
 	public long addDownloadStatus(Context context, DownloadStatus status) {
