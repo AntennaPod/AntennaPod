@@ -24,6 +24,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
+	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 
 	private static PodcastApp singleton;
 

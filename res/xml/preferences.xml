@@ -30,6 +30,13 @@
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervall_sum"
             android:title="@string/pref_autoUpdateIntervall_title" />
+
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefMobileUpdate"
+            android:summary="@string/pref_mobileUpdate_sum"
+            android:title="@string/pref_mobileUpdate_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
         <Preference android:title="@string/version_pref" />

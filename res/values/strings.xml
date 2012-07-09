@@ -86,8 +86,10 @@
     <string name="pref_autoUpdateIntervall_title">Update intervall</string>
     <string name="pref_autoUpdateIntervall_sum">Specify an intervall in which the feeds are refreshed automatically or disable it</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
-    <string name="pref_followQueue_title">Follow queue</string>
+    <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headset disconnect</string>
+    <string name="pref_mobileUpdate_title">Mobile Updates</string>
+    <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
 
 </resources>
