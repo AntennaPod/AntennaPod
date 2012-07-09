@@ -10,10 +10,11 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.podfetcher.R;
+import de.podfetcher.util.StorageUtils;
 
 public class StorageErrorActivity extends SherlockActivity {
 	private static final String TAG = "StorageErrorActivity";
-	
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -23,15 +24,29 @@ public class StorageErrorActivity extends SherlockActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(mediaUpdate);
+		try {
+			unregisterReceiver(mediaUpdate);
+		} catch (IllegalArgumentException e) {
+
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		registerReceiver(mediaUpdate, new IntentFilter(Intent.ACTION_MEDIA_MOUNTED));
+		if (StorageUtils.storageAvailable()) {
+			leaveErrorState();
+		} else {
+			registerReceiver(mediaUpdate, new IntentFilter(
+					Intent.ACTION_MEDIA_MOUNTED));
+		}
 	}
 	
+	private void leaveErrorState() {
+		finish();
+		startActivity(new Intent(this, PodfetcherActivity.class));
+	}
+
 	private BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
 
 		@Override
@@ -39,13 +54,13 @@ public class StorageErrorActivity extends SherlockActivity {
 			if (intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
 				if (intent.getBooleanExtra("read-only", true)) {
 					Log.d(TAG, "Media was mounted; Finishing activity");
-					finish();
+					leaveErrorState();
 				} else {
 					Log.d(TAG, "Media seemed to have been mounted read only");
 				}
 			}
 		}
-		
+
 	};
-	
+
 }
