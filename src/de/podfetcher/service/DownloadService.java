@@ -406,6 +406,9 @@ public class DownloadService extends Service {
 
 			requester.removeDownload(feed);
 			cleanup();
+			if (savedFeed == null) {
+				savedFeed = feed;
+			}
 			long statusId = saveDownloadStatus(new DownloadStatus(savedFeed,
 					reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
