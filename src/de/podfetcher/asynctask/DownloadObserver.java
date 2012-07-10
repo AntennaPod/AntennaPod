@@ -50,8 +50,6 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 			callback.onFinish();
 		}
 	}
-	
-	
 
 	@Override
 	protected void onPostExecute(Void result) {
@@ -94,40 +92,43 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 				long downloadId = getDownloadStatus(cursor,
 						DownloadManager.COLUMN_ID);
 				FeedFile feedFile = requester.getFeedFile(downloadId);
-				DownloadStatus status = findDownloadStatus(feedFile);
-				if (status == null) {
-					status = new DownloadStatus(feedFile);
-					statusList.add(status);
-				} else {
-					unhandledItems.remove(status);
-				}
+				if (feedFile != null) {
+					DownloadStatus status = findDownloadStatus(feedFile);
 
-				// refresh status
-				int statusId = getDownloadStatus(cursor,
-						DownloadManager.COLUMN_STATUS);
-				getDownloadProgress(cursor, status);
-				switch (statusId) {
-				case DownloadManager.STATUS_SUCCESSFUL:
-					status.statusMsg = R.string.download_successful;
-					status.successful = true;
-					status.done = true;
-				case DownloadManager.STATUS_RUNNING:
-					status.statusMsg = R.string.download_running;
-					break;
-				case DownloadManager.STATUS_FAILED:
-					status.statusMsg = R.string.download_failed;
-					requester.notifyDownloadService(context);
-					status.successful = false;
-					status.done = true;
-					status.reason = getDownloadStatus(cursor,
-							DownloadManager.COLUMN_REASON);
-				case DownloadManager.STATUS_PENDING:
-					status.statusMsg = R.string.download_pending;
-					break;
-				default:
-					status.done = true;
-					status.successful = false;
-					status.statusMsg = R.string.download_cancelled_msg;
+					if (status == null) {
+						status = new DownloadStatus(feedFile);
+						statusList.add(status);
+					} else {
+						unhandledItems.remove(status);
+					}
+
+					// refresh status
+					int statusId = getDownloadStatus(cursor,
+							DownloadManager.COLUMN_STATUS);
+					getDownloadProgress(cursor, status);
+					switch (statusId) {
+					case DownloadManager.STATUS_SUCCESSFUL:
+						status.statusMsg = R.string.download_successful;
+						status.successful = true;
+						status.done = true;
+					case DownloadManager.STATUS_RUNNING:
+						status.statusMsg = R.string.download_running;
+						break;
+					case DownloadManager.STATUS_FAILED:
+						status.statusMsg = R.string.download_failed;
+						requester.notifyDownloadService(context);
+						status.successful = false;
+						status.done = true;
+						status.reason = getDownloadStatus(cursor,
+								DownloadManager.COLUMN_REASON);
+					case DownloadManager.STATUS_PENDING:
+						status.statusMsg = R.string.download_pending;
+						break;
+					default:
+						status.done = true;
+						status.successful = false;
+						status.statusMsg = R.string.download_cancelled_msg;
+					}
 				}
 			} while (cursor.moveToNext());
 		}
@@ -203,6 +204,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	public interface Callback {
 		public void onProgressUpdate();
+
 		public void onFinish();
 	}
 

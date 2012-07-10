@@ -179,7 +179,8 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	@Override
 	public void onFinish() {
+		Log.d(TAG, "Observer has finished, clearing adapter");
 		dla.clear();
-		dla.notifyDataSetChanged();
+		dla.notifyDataSetInvalidated();
 	}
 }
