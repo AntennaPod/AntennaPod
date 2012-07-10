@@ -40,6 +40,9 @@ public class FeedMenuHandler {
 		} else {
 			refresh.setVisible(true);
 		}
+		
+		menu.findItem(R.id.share_link_item).setVisible(selectedFeed.getLink() != null);
+		
 		return true;
 	}
 
@@ -67,6 +70,12 @@ public class FeedMenuHandler {
 		case R.id.support_item:
 			Uri supportUri = Uri.parse(selectedFeed.getPaymentLink());
 			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
+			break;
+		case R.id.share_link_item:
+			ShareUtils.shareFeedlink(context, selectedFeed);
+			break;
+		case R.id.share_source_item:
+			ShareUtils.shareFeedDownloadLink(context, selectedFeed);
 			break;
 		default:
 			return false;

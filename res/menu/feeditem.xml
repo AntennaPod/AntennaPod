@@ -9,7 +9,8 @@
     <item android:id="@+id/add_to_queue_item" android:title="@string/add_to_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/remove_from_queue_item" android:title="@string/remove_from_queue_label" android:visible="false" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/stream_item" android:title="@string/stream_label" android:visible="false" android:showAsAction="always" android:icon="@drawable/action_stream"></item>
-    <item android:id="@+id/visit_website_item" android:icon="@drawable/location_web_site" android:title="@string/visit_website_label" android:showAsAction="ifRoom|collapseActionView" android:visible="false"></item>
+    <item android:id="@+id/share_link_item" android:title="@string/share_link_label" android:showAsAction="collapseActionView"></item><item android:id="@+id/visit_website_item" android:icon="@drawable/location_web_site" android:title="@string/visit_website_label" android:showAsAction="ifRoom|collapseActionView" android:visible="false"></item>
     <item android:id="@+id/support_item" android:title="@string/support_label" android:showAsAction="collapseActionView" android:visible="false"></item>
+    
 
 </menu>

@@ -38,6 +38,8 @@ public class FeedItemMenuHandler {
 			} else {
 				menu.findItem(R.id.add_to_queue_item).setVisible(true);
 			}
+			
+			menu.findItem(R.id.share_link_item).setVisible(selectedItem.getLink() != null);
 		}
 
 		if (selectedItem.isRead()) {
@@ -99,6 +101,9 @@ public class FeedItemMenuHandler {
 		case R.id.support_item:
 			Uri supportUri = Uri.parse(selectedItem.getPaymentLink());
 			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
+			break;
+		case R.id.share_link_item:
+			ShareUtils.shareFeedItemLink(context, selectedItem);
 			break;
 		default:
 			return false;
