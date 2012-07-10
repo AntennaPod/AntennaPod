@@ -51,7 +51,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (webViewLoader == null) {
+		if (webViewLoader == null && item != null) {
 			webViewLoader = createLoader();
 			webViewLoader.execute();
 		}
@@ -83,6 +83,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (feedId != -1 && itemId != -1) {
 			Feed feed = manager.getFeed(feedId);
 			item = manager.getFeedItem(itemId, feed);
+			webViewLoader = createLoader();
+			webViewLoader.execute();
 		} else {
 			Log.e(TAG, TAG + " was called with invalid arguments");
 		}
