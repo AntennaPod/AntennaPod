@@ -268,8 +268,9 @@ public class FeedManager {
 					"Found no existing Feed with title " + newFeed.getTitle()
 							+ ". Adding as new one.");
 			// Add a new Feed
-			newFeed.getItems().get(0).read = false;
 			addNewFeed(context, newFeed);
+			markItemRead(context, newFeed.getItems().get(0), false);
+
 			return newFeed;
 		} else {
 			Log.d(TAG, "Feed with title " + newFeed.getTitle()
