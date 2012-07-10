@@ -145,11 +145,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		if (positionObserver != null) {
 			positionObserver.cancel(true);
 		}
-		if (orientation == Configuration.ORIENTATION_LANDSCAPE) {
-			setContentView(R.layout.mediaplayer_activity);
-		} else {
-			setContentView(R.layout.mediaplayer_activity);
-		}
 		setupGUI();
 		handleStatus();
 
@@ -177,9 +172,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
-		this.setContentView(R.layout.mediaplayer_activity);
 
-		setupGUI();
 		bindToService();
 	}
 
@@ -327,6 +320,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	}
 
 	private void setupGUI() {
+		setContentView(R.layout.mediaplayer_activity);
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
@@ -503,6 +497,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			if ((requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE && orientation == Configuration.ORIENTATION_LANDSCAPE)
 					|| (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && orientation == Configuration.ORIENTATION_PORTRAIT)) {
 				Log.d(TAG, "Orientation correct");
+				setupGUI();
 				handleStatus();
 			} else {
 				Log.d(TAG,
@@ -671,7 +666,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	}
 
 	public static class MediaPlayerPagerAdapter extends
-			FragmentStatePagerAdapter {
+			FragmentPagerAdapter {
 		private int numItems;
 		private MediaplayerActivity activity;
 
@@ -725,7 +720,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 		@Override
 		public int getItemPosition(Object object) {
-			return POSITION_NONE;
+			return POSITION_UNCHANGED;
 		}
 
 	}
