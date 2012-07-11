@@ -193,7 +193,7 @@ public class FeedManager {
 			}
 		}
 	}
-	
+
 	/** Marks all items in the unread items list as read */
 	public void markAllItemsRead(Context context) {
 		Log.d(TAG, "marking all items as read");
@@ -213,6 +213,18 @@ public class FeedManager {
 		for (Feed feed : feeds) {
 			refreshFeed(context, feed);
 		}
+	}
+
+	/**
+	 * Notifies the feed manager that the an image file is invalid. It will try
+	 * to redownload it
+	 */
+	public void notifyInvalidImageFile(Context context, FeedImage image) {
+		Log.i(TAG,
+				"The feedmanager was notified about an invalid image download. It will now try to redownload the image file");
+		image.setDownloaded(false);
+		image.setFile_url(null);
+		requester.downloadImage(context, image);
 	}
 
 	public void refreshFeed(Context context, Feed feed) {
@@ -240,7 +252,7 @@ public class FeedManager {
 		adapter.close();
 		sendQueueUpdateBroadcast(context, item);
 	}
-	
+
 	/** Removes all items in queue */
 	public void clearQueue(Context context) {
 		Log.d(TAG, "Clearing queue");

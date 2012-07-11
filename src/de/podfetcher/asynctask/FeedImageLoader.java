@@ -1,8 +1,12 @@
 package de.podfetcher.asynctask;
 
+import java.io.File;
+
 import de.podfetcher.PodcastApp;
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedImage;
+import de.podfetcher.feed.FeedManager;
+import de.podfetcher.storage.DownloadRequester;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
@@ -128,26 +132,44 @@ public class FeedImageLoader {
 
 		@Override
 		protected Void doInBackground(FeedImage... params) {
+			File f = null;
 			if (params[0].getFile_url() != null) {
+				f = new File(params[0].getFile_url());
+			}
+			if (params[0].getFile_url() != null && f.exists()) {
 				BitmapFactory.Options options = new BitmapFactory.Options();
 				options.inJustDecodeBounds = true;
 				BitmapFactory.decodeFile(params[0].getFile_url(), options);
 				int sampleSize = calculateSampleSize(options.outWidth,
 						options.outHeight);
-				
+
 				options.inJustDecodeBounds = false;
 				options.inSampleSize = sampleSize;
 				decodedBitmap = BitmapFactory.decodeFile(
 						params[0].getFile_url(), options);
+				if (decodedBitmap == null) {
+					Log.i(TAG,
+							"Bitmap could not be decoded in custom sample size. Trying default sample size (path was "
+									+ params[0].getFile_url() + ")");
+					decodedBitmap = BitmapFactory.decodeFile(params[0]
+							.getFile_url());
+				}
 				bitmap = Bitmap.createScaledBitmap(decodedBitmap,
 						PREFERRED_LENGTH, PREFERRED_LENGTH, false);
 
 				addBitmapToCache(params[0].getId(), bitmap);
 				Log.d(TAG, "Finished loading bitmaps");
 			} else {
-				Log.e(TAG, "FeedImage has no file url. Using default image");
+				Log.e(TAG,
+						"FeedImage has no valid file url. Using default image");
 				bitmap = BitmapFactory.decodeResource(target.getResources(),
 						R.drawable.default_cover);
+				if (params[0].getFile_url() != null
+						&& !DownloadRequester.getInstance().isDownloadingFile(
+								params[0])) {
+					FeedManager.getInstance().notifyInvalidImageFile(
+							PodcastApp.getInstance(), params[0]);
+				}
 			}
 			return null;
 		}
