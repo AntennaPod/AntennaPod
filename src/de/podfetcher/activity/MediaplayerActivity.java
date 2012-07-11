@@ -40,6 +40,7 @@ import android.widget.ViewSwitcher;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -124,8 +125,19 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		// TODO Auto-generated method stub
-		return super.onCreateOptionsMenu(menu);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
+		default:
+			return false;
+		}
+		return true;
 	}
 
 	@Override
@@ -172,7 +184,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
-
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		bindToService();
 	}
 
@@ -665,8 +677,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		holderCreated = false;
 	}
 
-	public static class MediaPlayerPagerAdapter extends
-			FragmentPagerAdapter {
+	public static class MediaPlayerPagerAdapter extends FragmentPagerAdapter {
 		private int numItems;
 		private MediaplayerActivity activity;
 

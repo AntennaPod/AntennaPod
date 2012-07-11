@@ -44,6 +44,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		super.onCreate(savedInstanceState);
 		Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 	}
 
@@ -104,6 +105,9 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			break;
 		case MENU_SHOW_LOG:
 			startActivity(new Intent(this, DownloadLogActivity.class));
 			break;
