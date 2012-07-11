@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 import de.podfetcher.feed.FeedItem;
+import de.podfetcher.feed.FeedManager;
 import de.podfetcher.util.Converter;
 import de.podfetcher.R;
 import android.widget.ArrayAdapter;
@@ -55,6 +56,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 					.findViewById(R.id.butAction);
 			holder.published = (TextView) convertView
 					.findViewById(R.id.txtvPublished);
+			holder.inPlaylist = (ImageView) convertView
+					.findViewById(R.id.imgvInPlaylist);
 			holder.downloaded = (ImageView) convertView
 					.findViewById(R.id.imgvDownloaded);
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
@@ -99,6 +102,11 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.encInfo.setVisibility(View.GONE);
 		} else {
 			holder.encInfo.setVisibility(View.VISIBLE);
+			if (FeedManager.getInstance().isInQueue(item)) {
+				holder.inPlaylist.setVisibility(View.VISIBLE);
+			} else {
+				holder.inPlaylist.setVisibility(View.GONE);
+			}
 			if (item.getMedia().isDownloaded()) {
 				holder.lenSize.setText(Converter.getDurationStringShort(item
 						.getMedia().getDuration()));
@@ -138,6 +146,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		TextView feedtitle;
 		TextView published;
 		TextView lenSize;
+		ImageView inPlaylist;
 		ImageView downloaded;
 		ImageView type;
 		ImageView downloading;

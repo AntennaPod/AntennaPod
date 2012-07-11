@@ -71,6 +71,13 @@
                     android:layout_height="match_parent" />
 
                 <ImageView
+                    android:id="@+id/imgvInPlaylist"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/stat_playlist"
+                    android:visibility="gone" />
+
+                <ImageView
                     android:id="@+id/imgvDownloaded"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
