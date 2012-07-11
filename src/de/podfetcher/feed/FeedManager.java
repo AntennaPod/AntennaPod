@@ -193,6 +193,20 @@ public class FeedManager {
 			}
 		}
 	}
+	
+	/** Marks all items in the unread items list as read */
+	public void markAllItemsRead(Context context) {
+		Log.d(TAG, "marking all items as read");
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		for (FeedItem item : unreadItems) {
+			item.read = true;
+			setFeedItem(item, adapter);
+		}
+		adapter.close();
+		unreadItems.clear();
+		sendUnreadItemsUpdateBroadcast(context, null);
+	}
 
 	public void refreshAllFeeds(Context context) {
 		Log.d(TAG, "Refreshing all feeds.");

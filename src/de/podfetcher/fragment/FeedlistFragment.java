@@ -105,6 +105,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
+		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
 
 		pActivity.registerReceiver(contentUpdate, filter);
 		fla.notifyDataSetChanged();
