@@ -25,6 +25,11 @@ import android.util.Log;
 public class FeedManager {
 	private static final String TAG = "FeedManager";
 
+	public static final String ACTION_UNREAD_ITEMS_UPDATE = "de.podfetcher.action.feed.unreadItemsUpdate";
+	public static final String ACTION_QUEUE_UPDATE = "de.podfetcher.action.feed.queueUpdate";
+	public static final String EXTRA_FEED_ITEM_ID = "de.podfetcher.extra.feed.feedItemId";
+	public static final String EXTRA_FEED_ID = "de.podfetcher.extra.feed.feedId";
+
 	/** Number of completed Download status entries to store. */
 	private static final int DOWNLOAD_LOG_SIZE = 25;
 
@@ -140,12 +145,31 @@ public class FeedManager {
 
 	}
 
+	private void sendUnreadItemsUpdateBroadcast(Context context, FeedItem item) {
+		Intent update = new Intent(ACTION_UNREAD_ITEMS_UPDATE);
+		if (item != null) {
+			update.putExtra(EXTRA_FEED_ID, item.getFeed().getId());
+			update.putExtra(EXTRA_FEED_ITEM_ID, item.getId());
+		}
+		context.sendBroadcast(update);
+	}
+
+	private void sendQueueUpdateBroadcast(Context context, FeedItem item) {
+		Intent update = new Intent(ACTION_QUEUE_UPDATE);
+		if (item != null) {
+			update.putExtra(EXTRA_FEED_ID, item.getFeed().getId());
+			update.putExtra(EXTRA_FEED_ITEM_ID, item.getId());
+		}
+		context.sendBroadcast(update);
+	}
+
 	/**
 	 * Sets the 'read'-attribute of a FeedItem. Should be used by all Classes
 	 * instead of the setters of FeedItem.
 	 */
 	public void markItemRead(Context context, FeedItem item, boolean read) {
-		Log.d(TAG, "Setting item with title " + item.getTitle() + " as read/unread");
+		Log.d(TAG, "Setting item with title " + item.getTitle()
+				+ " as read/unread");
 		item.read = read;
 		setFeedItem(context, item);
 		if (read == true) {
@@ -154,6 +178,7 @@ public class FeedManager {
 			unreadItems.add(item);
 			Collections.sort(unreadItems, new FeedItemPubdateComparator());
 		}
+		sendUnreadItemsUpdateBroadcast(context, item);
 	}
 
 	/**
@@ -175,7 +200,7 @@ public class FeedManager {
 			refreshFeed(context, feed);
 		}
 	}
-	
+
 	public void refreshFeed(Context context, Feed feed) {
 		requester.downloadFeed(context, new Feed(feed.getDownload_url(),
 				new Date()));
@@ -199,6 +224,7 @@ public class FeedManager {
 		adapter.open();
 		adapter.setQueue(queue);
 		adapter.close();
+		sendQueueUpdateBroadcast(context, item);
 	}
 
 	/** Uses external adapter. */
@@ -207,6 +233,7 @@ public class FeedManager {
 		if (removed) {
 			adapter.setQueue(queue);
 		}
+
 	}
 
 	/** Uses its own adapter. */
@@ -218,8 +245,9 @@ public class FeedManager {
 			adapter.setQueue(queue);
 			adapter.close();
 		}
+		sendQueueUpdateBroadcast(context, item);
 	}
-	
+
 	public void moveQueueItem(Context context, FeedItem item, int delta) {
 		Log.d(TAG, "Moving queue item");
 		int itemIndex = queue.indexOf(item);
@@ -232,6 +260,7 @@ public class FeedManager {
 			adapter.setQueue(queue);
 			adapter.close();
 		}
+		sendQueueUpdateBroadcast(context, item);
 	}
 
 	public boolean isInQueue(FeedItem item) {
