@@ -62,7 +62,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
-			
+
 		}
 
 		if (position == selectedItemIndex) {
@@ -73,10 +73,14 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		}
 
 		holder.title.setText(feed.getTitle());
-		holder.lastUpdate.setText("Last Update: "
-				+ DateUtils.formatSameDayTime(feed.getLastUpdate().getTime(),
-						System.currentTimeMillis(), DateFormat.SHORT,
-						DateFormat.SHORT));
+		if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
+			holder.lastUpdate.setText(R.string.refreshing_label);
+		} else {
+			holder.lastUpdate.setText("Last Update: "
+					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
+							.getTime(), System.currentTimeMillis(),
+							DateFormat.SHORT, DateFormat.SHORT));
+		}
 		holder.numberOfEpisodes.setText(feed.getItems().size() + " Episodes");
 		int newItems = feed.getNumOfNewItems();
 		if (newItems > 0) {
