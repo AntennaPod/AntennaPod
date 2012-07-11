@@ -96,5 +96,6 @@
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="share_link_label">Share link...</string>
     <string name="share_source_label">Share source link...</string>
+    <string name="clear_queue_label">Clear queue</string>
 
 </resources>

@@ -4,9 +4,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
@@ -46,6 +48,12 @@ public class QueueFragment extends ItemlistFragment {
 	}
 
 	@Override
+	public void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+	}
+
+	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		boolean handled = false;
 		switch (item.getItemId()) {
@@ -73,5 +81,24 @@ public class QueueFragment extends ItemlistFragment {
 		}
 
 	};
+
+	@Override
+	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		super.onCreateOptionsMenu(menu, inflater);
+		menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
+				.getString(R.string.clear_queue_label));
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case R.id.clear_queue_item:
+			manager.clearQueue(getActivity());
+			break;
+		default:
+			return false;
+		}
+		return true;
+	}
 
 }

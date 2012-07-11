@@ -240,6 +240,17 @@ public class FeedManager {
 		adapter.close();
 		sendQueueUpdateBroadcast(context, item);
 	}
+	
+	/** Removes all items in queue */
+	public void clearQueue(Context context) {
+		Log.d(TAG, "Clearing queue");
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		queue.clear();
+		adapter.setQueue(queue);
+		adapter.close();
+		sendQueueUpdateBroadcast(context, null);
+	}
 
 	/** Uses external adapter. */
 	public void removeQueueItem(FeedItem item, PodDBAdapter adapter) {

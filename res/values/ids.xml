@@ -4,5 +4,6 @@
     <item name="action_bar_add" type="id"/>
     <item name="move_up_item" type="id"/>
     <item name="move_down_item" type="id"/>
+    <item type="id" name="clear_queue_item"/>
 
 </resources>
