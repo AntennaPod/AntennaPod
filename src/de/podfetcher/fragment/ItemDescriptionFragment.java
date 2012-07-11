@@ -27,6 +27,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private static final String ARG_FEED_ID = "arg.feedId";
 	private static final String ARG_FEEDITEM_ID = "arg.feedItemId";
 
+	private static final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { font-family: Helvetica; line-height: 1.5em; font-size: 12pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
+
 	private WebView webvDescription;
 	private FeedItem item;
 
@@ -109,9 +111,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
 				// /webvDescription.loadData(url, "text/html", "utf-8");
-				webvDescription.loadDataWithBaseURL(null,
-						item.getContentEncoded(), "text/html", "utf-8",
-						"about:blank");
+				webvDescription.loadDataWithBaseURL(null, data, "text/html",
+						"utf-8", "about:blank");
 				getSherlockActivity()
 						.setSupportProgressBarIndeterminateVisibility(false);
 				Log.d(TAG, "Webview loaded");
@@ -136,6 +137,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 					data = StringEscapeUtils.unescapeHtml4(item
 							.getContentEncoded());
 				}
+
+				data = WEBVIEW_STYLE + data;
 
 				return null;
 			}
