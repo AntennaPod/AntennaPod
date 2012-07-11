@@ -103,12 +103,15 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				webViewLoader = null;
 			}
 
-			String url;
+			String data;
 
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
-				webvDescription.loadData(url, "text/html", "utf-8");
+				// /webvDescription.loadData(url, "text/html", "utf-8");
+				webvDescription.loadDataWithBaseURL(null,
+						item.getContentEncoded(), "text/html", "utf-8",
+						"about:blank");
 				getSherlockActivity()
 						.setSupportProgressBarIndeterminateVisibility(false);
 				Log.d(TAG, "Webview loaded");
@@ -125,21 +128,13 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			@Override
 			protected Void doInBackground(Void... params) {
 				Log.d(TAG, "Loading Webview");
-				url = "";
-				try {
-					if (item.getContentEncoded() == null) {
-						url = URLEncoder.encode(item.getDescription(), "utf-8")
-								.replaceAll("\\+", " ");
-					} else {
-						url = URLEncoder.encode(
-								StringEscapeUtils.unescapeHtml4(item
-										.getContentEncoded()), "utf-8")
-								.replaceAll("\\+", " ");
-					}
-
-				} catch (UnsupportedEncodingException e) {
-					url = "Page could not be loaded";
-					e.printStackTrace();
+				data = "";
+				if (item.getContentEncoded() == null
+						&& item.getDescription() != null) {
+					data = item.getDescription();
+				} else {
+					data = StringEscapeUtils.unescapeHtml4(item
+							.getContentEncoded());
 				}
 
 				return null;
