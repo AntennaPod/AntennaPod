@@ -52,9 +52,9 @@
             android:enabled="true" >
         </service>
 
-        <activity android:name=".activity.PreferenceActivity" >
+        <activity android:name=".activity.PreferenceActivity" android:label="@string/settings_label">
         </activity>
-        <activity android:name=".activity.DownloadLogActivity" >
+        <activity android:name=".activity.DownloadLogActivity" android:label="@string/download_log_label">
         </activity>
 
         <receiver android:name=".receiver.MediaButtonReceiver" >

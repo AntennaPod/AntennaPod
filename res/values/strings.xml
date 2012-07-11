@@ -98,5 +98,6 @@
     <string name="share_source_label">Share source link...</string>
     <string name="clear_queue_label">Clear queue</string>
     <string name="refreshing_label">Refreshing...</string>
+    <string name="download_log_label">Download log</string>
 
 </resources>
