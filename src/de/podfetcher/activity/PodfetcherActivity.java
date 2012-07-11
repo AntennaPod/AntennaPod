@@ -1,6 +1,5 @@
 package de.podfetcher.activity;
 
-import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -8,27 +7,19 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import com.actionbarsherlock.view.Window;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
+import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
 import de.podfetcher.R;
 import de.podfetcher.feed.FeedManager;
-import de.podfetcher.fragment.ItemlistFragment;
 import de.podfetcher.fragment.FeedlistFragment;
 import de.podfetcher.fragment.QueueFragment;
 import de.podfetcher.fragment.UnreadItemlistFragment;
@@ -51,8 +42,6 @@ public class PodfetcherActivity extends SherlockFragmentActivity {
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
-		ActionBar actionBar = getSupportActionBar();
-		actionBar.setDisplayShowTitleEnabled(false);
 		pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
 		
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
