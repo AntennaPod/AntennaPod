@@ -35,8 +35,12 @@
         <PreferenceScreen
             android:summary="@string/pref_flattr_auth_sum"
             android:title="@string/pref_flattr_auth_title" >
-            <intent android:action=".activities.FlattrAuthActivity"/>
+            <intent android:action=".activities.FlattrAuthActivity" />
         </PreferenceScreen>
+        <Preference
+            android:summary="@string/pref_flattr_this_app_sum"
+            android:title="@string/pref_flattr_this_app_title" android:key="prefFlattrThisApp">
+        </Preference>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
         <Preference android:title="@string/version_pref" />
