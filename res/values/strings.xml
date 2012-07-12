@@ -118,5 +118,7 @@
     <string name="pref_flattr_this_app_sum">Support the development of Antennacast by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
+    <string name="access_revoked_title">Access revoked</string>
+    <string name="access_revoked_info">You have successfully revoked deleted Antennapod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
 
 </resources>

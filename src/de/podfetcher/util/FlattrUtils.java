@@ -10,6 +10,7 @@ import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
 import org.shredzone.flattr4j.oauth.Scope;
 
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -114,6 +115,29 @@ public class FlattrUtils {
 			Log.w(TAG, "Flattr token was null");
 			return null;
 		}
+	}
+	
+	public static void revokeAccessToken(Context context) {
+		Log.d(TAG, "Revoking access token");
+		deleteToken();
+		showRevokeDialog(context);
+	}
+	
+	
+	//------------------------------------------------ DIALOGS
+	
+	private static void showRevokeDialog(final Context context) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(R.string.access_revoked_title);
+		builder.setMessage(R.string.access_revoked_info);
+		builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
+		builder.create().show();
 	}
 
 	private static void showNoTokenDialog(final Context context,

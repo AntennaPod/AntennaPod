@@ -30,10 +30,20 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						Log.d(TAG, "Flattring this app");
+						Log.d(TAG, "Flattring this app"); // TODO implement
 						return true;
 					}
 				});
+		findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				FlattrUtils.revokeAccessToken(PreferenceActivity.this);
+				checkItemVisibility();
+				return true;
+			}
+			
+		});
 	}
 
 	@Override
