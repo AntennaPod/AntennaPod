@@ -89,6 +89,12 @@
             </intent-filter>
         </receiver>
         <activity android:name=".activity.StorageErrorActivity"></activity>
+        <activity android:name=".activity.FlattrAuthActivity" android:label="@string/flattr_auth_label">
+            <intent-filter>
+                <action android:name=".activities.FlattrAuthActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

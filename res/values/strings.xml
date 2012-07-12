@@ -99,5 +99,13 @@
     <string name="clear_queue_label">Clear queue</string>
     <string name="refreshing_label">Refreshing...</string>
     <string name="download_log_label">Download log</string>
+    <string name="flattr_auth_label">Flattr authentification</string>
+    <string name="flattr_auth_explanation">Press the button below to start the authentication process. You will be forwarded to the flattr login screen in your browser and be asked to give Antennapod the permission to flattr things. After you have given permission, you will return to this screen automatically.</string>
+    <string name="authenticate_label">Authenticate</string>
+    <string name="return_home_label">Return to home</string>
+    <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
+    <string name="flattr_settings_label">Flattr settings</string>
+    <string name="pref_flattr_auth_title">Flattr Authentication</string>
+    <string name="pref_flattr_auth_sum">Connect your flattr account to Antennapod to flattr things from within the app.</string>
 
 </resources>

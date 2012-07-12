@@ -16,7 +16,6 @@
             android:title="@string/pref_followQueue_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >
-
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/update_intervall_options"
@@ -31,6 +30,13 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/flattr_settings_label" >
+        <PreferenceScreen
+            android:summary="@string/pref_flattr_auth_sum"
+            android:title="@string/pref_flattr_auth_title" >
+            <intent android:action=".activities.FlattrAuthActivity"/>
+        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
         <Preference android:title="@string/version_pref" />
