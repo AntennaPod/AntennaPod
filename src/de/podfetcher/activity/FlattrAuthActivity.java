@@ -1,6 +1,9 @@
 package de.podfetcher.activity;
 
+import org.shredzone.flattr4j.exception.FlattrException;
+
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.podfetcher.R;
+import de.podfetcher.util.FlattrUtils;
 
 /** Guides the user through the authentication process */
 public class FlattrAuthActivity extends SherlockActivity {
@@ -39,12 +43,41 @@ public class FlattrAuthActivity extends SherlockActivity {
 						PodfetcherActivity.class));
 			}
 		});
+		
+		butAuthenticate.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				try {
+					FlattrUtils.startAuthProcess(FlattrAuthActivity.this);
+				} catch (FlattrException e) {
+					e.printStackTrace();
+				}
+			}	
+		});
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		Log.d(TAG, "Activity resumed");
+		Uri uri = getIntent().getData();
+		if (uri != null) {
+			Log.d(TAG, "Received uri");
+			try {
+				if (FlattrUtils.handleCallback(uri) != null) {
+					handleAuthenticationSuccess();
+					Log.d(TAG, "Authentication seemed to be successful");
+				}
+			} catch (FlattrException e) {
+				e.printStackTrace();
+			} 
+		}
+	}
+
+	private void handleAuthenticationSuccess() {
+		txtvExplanation.setText(R.string.flattr_auth_success);
+		butAuthenticate.setEnabled(false);
+		butReturn.setVisibility(View.VISIBLE);
 	}
 
 	@Override

@@ -68,8 +68,7 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			Uri supportUri = Uri.parse(selectedFeed.getPaymentLink());
-			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
+			FlattrUtils.clickUrl(context, selectedFeed.getPaymentLink());
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);
