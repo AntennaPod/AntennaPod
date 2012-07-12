@@ -107,5 +107,11 @@
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr Authentication</string>
     <string name="pref_flattr_auth_sum">Connect your flattr account to Antennapod to flattr things from within the app.</string>
+    <string name="no_flattr_token_title">No Flattr token found</string>
+    <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to Antennapod. You can either connect your account to Antennapod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
+    <string name="visit_website_label">Visit website</string>
+    <string name="authenticate_now_label">Authenticate</string>
+    <string name="action_forbidden_title">Action forbidden</string>
+    <string name="action_forbidden_msg">Antennapod has no permission for this action. The reason for this could be that the access token of Antennapod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
 
 </resources>
