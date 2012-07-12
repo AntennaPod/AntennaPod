@@ -116,5 +116,7 @@
     <string name="flattr_click_success">Successfully flattred this thing!</string>
     <string name="pref_flattr_this_app_title">Flattr this app</string>
     <string name="pref_flattr_this_app_sum">Support the development of Antennacast by flattring it. Thanks!</string>
+    <string name="pref_revokeAccess_title">Revoke access</string>
+    <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
 
 </resources>
