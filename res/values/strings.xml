@@ -113,5 +113,6 @@
     <string name="authenticate_now_label">Authenticate</string>
     <string name="action_forbidden_title">Action forbidden</string>
     <string name="action_forbidden_msg">Antennapod has no permission for this action. The reason for this could be that the access token of Antennapod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
+    <string name="flattr_click_success">Successfully flattred this thing!</string>
 
 </resources>

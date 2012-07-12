@@ -5,14 +5,9 @@ import java.util.EnumSet;
 import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.exception.ForbiddenException;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
 import org.shredzone.flattr4j.oauth.Scope;
-
-import de.podfetcher.PodcastApp;
-import de.podfetcher.R;
-import de.podfetcher.activity.FlattrAuthActivity;
 
 import android.app.AlertDialog;
 import android.content.Context;
@@ -23,14 +18,18 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.widget.Toast;
+import de.podfetcher.PodcastApp;
+import de.podfetcher.R;
+import de.podfetcher.activity.FlattrAuthActivity;
 
 /** Utility methods for doing something with flattr. */
 public class FlattrUtils {
 	private static final String TAG = "FlattrUtils";
 
-	private static final String HOST_NAME = "";
-	private static final String APP_KEY = "";
-	private static final String APP_SECRET = "";
+	private static final String HOST_NAME = "de.danoeh.antennapod";
+	private static final String APP_KEY = "qBoVa9rhUOSPCrBwYPjzyNytHRbkPul5VzRWz93jNMZf4rCS7LhwpGPWnR73biZW";
+	private static final String APP_SECRET = "IGJ8FDiif7n9pPSmr0JHwotK5rD7AsU8Yt7uWfC2cQ2svKFNAekXtExpV1mlk7k8";
 
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
@@ -92,11 +91,12 @@ public class FlattrUtils {
 			FlattrService fs = factory.createFlattrService(retrieveToken());
 			try {
 				fs.click(url);
-			} catch (ForbiddenException fe) {
-				deleteToken();
-				showForbiddenDialog(context, url);
+				Toast toast = Toast.makeText(context.getApplicationContext(),
+						R.string.flattr_click_success, Toast.LENGTH_LONG);
+				toast.show();
 			} catch (FlattrException e) {
 				e.printStackTrace();
+				showErrorDialog(context, e.getMessage());
 			}
 		} else {
 			showNoTokenDialog(context, url);
@@ -172,6 +172,20 @@ public class FlattrUtils {
 					}
 
 				});
+		builder.create().show();
+	}
+
+	private static void showErrorDialog(final Context context, final String msg) {
+		AlertDialog.Builder builder = new AlertDialog.Builder(context);
+		builder.setTitle(R.string.error_label);
+		builder.setMessage(msg);
+		builder.setNeutralButton(android.R.string.ok, new OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.cancel();
+			}
+		});
 		builder.create().show();
 	}
 }

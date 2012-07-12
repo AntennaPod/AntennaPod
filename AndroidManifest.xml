@@ -52,9 +52,13 @@
             android:enabled="true" >
         </service>
 
-        <activity android:name=".activity.PreferenceActivity" android:label="@string/settings_label">
+        <activity
+            android:name=".activity.PreferenceActivity"
+            android:label="@string/settings_label" >
         </activity>
-        <activity android:name=".activity.DownloadLogActivity" android:label="@string/download_log_label">
+        <activity
+            android:name=".activity.DownloadLogActivity"
+            android:label="@string/download_log_label" >
         </activity>
 
         <receiver android:name=".receiver.MediaButtonReceiver" >
@@ -62,7 +66,7 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.podfetcher.NOTIFY_BUTTON_RECEIVER"/>
+                <action android:name="de.podfetcher.NOTIFY_BUTTON_RECEIVER" />
             </intent-filter>
         </receiver>
 
@@ -74,25 +78,44 @@
             android:enabled="true"
             android:exported="false" >
         </service>
-        <receiver android:name=".receiver.PlayerWidget">
+
+        <receiver android:name=".receiver.PlayerWidget" >
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.podfetcher.FORCE_WIDGET_UPDATE"/>
+                <action android:name="de.podfetcher.FORCE_WIDGET_UPDATE" />
             </intent-filter>
-            <meta-data android:resource="@xml/player_widget_info" android:name="android.appwidget.provider"/>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/player_widget_info" />
         </receiver>
-        <receiver android:name=".receiver.FeedUpdateReceiver">
+        <receiver android:name=".receiver.FeedUpdateReceiver" >
             <intent-filter>
-                <action android:name="de.podfetcher.feedupdatereceiver.refreshFeeds"/>
+                <action android:name="de.podfetcher.feedupdatereceiver.refreshFeeds" />
             </intent-filter>
         </receiver>
-        <activity android:name=".activity.StorageErrorActivity"></activity>
-        <activity android:name=".activity.FlattrAuthActivity" android:label="@string/flattr_auth_label">
+
+        <activity android:name=".activity.StorageErrorActivity" >
+        </activity>
+        <activity
+            android:name=".activity.FlattrAuthActivity"
+            android:label="@string/flattr_auth_label" >
             <intent-filter>
-                <action android:name=".activities.FlattrAuthActivity"/>
-                <category android:name="android.intent.category.DEFAULT"/>
+                <action android:name=".activities.FlattrAuthActivity" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data
+                    android:host="de.danoeh.antennapod"
+                    android:scheme="flattr4j" />
             </intent-filter>
         </activity>
     </application>
