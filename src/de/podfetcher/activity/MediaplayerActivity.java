@@ -702,7 +702,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					return activity.coverFragment;
 				case POS_DESCR:
 					activity.descriptionFragment = ItemDescriptionFragment
-							.newInstance(activity.media.getItem());
+							.newInstance(activity.media.getItem(), true);
 					return activity.descriptionFragment;
 				default:
 					return CoverFragment.newInstance(null);

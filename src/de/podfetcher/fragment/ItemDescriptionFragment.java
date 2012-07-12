@@ -26,19 +26,22 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private static final String TAG = "ItemDescriptionFragment";
 	private static final String ARG_FEED_ID = "arg.feedId";
 	private static final String ARG_FEEDITEM_ID = "arg.feedItemId";
+	private static final String ARG_SCROLLBAR_ENABLED = "arg.scrollbarEnabled";
 
 	private static final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { font-family: Helvetica; line-height: 1.5em; font-size: 12pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
 
+	private boolean scrollbarEnabled;
 	private WebView webvDescription;
 	private FeedItem item;
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
 
-	public static ItemDescriptionFragment newInstance(FeedItem item) {
+	public static ItemDescriptionFragment newInstance(FeedItem item, boolean scrollbarEnabled) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
 		args.putLong(ARG_FEED_ID, item.getFeed().getId());
 		args.putLong(ARG_FEEDITEM_ID, item.getId());
+		args.putBoolean(ARG_SCROLLBAR_ENABLED, scrollbarEnabled);
 		f.setArguments(args);
 		return f;
 	}
@@ -47,6 +50,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		webvDescription = new WebView(getActivity());
+		webvDescription.setHorizontalScrollBarEnabled(scrollbarEnabled);
 		return webvDescription;
 	}
 
@@ -82,6 +86,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		Bundle args = getArguments();
 		long feedId = args.getLong(ARG_FEED_ID, -1);
 		long itemId = args.getLong(ARG_FEEDITEM_ID, -1);
+		scrollbarEnabled = args.getBoolean(ARG_SCROLLBAR_ENABLED, true);
 		if (feedId != -1 && itemId != -1) {
 			Feed feed = manager.getFeed(feedId);
 			item = manager.getFeedItem(itemId, feed);

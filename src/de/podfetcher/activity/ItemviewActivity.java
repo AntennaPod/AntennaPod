@@ -43,6 +43,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		extractFeeditem();
 		populateUI();
 	}
@@ -90,8 +91,8 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		ItemDescriptionFragment fragment = ItemDescriptionFragment
-				.newInstance(item);
+		ItemDescriptionFragment fragment = ItemDescriptionFragment.newInstance(
+				item, false);
 		fragmentTransaction.add(R.id.description_fragment, fragment);
 		fragmentTransaction.commit();
 	}

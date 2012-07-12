@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
     <LinearLayout
         android:layout_width="fill_parent"
@@ -13,29 +12,32 @@
             android:id="@+id/txtvItemname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textSize="16dp" />
+            android:layout_margin="8dp"
+            android:textSize="18dp" />
 
         <TextView
             android:id="@+id/txtvPublished"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:textStyle="italic"
-            android:textColor="@color/gray" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/gray"
+            android:textStyle="italic" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_marginBottom="8dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:background="@color/ics_gray" />
+
+        <FrameLayout
+            android:id="@+id/description_fragment"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+        </FrameLayout>
     </LinearLayout>
-	<TextView 
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content"
-	    android:layout_marginTop="8dp"
-	    android:background="@color/gray"
-	    android:textColor="@color/white"
-	    android:textStyle="bold"
-	    android:gravity="center_horizontal"
-	    android:text="@string/description_label"/>
 
-	<FrameLayout
-	    android:id="@+id/description_fragment"
-	    android:layout_width="match_parent"
-	    android:layout_height="wrap_content" >
-	</FrameLayout>
-
-</LinearLayout>
+</ScrollView>
