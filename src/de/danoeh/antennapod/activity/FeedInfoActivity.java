@@ -12,6 +12,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.R;
 
 /** Displays information about a feed. */
@@ -50,7 +51,7 @@ public class FeedInfoActivity extends SherlockActivity {
 				txtvAuthor.setText(feed.getAuthor());
 			}
 			if (feed.getLanguage() != null) {
-				txtvLanguage.setText(feed.getLanguage());
+				txtvLanguage.setText(LangUtils.getLanguageString(feed.getLanguage()));
 			}
 		} else {
 			Log.e(TAG, "Activity was started with invalid arguments");
