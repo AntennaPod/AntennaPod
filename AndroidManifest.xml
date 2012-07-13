@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.podfetcher"
+    package="de.danoeh.antennapod"
     android:versionCode="1"
     android:versionName="1.0" >
 
@@ -13,13 +13,13 @@
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
 
     <application
-        android:name="de.podfetcher.PodcastApp"
+        android:name="de.danoeh.antennapod.PodcastApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
         android:theme="@style/Theme.Sherlock.Light.ForceOverflow" >
         <activity
-            android:name="de.podfetcher.activity.PodfetcherActivity"
+            android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/StyledIndicators" >
             <intent-filter>
@@ -29,26 +29,26 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="de.podfetcher.activity.AddFeedActivity"
+            android:name="de.danoeh.antennapod.activity.AddFeedActivity"
             android:label="@string/add_new_feed_label" />
         <activity
-            android:name="de.podfetcher.activity.FeedItemlistActivity"
+            android:name="de.danoeh.antennapod.activity.FeedItemlistActivity"
             android:configChanges="orientation|screenSize" />
-        <activity android:name="de.podfetcher.activity.ItemviewActivity" />
+        <activity android:name="de.danoeh.antennapod.activity.ItemviewActivity" />
         <activity
-            android:name="de.podfetcher.activity.DownloadActivity"
+            android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />
         <activity
-            android:name="de.podfetcher.activity.MediaplayerActivity"
+            android:name="de.danoeh.antennapod.activity.MediaplayerActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:theme="@style/Theme.MediaPlayer" />
 
         <service
-            android:name="de.podfetcher.service.DownloadService"
+            android:name="de.danoeh.antennapod.service.DownloadService"
             android:enabled="true" />
         <service
-            android:name="de.podfetcher.service.PlaybackService"
+            android:name="de.danoeh.antennapod.service.PlaybackService"
             android:enabled="true" >
         </service>
 
@@ -66,7 +66,7 @@
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.podfetcher.NOTIFY_BUTTON_RECEIVER" />
+                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER" />
             </intent-filter>
         </receiver>
 
@@ -84,7 +84,7 @@
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.podfetcher.FORCE_WIDGET_UPDATE" />
+                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE" />
             </intent-filter>
 
             <meta-data
@@ -93,7 +93,7 @@
         </receiver>
         <receiver android:name=".receiver.FeedUpdateReceiver" >
             <intent-filter>
-                <action android:name="de.podfetcher.feedupdatereceiver.refreshFeeds" />
+                <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds" />
             </intent-filter>
         </receiver>
 

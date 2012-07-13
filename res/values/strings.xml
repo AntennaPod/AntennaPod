@@ -2,7 +2,7 @@
 <resources>
 
     <!-- Activitiy titles -->
-    <string name="app_name">Podfetcher</string>
+    <string name="app_name">Antennapod</string>
     <string name="feeds_label">Feeds</string>
     <string name="new_label">New</string>
     <string name="settings_label">Settings</string>
