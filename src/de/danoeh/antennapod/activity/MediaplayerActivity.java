@@ -213,6 +213,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			} else {
 				Log.d(TAG, "No last played media found");
 				status = PlayerStatus.STOPPED;
+				setupGUI();
 				handleStatus();
 			}
 		} else {
