@@ -13,8 +13,10 @@
     <LinearLayout
         android:id="@+id/player_control"
         android:layout_width="match_parent"
-        android:layout_height="80dp"
-        android:layout_alignParentBottom="true" >
+        android:layout_height="60dp"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="4dp"
+        android:layout_marginTop="8dp" >
 
         <ImageButton
             android:id="@+id/butRev"
@@ -24,11 +26,12 @@
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_rew" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <View
+            android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/vertical_divider" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/gray" />
 
         <ImageButton
             android:id="@+id/butPlay"
@@ -38,11 +41,12 @@
             android:background="@drawable/borderless_button"
             android:src="@android:drawable/ic_media_pause" />
 
-        <ImageView
-            android:layout_width="wrap_content"
+        <View
+            android:layout_width="0.5dp"
             android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:src="@drawable/vertical_divider" />
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="8dp"
+            android:background="@color/gray" />
 
         <ImageButton
             android:id="@+id/butFF"
@@ -59,25 +63,28 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/player_control"
         android:layout_alignParentLeft="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
         android:max="500" />
 
-    <ImageView
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0.5dp"
         android:layout_alignParentLeft="true"
         android:layout_below="@+id/sbPosition"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:padding="5dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/horizontal_divider" />
+        android:layout_margin="8dp"
+        android:background="@color/gray" />
 
     <RelativeLayout
         android:id="@+id/playtime_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/sbPosition"
-        android:layout_alignParentLeft="true" >
+        android:layout_alignParentLeft="true"
+        android:layout_marginTop="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp" >
 
         <TextView
             android:id="@+id/txtvPosition"
@@ -110,16 +117,5 @@
         android:layout_above="@id/playtime_layout"
         android:layout_below="@id/tabs" >
     </android.support.v4.view.ViewPager>
-
-    <ImageView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="5dp"
-        android:layout_marginTop="5dp"
-        android:padding="5dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/horizontal_divider" />
 
 </RelativeLayout>
