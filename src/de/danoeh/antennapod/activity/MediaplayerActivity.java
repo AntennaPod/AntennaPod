@@ -19,32 +19,27 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
-import android.view.SurfaceView;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.VideoView;
-import android.widget.ViewSwitcher;
 
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.fragment.CoverFragment;
@@ -52,10 +47,8 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.R;
 
 public class MediaplayerActivity extends SherlockFragmentActivity implements
 		SurfaceHolder.Callback {
@@ -165,7 +158,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
-		if (playbackService.isRunning && playbackService != null
+		if (PlaybackService.isRunning && playbackService != null
 				&& playbackService.isPlayingVideo()) {
 			playbackService.stop();
 		}
@@ -471,18 +464,18 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	}
 
 	private void handleError(int errorCode) {
-		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
+		final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog
 				.setMessage(MediaPlayerError.getErrorString(this, errorCode));
-		errorDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		errorDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				errorDialog.dismiss();
+				dialog.dismiss();
 				finish();
 			}
 		});
-		errorDialog.show();
+		errorDialog.create().show();
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {
