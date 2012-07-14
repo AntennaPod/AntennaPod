@@ -30,7 +30,13 @@
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
-            android:label="@string/add_new_feed_label" />
+            android:label="@string/add_new_feed_label" >
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <data android:mimeType="text/plain"/>
+            </intent-filter>
+        </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.FeedItemlistActivity"
             android:configChanges="orientation|screenSize" />

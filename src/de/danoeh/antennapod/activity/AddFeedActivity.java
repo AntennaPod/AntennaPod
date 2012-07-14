@@ -101,6 +101,16 @@ public class AddFeedActivity extends SherlockActivity {
 	protected void onResume() {
 		super.onResume();
 		StorageUtils.checkStorageAvailability(this);
+		Intent intent = getIntent();
+		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)) {
+			Log.d(TAG, "Was started with ACTION_SEND intent");
+			String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+			if (text != null) {
+				etxtFeedurl.setText(text);
+			} else {
+				Log.d(TAG, "No text was sent");
+			}
+		}
 
 	}
 
