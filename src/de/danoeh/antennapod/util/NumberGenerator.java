@@ -18,8 +18,6 @@ public final class NumberGenerator {
      *  @return The generated random value
      * */
     public static long generateLong(final String strSeed) {
-        long seed = (long) strSeed.hashCode();
-        Log.d(TAG, "Taking " + seed + " as seed.");
-        return new Random(seed).nextLong();
+        return strSeed.hashCode();
     }
 }

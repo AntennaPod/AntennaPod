@@ -24,7 +24,7 @@ import android.os.RemoteException;
 import android.content.Intent;
 import android.webkit.URLUtil;
 
-public class DownloadRequester {
+public class DownloadRequester {// TODO handle externalstorage missing
 	private static final String TAG = "DownloadRequester";
 	private static final int currentApi = android.os.Build.VERSION.SDK_INT;
 
@@ -32,7 +32,6 @@ public class DownloadRequester {
 	public static String EXTRA_ITEM_ID = "extra.de.danoeh.antennapod.storage.item_id";
 
 	public static String ACTION_DOWNLOAD_QUEUED = "action.de.danoeh.antennapod.storage.downloadQueued";
-	
 
 	private static boolean STORE_ON_SD = true;
 	public static String IMAGE_DOWNLOADPATH = "images/";
@@ -77,7 +76,7 @@ public class DownloadRequester {
 		// TODO Set Allowed Network Types
 		DownloadManager manager = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
-		
+
 		long downloadId = manager.enqueue(request);
 		item.setDownloadId(downloadId);
 		item.setFile_url(dest.toString());
@@ -125,7 +124,7 @@ public class DownloadRequester {
 			notifyDownloadService(context);
 		}
 	}
-	
+
 	/** Cancels all running downloads */
 	public void cancelAllDownloads(Context context) {
 		Log.d(TAG, "Cancelling all running downloads");
@@ -149,7 +148,7 @@ public class DownloadRequester {
 		}
 		return null;
 	}
-	
+
 	/** Returns true if there is at least one Feed in the downloads queue. */
 	public boolean isDownloadingFeeds() {
 		for (FeedFile f : downloads) {
@@ -159,7 +158,7 @@ public class DownloadRequester {
 		}
 		return false;
 	}
-	
+
 	/** Checks if feedfile is in the downloads list */
 	public boolean isDownloadingFile(FeedFile item) {
 		for (FeedFile f : downloads) {
@@ -201,11 +200,9 @@ public class DownloadRequester {
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media) {
-		return context
-				.getExternalFilesDir(
-						MEDIA_DOWNLOADPATH
-								+ media.getItem().getFeed().getTitle() + "/")
-				.toString();
+		File externalStorage = context.getExternalFilesDir(MEDIA_DOWNLOADPATH
+				+ NumberGenerator.generateLong(media.getItem().getFeed().getTitle()) + "/");
+		return externalStorage.toString();
 	}
 
 	public String getMediafilename(FeedMedia media) {
