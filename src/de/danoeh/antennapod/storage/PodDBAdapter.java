@@ -26,6 +26,8 @@ public class PodDBAdapter {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
+	public static final int KEY_INDEX = 0;
+	
 	// Key-constants
 	public static final String KEY_ID = "id";
 	public static final String KEY_TITLE = "title";
@@ -57,6 +59,7 @@ public class PodDBAdapter {
 	public static final String KEY_START = "start";
 	public static final String KEY_LANGUAGE = "language";
 	public static final String KEY_AUTHOR = "author";
+	public static final String KEY_HAS_SIMPLECHAPTERS = "has_simple_chapters";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -85,7 +88,7 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
 			+ KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE + " INTEGER,"
 			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER," + KEY_READ
-			+ " INTEGER," + KEY_PAYMENT_LINK + " TEXT)";
+			+ " INTEGER," + KEY_PAYMENT_LINK + " TEXT," + KEY_HAS_SIMPLECHAPTERS + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_CATEGORIES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_CATEGORIES + " (" + TABLE_PRIMARY_KEY + KEY_NAME
@@ -252,8 +255,11 @@ public class PodDBAdapter {
 		}
 		return media.getId();
 	}
-	
-	/** Insert all FeedItems of a feed and the feed object itself in a single transaction */
+
+	/**
+	 * Insert all FeedItems of a feed and the feed object itself in a single
+	 * transaction
+	 */
 	public void setCompleteFeed(Feed feed) {
 		db.beginTransaction();
 		setFeed(feed);
@@ -263,7 +269,7 @@ public class PodDBAdapter {
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
-	
+
 	public long setSingleFeedItem(FeedItem item) {
 		db.beginTransaction();
 		long result = setFeedItem(item);
@@ -296,12 +302,10 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
-
+		values.put(KEY_HAS_SIMPLECHAPTERS, item.getSimpleChapters() != null);
 		if (item.getId() == 0) {
-			Log.d(TAG, "inserting new feeditem into db");
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
-			Log.d(TAG, "updating existing feeditem in db");
 			db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
 					new String[] { String.valueOf(item.getId()) });
 		}
@@ -511,7 +515,7 @@ public class PodDBAdapter {
 			final FeedItem owner) throws SQLException {
 		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
 				new String[] { String.valueOf(rowIndex) }, null, null, null);
-		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
+		if (!cursor.moveToFirst()) {
 			throw new SQLException("No FeedMedia found at index: " + rowIndex);
 		}
 		FeedMedia media = new FeedMedia(rowIndex, owner, cursor.getInt(cursor
@@ -524,6 +528,21 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
 		cursor.close();
 		return media;
+	}
+
+	public final Cursor getFeedMediaCursor(String... mediaIds) {
+		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + " IN "
+				+ buildInOperator(mediaIds.length), mediaIds, null, null, null);
+	}
+
+	/** Builds an IN-operator argument depending on the number of items. */
+	private String buildInOperator(int size) {
+		StringBuffer buffer = new StringBuffer("(");
+		for (int i = 0; i <= size; i++) {
+			buffer.append("?,");
+		}
+		buffer.append("?)");
+		return buffer.toString();
 	}
 
 	/**

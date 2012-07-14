@@ -24,6 +24,14 @@ public class FeedMedia extends FeedFile{
 		this.size = size;
 		this.mime_type = mime_type;
 	}
+	
+	
+
+	public FeedMedia(long id,FeedItem item) {
+		super();
+		this.id = id;
+		this.item = item;
+	}
 
 	public int getDuration() {
 		return duration;

@@ -569,8 +569,7 @@ public class FeedManager {
 								.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE)));
 				Feed feed = new Feed(lastUpdate);
 
-				feed.id = feedlistCursor.getLong(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_ID));
+				feed.id = feedlistCursor.getLong(PodDBAdapter.KEY_INDEX);
 				feed.setTitle(feedlistCursor.getString(feedlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 				feed.setLink(feedlistCursor.getString(feedlistCursor
@@ -609,12 +608,13 @@ public class FeedManager {
 			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
 		Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
+		ArrayList<String> mediaIds = new ArrayList<String>();
+
 		if (itemlistCursor.moveToFirst()) {
 			do {
 				FeedItem item = new FeedItem();
 
-				item.id = itemlistCursor.getLong(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_ID));
+				item.id = itemlistCursor.getLong(PodDBAdapter.KEY_INDEX);
 				item.setFeed(feed);
 				item.setTitle(itemlistCursor.getString(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
@@ -631,7 +631,8 @@ public class FeedManager {
 				long mediaId = itemlistCursor.getLong(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_MEDIA));
 				if (mediaId != 0) {
-					item.setMedia(adapter.getFeedMedia(mediaId, item));
+					mediaIds.add(String.valueOf(mediaId));
+					item.setMedia(new FeedMedia(mediaId, item));
 				}
 				item.read = (itemlistCursor.getInt(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true
@@ -641,27 +642,78 @@ public class FeedManager {
 				}
 
 				// extract chapters
-				Cursor chapterCursor = adapter
-						.getSimpleChaptersOfFeedItemCursor(item);
-				if (chapterCursor.moveToFirst()) {
-					item.setSimpleChapters(new ArrayList<SimpleChapter>());
-					do {
-						SimpleChapter chapter = new SimpleChapter(
-								chapterCursor
-										.getLong(chapterCursor
-												.getColumnIndex(PodDBAdapter.KEY_START)),
-								chapterCursor.getString(chapterCursor
-										.getColumnIndex(PodDBAdapter.KEY_TITLE)));
-						item.getSimpleChapters().add(chapter);
-					} while (chapterCursor.moveToNext());
+				boolean hasSimpleChapters = itemlistCursor
+						.getInt(itemlistCursor
+								.getColumnIndex(PodDBAdapter.KEY_HAS_SIMPLECHAPTERS)) > 0;
+				if (hasSimpleChapters) {
+					Cursor chapterCursor = adapter
+							.getSimpleChaptersOfFeedItemCursor(item);
+					if (chapterCursor.moveToFirst()) {
+						item.setSimpleChapters(new ArrayList<SimpleChapter>());
+						do {
+							SimpleChapter chapter = new SimpleChapter(
+									chapterCursor
+											.getLong(chapterCursor
+													.getColumnIndex(PodDBAdapter.KEY_START)),
+									chapterCursor.getString(chapterCursor
+											.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+							item.getSimpleChapters().add(chapter);
+						} while (chapterCursor.moveToNext());
+					}
+					chapterCursor.close();
 				}
-				chapterCursor.close();
-
 				items.add(item);
 			} while (itemlistCursor.moveToNext());
 		}
+		extractMediafromFeedItemlist(adapter, items, mediaIds);
 		Collections.sort(items, new FeedItemPubdateComparator());
 		return items;
+	}
+
+	private void extractMediafromFeedItemlist(PodDBAdapter adapter,
+			ArrayList<FeedItem> items, ArrayList<String> mediaIds) {
+		ArrayList<FeedItem> itemsCopy = new ArrayList<FeedItem>(items);
+		Cursor cursor = adapter.getFeedMediaCursor(mediaIds
+				.toArray(new String[mediaIds.size()]));
+		if (cursor.moveToFirst()) {
+			do {
+				long mediaId = cursor.getLong(PodDBAdapter.KEY_INDEX);
+				// find matching feed item
+				FeedItem item = getMatchingItemForMedia(mediaId, itemsCopy);
+				itemsCopy.remove(item);
+				if (item != null) {
+					item.setMedia(new FeedMedia(
+							mediaId,
+							item,
+							cursor.getInt(cursor
+									.getColumnIndex(PodDBAdapter.KEY_DURATION)),
+							cursor.getInt(cursor
+									.getColumnIndex(PodDBAdapter.KEY_POSITION)),
+							cursor.getLong(cursor
+									.getColumnIndex(PodDBAdapter.KEY_SIZE)),
+							cursor.getString(cursor
+									.getColumnIndex(PodDBAdapter.KEY_MIME_TYPE)),
+							cursor.getString(cursor
+									.getColumnIndex(PodDBAdapter.KEY_FILE_URL)),
+							cursor.getString(cursor
+									.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL)),
+							cursor.getInt(cursor
+									.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED)) > 0));
+
+				}
+			} while (cursor.moveToNext());
+			cursor.close();
+		}
+	}
+
+	private FeedItem getMatchingItemForMedia(long mediaId,
+			ArrayList<FeedItem> items) {
+		for (FeedItem item : items) {
+			if (item.getMedia() != null && item.getMedia().getId() == mediaId) {
+				return item;
+			}
+		}
+		return null;
 	}
 
 	private void extractDownloadLogFromCursor(Context context,
@@ -670,8 +722,7 @@ public class FeedManager {
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {
-				long id = logCursor.getLong(logCursor
-						.getColumnIndex(PodDBAdapter.KEY_ID));
+				long id = logCursor.getLong(PodDBAdapter.KEY_INDEX);
 				long feedfileId = logCursor.getLong(logCursor
 						.getColumnIndex(PodDBAdapter.KEY_FEEDFILE));
 				int feedfileType = logCursor.getInt(logCursor
@@ -708,8 +759,7 @@ public class FeedManager {
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
-				int index = cursor.getInt(cursor
-						.getColumnIndex(PodDBAdapter.KEY_ID));
+				int index = cursor.getInt(PodDBAdapter.KEY_INDEX);
 				Feed feed = getFeed(cursor.getLong(cursor
 						.getColumnIndex(PodDBAdapter.KEY_FEED)));
 				if (feed != null) {
