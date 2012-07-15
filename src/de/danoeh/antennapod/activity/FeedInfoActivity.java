@@ -7,11 +7,13 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.R;
 
@@ -21,6 +23,8 @@ public class FeedInfoActivity extends SherlockActivity {
 
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 
+	private Feed feed;
+	
 	private ImageView imgvCover;
 	private TextView txtvTitle;
 	private TextView txtvDescription;
@@ -34,7 +38,7 @@ public class FeedInfoActivity extends SherlockActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
 		FeedManager manager = FeedManager.getInstance();
-		Feed feed = manager.getFeed(feedId);
+		feed = manager.getFeed(feedId);
 		if (feed != null) {
 			Log.d(TAG, "Language is " + feed.getLanguage());
 			Log.d(TAG, "Author is " + feed.getAuthor());
@@ -63,8 +67,22 @@ public class FeedInfoActivity extends SherlockActivity {
 	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = new MenuInflater(this);
+		inflater.inflate(R.menu.feedinfo, menu);
 		return true;
 	}
+	
+	
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.support_item).setVisible(feed.getPaymentLink() != null);
+		menu.findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
+		
+		return true;
+	}
+
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -73,7 +91,7 @@ public class FeedInfoActivity extends SherlockActivity {
 			finish();
 			return true;
 		default:
-			return false;
+			return FeedMenuHandler.onOptionsItemClicked(this, item, feed);
 		}
 	}
 }

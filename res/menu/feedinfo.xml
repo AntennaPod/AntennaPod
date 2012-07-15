@@ -1,29 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item
-        android:id="@+id/refresh_item"
-        android:showAsAction="collapseActionView"
-        android:title="@string/refresh_label">
-    </item>
-    <item
-        android:id="@+id/mark_all_read_item"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/mark_all_read_label">
-    </item>
-    <item
-        android:id="@+id/show_info_item"
-        android:icon="@drawable/action_about"
-        android:showAsAction="always"
-        android:title="@string/show_info_label">
-    </item>
-    <item
-        android:id="@+id/remove_item"
-        android:icon="@drawable/content_discard"
-        android:showAsAction="collapseActionView"
-        android:title="@string/remove_feed_label"
-        android:visible="true">
-    </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="@drawable/location_web_site"
@@ -33,7 +9,7 @@
     </item>
     <item
         android:id="@+id/support_item"
-        android:showAsAction="collapseActionView"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>
