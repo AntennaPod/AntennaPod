@@ -565,32 +565,21 @@ public class FeedManager {
 		if (feedlistCursor.moveToFirst()) {
 			do {
 				Date lastUpdate = new Date(
-						feedlistCursor.getLong(feedlistCursor
-								.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE)));
+						feedlistCursor.getLong(PodDBAdapter.KEY_LAST_UPDATE_INDEX));
 				Feed feed = new Feed(lastUpdate);
 
 				feed.id = feedlistCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
-				feed.setTitle(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
-				feed.setLink(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_LINK)));
-				feed.setDescription(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
-				feed.setPaymentLink(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK)));
-				feed.setAuthor(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_AUTHOR)));
-				feed.setLanguage(feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_LANGUAGE)));
+				feed.setTitle(feedlistCursor.getString(PodDBAdapter.KEY_TITLE_INDEX));
+				feed.setLink(feedlistCursor.getString(PodDBAdapter.KEY_LINK_INDEX));
+				feed.setDescription(feedlistCursor.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
+				feed.setPaymentLink(feedlistCursor.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
+				feed.setAuthor(feedlistCursor.getString(PodDBAdapter.KEY_AUTHOR_INDEX));
+				feed.setLanguage(feedlistCursor.getString(PodDBAdapter.KEY_LANGUAGE_INDEX));
 				feed.setImage(adapter.getFeedImage(feedlistCursor
-						.getLong(feedlistCursor
-								.getColumnIndex(PodDBAdapter.KEY_IMAGE))));
-				feed.file_url = feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_FILE_URL));
-				feed.download_url = feedlistCursor.getString(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL));
-				feed.setDownloaded(feedlistCursor.getInt(feedlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED)) > 0);
+						.getLong(PodDBAdapter.KEY_IMAGE_INDEX)));
+				feed.file_url = feedlistCursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX);
+				feed.download_url = feedlistCursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX);
+				feed.setDownloaded(feedlistCursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed,
@@ -616,26 +605,18 @@ public class FeedManager {
 
 				item.id = itemlistCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
 				item.setFeed(feed);
-				item.setTitle(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
-				item.setLink(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_LINK)));
-				item.setDescription(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION)));
-				item.setContentEncoded(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_CONTENT_ENCODED)));
-				item.setPubDate(new Date(itemlistCursor.getLong(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_PUBDATE))));
-				item.setPaymentLink(itemlistCursor.getString(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK)));
-				long mediaId = itemlistCursor.getLong(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_MEDIA));
+				item.setTitle(itemlistCursor.getString(PodDBAdapter.KEY_TITLE_INDEX));
+				item.setLink(itemlistCursor.getString(PodDBAdapter.KEY_LINK_INDEX));
+				item.setDescription(itemlistCursor.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
+				item.setContentEncoded(itemlistCursor.getString(PodDBAdapter.KEY_CONTENT_ENCODED_INDEX));
+				item.setPubDate(new Date(itemlistCursor.getLong(PodDBAdapter.KEY_PUBDATE_INDEX)));
+				item.setPaymentLink(itemlistCursor.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
+				long mediaId = itemlistCursor.getLong(PodDBAdapter.KEY_MEDIA_INDEX);
 				if (mediaId != 0) {
 					mediaIds.add(String.valueOf(mediaId));
 					item.setMedia(new FeedMedia(mediaId, item));
 				}
-				item.read = (itemlistCursor.getInt(itemlistCursor
-						.getColumnIndex(PodDBAdapter.KEY_READ)) > 0) ? true
+				item.read = (itemlistCursor.getInt(PodDBAdapter.KEY_READ_INDEX) > 0) ? true
 						: false;
 				if (!item.read) {
 					unreadItems.add(item);
@@ -643,8 +624,7 @@ public class FeedManager {
 
 				// extract chapters
 				boolean hasSimpleChapters = itemlistCursor
-						.getInt(itemlistCursor
-								.getColumnIndex(PodDBAdapter.KEY_HAS_SIMPLECHAPTERS)) > 0;
+						.getInt(PodDBAdapter.KEY_HAS_SIMPLECHAPTERS_INDEX) > 0;
 				if (hasSimpleChapters) {
 					Cursor chapterCursor = adapter
 							.getSimpleChaptersOfFeedItemCursor(item);
@@ -653,10 +633,8 @@ public class FeedManager {
 						do {
 							SimpleChapter chapter = new SimpleChapter(
 									chapterCursor
-											.getLong(chapterCursor
-													.getColumnIndex(PodDBAdapter.KEY_START)),
-									chapterCursor.getString(chapterCursor
-											.getColumnIndex(PodDBAdapter.KEY_TITLE)));
+											.getLong(PodDBAdapter.KEY_SC_START_INDEX),
+									chapterCursor.getString(PodDBAdapter.KEY_TITLE_INDEX));
 							item.getSimpleChapters().add(chapter);
 						} while (chapterCursor.moveToNext());
 					}
@@ -685,20 +663,13 @@ public class FeedManager {
 					item.setMedia(new FeedMedia(
 							mediaId,
 							item,
-							cursor.getInt(cursor
-									.getColumnIndex(PodDBAdapter.KEY_DURATION)),
-							cursor.getInt(cursor
-									.getColumnIndex(PodDBAdapter.KEY_POSITION)),
-							cursor.getLong(cursor
-									.getColumnIndex(PodDBAdapter.KEY_SIZE)),
-							cursor.getString(cursor
-									.getColumnIndex(PodDBAdapter.KEY_MIME_TYPE)),
-							cursor.getString(cursor
-									.getColumnIndex(PodDBAdapter.KEY_FILE_URL)),
-							cursor.getString(cursor
-									.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL)),
-							cursor.getInt(cursor
-									.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED)) > 0));
+							cursor.getInt(PodDBAdapter.KEY_DURATION_INDEX),
+							cursor.getInt(PodDBAdapter.KEY_POSITION_INDEX),
+							cursor.getLong(PodDBAdapter.KEY_SIZE_INDEX),
+							cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
+							cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
+							cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
+							cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0));
 
 				}
 			} while (cursor.moveToNext());
@@ -723,10 +694,8 @@ public class FeedManager {
 		if (logCursor.moveToFirst()) {
 			do {
 				long id = logCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
-				long feedfileId = logCursor.getLong(logCursor
-						.getColumnIndex(PodDBAdapter.KEY_FEEDFILE));
-				int feedfileType = logCursor.getInt(logCursor
-						.getColumnIndex(PodDBAdapter.KEY_FEEDFILETYPE));
+				long feedfileId = logCursor.getLong(PodDBAdapter.KEY_FEEDFILE_INDEX);
+				int feedfileType = logCursor.getInt(PodDBAdapter.KEY_FEEDFILETYPE_INDEX);
 				FeedFile feedfile = null;
 				switch (feedfileType) {
 				case PodDBAdapter.FEEDFILETYPE_FEED:
@@ -739,12 +708,9 @@ public class FeedManager {
 					feedfile = getFeedMedia(feedfileId);
 				}
 				if (feedfile != null) { // otherwise ignore status
-					boolean successful = logCursor.getInt(logCursor
-							.getColumnIndex(PodDBAdapter.KEY_SUCCESSFUL)) > 0;
-					int reason = logCursor.getInt(logCursor
-							.getColumnIndex(PodDBAdapter.KEY_REASON));
-					Date completionDate = new Date(logCursor.getLong(logCursor
-							.getColumnIndex(PodDBAdapter.KEY_COMPLETION_DATE)));
+					boolean successful = logCursor.getInt(PodDBAdapter.KEY_SUCCESSFUL_INDEX) > 0;
+					int reason = logCursor.getInt(PodDBAdapter.KEY_REASON_INDEX);
+					Date completionDate = new Date(logCursor.getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
 					downloadLog.add(new DownloadStatus(id, feedfile,
 							successful, reason, completionDate));
 				}
@@ -760,11 +726,9 @@ public class FeedManager {
 		if (cursor.moveToFirst()) {
 			do {
 				int index = cursor.getInt(PodDBAdapter.KEY_ID_INDEX);
-				Feed feed = getFeed(cursor.getLong(cursor
-						.getColumnIndex(PodDBAdapter.KEY_FEED)));
+				Feed feed = getFeed(cursor.getLong(PodDBAdapter.KEY_QUEUE_FEED_INDEX));
 				if (feed != null) {
-					FeedItem item = getFeedItem(cursor.getLong(cursor
-							.getColumnIndex(PodDBAdapter.KEY_FEEDITEM)), feed);
+					FeedItem item = getFeedItem(cursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX), feed);
 					if (item != null) {
 						queue.add(index, item);
 					}
