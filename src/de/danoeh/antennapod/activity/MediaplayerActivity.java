@@ -228,13 +228,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				positionObserver.cancel(true);
 				positionObserver = null;
 			}
-			butPlay.setImageResource(android.R.drawable.ic_media_play);
+			butPlay.setImageResource(R.drawable.av_play);
 			break;
 		case PLAYING:
 			setStatusMsg(R.string.player_playing_msg, View.INVISIBLE);
 			loadMediaInfo();
 			setupPositionObserver();
-			butPlay.setImageResource(android.R.drawable.ic_media_pause);
+			butPlay.setImageResource(R.drawable.av_pause);
 			break;
 		case PREPARING:
 			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
@@ -246,7 +246,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		case PREPARED:
 			loadMediaInfo();
 			setStatusMsg(R.string.player_ready_msg, View.VISIBLE);
-			butPlay.setImageResource(android.R.drawable.ic_media_play);
+			butPlay.setImageResource(R.drawable.av_play);
 			break;
 		case SEEKING:
 			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);

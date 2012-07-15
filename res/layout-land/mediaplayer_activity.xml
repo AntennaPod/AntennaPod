@@ -32,7 +32,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:background="@drawable/borderless_button"
-                android:src="@android:drawable/ic_media_pause" />
+                android:src="@drawable/av_pause" />
 
             <ImageButton
                 android:id="@+id/butFF"
@@ -42,7 +42,7 @@
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/butPlay"
                 android:background="@drawable/borderless_button"
-                android:src="@android:drawable/ic_media_ff" />
+                android:src="@drawable/av_fast_forward" />
 
             <ImageButton
                 android:id="@+id/butRev"
@@ -52,8 +52,7 @@
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@+id/butPlay"
                 android:background="@drawable/borderless_button"
-                android:src="@android:drawable/ic_media_rew" />
-
+                android:src="@drawable/av_rewind" />
         </RelativeLayout>
 
         <RelativeLayout
@@ -74,10 +73,10 @@
                 android:id="@+id/txtvLength"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
                 android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
                 android:text="@string/position_default_label" />
-            
+
             <SeekBar
                 android:id="@+id/sbPosition"
                 android:layout_width="0px"
@@ -87,9 +86,7 @@
                 android:layout_toLeftOf="@+id/txtvLength"
                 android:layout_toRightOf="@+id/txtvPosition"
                 android:max="500" />
-
         </RelativeLayout>
-
     </LinearLayout>
 
 </FrameLayout>
