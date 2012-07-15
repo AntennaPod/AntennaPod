@@ -35,6 +35,7 @@ import android.widget.VideoView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TabPageIndicator;
 
@@ -47,6 +48,7 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.FeedItemMenuHandler;
 import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
 
@@ -118,6 +120,16 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = new MenuInflater(this);
+		inflater.inflate(R.menu.mediaplayer, menu);
+		return true;
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.support_item).setVisible(media.getItem().getPaymentLink() != null);
+		menu.findItem(R.id.share_link_item).setVisible(media.getItem().getLink() != null);
+		menu.findItem(R.id.visit_website_item).setVisible(media.getItem().getLink() != null);
 		return true;
 	}
 
@@ -128,7 +140,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			finish();
 			break;
 		default:
-			return false;
+			return FeedItemMenuHandler.onMenuItemClicked(this, item, media.getItem());
 		}
 		return true;
 	}
@@ -468,13 +480,14 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog
 				.setMessage(MediaPlayerError.getErrorString(this, errorCode));
-		errorDialog.setNeutralButton("OK", new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.dismiss();
-				finish();
-			}
-		});
+		errorDialog.setNeutralButton("OK",
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						finish();
+					}
+				});
 		errorDialog.create().show();
 	}
 
