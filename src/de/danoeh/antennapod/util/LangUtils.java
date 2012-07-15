@@ -67,7 +67,42 @@ public class LangUtils {
 		languages.put("no", "Norwegian");
 		languages.put("pl", "Polish");
 		languages.put("pt", "Portugese");
-		languages.put("pt-br", "Portugese (Brazil)"); // TODO complete
+		languages.put("pt-br", "Portugese (Brazil)");
+		languages.put("pt-pt", "Portugese (Portugal");
+		languages.put("ro", "Romanian");
+		languages.put("ro-mo", "Romanian (Moldova)");
+		languages.put("ro-ro", "Romanian (Romania");
+		languages.put("ru", "Russian");
+		languages.put("ru-mo", "Russian (Moldova)");
+		languages.put("ru-ru", "Russian (Russia)");
+		languages.put("sr", "Serbian");
+		languages.put("sk", "Slovak");
+		languages.put("sl", "Slovenian");
+		languages.put("es", "Spanish");
+		languages.put("es-ar", "Spanish (Argentinia)");
+		languages.put("es=bo", "Spanish (Bolivia)");
+		languages.put("es-cl", "Spanish (Chile)");
+		languages.put("es-co", "Spanish (Colombia)");
+		languages.put("es-cr", "Spanish (Costa Rica)");
+		languages.put("es-do", "Spanish (Dominican Republic)");
+		languages.put("es-ec", "Spanish (Ecuador)");
+		languages.put("es-sv", "Spanish (El Salvador)");
+		languages.put("es-gt", "Spanish (Guatemala)");
+		languages.put("es-hn", "Spanish (Honduras)");
+		languages.put("es-mx", "Spanish (Mexico)");
+		languages.put("es-ni", "Spanish (Nicaragua)");
+		languages.put("es-pa", "Spanish (Panama)");
+		languages.put("es-py", "Spanish (Paraguay)");
+		languages.put("es-pe", "Spanish (Peru)");
+		languages.put("es-pr", "Spanish (Puerto Rico)");
+		languages.put("es-es", "Spanish (Spain)");
+		languages.put("es-uy", "Spanish (Uruguay)");
+		languages.put("es-ve", "Spanish (Venezuela)");
+		languages.put("sv", "Swedish");
+		languages.put("sv-fi", "Swedish (Finland)");
+		languages.put("sv-se", "Swedish (Sweden)");
+		languages.put("tr", "Turkish");
+		languages.put("uk", "Ukranian");
 	}
 	
 	/** Finds language string for key or returns the language key if it can't be found. */
