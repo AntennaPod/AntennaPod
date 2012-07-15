@@ -569,7 +569,7 @@ public class FeedManager {
 								.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE)));
 				Feed feed = new Feed(lastUpdate);
 
-				feed.id = feedlistCursor.getLong(PodDBAdapter.KEY_INDEX);
+				feed.id = feedlistCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
 				feed.setTitle(feedlistCursor.getString(feedlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
 				feed.setLink(feedlistCursor.getString(feedlistCursor
@@ -614,7 +614,7 @@ public class FeedManager {
 			do {
 				FeedItem item = new FeedItem();
 
-				item.id = itemlistCursor.getLong(PodDBAdapter.KEY_INDEX);
+				item.id = itemlistCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
 				item.setFeed(feed);
 				item.setTitle(itemlistCursor.getString(itemlistCursor
 						.getColumnIndex(PodDBAdapter.KEY_TITLE)));
@@ -677,7 +677,7 @@ public class FeedManager {
 				.toArray(new String[mediaIds.size()]));
 		if (cursor.moveToFirst()) {
 			do {
-				long mediaId = cursor.getLong(PodDBAdapter.KEY_INDEX);
+				long mediaId = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
 				// find matching feed item
 				FeedItem item = getMatchingItemForMedia(mediaId, itemsCopy);
 				itemsCopy.remove(item);
@@ -722,7 +722,7 @@ public class FeedManager {
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {
-				long id = logCursor.getLong(PodDBAdapter.KEY_INDEX);
+				long id = logCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
 				long feedfileId = logCursor.getLong(logCursor
 						.getColumnIndex(PodDBAdapter.KEY_FEEDFILE));
 				int feedfileType = logCursor.getInt(logCursor
@@ -759,7 +759,7 @@ public class FeedManager {
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {
-				int index = cursor.getInt(PodDBAdapter.KEY_INDEX);
+				int index = cursor.getInt(PodDBAdapter.KEY_ID_INDEX);
 				Feed feed = getFeed(cursor.getLong(cursor
 						.getColumnIndex(PodDBAdapter.KEY_FEED)));
 				if (feed != null) {

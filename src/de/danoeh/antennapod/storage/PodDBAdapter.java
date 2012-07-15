@@ -26,7 +26,47 @@ public class PodDBAdapter {
 	private static final int DATABASE_VERSION = 1;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
-	public static final int KEY_INDEX = 0;
+	
+	// -----------	Column indices
+	// ----------- General indices
+	public static final int KEY_ID_INDEX = 0;
+	public static final int KEY_TITLE_INDEX = 1;
+	public static final int KEY_FILE_URL_INDEX = 2;
+	public static final int KEY_DOWNLOAD_URL_INDEX = 3;
+	public static final int KEY_DOWNLOADED_INDEX = 4;
+	public static final int KEY_LINK_INDEX = 5;
+	public static final int KEY_DESCRIPTION_INDEX = 6;
+	public static final int KEY_PAYMENT_LINK_INDEX = 7;
+	// ----------- Feed indices
+	public static final int KEY_LAST_UPDATE_INDEX = 8;
+	public static final int KEY_LANGUAGE_INDEX = 9;
+	public static final int KEY_AUTHOR_INDEX = 10;
+	public static final int KEY_IMAGE_INDEX = 11;
+	// ----------- FeedItem indices
+	public static final int KEY_CONTENT_ENCODED_INDEX = 2;
+	public static final int KEY_PUBDATE_INDEX = 3;
+	public static final int KEY_READ_INDEX = 4;
+	public static final int KEY_MEDIA_INDEX = 8;
+	public static final int KEY_FEED_INDEX = 9;
+	public static final int KEY_HAS_SIMPLECHAPTERS_INDEX = 10;
+	// ---------- FeedMedia indices
+	public static final int KEY_DURATION_INDEX = 1;
+	public static final int KEY_POSITION_INDEX = 5;
+	public static final int KEY_SIZE_INDEX = 6;
+	public static final int KEY_MIME_TYPE_INDEX = 7;
+	// --------- Download log indices
+	public static final int KEY_FEEDFILE_INDEX = 1;
+	public static final int KEY_FEEDFILETYPE_INDEX = 2;
+	public static final int KEY_REASON_INDEX = 3;
+	public static final int KEY_SUCCESSFUL_INDEX = 4;
+	public static final int KEY_COMPLETION_DATE_INDEX = 5;
+	// --------- Queue indices
+	public static final int KEY_FEEDITEM_INDEX = 1;
+	public static final int KEY_QUEUE_FEED_INDEX = 2;
+	// --------- Simplechapters indices
+	public static final int KEY_SC_START_INDEX = 2;
+	public static final int KEY_SC_FEEDITEM_INDEX = 3;
+	
 	
 	// Key-constants
 	public static final String KEY_ID = "id";
@@ -43,7 +83,6 @@ public class PodDBAdapter {
 	public static final String KEY_SIZE = "filesize";
 	public static final String KEY_MIME_TYPE = "mime_type";
 	public static final String KEY_IMAGE = "image";
-	public static final String KEY_CATEGORY = "category";
 	public static final String KEY_FEED = "feed";
 	public static final String KEY_MEDIA = "media";
 	public static final String KEY_DOWNLOADED = "downloaded";
@@ -64,7 +103,6 @@ public class PodDBAdapter {
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
-	public static final String TABLE_NAME_FEED_CATEGORIES = "FeedCategories";
 	public static final String TABLE_NAME_FEED_IMAGES = "FeedImages";
 	public static final String TABLE_NAME_FEED_MEDIA = "FeedMedia";
 	public static final String TABLE_NAME_DOWNLOAD_LOG = "DownloadLog";
@@ -74,50 +112,70 @@ public class PodDBAdapter {
 	// SQL Statements for creating new tables
 	private static final String TABLE_PRIMARY_KEY = KEY_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT ,";
+	
 	private static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
-			+ TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
-			+ KEY_IMAGE + " INTEGER," + KEY_CATEGORY + " INTEGER,"
-			+ KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
-			+ KEY_DOWNLOADED + " INTEGER," + KEY_LASTUPDATE + " TEXT,"
-			+ KEY_PAYMENT_LINK + " TEXT," + KEY_LANGUAGE + " TEXT,"
-			+ KEY_AUTHOR + " TEXT)";
+			+ TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + 
+			KEY_TITLE + " TEXT," + 
+			KEY_FILE_URL + " TEXT," + 
+			KEY_DOWNLOAD_URL + " TEXT," +
+			KEY_DOWNLOADED + " INTEGER," + 
+			KEY_LINK + " TEXT," + 
+			KEY_DESCRIPTION + " TEXT," +
+			KEY_PAYMENT_LINK + " TEXT," + 
+			KEY_LASTUPDATE + " TEXT," +
+			KEY_LANGUAGE + " TEXT," +
+			KEY_AUTHOR + " TEXT," +
+			KEY_IMAGE + " INTEGER)";
+;
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
-			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-			+ " TEXT," + KEY_LINK + " TEXT," + KEY_DESCRIPTION + " TEXT,"
-			+ KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE + " INTEGER,"
-			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER," + KEY_READ
-			+ " INTEGER," + KEY_PAYMENT_LINK + " TEXT," + KEY_HAS_SIMPLECHAPTERS + " INTEGER)";
-
-	private static final String CREATE_TABLE_FEED_CATEGORIES = "CREATE TABLE "
-			+ TABLE_NAME_FEED_CATEGORIES + " (" + TABLE_PRIMARY_KEY + KEY_NAME
-			+ " TEXT)";
+			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + 
+			KEY_TITLE + " TEXT," + 
+			KEY_CONTENT_ENCODED + " TEXT," + 
+			KEY_PUBDATE + " INTEGER," +	
+			KEY_READ + " INTEGER," + 
+			KEY_LINK + " TEXT," + 
+			KEY_DESCRIPTION + " TEXT," + 
+			KEY_PAYMENT_LINK + " TEXT," + 
+			KEY_MEDIA + " INTEGER," + 
+			KEY_FEED + " INTEGER," + 
+			KEY_HAS_SIMPLECHAPTERS + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
-			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-			+ " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
+			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + 
+			KEY_TITLE + " TEXT," + 
+			KEY_FILE_URL + " TEXT," + 
+			KEY_DOWNLOAD_URL + " TEXT,"
 			+ KEY_DOWNLOADED + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
-			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
-			+ " INTEGER," + KEY_POSITION + " INTEGER," + KEY_SIZE + " INTEGER,"
-			+ KEY_MIME_TYPE + " TEXT," + KEY_FILE_URL + " TEXT,"
-			+ KEY_DOWNLOAD_URL + " TEXT," + KEY_DOWNLOADED + " INTEGER)";
+			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + 
+			KEY_DURATION + " INTEGER," + 
+			KEY_FILE_URL + " TEXT," +
+			KEY_DOWNLOAD_URL + " TEXT," + 
+			KEY_DOWNLOADED + " INTEGER," +
+			KEY_POSITION + " INTEGER," + 
+			KEY_SIZE + " INTEGER," +
+			KEY_MIME_TYPE + " TEXT)";
+			
 
 	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
-			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
-			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
-			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
-			+ " INTEGER)";
+			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + 
+			KEY_FEEDFILE + " INTEGER," + 
+			KEY_FEEDFILETYPE + " INTEGER," + 
+			KEY_REASON + " INTEGER," + 
+			KEY_SUCCESSFUL + " INTEGER," + 
+			KEY_COMPLETION_DATE + " INTEGER)";
 
 	private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
 			+ TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
 	private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
-			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
-			+ " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER)";
+			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + 
+			KEY_TITLE + " TEXT," + 
+			KEY_START + " INTEGER," + 
+			KEY_FEEDITEM + " INTEGER)";
 
 	/**
 	 * Used for storing download status entries to determine the type of the
@@ -173,12 +231,7 @@ public class PodDBAdapter {
 			}
 			values.put(KEY_IMAGE, feed.getImage().getId());
 		}
-		if (feed.getCategory() != null) {
-			if (feed.getCategory().getId() == 0) {
-				setCategory(feed.getCategory());
-			}
-			values.put(KEY_CATEGORY, feed.getCategory().getId());
-		}
+		
 		values.put(KEY_FILE_URL, feed.getFile_url());
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		values.put(KEY_DOWNLOADED, feed.isDownloaded());
@@ -193,24 +246,6 @@ public class PodDBAdapter {
 					new String[] { Long.toString(feed.getId()) });
 		}
 		return feed.getId();
-	}
-
-	/**
-	 * Inserts or updates a category entry
-	 * 
-	 * @return the id of the entry
-	 * */
-	public long setCategory(FeedCategory category) {
-		ContentValues values = new ContentValues();
-		values.put(KEY_NAME, category.getName());
-		if (category.getId() == 0) {
-			category.setId(db.insert(TABLE_NAME_FEED_CATEGORIES, null, values));
-		} else {
-			db.update(TABLE_NAME_FEED_CATEGORIES, values, KEY_ID + "=?",
-					new String[] { String.valueOf(category.getId()) });
-
-		}
-		return category.getId();
 	}
 
 	/**
@@ -410,17 +445,6 @@ public class PodDBAdapter {
 				new String[] { String.valueOf(remove.getId()) });
 	}
 
-	/**
-	 * Get all Categories from the Categories Table.
-	 * 
-	 * @return The cursor of the query
-	 * */
-	public final Cursor getAllCategoriesCursor() {
-		open();
-		Cursor c = db.query(TABLE_NAME_FEED_CATEGORIES, null, null, null, null,
-				null, null);
-		return c;
-	}
 
 	/**
 	 * Get all Feeds from the Feed Table.
@@ -590,7 +614,6 @@ public class PodDBAdapter {
 		public void onCreate(final SQLiteDatabase db) {
 			db.execSQL(CREATE_TABLE_FEEDS);
 			db.execSQL(CREATE_TABLE_FEED_ITEMS);
-			db.execSQL(CREATE_TABLE_FEED_CATEGORIES);
 			db.execSQL(CREATE_TABLE_FEED_IMAGES);
 			db.execSQL(CREATE_TABLE_FEED_MEDIA);
 			db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
