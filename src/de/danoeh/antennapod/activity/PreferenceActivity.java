@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -18,6 +19,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
 	private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
 	private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
+	private static final String PREF_ABOUT = "prefAbout";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -34,16 +36,29 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
-		findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+		findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
 
-			@Override
-			public boolean onPreferenceClick(Preference preference) {
-				FlattrUtils.revokeAccessToken(PreferenceActivity.this);
-				checkItemVisibility();
-				return true;
-			}
-			
-		});
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						FlattrUtils.revokeAccessToken(PreferenceActivity.this);
+						checkItemVisibility();
+						return true;
+					}
+
+				});
+
+		findPreference(PREF_ABOUT).setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						PreferenceActivity.this.startActivity(new Intent(
+								PreferenceActivity.this, AboutActivity.class));
+						return true;
+					}
+
+				});
 	}
 
 	@Override

@@ -44,8 +44,7 @@
         </Preference>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
-        <Preference android:title="@string/version_pref" />
-        <Preference android:title="@string/about_pref" />
+        <Preference android:title="@string/about_pref" android:key="prefAbout"/>
     </PreferenceCategory>
 
 </PreferenceScreen>
