@@ -127,9 +127,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.support_item).setVisible(media.getItem().getPaymentLink() != null);
-		menu.findItem(R.id.share_link_item).setVisible(media.getItem().getLink() != null);
-		menu.findItem(R.id.visit_website_item).setVisible(media.getItem().getLink() != null);
+		
+		menu.findItem(R.id.support_item).setVisible(media != null && media.getItem().getPaymentLink() != null);
+		menu.findItem(R.id.share_link_item).setVisible(media != null && media.getItem().getLink() != null);
+		menu.findItem(R.id.visit_website_item).setVisible(media != null && media.getItem().getLink() != null);
 		return true;
 	}
 
@@ -498,7 +499,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			int requestedOrientation;
 			status = playbackService.getStatus();
 			media = playbackService.getMedia();
-
+			invalidateOptionsMenu();
 			registerReceiver(statusUpdate, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
