@@ -331,22 +331,23 @@ public class PlaybackService extends Service {
 	}
 
 	private void setupPositionSaver() {
-		if (positionSaver == null) {
-			positionSaver = new PositionSaver() {
-				@Override
-				protected void onCancelled(Void result) {
-					super.onCancelled(result);
-					positionSaver = null;
-				}
-
-				@Override
-				protected void onPostExecute(Void result) {
-					super.onPostExecute(result);
-					positionSaver = null;
-				}
-			};
-			positionSaver.execute();
+		if (positionSaver != null && !positionSaver.isCancelled()) {
+			positionSaver.cancel(true);
 		}
+		positionSaver = new PositionSaver() {
+			@Override
+			protected void onCancelled(Void result) {
+				super.onCancelled(result);
+				positionSaver = null;
+			}
+
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				positionSaver = null;
+			}
+		};
+		positionSaver.execute();
 	}
 
 	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
