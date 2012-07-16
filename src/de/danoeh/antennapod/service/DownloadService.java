@@ -27,7 +27,6 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.DownloadError;
-import android.R;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -164,13 +163,13 @@ public class DownloadService extends Service {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Bitmap icon = BitmapFactory.decodeResource(null,
-				R.drawable.stat_notify_sync_noanim);
+				android.R.drawable.stat_notify_sync_noanim);
 		notificationBuilder = new NotificationCompat.Builder(this)
 				.setContentTitle("Downloading Podcast data")
 				.setContentText(
 						requester.getNumberOfDownloads() + " Downloads left")
 				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
-				.setSmallIcon(R.drawable.stat_notify_sync_noanim);
+				.setSmallIcon(android.R.drawable.stat_notify_sync_noanim);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
 		Log.d(TAG, "Notification set up");
@@ -295,10 +294,10 @@ public class DownloadService extends Service {
 					.setContentText(
 							successfulDownloads + " Downloads succeeded, "
 									+ failedDownloads + " failed")
-					.setSmallIcon(R.drawable.stat_notify_sync)
+					.setSmallIcon(android.R.drawable.stat_notify_sync)
 					.setLargeIcon(
 							BitmapFactory.decodeResource(null,
-									R.drawable.stat_notify_sync))
+									android.R.drawable.stat_notify_sync))
 					.setContentIntent(
 							PendingIntent.getActivity(this, 0, new Intent(this,
 									MainActivity.class), 0))

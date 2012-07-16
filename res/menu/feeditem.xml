@@ -4,32 +4,33 @@
     <item
         android:id="@+id/download_item"
         android:icon="@drawable/av_download"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/download_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/remove_item"
         android:icon="@drawable/content_discard"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/remove_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/play_item"
         android:icon="@drawable/av_play"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/play_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/cancel_download_item"
         android:icon="@drawable/navigation_cancel"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="@string/cancel_download_label"
         android:visible="false">
     </item>
-    <item
+    <item android:id="@+id/stream_item" android:icon="@drawable/action_stream" android:showAsAction="ifRoom" android:title="@string/stream_label" android:visible="false">
+    </item><item
         android:id="@+id/mark_read_item"
         android:showAsAction="collapseActionView"
         android:title="@string/mark_read_label"
@@ -53,13 +54,7 @@
         android:title="@string/remove_from_queue_label"
         android:visible="false">
     </item>
-    <item
-        android:id="@+id/stream_item"
-        android:icon="@drawable/action_stream"
-        android:showAsAction="always"
-        android:title="@string/stream_label"
-        android:visible="false">
-    </item>
+    
     <item
         android:id="@+id/share_link_item"
         android:showAsAction="collapseActionView"

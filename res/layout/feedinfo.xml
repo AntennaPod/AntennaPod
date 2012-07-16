@@ -60,24 +60,23 @@
 
                 <TextView
                     android:id="@+id/lblAuthor"
-                    android:textStyle="bold"
                     app:layout_row="0"
-                    android:text="@string/author_label" />
+                    android:text="@string/author_label"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/lblLanguage"
-                    android:textStyle="bold"
                     app:layout_column="0"
                     app:layout_row="2"
-                    android:text="@string/language_label" />
+                    android:text="@string/language_label"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtvLanguage"
                     android:layout_width="wrap_content"
                     app:layout_column="1"
                     app:layout_gravity="fill_vertical"
-                    app:layout_row="2"
-                    android:text="deutsch" />
+                    app:layout_row="2" />
 
                 <TextView
                     android:id="@+id/txtvAuthor"
@@ -85,13 +84,12 @@
                     app:layout_column="1"
                     app:layout_gravity="fill_vertical"
                     app:layout_row="0"
-                    app:layout_rowSpan="2"
-                    android:text="metaebene personal media - Tim pritlove" />
+                    app:layout_rowSpan="2" />
 
                 <android.support.v7.widget.Space
                     android:id="@+id/space1"
-                    android:layout_height="16dp"
                     android:layout_width="50dp"
+                    android:layout_height="16dp"
                     app:layout_column="0"
                     app:layout_row="1" />
             </android.support.v7.widget.GridLayout>

@@ -35,7 +35,6 @@
         android:layout_alignParentTop="false"
         android:layout_below="@id/txtvFeed"
         android:layout_gravity="center"
-        android:layout_weight="1"
         android:orientation="vertical" >
 
         <ImageView
