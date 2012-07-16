@@ -19,6 +19,7 @@ import android.os.IBinder;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -127,10 +128,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		
-		menu.findItem(R.id.support_item).setVisible(media != null && media.getItem().getPaymentLink() != null);
-		menu.findItem(R.id.share_link_item).setVisible(media != null && media.getItem().getLink() != null);
-		menu.findItem(R.id.visit_website_item).setVisible(media != null && media.getItem().getLink() != null);
+
+		menu.findItem(R.id.support_item).setVisible(
+				media != null && media.getItem().getPaymentLink() != null);
+		menu.findItem(R.id.share_link_item).setVisible(
+				media != null && media.getItem().getLink() != null);
+		menu.findItem(R.id.visit_website_item).setVisible(
+				media != null && media.getItem().getLink() != null);
 		return true;
 	}
 
@@ -141,7 +145,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			finish();
 			break;
 		default:
-			return FeedItemMenuHandler.onMenuItemClicked(this, item, media.getItem());
+			return FeedItemMenuHandler.onMenuItemClicked(this, item,
+					media.getItem());
 		}
 		return true;
 	}
@@ -312,12 +317,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		if (!mediaInfoLoaded) {
 			Log.d(TAG, "Loading media info");
 			if (media != null) {
-
+				getSupportActionBar().setSubtitle(
+						media.getItem().getTitle());
+				getSupportActionBar().setTitle(
+						media.getItem().getFeed().getTitle());
 				if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-					getSupportActionBar().setSubtitle(
-							media.getItem().getTitle());
-					getSupportActionBar().setTitle(
-							media.getItem().getFeed().getTitle());
 					pagerAdapter.notifyDataSetChanged();
 
 				}
@@ -496,15 +500,36 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
-			int requestedOrientation;
-			status = playbackService.getStatus();
-			media = playbackService.getMedia();
-			invalidateOptionsMenu();
+
 			registerReceiver(statusUpdate, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
 
 			registerReceiver(notificationReceiver, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_NOTIFICATION));
+
+			queryService();
+			Log.d(TAG, "Connection to Service established");
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			playbackService = null;
+			Log.d(TAG, "Disconnected from Service");
+
+		}
+	};
+
+	/**
+	 * Called when connection to playback service has been established or
+	 * information has to be refreshed
+	 */
+	private void queryService() {
+		Log.d(TAG, "Querying service info");
+		if (playbackService != null) {
+			int requestedOrientation;
+			status = playbackService.getStatus();
+			media = playbackService.getMedia();
+			invalidateOptionsMenu();
 
 			if (playbackService.isPlayingVideo()) {
 				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
@@ -523,17 +548,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				Log.d(TAG,
 						"Orientation incorrect, waiting for orientation change");
 			}
-
-			Log.d(TAG, "Connection to Service established");
+		} else {
+			Log.e(TAG,
+					"queryService() was called without an existing connection to playbackservice");
 		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			playbackService = null;
-			Log.d(TAG, "Disconnected from Service");
-
-		}
-	};
+	}
 
 	private BroadcastReceiver statusUpdate = new BroadcastReceiver() {
 		@Override
@@ -565,17 +584,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					}
 					break;
 				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-					try {
-						unbindService(mConnection);
-					} catch (IllegalArgumentException e) {
-						e.printStackTrace();
-					}
 					if (positionObserver != null) {
 						positionObserver.cancel(true);
 						positionObserver = null;
 					}
 					mediaInfoLoaded = false;
-					bindToService();
+					queryService();
+
 					break;
 				}
 
@@ -586,6 +601,96 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		}
 
 	};
+
+	private boolean holderCreated;
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		holder.setFixedSize(width, height);
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		holderCreated = true;
+		Log.d(TAG, "Videoview holder created");
+		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+			if (playbackService != null) {
+				playbackService.setVideoSurface(holder);
+			} else {
+				Log.e(TAG,
+						"Could'nt attach surface to mediaplayer - reference to service was null");
+			}
+		}
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		holderCreated = false;
+	}
+
+	public static class MediaPlayerPagerAdapter extends
+			FragmentStatePagerAdapter {
+		private int numItems;
+		private MediaplayerActivity activity;
+
+		private static final int POS_COVER = 0;
+		private static final int POS_DESCR = 1;
+		private static final int POS_CHAPTERS = 2;
+
+		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
+				MediaplayerActivity activity) {
+			super(fm);
+			this.numItems = numItems;
+			this.activity = activity;
+		}
+
+		@Override
+		public Fragment getItem(int position) {
+			if (activity.media != null) {
+				switch (position) {
+				case POS_COVER:
+					activity.coverFragment = CoverFragment
+							.newInstance(activity.media.getItem());
+					return activity.coverFragment;
+				case POS_DESCR:
+					activity.descriptionFragment = ItemDescriptionFragment
+							.newInstance(activity.media.getItem(), true);
+					return activity.descriptionFragment;
+				default:
+					return CoverFragment.newInstance(null);
+				}
+			} else {
+				return CoverFragment.newInstance(null);
+			}
+		}
+
+		@Override
+		public CharSequence getPageTitle(int position) {
+			switch (position) {
+			case POS_COVER:
+				return activity.getString(R.string.cover_label);
+			case POS_DESCR:
+				return activity.getString(R.string.description_label);
+			default:
+				return super.getPageTitle(position);
+			}
+		}
+
+		@Override
+		public int getCount() {
+			return numItems;
+		}
+
+		@Override
+		public int getItemPosition(Object object) {
+			return POSITION_UNCHANGED;
+		}
+
+	}
+
+	// ---------------------- ASYNC TASKS
 
 	/** Refreshes the current position of the media file that is playing. */
 	public class MediaPositionObserver extends
@@ -658,88 +763,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			}
 			publishProgress();
 			return null;
-		}
-
-	}
-
-	private boolean holderCreated;
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		holder.setFixedSize(width, height);
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		holderCreated = true;
-		Log.d(TAG, "Videoview holder created");
-		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
-			playbackService.setVideoSurface(holder);
-		}
-
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		holderCreated = false;
-	}
-
-	public static class MediaPlayerPagerAdapter extends FragmentPagerAdapter {
-		private int numItems;
-		private MediaplayerActivity activity;
-
-		private static final int POS_COVER = 0;
-		private static final int POS_DESCR = 1;
-		private static final int POS_CHAPTERS = 2;
-
-		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
-				MediaplayerActivity activity) {
-			super(fm);
-			this.numItems = numItems;
-			this.activity = activity;
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			if (activity.media != null) {
-				switch (position) {
-				case POS_COVER:
-					activity.coverFragment = CoverFragment
-							.newInstance(activity.media.getItem());
-					return activity.coverFragment;
-				case POS_DESCR:
-					activity.descriptionFragment = ItemDescriptionFragment
-							.newInstance(activity.media.getItem(), true);
-					return activity.descriptionFragment;
-				default:
-					return CoverFragment.newInstance(null);
-				}
-			} else {
-				return CoverFragment.newInstance(null);
-			}
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case POS_COVER:
-				return activity.getString(R.string.cover_label);
-			case POS_DESCR:
-				return activity.getString(R.string.description_label);
-			default:
-				return super.getPageTitle(position);
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return numItems;
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return POSITION_UNCHANGED;
 		}
 
 	}

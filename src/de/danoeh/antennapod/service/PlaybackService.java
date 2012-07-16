@@ -90,7 +90,7 @@ public class PlaybackService extends Service {
 	private PositionSaver positionSaver;
 	private WidgetUpdateWorker widgetUpdater;
 
-	private PlayerStatus statusBeforeSeek;
+	private volatile PlayerStatus statusBeforeSeek;
 
 	/** True if mediaplayer was paused because it lost audio focus temporarily */
 	private boolean pausedBecauseOfTransientAudiofocusLoss;
