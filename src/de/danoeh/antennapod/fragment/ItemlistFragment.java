@@ -8,8 +8,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -82,6 +84,12 @@ public class ItemlistFragment extends SherlockListFragment implements
 	}
 
 	@Override
+	public View onCreateView(LayoutInflater inflater, ViewGroup container,
+			Bundle savedInstanceState) {
+		return inflater.inflate(R.layout.feeditemlist, container, false);
+	}
+
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (items == null) {
@@ -93,6 +101,8 @@ public class ItemlistFragment extends SherlockListFragment implements
 				onButActionClicked, showFeedtitle);
 		setListAdapter(fila);
 	}
+	
+	
 
 	@Override
 	public void onPause() {

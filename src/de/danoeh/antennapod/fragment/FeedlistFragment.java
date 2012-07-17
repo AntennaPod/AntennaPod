@@ -67,7 +67,6 @@ public class FeedlistFragment extends SherlockListFragment implements
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		super.onCreateView(inflater, container, savedInstanceState);
 		return inflater.inflate(R.layout.feedlist, container, false);
 
 	}
