@@ -29,9 +29,6 @@
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
 
-    <!-- other messages -->
-    <string name="nofeeds_msg">No feeds added yet.</string>
-
     <!-- Mediaplayer status Messages -->
     <string name="player_paused_msg">Paused</string>
     <string name="player_error_msg">Error!</string>
@@ -78,7 +75,7 @@
     <string name="download_cancelled_msg">Download cancelled</string>
     <string name="no_media_playing_label">No media playing</string>
     <string name="general_pref">General</string>
-    <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headset is disconnected</string>
+    <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
@@ -87,7 +84,7 @@
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
-    <string name="pref_pauseOnHeadsetDisconnect_title">Headset disconnect</string>
+    <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile Updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="download_report_title">All downloads completed</string>
