@@ -1,4 +1,4 @@
 <?xml version="1.0" encoding="utf-8"?>
-<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:resizeMode="none" android:initialLayout="@layout/player_widget" android:minHeight="74dp" android:minWidth="294dp">
+<appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android" android:resizeMode="none" android:initialLayout="@layout/player_widget" android:minHeight="40dp" android:minWidth="250dp">
 
 </appwidget-provider>
