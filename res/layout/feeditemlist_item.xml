@@ -32,18 +32,21 @@
             android:id="@+id/txtvItemname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textSize="16dp" />
 
         <TextView
             android:id="@+id/txtvFeedname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/txtvPublished"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
             android:textColor="@color/gray" />
 
         <RelativeLayout
