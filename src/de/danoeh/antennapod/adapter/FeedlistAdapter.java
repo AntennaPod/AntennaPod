@@ -76,12 +76,15 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
 			holder.lastUpdate.setText(R.string.refreshing_label);
 		} else {
-			holder.lastUpdate.setText("Last Update: "
+			holder.lastUpdate.setText(convertView.getResources().getString(
+					R.string.last_update_prefix)
 					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
 							.getTime(), System.currentTimeMillis(),
 							DateFormat.SHORT, DateFormat.SHORT));
 		}
-		holder.numberOfEpisodes.setText(feed.getItems().size() + " Episodes");
+		holder.numberOfEpisodes.setText(feed.getItems().size()
+				+ convertView.getResources()
+						.getString(R.string.episodes_suffix));
 		int newItems = feed.getNumOfNewItems();
 		if (newItems > 0) {
 			holder.newEpisodes.setText(Integer.toString(newItems));

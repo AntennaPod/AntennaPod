@@ -118,5 +118,10 @@
     <string name="access_revoked_info">You have successfully revoked Antennapod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
     <string name="no_items_label">There are no items in this list.</string>
     <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+    <string name="last_update_prefix">Last Update:\u0020</string>
+    <string name="episodes_suffix">\u0020episodes</string>
+    <string name="published_prefix">Published:\u0020</string>
+    <string name="length_prefix">Length:\u0020</string>
+    <string name="size_prefix">Size:\u0020</string>
 
 </resources>

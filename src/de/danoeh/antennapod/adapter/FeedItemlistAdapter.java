@@ -93,7 +93,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.title.setTypeface(Typeface.DEFAULT);
 		}
 
-		holder.published.setText("Published: "
+		holder.published.setText(convertView.getResources().getString(
+				R.string.published_prefix)
 				+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
 						System.currentTimeMillis(), DateFormat.SHORT,
 						DateFormat.SHORT));
@@ -108,12 +109,15 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.inPlaylist.setVisibility(View.GONE);
 			}
 			if (item.getMedia().isDownloaded()) {
-				holder.lenSize.setText(Converter.getDurationStringShort(item
-						.getMedia().getDuration()));
+				holder.lenSize.setText(convertView.getResources().getString(
+						R.string.length_prefix)
+						+ Converter.getDurationStringLong(item.getMedia()
+								.getDuration()));
 				holder.downloaded.setVisibility(View.VISIBLE);
 			} else {
-				holder.lenSize.setText(Converter.byteToString(item.getMedia()
-						.getSize()));
+				holder.lenSize.setText(convertView.getResources().getString(
+						R.string.size_prefix)
+						+ Converter.byteToString(item.getMedia().getSize()));
 				holder.downloaded.setVisibility(View.GONE);
 			}
 
