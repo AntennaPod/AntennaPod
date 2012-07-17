@@ -31,8 +31,6 @@
             android:layout_width="match_parent"
             android:layout_height="1dip"
             android:layout_alignParentTop="true"
-            android:layout_marginLeft="4dip"
-            android:layout_marginRight="4dip"
             android:background="?android:attr/dividerVertical" />
 
         <View
@@ -41,7 +39,8 @@
             android:layout_height="fill_parent"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_margin="4dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
             android:background="?android:attr/dividerVertical" />
 
         <Button
