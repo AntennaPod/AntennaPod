@@ -17,6 +17,7 @@ import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
@@ -85,22 +86,14 @@ public class FlattrUtils {
 		storeToken(null);
 	}
 
-	public static void clickUrl(Context context, String url) {
+	public static void clickUrl(AccessToken token, Context context, String url)
+			throws FlattrException {
 		FlattrFactory factory = FlattrFactory.getInstance();
-		AccessToken token = retrieveToken();
 		if (token != null) {
 			FlattrService fs = factory.createFlattrService(retrieveToken());
-			try {
-				fs.click(url);
-				Toast toast = Toast.makeText(context.getApplicationContext(),
-						R.string.flattr_click_success, Toast.LENGTH_LONG);
-				toast.show();
-			} catch (FlattrException e) {
-				e.printStackTrace();
-				showErrorDialog(context, e.getMessage());
-			}
+			fs.click(url);
 		} else {
-			showNoTokenDialog(context, url);
+			Log.e(TAG, "clickUrl was called with null access token");
 		}
 	}
 
@@ -116,17 +109,16 @@ public class FlattrUtils {
 			return null;
 		}
 	}
-	
+
 	public static void revokeAccessToken(Context context) {
 		Log.d(TAG, "Revoking access token");
 		deleteToken();
 		showRevokeDialog(context);
 	}
-	
-	
-	//------------------------------------------------ DIALOGS
-	
-	private static void showRevokeDialog(final Context context) {
+
+	// ------------------------------------------------ DIALOGS
+
+	public static void showRevokeDialog(final Context context) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.access_revoked_title);
 		builder.setMessage(R.string.access_revoked_info);
@@ -140,7 +132,7 @@ public class FlattrUtils {
 		builder.create().show();
 	}
 
-	private static void showNoTokenDialog(final Context context,
+	public static void showNoTokenDialog(final Context context,
 			final String url) {
 		Log.d(TAG, "Creating showNoTokenDialog");
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -170,7 +162,7 @@ public class FlattrUtils {
 		builder.create().show();
 	}
 
-	private static void showForbiddenDialog(final Context context,
+	public static void showForbiddenDialog(final Context context,
 			final String url) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.action_forbidden_title);
@@ -199,7 +191,7 @@ public class FlattrUtils {
 		builder.create().show();
 	}
 
-	private static void showErrorDialog(final Context context, final String msg) {
+	public static void showErrorDialog(final Context context, final String msg) {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.error_label);
 		builder.setMessage(msg);
@@ -212,4 +204,5 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
+
 }
