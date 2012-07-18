@@ -45,9 +45,12 @@ public class SyndDateUtils {
 			e.printStackTrace();
 			format.applyPattern(RFC822);
 			try {
-				result = format.parse(date);
+				result = format.parse(date);			
 			} catch (ParseException e1) {
 				e1.printStackTrace();
+				Log.e(TAG, "Unable to parse feed date correctly");
+			} finally {
+				format.applyPattern(RFC822DAY); // apply old pattern again	
 			}
 		}
 
@@ -77,6 +80,9 @@ public class SyndDateUtils {
 				result = format.parse(bufStr);
 			} catch (ParseException e) {
 				e.printStackTrace();
+				Log.e(TAG, "Unable to parse date");
+			} finally {
+				format.applyPattern(RFC3339UTC);
 			}
 
 		}
