@@ -26,12 +26,15 @@ public class FlattrAuthActivity extends SherlockActivity {
 	private Button butAuthenticate;
 	private Button butReturn;
 	
+	private boolean authSuccessful;
+	
 	private static FlattrAuthActivity singleton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		singleton = this;
+		authSuccessful = false;
 		Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
@@ -75,6 +78,7 @@ public class FlattrAuthActivity extends SherlockActivity {
 	}
 
 	public void handleAuthenticationSuccess() {
+		authSuccessful = true;
 		txtvExplanation.setText(R.string.flattr_auth_success);
 		butAuthenticate.setEnabled(false);
 		butReturn.setVisibility(View.VISIBLE);
@@ -84,12 +88,25 @@ public class FlattrAuthActivity extends SherlockActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;
 	}
+	
+	
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		if (authSuccessful) {
+			finish();
+		}
+	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			startActivity(new Intent(this, PreferenceActivity.class));
+			if (authSuccessful) {
+				finish();
+			}
 			break;
 		default:
 			return false;
