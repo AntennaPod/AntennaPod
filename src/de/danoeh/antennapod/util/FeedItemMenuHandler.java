@@ -21,6 +21,7 @@ public class FeedItemMenuHandler {
 
 	public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
 		FeedManager manager = FeedManager.getInstance();
+		DownloadRequester requester = DownloadRequester.getInstance();
 
 		if (selectedItem.getMedia() != null) {
 			if (selectedItem.getMedia().isDownloaded()) {
@@ -29,17 +30,19 @@ public class FeedItemMenuHandler {
 			} else if (selectedItem.getMedia().getFile_url() == null) {
 				menu.findItem(R.id.download_item).setVisible(true);
 				menu.findItem(R.id.stream_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.cancel_download_item).setVisible(true);
 			}
+
+			boolean isDownloading = requester.isDownloadingFile(selectedItem.getMedia());
+			menu.findItem(R.id.cancel_download_item).setVisible(isDownloading);
 
 			if (manager.isInQueue(selectedItem)) {
 				menu.findItem(R.id.remove_from_queue_item).setVisible(true);
 			} else {
 				menu.findItem(R.id.add_to_queue_item).setVisible(true);
 			}
-			
-			menu.findItem(R.id.share_link_item).setVisible(selectedItem.getLink() != null);
+
+			menu.findItem(R.id.share_link_item).setVisible(
+					selectedItem.getLink() != null);
 		}
 
 		if (selectedItem.isRead()) {
@@ -51,11 +54,11 @@ public class FeedItemMenuHandler {
 		if (selectedItem.getLink() != null) {
 			menu.findItem(R.id.visit_website_item).setVisible(true);
 		}
-		
+
 		if (selectedItem.getPaymentLink() != null) {
 			menu.findItem(R.id.support_item).setVisible(true);
 		}
-		
+
 		return true;
 	}
 
