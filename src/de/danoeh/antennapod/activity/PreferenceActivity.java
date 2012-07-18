@@ -84,7 +84,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+			startActivity(new Intent(PreferenceActivity.this, MainActivity.class));
 			break;
 		default:
 			return false;

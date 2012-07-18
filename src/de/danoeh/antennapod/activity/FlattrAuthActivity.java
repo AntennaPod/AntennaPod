@@ -89,7 +89,7 @@ public class FlattrAuthActivity extends SherlockActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+			startActivity(new Intent(this, PreferenceActivity.class));
 			break;
 		default:
 			return false;

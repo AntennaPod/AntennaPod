@@ -142,7 +142,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+			startActivity(new Intent(MediaplayerActivity.this, MainActivity.class));
 			break;
 		default:
 			return FeedItemMenuHandler.onMenuItemClicked(this, item,
