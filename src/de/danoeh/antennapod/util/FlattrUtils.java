@@ -11,6 +11,7 @@ import org.shredzone.flattr4j.oauth.Scope;
 
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
@@ -23,6 +24,7 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
+import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
 import de.danoeh.antennapod.R;
 
 /** Utility methods for doing something with flattr. */
@@ -69,7 +71,7 @@ public class FlattrUtils {
 	}
 
 	/** Stores the token as a preference */
-	private static void storeToken(AccessToken token) {
+	public static void storeToken(AccessToken token) {
 		Log.d(TAG, "Storing token");
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(PodcastApp.getInstance()).edit();
@@ -97,17 +99,9 @@ public class FlattrUtils {
 		}
 	}
 
-	public static AccessToken handleCallback(Uri uri) throws FlattrException {
+	public static void handleCallback(Context context, Uri uri) {
 		AndroidAuthenticator auth = createAuthenticator();
-		AccessToken token = auth.fetchAccessToken(uri);
-		if (token != null) {
-			Log.d(TAG, "Successfully got token");
-			storeToken(token);
-			return token;
-		} else {
-			Log.w(TAG, "Flattr token was null");
-			return null;
-		}
+		new FlattrTokenFetcher(context, auth, uri).execute();
 	}
 
 	public static void revokeAccessToken(Context context) {
@@ -204,5 +198,6 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
+	
 
 }

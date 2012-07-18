@@ -25,10 +25,13 @@ public class FlattrAuthActivity extends SherlockActivity {
 	private TextView txtvExplanation;
 	private Button butAuthenticate;
 	private Button butReturn;
+	
+	private static FlattrAuthActivity singleton;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		singleton = this;
 		Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
@@ -55,6 +58,10 @@ public class FlattrAuthActivity extends SherlockActivity {
 			}	
 		});
 	}
+	
+	public static FlattrAuthActivity getInstance() {
+		return singleton;
+	}
 
 	@Override
 	protected void onResume() {
@@ -63,18 +70,11 @@ public class FlattrAuthActivity extends SherlockActivity {
 		Uri uri = getIntent().getData();
 		if (uri != null) {
 			Log.d(TAG, "Received uri");
-			try {
-				if (FlattrUtils.handleCallback(uri) != null) {
-					handleAuthenticationSuccess();
-					Log.d(TAG, "Authentication seemed to be successful");
-				}
-			} catch (FlattrException e) {
-				e.printStackTrace();
-			} 
+			FlattrUtils.handleCallback(this, uri);
 		}
 	}
 
-	private void handleAuthenticationSuccess() {
+	public void handleAuthenticationSuccess() {
 		txtvExplanation.setText(R.string.flattr_auth_success);
 		butAuthenticate.setEnabled(false);
 		butReturn.setVisibility(View.VISIBLE);
