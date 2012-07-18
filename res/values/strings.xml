@@ -85,7 +85,7 @@
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
-    <string name="pref_mobileUpdate_title">Mobile Updates</string>
+    <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="download_report_title">All downloads completed</string>
     <string name="refresh_label">Refresh</string>
@@ -102,7 +102,7 @@
     <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr sign-in</string>
-    <string name="pref_flattr_auth_sum">Sign in to your flattr account to flattr things from within the app.</string>
+    <string name="pref_flattr_auth_sum">Sign in to your flattr account to flattr things directly from the app.</string>
     <string name="no_flattr_token_title">No Flattr token found</string>
     <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to Antennapod. You can either connect your account to Antennapod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
     <string name="visit_website_label">Visit website</string>
