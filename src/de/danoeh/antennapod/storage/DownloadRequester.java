@@ -58,33 +58,38 @@ public class DownloadRequester {// TODO handle externalstorage missing
 
 	@SuppressLint("NewApi")
 	private long download(Context context, FeedFile item, File dest) {
-		if (dest.exists()) {
-			Log.d(TAG, "File already exists. Deleting !");
-			dest.delete();
-		}
-		Log.d(TAG, "Requesting download of url " + item.getDownload_url());
-		downloads.add(item);
-		DownloadManager.Request request = new DownloadManager.Request(
-				Uri.parse(item.getDownload_url())).setDestinationUri(Uri
-				.fromFile(dest));
-		Log.d(TAG, "Version is " + currentApi);
-		if (currentApi >= 11) {
-			request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+		if (!isDownloadingFile(item)) {
+			if (dest.exists()) {
+				Log.d(TAG, "File already exists. Deleting !");
+				dest.delete();
+			}
+			Log.d(TAG, "Requesting download of url " + item.getDownload_url());
+			downloads.add(item);
+			DownloadManager.Request request = new DownloadManager.Request(
+					Uri.parse(item.getDownload_url())).setDestinationUri(Uri
+					.fromFile(dest));
+			Log.d(TAG, "Version is " + currentApi);
+			if (currentApi >= 11) {
+				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
+			} else {
+				request.setVisibleInDownloadsUi(false);
+				request.setShowRunningNotification(false);
+			}
+
+			// TODO Set Allowed Network Types
+			DownloadManager manager = (DownloadManager) context
+					.getSystemService(Context.DOWNLOAD_SERVICE);
+
+			long downloadId = manager.enqueue(request);
+			item.setDownloadId(downloadId);
+			item.setFile_url(dest.toString());
+			context.startService(new Intent(context, DownloadService.class));
+			context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
+			return downloadId;
 		} else {
-			request.setVisibleInDownloadsUi(false);
-			request.setShowRunningNotification(false);
+			Log.e(TAG, "URL " + item.getDownload_url() + " is already being downloaded");
+			return 0;
 		}
-
-		// TODO Set Allowed Network Types
-		DownloadManager manager = (DownloadManager) context
-				.getSystemService(Context.DOWNLOAD_SERVICE);
-
-		long downloadId = manager.enqueue(request);
-		item.setDownloadId(downloadId);
-		item.setFile_url(dest.toString());
-		context.startService(new Intent(context, DownloadService.class));
-		context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
-		return downloadId;
 	}
 
 	public long downloadFeed(Context context, Feed feed) {
@@ -203,7 +208,8 @@ public class DownloadRequester {// TODO handle externalstorage missing
 
 	public String getMediafilePath(Context context, FeedMedia media) {
 		File externalStorage = context.getExternalFilesDir(MEDIA_DOWNLOADPATH
-				+ NumberGenerator.generateLong(media.getItem().getFeed().getTitle()) + "/");
+				+ NumberGenerator.generateLong(media.getItem().getFeed()
+						.getTitle()) + "/");
 		return externalStorage.toString();
 	}
 
