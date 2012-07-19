@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.storage;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.io.File;
 import java.util.concurrent.Callable;
 
@@ -41,10 +43,10 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	private static DownloadRequester downloader;
 	private DownloadManager manager;
 
-	public ArrayList<FeedFile> downloads;
+	public List<FeedFile> downloads;
 
 	private DownloadRequester() {
-		downloads = new ArrayList<FeedFile>();
+		downloads = Collections.synchronizedList(new ArrayList<FeedFile>());
 	}
 
 	public static DownloadRequester getInstance() {
@@ -174,7 +176,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 		downloads.remove(f);
 	}
 
-	public ArrayList<FeedFile> getDownloads() {
+	public List<FeedFile> getDownloads() {
 		return downloads;
 	}
 
