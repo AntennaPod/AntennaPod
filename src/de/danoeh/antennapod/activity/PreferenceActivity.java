@@ -35,12 +35,9 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						Thing appThing = FlattrUtils
-								.getAppThing(PreferenceActivity.this);
-						if (appThing != null) {
-							new FlattrClickWorker(PreferenceActivity.this,
-									appThing.getUrl()).execute();
-						}
+						new FlattrClickWorker(PreferenceActivity.this,
+								FlattrUtils.APP_URL).execute();
+
 						return true;
 					}
 				});

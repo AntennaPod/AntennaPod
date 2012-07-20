@@ -39,7 +39,7 @@ public class FlattrUtils {
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
 	/** Flattr URL for this app. */
-	public static final String APP_URL = "http://flattr.com/thing/745609"; 
+	public static final String APP_URL = "http://antennapod.com"; 
 	public static final String APP_THING_ID = "745609";
 	
 	
@@ -98,7 +98,9 @@ public class FlattrUtils {
 	public static Thing getAppThing(Context context) {
 		FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
 		try {
-			return fs.getThing(Thing.withId(APP_THING_ID));
+			Thing thing = fs.getThing(Thing.withId(APP_THING_ID));
+			Log.i(TAG, "URL is " + thing.getUrl());
+			return thing;
 		} catch (FlattrException e) {
 			e.printStackTrace();
 			showErrorDialog(context, e.getMessage());
