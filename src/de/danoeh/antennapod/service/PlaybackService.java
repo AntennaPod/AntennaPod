@@ -24,6 +24,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -513,12 +514,12 @@ public class PlaybackService extends Service {
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Bitmap icon = BitmapFactory.decodeResource(null,
-				android.R.drawable.stat_notify_sdcard);
+				R.drawable.ic_stat_antenna);
 		notificationBuilder = new NotificationCompat.Builder(this)
 				.setContentTitle("Mediaplayer Service")
 				.setContentText("Click here for more info").setOngoing(true)
 				.setContentIntent(pIntent).setLargeIcon(icon)
-				.setSmallIcon(android.R.drawable.stat_notify_sdcard);
+				.setSmallIcon(R.drawable.ic_stat_antenna);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
 		Log.d(TAG, "Notification set up");
