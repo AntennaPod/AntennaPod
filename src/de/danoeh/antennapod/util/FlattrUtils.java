@@ -5,6 +5,7 @@ import java.util.EnumSet;
 import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
 import org.shredzone.flattr4j.oauth.Scope;
@@ -37,6 +38,10 @@ public class FlattrUtils {
 
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
+	/** Flattr URL for this app. */
+	public static final String APP_URL = "http://flattr.com/thing/745609"; 
+	public static final String APP_THING_ID = "745609";
+	
 	private static AndroidAuthenticator createAuthenticator() {
 		return new AndroidAuthenticator(HOST_NAME, APP_KEY, APP_SECRET);
 	}
@@ -86,6 +91,19 @@ public class FlattrUtils {
 	public static void deleteToken() {
 		Log.d(TAG, "Deleting flattr token");
 		storeToken(null);
+	}
+	
+	/** Get the thing that represents this app */
+	public static Thing getAppThing(Context context) {
+		FlattrFactory factory = FlattrFactory.getInstance();
+		FlattrService fs = factory.createFlattrService(retrieveToken());
+		try {
+			return fs.getThing(Thing.withId(APP_THING_ID));
+		} catch (FlattrException e) {
+			e.printStackTrace();
+			showErrorDialog(context, e.getMessage());
+			return null;
+		}
 	}
 
 	public static void clickUrl(AccessToken token, Context context, String url)

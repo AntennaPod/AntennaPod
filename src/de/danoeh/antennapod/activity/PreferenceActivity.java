@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import org.shredzone.flattr4j.model.Thing;
+
 import android.content.Intent;
 import android.os.Bundle;
 import android.preference.Preference;
@@ -10,6 +12,7 @@ import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.util.FlattrUtils;
 import de.danoeh.antennapod.R;
 
@@ -32,7 +35,12 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						Log.d(TAG, "Flattring this app"); // TODO implement
+						Thing appThing = FlattrUtils
+								.getAppThing(PreferenceActivity.this);
+						if (appThing != null) {
+							new FlattrClickWorker(PreferenceActivity.this,
+									appThing.getUrl()).execute();
+						}
 						return true;
 					}
 				});
@@ -84,7 +92,8 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			startActivity(new Intent(PreferenceActivity.this, MainActivity.class));
+			startActivity(new Intent(PreferenceActivity.this,
+					MainActivity.class));
 			break;
 		default:
 			return false;
