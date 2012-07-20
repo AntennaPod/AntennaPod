@@ -64,10 +64,9 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected Void doInBackground(Void... params) {
 		Log.d(TAG, "Starting background work");
-		AccessToken token = FlattrUtils.retrieveToken();
-		if (token != null) {
+		if (FlattrUtils.hasToken()) {
 			try {
-				FlattrUtils.clickUrl(token, context, url);
+				FlattrUtils.clickUrl(context, url);
 			} catch (FlattrException e) {
 				e.printStackTrace();
 				exitCode = FLATTR_ERROR;

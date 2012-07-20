@@ -42,6 +42,7 @@ public class FlattrUtils {
 	public static final String APP_URL = "http://flattr.com/thing/745609"; 
 	public static final String APP_THING_ID = "745609";
 	
+	
 	private static AndroidAuthenticator createAuthenticator() {
 		return new AndroidAuthenticator(HOST_NAME, APP_KEY, APP_SECRET);
 	}
@@ -57,7 +58,7 @@ public class FlattrUtils {
 	 * Returns the access token from the preferences or null if no access token
 	 * was saved before.
 	 */
-	public static AccessToken retrieveToken() {
+	private static AccessToken retrieveToken() {
 		Log.d(TAG, "Retrieving access token");
 		String token = PreferenceManager.getDefaultSharedPreferences(
 				PodcastApp.getInstance()).getString(PREF_ACCESS_TOKEN, null);
@@ -95,8 +96,7 @@ public class FlattrUtils {
 	
 	/** Get the thing that represents this app */
 	public static Thing getAppThing(Context context) {
-		FlattrFactory factory = FlattrFactory.getInstance();
-		FlattrService fs = factory.createFlattrService(retrieveToken());
+		FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
 		try {
 			return fs.getThing(Thing.withId(APP_THING_ID));
 		} catch (FlattrException e) {
@@ -106,11 +106,10 @@ public class FlattrUtils {
 		}
 	}
 
-	public static void clickUrl(AccessToken token, Context context, String url)
+	public static void clickUrl(Context context, String url)
 			throws FlattrException {
-		FlattrFactory factory = FlattrFactory.getInstance();
-		if (token != null) {
-			FlattrService fs = factory.createFlattrService(retrieveToken());
+		if (hasToken()) {
+			FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
 			fs.click(url);
 		} else {
 			Log.e(TAG, "clickUrl was called with null access token");
