@@ -32,8 +32,8 @@ public class FlattrUtils {
 	private static final String TAG = "FlattrUtils";
 
 	private static final String HOST_NAME = "de.danoeh.antennapod";
-	private static final String APP_KEY = "qBoVa9rhUOSPCrBwYPjzyNytHRbkPul5VzRWz93jNMZf4rCS7LhwpGPWnR73biZW";
-	private static final String APP_SECRET = "IGJ8FDiif7n9pPSmr0JHwotK5rD7AsU8Yt7uWfC2cQ2svKFNAekXtExpV1mlk7k8";
+	private static final String APP_KEY = "oJ5B1Z90x0gpHbu84F81fWgZWjRpKj4Y";
+	private static final String APP_SECRET = "S0qKPpAcfGrNHMLCiKtnwAciJUyj3t8MjomZEN2KkjnSWZk4zEiW4k4D5sNZMLBV";
 
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
