@@ -33,7 +33,11 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 
 	protected void onNoAccessToken() {
 		Log.w(TAG, "No access token was available");
-		FlattrUtils.showNoTokenDialog(context, url);
+		if (url.equals(FlattrUtils.APP_URL)) {
+			FlattrUtils.showNoTokenDialog(context, FlattrUtils.APP_LINK);
+		} else {
+			FlattrUtils.showNoTokenDialog(context, url);
+		}
 	}
 
 	protected void onFlattrError() {
@@ -89,4 +93,3 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 	}
 
 }
-

@@ -40,6 +40,8 @@ public class FlattrUtils {
 
 	/** Flattr URL for this app. */
 	public static final String APP_URL = "http://antennapod.com"; 
+	/** Human-readable flattr-page. */
+	public static final String APP_LINK = "https://flattr.com/thing/745609/";
 	public static final String APP_THING_ID = "745609";
 	
 	
@@ -99,7 +101,6 @@ public class FlattrUtils {
 		FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
 		try {
 			Thing thing = fs.getThing(Thing.withId(APP_THING_ID));
-			Log.i(TAG, "URL is " + thing.getUrl());
 			return thing;
 		} catch (FlattrException e) {
 			e.printStackTrace();
