@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.asynctask;
 
 import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.oauth.AccessToken;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -18,6 +18,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 	protected String url;
 	protected String errorMsg;
 	protected int exitCode;
+	protected ProgressDialog progDialog;
 
 	protected final static int SUCCESS = 0;
 	protected final static int NO_TOKEN = 1;
@@ -50,9 +51,20 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 		toast.show();
 	}
 
+	protected void onSetupProgDialog() {
+		progDialog = new ProgressDialog(context);
+		progDialog.setMessage(context.getString(R.string.flattring_label));
+		progDialog.setIndeterminate(true);
+		progDialog.setCancelable(false);
+		progDialog.show();
+	}
+
 	@Override
 	protected void onPostExecute(Void result) {
 		Log.d(TAG, "Exit code was " + exitCode);
+		if (progDialog != null) {
+			progDialog.dismiss();
+		}
 		switch (exitCode) {
 		case NO_TOKEN:
 			onNoAccessToken();
@@ -64,6 +76,11 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 			onSuccess();
 			break;
 		}
+	}
+
+	@Override
+	protected void onPreExecute() {
+		onSetupProgDialog();
 	}
 
 	@Override

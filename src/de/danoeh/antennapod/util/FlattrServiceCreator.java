@@ -10,7 +10,7 @@ import android.util.Log;
 public class FlattrServiceCreator {
 	public static final String TAG = "FlattrServiceCreator";
 	
-	private static FlattrService flattrService;
+	private static volatile FlattrService flattrService;
 	
 	public static FlattrService getService(AccessToken token) {
 		if (flattrService == null) {
@@ -19,5 +19,10 @@ public class FlattrServiceCreator {
 			flattrService = factory.createFlattrService(token);
 		}
 		return flattrService;
+	}
+	
+	public static void deleteFlattrService() {
+		Log.d(TAG, "Deleting service instance");
+		flattrService = null;
 	}
 }

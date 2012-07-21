@@ -4,6 +4,7 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
 
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
@@ -79,6 +80,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	public void executeAsync() {
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);

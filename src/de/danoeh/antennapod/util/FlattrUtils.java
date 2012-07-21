@@ -39,12 +39,13 @@ public class FlattrUtils {
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
 	/** Flattr URL for this app. */
-	public static final String APP_URL = "http://antennapod.com"; 
+	public static final String APP_URL = "http://antennapod.com";
 	/** Human-readable flattr-page. */
 	public static final String APP_LINK = "https://flattr.com/thing/745609/";
 	public static final String APP_THING_ID = "745609";
-	
-	
+
+	private static volatile AccessToken cachedToken;
+
 	private static AndroidAuthenticator createAuthenticator() {
 		return new AndroidAuthenticator(HOST_NAME, APP_KEY, APP_SECRET);
 	}
@@ -61,16 +62,21 @@ public class FlattrUtils {
 	 * was saved before.
 	 */
 	private static AccessToken retrieveToken() {
-		Log.d(TAG, "Retrieving access token");
-		String token = PreferenceManager.getDefaultSharedPreferences(
-				PodcastApp.getInstance()).getString(PREF_ACCESS_TOKEN, null);
-		if (token != null) {
-			Log.d(TAG, "Found access token");
-			return new AccessToken(token);
-		} else {
-			Log.d(TAG, "No access token found");
-			return null;
+		if (cachedToken == null) {
+			Log.d(TAG, "Retrieving access token");
+			String token = PreferenceManager.getDefaultSharedPreferences(
+					PodcastApp.getInstance())
+					.getString(PREF_ACCESS_TOKEN, null);
+			if (token != null) {
+				Log.d(TAG, "Found access token. Caching.");
+				cachedToken = new AccessToken(token);
+			} else {
+				Log.d(TAG, "No access token found");
+				return null;
+			}
 		}
+		return cachedToken;
+
 	}
 
 	/** Returns true if the application has saved an access token */
@@ -89,13 +95,14 @@ public class FlattrUtils {
 			editor.putString(PREF_ACCESS_TOKEN, null);
 		}
 		editor.commit();
+		cachedToken = null;
 	}
 
 	public static void deleteToken() {
 		Log.d(TAG, "Deleting flattr token");
 		storeToken(null);
 	}
-	
+
 	/** Get the thing that represents this app */
 	public static Thing getAppThing(Context context) {
 		FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
@@ -127,6 +134,7 @@ public class FlattrUtils {
 	public static void revokeAccessToken(Context context) {
 		Log.d(TAG, "Revoking access token");
 		deleteToken();
+		FlattrServiceCreator.deleteFlattrService();
 		showRevokeDialog(context);
 	}
 
@@ -146,8 +154,7 @@ public class FlattrUtils {
 		builder.create().show();
 	}
 
-	public static void showNoTokenDialog(final Context context,
-			final String url) {
+	public static void showNoTokenDialog(final Context context, final String url) {
 		Log.d(TAG, "Creating showNoTokenDialog");
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.no_flattr_token_title);
@@ -218,6 +225,5 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
-	
 
 }
