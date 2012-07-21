@@ -27,6 +27,8 @@ public class PodcastApp extends Application implements
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
+	
+	private static float LOGICAL_DENSITY;
 
 	private static PodcastApp singleton;
 
@@ -38,6 +40,7 @@ public class PodcastApp extends Application implements
 	public void onCreate() {
 		super.onCreate();
 		singleton = this;
+		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -74,5 +77,9 @@ public class PodcastApp extends Application implements
 				Log.d(TAG, "Automatic update was deactivated");
 			}
 		}
+	}
+	
+	public static float getLogicalDensity() {
+		return LOGICAL_DENSITY;
 	}
 }

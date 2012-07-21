@@ -58,6 +58,7 @@ public class FeedImageLoader {
 		return singleton;
 	}
 
+	@SuppressLint("NewApi")
 	public void loadBitmap(FeedImage image, ImageView target) {
 		if (image != null) {
 			Bitmap bitmap = getBitmapFromCache(image.getId());
@@ -95,7 +96,8 @@ public class FeedImageLoader {
 
 	class BitmapWorkerTask extends AsyncTask<FeedImage, Void, Void> {
 		/** The preferred width and height of a bitmap. */
-		private static final int PREFERRED_LENGTH = 300;
+		private static final int LENGTH_BASE_VALUE = 200;
+		private int PREFERRED_LENGTH;
 
 		private static final String TAG = "BitmapWorkerTask";
 		private ImageView target;
@@ -105,6 +107,7 @@ public class FeedImageLoader {
 		public BitmapWorkerTask(ImageView target) {
 			super();
 			this.target = target;
+			this.PREFERRED_LENGTH = (int) (LENGTH_BASE_VALUE * PodcastApp.getLogicalDensity());
 		}
 
 		@Override
