@@ -66,7 +66,11 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				BitmapWorkerTask worker = new BitmapWorkerTask(target);
-				worker.execute(image);
+				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+					worker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, image);
+				} else {
+					worker.execute(image);
+				}
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);

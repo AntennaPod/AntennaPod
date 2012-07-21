@@ -27,6 +27,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.DownloadError;
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -43,6 +44,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Debug;
 import android.os.Handler;
@@ -95,6 +97,7 @@ public class DownloadService extends Service {
 		return super.onStartCommand(intent, flags, startId);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate() {
 		Log.d(TAG, "Service started");
@@ -108,7 +111,11 @@ public class DownloadService extends Service {
 		downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
 		downloadObserver = new DownloadObserver(this);
 		setupNotification();
-		downloadObserver.execute();
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			downloadObserver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			downloadObserver.execute();
+		}
 	}
 
 	@Override

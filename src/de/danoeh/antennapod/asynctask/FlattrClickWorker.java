@@ -3,6 +3,7 @@ package de.danoeh.antennapod.asynctask;
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.oauth.AccessToken;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
@@ -76,6 +77,15 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 			exitCode = NO_TOKEN;
 		}
 		return null;
+	}
+
+	@SuppressLint("NewApi")
+	public void executeAsync() {
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			executeOnExecutor(THREAD_POOL_EXECUTOR);
+		} else {
+			execute();
+		}
 	}
 
 }

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.service;
 
 import java.io.IOException;
 
+import android.annotation.SuppressLint;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -330,6 +331,7 @@ public class PlaybackService extends Service {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	private void setupPositionSaver() {
 		if (positionSaver != null && !positionSaver.isCancelled()) {
 			positionSaver.cancel(true);
@@ -347,7 +349,11 @@ public class PlaybackService extends Service {
 				positionSaver = null;
 			}
 		};
-		positionSaver.execute();
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			positionSaver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			positionSaver.execute();
+		}
 	}
 
 	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
@@ -561,7 +567,11 @@ public class PlaybackService extends Service {
 	private void setupWidgetUpdater() {
 		if (widgetUpdater == null || widgetUpdater.isCancelled()) {
 			widgetUpdater = new WidgetUpdateWorker();
-			widgetUpdater.execute();
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				widgetUpdater.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				widgetUpdater.execute();
+			}
 		}
 	}
 

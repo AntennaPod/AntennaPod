@@ -120,7 +120,7 @@ public class FlattrUtils {
 
 	public static void handleCallback(Context context, Uri uri) {
 		AndroidAuthenticator auth = createAuthenticator();
-		new FlattrTokenFetcher(context, auth, uri).execute();
+		new FlattrTokenFetcher(context, auth, uri).executeAsync();
 	}
 
 	public static void revokeAccessToken(Context context) {

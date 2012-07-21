@@ -78,5 +78,13 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 			return null;
 		}
 	}
+
+	public void executeAsync() {
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			execute();
+		}
+	}
 	
 }

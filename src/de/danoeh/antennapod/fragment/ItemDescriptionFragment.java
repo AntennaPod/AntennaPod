@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -36,7 +37,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
 
-	public static ItemDescriptionFragment newInstance(FeedItem item, boolean scrollbarEnabled) {
+	public static ItemDescriptionFragment newInstance(FeedItem item,
+			boolean scrollbarEnabled) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
 		args.putLong(ARG_FEED_ID, item.getFeed().getId());
@@ -54,12 +56,17 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		return webvDescription;
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
 		if (webViewLoader == null && item != null) {
 			webViewLoader = createLoader();
-			webViewLoader.execute();
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				webViewLoader.execute();
+			}
 		}
 	}
 
@@ -91,7 +98,11 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			Feed feed = manager.getFeed(feedId);
 			item = manager.getFeedItem(itemId, feed);
 			webViewLoader = createLoader();
-			webViewLoader.execute();
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				webViewLoader.execute();
+			}
 		} else {
 			Log.e(TAG, TAG + " was called with invalid arguments");
 		}

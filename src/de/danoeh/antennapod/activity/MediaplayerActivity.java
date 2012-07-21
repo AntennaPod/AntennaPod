@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -142,7 +143,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			startActivity(new Intent(MediaplayerActivity.this, MainActivity.class));
+			startActivity(new Intent(MediaplayerActivity.this,
+					MainActivity.class));
 			break;
 		default:
 			return FeedItemMenuHandler.onMenuItemClicked(this, item,
@@ -284,8 +286,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		}
 	}
 
+	@SuppressLint("NewApi")
 	private void setupPositionObserver() {
 		if (positionObserver == null || positionObserver.isCancelled()) {
+			Log.d(TAG, "Setting up position observer");
 			positionObserver = new MediaPositionObserver() {
 
 				@Override
@@ -301,7 +305,14 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				}
 
 			};
-			positionObserver.execute(playbackService.getPlayer());
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				positionObserver.executeOnExecutor(
+						AsyncTask.THREAD_POOL_EXECUTOR,
+						playbackService.getPlayer());
+			} else {
+				positionObserver.execute(playbackService.getPlayer());
+			}
+
 		}
 	}
 
@@ -317,8 +328,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		if (!mediaInfoLoaded) {
 			Log.d(TAG, "Loading media info");
 			if (media != null) {
-				getSupportActionBar().setSubtitle(
-						media.getItem().getTitle());
+				getSupportActionBar().setSubtitle(media.getItem().getTitle());
 				getSupportActionBar().setTitle(
 						media.getItem().getFeed().getTitle());
 				if (orientation == Configuration.ORIENTATION_PORTRAIT) {
@@ -461,12 +471,18 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		}
 	};
 
+	@SuppressLint("NewApi")
 	private void setupVideoControlsToggler() {
 		if (videoControlsToggler != null) {
 			videoControlsToggler.cancel(true);
 		}
 		videoControlsToggler = new VideoControlsHider();
-		videoControlsToggler.execute();
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			videoControlsToggler.executeOnExecutor(
+					AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			videoControlsToggler.execute();
+		}
 	}
 
 	private void toggleVideoControlsVisibility() {

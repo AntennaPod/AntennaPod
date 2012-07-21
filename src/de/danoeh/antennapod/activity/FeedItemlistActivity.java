@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.graphics.drawable.BitmapDrawable;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -90,7 +91,12 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 						finish();
 					}
 				};
-				remover.execute(feed);
+				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+							feed);
+				} else {
+					remover.execute(feed);
+				}
 				break;
 			case android.R.id.home:
 				finish();

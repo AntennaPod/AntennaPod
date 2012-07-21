@@ -8,6 +8,7 @@ import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.R;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
 import android.view.View;
@@ -163,7 +164,11 @@ public class FeedlistFragment extends SherlockListFragment implements
 						fla.notifyDataSetChanged();
 					}
 				};
-				remover.execute(selectedFeed);
+				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, selectedFeed);
+				} else {
+					remover.execute(selectedFeed);
+				}
 				break;
 			}
 		}

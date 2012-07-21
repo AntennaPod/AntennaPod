@@ -69,7 +69,7 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedFeed.getPaymentLink()).execute();
+			new FlattrClickWorker(context, selectedFeed.getPaymentLink()).executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);
