@@ -9,7 +9,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -103,7 +102,8 @@ public class FeedItemMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedItem.getPaymentLink()).executeAsync();
+			Uri supportUri = Uri.parse(selectedItem.getPaymentLink());
+			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);

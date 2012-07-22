@@ -11,7 +11,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.activity.FeedInfoActivity;
-import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -30,7 +29,8 @@ public class FeedMenuHandler {
 	}
 
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Preparing options menu");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Preparing options menu");
 		if (selectedFeed.getPaymentLink() != null) {
 			menu.findItem(R.id.support_item).setVisible(true);
 		}
@@ -42,9 +42,10 @@ public class FeedMenuHandler {
 		} else {
 			refresh.setVisible(true);
 		}
-		
-		menu.findItem(R.id.share_link_item).setVisible(selectedFeed.getLink() != null);
-		
+
+		menu.findItem(R.id.share_link_item).setVisible(
+				selectedFeed.getLink() != null);
+
 		return true;
 	}
 
@@ -70,7 +71,8 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedFeed.getPaymentLink()).executeAsync();
+			Uri supportUri = Uri.parse(selectedFeed.getPaymentLink());
+			context.startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);

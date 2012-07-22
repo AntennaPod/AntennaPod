@@ -31,19 +31,8 @@
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/flattr_settings_label" >
-        <PreferenceScreen
-            android:summary="@string/pref_flattr_auth_sum"
-            android:title="@string/pref_flattr_auth_title" android:key="pref_flattr_authenticate">
-            <intent android:action=".activities.FlattrAuthActivity" />
-            
-        </PreferenceScreen><Preference android:key="prefRevokeAccess" android:title="@string/pref_revokeAccess_title" android:summary="@string/pref_revokeAccess_sum"/>
-        <Preference
-            android:summary="@string/pref_flattr_this_app_sum"
-            android:title="@string/pref_flattr_this_app_title" android:key="prefFlattrThisApp">
+    <PreferenceCategory android:title="@string/other_pref" ><Preference android:summary="@string/pref_flattr_this_app_sum" android:title="@string/pref_flattr_this_app_title" android:key="prefFlattrThisApp">
         </Preference>
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_pref" >
         <Preference android:title="@string/about_pref" android:key="prefAbout"/>
     </PreferenceCategory>
 

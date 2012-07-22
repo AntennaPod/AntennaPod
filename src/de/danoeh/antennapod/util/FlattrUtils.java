@@ -2,14 +2,6 @@ package de.danoeh.antennapod.util;
 
 import java.util.EnumSet;
 
-import org.shredzone.flattr4j.FlattrFactory;
-import org.shredzone.flattr4j.FlattrService;
-import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.oauth.AccessToken;
-import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
-import org.shredzone.flattr4j.oauth.Scope;
-
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -25,11 +17,11 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.activity.FlattrAuthActivity;
-import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
+
 import de.danoeh.antennapod.R;
 
 /** Utility methods for doing something with flattr. */
+
 public class FlattrUtils {
 	private static final String TAG = "FlattrUtils";
 
@@ -39,12 +31,12 @@ public class FlattrUtils {
 
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
-	/** Flattr URL for this app. */
+	// Flattr URL for this app.
 	public static final String APP_URL = "http://antennapod.com";
-	/** Human-readable flattr-page. */
+	// Human-readable flattr-page.
 	public static final String APP_LINK = "https://flattr.com/thing/745609/";
 	public static final String APP_THING_ID = "745609";
-
+/*
 	private static volatile AccessToken cachedToken;
 
 	private static AndroidAuthenticator createAuthenticator() {
@@ -58,10 +50,6 @@ public class FlattrUtils {
 		context.startActivity(intent);
 	}
 
-	/**
-	 * Returns the access token from the preferences or null if no access token
-	 * was saved before.
-	 */
 	private static AccessToken retrieveToken() {
 		if (cachedToken == null) {
 			if (AppConfig.DEBUG) Log.d(TAG, "Retrieving access token");
@@ -80,12 +68,10 @@ public class FlattrUtils {
 
 	}
 
-	/** Returns true if the application has saved an access token */
 	public static boolean hasToken() {
 		return retrieveToken() != null;
 	}
 
-	/** Stores the token as a preference */
 	public static void storeToken(AccessToken token) {
 		if (AppConfig.DEBUG) Log.d(TAG, "Storing token");
 		SharedPreferences.Editor editor = PreferenceManager
@@ -104,7 +90,6 @@ public class FlattrUtils {
 		storeToken(null);
 	}
 
-	/** Get the thing that represents this app */
 	public static Thing getAppThing(Context context) {
 		FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
 		try {
@@ -226,5 +211,7 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
+	*/
+
 
 }

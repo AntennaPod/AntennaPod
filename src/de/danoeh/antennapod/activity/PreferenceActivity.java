@@ -1,20 +1,17 @@
 package de.danoeh.antennapod.activity;
 
-import org.shredzone.flattr4j.model.Thing;
-
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
-import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.danoeh.antennapod.asynctask.FlattrClickWorker;
-import de.danoeh.antennapod.util.FlattrUtils;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.util.FlattrUtils;
 
 public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String TAG = "PreferenceActivity";
@@ -35,24 +32,24 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						new FlattrClickWorker(PreferenceActivity.this,
-								FlattrUtils.APP_URL).execute();
+						Uri supportUri = Uri.parse(FlattrUtils.APP_LINK);
+						startActivity(new Intent(Intent.ACTION_VIEW, supportUri));
 
 						return true;
 					}
 				});
-		findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
-				new OnPreferenceClickListener() {
 
-					@Override
-					public boolean onPreferenceClick(Preference preference) {
-						FlattrUtils.revokeAccessToken(PreferenceActivity.this);
-						checkItemVisibility();
-						return true;
-					}
-
-				});
-
+		/*
+		 * Disabled until it works
+		 * findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener( new
+		 * OnPreferenceClickListener() {
+		 * 
+		 * @Override public boolean onPreferenceClick(Preference preference) {
+		 * FlattrUtils.revokeAccessToken(PreferenceActivity.this);
+		 * checkItemVisibility(); return true; }
+		 * 
+		 * });
+		 */
 		findPreference(PREF_ABOUT).setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {
 
@@ -64,6 +61,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 					}
 
 				});
+
 	}
 
 	@Override
@@ -74,10 +72,12 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 	@SuppressWarnings("deprecation")
 	private void checkItemVisibility() {
-		boolean hasFlattrToken = FlattrUtils.hasToken();
-		findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
-		findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
-
+		/*
+		 * boolean hasFlattrToken = FlattrUtils.hasToken();
+		 * 
+		 * findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
+		 * findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
+		 */
 	}
 
 	@Override
