@@ -7,7 +7,7 @@ import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.FeedMenuHandler;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -59,7 +59,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (BuildConfig.DEBUG) Log.d(TAG, "Creating");
+		if (AppConfig.DEBUG) Log.d(TAG, "Creating");
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
@@ -82,7 +82,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Feed selection = fla.getItem(position);
-				if (BuildConfig.DEBUG) Log.d(TAG, "Selected Feed with title " + selection.getTitle());
+				if (AppConfig.DEBUG) Log.d(TAG, "Selected Feed with title " + selection.getTitle());
 				if (selection != null) {
 					if (mActionMode != null) {
 						mActionMode.finish();
@@ -124,7 +124,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
+			if (AppConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
 			fla.notifyDataSetChanged();
 		}
 	};

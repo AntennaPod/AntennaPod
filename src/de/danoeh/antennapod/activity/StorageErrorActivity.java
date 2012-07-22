@@ -10,7 +10,7 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 public class StorageErrorActivity extends SherlockActivity {
@@ -54,10 +54,10 @@ public class StorageErrorActivity extends SherlockActivity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
 				if (intent.getBooleanExtra("read-only", true)) {
-					if (BuildConfig.DEBUG) Log.d(TAG, "Media was mounted; Finishing activity");
+					if (AppConfig.DEBUG) Log.d(TAG, "Media was mounted; Finishing activity");
 					leaveErrorState();
 				} else {
-					if (BuildConfig.DEBUG) Log.d(TAG, "Media seemed to have been mounted read only");
+					if (AppConfig.DEBUG) Log.d(TAG, "Media seemed to have been mounted read only");
 				}
 			}
 		}

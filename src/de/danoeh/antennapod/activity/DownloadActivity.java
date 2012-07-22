@@ -7,7 +7,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -43,7 +43,7 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (BuildConfig.DEBUG) Log.d(TAG, "Creating Activity");
+		if (AppConfig.DEBUG) Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -61,14 +61,14 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (BuildConfig.DEBUG) Log.d(TAG, "Trying to bind service");
+		if (AppConfig.DEBUG) Log.d(TAG, "Trying to bind service");
 		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (BuildConfig.DEBUG) Log.d(TAG, "Stopping Activity");
+		if (AppConfig.DEBUG) Log.d(TAG, "Stopping Activity");
 	}
 
 	@Override
@@ -162,7 +162,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			downloadService = ((DownloadService.LocalBinder) service)
 					.getService();
-			if (BuildConfig.DEBUG) Log.d(TAG, "Connection to service established");
+			if (AppConfig.DEBUG) Log.d(TAG, "Connection to service established");
 			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
 					downloadService.getDownloadObserver().getStatusList());
 			setListAdapter(dla);
@@ -184,7 +184,7 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	@Override
 	public void onFinish() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Observer has finished, clearing adapter");
+		if (AppConfig.DEBUG) Log.d(TAG, "Observer has finished, clearing adapter");
 		dla.clear();
 		dla.notifyDataSetInvalidated();
 	}

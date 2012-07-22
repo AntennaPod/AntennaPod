@@ -10,7 +10,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.util.FlattrUtils;
@@ -72,7 +72,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 			return null;
 		}
 		if (token != null) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Successfully got token");
+			if (AppConfig.DEBUG) Log.d(TAG, "Successfully got token");
 			FlattrUtils.storeToken(token);
 			return token;
 		} else {

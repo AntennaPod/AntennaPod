@@ -12,7 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
@@ -104,12 +104,12 @@ public class AddFeedActivity extends SherlockActivity {
 		StorageUtils.checkStorageAvailability(this);
 		Intent intent = getIntent();
 		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Was started with ACTION_SEND intent");
+			if (AppConfig.DEBUG) Log.d(TAG, "Was started with ACTION_SEND intent");
 			String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 			if (text != null) {
 				etxtFeedurl.setText(text);
 			} else {
-				if (BuildConfig.DEBUG) Log.d(TAG, "No text was sent");
+				if (AppConfig.DEBUG) Log.d(TAG, "No text was sent");
 			}
 		}
 
@@ -118,7 +118,7 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (BuildConfig.DEBUG) Log.d(TAG, "Stopping Activity");
+		if (AppConfig.DEBUG) Log.d(TAG, "Stopping Activity");
 	}
 
 	@Override

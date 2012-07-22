@@ -12,7 +12,7 @@ import org.xmlpull.v1.XmlPullParserFactory;
 
 import android.util.Log;
 
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 
 /** Gets the type of a specific feed by reading the root element. */
@@ -39,15 +39,15 @@ public class TypeGetter {
 				if (eventType == XmlPullParser.START_TAG) {
 					String tag = xpp.getName();
 					if (tag.equals(ATOM_ROOT)) {
-						if (BuildConfig.DEBUG) Log.d(TAG, "Recognized type Atom");
+						if (AppConfig.DEBUG) Log.d(TAG, "Recognized type Atom");
 						return Type.ATOM;
 					} else if (tag.equals(RSS_ROOT)
 							&& (xpp.getAttributeValue(null, "version")
 									.equals("2.0"))) {
-						if (BuildConfig.DEBUG) Log.d(TAG, "Recognized type RSS 2.0");
+						if (AppConfig.DEBUG) Log.d(TAG, "Recognized type RSS 2.0");
 						return Type.RSS20;
 					} else {
-						if (BuildConfig.DEBUG) Log.d(TAG, "Type is invalid");
+						if (AppConfig.DEBUG) Log.d(TAG, "Type is invalid");
 						throw new UnsupportedFeedtypeException(Type.INVALID);
 					}
 				} else {
@@ -60,7 +60,7 @@ public class TypeGetter {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		if (BuildConfig.DEBUG) Log.d(TAG, "Type is invalid");
+		if (AppConfig.DEBUG) Log.d(TAG, "Type is invalid");
 		throw new UnsupportedFeedtypeException(Type.INVALID);
 	}
 

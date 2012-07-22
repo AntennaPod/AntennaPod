@@ -15,7 +15,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.util.LangUtils;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 /** Displays information about a feed. */
@@ -41,8 +41,8 @@ public class FeedInfoActivity extends SherlockActivity {
 		FeedManager manager = FeedManager.getInstance();
 		feed = manager.getFeed(feedId);
 		if (feed != null) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Language is " + feed.getLanguage());
-			if (BuildConfig.DEBUG) Log.d(TAG, "Author is " + feed.getAuthor());
+			if (AppConfig.DEBUG) Log.d(TAG, "Language is " + feed.getLanguage());
+			if (AppConfig.DEBUG) Log.d(TAG, "Author is " + feed.getAuthor());
 			imgvCover = (ImageView) findViewById(R.id.imgvCover);
 			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);

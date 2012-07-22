@@ -16,7 +16,7 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import org.xml.sax.SAXException;
 
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -101,7 +101,7 @@ public class DownloadService extends Service {
 	@SuppressLint("NewApi")
 	@Override
 	public void onCreate() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Service started");
+		if (AppConfig.DEBUG) Log.d(TAG, "Service started");
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
@@ -126,7 +126,7 @@ public class DownloadService extends Service {
 
 	@Override
 	public void onDestroy() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Service shutting down");
+		if (AppConfig.DEBUG) Log.d(TAG, "Service shutting down");
 		isRunning = false;
 		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		mediaplayer.release();
@@ -143,17 +143,17 @@ public class DownloadService extends Service {
 
 	/** Shuts down Executor service and prepares for shutdown */
 	private void initiateShutdown() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Initiating shutdown");
+		if (AppConfig.DEBUG) Log.d(TAG, "Initiating shutdown");
 		// Wait until PoolExecutor is done
 		Thread waiter = new Thread() {
 			@Override
 			public void run() {
 				syncExecutor.shutdown();
 				try {
-					if (BuildConfig.DEBUG) Log.d(TAG, "Starting to wait for termination");
+					if (AppConfig.DEBUG) Log.d(TAG, "Starting to wait for termination");
 					boolean b = syncExecutor.awaitTermination(20L,
 							TimeUnit.SECONDS);
-					if (BuildConfig.DEBUG) Log.d(TAG, "Stopping waiting for termination; Result : "
+					if (AppConfig.DEBUG) Log.d(TAG, "Stopping waiting for termination; Result : "
 							+ b);
 
 					stopSelf();
@@ -180,7 +180,7 @@ public class DownloadService extends Service {
 				.setSmallIcon(android.R.drawable.stat_notify_sync_noanim);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
-		if (BuildConfig.DEBUG) Log.d(TAG, "Notification set up");
+		if (AppConfig.DEBUG) Log.d(TAG, "Notification set up");
 	}
 
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
@@ -189,7 +189,7 @@ public class DownloadService extends Service {
 			int status = -1;
 			boolean successful = false;
 			int reason = 0;
-			if (BuildConfig.DEBUG) Log.d(TAG, "Received 'Download Complete' - message.");
+			if (AppConfig.DEBUG) Log.d(TAG, "Received 'Download Complete' - message.");
 			long downloadId = intent.getLongExtra(
 					DownloadManager.EXTRA_DOWNLOAD_ID, 0);
 			// get status
@@ -283,7 +283,7 @@ public class DownloadService extends Service {
 			}
 		}
 		if (createReport) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Creating report");
+			if (AppConfig.DEBUG) Log.d(TAG, "Creating report");
 			int successfulDownloads = 0;
 			int failedDownloads = 0;
 			for (DownloadStatus status : completedDownloads) {
@@ -314,7 +314,7 @@ public class DownloadService extends Service {
 			nm.notify(REPORT_ID, notification);
 
 		} else {
-			if (BuildConfig.DEBUG) Log.d(TAG, "No report is created");
+			if (AppConfig.DEBUG) Log.d(TAG, "No report is created");
 		}
 	}
 
@@ -335,21 +335,21 @@ public class DownloadService extends Service {
 
 	/** Is called whenever a Feed is downloaded */
 	private void handleCompletedFeedDownload(Context context, Feed feed) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Handling completed Feed Download");
+		if (AppConfig.DEBUG) Log.d(TAG, "Handling completed Feed Download");
 		syncExecutor.execute(new FeedSyncThread(feed, this));
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
 	private void handleCompletedImageDownload(Context context, FeedImage image) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Handling completed Image Download");
+		if (AppConfig.DEBUG) Log.d(TAG, "Handling completed Image Download");
 		syncExecutor.execute(new ImageHandlerThread(image, this));
 	}
 
 	/** Is called whenever a FeedMedia is downloaded. */
 	private void handleCompletedFeedMediaDownload(Context context,
 			FeedMedia media) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Handling completed FeedMedia Download");
+		if (AppConfig.DEBUG) Log.d(TAG, "Handling completed FeedMedia Download");
 		syncExecutor.execute(new MediaHandlerThread(media, this));
 	}
 
@@ -381,14 +381,14 @@ public class DownloadService extends Service {
 
 			try {
 				feed = handler.parseFeed(feed);
-				if (BuildConfig.DEBUG) Log.d(TAG, feed.getTitle() + " parsed");
+				if (AppConfig.DEBUG) Log.d(TAG, feed.getTitle() + " parsed");
 
 				feed.setDownloadId(0);
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
 				// Download Feed Image if provided and not downloaded
 				if (savedFeed.getImage().isDownloaded() == false) {
-					if (BuildConfig.DEBUG) Log.d(TAG, "Feed has image; Downloading....");
+					if (AppConfig.DEBUG) Log.d(TAG, "Feed has image; Downloading....");
 					imageId = requester.downloadImage(service, feed.getImage());
 					hasImage = true;
 				}
@@ -425,7 +425,7 @@ public class DownloadService extends Service {
 		/** Delete files that aren't needed anymore */
 		private void cleanup() {
 			if (new File(feed.getFile_url()).delete())
-				if (BuildConfig.DEBUG) Log.d(TAG, "Successfully deleted cache file.");
+				if (AppConfig.DEBUG) Log.d(TAG, "Successfully deleted cache file.");
 			else
 				Log.e(TAG, "Failed to delete cache file.");
 			feed.setFile_url(null);
@@ -481,7 +481,7 @@ public class DownloadService extends Service {
 				e.printStackTrace();
 			}
 			media.setDuration(mediaplayer.getDuration());
-			if (BuildConfig.DEBUG) Log.d(TAG, "Duration of file is " + media.getDuration());
+			if (AppConfig.DEBUG) Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 			long statusId = saveDownloadStatus(new DownloadStatus(media, 0,
 					true));

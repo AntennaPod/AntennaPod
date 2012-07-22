@@ -4,7 +4,7 @@ import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.oauth.AccessToken;
 
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 
 import android.util.Log;
 
@@ -16,7 +16,7 @@ public class FlattrServiceCreator {
 	
 	public static FlattrService getService(AccessToken token) {
 		if (flattrService == null) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Creating new instance of Flattr Service");
+			if (AppConfig.DEBUG) Log.d(TAG, "Creating new instance of Flattr Service");
 			FlattrFactory factory = FlattrFactory.getInstance();
 			flattrService = factory.createFlattrService(token);
 		}
@@ -24,7 +24,7 @@ public class FlattrServiceCreator {
 	}
 	
 	public static void deleteFlattrService() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Deleting service instance");
+		if (AppConfig.DEBUG) Log.d(TAG, "Deleting service instance");
 		flattrService = null;
 	}
 }

@@ -9,7 +9,7 @@ import java.util.concurrent.Callable;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.util.NumberGenerator;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 import android.util.Log;
@@ -61,15 +61,15 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	private long download(Context context, FeedFile item, File dest) {
 		if (!isDownloadingFile(item)) {
 			if (dest.exists()) {
-				if (BuildConfig.DEBUG) Log.d(TAG, "File already exists. Deleting !");
+				if (AppConfig.DEBUG) Log.d(TAG, "File already exists. Deleting !");
 				dest.delete();
 			}
-			if (BuildConfig.DEBUG) Log.d(TAG, "Requesting download of url " + item.getDownload_url());
+			if (AppConfig.DEBUG) Log.d(TAG, "Requesting download of url " + item.getDownload_url());
 			downloads.add(item);
 			DownloadManager.Request request = new DownloadManager.Request(
 					Uri.parse(item.getDownload_url())).setDestinationUri(Uri
 					.fromFile(dest));
-			if (BuildConfig.DEBUG) Log.d(TAG, "Version is " + currentApi);
+			if (AppConfig.DEBUG) Log.d(TAG, "Version is " + currentApi);
 			if (currentApi >= 11) {
 				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
 			} else {
@@ -118,7 +118,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	 *            ID of the download to cancel
 	 * */
 	public void cancelDownload(final Context context, final long id) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Cancelling download with id " + id);
+		if (AppConfig.DEBUG) Log.d(TAG, "Cancelling download with id " + id);
 		DownloadManager dm = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
 		int removed = dm.remove(id);
@@ -135,7 +135,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 
 	/** Cancels all running downloads */
 	public void cancelAllDownloads(Context context) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Cancelling all running downloads");
+		if (AppConfig.DEBUG) Log.d(TAG, "Cancelling all running downloads");
 		DownloadManager dm = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
 		for (FeedFile f : downloads) {
@@ -230,7 +230,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			mService = ((DownloadService.LocalBinder) service).getService();
-			if (BuildConfig.DEBUG) Log.d(TAG, "Connection to service established");
+			if (AppConfig.DEBUG) Log.d(TAG, "Connection to service established");
 			mService.queryDownloads();
 			mContext.unbindService(mConnection);
 		}

@@ -11,7 +11,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 /** Observes the status of a specific Download */
@@ -45,7 +45,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onCancelled() {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Task was cancelled.");
+		if (AppConfig.DEBUG) Log.d(TAG, "Task was cancelled.");
 		statusList.clear();
 		for (DownloadObserver.Callback callback : observer) {
 			callback.onFinish();
@@ -54,7 +54,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Background task has finished");
+		if (AppConfig.DEBUG) Log.d(TAG, "Background task has finished");
 		statusList.clear();
 		for (DownloadObserver.Callback callback : observer) {
 			callback.onFinish();
@@ -62,7 +62,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	protected Void doInBackground(Void... params) {
-		if (BuildConfig.DEBUG) Log.d(TAG, "Background Task started.");
+		if (AppConfig.DEBUG) Log.d(TAG, "Background Task started.");
 		while (downloadsLeft() && !isCancelled()) {
 			refreshStatuslist();
 			publishProgress();
@@ -72,7 +72,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 				Log.w(TAG, "Thread was interrupted while waiting.");
 			}
 		}
-		if (BuildConfig.DEBUG) Log.d(TAG, "Background Task finished.");
+		if (AppConfig.DEBUG) Log.d(TAG, "Background Task finished.");
 		return null;
 	}
 

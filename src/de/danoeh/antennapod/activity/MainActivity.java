@@ -25,7 +25,7 @@ import de.danoeh.antennapod.fragment.UnreadItemlistFragment;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 public class MainActivity extends SherlockFragmentActivity {
@@ -72,7 +72,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (BuildConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
+			if (AppConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
 			updateProgressBarVisibility();
 		}
 	};

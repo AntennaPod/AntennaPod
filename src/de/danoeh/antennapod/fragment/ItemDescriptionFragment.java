@@ -17,7 +17,7 @@ import android.webkit.WebView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
-import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -132,7 +132,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 						"utf-8", "about:blank");
 				getSherlockActivity()
 						.setSupportProgressBarIndeterminateVisibility(false);
-				if (BuildConfig.DEBUG) Log.d(TAG, "Webview loaded");
+				if (AppConfig.DEBUG) Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
 			}
 
@@ -145,7 +145,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				if (BuildConfig.DEBUG) Log.d(TAG, "Loading Webview");
+				if (AppConfig.DEBUG) Log.d(TAG, "Loading Webview");
 				data = "";
 				if (item.getContentEncoded() == null
 						&& item.getDescription() != null) {
