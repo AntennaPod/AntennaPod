@@ -15,12 +15,7 @@ public class FlattrServiceCreator {
 	private static volatile FlattrService flattrService;
 	
 	public static FlattrService getService(AccessToken token) {
-		if (flattrService == null) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Creating new instance of Flattr Service");
-			FlattrFactory factory = FlattrFactory.getInstance();
-			flattrService = factory.createFlattrService(token);
-		}
-		return flattrService;
+		return FlattrFactory.getInstance().createFlattrService(token);
 	}
 	
 	public static void deleteFlattrService() {

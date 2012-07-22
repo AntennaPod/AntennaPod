@@ -103,6 +103,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 
 	@SuppressLint("NewApi")
 	public void executeAsync() {
+		FlattrUtils.hasToken();
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			executeOnExecutor(THREAD_POOL_EXECUTOR);
 		} else {

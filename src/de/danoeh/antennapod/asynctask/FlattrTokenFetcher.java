@@ -34,7 +34,9 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 
 	@Override
 	protected void onPostExecute(AccessToken result) {
-		super.onPostExecute(result);
+		if (result != null) {
+			FlattrUtils.storeToken(result);
+		}
 		dialog.dismiss();
 		if (exception == null) {
 			FlattrAuthActivity instance = FlattrAuthActivity.getInstance();
@@ -73,7 +75,6 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 		}
 		if (token != null) {
 			if (AppConfig.DEBUG) Log.d(TAG, "Successfully got token");
-			FlattrUtils.storeToken(token);
 			return token;
 		} else {
 			Log.w(TAG, "Flattr token was null");
