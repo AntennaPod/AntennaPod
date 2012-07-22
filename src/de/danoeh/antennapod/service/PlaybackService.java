@@ -32,6 +32,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 
@@ -111,7 +112,8 @@ public class PlaybackService extends Service {
 		isRunning = true;
 		pausedBecauseOfTransientAudiofocusLoss = false;
 		status = PlayerStatus.STOPPED;
-		if (AppConfig.DEBUG) Log.d(TAG, "Service created.");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Service created.");
 		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		manager = FeedManager.getInstance();
 		player = new MediaPlayer();
@@ -133,7 +135,8 @@ public class PlaybackService extends Service {
 		super.onDestroy();
 		isRunning = false;
 		unregisterReceiver(headsetDisconnected);
-		if (AppConfig.DEBUG) Log.d(TAG, "Service is about to be destroyed");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Service is about to be destroyed");
 		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
 		player.release();
@@ -152,24 +155,28 @@ public class PlaybackService extends Service {
 		public void onAudioFocusChange(int focusChange) {
 			switch (focusChange) {
 			case AudioManager.AUDIOFOCUS_LOSS:
-				if (AppConfig.DEBUG) Log.d(TAG, "Lost audio focus");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Lost audio focus");
 				pause(true);
 				stopSelf();
 				break;
 			case AudioManager.AUDIOFOCUS_GAIN:
-				if (AppConfig.DEBUG) Log.d(TAG, "Gained audio focus");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Gained audio focus");
 				if (pausedBecauseOfTransientAudiofocusLoss) {
 					play();
 				}
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-				if (AppConfig.DEBUG) Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Lost audio focus temporarily. Ducking...");
 				audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
 						AudioManager.ADJUST_LOWER, 0);
 				pausedBecauseOfTransientAudiofocusLoss = true;
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-				if (AppConfig.DEBUG) Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Lost audio focus temporarily. Pausing...");
 				pause(false);
 				pausedBecauseOfTransientAudiofocusLoss = true;
 			}
@@ -180,7 +187,8 @@ public class PlaybackService extends Service {
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
 		if (keycode != -1) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received media button event");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received media button event");
 			handleKeycode(keycode);
 		} else {
 
@@ -257,7 +265,8 @@ public class PlaybackService extends Service {
 	 * mediaplayer.
 	 */
 	public void setVideoSurface(SurfaceHolder sh) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Setting display");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Setting display");
 		player.setDisplay(null);
 		player.setDisplay(sh);
 		if (status == PlayerStatus.STOPPED
@@ -360,7 +369,8 @@ public class PlaybackService extends Service {
 	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
 		@Override
 		public void onPrepared(MediaPlayer mp) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Resource prepared");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Resource prepared");
 			mp.seekTo(media.getPosition());
 			setStatus(PlayerStatus.PREPARED);
 			if (startWhenPrepared) {
@@ -399,7 +409,8 @@ public class PlaybackService extends Service {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Playback completed");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Playback completed");
 			// Save state
 			positionSaver.cancel(true);
 			media.setPosition(0);
@@ -416,14 +427,16 @@ public class PlaybackService extends Service {
 					.getBoolean(PodcastApp.PREF_FOLLOW_QUEUE, false);
 			FeedItem nextItem = manager.getFirstQueueItem();
 			if (isInQueue && followQueue && nextItem != null) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Loading next item in queue");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Loading next item in queue");
 				media = nextItem.getMedia();
 				feed = nextItem.getFeed();
 				shouldStream = !media.isDownloaded();
 				resetVideoSurface();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Stopping playback");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Stopping playback");
 				stopWidgetUpdater();
 				setStatus(PlayerStatus.STOPPED);
 				stopForeground(true);
@@ -449,7 +462,8 @@ public class PlaybackService extends Service {
 	 */
 	public void pause(boolean abandonFocus) {
 		if (player.isPlaying()) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Pausing playback.");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Pausing playback.");
 			player.pause();
 			if (abandonFocus) {
 				audioManager.abandonAudioFocus(audioFocusChangeListener);
@@ -478,8 +492,10 @@ public class PlaybackService extends Service {
 					AudioManager.AUDIOFOCUS_GAIN);
 
 			if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Audiofocus successfully requested");
-				if (AppConfig.DEBUG) Log.d(TAG, "Resuming/Starting playback");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Audiofocus successfully requested");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Resuming/Starting playback");
 				SharedPreferences.Editor editor = getApplicationContext()
 						.getSharedPreferences(PodcastApp.PREF_NAME, 0).edit();
 				editor.putLong(PREF_LAST_PLAYED_ID, media.getId());
@@ -495,13 +511,15 @@ public class PlaybackService extends Service {
 				setupNotification();
 				pausedBecauseOfTransientAudiofocusLoss = false;
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Failed to request Audiofocus");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Failed to request Audiofocus");
 			}
 		}
 	}
 
 	private void setStatus(PlayerStatus newStatus) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Setting status to " + newStatus);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Setting status to " + newStatus);
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 		updateWidget();
@@ -529,7 +547,8 @@ public class PlaybackService extends Service {
 				.setSmallIcon(R.drawable.ic_stat_antenna);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
-		if (AppConfig.DEBUG) Log.d(TAG, "Notification set up");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Notification set up");
 	}
 
 	/**
@@ -543,7 +562,8 @@ public class PlaybackService extends Service {
 	}
 
 	public void seek(int i) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Seeking position " + i);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Seeking position " + i);
 		if (shouldStream) {
 			statusBeforeSeek = status;
 			setStatus(PlayerStatus.SEEKING);
@@ -552,9 +572,15 @@ public class PlaybackService extends Service {
 		saveCurrentPosition();
 	}
 
+	public void seekToChapter(SimpleChapter chapter) {
+		seek((int) chapter.getStart());
+	}
+
 	/** Saves the current position of the media file to the DB */
 	private synchronized void saveCurrentPosition() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Saving current position to " + player.getCurrentPosition());
+		if (AppConfig.DEBUG)
+			Log.d(TAG,
+					"Saving current position to " + player.getCurrentPosition());
 		media.setPosition(player.getCurrentPosition());
 		manager.setFeedMedia(this, media);
 	}
@@ -577,7 +603,8 @@ public class PlaybackService extends Service {
 	}
 
 	private void updateWidget() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Sending widget update request");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Sending widget update request");
 		PlaybackService.this.sendBroadcast(new Intent(
 				PlayerWidget.FORCE_WIDGET_UPDATE));
 	}
@@ -595,19 +622,22 @@ public class PlaybackService extends Service {
 			if (intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
 				int state = intent.getIntExtra("state", -1);
 				if (state != -1) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Headset plug event. State is " + state);
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Headset plug event. State is " + state);
 					boolean pauseOnDisconnect = PreferenceManager
 							.getDefaultSharedPreferences(
 									getApplicationContext())
 							.getBoolean(
 									PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT,
 									false);
-					if (AppConfig.DEBUG) Log.d(TAG, "pauseOnDisconnect preference is "
-							+ pauseOnDisconnect);
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "pauseOnDisconnect preference is "
+								+ pauseOnDisconnect);
 					if (state == UNPLUGGED && pauseOnDisconnect
 							&& status == PlayerStatus.PLAYING) {
-						if (AppConfig.DEBUG) Log.d(TAG,
-								"Pausing playback because headset was disconnected");
+						if (AppConfig.DEBUG)
+							Log.d(TAG,
+									"Pausing playback because headset was disconnected");
 						pause(true);
 					}
 				} else {
@@ -628,11 +658,13 @@ public class PlaybackService extends Service {
 					Thread.sleep(WAITING_INTERVALL);
 					saveCurrentPosition();
 				} catch (InterruptedException e) {
-					if (AppConfig.DEBUG) Log.d(TAG,
-							"Thread was interrupted while waiting. Finishing now...");
+					if (AppConfig.DEBUG)
+						Log.d(TAG,
+								"Thread was interrupted while waiting. Finishing now...");
 					return null;
 				} catch (IllegalStateException e) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Player is in illegal state. Finishing now");
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Player is in illegal state. Finishing now");
 					return null;
 				}
 

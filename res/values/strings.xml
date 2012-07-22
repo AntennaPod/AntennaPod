@@ -125,5 +125,6 @@
     <string name="size_prefix">Size:\u0020</string>
     <string name="processing_label">Processing</string>
     <string name="flattring_label">flattring</string>
+    <string name="chapters_label">Chapters</string>
 
 </resources>
