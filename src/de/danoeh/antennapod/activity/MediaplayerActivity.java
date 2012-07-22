@@ -741,7 +741,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			case POS_COVER:
 				return activity.getString(R.string.cover_label);
 			case POS_DESCR:
-				return activity.getString(R.string.description_label);
+				return activity.getString(R.string.shownotes_label);
 			case POS_CHAPTERS:
 				return activity.getString(R.string.chapters_label);
 			default:
