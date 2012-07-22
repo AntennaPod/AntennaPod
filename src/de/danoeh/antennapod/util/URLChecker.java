@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.util;
 
+import de.danoeh.antennapod.BuildConfig;
 import android.util.Log;
 
 /** Provides methods for checking and editing a URL.*/
@@ -25,12 +26,12 @@ public final class URLChecker {
 
         if (!url.startsWith("http")) {
             builder.append("http://");
-            Log.d(TAG, "Missing http; appending");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Missing http; appending");
         }
         builder.append(url);
 
         if (url.contains(FEEDBURNER_URL)) {
-            Log.d(TAG,
+            if (BuildConfig.DEBUG) Log.d(TAG,
             "URL seems to be Feedburner URL; appending prefix");
             builder.append(FEEDBURNER_PREFIX);
         }

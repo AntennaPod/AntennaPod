@@ -6,6 +6,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
 
+import de.danoeh.antennapod.BuildConfig;
+
 import android.content.Context;
 import android.util.Log;
 
@@ -32,22 +34,22 @@ public class ConnectionTester implements Runnable {
 
 	@Override
 	public void run() {
-		Log.d(TAG, "Testing connection");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Testing connection");
 		try {		
 			URL url = new URL(strUrl);
 	        HttpURLConnection con = (HttpURLConnection) url.openConnection();
 	        con.connect();
 	        callback.onConnectionSuccessful();
-	        Log.d(TAG, "Connection seems to work");
+	        if (BuildConfig.DEBUG) Log.d(TAG, "Connection seems to work");
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			reason = DownloadError.ERROR_CONNECTION_ERROR;
-			Log.d(TAG, "Connection failed");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Connection failed");
 			callback.onConnectionFailure();
 		} catch (IOException e) {
 			e.printStackTrace();
 			reason = DownloadError.ERROR_CONNECTION_ERROR;
-			Log.d(TAG, "Connection failed");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Connection failed");
 			callback.onConnectionFailure();
 		}
 	}

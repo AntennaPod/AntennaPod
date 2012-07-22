@@ -2,6 +2,7 @@ package de.danoeh.antennapod.storage;
 
 import java.util.ArrayList;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedCategory;
@@ -196,7 +197,7 @@ public class PodDBAdapter {
 
 	public PodDBAdapter open() {
 		if (db == null || !db.isOpen() || db.isReadOnly()) {
-			Log.d(TAG, "Opening DB");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Opening DB");
 			try {
 				db = helper.getWritableDatabase();
 			} catch (SQLException ex) {
@@ -208,7 +209,7 @@ public class PodDBAdapter {
 	}
 
 	public void close() {
-		Log.d(TAG, "Closing DB");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Closing DB");
 		db.close();
 	}
 
@@ -238,10 +239,10 @@ public class PodDBAdapter {
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
 		if (feed.getId() == 0) {
 			// Create new entry
-			Log.d(this.toString(), "Inserting new Feed into db");
+			if (BuildConfig.DEBUG) Log.d(this.toString(), "Inserting new Feed into db");
 			feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
 		} else {
-			Log.d(this.toString(), "Updating existing Feed in db");
+			if (BuildConfig.DEBUG) Log.d(this.toString(), "Updating existing Feed in db");
 			db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
 					new String[] { Long.toString(feed.getId()) });
 		}

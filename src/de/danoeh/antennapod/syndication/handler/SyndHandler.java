@@ -6,6 +6,7 @@ import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
 import de.danoeh.antennapod.syndication.namespace.SyndElement;
@@ -82,17 +83,17 @@ public class SyndHandler extends DefaultHandler {
 				state.defaultNamespaces.push(new NSAtom());
 			} else if (prefix.equals(NSAtom.NSTAG)) {
 				state.namespaces.put(uri, new NSAtom());
-				Log.d(TAG, "Recognized Atom namespace");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Recognized Atom namespace");
 			}
 		} else if (uri.equals(NSContent.NSURI) && prefix.equals(NSContent.NSTAG)) {
 			state.namespaces.put(uri, new NSContent());
-			Log.d(TAG, "Recognized Content namespace");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Recognized Content namespace");
 		} else if (uri.equals(NSITunes.NSURI) && prefix.equals(NSITunes.NSTAG)) {
 			state.namespaces.put(uri, new NSITunes());
-			Log.d(TAG, "Recognized ITunes namespace");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Recognized ITunes namespace");
 		} else if (uri.equals(NSSimpleChapters.NSURI) && prefix.equals(NSSimpleChapters.NSTAG)) {
 			state.namespaces.put(uri, new NSSimpleChapters());
-			Log.d(TAG, "Recognized SimpleChapters namespace");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Recognized SimpleChapters namespace");
 		}
 	}
 

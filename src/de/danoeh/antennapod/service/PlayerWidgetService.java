@@ -17,6 +17,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /** Updates the state of the player widget */
@@ -33,7 +34,7 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.d(TAG, "Service created");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Service created");
 		isUpdating = false;
 	}
 
@@ -54,14 +55,14 @@ public class PlayerWidgetService extends Service {
 				isUpdating = false;
 			}
 		} else {
-			Log.d(TAG,
+			if (BuildConfig.DEBUG) Log.d(TAG,
 					"Service was called while updating. Ignoring update request");
 		}
 		return Service.START_NOT_STICKY;
 	}
 
 	private void updateViews() {
-		Log.d(TAG, "Updating widget views");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Updating widget views");
 		ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		RemoteViews views = new RemoteViews(getPackageName(),
@@ -87,7 +88,7 @@ public class PlayerWidgetService extends Service {
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());
 		} else {
-			Log.d(TAG, "No media playing. Displaying defaultt views");
+			if (BuildConfig.DEBUG) Log.d(TAG, "No media playing. Displaying defaultt views");
 			views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
 			views.setTextViewText(R.id.txtvTitle,
 					this.getString(R.string.no_media_playing_label));
@@ -117,7 +118,7 @@ public class PlayerWidgetService extends Service {
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			Log.d(TAG, "Connection to service established");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Connection to service established");
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
 			updateViews();
@@ -127,7 +128,7 @@ public class PlayerWidgetService extends Service {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			playbackService = null;
-			Log.d(TAG, "Disconnected from service");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Disconnected from service");
 		}
 
 	};

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import java.io.File;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -35,7 +36,7 @@ public class FeedImageLoader {
 	private LruCache<Long, Bitmap> imageCache;
 
 	private FeedImageLoader() {
-		Log.d(TAG, "Creating cache with size " + cacheSize);
+		if (BuildConfig.DEBUG) Log.d(TAG, "Creating cache with size " + cacheSize);
 		imageCache = new LruCache<Long, Bitmap>(cacheSize) {
 
 			@SuppressLint("NewApi")
@@ -165,7 +166,7 @@ public class FeedImageLoader {
 						PREFERRED_LENGTH, PREFERRED_LENGTH, false);
 
 				addBitmapToCache(params[0].getId(), bitmap);
-				Log.d(TAG, "Finished loading bitmaps");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Finished loading bitmaps");
 			} else {
 				Log.e(TAG,
 						"FeedImage has no valid file url. Using default image");

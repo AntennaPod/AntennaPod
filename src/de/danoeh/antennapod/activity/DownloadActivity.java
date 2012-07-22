@@ -7,6 +7,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -42,7 +43,7 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "Creating Activity");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -60,14 +61,14 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(TAG, "Trying to bind service");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Trying to bind service");
 		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Log.d(TAG, "Stopping Activity");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Stopping Activity");
 	}
 
 	@Override
@@ -161,7 +162,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			downloadService = ((DownloadService.LocalBinder) service)
 					.getService();
-			Log.d(TAG, "Connection to service established");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Connection to service established");
 			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
 					downloadService.getDownloadObserver().getStatusList());
 			setListAdapter(dla);
@@ -183,7 +184,7 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	@Override
 	public void onFinish() {
-		Log.d(TAG, "Observer has finished, clearing adapter");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Observer has finished, clearing adapter");
 		dla.clear();
 		dla.notifyDataSetInvalidated();
 	}

@@ -60,7 +60,7 @@ public class PodcastApp extends Application implements
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		Log.d(TAG, "Registered change of application preferences");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Registered change of application preferences");
 		if (key.equals(PREF_UPDATE_INTERVALL)) {
 			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			int hours = Integer.parseInt(sharedPreferences.getString(
@@ -72,9 +72,9 @@ public class PodcastApp extends Application implements
 				long newIntervall = TimeUnit.HOURS.toMillis(hours);
 				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
 						newIntervall, newIntervall, updateIntent);
-				Log.d(TAG, "Changed alarm to new intervall");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Changed alarm to new intervall");
 			} else {
-				Log.d(TAG, "Automatic update was deactivated");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Automatic update was deactivated");
 			}
 		}
 	}

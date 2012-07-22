@@ -16,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.util.FlattrUtils;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /** Guides the user through the authentication process */
@@ -35,7 +36,7 @@ public class FlattrAuthActivity extends SherlockActivity {
 		super.onCreate(savedInstanceState);
 		singleton = this;
 		authSuccessful = false;
-		Log.d(TAG, "Activity created");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
 		txtvExplanation = (TextView) findViewById(R.id.txtvExplanation);
@@ -69,10 +70,10 @@ public class FlattrAuthActivity extends SherlockActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(TAG, "Activity resumed");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Activity resumed");
 		Uri uri = getIntent().getData();
 		if (uri != null) {
-			Log.d(TAG, "Received uri");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Received uri");
 			FlattrUtils.handleCallback(this, uri);
 		}
 	}

@@ -17,6 +17,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /** Handles interactions with the FeedItemMenu. */
@@ -29,7 +30,7 @@ public class FeedMenuHandler {
 	}
 
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
-		Log.d(TAG, "Preparing options menu");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Preparing options menu");
 		if (selectedFeed.getPaymentLink() != null) {
 			menu.findItem(R.id.support_item).setVisible(true);
 		}

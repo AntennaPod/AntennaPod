@@ -28,6 +28,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.FeedItemMenuHandler;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /** Displays a list of FeedItems. */
@@ -139,7 +140,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Received contentUpdate Intent.");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
 			fila.notifyDataSetChanged();
 			updateProgressBarVisibility();
 		}

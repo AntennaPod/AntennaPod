@@ -24,6 +24,7 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.util.FeedItemMenuHandler;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /** Displays a single FeedItem and provides various actions */
@@ -58,7 +59,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		Log.d(TAG, "Stopping Activity");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Stopping Activity");
 	}
 
 	/** Extracts FeedItem object the activity is supposed to display */
@@ -72,8 +73,8 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		}
 		Feed feed = manager.getFeed(feedId);
 		item = manager.getFeedItem(itemId, feed);
-		Log.d(TAG, "Title of item is " + item.getTitle());
-		Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
+		if (BuildConfig.DEBUG) Log.d(TAG, "Title of item is " + item.getTitle());
+		if (BuildConfig.DEBUG) Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
 	}
 
 	private void populateUI() {

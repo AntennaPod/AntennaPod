@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.receiver;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.FeedManager;
 import android.content.BroadcastReceiver;
@@ -18,7 +19,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(ACTION_REFRESH_FEEDS)) {
-			Log.d(TAG, "Received intent");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Received intent");
 			boolean mobileUpdate = PreferenceManager
 					.getDefaultSharedPreferences(
 							context.getApplicationContext()).getBoolean(
@@ -26,7 +27,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 			if (mobileUpdate || connectedToWifi(context)) {
 				FeedManager.getInstance().refreshAllFeeds(context);
 			} else {
-				Log.d(TAG,
+				if (BuildConfig.DEBUG) Log.d(TAG,
 						"Blocking automatic update: no wifi available / no mobile updates allowed");
 			}
 		}

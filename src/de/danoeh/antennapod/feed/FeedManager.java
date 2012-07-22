@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -109,7 +110,7 @@ public class FeedManager {
 			media.setFile_url(null);
 			setFeedMedia(context, media);
 		}
-		Log.d(TAG, "Deleting File. Result: " + result);
+		if (BuildConfig.DEBUG) Log.d(TAG, "Deleting File. Result: " + result);
 		return result;
 	}
 
@@ -168,7 +169,7 @@ public class FeedManager {
 	 * instead of the setters of FeedItem.
 	 */
 	public void markItemRead(Context context, FeedItem item, boolean read) {
-		Log.d(TAG, "Setting item with title " + item.getTitle()
+		if (BuildConfig.DEBUG) Log.d(TAG, "Setting item with title " + item.getTitle()
 				+ " as read/unread");
 		item.read = read;
 		setFeedItem(context, item);
@@ -196,7 +197,7 @@ public class FeedManager {
 
 	/** Marks all items in the unread items list as read */
 	public void markAllItemsRead(Context context) {
-		Log.d(TAG, "marking all items as read");
+		if (BuildConfig.DEBUG) Log.d(TAG, "marking all items as read");
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		for (FeedItem item : unreadItems) {
@@ -209,7 +210,7 @@ public class FeedManager {
 	}
 
 	public void refreshAllFeeds(Context context) {
-		Log.d(TAG, "Refreshing all feeds.");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Refreshing all feeds.");
 		for (Feed feed : feeds) {
 			refreshFeed(context, feed);
 		}
@@ -255,7 +256,7 @@ public class FeedManager {
 
 	/** Removes all items in queue */
 	public void clearQueue(Context context) {
-		Log.d(TAG, "Clearing queue");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Clearing queue");
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		queue.clear();
@@ -286,7 +287,7 @@ public class FeedManager {
 	}
 
 	public void moveQueueItem(Context context, FeedItem item, int delta) {
-		Log.d(TAG, "Moving queue item");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Moving queue item");
 		int itemIndex = queue.indexOf(item);
 		int newIndex = itemIndex + delta;
 		if (newIndex >= 0 && newIndex < queue.size()) {
@@ -330,7 +331,7 @@ public class FeedManager {
 		// Look up feed in the feedslist
 		final Feed savedFeed = searchFeedByLink(newFeed.getLink());
 		if (savedFeed == null) {
-			Log.d(TAG,
+			if (BuildConfig.DEBUG) Log.d(TAG,
 					"Found no existing Feed with title " + newFeed.getTitle()
 							+ ". Adding as new one.");
 			// Add a new Feed
@@ -339,7 +340,7 @@ public class FeedManager {
 
 			return newFeed;
 		} else {
-			Log.d(TAG, "Feed with title " + newFeed.getTitle()
+			if (BuildConfig.DEBUG) Log.d(TAG, "Feed with title " + newFeed.getTitle()
 					+ " already exists. Syncing new with existing one.");
 			// Look for new or updated Items
 			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
@@ -560,7 +561,7 @@ public class FeedManager {
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
-		Log.d(TAG, "Extracting Feedlist");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Extracting Feedlist");
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
 		if (feedlistCursor.moveToFirst()) {
 			do {
@@ -595,7 +596,7 @@ public class FeedManager {
 
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
 			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
-		Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
+		if (BuildConfig.DEBUG) Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 		ArrayList<FeedItem> items = new ArrayList<FeedItem>();
 		ArrayList<String> mediaIds = new ArrayList<String>();
 
@@ -689,7 +690,7 @@ public class FeedManager {
 
 	private void extractDownloadLogFromCursor(Context context,
 			PodDBAdapter adapter) {
-		Log.d(TAG, "Extracting DownloadLog");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Extracting DownloadLog");
 		Cursor logCursor = adapter.getDownloadLogCursor();
 		if (logCursor.moveToFirst()) {
 			do {
@@ -721,7 +722,7 @@ public class FeedManager {
 	}
 
 	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
-		Log.d(TAG, "Extracting Queue");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Extracting Queue");
 		Cursor cursor = adapter.getQueueCursor();
 		if (cursor.moveToFirst()) {
 			do {

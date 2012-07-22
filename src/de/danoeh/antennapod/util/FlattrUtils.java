@@ -23,6 +23,7 @@ import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.widget.Toast;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
@@ -63,15 +64,15 @@ public class FlattrUtils {
 	 */
 	private static AccessToken retrieveToken() {
 		if (cachedToken == null) {
-			Log.d(TAG, "Retrieving access token");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Retrieving access token");
 			String token = PreferenceManager.getDefaultSharedPreferences(
 					PodcastApp.getInstance())
 					.getString(PREF_ACCESS_TOKEN, null);
 			if (token != null) {
-				Log.d(TAG, "Found access token. Caching.");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Found access token. Caching.");
 				cachedToken = new AccessToken(token);
 			} else {
-				Log.d(TAG, "No access token found");
+				if (BuildConfig.DEBUG) Log.d(TAG, "No access token found");
 				return null;
 			}
 		}
@@ -86,7 +87,7 @@ public class FlattrUtils {
 
 	/** Stores the token as a preference */
 	public static void storeToken(AccessToken token) {
-		Log.d(TAG, "Storing token");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Storing token");
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(PodcastApp.getInstance()).edit();
 		if (token != null) {
@@ -99,7 +100,7 @@ public class FlattrUtils {
 	}
 
 	public static void deleteToken() {
-		Log.d(TAG, "Deleting flattr token");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Deleting flattr token");
 		storeToken(null);
 	}
 
@@ -132,7 +133,7 @@ public class FlattrUtils {
 	}
 
 	public static void revokeAccessToken(Context context) {
-		Log.d(TAG, "Revoking access token");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Revoking access token");
 		deleteToken();
 		FlattrServiceCreator.deleteFlattrService();
 		showRevokeDialog(context);
@@ -155,7 +156,7 @@ public class FlattrUtils {
 	}
 
 	public static void showNoTokenDialog(final Context context, final String url) {
-		Log.d(TAG, "Creating showNoTokenDialog");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Creating showNoTokenDialog");
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.no_flattr_token_title);
 		builder.setMessage(R.string.no_flattr_token_msg);

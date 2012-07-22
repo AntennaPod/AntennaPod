@@ -41,6 +41,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TabPageIndicator;
 
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -97,7 +98,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		Log.d(TAG, "Activity stopped");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Activity stopped");
 		try {
 			unregisterReceiver(statusUpdate);
 		} catch (IllegalArgumentException e) {
@@ -156,7 +157,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		Log.d(TAG, "Resuming Activity");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Resuming Activity");
 		StorageUtils.checkStorageAvailability(this);
 		bindToService();
 
@@ -165,7 +166,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		Log.d(TAG, "Configuration changed");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Configuration changed");
 		orientation = newConfig.orientation;
 		if (positionObserver != null) {
 			positionObserver.cancel(true);
@@ -191,7 +192,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		Log.d(TAG, "Creating Activity");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Creating Activity");
 		StorageUtils.checkStorageAvailability(this);
 
 		orientation = getResources().getConfiguration().orientation;
@@ -205,7 +206,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		Intent serviceIntent = new Intent(this, PlaybackService.class);
 		boolean bound = false;
 		if (!PlaybackService.isRunning) {
-			Log.d(TAG, "Trying to restore last played media");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Trying to restore last played media");
 			SharedPreferences prefs = getApplicationContext()
 					.getSharedPreferences(PodcastApp.PREF_NAME, 0);
 			long mediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID,
@@ -224,7 +225,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				bound = bindService(serviceIntent, mConnection,
 						Context.BIND_AUTO_CREATE);
 			} else {
-				Log.d(TAG, "No last played media found");
+				if (BuildConfig.DEBUG) Log.d(TAG, "No last played media found");
 				status = PlayerStatus.STOPPED;
 				setupGUI();
 				handleStatus();
@@ -232,7 +233,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		} else {
 			bound = bindService(serviceIntent, mConnection, 0);
 		}
-		Log.d(TAG, "Result for service binding: " + bound);
+		if (BuildConfig.DEBUG) Log.d(TAG, "Result for service binding: " + bound);
 	}
 
 	private void handleStatus() {
@@ -272,7 +273,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
 			break;
 		case AWAITING_VIDEO_SURFACE:
-			Log.d(TAG, "Preparing video playback");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Preparing video playback");
 			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
 		}
 	}
@@ -289,7 +290,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@SuppressLint("NewApi")
 	private void setupPositionObserver() {
 		if (positionObserver == null || positionObserver.isCancelled()) {
-			Log.d(TAG, "Setting up position observer");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Setting up position observer");
 			positionObserver = new MediaPositionObserver() {
 
 				@Override
@@ -317,7 +318,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	}
 
 	private void updateProgressbarPosition() {
-		Log.d(TAG, "Updating progressbar info");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Updating progressbar info");
 		MediaPlayer player = playbackService.getPlayer();
 		float progress = ((float) player.getCurrentPosition())
 				/ player.getDuration();
@@ -326,7 +327,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 	private void loadMediaInfo() {
 		if (!mediaInfoLoaded) {
-			Log.d(TAG, "Loading media info");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Loading media info");
 			if (media != null) {
 				getSupportActionBar().setSubtitle(media.getItem().getTitle());
 				getSupportActionBar().setTitle(
@@ -524,13 +525,13 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
 			queryService();
-			Log.d(TAG, "Connection to Service established");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Connection to Service established");
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			playbackService = null;
-			Log.d(TAG, "Disconnected from Service");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Disconnected from Service");
 
 		}
 	};
@@ -540,7 +541,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	 * information has to be refreshed
 	 */
 	private void queryService() {
-		Log.d(TAG, "Querying service info");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Querying service info");
 		if (playbackService != null) {
 			int requestedOrientation;
 			status = playbackService.getStatus();
@@ -557,11 +558,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			// check if orientation is correct
 			if ((requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE && orientation == Configuration.ORIENTATION_LANDSCAPE)
 					|| (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && orientation == Configuration.ORIENTATION_PORTRAIT)) {
-				Log.d(TAG, "Orientation correct");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Orientation correct");
 				setupGUI();
 				handleStatus();
 			} else {
-				Log.d(TAG,
+				if (BuildConfig.DEBUG) Log.d(TAG,
 						"Orientation incorrect, waiting for orientation change");
 			}
 		} else {
@@ -573,7 +574,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	private BroadcastReceiver statusUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			Log.d(TAG, "Received statusUpdate Intent.");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Received statusUpdate Intent.");
 			status = playbackService.getStatus();
 			handleStatus();
 		}
@@ -611,7 +612,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				}
 
 			} else {
-				Log.d(TAG, "Bad arguments. Won't handle intent");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Bad arguments. Won't handle intent");
 			}
 
 		}
@@ -629,7 +630,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	public void surfaceCreated(SurfaceHolder holder) {
 		holderCreated = true;
-		Log.d(TAG, "Videoview holder created");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Videoview holder created");
 		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
 			if (playbackService != null) {
 				playbackService.setVideoSurface(holder);
@@ -718,19 +719,19 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 		@Override
 		protected void onCancelled() {
-			Log.d(TAG, "Task was cancelled");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Task was cancelled");
 		}
 
 		@Override
 		protected Void doInBackground(MediaPlayer... p) {
-			Log.d(TAG, "Background Task started");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Background Task started");
 			player = p[0];
 			try {
 				while (player.isPlaying() && !isCancelled()) {
 					try {
 						Thread.sleep(WAITING_INTERVALL);
 					} catch (InterruptedException e) {
-						Log.d(TAG,
+						if (BuildConfig.DEBUG) Log.d(TAG,
 								"Thread was interrupted while waiting. Finishing now");
 						return null;
 					}
@@ -738,9 +739,9 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 				}
 			} catch (IllegalStateException e) {
-				Log.d(TAG, "player is in illegal state, exiting now");
+				if (BuildConfig.DEBUG) Log.d(TAG, "player is in illegal state, exiting now");
 			}
-			Log.d(TAG, "Background Task finished");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Background Task finished");
 			return null;
 		}
 	}
@@ -763,7 +764,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		@Override
 		protected void onProgressUpdate(Void... values) {
 			if (videoControlsShowing) {
-				Log.d(TAG, "Hiding video controls");
+				if (BuildConfig.DEBUG) Log.d(TAG, "Hiding video controls");
 				getSupportActionBar().hide();
 				videoOverlay.setVisibility(View.GONE);
 				videoControlsShowing = false;

@@ -8,6 +8,7 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.FlattrUtils;
 
@@ -61,7 +62,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		Log.d(TAG, "Exit code was " + exitCode);
+		if (BuildConfig.DEBUG) Log.d(TAG, "Exit code was " + exitCode);
 		if (progDialog != null) {
 			progDialog.dismiss();
 		}
@@ -85,7 +86,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected Void doInBackground(Void... params) {
-		Log.d(TAG, "Starting background work");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Starting background work");
 		if (FlattrUtils.hasToken()) {
 			try {
 				FlattrUtils.clickUrl(context, url);
