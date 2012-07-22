@@ -632,7 +632,7 @@ public class FeedManager {
 					if (chapterCursor.moveToFirst()) {
 						item.setSimpleChapters(new ArrayList<SimpleChapter>());
 						do {
-							SimpleChapter chapter = new SimpleChapter(
+							SimpleChapter chapter = new SimpleChapter(item,
 									chapterCursor
 											.getLong(PodDBAdapter.KEY_SC_START_INDEX),
 									chapterCursor.getString(PodDBAdapter.KEY_TITLE_INDEX));

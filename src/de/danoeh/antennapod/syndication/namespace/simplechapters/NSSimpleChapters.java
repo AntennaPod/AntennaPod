@@ -28,9 +28,10 @@ public class NSSimpleChapters extends Namespace {
 		} else if (localName.equals(CHAPTER)) {
 			state.getCurrentItem()
 					.getSimpleChapters()
-					.add(new SimpleChapter(SyndDateUtils
-							.parseTimeString(attributes.getValue(START)),
-							attributes.getValue(TITLE)));
+					.add(new SimpleChapter(state.getCurrentItem(),
+							SyndDateUtils.parseTimeString(attributes
+									.getValue(START)), attributes
+									.getValue(TITLE)));
 		}
 
 		return new SyndElement(localName, this);

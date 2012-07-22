@@ -1,12 +1,14 @@
 package de.danoeh.antennapod.feed;
 
 public class SimpleChapter extends FeedComponent {
-	public long getStart() {
-		return start;
-	}
-		
-	public SimpleChapter(long start, String title) {
+	/** Defines starting point in milliseconds. */
+	private long start;
+	private String title;
+	private FeedItem item;
+
+	public SimpleChapter(FeedItem item, long start, String title) {
 		super();
+		this.item = item;
 		this.start = start;
 		this.title = title;
 	}
@@ -14,9 +16,17 @@ public class SimpleChapter extends FeedComponent {
 	public String getTitle() {
 		return title;
 	}
-	/** Defines starting point in milliseconds. */
-	private long start;
-	private String title;
-	
-	
+
+	public FeedItem getItem() {
+		return item;
+	}
+
+	public long getStart() {
+		return start;
+	}
+
+	public void setItem(FeedItem item) {
+		this.item = item;
+	}
+
 }

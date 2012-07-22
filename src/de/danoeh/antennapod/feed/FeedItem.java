@@ -3,13 +3,13 @@ package de.danoeh.antennapod.feed;
 import java.util.ArrayList;
 import java.util.Date;
 
-
 /**
  * Data Object for a XML message
+ * 
  * @author daniel
- *
+ * 
  */
-public class FeedItem extends FeedComponent{
+public class FeedItem extends FeedComponent {
 
 	private String title;
 	private String description;
@@ -23,9 +23,9 @@ public class FeedItem extends FeedComponent{
 	private ArrayList<SimpleChapter> simpleChapters;
 
 	public FeedItem() {
-			this.read = true;
+		this.read = true;
 	}
-	
+
 	public FeedItem(String title, String description, String link,
 			Date pubDate, FeedMedia media, Feed feed) {
 		super();
@@ -36,6 +36,20 @@ public class FeedItem extends FeedComponent{
 		this.media = media;
 		this.feed = feed;
 		this.read = true;
+	}
+
+	public SimpleChapter getCurrentChapter() {
+		if (simpleChapters != null) {
+			SimpleChapter current = simpleChapters.get(0);
+			for (SimpleChapter sc : simpleChapters) {
+				if (media.getPosition() > current.getStart() &&
+						media.getPosition() <= sc.getStart()) {
+					return current;
+				}
+				current = sc;
+			}
+		}
+		return null;
 	}
 
 	public String getTitle() {
@@ -89,7 +103,7 @@ public class FeedItem extends FeedComponent{
 	public boolean isRead() {
 		return read;
 	}
-	
+
 	public String getContentEncoded() {
 		return contentEncoded;
 	}
@@ -97,7 +111,7 @@ public class FeedItem extends FeedComponent{
 	public void setContentEncoded(String contentEncoded) {
 		this.contentEncoded = contentEncoded;
 	}
-	
+
 	public String getPaymentLink() {
 		return paymentLink;
 	}
