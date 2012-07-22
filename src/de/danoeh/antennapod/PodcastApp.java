@@ -27,7 +27,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
-	
+
 	private static float LOGICAL_DENSITY;
 
 	private static PodcastApp singleton;
@@ -44,10 +44,8 @@ public class PodcastApp extends Application implements
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		if (StorageUtils.storageAvailable()) {
-			FeedManager manager = FeedManager.getInstance();
-			manager.loadDBData(getApplicationContext());
-		}
+		FeedManager manager = FeedManager.getInstance();
+		manager.loadDBData(getApplicationContext());
 	}
 
 	@Override
@@ -60,7 +58,8 @@ public class PodcastApp extends Application implements
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Registered change of application preferences");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Registered change of application preferences");
 		if (key.equals(PREF_UPDATE_INTERVALL)) {
 			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			int hours = Integer.parseInt(sharedPreferences.getString(
@@ -72,13 +71,15 @@ public class PodcastApp extends Application implements
 				long newIntervall = TimeUnit.HOURS.toMillis(hours);
 				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
 						newIntervall, newIntervall, updateIntent);
-				if (AppConfig.DEBUG) Log.d(TAG, "Changed alarm to new intervall");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Changed alarm to new intervall");
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Automatic update was deactivated");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Automatic update was deactivated");
 			}
 		}
 	}
-	
+
 	public static float getLogicalDensity() {
 		return LOGICAL_DENSITY;
 	}
