@@ -39,7 +39,6 @@ public class PodcastApp extends Application implements
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		Log.i(TAG, "AppConfig is " + AppConfig.DEBUG);
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
