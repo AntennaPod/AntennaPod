@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.storage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
@@ -397,7 +398,7 @@ public class PodDBAdapter {
 		return status.getId();
 	}
 
-	public void setQueue(ArrayList<FeedItem> queue) {
+	public void setQueue(List<FeedItem> queue) {
 		ContentValues values = new ContentValues();
 		db.delete(TABLE_NAME_QUEUE, null, null);
 		for (int i = 0; i < queue.size(); i++) {

@@ -11,6 +11,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,11 @@ public class FeedlistFragment extends SherlockListFragment implements
 		pActivity = null;
 	}
 
-	
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (AppConfig.DEBUG) Log.d(TAG, "Creating");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating");
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
 		setListAdapter(fla);
@@ -82,7 +82,9 @@ public class FeedlistFragment extends SherlockListFragment implements
 			public boolean onItemLongClick(AdapterView<?> parent, View view,
 					int position, long id) {
 				Feed selection = fla.getItem(position);
-				if (AppConfig.DEBUG) Log.d(TAG, "Selected Feed with title " + selection.getTitle());
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Selected Feed with title " + selection.getTitle());
 				if (selection != null) {
 					if (mActionMode != null) {
 						mActionMode.finish();
@@ -102,6 +104,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 	@Override
 	public void onResume() {
 		super.onResume();
+		if (AppConfig.DEBUG) Log.d(TAG, "Resuming");
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(DownloadService.ACTION_FEED_SYNC_COMPLETED);
@@ -124,8 +127,16 @@ public class FeedlistFragment extends SherlockListFragment implements
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
-			fla.notifyDataSetChanged();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received contentUpdate Intent.");
+			getActivity().runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					fla.notifyDataSetChanged();
+
+				}
+			});
 		}
 	};
 
@@ -150,6 +161,7 @@ public class FeedlistFragment extends SherlockListFragment implements
 		return FeedMenuHandler.onPrepareOptionsMenu(menu, selectedFeed);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(), item,
@@ -166,7 +178,8 @@ public class FeedlistFragment extends SherlockListFragment implements
 					}
 				};
 				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, selectedFeed);
+					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
+							selectedFeed);
 				} else {
 					remover.execute(selectedFeed);
 				}
@@ -183,5 +196,5 @@ public class FeedlistFragment extends SherlockListFragment implements
 		selectedFeed = null;
 		fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
 	}
-		
+
 }

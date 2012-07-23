@@ -21,7 +21,7 @@ public final class URLChecker {
      *  @param url The url which is going to be prepared
      *  @return The prepared url
      * */
-    public static String prepareURL(final String url) {
+    public static String prepareURL(String url) {
         StringBuilder builder = new StringBuilder();
 
         if (!url.startsWith("http")) {
@@ -29,7 +29,7 @@ public final class URLChecker {
             if (AppConfig.DEBUG) Log.d(TAG, "Missing http; appending");
         } else if (url.startsWith("https")) {
         	if (AppConfig.DEBUG) Log.d(TAG, "Replacing https with http");
-        	url.replaceFirst("https", "http");
+        	url = url.replaceFirst("https", "http");
         }
         builder.append(url);
 

@@ -45,7 +45,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onCancelled() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Task was cancelled.");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Task was cancelled.");
 		statusList.clear();
 		for (DownloadObserver.Callback callback : observer) {
 			callback.onFinish();
@@ -54,7 +55,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	@Override
 	protected void onPostExecute(Void result) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Background task has finished");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Background task has finished");
 		statusList.clear();
 		for (DownloadObserver.Callback callback : observer) {
 			callback.onFinish();
@@ -62,7 +64,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	protected Void doInBackground(Void... params) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Background Task started.");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Background Task started.");
 		while (downloadsLeft() && !isCancelled()) {
 			refreshStatuslist();
 			publishProgress();
@@ -72,7 +75,8 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 				Log.w(TAG, "Thread was interrupted while waiting.");
 			}
 		}
-		if (AppConfig.DEBUG) Log.d(TAG, "Background Task finished.");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Background Task finished.");
 		return null;
 	}
 
@@ -144,13 +148,17 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	/** Request a cursor with all running Feedfile downloads */
 	private Cursor getDownloadCursor() {
 		// Collect download ids
-		int numDownloads = requester.getNumberOfDownloads();
-		long ids[] = new long[numDownloads];
-		for (int i = 0; i < numDownloads; i++) {
-			ids[i] = requester.getDownloadAt(i).getDownloadId();
+
+		ArrayList<Long> ids = new ArrayList<Long>();
+		for (FeedFile download : requester.getDownloads()) {
+			ids.add(download.getDownloadId());
 		}
 		DownloadManager.Query query = new DownloadManager.Query();
-		query.setFilterById(ids);
+		long[] pIds = new long[ids.size()];
+		for (int x = 0; x < ids.size(); x++) {
+			pIds[x] = ids.get(x);
+		}
+		query.setFilterById(pIds);
 		DownloadManager manager = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
 

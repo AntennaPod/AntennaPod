@@ -31,23 +31,6 @@ public class QueueFragment extends ItemlistFragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		try {
-			getActivity().unregisterReceiver(queueUpdate);
-		} catch (IllegalArgumentException e) {
-
-		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		getActivity().registerReceiver(queueUpdate,
-				new IntentFilter(FeedManager.ACTION_QUEUE_UPDATE));
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
@@ -72,15 +55,6 @@ public class QueueFragment extends ItemlistFragment {
 		mode.finish();
 		return handled;
 	}
-
-	private BroadcastReceiver queueUpdate = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			fila.notifyDataSetChanged();
-		}
-
-	};
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

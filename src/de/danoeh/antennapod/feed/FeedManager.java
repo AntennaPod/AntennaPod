@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.activity.MediaplayerActivity;
@@ -36,27 +37,27 @@ public class FeedManager {
 
 	private static FeedManager singleton;
 
-	private ArrayList<Feed> feeds;
+	private List<Feed> feeds;
 	private ArrayList<FeedCategory> categories;
 
 	/** Contains all items where 'read' is false */
-	private ArrayList<FeedItem> unreadItems;
+	private List<FeedItem> unreadItems;
 
 	/** Contains completed Download status entries */
 	private ArrayList<DownloadStatus> downloadLog;
 
 	/** Contains the queue of items to be played. */
-	private ArrayList<FeedItem> queue;
+	private List<FeedItem> queue;
 
 	private DownloadRequester requester;
 
 	private FeedManager() {
-		feeds = new ArrayList<Feed>();
+		feeds = Collections.synchronizedList(new ArrayList<Feed>());
 		categories = new ArrayList<FeedCategory>();
-		unreadItems = new ArrayList<FeedItem>();
+		unreadItems = Collections.synchronizedList(new ArrayList<FeedItem>());
 		requester = DownloadRequester.getInstance();
 		downloadLog = new ArrayList<DownloadStatus>();
-		queue = new ArrayList<FeedItem>();
+		queue = Collections.synchronizedList(new ArrayList<FeedItem>());
 	}
 
 	public static FeedManager getInstance() {
@@ -740,11 +741,11 @@ public class FeedManager {
 		cursor.close();
 	}
 
-	public ArrayList<Feed> getFeeds() {
+	public List<Feed> getFeeds() {
 		return feeds;
 	}
 
-	public ArrayList<FeedItem> getUnreadItems() {
+	public List<FeedItem> getUnreadItems() {
 		return unreadItems;
 	}
 
@@ -752,7 +753,7 @@ public class FeedManager {
 		return downloadLog;
 	}
 
-	public ArrayList<FeedItem> getQueue() {
+	public List<FeedItem> getQueue() {
 		return queue;
 	}
 

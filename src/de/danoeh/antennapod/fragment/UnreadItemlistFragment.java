@@ -21,36 +21,10 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-		try {
-			getActivity().unregisterReceiver(unreadItemsUpdate);
-		} catch (IllegalArgumentException e) {
-
-		}
-	}
-
-	@Override
-	public void onResume() {
-		super.onResume();
-		getActivity().registerReceiver(unreadItemsUpdate,
-				new IntentFilter(FeedManager.ACTION_UNREAD_ITEMS_UPDATE));
-	}
-
-	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
 	}
-
-	private BroadcastReceiver unreadItemsUpdate = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			fila.notifyDataSetChanged();
-		}
-
-	};
 
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {

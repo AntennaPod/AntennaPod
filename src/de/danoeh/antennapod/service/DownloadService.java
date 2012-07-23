@@ -420,6 +420,12 @@ public class DownloadService extends Service {
 					reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 		}
 
 		/** Delete files that aren't needed anymore */

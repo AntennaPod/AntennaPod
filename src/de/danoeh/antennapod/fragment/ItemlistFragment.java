@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -43,7 +44,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	protected DownloadRequester requester;
 
 	/** The feed which the activity displays */
-	protected ArrayList<FeedItem> items;
+	protected List<FeedItem> items;
 	/**
 	 * This is only not null if the fragment displays the items of a specific
 	 * feed
@@ -56,7 +57,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
-	public ItemlistFragment(ArrayList<FeedItem> items, boolean showFeedtitle) {
+	public ItemlistFragment(List<FeedItem> items, boolean showFeedtitle) {
 		super();
 		this.items = items;
 		this.showFeedtitle = showFeedtitle;
@@ -102,26 +103,37 @@ public class ItemlistFragment extends SherlockListFragment implements
 				onButActionClicked, showFeedtitle);
 		setListAdapter(fila);
 	}
-	
-	
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		getActivity().unregisterReceiver(contentUpdate);
 		if (mActionMode != null) {
 			mActionMode.finish();
 		}
 	}
 
 	@Override
+	public void onDestroy() {
+		super.onDestroy();
+		getActivity().unregisterReceiver(contentUpdate);
+
+	}
+
+	@Override
 	public void onResume() {
 		super.onResume();
-		fila.notifyDataSetChanged();
+		getActivity().runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				fila.notifyDataSetChanged();
+			}
+		});
 		updateProgressBarVisibility();
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
+		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
+		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
 
 		getActivity().registerReceiver(contentUpdate, filter);
 	}
@@ -140,9 +152,17 @@ public class ItemlistFragment extends SherlockListFragment implements
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
-			fila.notifyDataSetChanged();
-			updateProgressBarVisibility();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received contentUpdate Intent.");
+			getActivity().runOnUiThread(new Runnable() {
+
+				@Override
+				public void run() {
+					fila.notifyDataSetChanged();
+					updateProgressBarVisibility();
+				}
+
+			});
 		}
 	};
 
