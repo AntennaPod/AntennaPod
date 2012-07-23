@@ -9,6 +9,7 @@ import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.util.URLChecker;
 
 import android.content.Context;
 import android.util.Log;
@@ -68,7 +69,7 @@ public class OpmlReader {
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
 					element.setText(xpp.getAttributeValue(null, TEXT));
-					element.setXmlUrl(xpp.getAttributeValue(null, XMLURL));
+					element.setXmlUrl(URLChecker.prepareURL(xpp.getAttributeValue(null, XMLURL)));
 					element.setHtmlUrl(xpp.getAttributeValue(null, HTMLURL));
 					element.setType(xpp.getAttributeValue(null, TYPE));
 					if (element.getXmlUrl() != null) {

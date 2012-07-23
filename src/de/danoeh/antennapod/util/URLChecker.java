@@ -27,6 +27,9 @@ public final class URLChecker {
         if (!url.startsWith("http")) {
             builder.append("http://");
             if (AppConfig.DEBUG) Log.d(TAG, "Missing http; appending");
+        } else if (url.startsWith("https")) {
+        	if (AppConfig.DEBUG) Log.d(TAG, "Replacing https with http");
+        	url.replaceFirst("https", "http");
         }
         builder.append(url);
 

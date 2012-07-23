@@ -1,31 +1,26 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 import java.io.File;
-import java.util.concurrent.Callable;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.DownloadService;
-import de.danoeh.antennapod.util.NumberGenerator;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
-
-import android.util.Log;
-import android.database.Cursor;
 import android.annotation.SuppressLint;
 import android.app.DownloadManager;
-import android.content.Context;
-import android.net.Uri;
-import android.os.Messenger;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.content.ComponentName;
-import android.os.Message;
-import android.os.RemoteException;
+import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
+import android.net.Uri;
+import android.os.IBinder;
+import android.util.Log;
 import android.webkit.URLUtil;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedFile;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.util.NumberGenerator;
 
 public class DownloadRequester {// TODO handle externalstorage missing
 	private static final String TAG = "DownloadRequester";
@@ -44,10 +39,10 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	private static DownloadRequester downloader;
 	private DownloadManager manager;
 
-	public List<FeedFile> downloads;
+	private List<FeedFile> downloads;
 
 	private DownloadRequester() {
-		downloads = Collections.synchronizedList(new ArrayList<FeedFile>());
+		downloads = new CopyOnWriteArrayList<FeedFile>();
 	}
 
 	public static DownloadRequester getInstance() {
@@ -175,6 +170,14 @@ public class DownloadRequester {// TODO handle externalstorage missing
 			}
 		}
 		return false;
+	}
+	
+	public boolean hasNoDownloads() {
+		return downloads.isEmpty();
+	}
+	
+	public FeedFile getDownloadAt(int index) {
+		return downloads.get(index);
 	}
 
 	/** Remove an object from the downloads-list of the requester. */

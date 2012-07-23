@@ -147,7 +147,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		int numDownloads = requester.getNumberOfDownloads();
 		long ids[] = new long[numDownloads];
 		for (int i = 0; i < numDownloads; i++) {
-			ids[i] = requester.downloads.get(i).getDownloadId();
+			ids[i] = requester.getDownloadAt(i).getDownloadId();
 		}
 		DownloadManager.Query query = new DownloadManager.Query();
 		query.setFilterById(ids);
@@ -192,7 +192,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	private boolean downloadsLeft() {
-		return !requester.downloads.isEmpty();
+		return !requester.hasNoDownloads();
 	}
 
 	public void registerCallback(DownloadObserver.Callback callback) {
