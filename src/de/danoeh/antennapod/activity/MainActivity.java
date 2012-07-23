@@ -105,6 +105,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.show_player:
 			startActivity(new Intent(this, MediaplayerActivity.class));
 			return true;
+		case R.id.opml_import:
+			startActivity(new Intent(this, OpmlImportActivity.class));
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

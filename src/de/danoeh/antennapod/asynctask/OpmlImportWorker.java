@@ -13,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.opml.OpmlReader;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.app.AlertDialog.Builder;
@@ -99,6 +100,19 @@ public class OpmlImportWorker extends
 		progDialog.setIndeterminate(true);
 		progDialog.setCancelable(false);
 		progDialog.show();
+	}
+	
+	public boolean wasSuccessful() {
+		return exception != null;
+	}
+	
+	@SuppressLint("NewApi")
+	public void executeAsync() {
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			executeOnExecutor(THREAD_POOL_EXECUTOR);
+		} else {
+			execute();
+		}
 	}
 
 }

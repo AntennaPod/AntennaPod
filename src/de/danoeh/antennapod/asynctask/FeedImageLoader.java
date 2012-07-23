@@ -162,10 +162,16 @@ public class FeedImageLoader {
 					decodedBitmap = BitmapFactory.decodeFile(params[0]
 							.getFile_url());
 				}
+				if (decodedBitmap != null) {
 				bitmap = Bitmap.createScaledBitmap(decodedBitmap,
 						PREFERRED_LENGTH, PREFERRED_LENGTH, false);
-
+				
 				addBitmapToCache(params[0].getId(), bitmap);
+				} else {
+					Log.w(TAG, "Could not load bitmap. Using default image.");
+					bitmap = BitmapFactory.decodeResource(target.getResources(),
+							R.drawable.default_cover);
+				}
 				if (AppConfig.DEBUG) Log.d(TAG, "Finished loading bitmaps");
 			} else {
 				Log.e(TAG,

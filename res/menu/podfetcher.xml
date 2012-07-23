@@ -20,4 +20,5 @@
     </item>
     <item android:id="@+id/show_preferences" android:title="@string/settings_label" android:icon="@drawable/action_settings" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/show_player" android:title="@string/show_player_label" android:icon="@drawable/av_play" android:showAsAction="collapseActionView"></item>
+    <item android:id="@+id/opml_import" android:title="@string/opml_import_label" android:showAsAction="collapseActionView"></item>
 </menu>
