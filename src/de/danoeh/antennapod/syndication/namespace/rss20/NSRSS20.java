@@ -102,7 +102,7 @@ public class NSRSS20 extends Namespace {
 			} else if (localName.equals(DESCR)) {
 				if (second.equals(CHANNEL)) {
 					state.getFeed().setDescription(content);
-				} else {
+				} else if (second.equals(ITEM)){
 					state.getCurrentItem().setDescription(content);
 				}
 
