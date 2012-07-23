@@ -10,6 +10,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -110,49 +111,56 @@ public class OpmlImportActivity extends SherlockActivity {
 					protected void onPostExecute(ArrayList<OpmlElement> result) {
 						super.onPostExecute(result);
 						if (result != null) {
-							if (AppConfig.DEBUG) Log.d(TAG, "Parsing was successful");
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Parsing was successful");
 							readElements = result;
 							startActivityForResult(new Intent(
 									OpmlImportActivity.this,
 									OpmlFeedChooserActivity.class), 0);
 						} else {
-							if (AppConfig.DEBUG) Log.d(TAG, "Parser error occured");
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Parser error occured");
 						}
 					}
 				};
 				importWorker.executeAsync();
 			} else {
 				Log.e(TAG, "Import directory is empty");
+				Toast toast = Toast
+						.makeText(this, R.string.opml_import_error_dir_empty,
+								Toast.LENGTH_LONG);
+				toast.show();
 			}
 		}
 	}
-	
-	
 
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Received result");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Received result");
 		if (resultCode == RESULT_CANCELED) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Activity was cancelled");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Activity was cancelled");
 		} else {
-			int[] selected = data.getIntArrayExtra(OpmlFeedChooserActivity.EXTRA_SELECTED_ITEMS);
+			int[] selected = data
+					.getIntArrayExtra(OpmlFeedChooserActivity.EXTRA_SELECTED_ITEMS);
 			if (selected != null && selected.length > 0) {
-				OpmlFeedQueuer queuer = new OpmlFeedQueuer(this, selected){
+				OpmlFeedQueuer queuer = new OpmlFeedQueuer(this, selected) {
 
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						finish();
 					}
-					
+
 				};
 				queuer.executeAsync();
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "No items were selected");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "No items were selected");
 			}
 		}
 	}
-	
 
 	public static ArrayList<OpmlElement> getReadElements() {
 		return readElements;

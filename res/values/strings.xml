@@ -133,7 +133,7 @@
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
     <string name="opml_reader_error">An error has occured while reading the opml document:</string>
-    <string name="opml_import_error_dir_empty">It seems like the import directory is empty. Please copy a OPML file into the directory to import it.</string>
+    <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
     
