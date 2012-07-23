@@ -5,5 +5,7 @@
     <item name="move_up_item" type="id"/>
     <item name="move_down_item" type="id"/>
     <item type="id" name="clear_queue_item"/>
+    <item type="id" name="select_all_item"/>
+    <item type="id" name="deselect_all_item"/>
 
 </resources>
