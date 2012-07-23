@@ -131,5 +131,7 @@
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>
     <string name="opml_directory_error">ERROR!</string>
+    <string name="reading_opml_label">Reading OPML file</string>
+    <string name="opml_reader_error">An error has occured while reading the opml document:</string>
 
 </resources>
