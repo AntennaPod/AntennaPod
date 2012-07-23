@@ -416,7 +416,8 @@ public class DownloadService extends Service {
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
 				// Download Feed Image if provided and not downloaded
-				if (savedFeed.getImage().isDownloaded() == false) {
+				if (savedFeed.getImage() != null
+						&& savedFeed.getImage().isDownloaded() == false) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
 					imageId = requester.downloadImage(service, feed.getImage());
