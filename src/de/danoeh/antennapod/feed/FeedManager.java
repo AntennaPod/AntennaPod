@@ -337,8 +337,6 @@ public class FeedManager {
 							+ ". Adding as new one.");
 			// Add a new Feed
 			addNewFeed(context, newFeed);
-			markItemRead(context, newFeed.getItems().get(0), false);
-
 			return newFeed;
 		} else {
 			if (AppConfig.DEBUG) Log.d(TAG, "Feed with title " + newFeed.getTitle()
