@@ -88,6 +88,7 @@ public class OpmlImportWorker extends
 				}
 
 			});
+			alert.create().show();
 		}
 	}
 
