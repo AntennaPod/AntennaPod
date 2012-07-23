@@ -21,6 +21,7 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.util.NumberGenerator;
+import de.danoeh.antennapod.util.URLChecker;
 
 public class DownloadRequester {// TODO handle externalstorage missing
 	private static final String TAG = "DownloadRequester";
@@ -61,6 +62,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 			}
 			if (AppConfig.DEBUG) Log.d(TAG, "Requesting download of url " + item.getDownload_url());
 			downloads.add(item);
+			item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
 			DownloadManager.Request request = new DownloadManager.Request(
 					Uri.parse(item.getDownload_url())).setDestinationUri(Uri
 					.fromFile(dest));

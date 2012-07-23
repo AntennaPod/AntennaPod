@@ -69,7 +69,7 @@ public class OpmlReader {
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
 					element.setText(xpp.getAttributeValue(null, TEXT));
-					element.setXmlUrl(URLChecker.prepareURL(xpp.getAttributeValue(null, XMLURL)));
+					element.setXmlUrl(xpp.getAttributeValue(null, XMLURL));
 					element.setHtmlUrl(xpp.getAttributeValue(null, HTMLURL));
 					element.setType(xpp.getAttributeValue(null, TYPE));
 					if (element.getXmlUrl() != null) {
