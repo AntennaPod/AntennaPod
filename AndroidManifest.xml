@@ -127,6 +127,7 @@
             </intent-filter>
         </activity>
         <activity android:label="@string/about_pref" android:name=".activity.AboutActivity" android:theme="@style/Theme.Sherlock.Light.NoActionBar"></activity>
+        <activity android:label="@string/opml_import_label" android:name=".activity.OpmlImportActivity"></activity>
     </application>
 
 </manifest>

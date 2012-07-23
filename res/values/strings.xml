@@ -127,5 +127,9 @@
     <string name="flattring_label">flattring</string>
     <string name="chapters_label">Chapters</string>
     <string name="shownotes_label">Shownotes</string>
+    <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
+    <string name="start_import_label">Start import</string>
+    <string name="opml_import_label">OPML import</string>
+    <string name="opml_directory_error">ERROR!</string>
 
 </resources>
