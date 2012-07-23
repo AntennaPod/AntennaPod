@@ -121,8 +121,8 @@
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="1dp"
+        android:layout_height="0.5dp"
         android:layout_below="@id/viewpager"
-        android:background="@color/bright_blue" />
+        android:background="@color/ics_gray" />
 
 </RelativeLayout>
