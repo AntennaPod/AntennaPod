@@ -46,11 +46,22 @@ public class SearchActivity extends SherlockListActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.searchlist);
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		setIntent(intent);
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
 		Intent intent = getIntent();
 		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
 			Bundle extra = intent.getBundleExtra(SearchManager.APP_DATA);
 			if (extra != null) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Found bundle extra");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Found bundle extra");
 				long feedId = extra.getLong(EXTRA_FEED_ID);
 				selectedFeed = FeedManager.getInstance().getFeed(feedId);
 			}
@@ -65,6 +76,9 @@ public class SearchActivity extends SherlockListActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
+				.setIcon(R.drawable.action_search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}
 
@@ -74,9 +88,23 @@ public class SearchActivity extends SherlockListActivity {
 		case android.R.id.home:
 			startActivity(new Intent(this, MainActivity.class));
 			return true;
+		case R.id.search_item:
+			onSearchRequested();
+			return true;
 		default:
 			return false;
 		}
+	}
+
+	@Override
+	public boolean onSearchRequested() {
+		Bundle extra = null;
+		if (selectedFeed != null) {
+			extra = new Bundle();
+			extra.putLong(EXTRA_FEED_ID, selectedFeed.getId());
+		}
+		startSearch(null, false, extra, false);
+		return true;
 	}
 
 	@Override
@@ -107,6 +135,10 @@ public class SearchActivity extends SherlockListActivity {
 
 			@Override
 			protected void onPreExecute() {
+				if (searchAdapter != null) {
+					searchAdapter.clear();
+					searchAdapter.notifyDataSetChanged();
+				}
 				txtvStatus.setText(R.string.search_status_searching);
 			}
 
