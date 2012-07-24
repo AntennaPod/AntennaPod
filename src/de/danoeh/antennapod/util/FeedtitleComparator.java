@@ -9,7 +9,7 @@ public class FeedtitleComparator implements Comparator<Feed> {
 
 	@Override
 	public int compare(Feed lhs, Feed rhs) {
-		return lhs.getTitle().compareTo(rhs.getTitle());
+		return lhs.getTitle().compareToIgnoreCase(rhs.getTitle());
 	}
 
 }
