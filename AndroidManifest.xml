@@ -29,6 +29,7 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.default_searchable" android:value=".activity.SearchActivity"/>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
@@ -129,6 +130,12 @@
         <activity android:label="@string/about_pref" android:name=".activity.AboutActivity" android:theme="@style/Theme.Sherlock.Light.NoActionBar"></activity>
         <activity android:label="@string/opml_import_label" android:name=".activity.OpmlImportActivity"></activity>
         <activity android:label="@string/opml_import_label" android:name=".activity.OpmlFeedChooserActivity"></activity>
+        <activity android:name=".activity.SearchActivity" android:theme="@style/Theme.Sherlock.Light.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+        <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" /></activity>
+        
     </application>
 
 </manifest>

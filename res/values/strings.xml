@@ -136,6 +136,10 @@
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
+    <string name="search_hint">Search for Feeds or Episodes</string>
+    <string name="found_in_label">Found in:\u0020</string>
+    <string name="found_in_shownotes_label">Found in shownotes</string>
+    <string name="found_in_chapters_label">Found in chapters</string>
     
 
 </resources>
