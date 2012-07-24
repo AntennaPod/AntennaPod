@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -77,6 +79,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		return FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
@@ -99,7 +102,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 				}
 				break;
 			case android.R.id.home:
-				finish();
+				startActivity(new Intent(this, MainActivity.class));
+				break;
 			}
 		}
 		return true;

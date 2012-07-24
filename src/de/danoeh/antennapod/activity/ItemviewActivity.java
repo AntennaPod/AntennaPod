@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import java.text.DateFormat;
 
+import android.content.Intent;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -108,7 +109,9 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
 			switch (menuItem.getItemId()) {
 			case android.R.id.home:
-				finish();
+				Intent upIntent = new Intent(this, FeedItemlistActivity.class);
+				upIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, item.getFeed().getId());
+				startActivity(upIntent);
 				break;
 			}
 		}
