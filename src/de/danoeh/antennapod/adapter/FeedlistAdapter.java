@@ -92,9 +92,9 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		} else {
 			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
-
-		imageLoader.loadBitmap(feed.getImage(), holder.image);
-
+		holder.image.setTag(feed.getImage());
+		imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
+		
 		// TODO find new Episodes txtvNewEpisodes.setText(feed)
 		return convertView;
 	}

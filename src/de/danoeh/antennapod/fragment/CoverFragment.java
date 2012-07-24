@@ -81,7 +81,7 @@ public class CoverFragment extends SherlockFragment {
 	}
 
 	private void loadMediaInfo() {
-		FeedImageLoader.getInstance().loadBitmap(
+		FeedImageLoader.getInstance().loadCoverBitmap(
 				media.getItem().getFeed().getImage(), imgvCover);
 		txtvTitle.setText(media.getItem().getTitle());
 		txtvFeed.setText(media.getItem().getFeed().getTitle());

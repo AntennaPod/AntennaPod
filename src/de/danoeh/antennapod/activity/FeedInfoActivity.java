@@ -48,7 +48,7 @@ public class FeedInfoActivity extends SherlockActivity {
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);
 			txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
 			txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
-			FeedImageLoader.getInstance().loadBitmap(feed.getImage(), imgvCover);
+			FeedImageLoader.getInstance().loadCoverBitmap(feed.getImage(), imgvCover);
 			
 			txtvTitle.setText(feed.getTitle());
 			txtvDescription.setText(feed.getDescription());
