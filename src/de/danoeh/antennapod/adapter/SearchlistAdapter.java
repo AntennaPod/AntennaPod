@@ -57,10 +57,13 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 		} else if (component.getClass() == FeedItem.class) {
 			FeedItem item = (FeedItem) component;
 			holder.title.setText(item.getTitle());
-			holder.subtitle.setVisibility(View.VISIBLE);
-			holder.subtitle.setText(result.getSubtitle());
+			if (result.getSubtitle() != null) {
+				holder.subtitle.setVisibility(View.VISIBLE);
+				holder.subtitle.setText(result.getSubtitle());
+			}
 			FeedImageLoader.getInstance().loadBitmap(item.getFeed().getImage(),
-					holder.cover);		}
+					holder.cover);
+		}
 
 		return convertView;
 	}

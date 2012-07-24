@@ -145,6 +145,7 @@
     <string name="search_results_label">Search results</string>
     <string name="search_term_label">You searched:\u0020</string>
     <string name="search_label">Search</string>
+    <string name="found_in_title_label">Found in title</string>
     
 
 </resources>

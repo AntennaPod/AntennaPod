@@ -69,7 +69,7 @@ public class SearchActivity extends SherlockListActivity {
 				Log.d(TAG, "Starting search");
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			getSupportActionBar().setSubtitle(
-					getString(R.string.search_term_label) + query);
+					getString(R.string.search_term_label) + "\"" + query + "\"");
 			startSearch(query);
 		}
 	}

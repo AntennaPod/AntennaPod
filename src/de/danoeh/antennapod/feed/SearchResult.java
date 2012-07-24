@@ -4,11 +4,13 @@ public class SearchResult {
 	private FeedComponent component;
 	/** Additional information (e.g. where it was found) */
 	private String subtitle;
+	/** Higher value means more importance */
+	private int value;
 
-	public SearchResult(FeedComponent component, String subtitle) {
+	public SearchResult(FeedComponent component, int value) {
 		super();
 		this.component = component;
-		this.subtitle = subtitle;
+		this.value = value;
 	}
 
 	public FeedComponent getComponent() {
@@ -18,5 +20,14 @@ public class SearchResult {
 	public String getSubtitle() {
 		return subtitle;
 	}
+
+	public void setSubtitle(String subtitle) {
+		this.subtitle = subtitle;
+	}
+
+	public int getValue() {
+		return value;
+	}
+	
 
 }

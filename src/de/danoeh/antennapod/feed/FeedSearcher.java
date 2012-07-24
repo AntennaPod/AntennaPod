@@ -1,16 +1,27 @@
 package de.danoeh.antennapod.feed;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import android.util.Log;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.util.SearchResultValueComparator;
 
 /** Performs search on Feeds and FeedItems */
 public class FeedSearcher {
 	private static final String TAG = "FeedSearcher";
+
+	// Search result values
+	private static final int VALUE_FEED_TITLE = 3;
+	private static final int VALUE_ITEM_TITLE = 2;
+	private static final int VALUE_ITEM_CHAPTER = 1;
+	private static final int VALUE_ITEM_DESCRIPTION = 0;
+	private static final int VALUE_WORD_MATCH = 4;
 
 	/** Performs a search in all feeds or one specific feed. */
 	public static ArrayList<SearchResult> performSearch(final String query,
@@ -18,7 +29,8 @@ public class FeedSearcher {
 		String lcQuery = query.toLowerCase();
 		ArrayList<SearchResult> result = new ArrayList<SearchResult>();
 		if (selectedFeed == null) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Performing global search");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Performing global search");
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Searching Feed titles");
 			searchFeedtitles(lcQuery, result);
@@ -42,6 +54,10 @@ public class FeedSearcher {
 			Log.d(TAG, "Searching item content encoded data");
 		searchFeedItemContentEncoded(lcQuery, result, selectedFeed);
 
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Sorting results");
+		Collections.sort(result, new SearchResultValueComparator());
+
 		return result;
 	}
 
@@ -49,8 +65,10 @@ public class FeedSearcher {
 			ArrayList<SearchResult> destination) {
 		FeedManager manager = FeedManager.getInstance();
 		for (Feed feed : manager.getFeeds()) {
-			if (feed.getTitle().toLowerCase().contains(query)) {
-				destination.add(new SearchResult(feed, null));
+			SearchResult result = createSearchResult(feed, query, feed
+					.getTitle().toLowerCase(), VALUE_FEED_TITLE);
+			if (result != null) {
+				destination.add(result);
 			}
 		}
 	}
@@ -70,11 +88,14 @@ public class FeedSearcher {
 	private static void searchFeedItemTitlesSingleFeed(String query,
 			ArrayList<SearchResult> destination, Feed feed) {
 		for (FeedItem item : feed.getItems()) {
-			if (item.getTitle().toLowerCase().contains(query)) {
-				destination.add(new SearchResult(item, PodcastApp.getInstance()
-						.getString(R.string.found_in_label)
-						+ item.getFeed().getTitle()));
+			SearchResult result = createSearchResult(item, query, item
+					.getTitle().toLowerCase(), VALUE_ITEM_TITLE);
+			if (result != null) {
+				result.setSubtitle(PodcastApp.getInstance().getString(
+						R.string.found_in_title_label));
+				destination.add(result);
 			}
+
 		}
 	}
 
@@ -95,10 +116,12 @@ public class FeedSearcher {
 		for (FeedItem item : feed.getItems()) {
 			if (item.getSimpleChapters() != null) {
 				for (SimpleChapter sc : item.getSimpleChapters()) {
-					if (sc.getTitle().toLowerCase().contains(query)) {
-						destination.add(new SearchResult(item, PodcastApp
-								.getInstance().getString(
-										R.string.found_in_chapters_label)));
+					SearchResult result = createSearchResult(item, query, sc
+							.getTitle().toLowerCase(), VALUE_ITEM_CHAPTER);
+					if (result != null) {
+						result.setSubtitle(PodcastApp.getInstance().getString(
+								R.string.found_in_chapters_label));
+						destination.add(result);
 					}
 				}
 			}
@@ -121,10 +144,15 @@ public class FeedSearcher {
 	private static void searchFeedItemDescriptionSingleFeed(String query,
 			ArrayList<SearchResult> destination, Feed feed) {
 		for (FeedItem item : feed.getItems()) {
-			if (item.getDescription() != null
-					&& item.getDescription().toLowerCase().contains(query)) {
-				destination.add(new SearchResult(item, PodcastApp.getInstance()
-						.getString(R.string.found_in_shownotes_label)));
+			if (item.getDescription() != null) {
+				SearchResult result = createSearchResult(item, query, item
+						.getDescription().toLowerCase(), VALUE_ITEM_DESCRIPTION);
+				if (result != null) {
+					result.setSubtitle(PodcastApp.getInstance().getString(
+							R.string.found_in_shownotes_label));
+					destination.add(result);
+				}
+
 			}
 		}
 	}
@@ -137,18 +165,46 @@ public class FeedSearcher {
 				searchFeedItemContentEncodedSingleFeed(query, destination, feed);
 			}
 		} else {
-			searchFeedItemContentEncodedSingleFeed(query, destination, selectedFeed);
+			searchFeedItemContentEncodedSingleFeed(query, destination,
+					selectedFeed);
 		}
 	}
 
 	private static void searchFeedItemContentEncodedSingleFeed(String query,
 			ArrayList<SearchResult> destination, Feed feed) {
 		for (FeedItem item : feed.getItems()) {
-			if (!destination.contains(item) && item.getContentEncoded() != null
-					&& item.getContentEncoded().toLowerCase().contains(query)) {
-				destination.add(new SearchResult(item, PodcastApp.getInstance()
-						.getString(R.string.found_in_shownotes_label)));
+			if (!destination.contains(item) && item.getContentEncoded() != null) {
+				SearchResult result = createSearchResult(item, query, item
+						.getContentEncoded().toLowerCase(),
+						VALUE_ITEM_DESCRIPTION);
+				if (result != null) {
+					result.setSubtitle(PodcastApp.getInstance().getString(
+							R.string.found_in_shownotes_label));
+					destination.add(result);
+				}
 			}
+		}
+	}
+
+	private static SearchResult createSearchResult(FeedComponent component,
+			String query, String text, int baseValue) {
+		int bonus = 0;
+		boolean found = false;
+		// try word search
+		Pattern word = Pattern.compile("\b" + query + "\b");
+		Matcher matcher = word.matcher(text);
+		found = matcher.find();
+		if (found) {
+			bonus = VALUE_WORD_MATCH;
+		} else {
+			// search for other occurence
+			found = text.contains(query);
+		}
+
+		if (found) {
+			return new SearchResult(component, baseValue + bonus);
+		} else {
+			return null;
 		}
 	}
 
