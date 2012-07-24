@@ -71,6 +71,9 @@ public class TypeGetter {
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return null;
+		} catch (NullPointerException e) {
+			e.printStackTrace();
+			return null;
 		}
 		return reader;
 	}

@@ -43,7 +43,8 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (AppConfig.DEBUG) Log.d(TAG, "Creating Activity");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
@@ -61,14 +62,16 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (AppConfig.DEBUG) Log.d(TAG, "Trying to bind service");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Trying to bind service");
 		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 	}
 
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (AppConfig.DEBUG) Log.d(TAG, "Stopping Activity");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Stopping Activity");
 	}
 
 	@Override
@@ -162,7 +165,8 @@ public class DownloadActivity extends SherlockListActivity implements
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			downloadService = ((DownloadService.LocalBinder) service)
 					.getService();
-			if (AppConfig.DEBUG) Log.d(TAG, "Connection to service established");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Connection to service established");
 			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
 					downloadService.getDownloadObserver().getStatusList());
 			setListAdapter(dla);
@@ -179,13 +183,28 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	@Override
 	public void onProgressUpdate() {
-		dla.notifyDataSetChanged();
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				dla.notifyDataSetChanged();
+
+			}
+		});
 	}
 
 	@Override
 	public void onFinish() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Observer has finished, clearing adapter");
-		dla.clear();
-		dla.notifyDataSetInvalidated();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Observer has finished, clearing adapter");
+		runOnUiThread(new Runnable() {
+
+			@Override
+			public void run() {
+				dla.clear();
+				dla.notifyDataSetInvalidated();
+			}
+		});
+
 	}
 }
