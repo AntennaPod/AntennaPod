@@ -2,13 +2,11 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.View;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
@@ -16,6 +14,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -23,7 +22,6 @@ import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.R;
 
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockFragmentActivity {

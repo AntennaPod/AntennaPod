@@ -1,30 +1,27 @@
 package de.danoeh.antennapod.activity;
 
-import de.danoeh.antennapod.adapter.DownloadlistAdapter;
-import de.danoeh.antennapod.asynctask.DownloadObserver;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.service.DownloadService;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
 import android.content.ServiceConnection;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+
+import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.ActionMode;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
+
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.DownloadlistAdapter;
+import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.storage.DownloadRequester;
 
 /** Shows all running downloads in a list */
 public class DownloadActivity extends SherlockListActivity implements

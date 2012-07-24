@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.activity;
 
-import android.os.Bundle;
-import android.widget.Button;
-import android.widget.EditText;
-import android.view.View;
+import java.util.Date;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.BroadcastReceiver;
@@ -11,10 +9,16 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+
+import com.actionbarsherlock.app.SherlockActivity;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -24,13 +28,6 @@ import de.danoeh.antennapod.util.ConnectionTester;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.URLChecker;
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
-import java.util.Date;
-import java.util.concurrent.Callable;
 
 /** Activity for adding/editing a Feed */
 public class AddFeedActivity extends SherlockActivity {

@@ -8,13 +8,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.os.Debug;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
-import de.danoeh.antennapod.util.StorageUtils;
 
 public class PodcastApp extends Application implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
