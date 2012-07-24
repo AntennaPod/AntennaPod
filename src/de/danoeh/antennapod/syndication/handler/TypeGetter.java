@@ -18,7 +18,7 @@ import de.danoeh.antennapod.feed.Feed;
 /** Gets the type of a specific feed by reading the root element. */
 public class TypeGetter {
 	private static final String TAG = "TypeGetter";
-	
+
 	enum Type {
 		RSS20, ATOM, INVALID
 	}
@@ -28,39 +28,45 @@ public class TypeGetter {
 
 	public Type getType(Feed feed) throws UnsupportedFeedtypeException {
 		XmlPullParserFactory factory;
-		try {
-			factory = XmlPullParserFactory.newInstance();
-			factory.setNamespaceAware(true);
-			XmlPullParser xpp = factory.newPullParser();
-			xpp.setInput(createReader(feed));
-			int eventType = xpp.getEventType();
-			
-			while (eventType != XmlPullParser.END_DOCUMENT) {
-				if (eventType == XmlPullParser.START_TAG) {
-					String tag = xpp.getName();
-					if (tag.equals(ATOM_ROOT)) {
-						if (AppConfig.DEBUG) Log.d(TAG, "Recognized type Atom");
-						return Type.ATOM;
-					} else if (tag.equals(RSS_ROOT)
-							&& (xpp.getAttributeValue(null, "version")
-									.equals("2.0"))) {
-						if (AppConfig.DEBUG) Log.d(TAG, "Recognized type RSS 2.0");
-						return Type.RSS20;
-					} else {
-						if (AppConfig.DEBUG) Log.d(TAG, "Type is invalid");
-						throw new UnsupportedFeedtypeException(Type.INVALID);
-					}
-				} else {
-					eventType = xpp.next();
-				}
-			}
+		if (feed.getFile_url() != null) {
+			try {
+				factory = XmlPullParserFactory.newInstance();
+				factory.setNamespaceAware(true);
+				XmlPullParser xpp = factory.newPullParser();
+				xpp.setInput(createReader(feed));
+				int eventType = xpp.getEventType();
 
-		} catch (XmlPullParserException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
+				while (eventType != XmlPullParser.END_DOCUMENT) {
+					if (eventType == XmlPullParser.START_TAG) {
+						String tag = xpp.getName();
+						if (tag.equals(ATOM_ROOT)) {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Recognized type Atom");
+							return Type.ATOM;
+						} else if (tag.equals(RSS_ROOT)
+								&& (xpp.getAttributeValue(null, "version")
+										.equals("2.0"))) {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Recognized type RSS 2.0");
+							return Type.RSS20;
+						} else {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Type is invalid");
+							throw new UnsupportedFeedtypeException(Type.INVALID);
+						}
+					} else {
+						eventType = xpp.next();
+					}
+				}
+
+			} catch (XmlPullParserException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 		}
-		if (AppConfig.DEBUG) Log.d(TAG, "Type is invalid");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Type is invalid");
 		throw new UnsupportedFeedtypeException(Type.INVALID);
 	}
 
@@ -69,9 +75,6 @@ public class TypeGetter {
 		try {
 			reader = new FileReader(new File(feed.getFile_url()));
 		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			return null;
-		} catch (NullPointerException e) {
 			e.printStackTrace();
 			return null;
 		}
