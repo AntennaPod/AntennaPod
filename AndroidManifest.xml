@@ -8,18 +8,26 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="14"/>
+    <uses-sdk
+        android:minSdkVersion="10"
+        android:targetSdkVersion="14" />
 
     <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <supports-screens android:normalScreens="true" android:xlargeScreens="true" android:smallScreens="false" android:largeScreens="true"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <supports-screens
+        android:largeScreens="true"
+        android:normalScreens="true"
+        android:smallScreens="false"
+        android:xlargeScreens="true" />
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
+        android:debuggable="false"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/Theme.Sherlock.Light.ForceOverflow" android:debuggable="false">
+        android:theme="@style/Theme.Sherlock.Light.ForceOverflow" >
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
@@ -29,20 +37,30 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data android:name="android.app.default_searchable" android:value=".activity.SearchActivity"/>
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.SearchActivity" />
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
-            android:label="@string/add_new_feed_label" android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/add_new_feed_label" >
             <intent-filter>
-                <action android:name="android.intent.action.SEND"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <data android:mimeType="text/plain"/>
+                <action android:name="android.intent.action.SEND" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.FeedItemlistActivity"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.SearchActivity" />
+        </activity>
         <activity android:name="de.danoeh.antennapod.activity.ItemviewActivity" />
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
@@ -63,7 +81,8 @@
 
         <activity
             android:name=".activity.PreferenceActivity"
-            android:label="@string/settings_label" android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/settings_label" >
         </activity>
         <activity
             android:name=".activity.DownloadLogActivity"
@@ -127,15 +146,32 @@
                     android:scheme="flattr4j" />
             </intent-filter>
         </activity>
-        <activity android:label="@string/about_pref" android:name=".activity.AboutActivity" android:theme="@style/Theme.Sherlock.Light.NoActionBar"></activity>
-        <activity android:label="@string/opml_import_label" android:name=".activity.OpmlImportActivity"></activity>
-        <activity android:label="@string/opml_import_label" android:name=".activity.OpmlFeedChooserActivity"></activity>
-        <activity android:name=".activity.SearchActivity" android:launchMode="singleTop" android:label="@string/search_results_label" android:configChanges="keyboardHidden|orientation">
+        <activity
+            android:name=".activity.AboutActivity"
+            android:label="@string/about_pref"
+            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+        </activity>
+        <activity
+            android:name=".activity.OpmlImportActivity"
+            android:label="@string/opml_import_label" >
+        </activity>
+        <activity
+            android:name=".activity.OpmlFeedChooserActivity"
+            android:label="@string/opml_import_label" >
+        </activity>
+        <activity
+            android:name=".activity.SearchActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/search_results_label"
+            android:launchMode="singleTop" >
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH"/>
+                <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-        <meta-data android:name="android.app.searchable" android:resource="@xml/searchable" /></activity>
-        
+
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+        </activity>
     </application>
 
 </manifest>

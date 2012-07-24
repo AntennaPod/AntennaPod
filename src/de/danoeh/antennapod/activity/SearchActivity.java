@@ -21,6 +21,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedSearcher;
 import de.danoeh.antennapod.feed.SearchResult;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
@@ -29,8 +30,13 @@ import de.danoeh.antennapod.fragment.ItemlistFragment;
 public class SearchActivity extends SherlockListActivity {
 	private static final String TAG = "SearchActivity";
 
+	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.searchactivity.extra.feedId";
+
 	private SearchlistAdapter searchAdapter;
 	private ArrayList<SearchResult> content;
+
+	/** Feed that is being searched or null if the search is global. */
+	private Feed selectedFeed;
 
 	private TextView txtvStatus;
 
@@ -40,10 +46,17 @@ public class SearchActivity extends SherlockListActivity {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.searchlist);
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
-		if (Intent.ACTION_SEARCH.equals(getIntent().getAction())) {
+		Intent intent = getIntent();
+		if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
+			Bundle extra = intent.getBundleExtra(SearchManager.APP_DATA);
+			if (extra != null) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Found bundle extra");
+				long feedId = extra.getLong(EXTRA_FEED_ID);
+				selectedFeed = FeedManager.getInstance().getFeed(feedId);
+			}
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting search");
-			String query = getIntent().getStringExtra(SearchManager.QUERY);
+			String query = intent.getStringExtra(SearchManager.QUERY);
 			getSupportActionBar().setSubtitle(
 					getString(R.string.search_term_label) + query);
 			startSearch(query);
@@ -101,7 +114,7 @@ public class SearchActivity extends SherlockListActivity {
 			protected ArrayList<SearchResult> doInBackground(String... params) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Starting background work");
-				return FeedSearcher.performSearch(params[0]);
+				return FeedSearcher.performSearch(params[0], selectedFeed);
 			}
 
 			@Override

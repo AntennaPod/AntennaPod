@@ -70,6 +70,9 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
+				.setIcon(R.drawable.action_search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return FeedMenuHandler
 				.onCreateOptionsMenu(new MenuInflater(this), menu);
 	}
@@ -101,6 +104,9 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 					remover.execute(feed);
 				}
 				break;
+			case R.id.search_item:
+				onSearchRequested();
+				break;
 			case android.R.id.home:
 				startActivity(new Intent(this, MainActivity.class));
 				break;
@@ -108,5 +114,15 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		}
 		return true;
 	}
+
+	@Override
+	public boolean onSearchRequested() {
+		Bundle bundle = new Bundle();
+		bundle.putLong(SearchActivity.EXTRA_FEED_ID, feed.getId());
+		startSearch(null, false, bundle, false);
+		return true;
+	}
+	
+	
 
 }
