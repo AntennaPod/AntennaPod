@@ -108,6 +108,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.opml_import:
 			startActivity(new Intent(this, OpmlImportActivity.class));
 			return true;
+		case R.id.search_item:
+			onSearchRequested();
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

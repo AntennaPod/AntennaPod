@@ -140,6 +140,11 @@
     <string name="found_in_label">Found in:\u0020</string>
     <string name="found_in_shownotes_label">Found in shownotes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
+    <string name="search_status_searching">Searching...</string>
+    <string name="search_status_no_results">No results were found</string>
+    <string name="search_results_label">Search results</string>
+    <string name="search_term_label">You searched:\u0020</string>
+    <string name="search_label">Search</string>
     
 
 </resources>
