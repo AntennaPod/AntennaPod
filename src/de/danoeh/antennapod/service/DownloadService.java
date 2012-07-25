@@ -10,6 +10,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -106,7 +107,15 @@ public class DownloadService extends Service {
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
-		syncExecutor = Executors.newSingleThreadExecutor();
+		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
+				return t;
+			}
+		});
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
