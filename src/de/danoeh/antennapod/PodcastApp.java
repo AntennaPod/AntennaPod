@@ -1,5 +1,6 @@
 package de.danoeh.antennapod;
 
+import java.io.File;
 import java.util.concurrent.TimeUnit;
 
 import android.app.AlarmManager;
@@ -10,6 +11,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
@@ -41,9 +43,25 @@ public class PodcastApp extends Application implements
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
+		createImportDirectory();
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
+	}
+	
+	/** Creates the import directory if it doesn't exist and if storage is available */
+	private void createImportDirectory() {
+		File importDir = getExternalFilesDir(OpmlImportActivity.IMPORT_DIR);
+		if (importDir != null) {
+			if (importDir.exists()) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Import directory already exists");
+			} else {
+				if (AppConfig.DEBUG) Log.d(TAG, "Creating import directory");
+				importDir.mkdir();
+			}
+		} else {
+			if (AppConfig.DEBUG) Log.d(TAG, "Could not access external storage.");
+		}
 	}
 
 	@Override

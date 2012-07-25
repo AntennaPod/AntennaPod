@@ -3,6 +3,8 @@ package de.danoeh.antennapod.activity;
 import java.io.File;
 import java.util.ArrayList;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,7 +28,7 @@ import de.danoeh.antennapod.util.StorageUtils;
 public class OpmlImportActivity extends SherlockActivity {
 	private static final String TAG = "OpmlImportActivity";
 
-	private static final String IMPORT_DIR = "import/";
+	public static final String IMPORT_DIR = "import/";
 
 	private TextView txtvPath;
 	private Button butStart;
@@ -48,7 +50,7 @@ public class OpmlImportActivity extends SherlockActivity {
 		butStart.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				startImport();
+				checkFolderForFiles();
 			}
 
 		});
@@ -95,17 +97,33 @@ public class OpmlImportActivity extends SherlockActivity {
 			return false;
 		}
 	}
-
-	private void startImport() {
+	
+	/** Looks at the contents of the import directory and decides what to do. */
+	private void checkFolderForFiles() {
 		File dir = new File(importPath);
 		if (dir.isDirectory()) {
 			File[] fileList = dir.listFiles();
-			if (fileList.length > 1) {
+			if (fileList.length == 1) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Found one file, choosing that one.");
+				startImport(fileList[0]);
+			} else if (fileList.length > 1) {
 				Log.w(TAG,
-						"Import directory contains more than one file. Might choose the wrong one");
+						"Import directory contains more than one file.");
+				askForFile(dir);
+			} else {
+				Log.e(TAG, "Import directory is empty");
+				Toast toast = Toast
+						.makeText(this, R.string.opml_import_error_dir_empty,
+								Toast.LENGTH_LONG);
+				toast.show();
 			}
-			if (fileList.length > 0) {
-				importWorker = new OpmlImportWorker(this, fileList[0]) {
+	}
+	}
+
+	private void startImport(File file) {
+		
+			if (file != null) {
+				importWorker = new OpmlImportWorker(this, file) {
 
 					@Override
 					protected void onPostExecute(ArrayList<OpmlElement> result) {
@@ -124,14 +142,34 @@ public class OpmlImportActivity extends SherlockActivity {
 					}
 				};
 				importWorker.executeAsync();
-			} else {
-				Log.e(TAG, "Import directory is empty");
-				Toast toast = Toast
-						.makeText(this, R.string.opml_import_error_dir_empty,
-								Toast.LENGTH_LONG);
-				toast.show();
 			}
 		}
+	
+	
+	/** Asks the user to choose from a list of files in a directory and returns his choice. */
+	private void askForFile(File dir) {
+		final File[] fileList = dir.listFiles();
+		String[] fileNames = dir.list();
+		
+		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+		dialog.setTitle(R.string.choose_file_to_import_label);
+		dialog.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Dialog was cancelled");
+				dialog.dismiss();
+			}});
+		dialog.setItems(fileNames, new DialogInterface.OnClickListener() {
+			
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				if (AppConfig.DEBUG) Log.d(TAG, "File at index " + which + " was chosen");
+				dialog.dismiss();
+				startImport(fileList[which]);
+			}
+		});
+		dialog.create().show();
 	}
 
 	@Override

@@ -146,6 +146,7 @@
     <string name="search_term_label">You searched:\u0020</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>
+    <string name="choose_file_to_import_label">Choose file to import</string>
     
 
 </resources>
