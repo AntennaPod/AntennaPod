@@ -461,12 +461,16 @@ public class DownloadService extends Service {
 
 		/** Delete files that aren't needed anymore */
 		private void cleanup() {
-			if (new File(feed.getFile_url()).delete())
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Successfully deleted cache file.");
-				else
-					Log.e(TAG, "Failed to delete cache file.");
-			feed.setFile_url(null);
+			if (feed.getFile_url() != null) {
+				if (new File(feed.getFile_url()).delete())
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Successfully deleted cache file.");
+					else
+						Log.e(TAG, "Failed to delete cache file.");
+				feed.setFile_url(null);
+			} else if (AppConfig.DEBUG) {
+				Log.d(TAG, "Didn't delete cache file: File url is not set.");
+			}
 		}
 
 	}
