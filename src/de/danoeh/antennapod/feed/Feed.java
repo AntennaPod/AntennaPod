@@ -10,8 +10,8 @@ import java.util.Date;
  * 
  */
 public class Feed extends FeedFile {
-	private static final String TYPE_RSS2 = "rss";
-	private static final String TYPE_ATOM1 = "atom";
+	public static final String TYPE_RSS2 = "rss";
+	public static final String TYPE_ATOM1 = "atom";
 	
 	private String title;
 	/** Link to the website. */

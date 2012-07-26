@@ -40,12 +40,14 @@ public class TypeGetter {
 					if (eventType == XmlPullParser.START_TAG) {
 						String tag = xpp.getName();
 						if (tag.equals(ATOM_ROOT)) {
+							feed.setType(Feed.TYPE_ATOM1);
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Recognized type Atom");
 							return Type.ATOM;
 						} else if (tag.equals(RSS_ROOT)
 								&& (xpp.getAttributeValue(null, "version")
 										.equals("2.0"))) {
+							feed.setType(Feed.TYPE_RSS2);
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Recognized type RSS 2.0");
 							return Type.RSS20;

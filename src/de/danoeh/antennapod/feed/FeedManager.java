@@ -361,7 +361,9 @@ public class FeedManager {
 					markItemRead(context, item, false);
 				}
 			}
+			// update attributes
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
+			savedFeed.setType(newFeed.getType());
 			setFeed(context, savedFeed);
 			return savedFeed;
 		}
