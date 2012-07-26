@@ -387,7 +387,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			@Override
 			public void onProgressChanged(SeekBar seekBar, int progress,
 					boolean fromUser) {
-				if (fromUser) {
+				if (fromUser && PlaybackService.isRunning) {
 					prog = progress / ((float) seekBar.getMax());
 					duration = playbackService.getPlayer().getDuration();
 					txtvPosition.setText(Converter
@@ -407,8 +407,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 
 			@Override
 			public void onStopTrackingTouch(SeekBar seekBar) {
-				playbackService.seek((int) (prog * duration));
-				setupPositionObserver();
+				if (PlaybackService.isRunning) {
+					playbackService.seek((int) (prog * duration));
+					setupPositionObserver();
+				}
 			}
 		});
 
