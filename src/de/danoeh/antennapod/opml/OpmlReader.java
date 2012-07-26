@@ -8,25 +8,13 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.util.URLChecker;
-
-import android.content.Context;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 /** Reads OPML documents. */
 public class OpmlReader {
 	private static final String TAG = "OpmlReader";
-
-	// TAGS
-	private static final String OPML = "opml";
-	private static final String BODY = "body";
-	private static final String OUTLINE = "outline";
-	private static final String TEXT = "text";
-	private static final String XMLURL = "xmlUrl";
-	private static final String HTMLURL = "htmlUrl";
-	private static final String TYPE = "type";
-
+	
 	// ATTRIBUTES
 	private boolean isInOpml = false;
 	private boolean isInBody = false;
@@ -55,23 +43,23 @@ public class OpmlReader {
 					Log.d(TAG, "Reached beginning of document");
 				break;
 			case XmlPullParser.START_TAG:
-				if (xpp.getName().equals(OPML)) {
+				if (xpp.getName().equals(OpmlSymbols.OPML)) {
 					isInOpml = true;
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Reached beginning of OPML tree.");
-				} else if (isInOpml && xpp.getName().equals(BODY)) {
+				} else if (isInOpml && xpp.getName().equals(OpmlSymbols.BODY)) {
 					isInBody = true;
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Reached beginning of body tree.");
 
-				} else if (isInBody && xpp.getName().equals(OUTLINE)) {
+				} else if (isInBody && xpp.getName().equals(OpmlSymbols.OUTLINE)) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
-					element.setText(xpp.getAttributeValue(null, TEXT));
-					element.setXmlUrl(xpp.getAttributeValue(null, XMLURL));
-					element.setHtmlUrl(xpp.getAttributeValue(null, HTMLURL));
-					element.setType(xpp.getAttributeValue(null, TYPE));
+					element.setText(xpp.getAttributeValue(null, OpmlSymbols.TEXT));
+					element.setXmlUrl(xpp.getAttributeValue(null, OpmlSymbols.XMLURL));
+					element.setHtmlUrl(xpp.getAttributeValue(null, OpmlSymbols.HTMLURL));
+					element.setType(xpp.getAttributeValue(null, OpmlSymbols.TYPE));
 					if (element.getXmlUrl() != null) {
 						elementList.add(element);
 					} else {
