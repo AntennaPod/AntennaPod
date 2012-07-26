@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.util;
+package de.danoeh.antennapod.util.menuhandler;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.ShareUtils;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedItemMenuHandler {

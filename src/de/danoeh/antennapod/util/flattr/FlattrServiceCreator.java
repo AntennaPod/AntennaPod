@@ -1,3 +1,4 @@
+package de.danoeh.antennapod.util.flattr;
 /*
 package de.danoeh.antennapod.util;
 

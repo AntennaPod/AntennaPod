@@ -13,8 +13,8 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.util.LangUtils;
+import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 

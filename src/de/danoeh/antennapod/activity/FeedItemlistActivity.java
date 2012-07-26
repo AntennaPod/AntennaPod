@@ -20,8 +20,8 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
-import de.danoeh.antennapod.util.FeedMenuHandler;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 /** Displays a List of FeedItems */
 public class FeedItemlistActivity extends SherlockFragmentActivity {

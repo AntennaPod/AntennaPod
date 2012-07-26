@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.util;
+package de.danoeh.antennapod.util.comparator;
 
 import java.util.Comparator;
 

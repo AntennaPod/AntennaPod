@@ -9,7 +9,7 @@ import android.os.AsyncTask;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.util.FlattrUtils;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Fetches the access token in the background in order to avoid networkOnMainThread exception. */
 /*

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.util;
+package de.danoeh.antennapod.util.flattr;
 
 import java.util.EnumSet;
 

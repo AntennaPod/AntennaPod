@@ -6,7 +6,7 @@ import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.FeedMenuHandler;
+import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import android.os.AsyncTask;

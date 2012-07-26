@@ -28,7 +28,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.FeedItemMenuHandler;
+import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 

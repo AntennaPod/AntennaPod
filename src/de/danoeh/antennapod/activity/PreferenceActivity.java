@@ -11,7 +11,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.util.FlattrUtils;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String TAG = "PreferenceActivity";

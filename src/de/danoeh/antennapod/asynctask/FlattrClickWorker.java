@@ -8,7 +8,7 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.util.FlattrUtils;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Performs a click action in a background thread. */
 /*

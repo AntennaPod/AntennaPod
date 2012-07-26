@@ -55,9 +55,9 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.FeedItemMenuHandler;
 import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 public class MediaplayerActivity extends SherlockFragmentActivity implements
 		SurfaceHolder.Callback {
