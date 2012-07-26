@@ -25,7 +25,7 @@ import android.util.Log;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 1;
+	private static final int DATABASE_VERSION = 2;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	
@@ -598,7 +598,6 @@ public class PodDBAdapter {
 
 	/** Helper class for opening the Antennapod database. */
 	private static class PodDBHelper extends SQLiteOpenHelper {
-
 		/**
 		 * Constructor.
 		 * 
@@ -632,7 +631,10 @@ public class PodDBAdapter {
 				final int newVersion) {
 			Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
 					+ newVersion + ".");
-			// TODO delete Database
+			if (oldVersion == 1) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN " + 
+						KEY_TYPE + " TEXT");
+			}
 		}
 	}
 
