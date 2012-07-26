@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.activity;
 
 
+import org.shredzone.flattr4j.exception.FlattrException;
+
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -19,7 +21,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
 /** Guides the user through the authentication process */
-/*
+
 public class FlattrAuthActivity extends SherlockActivity {
 	private static final String TAG = "FlattrAuthActivity";
 
@@ -116,4 +118,4 @@ public class FlattrAuthActivity extends SherlockActivity {
 	}
 	
 
-}*/
+}

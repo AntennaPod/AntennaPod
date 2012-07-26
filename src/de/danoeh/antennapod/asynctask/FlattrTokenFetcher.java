@@ -1,6 +1,10 @@
 package de.danoeh.antennapod.asynctask;
 
 
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.oauth.AccessToken;
+import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -9,10 +13,11 @@ import android.os.AsyncTask;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Fetches the access token in the background in order to avoid networkOnMainThread exception. */
-/*
+
 public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 	private static final String TAG = "FlattrTokenFetcher";
 	Context context;
@@ -89,4 +94,3 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 	}
 	
 }
-*/

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.asynctask;
 
+import org.shredzone.flattr4j.exception.FlattrException;
+
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -11,7 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Performs a click action in a background thread. */
-/*
+
 public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 	protected static final String TAG = "FlattrClickWorker";
 	protected Context context;
@@ -110,4 +112,4 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 		}
 	}
 
-}*/
+}

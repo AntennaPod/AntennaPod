@@ -2,6 +2,13 @@ package de.danoeh.antennapod.util.flattr;
 
 import java.util.EnumSet;
 
+import org.shredzone.flattr4j.FlattrService;
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.oauth.AccessToken;
+import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
+import org.shredzone.flattr4j.oauth.Scope;
+
 import android.app.AlertDialog;
 import android.app.AlertDialog.Builder;
 import android.app.ProgressDialog;
@@ -19,6 +26,8 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FlattrAuthActivity;
+import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
 
 /** Utility methods for doing something with flattr. */
 
@@ -36,7 +45,7 @@ public class FlattrUtils {
 	// Human-readable flattr-page.
 	public static final String APP_LINK = "https://flattr.com/thing/745609/";
 	public static final String APP_THING_ID = "745609";
-/*
+
 	private static volatile AccessToken cachedToken;
 
 	private static AndroidAuthenticator createAuthenticator() {
@@ -211,7 +220,7 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
-	*/
+	
 
 
 }
