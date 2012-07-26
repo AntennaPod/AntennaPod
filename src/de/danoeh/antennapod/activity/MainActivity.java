@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
+import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -108,6 +109,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.opml_import:
 			startActivity(new Intent(this, OpmlImportActivity.class));
 			return true;
+		case R.id.opml_export:
+			new OpmlExportWorker(this).executeAsync();
+			return false;
 		case R.id.search_item:
 			onSearchRequested();
 			return true;
@@ -125,6 +129,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			refreshAll.setVisible(true);
 		}
+		
+		boolean hasFeeds = !manager.getFeeds().isEmpty();
+		menu.findItem(R.id.opml_export).setVisible(hasFeeds);
 		return true;
 	}
 

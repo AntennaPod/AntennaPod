@@ -19,7 +19,7 @@ import de.danoeh.antennapod.opml.OpmlWriter;
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 	private static final String TAG = "OpmlExportWorker";
-	private static final String DEFAULT_OUTPUT_NAME = "AntennaPod-Feeds.opml";
+	private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds.opml";
 	private Context context;
 	private File output;
 

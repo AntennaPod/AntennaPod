@@ -16,6 +16,7 @@
     
     <item android:id="@id/search_item" android:icon="@drawable/action_search" android:title="@string/search_label" android:showAsAction="ifRoom|collapseActionView"></item><item android:id="@+id/show_player" android:title="@string/show_player_label" android:icon="@drawable/av_play" android:showAsAction="collapseActionView"></item>
     <item android:id="@+id/opml_import" android:title="@string/opml_import_label" android:showAsAction="collapseActionView"></item>
-    <item android:id="@+id/show_downloads" android:title="Downloads" android:icon="@drawable/av_download" android:showAsAction="collapseActionView">
+    <item android:id="@+id/opml_export" android:title="@string/opml_export_label"></item><item android:id="@+id/show_downloads" android:title="Downloads" android:icon="@drawable/av_download" android:showAsAction="collapseActionView">
     </item><item android:id="@+id/show_preferences" android:title="@string/settings_label" android:icon="@drawable/action_settings" android:showAsAction="collapseActionView"></item>
+    
 </menu>
