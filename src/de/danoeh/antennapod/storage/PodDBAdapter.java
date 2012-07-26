@@ -44,6 +44,7 @@ public class PodDBAdapter {
 	public static final int KEY_LANGUAGE_INDEX = 9;
 	public static final int KEY_AUTHOR_INDEX = 10;
 	public static final int KEY_IMAGE_INDEX = 11;
+	public static final int KEY_TYPE_INDEX = 12;
 	// ----------- FeedItem indices
 	public static final int KEY_CONTENT_ENCODED_INDEX = 2;
 	public static final int KEY_PUBDATE_INDEX = 3;
@@ -101,6 +102,7 @@ public class PodDBAdapter {
 	public static final String KEY_LANGUAGE = "language";
 	public static final String KEY_AUTHOR = "author";
 	public static final String KEY_HAS_SIMPLECHAPTERS = "has_simple_chapters";
+	public static final String KEY_TYPE = "type";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -127,7 +129,8 @@ public class PodDBAdapter {
 			KEY_LASTUPDATE + " TEXT," +
 			KEY_LANGUAGE + " TEXT," +
 			KEY_AUTHOR + " TEXT," +
-			KEY_IMAGE + " INTEGER)";
+			KEY_IMAGE + " INTEGER," +
+			KEY_TYPE + " TEXT)";
 ;
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
@@ -238,6 +241,7 @@ public class PodDBAdapter {
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		values.put(KEY_DOWNLOADED, feed.isDownloaded());
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
+		values.put(KEY_TYPE, feed.getType());
 		if (feed.getId() == 0) {
 			// Create new entry
 			if (AppConfig.DEBUG) Log.d(this.toString(), "Inserting new Feed into db");

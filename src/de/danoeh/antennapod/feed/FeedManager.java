@@ -591,6 +591,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_AUTHOR_INDEX));
 				feed.setLanguage(feedlistCursor
 						.getString(PodDBAdapter.KEY_LANGUAGE_INDEX));
+				feed.setType(feedlistCursor
+						.getString(PodDBAdapter.KEY_TYPE_INDEX));
 				long imageIndex = feedlistCursor
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {

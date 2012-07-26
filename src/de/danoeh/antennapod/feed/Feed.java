@@ -10,6 +10,9 @@ import java.util.Date;
  * 
  */
 public class Feed extends FeedFile {
+	private static final String TYPE_RSS2 = "rss";
+	private static final String TYPE_ATOM1 = "atom";
+	
 	private String title;
 	/** Link to the website. */
 	private String link;
@@ -23,6 +26,8 @@ public class Feed extends FeedFile {
 	/** Date of last refresh. */
 	private Date lastUpdate;
 	private String paymentLink;
+	/** Feed type, for example RSS 2 or Atom */
+	private String type;
 
 	public Feed(Date lastUpdate) {
 		super();
@@ -125,5 +130,15 @@ public class Feed extends FeedFile {
 	public void setAuthor(String author) {
 		this.author = author;
 	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
+	}
+	
+	
 
 }
