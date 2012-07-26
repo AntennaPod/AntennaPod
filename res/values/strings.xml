@@ -147,6 +147,12 @@
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>
     <string name="choose_file_to_import_label">Choose file to import</string>
+    <string name="opml_export_label">OPML export</string>
+    <string name="exporting_label">Exporting...</string>
+    <string name="opml_export_error_no_feeds">You have no feeds</string>
+    <string name="export_error_label">Export error</string>
+    <string name="opml_export_success_title">Opml export successful.</string>
+    <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
     
 
 </resources>
