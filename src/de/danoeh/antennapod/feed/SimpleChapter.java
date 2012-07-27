@@ -5,12 +5,14 @@ public class SimpleChapter extends FeedComponent {
 	private long start;
 	private String title;
 	private FeedItem item;
+	private String link;
 
-	public SimpleChapter(FeedItem item, long start, String title) {
+	public SimpleChapter(FeedItem item, long start, String title, String link) {
 		super();
 		this.item = item;
 		this.start = start;
 		this.title = title;
+		this.link = link;
 	}
 
 	public String getTitle() {
@@ -27,6 +29,10 @@ public class SimpleChapter extends FeedComponent {
 
 	public void setItem(FeedItem item) {
 		this.item = item;
+	}
+
+	public String getLink() {
+		return link;
 	}
 
 }

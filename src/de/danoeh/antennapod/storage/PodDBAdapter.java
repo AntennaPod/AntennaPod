@@ -25,7 +25,7 @@ import android.util.Log;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 2;
+	private static final int DATABASE_VERSION = 3;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	
@@ -69,6 +69,7 @@ public class PodDBAdapter {
 	// --------- Simplechapters indices
 	public static final int KEY_SC_START_INDEX = 2;
 	public static final int KEY_SC_FEEDITEM_INDEX = 3;
+	public static final int KEY_SC_LINK_INDEX = 4;
 	
 	
 	// Key-constants
@@ -180,7 +181,8 @@ public class PodDBAdapter {
 			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + 
 			KEY_TITLE + " TEXT," + 
 			KEY_START + " INTEGER," + 
-			KEY_FEEDITEM + " INTEGER)";
+			KEY_FEEDITEM + " INTEGER," +
+			KEY_LINK + " TEXT)";
 
 	/**
 	 * Used for storing download status entries to determine the type of the
@@ -362,6 +364,7 @@ public class PodDBAdapter {
 			values.put(KEY_TITLE, chapter.getTitle());
 			values.put(KEY_START, chapter.getStart());
 			values.put(KEY_FEEDITEM, item.getId());
+			values.put(KEY_LINK, chapter.getLink());
 			if (chapter.getId() == 0) {
 				chapter.setId(db
 						.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
@@ -631,9 +634,13 @@ public class PodDBAdapter {
 				final int newVersion) {
 			Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
 					+ newVersion + ".");
-			if (oldVersion == 1) {
+			if (oldVersion <= 1) {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN " + 
 						KEY_TYPE + " TEXT");
+			}
+			if (oldVersion <= 2) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS + " ADD COLUMN " + 
+						KEY_LINK + " TEXT");
 			}
 		}
 	}

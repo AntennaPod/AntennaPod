@@ -670,7 +670,9 @@ public class FeedManager {
 									chapterCursor
 											.getLong(PodDBAdapter.KEY_SC_START_INDEX),
 									chapterCursor
-											.getString(PodDBAdapter.KEY_TITLE_INDEX));
+											.getString(PodDBAdapter.KEY_TITLE_INDEX),
+									chapterCursor
+											.getString(PodDBAdapter.KEY_SC_LINK_INDEX));
 							item.getSimpleChapters().add(chapter);
 						} while (chapterCursor.moveToNext());
 					}

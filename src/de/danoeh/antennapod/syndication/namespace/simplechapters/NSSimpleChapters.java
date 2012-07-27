@@ -18,6 +18,7 @@ public class NSSimpleChapters extends Namespace {
 	public static final String CHAPTER = "chapter";
 	public static final String START = "start";
 	public static final String TITLE = "title";
+	public static final String HREF = "href";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
@@ -31,7 +32,7 @@ public class NSSimpleChapters extends Namespace {
 					.add(new SimpleChapter(state.getCurrentItem(),
 							SyndDateUtils.parseTimeString(attributes
 									.getValue(START)), attributes
-									.getValue(TITLE)));
+									.getValue(TITLE), attributes.getValue(HREF)));
 		}
 
 		return new SyndElement(localName, this);
