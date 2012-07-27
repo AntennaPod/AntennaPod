@@ -70,6 +70,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_INFO = 1;
 	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 	public static final int NOTIFICATION_TYPE_RELOAD = 3;
+	/** The state of the sleeptimer changed. */
 	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
 
 	/** Is true if service is running. */
@@ -459,11 +460,14 @@ public class PlaybackService extends Service {
 	};
 
 	public void setSleepTimer(long waitingTime) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
+					+ " milliseconds");
 		if (sleepTimer != null) {
-			sleepTimer.interrupt();
+			sleepTimer.cancel(true);
 		}
 		sleepTimer = new SleepTimer(waitingTime);
-		sleepTimer.start();
+		sleepTimer.executeAsync();
 		sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 	}
 
@@ -471,7 +475,7 @@ public class PlaybackService extends Service {
 		if (sleepTimer != null) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Disabling sleep timer");
-			sleepTimer.interrupt();
+			sleepTimer.cancel(true);
 			sleepTimer = null;
 			sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 		}
@@ -632,9 +636,9 @@ public class PlaybackService extends Service {
 		PlaybackService.this.sendBroadcast(new Intent(
 				PlayerWidget.FORCE_WIDGET_UPDATE));
 	}
-	
+
 	public boolean sleepTimerActive() {
-		return sleepTimer == null || sleepTimer.isWaiting();
+		return sleepTimer != null && sleepTimer.isWaiting();
 	}
 
 	/**
@@ -728,8 +732,9 @@ public class PlaybackService extends Service {
 	}
 
 	/** Sleeps for a given time and then pauses playback. */
-	class SleepTimer extends Thread {
+	class SleepTimer extends AsyncTask<Void, Void, Void> {
 		private static final String TAG = "SleepTimer";
+		private static final long UPDATE_INTERVALL = 1000L;
 		private long waitingTime;
 		private boolean isWaiting;
 
@@ -739,20 +744,45 @@ public class PlaybackService extends Service {
 		}
 
 		@Override
-		public void run() {
+		protected Void doInBackground(Void... params) {
 			isWaiting = true;
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting");
-			try {
-				Thread.sleep(waitingTime);
-				if (status == PlayerStatus.PLAYING) {
-					Log.d(TAG, "Pausing playback");
-					pause(true);
+			while (!isCancelled()) {
+				try {
+					Thread.sleep(UPDATE_INTERVALL);
+					waitingTime -= UPDATE_INTERVALL;
+
+					if (waitingTime <= 0 && status == PlayerStatus.PLAYING) {
+						Log.d(TAG, "Pausing playback");
+						pause(true);
+						return null;
+					}
+				} catch (InterruptedException e) {
+					Log.d(TAG, "Thread was interrupted while waiting");
 				}
-			} catch (InterruptedException e) {
-				Log.d(TAG, "Thread was interrupted while waiting");
 			}
+			return null;
+		}
+		
+		@SuppressLint("NewApi")
+		public void executeAsync() {
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				execute();
+			}
+		}
+		
+		@Override
+		protected void onCancelled() {
 			isWaiting = false;
+		}
+
+		@Override
+		protected void onPostExecute(Void result) {
+			isWaiting = false;
+			sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 		}
 
 		public long getWaitingTime() {

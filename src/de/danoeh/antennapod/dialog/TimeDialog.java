@@ -8,14 +8,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
 
 public abstract class TimeDialog extends Dialog {
-	private int leftButtonTextId;
-	private int titleTextId;
 
 	private EditText etxtTime;
 	private Spinner spTimeUnit;
@@ -25,25 +24,28 @@ public abstract class TimeDialog extends Dialog {
 	private String[] spinnerContent = { "min", "h" };
 	private TimeUnit[] units = { TimeUnit.MINUTES, TimeUnit.HOURS };
 
-	public TimeDialog(Context context, int TitleTextId, int leftButtonTextId) {
+	public TimeDialog(Context context, int titleTextId, int leftButtonTextId) {
 		super(context);
-		this.leftButtonTextId = leftButtonTextId;
 	}
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		setContentView(R.layout.time_dialog);
 		etxtTime = (EditText) findViewById(R.id.etxtTime);
 		spTimeUnit = (Spinner) findViewById(R.id.spTimeUnit);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
-		butConfirm.setText(leftButtonTextId);
+		
+		butConfirm.setText(R.string.set_sleeptimer_label);
 		butCancel.setText(R.string.cancel_label);
-		setTitle(titleTextId);
-		spTimeUnit.setAdapter(new ArrayAdapter<String>(this.getContext(), 0,
-				spinnerContent));
+		setTitle(R.string.set_sleeptimer_label);
+		ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(this.getContext(), android.R.layout.simple_spinner_item,
+				spinnerContent);
+		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+		spTimeUnit.setAdapter(spinnerAdapter);
+		spTimeUnit.setSelection(0);
 		butCancel.setOnClickListener(new View.OnClickListener() {
 
 			@Override

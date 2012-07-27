@@ -155,7 +155,7 @@
     <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
-    <string name="enter_time_here_label">Enter time here</string>
+    <string name="enter_time_here_label">Enter time</string>
     
 
 </resources>

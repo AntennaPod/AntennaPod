@@ -47,6 +47,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SCListAdapter;
+import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
@@ -142,9 +143,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				media != null && media.getItem().getLink() != null);
 		menu.findItem(R.id.visit_website_item).setVisible(
 				media != null && media.getItem().getLink() != null);
-		
-		boolean sleepTimerSet = playbackService != null && playbackService.sleepTimerActive();
-		boolean sleepTimerNotSet = playbackService != null && !playbackService.sleepTimerActive();
+
+		boolean sleepTimerSet = playbackService != null
+				&& playbackService.sleepTimerActive();
+		boolean sleepTimerNotSet = playbackService != null
+				&& !playbackService.sleepTimerActive();
 		menu.findItem(R.id.set_sleeptimer_item).setVisible(sleepTimerNotSet);
 		menu.findItem(R.id.disable_sleeptimer_item).setVisible(sleepTimerSet);
 		return true;
@@ -157,6 +160,28 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			startActivity(new Intent(MediaplayerActivity.this,
 					MainActivity.class));
 			break;
+		case R.id.disable_sleeptimer_item:
+			if (playbackService != null) {
+				playbackService.disableSleepTimer();
+			}
+			break;
+		case R.id.set_sleeptimer_item:
+			if (playbackService != null) {
+				TimeDialog td = new TimeDialog(this,
+						R.string.set_sleeptimer_label,
+						R.string.set_sleeptimer_label) {
+
+					@Override
+					public void onTimeEntered(long millis) {
+						if (playbackService != null) {
+							playbackService.setSleepTimer(millis);
+						}
+					}
+				};
+				td.show();
+				break;
+
+			}
 		default:
 			return FeedItemMenuHandler.onMenuItemClicked(this, item,
 					media.getItem());
@@ -642,6 +667,9 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					mediaInfoLoaded = false;
 					queryService();
 
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
+					invalidateOptionsMenu();
 					break;
 				}
 

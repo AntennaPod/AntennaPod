@@ -11,8 +11,9 @@
 
         <EditText
             android:id="@+id/etxtTime"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:layout_margin="8dp"
             android:ems="10"
             android:hint="@string/enter_time_here_label"
@@ -24,10 +25,9 @@
 
         <Spinner
             android:id="@+id/spTimeUnit"
-            android:layout_width="wrap_content"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="8dp"
             android:layout_marginTop="8dp" />
     </LinearLayout>
 
