@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -162,7 +163,34 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			break;
 		case R.id.disable_sleeptimer_item:
 			if (playbackService != null) {
-				playbackService.disableSleepTimer();
+				AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
+				stDialog.setTitle(R.string.sleep_timer_label);
+				stDialog.setMessage(getString(R.string.time_left_label)
+						+ Converter
+								.getDurationStringLong((int) playbackService
+										.getSleepTimerTimeLeft()));
+				stDialog.setPositiveButton(R.string.disable_sleeptimer_label,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								if (playbackService != null) {
+									playbackService.disableSleepTimer();
+								}
+							}
+						});
+				stDialog.setNegativeButton(R.string.cancel_label,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				stDialog.create().show();
 			}
 			break;
 		case R.id.set_sleeptimer_item:

@@ -494,6 +494,7 @@ public class PlaybackService extends Service {
 			player.pause();
 			if (abandonFocus) {
 				audioManager.abandonAudioFocus(audioFocusChangeListener);
+				disableSleepTimer();
 			}
 			if (positionSaver != null) {
 				positionSaver.cancel(true);
@@ -641,6 +642,14 @@ public class PlaybackService extends Service {
 		return sleepTimer != null && sleepTimer.isWaiting();
 	}
 
+	public long getSleepTimerTimeLeft() {
+		if (sleepTimerActive()) {
+			return sleepTimer.getWaitingTime();
+		} else {
+			return 0;
+		}
+	}
+
 	/**
 	 * Pauses playback when the headset is disconnected and the preference is
 	 * set
@@ -735,7 +744,7 @@ public class PlaybackService extends Service {
 	class SleepTimer extends AsyncTask<Void, Void, Void> {
 		private static final String TAG = "SleepTimer";
 		private static final long UPDATE_INTERVALL = 1000L;
-		private long waitingTime;
+		private volatile long waitingTime;
 		private boolean isWaiting;
 
 		public SleepTimer(long waitingTime) {
@@ -753,9 +762,14 @@ public class PlaybackService extends Service {
 					Thread.sleep(UPDATE_INTERVALL);
 					waitingTime -= UPDATE_INTERVALL;
 
-					if (waitingTime <= 0 && status == PlayerStatus.PLAYING) {
-						Log.d(TAG, "Pausing playback");
-						pause(true);
+					if (waitingTime <= 0) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Waiting completed");
+						if (status == PlayerStatus.PLAYING) {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Pausing playback");
+							pause(true);
+						}
 						return null;
 					}
 				} catch (InterruptedException e) {
@@ -764,7 +778,7 @@ public class PlaybackService extends Service {
 			}
 			return null;
 		}
-		
+
 		@SuppressLint("NewApi")
 		public void executeAsync() {
 			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
@@ -773,7 +787,7 @@ public class PlaybackService extends Service {
 				execute();
 			}
 		}
-		
+
 		@Override
 		protected void onCancelled() {
 			isWaiting = false;

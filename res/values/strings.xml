@@ -156,6 +156,8 @@
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="enter_time_here_label">Enter time</string>
+    <string name="sleep_timer_label">Sleep timer</string>
+    <string name="time_left_label">Time left:\u0020</string>
     
 
 </resources>

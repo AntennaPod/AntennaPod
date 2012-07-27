@@ -16,13 +16,15 @@ import android.widget.Spinner;
 
 public abstract class TimeDialog extends Dialog {
 
+	private static final int DEFAULT_SPINNER_POSITION = 1;
+	
 	private EditText etxtTime;
 	private Spinner spTimeUnit;
 	private Button butConfirm;
 	private Button butCancel;
 
-	private String[] spinnerContent = { "min", "h" };
-	private TimeUnit[] units = { TimeUnit.MINUTES, TimeUnit.HOURS };
+	private String[] spinnerContent = { "s", "min", "h" };
+	private TimeUnit[] units = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
 	public TimeDialog(Context context, int titleTextId, int leftButtonTextId) {
 		super(context);
@@ -45,7 +47,7 @@ public abstract class TimeDialog extends Dialog {
 				spinnerContent);
 		spinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 		spTimeUnit.setAdapter(spinnerAdapter);
-		spTimeUnit.setSelection(0);
+		spTimeUnit.setSelection(DEFAULT_SPINNER_POSITION);
 		butCancel.setOnClickListener(new View.OnClickListener() {
 
 			@Override
