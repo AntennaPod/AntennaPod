@@ -142,6 +142,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				media != null && media.getItem().getLink() != null);
 		menu.findItem(R.id.visit_website_item).setVisible(
 				media != null && media.getItem().getLink() != null);
+		
+		boolean sleepTimerSet = playbackService != null && playbackService.sleepTimerActive();
+		boolean sleepTimerNotSet = playbackService != null && !playbackService.sleepTimerActive();
+		menu.findItem(R.id.set_sleeptimer_item).setVisible(sleepTimerNotSet);
+		menu.findItem(R.id.disable_sleeptimer_item).setVisible(sleepTimerSet);
 		return true;
 	}
 

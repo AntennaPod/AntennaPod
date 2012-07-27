@@ -70,9 +70,12 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_INFO = 1;
 	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 	public static final int NOTIFICATION_TYPE_RELOAD = 3;
+	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
 
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
+
+	private SleepTimer sleepTimer;
 
 	private static final int NOTIFICATION_ID = 1;
 	private NotificationCompat.Builder notificationBuilder;
@@ -134,6 +137,7 @@ public class PlaybackService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		isRunning = false;
+		disableSleepTimer();
 		unregisterReceiver(headsetDisconnected);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service is about to be destroyed");
@@ -454,6 +458,25 @@ public class PlaybackService extends Service {
 		}
 	};
 
+	public void setSleepTimer(long waitingTime) {
+		if (sleepTimer != null) {
+			sleepTimer.interrupt();
+		}
+		sleepTimer = new SleepTimer(waitingTime);
+		sleepTimer.start();
+		sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+	}
+
+	public void disableSleepTimer() {
+		if (sleepTimer != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Disabling sleep timer");
+			sleepTimer.interrupt();
+			sleepTimer = null;
+			sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+		}
+	}
+
 	/**
 	 * Saves the current position and pauses playback
 	 * 
@@ -591,6 +614,7 @@ public class PlaybackService extends Service {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	private void setupWidgetUpdater() {
 		if (widgetUpdater == null || widgetUpdater.isCancelled()) {
 			widgetUpdater = new WidgetUpdateWorker();
@@ -607,6 +631,10 @@ public class PlaybackService extends Service {
 			Log.d(TAG, "Sending widget update request");
 		PlaybackService.this.sendBroadcast(new Intent(
 				PlayerWidget.FORCE_WIDGET_UPDATE));
+	}
+	
+	public boolean sleepTimerActive() {
+		return sleepTimer == null || sleepTimer.isWaiting();
 	}
 
 	/**
@@ -660,7 +688,7 @@ public class PlaybackService extends Service {
 				} catch (InterruptedException e) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG,
-								"Thread was interrupted while waiting. Finishing now...");
+								"Thre¿ad was interrupted while waiting. Finishing now...");
 					return null;
 				} catch (IllegalStateException e) {
 					if (AppConfig.DEBUG)
@@ -695,6 +723,44 @@ public class PlaybackService extends Service {
 				}
 			}
 			return null;
+		}
+
+	}
+
+	/** Sleeps for a given time and then pauses playback. */
+	class SleepTimer extends Thread {
+		private static final String TAG = "SleepTimer";
+		private long waitingTime;
+		private boolean isWaiting;
+
+		public SleepTimer(long waitingTime) {
+			super();
+			this.waitingTime = waitingTime;
+		}
+
+		@Override
+		public void run() {
+			isWaiting = true;
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Starting");
+			try {
+				Thread.sleep(waitingTime);
+				if (status == PlayerStatus.PLAYING) {
+					Log.d(TAG, "Pausing playback");
+					pause(true);
+				}
+			} catch (InterruptedException e) {
+				Log.d(TAG, "Thread was interrupted while waiting");
+			}
+			isWaiting = false;
+		}
+
+		public long getWaitingTime() {
+			return waitingTime;
+		}
+
+		public boolean isWaiting() {
+			return isWaiting;
 		}
 
 	}
