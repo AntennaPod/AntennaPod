@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.9
+-------------
+
+* OPML export
+* Flattr integration
+* Sleep timer
+
 Version 0.8.2
 -------------
 
