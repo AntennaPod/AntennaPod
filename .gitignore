@@ -21,6 +21,8 @@ local.properties
 #eclipse project files
 .project
 .classpath
+.metadata
+.settings
 # other
 *.odg#
 Docs/todo
