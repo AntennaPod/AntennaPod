@@ -28,6 +28,8 @@ import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -166,9 +168,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
 				stDialog.setTitle(R.string.sleep_timer_label);
 				stDialog.setMessage(getString(R.string.time_left_label)
-						+ Converter
-								.getDurationStringLong((int) playbackService
-										.getSleepTimerTimeLeft()));
+						+ Converter.getDurationStringLong((int) playbackService
+								.getSleepTimerTimeLeft()));
 				stDialog.setPositiveButton(R.string.disable_sleeptimer_label,
 						new DialogInterface.OnClickListener() {
 
@@ -367,9 +368,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				@Override
 				protected void onProgressUpdate(Void... v) {
 					super.onProgressUpdate();
+					int currentPosition = playbackService.getPlayer()
+							.getCurrentPosition();
+					media.setPosition(currentPosition);
 					txtvPosition.setText(Converter
-							.getDurationStringLong(playbackService.getPlayer()
-									.getCurrentPosition()));
+							.getDurationStringLong(currentPosition));
 					txtvLength.setText(Converter
 							.getDurationStringLong(playbackService.getPlayer()
 									.getDuration()));
@@ -788,6 +791,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					sCChapterFragment.setListAdapter(new SCListAdapter(
 							activity, 0, activity.media.getItem()
 									.getSimpleChapters()));
+					
 					return sCChapterFragment;
 				default:
 					return CoverFragment.newInstance(null);

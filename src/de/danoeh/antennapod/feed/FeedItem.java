@@ -38,18 +38,25 @@ public class FeedItem extends FeedComponent {
 		this.read = true;
 	}
 
-	public SimpleChapter getCurrentChapter() {
+	/** Get the chapter that fits the position. */
+	public SimpleChapter getCurrentChapter(int position) {
+		SimpleChapter current = null;
 		if (simpleChapters != null) {
-			SimpleChapter current = simpleChapters.get(0);
+			current = simpleChapters.get(0);
 			for (SimpleChapter sc : simpleChapters) {
-				if (media.getPosition() > current.getStart() &&
-						media.getPosition() <= sc.getStart()) {
-					return current;
+				if (sc.getStart() > position) {
+					break;
+				} else {
+					current = sc;
 				}
-				current = sc;
 			}
 		}
-		return null;
+		return current;
+	}
+
+	/** Calls getCurrentChapter with current position. */
+	public SimpleChapter getCurrentChapter() {
+		return getCurrentChapter(media.getPosition());
 	}
 
 	public String getTitle() {

@@ -53,7 +53,9 @@ public class CoverFragment extends SherlockFragment {
 			if (feedId != -1 && itemId != -1) {
 				Feed feed = manager.getFeed(feedId);
 				item = manager.getFeedItem(itemId, feed);
-				media = item.getMedia();
+				if (item != null) {
+					media = item.getMedia();
+				}
 			} else {
 				Log.e(TAG, TAG + " was called with invalid arguments");
 			}
