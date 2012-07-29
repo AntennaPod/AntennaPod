@@ -25,5 +25,5 @@ local.properties
 .settings
 # other
 *.odg#
-Docs
+proguard
 *.DS_Store
