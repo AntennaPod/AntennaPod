@@ -25,3 +25,4 @@ local.properties
 *.odg#
 Docs/todo
 Docs/market
+*.DS_Store
