@@ -1,8 +1,13 @@
 Change Log
 ==========
 
+Version 0.9.1
+-----------------
+* Added support for links in SimpleChapters
+* Bugfix: Current Chapter wasn't always displayed correctly
+
 Version 0.9
--------------
+--------------
 
 * OPML export
 * Flattr integration
