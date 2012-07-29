@@ -1,22 +1,13 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.FeedlistAdapter.Holder;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.SimpleChapter;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.Converter;
 import android.content.Context;
 import android.graphics.Color;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;
 import android.text.Spanned;
-import android.text.format.DateUtils;
 import android.text.method.LinkMovementMethod;
 import android.text.style.ClickableSpan;
 import android.text.util.Linkify;
@@ -27,8 +18,10 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.SimpleChapter;
+import de.danoeh.antennapod.util.Converter;
 
 public class SCListAdapter extends ArrayAdapter<SimpleChapter> {
 
@@ -76,6 +69,8 @@ public class SCListAdapter extends ArrayAdapter<SimpleChapter> {
 
 			@Override
 			public boolean onTouch(View v, MotionEvent event) {
+				// from
+				// http://stackoverflow.com/questions/7236840/android-textview-linkify-intercepts-with-parent-view-gestures
 				TextView widget = (TextView) v;
 				Object text = widget.getText();
 				if (text instanceof Spanned) {

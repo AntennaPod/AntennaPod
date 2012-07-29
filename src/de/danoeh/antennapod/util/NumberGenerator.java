@@ -3,7 +3,7 @@ package de.danoeh.antennapod.util;
 import java.util.Random;
 import android.util.Log;
 
-/**Utility class for creating large random numbers.*/
+/**Utility class for creating numbers.*/
 public final class NumberGenerator {
     /** Class shall not be instantiated.*/
     private NumberGenerator() {
