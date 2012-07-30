@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res/de.danoeh.antennapod"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical" >
@@ -48,51 +47,53 @@
             android:layout_height="wrap_content"
             android:orientation="vertical" >
 
-            <android.support.v7.widget.GridLayout
-                xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:grid="http://schemas.android.com/apk/res-auto"
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
-                app:columnCount="2"
-                app:orientation="horizontal"
-                grid:useDefaultMargins="true" >
+                android:layout_marginBottom="16dp" >
+
+                <View
+                    android:id="@+id/center_divider"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:layout_centerHorizontal="true" />
 
                 <TextView
                     android:id="@+id/lblAuthor"
-                    app:layout_row="0"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_margin="8dp"
                     android:text="@string/author_label"
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/txtvAuthor"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_margin="8dp"
+                    android:layout_toRightOf="@id/center_divider" />
+
+                <TextView
                     android:id="@+id/lblLanguage"
-                    app:layout_column="0"
-                    app:layout_row="2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/txtvAuthor"
+                    android:layout_margin="8dp"
                     android:text="@string/language_label"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/txtvLanguage"
                     android:layout_width="wrap_content"
-                    app:layout_column="1"
-                    app:layout_gravity="fill_vertical"
-                    app:layout_row="2" />
-
-                <TextView
-                    android:id="@+id/txtvAuthor"
-                    android:layout_width="210dp"
-                    app:layout_column="1"
-                    app:layout_gravity="fill_vertical"
-                    app:layout_row="0"
-                    app:layout_rowSpan="2" />
-
-                <android.support.v7.widget.Space
-                    android:id="@+id/space1"
-                    android:layout_width="50dp"
-                    android:layout_height="16dp"
-                    app:layout_column="0"
-                    app:layout_row="1" />
-            </android.support.v7.widget.GridLayout>
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@id/txtvAuthor"
+                    android:layout_margin="8dp"
+                    android:layout_toRightOf="@id/center_divider" />
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/txtvDescription"
