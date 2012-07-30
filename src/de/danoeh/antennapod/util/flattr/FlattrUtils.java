@@ -35,8 +35,6 @@ public class FlattrUtils {
 	private static final String TAG = "FlattrUtils";
 
 	private static final String HOST_NAME = "de.danoeh.antennapod";
-	private static final String APP_KEY = "oJ5B1Z90x0gpHbu84F81fWgZWjRpKj4Y";
-	private static final String APP_SECRET = "S0qKPpAcfGrNHMLCiKtnwAciJUyj3t8MjomZEN2KkjnSWZk4zEiW4k4D5sNZMLBV";
 
 	private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
@@ -49,7 +47,8 @@ public class FlattrUtils {
 	private static volatile AccessToken cachedToken;
 
 	private static AndroidAuthenticator createAuthenticator() {
-		return new AndroidAuthenticator(HOST_NAME, APP_KEY, APP_SECRET);
+		return new AndroidAuthenticator(HOST_NAME, FlattrConfig.APP_KEY,
+				FlattrConfig.APP_SECRET);
 	}
 
 	public static void startAuthProcess(Context context) throws FlattrException {
@@ -61,15 +60,18 @@ public class FlattrUtils {
 
 	private static AccessToken retrieveToken() {
 		if (cachedToken == null) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Retrieving access token");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Retrieving access token");
 			String token = PreferenceManager.getDefaultSharedPreferences(
 					PodcastApp.getInstance())
 					.getString(PREF_ACCESS_TOKEN, null);
 			if (token != null) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Found access token. Caching.");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Found access token. Caching.");
 				cachedToken = new AccessToken(token);
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "No access token found");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "No access token found");
 				return null;
 			}
 		}
@@ -82,7 +84,8 @@ public class FlattrUtils {
 	}
 
 	public static void storeToken(AccessToken token) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Storing token");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Storing token");
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(PodcastApp.getInstance()).edit();
 		if (token != null) {
@@ -95,7 +98,8 @@ public class FlattrUtils {
 	}
 
 	public static void deleteToken() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Deleting flattr token");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Deleting flattr token");
 		storeToken(null);
 	}
 
@@ -127,7 +131,8 @@ public class FlattrUtils {
 	}
 
 	public static void revokeAccessToken(Context context) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Revoking access token");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Revoking access token");
 		deleteToken();
 		FlattrServiceCreator.deleteFlattrService();
 		showRevokeDialog(context);
@@ -150,7 +155,8 @@ public class FlattrUtils {
 	}
 
 	public static void showNoTokenDialog(final Context context, final String url) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Creating showNoTokenDialog");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating showNoTokenDialog");
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.no_flattr_token_title);
 		builder.setMessage(R.string.no_flattr_token_msg);
@@ -220,7 +226,5 @@ public class FlattrUtils {
 		});
 		builder.create().show();
 	}
-	
-
 
 }

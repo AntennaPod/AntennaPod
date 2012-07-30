@@ -27,3 +27,4 @@ local.properties
 *.odg#
 proguard
 *.DS_Store
+src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
