@@ -88,6 +88,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setRetainInstance(true);
 		FeedManager manager = FeedManager.getInstance();
 		Bundle args = getArguments();
 		long feedId = args.getLong(ARG_FEED_ID, -1);

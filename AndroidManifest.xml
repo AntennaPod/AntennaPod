@@ -61,7 +61,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name="de.danoeh.antennapod.activity.ItemviewActivity" />
+        <activity android:name="de.danoeh.antennapod.activity.ItemviewActivity" android:configChanges="keyboardHidden|orientation"/>
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />
@@ -98,7 +98,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.FeedInfoActivity" >
+        <activity android:name=".activity.FeedInfoActivity">
         </activity>
 
         <service
