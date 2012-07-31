@@ -25,7 +25,7 @@ import android.util.Log;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 3;
+	private static final int DATABASE_VERSION = 4;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	
@@ -52,6 +52,7 @@ public class PodDBAdapter {
 	public static final int KEY_MEDIA_INDEX = 8;
 	public static final int KEY_FEED_INDEX = 9;
 	public static final int KEY_HAS_SIMPLECHAPTERS_INDEX = 10;
+	public static final int KEY_ITEM_IDENTIFIER_INDEX = 11;
 	// ---------- FeedMedia indices
 	public static final int KEY_DURATION_INDEX = 1;
 	public static final int KEY_POSITION_INDEX = 5;
@@ -104,6 +105,7 @@ public class PodDBAdapter {
 	public static final String KEY_AUTHOR = "author";
 	public static final String KEY_HAS_SIMPLECHAPTERS = "has_simple_chapters";
 	public static final String KEY_TYPE = "type";
+	public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -145,7 +147,8 @@ public class PodDBAdapter {
 			KEY_PAYMENT_LINK + " TEXT," + 
 			KEY_MEDIA + " INTEGER," + 
 			KEY_FEED + " INTEGER," + 
-			KEY_HAS_SIMPLECHAPTERS + " INTEGER)";
+			KEY_HAS_SIMPLECHAPTERS + " INTEGER," +
+			KEY_ITEM_IDENTIFIER + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + 
@@ -346,6 +349,7 @@ public class PodDBAdapter {
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
 		values.put(KEY_HAS_SIMPLECHAPTERS, item.getSimpleChapters() != null);
+		values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
 		if (item.getId() == 0) {
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
 		} else {
@@ -641,6 +645,10 @@ public class PodDBAdapter {
 			if (oldVersion <= 2) {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS + " ADD COLUMN " + 
 						KEY_LINK + " TEXT");
+			}
+			if (oldVersion <= 3) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS + " ADD COLUMN " + 
+						KEY_ITEM_IDENTIFIER + " TEXT");
 			}
 		}
 	}

@@ -11,6 +11,8 @@ import java.util.Date;
  */
 public class FeedItem extends FeedComponent {
 
+	/** The id/guid that can be found in the rss/atom feed. Might not be set.*/
+	private String itemIdentifier;
 	private String title;
 	private String description;
 	private String contentEncoded;
@@ -57,6 +59,21 @@ public class FeedItem extends FeedComponent {
 	/** Calls getCurrentChapter with current position. */
 	public SimpleChapter getCurrentChapter() {
 		return getCurrentChapter(media.getPosition());
+	}
+	
+	/** Returns the value that uniquely identifies this FeedItem. 
+	 *  If the itemIdentifier attribute is not null, it will be returned.
+	 *  Else it will try to return the link. If the link is not given, it will
+	 *  use the title of the entry.
+	 * */
+	public String getIdentifyingValue() {
+		if (itemIdentifier != null) {
+			return itemIdentifier;
+		} else if (link != null) {
+			return link;
+		} else {
+			return title;
+		}
 	}
 
 	public String getTitle() {
@@ -134,5 +151,14 @@ public class FeedItem extends FeedComponent {
 	public void setSimpleChapters(ArrayList<SimpleChapter> simpleChapters) {
 		this.simpleChapters = simpleChapters;
 	}
+
+	public String getItemIdentifier() {
+		return itemIdentifier;
+	}
+
+	public void setItemIdentifier(String itemIdentifier) {
+		this.itemIdentifier = itemIdentifier;
+	}
+	
 
 }
