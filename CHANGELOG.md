@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.1.1
+--------------------
+* Changed Flattr credentials
+* Improved layout of Feed information screen
+* AntennaPod is now open source! The source code is available at https://github.com/danieloeh/AntennaPod
+
 Version 0.9.1
 -----------------
 * Added support for links in SimpleChapters
