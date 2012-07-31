@@ -16,7 +16,6 @@ AntennaPod has the following dependencies:
 
 - [flattr4j](http://www.shredzone.org/projects/flattr4j/files)
 - [Apache Commons Lang](http://commons.apache.org/lang/download_lang.cgi)
-
 - [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
 - [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
