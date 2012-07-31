@@ -13,9 +13,11 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.*;
 import de.danoeh.antennapod.util.FeedtitleComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.AsyncTask;
 import android.os.Debug;
 import android.util.Log;
 
@@ -50,6 +52,9 @@ public class FeedManager {
 	private List<FeedItem> queue;
 
 	private DownloadRequester requester;
+
+	/** Prevents user from starting several feed updates at the same time. */
+	private static boolean isStartingFeedRefresh = false;
 
 	private FeedManager() {
 		feeds = Collections.synchronizedList(new ArrayList<Feed>());
@@ -213,12 +218,38 @@ public class FeedManager {
 		sendUnreadItemsUpdateBroadcast(context, null);
 	}
 
-	public void refreshAllFeeds(Context context) {
+	@SuppressLint("NewApi")
+	public void refreshAllFeeds(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Refreshing all feeds.");
-		for (Feed feed : feeds) {
-			refreshFeed(context, feed);
+		if (!isStartingFeedRefresh) {
+			isStartingFeedRefresh = true;
+			AsyncTask<Void, Void, Void> updateWorker = new AsyncTask<Void, Void, Void>() {
+
+				@Override
+				protected void onPostExecute(Void result) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG,
+								"All feeds have been sent to the downloadmanager");
+					isStartingFeedRefresh = false;
+				}
+
+				@Override
+				protected Void doInBackground(Void... params) {
+					for (Feed feed : feeds) {
+						refreshFeed(context, feed);
+					}
+					return null;
+				}
+
+			};
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				updateWorker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			} else {
+				updateWorker.execute();
+			}
 		}
+
 	}
 
 	/**
