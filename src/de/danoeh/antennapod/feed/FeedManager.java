@@ -352,8 +352,8 @@ public class FeedManager {
 			// Look for new or updated Items
 			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
 				FeedItem item = newFeed.getItems().get(idx);
-				FeedItem oldItem = searchFeedItemByTitle(savedFeed,
-						item.getTitle());
+				FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
+						item.getIdentifyingValue());
 				if (oldItem == null) {
 					// item is new
 					item.setFeed(savedFeed);
@@ -380,10 +380,11 @@ public class FeedManager {
 		return null;
 	}
 
-	/** Get a FeedItem by its link */
-	private FeedItem searchFeedItemByTitle(Feed feed, String title) {
+	/** Get a FeedItem by its identifying value. */
+	private FeedItem searchFeedItemByIdentifyingValue(Feed feed,
+			String identifier) {
 		for (FeedItem item : feed.getItems()) {
-			if (item.getTitle().equals(title)) {
+			if (item.getIdentifyingValue().equals(identifier)) {
 				return item;
 			}
 		}
