@@ -24,8 +24,8 @@ public class FeedItemMenuHandler {
 	public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
 		FeedManager manager = FeedManager.getInstance();
 		DownloadRequester requester = DownloadRequester.getInstance();
-
-		if (selectedItem.getMedia() != null) {
+		boolean hasMedia = selectedItem.getMedia() != null;
+		if (hasMedia) {
 			if (selectedItem.getMedia().isDownloaded()) {
 				menu.findItem(R.id.play_item).setVisible(true);
 				menu.findItem(R.id.remove_item).setVisible(true);
@@ -33,19 +33,20 @@ public class FeedItemMenuHandler {
 				menu.findItem(R.id.download_item).setVisible(true);
 				menu.findItem(R.id.stream_item).setVisible(true);
 			}
-
-			boolean isDownloading = requester.isDownloadingFile(selectedItem.getMedia());
-			menu.findItem(R.id.cancel_download_item).setVisible(isDownloading);
-
-			if (manager.isInQueue(selectedItem)) {
-				menu.findItem(R.id.remove_from_queue_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.add_to_queue_item).setVisible(true);
-			}
-
-			menu.findItem(R.id.share_link_item).setVisible(
-					selectedItem.getLink() != null);
 		}
+		
+		boolean isDownloading = hasMedia
+				&& requester.isDownloadingFile(selectedItem.getMedia());
+		menu.findItem(R.id.cancel_download_item).setVisible(isDownloading);
+
+		if (manager.isInQueue(selectedItem)) {
+			menu.findItem(R.id.remove_from_queue_item).setVisible(true);
+		} else {
+			menu.findItem(R.id.add_to_queue_item).setVisible(true);
+		}
+
+		menu.findItem(R.id.share_link_item).setVisible(
+				selectedItem.getLink() != null);
 
 		if (selectedItem.isRead()) {
 			menu.findItem(R.id.mark_unread_item).setVisible(true);
@@ -104,7 +105,8 @@ public class FeedItemMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedItem.getPaymentLink()).executeAsync();
+			new FlattrClickWorker(context, selectedItem.getPaymentLink())
+					.executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);
