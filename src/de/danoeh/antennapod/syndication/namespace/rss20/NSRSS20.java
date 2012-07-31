@@ -29,6 +29,7 @@ public class NSRSS20 extends Namespace {
 
 	public final static String CHANNEL = "channel";
 	public final static String ITEM = "item";
+	public final static String GUID = "guid";
 	public final static String TITLE = "title";
 	public final static String LINK = "link";
 	public final static String DESCR = "description";
@@ -80,7 +81,10 @@ public class NSRSS20 extends Namespace {
 			String top = topElement.getName();
 			SyndElement secondElement = state.getSecondTag();
 			String second = secondElement.getName();
-			if (top.equals(TITLE)) {
+			
+			if (top.equals(GUID) && second.equals(ITEM)) {
+				state.getCurrentItem().setItemIdentifier(content);
+			} else if (top.equals(TITLE)) {
 				if (second.equals(ITEM)) {
 					state.getCurrentItem().setTitle(content);
 				} else if (second.equals(CHANNEL)) {
@@ -102,7 +106,7 @@ public class NSRSS20 extends Namespace {
 			} else if (localName.equals(DESCR)) {
 				if (second.equals(CHANNEL)) {
 					state.getFeed().setDescription(content);
-				} else if (second.equals(ITEM)){
+				} else if (second.equals(ITEM)) {
 					state.getCurrentItem().setDescription(content);
 				}
 

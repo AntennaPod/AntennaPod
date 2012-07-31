@@ -20,6 +20,7 @@ public class NSAtom extends Namespace {
 	public static final String NSURI = "http://www.w3.org/2005/Atom";
 
 	private static final String FEED = "feed";
+	private static final String ID = "id";
 	private static final String TITLE = "title";
 	private static final String ENTRY = "entry";
 	private static final String LINK = "link";
@@ -50,7 +51,7 @@ public class NSAtom extends Namespace {
 
 	public static final String isFeed = FEED + "|" + NSRSS20.CHANNEL;
 	public static final String isFeedItem = ENTRY + "|" + NSRSS20.ITEM;
-	
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -93,7 +94,6 @@ public class NSAtom extends Namespace {
 		return new SyndElement(localName, this);
 	}
 
-
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ENTRY)) {
@@ -113,7 +113,11 @@ public class NSAtom extends Namespace {
 				textElement.setContent(content);
 			}
 
-			if (top.equals(TITLE)) {
+			if (top.equals(ID)) {
+				if (second.equals(ENTRY)) {
+					state.getCurrentItem().setItemIdentifier(content);
+				}
+			} else if (top.equals(TITLE)) {
 
 				if (second.equals(FEED)) {
 					state.getFeed().setTitle(textElement.getProcessedContent());
