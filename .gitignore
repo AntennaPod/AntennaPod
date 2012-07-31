@@ -19,12 +19,11 @@ local.properties
 *~
 
 #eclipse project files
-.project
-.classpath
 .metadata
 .settings
 # other
 *.odg#
 proguard
+libs
 *.DS_Store
 src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
