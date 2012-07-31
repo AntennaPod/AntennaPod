@@ -20,6 +20,10 @@ AntennaPod has the following dependencies:
 - [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
 - [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
 
+## Building
+
+Before building, make sure you have added FlattrConfig.java as described in the 'Flattr API' - section!
+
 ### Building with ant
 
 ActionBarSherlock and ViewPagerIndicator have to be added as library projects. Flattr4j and ApacheCommons Lang are jar-libraries and have to be copied into the libs folder in the root directory. 
