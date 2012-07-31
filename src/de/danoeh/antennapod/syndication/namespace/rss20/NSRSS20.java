@@ -3,6 +3,7 @@ package de.danoeh.antennapod.syndication.namespace.rss20;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -17,6 +18,8 @@ import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
+import android.util.Log;
+
 /**
  * SAX-Parser for reading RSS-Feeds
  * 
@@ -24,6 +27,7 @@ import org.xml.sax.helpers.DefaultHandler;
  * 
  */
 public class NSRSS20 extends Namespace {
+	private static final String TAG = "NSRSS20";
 	public static final String NSTAG = "rss";
 	public static final String NSURI = "";
 
@@ -57,10 +61,16 @@ public class NSRSS20 extends Namespace {
 			String type = attributes.getValue(ENC_TYPE);
 			if (state.getCurrentItem().getMedia() == null
 					&& (type.matches(VALID_MIMETYPE))) {
+				long size = 0;
+				try {
+					size = Long.parseLong(attributes
+							.getValue(ENC_LEN));
+				} catch (NumberFormatException e) {
+					if (AppConfig.DEBUG) Log.d(TAG, "Length attribute could not be parsed.");
+				}
 				state.getCurrentItem().setMedia(
 						new FeedMedia(state.getCurrentItem(), attributes
-								.getValue(ENC_URL), Long.parseLong(attributes
-								.getValue(ENC_LEN)), attributes
+								.getValue(ENC_URL), size, attributes
 								.getValue(ENC_TYPE)));
 			}
 
