@@ -131,6 +131,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 		});
 		updateProgressBarVisibility();
 		IntentFilter filter = new IntentFilter();
+		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
@@ -154,15 +155,20 @@ public class ItemlistFragment extends SherlockListFragment implements
 		public void onReceive(Context context, Intent intent) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Received contentUpdate Intent.");
-			getActivity().runOnUiThread(new Runnable() {
+			if (intent.getAction().equals(
+					DownloadRequester.ACTION_DOWNLOAD_QUEUED)) {
+				updateProgressBarVisibility();
+			} else {
+				getActivity().runOnUiThread(new Runnable() {
 
-				@Override
-				public void run() {
-					fila.notifyDataSetChanged();
-					updateProgressBarVisibility();
-				}
+					@Override
+					public void run() {
+						fila.notifyDataSetChanged();
+						updateProgressBarVisibility();
+					}
 
-			});
+				});
+			}
 		}
 	};
 

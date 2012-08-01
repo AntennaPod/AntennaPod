@@ -19,6 +19,8 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Debug;
+import android.os.Handler;
+import android.os.Message;
 import android.util.Log;
 
 /**
@@ -29,6 +31,7 @@ import android.util.Log;
 public class FeedManager {
 	private static final String TAG = "FeedManager";
 
+	public static final String ACITON_FEED_LIST_UPDATE = "de.danoeh.antennapod.action.feed.feedlistUpdate";
 	public static final String ACTION_UNREAD_ITEMS_UPDATE = "de.danoeh.antennapod.action.feed.unreadItemsUpdate";
 	public static final String ACTION_QUEUE_UPDATE = "de.danoeh.antennapod.action.feed.queueUpdate";
 	public static final String EXTRA_FEED_ITEM_ID = "de.danoeh.antennapod.extra.feed.feedItemId";
@@ -53,6 +56,9 @@ public class FeedManager {
 
 	private DownloadRequester requester;
 
+	/** Should be used to change the content of the arrays from another thread. */
+	private Handler contentChanger;
+
 	/** Prevents user from starting several feed updates at the same time. */
 	private static boolean isStartingFeedRefresh = false;
 
@@ -63,6 +69,7 @@ public class FeedManager {
 		requester = DownloadRequester.getInstance();
 		downloadLog = new ArrayList<DownloadStatus>();
 		queue = Collections.synchronizedList(new ArrayList<FeedItem>());
+		contentChanger = new Handler();
 	}
 
 	public static FeedManager getInstance() {
@@ -122,7 +129,7 @@ public class FeedManager {
 	}
 
 	/** Remove a feed with all its items and media files and its image. */
-	public boolean deleteFeed(Context context, Feed feed) {
+	public void deleteFeed(final Context context, final Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		// delete image file
@@ -149,7 +156,13 @@ public class FeedManager {
 
 		adapter.removeFeed(feed);
 		adapter.close();
-		return feeds.remove(feed);
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				feeds.remove(feed);
+				sendFeedUpdateBroadcast(context);
+			}});
 
 	}
 
@@ -170,24 +183,34 @@ public class FeedManager {
 		}
 		context.sendBroadcast(update);
 	}
+	
+	private void sendFeedUpdateBroadcast(Context context) {
+		context.sendBroadcast(new Intent(ACITON_FEED_LIST_UPDATE));
+	}
 
 	/**
 	 * Sets the 'read'-attribute of a FeedItem. Should be used by all Classes
 	 * instead of the setters of FeedItem.
 	 */
-	public void markItemRead(Context context, FeedItem item, boolean read) {
+	public void markItemRead(final Context context, final FeedItem item, final boolean read) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting item with title " + item.getTitle()
 					+ " as read/unread");
 		item.read = read;
 		setFeedItem(context, item);
-		if (read == true) {
-			unreadItems.remove(item);
-		} else {
-			unreadItems.add(item);
-			Collections.sort(unreadItems, new FeedItemPubdateComparator());
-		}
-		sendUnreadItemsUpdateBroadcast(context, item);
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				if (read == true) {
+					unreadItems.remove(item);
+				} else {
+					unreadItems.add(item);
+					Collections.sort(unreadItems, new FeedItemPubdateComparator());
+				}
+				sendUnreadItemsUpdateBroadcast(context, item);
+			}});
+		
 	}
 
 	/**
@@ -351,9 +374,17 @@ public class FeedManager {
 		}
 	}
 
-	private void addNewFeed(Context context, Feed feed) {
-		feeds.add(feed);
-		Collections.sort(feeds, new FeedtitleComparator());
+	private void addNewFeed(final Context context, final Feed feed) {
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				feeds.add(feed);
+				Collections.sort(feeds, new FeedtitleComparator());
+				sendFeedUpdateBroadcast(context);
+			}
+		});
+
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		adapter.setCompleteFeed(feed);
@@ -382,13 +413,20 @@ public class FeedManager {
 						+ " already exists. Syncing new with existing one.");
 			// Look for new or updated Items
 			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
-				FeedItem item = newFeed.getItems().get(idx);
+				final FeedItem item = newFeed.getItems().get(idx);
 				FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
 						item.getIdentifyingValue());
 				if (oldItem == null) {
 					// item is new
+					final int i = idx;
 					item.setFeed(savedFeed);
-					savedFeed.getItems().add(idx, item);
+					contentChanger.post(new Runnable() {
+						@Override
+						public void run() {
+							savedFeed.getItems().add(i, item);
+
+						}
+					});
 					markItemRead(context, item, false);
 				}
 			}

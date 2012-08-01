@@ -57,7 +57,6 @@ public class DownloadService extends Service {
 	private static final String TAG = "DownloadService";
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.danoeh.antennapod.storage.all_feed_downloads_completed";
-	public static final String ACTION_FEED_SYNC_COMPLETED = "action.de.danoeh.antennapod.service.feed_sync_completed";
 
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
 	/** True if handled feed has an image. */
@@ -139,7 +138,6 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service shutting down");
 		isRunning = false;
-		sendBroadcast(new Intent(ACTION_FEED_SYNC_COMPLETED));
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);
 		downloadObserver.cancel(true);
@@ -460,12 +458,6 @@ public class DownloadService extends Service {
 					reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
 		}
 
 		/** Delete files that aren't needed anymore */
