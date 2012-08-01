@@ -3,11 +3,13 @@ package de.danoeh.antennapod.asynctask;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.app.DownloadManager;
 import android.content.Context;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -31,16 +33,18 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	private DownloadRequester requester;
 	private Context context;
-	private ArrayList<DownloadStatus> statusList;
+	private List<DownloadStatus> statusList;
 	private List<DownloadObserver.Callback> observer;
+	private Handler contentChanger;
 
 	public DownloadObserver(Context context) {
 		super();
 		this.context = context;
 		requester = DownloadRequester.getInstance();
-		statusList = new ArrayList<DownloadStatus>();
+		statusList = new CopyOnWriteArrayList<DownloadStatus>();
 		observer = Collections
 				.synchronizedList(new ArrayList<DownloadObserver.Callback>());
+		contentChanger = new Handler();
 	}
 
 	@Override
@@ -88,7 +92,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 	private void refreshStatuslist() {
-		ArrayList<DownloadStatus> unhandledItems = new ArrayList<DownloadStatus>(
+		final ArrayList<DownloadStatus> unhandledItems = new ArrayList<DownloadStatus>(
 				statusList);
 
 		Cursor cursor = getDownloadCursor();
@@ -102,7 +106,14 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 					if (status == null) {
 						status = new DownloadStatus(feedFile);
-						statusList.add(status);
+						final DownloadStatus statusToAdd = status;
+						contentChanger.post(new Runnable() {
+							@Override
+							public void run() {
+								statusList.add(statusToAdd);
+								publishProgress();
+							}
+						});
 					} else {
 						unhandledItems.remove(status);
 					}
@@ -138,11 +149,18 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
+		contentChanger.post(new Runnable() {
 
-		// remove unhandled items from statuslist
-		for (DownloadStatus status : unhandledItems) {
-			statusList.remove(status);
-		}
+			@Override
+			public void run() {
+				// remove unhandled items from statuslist
+				for (DownloadStatus status : unhandledItems) {
+					statusList.remove(status);
+				}
+				publishProgress();
+			}
+		});
+
 	}
 
 	/** Request a cursor with all running Feedfile downloads */
@@ -195,7 +213,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		return null;
 	}
 
-	public ArrayList<DownloadStatus> getStatusList() {
+	public List<DownloadStatus> getStatusList() {
 		return statusList;
 	}
 
