@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.9.2
+-------------
+* Bugfixes in the user interface
+* GUID and ID attributes are now recognized by the Feedparser
+* Stability improvements when adding several feeds at the same time
+* Fixed bugs that occured when adding certain feeds
+
 Version 0.9.1.1
 --------------------
 * Changed Flattr credentials
