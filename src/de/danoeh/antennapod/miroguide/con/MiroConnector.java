@@ -20,7 +20,7 @@ import android.net.Uri;
 public class MiroConnector {
 	private HttpClient httpClient;
 
-	private static final String HOST_URL = "www.miroguide.com/api/";
+	private static final String HOST_URL = "https://www.miroguide.com/api/";
 	private static final String PATH_GET_CHANNELS = "get_channels";
 	private static final String PATH_LIST_CATEGORIES = "list_categories";
 	private static final String PATH_GET_CHANNEL = "get_channel";
@@ -34,9 +34,8 @@ public class MiroConnector {
 	}
 
 	private Uri.Builder getBaseURIBuilder(String path) {
-		Uri.Builder builder = new Uri.Builder();
-		builder.scheme("https").appendPath(HOST_URL).appendPath(path)
-				.appendQueryParameter("datatype", "json");
+		Uri.Builder builder = Uri.parse(HOST_URL).buildUpon();
+		builder.appendPath(path).appendQueryParameter("datatype", "json");
 		return builder;
 	}
 
