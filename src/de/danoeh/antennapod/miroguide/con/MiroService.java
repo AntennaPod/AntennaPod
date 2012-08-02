@@ -108,7 +108,7 @@ public class MiroService {
 		long id = content.getLong("id");
 		String name = content.getString("name");
 		String description = content.getString("description");
-		String thumbnailUrl = content.getString("thumbnail_url");
+		String thumbnailUrl = content.optString("thumbnail_url");
 		String downloadUrl = content.getString("url");
 		String websiteUrl = content.getString("website_url");
 		if (!withItems) {
