@@ -159,6 +159,9 @@
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_left_label">Time left:\u0020</string>
     <string name="loading_categories_label">Loading categories...</string>
+    <string name="browse_miroguide_label">Browse Miro Guide</string>
+    <string name="txtv_browse_miroguide_label">Or browse the Miro Guide:</string>
+    <string name="miro_guide_label">Miro Guide</string>
     
 
 </resources>

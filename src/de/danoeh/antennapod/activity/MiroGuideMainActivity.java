@@ -56,6 +56,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	private void loadCategories() {
 		AsyncTask<Void, Void, Void> listLoader = new AsyncTask<Void, Void, Void>() {
 
@@ -64,7 +65,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 			
 			@Override
 			protected void onPostExecute(Void result) {
-				if (exception != null) {
+				if (exception == null) {
 					if (AppConfig.DEBUG) Log.d(TAG, "Successfully loaded categories");
 					categories = c;
 					createAdapter();
@@ -79,7 +80,6 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 				txtvStatus.setText(R.string.loading_categories_label);
 			}
 
-			@SuppressLint({ "NewApi", "NewApi" })
 			@Override
 			protected Void doInBackground(Void... params) {
 				MiroService service = new MiroService();

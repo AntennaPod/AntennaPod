@@ -21,6 +21,22 @@
         android:hint="@string/feedurl_label"
         android:inputType="textUri" />
 
+    <TextView
+        android:id="@+id/txtvBrowseMiroguide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/etxtFeedurl"
+        android:layout_margin="8dp"
+        android:text="@string/txtv_browse_miroguide_label" />
+
+    <Button
+        android:id="@+id/butBrowseMiroguide"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvBrowseMiroguide"
+        android:layout_margin="8dp"
+        android:text="@string/browse_miroguide_label" />
+
     <LinearLayout
         android:id="@+id/footer"
         style="@android:style/ButtonBar"

@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -37,6 +38,7 @@ public class AddFeedActivity extends SherlockActivity {
 	private FeedManager manager;
 
 	private EditText etxtFeedurl;
+	private Button butBrowseMiroGuide;
 	private Button butConfirm;
 	private Button butCancel;
 	private long downloadId;
@@ -76,8 +78,18 @@ public class AddFeedActivity extends SherlockActivity {
 		};
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
+		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
+
+		butBrowseMiroGuide.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(AddFeedActivity.this,
+						MiroGuideMainActivity.class));
+			}
+		});
 
 		butConfirm.setOnClickListener(new View.OnClickListener() {
 			@Override
@@ -100,13 +112,16 @@ public class AddFeedActivity extends SherlockActivity {
 		super.onResume();
 		StorageUtils.checkStorageAvailability(this);
 		Intent intent = getIntent();
-		if (intent.getAction() != null && intent.getAction().equals(Intent.ACTION_SEND)) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Was started with ACTION_SEND intent");
+		if (intent.getAction() != null
+				&& intent.getAction().equals(Intent.ACTION_SEND)) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Was started with ACTION_SEND intent");
 			String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 			if (text != null) {
 				etxtFeedurl.setText(text);
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "No text was sent");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "No text was sent");
 			}
 		}
 
@@ -115,7 +130,8 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (AppConfig.DEBUG) Log.d(TAG, "Stopping Activity");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Stopping Activity");
 	}
 
 	@Override
