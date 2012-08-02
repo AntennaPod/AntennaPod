@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -46,7 +48,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 			loadCategories();
 		}
 	}
-	
+
 	private void createAdapter() {
 		if (categories != null) {
 			listAdapter = new ArrayAdapter<String>(this,
@@ -62,11 +64,12 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 
 			private String[] c;
 			private MiroException exception;
-			
+
 			@Override
 			protected void onPostExecute(Void result) {
 				if (exception == null) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Successfully loaded categories");
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Successfully loaded categories");
 					categories = c;
 					createAdapter();
 				} else {
@@ -93,11 +96,33 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 			}
 
 		};
-		
+
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			listLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
 			listLoader.execute();
+		}
+	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
+				.setIcon(R.drawable.action_search)
+				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			return true;
+		case R.id.search_item:
+			onSearchRequested();
+			return true;
+		default:
+			return false;
 		}
 	}
 

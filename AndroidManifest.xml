@@ -61,7 +61,9 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name="de.danoeh.antennapod.activity.ItemviewActivity" android:configChanges="keyboardHidden|orientation"/>
+        <activity
+            android:name="de.danoeh.antennapod.activity.ItemviewActivity"
+            android:configChanges="keyboardHidden|orientation" />
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />
@@ -98,7 +100,7 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.FeedInfoActivity">
+        <activity android:name=".activity.FeedInfoActivity" >
         </activity>
 
         <service
@@ -175,7 +177,24 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.SearchActivity" />
         </activity>
-        <activity android:name=".activity.MiroGuideMainActivity" android:label="@string/miro_guide_label"></activity>
+        <activity
+            android:name=".activity.MiroGuideMainActivity"
+            android:label="@string/miro_guide_label" >
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.MiroSearchActivity" />
+        </activity>
+        <activity android:name=".activity.MiroSearchActivity" android:launchMode="singleTop" android:configChanges="keyboardHidden|orientation">
+            <intent-filter>
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/miro_searchable" />
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value=".activity.MiroSearchActivity" />
+        </activity>
     </application>
 
 </manifest>
