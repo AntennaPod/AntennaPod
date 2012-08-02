@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
@@ -16,12 +17,19 @@ import android.widget.AbsListView.OnScrollListener;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroChannellistAdapter;
 import de.danoeh.antennapod.miroguide.con.MiroException;
 import de.danoeh.antennapod.miroguide.con.MiroService;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
 
+/**
+ * Displays a list of MiroChannel objects that were results of a certain
+ * MiroService query. If the user reaches the bottom of the list, more entries
+ * will be loaded until all entries have been loaded or the maximum number of
+ * channels has been reached.
+ * */
 public class MiroChannellistFragment extends SherlockListFragment {
 	private static final String TAG = "MiroChannellistFragment";
 
@@ -29,17 +37,27 @@ public class MiroChannellistFragment extends SherlockListFragment {
 	private static final String ARG_FILTER_VALUE = "filter_value";
 	private static final String ARG_SORT = "sort";
 
+	private static final int MAX_CHANNELS = 200;
+	private static final int CHANNELS_PER_QUERY = MiroService.DEFAULT_CHANNEL_LIMIT;
+
 	private ArrayList<MiroChannel> channels;
 	private MiroChannellistAdapter listAdapter;
 	private int offset;
 
 	private boolean isLoadingChannels;
+	/**
+	 * True if there are no more entries to load or if the maximum number of
+	 * channels in the channellist has been reached
+	 */
+	private boolean stopLoading;
 
 	private View footer;
 
 	private String filter;
 	private String filterValue;
 	private String sort;
+
+	private AsyncTask<Void, Void, List<MiroChannel>> channelLoader;
 
 	/**
 	 * Creates a new instance of Channellist fragment.
@@ -88,8 +106,6 @@ public class MiroChannellistFragment extends SherlockListFragment {
 		footer = inflater.inflate(R.layout.loading_footer, null);
 		listAdapter = new MiroChannellistAdapter(getActivity(), 0, channels);
 	}
-	
-	
 
 	@Override
 	public void onResume() {
@@ -101,10 +117,18 @@ public class MiroChannellistFragment extends SherlockListFragment {
 	}
 
 	@Override
+	public void onPause() {
+		super.onPause();
+		if (channelLoader != null) {
+			channelLoader.cancel(true);
+		}
+	}
+
+	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		getListView().addFooterView(footer);
+		getListView().addFooterView(footer);	// footer has to be added before the adapter has been set
 		getListView().setAdapter(listAdapter);
 		getListView().removeFooterView(footer);
 
@@ -115,7 +139,8 @@ public class MiroChannellistFragment extends SherlockListFragment {
 					int visibleItemCount, int totalItemCount) {
 				int lastVisibleItem = firstVisibleItem + visibleItemCount;
 				if (lastVisibleItem == totalItemCount) {
-					loadChannels();
+					if (AppConfig.DEBUG)
+						loadChannels();
 				}
 			}
 
@@ -128,66 +153,95 @@ public class MiroChannellistFragment extends SherlockListFragment {
 	@SuppressLint("NewApi")
 	private void loadChannels() {
 		if (!isLoadingChannels) {
-			isLoadingChannels = true;
-			AsyncTask<Void, Void, List<MiroChannel>> channelLoader = new AsyncTask<Void, Void, List<MiroChannel>>() {
-				private MiroException exception;
+			if (!stopLoading) {
+				isLoadingChannels = true;
+				channelLoader = new AsyncTask<Void, Void, List<MiroChannel>>() {
+					private MiroException exception;
 
-				@Override
-				protected void onPostExecute(List<MiroChannel> result) {
-					if (exception == null) {
-						getListView().removeFooterView(footer);
-						for (MiroChannel channel : result) {
-							channels.add(channel);
+					@Override
+					protected void onCancelled() {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Channel loader was cancelled");
+					}
+
+					@Override
+					protected void onPostExecute(List<MiroChannel> result) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Channel loading finished");
+						if (exception == null) {
+							getListView().removeFooterView(footer);
+							for (MiroChannel channel : result) {
+								channels.add(channel);
+							}
+							listAdapter.notifyDataSetChanged();
+							offset += CHANNELS_PER_QUERY;
+							// check if fragment should not send any more
+							// queries
+							if (result.size() < CHANNELS_PER_QUERY) {
+								if (AppConfig.DEBUG)
+									Log.d(TAG,
+											"Query result was less than requested number of channels. Stopping to send any more queries");
+								stopLoading = true;
+							}
+							if (offset >= MAX_CHANNELS) {
+								if (AppConfig.DEBUG)
+									Log.d(TAG,
+											"Maximum number of feeds has been reached. Stopping to send any more queries");
+								stopLoading = true;
+							}
+
+							setListShown(true);
+						} else {
+							AlertDialog.Builder dialog = new AlertDialog.Builder(
+									getActivity());
+							dialog.setTitle(R.string.error_label);
+							dialog.setMessage(exception.getMessage());
+							dialog.setNeutralButton(android.R.string.ok,
+									new DialogInterface.OnClickListener() {
+
+										@Override
+										public void onClick(
+												DialogInterface dialog,
+												int which) {
+											dialog.dismiss();
+										}
+									});
+							dialog.create().show();
 						}
-						listAdapter.notifyDataSetChanged();
-						offset += MiroService.DEFAULT_CHANNEL_LIMIT;
-						setListShown(true);
-					} else {
-						AlertDialog.Builder dialog = new AlertDialog.Builder(
-								getActivity());
-						dialog.setTitle(R.string.error_label);
-						dialog.setMessage(exception.getMessage());
-						dialog.setNeutralButton(android.R.string.ok,
-								new DialogInterface.OnClickListener() {
-
-									@Override
-									public void onClick(DialogInterface dialog,
-											int which) {
-										dialog.dismiss();
-										getActivity().finish();
-									}
-								});
-						dialog.create().show();
+						isLoadingChannels = false;
 					}
-				}
 
-				@Override
-				protected void onPreExecute() {
-					getListView().addFooterView(footer);
-				}
-
-				@Override
-				protected List<MiroChannel> doInBackground(Void... params) {
-					MiroService service = new MiroService();
-					try {
-						return service
-								.getChannelList(filter, filterValue, sort,
-										MiroService.DEFAULT_CHANNEL_LIMIT,
-										offset);
-					} catch (MiroException e) {
-						exception = e;
-						e.printStackTrace();
+					@Override
+					protected void onPreExecute() {
+						getListView().addFooterView(footer);
 					}
-					return null;
-				}
-			};
 
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				channelLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				channelLoader.execute();
+					@Override
+					protected List<MiroChannel> doInBackground(Void... params) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Background channel loader started");
+						MiroService service = new MiroService();
+						try {
+							return service.getChannelList(filter, filterValue,
+									sort, CHANNELS_PER_QUERY, offset);
+						} catch (MiroException e) {
+							exception = e;
+							e.printStackTrace();
+						}
+						return null;
+					}
+				};
+
+				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+					channelLoader
+							.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				} else {
+					channelLoader.execute();
+				}
 			}
-
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Channels are already being loaded");
 		}
 	}
 }

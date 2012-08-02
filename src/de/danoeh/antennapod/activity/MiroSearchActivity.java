@@ -14,6 +14,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroChannellistFragment;
 
+/** Displays results when a search for miroguide channels has been performed */
 public class MiroSearchActivity extends SherlockFragmentActivity {
 	private static final String TAG = "MiroSearchActivity";
 
