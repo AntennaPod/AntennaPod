@@ -13,8 +13,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.miroguide.con.MiroException;
-import de.danoeh.antennapod.miroguide.con.MiroService;
+import de.danoeh.antennapod.miroguide.con.MiroGuideException;
+import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 
 /** Shows a list of available categories and offers a search button. */
 public class MiroGuideMainActivity extends SherlockListActivity {
@@ -29,7 +29,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.miro_categorylist);
+		setContentView(R.layout.miroguide_categorylist);
 
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
 	}
@@ -63,7 +63,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		AsyncTask<Void, Void, Void> listLoader = new AsyncTask<Void, Void, Void>() {
 
 			private String[] c;
-			private MiroException exception;
+			private MiroGuideException exception;
 
 			@Override
 			protected void onPostExecute(Void result) {
@@ -85,10 +85,10 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				MiroService service = new MiroService();
+				MiroGuideService service = new MiroGuideService();
 				try {
 					c = service.getCategories();
-				} catch (MiroException e) {
+				} catch (MiroGuideException e) {
 					e.printStackTrace();
 					exception = e;
 				}

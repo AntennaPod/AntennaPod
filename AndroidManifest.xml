@@ -184,13 +184,13 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.MiroSearchActivity" />
         </activity>
-        <activity android:name=".activity.MiroSearchActivity" android:launchMode="singleTop" android:configChanges="keyboardHidden|orientation">
+        <activity android:name=".activity.MiroGuideSearchActivity" android:launchMode="singleTop" android:configChanges="keyboardHidden|orientation">
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/miro_searchable" />
+                android:resource="@xml/miroguide_searchable" />
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value=".activity.MiroSearchActivity" />

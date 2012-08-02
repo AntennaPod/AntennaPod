@@ -12,9 +12,9 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
 
-public class MiroChannellistAdapter extends ArrayAdapter<MiroChannel> {
+public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
 
-	public MiroChannellistAdapter(Context context, int textViewResourceId,
+	public MiroGuideChannelListAdapter(Context context, int textViewResourceId,
 			List<MiroChannel> objects) {
 		super(context, textViewResourceId, objects);
 	}
@@ -30,7 +30,7 @@ public class MiroChannellistAdapter extends ArrayAdapter<MiroChannel> {
 			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView = inflater.inflate(R.layout.miro_channellist_item, null);
+			convertView = inflater.inflate(R.layout.miroguide_channellist_item, null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			holder.cover = (ImageView) convertView
 					.findViewById(R.id.imgvChannelimage);

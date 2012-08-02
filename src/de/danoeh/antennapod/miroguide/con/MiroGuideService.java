@@ -16,7 +16,7 @@ import de.danoeh.antennapod.miroguide.model.MiroItem;
 
 
 /** Provides methods to communicate with the Miroguide API on an abstract level. */
-public class MiroService {
+public class MiroGuideService {
 	public static final int DEFAULT_CHANNEL_LIMIT = 20;
 
 	public static final String FILTER_CATEGORY = "category";
@@ -27,7 +27,7 @@ public class MiroService {
 
 	public static final String JSON_DATE_FORMAT_STRING = "yyyy-MM-dd'T'HH:mm:ss";
 
-	private MiroConnector connector;
+	private MiroGuideConnector connector;
 
 	private static ThreadLocal<SimpleDateFormat> jSONDateFormat = new ThreadLocal<SimpleDateFormat>() {
 		@Override
@@ -37,11 +37,11 @@ public class MiroService {
 
 	};
 
-	public MiroService() {
-		connector = new MiroConnector();
+	public MiroGuideService() {
+		connector = new MiroGuideConnector();
 	}
 
-	public String[] getCategories() throws MiroException {
+	public String[] getCategories() throws MiroGuideException {
 		JSONArray resultArray = connector.getArrayResponse(connector
 				.createListCategoriesURI());
 		String[] result = new String[resultArray.length()];
@@ -50,7 +50,7 @@ public class MiroService {
 				result[i] = resultArray.getJSONObject(i).getString("name");
 			} catch (JSONException e) {
 				e.printStackTrace();
-				throw new MiroException();
+				throw new MiroGuideException();
 			}
 		}
 		return result;
@@ -58,7 +58,7 @@ public class MiroService {
 
 	/** Get a list of MiroChannel objects without their items. */
 	public List<MiroChannel> getChannelList(String filter, String filterValue,
-			String sort, int limit, int offset) throws MiroException {
+			String sort, int limit, int offset) throws MiroGuideException {
 		JSONArray resultArray = connector.getArrayResponse(connector
 				.createGetChannelsUri(filter, filterValue, sort,
 						Integer.toString(limit), Integer.toString(offset)));
@@ -72,7 +72,7 @@ public class MiroService {
 				channels.add(channel);
 			} catch (JSONException e) {
 				e.printStackTrace();
-				throw new MiroException();
+				throw new MiroGuideException();
 			}
 		}
 
@@ -82,9 +82,9 @@ public class MiroService {
 	/**
 	 * Get a single channel with its items.
 	 * 
-	 * @throws MiroException
+	 * @throws MiroGuideException
 	 */
-	public MiroChannel getChannel(long id) throws MiroException {
+	public MiroChannel getChannel(long id) throws MiroGuideException {
 		JSONObject resultObject = connector.getSingleObjectResponse(connector
 				.createGetChannelUri(Long.toString(id)));
 		MiroChannel result = null;
@@ -92,7 +92,7 @@ public class MiroService {
 			result = extractMiroChannel(resultObject, true);
 		} catch (JSONException e) {
 			e.printStackTrace();
-			throw new MiroException();
+			throw new MiroGuideException();
 		}
 		return result;
 	}

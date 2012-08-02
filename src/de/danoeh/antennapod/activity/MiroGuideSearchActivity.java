@@ -12,19 +12,19 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.fragment.MiroChannellistFragment;
+import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
 
 /** Displays results when a search for miroguide channels has been performed */
-public class MiroSearchActivity extends SherlockFragmentActivity {
-	private static final String TAG = "MiroSearchActivity";
+public class MiroGuideSearchActivity extends SherlockFragmentActivity {
+	private static final String TAG = "MiroGuideSearchActivity";
 
-	private MiroChannellistFragment listFragment;
+	private MiroGuideChannellistFragment listFragment;
 
 	@Override
 	protected void onCreate(Bundle arg0) {
 		super.onCreate(arg0);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.mirosearch);
+		setContentView(R.layout.miroguidesearch);
 	}
 
 	@Override
@@ -45,7 +45,7 @@ public class MiroSearchActivity extends SherlockFragmentActivity {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Performing search");
 		FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-		listFragment = MiroChannellistFragment.newInstance("name", query,
+		listFragment = MiroGuideChannellistFragment.newInstance("name", query,
 				"name");
 		ft.replace(R.id.channellistFragment, listFragment);
 		ft.commit();

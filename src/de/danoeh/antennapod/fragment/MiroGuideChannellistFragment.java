@@ -19,29 +19,29 @@ import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.MiroChannellistAdapter;
-import de.danoeh.antennapod.miroguide.con.MiroException;
-import de.danoeh.antennapod.miroguide.con.MiroService;
+import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
+import de.danoeh.antennapod.miroguide.con.MiroGuideException;
+import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
 
 /**
  * Displays a list of MiroChannel objects that were results of a certain
- * MiroService query. If the user reaches the bottom of the list, more entries
+ * MiroGuideService query. If the user reaches the bottom of the list, more entries
  * will be loaded until all entries have been loaded or the maximum number of
  * channels has been reached.
  * */
-public class MiroChannellistFragment extends SherlockListFragment {
-	private static final String TAG = "MiroChannellistFragment";
+public class MiroGuideChannellistFragment extends SherlockListFragment {
+	private static final String TAG = "MiroGuideChannellistFragment";
 
 	private static final String ARG_FILTER = "filter";
 	private static final String ARG_FILTER_VALUE = "filter_value";
 	private static final String ARG_SORT = "sort";
 
 	private static final int MAX_CHANNELS = 200;
-	private static final int CHANNELS_PER_QUERY = MiroService.DEFAULT_CHANNEL_LIMIT;
+	private static final int CHANNELS_PER_QUERY = MiroGuideService.DEFAULT_CHANNEL_LIMIT;
 
 	private ArrayList<MiroChannel> channels;
-	private MiroChannellistAdapter listAdapter;
+	private MiroGuideChannelListAdapter listAdapter;
 	private int offset;
 
 	private boolean isLoadingChannels;
@@ -65,7 +65,7 @@ public class MiroChannellistFragment extends SherlockListFragment {
 	 * @throws IllegalArgumentException
 	 *             if filter, filterValue or sort is null
 	 * */
-	public static MiroChannellistFragment newInstance(String filter,
+	public static MiroGuideChannellistFragment newInstance(String filter,
 			String filterValue, String sort) {
 		if (filter == null) {
 			throw new IllegalArgumentException("filter cannot be null");
@@ -76,7 +76,7 @@ public class MiroChannellistFragment extends SherlockListFragment {
 		if (sort == null) {
 			throw new IllegalArgumentException("sort cannot be null");
 		}
-		MiroChannellistFragment cf = new MiroChannellistFragment();
+		MiroGuideChannellistFragment cf = new MiroGuideChannellistFragment();
 		Bundle args = new Bundle();
 		args.putString(ARG_FILTER, filter);
 		args.putString(ARG_FILTER_VALUE, filterValue);
@@ -85,7 +85,7 @@ public class MiroChannellistFragment extends SherlockListFragment {
 		return cf;
 	}
 
-	private MiroChannellistFragment() {
+	private MiroGuideChannellistFragment() {
 		super();
 	}
 
@@ -104,7 +104,7 @@ public class MiroChannellistFragment extends SherlockListFragment {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		footer = inflater.inflate(R.layout.loading_footer, null);
-		listAdapter = new MiroChannellistAdapter(getActivity(), 0, channels);
+		listAdapter = new MiroGuideChannelListAdapter(getActivity(), 0, channels);
 	}
 
 	@Override
@@ -156,7 +156,7 @@ public class MiroChannellistFragment extends SherlockListFragment {
 			if (!stopLoading) {
 				isLoadingChannels = true;
 				channelLoader = new AsyncTask<Void, Void, List<MiroChannel>>() {
-					private MiroException exception;
+					private MiroGuideException exception;
 
 					@Override
 					protected void onCancelled() {
@@ -220,11 +220,11 @@ public class MiroChannellistFragment extends SherlockListFragment {
 					protected List<MiroChannel> doInBackground(Void... params) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Background channel loader started");
-						MiroService service = new MiroService();
+						MiroGuideService service = new MiroGuideService();
 						try {
 							return service.getChannelList(filter, filterValue,
 									sort, CHANNELS_PER_QUERY, offset);
-						} catch (MiroException e) {
+						} catch (MiroGuideException e) {
 							exception = e;
 							e.printStackTrace();
 						}

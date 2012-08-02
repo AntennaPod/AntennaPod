@@ -17,7 +17,7 @@ import org.json.JSONObject;
 import android.net.Uri;
 
 /** Executes HTTP requests and returns the results. */
-public class MiroConnector {
+public class MiroGuideConnector {
 	private HttpClient httpClient;
 
 	private static final String HOST_URL = "https://www.miroguide.com/api/";
@@ -25,7 +25,7 @@ public class MiroConnector {
 	private static final String PATH_LIST_CATEGORIES = "list_categories";
 	private static final String PATH_GET_CHANNEL = "get_channel";
 
-	public MiroConnector() {
+	public MiroGuideConnector() {
 		httpClient = new DefaultHttpClient();
 	}
 
@@ -39,23 +39,23 @@ public class MiroConnector {
 		return builder;
 	}
 
-	public JSONArray getArrayResponse(Uri uri) throws MiroException {
+	public JSONArray getArrayResponse(Uri uri) throws MiroGuideException {
 		try {
 			JSONArray result = new JSONArray(executeRequest(uri));
 			return result;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			throw new MiroException();
+			throw new MiroGuideException();
 		}
 	}
 
-	public JSONObject getSingleObjectResponse(Uri uri) throws MiroException {
+	public JSONObject getSingleObjectResponse(Uri uri) throws MiroGuideException {
 		try {
 			JSONObject result = new JSONObject(executeRequest(uri));
 			return result;
 		} catch (JSONException e) {
 			e.printStackTrace();
-			throw new MiroException();
+			throw new MiroGuideException();
 		}
 	}
 
@@ -63,9 +63,9 @@ public class MiroConnector {
 	 * Executes a HTTP GET request with the given URI and returns the content of
 	 * the return value.
 	 * 
-	 * @throws MiroException
+	 * @throws MiroGuideException
 	 */
-	private String executeRequest(Uri uri) throws MiroException {
+	private String executeRequest(Uri uri) throws MiroGuideException {
 		HttpGet httpGet = new HttpGet(uri.toString());
 		String result = null;
 		try {
@@ -80,19 +80,19 @@ public class MiroConnector {
 					result = reader.readLine();
 				}
 			} else {
-				throw new MiroException(response.getStatusLine()
+				throw new MiroGuideException(response.getStatusLine()
 						.getReasonPhrase());
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			throw new MiroException(e.getMessage());
+			throw new MiroGuideException(e.getMessage());
 		}
 		return result;
 
 	}
 
 	public Uri createGetChannelsUri(String filter, String filterValue,
-			String sort, String limit, String offset) throws MiroException {
+			String sort, String limit, String offset) throws MiroGuideException {
 		Uri.Builder resultBuilder = getBaseURIBuilder(PATH_GET_CHANNELS);
 		resultBuilder.appendQueryParameter("filter", filter)
 				.appendQueryParameter("filter_value", filterValue);
@@ -110,14 +110,14 @@ public class MiroConnector {
 		return result;
 	}
 
-	public Uri createListCategoriesURI() throws MiroException {
+	public Uri createListCategoriesURI() throws MiroGuideException {
 		Uri.Builder resultBuilder = getBaseURIBuilder(PATH_LIST_CATEGORIES);
 		Uri result = resultBuilder.build();
 
 		return result;
 	}
 
-	public Uri createGetChannelUri(String id) throws MiroException {
+	public Uri createGetChannelUri(String id) throws MiroGuideException {
 		Uri.Builder resultBuilder = getBaseURIBuilder(PATH_GET_CHANNEL)
 				.appendQueryParameter("id", id);
 		Uri result = resultBuilder.build();
