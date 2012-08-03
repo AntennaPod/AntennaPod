@@ -1,22 +1,16 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.File;
-
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.R;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.support.v4.util.LruCache;
-import android.util.Log;
 import android.widget.ImageView;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DownloadRequester;
 
 /** Caches and loads FeedImage bitmaps in the background */
 public class FeedImageLoader {
@@ -78,7 +72,6 @@ public class FeedImageLoader {
 		return singleton;
 	}
 
-	@SuppressLint("NewApi")
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
 		if (image != null) {
 			Bitmap bitmap = getBitmapFromCoverCache(image.getId());
@@ -86,20 +79,15 @@ public class FeedImageLoader {
 				target.setImageBitmap(bitmap);
 			} else {
 				target.setImageResource(R.drawable.default_cover);
-				BitmapWorkerTask worker = new BitmapWorkerTask(target, image,
-						LENGTH_BASE_COVER);
-				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-					worker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					worker.execute();
-				}
+				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
+						target, image, LENGTH_BASE_COVER);
+				worker.executeAsync();
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
 		}
 	}
 
-	@SuppressLint("NewApi")
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
 		if (image != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(image.getId());
@@ -107,13 +95,9 @@ public class FeedImageLoader {
 				target.setImageBitmap(bitmap);
 			} else {
 				target.setImageResource(R.drawable.default_cover);
-				BitmapWorkerTask worker = new BitmapWorkerTask(target, image,
-						LENGTH_BASE_THUMBNAIL);
-				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-					worker.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-				} else {
-					worker.execute();
-				}
+				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
+						target, image, LENGTH_BASE_THUMBNAIL);
+				worker.executeAsync();
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
@@ -149,119 +133,44 @@ public class FeedImageLoader {
 		coverCache.put(id, bitmap);
 	}
 
-	class BitmapWorkerTask extends AsyncTask<Void, Void, Void> {
+	class FeedImageDecodeWorkerTask extends BitmapDecodeWorkerTask {
 
-		private int PREFERRED_LENGTH;
+		private static final String TAG = "FeedImageDecodeWorkerTask";
 
-		private static final String TAG = "BitmapWorkerTask";
-		private ImageView target;
-		private Bitmap bitmap;
-		private Bitmap decodedBitmap;
-		
-		private int baseLength;
+		protected FeedImage image;
 
-		private FeedImage image;
-
-		public BitmapWorkerTask(ImageView target, FeedImage image, int length) {
-			super();
-			this.target = target;
+		public FeedImageDecodeWorkerTask(ImageView target, FeedImage image,
+				int length) {
+			super(target, image.getFile_url(), length);
 			this.image = image;
-			this.baseLength = length;
-			this.PREFERRED_LENGTH = (int) (length * PodcastApp
-					.getLogicalDensity());
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
-			super.onPostExecute(result);
-			// check if imageview is still supposed to display this image
-			if (target.getTag() == null || target.getTag() == image) {
-				target.setImageBitmap(bitmap);
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Not displaying image");
-			}
+		protected boolean tagsMatching(ImageView target) {
+			return target.getTag() == null || target.getTag() == image;
 		}
 
 		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-		}
-
-		private int calculateSampleSize(int width, int height) {
-			int max = Math.max(width, height);
-			if (max < PREFERRED_LENGTH) {
-				return 1;
-			} else {
-				// find first sample size where max / sampleSize <
-				// PREFERRED_LENGTH
-				for (int sampleSize = 1, power = 0;; power++, sampleSize = (int) Math
-						.pow(2, power)) {
-					int newLength = max / sampleSize;
-					if (newLength <= PREFERRED_LENGTH) {
-						if (newLength > 0) {
-							return sampleSize;
-						} else {
-							return sampleSize - 1;
-						}
-					}
-				}
+		protected void storeBitmapInCache(Bitmap bitmap) {
+			if (baseLength == LENGTH_BASE_COVER) {
+				addBitmapToCoverCache(image.getId(), bitmap);
+			} else if (baseLength == LENGTH_BASE_THUMBNAIL) {
+				addBitmapToThumbnailCache(image.getId(), bitmap);
 			}
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			File f = null;
-			if (image.getFile_url() != null) {
-				f = new File(image.getFile_url());
+		protected void onInvalidFileUrl() {
+			super.onInvalidFileUrl();
+			if (image.getFile_url() != null
+					&& !DownloadRequester.getInstance()
+							.isDownloadingFile(image)) {
+				FeedManager.getInstance().notifyInvalidImageFile(
+						PodcastApp.getInstance(), image);
 			}
-			if (image.getFile_url() != null && f.exists()) {
-				BitmapFactory.Options options = new BitmapFactory.Options();
-				options.inJustDecodeBounds = true;
-				BitmapFactory.decodeFile(image.getFile_url(), options);
-				int sampleSize = calculateSampleSize(options.outWidth,
-						options.outHeight);
 
-				options.inJustDecodeBounds = false;
-				options.inSampleSize = sampleSize;
-				decodedBitmap = BitmapFactory.decodeFile(image.getFile_url(),
-						options);
-				if (decodedBitmap == null) {
-					Log.i(TAG,
-							"Bitmap could not be decoded in custom sample size. Trying default sample size (path was "
-									+ image.getFile_url() + ")");
-					decodedBitmap = BitmapFactory.decodeFile(image
-							.getFile_url());
-				}
-				if (decodedBitmap != null) {
-					bitmap = Bitmap.createScaledBitmap(decodedBitmap,
-							PREFERRED_LENGTH, PREFERRED_LENGTH, false);
-					if (baseLength == LENGTH_BASE_COVER) {
-						addBitmapToCoverCache(image.getId(), bitmap);
-					} else if (baseLength == LENGTH_BASE_THUMBNAIL) {
-						addBitmapToThumbnailCache(image.getId(), bitmap);
-					}
-				} else {
-					Log.w(TAG, "Could not load bitmap. Using default image.");
-					bitmap = BitmapFactory.decodeResource(
-							target.getResources(), R.drawable.default_cover);
-				}
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Finished loading bitmaps");
-			} else {
-				Log.e(TAG,
-						"FeedImage has no valid file url. Using default image");
-				bitmap = BitmapFactory.decodeResource(target.getResources(),
-						R.drawable.default_cover);
-				if (image.getFile_url() != null
-						&& !DownloadRequester.getInstance().isDownloadingFile(
-								image)) {
-					FeedManager.getInstance().notifyInvalidImageFile(
-							PodcastApp.getInstance(), image);
-				}
-			}
-			return null;
 		}
+
 	}
 
 }
