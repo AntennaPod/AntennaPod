@@ -16,8 +16,8 @@ import de.danoeh.antennapod.util.BitmapDecoder;
 public abstract class BitmapDecodeWorkerTask extends
 		AsyncTask<Void, Void, Void> {
 
-	private int PREFERRED_LENGTH;
-	
+	protected int PREFERRED_LENGTH;
+
 	public static final int LENGTH_BASE_COVER = 200;
 	public static final int LENGTH_BASE_THUMBNAIL = 100;
 
@@ -28,7 +28,7 @@ public abstract class BitmapDecodeWorkerTask extends
 
 	protected int baseLength;
 
-	private String fileUrl;
+	protected String fileUrl;
 
 	public BitmapDecodeWorkerTask(ImageView target, String fileUrl, int length) {
 		super();
@@ -61,27 +61,6 @@ public abstract class BitmapDecodeWorkerTask extends
 		super.onPreExecute();
 	}
 
-	private int calculateSampleSize(int width, int height) {
-		int max = Math.max(width, height);
-		if (max < PREFERRED_LENGTH) {
-			return 1;
-		} else {
-			// find first sample size where max / sampleSize <
-			// PREFERRED_LENGTH
-			for (int sampleSize = 1, power = 0;; power++, sampleSize = (int) Math
-					.pow(2, power)) {
-				int newLength = max / sampleSize;
-				if (newLength <= PREFERRED_LENGTH) {
-					if (newLength > 0) {
-						return sampleSize;
-					} else {
-						return sampleSize - 1;
-					}
-				}
-			}
-		}
-	}
-
 	@Override
 	protected Void doInBackground(Void... params) {
 		File f = null;
@@ -104,13 +83,13 @@ public abstract class BitmapDecodeWorkerTask extends
 		}
 		return null;
 	}
-	
+
 	protected void onInvalidFileUrl() {
 		Log.e(TAG, "FeedImage has no valid file url. Using default image");
 		bitmap = BitmapFactory.decodeResource(target.getResources(),
 				R.drawable.default_cover);
 	}
-	
+
 	protected abstract void storeBitmapInCache(Bitmap bitmap);
 
 	@SuppressLint("NewApi")
