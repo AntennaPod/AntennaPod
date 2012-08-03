@@ -59,16 +59,7 @@ public class FeedImageLoader {
 
 	private FeedImageLoader() {
 		handler = new Handler();
-		executor = Executors.newFixedThreadPool(Runtime.getRuntime()
-				.availableProcessors(), new ThreadFactory() {
-
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread t = new Thread(r);
-				t.setPriority(Thread.MIN_PRIORITY);
-				return t;
-			}
-		});
+		executor = createExecutor();
 
 		coverCache = new LruCache<String, Bitmap>(coverCacheSize) {
 
@@ -99,6 +90,19 @@ public class FeedImageLoader {
 		};
 	}
 
+	private ExecutorService createExecutor() {
+		return Executors.newFixedThreadPool(Runtime.getRuntime()
+				.availableProcessors(), new ThreadFactory() {
+			
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
+				return t;
+			}
+		});
+	}
+	
 	public static FeedImageLoader getInstance() {
 		if (singleton == null) {
 			singleton = new FeedImageLoader();
@@ -184,6 +188,13 @@ public class FeedImageLoader {
 		} else {
 			target.setImageResource(R.drawable.default_cover);
 		}
+	}
+	
+	public void clearExecutorQueue() {
+		executor.shutdownNow();
+		if (AppConfig.DEBUG) Log.d(TAG, "Executor was shut down.");
+		executor = createExecutor();
+		
 	}
 
 	public void wipeImageCache() {

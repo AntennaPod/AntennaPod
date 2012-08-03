@@ -20,6 +20,7 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
+import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
@@ -122,6 +123,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		if (channelLoader != null) {
 			channelLoader.cancel(true);
 		}
+		FeedImageLoader.getInstance().clearExecutorQueue();
 	}
 
 	@Override
