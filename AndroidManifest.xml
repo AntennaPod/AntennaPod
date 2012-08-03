@@ -182,7 +182,7 @@
             android:label="@string/miro_guide_label" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activity.MiroSearchActivity" />
+                android:value=".activity.MiroGuideSearchActivity" />
         </activity>
         <activity android:name=".activity.MiroGuideSearchActivity" android:launchMode="singleTop" android:configChanges="keyboardHidden|orientation">
             <intent-filter>
@@ -193,7 +193,7 @@
                 android:resource="@xml/miroguide_searchable" />
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activity.MiroSearchActivity" />
+                android:value=".activity.MiroGuideSearchActivity" />
         </activity>
         <activity android:name=".activity.MiroGuideCategoryActivity" android:configChanges="keyboardHidden|orientation" android:theme="@style/StyledIndicators"></activity>
     </application>
