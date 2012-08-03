@@ -73,7 +73,7 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 					output.write(inputBuffer, 0, count);
 				}
 				output.close();
-
+				if (AppConfig.DEBUG) Log.d(TAG, "MiroGuide thumbnail downloaded");
 				// Get a smaller version of the bitmap and store it inside the
 				// LRU
 				// Cache

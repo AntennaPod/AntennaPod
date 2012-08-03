@@ -133,6 +133,28 @@ public class FeedImageLoader {
 			target.setImageResource(R.drawable.default_cover);
 		}
 	}
+	
+	public void loadMiroGuideThumbnail(MiroChannel channel, ImageView target) {
+		if (channel.getThumbnailUrl() != null) {
+			Bitmap bitmap = getBitmapFromThumbnailCache(channel.getThumbnailUrl());
+			if (bitmap != null) {
+				boolean isInDiskCache = false;
+				try {
+				isInDiskCache = isInThumbnailDiskCache(channel.getThumbnailUrl());
+				} catch (IOException e) {
+					e.printStackTrace();
+					Log.e(TAG, "Error when trying to read disk cache");
+				}
+				if (isInDiskCache) {
+					new MiroGuideDiskCacheLoader(target, channel, LENGTH_BASE_THUMBNAIL).executeAsync();
+				} else {
+					new MiroGuideThumbnailDownloader(target, channel, LENGTH_BASE_THUMBNAIL).executeAsync();
+				}
+			}
+		} else {
+			target.setImageResource(R.drawable.default_cover);
+		}
+	}
 
 	public void wipeImageCache() {
 		coverCache.evictAll();
@@ -161,6 +183,11 @@ public class FeedImageLoader {
 
 	public void addBitmapToCoverCache(String key, Bitmap bitmap) {
 		coverCache.put(key, bitmap);
+	}
+	
+	public boolean isInThumbnailDiskCache(String key) throws IOException {
+		DiskLruCache cache = openThubmnailDiskCache();
+		return cache.get(key) != null;
 	}
 
 	class FeedImageDecodeWorkerTask extends BitmapDecodeWorkerTask {
