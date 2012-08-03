@@ -164,6 +164,8 @@
     <string name="miro_guide_label">Miro Guide</string>
     <string name="loading_label">Loading...</string>
     <string name="miro_search_hint">Search Miro Guide</string>
+    <string name="popular_label">Popular</string>
+    <string name="best_rating_label">Best rating</string>
     
 
 </resources>

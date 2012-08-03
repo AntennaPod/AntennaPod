@@ -195,6 +195,7 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.MiroSearchActivity" />
         </activity>
+        <activity android:name=".activity.MiroGuideCategoryActivity" android:configChanges="keyboardHidden|orientation" android:theme="@style/StyledIndicators"></activity>
     </application>
 
 </manifest>

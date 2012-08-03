@@ -1,10 +1,13 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
 import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListActivity;
@@ -47,6 +50,15 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		} else {
 			loadCategories();
 		}
+	}
+
+	@Override
+	protected void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		String selection = listAdapter.getItem(position);
+		Intent launchIntent = new Intent(this, MiroGuideCategoryActivity.class);
+		launchIntent.putExtra(MiroGuideCategoryActivity.EXTRA_CATEGORY, selection);
+		startActivity(launchIntent);
 	}
 
 	private void createAdapter() {
