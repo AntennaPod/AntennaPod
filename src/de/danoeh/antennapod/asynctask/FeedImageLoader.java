@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.asynctask;
 
 import java.io.IOException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
@@ -8,6 +11,7 @@ import android.content.Context;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
@@ -34,6 +38,9 @@ public class FeedImageLoader {
 	private static final int CACHE_SIZE = 20 * 1024 * 1024;
 	private static final int VALUE_SIZE = 500 * 1024;
 
+	private Handler handler;
+	private ExecutorService executor;
+
 	/**
 	 * Stores references to loaded bitmaps. Bitmaps can be accessed by the id of
 	 * the FeedImage the bitmap belongs to.
@@ -50,6 +57,18 @@ public class FeedImageLoader {
 	private LruCache<String, Bitmap> thumbnailCache;
 
 	private FeedImageLoader() {
+		handler = new Handler();
+		executor = Executors.newFixedThreadPool(Runtime.getRuntime()
+				.availableProcessors(), new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
+				return t;
+			}
+		});
+
 		coverCache = new LruCache<String, Bitmap>(coverCacheSize) {
 
 			@SuppressLint("NewApi")
@@ -110,8 +129,8 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						target, image, LENGTH_BASE_COVER);
-				worker.executeAsync();
+						handler, target, image, LENGTH_BASE_COVER);
+				executor.submit(worker);
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
@@ -126,30 +145,36 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						target, image, LENGTH_BASE_THUMBNAIL);
-				worker.executeAsync();
+						handler, target, image, LENGTH_BASE_THUMBNAIL);
+				executor.submit(worker);
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
 		}
 	}
-	
+
 	public void loadMiroGuideThumbnail(MiroChannel channel, ImageView target) {
 		if (channel.getThumbnailUrl() != null) {
-			Bitmap bitmap = getBitmapFromThumbnailCache(channel.getThumbnailUrl());
-			if (bitmap != null) {
+			Bitmap bitmap = getBitmapFromThumbnailCache(channel
+					.getThumbnailUrl());
+			if (bitmap == null) {
 				boolean isInDiskCache = false;
 				try {
-				isInDiskCache = isInThumbnailDiskCache(channel.getThumbnailUrl());
+					isInDiskCache = isInThumbnailDiskCache(channel
+							.getThumbnailUrl());
 				} catch (IOException e) {
 					e.printStackTrace();
 					Log.e(TAG, "Error when trying to read disk cache");
 				}
 				if (isInDiskCache) {
-					new MiroGuideDiskCacheLoader(target, channel, LENGTH_BASE_THUMBNAIL).executeAsync();
+					executor.submit(new MiroGuideDiskCacheLoader(handler,
+							target, channel, LENGTH_BASE_THUMBNAIL));
 				} else {
-					new MiroGuideThumbnailDownloader(target, channel, LENGTH_BASE_THUMBNAIL).executeAsync();
+					executor.submit(new MiroGuideThumbnailDownloader(handler,
+							target, channel, LENGTH_BASE_THUMBNAIL));
 				}
+			} else {
+				target.setImageBitmap(bitmap);
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
@@ -184,7 +209,7 @@ public class FeedImageLoader {
 	public void addBitmapToCoverCache(String key, Bitmap bitmap) {
 		coverCache.put(key, bitmap);
 	}
-	
+
 	public boolean isInThumbnailDiskCache(String key) throws IOException {
 		DiskLruCache cache = openThubmnailDiskCache();
 		return cache.get(key) != null;
@@ -196,9 +221,9 @@ public class FeedImageLoader {
 
 		protected FeedImage image;
 
-		public FeedImageDecodeWorkerTask(ImageView target, FeedImage image,
-				int length) {
-			super(target, image.getFile_url(), length);
+		public FeedImageDecodeWorkerTask(Handler handler, ImageView target,
+				FeedImage image, int length) {
+			super(handler, target, image.getFile_url(), length);
 			this.image = image;
 		}
 
@@ -227,14 +252,13 @@ public class FeedImageLoader {
 
 		private MiroChannel channel;
 
-		public MiroGuideDiskCacheLoader(ImageView target, MiroChannel channel,
-				int length) {
-			super(target, channel.getThumbnailUrl(), length);
+		public MiroGuideDiskCacheLoader(Handler handler, ImageView target,
+				MiroChannel channel, int length) {
+			super(handler, target, channel.getThumbnailUrl(), length);
 			this.channel = channel;
 		}
 
-		@Override
-		protected Void doInBackground(Void... params) {
+		public void run() {
 			try {
 				DiskLruCache cache = openThubmnailDiskCache();
 				Snapshot snapshot = cache.get(fileUrl);
@@ -244,13 +268,13 @@ public class FeedImageLoader {
 				e.printStackTrace();
 				exception = e;
 			}
-			return null;
+			endBackgroundTask();
 		}
 
 		@Override
-		protected void onPostExecute(Void result) {
+		protected void onPostExecute() {
 			if (exception != null) {
-				super.onPostExecute(result);
+				super.onPostExecute();
 			} else {
 				Log.e(TAG, "Failed to load bitmap from disk cache");
 			}

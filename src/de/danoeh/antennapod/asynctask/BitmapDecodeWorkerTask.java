@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
@@ -13,8 +14,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.BitmapDecoder;
 
-public abstract class BitmapDecodeWorkerTask extends
-		AsyncTask<Void, Void, Void> {
+public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected int PREFERRED_LENGTH;
 
@@ -30,8 +30,12 @@ public abstract class BitmapDecodeWorkerTask extends
 
 	protected String fileUrl;
 
-	public BitmapDecodeWorkerTask(ImageView target, String fileUrl, int length) {
+	private Handler handler;
+
+	public BitmapDecodeWorkerTask(Handler handler, ImageView target,
+			String fileUrl, int length) {
 		super();
+		this.handler = handler;
 		this.target = target;
 		this.fileUrl = fileUrl;
 		this.baseLength = length;
@@ -44,9 +48,7 @@ public abstract class BitmapDecodeWorkerTask extends
 	 */
 	abstract protected boolean tagsMatching(ImageView target);
 
-	@Override
-	protected void onPostExecute(Void result) {
-		super.onPostExecute(result);
+	protected void onPostExecute() {
 		// check if imageview is still supposed to display this image
 		if (tagsMatching(target)) {
 			target.setImageBitmap(bitmap);
@@ -57,12 +59,7 @@ public abstract class BitmapDecodeWorkerTask extends
 	}
 
 	@Override
-	protected void onPreExecute() {
-		super.onPreExecute();
-	}
-
-	@Override
-	protected Void doInBackground(Void... params) {
+	public void run() {
 		File f = null;
 		if (fileUrl != null) {
 			f = new File(fileUrl);
@@ -81,7 +78,18 @@ public abstract class BitmapDecodeWorkerTask extends
 		} else {
 			onInvalidFileUrl();
 		}
-		return null;
+		endBackgroundTask();
+	}
+
+	protected final void endBackgroundTask() {
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				onPostExecute();
+			}
+
+		});
 	}
 
 	protected void onInvalidFileUrl() {
@@ -96,15 +104,6 @@ public abstract class BitmapDecodeWorkerTask extends
 			loader.addBitmapToCoverCache(fileUrl, bitmap);
 		} else if (baseLength == LENGTH_BASE_THUMBNAIL) {
 			loader.addBitmapToThumbnailCache(fileUrl, bitmap);
-		}
-	}
-
-	@SuppressLint("NewApi")
-	public void executeAsync() {
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			execute();
 		}
 	}
 }

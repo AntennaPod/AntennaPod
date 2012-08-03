@@ -103,6 +103,8 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 				} catch (MiroGuideException e) {
 					e.printStackTrace();
 					exception = e;
+				} finally {
+					service.close();
 				}
 				return null;
 			}

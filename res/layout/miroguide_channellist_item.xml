@@ -6,6 +6,7 @@
 
     <ImageView
         android:id="@+id/imgvChannelimage"
+        android:src="@drawable/default_cover"
         android:layout_width="55dip"
         android:layout_height="55dip"
         android:layout_alignParentLeft="true"

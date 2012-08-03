@@ -10,6 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
 
 public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
@@ -41,9 +42,9 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
 			holder = (Holder) convertView.getTag();
 		}
 		
-		holder.cover.setVisibility(View.GONE);
 		holder.title.setText(channel.getName());
-		
+		holder.cover.setTag(channel);
+		FeedImageLoader.getInstance().loadMiroGuideThumbnail(channel, holder.cover);
 		return convertView;
 	}
 

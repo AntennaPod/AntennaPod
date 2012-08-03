@@ -19,6 +19,7 @@ import de.danoeh.antennapod.miroguide.model.MiroChannel;
 import de.danoeh.antennapod.util.BitmapDecoder;
 
 import android.graphics.Bitmap;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -30,30 +31,29 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 
 	private MiroChannel miroChannel;
 
-	public MiroGuideThumbnailDownloader(ImageView target,
+	public MiroGuideThumbnailDownloader(Handler handler, ImageView target,
 			MiroChannel miroChannel, int length) {
-		super(target, miroChannel.getThumbnailUrl(), length);
+		super(handler, target, miroChannel.getThumbnailUrl(), length);
 		this.miroChannel = miroChannel;
 	}
 
 	@Override
-	protected void onPostExecute(Void result) {
+	protected void onPostExecute() {
 		if (exception != null) {
-			super.onPostExecute(result);
+			super.onPostExecute();
 		} else {
 			Log.e(TAG, "Failed to download thumbnail");
 		}
 	}
 
-	@Override
-	protected Void doInBackground(Void... params) {
+	public void run() {
 		// Download file to cache folder
 		URL url = null;
 		try {
 			url = new URL(fileUrl);
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			return null;
+			endBackgroundTask();
 		}
 		File destination = new File(PodcastApp.getInstance().getCacheDir(),
 				Integer.toString(fileUrl.hashCode()));
@@ -73,6 +73,7 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 					output.write(inputBuffer, 0, count);
 				}
 				output.close();
+				connection.disconnect();
 				if (AppConfig.DEBUG) Log.d(TAG, "MiroGuide thumbnail downloaded");
 				// Get a smaller version of the bitmap and store it inside the
 				// LRU
@@ -91,13 +92,13 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 			}
 		} catch (IOException e) {
 			e.printStackTrace();
-			return null;
+			endBackgroundTask();
 		} finally {
 			if (destination.exists()) {
 				destination.delete();
 			}
 		}
-		return null;
+		endBackgroundTask();
 	}
 
 	@Override

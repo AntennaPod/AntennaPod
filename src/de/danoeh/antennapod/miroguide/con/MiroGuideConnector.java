@@ -15,10 +15,11 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
+import android.net.http.AndroidHttpClient;
 
 /** Executes HTTP requests and returns the results. */
 public class MiroGuideConnector {
-	private HttpClient httpClient;
+	private AndroidHttpClient httpClient;
 
 	private static final String HOST_URL = "https://www.miroguide.com/api/";
 	private static final String PATH_GET_CHANNELS = "get_channels";
@@ -26,11 +27,11 @@ public class MiroGuideConnector {
 	private static final String PATH_GET_CHANNEL = "get_channel";
 
 	public MiroGuideConnector() {
-		httpClient = new DefaultHttpClient();
+		httpClient = AndroidHttpClient.newInstance(null);
 	}
 
 	public void shutdown() {
-		httpClient.getConnectionManager().shutdown();
+		httpClient.close();
 	}
 
 	private Uri.Builder getBaseURIBuilder(String path) {
@@ -78,6 +79,7 @@ public class MiroGuideConnector {
 					BufferedReader reader = new BufferedReader(
 							new InputStreamReader(in));
 					result = reader.readLine();
+					in.close();
 				}
 			} else {
 				throw new MiroGuideException(response.getStatusLine()

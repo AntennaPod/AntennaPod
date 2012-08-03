@@ -40,6 +40,10 @@ public class MiroGuideService {
 	public MiroGuideService() {
 		connector = new MiroGuideConnector();
 	}
+	
+	public void close() {
+		connector.shutdown();
+	}
 
 	public String[] getCategories() throws MiroGuideException {
 		JSONArray resultArray = connector.getArrayResponse(connector
