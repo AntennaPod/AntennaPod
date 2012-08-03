@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.util.BitmapDecoder;
 
 public abstract class BitmapDecodeWorkerTask extends
 		AsyncTask<Void, Void, Void> {
@@ -88,25 +89,8 @@ public abstract class BitmapDecodeWorkerTask extends
 			f = new File(fileUrl);
 		}
 		if (fileUrl != null && f.exists()) {
-			BitmapFactory.Options options = new BitmapFactory.Options();
-			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(fileUrl, options);
-			int sampleSize = calculateSampleSize(options.outWidth,
-					options.outHeight);
-
-			options.inJustDecodeBounds = false;
-			options.inSampleSize = sampleSize;
-			decodedBitmap = BitmapFactory.decodeFile(fileUrl,
-					options);
-			if (decodedBitmap == null) {
-				Log.i(TAG,
-						"Bitmap could not be decoded in custom sample size. Trying default sample size (path was "
-								+ fileUrl + ")");
-				decodedBitmap = BitmapFactory.decodeFile(fileUrl);
-			}
-			if (decodedBitmap != null) {
-				bitmap = Bitmap.createScaledBitmap(decodedBitmap,
-						PREFERRED_LENGTH, PREFERRED_LENGTH, false);
+			bitmap = BitmapDecoder.decodeBitmap(PREFERRED_LENGTH, fileUrl);
+			if (bitmap != null) {
 				storeBitmapInCache(bitmap);
 			} else {
 				Log.w(TAG, "Could not load bitmap. Using default image.");
