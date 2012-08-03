@@ -90,7 +90,14 @@ public abstract class BitmapDecodeWorkerTask extends
 				R.drawable.default_cover);
 	}
 
-	protected abstract void storeBitmapInCache(Bitmap bitmap);
+	protected void storeBitmapInCache(Bitmap bitmap) {
+		FeedImageLoader loader = FeedImageLoader.getInstance();
+		if (baseLength == LENGTH_BASE_COVER) {
+			loader.addBitmapToCoverCache(fileUrl, bitmap);
+		} else if (baseLength == LENGTH_BASE_THUMBNAIL) {
+			loader.addBitmapToThumbnailCache(fileUrl, bitmap);
+		}
+	}
 
 	@SuppressLint("NewApi")
 	public void executeAsync() {

@@ -18,10 +18,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.miroguide.model.MiroChannel;
 import de.danoeh.antennapod.util.BitmapDecoder;
 
-import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.ImageView;
 
@@ -29,12 +26,8 @@ import android.widget.ImageView;
 public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 	private static final String TAG = "MiroGuideThumbnailDownloader";
 
-	private static final String CACHE_DIR = "miroguide_thumbnails";
-	private static final int CACHE_SIZE = 20 * 1024 * 1024;
-	private static final int VALUE_SIZE = 500 * 1024;
-
 	private Exception exception;
-	
+
 	private MiroChannel miroChannel;
 
 	public MiroGuideThumbnailDownloader(ImageView target,
@@ -43,14 +36,13 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 		this.miroChannel = miroChannel;
 	}
 
-	private static DiskLruCache openThubmnailDiskCache()
-			throws NameNotFoundException, IOException {
-		Context appContext = PodcastApp.getInstance();
-		return DiskLruCache.open(
-				appContext.getExternalFilesDir(CACHE_DIR),
-				appContext.getPackageManager().getPackageInfo(
-						appContext.getPackageName(), 0).versionCode,
-				VALUE_SIZE, CACHE_SIZE);
+	@Override
+	protected void onPostExecute(Void result) {
+		if (exception != null) {
+			super.onPostExecute(result);
+		} else {
+			Log.e(TAG, "Failed to download thumbnail");
+		}
 	}
 
 	@Override
@@ -66,7 +58,7 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 		File destination = new File(PodcastApp.getInstance().getCacheDir(),
 				Integer.toString(fileUrl.hashCode()));
 		try {
-			DiskLruCache diskCache = openThubmnailDiskCache();
+			DiskLruCache diskCache = FeedImageLoader.openThubmnailDiskCache();
 			Editor editor = diskCache.edit(fileUrl);
 			if (editor != null) {
 				HttpURLConnection connection = (HttpURLConnection) url
@@ -100,9 +92,6 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-			return null;
 		} finally {
 			if (destination.exists()) {
 				destination.delete();
@@ -114,10 +103,5 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 	@Override
 	protected boolean tagsMatching(ImageView target) {
 		return target.getTag() == null || target.getTag() == miroChannel;
-	}
-
-	@Override
-	protected void storeBitmapInCache(Bitmap bitmap) {
-		
 	}
 }
