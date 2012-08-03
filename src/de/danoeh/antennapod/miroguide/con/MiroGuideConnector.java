@@ -19,7 +19,7 @@ import android.net.http.AndroidHttpClient;
 
 /** Executes HTTP requests and returns the results. */
 public class MiroGuideConnector {
-	private AndroidHttpClient httpClient;
+	private HttpClient httpClient;
 
 	private static final String HOST_URL = "https://www.miroguide.com/api/";
 	private static final String PATH_GET_CHANNELS = "get_channels";
@@ -27,11 +27,11 @@ public class MiroGuideConnector {
 	private static final String PATH_GET_CHANNEL = "get_channel";
 
 	public MiroGuideConnector() {
-		httpClient = AndroidHttpClient.newInstance(null);
+		httpClient = new DefaultHttpClient();
 	}
 
 	public void shutdown() {
-		httpClient.close();
+		httpClient.getConnectionManager().shutdown();
 	}
 
 	private Uri.Builder getBaseURIBuilder(String path) {

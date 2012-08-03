@@ -6,14 +6,13 @@
 
     <ImageView
         android:id="@+id/imgvChannelimage"
-        android:src="@drawable/default_cover"
-        android:layout_width="55dip"
-        android:layout_height="55dip"
+        android:layout_width="40dip"
+        android:layout_height="40dip"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="4dip"
-        android:cropToPadding="true" />
+        android:src="@drawable/default_cover" />
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"

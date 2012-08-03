@@ -19,6 +19,7 @@ import android.widget.ImageView;
 import com.jakewharton.DiskLruCache;
 import com.jakewharton.DiskLruCache.Snapshot;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedImage;
@@ -159,6 +160,7 @@ public class FeedImageLoader {
 					.getThumbnailUrl());
 			if (bitmap == null) {
 				boolean isInDiskCache = false;
+				/*
 				try {
 					isInDiskCache = isInThumbnailDiskCache(channel
 							.getThumbnailUrl());
@@ -166,10 +168,13 @@ public class FeedImageLoader {
 					e.printStackTrace();
 					Log.e(TAG, "Error when trying to read disk cache");
 				}
+				*/
 				if (isInDiskCache) {
 					executor.submit(new MiroGuideDiskCacheLoader(handler,
 							target, channel, LENGTH_BASE_THUMBNAIL));
 				} else {
+					if (AppConfig.DEBUG) Log.d(TAG, "Starting new thumbnail download");
+
 					executor.submit(new MiroGuideThumbnailDownloader(handler,
 							target, channel, LENGTH_BASE_THUMBNAIL));
 				}

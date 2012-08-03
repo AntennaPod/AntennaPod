@@ -34,8 +34,6 @@ public class MiroChannel {
 		this.description = description;
 		this.items = items;
 	}
-	
-	
 
 	@Override
 	public String toString() {
@@ -69,7 +67,9 @@ public class MiroChannel {
 	public ArrayList<MiroItem> getItems() {
 		return items;
 	}
-	
-	
+
+	public void setThumbnailUrl(String thumbnailUrl) {
+		this.thumbnailUrl = thumbnailUrl;
+	}
 
 }

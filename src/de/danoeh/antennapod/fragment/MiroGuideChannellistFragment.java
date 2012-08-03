@@ -228,7 +228,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 							exception = e;
 							e.printStackTrace();
 						} finally {
-							service.close();
+							//service.close();
 						}
 						return null;
 					}

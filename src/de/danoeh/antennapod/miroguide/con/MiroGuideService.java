@@ -17,6 +17,8 @@ import de.danoeh.antennapod.miroguide.model.MiroItem;
 
 /** Provides methods to communicate with the Miroguide API on an abstract level. */
 public class MiroGuideService {
+	private static final String TAG = "MiroGuideService";
+	
 	public static final int DEFAULT_CHANNEL_LIMIT = 20;
 
 	public static final String FILTER_CATEGORY = "category";

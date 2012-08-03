@@ -6,8 +6,9 @@ import android.util.Log;
 
 public class BitmapDecoder {
 	private static final String TAG = "BitmapDecoder";
-	
-	private static int calculateSampleSize(int preferredLength, int width, int height) {
+
+	private static int calculateSampleSize(int preferredLength, int width,
+			int height) {
 		int max = Math.max(width, height);
 		if (max < preferredLength) {
 			return 1;
@@ -27,18 +28,23 @@ public class BitmapDecoder {
 			}
 		}
 	}
-	
+
 	public static Bitmap decodeBitmap(int preferredLength, String fileUrl) {
 		BitmapFactory.Options options = new BitmapFactory.Options();
 		options.inJustDecodeBounds = true;
 		BitmapFactory.decodeFile(fileUrl, options);
-		int sampleSize = calculateSampleSize(preferredLength, options.outWidth,
-				options.outHeight);
+		int srcWidth = options.outWidth;
+		int srcHeight = options.outHeight;
+		int sampleSize = calculateSampleSize(preferredLength, srcWidth,
+				srcHeight);
 
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = sampleSize;
-		Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl,
-				options);
+		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		options.inDither = false;
+		options.inScaled = false;
+
+		Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl, options);
 		if (decodedBitmap == null) {
 			Log.i(TAG,
 					"Bitmap could not be decoded in custom sample size. Trying default sample size (path was "
@@ -46,8 +52,12 @@ public class BitmapDecoder {
 			decodedBitmap = BitmapFactory.decodeFile(fileUrl);
 		}
 		if (decodedBitmap != null) {
-			return Bitmap.createScaledBitmap(decodedBitmap,
-					preferredLength, preferredLength, false);
+			if (preferredLength > srcWidth || preferredLength > srcHeight) {
+				return decodedBitmap;
+			} else {
+				return Bitmap.createScaledBitmap(decodedBitmap,
+						preferredLength, preferredLength, false);
+			}
 		} else {
 			return null;
 		}

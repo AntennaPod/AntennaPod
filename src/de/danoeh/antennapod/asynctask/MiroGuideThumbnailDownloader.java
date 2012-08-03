@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.asynctask;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -9,6 +10,7 @@ import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.URLConnection;
 
 import com.jakewharton.DiskLruCache;
 import com.jakewharton.DiskLruCache.Editor;
@@ -19,6 +21,7 @@ import de.danoeh.antennapod.miroguide.model.MiroChannel;
 import de.danoeh.antennapod.util.BitmapDecoder;
 
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
 import android.widget.ImageView;
@@ -39,7 +42,7 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 
 	@Override
 	protected void onPostExecute() {
-		if (exception != null) {
+		if (exception == null) {
 			super.onPostExecute();
 		} else {
 			Log.e(TAG, "Failed to download thumbnail");
@@ -58,40 +61,43 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 		File destination = new File(PodcastApp.getInstance().getCacheDir(),
 				Integer.toString(fileUrl.hashCode()));
 		try {
-			DiskLruCache diskCache = FeedImageLoader.openThubmnailDiskCache();
-			Editor editor = diskCache.edit(fileUrl);
-			if (editor != null) {
-				HttpURLConnection connection = (HttpURLConnection) url
-						.openConnection();
-				byte inputBuffer[] = new byte[10 * 1024];
-				InputStream input = new BufferedInputStream(
-						connection.getInputStream());
-				FileOutputStream output = new FileOutputStream(destination);
+			/*
+			 * DiskLruCache diskCache =
+			 * FeedImageLoader.openThubmnailDiskCache(); Editor editor =
+			 * diskCache.edit(fileUrl);
+			 */
+			if (AppConfig.DEBUG) Log.d(TAG, "Downloading " + fileUrl);
+			URLConnection connection = url.openConnection();
+			connection.connect();
+			byte inputBuffer[] = new byte[1024];
+			BufferedInputStream input = new BufferedInputStream(
+					connection.getInputStream());
+			FileOutputStream output = new FileOutputStream(destination);
 
-				int count = 0;
-				while ((count = input.read(inputBuffer, 0, 10 * 1024)) != -1) {
-					output.write(inputBuffer, 0, count);
-				}
-				output.close();
-				connection.disconnect();
-				if (AppConfig.DEBUG) Log.d(TAG, "MiroGuide thumbnail downloaded");
-				// Get a smaller version of the bitmap and store it inside the
-				// LRU
-				// Cache
-				Bitmap bitmap = BitmapDecoder.decodeBitmap(PREFERRED_LENGTH,
-						fileUrl);
-				if (bitmap != null) {
-					OutputStream imageOut = editor.newOutputStream(0);
-					bitmap.compress(Bitmap.CompressFormat.PNG, 80, imageOut);
-					editor.commit();
-					storeBitmapInCache(bitmap);
-				}
-			} else {
+			int count = 0;
+			while ((count = input.read(inputBuffer)) != -1) {
+				output.write(inputBuffer, 0, count);
 				if (AppConfig.DEBUG)
-					Log.d(TAG, "No editor object available");
+					Log.d(TAG, "" + count);
 			}
+			output.close();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "MiroGuide thumbnail downloaded");
+			// Get a smaller version of the bitmap and store it inside the
+			// LRU
+			// Cache
+			Bitmap bitmap = BitmapDecoder.decodeBitmap(PREFERRED_LENGTH,
+					destination.getPath());
+			if (bitmap != null) {
+				// OutputStream imageOut = editor.newOutputStream(0);
+				// bitmap.compress(Bitmap.CompressFormat.PNG, 80, imageOut);
+				// editor.commit();
+				storeBitmapInCache(bitmap);
+			}
+
 		} catch (IOException e) {
 			e.printStackTrace();
+			miroChannel.setThumbnailUrl(null);
 			endBackgroundTask();
 		} finally {
 			if (destination.exists()) {
