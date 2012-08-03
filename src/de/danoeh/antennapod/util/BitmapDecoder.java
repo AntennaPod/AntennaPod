@@ -41,8 +41,6 @@ public class BitmapDecoder {
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = sampleSize;
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		options.inDither = false;
-		options.inScaled = false;
 
 		Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl, options);
 		if (decodedBitmap == null) {
@@ -52,12 +50,10 @@ public class BitmapDecoder {
 			decodedBitmap = BitmapFactory.decodeFile(fileUrl);
 		}
 		if (decodedBitmap != null) {
-			if (preferredLength > srcWidth || preferredLength > srcHeight) {
-				return decodedBitmap;
-			} else {
+			
 				return Bitmap.createScaledBitmap(decodedBitmap,
 						preferredLength, preferredLength, false);
-			}
+			
 		} else {
 			return null;
 		}

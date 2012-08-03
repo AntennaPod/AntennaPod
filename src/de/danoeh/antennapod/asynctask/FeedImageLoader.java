@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.IOException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -8,17 +7,11 @@ import java.util.concurrent.ThreadFactory;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.util.Log;
 import android.widget.ImageView;
-
-import com.jakewharton.DiskLruCache;
-import com.jakewharton.DiskLruCache.Snapshot;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -93,7 +86,7 @@ public class FeedImageLoader {
 	private ExecutorService createExecutor() {
 		return Executors.newFixedThreadPool(Runtime.getRuntime()
 				.availableProcessors(), new ThreadFactory() {
-			
+
 			@Override
 			public Thread newThread(Runnable r) {
 				Thread t = new Thread(r);
@@ -102,28 +95,12 @@ public class FeedImageLoader {
 			}
 		});
 	}
-	
+
 	public static FeedImageLoader getInstance() {
 		if (singleton == null) {
 			singleton = new FeedImageLoader();
 		}
 		return singleton;
-	}
-
-	public static DiskLruCache openThubmnailDiskCache() throws IOException {
-
-		Context appContext = PodcastApp.getInstance();
-		DiskLruCache cache = null;
-		try {
-			cache = DiskLruCache.open(
-					appContext.getExternalFilesDir(CACHE_DIR),
-					appContext.getPackageManager().getPackageInfo(
-							appContext.getPackageName(), 0).versionCode,
-					VALUE_SIZE, CACHE_SIZE);
-		} catch (NameNotFoundException e) {
-			e.printStackTrace();
-		}
-		return cache;
 	}
 
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
@@ -163,25 +140,12 @@ public class FeedImageLoader {
 			Bitmap bitmap = getBitmapFromThumbnailCache(channel
 					.getThumbnailUrl());
 			if (bitmap == null) {
-				boolean isInDiskCache = false;
-				/*
-				try {
-					isInDiskCache = isInThumbnailDiskCache(channel
-							.getThumbnailUrl());
-				} catch (IOException e) {
-					e.printStackTrace();
-					Log.e(TAG, "Error when trying to read disk cache");
-				}
-				*/
-				if (isInDiskCache) {
-					executor.submit(new MiroGuideDiskCacheLoader(handler,
-							target, channel, LENGTH_BASE_THUMBNAIL));
-				} else {
-					if (AppConfig.DEBUG) Log.d(TAG, "Starting new thumbnail download");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Starting new thumbnail download");
+				target.setImageResource(R.drawable.default_cover);
 
-					executor.submit(new MiroGuideThumbnailDownloader(handler,
-							target, channel, LENGTH_BASE_THUMBNAIL));
-				}
+				executor.submit(new MiroGuideThumbnailDownloader(handler,
+						target, channel, LENGTH_BASE_THUMBNAIL));
 			} else {
 				target.setImageBitmap(bitmap);
 			}
@@ -189,12 +153,13 @@ public class FeedImageLoader {
 			target.setImageResource(R.drawable.default_cover);
 		}
 	}
-	
+
 	public void clearExecutorQueue() {
 		executor.shutdownNow();
-		if (AppConfig.DEBUG) Log.d(TAG, "Executor was shut down.");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Executor was shut down.");
 		executor = createExecutor();
-		
+
 	}
 
 	public void wipeImageCache() {
@@ -226,11 +191,6 @@ public class FeedImageLoader {
 		coverCache.put(key, bitmap);
 	}
 
-	public boolean isInThumbnailDiskCache(String key) throws IOException {
-		DiskLruCache cache = openThubmnailDiskCache();
-		return cache.get(key) != null;
-	}
-
 	class FeedImageDecodeWorkerTask extends BitmapDecodeWorkerTask {
 
 		private static final String TAG = "FeedImageDecodeWorkerTask";
@@ -258,47 +218,6 @@ public class FeedImageLoader {
 						PodcastApp.getInstance(), image);
 			}
 
-		}
-
-	}
-
-	class MiroGuideDiskCacheLoader extends BitmapDecodeWorkerTask {
-		private static final String TAG = "MiroGuideDiskCacheLoader";
-		private Exception exception;
-
-		private MiroChannel channel;
-
-		public MiroGuideDiskCacheLoader(Handler handler, ImageView target,
-				MiroChannel channel, int length) {
-			super(handler, target, channel.getThumbnailUrl(), length);
-			this.channel = channel;
-		}
-
-		public void run() {
-			try {
-				DiskLruCache cache = openThubmnailDiskCache();
-				Snapshot snapshot = cache.get(fileUrl);
-				storeBitmapInCache(BitmapFactory.decodeStream(snapshot
-						.getInputStream(0)));
-			} catch (IOException e) {
-				e.printStackTrace();
-				exception = e;
-			}
-			endBackgroundTask();
-		}
-
-		@Override
-		protected void onPostExecute() {
-			if (exception != null) {
-				super.onPostExecute();
-			} else {
-				Log.e(TAG, "Failed to load bitmap from disk cache");
-			}
-		}
-
-		@Override
-		protected boolean tagsMatching(ImageView target) {
-			return target.getTag() == null || target.getTag() == channel;
 		}
 
 	}

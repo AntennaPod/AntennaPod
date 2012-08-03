@@ -23,7 +23,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	private static final String TAG = "BitmapDecodeWorkerTask";
 	private ImageView target;
-	private Bitmap bitmap;
+	protected Bitmap bitmap;
 	private Bitmap decodedBitmap;
 
 	protected int baseLength;
@@ -50,7 +50,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected void onPostExecute() {
 		// check if imageview is still supposed to display this image
-		if (tagsMatching(target)) {
+		if (tagsMatching(target) && bitmap != null) {
 			target.setImageBitmap(bitmap);
 		} else {
 			if (AppConfig.DEBUG)
