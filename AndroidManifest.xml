@@ -68,7 +68,7 @@
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />
         <activity
-            android:name="de.danoeh.antennapod.activity.MediaplayerActivity"
+            android:name=".activity.AudioplayerActivity"
             android:configChanges="orientation"
             android:launchMode="singleTask"
             android:theme="@style/Theme.MediaPlayer" />

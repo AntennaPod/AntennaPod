@@ -19,7 +19,7 @@ import org.xml.sax.SAXException;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.activity.DownloadActivity;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.DownloadStatus;

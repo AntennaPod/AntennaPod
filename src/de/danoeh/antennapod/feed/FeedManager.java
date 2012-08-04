@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.*;
@@ -106,7 +106,7 @@ public class FeedManager {
 		context.startService(launchIntent);
 		if (showPlayer) {
 			// Launch Mediaplayer
-			Intent playerIntent = new Intent(context, MediaplayerActivity.class);
+			Intent playerIntent = new Intent(context, AudioplayerActivity.class);
 			context.startActivity(playerIntent);
 		}
 	}

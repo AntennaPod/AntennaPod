@@ -27,7 +27,7 @@ import android.view.SurfaceHolder;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -563,7 +563,7 @@ public class PlaybackService extends Service {
 	/** Prepares notification and starts the service in the foreground. */
 	private void setupNotification() {
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
-				this, MediaplayerActivity.class),
+				this, AudioplayerActivity.class),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Bitmap icon = BitmapFactory.decodeResource(null,

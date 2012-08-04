@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,29 +17,19 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
-import android.view.MotionEvent;
-import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.WindowManager;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 import android.widget.VideoView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
@@ -49,13 +38,11 @@ import com.viewpagerindicator.TabPageIndicator;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.SCListAdapter;
+import de.danoeh.antennapod.activity.AudioplayerActivity.MediaPlayerPagerAdapter;
+import de.danoeh.antennapod.activity.AudioplayerActivity.MediaPositionObserver;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.SimpleChapter;
-import de.danoeh.antennapod.fragment.CoverFragment;
-import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import de.danoeh.antennapod.util.Converter;
@@ -63,45 +50,129 @@ import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
-public class MediaplayerActivity extends SherlockFragmentActivity implements
-		SurfaceHolder.Callback {
+public abstract class MediaplayerActivity extends SherlockFragmentActivity {
+	private static final String TAG = "MediaplayerActivity";
 
-	private final String TAG = "MediaplayerActivity";
+	static final int DEFAULT_SEEK_DELTA = 30000;
 
-	private static final int DEFAULT_SEEK_DELTA = 30000; // Seek-Delta to use
-															// when using FF or
-															// Rev Buttons
-	/** Current screen orientation. */
-	private int orientation;
-
-	/** True if video controls are currently visible. */
-	private boolean videoControlsShowing = true;
 	/** True if media information was loaded. */
-	private boolean mediaInfoLoaded = false;
+	protected boolean mediaInfoLoaded = false;
+	protected PlaybackService playbackService;
+	protected MediaPositionObserver positionObserver;
+	protected FeedMedia media;
+	protected PlayerStatus status;
+	protected FeedManager manager;
 
-	private PlaybackService playbackService;
-	private MediaPositionObserver positionObserver;
-	private VideoControlsHider videoControlsToggler;
+	protected TextView txtvPosition;
+	protected TextView txtvLength;
+	protected SeekBar sbPosition;
+	protected ImageButton butPlay;
+	protected ImageButton butRev;
+	protected ImageButton butFF;
 
-	private FeedMedia media;
-	private PlayerStatus status;
-	private FeedManager manager;
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating Activity");
+		StorageUtils.checkStorageAvailability(this);
 
-	// Widgets
-	private CoverFragment coverFragment;
-	private ItemDescriptionFragment descriptionFragment;
-	private ViewPager viewpager;
-	private TabPageIndicator tabs;
-	private MediaPlayerPagerAdapter pagerAdapter;
-	private VideoView videoview;
-	private TextView txtvStatus;
-	private TextView txtvPosition;
-	private TextView txtvLength;
-	private SeekBar sbPosition;
-	private ImageButton butPlay;
-	private ImageButton butRev;
-	private ImageButton butFF;
-	private LinearLayout videoOverlay;
+		orientation = getResources().getConfiguration().orientation;
+		manager = FeedManager.getInstance();
+		getWindow().setFormat(PixelFormat.TRANSPARENT);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+		bindToService();
+	}
+
+	protected OnClickListener playbuttonListener = new OnClickListener() {
+		@Override
+		public void onClick(View v) {
+			if (status == PlayerStatus.PLAYING) {
+				playbackService.pause(true);
+			} else if (status == PlayerStatus.PAUSED
+					|| status == PlayerStatus.PREPARED) {
+				playbackService.play();
+			}
+		}
+	};
+	protected ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceConnected(ComponentName className, IBinder service) {
+			playbackService = ((PlaybackService.LocalBinder) service)
+					.getService();
+
+			registerReceiver(statusUpdate, new IntentFilter(
+					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
+
+			registerReceiver(notificationReceiver, new IntentFilter(
+					PlaybackService.ACTION_PLAYER_NOTIFICATION));
+
+			queryService();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Connection to Service established");
+		}
+
+		@Override
+		public void onServiceDisconnected(ComponentName name) {
+			playbackService = null;
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Disconnected from Service");
+
+		}
+	};
+	protected BroadcastReceiver statusUpdate = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received statusUpdate Intent.");
+			status = playbackService.getStatus();
+			handleStatus();
+		}
+	};
+	protected BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			int type = intent.getIntExtra(
+					PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
+			int code = intent.getIntExtra(
+					PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
+			if (code != -1 && type != -1) {
+				switch (type) {
+				case PlaybackService.NOTIFICATION_TYPE_ERROR:
+					handleError(code);
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
+					if (sbPosition != null) {
+						float progress = ((float) code) / 100;
+						sbPosition.setSecondaryProgress((int) progress
+								* sbPosition.getMax());
+					}
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
+					if (positionObserver != null) {
+						positionObserver.cancel(true);
+						positionObserver = null;
+					}
+					mediaInfoLoaded = false;
+					queryService();
+
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
+					invalidateOptionsMenu();
+					break;
+				}
+
+			} else {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Bad arguments. Won't handle intent");
+			}
+
+		}
+
+	};
+
+	/** Current screen orientation. */
+	protected int orientation;
 
 	@Override
 	protected void onStop() {
@@ -231,45 +302,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Configuration changed");
-		orientation = newConfig.orientation;
-		if (positionObserver != null) {
-			positionObserver.cancel(true);
-		}
-		setupGUI();
-		handleStatus();
+		// ignore orientation change
 
 	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		if (PlaybackService.isRunning && playbackService != null
-				&& playbackService.isPlayingVideo()) {
-			playbackService.stop();
-		}
-		if (videoControlsToggler != null) {
-			videoControlsToggler.cancel(true);
-		}
-		finish();
-	}
-
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Creating Activity");
-		StorageUtils.checkStorageAvailability(this);
-
-		orientation = getResources().getConfiguration().orientation;
-		manager = FeedManager.getInstance();
-		getWindow().setFormat(PixelFormat.TRANSPARENT);
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		bindToService();
-	}
-
-	private void bindToService() {
+	protected void bindToService() {
 		Intent serviceIntent = new Intent(this, PlaybackService.class);
 		boolean bound = false;
 		if (!PlaybackService.isRunning) {
@@ -310,10 +347,10 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		switch (status) {
 
 		case ERROR:
-			setStatusMsg(R.string.player_error_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_error_msg);
 			break;
 		case PAUSED:
-			setStatusMsg(R.string.player_paused_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_paused_msg);
 			loadMediaInfo();
 			if (positionObserver != null) {
 				positionObserver.cancel(true);
@@ -322,40 +359,45 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			butPlay.setImageResource(R.drawable.av_play);
 			break;
 		case PLAYING:
-			setStatusMsg(R.string.player_playing_msg, View.INVISIBLE);
+			clearStatusMsg();
 			loadMediaInfo();
 			setupPositionObserver();
 			butPlay.setImageResource(R.drawable.av_pause);
 			break;
 		case PREPARING:
-			setStatusMsg(R.string.player_preparing_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_preparing_msg);
 			loadMediaInfo();
 			break;
 		case STOPPED:
-			setStatusMsg(R.string.player_stopped_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_stopped_msg);
 			break;
 		case PREPARED:
 			loadMediaInfo();
-			setStatusMsg(R.string.player_ready_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_ready_msg);
 			butPlay.setImageResource(R.drawable.av_play);
 			break;
 		case SEEKING:
-			setStatusMsg(R.string.player_seeking_msg, View.VISIBLE);
+			postStatusMsg(R.string.player_seeking_msg);
 			break;
 		case AWAITING_VIDEO_SURFACE:
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Preparing video playback");
-			this.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+			onAwaitingVideoSurface();
+			break;
 		}
 	}
+	
+	protected abstract void onAwaitingVideoSurface();
+	
+	protected abstract void postStatusMsg(int resId);
 
-	private void setStatusMsg(int resId, int visibility) {
-		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			if (visibility == View.VISIBLE) {
-				txtvStatus.setText(resId);
-			}
-			txtvStatus.setVisibility(visibility);
-		}
+	protected abstract void clearStatusMsg();
+
+	protected void onPositionObserverUpdate() {
+		int currentPosition = playbackService.getPlayer().getCurrentPosition();
+		media.setPosition(currentPosition);
+		txtvPosition.setText(Converter.getDurationStringLong(currentPosition));
+		txtvLength.setText(Converter.getDurationStringLong(playbackService
+				.getPlayer().getDuration()));
+		updateProgressbarPosition();
 	}
 
 	@SuppressLint("NewApi")
@@ -368,16 +410,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				@Override
 				protected void onProgressUpdate(Void... v) {
 					super.onProgressUpdate();
-					int currentPosition = playbackService.getPlayer()
-							.getCurrentPosition();
-					media.setPosition(currentPosition);
-					txtvPosition.setText(Converter
-							.getDurationStringLong(currentPosition));
-					txtvLength.setText(Converter
-							.getDurationStringLong(playbackService.getPlayer()
-									.getDuration()));
-					updateProgressbarPosition();
-					pagerAdapter.notifyMediaPositionChanged();
+					onPositionObserverUpdate();
 				}
 
 			};
@@ -401,7 +434,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		sbPosition.setProgress((int) (progress * sbPosition.getMax()));
 	}
 
-	private void loadMediaInfo() {
+	protected void loadMediaInfo() {
 		if (!mediaInfoLoaded) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Loading media info");
@@ -409,11 +442,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				getSupportActionBar().setSubtitle(media.getItem().getTitle());
 				getSupportActionBar().setTitle(
 						media.getItem().getFeed().getTitle());
-				if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-					pagerAdapter.notifyDataSetChanged();
-
-				}
-
 				txtvPosition.setText(Converter.getDurationStringLong((media
 						.getPosition())));
 
@@ -430,7 +458,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		}
 	}
 
-	private void setupGUI() {
+	protected void setupGUI() {
 		setContentView(R.layout.mediaplayer_activity);
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
@@ -497,21 +525,8 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 			}
 		});
 
-		// PORTRAIT ORIENTATION SETUP
-
 		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-			txtvStatus = (TextView) findViewById(R.id.txtvStatus);
-			viewpager = (ViewPager) findViewById(R.id.viewpager);
-			tabs = (TabPageIndicator) findViewById(R.id.tabs);
 
-			int tabcount = 2;
-			if (media != null && media.getItem().getSimpleChapters() != null) {
-				tabcount = 3;
-			}
-			pagerAdapter = new MediaPlayerPagerAdapter(
-					getSupportFragmentManager(), tabcount, this);
-			viewpager.setAdapter(pagerAdapter);
-			tabs.setViewPager(viewpager);
 		} else {
 			videoOverlay = (LinearLayout) findViewById(R.id.overlay);
 			videoview = (VideoView) findViewById(R.id.videoview);
@@ -524,64 +539,7 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		}
 	}
 
-	private OnClickListener playbuttonListener = new OnClickListener() {
-		@Override
-		public void onClick(View v) {
-			if (status == PlayerStatus.PLAYING) {
-				playbackService.pause(true);
-			} else if (status == PlayerStatus.PAUSED
-					|| status == PlayerStatus.PREPARED) {
-				playbackService.play();
-			}
-		}
-	};
-
-	private View.OnTouchListener onVideoviewTouched = new View.OnTouchListener() {
-
-		@Override
-		public boolean onTouch(View v, MotionEvent event) {
-			if (event.getAction() == MotionEvent.ACTION_DOWN) {
-				if (videoControlsToggler != null) {
-					videoControlsToggler.cancel(true);
-				}
-				toggleVideoControlsVisibility();
-				if (videoControlsShowing) {
-					setupVideoControlsToggler();
-				}
-
-				return true;
-			} else {
-				return false;
-			}
-		}
-	};
-
-	@SuppressLint("NewApi")
-	private void setupVideoControlsToggler() {
-		if (videoControlsToggler != null) {
-			videoControlsToggler.cancel(true);
-		}
-		videoControlsToggler = new VideoControlsHider();
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			videoControlsToggler
-					.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			videoControlsToggler.execute();
-		}
-	}
-
-	private void toggleVideoControlsVisibility() {
-		if (videoControlsShowing) {
-			getSupportActionBar().hide();
-			videoOverlay.setVisibility(View.GONE);
-		} else {
-			getSupportActionBar().show();
-			videoOverlay.setVisibility(View.VISIBLE);
-		}
-		videoControlsShowing = !videoControlsShowing;
-	}
-
-	private void handleError(int errorCode) {
+	void handleError(int errorCode) {
 		final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog
@@ -597,36 +555,11 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 		errorDialog.create().show();
 	}
 
-	private ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			playbackService = ((PlaybackService.LocalBinder) service)
-					.getService();
-
-			registerReceiver(statusUpdate, new IntentFilter(
-					PlaybackService.ACTION_PLAYER_STATUS_CHANGED));
-
-			registerReceiver(notificationReceiver, new IntentFilter(
-					PlaybackService.ACTION_PLAYER_NOTIFICATION));
-
-			queryService();
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Connection to Service established");
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			playbackService = null;
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Disconnected from Service");
-
-		}
-	};
-
 	/**
 	 * Called when connection to playback service has been established or
 	 * information has to be refreshed
 	 */
-	private void queryService() {
+	void queryService() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Querying service info");
 		if (playbackService != null) {
@@ -659,183 +592,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 					"queryService() was called without an existing connection to playbackservice");
 		}
 	}
-
-	private BroadcastReceiver statusUpdate = new BroadcastReceiver() {
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received statusUpdate Intent.");
-			status = playbackService.getStatus();
-			handleStatus();
-		}
-	};
-
-	private BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			int type = intent.getIntExtra(
-					PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
-			int code = intent.getIntExtra(
-					PlaybackService.EXTRA_NOTIFICATION_CODE, -1);
-			if (code != -1 && type != -1) {
-				switch (type) {
-				case PlaybackService.NOTIFICATION_TYPE_ERROR:
-					handleError(code);
-					break;
-				case PlaybackService.NOTIFICATION_TYPE_BUFFER_UPDATE:
-					if (sbPosition != null) {
-						float progress = ((float) code) / 100;
-						sbPosition.setSecondaryProgress((int) progress
-								* sbPosition.getMax());
-					}
-					break;
-				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-					if (positionObserver != null) {
-						positionObserver.cancel(true);
-						positionObserver = null;
-					}
-					mediaInfoLoaded = false;
-					queryService();
-
-					break;
-				case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
-					invalidateOptionsMenu();
-					break;
-				}
-
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Bad arguments. Won't handle intent");
-			}
-
-		}
-
-	};
-
-	private boolean holderCreated;
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		holder.setFixedSize(width, height);
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		holderCreated = true;
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Videoview holder created");
-		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
-			if (playbackService != null) {
-				playbackService.setVideoSurface(holder);
-			} else {
-				Log.e(TAG,
-						"Could'nt attach surface to mediaplayer - reference to service was null");
-			}
-		}
-
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		holderCreated = false;
-	}
-
-	public static class MediaPlayerPagerAdapter extends
-			FragmentStatePagerAdapter {
-		private int numItems;
-		private MediaplayerActivity activity;
-
-		private SherlockListFragment sCChapterFragment;
-
-		private static final int POS_COVER = 0;
-		private static final int POS_DESCR = 1;
-		private static final int POS_CHAPTERS = 2;
-
-		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
-				MediaplayerActivity activity) {
-			super(fm);
-			this.numItems = numItems;
-			this.activity = activity;
-		}
-
-		@Override
-		public Fragment getItem(int position) {
-			if (activity.media != null) {
-				switch (position) {
-				case POS_COVER:
-					activity.coverFragment = CoverFragment
-							.newInstance(activity.media.getItem());
-					return activity.coverFragment;
-				case POS_DESCR:
-					activity.descriptionFragment = ItemDescriptionFragment
-							.newInstance(activity.media.getItem());
-					return activity.descriptionFragment;
-				case POS_CHAPTERS:
-					sCChapterFragment = new SherlockListFragment() {
-
-						@Override
-						public void onListItemClick(ListView l, View v,
-								int position, long id) {
-							super.onListItemClick(l, v, position, id);
-							SimpleChapter chapter = (SimpleChapter) this
-									.getListAdapter().getItem(position);
-							if (activity.playbackService != null) {
-								activity.playbackService.seekToChapter(chapter);
-							}
-						}
-
-					};
-
-					sCChapterFragment.setListAdapter(new SCListAdapter(
-							activity, 0, activity.media.getItem()
-									.getSimpleChapters()));
-					
-					return sCChapterFragment;
-				default:
-					return CoverFragment.newInstance(null);
-				}
-			} else {
-				return CoverFragment.newInstance(null);
-			}
-		}
-
-		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case POS_COVER:
-				return activity.getString(R.string.cover_label);
-			case POS_DESCR:
-				return activity.getString(R.string.shownotes_label);
-			case POS_CHAPTERS:
-				return activity.getString(R.string.chapters_label);
-			default:
-				return super.getPageTitle(position);
-			}
-		}
-
-		@Override
-		public int getCount() {
-			return numItems;
-		}
-
-		@Override
-		public int getItemPosition(Object object) {
-			return POSITION_UNCHANGED;
-		}
-
-		public void notifyMediaPositionChanged() {
-			if (sCChapterFragment != null) {
-				ArrayAdapter<SimpleChapter> adapter = (ArrayAdapter<SimpleChapter>) sCChapterFragment
-						.getListAdapter();
-				adapter.notifyDataSetChanged();
-			}
-		}
-
-	}
-
-	// ---------------------- ASYNC TASKS
 
 	/** Refreshes the current position of the media file that is playing. */
 	public class MediaPositionObserver extends
@@ -877,45 +633,6 @@ public class MediaplayerActivity extends SherlockFragmentActivity implements
 				Log.d(TAG, "Background Task finished");
 			return null;
 		}
-	}
-
-	/** Hides the videocontrols after a certain period of time. */
-	public class VideoControlsHider extends AsyncTask<Void, Void, Void> {
-		@Override
-		protected void onCancelled() {
-			videoControlsToggler = null;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
-			videoControlsToggler = null;
-		}
-
-		private static final int WAITING_INTERVALL = 5000;
-		private static final String TAG = "VideoControlsToggler";
-
-		@Override
-		protected void onProgressUpdate(Void... values) {
-			if (videoControlsShowing) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Hiding video controls");
-				getSupportActionBar().hide();
-				videoOverlay.setVisibility(View.GONE);
-				videoControlsShowing = false;
-			}
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			try {
-				Thread.sleep(WAITING_INTERVALL);
-			} catch (InterruptedException e) {
-				return null;
-			}
-			publishProgress();
-			return null;
-		}
-
 	}
 
 }

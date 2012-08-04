@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
-import de.danoeh.antennapod.activity.MediaplayerActivity;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
@@ -68,7 +68,7 @@ public class PlayerWidgetService extends Service {
 		RemoteViews views = new RemoteViews(getPackageName(),
 				R.layout.player_widget);
 		PendingIntent startMediaplayer = PendingIntent.getActivity(this, 0,
-				new Intent(this, MediaplayerActivity.class), 0);
+				new Intent(this, AudioplayerActivity.class), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
 		if (playbackService != null) {
