@@ -29,6 +29,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.util.InvalidFeedException;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -397,6 +398,9 @@ public class DownloadService extends Service {
 
 		private Feed feed;
 		private DownloadService service;
+		
+		private int reason;
+		private boolean successful;
 
 		public FeedSyncThread(Feed feed, DownloadService service) {
 			this.feed = feed;
@@ -408,8 +412,8 @@ public class DownloadService extends Service {
 			long imageId = 0;
 			boolean hasImage = false;
 			long downloadId = feed.getDownloadId();
-			int reason = 0;
-			boolean successful = true;
+			reason = 0;
+			successful = true;
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
 			feed.setDownloaded(true);
@@ -418,7 +422,9 @@ public class DownloadService extends Service {
 				feed = handler.parseFeed(feed);
 				if (AppConfig.DEBUG)
 					Log.d(TAG, feed.getTitle() + " parsed");
-
+				if (checkFeedData(feed) == false) {
+					throw new InvalidFeedException();
+				}
 				feed.setDownloadId(0);
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
@@ -447,6 +453,10 @@ public class DownloadService extends Service {
 				e.printStackTrace();
 				successful = false;
 				reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
+			} catch (InvalidFeedException e) {
+				e.printStackTrace();
+				successful = false;
+				reason = DownloadError.ERROR_PARSER_EXCEPTION;
 			}
 
 			requester.removeDownload(feed);
@@ -458,6 +468,17 @@ public class DownloadService extends Service {
 					reason, successful));
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();
+		}
+		
+		/** Checks if the feed was parsed correctly. */
+		private boolean checkFeedData(Feed feed) {
+			if (feed.getTitle() == null) {
+				Log.e(TAG, "Feed has no title.");
+				return false;
+			} else {
+				if (AppConfig.DEBUG) Log.d(TAG, "Feed appears to be valid.");
+				return true;
+			}
 		}
 
 		/** Delete files that aren't needed anymore */
