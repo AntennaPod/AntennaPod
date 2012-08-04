@@ -11,19 +11,19 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 
-public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
+public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> {
 
 	public MiroGuideChannelListAdapter(Context context, int textViewResourceId,
-			List<MiroChannel> objects) {
+			List<MiroGuideChannel> objects) {
 		super(context, textViewResourceId, objects);
 	}
 	
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
-		MiroChannel channel = getItem(position);
+		MiroGuideChannel channel = getItem(position);
 
 		// Inflate Layout
 		if (convertView == null) {

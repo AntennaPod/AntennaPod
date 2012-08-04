@@ -2,16 +2,16 @@ package de.danoeh.antennapod.miroguide.model;
 
 import java.util.ArrayList;
 
-public class MiroChannel {
+public class MiroGuideChannel {
 	private long id;
 	private String name;
 	private String thumbnailUrl;
 	private String downloadUrl;
 	private String websiteUrl;
 	private String description;
-	private ArrayList<MiroItem> items;
+	private ArrayList<MiroGuideItem> items;
 
-	public MiroChannel(long id, String name, String thumbnailUrl,
+	public MiroGuideChannel(long id, String name, String thumbnailUrl,
 			String downloadUrl, String websiteUrl, String description) {
 		super();
 		this.id = id;
@@ -22,9 +22,9 @@ public class MiroChannel {
 		this.description = description;
 	}
 
-	public MiroChannel(long id, String name, String thumbnailUrl,
+	public MiroGuideChannel(long id, String name, String thumbnailUrl,
 			String downloadUrl, String websiteUrl, String description,
-			ArrayList<MiroItem> items) {
+			ArrayList<MiroGuideItem> items) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -64,7 +64,7 @@ public class MiroChannel {
 		return description;
 	}
 
-	public ArrayList<MiroItem> getItems() {
+	public ArrayList<MiroGuideItem> getItems() {
 		return items;
 	}
 

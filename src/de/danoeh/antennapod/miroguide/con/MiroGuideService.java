@@ -11,8 +11,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
-import de.danoeh.antennapod.miroguide.model.MiroItem;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 
 
 /** Provides methods to communicate with the Miroguide API on an abstract level. */
@@ -62,19 +62,19 @@ public class MiroGuideService {
 		return result;
 	}
 
-	/** Get a list of MiroChannel objects without their items. */
-	public List<MiroChannel> getChannelList(String filter, String filterValue,
+	/** Get a list of MiroGuideChannel objects without their items. */
+	public List<MiroGuideChannel> getChannelList(String filter, String filterValue,
 			String sort, int limit, int offset) throws MiroGuideException {
 		JSONArray resultArray = connector.getArrayResponse(connector
 				.createGetChannelsUri(filter, filterValue, sort,
 						Integer.toString(limit), Integer.toString(offset)));
 		int resultLen = resultArray.length();
-		List<MiroChannel> channels = new ArrayList<MiroChannel>(resultLen);
+		List<MiroGuideChannel> channels = new ArrayList<MiroGuideChannel>(resultLen);
 		for (int i = 0; i < resultLen; i++) {
 			JSONObject content = null;
 			try {
 				content = resultArray.getJSONObject(i);
-				MiroChannel channel = extractMiroChannel(content, false);
+				MiroGuideChannel channel = extractMiroChannel(content, false);
 				channels.add(channel);
 			} catch (JSONException e) {
 				e.printStackTrace();
@@ -90,10 +90,10 @@ public class MiroGuideService {
 	 * 
 	 * @throws MiroGuideException
 	 */
-	public MiroChannel getChannel(long id) throws MiroGuideException {
+	public MiroGuideChannel getChannel(long id) throws MiroGuideException {
 		JSONObject resultObject = connector.getSingleObjectResponse(connector
 				.createGetChannelUri(Long.toString(id)));
-		MiroChannel result = null;
+		MiroGuideChannel result = null;
 		try {
 			result = extractMiroChannel(resultObject, true);
 		} catch (JSONException e) {
@@ -104,12 +104,12 @@ public class MiroGuideService {
 	}
 
 	/**
-	 * Get a MiroChannel object from it's JSON source. The itemlist of the
+	 * Get a MiroGuideChannel object from it's JSON source. The itemlist of the
 	 * channel can be included or excluded
 	 * 
 	 * @throws JSONException
 	 */
-	private MiroChannel extractMiroChannel(JSONObject content, boolean withItems)
+	private MiroGuideChannel extractMiroChannel(JSONObject content, boolean withItems)
 			throws JSONException {
 		long id = content.getLong("id");
 		String name = content.getString("name");
@@ -118,28 +118,28 @@ public class MiroGuideService {
 		String downloadUrl = content.getString("url");
 		String websiteUrl = content.getString("website_url");
 		if (!withItems) {
-			return new MiroChannel(id, name, thumbnailUrl, downloadUrl,
+			return new MiroGuideChannel(id, name, thumbnailUrl, downloadUrl,
 					websiteUrl, description);
 		} else {
 			JSONArray itemData = content.getJSONArray("item");
 			int numItems = itemData.length();
-			ArrayList<MiroItem> items = new ArrayList<MiroItem>(numItems);
+			ArrayList<MiroGuideItem> items = new ArrayList<MiroGuideItem>(numItems);
 			for (int i = 0; i < numItems; i++) {
 				items.add(extractMiroItem(itemData.getJSONObject(i)));
 			}
 
-			return new MiroChannel(id, name, thumbnailUrl, downloadUrl,
+			return new MiroGuideChannel(id, name, thumbnailUrl, downloadUrl,
 					websiteUrl, description, items);
 		}
 	}
 
-	/** Get a MiroItem from its JSON source. */
-	private MiroItem extractMiroItem(JSONObject content) throws JSONException {
+	/** Get a MiroGuideItem from its JSON source. */
+	private MiroGuideItem extractMiroItem(JSONObject content) throws JSONException {
 		Date date = parseMiroItemDate(content.getString("date"));
 		String description = content.getString("description");
 		String name = content.getString("name");
 		String url = content.getString("url");
-		return new MiroItem(name, description, date, url);
+		return new MiroGuideItem(name, description, date, url);
 	}
 
 	private Date parseMiroItemDate(String s) {

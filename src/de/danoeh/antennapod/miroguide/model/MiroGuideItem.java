@@ -2,13 +2,13 @@ package de.danoeh.antennapod.miroguide.model;
 
 import java.util.Date;
 
-public class MiroItem {
+public class MiroGuideItem {
 	private String name;
 	private String description;
 	private Date date;
 	private String url;
 
-	public MiroItem(String name, String description, Date date, String url) {
+	public MiroGuideItem(String name, String description, Date date, String url) {
 		super();
 		this.name = name;
 		this.description = description;

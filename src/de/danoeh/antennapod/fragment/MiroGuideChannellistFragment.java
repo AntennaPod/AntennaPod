@@ -26,10 +26,10 @@ import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 
 /**
- * Displays a list of MiroChannel objects that were results of a certain
+ * Displays a list of MiroGuideChannel objects that were results of a certain
  * MiroGuideService query. If the user reaches the bottom of the list, more
  * entries will be loaded until all entries have been loaded or the maximum
  * number of channels has been reached.
@@ -44,7 +44,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 	private static final int MAX_CHANNELS = 200;
 	private static final int CHANNELS_PER_QUERY = MiroGuideService.DEFAULT_CHANNEL_LIMIT;
 
-	private ArrayList<MiroChannel> channels;
+	private ArrayList<MiroGuideChannel> channels;
 	private MiroGuideChannelListAdapter listAdapter;
 	private int offset;
 
@@ -61,7 +61,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 	private String filterValue;
 	private String sort;
 
-	private AsyncTask<Void, Void, List<MiroChannel>> channelLoader;
+	private AsyncTask<Void, Void, List<MiroGuideChannel>> channelLoader;
 
 	/**
 	 * Creates a new instance of Channellist fragment.
@@ -98,7 +98,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		super.onCreate(savedInstanceState);
 
 		offset = 0;
-		channels = new ArrayList<MiroChannel>();
+		channels = new ArrayList<MiroGuideChannel>();
 
 		Bundle args = getArguments();
 		filter = args.getString(ARG_FILTER);
@@ -160,7 +160,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 	public void onListItemClick(ListView l, View v, int position, long id) {
 		super.onListItemClick(l, v, position, id);
 		if (listAdapter != null) {
-			MiroChannel selection = listAdapter.getItem(position);
+			MiroGuideChannel selection = listAdapter.getItem(position);
 			Intent launchIntent = new Intent(getActivity(),
 					MiroGuideChannelViewActivity.class);
 			launchIntent.putExtra(MiroGuideChannelViewActivity.EXTRA_CHANNEL_ID,
@@ -176,7 +176,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		if (!isLoadingChannels) {
 			if (!stopLoading) {
 				isLoadingChannels = true;
-				channelLoader = new AsyncTask<Void, Void, List<MiroChannel>>() {
+				channelLoader = new AsyncTask<Void, Void, List<MiroGuideChannel>>() {
 					private MiroGuideException exception;
 
 					@Override
@@ -186,12 +186,12 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 					}
 
 					@Override
-					protected void onPostExecute(List<MiroChannel> result) {
+					protected void onPostExecute(List<MiroGuideChannel> result) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Channel loading finished");
 						if (exception == null) {
 							getListView().removeFooterView(footer);
-							for (MiroChannel channel : result) {
+							for (MiroGuideChannel channel : result) {
 								channels.add(channel);
 							}
 							listAdapter.notifyDataSetChanged();
@@ -238,7 +238,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 					}
 
 					@Override
-					protected List<MiroChannel> doInBackground(Void... params) {
+					protected List<MiroGuideChannel> doInBackground(Void... params) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Background channel loader started");
 						MiroGuideService service = new MiroGuideService();

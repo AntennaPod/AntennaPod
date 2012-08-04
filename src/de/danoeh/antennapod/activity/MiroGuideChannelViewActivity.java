@@ -22,8 +22,8 @@ import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
-import de.danoeh.antennapod.miroguide.model.MiroItem;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 public class MiroGuideChannelViewActivity extends SherlockActivity {
@@ -40,7 +40,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 
 	private long channelId;
 	private String channelUrl;
-	private MiroChannel channel;
+	private MiroGuideChannel channel;
 
 	@Override
 	protected void onPause() {

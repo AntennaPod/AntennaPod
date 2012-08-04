@@ -11,19 +11,19 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.miroguide.model.MiroItem;
+import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 
-public class MiroGuideItemlistAdapter extends ArrayAdapter<MiroItem> {
+public class MiroGuideItemlistAdapter extends ArrayAdapter<MiroGuideItem> {
 
 	public MiroGuideItemlistAdapter(Context context, int textViewResourceId,
-			List<MiroItem> objects) {
+			List<MiroGuideItem> objects) {
 		super(context, textViewResourceId, objects);
 	}
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
-		MiroItem item = getItem(position);
+		MiroGuideItem item = getItem(position);
 
 		// Inflate Layout
 		if (convertView == null) {

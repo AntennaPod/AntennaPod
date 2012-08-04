@@ -13,7 +13,7 @@ import android.util.Log;
 import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 import de.danoeh.antennapod.util.BitmapDecoder;
 
 /** Downlods thumbnails from the MiroGuide and stores them in a DiskLruCache */
@@ -22,10 +22,10 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 
 	private Exception exception;
 
-	private MiroChannel miroChannel;
+	private MiroGuideChannel miroChannel;
 
 	public MiroGuideThumbnailDownloader(Handler handler, ImageView target,
-			MiroChannel miroChannel, int length) {
+			MiroGuideChannel miroChannel, int length) {
 		super(handler, target, miroChannel.getThumbnailUrl(), length);
 		this.miroChannel = miroChannel;
 	}

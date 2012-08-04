@@ -17,7 +17,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.miroguide.model.MiroChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 /** Caches and loads FeedImage bitmaps in the background */
@@ -135,7 +135,7 @@ public class FeedImageLoader {
 		}
 	}
 
-	public void loadMiroGuideThumbnail(MiroChannel channel, ImageView target) {
+	public void loadMiroGuideThumbnail(MiroGuideChannel channel, ImageView target) {
 		if (channel.getThumbnailUrl() != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(channel
 					.getThumbnailUrl());
