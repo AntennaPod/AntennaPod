@@ -180,6 +180,16 @@ public class DownloadRequester {// TODO handle externalstorage missing
 		}
 		return false;
 	}
+	
+	/** Checks if feedfile with the given download url is in the downloads list */
+	public boolean isDownloadingFile(String downloadUrl) {
+		for (FeedFile f : downloads) {
+			if (f.getDownload_url().equals(downloadUrl)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	public boolean hasNoDownloads() {
 		return downloads.isEmpty();

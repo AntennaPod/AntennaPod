@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item android:id="@+id/add_feed" android:icon="@drawable/content_new" android:title="@string/add_new_feed_label" android:showAsAction="ifRoom"></item>
+    <item android:id="@+id/visit_website_item" android:title="@string/visit_website_label" android:showAsAction="ifRoom" android:icon="@drawable/location_web_site"></item>
+    
+
+</menu>

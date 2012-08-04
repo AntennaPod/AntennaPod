@@ -448,6 +448,16 @@ public class FeedManager {
 		}
 		return null;
 	}
+	
+	/** Returns true if a feed with the given download link is already in the feedlist. */
+	public boolean feedExists(String downloadUrl) {
+		for (Feed feed : feeds) {
+			if (feed.getDownload_url().equals(downloadUrl)) {
+				return true;
+			}
+		}
+		return false;
+	}
 
 	/** Get a FeedItem by its identifying value. */
 	private FeedItem searchFeedItemByIdentifyingValue(Feed feed,

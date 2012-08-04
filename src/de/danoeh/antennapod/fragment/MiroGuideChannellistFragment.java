@@ -7,6 +7,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -14,11 +15,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
+import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MiroGuideChannelViewActivity;
 import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
@@ -151,6 +154,21 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 			public void onScrollStateChanged(AbsListView view, int scrollState) {
 			}
 		});
+	}
+
+	@Override
+	public void onListItemClick(ListView l, View v, int position, long id) {
+		super.onListItemClick(l, v, position, id);
+		if (listAdapter != null) {
+			MiroChannel selection = listAdapter.getItem(position);
+			Intent launchIntent = new Intent(getActivity(),
+					MiroGuideChannelViewActivity.class);
+			launchIntent.putExtra(MiroGuideChannelViewActivity.EXTRA_CHANNEL_ID,
+					selection.getId());
+			launchIntent.putExtra(MiroGuideChannelViewActivity.EXTRA_CHANNEL_URL,
+					selection.getDownloadUrl());
+			startActivity(launchIntent);
+		}
 	}
 
 	@SuppressLint("NewApi")
