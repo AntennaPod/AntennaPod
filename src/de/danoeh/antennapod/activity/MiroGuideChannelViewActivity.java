@@ -97,10 +97,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			if (exception == null) {
 				txtvTitle.setText(channel.getName());
 				txtVDescription.setText(channel.getDescription());
-				String[] entryNames = new String[channel.getItems().size()];
-				for (int i = 0; i < channel.getItems().size(); i++) {
-					entryNames[i] = channel.getItems().get(i).getName();
-				}
+
 				MiroGuideItemlistAdapter listAdapter = new MiroGuideItemlistAdapter(
 						MiroGuideChannelViewActivity.this, 0,
 						channel.getItems());
