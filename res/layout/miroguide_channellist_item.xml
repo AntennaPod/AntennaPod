@@ -1,35 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp" >
+    android:layout_height="match_parent" >
 
-    <ImageView
-        android:id="@+id/imgvChannelimage"
-        android:layout_width="40dip"
-        android:layout_height="40dip"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginLeft="1dip"
-        android:layout_marginRight="4dip"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        android:src="@drawable/default_cover" />
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="32dp"
+        android:gravity="center_vertical"
+        android:maxLines="1"
+        android:layout_margin="8dp"
+        android:textStyle="bold" />
 
-    <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_toRightOf="@id/imgvChannelimage"
-        android:orientation="vertical" >
-
-        <TextView
-            android:id="@+id/txtvTitle"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:textStyle="bold" />
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

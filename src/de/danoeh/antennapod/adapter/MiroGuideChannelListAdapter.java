@@ -33,9 +33,6 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
 
 			convertView = inflater.inflate(R.layout.miroguide_channellist_item, null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-			holder.cover = (ImageView) convertView
-					.findViewById(R.id.imgvChannelimage);
-			
 
 			convertView.setTag(holder);
 		} else {
@@ -43,13 +40,10 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroChannel> {
 		}
 		
 		holder.title.setText(channel.getName());
-		holder.cover.setTag(channel);
-		FeedImageLoader.getInstance().loadMiroGuideThumbnail(channel, holder.cover);
 		return convertView;
 	}
 
 	static class Holder {
-		ImageView cover;
 		TextView title;
 	}
 

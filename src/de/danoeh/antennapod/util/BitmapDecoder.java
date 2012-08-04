@@ -41,7 +41,7 @@ public class BitmapDecoder {
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = sampleSize;
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
+		
 		Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl, options);
 		if (decodedBitmap == null) {
 			Log.i(TAG,

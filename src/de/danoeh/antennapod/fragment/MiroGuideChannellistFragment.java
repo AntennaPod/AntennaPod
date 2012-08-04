@@ -27,9 +27,9 @@ import de.danoeh.antennapod.miroguide.model.MiroChannel;
 
 /**
  * Displays a list of MiroChannel objects that were results of a certain
- * MiroGuideService query. If the user reaches the bottom of the list, more entries
- * will be loaded until all entries have been loaded or the maximum number of
- * channels has been reached.
+ * MiroGuideService query. If the user reaches the bottom of the list, more
+ * entries will be loaded until all entries have been loaded or the maximum
+ * number of channels has been reached.
  * */
 public class MiroGuideChannellistFragment extends SherlockListFragment {
 	private static final String TAG = "MiroGuideChannellistFragment";
@@ -105,7 +105,8 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		LayoutInflater inflater = (LayoutInflater) getActivity()
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		footer = inflater.inflate(R.layout.loading_footer, null);
-		listAdapter = new MiroGuideChannelListAdapter(getActivity(), 0, channels);
+		listAdapter = new MiroGuideChannelListAdapter(getActivity(), 0,
+				channels);
 	}
 
 	@Override
@@ -123,14 +124,14 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		if (channelLoader != null) {
 			channelLoader.cancel(true);
 		}
-		FeedImageLoader.getInstance().clearExecutorQueue();
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 
-		getListView().addFooterView(footer);	// footer has to be added before the adapter has been set
+		getListView().addFooterView(footer); // footer has to be added before
+												// the adapter has been set
 		getListView().setAdapter(listAdapter);
 		getListView().removeFooterView(footer);
 
@@ -230,7 +231,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 							exception = e;
 							e.printStackTrace();
 						} finally {
-							//service.close();
+							// service.close();
 						}
 						return null;
 					}
