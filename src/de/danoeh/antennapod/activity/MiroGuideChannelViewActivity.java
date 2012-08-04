@@ -1,6 +1,10 @@
 package de.danoeh.antennapod.activity;
 
+import java.util.Date;
+
 import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +14,7 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -19,6 +24,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
+import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
@@ -122,10 +128,11 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean channelLoaded = channel != null;
+		boolean beingDownloaded = channelLoaded && DownloadRequester.getInstance()
+				.isDownloadingFile(channel.getDownloadUrl());
 		boolean notAdded = channelLoaded
 				&& !((FeedManager.getInstance().feedExists(channel
-						.getDownloadUrl())) || (DownloadRequester.getInstance()
-						.isDownloadingFile(channel.getDownloadUrl())));
+						.getDownloadUrl()) || beingDownloaded));
 		menu.findItem(R.id.add_feed).setVisible(notAdded);
 		menu.findItem(R.id.visit_website_item).setVisible(
 				channelLoaded && channel.getWebsiteUrl() != null);
@@ -137,6 +144,17 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			finish();
+			return true;
+		case R.id.visit_website_item:
+			Uri uri = Uri.parse(channel.getWebsiteUrl());
+			startActivity(new Intent(Intent.ACTION_VIEW, uri));
+			return true;
+		case R.id.add_feed:
+			DownloadRequester.getInstance().downloadFeed(this,
+					new Feed(channel.getDownloadUrl(), new Date()));
+			Toast toast = Toast.makeText(this, R.string.miro_feed_added, Toast.LENGTH_LONG);
+			toast.show();
+			invalidateOptionsMenu();
 			return true;
 		default:
 			return false;

@@ -166,6 +166,8 @@
     <string name="miro_search_hint">Search Miro Guide</string>
     <string name="popular_label">Popular</string>
     <string name="best_rating_label">Best rating</string>
+    <string name="add_feed_label">Add feed</string>
+    <string name="miro_feed_added">Feed is being added</string>
     
 
 </resources>

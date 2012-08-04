@@ -196,7 +196,7 @@
                 android:value=".activity.MiroGuideSearchActivity" />
         </activity>
         <activity android:name=".activity.MiroGuideCategoryActivity" android:configChanges="keyboardHidden|orientation" android:theme="@style/StyledIndicators"></activity>
-        <activity android:name=".activity.MiroGuideChannelViewActivity" android:configChanges="keyboard|orientation"></activity>
+        <activity android:name=".activity.MiroGuideChannelViewActivity" android:configChanges="keyboard|orientation" android:label="@string/miro_guide_label"></activity>
     </application>
 
 </manifest>
