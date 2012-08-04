@@ -17,29 +17,22 @@ import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.WindowManager;
 import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import android.widget.VideoView;
 
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity.MediaPlayerPagerAdapter;
-import de.danoeh.antennapod.activity.AudioplayerActivity.MediaPositionObserver;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -524,19 +517,6 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 				}
 			}
 		});
-
-		if (orientation == Configuration.ORIENTATION_PORTRAIT) {
-
-		} else {
-			videoOverlay = (LinearLayout) findViewById(R.id.overlay);
-			videoview = (VideoView) findViewById(R.id.videoview);
-			videoview.getHolder().addCallback(this);
-			videoview.setOnClickListener(playbuttonListener);
-			videoview.setOnTouchListener(onVideoviewTouched);
-			setupVideoControlsToggler();
-			getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-					WindowManager.LayoutParams.FLAG_FULLSCREEN);
-		}
 	}
 
 	void handleError(int errorCode) {
