@@ -12,9 +12,11 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
 import android.widget.VideoView;
 
 public class VideoplayerActivity extends MediaplayerActivity implements
@@ -54,6 +56,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		videoview.getHolder().addCallback(this);
 		videoview.setOnClickListener(playbuttonListener);
 		videoview.setOnTouchListener(onVideoviewTouched);
+		
 		setupVideoControlsToggler();
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -100,7 +103,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			}
 		}
 	};
-
+	
 	@SuppressLint("NewApi")
 	void setupVideoControlsToggler() {
 		if (videoControlsToggler != null) {
@@ -201,5 +204,21 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			startActivity(new Intent(this, AudioplayerActivity.class));
 		}
 	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		super.onStartTrackingTouch(seekBar);
+		if (videoControlsToggler != null) {
+			videoControlsToggler.cancel(true);
+		}
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		super.onStopTrackingTouch(seekBar);
+		setupVideoControlsToggler();
+	}
+	
+	
 
 }

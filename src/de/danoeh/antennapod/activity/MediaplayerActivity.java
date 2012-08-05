@@ -43,7 +43,7 @@ import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
-public abstract class MediaplayerActivity extends SherlockFragmentActivity {
+public abstract class MediaplayerActivity extends SherlockFragmentActivity implements OnSeekBarChangeListener{
 	private static final String TAG = "MediaplayerActivity";
 
 	static final int DEFAULT_SEEK_DELTA = 30000;
@@ -471,39 +471,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 
 		// SEEKBAR SETUP
 
-		sbPosition.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
-			int duration;
-			float prog;
-
-			@Override
-			public void onProgressChanged(SeekBar seekBar, int progress,
-					boolean fromUser) {
-				if (fromUser && PlaybackService.isRunning) {
-					prog = progress / ((float) seekBar.getMax());
-					duration = playbackService.getPlayer().getDuration();
-					txtvPosition.setText(Converter
-							.getDurationStringLong((int) (prog * duration)));
-				}
-
-			}
-
-			@Override
-			public void onStartTrackingTouch(SeekBar seekBar) {
-				// interrupt position Observer, restart later
-				if (positionObserver != null) {
-					positionObserver.cancel(true);
-					positionObserver = null;
-				}
-			}
-
-			@Override
-			public void onStopTrackingTouch(SeekBar seekBar) {
-				if (PlaybackService.isRunning) {
-					playbackService.seek((int) (prog * duration));
-					setupPositionObserver();
-				}
-			}
-		});
+		sbPosition.setOnSeekBarChangeListener(this);
 
 		// BUTTON SETUP
 
@@ -604,6 +572,39 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Background Task finished");
 			return null;
+		}
+	}
+	
+	// OnSeekbarChangeListener
+	private int duration;
+	private float prog;
+
+	@Override
+	public void onProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser) {
+		if (fromUser && PlaybackService.isRunning) {
+			prog = progress / ((float) seekBar.getMax());
+			duration = playbackService.getPlayer().getDuration();
+			txtvPosition.setText(Converter
+					.getDurationStringLong((int) (prog * duration)));
+		}
+
+	}
+
+	@Override
+	public void onStartTrackingTouch(SeekBar seekBar) {
+		// interrupt position Observer, restart later
+		if (positionObserver != null) {
+			positionObserver.cancel(true);
+			positionObserver = null;
+		}
+	}
+
+	@Override
+	public void onStopTrackingTouch(SeekBar seekBar) {
+		if (PlaybackService.isRunning) {
+			playbackService.seek((int) (prog * duration));
+			setupPositionObserver();
 		}
 	}
 
