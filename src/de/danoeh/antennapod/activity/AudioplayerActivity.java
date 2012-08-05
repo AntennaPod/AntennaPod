@@ -5,6 +5,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -13,11 +14,13 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.viewpagerindicator.TabPageIndicator;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SCListAdapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
+import de.danoeh.antennapod.service.PlaybackService;
 
 public class AudioplayerActivity extends MediaplayerActivity {
 
@@ -78,8 +81,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 		}
 	}
-
-	
 
 	public static class MediaPlayerPagerAdapter extends
 			FragmentStatePagerAdapter {
@@ -174,6 +175,15 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	}
 
+	@Override
+	protected void onReloadNotification(int notificationCode) {
+		if (notificationCode == PlaybackService.EXTRA_CODE_VIDEO) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"ReloadNotification received, switching to Videoplayer now");
+			startActivity(new Intent(this, VideoplayerActivity.class));
 
-	
+		}
+	}
+
 }

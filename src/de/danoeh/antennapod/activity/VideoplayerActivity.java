@@ -5,6 +5,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -192,6 +193,14 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Videosurface was destroyed");
 		videoSurfaceCreated = false;
+	}
+
+	@Override
+	protected void onReloadNotification(int notificationCode) {
+		if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
+			if (AppConfig.DEBUG) Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
+			startActivity(new Intent(this, AudioplayerActivity.class));
+		}
 	}
 
 }

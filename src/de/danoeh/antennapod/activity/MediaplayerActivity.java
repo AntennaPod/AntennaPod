@@ -121,6 +121,13 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 			handleStatus();
 		}
 	};
+
+	/**
+	 * Should be used to switch to another player activity if the mime type is
+	 * not the correct one for the current activity.
+	 */
+	protected abstract void onReloadNotification(int notificationCode);
+
 	protected BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
 
 		@Override
@@ -147,6 +154,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 						positionObserver = null;
 					}
 					mediaInfoLoaded = false;
+					onReloadNotification(intent.getIntExtra(
+							PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
 					queryService();
 
 					break;

@@ -68,6 +68,10 @@ public class PlaybackService extends Service {
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
+	
+	/** Used in NOTIFICATION_TYPE_RELOAD. */
+	public static final int EXTRA_CODE_AUDIO = 1;
+	public static final int EXTRA_CODE_VIDEO = 2;
 
 	public static final int NOTIFICATION_TYPE_ERROR = 0;
 	public static final int NOTIFICATION_TYPE_INFO = 1;
@@ -478,8 +482,14 @@ public class PlaybackService extends Service {
 				media = nextItem.getMedia();
 				feed = nextItem.getFeed();
 				shouldStream = !media.isDownloaded();
+				int notificationCode = 0;
+				if (media.getMime_type().startsWith("audio")) {
+					notificationCode = EXTRA_CODE_AUDIO;
+				} else if (media.getMime_type().startsWith("video")) {
+					notificationCode = EXTRA_CODE_VIDEO;
+				}
 				resetVideoSurface();
-				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Stopping playback");
