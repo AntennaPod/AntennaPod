@@ -108,7 +108,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:visibility="invisible" />
+            android:textColor="@color/gray" />
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
