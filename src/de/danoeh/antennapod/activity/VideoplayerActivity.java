@@ -44,7 +44,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		if (videoControlsToggler != null) {
 			videoControlsToggler.cancel(true);
 		}
-		finish();
 	}
 
 	@Override

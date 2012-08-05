@@ -68,7 +68,7 @@ public class PlaybackService extends Service {
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
-	
+
 	/** Used in NOTIFICATION_TYPE_RELOAD. */
 	public static final int EXTRA_CODE_AUDIO = 1;
 	public static final int EXTRA_CODE_VIDEO = 2;
@@ -362,8 +362,12 @@ public class PlaybackService extends Service {
 
 	/** Called after service has extracted the media it is supposed to play. */
 	private void setupMediaplayer() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Setting up media player");
 		try {
 			if (media.getMime_type().startsWith("audio")) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Mime type is audio");
 				playingVideo = false;
 				if (shouldStream) {
 					player.setDataSource(media.getDownload_url());
@@ -375,6 +379,8 @@ public class PlaybackService extends Service {
 					player.prepare();
 				}
 			} else if (media.getMime_type().startsWith("video")) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Mime type is video");
 				playingVideo = true;
 				setStatus(PlayerStatus.AWAITING_VIDEO_SURFACE);
 				player.setScreenOnWhilePlaying(true);
@@ -485,11 +491,13 @@ public class PlaybackService extends Service {
 				int notificationCode = 0;
 				if (media.getMime_type().startsWith("audio")) {
 					notificationCode = EXTRA_CODE_AUDIO;
+					playingVideo = false;
 				} else if (media.getMime_type().startsWith("video")) {
 					notificationCode = EXTRA_CODE_VIDEO;
 				}
 				resetVideoSurface();
-				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+						notificationCode);
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Stopping playback");
