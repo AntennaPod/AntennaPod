@@ -6,10 +6,12 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
+import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.VideoView;
@@ -20,16 +22,22 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 
 	/** True if video controls are currently visible. */
 	private boolean videoControlsShowing = true;
+	private boolean videoSurfaceCreated = false;
 	private VideoControlsHider videoControlsToggler;
 
 	private LinearLayout videoOverlay;
 	private VideoView videoview;
 
 	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+	}
+
+	@Override
 	protected void onPause() {
 		super.onPause();
 		if (PlaybackService.isRunning && playbackService != null
-				&& playbackService.isPlayingVideo()) {
+				&& PlaybackService.isPlayingVideo()) {
 			playbackService.stop();
 		}
 		if (videoControlsToggler != null) {
@@ -37,8 +45,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		}
 		finish();
 	}
-
-	
 
 	@Override
 	protected void setupGUI() {
@@ -53,11 +59,14 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
 	}
 
-
-
 	@Override
 	protected void onAwaitingVideoSurface() {
-		playbackService.setVideoSurface(videoview.getHolder());
+		if (videoSurfaceCreated) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"Videosurface already created, setting videosurface now");
+			playbackService.setVideoSurface(videoview.getHolder());
+		}
 	}
 
 	@Override
@@ -71,7 +80,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		// TODO Auto-generated method stub
 
 	}
-	
+
 	View.OnTouchListener onVideoviewTouched = new View.OnTouchListener() {
 
 		@Override
@@ -117,33 +126,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		videoControlsShowing = !videoControlsShowing;
 	}
 
-
-	@Override
-	public void surfaceChanged(SurfaceHolder holder, int format, int width,
-			int height) {
-		holder.setFixedSize(width, height);
-	}
-
-	@Override
-	public void surfaceCreated(SurfaceHolder holder) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Videoview holder created");
-		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
-			if (playbackService != null) {
-				playbackService.setVideoSurface(holder);
-			} else {
-				Log.e(TAG,
-						"Could'nt attach surface to mediaplayer - reference to service was null");
-			}
-		}
-
-	}
-
-	@Override
-	public void surfaceDestroyed(SurfaceHolder holder) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Videosurface was destroyed");
-	}
-	
 	/** Hides the videocontrols after a certain period of time. */
 	public class VideoControlsHider extends AsyncTask<Void, Void, Void> {
 		@Override
@@ -181,6 +163,35 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			return null;
 		}
 
+	}
+
+	@Override
+	public void surfaceChanged(SurfaceHolder holder, int format, int width,
+			int height) {
+		holder.setFixedSize(width, height);
+	}
+
+	@Override
+	public void surfaceCreated(SurfaceHolder holder) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Videoview holder created");
+		videoSurfaceCreated = true;
+		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+			if (playbackService != null) {
+				playbackService.setVideoSurface(holder);
+			} else {
+				Log.e(TAG,
+						"Could'nt attach surface to mediaplayer - reference to service was null");
+			}
+		}
+
+	}
+
+	@Override
+	public void surfaceDestroyed(SurfaceHolder holder) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Videosurface was destroyed");
+		videoSurfaceCreated = false;
 	}
 
 }

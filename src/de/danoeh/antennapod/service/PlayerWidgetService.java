@@ -68,7 +68,7 @@ public class PlayerWidgetService extends Service {
 		RemoteViews views = new RemoteViews(getPackageName(),
 				R.layout.player_widget);
 		PendingIntent startMediaplayer = PendingIntent.getActivity(this, 0,
-				new Intent(this, AudioplayerActivity.class), 0);
+				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
 		if (playbackService != null) {

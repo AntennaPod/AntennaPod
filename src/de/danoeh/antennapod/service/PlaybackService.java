@@ -28,6 +28,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
+import de.danoeh.antennapod.activity.VideoplayerActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -47,6 +48,8 @@ public class PlaybackService extends Service {
 	public static final String PREF_LAST_PLAYED_FEED_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedId";
 	/** True if last played media was streamed. */
 	public static final String PREF_LAST_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
+	/** True if last played media was a video. */
+	public static final String PREF_LAST_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
 	/** Contains the id of the FeedMedia object. */
 	public static final String EXTRA_MEDIA_ID = "extra.de.danoeh.antennapod.service.mediaId";
@@ -91,13 +94,14 @@ public class PlaybackService extends Service {
 	/** True if media should be streamed (Extracted from Intent Extra) . */
 	private boolean shouldStream;
 	private boolean startWhenPrepared;
-	private boolean playingVideo;
 	private FeedManager manager;
 	private PlayerStatus status;
 	private PositionSaver positionSaver;
 	private WidgetUpdateWorker widgetUpdater;
 
 	private volatile PlayerStatus statusBeforeSeek;
+
+	private static boolean playingVideo;
 
 	/** True if mediaplayer was paused because it lost audio focus temporarily */
 	private boolean pausedBecauseOfTransientAudiofocusLoss;
@@ -107,6 +111,43 @@ public class PlaybackService extends Service {
 	public class LocalBinder extends Binder {
 		public PlaybackService getService() {
 			return PlaybackService.this;
+		}
+	}
+
+	/**
+	 * Returns an intent which starts an audio- or videoplayer, depending on the
+	 * type of media that is being played. If the playbackservice is not
+	 * running, the type of the last played media will be looked up.
+	 * */
+	public static Intent getPlayerActivityIntent(Context context) {
+		if (isRunning) {
+			if (playingVideo) {
+				return new Intent(context, VideoplayerActivity.class);
+			} else {
+				return new Intent(context, AudioplayerActivity.class);
+			}
+		} else {
+			SharedPreferences pref = context.getApplicationContext()
+					.getSharedPreferences(PodcastApp.PREF_NAME, 0);
+			boolean isVideo = pref.getBoolean(PREF_LAST_IS_VIDEO, false);
+			if (isVideo) {
+				return new Intent(context, VideoplayerActivity.class);
+			} else {
+				return new Intent(context, AudioplayerActivity.class);
+			}
+		}
+	}
+
+	/**
+	 * Same as getPlayerActivityIntent(context), but here the type of activity
+	 * depends on the FeedMedia that is provided as an argument.
+	 */
+	public static Intent getPlayerActivityIntent(Context context,
+			FeedMedia media) {
+		if (media.getMime_type().startsWith("video")) {
+			return new Intent(context, VideoplayerActivity.class);
+		} else {
+			return new Intent(context, AudioplayerActivity.class);
 		}
 	}
 
@@ -529,6 +570,7 @@ public class PlaybackService extends Service {
 				editor.putLong(PREF_LAST_PLAYED_ID, media.getId());
 				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
 				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);
+				editor.putBoolean(PREF_LAST_IS_VIDEO, playingVideo);
 				editor.commit();
 
 				player.start();
@@ -562,8 +604,8 @@ public class PlaybackService extends Service {
 
 	/** Prepares notification and starts the service in the foreground. */
 	private void setupNotification() {
-		PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
-				this, AudioplayerActivity.class),
+		PendingIntent pIntent = PendingIntent.getActivity(this, 0,
+				PlaybackService.getPlayerActivityIntent(this),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Bitmap icon = BitmapFactory.decodeResource(null,
@@ -809,7 +851,7 @@ public class PlaybackService extends Service {
 
 	}
 
-	public boolean isPlayingVideo() {
+	public static boolean isPlayingVideo() {
 		return playingVideo;
 	}
 

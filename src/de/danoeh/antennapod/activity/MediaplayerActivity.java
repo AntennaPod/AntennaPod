@@ -377,9 +377,9 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 			break;
 		}
 	}
-	
+
 	protected abstract void onAwaitingVideoSurface();
-	
+
 	protected abstract void postStatusMsg(int resId);
 
 	protected abstract void clearStatusMsg();
@@ -543,30 +543,13 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Querying service info");
 		if (playbackService != null) {
-			int requestedOrientation;
 			status = playbackService.getStatus();
 			media = playbackService.getMedia();
 			invalidateOptionsMenu();
 
-			if (playbackService.isPlayingVideo()) {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE;
-			} else {
-				setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-				requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_PORTRAIT;
-			}
-			// check if orientation is correct
-			if ((requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE && orientation == Configuration.ORIENTATION_LANDSCAPE)
-					|| (requestedOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT && orientation == Configuration.ORIENTATION_PORTRAIT)) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Orientation correct");
-				setupGUI();
-				handleStatus();
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG,
-							"Orientation incorrect, waiting for orientation change");
-			}
+			setupGUI();
+			handleStatus();
+
 		} else {
 			Log.e(TAG,
 					"queryService() was called without an existing connection to playbackservice");

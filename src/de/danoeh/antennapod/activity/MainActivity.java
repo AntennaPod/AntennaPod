@@ -24,6 +24,7 @@ import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.UnreadItemlistFragment;
 import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.AppConfig;
@@ -104,7 +105,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			startActivity(new Intent(this, PreferenceActivity.class));
 			return true;
 		case R.id.show_player:
-			startActivity(new Intent(this, AudioplayerActivity.class));
+			startActivity(PlaybackService.getPlayerActivityIntent(this));
 			return true;
 		case R.id.opml_import:
 			startActivity(new Intent(this, OpmlImportActivity.class));

@@ -106,8 +106,7 @@ public class FeedManager {
 		context.startService(launchIntent);
 		if (showPlayer) {
 			// Launch Mediaplayer
-			Intent playerIntent = new Intent(context, AudioplayerActivity.class);
-			context.startActivity(playerIntent);
+			context.startActivity(PlaybackService.getPlayerActivityIntent(context, media));
 		}
 	}
 

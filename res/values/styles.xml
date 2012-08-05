@@ -10,4 +10,9 @@
             <item name="android:textColor">@color/black</item>
         </style>
         
+    
+    <style name="VideoplayerTheme" parent="@style/Theme.Sherlock.Light.ForceOverflow">
+        <item name="android:windowActionBarOverlay">true</item>
+    </style>
+        
 </resources>

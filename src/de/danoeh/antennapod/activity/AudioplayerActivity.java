@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Intent;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
@@ -22,7 +23,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	final String TAG = "AudioplayerActivity";
 
-	// Widgets
 	private CoverFragment coverFragment;
 	private ItemDescriptionFragment descriptionFragment;
 	ViewPager viewpager;
@@ -32,8 +32,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void onAwaitingVideoSurface() {
-		// TODO Auto-generated method stub
-
+		startActivity(new Intent(this, VideoplayerActivity.class));
 	}
 
 	@Override
