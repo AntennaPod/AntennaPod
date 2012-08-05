@@ -168,6 +168,7 @@
     <string name="best_rating_label">Best rating</string>
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
+    <string name="player_buffering_msg">Buffering</string>
     
 
 </resources>

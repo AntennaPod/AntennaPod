@@ -8,6 +8,14 @@
         android:id="@+id/videoview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
+
+    <ProgressBar
+        android:id="@+id/progressIndicator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:visibility="invisible"
+        android:indeterminateOnly="true" />
     <!-- Mediaplayer controls -->
 
     <LinearLayout

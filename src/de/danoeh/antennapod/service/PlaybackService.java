@@ -79,6 +79,8 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_RELOAD = 3;
 	/** The state of the sleeptimer changed. */
 	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
+	public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
+	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
@@ -171,6 +173,7 @@ public class PlaybackService extends Service {
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
 		player.setOnErrorListener(onErrorListener);
 		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
+		player.setOnInfoListener(onInfoListener);
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
@@ -356,6 +359,7 @@ public class PlaybackService extends Service {
 		player.setOnSeekCompleteListener(onSeekCompleteListener);
 		player.setOnErrorListener(onErrorListener);
 		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
+		player.setOnInfoListener(onInfoListener);
 		status = PlayerStatus.STOPPED;
 		setupMediaplayer();
 	}
@@ -446,6 +450,23 @@ public class PlaybackService extends Service {
 		}
 	};
 
+	private MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
+		
+		@Override
+		public boolean onInfo(MediaPlayer mp, int what, int extra) {
+			switch (what) {
+			case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+				sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
+				return true;
+			case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+				sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
+				return true;
+				default:
+					return false;
+			}
+		}
+	};
+	
 	private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
 		private static final String TAG = "PlaybackService.onErrorListener";
 

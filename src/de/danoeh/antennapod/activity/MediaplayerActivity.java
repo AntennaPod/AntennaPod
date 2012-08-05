@@ -127,6 +127,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 	 * not the correct one for the current activity.
 	 */
 	protected abstract void onReloadNotification(int notificationCode);
+	protected abstract void onBufferStart();
+	protected abstract void onBufferEnd();
 
 	protected BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
 
@@ -161,6 +163,12 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 					break;
 				case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
 					invalidateOptionsMenu();
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_BUFFER_START:
+					onBufferStart();
+					break;
+				case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
+					onBufferEnd();
 					break;
 				}
 

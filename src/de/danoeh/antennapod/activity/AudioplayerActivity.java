@@ -186,4 +186,14 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		}
 	}
 
+	@Override
+	protected void onBufferStart() {
+		postStatusMsg(R.string.player_buffering_msg);
+	}
+
+	@Override
+	protected void onBufferEnd() {
+		clearStatusMsg();
+	}
+
 }

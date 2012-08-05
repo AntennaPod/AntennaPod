@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.VideoView;
 
@@ -30,6 +31,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 
 	private LinearLayout videoOverlay;
 	private VideoView videoview;
+	private ProgressBar progressIndicator;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -64,6 +66,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		super.setupGUI();
 		videoOverlay = (LinearLayout) findViewById(R.id.overlay);
 		videoview = (VideoView) findViewById(R.id.videoview);
+		progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
 		videoview.getHolder().addCallback(this);
 		videoview.setOnClickListener(playbuttonListener);
 		videoview.setOnTouchListener(onVideoviewTouched);
@@ -85,14 +88,15 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 
 	@Override
 	protected void postStatusMsg(int resId) {
-		// TODO Auto-generated method stub
+		if (resId == R.string.player_preparing_msg) {
+			progressIndicator.setVisibility(View.VISIBLE);
+		}
 
 	}
 
 	@Override
 	protected void clearStatusMsg() {
-		// TODO Auto-generated method stub
-
+		progressIndicator.setVisibility(View.INVISIBLE);
 	}
 
 	View.OnTouchListener onVideoviewTouched = new View.OnTouchListener() {
@@ -228,6 +232,16 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	public void onStopTrackingTouch(SeekBar seekBar) {
 		super.onStopTrackingTouch(seekBar);
 		setupVideoControlsToggler();
+	}
+
+	@Override
+	protected void onBufferStart() {
+		progressIndicator.setVisibility(View.VISIBLE);
+	}
+
+	@Override
+	protected void onBufferEnd() {
+		progressIndicator.setVisibility(View.INVISIBLE);
 	}
 	
 	
