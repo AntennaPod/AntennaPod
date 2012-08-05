@@ -20,5 +20,6 @@
     <color name="bright_blue">#33B5E5</color>
     <color name="ics_gray">#858585</color>
     <color name="selection_background">#FEBB20</color>
+    <color name="actionbar_gray">#DDDDDD</color>
 
 </resources>
