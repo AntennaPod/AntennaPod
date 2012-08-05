@@ -39,12 +39,23 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	@Override
 	protected void onPause() {
 		super.onPause();
+		if (videoControlsToggler != null) {
+			videoControlsToggler.cancel(true);
+		}
+		if (PlaybackService.isRunning && playbackService != null
+				&& PlaybackService.isPlayingVideo()) {
+			playbackService.pause(true);
+		}
+	}
+	
+	
+
+	@Override
+	protected void onStop() {
+		super.onStop();
 		if (PlaybackService.isRunning && playbackService != null
 				&& PlaybackService.isPlayingVideo()) {
 			playbackService.stop();
-		}
-		if (videoControlsToggler != null) {
-			videoControlsToggler.cancel(true);
 		}
 	}
 
