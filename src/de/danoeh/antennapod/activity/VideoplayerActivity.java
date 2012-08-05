@@ -90,6 +90,8 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	protected void postStatusMsg(int resId) {
 		if (resId == R.string.player_preparing_msg) {
 			progressIndicator.setVisibility(View.VISIBLE);
+		} else {
+			progressIndicator.setVisibility(View.INVISIBLE);
 		}
 
 	}
