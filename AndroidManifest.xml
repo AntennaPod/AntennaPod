@@ -19,7 +19,7 @@
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="false"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true" android:anyDensity="true"/>
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"

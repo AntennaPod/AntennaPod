@@ -120,7 +120,7 @@ public class FeedImageLoader {
 	}
 
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
-		if (image.getFile_url() != null) {
+		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(image.getFile_url());
 			if (bitmap != null) {
 				target.setImageBitmap(bitmap);
