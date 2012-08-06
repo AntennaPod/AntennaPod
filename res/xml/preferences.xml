@@ -30,6 +30,7 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
+        <CheckBoxPreference android:summary="@string/pref_autoQueue_sum" android:defaultValue="true" android:key="prefAutoQueue" android:title="@string/pref_autoQueue_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/flattr_settings_label" >
         <PreferenceScreen
