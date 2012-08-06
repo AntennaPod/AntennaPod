@@ -85,7 +85,7 @@ public class FeedImageLoader {
 
 	private ExecutorService createExecutor() {
 		return Executors.newFixedThreadPool(Runtime.getRuntime()
-				.availableProcessors(), new ThreadFactory() {
+				.availableProcessors() + 1, new ThreadFactory() {
 
 			@Override
 			public Thread newThread(Runnable r) {

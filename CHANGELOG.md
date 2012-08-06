@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.3
+-------------
+* MiroGuide integration
+* Bugfixes in the audio- and videoplayer
+* Automatically add feeds to the queue when they have been downloaded
+
 Version 0.9.2
 -------------
 * Bugfixes in the user interface
