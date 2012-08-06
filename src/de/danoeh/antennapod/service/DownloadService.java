@@ -18,6 +18,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import org.xml.sax.SAXException;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -53,6 +54,7 @@ import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.preference.PreferenceManager;
 
 public class DownloadService extends Service {
 	private static final String TAG = "DownloadService";
@@ -398,7 +400,7 @@ public class DownloadService extends Service {
 
 		private Feed feed;
 		private DownloadService service;
-		
+
 		private int reason;
 		private boolean successful;
 
@@ -469,14 +471,15 @@ public class DownloadService extends Service {
 			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
 			queryDownloads();
 		}
-		
+
 		/** Checks if the feed was parsed correctly. */
 		private boolean checkFeedData(Feed feed) {
 			if (feed.getTitle() == null) {
 				Log.e(TAG, "Feed has no title.");
 				return false;
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Feed appears to be valid.");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Feed appears to be valid.");
 				return true;
 			}
 		}
@@ -553,6 +556,24 @@ public class DownloadService extends Service {
 			sendDownloadHandledIntent(media.getDownloadId(), statusId, false, 0);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
+			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
+					getApplicationContext()).getBoolean(
+					PodcastApp.PREF_AUTO_QUEUE, true);
+			
+			if (!manager.isInQueue(media.getItem())) {
+				// Auto-queue
+				if (autoQueue) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Autoqueue is enabled. Adding item to queue");
+					manager.addQueueItem(DownloadService.this, media.getItem());
+				} else {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Autoqueue is disabled");
+				}
+			} else {
+				if (AppConfig.DEBUG) Log.d(TAG, "Item is already in queue");
+			}
+			
 			queryDownloads();
 		}
 	}

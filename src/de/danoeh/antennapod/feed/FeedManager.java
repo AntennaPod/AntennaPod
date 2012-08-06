@@ -106,7 +106,8 @@ public class FeedManager {
 		context.startService(launchIntent);
 		if (showPlayer) {
 			// Launch Mediaplayer
-			context.startActivity(PlaybackService.getPlayerActivityIntent(context, media));
+			context.startActivity(PlaybackService.getPlayerActivityIntent(
+					context, media));
 		}
 	}
 
@@ -161,7 +162,8 @@ public class FeedManager {
 			public void run() {
 				feeds.remove(feed);
 				sendFeedUpdateBroadcast(context);
-			}});
+			}
+		});
 
 	}
 
@@ -182,7 +184,7 @@ public class FeedManager {
 		}
 		context.sendBroadcast(update);
 	}
-	
+
 	private void sendFeedUpdateBroadcast(Context context) {
 		context.sendBroadcast(new Intent(ACITON_FEED_LIST_UPDATE));
 	}
@@ -191,7 +193,8 @@ public class FeedManager {
 	 * Sets the 'read'-attribute of a FeedItem. Should be used by all Classes
 	 * instead of the setters of FeedItem.
 	 */
-	public void markItemRead(final Context context, final FeedItem item, final boolean read) {
+	public void markItemRead(final Context context, final FeedItem item,
+			final boolean read) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting item with title " + item.getTitle()
 					+ " as read/unread");
@@ -205,11 +208,13 @@ public class FeedManager {
 					unreadItems.remove(item);
 				} else {
 					unreadItems.add(item);
-					Collections.sort(unreadItems, new FeedItemPubdateComparator());
+					Collections.sort(unreadItems,
+							new FeedItemPubdateComparator());
 				}
 				sendUnreadItemsUpdateBroadcast(context, item);
-			}});
-		
+			}
+		});
+
 	}
 
 	/**
@@ -303,13 +308,20 @@ public class FeedManager {
 		return result;
 	}
 
-	public void addQueueItem(Context context, FeedItem item) {
+	public void addQueueItem(final Context context, final FeedItem item) {
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				queue.add(item);
+				sendQueueUpdateBroadcast(context, item);
+
+			}
+		});
 		PodDBAdapter adapter = new PodDBAdapter(context);
-		queue.add(item);
 		adapter.open();
 		adapter.setQueue(queue);
 		adapter.close();
-		sendQueueUpdateBroadcast(context, item);
 	}
 
 	/** Removes all items in queue */
@@ -447,8 +459,11 @@ public class FeedManager {
 		}
 		return null;
 	}
-	
-	/** Returns true if a feed with the given download link is already in the feedlist. */
+
+	/**
+	 * Returns true if a feed with the given download link is already in the
+	 * feedlist.
+	 */
 	public boolean feedExists(String downloadUrl) {
 		for (Feed feed : feeds) {
 			if (feed.getDownload_url().equals(downloadUrl)) {
