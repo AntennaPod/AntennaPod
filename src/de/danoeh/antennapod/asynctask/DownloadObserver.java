@@ -137,6 +137,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 						status.done = true;
 						status.reason = getDownloadStatus(cursor,
 								DownloadManager.COLUMN_REASON);
+						break;
 					case DownloadManager.STATUS_PENDING:
 						status.statusMsg = R.string.download_pending;
 						break;
@@ -144,6 +145,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 						status.done = true;
 						status.successful = false;
 						status.statusMsg = R.string.download_cancelled_msg;
+						requester.notifyDownloadService(context);
 					}
 				}
 			} while (cursor.moveToNext());
