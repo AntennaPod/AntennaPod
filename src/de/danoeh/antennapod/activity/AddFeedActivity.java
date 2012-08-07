@@ -30,7 +30,7 @@ import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.URLChecker;
 
-/** Activity for adding/editing a Feed */
+/** Activity for adding a Feed */
 public class AddFeedActivity extends SherlockActivity {
 	private static final String TAG = "AddFeedActivity";
 
@@ -145,6 +145,7 @@ public class AddFeedActivity extends SherlockActivity {
 
 	}
 
+	/** Read the url text field and start downloading a new feed. */
 	private void addNewFeed() {
 		String url = etxtFeedurl.getText().toString();
 		url = URLChecker.prepareURL(url);
@@ -182,6 +183,7 @@ public class AddFeedActivity extends SherlockActivity {
 		}
 	}
 
+	/** Start listening for any intents send by the DownloadService. */
 	private void observeDownload(Feed feed) {
 		progDialog.show();
 		progDialog.setMessage("Downloading Feed");
@@ -189,6 +191,10 @@ public class AddFeedActivity extends SherlockActivity {
 				DownloadService.ACTION_DOWNLOAD_HANDLED));
 	}
 
+	/**
+	 * Set the message text of the progress dialog to the current status of the
+	 * download.
+	 */
 	private void updateProgDialog(final String msg) {
 		if (progDialog.isShowing()) {
 			runOnUiThread(new Runnable() {

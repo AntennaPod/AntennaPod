@@ -16,6 +16,7 @@ import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
 
+/** Main application class. */
 public class PodcastApp extends Application implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
 
@@ -50,19 +51,25 @@ public class PodcastApp extends Application implements
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
 	}
-	
-	/** Creates the import directory if it doesn't exist and if storage is available */
+
+	/**
+	 * Creates the import directory if it doesn't exist and if storage is
+	 * available
+	 */
 	private void createImportDirectory() {
 		File importDir = getExternalFilesDir(OpmlImportActivity.IMPORT_DIR);
 		if (importDir != null) {
 			if (importDir.exists()) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Import directory already exists");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Import directory already exists");
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Creating import directory");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Creating import directory");
 				importDir.mkdir();
 			}
 		} else {
-			if (AppConfig.DEBUG) Log.d(TAG, "Could not access external storage.");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Could not access external storage.");
 		}
 	}
 
@@ -73,6 +80,10 @@ public class PodcastApp extends Application implements
 		FeedImageLoader.getInstance().wipeImageCache();
 	}
 
+	/**
+	 * Listens for changes in the 'update intervall'-preference and changes the
+	 * alarm if necessary.
+	 */
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sharedPreferences,
 			String key) {

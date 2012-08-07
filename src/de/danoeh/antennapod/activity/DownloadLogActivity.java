@@ -9,6 +9,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.feed.FeedManager;
 
+/** Displays completed and failed downloads in a list. The data comes from the FeedManager. */
 public class DownloadLogActivity extends SherlockListActivity {
 	private static final String TAG = "DownloadLogActivity";
 

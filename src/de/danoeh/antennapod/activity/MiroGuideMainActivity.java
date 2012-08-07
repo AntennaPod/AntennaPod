@@ -19,7 +19,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 
-/** Shows a list of available categories and offers a search button. */
+/**
+ * Shows a list of available categories and offers a search button. If the user
+ * selects a category, the MiroGuideCategoryActivity is started.
+ */
 public class MiroGuideMainActivity extends SherlockListActivity {
 	private static final String TAG = "MiroGuideMainActivity";
 
@@ -57,7 +60,8 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		super.onListItemClick(l, v, position, id);
 		String selection = listAdapter.getItem(position);
 		Intent launchIntent = new Intent(this, MiroGuideCategoryActivity.class);
-		launchIntent.putExtra(MiroGuideCategoryActivity.EXTRA_CATEGORY, selection);
+		launchIntent.putExtra(MiroGuideCategoryActivity.EXTRA_CATEGORY,
+				selection);
 		startActivity(launchIntent);
 	}
 
@@ -70,6 +74,9 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		}
 	}
 
+	/**
+	 * Launches an AsyncTask to load the available categories in the background.
+	 */
 	@SuppressLint("NewApi")
 	private void loadCategories() {
 		AsyncTask<Void, Void, Void> listLoader = new AsyncTask<Void, Void, Void>() {

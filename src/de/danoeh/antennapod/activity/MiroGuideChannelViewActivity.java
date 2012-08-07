@@ -9,7 +9,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
@@ -29,9 +28,12 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
-import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
+/**
+ * Displays information about one channel and lets the user add this channel to
+ * his library.
+ */
 public class MiroGuideChannelViewActivity extends SherlockActivity {
 	private static final String TAG = "MiroGuideChannelViewActivity";
 
@@ -78,6 +80,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 
 	}
 
+	/** Is used to load channel information asynchronously. */
 	private AsyncTask<Void, Void, Void> channelLoader = new AsyncTask<Void, Void, Void>() {
 		private static final String TAG = "ChannelLoader";
 		private Exception exception;
@@ -128,11 +131,12 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
 		boolean channelLoaded = channel != null;
-		boolean beingDownloaded = channelLoaded && DownloadRequester.getInstance()
-				.isDownloadingFile(channel.getDownloadUrl());
+		boolean beingDownloaded = channelLoaded
+				&& DownloadRequester.getInstance().isDownloadingFile(
+						channel.getDownloadUrl());
 		boolean notAdded = channelLoaded
-				&& !((FeedManager.getInstance().feedExists(channel
-						.getDownloadUrl()) || beingDownloaded));
+				&& !((FeedManager.getInstance().feedExists(
+						channel.getDownloadUrl()) || beingDownloaded));
 		menu.findItem(R.id.add_feed).setVisible(notAdded);
 		menu.findItem(R.id.visit_website_item).setVisible(
 				channelLoaded && channel.getWebsiteUrl() != null);
@@ -152,7 +156,8 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 		case R.id.add_feed:
 			DownloadRequester.getInstance().downloadFeed(this,
 					new Feed(channel.getDownloadUrl(), new Date()));
-			Toast toast = Toast.makeText(this, R.string.miro_feed_added, Toast.LENGTH_LONG);
+			Toast toast = Toast.makeText(this, R.string.miro_feed_added,
+					Toast.LENGTH_LONG);
 			toast.show();
 			invalidateOptionsMenu();
 			return true;

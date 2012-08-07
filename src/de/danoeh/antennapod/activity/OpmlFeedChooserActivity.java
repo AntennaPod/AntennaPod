@@ -19,6 +19,10 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
 
+/**
+ * Displays the feeds that the OPML-Importer has read and lets the user choose
+ * which feeds he wants to import.
+ */
 public class OpmlFeedChooserActivity extends SherlockActivity {
 	private static final String TAG = "OpmlFeedChooserActivity";
 

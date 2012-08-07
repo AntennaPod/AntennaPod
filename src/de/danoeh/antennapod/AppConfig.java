@@ -1,5 +1,6 @@
 package de.danoeh.antennapod;
 
 public final class AppConfig {
-    public final static boolean DEBUG = true;
+	/** Should be used for debug logging. */
+	public final static boolean DEBUG = true;
 }

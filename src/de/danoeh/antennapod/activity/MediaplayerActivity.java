@@ -10,7 +10,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.media.MediaPlayer;
@@ -43,7 +42,12 @@ import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
-public abstract class MediaplayerActivity extends SherlockFragmentActivity implements OnSeekBarChangeListener{
+/**
+ * Provides general features which are both needed for playing audio and video
+ * files.
+ */
+public abstract class MediaplayerActivity extends SherlockFragmentActivity
+		implements OnSeekBarChangeListener {
 	private static final String TAG = "MediaplayerActivity";
 
 	static final int DEFAULT_SEEK_DELTA = 30000;
@@ -127,7 +131,16 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 	 * not the correct one for the current activity.
 	 */
 	protected abstract void onReloadNotification(int notificationCode);
+
+	/**
+	 * Should be used to inform the user that the PlaybackService is currently
+	 * buffering.
+	 */
 	protected abstract void onBufferStart();
+
+	/**
+	 * Should be used to hide the view that was showing the 'buffering'-message.
+	 */
 	protected abstract void onBufferEnd();
 
 	protected BroadcastReceiver notificationReceiver = new BroadcastReceiver() {
@@ -316,6 +329,11 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 
 	}
 
+	/**
+	 * Tries to establish a connection to the PlaybackService. If it isn't
+	 * running, the PlaybackService will be started with the last played media
+	 * as the arguments of the launch intent.
+	 */
 	protected void bindToService() {
 		Intent serviceIntent = new Intent(this, PlaybackService.class);
 		boolean bound = false;
@@ -353,6 +371,10 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 			Log.d(TAG, "Result for service binding: " + bound);
 	}
 
+	/**
+	 * Is called whenever the PlaybackService changes it's status. This method
+	 * should be used to update the GUI or start/cancel AsyncTasks.
+	 */
 	private void handleStatus() {
 		switch (status) {
 
@@ -395,6 +417,10 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 		}
 	}
 
+	/**
+	 * Called by 'handleStatus()' when the PlaybackService is in the
+	 * AWAITING_VIDEO_SURFACE state.
+	 */
 	protected abstract void onAwaitingVideoSurface();
 
 	protected abstract void postStatusMsg(int resId);
@@ -444,6 +470,12 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 		sbPosition.setProgress((int) (progress * sbPosition.getMax()));
 	}
 
+	/**
+	 * Load information about the media that is going to be played or currently
+	 * being played. This method will be called when the activity is connected
+	 * to the PlaybackService to ensure that the activity has the right
+	 * FeedMedia object.
+	 */
 	protected void loadMediaInfo() {
 		if (!mediaInfoLoaded) {
 			if (AppConfig.DEBUG)
@@ -582,7 +614,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity imple
 			return null;
 		}
 	}
-	
+
 	// OnSeekbarChangeListener
 	private int duration;
 	private float prog;

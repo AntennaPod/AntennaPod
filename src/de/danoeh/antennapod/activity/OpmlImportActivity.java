@@ -25,6 +25,7 @@ import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.util.StorageUtils;
 
+/** Lets the user start the OPML-import process. */
 public class OpmlImportActivity extends SherlockActivity {
 	private static final String TAG = "OpmlImportActivity";
 
@@ -63,6 +64,10 @@ public class OpmlImportActivity extends SherlockActivity {
 		setImportPath();
 	}
 
+	/**
+	 * Sets the importPath variable and makes txtvPath display the import
+	 * directory.
+	 */
 	private void setImportPath() {
 		File importDir = getExternalFilesDir(IMPORT_DIR);
 		boolean success = true;
@@ -97,18 +102,22 @@ public class OpmlImportActivity extends SherlockActivity {
 			return false;
 		}
 	}
-	
-	/** Looks at the contents of the import directory and decides what to do. */
+
+	/**
+	 * Looks at the contents of the import directory and decides what to do. If
+	 * more than one file is in the directory, a dialog will be created to let
+	 * the user choose which item to import
+	 * */
 	private void checkFolderForFiles() {
 		File dir = new File(importPath);
 		if (dir.isDirectory()) {
 			File[] fileList = dir.listFiles();
 			if (fileList.length == 1) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Found one file, choosing that one.");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Found one file, choosing that one.");
 				startImport(fileList[0]);
 			} else if (fileList.length > 1) {
-				Log.w(TAG,
-						"Import directory contains more than one file.");
+				Log.w(TAG, "Import directory contains more than one file.");
 				askForFile(dir);
 			} else {
 				Log.e(TAG, "Import directory is empty");
@@ -117,54 +126,61 @@ public class OpmlImportActivity extends SherlockActivity {
 								Toast.LENGTH_LONG);
 				toast.show();
 			}
-	}
-	}
-
-	private void startImport(File file) {
-		
-			if (file != null) {
-				importWorker = new OpmlImportWorker(this, file) {
-
-					@Override
-					protected void onPostExecute(ArrayList<OpmlElement> result) {
-						super.onPostExecute(result);
-						if (result != null) {
-							if (AppConfig.DEBUG)
-								Log.d(TAG, "Parsing was successful");
-							readElements = result;
-							startActivityForResult(new Intent(
-									OpmlImportActivity.this,
-									OpmlFeedChooserActivity.class), 0);
-						} else {
-							if (AppConfig.DEBUG)
-								Log.d(TAG, "Parser error occured");
-						}
-					}
-				};
-				importWorker.executeAsync();
-			}
 		}
-	
-	
-	/** Asks the user to choose from a list of files in a directory and returns his choice. */
+	}
+
+	/** Starts the import process. */
+	private void startImport(File file) {
+
+		if (file != null) {
+			importWorker = new OpmlImportWorker(this, file) {
+
+				@Override
+				protected void onPostExecute(ArrayList<OpmlElement> result) {
+					super.onPostExecute(result);
+					if (result != null) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Parsing was successful");
+						readElements = result;
+						startActivityForResult(new Intent(
+								OpmlImportActivity.this,
+								OpmlFeedChooserActivity.class), 0);
+					} else {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Parser error occured");
+					}
+				}
+			};
+			importWorker.executeAsync();
+		}
+	}
+
+	/**
+	 * Asks the user to choose from a list of files in a directory and returns
+	 * his choice.
+	 */
 	private void askForFile(File dir) {
 		final File[] fileList = dir.listFiles();
 		String[] fileNames = dir.list();
-		
+
 		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
 		dialog.setTitle(R.string.choose_file_to_import_label);
-		dialog.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		dialog.setNeutralButton(android.R.string.cancel,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Dialog was cancelled");
+						dialog.dismiss();
+					}
+				});
+		dialog.setItems(fileNames, new DialogInterface.OnClickListener() {
 
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Dialog was cancelled");
-				dialog.dismiss();
-			}});
-		dialog.setItems(fileNames, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (AppConfig.DEBUG) Log.d(TAG, "File at index " + which + " was chosen");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "File at index " + which + " was chosen");
 				dialog.dismiss();
 				startImport(fileList[which]);
 			}
@@ -172,6 +188,10 @@ public class OpmlImportActivity extends SherlockActivity {
 		dialog.create().show();
 	}
 
+	/**
+	 * Handles the choices made by the user in the OpmlFeedChooserActivity and
+	 * starts the OpmlFeedQueuer if necessary.
+	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
 		if (AppConfig.DEBUG)

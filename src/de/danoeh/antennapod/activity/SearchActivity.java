@@ -27,6 +27,7 @@ import de.danoeh.antennapod.feed.SearchResult;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 
+/** Displays the results when the user searches for FeedItems or Feeds. */
 public class SearchActivity extends SherlockListActivity {
 	private static final String TAG = "SearchActivity";
 
@@ -70,7 +71,7 @@ public class SearchActivity extends SherlockListActivity {
 			String query = intent.getStringExtra(SearchManager.QUERY);
 			getSupportActionBar().setSubtitle(
 					getString(R.string.search_term_label) + "\"" + query + "\"");
-			startSearch(query);
+			handleSearchRequest(query);
 		}
 	}
 
@@ -130,7 +131,7 @@ public class SearchActivity extends SherlockListActivity {
 	}
 
 	@SuppressLint({ "NewApi", "NewApi" })
-	private void startSearch(String query) {
+	private void handleSearchRequest(String query) {
 		AsyncTask<String, Void, ArrayList<SearchResult>> executor = new AsyncTask<String, Void, ArrayList<SearchResult>>() {
 
 			@Override

@@ -13,6 +13,7 @@ import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
+/** Is show if there is now external storage available. */
 public class StorageErrorActivity extends SherlockActivity {
 	private static final String TAG = "StorageErrorActivity";
 
@@ -42,7 +43,7 @@ public class StorageErrorActivity extends SherlockActivity {
 					Intent.ACTION_MEDIA_MOUNTED));
 		}
 	}
-	
+
 	private void leaveErrorState() {
 		finish();
 		startActivity(new Intent(this, MainActivity.class));
@@ -54,10 +55,13 @@ public class StorageErrorActivity extends SherlockActivity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(Intent.ACTION_MEDIA_MOUNTED)) {
 				if (intent.getBooleanExtra("read-only", true)) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Media was mounted; Finishing activity");
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Media was mounted; Finishing activity");
 					leaveErrorState();
 				} else {
-					if (AppConfig.DEBUG) Log.d(TAG, "Media seemed to have been mounted read only");
+					if (AppConfig.DEBUG)
+						Log.d(TAG,
+								"Media seemed to have been mounted read only");
 				}
 			}
 		}

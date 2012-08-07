@@ -1,9 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.service.PlayerStatus;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -12,14 +8,18 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.VideoView;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.PlayerStatus;
 
+
+/** Activity for playing audio files. */
 public class VideoplayerActivity extends MediaplayerActivity implements
 		SurfaceHolder.Callback {
 	private static final String TAG = "VideoplayerActivity";
@@ -49,8 +49,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			playbackService.pause(true);
 		}
 	}
-	
-	
 
 	@Override
 	protected void onStop() {
@@ -70,7 +68,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		videoview.getHolder().addCallback(this);
 		videoview.setOnClickListener(playbuttonListener);
 		videoview.setOnTouchListener(onVideoviewTouched);
-		
+
 		setupVideoControlsToggler();
 		getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
 				WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -120,7 +118,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			}
 		}
 	};
-	
+
 	@SuppressLint("NewApi")
 	void setupVideoControlsToggler() {
 		if (videoControlsToggler != null) {
@@ -217,7 +215,9 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	@Override
 	protected void onReloadNotification(int notificationCode) {
 		if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
-			if (AppConfig.DEBUG) Log.d(TAG, "ReloadNotification received, switching to Audioplayer now");
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"ReloadNotification received, switching to Audioplayer now");
 			startActivity(new Intent(this, AudioplayerActivity.class));
 		}
 	}
@@ -245,7 +245,5 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	protected void onBufferEnd() {
 		progressIndicator.setVisibility(View.INVISIBLE);
 	}
-	
-	
 
 }

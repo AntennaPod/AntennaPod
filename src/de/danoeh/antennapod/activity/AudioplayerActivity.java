@@ -22,6 +22,7 @@ import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
 
+/** Activity for playing audio files. */
 public class AudioplayerActivity extends MediaplayerActivity {
 
 	final String TAG = "AudioplayerActivity";

@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -14,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
+/** The main preference activity */
 public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String TAG = "PreferenceActivity";
 

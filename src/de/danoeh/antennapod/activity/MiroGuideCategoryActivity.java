@@ -15,6 +15,11 @@ import com.viewpagerindicator.TabPageIndicator;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
 
+/**
+ * Shows channels of a category sorted by different criteria in lists. The
+ * activity uses MiroGuideChannelListFragments for these lists. If the user
+ * selects a channel, the MiroGuideChannelViewActivity is started.
+ */
 public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 	private static final String TAG = "MiroGuideCategoryActivity";
 

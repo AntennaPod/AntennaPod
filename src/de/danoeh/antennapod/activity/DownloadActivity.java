@@ -23,7 +23,10 @@ import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
-/** Shows all running downloads in a list */
+/**
+ * Shows all running downloads in a list. The list objects are DownloadStatus
+ * objects created by a DownloadObserver.
+ */
 public class DownloadActivity extends SherlockListActivity implements
 		ActionMode.Callback, DownloadObserver.Callback {
 

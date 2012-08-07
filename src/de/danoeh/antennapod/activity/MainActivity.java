@@ -30,6 +30,7 @@ import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
+/** The activity that is shown when the user launches the app. */
 public class MainActivity extends SherlockFragmentActivity {
 	private static final String TAG = "MainActivity";
 
@@ -46,10 +47,10 @@ public class MainActivity extends SherlockFragmentActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
 		pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
-		
+
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		tabs = (TabPageIndicator) findViewById(R.id.tabs);
-		
+
 		viewpager.setAdapter(pagerAdapter);
 		tabs.setViewPager(viewpager);
 	}
@@ -74,7 +75,8 @@ public class MainActivity extends SherlockFragmentActivity {
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received contentUpdate Intent.");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received contentUpdate Intent.");
 			updateProgressBarVisibility();
 		}
 	};
@@ -130,7 +132,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			refreshAll.setVisible(true);
 		}
-		
+
 		boolean hasFeeds = !manager.getFeeds().isEmpty();
 		menu.findItem(R.id.opml_export).setVisible(hasFeeds);
 		return true;
@@ -149,7 +151,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		private static final int POS_FEEDLIST = 0;
 		private static final int POS_NEW_ITEMS = 1;
 		private static final int POS_QUEUE = 2;
-		
+
 		private Context context;
 
 		public MainPagerAdapter(FragmentManager fm, Context context) {
@@ -175,7 +177,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		public int getCount() {
 			return NUM_ITEMS;
 		}
-		
+
 		@Override
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
