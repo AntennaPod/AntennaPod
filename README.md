@@ -2,6 +2,7 @@
 
 This is the official repository of AntennaPod, a podcast manager for Android.
 
+[![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/745609/Antennapod "AntennaPod")
 <a href="https://play.google.com/store/apps/details?id=de.danoeh.antennapod" alt="Download from Google Play">
   <img src="http://www.android.com/images/brand/android_app_on_play_large.png">
 </a>
