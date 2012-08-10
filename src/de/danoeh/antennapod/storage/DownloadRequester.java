@@ -180,7 +180,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 		}
 		return false;
 	}
-	
+
 	/** Checks if feedfile with the given download url is in the downloads list */
 	public boolean isDownloadingFile(String downloadUrl) {
 		for (FeedFile f : downloads) {
@@ -255,8 +255,12 @@ public class DownloadRequester {// TODO handle externalstorage missing
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Connection to service established");
 			mService.queryDownloads();
-			if (mContext != null) {
-				mContext.unbindService(mConnection);
+			if (mContext != null && mIsBound) {
+				try {
+					mContext.unbindService(mConnection);
+				} catch (IllegalArgumentException e) {
+					e.printStackTrace();
+				}
 			}
 		}
 
@@ -271,8 +275,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	/** Notifies the DownloadService to check if there are any Downloads left */
 	public void notifyDownloadService(Context context) {
 		mContext = context;
-		context.bindService(new Intent(context, DownloadService.class),
-				mConnection, Context.BIND_AUTO_CREATE);
-		mIsBound = true;
+		mIsBound = context.bindService(new Intent(context,
+				DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
 	}
 }
