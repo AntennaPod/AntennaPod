@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <PreferenceCategory android:title="@string/playback_pref" >
+    <PreferenceCategory android:title="@string/user_interface_label">
+        <CheckBoxPreference android:title="@string/pref_display_only_episodes_title" android:summary="@string/pref_display_only_episodes_sum" android:key="prefDisplayOnlyEpisodes"/>
+    </PreferenceCategory><PreferenceCategory android:title="@string/playback_pref" >
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
@@ -14,6 +16,7 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title" />
+        
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >
         <ListPreference

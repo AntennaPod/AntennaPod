@@ -171,6 +171,9 @@
     <string name="player_buffering_msg">Buffering</string>
     <string name="pref_autoQueue_title">Auto-enqueue</string>
     <string name="pref_autoQueue_sum">Add an episode to the queue after it has been downloaded.</string>
+    <string name="pref_display_only_episodes_title">Display only episodes</string>
+    <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
+    <string name="user_interface_label">User Interface</string>
     
 
 </resources>
