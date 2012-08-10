@@ -34,16 +34,16 @@ public class FeedItemMenuHandler {
 				menu.findItem(R.id.stream_item).setVisible(true);
 			}
 		}
-		
+
 		boolean isDownloading = hasMedia
 				&& requester.isDownloadingFile(selectedItem.getMedia());
 		menu.findItem(R.id.cancel_download_item).setVisible(isDownloading);
 
-		if (manager.isInQueue(selectedItem)) {
-			menu.findItem(R.id.remove_from_queue_item).setVisible(true);
-		} else {
-			menu.findItem(R.id.add_to_queue_item).setVisible(true);
-		}
+		boolean isInQueue = manager.isInQueue(selectedItem);
+
+		menu.findItem(R.id.remove_from_queue_item).setVisible(isInQueue);
+		menu.findItem(R.id.add_to_queue_item).setVisible(
+				!isInQueue && selectedItem.getMedia() != null);
 
 		menu.findItem(R.id.share_link_item).setVisible(
 				selectedItem.getLink() != null);
