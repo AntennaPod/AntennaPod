@@ -8,6 +8,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,8 +29,10 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 
 /** Displays a list of FeedItems. */
@@ -99,6 +102,14 @@ public class ItemlistFragment extends SherlockListFragment implements
 			feed = FeedManager.getInstance().getFeed(feedId);
 			items = feed.getItems();
 		}
+		
+		boolean displayOnlyEpisodes = PreferenceManager
+				.getDefaultSharedPreferences(PodcastApp.getInstance())
+				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
+		if (displayOnlyEpisodes) {
+			items = EpisodeFilter.getEpisodeList(items);
+		}
+		
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
 				onButActionClicked, showFeedtitle);
 		setListAdapter(fila);

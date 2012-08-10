@@ -82,7 +82,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 							.getTime(), System.currentTimeMillis(),
 							DateFormat.SHORT, DateFormat.SHORT));
 		}
-		holder.numberOfEpisodes.setText(feed.getItems().size()
+		holder.numberOfEpisodes.setText(feed.getNumOfItems()
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
 		int newItems = feed.getNumOfNewItems();

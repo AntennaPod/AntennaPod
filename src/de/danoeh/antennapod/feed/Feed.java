@@ -3,6 +3,10 @@ package de.danoeh.antennapod.feed;
 import java.util.ArrayList;
 import java.util.Date;
 
+import de.danoeh.antennapod.PodcastApp;
+
+import android.preference.PreferenceManager;
+
 /**
  * Data Object for a whole feed
  * 
@@ -12,7 +16,7 @@ import java.util.Date;
 public class Feed extends FeedFile {
 	public static final String TYPE_RSS2 = "rss";
 	public static final String TYPE_ATOM1 = "atom";
-	
+
 	private String title;
 	/** Link to the website. */
 	private String link;
@@ -39,14 +43,42 @@ public class Feed extends FeedFile {
 		this(lastUpdate);
 		this.download_url = url;
 	}
-	
-	/** Returns the number of FeedItems where 'read' is false. */
+
+	/**
+	 * Returns the number of FeedItems where 'read' is false. If the 'display
+	 * only episodes' - preference is set to true, this method will only count
+	 * items with episodes.
+	 * */
 	public int getNumOfNewItems() {
 		int count = 0;
+		boolean displayOnlyEpisodes = PreferenceManager
+				.getDefaultSharedPreferences(PodcastApp.getInstance())
+				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
+
 		for (FeedItem item : items) {
 			if (!item.isRead()) {
+				if (!displayOnlyEpisodes || item.getMedia() != null) {
+					count++;
+				}
+			}
+		}
+		return count;
+	}
+
+	/**
+	 * Returns the number of FeedItems. If the 'display only episodes' -
+	 * preference is set to true, this method will only count items with
+	 * episodes.
+	 * */
+	public int getNumOfItems() {
+		int count = 0;
+		boolean displayOnlyEpisodes = PreferenceManager
+				.getDefaultSharedPreferences(PodcastApp.getInstance())
+				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
+		for (FeedItem item : items) {
+			if (!displayOnlyEpisodes || item.getMedia() != null) {
 				count++;
-			} 
+			}
 		}
 		return count;
 	}
@@ -106,7 +138,7 @@ public class Feed extends FeedFile {
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
 	}
-	
+
 	public String getPaymentLink() {
 		return paymentLink;
 	}
@@ -138,7 +170,5 @@ public class Feed extends FeedFile {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
-	
 
 }
