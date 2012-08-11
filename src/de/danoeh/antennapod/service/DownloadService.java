@@ -7,6 +7,7 @@ package de.danoeh.antennapod.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -115,6 +116,14 @@ public class DownloadService extends Service {
 			public Thread newThread(Runnable r) {
 				Thread t = new Thread(r);
 				t.setPriority(Thread.MIN_PRIORITY);
+				t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+
+					@Override
+					public void uncaughtException(Thread thread, Throwable ex) {
+						Log.e(TAG, "Thread exited with uncaught exception");
+						ex.printStackTrace();
+						queryDownloads();
+					}});
 				return t;
 			}
 		});

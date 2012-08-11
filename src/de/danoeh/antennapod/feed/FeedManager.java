@@ -38,7 +38,7 @@ public class FeedManager {
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feed.feedId";
 
 	/** Number of completed Download status entries to store. */
-	private static final int DOWNLOAD_LOG_SIZE = 25;
+	private static final int DOWNLOAD_LOG_SIZE = 50;
 
 	private static FeedManager singleton;
 
@@ -131,14 +131,17 @@ public class FeedManager {
 	/** Remove a feed with all its items and media files and its image. */
 	public void deleteFeed(final Context context, final Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
+		DownloadRequester requester = DownloadRequester.getInstance();
 		adapter.open();
 		// delete image file
 		if (feed.getImage() != null) {
 			if (feed.getImage().isDownloaded()
-					&& feed.getImage().getFile_url() == null) {
+					&& feed.getImage().getFile_url() != null) {
 				File imageFile = new File(feed.getImage().getFile_url());
 				imageFile.delete();
 			}
+		} else if (requester.isDownloadingFile(feed.getImage())) {
+			requester.cancelDownload(context, feed.getImage().getDownloadId());
 		}
 		// delete stored media files and mark them as read
 		for (FeedItem item : feed.getItems()) {
@@ -151,6 +154,10 @@ public class FeedManager {
 			if (item.getMedia() != null && item.getMedia().isDownloaded()) {
 				File mediaFile = new File(item.getMedia().getFile_url());
 				mediaFile.delete();
+			} else if (item.getMedia() != null
+					&& requester.isDownloadingFile(item.getMedia())) {
+				requester.cancelDownload(context, item.getMedia()
+						.getDownloadId());
 			}
 		}
 
