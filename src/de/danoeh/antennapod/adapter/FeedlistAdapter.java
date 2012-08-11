@@ -7,6 +7,7 @@ import java.util.List;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import android.content.Context;
 import android.net.Uri;
@@ -93,9 +94,11 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
 		holder.image.setTag(feed.getImage());
-		imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
-		
-		// TODO find new Episodes txtvNewEpisodes.setText(feed)
+		if (PodcastApp.getInstance().isLargeScreen()) {
+			imageLoader.loadCoverBitmap(feed.getImage(), holder.image);
+		} else {
+			imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
+		}
 		return convertView;
 	}
 

@@ -9,6 +9,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
@@ -112,5 +113,10 @@ public class PodcastApp extends Application implements
 
 	public static float getLogicalDensity() {
 		return LOGICAL_DENSITY;
+	}
+
+	public boolean isLargeScreen() {
+		return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE || (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+
 	}
 }

@@ -22,7 +22,11 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
+import android.widget.GridView;
 import android.widget.ListView;
+import android.widget.TextView;
+
+import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
@@ -31,8 +35,9 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import android.util.Log;
 
-public class FeedlistFragment extends SherlockListFragment implements
-		ActionMode.Callback {
+public class FeedlistFragment extends SherlockFragment implements
+		ActionMode.Callback, AdapterView.OnItemClickListener,
+		AdapterView.OnItemLongClickListener {
 	private static final String TAG = "FeedlistFragment";
 	public static final String EXTRA_SELECTED_FEED = "extra.de.danoeh.antennapod.activity.selected_feed";
 
@@ -42,6 +47,10 @@ public class FeedlistFragment extends SherlockListFragment implements
 
 	private Feed selectedFeed;
 	private ActionMode mActionMode;
+
+	private GridView gridView;
+	private ListView listView;
+	private TextView txtvEmpty;
 
 	@Override
 	public void onAttach(Activity activity) {
@@ -62,49 +71,44 @@ public class FeedlistFragment extends SherlockListFragment implements
 			Log.d(TAG, "Creating");
 		manager = FeedManager.getInstance();
 		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
-		setListAdapter(fla);
 
 	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
-		return inflater.inflate(R.layout.feedlist, container, false);
+		View result = inflater.inflate(R.layout.feedlist, container, false);
+		listView = (ListView) result.findViewById(android.R.id.list);
+		gridView = (GridView) result.findViewById(R.id.grid);
+		txtvEmpty = (TextView) result.findViewById(android.R.id.empty);
+
+		return result;
 
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> parent, View view,
-					int position, long id) {
-				Feed selection = fla.getItem(position);
-				if (AppConfig.DEBUG)
-					Log.d(TAG,
-							"Selected Feed with title " + selection.getTitle());
-				if (selection != null) {
-					if (mActionMode != null) {
-						mActionMode.finish();
-					}
-					fla.setSelectedItemIndex(position);
-					selectedFeed = selection;
-					mActionMode = getSherlockActivity().startActionMode(
-							FeedlistFragment.this);
-
-				}
-				return true;
-			}
-
-		});
+		if (listView != null) {
+			listView.setOnItemClickListener(this);
+			listView.setOnItemLongClickListener(this);
+			listView.setAdapter(fla);
+			listView.setEmptyView(txtvEmpty);
+			if (AppConfig.DEBUG) Log.d(TAG, "Using ListView");
+		} else {
+			gridView.setOnItemClickListener(this);
+			gridView.setOnItemLongClickListener(this);
+			gridView.setAdapter(fla);
+			gridView.setEmptyView(txtvEmpty);
+			if (AppConfig.DEBUG) Log.d(TAG, "Using GridView");
+		}
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		if (AppConfig.DEBUG) Log.d(TAG, "Resuming");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Resuming");
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
@@ -138,15 +142,6 @@ public class FeedlistFragment extends SherlockListFragment implements
 			});
 		}
 	};
-
-	@Override
-	public void onListItemClick(ListView l, View v, int position, long id) {
-		Feed selection = fla.getItem(position);
-		Intent showFeed = new Intent(pActivity, FeedItemlistActivity.class);
-		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
-
-		pActivity.startActivity(showFeed);
-	}
 
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
@@ -196,4 +191,32 @@ public class FeedlistFragment extends SherlockListFragment implements
 		fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
 	}
 
+	@Override
+	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
+			long id) {
+		Feed selection = fla.getItem(position);
+		Intent showFeed = new Intent(pActivity, FeedItemlistActivity.class);
+		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
+
+		pActivity.startActivity(showFeed);
+	}
+
+	@Override
+	public boolean onItemLongClick(AdapterView<?> parent, View view,
+			int position, long id) {
+		Feed selection = fla.getItem(position);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Selected Feed with title " + selection.getTitle());
+		if (selection != null) {
+			if (mActionMode != null) {
+				mActionMode.finish();
+			}
+			fla.setSelectedItemIndex(position);
+			selectedFeed = selection;
+			mActionMode = getSherlockActivity().startActionMode(
+					FeedlistFragment.this);
+
+		}
+		return true;
+	}
 }

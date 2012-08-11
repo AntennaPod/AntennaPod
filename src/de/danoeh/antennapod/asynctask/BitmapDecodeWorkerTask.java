@@ -39,7 +39,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 		this.target = target;
 		this.fileUrl = fileUrl;
 		this.baseLength = length;
-		this.PREFERRED_LENGTH = (int) (length * PodcastApp.getLogicalDensity());
+		this.PREFERRED_LENGTH = (int) (length * PodcastApp.getLogicalDensity() + 0.5f);
 	}
 
 	/**
