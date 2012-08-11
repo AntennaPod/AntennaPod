@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
@@ -58,6 +61,8 @@ public class FeedManager {
 
 	/** Should be used to change the content of the arrays from another thread. */
 	private Handler contentChanger;
+	/** Ensures that there are no parallel db operations. */
+	private Executor dbExec;
 
 	/** Prevents user from starting several feed updates at the same time. */
 	private static boolean isStartingFeedRefresh = false;
@@ -70,6 +75,14 @@ public class FeedManager {
 		downloadLog = new ArrayList<DownloadStatus>();
 		queue = Collections.synchronizedList(new ArrayList<FeedItem>());
 		contentChanger = new Handler();
+		dbExec = Executors.newSingleThreadExecutor(new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
+				return t;
+			}});
 	}
 
 	public static FeedManager getInstance() {
@@ -301,16 +314,15 @@ public class FeedManager {
 				new Date()));
 	}
 
-	public long addDownloadStatus(Context context, DownloadStatus status) {
+	public void addDownloadStatus(Context context, DownloadStatus status) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		downloadLog.add(status);
 		adapter.open();
 		if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
 			adapter.removeDownloadStatus(downloadLog.remove(0));
 		}
-		long result = adapter.setDownloadStatus(status);
+		adapter.setDownloadStatus(status);
 		adapter.close();
-		return result;
 	}
 
 	public void addQueueItem(final Context context, final FeedItem item) {
@@ -490,32 +502,29 @@ public class FeedManager {
 	}
 
 	/** Updates Information of an existing Feed. Uses external adapter. */
-	public long setFeed(Feed feed, PodDBAdapter adapter) {
+	public void setFeed(Feed feed, PodDBAdapter adapter) {
 		if (adapter != null) {
-			return adapter.setFeed(feed);
+			adapter.setFeed(feed);
 		} else {
 			Log.w(TAG, "Adapter in setFeed was null");
-			return 0;
 		}
 	}
 
 	/** Updates Information of an existing Feeditem. Uses external adapter. */
-	public long setFeedItem(FeedItem item, PodDBAdapter adapter) {
+	public void setFeedItem(FeedItem item, PodDBAdapter adapter) {
 		if (adapter != null) {
-			return adapter.setSingleFeedItem(item);
+			adapter.setSingleFeedItem(item);
 		} else {
 			Log.w(TAG, "Adapter in setFeedItem was null");
-			return 0;
 		}
 	}
 
 	/** Updates Information of an existing Feedimage. Uses external adapter. */
-	public long setFeedImage(FeedImage image, PodDBAdapter adapter) {
+	public void setFeedImage(FeedImage image, PodDBAdapter adapter) {
 		if (adapter != null) {
-			return adapter.setImage(image);
+			adapter.setImage(image);
 		} else {
 			Log.w(TAG, "Adapter in setFeedImage was null");
-			return 0;
 		}
 	}
 
@@ -523,12 +532,11 @@ public class FeedManager {
 	 * Updates Information of an existing Feedmedia object. Uses external
 	 * adapter.
 	 */
-	public long setFeedImage(FeedMedia media, PodDBAdapter adapter) {
+	public void setFeedImage(FeedMedia media, PodDBAdapter adapter) {
 		if (adapter != null) {
-			return adapter.setMedia(media);
+			adapter.setMedia(media);
 		} else {
 			Log.w(TAG, "Adapter in setFeedMedia was null");
-			return 0;
 		}
 	}
 
@@ -536,48 +544,44 @@ public class FeedManager {
 	 * Updates Information of an existing Feed. Creates and opens its own
 	 * adapter.
 	 */
-	public long setFeed(Context context, Feed feed) {
+	public void setFeed(Context context, Feed feed) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		long result = adapter.setFeed(feed);
+		adapter.setFeed(feed);
 		adapter.close();
-		return result;
 	}
 
 	/**
 	 * Updates information of an existing FeedItem. Creates and opens its own
 	 * adapter.
 	 */
-	public long setFeedItem(Context context, FeedItem item) {
+	public void setFeedItem(Context context, FeedItem item) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		long result = adapter.setSingleFeedItem(item);
+		adapter.setSingleFeedItem(item);
 		adapter.close();
-		return result;
 	}
 
 	/**
 	 * Updates information of an existing FeedImage. Creates and opens its own
 	 * adapter.
 	 */
-	public long setFeedImage(Context context, FeedImage image) {
+	public void setFeedImage(Context context, FeedImage image) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		long result = adapter.setImage(image);
+		adapter.setImage(image);
 		adapter.close();
-		return result;
 	}
 
 	/**
 	 * Updates information of an existing FeedMedia object. Creates and opens
 	 * its own adapter.
 	 */
-	public long setFeedMedia(Context context, FeedMedia media) {
+	public void setFeedMedia(Context context, FeedMedia media) {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-		long result = adapter.setMedia(media);
+		adapter.setMedia(media);
 		adapter.close();
-		return result;
 	}
 
 	/** Get a Feed by its id */
@@ -643,9 +647,9 @@ public class FeedManager {
 		return null;
 	}
 
-	public DownloadStatus getDownloadStatus(long statusId) {
+	public DownloadStatus getDownloadStatus(FeedFile feedFile) {
 		for (DownloadStatus status : downloadLog) {
-			if (status.getId() == statusId) {
+			if (status.getFeedFile() == feedFile) {
 				return status;
 			}
 		}

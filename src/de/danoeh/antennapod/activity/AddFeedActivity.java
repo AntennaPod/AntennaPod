@@ -35,17 +35,11 @@ public class AddFeedActivity extends SherlockActivity {
 	private static final String TAG = "AddFeedActivity";
 
 	private DownloadRequester requester;
-	private FeedManager manager;
 
 	private EditText etxtFeedurl;
 	private Button butBrowseMiroGuide;
 	private Button butConfirm;
 	private Button butCancel;
-	private long downloadId;
-
-	private boolean hasImage;
-	private boolean isWaitingForImage = false;
-	private long imageDownloadId;
 
 	private ProgressDialog progDialog;
 
@@ -56,26 +50,7 @@ public class AddFeedActivity extends SherlockActivity {
 		setContentView(R.layout.addfeed);
 
 		requester = DownloadRequester.getInstance();
-		manager = FeedManager.getInstance();
-
-		progDialog = new ProgressDialog(this) {
-			@Override
-			public void onBackPressed() {
-				if (isWaitingForImage) {
-					requester.cancelDownload(getContext(), imageDownloadId);
-				} else {
-					requester.cancelDownload(getContext(), downloadId);
-				}
-
-				try {
-					unregisterReceiver(downloadCompleted);
-				} catch (IllegalArgumentException e) {
-					// ignore
-				}
-				dismiss();
-			}
-
-		};
+		progDialog = new ProgressDialog(this);
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
@@ -137,12 +112,6 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		try {
-			unregisterReceiver(downloadCompleted);
-		} catch (IllegalArgumentException e) {
-			// ignore
-		}
-
 	}
 
 	/** Read the url text field and start downloading a new feed. */
@@ -152,29 +121,21 @@ public class AddFeedActivity extends SherlockActivity {
 
 		if (url != null) {
 			final Feed feed = new Feed(url, new Date());
-			final ConnectionTester conTester = new ConnectionTester(url, this,
+			final ConnectionTester conTester = new ConnectionTester(url,
 					new ConnectionTester.Callback() {
 
 						@Override
 						public void onConnectionSuccessful() {
-							downloadId = requester.downloadFeed(
-									AddFeedActivity.this, feed);
-
+							requester.downloadFeed(AddFeedActivity.this, feed);
+							if (progDialog.isShowing()) {
+								progDialog.dismiss();
+								finish();
+							}
 						}
 
 						@Override
-						public void onConnectionFailure() {
-							int reason = DownloadError.ERROR_CONNECTION_ERROR;
-							long statusId = manager.addDownloadStatus(
-									AddFeedActivity.this, new DownloadStatus(
-											feed, reason, false));
-							Intent intent = new Intent(
-									DownloadService.ACTION_DOWNLOAD_HANDLED);
-							intent.putExtra(DownloadService.EXTRA_DOWNLOAD_ID,
-									downloadId);
-							intent.putExtra(DownloadService.EXTRA_STATUS_ID,
-									statusId);
-							AddFeedActivity.this.sendBroadcast(intent);
+						public void onConnectionFailure(int reason) {
+							handleDownloadError(reason);
 						}
 					});
 			observeDownload(feed);
@@ -187,33 +148,13 @@ public class AddFeedActivity extends SherlockActivity {
 	private void observeDownload(Feed feed) {
 		progDialog.show();
 		progDialog.setMessage("Downloading Feed");
-		registerReceiver(downloadCompleted, new IntentFilter(
-				DownloadService.ACTION_DOWNLOAD_HANDLED));
 	}
 
-	/**
-	 * Set the message text of the progress dialog to the current status of the
-	 * download.
-	 */
-	private void updateProgDialog(final String msg) {
-		if (progDialog.isShowing()) {
-			runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					progDialog.setMessage(msg);
-
-				}
-
-			});
-		}
-	}
-
-	private void handleDownloadError(DownloadStatus status) {
+	private void handleDownloadError(int reason) {
 		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
-				+ DownloadError.getErrorString(this, status.getReason()));
+				+ DownloadError.getErrorString(this, reason));
 		errorDialog.setButton("OK", new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
@@ -225,44 +166,4 @@ public class AddFeedActivity extends SherlockActivity {
 		}
 		errorDialog.show();
 	}
-
-	private BroadcastReceiver downloadCompleted = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			long receivedDownloadId = intent.getLongExtra(
-					DownloadService.EXTRA_DOWNLOAD_ID, -1);
-			if (receivedDownloadId == downloadId
-					|| (isWaitingForImage && receivedDownloadId == imageDownloadId)) {
-				long statusId = intent.getLongExtra(
-						DownloadService.EXTRA_STATUS_ID, 0);
-				DownloadStatus status = manager.getDownloadStatus(statusId);
-				if (status.isSuccessful()) {
-					if (!isWaitingForImage) {
-						hasImage = intent.getBooleanExtra(
-								DownloadService.EXTRA_FEED_HAS_IMAGE, false);
-						if (!hasImage) {
-							progDialog.dismiss();
-							finish();
-						} else {
-							imageDownloadId = intent
-									.getLongExtra(
-											DownloadService.EXTRA_IMAGE_DOWNLOAD_ID,
-											-1);
-							isWaitingForImage = true;
-							updateProgDialog("Downloading Image");
-						}
-					} else {
-						progDialog.dismiss();
-						finish();
-					}
-				} else {
-					handleDownloadError(status);
-				}
-			}
-
-		}
-
-	};
-
 }

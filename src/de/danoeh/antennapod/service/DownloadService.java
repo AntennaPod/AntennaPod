@@ -65,8 +65,6 @@ public class DownloadService extends Service {
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
 	/** True if handled feed has an image. */
 	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.danoeh.antennapod.service.feed_has_image";
-	/** ID of DownloadStatus. */
-	public static final String EXTRA_STATUS_ID = "extra.de.danoeh.antennapod.service.feedfile_id";
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
 	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.image_download_id";
 
@@ -123,7 +121,8 @@ public class DownloadService extends Service {
 						Log.e(TAG, "Thread exited with uncaught exception");
 						ex.printStackTrace();
 						queryDownloads();
-					}});
+					}
+				});
 				return t;
 			}
 		});
@@ -258,11 +257,11 @@ public class DownloadService extends Service {
 							Log.e(TAG, "Download failed");
 							Log.e(TAG, "reason code is " + reason);
 							successful = false;
-							long statusId = saveDownloadStatus(new DownloadStatus(
-									download, reason, successful));
+							saveDownloadStatus(new DownloadStatus(download,
+									reason, successful));
 							requester.removeDownload(download);
 							sendDownloadHandledIntent(download.getDownloadId(),
-									statusId, false, 0);
+									false, 0);
 							download.setDownloadId(0);
 
 						}
@@ -288,16 +287,15 @@ public class DownloadService extends Service {
 	 * @param status
 	 *            the download that is going to be saved
 	 */
-	private long saveDownloadStatus(DownloadStatus status) {
+	private void saveDownloadStatus(DownloadStatus status) {
 		completedDownloads.add(status);
-		return manager.addDownloadStatus(this, status);
+		manager.addDownloadStatus(this, status);
 	}
 
-	private void sendDownloadHandledIntent(long downloadId, long statusId,
+	private void sendDownloadHandledIntent(long downloadId,
 			boolean feedHasImage, long imageDownloadId) {
 		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
 		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
-		intent.putExtra(EXTRA_STATUS_ID, statusId);
 		intent.putExtra(EXTRA_FEED_HAS_IMAGE, feedHasImage);
 		if (feedHasImage) {
 			intent.putExtra(EXTRA_IMAGE_DOWNLOAD_ID, imageDownloadId);
@@ -448,7 +446,8 @@ public class DownloadService extends Service {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
 					savedFeed.getImage().setFeed(savedFeed);
-					imageId = requester.downloadImage(service, savedFeed.getImage());
+					imageId = requester.downloadImage(service,
+							savedFeed.getImage());
 					hasImage = true;
 				}
 
@@ -475,13 +474,12 @@ public class DownloadService extends Service {
 			}
 
 			requester.removeDownload(feed);
-			//cleanup();
+			// cleanup();
 			if (savedFeed == null) {
 				savedFeed = feed;
 			}
-			long statusId = saveDownloadStatus(new DownloadStatus(savedFeed,
-					reason, successful));
-			sendDownloadHandledIntent(downloadId, statusId, hasImage, imageId);
+			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
+			sendDownloadHandledIntent(downloadId, hasImage, imageId);
 			queryDownloads();
 		}
 
@@ -528,15 +526,15 @@ public class DownloadService extends Service {
 			image.setDownloaded(true);
 			requester.removeDownload(image);
 
-			long statusId = saveDownloadStatus(new DownloadStatus(image, 0,
-					true));
-			sendDownloadHandledIntent(image.getDownloadId(), statusId, false, 0);
+			saveDownloadStatus(new DownloadStatus(image, 0, true));
+			sendDownloadHandledIntent(image.getDownloadId(), false, 0);
 			image.setDownloadId(0);
 			manager.setFeedImage(service, image);
 			if (image.getFeed() != null) {
 				manager.setFeed(service, image.getFeed());
 			} else {
-				Log.e(TAG, "Image has no feed, image might not be saved correctly!");
+				Log.e(TAG,
+						"Image has no feed, image might not be saved correctly!");
 			}
 			queryDownloads();
 		}
@@ -568,15 +566,14 @@ public class DownloadService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
-			long statusId = saveDownloadStatus(new DownloadStatus(media, 0,
-					true));
-			sendDownloadHandledIntent(media.getDownloadId(), statusId, false, 0);
+			saveDownloadStatus(new DownloadStatus(media, 0, true));
+			sendDownloadHandledIntent(media.getDownloadId(), false, 0);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
 			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
 					getApplicationContext()).getBoolean(
 					PodcastApp.PREF_AUTO_QUEUE, true);
-			
+
 			if (!manager.isInQueue(media.getItem())) {
 				// Auto-queue
 				if (autoQueue) {
@@ -588,9 +585,10 @@ public class DownloadService extends Service {
 						Log.d(TAG, "Autoqueue is disabled");
 				}
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "Item is already in queue");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Item is already in queue");
 			}
-			
+
 			queryDownloads();
 		}
 	}
