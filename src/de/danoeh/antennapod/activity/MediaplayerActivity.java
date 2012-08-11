@@ -121,8 +121,13 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		public void onReceive(Context context, Intent intent) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Received statusUpdate Intent.");
-			status = playbackService.getStatus();
-			handleStatus();
+			if (playbackService != null) {
+				status = playbackService.getStatus();
+				handleStatus();
+			} else {
+				Log.w(TAG,
+						"Couldn't receive status update: playbackService was null");
+			}
 		}
 	};
 
