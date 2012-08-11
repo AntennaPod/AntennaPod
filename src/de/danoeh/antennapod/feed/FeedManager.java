@@ -82,7 +82,8 @@ public class FeedManager {
 				Thread t = new Thread(r);
 				t.setPriority(Thread.MIN_PRIORITY);
 				return t;
-			}});
+			}
+		});
 	}
 
 	public static FeedManager getInstance() {
@@ -143,45 +144,53 @@ public class FeedManager {
 
 	/** Remove a feed with all its items and media files and its image. */
 	public void deleteFeed(final Context context, final Feed feed) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		DownloadRequester requester = DownloadRequester.getInstance();
-		adapter.open();
-		// delete image file
-		if (feed.getImage() != null) {
-			if (feed.getImage().isDownloaded()
-					&& feed.getImage().getFile_url() != null) {
-				File imageFile = new File(feed.getImage().getFile_url());
-				imageFile.delete();
-			}
-		} else if (requester.isDownloadingFile(feed.getImage())) {
-			requester.cancelDownload(context, feed.getImage().getDownloadId());
-		}
-		// delete stored media files and mark them as read
-		for (FeedItem item : feed.getItems()) {
-			if (!item.isRead()) {
-				unreadItems.remove(item);
-			}
-			if (queue.contains(item)) {
-				removeQueueItem(item, adapter);
-			}
-			if (item.getMedia() != null && item.getMedia().isDownloaded()) {
-				File mediaFile = new File(item.getMedia().getFile_url());
-				mediaFile.delete();
-			} else if (item.getMedia() != null
-					&& requester.isDownloadingFile(item.getMedia())) {
-				requester.cancelDownload(context, item.getMedia()
-						.getDownloadId());
-			}
-		}
-
-		adapter.removeFeed(feed);
-		adapter.close();
-		contentChanger.post(new Runnable() {
+		dbExec.execute(new Runnable() {
 
 			@Override
 			public void run() {
-				feeds.remove(feed);
-				sendFeedUpdateBroadcast(context);
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				DownloadRequester requester = DownloadRequester.getInstance();
+				adapter.open();
+				// delete image file
+				if (feed.getImage() != null) {
+					if (feed.getImage().isDownloaded()
+							&& feed.getImage().getFile_url() != null) {
+						File imageFile = new File(feed.getImage().getFile_url());
+						imageFile.delete();
+					}
+				} else if (requester.isDownloadingFile(feed.getImage())) {
+					requester.cancelDownload(context, feed.getImage()
+							.getDownloadId());
+				}
+				// delete stored media files and mark them as read
+				for (FeedItem item : feed.getItems()) {
+					if (!item.isRead()) {
+						unreadItems.remove(item);
+					}
+					if (queue.contains(item)) {
+						removeQueueItem(item, adapter);
+					}
+					if (item.getMedia() != null
+							&& item.getMedia().isDownloaded()) {
+						File mediaFile = new File(item.getMedia().getFile_url());
+						mediaFile.delete();
+					} else if (item.getMedia() != null
+							&& requester.isDownloadingFile(item.getMedia())) {
+						requester.cancelDownload(context, item.getMedia()
+								.getDownloadId());
+					}
+				}
+
+				adapter.removeFeed(feed);
+				adapter.close();
+				contentChanger.post(new Runnable() {
+
+					@Override
+					public void run() {
+						feeds.remove(feed);
+						sendFeedUpdateBroadcast(context);
+					}
+				});
 			}
 		});
 
@@ -251,18 +260,27 @@ public class FeedManager {
 	}
 
 	/** Marks all items in the unread items list as read */
-	public void markAllItemsRead(Context context) {
+	public void markAllItemsRead(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "marking all items as read");
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
 		for (FeedItem item : unreadItems) {
 			item.read = true;
-			setFeedItem(item, adapter);
 		}
-		adapter.close();
 		unreadItems.clear();
 		sendUnreadItemsUpdateBroadcast(context, null);
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				for (FeedItem item : unreadItems) {
+					setFeedItem(item, adapter);
+				}
+				adapter.close();
+			}
+		});
+
 	}
 
 	@SuppressLint("NewApi")
@@ -314,15 +332,22 @@ public class FeedManager {
 				new Date()));
 	}
 
-	public void addDownloadStatus(Context context, DownloadStatus status) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
+	public void addDownloadStatus(final Context context,
+			final DownloadStatus status) {
 		downloadLog.add(status);
-		adapter.open();
-		if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
-			adapter.removeDownloadStatus(downloadLog.remove(0));
-		}
-		adapter.setDownloadStatus(status);
-		adapter.close();
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
+					adapter.removeDownloadStatus(downloadLog.remove(0));
+				}
+				adapter.setDownloadStatus(status);
+				adapter.close();
+			}
+		});
 	}
 
 	public void addQueueItem(final Context context, final FeedItem item) {
@@ -335,22 +360,36 @@ public class FeedManager {
 
 			}
 		});
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setQueue(queue);
-		adapter.close();
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setQueue(queue);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/** Removes all items in queue */
-	public void clearQueue(Context context) {
+	public void clearQueue(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Clearing queue");
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
 		queue.clear();
-		adapter.setQueue(queue);
-		adapter.close();
 		sendQueueUpdateBroadcast(context, null);
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setQueue(queue);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/** Uses external adapter. */
@@ -363,18 +402,25 @@ public class FeedManager {
 	}
 
 	/** Uses its own adapter. */
-	public void removeQueueItem(Context context, FeedItem item) {
+	public void removeQueueItem(final Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
-			PodDBAdapter adapter = new PodDBAdapter(context);
-			adapter.open();
-			adapter.setQueue(queue);
-			adapter.close();
+			dbExec.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					PodDBAdapter adapter = new PodDBAdapter(context);
+					adapter.open();
+					adapter.setQueue(queue);
+					adapter.close();
+				}
+			});
+
 		}
 		sendQueueUpdateBroadcast(context, item);
 	}
 
-	public void moveQueueItem(Context context, FeedItem item, int delta) {
+	public void moveQueueItem(final Context context, FeedItem item, int delta) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Moving queue item");
 		int itemIndex = queue.indexOf(item);
@@ -382,10 +428,17 @@ public class FeedManager {
 		if (newIndex >= 0 && newIndex < queue.size()) {
 			FeedItem oldItem = queue.set(newIndex, item);
 			queue.set(itemIndex, oldItem);
-			PodDBAdapter adapter = new PodDBAdapter(context);
-			adapter.open();
-			adapter.setQueue(queue);
-			adapter.close();
+			dbExec.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					PodDBAdapter adapter = new PodDBAdapter(context);
+					adapter.open();
+					adapter.setQueue(queue);
+					adapter.close();
+				}
+			});
+
 		}
 		sendQueueUpdateBroadcast(context, item);
 	}
@@ -412,11 +465,17 @@ public class FeedManager {
 				sendFeedUpdateBroadcast(context);
 			}
 		});
+		dbExec.execute(new Runnable() {
 
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setCompleteFeed(feed);
-		adapter.close();
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setCompleteFeed(feed);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/**
@@ -544,44 +603,72 @@ public class FeedManager {
 	 * Updates Information of an existing Feed. Creates and opens its own
 	 * adapter.
 	 */
-	public void setFeed(Context context, Feed feed) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setFeed(feed);
-		adapter.close();
+	public void setFeed(final Context context, final Feed feed) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setFeed(feed);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/**
 	 * Updates information of an existing FeedItem. Creates and opens its own
 	 * adapter.
 	 */
-	public void setFeedItem(Context context, FeedItem item) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setSingleFeedItem(item);
-		adapter.close();
+	public void setFeedItem(final Context context, final FeedItem item) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setSingleFeedItem(item);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/**
 	 * Updates information of an existing FeedImage. Creates and opens its own
 	 * adapter.
 	 */
-	public void setFeedImage(Context context, FeedImage image) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setImage(image);
-		adapter.close();
+	public void setFeedImage(final Context context, final FeedImage image) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setImage(image);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/**
 	 * Updates information of an existing FeedMedia object. Creates and opens
 	 * its own adapter.
 	 */
-	public void setFeedMedia(Context context, FeedMedia media) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setMedia(media);
-		adapter.close();
+	public void setFeedMedia(final Context context, final FeedMedia media) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setMedia(media);
+				adapter.close();
+			}
+		});
+
 	}
 
 	/** Get a Feed by its id */
