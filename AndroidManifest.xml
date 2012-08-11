@@ -45,7 +45,7 @@
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/add_new_feed_label" >
+            android:label="@string/add_new_feed_label" android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
