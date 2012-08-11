@@ -241,41 +241,8 @@ public class DownloadRequester {// TODO handle externalstorage missing
 				media.getMime_type());
 	}
 
-	/*
-	 * ------------ Methods for communicating with the DownloadService
-	 * -------------
-	 */
-	private DownloadService mService = null;
-	private Context mContext = null;
-	boolean mIsBound;
-
-	private ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			mService = ((DownloadService.LocalBinder) service).getService();
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Connection to service established");
-			mService.queryDownloads();
-			if (mContext != null && mIsBound) {
-				try {
-					mContext.unbindService(mConnection);
-				} catch (IllegalArgumentException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			mService = null;
-			mIsBound = false;
-			mContext = null;
-			Log.i(TAG, "Closed connection with DownloadService.");
-		}
-	};
-
 	/** Notifies the DownloadService to check if there are any Downloads left */
 	public void notifyDownloadService(Context context) {
-		mContext = context;
-		mIsBound = context.bindService(new Intent(context,
-				DownloadService.class), mConnection, Context.BIND_AUTO_CREATE);
+		context.sendBroadcast(new Intent(DownloadService.ACTION_NOTIFY_DOWNLOADS_CHANGED));
 	}
 }

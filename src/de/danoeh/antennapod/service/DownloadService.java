@@ -62,6 +62,12 @@ public class DownloadService extends Service {
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.danoeh.antennapod.storage.all_feed_downloads_completed";
 
+	/**
+	 * If the DownloadService receives this intent, it will execute
+	 * queryDownloads()
+	 */
+	public static final String ACTION_NOTIFY_DOWNLOADS_CHANGED = "action.de.danoeh.antennapod.service.notifyDownloadsChanged";
+
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
 	/** True if handled feed has an image. */
 	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.danoeh.antennapod.service.feed_has_image";
@@ -73,7 +79,7 @@ public class DownloadService extends Service {
 	public static final int DOWNLOAD_TYPE_FEED = 1;
 	public static final int DOWNLOAD_TYPE_MEDIA = 2;
 	public static final int DOWNLOAD_TYPE_IMAGE = 3;
-	
+
 	private ArrayList<DownloadStatus> completedDownloads;
 
 	private ExecutorService syncExecutor;
@@ -91,15 +97,14 @@ public class DownloadService extends Service {
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
 	public static boolean isRunning = false;
-
-	private final IBinder mBinder = new LocalBinder();
-
+	
+    private final IBinder mBinder = new LocalBinder();
 	public class LocalBinder extends Binder {
-		public DownloadService getService() {
-			return DownloadService.this;
-		}
-	}
-
+        public DownloadService getService() {
+            return DownloadService.this;
+        }
+    }
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		queryDownloads();
@@ -114,6 +119,7 @@ public class DownloadService extends Service {
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
+		registerReceiver(onDownloadsChanged, new IntentFilter(ACTION_NOTIFY_DOWNLOADS_CHANGED));
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -157,6 +163,7 @@ public class DownloadService extends Service {
 		isRunning = false;
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);
+		unregisterReceiver(onDownloadsChanged);
 		downloadObserver.cancel(true);
 		createReport();
 	}
@@ -213,6 +220,15 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Notification set up");
 	}
+	
+	private BroadcastReceiver onDownloadsChanged = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_NOTIFY_DOWNLOADS_CHANGED)) {
+				queryDownloads();
+			}
+		}};
 
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
 		@SuppressLint("NewApi")
@@ -297,7 +313,7 @@ public class DownloadService extends Service {
 		completedDownloads.add(status);
 		manager.addDownloadStatus(this, status);
 	}
-	
+
 	/** Returns correct value for EXTRA_DOWNLOAD_TYPE. */
 	private int getDownloadType(FeedFile f) {
 		if (f.getClass() == Feed.class) {
@@ -384,7 +400,7 @@ public class DownloadService extends Service {
 	}
 
 	/** Check if there's something else to download, otherwise stop */
-	public synchronized void queryDownloads() {
+	private void queryDownloads() {
 		int numOfDownloads = requester.getNumberOfDownloads();
 		if (!shutdownInitiated && numOfDownloads == 0) {
 			shutdownInitiated = true;
@@ -499,7 +515,8 @@ public class DownloadService extends Service {
 				savedFeed = feed;
 			}
 			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
-			sendDownloadHandledIntent(downloadId, hasImage, imageId, DOWNLOAD_TYPE_FEED);
+			sendDownloadHandledIntent(downloadId, hasImage, imageId,
+					DOWNLOAD_TYPE_FEED);
 			queryDownloads();
 		}
 
@@ -547,7 +564,8 @@ public class DownloadService extends Service {
 			requester.removeDownload(image);
 
 			saveDownloadStatus(new DownloadStatus(image, 0, true));
-			sendDownloadHandledIntent(image.getDownloadId(), false, 0, DOWNLOAD_TYPE_IMAGE);
+			sendDownloadHandledIntent(image.getDownloadId(), false, 0,
+					DOWNLOAD_TYPE_IMAGE);
 			image.setDownloadId(0);
 			manager.setFeedImage(service, image);
 			if (image.getFeed() != null) {
@@ -587,7 +605,8 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 			saveDownloadStatus(new DownloadStatus(media, 0, true));
-			sendDownloadHandledIntent(media.getDownloadId(), false, 0, DOWNLOAD_TYPE_MEDIA);
+			sendDownloadHandledIntent(media.getDownloadId(), false, 0,
+					DOWNLOAD_TYPE_MEDIA);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
 			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
