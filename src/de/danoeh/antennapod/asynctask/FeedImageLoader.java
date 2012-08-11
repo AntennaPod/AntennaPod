@@ -25,7 +25,7 @@ public class FeedImageLoader {
 	private static final String TAG = "FeedImageLoader";
 	private static FeedImageLoader singleton;
 
-	public static final int LENGTH_BASE_COVER = 200;
+	public static final int LENGTH_BASE_COVER = 300;
 	public static final int LENGTH_BASE_THUMBNAIL = 100;
 
 	private static final String CACHE_DIR = "miroguide_thumbnails";
@@ -44,7 +44,7 @@ public class FeedImageLoader {
 			.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
 	// Use 1/8th of the available memory for this memory cache.
-	final int coverCacheSize = 1024 * 1024 * memClass / 10;
+	final int coverCacheSize = 1024 * 1024 * memClass / 8;
 	final int thumbnailCacheSize = 1024 * 1024 * memClass / 6;
 
 	private LruCache<String, Bitmap> coverCache;

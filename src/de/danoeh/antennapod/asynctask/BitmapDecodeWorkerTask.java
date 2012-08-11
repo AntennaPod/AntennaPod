@@ -40,6 +40,9 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 		this.fileUrl = fileUrl;
 		this.baseLength = length;
 		this.PREFERRED_LENGTH = (int) (length * PodcastApp.getLogicalDensity() + 0.5f);
+		if (PodcastApp.getInstance().isLargeScreen()) {
+			this.PREFERRED_LENGTH *= 2.0;
+		}
 	}
 
 	/**
