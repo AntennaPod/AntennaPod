@@ -68,6 +68,12 @@ public class DownloadService extends Service {
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
 	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.image_download_id";
 
+	// Download types for ACTION_DOWNLOAD_HANDLED
+	public static final String EXTRA_DOWNLOAD_TYPE = "extra.de.danoeh.antennapod.service.downloadType";
+	public static final int DOWNLOAD_TYPE_FEED = 1;
+	public static final int DOWNLOAD_TYPE_MEDIA = 2;
+	public static final int DOWNLOAD_TYPE_IMAGE = 3;
+	
 	private ArrayList<DownloadStatus> completedDownloads;
 
 	private ExecutorService syncExecutor;
@@ -261,7 +267,7 @@ public class DownloadService extends Service {
 									reason, successful));
 							requester.removeDownload(download);
 							sendDownloadHandledIntent(download.getDownloadId(),
-									false, 0);
+									false, 0, getDownloadType(download));
 							download.setDownloadId(0);
 
 						}
@@ -291,12 +297,26 @@ public class DownloadService extends Service {
 		completedDownloads.add(status);
 		manager.addDownloadStatus(this, status);
 	}
+	
+	/** Returns correct value for EXTRA_DOWNLOAD_TYPE. */
+	private int getDownloadType(FeedFile f) {
+		if (f.getClass() == Feed.class) {
+			return DOWNLOAD_TYPE_FEED;
+		} else if (f.getClass() == FeedImage.class) {
+			return DOWNLOAD_TYPE_IMAGE;
+		} else if (f.getClass() == FeedMedia.class) {
+			return DOWNLOAD_TYPE_MEDIA;
+		} else {
+			return 0;
+		}
+	}
 
 	private void sendDownloadHandledIntent(long downloadId,
-			boolean feedHasImage, long imageDownloadId) {
+			boolean feedHasImage, long imageDownloadId, int type) {
 		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
 		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
 		intent.putExtra(EXTRA_FEED_HAS_IMAGE, feedHasImage);
+		intent.putExtra(EXTRA_DOWNLOAD_TYPE, type);
 		if (feedHasImage) {
 			intent.putExtra(EXTRA_IMAGE_DOWNLOAD_ID, imageDownloadId);
 		}
@@ -479,7 +499,7 @@ public class DownloadService extends Service {
 				savedFeed = feed;
 			}
 			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
-			sendDownloadHandledIntent(downloadId, hasImage, imageId);
+			sendDownloadHandledIntent(downloadId, hasImage, imageId, DOWNLOAD_TYPE_FEED);
 			queryDownloads();
 		}
 
@@ -527,7 +547,7 @@ public class DownloadService extends Service {
 			requester.removeDownload(image);
 
 			saveDownloadStatus(new DownloadStatus(image, 0, true));
-			sendDownloadHandledIntent(image.getDownloadId(), false, 0);
+			sendDownloadHandledIntent(image.getDownloadId(), false, 0, DOWNLOAD_TYPE_IMAGE);
 			image.setDownloadId(0);
 			manager.setFeedImage(service, image);
 			if (image.getFeed() != null) {
@@ -567,7 +587,7 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 			saveDownloadStatus(new DownloadStatus(media, 0, true));
-			sendDownloadHandledIntent(media.getDownloadId(), false, 0);
+			sendDownloadHandledIntent(media.getDownloadId(), false, 0, DOWNLOAD_TYPE_MEDIA);
 			media.setDownloadId(0);
 			manager.setFeedMedia(service, media);
 			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(

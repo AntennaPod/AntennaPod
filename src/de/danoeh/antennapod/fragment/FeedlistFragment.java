@@ -94,13 +94,15 @@ public class FeedlistFragment extends SherlockFragment implements
 			listView.setOnItemLongClickListener(this);
 			listView.setAdapter(fla);
 			listView.setEmptyView(txtvEmpty);
-			if (AppConfig.DEBUG) Log.d(TAG, "Using ListView");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Using ListView");
 		} else {
 			gridView.setOnItemClickListener(this);
 			gridView.setOnItemLongClickListener(this);
 			gridView.setAdapter(fla);
 			gridView.setEmptyView(txtvEmpty);
-			if (AppConfig.DEBUG) Log.d(TAG, "Using GridView");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Using GridView");
 		}
 	}
 
@@ -113,7 +115,7 @@ public class FeedlistFragment extends SherlockFragment implements
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
 		filter.addAction(FeedManager.ACITON_FEED_LIST_UPDATE);
-
+		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		pActivity.registerReceiver(contentUpdate, filter);
 		fla.notifyDataSetChanged();
 	}
@@ -129,15 +131,22 @@ public class FeedlistFragment extends SherlockFragment implements
 
 	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(Context context, final Intent intent) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Received contentUpdate Intent.");
 			getActivity().runOnUiThread(new Runnable() {
 
 				@Override
 				public void run() {
-					fla.notifyDataSetChanged();
-
+					if (intent.getAction().equals(
+							DownloadService.ACTION_DOWNLOAD_HANDLED)) {
+						int type = intent.getIntExtra(DownloadService.EXTRA_DOWNLOAD_TYPE, 0);
+						if (type == DownloadService.DOWNLOAD_TYPE_IMAGE) {
+							fla.notifyDataSetChanged();
+						}
+					} else {
+						fla.notifyDataSetChanged();
+					}
 				}
 			});
 		}
