@@ -223,6 +223,9 @@ public class DownloadService extends Service {
 						status = c.getInt(c
 								.getColumnIndex(DownloadManager.COLUMN_STATUS));
 					}
+					if (downloadId == 0) {
+						Log.d(TAG, "Download ID was null");
+					}
 					FeedFile download = requester.getFeedFile(downloadId);
 					if (download != null) {
 						if (status == DownloadManager.STATUS_SUCCESSFUL) {
@@ -435,7 +438,8 @@ public class DownloadService extends Service {
 						&& savedFeed.getImage().isDownloaded() == false) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
-					imageId = requester.downloadImage(service, feed.getImage());
+					savedFeed.getImage().setFeed(savedFeed);
+					imageId = requester.downloadImage(service, savedFeed.getImage());
 					hasImage = true;
 				}
 
@@ -462,7 +466,7 @@ public class DownloadService extends Service {
 			}
 
 			requester.removeDownload(feed);
-			cleanup();
+			//cleanup();
 			if (savedFeed == null) {
 				savedFeed = feed;
 			}
@@ -519,8 +523,12 @@ public class DownloadService extends Service {
 					true));
 			sendDownloadHandledIntent(image.getDownloadId(), statusId, false, 0);
 			image.setDownloadId(0);
-
 			manager.setFeedImage(service, image);
+			if (image.getFeed() != null) {
+				manager.setFeed(service, image.getFeed());
+			} else {
+				Log.e(TAG, "Image has no feed, image might not be saved correctly!");
+			}
 			queryDownloads();
 		}
 	}

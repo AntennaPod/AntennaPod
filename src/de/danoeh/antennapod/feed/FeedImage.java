@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.feed;
 
-
 public class FeedImage extends FeedFile {
 	protected String title;
+	protected Feed feed;
 
 	public FeedImage(String download_url, String title) {
 		super(null, download_url, false);
@@ -27,6 +27,14 @@ public class FeedImage extends FeedFile {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Feed getFeed() {
+		return feed;
+	}
+
+	public void setFeed(Feed feed) {
+		this.feed = feed;
 	}
 
 }

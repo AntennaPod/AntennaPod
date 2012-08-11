@@ -286,8 +286,6 @@ public class FeedManager {
 	public void notifyInvalidImageFile(Context context, FeedImage image) {
 		Log.i(TAG,
 				"The feedmanager was notified about an invalid image download. It will now try to redownload the image file");
-		image.setDownloaded(false);
-		image.setFile_url(null);
 		requester.downloadImage(context, image);
 	}
 
@@ -695,6 +693,7 @@ public class FeedManager {
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {
 					feed.setImage(adapter.getFeedImage(imageIndex));
+					feed.getImage().setFeed(feed);
 				}
 				feed.file_url = feedlistCursor
 						.getString(PodDBAdapter.KEY_FILE_URL_INDEX);
