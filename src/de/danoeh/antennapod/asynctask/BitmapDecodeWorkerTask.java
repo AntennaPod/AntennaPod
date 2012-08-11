@@ -76,6 +76,11 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Finished loading bitmaps");
 		} else {
+			if (fileUrl == null) {
+				Log.w(TAG, "File URL is null");
+			} else {
+				Log.w(TAG, "File does not exist anymore.");
+			}
 			onInvalidFileUrl();
 		}
 		endBackgroundTask();
