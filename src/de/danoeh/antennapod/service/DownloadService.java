@@ -98,6 +98,9 @@ public class DownloadService extends Service {
 	/** True if service is running. */
 	public static boolean isRunning = false;
 	
+	/** Is started when service waits for shutdown. */
+	private Thread waiter;
+	
     private final IBinder mBinder = new LocalBinder();
 	public class LocalBinder extends Binder {
         public DownloadService getService() {
@@ -107,6 +110,9 @@ public class DownloadService extends Service {
 	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (waiter != null) {
+			waiter.interrupt();
+		}
 		queryDownloads();
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -179,7 +185,7 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Initiating shutdown");
 		// Wait until PoolExecutor is done
-		Thread waiter = new Thread() {
+		waiter = new Thread() {
 			@Override
 			public void run() {
 				syncExecutor.shutdown();
@@ -192,10 +198,12 @@ public class DownloadService extends Service {
 						Log.d(TAG,
 								"Stopping waiting for termination; Result : "
 										+ b);
-
+					stopForeground(true);
 					stopSelf();
 				} catch (InterruptedException e) {
 					e.printStackTrace();
+					Log.i(TAG, "Service shutdown was interrupted.");
+					shutdownInitiated = false;
 				}
 			}
 		};
