@@ -2,10 +2,11 @@ package de.danoeh.antennapod.feed;
 
 import java.util.ArrayList;
 import java.util.Date;
-
-import de.danoeh.antennapod.PodcastApp;
+import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.preference.PreferenceManager;
+import de.danoeh.antennapod.PodcastApp;
 
 /**
  * Data Object for a whole feed
@@ -26,7 +27,7 @@ public class Feed extends FeedFile {
 	private String author;
 	private FeedImage image;
 	private FeedCategory category;
-	private ArrayList<FeedItem> items;
+	private List<FeedItem> items;
 	/** Date of last refresh. */
 	private Date lastUpdate;
 	private String paymentLink;
@@ -35,7 +36,7 @@ public class Feed extends FeedFile {
 
 	public Feed(Date lastUpdate) {
 		super();
-		items = new ArrayList<FeedItem>();
+		items = new CopyOnWriteArrayList<FeedItem>();
 		this.lastUpdate = lastUpdate;
 	}
 
@@ -123,7 +124,7 @@ public class Feed extends FeedFile {
 		this.category = category;
 	}
 
-	public ArrayList<FeedItem> getItems() {
+	public List<FeedItem> getItems() {
 		return items;
 	}
 
