@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.9.3.1
+---------------
+* Added preference to hide feed items which don't have an episode
+* Improved image size for some some screen sizes
+* Added grid view for large screens
+* Several bugfixes
+
 Version 0.9.3
 -------------
 * MiroGuide integration
