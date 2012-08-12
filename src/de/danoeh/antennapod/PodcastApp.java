@@ -1,6 +1,7 @@
 package de.danoeh.antennapod;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 import android.app.AlarmManager;
@@ -49,9 +50,24 @@ public class PodcastApp extends Application implements
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		createImportDirectory();
+		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
+	}
+
+	/** Create a .nomedia file to prevent scanning by the media scanner. */
+	private void createNoMediaFile() {
+		File f = new File(getExternalFilesDir(null), ".nomedia");
+		if (!f.exists()) {
+			try {
+				f.createNewFile();
+			} catch (IOException e) {
+				Log.e(TAG, "Could not create .nomedia file");
+				e.printStackTrace();
+			}
+			if (AppConfig.DEBUG) Log.d(TAG, ".nomedia file created");
+		}
 	}
 
 	/**
