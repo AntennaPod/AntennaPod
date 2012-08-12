@@ -30,7 +30,7 @@ public abstract class ConfirmationDialog {
 		dialog.dismiss();
 	}
 
-	public abstract void onConfirmButtonPressed();
+	public abstract void onConfirmButtonPressed(DialogInterface dialog);
 
 	public final AlertDialog createNewDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
@@ -41,7 +41,7 @@ public abstract class ConfirmationDialog {
 
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						onConfirmButtonPressed();
+						onConfirmButtonPressed(dialog);
 					}
 				});
 		builder.setNegativeButton(R.string.cancel_label,

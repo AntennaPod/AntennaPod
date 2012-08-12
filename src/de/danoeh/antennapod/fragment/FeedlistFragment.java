@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import de.danoeh.antennapod.activity.*;
 import de.danoeh.antennapod.adapter.FeedlistAdapter;
 import de.danoeh.antennapod.asynctask.FeedRemover;
+import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -16,6 +17,7 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.LayoutInflater;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.BroadcastReceiver;
@@ -173,19 +175,21 @@ public class FeedlistFragment extends SherlockFragment implements
 		} else {
 			switch (item.getItemId()) {
 			case R.id.remove_item:
-				FeedRemover remover = new FeedRemover(getSherlockActivity()) {
+				final FeedRemover remover = new FeedRemover(getSherlockActivity(), selectedFeed) {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						fla.notifyDataSetChanged();
 					}
 				};
-				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-							selectedFeed);
-				} else {
-					remover.execute(selectedFeed);
-				}
+				ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(), R.string.remove_feed_label, R.string.feed_delete_confirmation_msg){
+
+					@Override
+					public void onConfirmButtonPressed(DialogInterface dialog) {		
+						dialog.dismiss();
+						remover.executeAsync();
+					}};
+				conDialog.createNewDialog().show();
 				break;
 			}
 		}

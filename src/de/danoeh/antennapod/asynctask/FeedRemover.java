@@ -9,28 +9,24 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
 
 /** Removes a feed in the background. */
-public class FeedRemover extends AsyncTask<Feed, Void, Void> {
+public class FeedRemover extends AsyncTask<Void, Void, Void> {
 	Context context;
 	ProgressDialog dialog;
-	
-	public FeedRemover(Context context) {
+	Feed feed;
+
+	public FeedRemover(Context context, Feed feed) {
 		super();
 		this.context = context;
+		this.feed = feed;
 	}
 
 	@Override
-	protected Void doInBackground(Feed... params) {
+	protected Void doInBackground(Void... params) {
 		FeedManager manager = FeedManager.getInstance();
-		for (Feed feed : params) {
-			manager.deleteFeed(context, feed);
-			if (isCancelled()) {
-				break;
-			}
-		}
-		
+		manager.deleteFeed(context, feed);
 		return null;
 	}
-	
+
 	@Override
 	protected void onCancelled() {
 		dialog.dismiss();
@@ -50,13 +46,19 @@ public class FeedRemover extends AsyncTask<Feed, Void, Void> {
 			@Override
 			public void onCancel(DialogInterface dialog) {
 				cancel(true);
-				
+
 			}
-			
+
 		});
 		dialog.show();
 	}
-	
-	
+
+	public void executeAsync() {
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			execute();
+		}
+	}
 
 }

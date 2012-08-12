@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
+import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
@@ -88,19 +90,25 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		} else {
 			switch (item.getItemId()) {
 			case R.id.remove_item:
-				FeedRemover remover = new FeedRemover(this) {
+				final FeedRemover remover = new FeedRemover(
+						FeedItemlistActivity.this, feed) {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
 						finish();
 					}
 				};
-				if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-					remover.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR,
-							feed);
-				} else {
-					remover.execute(feed);
-				}
+				ConfirmationDialog conDialog = new ConfirmationDialog(this,
+						R.string.remove_feed_label,
+						R.string.feed_delete_confirmation_msg) {
+
+					@Override
+					public void onConfirmButtonPressed(DialogInterface dialog) {
+						dialog.dismiss();
+						remover.executeAsync();
+					}
+				};
+				conDialog.createNewDialog().show();
 				break;
 			case R.id.search_item:
 				onSearchRequested();
@@ -120,7 +128,5 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		startSearch(null, false, bundle, false);
 		return true;
 	}
-	
-	
 
 }

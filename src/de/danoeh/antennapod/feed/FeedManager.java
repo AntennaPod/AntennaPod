@@ -144,6 +144,14 @@ public class FeedManager {
 
 	/** Remove a feed with all its items and media files and its image. */
 	public void deleteFeed(final Context context, final Feed feed) {
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				feeds.remove(feed);
+				sendFeedUpdateBroadcast(context);
+			}
+		});
 		dbExec.execute(new Runnable() {
 
 			@Override
@@ -183,14 +191,6 @@ public class FeedManager {
 
 				adapter.removeFeed(feed);
 				adapter.close();
-				contentChanger.post(new Runnable() {
-
-					@Override
-					public void run() {
-						feeds.remove(feed);
-						sendFeedUpdateBroadcast(context);
-					}
-				});
 			}
 		});
 
