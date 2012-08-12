@@ -5,8 +5,8 @@
 
     <ImageView
         android:id="@+id/imgvFeedimage"
-        android:layout_width="200dip"
-        android:layout_height="200dip"
+        android:layout_width="160dip"
+        android:layout_height="160dip"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
