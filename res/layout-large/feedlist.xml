@@ -10,10 +10,8 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:horizontalSpacing="16dp"
         android:numColumns="auto_fit"
         android:stretchMode="columnWidth"
-        android:verticalSpacing="32dp"
         tools:listitem="@layout/feedlist_item_grid" />
 
     <TextView
