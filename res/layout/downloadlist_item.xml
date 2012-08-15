@@ -8,20 +8,22 @@
         android:id="@+id/txtvTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:textStyle="bold" />
 
     <TextView
         android:id="@+id/txtvMessage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="4dp" />
+        android:layout_margin="8dp" />
 
     <ProgressBar
         android:id="@+id/progProgress"
-        style="@android:style/Widget.ProgressBar.Horizontal"
+        style="?android:attr/progressBarStyleHorizontal"
         android:layout_width="match_parent"
         android:layout_height="16dp"
-        android:layout_margin="4dp" />
+        android:layout_margin="8dp" />
 
     <RelativeLayout
         android:layout_width="match_parent"
