@@ -28,8 +28,6 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 		this.selectedItemIndex = SELECTION_NONE;
 	}
 
-
-
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
@@ -69,7 +67,14 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 		} else if (feedFile.getClass() == Feed.class) {
 			titleText = ((Feed) feedFile).getTitle();
 		} else if (feedFile.getClass() == FeedImage.class) {
-			titleText = "[Image] " + ((FeedImage) feedFile).getTitle();
+			FeedImage image = (FeedImage) feedFile;
+			if (image.getFeed() != null) {
+				titleText = convertView.getResources().getString(
+						R.string.image_of_prefix)
+						+ image.getFeed().getTitle();
+			} else {
+				titleText = "[Image] " + ((FeedImage) feedFile).getTitle();
+			}
 		}
 		holder.title.setText(titleText);
 		holder.message.setText(status.getStatusMsg());

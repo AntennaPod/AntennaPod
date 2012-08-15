@@ -329,7 +329,7 @@ public class FeedManager {
 
 	public void refreshFeed(Context context, Feed feed) {
 		requester.downloadFeed(context, new Feed(feed.getDownload_url(),
-				new Date()));
+				new Date(), feed.getTitle()));
 	}
 
 	public void addDownloadStatus(final Context context,

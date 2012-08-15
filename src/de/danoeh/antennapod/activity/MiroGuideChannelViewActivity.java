@@ -155,7 +155,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			return true;
 		case R.id.add_feed:
 			DownloadRequester.getInstance().downloadFeed(this,
-					new Feed(channel.getDownloadUrl(), new Date()));
+					new Feed(channel.getDownloadUrl(), new Date(), channel.getName()));
 			Toast toast = Toast.makeText(this, R.string.miro_feed_added,
 					Toast.LENGTH_LONG);
 			toast.show();

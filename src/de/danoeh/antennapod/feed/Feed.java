@@ -40,9 +40,22 @@ public class Feed extends FeedFile {
 		this.lastUpdate = lastUpdate;
 	}
 
+	/**
+	 * This constructor is used for requesting a feed download. It should NOT be
+	 * used if the title of the feed is already known.
+	 * */
 	public Feed(String url, Date lastUpdate) {
 		this(lastUpdate);
 		this.download_url = url;
+	}
+
+	/**
+	 * This constructor is used for requesting a feed download. It should be
+	 * used if the title of the feed is already known.
+	 * */
+	public Feed(String url, Date lastUpdate, String title) {
+		this(url, lastUpdate);
+		this.title = title;
 	}
 
 	/**
