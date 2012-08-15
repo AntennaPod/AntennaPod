@@ -41,6 +41,7 @@ import android.app.DownloadManager;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.IBinder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -97,17 +98,18 @@ public class DownloadService extends Service {
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
 	public static boolean isRunning = false;
-	
+
 	/** Is started when service waits for shutdown. */
 	private Thread waiter;
-	
-    private final IBinder mBinder = new LocalBinder();
+
+	private final IBinder mBinder = new LocalBinder();
+
 	public class LocalBinder extends Binder {
-        public DownloadService getService() {
-            return DownloadService.this;
-        }
-    }
-	
+		public DownloadService getService() {
+			return DownloadService.this;
+		}
+	}
+
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (waiter != null) {
@@ -125,7 +127,8 @@ public class DownloadService extends Service {
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
-		registerReceiver(onDownloadsChanged, new IntentFilter(ACTION_NOTIFY_DOWNLOADS_CHANGED));
+		registerReceiver(onDownloadsChanged, new IntentFilter(
+				ACTION_NOTIFY_DOWNLOADS_CHANGED));
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -228,7 +231,7 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Notification set up");
 	}
-	
+
 	private BroadcastReceiver onDownloadsChanged = new BroadcastReceiver() {
 
 		@Override
@@ -236,7 +239,8 @@ public class DownloadService extends Service {
 			if (intent.getAction().equals(ACTION_NOTIFY_DOWNLOADS_CHANGED)) {
 				queryDownloads();
 			}
-		}};
+		}
+	};
 
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
 		@SuppressLint("NewApi")
@@ -247,6 +251,7 @@ public class DownloadService extends Service {
 				@Override
 				protected Void doInBackground(Void... params) {
 					int status = -1;
+					String file_url = null;
 					boolean successful = false;
 					int reason = 0;
 					if (AppConfig.DEBUG)
@@ -260,6 +265,19 @@ public class DownloadService extends Service {
 					if (c.moveToFirst()) {
 						status = c.getInt(c
 								.getColumnIndex(DownloadManager.COLUMN_STATUS));
+						String uriString = c
+								.getString(c
+										.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
+						if (uriString != null) {
+							Uri file_uri = Uri.parse(uriString);
+							file_url = file_uri.getPath();
+						} else {
+							Log.w(TAG,
+									"DownloadManager didn't provide a destination URI for downloaded file");
+						}
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "File url given by download manager is "
+									+ file_url);
 					}
 					if (downloadId == 0) {
 						Log.d(TAG, "Download ID was null");
@@ -267,7 +285,9 @@ public class DownloadService extends Service {
 					FeedFile download = requester.getFeedFile(downloadId);
 					if (download != null) {
 						if (status == DownloadManager.STATUS_SUCCESSFUL) {
-
+							if (file_url != null) {
+								download.setFile_url(file_url);
+							}
 							if (download.getClass() == Feed.class) {
 								handleCompletedFeedDownload(context,
 										(Feed) download);
@@ -296,8 +316,8 @@ public class DownloadService extends Service {
 
 						}
 						queryDownloads();
-						c.close();
 					}
+					c.close();
 					return null;
 				}
 			};
