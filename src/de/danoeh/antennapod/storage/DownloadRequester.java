@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.storage;
 
 import java.io.File;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.annotation.SuppressLint;
@@ -23,27 +26,24 @@ import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.NumberGenerator;
 import de.danoeh.antennapod.util.URLChecker;
 
-public class DownloadRequester {// TODO handle externalstorage missing
+public class DownloadRequester {
 	private static final String TAG = "DownloadRequester";
-	private static final int currentApi = android.os.Build.VERSION.SDK_INT;
 
 	public static String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.storage.download_id";
 	public static String EXTRA_ITEM_ID = "extra.de.danoeh.antennapod.storage.item_id";
 
 	public static String ACTION_DOWNLOAD_QUEUED = "action.de.danoeh.antennapod.storage.downloadQueued";
 
-	private static boolean STORE_ON_SD = true;
 	public static String IMAGE_DOWNLOADPATH = "images/";
 	public static String FEED_DOWNLOADPATH = "cache/";
 	public static String MEDIA_DOWNLOADPATH = "media/";
 
 	private static DownloadRequester downloader;
-	private DownloadManager manager;
 
-	private List<FeedFile> downloads;
+	Map<String, FeedFile> downloads;
 
 	private DownloadRequester() {
-		downloads = new CopyOnWriteArrayList<FeedFile>();
+		downloads = new ConcurrentHashMap<String, FeedFile>();
 	}
 
 	public static DownloadRequester getInstance() {
@@ -53,8 +53,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 		return downloader;
 	}
 
-	@SuppressLint("NewApi")
-	private long download(Context context, FeedFile item, File dest) {
+	private void download(Context context, FeedFile item, File dest) {
 		if (!isDownloadingFile(item)) {
 			if (dest.exists()) {
 				if (AppConfig.DEBUG)
@@ -64,74 +63,58 @@ public class DownloadRequester {// TODO handle externalstorage missing
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
 						"Requesting download of url " + item.getDownload_url());
-			downloads.add(item);
+			downloads.put(item.getDownload_url(), item);
 			item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
-			DownloadManager.Request request = new DownloadManager.Request(
-					Uri.parse(item.getDownload_url())).setDestinationUri(Uri
-					.fromFile(dest));
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Version is " + currentApi);
-			if (currentApi >= 11) {
-				request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_HIDDEN);
-			} else {
-				request.setVisibleInDownloadsUi(false);
-				request.setShowRunningNotification(false);
-			}
-
-			// TODO Set Allowed Network Types
-			DownloadManager manager = (DownloadManager) context
-					.getSystemService(Context.DOWNLOAD_SERVICE);
-
-			long downloadId = manager.enqueue(request);
-			item.setDownloadId(downloadId);
 			item.setFile_url(dest.toString());
-			context.startService(new Intent(context, DownloadService.class));
+
+			DownloadService.Request request = new DownloadService.Request(
+					item.getFile_url(), item.getDownload_url());
+			Intent queueIntent = new Intent(
+					DownloadService.ACTION_ENQUEUE_DOWNLOAD);
+			queueIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+			if (!DownloadService.isRunning) {
+				context.startService(new Intent(context, DownloadService.class));
+			}
+			context.sendBroadcast(queueIntent);
 			context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
-			return downloadId;
 		} else {
 			Log.e(TAG, "URL " + item.getDownload_url()
 					+ " is already being downloaded");
-			return 0;
 		}
 	}
 
-	public long downloadFeed(Context context, Feed feed) {
-		return download(context, feed, new File(getFeedfilePath(context),
+	public void downloadFeed(Context context, Feed feed) {
+		download(context, feed, new File(getFeedfilePath(context),
 				getFeedfileName(feed)));
 	}
 
-	public long downloadImage(Context context, FeedImage image) {
-		return download(context, image, new File(getImagefilePath(context),
+	public void downloadImage(Context context, FeedImage image) {
+		download(context, image, new File(getImagefilePath(context),
 				getImagefileName(image)));
 	}
 
-	public long downloadMedia(Context context, FeedMedia feedmedia) {
-		return download(context, feedmedia,
+	public void downloadMedia(Context context, FeedMedia feedmedia) {
+		download(context, feedmedia,
 				new File(getMediafilePath(context, feedmedia),
 						getMediafilename(feedmedia)));
 	}
 
 	/**
 	 * Cancels a running download.
-	 * 
-	 * @param context
-	 *            A context needed to get the DownloadManager service
-	 * @param id
-	 *            ID of the download to cancel
 	 * */
-	public void cancelDownload(final Context context, final long id) {
+	public void cancelDownload(final Context context, final FeedFile f) {
+		cancelDownload(context, f.getDownload_url());
+	}
+
+	/**
+	 * Cancels a running download.
+	 * */
+	public void cancelDownload(final Context context, final String download_url) {
 		if (AppConfig.DEBUG)
-			Log.d(TAG, "Cancelling download with id " + id);
-		DownloadManager dm = (DownloadManager) context
-				.getSystemService(Context.DOWNLOAD_SERVICE);
-		int removed = dm.remove(id);
-		if (removed > 0) {
-			FeedFile f = getFeedFile(id);
-			if (f != null) {
-				downloads.remove(f);
-				f.setFile_url(null);
-				f.setDownloadId(0);
-			}
+			Log.d(TAG, "Cancelling download with url " + download_url);
+		FeedFile download = downloads.remove(download_url);
+		if (download != null) {
+			download.setFile_url(null);
 			notifyDownloadService(context);
 		}
 	}
@@ -142,28 +125,17 @@ public class DownloadRequester {// TODO handle externalstorage missing
 			Log.d(TAG, "Cancelling all running downloads");
 		DownloadManager dm = (DownloadManager) context
 				.getSystemService(Context.DOWNLOAD_SERVICE);
-		for (FeedFile f : downloads) {
+		for (FeedFile f : downloads.values()) {
 			dm.remove(f.getDownloadId());
 			f.setFile_url(null);
-			f.setDownloadId(0);
 		}
 		downloads.clear();
 		notifyDownloadService(context);
 	}
 
-	/** Get a feedfile by its download id */
-	public FeedFile getFeedFile(long id) {
-		for (FeedFile f : downloads) {
-			if (f.getDownloadId() == id) {
-				return f;
-			}
-		}
-		return null;
-	}
-
 	/** Returns true if there is at least one Feed in the downloads queue. */
 	public boolean isDownloadingFeeds() {
-		for (FeedFile f : downloads) {
+		for (FeedFile f : downloads.values()) {
 			if (f.getClass() == Feed.class) {
 				return true;
 			}
@@ -173,22 +145,19 @@ public class DownloadRequester {// TODO handle externalstorage missing
 
 	/** Checks if feedfile is in the downloads list */
 	public boolean isDownloadingFile(FeedFile item) {
-		for (FeedFile f : downloads) {
-			if (f.getDownload_url().equals(item.getDownload_url())) {
-				return true;
-			}
+		if (item.getDownload_url() != null) {
+			return downloads.containsKey(item.getDownload_url());
 		}
 		return false;
 	}
 
+	public FeedFile getDownload(String downloadUrl) {
+		return downloads.get(downloadUrl);
+	}
+
 	/** Checks if feedfile with the given download url is in the downloads list */
 	public boolean isDownloadingFile(String downloadUrl) {
-		for (FeedFile f : downloads) {
-			if (f.getDownload_url().equals(downloadUrl)) {
-				return true;
-			}
-		}
-		return false;
+		return downloads.get(downloadUrl) != null;
 	}
 
 	public boolean hasNoDownloads() {
@@ -202,10 +171,6 @@ public class DownloadRequester {// TODO handle externalstorage missing
 	/** Remove an object from the downloads-list of the requester. */
 	public void removeDownload(FeedFile f) {
 		downloads.remove(f);
-	}
-
-	public List<FeedFile> getDownloads() {
-		return downloads;
 	}
 
 	/** Get the number of uncompleted Downloads */
@@ -243,6 +208,7 @@ public class DownloadRequester {// TODO handle externalstorage missing
 
 	/** Notifies the DownloadService to check if there are any Downloads left */
 	public void notifyDownloadService(Context context) {
-		context.sendBroadcast(new Intent(DownloadService.ACTION_NOTIFY_DOWNLOADS_CHANGED));
+		context.sendBroadcast(new Intent(
+				DownloadService.ACTION_NOTIFY_DOWNLOADS_CHANGED));
 	}
 }

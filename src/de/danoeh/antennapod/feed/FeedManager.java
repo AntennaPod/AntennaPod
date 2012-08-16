@@ -167,8 +167,7 @@ public class FeedManager {
 						imageFile.delete();
 					}
 				} else if (requester.isDownloadingFile(feed.getImage())) {
-					requester.cancelDownload(context, feed.getImage()
-							.getDownloadId());
+					requester.cancelDownload(context, feed.getImage());
 				}
 				// delete stored media files and mark them as read
 				for (FeedItem item : feed.getItems()) {
@@ -184,8 +183,7 @@ public class FeedManager {
 						mediaFile.delete();
 					} else if (item.getMedia() != null
 							&& requester.isDownloadingFile(item.getMedia())) {
-						requester.cancelDownload(context, item.getMedia()
-								.getDownloadId());
+						requester.cancelDownload(context, item.getMedia());
 					}
 				}
 

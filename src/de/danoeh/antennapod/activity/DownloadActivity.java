@@ -142,8 +142,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		boolean handled = false;
 		switch (item.getItemId()) {
 		case R.id.cancel_download_item:
-			requester.cancelDownload(this, selectedDownload.getFeedFile()
-					.getDownloadId());
+			requester.cancelDownload(this, selectedDownload.getFeedFile());
 			handled = true;
 			break;
 		}

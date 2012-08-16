@@ -81,8 +81,7 @@ public class FeedItemMenuHandler {
 			manager.deleteFeedMedia(context, selectedItem.getMedia());
 			break;
 		case R.id.cancel_download_item:
-			requester.cancelDownload(context, selectedItem.getMedia()
-					.getDownloadId());
+			requester.cancelDownload(context, selectedItem.getMedia());
 			break;
 		case R.id.mark_read_item:
 			manager.markItemRead(context, selectedItem, true);

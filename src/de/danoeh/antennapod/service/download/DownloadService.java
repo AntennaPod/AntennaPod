@@ -51,6 +51,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.webkit.URLUtil;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Debug;
@@ -71,12 +72,16 @@ public class DownloadService extends Service {
 	 * queryDownloads()
 	 */
 	public static final String ACTION_NOTIFY_DOWNLOADS_CHANGED = "action.de.danoeh.antennapod.service.notifyDownloadsChanged";
+	public static final String ACTION_ENQUEUE_DOWNLOAD = "action.de.danoeh.antennapod.service.enqueueDownload";
 
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
 	/** True if handled feed has an image. */
 	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.danoeh.antennapod.service.feed_has_image";
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
 	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.image_download_id";
+
+	/** Extra for ACTION_ENQUEUE_DOWNLOAD intent. */
+	public static final String EXTRA_REQUEST = "request";
 
 	// Download types for ACTION_DOWNLOAD_HANDLED
 	public static final String EXTRA_DOWNLOAD_TYPE = "extra.de.danoeh.antennapod.service.downloadType";
@@ -87,6 +92,8 @@ public class DownloadService extends Service {
 	private ArrayList<DownloadStatus> completedDownloads;
 
 	private ExecutorService syncExecutor;
+	private ExecutorService downloadExecutor;
+
 	private DownloadRequester requester;
 	private FeedManager manager;
 	private NotificationCompat.Builder notificationBuilder;
@@ -98,7 +105,7 @@ public class DownloadService extends Service {
 
 	private DownloadObserver downloadObserver;
 
-	private List<DownloadStatus> downloads;
+	private List<Downloader> downloads;
 
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
@@ -117,10 +124,6 @@ public class DownloadService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
-		if (waiter != null) {
-			waiter.interrupt();
-		}
-		queryDownloads();
 		return super.onStartCommand(intent, flags, startId);
 	}
 
@@ -131,10 +134,12 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service started");
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
-		downloads = new ArrayList<DownloadStatus>();
+		downloads = new ArrayList<Downloader>();
 		registerReceiver(downloadReceiver, createIntentFilter());
 		registerReceiver(onDownloadsChanged, new IntentFilter(
 				ACTION_NOTIFY_DOWNLOADS_CHANGED));
+		registerReceiver(downloadQueued, new IntentFilter(
+				ACTION_ENQUEUE_DOWNLOAD));
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -150,6 +155,15 @@ public class DownloadService extends Service {
 						queryDownloads();
 					}
 				});
+				return t;
+			}
+		});
+		downloadExecutor = Executors.newFixedThreadPool(2, new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
 				return t;
 			}
 		});
@@ -179,6 +193,7 @@ public class DownloadService extends Service {
 		mediaplayer.release();
 		unregisterReceiver(downloadReceiver);
 		unregisterReceiver(onDownloadsChanged);
+		unregisterReceiver(downloadQueued);
 		downloadObserver.cancel(true);
 		createReport();
 	}
@@ -247,6 +262,47 @@ public class DownloadService extends Service {
 			}
 		}
 	};
+
+	private BroadcastReceiver downloadQueued = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_ENQUEUE_DOWNLOAD)) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Received enqueue request");
+				Request request = intent.getParcelableExtra(EXTRA_REQUEST);
+				if (request == null) {
+					throw new IllegalArgumentException(
+							"ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
+				}
+				DownloadRequester requester = DownloadRequester.getInstance();
+				FeedFile feedfile = requester.getDownload(request.source);
+				if (feedfile != null) {
+					if (waiter != null) {
+						waiter.interrupt();
+					}
+					DownloadStatus status = new DownloadStatus(feedfile);
+					Downloader downloader = getDownloader(status);
+					if (downloader != null) {
+						downloads.add(downloader);
+						downloadExecutor.submit(downloader);
+					}
+				} else {
+					Log.e(TAG,
+							"Could not find feedfile in download requester when trying to enqueue new download");
+				}
+			}
+		}
+
+	};
+
+	private Downloader getDownloader(DownloadStatus status) {
+		if (URLUtil.isHttpUrl(status.getFeedFile().getDownload_url())) {
+			return new HttpDownloader(this, status);
+		}
+		Log.e(TAG, "Could not find appropriate downloader for "
+				+ status.getFeedFile().getDownload_url());
+		return null;
+	}
 
 	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
 		@SuppressLint("NewApi")
@@ -703,9 +759,15 @@ public class DownloadService extends Service {
 			}
 		};
 
-	}
+		public String getDestination() {
+			return destination;
+		}
 
-	
+		public String getSource() {
+			return source;
+		}
+
+	}
 
 	public DownloadObserver getDownloadObserver() {
 		return downloadObserver;
