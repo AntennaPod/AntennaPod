@@ -75,10 +75,8 @@ public class DownloadService extends Service {
 	public static final String ACTION_ENQUEUE_DOWNLOAD = "action.de.danoeh.antennapod.service.enqueueDownload";
 
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
-	/** True if handled feed has an image. */
-	public static final String EXTRA_FEED_HAS_IMAGE = "extra.de.danoeh.antennapod.service.feed_has_image";
+	
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
-	public static final String EXTRA_IMAGE_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.image_download_id";
 
 	/** Extra for ACTION_ENQUEUE_DOWNLOAD intent. */
 	public static final String EXTRA_REQUEST = "request";
@@ -135,7 +133,6 @@ public class DownloadService extends Service {
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		downloads = new ArrayList<Downloader>();
-		registerReceiver(downloadReceiver, createIntentFilter());
 		registerReceiver(onDownloadsChanged, new IntentFilter(
 				ACTION_NOTIFY_DOWNLOADS_CHANGED));
 		registerReceiver(downloadQueued, new IntentFilter(
@@ -191,17 +188,10 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service shutting down");
 		isRunning = false;
 		mediaplayer.release();
-		unregisterReceiver(downloadReceiver);
 		unregisterReceiver(onDownloadsChanged);
 		unregisterReceiver(downloadQueued);
 		downloadObserver.cancel(true);
 		createReport();
-	}
-
-	private IntentFilter createIntentFilter() {
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(DownloadManager.ACTION_DOWNLOAD_COMPLETE);
-		return filter;
 	}
 
 	/** Shuts down Executor service and prepares for shutdown */
@@ -268,7 +258,8 @@ public class DownloadService extends Service {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ACTION_ENQUEUE_DOWNLOAD)) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Received enqueue request");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received enqueue request");
 				Request request = intent.getParcelableExtra(EXTRA_REQUEST);
 				if (request == null) {
 					throw new IllegalArgumentException(
@@ -304,93 +295,60 @@ public class DownloadService extends Service {
 		return null;
 	}
 
-	private BroadcastReceiver downloadReceiver = new BroadcastReceiver() {
-		@SuppressLint("NewApi")
-		@Override
-		public void onReceive(final Context context, final Intent intent) {
-			AsyncTask<Void, Void, Void> handler = new AsyncTask<Void, Void, Void>() {
+	@SuppressLint("NewApi")
+	public void onDownloadCompleted(final DownloadStatus status) {
+		AsyncTask<Void, Void, Void> handler = new AsyncTask<Void, Void, Void>() {
 
-				@Override
-				protected Void doInBackground(Void... params) {
-					int status = -1;
-					String file_url = null;
-					boolean successful = false;
-					int reason = 0;
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Received 'Download Complete' - message.");
-					long downloadId = intent.getLongExtra(
-							DownloadManager.EXTRA_DOWNLOAD_ID, 0);
-					// get status
-					DownloadManager.Query q = new DownloadManager.Query();
-					q.setFilterById(downloadId);
-					Cursor c = downloadManager.query(q);
-					if (c.moveToFirst()) {
-						status = c.getInt(c
-								.getColumnIndex(DownloadManager.COLUMN_STATUS));
-						String uriString = c
-								.getString(c
-										.getColumnIndex(DownloadManager.COLUMN_LOCAL_URI));
-						if (uriString != null) {
-							Uri file_uri = Uri.parse(uriString);
-							file_url = file_uri.getPath();
-						} else {
-							Log.w(TAG,
-									"DownloadManager didn't provide a destination URI for downloaded file");
+			@Override
+			protected Void doInBackground(Void... params) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received 'Download Complete' - message.");
+				boolean successful = status.isSuccessful();
+				int reason = status.getReason();
+
+				FeedFile download = status.getFeedFile();
+				if (download != null) {
+					if (successful) {
+						if (download.getClass() == Feed.class) {
+							handleCompletedFeedDownload(DownloadService.this,
+									(Feed) download);
+						} else if (download.getClass() == FeedImage.class) {
+							handleCompletedImageDownload(DownloadService.this,
+									(FeedImage) download);
+						} else if (download.getClass() == FeedMedia.class) {
+							handleCompletedFeedMediaDownload(
+									DownloadService.this, (FeedMedia) download);
 						}
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "File url given by download manager is "
-									+ file_url);
-					}
-					if (downloadId == 0) {
-						Log.d(TAG, "Download ID was null");
-					}
-					FeedFile download = requester.getFeedFile(downloadId);
-					if (download != null) {
-						if (status == DownloadManager.STATUS_SUCCESSFUL) {
-							if (file_url != null) {
-								download.setFile_url(file_url);
-							}
-							if (download.getClass() == Feed.class) {
-								handleCompletedFeedDownload(context,
-										(Feed) download);
-							} else if (download.getClass() == FeedImage.class) {
-								handleCompletedImageDownload(context,
-										(FeedImage) download);
-							} else if (download.getClass() == FeedMedia.class) {
-								handleCompletedFeedMediaDownload(context,
-										(FeedMedia) download);
-							}
-							successful = true;
-
-						} else if (status == DownloadManager.STATUS_FAILED) {
-							reason = c
-									.getInt(c
-											.getColumnIndex(DownloadManager.COLUMN_REASON));
+					} else {
+						if (!successful
+								&& reason != DownloadError.ERROR_DOWNLOAD_CANCELLED) {
 							Log.e(TAG, "Download failed");
-							Log.e(TAG, "reason code is " + reason);
-							successful = false;
-							saveDownloadStatus(new DownloadStatus(download,
-									reason, successful));
-							requester.removeDownload(download);
-							sendDownloadHandledIntent(download.getDownloadId(),
-									false, 0, getDownloadType(download));
-							download.setDownloadId(0);
-
 						}
-						queryDownloads();
-					}
-					c.close();
-					return null;
-				}
-			};
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				handler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				handler.execute();
-			}
-		}
+						saveDownloadStatus(status);
+						removeDownload(status);
+						sendDownloadHandledIntent(getDownloadType(download));
 
-	};
+					}
+					queryDownloads();
+				}
+				return null;
+			}
+		};
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			handler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			handler.execute();
+		}
+	}
+
+	/**
+	 * Remove download from the DownloadRequester list and from the
+	 * DownloadService list.
+	 */
+	private void removeDownload(DownloadStatus status) {
+		downloads.remove(status);
+		DownloadRequester.getInstance().removeDownload(status.getFeedFile());
+	}
 
 	/**
 	 * Adds a new DownloadStatus object to the list of completed downloads and
@@ -417,15 +375,10 @@ public class DownloadService extends Service {
 		}
 	}
 
-	private void sendDownloadHandledIntent(long downloadId,
-			boolean feedHasImage, long imageDownloadId, int type) {
+	private void sendDownloadHandledIntent(int type) {
 		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
-		intent.putExtra(EXTRA_DOWNLOAD_ID, downloadId);
-		intent.putExtra(EXTRA_FEED_HAS_IMAGE, feedHasImage);
 		intent.putExtra(EXTRA_DOWNLOAD_TYPE, type);
-		if (feedHasImage) {
-			intent.putExtra(EXTRA_IMAGE_DOWNLOAD_ID, imageDownloadId);
-		}
+
 		sendBroadcast(intent);
 	}
 
@@ -548,8 +501,6 @@ public class DownloadService extends Service {
 		public void run() {
 			Feed savedFeed = null;
 			long imageId = 0;
-			boolean hasImage = false;
-			long downloadId = feed.getDownloadId();
 			reason = 0;
 			successful = true;
 			FeedManager manager = FeedManager.getInstance();
@@ -563,7 +514,6 @@ public class DownloadService extends Service {
 				if (checkFeedData(feed) == false) {
 					throw new InvalidFeedException();
 				}
-				feed.setDownloadId(0);
 				// Save information of feed in DB
 				savedFeed = manager.updateFeed(service, feed);
 				// Download Feed Image if provided and not downloaded
@@ -572,9 +522,7 @@ public class DownloadService extends Service {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
 					savedFeed.getImage().setFeed(savedFeed);
-					imageId = requester.downloadImage(service,
-							savedFeed.getImage());
-					hasImage = true;
+					requester.downloadImage(service, savedFeed.getImage());
 				}
 
 			} catch (SAXException e) {
@@ -605,8 +553,7 @@ public class DownloadService extends Service {
 				savedFeed = feed;
 			}
 			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
-			sendDownloadHandledIntent(downloadId, hasImage, imageId,
-					DOWNLOAD_TYPE_FEED);
+			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
 			queryDownloads();
 		}
 
@@ -654,9 +601,7 @@ public class DownloadService extends Service {
 			requester.removeDownload(image);
 
 			saveDownloadStatus(new DownloadStatus(image, 0, true));
-			sendDownloadHandledIntent(image.getDownloadId(), false, 0,
-					DOWNLOAD_TYPE_IMAGE);
-			image.setDownloadId(0);
+			sendDownloadHandledIntent(DOWNLOAD_TYPE_IMAGE);
 			manager.setFeedImage(service, image);
 			if (image.getFeed() != null) {
 				manager.setFeed(service, image.getFeed());
@@ -695,9 +640,7 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 			saveDownloadStatus(new DownloadStatus(media, 0, true));
-			sendDownloadHandledIntent(media.getDownloadId(), false, 0,
-					DOWNLOAD_TYPE_MEDIA);
-			media.setDownloadId(0);
+			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
 			manager.setFeedMedia(service, media);
 			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
 					getApplicationContext()).getBoolean(
