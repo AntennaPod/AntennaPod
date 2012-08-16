@@ -71,11 +71,15 @@ public class DownloadService extends Service {
 	 * If the DownloadService receives this intent, it will execute
 	 * queryDownloads()
 	 */
-	public static final String ACTION_NOTIFY_DOWNLOADS_CHANGED = "action.de.danoeh.antennapod.service.notifyDownloadsChanged";
 	public static final String ACTION_ENQUEUE_DOWNLOAD = "action.de.danoeh.antennapod.service.enqueueDownload";
+	public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.service.cancelDownload";
+	public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.service.cancelAllDownloads";
+
+	/** Extra for ACTION_CANCEL_DOWNLOAD */
+	public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
 
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
-	
+
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
 
 	/** Extra for ACTION_ENQUEUE_DOWNLOAD intent. */
@@ -133,10 +137,14 @@ public class DownloadService extends Service {
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
 		downloads = new ArrayList<Downloader>();
-		registerReceiver(onDownloadsChanged, new IntentFilter(
-				ACTION_NOTIFY_DOWNLOADS_CHANGED));
+
 		registerReceiver(downloadQueued, new IntentFilter(
 				ACTION_ENQUEUE_DOWNLOAD));
+
+		IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
+		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
+		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
+		registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -188,7 +196,7 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service shutting down");
 		isRunning = false;
 		mediaplayer.release();
-		unregisterReceiver(onDownloadsChanged);
+		unregisterReceiver(cancelDownloadReceiver);
 		unregisterReceiver(downloadQueued);
 		downloadObserver.cancel(true);
 		createReport();
@@ -243,14 +251,46 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Notification set up");
 	}
 
-	private BroadcastReceiver onDownloadsChanged = new BroadcastReceiver() {
+	private Downloader getDownloader(String downloadUrl) {
+		for (Downloader downloader : downloads) {
+			if (downloader.getStatus().getFeedFile().getDownload_url()
+					.equals(downloadUrl)) {
+				return downloader;
+			}
+		}
+		return null;
+	}
+
+	private BroadcastReceiver cancelDownloadReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals(ACTION_NOTIFY_DOWNLOADS_CHANGED)) {
-				queryDownloads();
+			if (intent.getAction().equals(ACTION_CANCEL_DOWNLOAD)) {
+				String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
+				if (url == null) {
+					throw new IllegalArgumentException(
+							"ACTION_CANCEL_DOWNLOAD intent needs download url extra");
+				}
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Cancelling download with url " + url);
+				Downloader d = getDownloader(url);
+				if (d != null) {
+					d.interrupt();
+					removeDownload(d.getStatus());
+				} else {
+					Log.e(TAG, "Could not cancel download with url " + url);
+				}
+
+			} else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
+				for (Downloader d : downloads) {
+					d.interrupt();
+					removeDownload(d.getStatus());
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Cancelled all downloads");
+				}
 			}
 		}
+
 	};
 
 	private BroadcastReceiver downloadQueued = new BroadcastReceiver() {
@@ -348,6 +388,7 @@ public class DownloadService extends Service {
 	private void removeDownload(DownloadStatus status) {
 		downloads.remove(status);
 		DownloadRequester.getInstance().removeDownload(status.getFeedFile());
+		status.getFeedFile().setFile_url(null);
 	}
 
 	/**
@@ -444,7 +485,7 @@ public class DownloadService extends Service {
 
 	/** Check if there's something else to download, otherwise stop */
 	void queryDownloads() {
-		int numOfDownloads = requester.getNumberOfDownloads();
+		int numOfDownloads = downloads.size();
 		if (!shutdownInitiated && numOfDownloads == 0) {
 			shutdownInitiated = true;
 			initiateShutdown();

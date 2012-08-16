@@ -109,28 +109,19 @@ public class DownloadRequester {
 	/**
 	 * Cancels a running download.
 	 * */
-	public void cancelDownload(final Context context, final String download_url) {
+	public void cancelDownload(final Context context, final String downloadUrl) {
 		if (AppConfig.DEBUG)
-			Log.d(TAG, "Cancelling download with url " + download_url);
-		FeedFile download = downloads.remove(download_url);
-		if (download != null) {
-			download.setFile_url(null);
-			notifyDownloadService(context);
-		}
+			Log.d(TAG, "Cancelling download with url " + downloadUrl);
+		Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
+		cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, downloadUrl);
 	}
 
 	/** Cancels all running downloads */
 	public void cancelAllDownloads(Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Cancelling all running downloads");
-		DownloadManager dm = (DownloadManager) context
-				.getSystemService(Context.DOWNLOAD_SERVICE);
-		for (FeedFile f : downloads.values()) {
-			dm.remove(f.getDownloadId());
-			f.setFile_url(null);
-		}
-		downloads.clear();
-		notifyDownloadService(context);
+		context.sendBroadcast(new Intent(
+				DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
 	}
 
 	/** Returns true if there is at least one Feed in the downloads queue. */
@@ -206,9 +197,4 @@ public class DownloadRequester {
 				media.getMime_type());
 	}
 
-	/** Notifies the DownloadService to check if there are any Downloads left */
-	public void notifyDownloadService(Context context) {
-		context.sendBroadcast(new Intent(
-				DownloadService.ACTION_NOTIFY_DOWNLOADS_CHANGED));
-	}
 }

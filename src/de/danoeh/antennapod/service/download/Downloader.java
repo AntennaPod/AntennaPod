@@ -37,7 +37,7 @@ public abstract class Downloader extends Thread {
 			});
 		}
 	}
-	
+
 	protected void publishProgress() {
 		status.setUpdateAvailable(true);
 	}
@@ -47,6 +47,10 @@ public abstract class Downloader extends Thread {
 	@Override
 	public final void run() {
 		download();
+	}
+
+	public DownloadStatus getStatus() {
+		return status;
 	}
 
 }
