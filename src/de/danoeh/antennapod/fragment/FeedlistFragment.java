@@ -5,7 +5,7 @@ import de.danoeh.antennapod.adapter.FeedlistAdapter;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.AppConfig;

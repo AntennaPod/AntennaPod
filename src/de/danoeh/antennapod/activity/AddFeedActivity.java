@@ -23,7 +23,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ConnectionTester;
 import de.danoeh.antennapod.util.DownloadError;

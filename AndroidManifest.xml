@@ -74,7 +74,7 @@
             android:theme="@style/Theme.MediaPlayer" android:screenOrientation="portrait"/>
 
         <service
-            android:name="de.danoeh.antennapod.service.DownloadService"
+            android:name=".service.download.DownloadService"
             android:enabled="true" />
         <service
             android:name="de.danoeh.antennapod.service.PlaybackService"

@@ -3,12 +3,13 @@
  * to complete, then stops
  * */
 
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.service.download;
 
 import java.io.File;
 import java.io.IOException;
 import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -56,6 +57,8 @@ import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.preference.PreferenceManager;
 
 public class DownloadService extends Service {
@@ -95,6 +98,8 @@ public class DownloadService extends Service {
 
 	private DownloadObserver downloadObserver;
 
+	private List<DownloadStatus> downloads;
+
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
 	public static boolean isRunning = false;
@@ -126,6 +131,7 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service started");
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
+		downloads = new ArrayList<DownloadStatus>();
 		registerReceiver(downloadReceiver, createIntentFilter());
 		registerReceiver(onDownloadsChanged, new IntentFilter(
 				ACTION_NOTIFY_DOWNLOADS_CHANGED));
@@ -428,7 +434,7 @@ public class DownloadService extends Service {
 	}
 
 	/** Check if there's something else to download, otherwise stop */
-	private void queryDownloads() {
+	void queryDownloads() {
 		int numOfDownloads = requester.getNumberOfDownloads();
 		if (!shutdownInitiated && numOfDownloads == 0) {
 			shutdownInitiated = true;
@@ -659,6 +665,47 @@ public class DownloadService extends Service {
 			queryDownloads();
 		}
 	}
+
+	/** Is used to request a new download. */
+	public static class Request implements Parcelable {
+		private String destination;
+		private String source;
+
+		public Request(String destination, String source) {
+			super();
+			this.destination = destination;
+			this.source = source;
+		}
+
+		private Request(Parcel in) {
+			destination = in.readString();
+			source = in.readString();
+		}
+
+		@Override
+		public int describeContents() {
+			return 0;
+		}
+
+		@Override
+		public void writeToParcel(Parcel dest, int flags) {
+			dest.writeString(destination);
+			dest.writeString(source);
+		}
+
+		public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
+			public Request createFromParcel(Parcel in) {
+				return new Request(in);
+			}
+
+			public Request[] newArray(int size) {
+				return new Request[size];
+			}
+		};
+
+	}
+
+	
 
 	public DownloadObserver getDownloadObserver() {
 		return downloadObserver;
