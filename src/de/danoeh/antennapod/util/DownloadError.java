@@ -9,7 +9,10 @@ public class DownloadError {
 	public static final int ERROR_PARSER_EXCEPTION = 1;
 	public static final int ERROR_UNSUPPORTED_TYPE = 2;
 	public static final int ERROR_CONNECTION_ERROR = 3;
-	
+	public static final int ERROR_MALFORMED_URL = 4;
+	public static final int ERROR_IO_ERROR = 5;
+	public static final int ERROR_FILE_EXISTS = 6;
+	public static final int ERROR_DOWNLOAD_CANCELLED = 7;
 	
 	/** Get a human-readable string for a specific error code. */
 	public static String getErrorString(Context context, int code) {

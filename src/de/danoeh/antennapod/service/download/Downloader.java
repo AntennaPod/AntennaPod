@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.service.download;
 
+import de.danoeh.antennapod.asynctask.DownloadStatus;
 import android.os.Handler;
 
 /** Downloads files */
@@ -7,25 +8,21 @@ public abstract class Downloader extends Thread {
 	private static final String TAG = "Downloader";
 	private Handler handler;
 	private DownloadService downloadService;
-	
-	protected boolean finished;
-	
-	protected String destination;
-	protected String source;
-	
-	
 
-	public Downloader(DownloadService downloadService, String destination, String source) {
+	protected boolean finished;
+
+	protected DownloadStatus status;
+
+	public Downloader(DownloadService downloadService, DownloadStatus status) {
 		super();
 		this.downloadService = downloadService;
-		this.destination = destination;
-		this.source = source;
+		this.status = status;
 		handler = new Handler();
 	}
 
 	/**
-	 * This method must be called when the download was completed, failed,
-	 * or was cancelled
+	 * This method must be called when the download was completed, failed, or
+	 * was cancelled
 	 */
 	protected void finish() {
 		if (!finished) {
@@ -40,9 +37,13 @@ public abstract class Downloader extends Thread {
 			});
 		}
 	}
+	
+	protected void publishProgress() {
+		status.setUpdateAvailable(true);
+	}
 
 	protected abstract void download();
-	
+
 	@Override
 	public final void run() {
 		download();
