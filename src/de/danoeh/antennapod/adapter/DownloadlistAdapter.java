@@ -14,16 +14,17 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.R;
 
-public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
+public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 	private int selectedItemIndex;
 
 	public static final int SELECTION_NONE = -1;
 
 	public DownloadlistAdapter(Context context, int textViewResourceId,
-			List<DownloadStatus> objects) {
+			List<Downloader> objects) {
 		super(context, textViewResourceId, objects);
 		this.selectedItemIndex = SELECTION_NONE;
 	}
@@ -31,7 +32,7 @@ public class DownloadlistAdapter extends ArrayAdapter<DownloadStatus> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
-		DownloadStatus status = getItem(position);
+		DownloadStatus status = getItem(position).getStatus();
 		FeedFile feedFile = status.getFeedFile();
 		// Inflate layout
 		if (convertView == null) {

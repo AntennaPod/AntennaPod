@@ -79,6 +79,11 @@ public class DownloadService extends Service {
 	public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
 
 	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
+	/**
+	 * Sent by the DownloadService when the content of the downloads list
+	 * changes.
+	 */
+	public static final String ACTION_DOWNLOADS_CONTENT_CHANGED = "action.de.danoeh.antennapod.service.downloadsContentChanged";
 
 	public static final String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.service.download_id";
 
@@ -105,9 +110,7 @@ public class DownloadService extends Service {
 	private MediaPlayer mediaplayer;
 	private DownloadManager downloadManager;
 
-	private DownloadObserver downloadObserver;
-
-	private List<Downloader> downloads;
+	private static List<Downloader> downloads = new ArrayList<Downloader>();
 
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
@@ -136,8 +139,10 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service started");
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
-		downloads = new ArrayList<Downloader>();
-
+		if (!downloads.isEmpty()) {
+			downloads.clear();
+			sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+		}
 		registerReceiver(downloadQueued, new IntentFilter(
 				ACTION_ENQUEUE_DOWNLOAD));
 
@@ -176,13 +181,8 @@ public class DownloadService extends Service {
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
 		downloadManager = (DownloadManager) getSystemService(Context.DOWNLOAD_SERVICE);
-		downloadObserver = new DownloadObserver(this);
 		setupNotification();
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			downloadObserver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			downloadObserver.execute();
-		}
+
 	}
 
 	@Override
@@ -198,7 +198,6 @@ public class DownloadService extends Service {
 		mediaplayer.release();
 		unregisterReceiver(cancelDownloadReceiver);
 		unregisterReceiver(downloadQueued);
-		downloadObserver.cancel(true);
 		createReport();
 	}
 
@@ -284,10 +283,14 @@ public class DownloadService extends Service {
 			} else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
 				for (Downloader d : downloads) {
 					d.interrupt();
-					removeDownload(d.getStatus());
+					DownloadRequester.getInstance().removeDownload(
+							d.getStatus().getFeedFile());
+					d.getStatus().getFeedFile().setFile_url(null);
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Cancelled all downloads");
 				}
+				downloads.clear();
+				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 			}
 		}
 
@@ -316,6 +319,7 @@ public class DownloadService extends Service {
 					if (downloader != null) {
 						downloads.add(downloader);
 						downloadExecutor.submit(downloader);
+						sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 					}
 				} else {
 					Log.e(TAG,
@@ -389,6 +393,7 @@ public class DownloadService extends Service {
 		downloads.remove(status);
 		DownloadRequester.getInstance().removeDownload(status.getFeedFile());
 		status.getFeedFile().setFile_url(null);
+		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 	}
 
 	/**
@@ -753,8 +758,8 @@ public class DownloadService extends Service {
 
 	}
 
-	public DownloadObserver getDownloadObserver() {
-		return downloadObserver;
+	public static List<Downloader> getDownloads() {
+		return downloads;
 	}
 
 }

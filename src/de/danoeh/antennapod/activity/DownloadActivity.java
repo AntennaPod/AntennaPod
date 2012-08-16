@@ -1,8 +1,13 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.ComponentName;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.util.Log;
@@ -28,7 +33,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
  * objects created by a DownloadObserver.
  */
 public class DownloadActivity extends SherlockListActivity implements
-		ActionMode.Callback, DownloadObserver.Callback {
+		ActionMode.Callback {
 
 	private static final String TAG = "DownloadActivity";
 	private static final int MENU_SHOW_LOG = 0;
@@ -38,7 +43,8 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	private ActionMode mActionMode;
 	private DownloadStatus selectedDownload;
-	private DownloadObserver downloadObserver;
+
+	private AsyncTask<Void, Void, Void> contentRefresher;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +53,21 @@ public class DownloadActivity extends SherlockListActivity implements
 			Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
+		dla = new DownloadlistAdapter(this, 0, DownloadService.getDownloads());
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unbindService(mConnection);
-		if (downloadObserver != null) {
-			downloadObserver.unregisterCallback(DownloadActivity.this);
-		}
+		unregisterReceiver(contentChanged);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Trying to bind service");
-		bindService(new Intent(this, DownloadService.class), mConnection, 0);
+		registerReceiver(contentChanged, new IntentFilter(
+				DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
+		startContentRefresher();
 	}
 
 	@Override
@@ -72,6 +75,47 @@ public class DownloadActivity extends SherlockListActivity implements
 		super.onStop();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Stopping Activity");
+		stopContentRefresher();
+	}
+
+	@SuppressLint("NewApi")
+	private void startContentRefresher() {
+		if (contentRefresher != null) {
+			contentRefresher.cancel(true);
+		}
+		contentRefresher = new AsyncTask<Void, Void, Void>() {
+			private final int WAITING_INTERVALL = 1000;
+			
+			@Override
+			protected void onProgressUpdate(Void... values) {
+				super.onProgressUpdate(values);
+				dla.notifyDataSetChanged();
+			}
+
+			@Override
+			protected Void doInBackground(Void... params) {
+				while(!isCancelled()) {
+					try {
+						Thread.sleep(WAITING_INTERVALL);
+						publishProgress();
+					} catch (InterruptedException e) {
+						return null;
+					}
+				}
+				return null;
+			}
+		};
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			contentRefresher.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			contentRefresher.execute();
+		}
+	}
+	
+	private void stopContentRefresher() {
+		if (contentRefresher != null) {
+			contentRefresher.cancel(true);
+		}
 	}
 
 	@Override
@@ -82,7 +126,7 @@ public class DownloadActivity extends SherlockListActivity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View view,
 					int position, long id) {
-				DownloadStatus selection = dla.getItem(position);
+				DownloadStatus selection = dla.getItem(position).getStatus();
 				if (selection != null && mActionMode != null) {
 					mActionMode.finish();
 				}
@@ -157,53 +201,14 @@ public class DownloadActivity extends SherlockListActivity implements
 		dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
 	}
 
-	private DownloadService downloadService = null;
-	boolean mIsBound;
+	private BroadcastReceiver contentChanged = new BroadcastReceiver() {
 
-	private ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			downloadService = ((DownloadService.LocalBinder) service)
-					.getService();
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Connection to service established");
-			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
-					downloadService.getDownloadObserver().getStatusList());
-			setListAdapter(dla);
-			downloadObserver = downloadService.getDownloadObserver();
-			downloadObserver.registerCallback(DownloadActivity.this);
-		}
-
-		public void onServiceDisconnected(ComponentName className) {
-			downloadService = null;
-			mIsBound = false;
-			Log.i(TAG, "Closed connection with DownloadService.");
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (dla != null) {
+				dla.notifyDataSetChanged();
+			}
 		}
 	};
 
-	@Override
-	public void onProgressUpdate() {
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				dla.notifyDataSetChanged();
-
-			}
-		});
-	}
-
-	@Override
-	public void onFinish() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Observer has finished, clearing adapter");
-		runOnUiThread(new Runnable() {
-
-			@Override
-			public void run() {
-				dla.clear();
-				dla.notifyDataSetInvalidated();
-			}
-		});
-
-	}
 }
