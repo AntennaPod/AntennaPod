@@ -104,7 +104,7 @@ public class FeedImageLoader {
 	}
 
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
-		if (image.getFile_url() != null) {
+		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromCoverCache(image.getFile_url());
 			if (bitmap != null) {
 				target.setImageBitmap(bitmap);
