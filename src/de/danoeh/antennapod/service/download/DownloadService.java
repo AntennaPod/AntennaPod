@@ -249,23 +249,16 @@ public class DownloadService extends Service {
 				}
 
 			} else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
-				handler.post(new Runnable() {
-
-					@Override
-					public void run() {
-						for (Downloader d : downloads) {
-							d.interrupt();
-							DownloadRequester.getInstance().removeDownload(
-									d.getStatus().getFeedFile());
-							d.getStatus().getFeedFile().setFile_url(null);
-							if (AppConfig.DEBUG)
-								Log.d(TAG, "Cancelled all downloads");
-						}
-						downloads.clear();
-						sendBroadcast(new Intent(
-								ACTION_DOWNLOADS_CONTENT_CHANGED));
-					}
-				});
+				for (Downloader d : downloads) {
+					d.interrupt();
+					DownloadRequester.getInstance().removeDownload(
+							d.getStatus().getFeedFile());
+					d.getStatus().getFeedFile().setFile_url(null);
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Cancelled all downloads");
+				}
+				downloads.clear();
+				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 
 			}
 			queryDownloads();
@@ -327,7 +320,7 @@ public class DownloadService extends Service {
 
 	@SuppressLint("NewApi")
 	public void onDownloadCompleted(final Downloader downloader) {
-		AsyncTask<Void, Void, Void> handler = new AsyncTask<Void, Void, Void>() {
+		final AsyncTask<Void, Void, Void> handlerTask = new AsyncTask<Void, Void, Void>() {
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -359,13 +352,16 @@ public class DownloadService extends Service {
 					}
 				}
 				removeDownload(downloader);
+				if (!successful) {
+					queryDownloads();
+				}
 				return null;
 			}
 		};
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			handler.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			handlerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 		} else {
-			handler.execute();
+			handlerTask.execute();
 		}
 	}
 
@@ -374,17 +370,10 @@ public class DownloadService extends Service {
 	 * DownloadService list.
 	 */
 	private void removeDownload(final Downloader d) {
-		handler.post(new Runnable() {
-
-			@Override
-			public void run() {
-				downloads.remove(d);
-				DownloadRequester.getInstance().removeDownload(
-						d.getStatus().getFeedFile());
-				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
-			}
-		});
-
+		downloads.remove(d);
+		DownloadRequester.getInstance().removeDownload(
+				d.getStatus().getFeedFile());
+		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 	}
 
 	/**

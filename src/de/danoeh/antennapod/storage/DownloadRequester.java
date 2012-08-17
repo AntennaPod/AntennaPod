@@ -109,6 +109,7 @@ public class DownloadRequester {
 			Log.d(TAG, "Cancelling download with url " + downloadUrl);
 		Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
 		cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, downloadUrl);
+		context.sendBroadcast(cancelIntent);
 	}
 
 	/** Cancels all running downloads */
