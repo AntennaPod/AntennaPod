@@ -1,20 +1,11 @@
 package de.danoeh.antennapod.storage;
 
 import java.io.File;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import android.annotation.SuppressLint;
-import android.app.DownloadManager;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.net.Uri;
-import android.os.IBinder;
 import android.util.Log;
 import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
