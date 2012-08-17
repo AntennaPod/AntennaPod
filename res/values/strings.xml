@@ -87,7 +87,7 @@
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
-    <string name="download_report_title">All downloads completed</string>
+    <string name="download_report_title">Downloads completed</string>
     <string name="refresh_label">Refresh</string>
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="share_link_label">Share link</string>

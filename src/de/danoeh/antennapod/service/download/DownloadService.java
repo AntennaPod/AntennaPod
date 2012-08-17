@@ -11,6 +11,7 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -70,6 +71,9 @@ public class DownloadService extends Service {
 	public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.service.cancelDownload";
 	public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.service.cancelAllDownloads";
 
+	/** Is used for sending the delete intent for the report notification */
+	private static final String ACTION_REPORT_DELETED = "action.de.danoeh.antennapod.service.reportDeleted";
+
 	/** Extra for ACTION_CANCEL_DOWNLOAD */
 	public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
 
@@ -91,7 +95,7 @@ public class DownloadService extends Service {
 	public static final int DOWNLOAD_TYPE_MEDIA = 2;
 	public static final int DOWNLOAD_TYPE_IMAGE = 3;
 
-	private ArrayList<DownloadStatus> completedDownloads;
+	private CopyOnWriteArrayList<DownloadStatus> completedDownloads;
 
 	private ExecutorService syncExecutor;
 	private ExecutorService downloadExecutor;
@@ -135,7 +139,8 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service started");
 		isRunning = true;
 		handler = new Handler();
-		completedDownloads = new ArrayList<DownloadStatus>();
+		completedDownloads = new CopyOnWriteArrayList<DownloadStatus>(
+				new ArrayList<DownloadStatus>());
 		downloads = new ArrayList<Downloader>();
 		registerReceiver(downloadQueued, new IntentFilter(
 				ACTION_ENQUEUE_DOWNLOAD));
@@ -144,6 +149,7 @@ public class DownloadService extends Service {
 		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
 		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
 		registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
+		registerReceiver(reportDeleted, new IntentFilter(ACTION_REPORT_DELETED));
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -191,7 +197,6 @@ public class DownloadService extends Service {
 		mediaplayer.release();
 		unregisterReceiver(cancelDownloadReceiver);
 		unregisterReceiver(downloadQueued);
-		createReport();
 	}
 
 	private void setupNotification() {
@@ -414,29 +419,25 @@ public class DownloadService extends Service {
 		sendBroadcast(intent);
 	}
 
+	private BroadcastReceiver reportDeleted = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_REPORT_DELETED)) {
+				completedDownloads.clear();
+			}
+		}
+	};
+
 	/**
 	 * Creates a notification at the end of the service lifecycle to notify the
 	 * user about the number of completed downloads. A report will only be
 	 * created if the number of feeds is > 1 or if at least one media file was
 	 * downloaded.
 	 */
-	private void createReport() {
+	private void updateReport() {
 		// check if report should be created
-		boolean createReport = false;
-		int feedCount = 0;
-		for (DownloadStatus status : completedDownloads) {
-			if (status.getFeedFile().getClass() == Feed.class) {
-				feedCount++;
-				if (feedCount > 1) {
-					createReport = true;
-					break;
-				}
-			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
-				createReport = true;
-				break;
-			}
-		}
-		if (createReport) {
+		if (!completedDownloads.isEmpty()) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Creating report");
 			int successfulDownloads = 0;
@@ -464,7 +465,12 @@ public class DownloadService extends Service {
 					.setContentIntent(
 							PendingIntent.getActivity(this, 0, new Intent(this,
 									MainActivity.class), 0))
-					.setAutoCancel(true).getNotification();
+					.setAutoCancel(true)
+					.setDeleteIntent(
+							PendingIntent.getBroadcast(this, 0, new Intent(
+									ACTION_REPORT_DELETED),
+									PendingIntent.FLAG_UPDATE_CURRENT))
+					.getNotification();
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(REPORT_ID, notification);
 
@@ -494,6 +500,7 @@ public class DownloadService extends Service {
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(NOTIFICATION_ID, notificationBuilder.getNotification());
 		}
+		updateReport();
 	}
 
 	/** Is called whenever a Feed is downloaded */
