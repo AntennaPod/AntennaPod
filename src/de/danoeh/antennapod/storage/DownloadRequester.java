@@ -69,13 +69,17 @@ public class DownloadRequester {
 
 			DownloadService.Request request = new DownloadService.Request(
 					item.getFile_url(), item.getDownload_url());
-			Intent queueIntent = new Intent(
-					DownloadService.ACTION_ENQUEUE_DOWNLOAD);
-			queueIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+			
 			if (!DownloadService.isRunning) {
-				context.startService(new Intent(context, DownloadService.class));
+				Intent launchIntent = new Intent(context, DownloadService.class);
+				launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+				context.startService(launchIntent);
+			} else {
+				Intent queueIntent = new Intent(
+						DownloadService.ACTION_ENQUEUE_DOWNLOAD);
+				queueIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+				context.sendBroadcast(queueIntent);
 			}
-			context.sendBroadcast(queueIntent);
 			context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
 		} else {
 			Log.e(TAG, "URL " + item.getDownload_url()
@@ -161,7 +165,9 @@ public class DownloadRequester {
 
 	/** Remove an object from the downloads-list of the requester. */
 	public void removeDownload(FeedFile f) {
-		downloads.remove(f.getDownload_url());
+		if (downloads.remove(f.getDownload_url()) == null) {
+			Log.e(TAG, "Could not remove object with url " + f.getDownload_url());
+		}
 	}
 
 	/** Get the number of uncompleted Downloads */

@@ -11,7 +11,7 @@ public abstract class Downloader extends Thread {
 
 	protected boolean finished;
 
-	protected DownloadStatus status;
+	protected volatile DownloadStatus status;
 
 	public Downloader(DownloadService downloadService, DownloadStatus status) {
 		super();

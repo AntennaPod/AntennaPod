@@ -78,7 +78,9 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 			}
 		}
 		holder.title.setText(titleText);
-		holder.message.setText(status.getStatusMsg());
+		if (status.getStatusMsg() != 0) {
+			holder.message.setText(status.getStatusMsg());
+		}
 		holder.downloaded.setText(Converter.byteToString(status.getSoFar())
 				+ " / " + Converter.byteToString(status.getSize()));
 		holder.percent.setText(status.getProgressPercent() + "%");

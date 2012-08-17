@@ -103,7 +103,7 @@ public class DownloadService extends Service {
 	/** Needed to determine the duration of a media file */
 	private MediaPlayer mediaplayer;
 
-	private static List<Downloader> downloads = new ArrayList<Downloader>();
+	private List<Downloader> downloads;
 
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
@@ -119,6 +119,9 @@ public class DownloadService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
+			onDownloadQueued(intent);
+		}
 		return Service.START_NOT_STICKY;
 	}
 
@@ -129,10 +132,7 @@ public class DownloadService extends Service {
 			Log.d(TAG, "Service started");
 		isRunning = true;
 		completedDownloads = new ArrayList<DownloadStatus>();
-		if (!downloads.isEmpty()) {
-			downloads.clear();
-			sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
-		}
+		downloads = new ArrayList<Downloader>();
 		registerReceiver(downloadQueued, new IntentFilter(
 				ACTION_ENQUEUE_DOWNLOAD));
 
@@ -256,43 +256,45 @@ public class DownloadService extends Service {
 
 	};
 
+	private void onDownloadQueued(Intent intent) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Received enqueue request");
+		Request request = intent.getParcelableExtra(EXTRA_REQUEST);
+		if (request == null) {
+			throw new IllegalArgumentException(
+					"ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
+		}
+		if (shutdownInitiated) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Cancelling shutdown; new download was queued");
+			shutdownInitiated = false;
+			setupNotification();
+		}
+
+		DownloadRequester requester = DownloadRequester.getInstance();
+		FeedFile feedfile = requester.getDownload(request.source);
+		if (feedfile != null) {
+
+			DownloadStatus status = new DownloadStatus(feedfile);
+			Downloader downloader = getDownloader(status);
+			if (downloader != null) {
+				downloads.add(downloader);
+				downloadExecutor.submit(downloader);
+				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+			}
+		} else {
+			Log.e(TAG,
+					"Could not find feedfile in download requester when trying to enqueue new download");
+			queryDownloads();
+
+		}
+	}
+
 	private BroadcastReceiver downloadQueued = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals(ACTION_ENQUEUE_DOWNLOAD)) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Received enqueue request");
-				Request request = intent.getParcelableExtra(EXTRA_REQUEST);
-				if (request == null) {
-					throw new IllegalArgumentException(
-							"ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
-				}
-				if (shutdownInitiated) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Cancelling shutdown; new download was queued");
-					shutdownInitiated = false;
-					setupNotification();
-				}
-				
-				DownloadRequester requester = DownloadRequester.getInstance();
-				FeedFile feedfile = requester.getDownload(request.source);
-				if (feedfile != null) {
-
-					DownloadStatus status = new DownloadStatus(feedfile);
-					Downloader downloader = getDownloader(status);
-					if (downloader != null) {
-						downloads.add(downloader);
-						downloadExecutor.submit(downloader);
-						sendBroadcast(new Intent(
-								ACTION_DOWNLOADS_CONTENT_CHANGED));
-					}
-				} else {
-					Log.e(TAG,
-							"Could not find feedfile in download requester when trying to enqueue new download");
-					queryDownloads();
-
-				}
-			}
+			onDownloadQueued(intent);
 		}
 
 	};
@@ -459,9 +461,10 @@ public class DownloadService extends Service {
 			Log.d(TAG, numOfDownloads + " downloads left");
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "ShutdownInitiated: " + shutdownInitiated);
-		
+
 		if (numOfDownloads == 0) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Starting shutdown");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Starting shutdown");
 			shutdownInitiated = true;
 			stopForeground(true);
 		} else {
@@ -566,7 +569,7 @@ public class DownloadService extends Service {
 			if (savedFeed == null) {
 				savedFeed = feed;
 			}
-			
+
 			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
 			queryDownloads();
@@ -654,7 +657,7 @@ public class DownloadService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
-			
+
 			status.setCompletionDate(new Date());
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
@@ -728,7 +731,7 @@ public class DownloadService extends Service {
 
 	}
 
-	public static List<Downloader> getDownloads() {
+	public List<Downloader> getDownloads() {
 		return downloads;
 	}
 

@@ -1,12 +1,17 @@
 package de.danoeh.antennapod.activity;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.ServiceConnection;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,6 +27,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 /**
@@ -40,6 +46,9 @@ public class DownloadActivity extends SherlockListActivity implements
 	private ActionMode mActionMode;
 	private DownloadStatus selectedDownload;
 
+	private DownloadService downloadService = null;
+	boolean mIsBound;
+
 	private AsyncTask<Void, Void, Void> contentRefresher;
 
 	@Override
@@ -49,12 +58,12 @@ public class DownloadActivity extends SherlockListActivity implements
 			Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		dla = new DownloadlistAdapter(this, 0, DownloadService.getDownloads());
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
+		unbindService(mConnection);
 		unregisterReceiver(contentChanged);
 	}
 
@@ -63,6 +72,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		super.onResume();
 		registerReceiver(contentChanged, new IntentFilter(
 				DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
+		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 		startContentRefresher();
 	}
 
@@ -74,6 +84,25 @@ public class DownloadActivity extends SherlockListActivity implements
 		stopContentRefresher();
 	}
 
+	private ServiceConnection mConnection = new ServiceConnection() {
+		public void onServiceDisconnected(ComponentName className) {
+			downloadService = null;
+			mIsBound = false;
+			Log.i(TAG, "Closed connection with DownloadService.");
+		}
+
+		public void onServiceConnected(ComponentName name, IBinder service) {
+			downloadService = ((DownloadService.LocalBinder) service)
+					.getService();
+			mIsBound = true;
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Connection to service established");
+			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
+					downloadService.getDownloads());
+			setListAdapter(dla);
+		}
+	};
+
 	@SuppressLint("NewApi")
 	private void startContentRefresher() {
 		if (contentRefresher != null) {
@@ -81,16 +110,20 @@ public class DownloadActivity extends SherlockListActivity implements
 		}
 		contentRefresher = new AsyncTask<Void, Void, Void>() {
 			private final int WAITING_INTERVALL = 1000;
-			
+
 			@Override
 			protected void onProgressUpdate(Void... values) {
 				super.onProgressUpdate(values);
-				dla.notifyDataSetChanged();
+				if (dla != null) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Refreshing content automatically");
+					dla.notifyDataSetChanged();
+				}
 			}
 
 			@Override
 			protected Void doInBackground(Void... params) {
-				while(!isCancelled()) {
+				while (!isCancelled()) {
 					try {
 						Thread.sleep(WAITING_INTERVALL);
 						publishProgress();
@@ -107,7 +140,7 @@ public class DownloadActivity extends SherlockListActivity implements
 			contentRefresher.execute();
 		}
 	}
-	
+
 	private void stopContentRefresher() {
 		if (contentRefresher != null) {
 			contentRefresher.cancel(true);
@@ -202,6 +235,8 @@ public class DownloadActivity extends SherlockListActivity implements
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (dla != null) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Refreshing content");
 				dla.notifyDataSetChanged();
 			}
 		}
