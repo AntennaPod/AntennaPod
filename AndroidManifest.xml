@@ -11,8 +11,6 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="14" />
-
-    <uses-permission android:name="android.permission.DOWNLOAD_WITHOUT_NOTIFICATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <supports-screens
@@ -74,7 +72,7 @@
             android:theme="@style/Theme.MediaPlayer" android:screenOrientation="portrait"/>
 
         <service
-            android:name="de.danoeh.antennapod.service.DownloadService"
+            android:name=".service.download.DownloadService"
             android:enabled="true" />
         <service
             android:name="de.danoeh.antennapod.service.PlaybackService"

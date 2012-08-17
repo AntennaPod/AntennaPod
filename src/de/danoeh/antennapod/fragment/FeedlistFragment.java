@@ -5,7 +5,7 @@ import de.danoeh.antennapod.adapter.FeedlistAdapter;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.AppConfig;
@@ -140,15 +140,7 @@ public class FeedlistFragment extends SherlockFragment implements
 
 				@Override
 				public void run() {
-					if (intent.getAction().equals(
-							DownloadService.ACTION_DOWNLOAD_HANDLED)) {
-						int type = intent.getIntExtra(DownloadService.EXTRA_DOWNLOAD_TYPE, 0);
-						if (type == DownloadService.DOWNLOAD_TYPE_IMAGE) {
-							fla.notifyDataSetChanged();
-						}
-					} else {
-						fla.notifyDataSetChanged();
-					}
+					fla.notifyDataSetChanged();
 				}
 			});
 		}

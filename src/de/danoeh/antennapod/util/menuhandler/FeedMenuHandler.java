@@ -15,7 +15,7 @@ import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.service.DownloadService;
+import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.AppConfig;

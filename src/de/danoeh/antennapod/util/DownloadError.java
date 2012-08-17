@@ -1,27 +1,35 @@
 package de.danoeh.antennapod.util;
 
-import de.danoeh.antennapod.R;
-import android.app.DownloadManager;
 import android.content.Context;
+import de.danoeh.antennapod.R;
 
 /** Utility class for Download Errors. */
 public class DownloadError {
 	public static final int ERROR_PARSER_EXCEPTION = 1;
 	public static final int ERROR_UNSUPPORTED_TYPE = 2;
 	public static final int ERROR_CONNECTION_ERROR = 3;
-	
+	public static final int ERROR_MALFORMED_URL = 4;
+	public static final int ERROR_IO_ERROR = 5;
+	public static final int ERROR_FILE_EXISTS = 6;
+	public static final int ERROR_DOWNLOAD_CANCELLED = 7;
+	public static final int ERROR_DEVICE_NOT_FOUND = 8;
+	public static final int ERROR_HTTP_DATA_ERROR = 9;
+	public static final int ERROR_NOT_ENOUGH_SPACE = 10;
 	
 	/** Get a human-readable string for a specific error code. */
 	public static String getErrorString(Context context, int code) {
 		int resId;
 		switch(code) {
-		case DownloadManager.ERROR_DEVICE_NOT_FOUND:
+		case ERROR_NOT_ENOUGH_SPACE:
 			resId = R.string.download_error_insufficient_space;
 			break;
-		case DownloadManager.ERROR_FILE_ERROR:
-			resId = R.string.download_error_file_error;
+		case ERROR_DEVICE_NOT_FOUND:
+			resId = R.string.download_error_device_not_found;
 			break;
-		case DownloadManager.ERROR_HTTP_DATA_ERROR:
+		case ERROR_IO_ERROR:
+			resId = R.string.download_error_io_error;
+			break;
+		case ERROR_HTTP_DATA_ERROR:
 			resId = R.string.download_error_http_data_error;
 			break;
 		case ERROR_PARSER_EXCEPTION:

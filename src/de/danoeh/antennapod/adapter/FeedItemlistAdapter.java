@@ -5,6 +5,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.R;
 import android.widget.ArrayAdapter;
@@ -121,7 +122,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.downloaded.setVisibility(View.GONE);
 			}
 
-			if (item.getMedia().isDownloading()) {
+			if (DownloadRequester.getInstance().isDownloadingFile(
+					item.getMedia())) {
 				holder.downloading.setVisibility(View.VISIBLE);
 			} else {
 				holder.downloading.setVisibility(View.GONE);
