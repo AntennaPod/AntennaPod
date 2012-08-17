@@ -15,6 +15,7 @@ import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.*;
 import de.danoeh.antennapod.util.FeedtitleComparator;
+import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -344,6 +345,7 @@ public class FeedManager {
 				} else {
 					removedStatus = null;
 				}
+				Collections.sort(downloadLog, new DownloadStatusComparator());
 				context.sendBroadcast(new Intent(ACTION_DOWNLOADLOG_UPDATE));
 				dbExec.execute(new Runnable() {
 
@@ -973,6 +975,7 @@ public class FeedManager {
 			} while (logCursor.moveToNext());
 		}
 		logCursor.close();
+		Collections.sort(downloadLog, new DownloadStatusComparator());
 	}
 
 	private void extractQueueFromCursor(Context context, PodDBAdapter adapter) {
