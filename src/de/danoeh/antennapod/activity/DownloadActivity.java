@@ -74,6 +74,9 @@ public class DownloadActivity extends SherlockListActivity implements
 				DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
 		bindService(new Intent(this, DownloadService.class), mConnection, 0);
 		startContentRefresher();
+		if (dla != null) {
+			dla.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -100,6 +103,7 @@ public class DownloadActivity extends SherlockListActivity implements
 			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
 					downloadService.getDownloads());
 			setListAdapter(dla);
+			dla.notifyDataSetChanged();
 		}
 	};
 

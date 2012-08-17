@@ -33,6 +33,7 @@ import android.graphics.BitmapFactory;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -109,6 +110,8 @@ public class DownloadService extends Service {
 	/** True if service is running. */
 	public static boolean isRunning = false;
 
+	private Handler handler;
+
 	private final IBinder mBinder = new LocalBinder();
 
 	public class LocalBinder extends Binder {
@@ -131,6 +134,7 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service started");
 		isRunning = true;
+		handler = new Handler();
 		completedDownloads = new ArrayList<DownloadStatus>();
 		downloads = new ArrayList<Downloader>();
 		registerReceiver(downloadQueued, new IntentFilter(
@@ -240,16 +244,24 @@ public class DownloadService extends Service {
 				}
 
 			} else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
-				for (Downloader d : downloads) {
-					d.interrupt();
-					DownloadRequester.getInstance().removeDownload(
-							d.getStatus().getFeedFile());
-					d.getStatus().getFeedFile().setFile_url(null);
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Cancelled all downloads");
-				}
-				downloads.clear();
-				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						for (Downloader d : downloads) {
+							d.interrupt();
+							DownloadRequester.getInstance().removeDownload(
+									d.getStatus().getFeedFile());
+							d.getStatus().getFeedFile().setFile_url(null);
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Cancelled all downloads");
+						}
+						downloads.clear();
+						sendBroadcast(new Intent(
+								ACTION_DOWNLOADS_CONTENT_CHANGED));
+					}
+				});
+
 			}
 			queryDownloads();
 		}
@@ -317,6 +329,7 @@ public class DownloadService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Received 'Download Complete' - message.");
 				DownloadStatus status = downloader.getStatus();
+				status.setCompletionDate(new Date());
 				boolean successful = status.isSuccessful();
 				int reason = status.getReason();
 
@@ -355,11 +368,18 @@ public class DownloadService extends Service {
 	 * Remove download from the DownloadRequester list and from the
 	 * DownloadService list.
 	 */
-	private void removeDownload(Downloader d) {
-		downloads.remove(d);
-		DownloadRequester.getInstance().removeDownload(
-				d.getStatus().getFeedFile());
-		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+	private void removeDownload(final Downloader d) {
+		handler.post(new Runnable() {
+
+			@Override
+			public void run() {
+				downloads.remove(d);
+				DownloadRequester.getInstance().removeDownload(
+						d.getStatus().getFeedFile());
+				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+			}
+		});
+
 	}
 
 	/**
@@ -617,7 +637,6 @@ public class DownloadService extends Service {
 		public void run() {
 			image.setDownloaded(true);
 
-			status.setCompletionDate(new Date());
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_IMAGE);
 			manager.setFeedImage(DownloadService.this, image);
@@ -658,7 +677,6 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Duration of file is " + media.getDuration());
 			mediaplayer.reset();
 
-			status.setCompletionDate(new Date());
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
 			manager.setFeedMedia(service, media);

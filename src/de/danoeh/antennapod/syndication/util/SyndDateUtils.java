@@ -10,48 +10,51 @@ import android.util.Log;
 /** Parses several date formats. */
 public class SyndDateUtils {
 	private static final String TAG = "DateUtils";
-	public static final String RFC822 = "dd MMM yyyy HH:mm:ss Z";
-	/** RFC 822 date format with day of the week. */
-	public static final String RFC822DAY = "EEE, " + RFC822;
+
+	public static final String[] RFC822DATES = { "EEE, dd MMM yyyy HH:mm:ss Z",
+			"dd MMM yyyy HH:mm:ss Z", "EEE, dd MMM yy HH:mm:ss Z",
+			"dd MMM yy HH:mm:ss Z", "EEE, dd MMM yyyy HH:mm:ss z",
+			"dd MMM yyyy HH:mm:ss z", "EEE, dd MMM yy HH:mm:ss z",
+			"dd MMM yy HH:mm:ss z" };
 
 	/** RFC 3339 date format for UTC dates. */
 	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
 	/** RFC 3339 date format for localtime dates with offset. */
 	public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
-	
+
 	private static ThreadLocal<SimpleDateFormat> RFC822Formatter = new ThreadLocal<SimpleDateFormat>() {
 		@Override
-		protected SimpleDateFormat initialValue() {			
-			return new SimpleDateFormat(RFC822DAY, Locale.US);
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(RFC822DATES[0], Locale.US);
 		}
-		
-	};
-	
-	private static ThreadLocal<SimpleDateFormat> RFC3339Formatter = new ThreadLocal<SimpleDateFormat>() {
-		@Override
-		protected SimpleDateFormat initialValue() {			
-			return new SimpleDateFormat(RFC3339UTC, Locale.US);
-		}
-		
+
 	};
 
-	public static Date parseRFC822Date(final String date) {
+	private static ThreadLocal<SimpleDateFormat> RFC3339Formatter = new ThreadLocal<SimpleDateFormat>() {
+		@Override
+		protected SimpleDateFormat initialValue() {
+			return new SimpleDateFormat(RFC3339UTC, Locale.US);
+		}
+
+	};
+
+	public static Date parseRFC822Date(String date) {
 		Date result = null;
+		if (date.contains("PDT")) {
+			date = date.replace("PDT", "PST8PDT");
+		}
 		SimpleDateFormat format = RFC822Formatter.get();
-		try {
-			result = format.parse(date);
-		} catch (ParseException e) {
-			e.printStackTrace();
-			format.applyPattern(RFC822);
+		for (int i = 0; i < RFC822DATES.length; i++) {
 			try {
-				result = format.parse(date);			
-			} catch (ParseException e1) {
-				e1.printStackTrace();
-				Log.e(TAG, "Unable to parse feed date correctly");
-			} finally {
-				format.applyPattern(RFC822DAY); // apply old pattern again	
+				result = format.parse(date);
+				break;
+			} catch (ParseException e) {
+				e.printStackTrace();
 			}
+		}
+		if (result == null) {
+			Log.e(TAG, "Unable to parse feed date correctly");
 		}
 
 		return result;
@@ -90,7 +93,11 @@ public class SyndDateUtils {
 		return result;
 
 	}
-	/** Takes a string of the form [HH:]MM:SS[.mmm] and converts it to milliseconds. */
+
+	/**
+	 * Takes a string of the form [HH:]MM:SS[.mmm] and converts it to
+	 * milliseconds.
+	 */
 	public static long parseTimeString(final String time) {
 		String[] parts = time.split(":");
 		long result = 0;
@@ -102,7 +109,7 @@ public class SyndDateUtils {
 		}
 		result += Integer.valueOf(parts[idx]) * 60000;
 		idx++;
-		result += ( Float.valueOf(parts[idx])) * 1000;
+		result += (Float.valueOf(parts[idx])) * 1000;
 		return result;
 	}
 }
