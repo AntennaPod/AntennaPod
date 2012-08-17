@@ -31,7 +31,7 @@ public abstract class Downloader extends Thread {
 
 				@Override
 				public void run() {
-					downloadService.queryDownloads();
+					downloadService.onDownloadCompleted(Downloader.this);
 				}
 
 			});
@@ -47,6 +47,7 @@ public abstract class Downloader extends Thread {
 	@Override
 	public final void run() {
 		download();
+		finish();
 	}
 
 	public DownloadStatus getStatus() {

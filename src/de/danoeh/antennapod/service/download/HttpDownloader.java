@@ -47,11 +47,15 @@ public class HttpDownloader extends Downloader {
 				byte[] buffer = new byte[BUFFER_SIZE];
 				int count = 0;
 				status.setStatusMsg(R.string.download_running);
+				if (AppConfig.DEBUG) Log.d(TAG, "Getting size of download");
 				status.setSize(connection.getContentLength());
+				if (AppConfig.DEBUG) Log.d(TAG, "Size is " + status.getSize());
 				publishProgress();
-				while ((count = in.read(buffer)) != -1 || !isInterrupted()) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Starting download");
+				while ((count = in.read(buffer)) != -1 && !isInterrupted()) {
 					out.write(buffer, 0, count);
 					status.setSoFar(status.getSoFar() + count);
+					status.setProgressPercent((int) (((double) status.getSoFar() / (double) status.getSize()) * 100));
 				}
 				if (isInterrupted()) {
 					onCancelled();

@@ -63,9 +63,9 @@ public class DownloadRequester {
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
 						"Requesting download of url " + item.getDownload_url());
-			downloads.put(item.getDownload_url(), item);
 			item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
 			item.setFile_url(dest.toString());
+			downloads.put(item.getDownload_url(), item);
 
 			DownloadService.Request request = new DownloadService.Request(
 					item.getFile_url(), item.getDownload_url());
@@ -161,7 +161,7 @@ public class DownloadRequester {
 
 	/** Remove an object from the downloads-list of the requester. */
 	public void removeDownload(FeedFile f) {
-		downloads.remove(f);
+		downloads.remove(f.getDownload_url());
 	}
 
 	/** Get the number of uncompleted Downloads */

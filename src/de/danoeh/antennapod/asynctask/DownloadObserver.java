@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.asynctask;
+/*package de.danoeh.antennapod.asynctask;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -16,16 +16,17 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 
-/** Observes the status of a specific Download */
-public class DownloadObserver extends AsyncTask<Void, Void, Void> {
+*//** Observes the status of a specific Download *//*
+public class DownloadObserver{
+	*//******
 	private static final String TAG = "DownloadObserver";
 
-	/** Types of downloads to observe. */
+	/** Types of downloads to observe. *//*
 	public static final int TYPE_FEED = 0;
 	public static final int TYPE_IMAGE = 1;
 	public static final int TYPE_MEDIA = 2;
 
-	/** Error codes */
+	*//** Error codes *//*
 	public static final int ALREADY_DOWNLOADED = 1;
 	public static final int NO_DOWNLOAD_FOUND = 2;
 
@@ -165,7 +166,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 
 	}
 
-	/** Request a cursor with all running Feedfile downloads */
+	*//** Request a cursor with all running Feedfile downloads *//*
 	private Cursor getDownloadCursor() {
 		// Collect download ids
 
@@ -186,7 +187,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		return result;
 	}
 
-	/** Return value of a specific column */
+	*//** Return value of a specific column *//*
 	private int getDownloadStatus(Cursor c, String column) {
 		int status = c.getInt(c.getColumnIndex(column));
 		return status;
@@ -205,7 +206,7 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 		return context;
 	}
 
-	/** Find a DownloadStatus entry by its FeedFile */
+	*//** Find a DownloadStatus entry by its FeedFile *//*
 	public DownloadStatus findDownloadStatus(FeedFile f) {
 		for (DownloadStatus status : statusList) {
 			if (status.feedfile == f) {
@@ -238,3 +239,4 @@ public class DownloadObserver extends AsyncTask<Void, Void, Void> {
 	}
 
 }
+*/
