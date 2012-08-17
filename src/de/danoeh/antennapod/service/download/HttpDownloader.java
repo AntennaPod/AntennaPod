@@ -17,6 +17,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.util.StorageUtils;
 
 public class HttpDownloader extends Downloader {
 	private static final String TAG = "HttpDownloader";
@@ -41,36 +42,49 @@ public class HttpDownloader extends Downloader {
 			if (AppConfig.DEBUG) {
 				Log.d(TAG, "Connected to resource");
 			}
-			File destination = new File(status.getFeedFile().getFile_url());
-			if (!destination.exists()) {
-				InputStream in = new BufferedInputStream(
-						connection.getInputStream());
-				out = new BufferedOutputStream(
-						new FileOutputStream(destination));
-				byte[] buffer = new byte[BUFFER_SIZE];
-				int count = 0;
-				status.setStatusMsg(R.string.download_running);
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Getting size of download");
-				status.setSize(connection.getContentLength());
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Size is " + status.getSize());
-				publishProgress();
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Starting download");
-				while ((count = in.read(buffer)) != -1 && !isInterrupted()) {
-					out.write(buffer, 0, count);
-					status.setSoFar(status.getSoFar() + count);
-					status.setProgressPercent((int) (((double) status
-							.getSoFar() / (double) status.getSize()) * 100));
-				}
-				if (isInterrupted()) {
-					onCancelled();
+			if (StorageUtils.externalStorageMounted()) {
+				File destination = new File(status.getFeedFile().getFile_url());
+				if (!destination.exists()) {
+					InputStream in = new BufferedInputStream(
+							connection.getInputStream());
+					out = new BufferedOutputStream(new FileOutputStream(
+							destination));
+					byte[] buffer = new byte[BUFFER_SIZE];
+					int count = 0;
+					status.setStatusMsg(R.string.download_running);
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Getting size of download");
+					status.setSize(connection.getContentLength());
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Size is " + status.getSize());
+					if (status.getSize() == -1
+							|| status.getSize() <= StorageUtils
+									.getFreeSpaceAvailable()) {
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Size is " + status.getSize());
+						publishProgress();
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Starting download");
+						while ((count = in.read(buffer)) != -1
+								&& !isInterrupted()) {
+							out.write(buffer, 0, count);
+							status.setSoFar(status.getSoFar() + count);
+							status.setProgressPercent((int) (((double) status
+									.getSoFar() / (double) status.getSize()) * 100));
+						}
+						if (isInterrupted()) {
+							onCancelled();
+						} else {
+							onSuccess();
+						}
+					} else {
+						onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE);
+					}
 				} else {
-					onSuccess();
+					onFail(DownloadError.ERROR_FILE_EXISTS);
 				}
 			} else {
-				onFail(DownloadError.ERROR_FILE_EXISTS);
+				onFail(DownloadError.ERROR_DEVICE_NOT_FOUND);
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();

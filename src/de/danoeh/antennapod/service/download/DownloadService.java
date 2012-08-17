@@ -661,7 +661,6 @@ public class DownloadService extends Service {
 	class MediaHandlerThread implements Runnable {
 		private FeedMedia media;
 		private DownloadStatus status;
-		private DownloadService service;
 
 		public MediaHandlerThread(DownloadStatus status) {
 			super();
@@ -686,7 +685,7 @@ public class DownloadService extends Service {
 
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
-			manager.setFeedMedia(service, media);
+			manager.setFeedMedia(DownloadService.this, media);
 			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
 					getApplicationContext()).getBoolean(
 					PodcastApp.PREF_AUTO_QUEUE, true);

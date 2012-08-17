@@ -4,6 +4,7 @@ import de.danoeh.antennapod.activity.StorageErrorActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
+import android.os.StatFs;
 
 /** Utility functions for handling storage errors */
 public class StorageUtils {
@@ -24,5 +25,15 @@ public class StorageUtils {
 			activity.startActivity(new Intent(activity, StorageErrorActivity.class));
 		}
 		return storageAvailable;
+	}
+	
+	/** Get the number of free bytes that are available on the external storage. */
+	public static int getFreeSpaceAvailable() {
+		StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
+		return stat.getAvailableBlocks() * stat.getBlockSize();
+	}
+	
+	public static boolean externalStorageMounted() {
+		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
 	}
 }

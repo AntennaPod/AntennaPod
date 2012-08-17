@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.service.download;
 
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import android.os.Environment;
 import android.os.Handler;
+import android.os.StatFs;
 
 /** Downloads files */
 public abstract class Downloader extends Thread {
