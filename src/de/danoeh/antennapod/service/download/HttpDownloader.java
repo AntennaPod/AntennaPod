@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.SocketTimeoutException;
 import java.net.URL;
 
 import android.util.Log;
@@ -21,6 +22,7 @@ public class HttpDownloader extends Downloader {
 	private static final String TAG = "HttpDownloader";
 
 	private static final int BUFFER_SIZE = 8 * 1024;
+	private static final int CONNECTION_TIMEOUT = 5000;
 
 	public HttpDownloader(DownloadService downloadService, DownloadStatus status) {
 		super(downloadService, status);
@@ -35,6 +37,7 @@ public class HttpDownloader extends Downloader {
 			publishProgress();
 			URL url = new URL(status.getFeedFile().getDownload_url());
 			connection = (HttpURLConnection) url.openConnection();
+			connection.setConnectTimeout(CONNECTION_TIMEOUT);
 			if (AppConfig.DEBUG) {
 				Log.d(TAG, "Connected to resource");
 			}
@@ -47,15 +50,19 @@ public class HttpDownloader extends Downloader {
 				byte[] buffer = new byte[BUFFER_SIZE];
 				int count = 0;
 				status.setStatusMsg(R.string.download_running);
-				if (AppConfig.DEBUG) Log.d(TAG, "Getting size of download");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Getting size of download");
 				status.setSize(connection.getContentLength());
-				if (AppConfig.DEBUG) Log.d(TAG, "Size is " + status.getSize());
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Size is " + status.getSize());
 				publishProgress();
-				if (AppConfig.DEBUG) Log.d(TAG, "Starting download");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Starting download");
 				while ((count = in.read(buffer)) != -1 && !isInterrupted()) {
 					out.write(buffer, 0, count);
 					status.setSoFar(status.getSoFar() + count);
-					status.setProgressPercent((int) (((double) status.getSoFar() / (double) status.getSize()) * 100));
+					status.setProgressPercent((int) (((double) status
+							.getSoFar() / (double) status.getSize()) * 100));
 				}
 				if (isInterrupted()) {
 					onCancelled();
@@ -68,6 +75,9 @@ public class HttpDownloader extends Downloader {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_MALFORMED_URL);
+		} catch (SocketTimeoutException e) {
+			e.printStackTrace();
+			onFail(DownloadError.ERROR_CONNECTION_ERROR);
 		} catch (IOException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_IO_ERROR);
@@ -102,7 +112,8 @@ public class HttpDownloader extends Downloader {
 	}
 
 	private void onCancelled() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Download was cancelled");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Download was cancelled");
 		status.setReason(DownloadError.ERROR_DOWNLOAD_CANCELLED);
 		status.setDone(true);
 		status.setSuccessful(false);
