@@ -140,15 +140,7 @@ public class FeedlistFragment extends SherlockFragment implements
 
 				@Override
 				public void run() {
-					if (intent.getAction().equals(
-							DownloadService.ACTION_DOWNLOAD_HANDLED)) {
-						int type = intent.getIntExtra(DownloadService.EXTRA_DOWNLOAD_TYPE, 0);
-						if (type == DownloadService.DOWNLOAD_TYPE_IMAGE) {
-							fla.notifyDataSetChanged();
-						}
-					} else {
-						fla.notifyDataSetChanged();
-					}
+					fla.notifyDataSetChanged();
 				}
 			});
 		}
