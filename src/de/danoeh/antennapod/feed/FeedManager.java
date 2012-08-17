@@ -37,6 +37,7 @@ public class FeedManager {
 	public static final String ACITON_FEED_LIST_UPDATE = "de.danoeh.antennapod.action.feed.feedlistUpdate";
 	public static final String ACTION_UNREAD_ITEMS_UPDATE = "de.danoeh.antennapod.action.feed.unreadItemsUpdate";
 	public static final String ACTION_QUEUE_UPDATE = "de.danoeh.antennapod.action.feed.queueUpdate";
+	public static final String ACTION_DOWNLOADLOG_UPDATE = "de.danoeh.antennapod.action.feed.downloadLogUpdate";
 	public static final String EXTRA_FEED_ITEM_ID = "de.danoeh.antennapod.extra.feed.feedItemId";
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feed.feedId";
 
@@ -332,20 +333,34 @@ public class FeedManager {
 
 	public void addDownloadStatus(final Context context,
 			final DownloadStatus status) {
-		downloadLog.add(status);
-		dbExec.execute(new Runnable() {
+		contentChanger.post(new Runnable() {
 
 			@Override
 			public void run() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				adapter.open();
+				downloadLog.add(status);
+				final DownloadStatus removedStatus;
 				if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
-					adapter.removeDownloadStatus(downloadLog.remove(0));
+					removedStatus = downloadLog.remove(0);
+				} else {
+					removedStatus = null;
 				}
-				adapter.setDownloadStatus(status);
-				adapter.close();
+				context.sendBroadcast(new Intent(ACTION_DOWNLOADLOG_UPDATE));
+				dbExec.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						PodDBAdapter adapter = new PodDBAdapter(context);
+						adapter.open();
+						if (removedStatus != null) {
+							adapter.removeDownloadStatus(removedStatus);
+						}
+						adapter.setDownloadStatus(status);
+						adapter.close();
+					}
+				});
 			}
 		});
+
 	}
 
 	public void addQueueItem(final Context context, final FeedItem item) {
