@@ -432,6 +432,10 @@ public class PlaybackService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Resource prepared");
 			mp.seekTo(media.getPosition());
+			if (media.getDuration() == 0) {
+				if (AppConfig.DEBUG) Log.d(TAG, "Setting duration of media");
+				media.setDuration(mp.getDuration());
+			}
 			setStatus(PlayerStatus.PREPARED);
 			if (startWhenPrepared) {
 				play();
@@ -782,7 +786,7 @@ public class PlaybackService extends Service {
 				} catch (InterruptedException e) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG,
-								"Thre¿ad was interrupted while waiting. Finishing now...");
+								"Thread was interrupted while waiting. Finishing now...");
 					return null;
 				} catch (IllegalStateException e) {
 					if (AppConfig.DEBUG)

@@ -81,6 +81,12 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		bindToService();
 	}
 
+	@Override
+	protected void onPause() {
+		super.onPause();
+		mediaInfoLoaded = false;
+	}
+
 	protected OnClickListener playbuttonListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
@@ -492,7 +498,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				txtvPosition.setText(Converter.getDurationStringLong((media
 						.getPosition())));
 
-				if (!playbackService.isShouldStream()) {
+				if (media.getDuration() != 0) {
 					txtvLength.setText(Converter.getDurationStringLong(media
 							.getDuration()));
 					float progress = ((float) media.getPosition())
