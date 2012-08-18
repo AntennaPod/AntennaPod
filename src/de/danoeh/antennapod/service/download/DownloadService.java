@@ -348,6 +348,8 @@ public class DownloadService extends Service {
 								&& reason != DownloadError.ERROR_DOWNLOAD_CANCELLED) {
 							Log.e(TAG, "Download failed");
 						}
+						download.setFile_url(null);
+						download.setDownloaded(false);
 						saveDownloadStatus(status);
 						sendDownloadHandledIntent(getDownloadType(download));
 

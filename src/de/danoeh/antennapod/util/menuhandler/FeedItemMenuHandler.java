@@ -29,7 +29,7 @@ public class FeedItemMenuHandler {
 			if (selectedItem.getMedia().isDownloaded()) {
 				menu.findItem(R.id.play_item).setVisible(true);
 				menu.findItem(R.id.remove_item).setVisible(true);
-			} else if (selectedItem.getMedia().getFile_url() == null) {
+			} else {
 				menu.findItem(R.id.download_item).setVisible(true);
 				menu.findItem(R.id.stream_item).setVisible(true);
 			}
