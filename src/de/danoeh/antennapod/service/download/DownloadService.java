@@ -99,6 +99,8 @@ public class DownloadService extends Service {
 
 	private ExecutorService syncExecutor;
 	private ExecutorService downloadExecutor;
+	/** Number of threads of downloadExecutor. */
+	private static final int NUM_PARALLEL_DOWNLOADS = 4;
 
 	private DownloadRequester requester;
 	private FeedManager manager;
@@ -168,7 +170,7 @@ public class DownloadService extends Service {
 				return t;
 			}
 		});
-		downloadExecutor = Executors.newFixedThreadPool(2, new ThreadFactory() {
+		downloadExecutor = Executors.newFixedThreadPool(NUM_PARALLEL_DOWNLOADS, new ThreadFactory() {
 
 			@Override
 			public Thread newThread(Runnable r) {
