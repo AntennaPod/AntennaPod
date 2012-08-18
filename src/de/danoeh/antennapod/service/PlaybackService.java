@@ -15,7 +15,10 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
 import android.media.AudioManager.OnAudioFocusChangeListener;
+import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
+import android.media.RemoteControlClient;
+import android.media.RemoteControlClient.MetadataEditor;
 import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
@@ -29,13 +32,16 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
+import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
+import de.danoeh.antennapod.util.Converter;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
@@ -94,6 +100,7 @@ public class PlaybackService extends Service {
 	private ComponentName mediaButtonReceiver;
 
 	private MediaPlayer player;
+	private RemoteControlClient remoteControlClient;
 
 	private FeedMedia media;
 	private Feed feed;
@@ -157,6 +164,7 @@ public class PlaybackService extends Service {
 		}
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -177,11 +185,16 @@ public class PlaybackService extends Service {
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
+		if (android.os.Build.VERSION.SDK_INT >= 14) {
+			audioManager
+					.registerRemoteControlClient(setupRemoteControlClient());
+		}
 		registerReceiver(headsetDisconnected, new IntentFilter(
 				Intent.ACTION_HEADSET_PLUG));
 
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
@@ -190,6 +203,9 @@ public class PlaybackService extends Service {
 		unregisterReceiver(headsetDisconnected);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service is about to be destroyed");
+		if (android.os.Build.VERSION.SDK_INT >= 14) {
+			audioManager.unregisterRemoteControlClient(remoteControlClient);
+		}
 		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
 		player.release();
@@ -295,7 +311,7 @@ public class PlaybackService extends Service {
 		switch (keycode) {
 		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(true);
+				pause(false);
 			} else if (status == PlayerStatus.PAUSED) {
 				play();
 			}
@@ -307,7 +323,7 @@ public class PlaybackService extends Service {
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(true);
+				pause(false);
 			}
 			break;
 		}
@@ -433,7 +449,8 @@ public class PlaybackService extends Service {
 				Log.d(TAG, "Resource prepared");
 			mp.seekTo(media.getPosition());
 			if (media.getDuration() == 0) {
-				if (AppConfig.DEBUG) Log.d(TAG, "Setting duration of media");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Setting duration of media");
 				media.setDuration(mp.getDuration());
 			}
 			setStatus(PlayerStatus.PREPARED);
@@ -455,7 +472,7 @@ public class PlaybackService extends Service {
 	};
 
 	private MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
-		
+
 		@Override
 		public boolean onInfo(MediaPlayer mp, int what, int extra) {
 			switch (what) {
@@ -465,12 +482,12 @@ public class PlaybackService extends Service {
 			case MediaPlayer.MEDIA_INFO_BUFFERING_END:
 				sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
 				return true;
-				default:
-					return false;
+			default:
+				return false;
 			}
 		}
 	};
-	
+
 	private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
 		private static final String TAG = "PlaybackService.onErrorListener";
 
@@ -521,6 +538,7 @@ public class PlaybackService extends Service {
 					notificationCode = EXTRA_CODE_VIDEO;
 				}
 				resetVideoSurface();
+				refreshRemoteControlClientState();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
 						notificationCode);
 			} else {
@@ -636,6 +654,7 @@ public class PlaybackService extends Service {
 		status = newStatus;
 		sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
 		updateWidget();
+		refreshRemoteControlClientState();
 	}
 
 	private void sendNotificationBroadcast(int type, int code) {
@@ -732,6 +751,63 @@ public class PlaybackService extends Service {
 			return sleepTimer.getWaitingTime();
 		} else {
 			return 0;
+		}
+	}
+
+	@SuppressLint("NewApi")
+	private RemoteControlClient setupRemoteControlClient() {
+		Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+		mediaButtonIntent.setComponent(mediaButtonReceiver);
+		PendingIntent mediaPendingIntent = PendingIntent.getBroadcast(
+				getApplicationContext(), 0, mediaButtonIntent, 0);
+		remoteControlClient = new RemoteControlClient(mediaPendingIntent);
+		remoteControlClient
+				.setTransportControlFlags(RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE);
+		return remoteControlClient;
+	}
+
+	/** Refresh player status and metadata. */
+	@SuppressLint("NewApi")
+	private void refreshRemoteControlClientState() {
+		if (android.os.Build.VERSION.SDK_INT >= 14) {
+			if (remoteControlClient != null) {
+				switch (status) {
+				case PLAYING:
+					remoteControlClient
+							.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
+					break;
+				case PAUSED:
+					remoteControlClient
+							.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
+					break;
+				case STOPPED:
+					remoteControlClient
+							.setPlaybackState(RemoteControlClient.PLAYSTATE_STOPPED);
+					break;
+				case ERROR:
+					remoteControlClient
+							.setPlaybackState(RemoteControlClient.PLAYSTATE_ERROR);
+					break;
+				default:
+					remoteControlClient
+							.setPlaybackState(RemoteControlClient.PLAYSTATE_BUFFERING);
+				}
+				if (media != null) {
+					MetadataEditor editor = remoteControlClient
+							.editMetadata(false);
+					editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
+							media.getItem().getTitle());
+					editor.putLong(
+							MediaMetadataRetriever.METADATA_KEY_DURATION,
+							media.getDuration());
+					editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
+							media.getItem().getFeed().getTitle());
+
+					editor.apply();
+				}
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "RemoteControlClient state was refreshed");
+			}
 		}
 	}
 
