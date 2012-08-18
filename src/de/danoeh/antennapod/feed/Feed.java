@@ -80,6 +80,25 @@ public class Feed extends FeedFile {
 	}
 
 	/**
+	 * Returns true if at least one item in the itemlist is unread.If the
+	 * 'display only episodes' - preference is set to true, this method will
+	 * only count items with episodes.
+	 */
+	public boolean hasNewItems() {
+		boolean displayOnlyEpisodes = PreferenceManager
+				.getDefaultSharedPreferences(PodcastApp.getInstance())
+				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
+		for (FeedItem item : items) {
+			if (!item.isRead()) {
+				if (!displayOnlyEpisodes || item.getMedia() != null) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+
+	/**
 	 * Returns the number of FeedItems. If the 'display only episodes' -
 	 * preference is set to true, this method will only count items with
 	 * episodes.

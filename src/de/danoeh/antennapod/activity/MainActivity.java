@@ -135,6 +135,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		boolean hasFeeds = !manager.getFeeds().isEmpty();
 		menu.findItem(R.id.opml_export).setVisible(hasFeeds);
+		menu.findItem(R.id.all_feed_refresh).setVisible(hasFeeds);
 		return true;
 	}
 

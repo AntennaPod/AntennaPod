@@ -33,6 +33,8 @@ public class FeedMenuHandler {
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Preparing options menu");
+		menu.findItem(R.id.mark_all_read_item).setVisible(
+				selectedFeed.hasNewItems());
 		if (selectedFeed.getPaymentLink() != null) {
 			menu.findItem(R.id.support_item).setVisible(true);
 		}
@@ -73,7 +75,8 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedFeed.getPaymentLink()).executeAsync();
+			new FlattrClickWorker(context, selectedFeed.getPaymentLink())
+					.executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);
