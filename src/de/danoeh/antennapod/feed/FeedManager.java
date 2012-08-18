@@ -266,6 +266,7 @@ public class FeedManager {
 		for (FeedItem item : unreadItems) {
 			item.read = true;
 		}
+		final ArrayList<FeedItem> unreadItemsCopy = new ArrayList<FeedItem>(unreadItems);
 		unreadItems.clear();
 		sendUnreadItemsUpdateBroadcast(context, null);
 		dbExec.execute(new Runnable() {
@@ -274,7 +275,7 @@ public class FeedManager {
 			public void run() {
 				PodDBAdapter adapter = new PodDBAdapter(context);
 				adapter.open();
-				for (FeedItem item : unreadItems) {
+				for (FeedItem item : unreadItemsCopy) {
 					setFeedItem(item, adapter);
 				}
 				adapter.close();
