@@ -170,15 +170,16 @@ public class DownloadService extends Service {
 				return t;
 			}
 		});
-		downloadExecutor = Executors.newFixedThreadPool(NUM_PARALLEL_DOWNLOADS, new ThreadFactory() {
+		downloadExecutor = Executors.newFixedThreadPool(NUM_PARALLEL_DOWNLOADS,
+				new ThreadFactory() {
 
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread t = new Thread(r);
-				t.setPriority(Thread.MIN_PRIORITY);
-				return t;
-			}
-		});
+					@Override
+					public Thread newThread(Runnable r) {
+						Thread t = new Thread(r);
+						t.setPriority(Thread.MIN_PRIORITY);
+						return t;
+					}
+				});
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
@@ -297,9 +298,8 @@ public class DownloadService extends Service {
 		} else {
 			Log.e(TAG,
 					"Could not find feedfile in download requester when trying to enqueue new download");
-			queryDownloads();
-
 		}
+		queryDownloads();
 	}
 
 	private BroadcastReceiver downloadQueued = new BroadcastReceiver() {
