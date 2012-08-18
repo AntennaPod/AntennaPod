@@ -266,7 +266,8 @@ public class FeedManager {
 		for (FeedItem item : unreadItems) {
 			item.read = true;
 		}
-		final ArrayList<FeedItem> unreadItemsCopy = new ArrayList<FeedItem>(unreadItems);
+		final ArrayList<FeedItem> unreadItemsCopy = new ArrayList<FeedItem>(
+				unreadItems);
 		unreadItems.clear();
 		sendUnreadItemsUpdateBroadcast(context, null);
 		dbExec.execute(new Runnable() {
@@ -340,13 +341,13 @@ public class FeedManager {
 			@Override
 			public void run() {
 				downloadLog.add(status);
+				Collections.sort(downloadLog, new DownloadStatusComparator());
 				final DownloadStatus removedStatus;
 				if (downloadLog.size() > DOWNLOAD_LOG_SIZE) {
-					removedStatus = downloadLog.remove(0);
+					removedStatus = downloadLog.remove(downloadLog.size() - 1);
 				} else {
 					removedStatus = null;
 				}
-				Collections.sort(downloadLog, new DownloadStatusComparator());
 				context.sendBroadcast(new Intent(ACTION_DOWNLOADLOG_UPDATE));
 				dbExec.execute(new Runnable() {
 
