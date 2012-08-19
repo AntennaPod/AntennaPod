@@ -524,30 +524,36 @@ public class PlaybackService extends Service {
 					.getDefaultSharedPreferences(getApplicationContext())
 					.getBoolean(PodcastApp.PREF_FOLLOW_QUEUE, false);
 			FeedItem nextItem = manager.getFirstQueueItem();
-			if (isInQueue && followQueue && nextItem != null) {
+			boolean playNextItem = isInQueue && followQueue && nextItem != null;
+			if (playNextItem) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading next item in queue");
 				media = nextItem.getMedia();
 				feed = nextItem.getFeed();
 				shouldStream = !media.isDownloaded();
-				int notificationCode = 0;
-				if (media.getMime_type().startsWith("audio")) {
-					notificationCode = EXTRA_CODE_AUDIO;
-					playingVideo = false;
-				} else if (media.getMime_type().startsWith("video")) {
-					notificationCode = EXTRA_CODE_VIDEO;
-				}
-				resetVideoSurface();
-				refreshRemoteControlClientState();
-				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-						notificationCode);
+				startWhenPrepared = true;
 			} else {
 				if (AppConfig.DEBUG)
-					Log.d(TAG, "Stopping playback");
-				stopWidgetUpdater();
-				setStatus(PlayerStatus.STOPPED);
-				stopForeground(true);
+					Log.d(TAG,
+							"No more episodes available to play; Reloading current episode");
+				startWhenPrepared = false;
 			}
+			int notificationCode = 0;
+			if (media.getMime_type().startsWith("audio")) {
+				notificationCode = EXTRA_CODE_AUDIO;
+				playingVideo = false;
+			} else if (media.getMime_type().startsWith("video")) {
+				notificationCode = EXTRA_CODE_VIDEO;
+			}
+			resetVideoSurface();
+			refreshRemoteControlClientState();
+			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+					notificationCode);
+			/*
+			 * } else { if (AppConfig.DEBUG) Log.d(TAG, "Stopping playback");
+			 * stopWidgetUpdater(); setStatus(PlayerStatus.STOPPED);
+			 * stopForeground(true); }
+			 */
 
 		}
 	};
