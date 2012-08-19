@@ -7,7 +7,10 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.EpisodeFilter;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -27,6 +30,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
+	private List<FeedItem> objects;
 
 	public static final int SELECTION_NONE = -1;
 
@@ -34,6 +38,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			List<FeedItem> objects, OnClickListener onButActionClicked,
 			boolean showFeedtitle) {
 		super(context, textViewResourceId, objects);
+		this.objects = objects;
 		this.onButActionClicked = onButActionClicked;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
@@ -75,74 +80,79 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
+		if (!(getItemViewType(position) == Adapter.IGNORE_ITEM_VIEW_TYPE)) {
+			convertView.setVisibility(View.VISIBLE);
+			if (position == selectedItemIndex) {
+				convertView.setBackgroundColor(convertView.getResources()
+						.getColor(R.color.selection_background));
+			} else {
+				convertView.setBackgroundResource(0);
+			}
 
-		if (position == selectedItemIndex) {
-			convertView.setBackgroundColor(convertView.getResources().getColor(
-					R.color.selection_background));
+			holder.title.setText(item.getTitle());
+			if (showFeedtitle) {
+				holder.feedtitle.setVisibility(View.VISIBLE);
+				holder.feedtitle.setText(item.getFeed().getTitle());
+			}
+			if (!item.isRead()) {
+				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+			} else {
+				holder.title.setTypeface(Typeface.DEFAULT);
+			}
+
+			holder.published.setText(convertView.getResources().getString(
+					R.string.published_prefix)
+					+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
+							System.currentTimeMillis(), DateFormat.SHORT,
+							DateFormat.SHORT));
+
+			if (item.getMedia() == null) {
+				holder.encInfo.setVisibility(View.GONE);
+			} else {
+				holder.encInfo.setVisibility(View.VISIBLE);
+				if (FeedManager.getInstance().isInQueue(item)) {
+					holder.inPlaylist.setVisibility(View.VISIBLE);
+				} else {
+					holder.inPlaylist.setVisibility(View.GONE);
+				}
+				if (item.getMedia().isDownloaded()) {
+					holder.lenSize.setText(convertView.getResources()
+							.getString(R.string.length_prefix)
+							+ Converter.getDurationStringLong(item.getMedia()
+									.getDuration()));
+					holder.downloaded.setVisibility(View.VISIBLE);
+				} else {
+					holder.lenSize
+							.setText(convertView.getResources().getString(
+									R.string.size_prefix)
+									+ Converter.byteToString(item.getMedia()
+											.getSize()));
+					holder.downloaded.setVisibility(View.GONE);
+				}
+
+				if (DownloadRequester.getInstance().isDownloadingFile(
+						item.getMedia())) {
+					holder.downloading.setVisibility(View.VISIBLE);
+				} else {
+					holder.downloading.setVisibility(View.GONE);
+				}
+
+				String type = item.getMedia().getMime_type();
+
+				if (type.startsWith("audio")) {
+					holder.type.setImageResource(R.drawable.type_audio);
+				} else if (type.startsWith("video")) {
+					holder.type.setImageResource(R.drawable.type_video);
+				} else {
+					holder.type.setImageBitmap(null);
+				}
+			}
+
+			holder.butAction.setFocusable(false);
+			holder.butAction.setOnClickListener(onButActionClicked);
 		} else {
-			convertView.setBackgroundResource(0);
+			convertView.setVisibility(View.GONE);
 		}
-
-		holder.title.setText(item.getTitle());
-		if (showFeedtitle) {
-			holder.feedtitle.setVisibility(View.VISIBLE);
-			holder.feedtitle.setText(item.getFeed().getTitle());
-		}
-		if (!item.isRead()) {
-			holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-		} else {
-			holder.title.setTypeface(Typeface.DEFAULT);
-		}
-
-		holder.published.setText(convertView.getResources().getString(
-				R.string.published_prefix)
-				+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
-						System.currentTimeMillis(), DateFormat.SHORT,
-						DateFormat.SHORT));
-
-		if (item.getMedia() == null) {
-			holder.encInfo.setVisibility(View.GONE);
-		} else {
-			holder.encInfo.setVisibility(View.VISIBLE);
-			if (FeedManager.getInstance().isInQueue(item)) {
-				holder.inPlaylist.setVisibility(View.VISIBLE);
-			} else {
-				holder.inPlaylist.setVisibility(View.GONE);
-			}
-			if (item.getMedia().isDownloaded()) {
-				holder.lenSize.setText(convertView.getResources().getString(
-						R.string.length_prefix)
-						+ Converter.getDurationStringLong(item.getMedia()
-								.getDuration()));
-				holder.downloaded.setVisibility(View.VISIBLE);
-			} else {
-				holder.lenSize.setText(convertView.getResources().getString(
-						R.string.size_prefix)
-						+ Converter.byteToString(item.getMedia().getSize()));
-				holder.downloaded.setVisibility(View.GONE);
-			}
-
-			if (DownloadRequester.getInstance().isDownloadingFile(
-					item.getMedia())) {
-				holder.downloading.setVisibility(View.VISIBLE);
-			} else {
-				holder.downloading.setVisibility(View.GONE);
-			}
-
-			String type = item.getMedia().getMime_type();
-
-			if (type.startsWith("audio")) {
-				holder.type.setImageResource(R.drawable.type_audio);
-			} else if (type.startsWith("video")) {
-				holder.type.setImageResource(R.drawable.type_video);
-			} else {
-				holder.type.setImageBitmap(null);
-			}
-		}
-
-		holder.butAction.setFocusable(false);
-		holder.butAction.setOnClickListener(onButActionClicked);
-
 		return convertView;
 
 	}
@@ -167,6 +177,24 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	public void setSelectedItemIndex(int selectedItemIndex) {
 		this.selectedItemIndex = selectedItemIndex;
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public int getCount() {
+		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
+			return EpisodeFilter.countItemsWithEpisodes(objects);
+		} else {
+			return super.getCount();
+		}
+	}
+
+	@Override
+	public FeedItem getItem(int position) {
+		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
+			return EpisodeFilter.accessEpisodeByIndex(objects, position);
+		} else {
+			return super.getItem(position);
+		}
 	}
 
 }

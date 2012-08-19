@@ -37,6 +37,8 @@ public class PodcastApp extends Application implements
 	private static float LOGICAL_DENSITY;
 
 	private static PodcastApp singleton;
+	
+	private boolean displayOnlyEpisodes;
 
 	public static PodcastApp getInstance() {
 		return singleton;
@@ -49,6 +51,7 @@ public class PodcastApp extends Application implements
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
+		displayOnlyEpisodes = prefs.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -124,11 +127,18 @@ public class PodcastApp extends Application implements
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Automatic update was deactivated");
 			}
+		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
+			if (AppConfig.DEBUG) Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
+			displayOnlyEpisodes = sharedPreferences.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		}
 	}
 
 	public static float getLogicalDensity() {
 		return LOGICAL_DENSITY;
+	}
+	
+	public boolean displayOnlyEpisodes() {
+		return displayOnlyEpisodes;
 	}
 
 	public boolean isLargeScreen() {

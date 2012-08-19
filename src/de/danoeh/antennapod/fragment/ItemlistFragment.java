@@ -102,14 +102,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 			feed = FeedManager.getInstance().getFeed(feedId);
 			items = feed.getItems();
 		}
-		
-		boolean displayOnlyEpisodes = PreferenceManager
-				.getDefaultSharedPreferences(PodcastApp.getInstance())
-				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
-		if (displayOnlyEpisodes) {
-			items = EpisodeFilter.getEpisodeList(items);
-		}
-		
+
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
 				onButActionClicked, showFeedtitle);
 		setListAdapter(fila);
@@ -170,15 +163,8 @@ public class ItemlistFragment extends SherlockListFragment implements
 					DownloadRequester.ACTION_DOWNLOAD_QUEUED)) {
 				updateProgressBarVisibility();
 			} else {
-				getActivity().runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						fila.notifyDataSetChanged();
-						updateProgressBarVisibility();
-					}
-
-				});
+				fila.notifyDataSetChanged();
+				updateProgressBarVisibility();
 			}
 		}
 	};

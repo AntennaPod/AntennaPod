@@ -15,7 +15,8 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.R;
 
 public class QueueFragment extends ItemlistFragment {
-
+	private static final String TAG = "QueueFragment";
+	
 	public QueueFragment() {
 		super(FeedManager.getInstance().getQueue(), true);
 	}
