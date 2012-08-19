@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.4
+-------------
+* Faster and more reliable downloads
+* Added lockscreen player controls for Android 4.x devices
+* Several bugfixes
+
 Version 0.9.3.1
 ---------------
 * Added preference to hide feed items which don't have an episode
