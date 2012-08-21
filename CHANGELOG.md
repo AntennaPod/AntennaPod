@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 0.9.4.1
+---------------
+* Changed behavior of download notifications
+
 Version 0.9.4
 -------------
 * Faster and more reliable downloads
