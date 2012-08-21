@@ -63,10 +63,6 @@ public class DownloadService extends Service {
 
 	public static String ACTION_ALL_FEED_DOWNLOADS_COMPLETED = "action.de.danoeh.antennapod.storage.all_feed_downloads_completed";
 
-	/**
-	 * If the DownloadService receives this intent, it will execute
-	 * queryDownloads()
-	 */
 	public static final String ACTION_ENQUEUE_DOWNLOAD = "action.de.danoeh.antennapod.service.enqueueDownload";
 	public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.service.cancelDownload";
 	public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.service.cancelAllDownloads";
@@ -111,6 +107,9 @@ public class DownloadService extends Service {
 	private MediaPlayer mediaplayer;
 
 	private List<Downloader> downloads;
+
+	/** Number of completed downloads which are currently being handled. */
+	private volatile int downloadsBeingHandled;
 
 	private volatile boolean shutdownInitiated = false;
 	/** True if service is running. */
@@ -164,6 +163,7 @@ public class DownloadService extends Service {
 					public void uncaughtException(Thread thread, Throwable ex) {
 						Log.e(TAG, "Thread exited with uncaught exception");
 						ex.printStackTrace();
+						downloadsBeingHandled -= 1;
 						queryDownloads();
 					}
 				});
@@ -183,8 +183,6 @@ public class DownloadService extends Service {
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 		mediaplayer = new MediaPlayer();
-		setupNotification();
-
 	}
 
 	@Override
@@ -328,6 +326,7 @@ public class DownloadService extends Service {
 			protected Void doInBackground(Void... params) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Received 'Download Complete' - message.");
+				downloadsBeingHandled += 1;
 				DownloadStatus status = downloader.getStatus();
 				status.setCompletionDate(new Date());
 				boolean successful = status.isSuccessful();
@@ -352,7 +351,7 @@ public class DownloadService extends Service {
 						download.setDownloaded(false);
 						saveDownloadStatus(status);
 						sendDownloadHandledIntent(getDownloadType(download));
-
+						downloadsBeingHandled -= 1;
 					}
 				}
 				removeDownload(downloader);
@@ -476,24 +475,30 @@ public class DownloadService extends Service {
 	/** Check if there's something else to download, otherwise stop */
 	void queryDownloads() {
 		int numOfDownloads = downloads.size();
-		if (AppConfig.DEBUG)
+		if (AppConfig.DEBUG) {
 			Log.d(TAG, numOfDownloads + " downloads left");
-		if (AppConfig.DEBUG)
+			Log.d(TAG, "Downloads being handled: " + downloadsBeingHandled);
 			Log.d(TAG, "ShutdownInitiated: " + shutdownInitiated);
+		}
 
-		if (numOfDownloads == 0) {
+		if (numOfDownloads == 0 && downloadsBeingHandled <= 0) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting shutdown");
 			shutdownInitiated = true;
+			updateReport();
 			stopForeground(true);
 		} else {
-			// update notification
-			notificationBuilder.setContentText(numOfDownloads
-					+ " Downloads left");
-			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-			nm.notify(NOTIFICATION_ID, notificationBuilder.getNotification());
+			if (notificationBuilder != null) {
+				// update notification
+				notificationBuilder.setContentText(numOfDownloads
+						+ " Downloads left");
+				NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+				nm.notify(NOTIFICATION_ID,
+						notificationBuilder.getNotification());
+			} else {
+				setupNotification();
+			}
 		}
-		updateReport();
 	}
 
 	/** Is called whenever a Feed is downloaded */
@@ -592,6 +597,7 @@ public class DownloadService extends Service {
 
 			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
+			downloadsBeingHandled -= 1;
 			queryDownloads();
 		}
 
@@ -646,6 +652,7 @@ public class DownloadService extends Service {
 				Log.e(TAG,
 						"Image has no feed, image might not be saved correctly!");
 			}
+			downloadsBeingHandled -= 1;
 			queryDownloads();
 		}
 	}
@@ -697,6 +704,7 @@ public class DownloadService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Item is already in queue");
 			}
+			downloadsBeingHandled -= 1;
 			queryDownloads();
 		}
 	}
