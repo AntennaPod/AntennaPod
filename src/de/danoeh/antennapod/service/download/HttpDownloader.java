@@ -65,14 +65,13 @@ public class HttpDownloader extends Downloader {
 						publishProgress();
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Starting download");
-						while ((count = in.read(buffer)) != -1
-								&& !isInterrupted()) {
+						while (!cancelled && (count = in.read(buffer)) != -1) {
 							out.write(buffer, 0, count);
 							status.setSoFar(status.getSoFar() + count);
 							status.setProgressPercent((int) (((double) status
 									.getSoFar() / (double) status.getSize()) * 100));
 						}
-						if (isInterrupted()) {
+						if (cancelled) {
 							onCancelled();
 						} else {
 							onSuccess();

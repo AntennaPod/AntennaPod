@@ -243,7 +243,7 @@ public class DownloadService extends Service {
 					Log.d(TAG, "Cancelling download with url " + url);
 				Downloader d = getDownloader(url);
 				if (d != null) {
-					d.interrupt();
+					d.cancel();
 					removeDownload(d);
 				} else {
 					Log.e(TAG, "Could not cancel download with url " + url);
@@ -251,7 +251,7 @@ public class DownloadService extends Service {
 
 			} else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
 				for (Downloader d : downloads) {
-					d.interrupt();
+					d.cancel();
 					DownloadRequester.getInstance().removeDownload(
 							d.getStatus().getFeedFile());
 					d.getStatus().getFeedFile().setFile_url(null);

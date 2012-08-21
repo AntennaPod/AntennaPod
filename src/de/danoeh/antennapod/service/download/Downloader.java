@@ -12,6 +12,8 @@ public abstract class Downloader extends Thread {
 	private DownloadService downloadService;
 
 	protected boolean finished;
+	
+	protected volatile boolean cancelled;
 
 	protected volatile DownloadStatus status;
 
@@ -19,6 +21,7 @@ public abstract class Downloader extends Thread {
 		super();
 		this.downloadService = downloadService;
 		this.status = status;
+		this.cancelled = false;
 		handler = new Handler();
 	}
 
@@ -54,6 +57,10 @@ public abstract class Downloader extends Thread {
 
 	public DownloadStatus getStatus() {
 		return status;
+	}
+	
+	public void cancel() {
+		cancelled = true;
 	}
 
 }
