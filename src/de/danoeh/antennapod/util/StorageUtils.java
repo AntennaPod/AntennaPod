@@ -28,9 +28,11 @@ public class StorageUtils {
 	}
 	
 	/** Get the number of free bytes that are available on the external storage. */
-	public static int getFreeSpaceAvailable() {
+	public static long getFreeSpaceAvailable() {
 		StatFs stat = new StatFs(Environment.getExternalStorageDirectory().getPath());
-		return stat.getAvailableBlocks() * stat.getBlockSize();
+		long availableBlocks = stat.getAvailableBlocks();
+		long blockSize = stat.getBlockSize();
+		return availableBlocks * blockSize;
 	}
 	
 	public static boolean externalStorageMounted() {

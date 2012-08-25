@@ -57,9 +57,10 @@ public class HttpDownloader extends Downloader {
 					status.setSize(connection.getContentLength());
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Size is " + status.getSize());
-					if (status.getSize() == -1
-							|| status.getSize() <= StorageUtils
-									.getFreeSpaceAvailable()) {
+					long freeSpace = StorageUtils.getFreeSpaceAvailable();
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Free space is " + freeSpace);
+					if (status.getSize() == -1 || status.getSize() <= freeSpace) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Size is " + status.getSize());
 						publishProgress();
