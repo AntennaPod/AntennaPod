@@ -37,8 +37,8 @@
 
         <ImageView
             android:id="@+id/imgvCover"
-            android:layout_marginLeft="60dp"
-            android:layout_marginRight="60dp"
+            android:layout_marginLeft="50dp"
+            android:layout_marginRight="50dp"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="4dp"
             android:layout_width="match_parent"
@@ -46,7 +46,7 @@
             android:layout_gravity="center"
             android:layout_weight="1"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop" />
+            android:scaleType="centerInside" />
 
     </LinearLayout>
 

@@ -10,7 +10,9 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_margin="8dp"
-        android:cropToPadding="true" />
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitXY" />
 
     <LinearLayout
         android:layout_width="0dp"
