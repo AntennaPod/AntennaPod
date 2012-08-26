@@ -39,8 +39,8 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Holder holder;
-		Feed feed = getItem(position);
+		final Holder holder;
+		final Feed feed = getItem(position);
 
 		// Inflate Layout
 		if (convertView == null) {
@@ -94,12 +94,14 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			holder.newEpisodes.setVisibility(View.INVISIBLE);
 		}
 		holder.image.setTag(feed.getImage());
-		/*if (PodcastApp.getInstance().isLargeScreen()) {
-			imageLoader.loadCoverBitmap(feed.getImage(), holder.image);
 
-		} else {*/
-			imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
-		//}
+		holder.image.post(new Runnable() {
+
+			@Override
+			public void run() {
+				imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
+			}
+		});
 		return convertView;
 	}
 

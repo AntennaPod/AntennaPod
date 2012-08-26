@@ -7,26 +7,12 @@ import android.util.Log;
 public class BitmapDecoder {
 	private static final String TAG = "BitmapDecoder";
 
-	private static int calculateSampleSize(int preferredLength, int width,
-			int height) {
-		int max = Math.max(width, height);
-		if (max < preferredLength) {
-			return 1;
-		} else {
-			// find first sample size where max / sampleSize <
-			// PREFERRED_LENGTH
-			for (int sampleSize = 1, power = 0;; power++, sampleSize = (int) Math
-					.pow(2, power)) {
-				int newLength = max / sampleSize;
-				if (newLength <= preferredLength) {
-					if (newLength > 0) {
-						return sampleSize;
-					} else {
-						return sampleSize - 1;
-					}
-				}
-			}
+	private static int calculateSampleSize(int preferredLength, int length) {
+		int sampleSize = 1;
+		if (length > preferredLength) {
+			sampleSize = Math.round(((float) length / (float) preferredLength));
 		}
+		return sampleSize;
 	}
 
 	public static Bitmap decodeBitmap(int preferredLength, String fileUrl) {
@@ -35,14 +21,13 @@ public class BitmapDecoder {
 		BitmapFactory.decodeFile(fileUrl, options);
 		int srcWidth = options.outWidth;
 		int srcHeight = options.outHeight;
-		int sampleSize = calculateSampleSize(preferredLength, srcWidth,
-				srcHeight);
-
+		int length = Math.max(srcWidth, srcHeight);
+		int sampleSize = calculateSampleSize(preferredLength, length);
+		Log.d(TAG, "Using samplesize " + sampleSize);
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = sampleSize;
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-		options.inScaled = true;
-		
+
 		Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl, options);
 		if (decodedBitmap == null) {
 			Log.i(TAG,
@@ -50,14 +35,6 @@ public class BitmapDecoder {
 							+ fileUrl + ")");
 			decodedBitmap = BitmapFactory.decodeFile(fileUrl);
 		}
-		if (decodedBitmap != null) {
-			return decodedBitmap;
-			/*
-				return Bitmap.createScaledBitmap(decodedBitmap,
-						preferredLength, preferredLength, false);
-			*/
-		} else {
-			return null;
-		}
+		return decodedBitmap;
 	}
 }

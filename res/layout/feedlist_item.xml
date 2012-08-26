@@ -14,7 +14,10 @@
         android:layout_centerVertical="true"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="4dip"
-        android:cropToPadding="true" />
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        android:src="@drawable/default_cover" />
 
     <TextView
         android:id="@+id/txtvNewEps"

@@ -25,8 +25,8 @@ public class FeedImageLoader {
 	private static final String TAG = "FeedImageLoader";
 	private static FeedImageLoader singleton;
 
-	public static final int LENGTH_BASE_COVER = 300;
-	public static final int LENGTH_BASE_THUMBNAIL = 100;
+	public static final int IMAGE_TYPE_THUMBNAIL = 0;
+	public static final int IMAGE_TYPE_COVER = 1;
 
 	private static final String CACHE_DIR = "miroguide_thumbnails";
 	private static final int CACHE_SIZE = 20 * 1024 * 1024;
@@ -45,7 +45,7 @@ public class FeedImageLoader {
 
 	// Use 1/8th of the available memory for this memory cache.
 	final int coverCacheSize = 1024 * 1024 * memClass / 8;
-	final int thumbnailCacheSize = 1024 * 1024 * memClass / 6;
+	final int thumbnailCacheSize = 1024 * 1024 * memClass / 8;
 
 	private LruCache<String, Bitmap> coverCache;
 	private LruCache<String, Bitmap> thumbnailCache;
@@ -103,6 +103,12 @@ public class FeedImageLoader {
 		return singleton;
 	}
 
+	/**
+	 * Load a bitmap from the cover cache. If the bitmap is not in the cache, it
+	 * will be loaded from the disk. This method should either be called if the
+	 * ImageView's size has already been set or inside a Runnable which is posted
+	 * to the ImageView's message queue.
+	 */
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
 		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromCoverCache(image.getFile_url());
@@ -111,7 +117,8 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, LENGTH_BASE_COVER);
+						handler, target, image, target.getHeight(),
+						IMAGE_TYPE_COVER);
 				executor.submit(worker);
 			}
 		} else {
@@ -119,6 +126,12 @@ public class FeedImageLoader {
 		}
 	}
 
+	/**
+	 * Load a bitmap from the thumbnail cache. If the bitmap is not in the cache, it
+	 * will be loaded from the disk. This method should either be called if the
+	 * ImageView's size has already been set or inside a Runnable which is posted
+	 * to the ImageView's message queue.
+	 */
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
 		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(image.getFile_url());
@@ -127,7 +140,8 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, LENGTH_BASE_THUMBNAIL);
+						handler, target, image, target.getHeight(),
+						IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
 			}
 		} else {
@@ -135,7 +149,8 @@ public class FeedImageLoader {
 		}
 	}
 
-	public void loadMiroGuideThumbnail(MiroGuideChannel channel, ImageView target) {
+	public void loadMiroGuideThumbnail(MiroGuideChannel channel,
+			ImageView target) {
 		if (channel.getThumbnailUrl() != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(channel
 					.getThumbnailUrl());
@@ -145,7 +160,7 @@ public class FeedImageLoader {
 				target.setImageResource(R.drawable.default_cover);
 
 				executor.submit(new MiroGuideThumbnailDownloader(handler,
-						target, channel, LENGTH_BASE_THUMBNAIL));
+						target, channel, target.getHeight(), coverCacheSize));
 			} else {
 				target.setImageBitmap(bitmap);
 			}
@@ -198,8 +213,8 @@ public class FeedImageLoader {
 		protected FeedImage image;
 
 		public FeedImageDecodeWorkerTask(Handler handler, ImageView target,
-				FeedImage image, int length) {
-			super(handler, target, image.getFile_url(), length);
+				FeedImage image, int length, int imageType) {
+			super(handler, target, image.getFile_url(), length, imageType);
 			this.image = image;
 		}
 

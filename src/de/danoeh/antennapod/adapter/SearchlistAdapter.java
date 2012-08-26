@@ -26,7 +26,7 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
-		Holder holder;
+		final Holder holder;
 		SearchResult result = getItem(position);
 		FeedComponent component = result.getComponent();
 
@@ -48,21 +48,34 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 			holder = (Holder) convertView.getTag();
 		}
 		if (component.getClass() == Feed.class) {
-			Feed feed = (Feed) component;
+			final Feed feed = (Feed) component;
 			holder.title.setText(feed.getTitle());
 			holder.subtitle.setVisibility(View.GONE);
-			FeedImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(),
-					holder.cover);
+			holder.cover.post(new Runnable() {
+
+				@Override
+				public void run() {
+					FeedImageLoader.getInstance().loadThumbnailBitmap(
+							feed.getImage(), holder.cover);
+				}
+			});
 
 		} else if (component.getClass() == FeedItem.class) {
-			FeedItem item = (FeedItem) component;
+			final FeedItem item = (FeedItem) component;
 			holder.title.setText(item.getTitle());
 			if (result.getSubtitle() != null) {
 				holder.subtitle.setVisibility(View.VISIBLE);
 				holder.subtitle.setText(result.getSubtitle());
 			}
-			FeedImageLoader.getInstance().loadThumbnailBitmap(item.getFeed().getImage(),
-					holder.cover);
+			holder.cover.post(new Runnable() {
+
+				@Override
+				public void run() {
+					FeedImageLoader.getInstance().loadThumbnailBitmap(
+							item.getFeed().getImage(), holder.cover);
+				}
+			});
+
 		}
 
 		return convertView;

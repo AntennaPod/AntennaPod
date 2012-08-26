@@ -25,8 +25,8 @@ public class MiroGuideThumbnailDownloader extends BitmapDecodeWorkerTask {
 	private MiroGuideChannel miroChannel;
 
 	public MiroGuideThumbnailDownloader(Handler handler, ImageView target,
-			MiroGuideChannel miroChannel, int length) {
-		super(handler, target, miroChannel.getThumbnailUrl(), length);
+			MiroGuideChannel miroChannel, int length, int imageType) {
+		super(handler, target, miroChannel.getThumbnailUrl(), length, imageType);
 		this.miroChannel = miroChannel;
 	}
 

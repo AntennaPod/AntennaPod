@@ -17,32 +17,27 @@ import de.danoeh.antennapod.util.BitmapDecoder;
 public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected int PREFERRED_LENGTH;
-
-	public static final int LENGTH_BASE_COVER = 200;
-	public static final int LENGTH_BASE_THUMBNAIL = 100;
+	
+	/** Can be thumbnail or cover */
+	protected int imageType;
 
 	private static final String TAG = "BitmapDecodeWorkerTask";
 	private ImageView target;
 	protected Bitmap bitmap;
 	private Bitmap decodedBitmap;
 
-	protected int baseLength;
-
 	protected String fileUrl;
 
 	private Handler handler;
 
 	public BitmapDecodeWorkerTask(Handler handler, ImageView target,
-			String fileUrl, int length) {
+			String fileUrl, int length, int imageType) {
 		super();
 		this.handler = handler;
 		this.target = target;
 		this.fileUrl = fileUrl;
-		this.baseLength = length;
-		this.PREFERRED_LENGTH = (int) (length * PodcastApp.getLogicalDensity() + 0.5f);
-		if (PodcastApp.getInstance().isLargeScreen()) {
-			this.PREFERRED_LENGTH *= 2.0;
-		}
+		this.PREFERRED_LENGTH = length;
+		this.imageType = imageType;
 	}
 
 	/**
@@ -108,9 +103,9 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected void storeBitmapInCache(Bitmap bitmap) {
 		FeedImageLoader loader = FeedImageLoader.getInstance();
-		if (baseLength == LENGTH_BASE_COVER) {
+		if (imageType == FeedImageLoader.IMAGE_TYPE_COVER) {
 			loader.addBitmapToCoverCache(fileUrl, bitmap);
-		} else if (baseLength == LENGTH_BASE_THUMBNAIL) {
+		} else if (imageType == FeedImageLoader.IMAGE_TYPE_THUMBNAIL) {
 			loader.addBitmapToThumbnailCache(fileUrl, bitmap);
 		}
 	}

@@ -25,7 +25,7 @@ public class FeedInfoActivity extends SherlockActivity {
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 
 	private Feed feed;
-	
+
 	private ImageView imgvCover;
 	private TextView txtvTitle;
 	private TextView txtvDescription;
@@ -41,22 +41,32 @@ public class FeedInfoActivity extends SherlockActivity {
 		FeedManager manager = FeedManager.getInstance();
 		feed = manager.getFeed(feedId);
 		if (feed != null) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Language is " + feed.getLanguage());
-			if (AppConfig.DEBUG) Log.d(TAG, "Author is " + feed.getAuthor());
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Language is " + feed.getLanguage());
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Author is " + feed.getAuthor());
 			imgvCover = (ImageView) findViewById(R.id.imgvCover);
 			txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);
 			txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
 			txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
-			FeedImageLoader.getInstance().loadCoverBitmap(feed.getImage(), imgvCover);
-			
+			imgvCover.post(new Runnable() {
+
+				@Override
+				public void run() {
+					FeedImageLoader.getInstance().loadThumbnailBitmap(
+							feed.getImage(), imgvCover);
+				}
+			});
+
 			txtvTitle.setText(feed.getTitle());
 			txtvDescription.setText(feed.getDescription());
 			if (feed.getAuthor() != null) {
 				txtvAuthor.setText(feed.getAuthor());
 			}
 			if (feed.getLanguage() != null) {
-				txtvLanguage.setText(LangUtils.getLanguageString(feed.getLanguage()));
+				txtvLanguage.setText(LangUtils.getLanguageString(feed
+						.getLanguage()));
 			}
 		} else {
 			Log.e(TAG, "Activity was started with invalid arguments");
@@ -64,26 +74,21 @@ public class FeedInfoActivity extends SherlockActivity {
 
 	}
 
-	
-	
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = new MenuInflater(this);
 		inflater.inflate(R.menu.feedinfo, menu);
 		return true;
 	}
-	
-	
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		menu.findItem(R.id.support_item).setVisible(feed.getPaymentLink() != null);
+		menu.findItem(R.id.support_item).setVisible(
+				feed.getPaymentLink() != null);
 		menu.findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
-		
+
 		return true;
 	}
-
-
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
