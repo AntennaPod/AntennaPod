@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.4.2
+---------------
+* Fixed bug in the OPML importer
+* Reduced memory usage of images
+* Fixed download problems on some devices
+
 Version 0.9.4.1
 ---------------
 * Changed behavior of download notifications
