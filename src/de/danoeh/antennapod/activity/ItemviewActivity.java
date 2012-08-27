@@ -108,9 +108,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
 			switch (menuItem.getItemId()) {
 			case android.R.id.home:
-				Intent upIntent = new Intent(this, FeedItemlistActivity.class);
-				upIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, item.getFeed().getId());
-				startActivity(upIntent);
+				finish();
 				break;
 			}
 		}
