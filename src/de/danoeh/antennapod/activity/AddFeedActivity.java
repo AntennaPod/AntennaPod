@@ -17,6 +17,8 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.actionbarsherlock.app.SherlockActivity;
+import com.actionbarsherlock.view.Menu;
+import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -46,6 +48,7 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		StorageUtils.checkStorageAvailability(this);
 		setContentView(R.layout.addfeed);
 
@@ -166,4 +169,22 @@ public class AddFeedActivity extends SherlockActivity {
 		}
 		errorDialog.show();
 	}
+
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		return true;
+	}
+
+	@Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		switch (item.getItemId()) {
+		case android.R.id.home:
+			finish();
+			startActivity(new Intent(this, MainActivity.class));
+			return true;
+		default:
+			return false;
+		}
+	}
+
 }
