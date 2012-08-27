@@ -95,13 +95,12 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		}
 		holder.image.setTag(feed.getImage());
 
-		holder.image.post(new Runnable() {
+		imageLoader.loadThumbnailBitmap(
+				feed.getImage(),
+				holder.image,
+				(int) convertView.getResources().getDimension(
+						R.dimen.thumbnail_length));
 
-			@Override
-			public void run() {
-				imageLoader.loadThumbnailBitmap(feed.getImage(), holder.image);
-			}
-		});
 		return convertView;
 	}
 

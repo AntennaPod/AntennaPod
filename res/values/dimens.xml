@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="widget_margin">8dp</dimen>
+    <dimen name="thumbnail_length">55dp</dimen>
     
 </resources>

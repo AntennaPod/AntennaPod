@@ -51,15 +51,8 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 			final Feed feed = (Feed) component;
 			holder.title.setText(feed.getTitle());
 			holder.subtitle.setVisibility(View.GONE);
-			holder.cover.post(new Runnable() {
-
-				@Override
-				public void run() {
-					FeedImageLoader.getInstance().loadThumbnailBitmap(
-							feed.getImage(), holder.cover);
-				}
-			});
-
+			FeedImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(),
+					holder.cover, (int) convertView.getResources().getDimension(R.dimen.thumbnail_length));
 		} else if (component.getClass() == FeedItem.class) {
 			final FeedItem item = (FeedItem) component;
 			holder.title.setText(item.getTitle());
@@ -67,14 +60,12 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 				holder.subtitle.setVisibility(View.VISIBLE);
 				holder.subtitle.setText(result.getSubtitle());
 			}
-			holder.cover.post(new Runnable() {
 
-				@Override
-				public void run() {
-					FeedImageLoader.getInstance().loadThumbnailBitmap(
-							item.getFeed().getImage(), holder.cover);
-				}
-			});
+			FeedImageLoader.getInstance().loadThumbnailBitmap(
+					item.getFeed().getImage(),
+					holder.cover,
+					(int) convertView.getResources().getDimension(
+							R.dimen.thumbnail_length));
 
 		}
 

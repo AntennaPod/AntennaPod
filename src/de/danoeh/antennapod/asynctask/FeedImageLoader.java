@@ -106,10 +106,20 @@ public class FeedImageLoader {
 	/**
 	 * Load a bitmap from the cover cache. If the bitmap is not in the cache, it
 	 * will be loaded from the disk. This method should either be called if the
-	 * ImageView's size has already been set or inside a Runnable which is posted
-	 * to the ImageView's message queue.
+	 * ImageView's size has already been set or inside a Runnable which is
+	 * posted to the ImageView's message queue.
 	 */
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
+		loadCoverBitmap(image, target, target.getHeight());
+	}
+
+	/**
+	 * Load a bitmap from the cover cache. If the bitmap is not in the cache, it
+	 * will be loaded from the disk. This method should either be called if the
+	 * ImageView's size has already been set or inside a Runnable which is
+	 * posted to the ImageView's message queue.
+	 */
+	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
 		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromCoverCache(image.getFile_url());
 			if (bitmap != null) {
@@ -117,8 +127,7 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, target.getHeight(),
-						IMAGE_TYPE_COVER);
+						handler, target, image, length, IMAGE_TYPE_COVER);
 				executor.submit(worker);
 			}
 		} else {
@@ -127,12 +136,22 @@ public class FeedImageLoader {
 	}
 
 	/**
-	 * Load a bitmap from the thumbnail cache. If the bitmap is not in the cache, it
-	 * will be loaded from the disk. This method should either be called if the
-	 * ImageView's size has already been set or inside a Runnable which is posted
-	 * to the ImageView's message queue.
+	 * Load a bitmap from the thumbnail cache. If the bitmap is not in the
+	 * cache, it will be loaded from the disk. This method should either be
+	 * called if the ImageView's size has already been set or inside a Runnable
+	 * which is posted to the ImageView's message queue.
 	 */
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
+		loadThumbnailBitmap(image, target, target.getHeight());
+	}
+	
+	/**
+	 * Load a bitmap from the thumbnail cache. If the bitmap is not in the
+	 * cache, it will be loaded from the disk. This method should either be
+	 * called if the ImageView's size has already been set or inside a Runnable
+	 * which is posted to the ImageView's message queue.
+	 */
+	public void loadThumbnailBitmap(FeedImage image, ImageView target, int length) {
 		if (image != null && image.getFile_url() != null) {
 			Bitmap bitmap = getBitmapFromThumbnailCache(image.getFile_url());
 			if (bitmap != null) {
@@ -140,7 +159,7 @@ public class FeedImageLoader {
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, target.getHeight(),
+						handler, target, image, length,
 						IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
 			}

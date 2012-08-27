@@ -8,16 +8,15 @@
 
     <ImageView
         android:id="@+id/imgvFeedimage"
-        android:layout_width="55dip"
-        android:layout_height="55dip"
+        android:layout_width="@dimen/thumbnail_length"
+        android:layout_height="@dimen/thumbnail_length"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginLeft="1dip"
         android:layout_marginRight="4dip"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
-        android:scaleType="fitXY"
-        android:src="@drawable/default_cover" />
+        android:scaleType="fitXY" />
 
     <TextView
         android:id="@+id/txtvNewEps"
