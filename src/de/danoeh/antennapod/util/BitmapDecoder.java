@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.util;
 
+import de.danoeh.antennapod.AppConfig;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
@@ -23,7 +24,8 @@ public class BitmapDecoder {
 		int srcHeight = options.outHeight;
 		int length = Math.max(srcWidth, srcHeight);
 		int sampleSize = calculateSampleSize(preferredLength, length);
-		Log.d(TAG, "Using samplesize " + sampleSize);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Using samplesize " + sampleSize);
 		options.inJustDecodeBounds = false;
 		options.inSampleSize = sampleSize;
 		options.inPreferredConfig = Bitmap.Config.ARGB_8888;
