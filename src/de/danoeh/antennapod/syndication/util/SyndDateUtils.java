@@ -11,11 +11,8 @@ import android.util.Log;
 public class SyndDateUtils {
 	private static final String TAG = "DateUtils";
 
-	public static final String[] RFC822DATES = { "EEE, dd MMM yyyy HH:mm:ss Z",
-			"dd MMM yyyy HH:mm:ss Z", "EEE, dd MMM yy HH:mm:ss Z",
-			"dd MMM yy HH:mm:ss Z", "EEE, dd MMM yyyy HH:mm:ss z",
-			"dd MMM yyyy HH:mm:ss z", "EEE, dd MMM yy HH:mm:ss z",
-			"dd MMM yy HH:mm:ss z" };
+	public static final String[] RFC822DATES = { "dd MMM yyyy HH:mm:ss Z",
+			"dd MMM yy HH:mm:ss Z", };
 
 	/** RFC 3339 date format for UTC dates. */
 	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -44,6 +41,10 @@ public class SyndDateUtils {
 		if (date.contains("PDT")) {
 			date = date.replace("PDT", "PST8PDT");
 		}
+		if (date.contains(",")) {
+			// Remove day of the week
+			date = date.substring(date.indexOf(",") + 1).trim();
+		}
 		SimpleDateFormat format = RFC822Formatter.get();
 		for (int i = 0; i < RFC822DATES.length; i++) {
 			try {
@@ -61,10 +62,28 @@ public class SyndDateUtils {
 		return result;
 	}
 
-	public static Date parseRFC3339Date(final String date) {
+	public static Date parseRFC3339Date(String date) {
 		Date result = null;
 		SimpleDateFormat format = RFC3339Formatter.get();
-		if (date.endsWith("Z")) {
+		boolean isLocal = date.endsWith("Z");
+		if (date.contains(".")) {
+			// remove secfrac
+			int fracIndex = date.indexOf(".");
+			String first = date.substring(0, fracIndex);
+			String second = null;
+			if (isLocal) {
+				second = date.substring(date.length() - 1);
+			} else {
+				if (date.contains("+")) {
+					second = date.substring(date.indexOf("+"));
+				} else {
+					second = date.substring(date.indexOf("-"));
+				}
+			}
+			
+			date = first + second;
+		}
+		if (isLocal) {
 			try {
 				result = format.parse(date);
 			} catch (ParseException e) {
