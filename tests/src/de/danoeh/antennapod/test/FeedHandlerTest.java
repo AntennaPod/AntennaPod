@@ -23,7 +23,8 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String TAG = "FeedHandlerTest";
 	private static final String FEEDS_DIR = "testfeeds";
 
-	private static final String[] rssUrls = {
+	private static final String[] urls = {
+			"http://bitlove.org/ranzzeit/ranz/feed",
 			"http://bitlove.org/importthis/mp3/feed",
 			"http://bitlove.org/astro/youtube/feed",
 			"http://bitlove.org/channelcast/channelcast/feed",
@@ -371,29 +372,16 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/wunderlich/podcast/feed",
 			"http://www.cczwei.de/rss_tvissues.php" };
 
-	private static final String[] atomUrls = {
-
-	};
-
-	private ArrayList<Feed> rssFeeds;
-	private ArrayList<Feed> atomFeeds;
+	private ArrayList<Feed> feeds;
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		rssFeeds = new ArrayList<Feed>();
-		for (int i = 0; i < rssUrls.length; i++) {
-			Feed f = new Feed(rssUrls[i], new Date());
+		feeds = new ArrayList<Feed>();
+		for (int i = 0; i < urls.length; i++) {
+			Feed f = new Feed(urls[i], new Date());
 			f.setFile_url(new File(getContext().getExternalFilesDir(FEEDS_DIR)
 					.getAbsolutePath(), "R" + i).getAbsolutePath());
-			rssFeeds.add(f);
-		}
-
-		atomFeeds = new ArrayList<Feed>();
-		for (int i = 0; i < atomUrls.length; i++) {
-			Feed f = new Feed(atomUrls[i], new Date());
-			f.setFile_url(new File(getContext().getExternalFilesDir(FEEDS_DIR)
-					.getAbsolutePath(), "A" + i).getAbsolutePath());
-			atomFeeds.add(f);
+			feeds.add(f);
 		}
 	}
 
@@ -410,17 +398,41 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private void downloadFeed(Feed feed) throws IOException {
-		InputStream in = getInputStream(feed.getDownload_url());
-		assertNotNull(in);
-		OutputStream out = new BufferedOutputStream(new FileOutputStream(
-				feed.getFile_url()));
-		byte[] buffer = new byte[8 * 1024];
-		int count = 0;
-		while ((count = in.read(buffer)) != -1) {
-			out.write(buffer, 0, count);
+		int num_retries = 2;
+		boolean successful = false;
+
+		for (int i = 0; i < num_retries; i++) {
+			InputStream in = null;
+			OutputStream out = null;
+			try {
+				in = getInputStream(feed.getDownload_url());
+				assertNotNull(in);
+				out = new BufferedOutputStream(new FileOutputStream(
+						feed.getFile_url()));
+				byte[] buffer = new byte[8 * 1024];
+				int count = 0;
+				while ((count = in.read(buffer)) != -1) {
+					out.write(buffer, 0, count);
+				}
+				successful = true;
+			} catch (IOException e) {
+				e.printStackTrace();
+			} finally {
+				if (in != null) {
+					in.close();
+				}
+				if (out != null) {
+					out.close();
+				}
+				if (successful) {
+					break;
+				}
+			}
 		}
-		in.close();
-		out.close();
+		if (!successful) {
+			Log.e(TAG, "Download failed after " + num_retries + " retries");
+			throw new IOException();
+		}
 	}
 
 	private boolean isFeedValid(Feed feed) {
@@ -458,20 +470,12 @@ public class FeedHandlerTest extends AndroidTestCase {
 		return true;
 	}
 
-	public void testParseRSS() {
+	public void testParseFeeds() {
 		Log.i(TAG, "Testing RSS feeds");
-		for (Feed feed : rssFeeds) {
+		for (Feed feed : feeds) {
 			parseFeed(feed);
 		}
 		Log.i(TAG, "RSS Test completed");
-	}
-
-	public void testParseAtom() {
-		Log.i(TAG, "Testing Atom feeds");
-		for (Feed feed : atomFeeds) {
-			parseFeed(feed);
-		}
-		Log.i(TAG, "Atom Test completed");
 	}
 
 	private void parseFeed(Feed feed) {
@@ -491,11 +495,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
-		for (Feed feed : rssFeeds) {
-			File f = new File(feed.getFile_url());
-			f.delete();
-		}
-		for (Feed feed : atomFeeds) {
+		for (Feed feed : feeds) {
 			File f = new File(feed.getFile_url());
 			f.delete();
 		}
