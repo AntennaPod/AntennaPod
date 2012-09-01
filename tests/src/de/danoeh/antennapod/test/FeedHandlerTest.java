@@ -15,6 +15,7 @@ import java.util.Date;
 import android.test.AndroidTestCase;
 import android.util.Log;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 
 /** Enqueues a list of Feeds and tests if they are parsed correctly */
@@ -23,6 +24,10 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] rssUrls = {
+			"http://bitlove.org/astro/youtube/feed",
+			"http://bitlove.org/channelcast/channelcast/feed",
+			"http://bitlove.org/cccb/chaosradio/feed",
+			"http://bitlove.org/astro/bitlove-show/feed",
 			"http://feeds.thisamericanlife.org/talpodcast",
 			"http://www.casasola.de/137b/1337motiv/1337motiv.xml",
 			"http://alternativlos.org/ogg.rss", "http://www.bitsundso.de/feed",
@@ -66,8 +71,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/alexolma/iphoneblog/feed",
 			"http://bitlove.org/andydrop/nachtnerd/feed",
 			"http://bitlove.org/apollo40/ps3newsroom/feed",
-			"http://bitlove.org/astro/bitlove-show/feed",
-			"http://bitlove.org/astro/youtube/feed",
 			"http://bitlove.org/beapirate/hauptstadtpiraten/feed",
 			"http://bitlove.org/benni/besondereumstaende/feed",
 			"http://bitlove.org/bennihahn/unicast/feed",
@@ -422,15 +425,35 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private boolean isFeedValid(Feed feed) {
+		Log.i(TAG, "Checking if " + feed.getDownload_url() + " is valid");
 		boolean result = false;
 		if (feed.getTitle() == null) {
 			Log.e(TAG, "Feed has no title");
+			return false;
 		}
 		if (feed.getItems() == null) {
 			Log.e(TAG, "Feed has no items");
+			return false;
 		}
-		result = feed.getTitle() != null && feed.getItems() != null;
-		return result;
+		if (!hasValidFeedItems(feed)) {
+			Log.e(TAG, "Feed has invalid items");
+			return false;
+		}
+		return true;
+	}
+
+	private boolean hasValidFeedItems(Feed feed) {
+		for (FeedItem item : feed.getItems()) {
+			if (item.getTitle() == null) {
+				Log.e(TAG, "Item has no title");
+				return false;
+			}
+			if (item.getPubDate() == null) {
+				Log.e(TAG, "Item has no pubDate");
+				return false;
+			}
+		}
+		return true;
 	}
 
 	public void testParseRSS() {
@@ -448,7 +471,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 		}
 		Log.i(TAG, "Atom Test completed");
 	}
-	
+
 	private void parseFeed(Feed feed) {
 		try {
 			Log.i(TAG, "Testing feed with url " + feed.getDownload_url());
@@ -457,8 +480,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 			handler.parseFeed(feed);
 			assertTrue(isFeedValid(feed));
 		} catch (Exception e) {
-			Log.e(TAG,
-					"Error when trying to test " + feed.getDownload_url());
+			Log.e(TAG, "Error when trying to test " + feed.getDownload_url());
 			e.printStackTrace();
 			fail();
 		}

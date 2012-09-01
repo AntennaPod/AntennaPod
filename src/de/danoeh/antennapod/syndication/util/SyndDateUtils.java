@@ -47,6 +47,7 @@ public class SyndDateUtils {
 		SimpleDateFormat format = RFC822Formatter.get();
 		for (int i = 0; i < RFC822DATES.length; i++) {
 			try {
+				format.applyPattern(RFC822DATES[i]);
 				result = format.parse(date);
 				break;
 			} catch (ParseException e) {

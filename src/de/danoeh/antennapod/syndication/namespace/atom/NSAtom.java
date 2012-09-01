@@ -102,7 +102,12 @@ public class NSAtom extends Namespace {
 
 		if (state.getTagstack().size() >= 2) {
 			AtomText textElement = null;
-			String content = state.getContentBuf().toString();
+			String content;
+			if (state.getContentBuf() != null) {
+				content = state.getContentBuf().toString();
+			} else {
+				content = new String();
+			}
 			SyndElement topElement = state.getTagstack().peek();
 			String top = topElement.getName();
 			SyndElement secondElement = state.getSecondTag();

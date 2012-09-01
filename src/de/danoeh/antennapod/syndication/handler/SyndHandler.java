@@ -22,7 +22,6 @@ public class SyndHandler extends DefaultHandler {
 	private static final String DEFAULT_PREFIX = "";
 	protected HandlerState state;
 
-	
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);
 		if (type == TypeGetter.Type.RSS20) {
@@ -49,8 +48,8 @@ public class SyndHandler extends DefaultHandler {
 		if (!state.tagstack.empty()) {
 			if (state.getTagstack().size() >= 2) {
 				if (state.contentBuf != null) {
-				String content = new String(ch, start, length);
-				state.contentBuf.append(content);
+					String content = new String(ch, start, length);
+					state.contentBuf.append(content);
 				}
 			}
 		}
@@ -83,24 +82,29 @@ public class SyndHandler extends DefaultHandler {
 				state.defaultNamespaces.push(new NSAtom());
 			} else if (prefix.equals(NSAtom.NSTAG)) {
 				state.namespaces.put(uri, new NSAtom());
-				if (AppConfig.DEBUG) Log.d(TAG, "Recognized Atom namespace");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Recognized Atom namespace");
 			}
-		} else if (uri.equals(NSContent.NSURI) && prefix.equals(NSContent.NSTAG)) {
+		} else if (uri.equals(NSContent.NSURI)
+				&& prefix.equals(NSContent.NSTAG)) {
 			state.namespaces.put(uri, new NSContent());
-			if (AppConfig.DEBUG) Log.d(TAG, "Recognized Content namespace");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Recognized Content namespace");
 		} else if (uri.equals(NSITunes.NSURI) && prefix.equals(NSITunes.NSTAG)) {
 			state.namespaces.put(uri, new NSITunes());
-			if (AppConfig.DEBUG) Log.d(TAG, "Recognized ITunes namespace");
-		} else if (uri.equals(NSSimpleChapters.NSURI) && prefix.equals(NSSimpleChapters.NSTAG)) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Recognized ITunes namespace");
+		} else if (uri.equals(NSSimpleChapters.NSURI)
+				&& prefix.equals(NSSimpleChapters.NSTAG)) {
 			state.namespaces.put(uri, new NSSimpleChapters());
-			if (AppConfig.DEBUG) Log.d(TAG, "Recognized SimpleChapters namespace");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Recognized SimpleChapters namespace");
 		}
 	}
 
 	private Namespace getHandlingNamespace(String uri) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && uri.equals(DEFAULT_PREFIX)
-				&& !state.defaultNamespaces.empty()) {
+		if (handler == null && !state.defaultNamespaces.empty()) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;
