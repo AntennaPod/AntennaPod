@@ -24,6 +24,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://www.blacksweetstories.com/feed/podcast/",
 			"http://bitlove.org/ranzzeit/ranz/feed",
 			"http://bitlove.org/importthis/mp3/feed",
 			"http://bitlove.org/astro/youtube/feed",

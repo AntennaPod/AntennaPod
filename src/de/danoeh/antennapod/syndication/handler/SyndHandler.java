@@ -70,7 +70,9 @@ public class SyndHandler extends DefaultHandler {
 
 	@Override
 	public void endPrefixMapping(String prefix) throws SAXException {
-		// TODO remove Namespace
+		if (state.defaultNamespaces.size() > 1 && prefix.equals(DEFAULT_PREFIX)) {
+			state.defaultNamespaces.pop();
+		}
 	}
 
 	@Override
