@@ -24,6 +24,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] rssUrls = {
+			"http://bitlove.org/importthis/mp3/feed",
 			"http://bitlove.org/astro/youtube/feed",
 			"http://bitlove.org/channelcast/channelcast/feed",
 			"http://bitlove.org/cccb/chaosradio/feed",
@@ -112,7 +113,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/ckater/schoeneecken-mp3/feed",
 			"http://bitlove.org/cllassnig/bytegefluester/feed",
 			"http://bitlove.org/cllassnig/nerdtirol/feed",
-			"http://bitlove.org/cmag/podcast/feed",
 			"http://bitlove.org/cocoaheads/austria/feed",
 			"http://bitlove.org/compod/compod/feed",
 			"http://bitlove.org/consolmedia/consolpodcast/feed",
@@ -171,7 +171,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/holgi/wrint/feed",
 			"http://bitlove.org/ich-bin-radio/fir/feed",
 			"http://bitlove.org/ich-bin-radio/rsff/feed",
-			"http://bitlove.org/importthis/mp3/feed",
 			"http://bitlove.org/incerio/podcast/feed",
 			"http://bitlove.org/jagdfunk/jagdfunk/feed",
 			"http://bitlove.org/janlelis/rubykraut/feed",
@@ -450,6 +449,9 @@ public class FeedHandlerTest extends AndroidTestCase {
 			}
 			if (item.getPubDate() == null) {
 				Log.e(TAG, "Item has no pubDate");
+				if (item.getTitle() != null) {
+					Log.e(TAG, "Title of invalid item: " + item.getTitle());
+				}
 				return false;
 			}
 		}

@@ -140,6 +140,12 @@ public class NSAtom extends Namespace {
 					state.getCurrentItem().setDescription(
 							textElement.getProcessedContent());
 				}
+			} else if (top.equals(UPDATED)) {
+				if (second.equals(ENTRY)
+						&& state.getCurrentItem().getPubDate() == null) {
+					state.getCurrentItem().setPubDate(
+							SyndDateUtils.parseRFC3339Date(content));
+				}
 			} else if (top.equals(PUBLISHED)) {
 				if (second.equals(ENTRY)) {
 					state.getCurrentItem().setPubDate(
