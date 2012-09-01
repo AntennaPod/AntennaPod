@@ -77,28 +77,31 @@ public class SyndHandler extends DefaultHandler {
 	public void startPrefixMapping(String prefix, String uri)
 			throws SAXException {
 		// Find the right namespace
-		if (uri.equals(NSAtom.NSURI)) {
-			if (prefix.equals(DEFAULT_PREFIX)) {
-				state.defaultNamespaces.push(new NSAtom());
-			} else if (prefix.equals(NSAtom.NSTAG)) {
-				state.namespaces.put(uri, new NSAtom());
+		if (!state.namespaces.containsKey(uri)) {
+			if (uri.equals(NSAtom.NSURI)) {
+				if (prefix.equals(DEFAULT_PREFIX)) {
+					state.defaultNamespaces.push(new NSAtom());
+				} else if (prefix.equals(NSAtom.NSTAG)) {
+					state.namespaces.put(uri, new NSAtom());
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Recognized Atom namespace");
+				}
+			} else if (uri.equals(NSContent.NSURI)
+					&& prefix.equals(NSContent.NSTAG)) {
+				state.namespaces.put(uri, new NSContent());
 				if (AppConfig.DEBUG)
-					Log.d(TAG, "Recognized Atom namespace");
+					Log.d(TAG, "Recognized Content namespace");
+			} else if (uri.equals(NSITunes.NSURI)
+					&& prefix.equals(NSITunes.NSTAG)) {
+				state.namespaces.put(uri, new NSITunes());
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Recognized ITunes namespace");
+			} else if (uri.equals(NSSimpleChapters.NSURI)
+					&& prefix.equals(NSSimpleChapters.NSTAG)) {
+				state.namespaces.put(uri, new NSSimpleChapters());
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Recognized SimpleChapters namespace");
 			}
-		} else if (uri.equals(NSContent.NSURI)
-				&& prefix.equals(NSContent.NSTAG)) {
-			state.namespaces.put(uri, new NSContent());
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Recognized Content namespace");
-		} else if (uri.equals(NSITunes.NSURI) && prefix.equals(NSITunes.NSTAG)) {
-			state.namespaces.put(uri, new NSITunes());
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Recognized ITunes namespace");
-		} else if (uri.equals(NSSimpleChapters.NSURI)
-				&& prefix.equals(NSSimpleChapters.NSTAG)) {
-			state.namespaces.put(uri, new NSSimpleChapters());
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Recognized SimpleChapters namespace");
 		}
 	}
 
