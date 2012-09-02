@@ -14,7 +14,7 @@
     <item
         android:id="@+id/show_info_item"
         android:icon="@drawable/action_about"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/show_info_label">
     </item>
     <item
