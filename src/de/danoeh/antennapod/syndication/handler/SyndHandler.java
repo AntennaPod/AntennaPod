@@ -33,7 +33,7 @@ public class SyndHandler extends DefaultHandler {
 	public void startElement(String uri, String localName, String qName,
 			Attributes attributes) throws SAXException {
 		state.contentBuf = new StringBuffer();
-		Namespace handler = getHandlingNamespace(uri);
+		Namespace handler = getHandlingNamespace(uri, qName);
 		if (handler != null) {
 			SyndElement element = handler.handleElementStart(localName, state,
 					attributes);
@@ -58,7 +58,7 @@ public class SyndHandler extends DefaultHandler {
 	@Override
 	public void endElement(String uri, String localName, String qName)
 			throws SAXException {
-		Namespace handler = getHandlingNamespace(uri);
+		Namespace handler = getHandlingNamespace(uri, qName);
 		if (handler != null) {
 			handler.handleElementEnd(localName, state);
 			state.tagstack.pop();
@@ -107,9 +107,9 @@ public class SyndHandler extends DefaultHandler {
 		}
 	}
 
-	private Namespace getHandlingNamespace(String uri) {
+	private Namespace getHandlingNamespace(String uri, String qName) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && !state.defaultNamespaces.empty()) {
+		if (handler == null && !state.defaultNamespaces.empty() && !qName.contains(":")) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;

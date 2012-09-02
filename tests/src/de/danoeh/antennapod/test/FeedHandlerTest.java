@@ -24,6 +24,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://feeds.feedburner.com/buildanalyze",
 			"http://www.blacksweetstories.com/feed/podcast/",
 			"http://bitlove.org/ranzzeit/ranz/feed",
 			"http://bitlove.org/importthis/mp3/feed",
@@ -451,6 +452,14 @@ public class FeedHandlerTest extends AndroidTestCase {
 			Log.e(TAG, "Feed has invalid items");
 			return false;
 		}
+		if (feed.getLink() == null) {
+			Log.e(TAG, "Feed has no link");
+			return false;
+		}
+		if (feed.getLink() != null && feed.getLink().length() == 0) {
+			Log.e(TAG, "Feed has empty link");
+			return false;
+		}
 		return true;
 	}
 
@@ -478,7 +487,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 			parseFeed(feed);
 			feeds.remove(0);
 		}
-		
+
 		Log.i(TAG, "RSS Test completed");
 	}
 
