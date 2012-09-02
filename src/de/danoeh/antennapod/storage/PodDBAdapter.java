@@ -25,11 +25,10 @@ import android.util.Log;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 5;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
-	
-	// -----------	Column indices
+	// ----------- Column indices
 	// ----------- General indices
 	public static final int KEY_ID_INDEX = 0;
 	public static final int KEY_TITLE_INDEX = 1;
@@ -45,6 +44,7 @@ public class PodDBAdapter {
 	public static final int KEY_AUTHOR_INDEX = 10;
 	public static final int KEY_IMAGE_INDEX = 11;
 	public static final int KEY_TYPE_INDEX = 12;
+	public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
 	// ----------- FeedItem indices
 	public static final int KEY_CONTENT_ENCODED_INDEX = 2;
 	public static final int KEY_PUBDATE_INDEX = 3;
@@ -71,8 +71,7 @@ public class PodDBAdapter {
 	public static final int KEY_SC_START_INDEX = 2;
 	public static final int KEY_SC_FEEDITEM_INDEX = 3;
 	public static final int KEY_SC_LINK_INDEX = 4;
-	
-	
+
 	// Key-constants
 	public static final String KEY_ID = "id";
 	public static final String KEY_TITLE = "title";
@@ -106,6 +105,7 @@ public class PodDBAdapter {
 	public static final String KEY_HAS_SIMPLECHAPTERS = "has_simple_chapters";
 	public static final String KEY_TYPE = "type";
 	public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
+	public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -119,73 +119,50 @@ public class PodDBAdapter {
 	// SQL Statements for creating new tables
 	private static final String TABLE_PRIMARY_KEY = KEY_ID
 			+ " INTEGER PRIMARY KEY AUTOINCREMENT ,";
-	
+
 	private static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
-			+ TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + 
-			KEY_TITLE + " TEXT," + 
-			KEY_FILE_URL + " TEXT," + 
-			KEY_DOWNLOAD_URL + " TEXT," +
-			KEY_DOWNLOADED + " INTEGER," + 
-			KEY_LINK + " TEXT," + 
-			KEY_DESCRIPTION + " TEXT," +
-			KEY_PAYMENT_LINK + " TEXT," + 
-			KEY_LASTUPDATE + " TEXT," +
-			KEY_LANGUAGE + " TEXT," +
-			KEY_AUTHOR + " TEXT," +
-			KEY_IMAGE + " INTEGER," +
-			KEY_TYPE + " TEXT)";
-;
+			+ TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+			+ " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
+			+ KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
+			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
+			+ KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
+			+ " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
+			+ KEY_FEED_IDENTIFIER + " TEXT)";;
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
-			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + 
-			KEY_TITLE + " TEXT," + 
-			KEY_CONTENT_ENCODED + " TEXT," + 
-			KEY_PUBDATE + " INTEGER," +	
-			KEY_READ + " INTEGER," + 
-			KEY_LINK + " TEXT," + 
-			KEY_DESCRIPTION + " TEXT," + 
-			KEY_PAYMENT_LINK + " TEXT," + 
-			KEY_MEDIA + " INTEGER," + 
-			KEY_FEED + " INTEGER," + 
-			KEY_HAS_SIMPLECHAPTERS + " INTEGER," +
-			KEY_ITEM_IDENTIFIER + " TEXT)";
+			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+			+ " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
+			+ " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
+			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
+			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
+			+ KEY_HAS_SIMPLECHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER
+			+ " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
-			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + 
-			KEY_TITLE + " TEXT," + 
-			KEY_FILE_URL + " TEXT," + 
-			KEY_DOWNLOAD_URL + " TEXT,"
+			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+			+ " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
 			+ KEY_DOWNLOADED + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
-			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + 
-			KEY_DURATION + " INTEGER," + 
-			KEY_FILE_URL + " TEXT," +
-			KEY_DOWNLOAD_URL + " TEXT," + 
-			KEY_DOWNLOADED + " INTEGER," +
-			KEY_POSITION + " INTEGER," + 
-			KEY_SIZE + " INTEGER," +
-			KEY_MIME_TYPE + " TEXT)";
-			
+			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
+			+ " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
+			+ " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
+			+ " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT)";
 
 	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
-			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + 
-			KEY_FEEDFILE + " INTEGER," + 
-			KEY_FEEDFILETYPE + " INTEGER," + 
-			KEY_REASON + " INTEGER," + 
-			KEY_SUCCESSFUL + " INTEGER," + 
-			KEY_COMPLETION_DATE + " INTEGER)";
+			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
+			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
+			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
+			+ " INTEGER)";
 
 	private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
 			+ TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
 			+ KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
 	private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
-			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + 
-			KEY_TITLE + " TEXT," + 
-			KEY_START + " INTEGER," + 
-			KEY_FEEDITEM + " INTEGER," +
-			KEY_LINK + " TEXT)";
+			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
+			+ " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
+			+ KEY_LINK + " TEXT)";
 
 	/**
 	 * Used for storing download status entries to determine the type of the
@@ -206,7 +183,8 @@ public class PodDBAdapter {
 
 	public PodDBAdapter open() {
 		if (db == null || !db.isOpen() || db.isReadOnly()) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Opening DB");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Opening DB");
 			try {
 				db = helper.getWritableDatabase();
 			} catch (SQLException ex) {
@@ -218,7 +196,8 @@ public class PodDBAdapter {
 	}
 
 	public void close() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Closing DB");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Closing DB");
 		db.close();
 	}
 
@@ -241,18 +220,21 @@ public class PodDBAdapter {
 			}
 			values.put(KEY_IMAGE, feed.getImage().getId());
 		}
-		
+
 		values.put(KEY_FILE_URL, feed.getFile_url());
 		values.put(KEY_DOWNLOAD_URL, feed.getDownload_url());
 		values.put(KEY_DOWNLOADED, feed.isDownloaded());
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
 		values.put(KEY_TYPE, feed.getType());
+		values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
 		if (feed.getId() == 0) {
 			// Create new entry
-			if (AppConfig.DEBUG) Log.d(this.toString(), "Inserting new Feed into db");
+			if (AppConfig.DEBUG)
+				Log.d(this.toString(), "Inserting new Feed into db");
 			feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
 		} else {
-			if (AppConfig.DEBUG) Log.d(this.toString(), "Updating existing Feed in db");
+			if (AppConfig.DEBUG)
+				Log.d(this.toString(), "Updating existing Feed in db");
 			db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
 					new String[] { Long.toString(feed.getId()) });
 		}
@@ -458,7 +440,6 @@ public class PodDBAdapter {
 				new String[] { String.valueOf(remove.getId()) });
 	}
 
-
 	/**
 	 * Get all Feeds from the Feed Table.
 	 * 
@@ -518,10 +499,9 @@ public class PodDBAdapter {
 
 	public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
 		open();
-		Cursor c = db
-				.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_FEEDITEM + "=?",
-						new String[] { String.valueOf(item.getId()) }, null,
-						null, null);
+		Cursor c = db.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_FEEDITEM
+				+ "=?", new String[] { String.valueOf(item.getId()) }, null,
+				null, null);
 		return c;
 	}
 
@@ -639,16 +619,20 @@ public class PodDBAdapter {
 			Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
 					+ newVersion + ".");
 			if (oldVersion <= 1) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN " + 
-						KEY_TYPE + " TEXT");
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
+						+ KEY_TYPE + " TEXT");
 			}
 			if (oldVersion <= 2) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS + " ADD COLUMN " + 
-						KEY_LINK + " TEXT");
+				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
+						+ " ADD COLUMN " + KEY_LINK + " TEXT");
 			}
 			if (oldVersion <= 3) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS + " ADD COLUMN " + 
-						KEY_ITEM_IDENTIFIER + " TEXT");
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
+						+ " ADD COLUMN " + KEY_ITEM_IDENTIFIER + " TEXT");
+			}
+			if (oldVersion <= 4) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
+						+ KEY_FEED_IDENTIFIER + " TEXT");
 			}
 		}
 	}

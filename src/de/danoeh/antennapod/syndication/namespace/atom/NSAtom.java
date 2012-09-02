@@ -119,7 +119,9 @@ public class NSAtom extends Namespace {
 			}
 
 			if (top.equals(ID)) {
-				if (second.equals(ENTRY)) {
+				if (second.equals(FEED)) {
+					state.getFeed().setFeedIdentifier(content);
+				} else if (second.equals(ENTRY)) {
 					state.getCurrentItem().setItemIdentifier(content);
 				}
 			} else if (top.equals(TITLE)) {

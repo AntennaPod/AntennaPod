@@ -460,6 +460,14 @@ public class FeedHandlerTest extends AndroidTestCase {
 			Log.e(TAG, "Feed has empty link");
 			return false;
 		}
+		if (feed.getIdentifyingValue() == null) {
+			Log.e(TAG, "Feed has no identifying value");
+			return false;
+		}
+		if (feed.getIdentifyingValue() != null
+				&& feed.getIdentifyingValue().length() == 0) {
+			Log.e(TAG, "Feed has empty identifying value");
+		}
 		return true;
 	}
 

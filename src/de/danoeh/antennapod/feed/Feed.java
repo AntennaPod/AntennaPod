@@ -19,6 +19,8 @@ public class Feed extends FeedFile {
 	public static final String TYPE_ATOM1 = "atom";
 
 	private String title;
+	/** Contains 'id'-element in Atom feed. */
+	private String feedIdentifier;
 	/** Link to the website. */
 	private String link;
 	private String description;
@@ -116,6 +118,22 @@ public class Feed extends FeedFile {
 		return count;
 	}
 
+	/**
+	 * Returns the value that uniquely identifies this Feed. If the
+	 * feedIdentifier attribute is not null, it will be returned. Else it will
+	 * try to return the link. If the link is not given, it will use the title
+	 * of the entry.
+	 * */
+	public String getIdentifyingValue() {
+		if (feedIdentifier != null) {
+			return feedIdentifier;
+		} else if (link != null) {
+			return link;
+		} else {
+			return title;
+		}
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -170,6 +188,14 @@ public class Feed extends FeedFile {
 
 	public void setLastUpdate(Date lastUpdate) {
 		this.lastUpdate = lastUpdate;
+	}
+
+	public String getFeedIdentifier() {
+		return feedIdentifier;
+	}
+
+	public void setFeedIdentifier(String feedIdentifier) {
+		this.feedIdentifier = feedIdentifier;
 	}
 
 	public String getPaymentLink() {

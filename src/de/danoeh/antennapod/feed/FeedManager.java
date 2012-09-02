@@ -502,7 +502,8 @@ public class FeedManager {
 	 */
 	public Feed updateFeed(Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
-		final Feed savedFeed = searchFeedByLink(newFeed.getLink());
+		final Feed savedFeed = searchFeedByIdentifyingValue(newFeed
+				.getIdentifyingValue());
 		if (savedFeed == null) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
@@ -544,9 +545,9 @@ public class FeedManager {
 	}
 
 	/** Get a Feed by its link */
-	private Feed searchFeedByLink(String link) {
+	private Feed searchFeedByIdentifyingValue(String identifier) {
 		for (Feed feed : feeds) {
-			if (feed.getLink().equals(link)) {
+			if (feed.getIdentifyingValue().equals(identifier)) {
 				return feed;
 			}
 		}
@@ -804,6 +805,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_LANGUAGE_INDEX));
 				feed.setType(feedlistCursor
 						.getString(PodDBAdapter.KEY_TYPE_INDEX));
+				feed.setFeedIdentifier(feedlistCursor
+						.getString(PodDBAdapter.KEY_FEED_IDENTIFIER_INDEX));
 				long imageIndex = feedlistCursor
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {
