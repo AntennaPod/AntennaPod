@@ -67,9 +67,6 @@ public class DownloadService extends Service {
 	public static final String ACTION_CANCEL_DOWNLOAD = "action.de.danoeh.antennapod.service.cancelDownload";
 	public static final String ACTION_CANCEL_ALL_DOWNLOADS = "action.de.danoeh.antennapod.service.cancelAllDownloads";
 
-	/** Is used for sending the delete intent for the report notification */
-	private static final String ACTION_REPORT_DELETED = "action.de.danoeh.antennapod.service.reportDeleted";
-
 	/** Extra for ACTION_CANCEL_DOWNLOAD */
 	public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
 
@@ -150,7 +147,6 @@ public class DownloadService extends Service {
 		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_ALL_DOWNLOADS);
 		cancelDownloadReceiverFilter.addAction(ACTION_CANCEL_DOWNLOAD);
 		registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
-		registerReceiver(reportDeleted, new IntentFilter(ACTION_REPORT_DELETED));
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
 			@Override
@@ -411,36 +407,41 @@ public class DownloadService extends Service {
 		sendBroadcast(intent);
 	}
 
-	private BroadcastReceiver reportDeleted = new BroadcastReceiver() {
-
-		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (intent.getAction().equals(ACTION_REPORT_DELETED)) {
-				completedDownloads.clear();
-			}
-		}
-	};
-
 	/**
 	 * Creates a notification at the end of the service lifecycle to notify the
 	 * user about the number of completed downloads. A report will only be
-	 * created if the number of feeds is > 1 or if at least one media file was
-	 * downloaded.
+	 * created if the number of successfully downloaded feeds is bigger than 1
+	 * or if there is at least one failed download or if there is at least
+	 * one downloaded media file.
 	 */
 	private void updateReport() {
 		// check if report should be created
-		if (!completedDownloads.isEmpty()) {
+		boolean createReport = false;
+		int successfulFeedDownloads = 0;
+		int successfulDownloads = 0;
+		int failedDownloads = 0;
+
+		for (DownloadStatus status : completedDownloads) {
+			if (status.isSuccessful()) {
+				if (status.getFeedFile().getClass() == Feed.class) {
+					successfulFeedDownloads++;
+				} else if (status.getFeedFile().getClass() == FeedMedia.class) {
+					createReport = true;
+				}
+				successfulDownloads++;
+			} else {
+				createReport = true;
+				failedDownloads++;
+			}
+		}
+
+		if (successfulFeedDownloads > 1) {
+			createReport = true;
+		}
+
+		if (createReport) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Creating report");
-			int successfulDownloads = 0;
-			int failedDownloads = 0;
-			for (DownloadStatus status : completedDownloads) {
-				if (status.isSuccessful()) {
-					successfulDownloads++;
-				} else {
-					failedDownloads++;
-				}
-			}
 			// create notification object
 			Notification notification = new NotificationCompat.Builder(this)
 					.setTicker(
@@ -457,19 +458,14 @@ public class DownloadService extends Service {
 					.setContentIntent(
 							PendingIntent.getActivity(this, 0, new Intent(this,
 									MainActivity.class), 0))
-					.setAutoCancel(true)
-					.setDeleteIntent(
-							PendingIntent.getBroadcast(this, 0, new Intent(
-									ACTION_REPORT_DELETED),
-									PendingIntent.FLAG_UPDATE_CURRENT))
-					.getNotification();
+					.setAutoCancel(true).getNotification();
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(REPORT_ID, notification);
-
 		} else {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "No report is created");
 		}
+		completedDownloads.clear();
 	}
 
 	/** Check if there's something else to download, otherwise stop */
