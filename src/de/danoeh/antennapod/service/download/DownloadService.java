@@ -411,8 +411,8 @@ public class DownloadService extends Service {
 	 * Creates a notification at the end of the service lifecycle to notify the
 	 * user about the number of completed downloads. A report will only be
 	 * created if the number of successfully downloaded feeds is bigger than 1
-	 * or if there is at least one failed download or if there is at least
-	 * one downloaded media file.
+	 * or if there is at least one failed download which is not an image or if
+	 * there is at least one downloaded media file.
 	 */
 	private void updateReport() {
 		// check if report should be created
@@ -430,7 +430,9 @@ public class DownloadService extends Service {
 				}
 				successfulDownloads++;
 			} else {
-				createReport = true;
+				if (status.getFeedFile().getClass() != FeedImage.class) {
+					createReport = true;
+				}
 				failedDownloads++;
 			}
 		}
