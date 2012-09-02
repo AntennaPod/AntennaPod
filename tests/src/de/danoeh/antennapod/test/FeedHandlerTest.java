@@ -399,7 +399,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private void downloadFeed(Feed feed) throws IOException {
-		int num_retries = 2;
+		int num_retries = 5;
 		boolean successful = false;
 
 		for (int i = 0; i < num_retries; i++) {
@@ -473,9 +473,12 @@ public class FeedHandlerTest extends AndroidTestCase {
 
 	public void testParseFeeds() {
 		Log.i(TAG, "Testing RSS feeds");
-		for (Feed feed : feeds) {
+		while (!feeds.isEmpty()) {
+			Feed feed = feeds.get(0);
 			parseFeed(feed);
+			feeds.remove(0);
 		}
+		
 		Log.i(TAG, "RSS Test completed");
 	}
 
