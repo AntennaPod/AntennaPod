@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.9.4.3
+---------------
+* Fixed several bugs in the feed parser
+* Improved behavior of download reports
+
 Version 0.9.4.2
 ---------------
 * Fixed bug in the OPML importer
