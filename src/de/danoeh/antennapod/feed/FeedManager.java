@@ -167,9 +167,9 @@ public class FeedManager {
 							&& feed.getImage().getFile_url() != null) {
 						File imageFile = new File(feed.getImage().getFile_url());
 						imageFile.delete();
+					} else if (requester.isDownloadingFile(feed.getImage())) {
+						requester.cancelDownload(context, feed.getImage());
 					}
-				} else if (requester.isDownloadingFile(feed.getImage())) {
-					requester.cancelDownload(context, feed.getImage());
 				}
 				// delete stored media files and mark them as read
 				for (FeedItem item : feed.getItems()) {
