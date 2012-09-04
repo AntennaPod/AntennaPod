@@ -537,6 +537,8 @@ public class PlaybackService extends Service {
 					Log.d(TAG,
 							"No more episodes available to play; Reloading current episode");
 				startWhenPrepared = false;
+				stopForeground(true);
+				stopWidgetUpdater();
 			}
 			int notificationCode = 0;
 			if (media.getMime_type().startsWith("audio")) {
@@ -549,12 +551,6 @@ public class PlaybackService extends Service {
 			refreshRemoteControlClientState();
 			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
 					notificationCode);
-			/*
-			 * } else { if (AppConfig.DEBUG) Log.d(TAG, "Stopping playback");
-			 * stopWidgetUpdater(); setStatus(PlayerStatus.STOPPED);
-			 * stopForeground(true); }
-			 */
-
 		}
 	};
 
