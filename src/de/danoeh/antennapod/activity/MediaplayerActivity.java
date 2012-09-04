@@ -90,13 +90,25 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected OnClickListener playbuttonListener = new OnClickListener() {
 		@Override
 		public void onClick(View v) {
-			if (status == PlayerStatus.PLAYING) {
-				playbackService.pause(true);
-			} else if (status == PlayerStatus.PAUSED
-					|| status == PlayerStatus.PREPARED) {
-				playbackService.play();
+			if (playbackService != null) {
+				switch (status) {
+				case PLAYING:
+					playbackService.pause(true);
+					break;
+				case PAUSED:
+				case PREPARED:
+					playbackService.play();
+					break;
+				case PREPARING:
+					playbackService.setStartWhenPrepared(!playbackService
+							.isStartWhenPrepared());
+				}
+			} else {
+				Log.w(TAG,
+						"Play/Pause button was pressed, but playbackservice was null!");
 			}
 		}
+
 	};
 	protected ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
@@ -410,6 +422,13 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		case PREPARING:
 			postStatusMsg(R.string.player_preparing_msg);
 			loadMediaInfo();
+			if (playbackService != null) {
+				if (playbackService.isStartWhenPrepared()) {
+					butPlay.setImageResource(R.drawable.av_pause);
+				} else {
+					butPlay.setImageResource(R.drawable.av_play);
+				}
+			}
 			break;
 		case STOPPED:
 			postStatusMsg(R.string.player_stopped_msg);

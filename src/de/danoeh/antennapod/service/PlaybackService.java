@@ -658,6 +658,11 @@ public class PlaybackService extends Service {
 		updateWidget();
 		refreshRemoteControlClientState();
 	}
+	
+	/** Send ACTION_PLAYER_STATUS_CHANGED without changing the status attribute. */
+	private void postStatusUpdateIntent() {
+		setStatus(status);
+	}
 
 	private void sendNotificationBroadcast(int type, int code) {
 		Intent intent = new Intent(ACTION_PLAYER_NOTIFICATION);
@@ -991,5 +996,16 @@ public class PlaybackService extends Service {
 	public MediaPlayer getPlayer() {
 		return player;
 	}
+
+	public boolean isStartWhenPrepared() {
+		return startWhenPrepared;
+	}
+
+	public void setStartWhenPrepared(boolean startWhenPrepared) {
+		this.startWhenPrepared = startWhenPrepared;
+		postStatusUpdateIntent();
+	}
+	
+	
 
 }
