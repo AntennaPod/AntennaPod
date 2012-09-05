@@ -888,7 +888,7 @@ public class PlaybackService extends Service {
 	/** Notifies the player widget in the specified intervall */
 	class WidgetUpdateWorker extends AsyncTask<Void, Void, Void> {
 		private static final String TAG = "WidgetUpdateWorker";
-		private static final int NOTIFICATION_INTERVALL = 2000;
+		private static final int NOTIFICATION_INTERVALL = 1000;
 
 		@Override
 		protected void onProgressUpdate(Void... values) {
