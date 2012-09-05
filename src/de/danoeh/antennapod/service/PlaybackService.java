@@ -233,6 +233,7 @@ public class PlaybackService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Gained audio focus");
 				if (pausedBecauseOfTransientAudiofocusLoss) {
+					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, 0);
 					play();
 				}
 				break;
