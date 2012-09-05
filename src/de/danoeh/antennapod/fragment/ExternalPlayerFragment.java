@@ -21,7 +21,6 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.PlayerWidget;
@@ -47,6 +46,10 @@ public class ExternalPlayerFragment extends SherlockFragment {
 	private BroadcastReceiver playbackServiceNotificationReceiver;
 
 	private boolean mediaInfoLoaded = false;
+
+	public ExternalPlayerFragment() {
+		super();
+	}
 
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -85,7 +88,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 					PlayerStatus status = playbackService.getStatus();
 					if (status == PlayerStatus.PLAYING) {
 						playbackService.pause(true);
-					} else if (status == PlayerStatus.PAUSED){
+					} else if (status == PlayerStatus.PAUSED) {
 						playbackService.play();
 					}
 				}
@@ -217,9 +220,12 @@ public class ExternalPlayerFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Refreshing fragment state");
 		if (playbackService == null) {
-			getActivity().bindService(
-					new Intent(getActivity(), PlaybackService.class),
-					mConnection, 0);
+			fragmentLayout.setVisibility(View.GONE);
+			if (PlaybackService.isRunning) {
+				getActivity().bindService(
+						new Intent(getActivity(), PlaybackService.class),
+						mConnection, 0);
+			}
 		} else {
 			PlayerStatus status = playbackService.getStatus();
 			if ((status == PlayerStatus.PAUSED || status == PlayerStatus.PLAYING)) {

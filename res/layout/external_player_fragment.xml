@@ -1,55 +1,68 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/fragmentLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/ics_gray" >
+    android:orientation="vertical" >
 
-    <ImageButton
-        android:id="@+id/butPlay"
-        android:background="@drawable/borderless_button"
-        android:layout_width="50dp"
-        android:layout_height="50dp"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="#AAAAAA" />
 
-    <RelativeLayout
-        android:id="@+id/layoutInfo"
-        android:layout_width="0dp"
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#D2D2D2" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/butPlay"
-        android:background="@drawable/borderless_button" >
+        android:background="@color/actionbar_gray" >
 
-        <ImageView
-            android:id="@+id/imgvCover"
-            android:layout_width="55dp"
-            android:layout_height="55dp"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_margin="8dp"
-            android:adjustViewBounds="true"
-            android:cropToPadding="true"
-            android:scaleType="fitXY" />
-
-        <TextView
-            android:id="@+id/txtvTitle"
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:id="@+id/layoutInfo"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/imgvCover"
-            android:textStyle="bold" />
+            android:layout_weight="1"
+            android:background="@drawable/borderless_button" >
 
-        <TextView
-            android:id="@+id/txtvPosition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_toRightOf="@id/imgvCover" />
-    </RelativeLayout>
+            <ImageView
+                android:id="@+id/imgvCover"
+                android:layout_width="@dimen/external_player_height"
+                android:layout_height="@dimen/external_player_height"
+                android:layout_alignParentLeft="true"
+                android:adjustViewBounds="true"
+                android:cropToPadding="true"
+                android:scaleType="fitXY" />
 
-</RelativeLayout>
+            <TextView
+                android:id="@+id/txtvTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_toRightOf="@id/imgvCover"
+                android:maxLines="1"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/txtvPosition"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvTitle"
+                android:layout_margin="8dp"
+                android:layout_toRightOf="@id/imgvCover"
+                android:textSize="14dp" />
+        </RelativeLayout>
+
+        <ImageButton
+            android:id="@+id/butPlay"
+            android:layout_width="@dimen/external_player_height"
+            android:layout_height="@dimen/external_player_height"
+            android:background="@drawable/borderless_button" />
+    </LinearLayout>
+
+</LinearLayout>

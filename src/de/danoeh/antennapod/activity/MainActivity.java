@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
@@ -20,6 +21,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.fragment.UnreadItemlistFragment;
@@ -38,6 +40,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	private ViewPager viewpager;
 	private MainPagerAdapter pagerAdapter;
 	private TabPageIndicator tabs;
+	private ExternalPlayerFragment externalPlayerFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +56,12 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		viewpager.setAdapter(pagerAdapter);
 		tabs.setViewPager(viewpager);
+
+		FragmentTransaction transaction = getSupportFragmentManager()
+				.beginTransaction();
+		externalPlayerFragment = new ExternalPlayerFragment();
+		transaction.replace(R.id.playerFragment, externalPlayerFragment);
+		transaction.commit();
 	}
 
 	@Override
