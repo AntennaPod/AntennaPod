@@ -118,6 +118,9 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/player_widget_info" />
+            <intent-filter>
+                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
+            </intent-filter>
         </receiver>
         <receiver android:name=".receiver.FeedUpdateReceiver" >
             <intent-filter>

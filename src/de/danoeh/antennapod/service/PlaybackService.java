@@ -604,8 +604,8 @@ public class PlaybackService extends Service {
 				positionSaver.cancel(true);
 			}
 			saveCurrentPosition();
-			stopWidgetUpdater();
 			setStatus(PlayerStatus.PAUSED);
+			stopWidgetUpdater();
 			stopForeground(true);
 		}
 	}
@@ -658,7 +658,7 @@ public class PlaybackService extends Service {
 		updateWidget();
 		refreshRemoteControlClientState();
 	}
-	
+
 	/** Send ACTION_PLAYER_STATUS_CHANGED without changing the status attribute. */
 	private void postStatusUpdateIntent() {
 		setStatus(status);
@@ -728,6 +728,7 @@ public class PlaybackService extends Service {
 		if (widgetUpdater != null) {
 			widgetUpdater.cancel(true);
 		}
+		sendBroadcast(new Intent(PlayerWidget.STOP_WIDGET_UPDATE));
 	}
 
 	@SuppressLint("NewApi")
@@ -1005,7 +1006,5 @@ public class PlaybackService extends Service {
 		this.startWhenPrepared = startWhenPrepared;
 		postStatusUpdateIntent();
 	}
-	
-	
 
 }
