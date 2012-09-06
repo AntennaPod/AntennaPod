@@ -7,7 +7,14 @@
     <FrameLayout
         android:id="@+id/feeditemlistFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" >
+        android:layout_height="0dp"
+        android:layout_weight="1" >
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/playerFragment"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
     </FrameLayout>
 
 </LinearLayout>

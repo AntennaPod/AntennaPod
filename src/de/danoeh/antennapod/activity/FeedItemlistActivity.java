@@ -20,6 +20,7 @@ import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.util.StorageUtils;
@@ -34,6 +35,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 	/** The feed which the activity displays */
 	private Feed feed;
 	private ItemlistFragment filf;
+	private ExternalPlayerFragment externalPlayerFragment;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -58,6 +60,9 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 		filf = ItemlistFragment.newInstance(feed.getId());
 		fT.add(R.id.feeditemlistFragment, filf);
+
+		externalPlayerFragment = new ExternalPlayerFragment();
+		fT.replace(R.id.playerFragment, externalPlayerFragment);
 		fT.commit();
 
 	}
