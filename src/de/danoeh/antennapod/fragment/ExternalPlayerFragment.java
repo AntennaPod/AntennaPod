@@ -1,13 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.os.Bundle;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,10 +16,9 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.service.PlayerStatus;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.PlaybackController;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -42,10 +34,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 	private TextView txtvPosition;
 	private ImageButton butPlay;
 
-	private PlaybackService playbackService;
-	private BroadcastReceiver playbackServiceNotificationReceiver;
-
-	private boolean mediaInfoLoaded = false;
+	private PlaybackController controller;
 
 	public ExternalPlayerFragment() {
 		super();
@@ -70,138 +59,126 @@ public class ExternalPlayerFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "layoutInfo was clicked");
 
-				if (playbackService != null
-						&& playbackService.getMedia() != null) {
+				if (controller.getMedia() != null) {
 					startActivity(PlaybackService.getPlayerActivityIntent(
-							getActivity(), playbackService.getMedia()));
-				}
-			}
-		});
-
-		butPlay.setOnClickListener(new OnClickListener() {
-
-			@Override
-			public void onClick(View v) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "butPlay was clicked");
-				if (playbackService != null) {
-					PlayerStatus status = playbackService.getStatus();
-					if (status == PlayerStatus.PLAYING) {
-						playbackService.pause(true);
-					} else if (status == PlayerStatus.PAUSED) {
-						playbackService.play();
-					}
+							getActivity(), controller.getMedia()));
 				}
 			}
 		});
 		return root;
 	}
 
-	private void setupReceiver() {
-		playbackServiceNotificationReceiver = new BroadcastReceiver() {
-
-			@Override
-			public void onReceive(Context context, Intent intent) {
-				if (intent.getAction() != null) {
-					if (intent.getAction().equals(
-							PlaybackService.ACTION_PLAYER_STATUS_CHANGED)) {
-						refreshFragmentState();
-					} else if (intent.getAction().equals(
-							PlayerWidget.FORCE_WIDGET_UPDATE)) {
-						refreshFragmentState();
-					} else if (intent.getAction().equals(
-							PlaybackService.ACTION_PLAYER_NOTIFICATION)) {
-						int type = intent.getIntExtra(
-								PlaybackService.EXTRA_NOTIFICATION_TYPE, -1);
-						if (type == PlaybackService.NOTIFICATION_TYPE_RELOAD) {
-							mediaInfoLoaded = false;
-							refreshFragmentState();
-						}
-					}
-				}
-			}
-		};
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(PlaybackService.ACTION_PLAYER_STATUS_CHANGED);
-		filter.addAction(PlayerWidget.FORCE_WIDGET_UPDATE);
-		filter.addAction(PlaybackService.ACTION_PLAYER_NOTIFICATION);
-		getActivity().registerReceiver(playbackServiceNotificationReceiver,
-				filter);
-	}
-
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		setupReceiver();
-		refreshFragmentState();
+		controller = new PlaybackController(getActivity()) {
+
+			@Override
+			public void setupGUI() {
+			}
+
+			@Override
+			public void onPositionObserverUpdate() {
+				int duration = controller.getDuration();
+				int position = controller.getPosition();
+				if (duration != PlaybackController.INVALID_TIME
+						&& position != PlaybackController.INVALID_TIME) {
+					txtvPosition.setText(getPositionString(position, duration));
+				}
+			}
+
+			@Override
+			public void onReloadNotification(int code) {
+			}
+
+			@Override
+			public void onBufferStart() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onBufferEnd() {
+				// TODO Auto-generated method stub
+
+			}
+
+			@Override
+			public void onBufferUpdate(float progress) {
+			}
+
+			@Override
+			public void onSleepTimerUpdate() {
+			}
+
+			@Override
+			public void handleError(int code) {
+			}
+
+			@Override
+			public ImageButton getPlayButton() {
+				return butPlay;
+			}
+
+			@Override
+			public void postStatusMsg(int msg) {
+			}
+
+			@Override
+			public void clearStatusMsg() {
+			}
+
+			@Override
+			public void loadMediaInfo() {
+				ExternalPlayerFragment.this.loadMediaInfo();
+			}
+
+			@Override
+			public void onAwaitingVideoSurface() {
+			}
+
+			@Override
+			public void onServiceQueried() {
+			}
+		};
+		butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+		controller.init();
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unbindService(mConnection);
-		try {
-			getActivity().unregisterReceiver(
-					playbackServiceNotificationReceiver);
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		}
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Fragment is about to be destroyed");
+		if (controller != null) {
+			controller.release();
+		}
 	}
 
-	private void refreshPlayButtonAppearance() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Refreshing playbutton appearance");
-		if (playbackService != null) {
-			if (!PlaybackService.isPlayingVideo()) {
-				PlayerStatus status = playbackService.getStatus();
-				switch (status) {
-				case PLAYING:
-					butPlay.setImageResource(R.drawable.av_pause);
-					butPlay.setVisibility(View.VISIBLE);
-					break;
-				case PAUSED:
-					butPlay.setImageResource(R.drawable.av_play);
-					butPlay.setVisibility(View.VISIBLE);
-					break;
-				default:
-					butPlay.setVisibility(View.GONE);
-				}
-			} else {
-				butPlay.setVisibility(View.GONE);
-			}
-		} else {
-			Log.w(TAG,
-					"refreshPlayButtonAppearance was called while playbackService was null!");
+	@Override
+	public void onPause() {
+		super.onPause();
+		if (controller != null) {
+			controller.pause();
 		}
 	}
 
 	private void loadMediaInfo() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
-		if (playbackService != null) {
-			FeedMedia media = playbackService.getMedia();
+		if (controller.serviceAvailable()) {
+			FeedMedia media = controller.getMedia();
 			if (media != null) {
-				if (!mediaInfoLoaded) {
-					txtvTitle.setText(media.getItem().getTitle());
-					FeedImageLoader.getInstance().loadThumbnailBitmap(
-							media.getItem().getFeed().getImage(), imgvCover);
-					mediaInfoLoaded = true;
-				}
-				PlayerStatus status = playbackService.getStatus();
-				refreshPlayButtonAppearance();
-				if (status == PlayerStatus.PLAYING
-						|| status == PlayerStatus.PAUSED) {
+				txtvTitle.setText(media.getItem().getTitle());
+				FeedImageLoader.getInstance().loadThumbnailBitmap(
+						media.getItem().getFeed().getImage(),
+						imgvCover,
+						(int) getActivity().getResources().getDimension(
+								R.dimen.external_player_height));
 
-					txtvPosition.setText(Converter
-							.getDurationStringLong(playbackService.getPlayer()
-									.getCurrentPosition())
-							+ " / "
-							+ Converter.getDurationStringLong(playbackService
-									.getPlayer().getDuration()));
-				}
-
+				txtvPosition.setText(getPositionString(media.getPosition(),
+						media.getDuration()));
+				fragmentLayout.setVisibility(View.VISIBLE);
 			} else {
 				Log.w(TAG,
 						"loadMediaInfo was called while the media object of playbackService was null!");
@@ -212,49 +189,8 @@ public class ExternalPlayerFragment extends SherlockFragment {
 		}
 	}
 
-	/**
-	 * Creates a connection to the playbackService if necessary and refreshes
-	 * the fragment's state.
-	 */
-	private void refreshFragmentState() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Refreshing fragment state");
-		if (playbackService == null) {
-			fragmentLayout.setVisibility(View.GONE);
-			if (PlaybackService.isRunning) {
-				getActivity().bindService(
-						new Intent(getActivity(), PlaybackService.class),
-						mConnection, 0);
-			}
-		} else {
-			PlayerStatus status = playbackService.getStatus();
-			if ((status == PlayerStatus.PAUSED || status == PlayerStatus.PLAYING)) {
-				if (fragmentLayout.getVisibility() != View.VISIBLE) {
-					fragmentLayout.setVisibility(View.VISIBLE);
-				}
-				loadMediaInfo();
-			} else if (fragmentLayout.getVisibility() != View.GONE) {
-				fragmentLayout.setVisibility(View.GONE);
-			}
-		}
-
+	private String getPositionString(int position, int duration) {
+		return Converter.getDurationStringLong(position) + " / "
+				+ Converter.getDurationStringLong(duration);
 	}
-
-	protected ServiceConnection mConnection = new ServiceConnection() {
-		public void onServiceConnected(ComponentName className, IBinder service) {
-			playbackService = ((PlaybackService.LocalBinder) service)
-					.getService();
-			refreshFragmentState();
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Connection to Service established");
-		}
-
-		@Override
-		public void onServiceDisconnected(ComponentName name) {
-			playbackService = null;
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Disconnected from Service");
-		}
-	};
-
 }
