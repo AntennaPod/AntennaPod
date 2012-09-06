@@ -18,7 +18,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 
-
 /** Activity for playing audio files. */
 public class VideoplayerActivity extends MediaplayerActivity implements
 		SurfaceHolder.Callback {
@@ -44,19 +43,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		if (videoControlsToggler != null) {
 			videoControlsToggler.cancel(true);
 		}
-		if (PlaybackService.isRunning && playbackService != null
-				&& PlaybackService.isPlayingVideo()) {
-			playbackService.pause(true);
-		}
-	}
-
-	@Override
-	protected void onStop() {
-		super.onStop();
-		if (PlaybackService.isRunning && playbackService != null
-				&& PlaybackService.isPlayingVideo()) {
-			playbackService.stop();
-		}
 	}
 
 	@Override
@@ -66,7 +52,6 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		videoview = (VideoView) findViewById(R.id.videoview);
 		progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
 		videoview.getHolder().addCallback(this);
-		videoview.setOnClickListener(playbuttonListener);
 		videoview.setOnTouchListener(onVideoviewTouched);
 
 		setupVideoControlsToggler();
@@ -80,7 +65,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
 						"Videosurface already created, setting videosurface now");
-			playbackService.setVideoSurface(videoview.getHolder());
+			controller.setVideoSurface(videoview.getHolder());
 		}
 	}
 
@@ -194,9 +179,9 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Videoview holder created");
 		videoSurfaceCreated = true;
-		if (status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
-			if (playbackService != null) {
-				playbackService.setVideoSurface(holder);
+		if (controller.getStatus() == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+			if (controller.serviceAvailable()) {
+				controller.setVideoSurface(holder);
 			} else {
 				Log.e(TAG,
 						"Could'nt attach surface to mediaplayer - reference to service was null");

@@ -17,6 +17,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SCListAdapter;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
@@ -58,6 +59,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		tabs = (TabPageIndicator) findViewById(R.id.tabs);
 
+		FeedMedia media = controller.getMedia();
+
 		int tabcount = 2;
 		if (media != null && media.getItem().getSimpleChapters() != null) {
 			tabcount = 3;
@@ -77,13 +80,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	@Override
 	protected void loadMediaInfo() {
 		super.loadMediaInfo();
-		if (!mediaInfoLoaded && media != null) {
+		if (controller.getMedia() != null) {
 			pagerAdapter.notifyDataSetChanged();
-
 		}
 	}
 
-	public static class MediaPlayerPagerAdapter extends
+	public class MediaPlayerPagerAdapter extends
 			FragmentStatePagerAdapter {
 		private int numItems;
 		private AudioplayerActivity activity;
@@ -103,15 +105,16 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 		@Override
 		public Fragment getItem(int position) {
-			if (activity.media != null) {
+			FeedMedia media = controller.getMedia();
+			if (media != null) {
 				switch (position) {
 				case POS_COVER:
 					activity.coverFragment = CoverFragment
-							.newInstance(activity.media.getItem());
+							.newInstance(media.getItem());
 					return activity.coverFragment;
 				case POS_DESCR:
 					activity.descriptionFragment = ItemDescriptionFragment
-							.newInstance(activity.media.getItem());
+							.newInstance(media.getItem());
 					return activity.descriptionFragment;
 				case POS_CHAPTERS:
 					sCChapterFragment = new SherlockListFragment() {
@@ -122,15 +125,13 @@ public class AudioplayerActivity extends MediaplayerActivity {
 							super.onListItemClick(l, v, position, id);
 							SimpleChapter chapter = (SimpleChapter) this
 									.getListAdapter().getItem(position);
-							if (activity.playbackService != null) {
-								activity.playbackService.seekToChapter(chapter);
-							}
+							controller.seekToChapter(chapter);
 						}
 
 					};
 
 					sCChapterFragment.setListAdapter(new SCListAdapter(
-							activity, 0, activity.media.getItem()
+							activity, 0, media.getItem()
 									.getSimpleChapters()));
 
 					return sCChapterFragment;
