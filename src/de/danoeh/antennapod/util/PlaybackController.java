@@ -415,14 +415,16 @@ public abstract class PlaybackController {
 	/**
 	 * Should be used by classes which implement the OnSeekBarChanged interface.
 	 */
-	public void onSeekBarProgressChanged(SeekBar seekBar, int progress,
-			boolean fromUser, float prog, int duration, TextView txtvPosition) {
-		if (fromUser && PlaybackService.isRunning) {
-			prog = progress / ((float) seekBar.getMax());
-			duration = playbackService.getPlayer().getDuration();
+	public float onSeekBarProgressChanged(SeekBar seekBar, int progress,
+			boolean fromUser, TextView txtvPosition) {
+		if (fromUser && playbackService != null) {
+			float prog = progress / ((float) seekBar.getMax());
+			int duration = playbackService.getPlayer().getDuration();
 			txtvPosition.setText(Converter
 					.getDurationStringLong((int) (prog * duration)));
+			return prog;
 		}
+		return 0;
 
 	}
 
@@ -440,9 +442,9 @@ public abstract class PlaybackController {
 	/**
 	 * Should be used by classes which implement the OnSeekBarChanged interface.
 	 */
-	public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog, int duration) {
-		if (PlaybackService.isRunning) {
-			playbackService.seek((int) (prog * duration));
+	public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
+		if (playbackService != null) {
+			playbackService.seek((int) (prog * playbackService.getPlayer().getDuration()));
 			setupPositionObserver();
 		}
 	}

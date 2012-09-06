@@ -380,13 +380,12 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	}
 
 	float prog;
-	int duration;
 
 	@Override
 	public void onProgressChanged(SeekBar seekBar, int progress,
 			boolean fromUser) {
-		controller.onSeekBarProgressChanged(seekBar, progress, fromUser, prog,
-				duration, txtvPosition);
+		prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
+				txtvPosition);
 	}
 
 	@Override
@@ -396,7 +395,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		controller.onSeekBarStopTrackingTouch(seekBar, prog, duration);
+		controller.onSeekBarStopTrackingTouch(seekBar, prog);
 	}
 
 }
