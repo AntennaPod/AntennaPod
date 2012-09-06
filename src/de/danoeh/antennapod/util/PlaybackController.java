@@ -1,12 +1,5 @@
 package de.danoeh.antennapod.util;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.SimpleChapter;
-import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.service.PlayerStatus;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.BroadcastReceiver;
@@ -25,10 +18,19 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
-import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.SimpleChapter;
+import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.PlayerStatus;
 
-/** Communicates with the playback service. */
+/**
+ * Communicates with the playback service. GUI classes should use this class to
+ * control playback instead of communicating with the PlaybackService directly.
+ */
 public abstract class PlaybackController {
 	private static final String TAG = "PlaybackController";
 
@@ -444,7 +446,8 @@ public abstract class PlaybackController {
 	 */
 	public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
 		if (playbackService != null) {
-			playbackService.seek((int) (prog * playbackService.getPlayer().getDuration()));
+			playbackService.seek((int) (prog * playbackService.getPlayer()
+					.getDuration()));
 			setupPositionObserver();
 		}
 	}
@@ -563,5 +566,12 @@ public abstract class PlaybackController {
 
 	public PlayerStatus getStatus() {
 		return status;
+	}
+
+	public boolean isPlayingVideo() {
+		if (playbackService != null) {
+			return PlaybackService.isPlayingVideo();
+		}
+		return false;
 	}
 }

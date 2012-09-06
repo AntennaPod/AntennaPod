@@ -179,6 +179,11 @@ public class ExternalPlayerFragment extends SherlockFragment {
 				txtvPosition.setText(getPositionString(media.getPosition(),
 						media.getDuration()));
 				fragmentLayout.setVisibility(View.VISIBLE);
+				if (controller.isPlayingVideo()) {
+					butPlay.setVisibility(View.GONE);
+				} else {
+					butPlay.setVisibility(View.VISIBLE);
+				}
 			} else {
 				Log.w(TAG,
 						"loadMediaInfo was called while the media object of playbackService was null!");
