@@ -195,6 +195,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Videosurface was destroyed");
 		videoSurfaceCreated = false;
+		controller.notifyVideoSurfaceAbandoned();
 	}
 
 	@Override

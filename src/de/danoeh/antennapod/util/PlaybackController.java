@@ -574,4 +574,10 @@ public abstract class PlaybackController {
 		}
 		return false;
 	}
+	
+	public void notifyVideoSurfaceAbandoned() {
+		if (playbackService != null) {
+			playbackService.notifyVideoSurfaceAbandoned();
+		}
+	}
 }

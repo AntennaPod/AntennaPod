@@ -32,16 +32,13 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
-import de.danoeh.antennapod.util.Converter;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
@@ -233,7 +230,8 @@ public class PlaybackService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Gained audio focus");
 				if (pausedBecauseOfTransientAudiofocusLoss) {
-					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_RAISE, 0);
+					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+							AudioManager.ADJUST_RAISE, 0);
 					play();
 				}
 				break;
@@ -365,8 +363,12 @@ public class PlaybackService extends Service {
 	}
 
 	/** Called when the surface holder of the mediaplayer has to be changed. */
-	public void resetVideoSurface() {
-		positionSaver.cancel(true);
+	private void resetVideoSurface() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Resetting video surface");
+		if (positionSaver != null) {
+			positionSaver.cancel(true);
+		}
 		player.setDisplay(null);
 		player.reset();
 		player.release();
@@ -379,6 +381,10 @@ public class PlaybackService extends Service {
 		player.setOnInfoListener(onInfoListener);
 		status = PlayerStatus.STOPPED;
 		setupMediaplayer();
+	}
+
+	public void notifyVideoSurfaceAbandoned() {
+		resetVideoSurface();
 	}
 
 	/** Called after service has extracted the media it is supposed to play. */
