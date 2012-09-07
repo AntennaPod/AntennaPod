@@ -1,6 +1,13 @@
 package de.danoeh.antennapod.service;
 
 import java.io.IOException;
+import java.util.concurrent.Future;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.app.PendingIntent;
@@ -19,7 +26,6 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -88,8 +94,6 @@ public class PlaybackService extends Service {
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
 
-	private SleepTimer sleepTimer;
-
 	private static final int NOTIFICATION_ID = 1;
 	private NotificationCompat.Builder notificationBuilder;
 
@@ -106,8 +110,18 @@ public class PlaybackService extends Service {
 	private boolean startWhenPrepared;
 	private FeedManager manager;
 	private PlayerStatus status;
+
 	private PositionSaver positionSaver;
+	private ScheduledFuture positionSaverFuture;
+
 	private WidgetUpdateWorker widgetUpdater;
+	private ScheduledFuture widgetUpdaterFuture;
+
+	private SleepTimer sleepTimer;
+	private Future sleepTimerFuture;
+
+	private static final int SCHED_EX_POOL_SIZE = 3;
+	private ScheduledThreadPoolExecutor schedExecutor;
 
 	private volatile PlayerStatus statusBeforeSeek;
 
@@ -172,6 +186,23 @@ public class PlaybackService extends Service {
 			Log.d(TAG, "Service created.");
 		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		manager = FeedManager.getInstance();
+		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
+				new ThreadFactory() {
+
+					@Override
+					public Thread newThread(Runnable r) {
+						Thread t = new Thread(r);
+						t.setPriority(Thread.MIN_PRIORITY);
+						return t;
+					}
+				}, new RejectedExecutionHandler() {
+
+					@Override
+					public void rejectedExecution(Runnable r,
+							ThreadPoolExecutor executor) {
+						Log.w(TAG, "SchedEx rejected submission of new task");
+					}
+				});
 		player = new MediaPlayer();
 		player.setOnPreparedListener(preparedListener);
 		player.setOnCompletionListener(completionListener);
@@ -366,9 +397,7 @@ public class PlaybackService extends Service {
 	private void resetVideoSurface() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Resetting video surface");
-		if (positionSaver != null) {
-			positionSaver.cancel(true);
-		}
+		cancelPositionSaver();
 		player.setDisplay(null);
 		player.reset();
 		player.release();
@@ -424,28 +453,23 @@ public class PlaybackService extends Service {
 		}
 	}
 
-	@SuppressLint("NewApi")
 	private void setupPositionSaver() {
-		if (positionSaver != null && !positionSaver.isCancelled()) {
-			positionSaver.cancel(true);
-		}
-		positionSaver = new PositionSaver() {
-			@Override
-			protected void onCancelled(Void result) {
-				super.onCancelled(result);
-				positionSaver = null;
-			}
+		if (positionSaverFuture == null
+				|| (positionSaverFuture.isCancelled() || positionSaverFuture
+						.isDone())) {
 
-			@Override
-			protected void onPostExecute(Void result) {
-				super.onPostExecute(result);
-				positionSaver = null;
-			}
-		};
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			positionSaver.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-		} else {
-			positionSaver.execute();
+			positionSaver = new PositionSaver();
+			positionSaverFuture = schedExecutor.scheduleAtFixedRate(
+					positionSaver, PositionSaver.WAITING_INTERVALL,
+					PositionSaver.WAITING_INTERVALL, TimeUnit.MILLISECONDS);
+		}
+	}
+
+	private void cancelPositionSaver() {
+		if (positionSaverFuture != null) {
+			boolean result = positionSaverFuture.cancel(true);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "PositionSaver cancelled. Result: " + result);
 		}
 	}
 
@@ -517,7 +541,7 @@ public class PlaybackService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Playback completed");
 			// Save state
-			positionSaver.cancel(true);
+			cancelPositionSaver();
 			media.setPosition(0);
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
 			boolean isInQueue = manager.isInQueue(media.getItem());
@@ -574,20 +598,19 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
 					+ " milliseconds");
-		if (sleepTimer != null) {
-			sleepTimer.cancel(true);
+		if (sleepTimerFuture != null) {
+			sleepTimerFuture.cancel(true);
 		}
 		sleepTimer = new SleepTimer(waitingTime);
-		sleepTimer.executeAsync();
+		sleepTimerFuture = schedExecutor.submit(sleepTimer);
 		sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 	}
 
 	public void disableSleepTimer() {
-		if (sleepTimer != null) {
+		if (sleepTimerFuture != null) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Disabling sleep timer");
-			sleepTimer.cancel(true);
-			sleepTimer = null;
+			sleepTimerFuture.cancel(true);
 			sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 		}
 	}
@@ -607,9 +630,7 @@ public class PlaybackService extends Service {
 				audioManager.abandonAudioFocus(audioFocusChangeListener);
 				disableSleepTimer();
 			}
-			if (positionSaver != null) {
-				positionSaver.cancel(true);
-			}
+			cancelPositionSaver();
 			saveCurrentPosition();
 			setStatus(PlayerStatus.PAUSED);
 			stopWidgetUpdater();
@@ -732,21 +753,24 @@ public class PlaybackService extends Service {
 	}
 
 	private void stopWidgetUpdater() {
-		if (widgetUpdater != null) {
-			widgetUpdater.cancel(true);
+		if (widgetUpdaterFuture != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Stopping widgetUpdateWorker");
+			widgetUpdaterFuture.cancel(true);
 		}
 		sendBroadcast(new Intent(PlayerWidget.STOP_WIDGET_UPDATE));
 	}
 
 	@SuppressLint("NewApi")
 	private void setupWidgetUpdater() {
-		if (widgetUpdater == null || widgetUpdater.isCancelled()) {
+		if (widgetUpdaterFuture == null
+				|| (widgetUpdaterFuture.isCancelled() || widgetUpdaterFuture
+						.isDone())) {
 			widgetUpdater = new WidgetUpdateWorker();
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				widgetUpdater.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				widgetUpdater.execute();
-			}
+			widgetUpdaterFuture = schedExecutor.scheduleAtFixedRate(
+					widgetUpdater, WidgetUpdateWorker.NOTIFICATION_INTERVALL,
+					WidgetUpdateWorker.NOTIFICATION_INTERVALL,
+					TimeUnit.MILLISECONDS);
 		}
 	}
 
@@ -865,59 +889,36 @@ public class PlaybackService extends Service {
 	};
 
 	/** Periodically saves the position of the media file */
-	class PositionSaver extends AsyncTask<Void, Void, Void> {
-		private static final int WAITING_INTERVALL = 5000;
+	class PositionSaver implements Runnable {
+		public static final int WAITING_INTERVALL = 5000;
 
 		@Override
-		protected Void doInBackground(Void... params) {
-			while (!isCancelled() && player.isPlaying()) {
+		public void run() {
+			if (player != null && player.isPlaying()) {
 				try {
-					Thread.sleep(WAITING_INTERVALL);
 					saveCurrentPosition();
-				} catch (InterruptedException e) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG,
-								"Thread was interrupted while waiting. Finishing now...");
-					return null;
 				} catch (IllegalStateException e) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Player is in illegal state. Finishing now");
-					return null;
+					Log.w(TAG,
+							"saveCurrentPosition was called in illegal state");
 				}
-
 			}
-			return null;
 		}
-
 	}
 
 	/** Notifies the player widget in the specified intervall */
-	class WidgetUpdateWorker extends AsyncTask<Void, Void, Void> {
-		private static final String TAG = "WidgetUpdateWorker";
+	class WidgetUpdateWorker implements Runnable {
 		private static final int NOTIFICATION_INTERVALL = 1000;
 
 		@Override
-		protected void onProgressUpdate(Void... values) {
-			updateWidget();
-		}
-
-		@Override
-		protected Void doInBackground(Void... params) {
-			while (PlaybackService.isRunning && !isCancelled()) {
-				publishProgress();
-				try {
-					Thread.sleep(NOTIFICATION_INTERVALL);
-				} catch (InterruptedException e) {
-					return null;
-				}
+		public void run() {
+			if (PlaybackService.isRunning) {
+				updateWidget();
 			}
-			return null;
 		}
-
 	}
 
 	/** Sleeps for a given time and then pauses playback. */
-	class SleepTimer extends AsyncTask<Void, Void, Void> {
+	class SleepTimer implements Runnable {
 		private static final String TAG = "SleepTimer";
 		private static final long UPDATE_INTERVALL = 1000L;
 		private volatile long waitingTime;
@@ -929,11 +930,11 @@ public class PlaybackService extends Service {
 		}
 
 		@Override
-		protected Void doInBackground(Void... params) {
+		public void run() {
 			isWaiting = true;
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting");
-			while (!isCancelled()) {
+			while (waitingTime > 0) {
 				try {
 					Thread.sleep(UPDATE_INTERVALL);
 					waitingTime -= UPDATE_INTERVALL;
@@ -946,31 +947,16 @@ public class PlaybackService extends Service {
 								Log.d(TAG, "Pausing playback");
 							pause(true);
 						}
-						return null;
+						postExecute();
 					}
 				} catch (InterruptedException e) {
 					Log.d(TAG, "Thread was interrupted while waiting");
 				}
 			}
-			return null;
+			postExecute();
 		}
 
-		@SuppressLint("NewApi")
-		public void executeAsync() {
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				execute();
-			}
-		}
-
-		@Override
-		protected void onCancelled() {
-			isWaiting = false;
-		}
-
-		@Override
-		protected void onPostExecute(Void result) {
+		protected void postExecute() {
 			isWaiting = false;
 			sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
 		}
