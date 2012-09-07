@@ -210,8 +210,9 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			startActivity(new Intent(MediaplayerActivity.this,
-					MainActivity.class));
+			Intent intent = new Intent(MediaplayerActivity.this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		case R.id.disable_sleeptimer_item:
 			if (controller.serviceAvailable()) {

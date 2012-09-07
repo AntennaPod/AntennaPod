@@ -187,7 +187,9 @@ public class DownloadActivity extends SherlockListActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+			Intent intent = new Intent(this, MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			startActivity(intent);
 			break;
 		case MENU_SHOW_LOG:
 			startActivity(new Intent(this, DownloadLogActivity.class));
