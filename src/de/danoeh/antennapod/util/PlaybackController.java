@@ -1,6 +1,12 @@
 package de.danoeh.antennapod.util;
 
-import android.annotation.SuppressLint;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -9,8 +15,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
-import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.SurfaceHolder;
@@ -48,12 +52,32 @@ public abstract class PlaybackController {
 	private FeedMedia media;
 	private PlayerStatus status;
 
+	private ScheduledThreadPoolExecutor schedExecutor;
+	private static final int SCHED_EX_POOLSIZE = 1;
+
 	protected MediaPositionObserver positionObserver;
+	protected ScheduledFuture positionObserverFuture;
 
 	private boolean mediaInfoLoaded = false;
 
 	public PlaybackController(Activity activity) {
 		this.activity = activity;
+		schedExecutor = new ScheduledThreadPoolExecutor(2, new ThreadFactory() {
+
+			@Override
+			public Thread newThread(Runnable r) {
+				Thread t = new Thread(r);
+				t.setPriority(Thread.MIN_PRIORITY);
+				return t;
+			}
+		}, new RejectedExecutionHandler() {
+
+			@Override
+			public void rejectedExecution(Runnable r,
+					ThreadPoolExecutor executor) {
+				Log.w(TAG, "Rejected execution of runnable in schedExecutor");
+			}
+		});
 	}
 
 	/**
@@ -89,9 +113,7 @@ public abstract class PlaybackController {
 		} catch (IllegalArgumentException e) {
 			// ignore
 		}
-		if (positionObserver != null) {
-			positionObserver.cancel(true);
-		}
+		cancelPositionObserver();
 	}
 
 	/** Should be called in the activity's onPause() method. */
@@ -146,28 +168,27 @@ public abstract class PlaybackController {
 
 	public abstract void setupGUI();
 
-	@SuppressLint("NewApi")
 	private void setupPositionObserver() {
-		if (positionObserver == null || positionObserver.isCancelled()) {
+		if ((positionObserverFuture != null && positionObserverFuture
+				.isCancelled())
+				|| (positionObserverFuture != null && positionObserverFuture
+						.isDone()) || positionObserverFuture == null) {
+
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Setting up position observer");
-			positionObserver = new MediaPositionObserver() {
+			positionObserver = new MediaPositionObserver();
+			positionObserverFuture = schedExecutor.scheduleWithFixedDelay(
+					positionObserver, MediaPositionObserver.WAITING_INTERVALL,
+					MediaPositionObserver.WAITING_INTERVALL,
+					TimeUnit.MILLISECONDS);
+		}
+	}
 
-				@Override
-				protected void onProgressUpdate(Void... v) {
-					super.onProgressUpdate();
-					onPositionObserverUpdate();
-				}
-
-			};
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				positionObserver.executeOnExecutor(
-						AsyncTask.THREAD_POOL_EXECUTOR,
-						playbackService.getPlayer());
-			} else {
-				positionObserver.execute(playbackService.getPlayer());
-			}
-
+	private void cancelPositionObserver() {
+		if (positionObserverFuture != null) {
+			boolean result = positionObserverFuture.cancel(true);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "PositionObserver cancelled. Result: " + result);
 		}
 	}
 
@@ -231,10 +252,7 @@ public abstract class PlaybackController {
 					onBufferUpdate(progress);
 					break;
 				case PlaybackService.NOTIFICATION_TYPE_RELOAD:
-					if (positionObserver != null) {
-						positionObserver.cancel(true);
-						positionObserver = null;
-					}
+					cancelPositionObserver();
 					mediaInfoLoaded = false;
 					onReloadNotification(intent.getIntExtra(
 							PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
@@ -276,7 +294,7 @@ public abstract class PlaybackController {
 
 	/**
 	 * Is called whenever the PlaybackService changes it's status. This method
-	 * should be used to update the GUI or start/cancel AsyncTasks.
+	 * should be used to update the GUI or start/cancel background threads.
 	 */
 	private void handleStatus() {
 		switch (status) {
@@ -287,10 +305,7 @@ public abstract class PlaybackController {
 		case PAUSED:
 			postStatusMsg(R.string.player_paused_msg);
 			checkMediaInfoLoaded();
-			if (positionObserver != null) {
-				positionObserver.cancel(true);
-				positionObserver = null;
-			}
+			cancelPositionObserver();
 			updatePlayButtonAppearance(R.drawable.av_play);
 			break;
 		case PLAYING:
@@ -372,48 +387,6 @@ public abstract class PlaybackController {
 
 	public abstract void onServiceQueried();
 
-	/** Refreshes the current position of the media file that is playing. */
-	public class MediaPositionObserver extends
-			AsyncTask<MediaPlayer, Void, Void> {
-
-		private static final String TAG = "MediaPositionObserver";
-		private static final int WAITING_INTERVALL = 1000;
-		private MediaPlayer player;
-
-		@Override
-		protected void onCancelled() {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Task was cancelled");
-		}
-
-		@Override
-		protected Void doInBackground(MediaPlayer... p) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Background Task started");
-			player = p[0];
-			try {
-				while (player.isPlaying() && !isCancelled()) {
-					try {
-						Thread.sleep(WAITING_INTERVALL);
-					} catch (InterruptedException e) {
-						if (AppConfig.DEBUG)
-							Log.d(TAG,
-									"Thread was interrupted while waiting. Finishing now");
-						return null;
-					}
-					publishProgress();
-
-				}
-			} catch (IllegalStateException e) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "player is in illegal state, exiting now");
-			}
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Background Task finished");
-			return null;
-		}
-	}
-
 	/**
 	 * Should be used by classes which implement the OnSeekBarChanged interface.
 	 */
@@ -435,10 +408,7 @@ public abstract class PlaybackController {
 	 */
 	public void onSeekBarStartTrackingTouch(SeekBar seekBar) {
 		// interrupt position Observer, restart later
-		if (positionObserver != null) {
-			positionObserver.cancel(true);
-			positionObserver = null;
-		}
+		cancelPositionObserver();
 	}
 
 	/**
@@ -574,10 +544,30 @@ public abstract class PlaybackController {
 		}
 		return false;
 	}
-	
+
 	public void notifyVideoSurfaceAbandoned() {
 		if (playbackService != null) {
 			playbackService.notifyVideoSurfaceAbandoned();
+		}
+	}
+
+	/** Refreshes the current position of the media file that is playing. */
+	public class MediaPositionObserver implements Runnable {
+
+		public static final int WAITING_INTERVALL = 1000;
+
+		@Override
+		public void run() {
+			if (playbackService != null && playbackService.getPlayer() != null
+					&& playbackService.getPlayer().isPlaying()) {
+				activity.runOnUiThread(new Runnable() {
+
+					@Override
+					public void run() {
+						onPositionObserverUpdate();
+					}
+				});
+			}
 		}
 	}
 }
