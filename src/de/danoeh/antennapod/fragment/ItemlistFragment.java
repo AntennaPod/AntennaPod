@@ -119,8 +119,12 @@ public class ItemlistFragment extends SherlockListFragment implements
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		getActivity().unregisterReceiver(contentUpdate);
-
+		try {
+			getActivity().unregisterReceiver(contentUpdate);
+		} catch (IllegalArgumentException e) {
+			Log.w(TAG,
+					"IllegalArgumentException when trying to unregister contentUpdate receiver.");
+		}
 	}
 
 	@Override
