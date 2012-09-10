@@ -676,7 +676,9 @@ public class PlaybackService extends Service {
 				editor.commit();
 
 				player.start();
-				player.seekTo((int) media.getPosition());
+				if (status != PlayerStatus.PAUSED) {
+					player.seekTo((int) media.getPosition());
+				}
 				setStatus(PlayerStatus.PLAYING);
 				setupPositionSaver();
 				setupWidgetUpdater();
