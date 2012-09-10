@@ -92,7 +92,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
 	/** Is true if service is running. */
-	public static boolean isRunning = false;
+	public static boolean isRunning;
 
 	private static final int NOTIFICATION_ID = 1;
 	private NotificationCompat.Builder notificationBuilder;
@@ -138,6 +138,13 @@ public class PlaybackService extends Service {
 		}
 	}
 
+	@Override
+	public boolean onUnbind(Intent intent) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Received onUnbind event");
+		return super.onUnbind(intent);
+	}
+
 	/**
 	 * Returns an intent which starts an audio- or videoplayer, depending on the
 	 * type of media that is being played. If the playbackservice is not
@@ -179,11 +186,11 @@ public class PlaybackService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Service created.");
 		isRunning = true;
 		pausedBecauseOfTransientAudiofocusLoss = false;
 		status = PlayerStatus.STOPPED;
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Service created.");
 		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
 		manager = FeedManager.getInstance();
 		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
@@ -226,11 +233,11 @@ public class PlaybackService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Service is about to be destroyed");
 		isRunning = false;
 		disableSleepTimer();
 		unregisterReceiver(headsetDisconnected);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Service is about to be destroyed");
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
 			audioManager.unregisterRemoteControlClient(remoteControlClient);
 		}
@@ -243,6 +250,8 @@ public class PlaybackService extends Service {
 
 	@Override
 	public IBinder onBind(Intent intent) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Received onBind event");
 		return mBinder;
 	}
 
@@ -284,6 +293,8 @@ public class PlaybackService extends Service {
 
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "OnStartCommand called");
 		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
 		if (keycode != -1) {
 			if (AppConfig.DEBUG)

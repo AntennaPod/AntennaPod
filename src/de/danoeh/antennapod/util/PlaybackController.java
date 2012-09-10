@@ -62,22 +62,24 @@ public abstract class PlaybackController {
 
 	public PlaybackController(Activity activity) {
 		this.activity = activity;
-		schedExecutor = new ScheduledThreadPoolExecutor(2, new ThreadFactory() {
+		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
+				new ThreadFactory() {
 
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread t = new Thread(r);
-				t.setPriority(Thread.MIN_PRIORITY);
-				return t;
-			}
-		}, new RejectedExecutionHandler() {
+					@Override
+					public Thread newThread(Runnable r) {
+						Thread t = new Thread(r);
+						t.setPriority(Thread.MIN_PRIORITY);
+						return t;
+					}
+				}, new RejectedExecutionHandler() {
 
-			@Override
-			public void rejectedExecution(Runnable r,
-					ThreadPoolExecutor executor) {
-				Log.w(TAG, "Rejected execution of runnable in schedExecutor");
-			}
-		});
+					@Override
+					public void rejectedExecution(Runnable r,
+							ThreadPoolExecutor executor) {
+						Log.w(TAG,
+								"Rejected execution of runnable in schedExecutor");
+					}
+				});
 	}
 
 	/**
@@ -130,40 +132,57 @@ public abstract class PlaybackController {
 	 * as the arguments of the launch intent.
 	 */
 	private void bindToService() {
-		Intent serviceIntent = new Intent(activity, PlaybackService.class);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Trying to connect to service");
+		Intent serviceIntent = getPlayLastPlayedMediaIntent();
 		boolean bound = false;
 		if (!PlaybackService.isRunning) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Trying to restore last played media");
-			SharedPreferences prefs = activity.getApplicationContext()
-					.getSharedPreferences(PodcastApp.PREF_NAME, 0);
-			long mediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID,
-					-1);
-			long feedId = prefs.getLong(
-					PlaybackService.PREF_LAST_PLAYED_FEED_ID, -1);
-			if (mediaId != -1 && feedId != -1) {
-				serviceIntent.putExtra(PlaybackService.EXTRA_FEED_ID, feedId);
-				serviceIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, mediaId);
-				serviceIntent.putExtra(
-						PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-				serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-						prefs.getBoolean(PlaybackService.PREF_LAST_IS_STREAM,
-								true));
+			if (serviceIntent != null) {
 				activity.startService(serviceIntent);
-				bound = activity.bindService(serviceIntent, mConnection,
-						Context.BIND_AUTO_CREATE);
+				bound = activity.bindService(serviceIntent, mConnection, 0);
 			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "No last played media found");
 				status = PlayerStatus.STOPPED;
 				setupGUI();
 				handleStatus();
 			}
 		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"PlaybackService is running, trying to connect without start command.");
 			bound = activity.bindService(serviceIntent, mConnection, 0);
 		}
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Result for service binding: " + bound);
+	}
+
+	/**
+	 * Returns an intent that starts the PlaybackService and plays the last
+	 * played media or null if no last played media could be found.
+	 */
+	private Intent getPlayLastPlayedMediaIntent() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Trying to restore last played media");
+		SharedPreferences prefs = activity.getApplicationContext()
+				.getSharedPreferences(PodcastApp.PREF_NAME, 0);
+		long mediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+		long feedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID,
+				-1);
+		if (mediaId != -1 && feedId != -1) {
+			Intent serviceIntent = new Intent(activity, PlaybackService.class);
+			serviceIntent.putExtra(PlaybackService.EXTRA_FEED_ID, feedId);
+			serviceIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, mediaId);
+			serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+					false);
+			serviceIntent
+					.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, prefs
+							.getBoolean(PlaybackService.PREF_LAST_IS_STREAM,
+									true));
+			return serviceIntent;
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "No last played media found");
+			return null;
+		}
 	}
 
 	public abstract void setupGUI();
@@ -374,6 +393,14 @@ public abstract class PlaybackController {
 		if (playbackService != null) {
 			status = playbackService.getStatus();
 			media = playbackService.getMedia();
+			if (media == null) {
+				Log.w(TAG,
+						"PlaybackService has no media object. Trying to restore last played media.");
+				Intent serviceIntent = getPlayLastPlayedMediaIntent();
+				if (serviceIntent != null) {
+					activity.startService(serviceIntent);
+				}
+			}
 			onServiceQueried();
 
 			setupGUI();
