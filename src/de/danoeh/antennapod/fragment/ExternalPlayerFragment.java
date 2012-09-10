@@ -142,6 +142,11 @@ public class ExternalPlayerFragment extends SherlockFragment {
 			}
 		};
 		butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
+	}
+
+	@Override
+	public void onResume() {
+		super.onResume();
 		controller.init();
 	}
 
