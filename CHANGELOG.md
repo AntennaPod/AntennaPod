@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.9.4.4
+---------------
+* Added player controls at the bottom of the main screen and the feedlist screens
+* Improved media playback
+
 Version 0.9.4.3
 ---------------
 * Fixed several bugs in the feed parser
