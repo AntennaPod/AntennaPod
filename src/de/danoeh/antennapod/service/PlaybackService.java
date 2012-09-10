@@ -92,7 +92,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
 	/** Is true if service is running. */
-	public static boolean isRunning;
+	public static boolean isRunning = false;
 
 	private static final int NOTIFICATION_ID = 1;
 	private NotificationCompat.Builder notificationBuilder;

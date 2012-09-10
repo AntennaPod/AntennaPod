@@ -149,7 +149,7 @@ public abstract class PlaybackController {
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
 						"PlaybackService is running, trying to connect without start command.");
-			bound = activity.bindService(serviceIntent, mConnection, 0);
+			bound = activity.bindService(new Intent(activity, PlaybackService.class), mConnection, 0);
 		}
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Result for service binding: " + bound);
