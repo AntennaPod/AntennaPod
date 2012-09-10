@@ -32,6 +32,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 	private ViewGroup layoutInfo;
 	private TextView txtvTitle;
 	private TextView txtvPosition;
+	private TextView txtvStatus;
 	private ImageButton butPlay;
 
 	private PlaybackController controller;
@@ -51,7 +52,8 @@ public class ExternalPlayerFragment extends SherlockFragment {
 		txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
 		txtvPosition = (TextView) root.findViewById(R.id.txtvPosition);
 		butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-
+		txtvStatus = (TextView) root.findViewById(R.id.txtvStatus);
+		
 		layoutInfo.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -122,10 +124,12 @@ public class ExternalPlayerFragment extends SherlockFragment {
 
 			@Override
 			public void postStatusMsg(int msg) {
+				txtvStatus.setText(msg);
 			}
 
 			@Override
 			public void clearStatusMsg() {
+				txtvStatus.setText("");
 			}
 
 			@Override
