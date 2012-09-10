@@ -30,7 +30,6 @@
     <string name="download_running">Download running</string>
 
     <!-- Mediaplayer status Messages -->
-    <string name="player_paused_msg">Paused</string>
     <string name="player_error_msg">Error!</string>
     <string name="player_stopped_msg">No media playing</string>
     <string name="player_preparing_msg">Preparing</string>

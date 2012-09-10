@@ -322,7 +322,7 @@ public abstract class PlaybackController {
 			postStatusMsg(R.string.player_error_msg);
 			break;
 		case PAUSED:
-			postStatusMsg(R.string.player_paused_msg);
+			clearStatusMsg();
 			checkMediaInfoLoaded();
 			cancelPositionObserver();
 			updatePlayButtonAppearance(R.drawable.av_play);
