@@ -318,6 +318,7 @@ public class PlaybackService extends Service {
 					|| playbackType != shouldStream) {
 				pause(true);
 				player.reset();
+				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 				if (media == null || mediaId != media.getId()) {
 					feed = manager.getFeed(feedId);
 					media = manager.getFeedMedia(mediaId, feed);
