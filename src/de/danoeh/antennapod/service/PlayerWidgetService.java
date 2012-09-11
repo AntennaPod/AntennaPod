@@ -44,7 +44,11 @@ public class PlayerWidgetService extends Service {
 		super.onDestroy();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service is about to be destroyed");
-		unbindService(mConnection);
+		try {
+			unbindService(mConnection);
+		} catch (IllegalArgumentException e) {
+			Log.w(TAG, "IllegalArgumentException when trying to unbind service");
+		}
 	}
 
 	@Override
