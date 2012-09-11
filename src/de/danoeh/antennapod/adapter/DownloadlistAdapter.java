@@ -74,7 +74,7 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 						R.string.image_of_prefix)
 						+ image.getFeed().getTitle();
 			} else {
-				titleText = "[Image] " + ((FeedImage) feedFile).getTitle();
+				titleText = ((FeedImage) feedFile).getTitle();
 			}
 		}
 		holder.title.setText(titleText);

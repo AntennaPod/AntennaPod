@@ -9,71 +9,118 @@
     <string name="add_new_feed_label">Add a new Feed</string>
     <string name="downloads_label">Downloads</string>
     <string name="cancel_download_label">Cancel Download</string>
+    <string name="download_log_label">Download log</string>
 
-    <!--  -->
+    <!-- Other -->
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>
+    <string name="author_label">Author</string>
+    <string name="language_label">Language</string>
+    <string name="cover_label">Cover</string>
+    <string name="error_label">Error</string>
+    <string name="error_msg_prefix">An error occured:</string>
+    <string name="refresh_label">Refresh</string>
+    <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
+    <string name="chapters_label">Chapters</string>
+    <string name="shownotes_label">Shownotes</string>
+    <string name="last_update_prefix">Last Update:\u0020</string>
+    <string name="episodes_suffix">\u0020episodes</string>
+    <string name="published_prefix">Published:\u0020</string>
+    <string name="length_prefix">Length:\u0020</string>
+    <string name="size_prefix">Size:\u0020</string>
+    <string name="processing_label">Processing</string>
+    <string name="loading_label">Loading...</string>
+    <string name="image_of_prefix">Image of:\u0020</string>
 
-    <!-- AddFeed Activity labels -->
+    <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
+    <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
 
-    <!-- Feeditemview labels -->
+    <!-- Actions on feeds -->
+    <string name="mark_all_read_label">Mark all read</string>
+    <string name="show_info_label">Show information</string>
+    <string name="remove_feed_label">Remove Feed</string>
+    <string name="share_link_label">Share website link</string>
+    <string name="share_source_label">Share feed link</string>
+    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
+
+    <!-- actions on feeditems -->
     <string name="download_label">Download</string>
     <string name="play_label">Play</string>
-    <string name="description_label">Description</string>
+    <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
+    <string name="mark_read_label">Mark read</string>
+    <string name="mark_unread_label">Mark unread</string>
+    <string name="add_to_queue_label">Add to Queue</string>
+    <string name="remove_from_queue_label">Remove from Queue</string>
+    <string name="visit_website_label">Visit Website</string>
+    <string name="support_label">Flattr this</string>
 
-    <!-- DownloadObserver Messages -->
+    <!-- Download messages and labels -->
     <string name="download_successful">Download successful</string>
     <string name="download_failed">Download failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
-
-    <!-- Mediaplayer status Messages -->
-    <string name="player_error_msg">Error!</string>
-    <string name="player_stopped_msg">No media playing</string>
-    <string name="player_preparing_msg">Preparing</string>
-    <string name="mark_read_label">Mark read</string>
-    <string name="mark_unread_label">Mark unread</string>
-    <string name="other_pref">Other</string>
-    <string name="about_pref">About</string>
-    <string name="show_download_log">Show Log</string>
     <string name="download_error_device_not_found">Storage device not found</string>
     <string name="download_error_insufficient_space">Insufficient space</string>
     <string name="download_error_file_error">File error</string>
     <string name="download_error_http_data_error">HTTP Data Error</string>
     <string name="download_error_error_unknown">Unknown Error</string>
-    <string name="show_player_label">Show player</string>
-    <string name="add_to_queue_label">Add to Queue</string>
-    <string name="remove_from_queue_label">Remove from Queue</string>
-    <string name="player_ready_msg">Ready</string>
-    <string name="stream_label">Stream</string>
-    <string name="player_seeking_msg">Seeking</string>
-    <string name="player_playing_msg"></string>
-    <string name="mark_all_read_label">Mark all read</string>
-    <string name="show_info_label">Show information</string>
-    <string name="remove_feed_label">Remove Feed</string>
-    <string name="position_default_label">00:00:00</string>
-    <string name="queue_label">Queue</string>
-    <string name="visit_website_label">Visit Website</string>
-    <string name="support_label">Flattr this</string>
     <string name="download_error_parser_exception">Parser Exception</string>
     <string name="download_error_unsupported_type">Unsupported Feed type</string>
-    <string name="error_label">Error</string>
-    <string name="error_msg_prefix">An error occured:</string>
     <string name="download_error_connection_error">Connection error</string>
-    <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
-    <string name="cover_label">Cover</string>
-    <string name="playback_error_server_died">Server died</string>
-    <string name="playback_error_unknown">Unknown Error</string>
-    <string name="author_label">Author</string>
-    <string name="language_label">Language</string>
-    <string name="move_up_label">Move up</string>
-    <string name="move_down_label">Move down</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_cancelled_msg">Download cancelled</string>
+    <string name="download_report_title">Downloads completed</string>
+    <string name="download_error_malformed_url">Malformed URL</string>
+    <string name="download_error_io_error">IO Error</string>
+    <string name="download_error_device_not_found">External storage unavailable</string>
+
+    <!-- Mediaplayer messages -->
+    <string name="player_error_msg">Error!</string>
+    <string name="player_stopped_msg">No media playing</string>
+    <string name="player_preparing_msg">Preparing</string>
+    <string name="player_ready_msg">Ready</string>
+    <string name="player_seeking_msg">Seeking</string>
+    <string name="playback_error_server_died">Server died</string>
+    <string name="playback_error_unknown">Unknown Error</string>
     <string name="no_media_playing_label">No media playing</string>
-    <string name="general_pref">General</string>
+    <string name="position_default_label">00:00:00</string>
+    <string name="player_buffering_msg">Buffering</string>
+
+    <!-- Navigation -->
+    <string name="show_download_log">Show Log</string>
+    <string name="show_player_label">Show player</string>
+
+    <!-- Queue operations -->
+    <string name="move_up_label">Move up</string>
+    <string name="move_down_label">Move down</string>
+    <string name="clear_queue_label">Clear queue</string>
+
+    <!-- Flattr -->
+    <string name="flattr_auth_label">Flattr sign-in</string>
+    <string name="flattr_auth_explanation">Press the button below to start the authentication process. You will be forwarded to the flattr login screen in your browser and be asked to give AntennaPod the permission to flattr things. After you have given permission, you will return to this screen automatically.</string>
+    <string name="authenticate_label">Authenticate</string>
+    <string name="return_home_label">Return to home</string>
+    <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
+    <string name="no_flattr_token_title">No Flattr token found</string>
+    <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
+    <string name="authenticate_now_label">Authenticate</string>
+    <string name="action_forbidden_title">Action forbidden</string>
+    <string name="action_forbidden_msg">AntennaPod has no permission for this action. The reason for this could be that the access token of AntennaPod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
+    <string name="access_revoked_title">Access revoked</string>
+    <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
+    <string name="flattr_click_success">Successfully flattred this thing!</string>
+    <string name="flattring_label">Flattring</string>
+
+    <!-- Empty list labels -->
+    <string name="no_items_label">There are no items in this list.</string>
+    <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
+
+    <!-- Preferences -->
+    <string name="other_pref">Other</string>
+    <string name="about_pref">About</string>
+    <string name="queue_label">Queue</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
@@ -86,46 +133,32 @@
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
-    <string name="download_report_title">Downloads completed</string>
-    <string name="refresh_label">Refresh</string>
-    <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
-    <string name="share_link_label">Share link</string>
-    <string name="share_source_label">Share source link</string>
-    <string name="clear_queue_label">Clear queue</string>
     <string name="refreshing_label">Refreshing</string>
-    <string name="download_log_label">Download log</string>
-    <string name="flattr_auth_label">Flattr sign-in</string>
-    <string name="flattr_auth_explanation">Press the button below to start the authentication process. You will be forwarded to the flattr login screen in your browser and be asked to give AntennaPod the permission to flattr things. After you have given permission, you will return to this screen automatically.</string>
-    <string name="authenticate_label">Authenticate</string>
-    <string name="return_home_label">Return to home</string>
-    <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
     <string name="flattr_settings_label">Flattr settings</string>
     <string name="pref_flattr_auth_title">Flattr sign-in</string>
     <string name="pref_flattr_auth_sum">Sign in to your flattr account to flattr things directly from the app.</string>
-    <string name="no_flattr_token_title">No Flattr token found</string>
-    <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
-    <string name="visit_website_label">Visit website</string>
-    <string name="authenticate_now_label">Authenticate</string>
-    <string name="action_forbidden_title">Action forbidden</string>
-    <string name="action_forbidden_msg">AntennaPod has no permission for this action. The reason for this could be that the access token of AntennaPod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
-    <string name="flattr_click_success">Successfully flattred this thing!</string>
     <string name="pref_flattr_this_app_title">Flattr this app</string>
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
-    <string name="access_revoked_title">Access revoked</string>
-    <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
-    <string name="no_items_label">There are no items in this list.</string>
-    <string name="no_feeds_label">You haven\'t subscribed to any feeds yet.</string>
-    <string name="last_update_prefix">Last Update:\u0020</string>
-    <string name="episodes_suffix">\u0020episodes</string>
-    <string name="published_prefix">Published:\u0020</string>
-    <string name="length_prefix">Length:\u0020</string>
-    <string name="size_prefix">Size:\u0020</string>
-    <string name="processing_label">Processing</string>
-    <string name="flattring_label">flattring</string>
-    <string name="chapters_label">Chapters</string>
-    <string name="shownotes_label">Shownotes</string>
+    <string name="pref_autoQueue_title">Auto-enqueue</string>
+    <string name="pref_autoQueue_sum">Add an episode to the queue after it has been downloaded.</string>
+    <string name="pref_display_only_episodes_title">Display only episodes</string>
+    <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
+    <string name="user_interface_label">User Interface</string>
+
+    <!-- Search -->
+    <string name="search_hint">Search for Feeds or Episodes</string>
+    <string name="found_in_shownotes_label">Found in shownotes</string>
+    <string name="found_in_chapters_label">Found in chapters</string>
+    <string name="search_status_searching">Searching...</string>
+    <string name="search_status_no_results">No results were found</string>
+    <string name="search_results_label">Search results</string>
+    <string name="search_term_label">You searched:\u0020</string>
+    <string name="search_label">Search</string>
+    <string name="found_in_title_label">Found in title</string>
+
+    <!-- OPML import and export -->
     <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>
@@ -135,50 +168,30 @@
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
-    <string name="search_hint">Search for Feeds or Episodes</string>
-    <string name="found_in_label">Found in:\u0020</string>
-    <string name="found_in_shownotes_label">Found in shownotes</string>
-    <string name="found_in_chapters_label">Found in chapters</string>
-    <string name="search_status_searching">Searching...</string>
-    <string name="search_status_no_results">No results were found</string>
-    <string name="search_results_label">Search results</string>
-    <string name="search_term_label">You searched:\u0020</string>
-    <string name="search_label">Search</string>
-    <string name="found_in_title_label">Found in title</string>
     <string name="choose_file_to_import_label">Choose file to import</string>
     <string name="opml_export_label">OPML export</string>
     <string name="exporting_label">Exporting...</string>
-    <string name="opml_export_error_no_feeds">You have no feeds</string>
     <string name="export_error_label">Export error</string>
     <string name="opml_export_success_title">Opml export successful.</string>
     <string name="opml_export_success_sum">The .opml file was written to:\u0020</string>
+
+    <!-- Sleep timer -->
     <string name="set_sleeptimer_label">Set sleep timer</string>
     <string name="disable_sleeptimer_label">Disable sleep timer</string>
     <string name="enter_time_here_label">Enter time</string>
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_left_label">Time left:\u0020</string>
+    <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
+
+    <!-- Miro Guide -->
     <string name="loading_categories_label">Loading categories...</string>
     <string name="browse_miroguide_label">Browse Miro Guide</string>
     <string name="txtv_browse_miroguide_label">Or browse the Miro Guide:</string>
     <string name="miro_guide_label">Miro Guide</string>
-    <string name="loading_label">Loading...</string>
     <string name="miro_search_hint">Search Miro Guide</string>
     <string name="popular_label">Popular</string>
     <string name="best_rating_label">Best rating</string>
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
-    <string name="player_buffering_msg">Buffering</string>
-    <string name="pref_autoQueue_title">Auto-enqueue</string>
-    <string name="pref_autoQueue_sum">Add an episode to the queue after it has been downloaded.</string>
-    <string name="pref_display_only_episodes_title">Display only episodes</string>
-    <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
-    <string name="user_interface_label">User Interface</string>
-    <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
-    <string name="image_of_prefix">Image of:\u0020</string>
-    <string name="download_error_malformed_url">Malformed URL</string>
-    <string name="download_error_io_error">IO Error</string>
-    <string name="download_error_device_not_found">External storage unavailable</string>
-    <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
-    
 
 </resources>

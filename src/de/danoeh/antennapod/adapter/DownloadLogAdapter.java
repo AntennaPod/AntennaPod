@@ -22,8 +22,8 @@ import de.danoeh.antennapod.R;
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 
-	public DownloadLogAdapter(Context context,
-			int textViewResourceId, List<DownloadStatus> objects) {
+	public DownloadLogAdapter(Context context, int textViewResourceId,
+			List<DownloadStatus> objects) {
 		super(context, textViewResourceId, objects);
 	}
 
@@ -55,18 +55,18 @@ public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 				holder.title.setText(((FeedImage) feedfile).getTitle());
 				holder.type.setText("Image");
 			}
-			holder.date.setText("On "
-					+ DateUtils.formatSameDayTime(status.getCompletionDate()
-							.getTime(), System.currentTimeMillis(),
-							DateFormat.SHORT, DateFormat.SHORT));
+			holder.date.setText(DateUtils.formatSameDayTime(status
+					.getCompletionDate().getTime(), System.currentTimeMillis(),
+					DateFormat.SHORT, DateFormat.SHORT));
 			if (status.isSuccessful()) {
 				holder.successful.setTextColor(Color.parseColor("green"));
-				holder.successful.setText("Download succeeded");
+				holder.successful.setText(R.string.download_successful);
 				holder.reason.setVisibility(View.GONE);
 			} else {
 				holder.successful.setTextColor(Color.parseColor("red"));
-				holder.successful.setText("Download failed");
-				holder.reason.setText(DownloadError.getErrorString(getContext(), status.getReason()));
+				holder.successful.setText(R.string.download_failed);
+				holder.reason.setText(DownloadError.getErrorString(
+						getContext(), status.getReason()));
 			}
 		} else {
 			holder = (Holder) convertView.getTag();
