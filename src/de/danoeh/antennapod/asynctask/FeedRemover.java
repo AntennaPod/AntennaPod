@@ -2,6 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
+import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -53,6 +54,7 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
 		dialog.show();
 	}
 
+	@SuppressLint("NewApi")
 	public void executeAsync() {
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
