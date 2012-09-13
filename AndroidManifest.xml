@@ -60,8 +60,7 @@
                 android:value=".activity.SearchActivity" />
         </activity>
         <activity
-            android:name="de.danoeh.antennapod.activity.ItemviewActivity"
-            android:configChanges="keyboardHidden|orientation" />
+            android:name="de.danoeh.antennapod.activity.ItemviewActivity" android:configChanges="keyboard|orientation"/>
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />

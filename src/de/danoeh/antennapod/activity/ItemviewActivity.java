@@ -94,7 +94,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 				.beginTransaction();
 		ItemDescriptionFragment fragment = ItemDescriptionFragment.newInstance(
 				item);
-		fragmentTransaction.add(R.id.description_fragment, fragment);
+		fragmentTransaction.replace(R.id.description_fragment, fragment);
 		fragmentTransaction.commit();
 	}
 

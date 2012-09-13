@@ -48,29 +48,30 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
 		webvDescription.getSettings().setUseWideViewPort(false);
-
 		return webvDescription;
 	}
 
-	@SuppressLint("NewApi")
+	@Override
+	public void onDestroyView() {
+		super.onDestroyView();
+	}
+
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		if (webViewLoader == null && item != null) {
-			webViewLoader = createLoader();
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-			} else {
-				webViewLoader.execute();
-			}
-		}
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Fragment attached");
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Fragment detached");
 		if (webViewLoader != null) {
 			webViewLoader.cancel(true);
 		}
@@ -79,6 +80,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Fragment destroyed");
 		if (webViewLoader != null) {
 			webViewLoader.cancel(true);
 		}
@@ -88,6 +91,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Creating fragment");
 		setRetainInstance(true);
 		FeedManager manager = FeedManager.getInstance();
 		Bundle args = getArguments();
@@ -96,6 +101,17 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (feedId != -1 && itemId != -1) {
 			Feed feed = manager.getFeed(feedId);
 			item = manager.getFeedItem(itemId, feed);
+
+		} else {
+			Log.e(TAG, TAG + " was called with invalid arguments");
+		}
+	}
+
+	@SuppressLint("NewApi")
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (item != null) {
 			webViewLoader = createLoader();
 			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 				webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -103,9 +119,13 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				webViewLoader.execute();
 			}
 		} else {
-			Log.e(TAG, TAG + " was called with invalid arguments");
+			Log.e(TAG, "Error in onViewCreated: Item was null");
 		}
+	}
 
+	@Override
+	public void onResume() {
+		super.onResume();
 	}
 
 	private AsyncTask<Void, Void, Void> createLoader() {
@@ -158,8 +178,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				data = WEBVIEW_STYLE + data;
 				return null;
 			}
-
-			
 
 		};
 	}
