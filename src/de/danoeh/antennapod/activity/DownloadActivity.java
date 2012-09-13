@@ -176,10 +176,10 @@ public class DownloadActivity extends SherlockListActivity implements
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, MENU_SHOW_LOG, Menu.NONE,
 				R.string.show_download_log).setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_IF_ROOM);
+				MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		menu.add(Menu.NONE, MENU_CANCEL_ALL_DOWNLOADS, Menu.NONE,
 				R.string.cancel_all_downloads_label).setShowAsAction(
-				MenuItem.SHOW_AS_ACTION_IF_ROOM);
+				MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return true;
 	}
 

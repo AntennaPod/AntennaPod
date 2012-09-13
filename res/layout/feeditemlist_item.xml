@@ -54,46 +54,48 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content" >
 
-            <TextView
-                android:id="@+id/txtvLenSize"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true" />
-
             <LinearLayout
+                android:id="@+id/enc_icons"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignBottom="@id/txtvLenSize"
+                android:layout_height="@dimen/enc_icons_size"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@id/txtvLenSize"
+                android:layout_centerVertical="true"
                 android:orientation="horizontal" >
 
                 <ImageView
                     android:id="@+id/imgvType"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/enc_icons_size"
                     android:layout_height="match_parent" />
 
                 <ImageView
                     android:id="@+id/imgvInPlaylist"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/enc_icons_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/stat_playlist"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/imgvDownloaded"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/enc_icons_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/av_download"
                     android:visibility="gone" />
 
                 <ImageView
                     android:id="@+id/imgvDownloading"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/enc_icons_size"
                     android:layout_height="match_parent"
                     android:src="@drawable/navigation_refresh"
                     android:visibility="gone" />
             </LinearLayout>
+
+            <TextView
+                android:id="@+id/txtvLenSize"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/enc_icons"
+                android:maxLines="2" />
         </RelativeLayout>
     </LinearLayout>
 

@@ -3,5 +3,6 @@
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="thumbnail_length">55dp</dimen>
     <dimen name="external_player_height">55dp</dimen>
+    <dimen name="enc_icons_size">20dp</dimen>
     
 </resources>
