@@ -25,19 +25,17 @@ public class FeedItemMenuHandler {
 		FeedManager manager = FeedManager.getInstance();
 		DownloadRequester requester = DownloadRequester.getInstance();
 		boolean hasMedia = selectedItem.getMedia() != null;
-		if (hasMedia) {
-			if (selectedItem.getMedia().isDownloaded()) {
-				menu.findItem(R.id.play_item).setVisible(true);
-				menu.findItem(R.id.remove_item).setVisible(true);
-			} else {
-				menu.findItem(R.id.download_item).setVisible(true);
-				menu.findItem(R.id.stream_item).setVisible(true);
-			}
-		}
-
-		boolean isDownloading = hasMedia
+		boolean downloaded = hasMedia && selectedItem.getMedia().isDownloaded();
+		boolean downloading = hasMedia
 				&& requester.isDownloadingFile(selectedItem.getMedia());
-		menu.findItem(R.id.cancel_download_item).setVisible(isDownloading);
+		boolean notLoadedAndNotLoading = hasMedia && (!downloaded) && (!downloading);
+
+		menu.findItem(R.id.play_item).setVisible(downloaded);
+		menu.findItem(R.id.remove_item).setVisible(downloaded);
+		menu.findItem(R.id.download_item).setVisible(notLoadedAndNotLoading);
+		menu.findItem(R.id.stream_item).setVisible(
+				notLoadedAndNotLoading | downloading);
+		menu.findItem(R.id.cancel_download_item).setVisible(downloading);
 
 		boolean isInQueue = manager.isInQueue(selectedItem);
 
