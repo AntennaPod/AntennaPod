@@ -44,6 +44,7 @@ import android.util.Log;
 import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
@@ -204,9 +205,11 @@ public class DownloadService extends Service {
 		Bitmap icon = BitmapFactory.decodeResource(null,
 				android.R.drawable.stat_notify_sync_noanim);
 		notificationBuilder = new NotificationCompat.Builder(this)
-				.setContentTitle("Downloading Podcast data")
+				.setContentTitle(
+						getString(R.string.download_notification_title))
 				.setContentText(
-						requester.getNumberOfDownloads() + " Downloads left")
+						requester.getNumberOfDownloads()
+								+ getString(R.string.downloads_left))
 				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
 				.setSmallIcon(android.R.drawable.stat_notify_sync_noanim);
 
@@ -451,8 +454,9 @@ public class DownloadService extends Service {
 					.setContentTitle(
 							getString(de.danoeh.antennapod.R.string.download_report_title))
 					.setContentText(
-							successfulDownloads + " Downloads succeeded, "
-									+ failedDownloads + " failed")
+							String.format(
+									getString(R.string.download_report_content),
+									successfulDownloads, failedDownloads))
 					.setSmallIcon(android.R.drawable.stat_notify_sync)
 					.setLargeIcon(
 							BitmapFactory.decodeResource(null,

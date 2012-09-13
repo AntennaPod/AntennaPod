@@ -722,8 +722,8 @@ public class PlaybackService extends Service {
 		Bitmap icon = BitmapFactory.decodeResource(null,
 				R.drawable.ic_stat_antenna);
 		notificationBuilder = new NotificationCompat.Builder(this)
-				.setContentTitle("Mediaplayer Service")
-				.setContentText("Click here for more info").setOngoing(true)
+				.setContentTitle(getString(R.string.playbackservice_notification_title))
+				.setContentText(getString(R.string.playbackservice_notification_content)).setOngoing(true)
 				.setContentIntent(pIntent).setLargeIcon(icon)
 				.setSmallIcon(R.drawable.ic_stat_antenna);
 

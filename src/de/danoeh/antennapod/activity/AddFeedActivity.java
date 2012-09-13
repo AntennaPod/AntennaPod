@@ -150,7 +150,7 @@ public class AddFeedActivity extends SherlockActivity {
 	/** Start listening for any intents send by the DownloadService. */
 	private void observeDownload(Feed feed) {
 		progDialog.show();
-		progDialog.setMessage("Downloading Feed");
+		progDialog.setMessage(getString(R.string.loading_label));
 	}
 
 	private void handleDownloadError(int reason) {
@@ -158,7 +158,7 @@ public class AddFeedActivity extends SherlockActivity {
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
 				+ DownloadError.getErrorString(this, reason));
-		errorDialog.setButton("OK", new DialogInterface.OnClickListener() {
+		errorDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				errorDialog.dismiss();
