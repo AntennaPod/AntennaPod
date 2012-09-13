@@ -1,24 +1,24 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedCategory;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.SimpleChapter;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.SimpleChapter;
 
 /**
  * Implements methods for accessing the database
@@ -27,6 +27,9 @@ public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
 	private static final int DATABASE_VERSION = 5;
 	private static final String DATABASE_NAME = "Antennapod.db";
+
+	/** Maximum number of arguments for IN-operator. */
+	public static final int IN_OPERATOR_MAXIMUM = 800;
 
 	// ----------- Column indices
 	// ----------- General indices
@@ -548,8 +551,37 @@ public class PodDBAdapter {
 	}
 
 	public final Cursor getFeedMediaCursor(String... mediaIds) {
-		return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + " IN "
-				+ buildInOperator(mediaIds.length), mediaIds, null, null, null);
+		int length = mediaIds.length;
+		if (length > IN_OPERATOR_MAXIMUM) {
+			Log.w(TAG, "Length of id array is larger than "
+					+ IN_OPERATOR_MAXIMUM + ". Creating multiple cursors");
+			int numCursors = (int) (((double) length) / (IN_OPERATOR_MAXIMUM)) + 1;
+			Cursor[] cursors = new Cursor[numCursors];
+			for (int i = 0; i < numCursors; i++) {
+				int neededLength = 0;
+				String[] parts = null;
+				final int elementsLeft = length - i * IN_OPERATOR_MAXIMUM;
+
+				if (elementsLeft >= IN_OPERATOR_MAXIMUM) {
+					neededLength = IN_OPERATOR_MAXIMUM;
+					parts = Arrays.copyOfRange(mediaIds, i
+							* IN_OPERATOR_MAXIMUM, (i + 1)
+							* IN_OPERATOR_MAXIMUM);
+				} else {
+					neededLength = elementsLeft;
+					parts = Arrays.copyOfRange(mediaIds, i
+							* IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM) + neededLength);
+				}
+
+				cursors[i] = db.rawQuery("SELECT * FROM "
+						+ TABLE_NAME_FEED_MEDIA + " WHERE " + KEY_ID + " IN "
+						+ buildInOperator(neededLength), parts);
+			}
+			return new MergeCursor(cursors);
+		} else {
+			return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + " IN "
+					+ buildInOperator(length), mediaIds, null, null, null);
+		}
 	}
 
 	/** Builds an IN-operator argument depending on the number of items. */
