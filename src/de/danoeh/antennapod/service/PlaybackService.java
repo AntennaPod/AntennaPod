@@ -276,17 +276,21 @@ public class PlaybackService extends Service {
 				}
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-				audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-						AudioManager.ADJUST_LOWER, 0);
-				pausedBecauseOfTransientAudiofocusLoss = true;
+				if (status == PlayerStatus.PLAYING) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+							AudioManager.ADJUST_LOWER, 0);
+					pausedBecauseOfTransientAudiofocusLoss = true;
+				}
 				break;
 			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-				pause(false);
-				pausedBecauseOfTransientAudiofocusLoss = true;
+				if (status == PlayerStatus.PLAYING) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+					pause(false);
+					pausedBecauseOfTransientAudiofocusLoss = true;
+				}
 			}
 		}
 	};
@@ -722,9 +726,11 @@ public class PlaybackService extends Service {
 		Bitmap icon = BitmapFactory.decodeResource(null,
 				R.drawable.ic_stat_antenna);
 		notificationBuilder = new NotificationCompat.Builder(this)
-				.setContentTitle(getString(R.string.playbackservice_notification_title))
-				.setContentText(getString(R.string.playbackservice_notification_content)).setOngoing(true)
-				.setContentIntent(pIntent).setLargeIcon(icon)
+				.setContentTitle(
+						getString(R.string.playbackservice_notification_title))
+				.setContentText(
+						getString(R.string.playbackservice_notification_content))
+				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
 				.setSmallIcon(R.drawable.ic_stat_antenna);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
