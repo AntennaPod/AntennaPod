@@ -81,10 +81,18 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 		if (status.getStatusMsg() != 0) {
 			holder.message.setText(status.getStatusMsg());
 		}
-		holder.downloaded.setText(Converter.byteToString(status.getSoFar())
-				+ " / " + Converter.byteToString(status.getSize()));
-		holder.percent.setText(status.getProgressPercent() + "%");
-		holder.progbar.setProgress(status.getProgressPercent());
+		String strDownloaded = Converter.byteToString(status.getSoFar());
+		if (status.getSize() != DownloadStatus.SIZE_UNKNOWN) {
+			strDownloaded += " / " + Converter.byteToString(status.getSize());
+			holder.percent.setText(status.getProgressPercent() + "%");
+			holder.progbar.setProgress(status.getProgressPercent());
+			holder.percent.setVisibility(View.VISIBLE);
+		} else {
+			holder.progbar.setProgress(0);
+			holder.percent.setVisibility(View.INVISIBLE);
+		}
+
+		holder.downloaded.setText(strDownloaded);
 
 		return convertView;
 	}

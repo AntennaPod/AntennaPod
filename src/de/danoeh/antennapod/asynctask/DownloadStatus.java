@@ -6,6 +6,11 @@ import de.danoeh.antennapod.feed.FeedFile;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {
+	/**
+	 * Downloaders should use this constant for the size attribute if necessary
+	 * so that the listadapters etc. can react properly.
+	 */
+	public static final int SIZE_UNKNOWN = -1;
 
 	public Date getCompletionDate() {
 		return completionDate;
