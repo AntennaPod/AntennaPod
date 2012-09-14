@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item
+    <item android:id="@+id/all_feed_refresh" android:title="@string/refresh_label" android:icon="@drawable/navigation_refresh" android:showAsAction="ifRoom|collapseActionView">
+    </item><item
         android:id="@+id/add_feed"
         android:title="@string/add_feed_label"
         android:icon="@drawable/content_new"
         android:showAsAction="ifRoom|collapseActionView">
     </item>
-    <item
-        android:id="@+id/all_feed_refresh"
-        android:title="@string/refresh_label"
-        android:icon="@drawable/navigation_refresh"
-        android:showAsAction="ifRoom|collapseActionView">
-    </item>
+    
     
     
     <item android:id="@id/search_item" android:icon="@drawable/action_search" android:title="@string/search_label" android:showAsAction="ifRoom|collapseActionView"></item><item android:id="@+id/show_player" android:title="@string/show_player_label" android:icon="@drawable/av_play" android:showAsAction="collapseActionView"></item>
