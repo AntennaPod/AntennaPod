@@ -129,8 +129,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
-    <string name="pref_autoUpdateIntervall_title">Update intervall</string>
-    <string name="pref_autoUpdateIntervall_sum">Specify an intervall in which the feeds are refreshed automatically or disable it</string>
+    <string name="pref_autoUpdateIntervall_title">Update interval</string>
+    <string name="pref_autoUpdateIntervall_sum">Specify an interval in which the feeds are refreshed automatically or disable it</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
