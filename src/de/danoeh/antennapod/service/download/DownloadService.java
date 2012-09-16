@@ -101,8 +101,7 @@ public class DownloadService extends Service {
 	private NotificationCompat.Builder notificationBuilder;
 	private int NOTIFICATION_ID = 2;
 	private int REPORT_ID = 3;
-	/** Needed to determine the duration of a media file */
-	private MediaPlayer mediaplayer;
+	
 
 	private List<Downloader> downloads;
 
@@ -179,7 +178,6 @@ public class DownloadService extends Service {
 				});
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
-		mediaplayer = new MediaPlayer();
 	}
 
 	@Override
@@ -192,7 +190,6 @@ public class DownloadService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service shutting down");
 		isRunning = false;
-		mediaplayer.release();
 		unregisterReceiver(cancelDownloadReceiver);
 		unregisterReceiver(downloadQueued);
 	}
@@ -674,17 +671,20 @@ public class DownloadService extends Service {
 		public void run() {
 			media.setDownloaded(true);
 			// Get duration
+			MediaPlayer mediaplayer = new MediaPlayer();
 			try {
 				mediaplayer.setDataSource(media.getFile_url());
 				mediaplayer.prepare();
+				media.setDuration(mediaplayer.getDuration());
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Duration of file is " + media.getDuration());
+				mediaplayer.reset();
 			} catch (IOException e) {
 				e.printStackTrace();
+			} finally {
+				mediaplayer.release();
 			}
-			media.setDuration(mediaplayer.getDuration());
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Duration of file is " + media.getDuration());
-			mediaplayer.reset();
-
+			
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
 			manager.setFeedMedia(DownloadService.this, media);
