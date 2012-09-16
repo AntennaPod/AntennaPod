@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Каналы</string>
+  <string name="new_label">Новые</string>
+  <string name="settings_label">Настройки</string>
+  <string name="add_new_feed_label">Добавить новый канал</string>
+  <string name="downloads_label">Закачки</string>
+  <string name="cancel_download_label">Отменить закачку</string>
+  <string name="download_log_label">Журнал закачек</string>
+  <!--Other-->
+  <string name="confirm_label">Подтвердить</string>
+  <string name="cancel_label">Отменить</string>
+  <string name="author_label">Автор</string>
+  <string name="language_label">Язык</string>
+  <string name="cover_label">Обложка</string>
+  <string name="error_label">Ошибка</string>
+  <string name="error_msg_prefix">Произошла ошибка:</string>
+  <string name="refresh_label">Обновить</string>
+  <string name="external_storage_error_msg">Внешний носитель данных недоступен. Убедитесь что внешний носитель смонтирован, иначе это приложение не сможет нормально работать.</string>
+  <string name="chapters_label">Разделы</string>
+  <string name="shownotes_label">Описание</string>
+  <string name="last_update_prefix">Последнее обновление:\u0020</string>
+  <string name="episodes_suffix">\u0020эпизоды</string>
+  <string name="published_prefix">Опубликовано:\u0020</string>
+  <string name="length_prefix">Продолжительность:\u0020</string>
+  <string name="size_prefix">Размер:\u0020</string>
+  <string name="processing_label">Обработка</string>
+  <string name="loading_label">Загрузка...</string>
+  <string name="image_of_prefix">Изображение:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL канала</string>
+  <string name="txtvfeedurl_label">Введите URL канала:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Отметить все как прочитанное</string>
+  <string name="show_info_label">Показать информацию</string>
+  <string name="remove_feed_label">Удалить канал</string>
+  <string name="share_link_label">Поделиться ссылкой на сайт</string>
+  <string name="share_source_label">Поделиться ссылкой на канал</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ закачанных эпизодов этого канала.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Закачать</string>
+  <string name="play_label">Слушать</string>
+  <string name="stream_label">Воспроизвести из сети</string>
+  <string name="remove_label">Удалить</string>
+  <string name="mark_read_label">Отметить как прочитанное</string>
+  <string name="mark_unread_label">Отметить как непрочитанное</string>
+  <string name="add_to_queue_label">Поставить в очередь</string>
+  <string name="remove_from_queue_label">Удалить из очереди</string>
+  <string name="visit_website_label">Посетить сайт</string>
+  <string name="support_label">Поддержать посредством Flattr</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Закачка завершилась успешно</string>
+  <string name="download_failed">Закачка </string>
+  <string name="download_pending">Закачка в ожидании</string>
+  <string name="download_running">Закачка в процессе</string>
+  <string name="download_error_device_not_found">Устройство хранения не найдено</string>
+  <string name="download_error_insufficient_space">Недостаточно свободного места</string>
+  <string name="download_error_file_error">Ошибка файла</string>
+  <string name="download_error_http_data_error">Ошибка протокола HTTP</string>
+  <string name="download_error_error_unknown">Неизвестная ошибка</string>
+  <string name="download_error_parser_exception">Ошибка парсера</string>
+  <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
+  <string name="download_error_connection_error">Ошибка соединения</string>
+  <string name="cancel_all_downloads_label">Отменить все закачки</string>
+  <string name="download_cancelled_msg">Закачка отменена</string>
+  <string name="download_report_title">Закачки завершены</string>
+  <string name="download_error_malformed_url">Некорректная ссылка</string>
+  <string name="download_error_io_error">Ошибка ввода-вывода</string>
+  <string name="download_error_device_not_found">Устройство хранения не найдено</string>
+  <string name="downloads_left">\u0020закачек осталось</string>
+  <string name="download_notification_title">Получение данных подкаста</string>
+  <string name="download_report_content">%1$d успешных закачек, %2$d неудачных</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Ошибка!</string>
+  <string name="player_stopped_msg">Ничего не воспроизводится</string>
+  <string name="player_preparing_msg">Подготовка</string>
+  <string name="player_ready_msg">Готово</string>
+  <string name="player_seeking_msg">Поиск</string>
+  <string name="playback_error_server_died">Сервер отключился</string>
+  <string name="playback_error_unknown">Неизвестная ошибка</string>
+  <string name="no_media_playing_label">Ничего не воспроизводится</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Буферизация</string>
+  <string name="playbackservice_notification_title">Воспроизведение подкаста</string>
+  <string name="playbackservice_notification_content">Для получения дополнительной информации нажмите здесь</string>
+  <!--Navigation-->
+  <string name="show_download_log">Показать журнал</string>
+  <string name="show_player_label">Показать проигрыватель</string>
+  <!--Queue operations-->
+  <string name="move_up_label">Поднять</string>
+  <string name="move_down_label">Опустить</string>
+  <string name="clear_queue_label">Очистить очередь</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Авторизоваться в Flattr</string>
+  <string name="flattr_auth_explanation">Нажмите кнопку чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr где вам нужно будет подключить AntennaPod к вашему аккаунту. После этого вы автоматически будете перенаправлены обратно.</string>
+  <string name="authenticate_label">Авторизовать</string>
+  <string name="return_home_label">Вернуться к началу</string>
+  <string name="flattr_auth_success">Успешная авторизация! Теперь вы можете использовать Flattr прямо из приложения.</string>
+  <string name="no_flattr_token_title">Токен Flattr не найден</string>
+  <string name="no_flattr_token_msg">Похоже что ваш аккаунт Flattr не подключен к AntennaPod. Можно подключить аккаунт к AntennaPod или посетить сайт канала чтобы использовать Flattr прямо на сайте.</string>
+  <string name="authenticate_now_label">Авторизоваться</string>
+  <string name="action_forbidden_title">Действие запрещено</string>
+  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно потому что доступ к вашему аккаунту был отозван. Вы можете авторизоваться заново или попробовать посетить сайт.</string>
+  <string name="access_revoked_title">Доступ отозван</string>
+  <string name="access_revoked_info">Вы успешно отключили AntennaPod от вашего аккаунта в Flattr. Чтобы завершить этот процесс вам нужно удалить AntennaPod из списка приложений подключенных к вашему аккаунту на сайте Flattr.</string>
+  <string name="flattr_click_success">Поддержка через Flattr прошла успешно!</string>
+  <string name="flattring_label">Отправляется запрос на Flattr</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Список пуст</string>
+  <string name="no_feeds_label">Вы еще не подписаны ни на один канал</string>
+  <!--Preferences-->
+  <string name="other_pref">Прочее</string>
+  <string name="about_pref">Информация</string>
+  <string name="queue_label">Очередь</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Остановить воспроизведение когда наушники отсоединены</string>
+  <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
+  <string name="playback_pref">Воспроизведение</string>
+  <string name="network_pref">Сеть</string>
+  <string name="pref_autoUpdateIntervall_title">Интервал обновлений</string>
+  <string name="pref_autoUpdateIntervall_sum">Укажите интервал через который каналы обновляются автоматически, или отключите это</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Закачивать файлы только по WiFi</string>
+  <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Закачка по WiFi</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
+  <string name="pref_mobileUpdate_title">Мобильные обновления</string>
+  <string name="pref_mobileUpdate_sum">Разрешить обновления через мобильное интернет-подключение</string>
+  <string name="refreshing_label">Обновление</string>
+  <string name="flattr_settings_label">Настройки Flattr</string>
+  <string name="pref_flattr_auth_title">Авторизация Flattr</string>
+  <string name="pref_flattr_auth_sum">Авторизуйтесь в Flattr чтобы поддерживать каналы прямо из приложения</string>
+  <string name="pref_flattr_this_app_title">Поддержать это приложение в Flattr</string>
+  <string name="pref_flattr_this_app_sum">Поддержать разработку AntennaPod через Flattr. Спасибо!</string>
+  <string name="pref_revokeAccess_title">Отозвать доступ</string>
+  <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
+  <string name="pref_autoQueue_title">Ставить в очередь автоматически</string>
+  <string name="pref_autoQueue_sum">Ставить эпизод в очередь сразу после закачки.</string>
+  <string name="pref_display_only_episodes_title">Показывать только эпизоды</string>
+  <string name="pref_display_only_episodes_sum">Показывать только элементы списка которые содержат эпизоды</string>
+  <string name="user_interface_label">Интерфейс</string>
+  <!--Search-->
+  <string name="search_hint">Поиск каналов или эпизодов</string>
+  <string name="found_in_shownotes_label">Найдено в описании эпизода</string>
+  <string name="found_in_chapters_label">Найдено в разделах</string>
+  <string name="search_status_searching">Поиск...</string>
+  <string name="search_status_no_results">Ничего не найдено</string>
+  <string name="search_results_label">Результаты поиска</string>
+  <string name="search_term_label">Вы искали:\u0020</string>
+  <string name="search_label">Поиск</string>
+  <string name="found_in_title_label">Найдено в заголовке</string>
+  <!--OPML import and export-->
+  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить в следующий каталог и нажать кнопку чтобы начать процесс импорта.</string>
+  <string name="start_import_label">Начать импорт</string>
+  <string name="opml_import_label">Импорт OPML</string>
+  <string name="opml_directory_error">ОШИБКА!</string>
+  <string name="reading_opml_label">Чтение файла OPML</string>
+  <string name="opml_reader_error">Ошибка чтения документа OPML</string>
+  <string name="opml_import_error_dir_empty">Каталог импорта пуст.</string>
+  <string name="select_all_label">Отметить все</string>
+  <string name="deselect_all_label">Снять все отметки</string>
+  <string name="choose_file_to_import_label">Выбрать файл для импорта</string>
+  <string name="opml_export_label">Выгрузка в OPML</string>
+  <string name="exporting_label">Выгружается...</string>
+  <string name="export_error_label">Ошибка выгрузки</string>
+  <string name="opml_export_success_title">Выгружено в OPML успешно</string>
+  <string name="opml_export_success_sum">OPML файл был записан в:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Установить таймер сна</string>
+  <string name="disable_sleeptimer_label">Отключить таймер сна</string>
+  <string name="enter_time_here_label">Ввести время</string>
+  <string name="sleep_timer_label">Таймер сна</string>
+  <string name="time_left_label">Времени осталось:\u0020</string>
+  <string name="time_dialog_invalid_input">Неправильный ввод, время должно быть в виде числа</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Загружаются категории...</string>
+  <string name="browse_miroguide_label">Просмотреть каталоги в проекте Miro</string>
+  <string name="txtv_browse_miroguide_label">Или просмотреть каталоги в проекте Miro</string>
+  <string name="miro_guide_label">Проект Miro</string>
+  <string name="miro_search_hint">Поиск в проекте Miro</string>
+  <string name="popular_label">Популярные</string>
+  <string name="best_rating_label">Наивысший рейтинг</string>
+  <string name="add_feed_label">Добавить канал</string>
+  <string name="miro_feed_added">Канал добавляется</string>
+</resources>
