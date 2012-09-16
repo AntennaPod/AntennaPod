@@ -752,7 +752,9 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Seeking position " + i);
 		if (shouldStream) {
-			statusBeforeSeek = status;
+			if (status != PlayerStatus.SEEKING) {
+				statusBeforeSeek = status;
+			}
 			setStatus(PlayerStatus.SEEKING);
 		}
 		player.seekTo(i);
