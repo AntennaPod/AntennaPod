@@ -1,0 +1,185 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Feeds</string>
+  <string name="new_label">Neu</string>
+  <string name="settings_label">Einstellungen</string>
+  <string name="add_new_feed_label">Feed hinzufügen</string>
+  <string name="downloads_label">Downloads</string>
+  <string name="cancel_download_label">Download abbrechen</string>
+  <string name="download_log_label">Download Log</string>
+  <!--Other-->
+  <string name="confirm_label">Bestätigen</string>
+  <string name="cancel_label">Abbrechen</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Sprache</string>
+  <string name="cover_label">Cover</string>
+  <string name="error_label">Fehler</string>
+  <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
+  <string name="refresh_label">Aktualisieren</string>
+  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
+  <string name="chapters_label">Kapitel</string>
+  <string name="shownotes_label">Sendungsnotizen</string>
+  <string name="last_update_prefix">Letztes Update:\u0020</string>
+  <string name="episodes_suffix">\u0020Episoden</string>
+  <string name="published_prefix">Veröffentlicht:\u0020</string>
+  <string name="length_prefix">Länge:\u0020</string>
+  <string name="size_prefix">Größe:\u0020</string>
+  <string name="processing_label">Verarbeite</string>
+  <string name="loading_label">Lade...</string>
+  <string name="image_of_prefix">Bild von:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Feed URL</string>
+  <string name="txtvfeedurl_label">Gib die URL des Feeds hier ein:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Markiere alle als gelesen</string>
+  <string name="show_info_label">Informationen anzeigen</string>
+  <string name="remove_feed_label">Feed entfernen</string>
+  <string name="share_link_label">Webseiten-Link teilen</string>
+  <string name="share_source_label">Feed-Link teilen</string>
+  <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Herunterladen</string>
+  <string name="play_label">Abspielen</string>
+  <string name="stream_label">Streamen</string>
+  <string name="remove_label">Entfernen</string>
+  <string name="mark_read_label">Als gelesen markieren</string>
+  <string name="mark_unread_label">Als ungelesen markieren</string>
+  <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
+  <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
+  <string name="visit_website_label">Webseite besuchen</string>
+  <string name="support_label">Flattr this</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Download erfolgreich</string>
+  <string name="download_failed">Download fehlgeschlagen</string>
+  <string name="download_pending">Download anstehend</string>
+  <string name="download_running">Download läuft</string>
+  <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
+  <string name="download_error_insufficient_space">Zu wenig Speicherplatz</string>
+  <string name="download_error_file_error">Dateifehler</string>
+  <string name="download_error_http_data_error">HTTP Datenfehler</string>
+  <string name="download_error_error_unknown">Unbekannter Fehler</string>
+  <string name="download_error_parser_exception">Parserfehler</string>
+  <string name="download_error_unsupported_type">Nicht unterstützter Feed-Typ</string>
+  <string name="download_error_connection_error">Verbindungsfehler</string>
+  <string name="cancel_all_downloads_label">Alle Downloads abbrechen</string>
+  <string name="download_cancelled_msg">Download abgebrochen</string>
+  <string name="download_report_title">Download abgeschlossen</string>
+  <string name="download_error_malformed_url">Fehler in URL</string>
+  <string name="download_error_io_error">IO Error</string>
+  <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
+  <string name="downloads_left">\u0020Downloads übrig</string>
+  <string name="download_notification_title">Lade Podcast-Daten</string>
+  <string name="download_report_content">%1$d Downloads erfolgreich, %2$d fehlgeschlagen</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Fehler!</string>
+  <string name="player_stopped_msg">Keine Medienwiedergabe</string>
+  <string name="player_preparing_msg">Bereite vor</string>
+  <string name="player_ready_msg">Fertig</string>
+  <string name="player_seeking_msg">Spule</string>
+  <string name="playback_error_server_died">Server ist offline</string>
+  <string name="playback_error_unknown">Unbekannter Fehler</string>
+  <string name="no_media_playing_label">Keine Medienwiedergabe</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Puffert</string>
+  <string name="playbackservice_notification_title">Spiele Podcast ab</string>
+  <string name="playbackservice_notification_content">Tippe hier für weitere Informationen</string>
+  <!--Navigation-->
+  <string name="show_download_log">Zeige Log</string>
+  <string name="show_player_label">Zeige Player</string>
+  <!--Queue operations-->
+  <string name="move_up_label">Nach oben bewegen</string>
+  <string name="move_down_label">Nach unten bewegen</string>
+  <string name="clear_queue_label">Abspielliste leeren</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Flattr Anmeldung</string>
+  <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
+  <string name="authenticate_label">Authentifizieren</string>
+  <string name="return_home_label">Zur Hauptseite zurückkehren</string>
+  <string name="flattr_auth_success">Die Authentifizierung war erfolgreich! Du kannst nun in der App Flattr verwenden.</string>
+  <string name="no_flattr_token_title">Kein Flattr Token gefunden</string>
+  <string name="no_flattr_token_msg">Dein Flattr Account scheint nicht mit AntennaPod verbunden zu sein. Du kannst entweder deinen Account mit AntennaPod verbinden, um direkt in der App Flattr zu verwenden, oder du kannst die Flattr-Seite der Sache im Web besuchen.</string>
+  <string name="authenticate_now_label">Authentifizieren</string>
+  <string name="action_forbidden_title">Aktion verboten</string>
+  <string name="action_forbidden_msg">AntennaPod besitzt keine Erlaubnis für diese Aktion. Der Grund dafür könnte sein, dass AntennaPods Zugangstoken aufgehoben worden ist. Du kannst dich entweder erneut authentifizieren oder die Flattr-Seite der Sache im Web besuchen.</string>
+  <string name="access_revoked_title">Zugriff widerrufen</string>
+  <string name="access_revoked_info">Du hast AntennaPod das Zugangstoken zu deinem Account entzogen. Um diesen Prozess abzuschließen, musst du diese App aus der Liste der zugelassenen Anwendungen in deinen Account Einstellungen auf der Flattr Webseite entfernen.</string>
+  <string name="flattr_click_success">Du hast erfolgreich diese Sache mit Flattr unterstützt!</string>
+  <string name="flattring_label">Flattre diese Sache</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
+  <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
+  <!--Preferences-->
+  <string name="other_pref">Anderes</string>
+  <string name="about_pref">Über</string>
+  <string name="queue_label">Abspielliste</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe wenn der Kopfhörer entfernt worden ist.</string>
+  <string name="pref_followQueue_sum">Springe zur nächsten Episode  wenn die vorherige Episode endet</string>
+  <string name="playback_pref">Wiedergabe</string>
+  <string name="network_pref">Netzwerk</string>
+  <string name="pref_autoUpdateIntervall_title">Aktualisierungsintervall</string>
+  <string name="pref_autoUpdateIntervall_sum">Lege ein Intervall fest, in dem Feeds automatisch aktualisiert werden oder deaktiviere es</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Lade Mediendateien nur über WiFi</string>
+  <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer-Trennung</string>
+  <string name="pref_mobileUpdate_title">Mobile Updates</string>
+  <string name="pref_mobileUpdate_sum">Erlaube Updates über die mobile Datenverbindung</string>
+  <string name="refreshing_label">Aktualisiere</string>
+  <string name="flattr_settings_label">Flattr Einstellungen</string>
+  <string name="pref_flattr_auth_title">Flattr Anmeldung</string>
+  <string name="pref_flattr_auth_sum">Melde dich mit deinem Flattr Account an, um direkt in der App flattrn.</string>
+  <string name="pref_flattr_this_app_title">Flattr diese App</string>
+  <string name="pref_flattr_this_app_sum">Unterstütze die Entwicklung von AntennaPod mit Flattr. Danke!</string>
+  <string name="pref_revokeAccess_title">Zugriff entziehen</string>
+  <string name="pref_revokeAccess_sum">Entziehe dieser App die Zugriffserlaubnis für deinen Flattr account</string>
+  <string name="pref_autoQueue_title">Automatisches Einreihen</string>
+  <string name="pref_autoQueue_sum">Füge eine Episode nach dem Herunterladen der Abspielliste hinzu.</string>
+  <string name="pref_display_only_episodes_title">Nur Episoden anzeigen</string>
+  <string name="pref_display_only_episodes_sum">Zeige nur Feed-Einträge mit Episoden an.</string>
+  <string name="user_interface_label">Benutzeroberfläche</string>
+  <!--Search-->
+  <string name="search_hint">Suche nach Feeds oder Episoden</string>
+  <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>
+  <string name="found_in_chapters_label">In Kapiteln gefunden</string>
+  <string name="search_status_searching">Suche...</string>
+  <string name="search_status_no_results">Keine Ergebnisse gefunden</string>
+  <string name="search_results_label">Suchergebnisse</string>
+  <string name="search_term_label">Suchbegriff:\u0020</string>
+  <string name="search_label">Suche</string>
+  <string name="found_in_title_label">In Titel gefunden</string>
+  <!--OPML import and export-->
+  <string name="opml_import_explanation">Um eine OPML Datei zu importieren, musst du diese im folgenden Ordner platzieren und den unteren Button antippen, um den Import Prozess zu starten.</string>
+  <string name="start_import_label">Import starten</string>
+  <string name="opml_import_label">OPML Import</string>
+  <string name="opml_directory_error">FEHLER!</string>
+  <string name="reading_opml_label">Lese OPML Datei</string>
+  <string name="opml_reader_error">Ein Fehler is beim Lesen des OPML Dokuments aufgetreten:</string>
+  <string name="opml_import_error_dir_empty">Der Import-Ordner ist leer.</string>
+  <string name="select_all_label">Alle auswählen</string>
+  <string name="deselect_all_label">Auswahl zurücksetzen</string>
+  <string name="choose_file_to_import_label">Wähle eine Datei zum Importieren aus</string>
+  <string name="opml_export_label">OPML Export</string>
+  <string name="exporting_label">Exportiere...</string>
+  <string name="export_error_label">Exportfehler</string>
+  <string name="opml_export_success_title">OPML Export erfolgreich</string>
+  <string name="opml_export_success_sum">Die .opml Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Sleep timer setzen</string>
+  <string name="disable_sleeptimer_label">Sleep Timer deaktivieren</string>
+  <string name="enter_time_here_label">Zeit eingeben</string>
+  <string name="sleep_timer_label">Sleep timer</string>
+  <string name="time_left_label">Zeit übrig:\u0020</string>
+  <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Lade Kategorien</string>
+  <string name="browse_miroguide_label">Durchsuche den Miro Guide</string>
+  <string name="txtv_browse_miroguide_label">Oder durchsuche den Miro Guide:</string>
+  <string name="miro_guide_label">Miro Guide</string>
+  <string name="miro_search_hint">Suche im Miro Guide</string>
+  <string name="popular_label">Beliebt</string>
+  <string name="best_rating_label">Beste Bewertung</string>
+  <string name="add_feed_label">Feed hinzufügen</string>
+  <string name="miro_feed_added">Feed wird hinzugefügt</string>
+</resources>
