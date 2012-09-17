@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.4.5
+---------------
+* Added Russian translation (Thanks older!)
+* Added German translation
+* Several bugfixes
+
 Version 0.9.4.4
 ---------------
 * Added player controls at the bottom of the main screen and the feedlist screens
