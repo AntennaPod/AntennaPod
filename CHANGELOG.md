@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.9.4.6
+---------------
+* Enabled support for small-screen devices
+* Disabling the sleep timer should now work again
+
 Version 0.9.4.5
 ---------------
 * Added Russian translation (Thanks older!)
