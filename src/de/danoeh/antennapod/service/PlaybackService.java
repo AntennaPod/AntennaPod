@@ -960,7 +960,7 @@ public class PlaybackService extends Service {
 				try {
 					Thread.sleep(UPDATE_INTERVALL);
 					waitingTime -= UPDATE_INTERVALL;
-
+					
 					if (waitingTime <= 0) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Waiting completed");
@@ -973,6 +973,7 @@ public class PlaybackService extends Service {
 					}
 				} catch (InterruptedException e) {
 					Log.d(TAG, "Thread was interrupted while waiting");
+					break;
 				}
 			}
 			postExecute();
