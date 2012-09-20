@@ -16,15 +16,19 @@
             android:id="@+id/txtvType"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="8dp"
+            android:textColor="@color/gray" />
 
         <TextView
             android:id="@+id/txtvTitle"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/txtvType" />
+            android:layout_toLeftOf="@id/txtvType"
+            android:ellipsize="end"
+            android:maxLines="2" />
     </RelativeLayout>
 
     <TextView
