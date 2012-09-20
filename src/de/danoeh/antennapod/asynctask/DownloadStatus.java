@@ -62,6 +62,7 @@ public class DownloadStatus {
 		this.reason = reason;
 		this.successful = successful;
 		this.completionDate = completionDate;
+		this.reasonDetailed = reasonDetailed;
 	}
 
 	/** Constructor for creating new completed downloads. */
