@@ -44,40 +44,41 @@ public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 					.findViewById(R.id.txtvStatus);
 			holder.reason = (TextView) convertView
 					.findViewById(R.id.txtvReason);
-
-			if (feedfile.getClass() == Feed.class) {
-				holder.type.setText(R.string.download_type_feed);
-			} else if (feedfile.getClass() == FeedMedia.class) {
-				holder.type.setText(R.string.download_type_media);
-			} else if (feedfile.getClass() == FeedImage.class) {
-				holder.type.setText(R.string.download_type_image);
-			}
-			if (status.getTitle() != null) {
-				holder.title.setText(status.getTitle());
-			} else {
-				holder.title.setText(R.string.download_log_title_unknown);
-			}
-			holder.date.setText(DateUtils.formatSameDayTime(status
-					.getCompletionDate().getTime(), System.currentTimeMillis(),
-					DateFormat.SHORT, DateFormat.SHORT));
-			if (status.isSuccessful()) {
-				holder.successful.setTextColor(convertView.getResources()
-						.getColor(R.color.download_success_green));
-				holder.successful.setText(R.string.download_successful);
-				holder.reason.setVisibility(View.GONE);
-			} else {
-				holder.successful.setTextColor(convertView.getResources()
-						.getColor(R.color.download_failed_red));
-				holder.successful.setText(R.string.download_failed);
-				String reasonText = DownloadError.getErrorString(
-						getContext(), status.getReason());
-				if (status.getReasonDetailed() != null) {
-					reasonText += ": " + status.getReasonDetailed();
-				}
-				holder.reason.setText(reasonText);
-			}
+			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
+		}
+		if (feedfile.getClass() == Feed.class) {
+			holder.type.setText(R.string.download_type_feed);
+		} else if (feedfile.getClass() == FeedMedia.class) {
+			holder.type.setText(R.string.download_type_media);
+		} else if (feedfile.getClass() == FeedImage.class) {
+			holder.type.setText(R.string.download_type_image);
+		}
+		if (status.getTitle() != null) {
+			holder.title.setText(status.getTitle());
+		} else {
+			holder.title.setText(R.string.download_log_title_unknown);
+		}
+		holder.date.setText(DateUtils.formatSameDayTime(status
+				.getCompletionDate().getTime(), System.currentTimeMillis(),
+				DateFormat.SHORT, DateFormat.SHORT));
+		if (status.isSuccessful()) {
+			holder.successful.setTextColor(convertView.getResources().getColor(
+					R.color.download_success_green));
+			holder.successful.setText(R.string.download_successful);
+			holder.reason.setVisibility(View.GONE);
+		} else {
+			holder.successful.setTextColor(convertView.getResources().getColor(
+					R.color.download_failed_red));
+			holder.successful.setText(R.string.download_failed);
+			String reasonText = DownloadError.getErrorString(getContext(),
+					status.getReason());
+			if (status.getReasonDetailed() != null) {
+				reasonText += ": " + status.getReasonDetailed();
+			}
+			holder.reason.setText(reasonText);
+			holder.reason.setVisibility(View.VISIBLE);
 		}
 
 		return convertView;
