@@ -281,7 +281,7 @@ public class DownloadService extends Service {
 		FeedFile feedfile = requester.getDownload(request.source);
 		if (feedfile != null) {
 
-			DownloadStatus status = new DownloadStatus(feedfile);
+			DownloadStatus status = new DownloadStatus(feedfile, feedfile.getHumanReadableIdentifier());
 			Downloader downloader = getDownloader(status);
 			if (downloader != null) {
 				downloads.add(downloader);

@@ -42,8 +42,9 @@ public class DownloadStatus {
 	protected int statusMsg;
 	protected boolean done;
 
-	public DownloadStatus(FeedFile feedfile) {
+	public DownloadStatus(FeedFile feedfile, String title) {
 		this.feedfile = feedfile;
+		this.title = title;
 	}
 
 	/** Constructor for restoring Download status entries from DB. */
