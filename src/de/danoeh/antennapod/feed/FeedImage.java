@@ -17,6 +17,15 @@ public class FeedImage extends FeedFile {
 		this.title = title;
 	}
 
+	@Override
+	public String getHumanReadableIdentifier() {
+		if (feed != null && feed.getTitle() != null) {
+			return feed.getTitle();
+		} else {
+			return download_url;
+		}
+	}
+	
 	public FeedImage() {
 		super();
 	}

@@ -134,6 +134,15 @@ public class Feed extends FeedFile {
 		}
 	}
 
+	@Override
+	public String getHumanReadableIdentifier() {
+		if (title != null) {
+			return title;
+		} else {
+			return download_url;
+		}
+	}
+
 	public String getTitle() {
 		return title;
 	}

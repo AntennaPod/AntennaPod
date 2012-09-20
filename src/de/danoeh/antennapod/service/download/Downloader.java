@@ -43,10 +43,6 @@ public abstract class Downloader extends Thread {
 		}
 	}
 
-	protected void publishProgress() {
-		status.setUpdateAvailable(true);
-	}
-
 	protected abstract void download();
 
 	@Override

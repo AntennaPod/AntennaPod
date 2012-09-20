@@ -25,7 +25,7 @@ import de.danoeh.antennapod.feed.SimpleChapter;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 5;
+	private static final int DATABASE_VERSION = 6;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -67,6 +67,8 @@ public class PodDBAdapter {
 	public static final int KEY_REASON_INDEX = 3;
 	public static final int KEY_SUCCESSFUL_INDEX = 4;
 	public static final int KEY_COMPLETION_DATE_INDEX = 5;
+	public static final int KEY_REASON_DETAILED_INDEX = 6;
+	public static final int KEY_DOWNLOADSTATUS_TITLE_INDEX = 7;
 	// --------- Queue indices
 	public static final int KEY_FEEDITEM_INDEX = 1;
 	public static final int KEY_QUEUE_FEED_INDEX = 2;
@@ -109,6 +111,8 @@ public class PodDBAdapter {
 	public static final String KEY_TYPE = "type";
 	public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
 	public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
+	public static final String KEY_REASON_DETAILED = "reason_detailed";
+	public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -156,7 +160,8 @@ public class PodDBAdapter {
 			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
 			+ " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
 			+ " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
-			+ " INTEGER)";
+			+ " INTEGER," + KEY_REASON_DETAILED + " TEXT,"
+			+ KEY_DOWNLOADSTATUS_TITLE + " TEXT)";
 
 	private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
 			+ TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
@@ -368,9 +373,8 @@ public class PodDBAdapter {
 	 * Inserts or updates a download status.
 	 * */
 	public long setDownloadStatus(DownloadStatus status) {
-		// Don't save failed downloads
+		ContentValues values = new ContentValues();
 		if (status.getFeedFile() != null) {
-			ContentValues values = new ContentValues();
 			values.put(KEY_FEEDFILE, status.getFeedFile().getId());
 			if (status.getFeedFile().getClass() == Feed.class) {
 				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEED);
@@ -379,18 +383,19 @@ public class PodDBAdapter {
 			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
 				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDMEDIA);
 			}
-
-			values.put(KEY_REASON, status.getReason());
-			values.put(KEY_SUCCESSFUL, status.isSuccessful());
-			values.put(KEY_COMPLETION_DATE, status.getCompletionDate()
-					.getTime());
-			if (status.getId() == 0) {
-				status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
-			} else {
-				db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
-						new String[] { String.valueOf(status.getId()) });
-			}
 		}
+		values.put(KEY_REASON, status.getReason());
+		values.put(KEY_SUCCESSFUL, status.isSuccessful());
+		values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
+		values.put(KEY_REASON_DETAILED, status.getReasonDetailed());
+		values.put(KEY_DOWNLOADSTATUS_TITLE, status.getTitle());
+		if (status.getId() == 0) {
+			status.setId(db.insert(TABLE_NAME_DOWNLOAD_LOG, null, values));
+		} else {
+			db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
+					new String[] { String.valueOf(status.getId()) });
+		}
+
 		return status.getId();
 	}
 
@@ -570,7 +575,8 @@ public class PodDBAdapter {
 				} else {
 					neededLength = elementsLeft;
 					parts = Arrays.copyOfRange(mediaIds, i
-							* IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM) + neededLength);
+							* IN_OPERATOR_MAXIMUM, (i * IN_OPERATOR_MAXIMUM)
+							+ neededLength);
 				}
 
 				cursors[i] = db.rawQuery("SELECT * FROM "
@@ -665,6 +671,12 @@ public class PodDBAdapter {
 			if (oldVersion <= 4) {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
 						+ KEY_FEED_IDENTIFIER + " TEXT");
+			}
+			if (oldVersion <= 5) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
+						+ " ADD COLUMN " + KEY_REASON_DETAILED + " TEXT");
+				db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
+						+ " ADD COLUMN " + KEY_DOWNLOADSTATUS_TITLE + " TEXT");
 			}
 		}
 	}

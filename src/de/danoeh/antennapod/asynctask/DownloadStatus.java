@@ -16,43 +16,57 @@ public class DownloadStatus {
 		return completionDate;
 	}
 
+	// ----------------------------------- ATTRIBUTES STORED IN DB
 	/** Unique id for storing the object in database. */
 	protected long id;
+	/**
+	 * A human-readable string which is shown to the user so that he can
+	 * identify the download. Should be the title of the item/feed/media or the
+	 * URL if the download has no other title.
+	 */
+	protected String title;
+	protected int reason;
+	/**
+	 * A message which can be presented to the user to give more information.
+	 * Should be null if Download was successful.
+	 */
+	protected String reasonDetailed;
+	protected boolean successful;
+	protected Date completionDate;
 
-	/** Used by DownloadService to check if the status has been updated. */
-	protected volatile boolean updateAvailable;
-
+	// ------------------------------------ NOT STORED IN DB
 	protected FeedFile feedfile;
 	protected int progressPercent;
 	protected long soFar;
 	protected long size;
 	protected int statusMsg;
-	protected int reason;
-	protected boolean successful;
 	protected boolean done;
-	protected Date completionDate;
 
 	public DownloadStatus(FeedFile feedfile) {
 		this.feedfile = feedfile;
 	}
 
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, FeedFile feedfile, boolean successful,
-			int reason, Date completionDate) {
-		this.id = id;
-		this.feedfile = feedfile;
+	public DownloadStatus(long id, String title, FeedFile feedfile,
+			boolean successful, int reason, Date completionDate,
+			String reasonDetailed) {
 		progressPercent = 100;
 		soFar = 0;
 		size = 0;
+
+		this.id = id;
+		this.title = title;
+		this.done = true;
+		this.feedfile = feedfile;
 		this.reason = reason;
 		this.successful = successful;
-		this.done = true;
 		this.completionDate = completionDate;
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(FeedFile feedfile, int reason, boolean successful) {
-		this(0, feedfile, successful, reason, new Date());
+	public DownloadStatus(FeedFile feedfile, String title, int reason,
+			boolean successful, String reasonDetailed) {
+		this(0, title, feedfile, successful, reason, new Date(), reasonDetailed);
 	}
 
 	public FeedFile getFeedFile() {
@@ -131,12 +145,20 @@ public class DownloadStatus {
 		this.completionDate = completionDate;
 	}
 
-	public boolean isUpdateAvailable() {
-		return updateAvailable;
+	public String getReasonDetailed() {
+		return reasonDetailed;
 	}
 
-	public void setUpdateAvailable(boolean updateAvailable) {
-		this.updateAvailable = updateAvailable;
+	public void setReasonDetailed(String reasonDetailed) {
+		this.reasonDetailed = reasonDetailed;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
 	}
 
 }

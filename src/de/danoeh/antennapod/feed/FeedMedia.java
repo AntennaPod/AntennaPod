@@ -1,21 +1,23 @@
 package de.danoeh.antennapod.feed;
 
-public class FeedMedia extends FeedFile{
+public class FeedMedia extends FeedFile {
 	private int duration;
-	private int position;	// Current position in file
-	private long size;	// File size in Byte
+	private int position; // Current position in file
+	private long size; // File size in Byte
 	private String mime_type;
 	private FeedItem item;
 
-	public FeedMedia(FeedItem i, String download_url, long size, String mime_type) {
+	public FeedMedia(FeedItem i, String download_url, long size,
+			String mime_type) {
 		super(null, download_url, false);
 		this.item = i;
 		this.size = size;
 		this.mime_type = mime_type;
 	}
 
-	public FeedMedia(long id, FeedItem item, int duration, int position, long size, String mime_type,
-			String file_url, String download_url, boolean downloaded) {
+	public FeedMedia(long id, FeedItem item, int duration, int position,
+			long size, String mime_type, String file_url, String download_url,
+			boolean downloaded) {
 		super(file_url, download_url, downloaded);
 		this.id = id;
 		this.item = item;
@@ -24,13 +26,20 @@ public class FeedMedia extends FeedFile{
 		this.size = size;
 		this.mime_type = mime_type;
 	}
-	
-	
 
-	public FeedMedia(long id,FeedItem item) {
+	public FeedMedia(long id, FeedItem item) {
 		super();
 		this.id = id;
 		this.item = item;
+	}
+
+	@Override
+	public String getHumanReadableIdentifier() {
+		if (item != null && item.getTitle() != null) {
+			return item.getTitle();
+		} else {
+			return download_url;
+		}
 	}
 
 	public int getDuration() {
@@ -72,10 +81,5 @@ public class FeedMedia extends FeedFile{
 	public void setItem(FeedItem item) {
 		this.item = item;
 	}
-	
-	
-	
-	
-	
-	
+
 }

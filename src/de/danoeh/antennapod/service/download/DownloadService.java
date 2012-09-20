@@ -101,7 +101,6 @@ public class DownloadService extends Service {
 	private NotificationCompat.Builder notificationBuilder;
 	private int NOTIFICATION_ID = 2;
 	private int REPORT_ID = 3;
-	
 
 	private List<Downloader> downloads;
 
@@ -543,6 +542,7 @@ public class DownloadService extends Service {
 		public void run() {
 			Feed savedFeed = null;
 			reason = 0;
+			String reasonDetailed = null;
 			successful = true;
 			FeedManager manager = FeedManager.getInstance();
 			FeedHandler handler = new FeedHandler();
@@ -571,22 +571,27 @@ public class DownloadService extends Service {
 				successful = false;
 				e.printStackTrace();
 				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+				reasonDetailed = e.getMessage();
 			} catch (IOException e) {
 				successful = false;
 				e.printStackTrace();
 				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+				reasonDetailed = e.getMessage();
 			} catch (ParserConfigurationException e) {
 				successful = false;
 				e.printStackTrace();
 				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+				reasonDetailed = e.getMessage();
 			} catch (UnsupportedFeedtypeException e) {
 				e.printStackTrace();
 				successful = false;
 				reason = DownloadError.ERROR_UNSUPPORTED_TYPE;
+				reasonDetailed = e.getMessage();
 			} catch (InvalidFeedException e) {
 				e.printStackTrace();
 				successful = false;
 				reason = DownloadError.ERROR_PARSER_EXCEPTION;
+				reasonDetailed = e.getMessage();
 			}
 
 			// cleanup();
@@ -594,7 +599,9 @@ public class DownloadService extends Service {
 				savedFeed = feed;
 			}
 
-			saveDownloadStatus(new DownloadStatus(savedFeed, reason, successful));
+			saveDownloadStatus(new DownloadStatus(savedFeed,
+					savedFeed.getHumanReadableIdentifier(), reason, successful,
+					reasonDetailed));
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
 			downloadsBeingHandled -= 1;
 			queryDownloads();
@@ -684,7 +691,7 @@ public class DownloadService extends Service {
 			} finally {
 				mediaplayer.release();
 			}
-			
+
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
 			manager.setFeedMedia(DownloadService.this, media);

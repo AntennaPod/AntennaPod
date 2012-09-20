@@ -35,7 +35,6 @@ public class HttpDownloader extends Downloader {
 		OutputStream out = null;
 		try {
 			status.setStatusMsg(R.string.download_pending);
-			publishProgress();
 			URL url = new URL(status.getFeedFile().getDownload_url());
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
@@ -66,7 +65,6 @@ public class HttpDownloader extends Downloader {
 						Log.d(TAG, "Free space is " + freeSpace);
 					if (status.getSize() == DownloadStatus.SIZE_UNKNOWN
 							|| status.getSize() <= freeSpace) {
-						publishProgress();
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Starting download");
 						while (!cancelled && (count = in.read(buffer)) != -1) {
@@ -81,23 +79,23 @@ public class HttpDownloader extends Downloader {
 							onSuccess();
 						}
 					} else {
-						onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE);
+						onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
 					}
 				} else {
-					onFail(DownloadError.ERROR_FILE_EXISTS);
+					onFail(DownloadError.ERROR_FILE_EXISTS, null);
 				}
 			} else {
-				onFail(DownloadError.ERROR_DEVICE_NOT_FOUND);
+				onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
-			onFail(DownloadError.ERROR_MALFORMED_URL);
+			onFail(DownloadError.ERROR_MALFORMED_URL, e.getMessage());
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
-			onFail(DownloadError.ERROR_CONNECTION_ERROR);
+			onFail(DownloadError.ERROR_CONNECTION_ERROR, e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
-			onFail(DownloadError.ERROR_IO_ERROR);
+			onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
 		} finally {
 			if (connection != null) {
 				connection.disconnect();
@@ -119,11 +117,12 @@ public class HttpDownloader extends Downloader {
 		status.setDone(true);
 	}
 
-	private void onFail(int reason) {
+	private void onFail(int reason, String reasonDetailed) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG, "Download failed");
 		}
 		status.setReason(reason);
+		status.setReasonDetailed(reasonDetailed);
 		status.setDone(true);
 		status.setSuccessful(false);
 	}
