@@ -954,17 +954,17 @@ public class FeedManager {
 
 				long feedfileId = logCursor
 						.getLong(PodDBAdapter.KEY_FEEDFILE_INDEX);
+				int feedfileType = logCursor
+						.getInt(PodDBAdapter.KEY_FEEDFILETYPE_INDEX);
 				if (feedfileId != 0) {
-					int feedfileType = logCursor
-							.getInt(PodDBAdapter.KEY_FEEDFILETYPE_INDEX);
 					switch (feedfileType) {
-					case PodDBAdapter.FEEDFILETYPE_FEED:
+					case Feed.FEEDFILETYPE_FEED:
 						feedfile = getFeed(feedfileId);
 						break;
-					case PodDBAdapter.FEEDFILETYPE_FEEDIMAGE:
+					case FeedImage.FEEDFILETYPE_FEEDIMAGE:
 						feedfile = getFeedImage(feedfileId);
 						break;
-					case PodDBAdapter.FEEDFILETYPE_FEEDMEDIA:
+					case FeedMedia.FEEDFILETYPE_FEEDMEDIA:
 						feedfile = getFeedMedia(feedfileId);
 					}
 				}
@@ -976,7 +976,7 @@ public class FeedManager {
 				Date completionDate = new Date(
 						logCursor
 								.getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
-				downloadLog.add(new DownloadStatus(id, title, feedfile, successful,
+				downloadLog.add(new DownloadStatus(id, title, feedfile, feedfileType, successful,
 						reason, completionDate, reasonDetailed));
 
 			} while (logCursor.moveToNext());

@@ -48,11 +48,11 @@ public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		if (feedfile.getClass() == Feed.class) {
+		if (status.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
 			holder.type.setText(R.string.download_type_feed);
-		} else if (feedfile.getClass() == FeedMedia.class) {
+		} else if (status.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
 			holder.type.setText(R.string.download_type_media);
-		} else if (feedfile.getClass() == FeedImage.class) {
+		} else if (status.getFeedfileType() == FeedImage.FEEDFILETYPE_FEEDIMAGE) {
 			holder.type.setText(R.string.download_type_image);
 		}
 		if (status.getTitle() != null) {

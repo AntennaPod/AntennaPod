@@ -1,6 +1,8 @@
 package de.danoeh.antennapod.feed;
 
 public class FeedImage extends FeedFile {
+	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
+
 	protected String title;
 	protected Feed feed;
 
@@ -25,7 +27,12 @@ public class FeedImage extends FeedFile {
 			return download_url;
 		}
 	}
-	
+
+	@Override
+	public int getTypeAsInt() {
+		return FEEDFILETYPE_FEEDIMAGE;
+	}
+
 	public FeedImage() {
 		super();
 	}

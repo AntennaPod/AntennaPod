@@ -2,6 +2,7 @@ package de.danoeh.antennapod.feed;
 
 /** Represents a component of a Feed that has to be downloaded */
 public abstract class FeedFile extends FeedComponent {
+
 	protected String file_url;
 	protected String download_url;
 	protected boolean downloaded;
@@ -22,6 +23,8 @@ public abstract class FeedFile extends FeedComponent {
 	 * identified by the user. Can be title, download-url, etc.
 	 */
 	public abstract String getHumanReadableIdentifier();
+
+	public abstract int getTypeAsInt();
 
 	public String getFile_url() {
 		return file_url;

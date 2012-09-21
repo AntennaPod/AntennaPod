@@ -15,6 +15,7 @@ import de.danoeh.antennapod.PodcastApp;
  * 
  */
 public class Feed extends FeedFile {
+	public static final int FEEDFILETYPE_FEED = 0;
 	public static final String TYPE_RSS2 = "rss";
 	public static final String TYPE_ATOM1 = "atom";
 
@@ -141,6 +142,11 @@ public class Feed extends FeedFile {
 		} else {
 			return download_url;
 		}
+	}
+
+	@Override
+	public int getTypeAsInt() {
+		return FEEDFILETYPE_FEED;
 	}
 
 	public String getTitle() {

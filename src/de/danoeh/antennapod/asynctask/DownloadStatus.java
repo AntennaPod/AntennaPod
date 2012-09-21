@@ -2,7 +2,11 @@ package de.danoeh.antennapod.asynctask;
 
 import java.util.Date;
 
+import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.storage.PodDBAdapter;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {
@@ -33,9 +37,15 @@ public class DownloadStatus {
 	protected String reasonDetailed;
 	protected boolean successful;
 	protected Date completionDate;
+	protected FeedFile feedfile;
+	/**
+	 * Is used to determine the type of the feedfile even if the feedfile does
+	 * not exist anymore. The value should be FEEDFILETYPE_FEED,
+	 * FEEDFILETYPE_FEEDIMAGE or FEEDFILETYPE_FEEDMEDIA
+	 */
+	protected int feedfileType;
 
 	// ------------------------------------ NOT STORED IN DB
-	protected FeedFile feedfile;
 	protected int progressPercent;
 	protected long soFar;
 	protected long size;
@@ -48,7 +58,7 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, String title, FeedFile feedfile,
+	public DownloadStatus(long id, String title, FeedFile feedfile, int feedfileType,
 			boolean successful, int reason, Date completionDate,
 			String reasonDetailed) {
 		progressPercent = 100;
@@ -63,12 +73,13 @@ public class DownloadStatus {
 		this.successful = successful;
 		this.completionDate = completionDate;
 		this.reasonDetailed = reasonDetailed;
+		this.feedfileType = feedfileType;
 	}
 
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, int reason,
 			boolean successful, String reasonDetailed) {
-		this(0, title, feedfile, successful, reason, new Date(), reasonDetailed);
+		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason, new Date(), reasonDetailed);
 	}
 
 	public FeedFile getFeedFile() {
@@ -109,10 +120,6 @@ public class DownloadStatus {
 
 	public boolean isDone() {
 		return done;
-	}
-
-	public void setFeedfile(FeedFile feedfile) {
-		this.feedfile = feedfile;
 	}
 
 	public void setProgressPercent(int progressPercent) {
@@ -161,6 +168,10 @@ public class DownloadStatus {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public int getFeedfileType() {
+		return feedfileType;
 	}
 
 }

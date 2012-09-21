@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.feed;
 
 public class FeedMedia extends FeedFile {
+
+	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
+
 	private int duration;
 	private int position; // Current position in file
 	private long size; // File size in Byte
@@ -40,6 +43,11 @@ public class FeedMedia extends FeedFile {
 		} else {
 			return download_url;
 		}
+	}
+
+	@Override
+	public int getTypeAsInt() {
+		return FEEDFILETYPE_FEEDMEDIA;
 	}
 
 	public int getDuration() {

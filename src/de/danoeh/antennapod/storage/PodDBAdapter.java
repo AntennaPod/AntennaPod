@@ -172,14 +172,6 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
 			+ KEY_LINK + " TEXT)";
 
-	/**
-	 * Used for storing download status entries to determine the type of the
-	 * Feedfile.
-	 */
-	public static final int FEEDFILETYPE_FEED = 0;
-	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
-	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
-
 	private SQLiteDatabase db;
 	private final Context context;
 	private PodDBHelper helper;
@@ -377,11 +369,11 @@ public class PodDBAdapter {
 		if (status.getFeedFile() != null) {
 			values.put(KEY_FEEDFILE, status.getFeedFile().getId());
 			if (status.getFeedFile().getClass() == Feed.class) {
-				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEED);
+				values.put(KEY_FEEDFILETYPE, Feed.FEEDFILETYPE_FEED);
 			} else if (status.getFeedFile().getClass() == FeedImage.class) {
-				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDIMAGE);
+				values.put(KEY_FEEDFILETYPE, FeedImage.FEEDFILETYPE_FEEDIMAGE);
 			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
-				values.put(KEY_FEEDFILETYPE, FEEDFILETYPE_FEEDMEDIA);
+				values.put(KEY_FEEDFILETYPE, FeedMedia.FEEDFILETYPE_FEEDMEDIA);
 			}
 		}
 		values.put(KEY_REASON, status.getReason());
