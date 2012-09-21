@@ -694,24 +694,7 @@ public class DownloadService extends Service {
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
 			manager.setFeedMedia(DownloadService.this, media);
-			boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
-					getApplicationContext()).getBoolean(
-					PodcastApp.PREF_AUTO_QUEUE, true);
-
-			if (!manager.isInQueue(media.getItem())) {
-				// Auto-queue
-				if (autoQueue) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Autoqueue is enabled. Adding item to queue");
-					manager.addQueueItem(DownloadService.this, media.getItem());
-				} else {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Autoqueue is disabled");
-				}
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Item is already in queue");
-			}
+			
 			downloadsBeingHandled -= 1;
 			queryDownloads();
 		}

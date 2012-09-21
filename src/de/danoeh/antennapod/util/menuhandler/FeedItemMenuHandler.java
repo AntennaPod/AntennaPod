@@ -69,7 +69,7 @@ public class FeedItemMenuHandler {
 		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {
 		case R.id.download_item:
-			requester.downloadMedia(context, selectedItem.getMedia());
+			manager.downloadFeedItem(context, selectedItem);
 			break;
 		case R.id.play_item:
 			manager.playMedia(context, selectedItem.getMedia(), true, true,

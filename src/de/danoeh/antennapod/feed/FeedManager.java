@@ -10,6 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -25,6 +26,7 @@ import android.os.AsyncTask;
 import android.os.Debug;
 import android.os.Handler;
 import android.os.Message;
+import android.preference.PreferenceManager;
 import android.util.Log;
 
 /**
@@ -368,13 +370,27 @@ public class FeedManager {
 	}
 
 	public void downloadAllItemsInQueue(final Context context) {
-		DownloadRequester requester = DownloadRequester.getInstance();
-		for (FeedItem item : queue) {
+		if (!queue.isEmpty()) {
+			downloadFeedItem(context, queue.toArray(new FeedItem[queue.size()]));
+		}
+	}
+	
+	public void downloadFeedItem(final Context context, FeedItem... items) {
+		boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
+				context.getApplicationContext()).getBoolean(
+				PodcastApp.PREF_AUTO_QUEUE, true);
+		List<FeedItem> addToQueue = new ArrayList<FeedItem>();
+		
+		for (FeedItem item : items) {
 			if (item.getMedia() != null
 					&& !requester.isDownloadingFile(item.getMedia())
 					&& !item.getMedia().isDownloaded()) {
 				requester.downloadMedia(context, item.getMedia());
+				addToQueue.add(item);
 			}
+		}
+		if (autoQueue) {
+			addQueueItem(context, addToQueue.toArray(new FeedItem[addToQueue.size()]));
 		}
 	}
 
