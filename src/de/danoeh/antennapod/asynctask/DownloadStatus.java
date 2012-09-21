@@ -51,6 +51,7 @@ public class DownloadStatus {
 	protected long size;
 	protected int statusMsg;
 	protected boolean done;
+	protected boolean cancelled;
 
 	public DownloadStatus(FeedFile feedfile, String title) {
 		this.feedfile = feedfile;
@@ -58,9 +59,9 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, String title, FeedFile feedfile, int feedfileType,
-			boolean successful, int reason, Date completionDate,
-			String reasonDetailed) {
+	public DownloadStatus(long id, String title, FeedFile feedfile,
+			int feedfileType, boolean successful, int reason,
+			Date completionDate, String reasonDetailed) {
 		progressPercent = 100;
 		soFar = 0;
 		size = 0;
@@ -79,7 +80,8 @@ public class DownloadStatus {
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, int reason,
 			boolean successful, String reasonDetailed) {
-		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason, new Date(), reasonDetailed);
+		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason,
+				new Date(), reasonDetailed);
 	}
 
 	public FeedFile getFeedFile() {
@@ -172,6 +174,14 @@ public class DownloadStatus {
 
 	public int getFeedfileType() {
 		return feedfileType;
+	}
+
+	public boolean isCancelled() {
+		return cancelled;
+	}
+
+	public void setCancelled(boolean cancelled) {
+		this.cancelled = cancelled;
 	}
 
 }

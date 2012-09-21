@@ -281,7 +281,8 @@ public class DownloadService extends Service {
 		FeedFile feedfile = requester.getDownload(request.source);
 		if (feedfile != null) {
 
-			DownloadStatus status = new DownloadStatus(feedfile, feedfile.getHumanReadableIdentifier());
+			DownloadStatus status = new DownloadStatus(feedfile,
+					feedfile.getHumanReadableIdentifier());
 			Downloader downloader = getDownloader(status);
 			if (downloader != null) {
 				downloads.add(downloader);
@@ -325,7 +326,6 @@ public class DownloadService extends Service {
 				DownloadStatus status = downloader.getStatus();
 				status.setCompletionDate(new Date());
 				boolean successful = status.isSuccessful();
-				int reason = status.getReason();
 
 				FeedFile download = status.getFeedFile();
 				if (download != null) {
@@ -338,13 +338,12 @@ public class DownloadService extends Service {
 							handleCompletedFeedMediaDownload(status);
 						}
 					} else {
-						if (!successful
-								&& reason != DownloadError.ERROR_DOWNLOAD_CANCELLED) {
-							Log.e(TAG, "Download failed");
-						}
 						download.setFile_url(null);
 						download.setDownloaded(false);
-						saveDownloadStatus(status);
+						if (!successful && !status.isCancelled()) {
+							Log.e(TAG, "Download failed");
+							saveDownloadStatus(status);
+						}
 						sendDownloadHandledIntent(getDownloadType(download));
 						downloadsBeingHandled -= 1;
 					}
@@ -428,7 +427,7 @@ public class DownloadService extends Service {
 					createReport = true;
 				}
 				successfulDownloads++;
-			} else {
+			} else if (!status.isCancelled()){
 				if (status.getFeedFile().getClass() != FeedImage.class) {
 					createReport = true;
 				}

@@ -133,6 +133,7 @@ public class HttpDownloader extends Downloader {
 		status.setReason(DownloadError.ERROR_DOWNLOAD_CANCELLED);
 		status.setDone(true);
 		status.setSuccessful(false);
+		status.setCancelled(true);
 	}
 
 }
