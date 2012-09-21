@@ -374,13 +374,13 @@ public class FeedManager {
 			downloadFeedItem(context, queue.toArray(new FeedItem[queue.size()]));
 		}
 	}
-	
+
 	public void downloadFeedItem(final Context context, FeedItem... items) {
 		boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
 				context.getApplicationContext()).getBoolean(
 				PodcastApp.PREF_AUTO_QUEUE, true);
 		List<FeedItem> addToQueue = new ArrayList<FeedItem>();
-		
+
 		for (FeedItem item : items) {
 			if (item.getMedia() != null
 					&& !requester.isDownloadingFile(item.getMedia())
@@ -390,7 +390,8 @@ public class FeedManager {
 			}
 		}
 		if (autoQueue) {
-			addQueueItem(context, addToQueue.toArray(new FeedItem[addToQueue.size()]));
+			addQueueItem(context,
+					addToQueue.toArray(new FeedItem[addToQueue.size()]));
 		}
 	}
 
@@ -921,15 +922,24 @@ public class FeedManager {
 					if (chapterCursor.moveToFirst()) {
 						item.setChapters(new ArrayList<Chapter>());
 						do {
-							int chapterType = chapterCursor.getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
+							int chapterType = chapterCursor
+									.getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
 							Chapter chapter = null;
-							long start = chapterCursor.getLong(PodDBAdapter.KEY_CHAPTER_START_INDEX);
-							String title = chapterCursor.getString(PodDBAdapter.KEY_TITLE_INDEX);
-							String link = chapterCursor.getString(PodDBAdapter.KEY_CHAPTER_LINK_INDEX);
-							
+							long start = chapterCursor
+									.getLong(PodDBAdapter.KEY_CHAPTER_START_INDEX);
+							String title = chapterCursor
+									.getString(PodDBAdapter.KEY_TITLE_INDEX);
+							String link = chapterCursor
+									.getString(PodDBAdapter.KEY_CHAPTER_LINK_INDEX);
+
 							switch (chapterType) {
 							case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
-								chapter = new SimpleChapter(start, title, item, link);
+								chapter = new SimpleChapter(start, title, item,
+										link);
+								break;
+							case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
+								chapter = new ID3Chapter(start, title, item,
+										link);
 								break;
 							}
 							chapter.setId(chapterCursor

@@ -1,12 +1,17 @@
 package de.danoeh.antennapod.feed;
 
-public abstract class Chapter extends FeedComponent{
+public abstract class Chapter extends FeedComponent {
 
 	/** Defines starting point in milliseconds. */
 	protected long start;
 	protected String title;
 	protected FeedItem item;
 	protected String link;
+
+	public Chapter(long start) {
+		super();
+		this.start = start;
+	}
 
 	public Chapter(long start, String title, FeedItem item, String link) {
 		super();
@@ -32,6 +37,22 @@ public abstract class Chapter extends FeedComponent{
 
 	public String getLink() {
 		return link;
+	}
+
+	public void setStart(long start) {
+		this.start = start;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	public void setItem(FeedItem item) {
+		this.item = item;
+	}
+
+	public void setLink(String link) {
+		this.link = link;
 	}
 
 }
