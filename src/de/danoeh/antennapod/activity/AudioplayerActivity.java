@@ -16,7 +16,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.SCListAdapter;
+import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
@@ -130,7 +130,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					};
 
-					sCChapterFragment.setListAdapter(new SCListAdapter(
+					sCChapterFragment.setListAdapter(new ChapterListAdapter(
 							activity, 0, media.getItem()
 									.getChapters()));
 

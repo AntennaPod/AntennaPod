@@ -923,9 +923,9 @@ public class FeedManager {
 						do {
 							int chapterType = chapterCursor.getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
 							Chapter chapter = null;
-							long start = chapterCursor.getLong(PodDBAdapter.KEY_SC_START_INDEX);
+							long start = chapterCursor.getLong(PodDBAdapter.KEY_CHAPTER_START_INDEX);
 							String title = chapterCursor.getString(PodDBAdapter.KEY_TITLE_INDEX);
-							String link = chapterCursor.getString(PodDBAdapter.KEY_SC_LINK_INDEX);
+							String link = chapterCursor.getString(PodDBAdapter.KEY_CHAPTER_LINK_INDEX);
 							
 							switch (chapterType) {
 							case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:

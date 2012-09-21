@@ -74,9 +74,9 @@ public class PodDBAdapter {
 	public static final int KEY_FEEDITEM_INDEX = 1;
 	public static final int KEY_QUEUE_FEED_INDEX = 2;
 	// --------- Chapters indices
-	public static final int KEY_SC_START_INDEX = 2;
-	public static final int KEY_SC_FEEDITEM_INDEX = 3;
-	public static final int KEY_SC_LINK_INDEX = 4;
+	public static final int KEY_CHAPTER_START_INDEX = 2;
+	public static final int KEY_CHAPTER_FEEDITEM_INDEX = 3;
+	public static final int KEY_CHAPTER_LINK_INDEX = 4;
 	public static final int KEY_CHAPTER_TYPE_INDEX = 5;
 
 	// Key-constants
@@ -109,7 +109,7 @@ public class PodDBAdapter {
 	public static final String KEY_START = "start";
 	public static final String KEY_LANGUAGE = "language";
 	public static final String KEY_AUTHOR = "author";
-	public static final String KEY_HAS_SIMPLECHAPTERS = "has_simple_chapters";
+	public static final String KEY_HAS_CHAPTERS = "has_simple_chapters";
 	public static final String KEY_TYPE = "type";
 	public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
 	public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
@@ -145,7 +145,7 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
 			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
 			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
-			+ KEY_HAS_SIMPLECHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER
+			+ KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER
 			+ " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
@@ -333,7 +333,7 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
-		values.put(KEY_HAS_SIMPLECHAPTERS, item.getChapters() != null);
+		values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
 		values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
 		if (item.getId() == 0) {
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));

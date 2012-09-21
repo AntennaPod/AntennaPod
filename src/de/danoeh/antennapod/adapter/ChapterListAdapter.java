@@ -24,11 +24,11 @@ import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.util.Converter;
 
-public class SCListAdapter extends ArrayAdapter<Chapter> {
+public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
-	private static final String TAG = "SCListAdapter";
+	private static final String TAG = "ChapterListAdapter";
 
-	public SCListAdapter(Context context, int textViewResourceId,
+	public ChapterListAdapter(Context context, int textViewResourceId,
 			List<Chapter> objects) {
 		super(context, textViewResourceId, objects);
 	}
