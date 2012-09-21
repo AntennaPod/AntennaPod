@@ -17,6 +17,7 @@ import com.viewpagerindicator.TabPageIndicator;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
@@ -85,8 +86,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		}
 	}
 
-	public class MediaPlayerPagerAdapter extends
-			FragmentStatePagerAdapter {
+	public class MediaPlayerPagerAdapter extends FragmentStatePagerAdapter {
 		private int numItems;
 		private AudioplayerActivity activity;
 
@@ -109,8 +109,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			if (media != null) {
 				switch (position) {
 				case POS_COVER:
-					activity.coverFragment = CoverFragment
-							.newInstance(media.getItem());
+					activity.coverFragment = CoverFragment.newInstance(media
+							.getItem());
 					return activity.coverFragment;
 				case POS_DESCR:
 					activity.descriptionFragment = ItemDescriptionFragment
@@ -123,16 +123,15 @@ public class AudioplayerActivity extends MediaplayerActivity {
 						public void onListItemClick(ListView l, View v,
 								int position, long id) {
 							super.onListItemClick(l, v, position, id);
-							SimpleChapter chapter = (SimpleChapter) this
-									.getListAdapter().getItem(position);
+							Chapter chapter = (Chapter) this.getListAdapter().getItem(
+									position);
 							controller.seekToChapter(chapter);
 						}
 
 					};
 
 					sCChapterFragment.setListAdapter(new ChapterListAdapter(
-							activity, 0, media.getItem()
-									.getChapters()));
+							activity, 0, media.getItem().getChapters()));
 
 					return sCChapterFragment;
 				default:

@@ -26,6 +26,7 @@ import android.widget.TextView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -549,7 +550,7 @@ public abstract class PlaybackController {
 		}
 	}
 
-	public void seekToChapter(SimpleChapter chapter) {
+	public void seekToChapter(Chapter chapter) {
 		if (playbackService != null) {
 			playbackService.seekToChapter(chapter);
 		}

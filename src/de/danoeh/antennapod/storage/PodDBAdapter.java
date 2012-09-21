@@ -342,12 +342,12 @@ public class PodDBAdapter {
 					new String[] { String.valueOf(item.getId()) });
 		}
 		if (item.getChapters() != null) {
-			setSimpleChapters(item);
+			setChapters(item);
 		}
 		return item.getId();
 	}
 
-	public void setSimpleChapters(FeedItem item) {
+	public void setChapters(FeedItem item) {
 		ContentValues values = new ContentValues();
 		for (Chapter chapter : item.getChapters()) {
 			values.put(KEY_TITLE, chapter.getTitle());

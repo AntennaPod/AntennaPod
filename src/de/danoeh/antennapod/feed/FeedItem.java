@@ -2,6 +2,7 @@ package de.danoeh.antennapod.feed;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Data Object for a XML message
@@ -22,7 +23,7 @@ public class FeedItem extends FeedComponent {
 	private Feed feed;
 	protected boolean read;
 	private String paymentLink;
-	private ArrayList<Chapter> chapters;
+	private List<Chapter> chapters;
 
 	public FeedItem() {
 		this.read = true;
@@ -144,11 +145,11 @@ public class FeedItem extends FeedComponent {
 		this.paymentLink = paymentLink;
 	}
 
-	public ArrayList<Chapter> getChapters() {
+	public List<Chapter> getChapters() {
 		return chapters;
 	}
 
-	public void setChapters(ArrayList<Chapter> chapters) {
+	public void setChapters(List<Chapter> chapters) {
 		this.chapters = chapters;
 	}
 

@@ -56,6 +56,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.InvalidFeedException;
 
@@ -427,7 +428,7 @@ public class DownloadService extends Service {
 					createReport = true;
 				}
 				successfulDownloads++;
-			} else if (!status.isCancelled()){
+			} else if (!status.isCancelled()) {
 				if (status.getFeedFile().getClass() != FeedImage.class) {
 					createReport = true;
 				}
@@ -675,6 +676,8 @@ public class DownloadService extends Service {
 
 		@Override
 		public void run() {
+			boolean chaptersRead = false;
+
 			media.setDownloaded(true);
 			// Get duration
 			MediaPlayer mediaplayer = new MediaPlayer();
@@ -691,10 +694,21 @@ public class DownloadService extends Service {
 				mediaplayer.release();
 			}
 
+			if (media.getItem().getChapters() == null) {
+				ChapterUtils.readID3ChaptersFromFeedItem(media.getItem());
+				if (media.getItem().getChapters() != null) {
+					chaptersRead = true;
+				}
+			}
+
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
-			manager.setFeedMedia(DownloadService.this, media);
-			
+			if (chaptersRead) {
+				manager.setFeedItem(DownloadService.this, media.getItem());
+			} else {
+				manager.setFeedMedia(DownloadService.this, media);
+			}
+
 			downloadsBeingHandled -= 1;
 			queryDownloads();
 		}

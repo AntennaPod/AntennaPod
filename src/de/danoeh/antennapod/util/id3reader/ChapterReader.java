@@ -5,6 +5,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.ID3Chapter;
 import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.util.id3reader.model.TagHeader;
@@ -14,12 +15,12 @@ public class ChapterReader extends ID3Reader {
 	private static final String FRAME_ID_CHAPTER = "CHAP";
 	private static final String FRAME_ID_TITLE = "TIT2";
 
-	private List<ID3Chapter> chapters;
+	private List<Chapter> chapters;
 	private ID3Chapter currentChapter;
 
 	@Override
 	public int onStartTagHeader(TagHeader header) {
-		chapters = new ArrayList<ID3Chapter>();
+		chapters = new ArrayList<Chapter>();
 		System.out.println(header.toString());
 		return ID3Reader.ACTION_DONT_SKIP;
 	}
@@ -58,8 +59,8 @@ public class ChapterReader extends ID3Reader {
 	}
 
 	private boolean hasId3Chapter(ID3Chapter chapter) {
-		for (ID3Chapter c : chapters) {
-			if (c.getId3ID().equals(chapter.getId3ID())) {
+		for (Chapter c : chapters) {
+			if (((ID3Chapter) c).getId3ID().equals(chapter.getId3ID())) {
 				return true;
 			}
 		}
@@ -75,7 +76,7 @@ public class ChapterReader extends ID3Reader {
 		}
 		System.out.println("Reached end of tag");
 		if (chapters != null) {
-			for (ID3Chapter c : chapters) {
+			for (Chapter c : chapters) {
 				System.out.println(c.toString());
 			}
 		}
@@ -85,6 +86,10 @@ public class ChapterReader extends ID3Reader {
 	public void onNoTagHeaderFound() {
 		System.out.println("No tag header found");
 		super.onNoTagHeaderFound();
+	}
+
+	public List<Chapter> getChapters() {
+		return chapters;
 	}
 
 }

@@ -38,6 +38,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -761,7 +762,7 @@ public class PlaybackService extends Service {
 		saveCurrentPosition();
 	}
 
-	public void seekToChapter(SimpleChapter chapter) {
+	public void seekToChapter(Chapter chapter) {
 		seek((int) chapter.getStart());
 	}
 
