@@ -20,15 +20,16 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.util.Converter;
 
-public class SCListAdapter extends ArrayAdapter<SimpleChapter> {
+public class SCListAdapter extends ArrayAdapter<Chapter> {
 
 	private static final String TAG = "SCListAdapter";
 
 	public SCListAdapter(Context context, int textViewResourceId,
-			List<SimpleChapter> objects) {
+			List<Chapter> objects) {
 		super(context, textViewResourceId, objects);
 	}
 
@@ -36,7 +37,7 @@ public class SCListAdapter extends ArrayAdapter<SimpleChapter> {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
 
-		SimpleChapter sc = getItem(position);
+		Chapter sc = getItem(position);
 
 		// Inflate Layout
 		if (convertView == null) {
@@ -114,7 +115,7 @@ public class SCListAdapter extends ArrayAdapter<SimpleChapter> {
 
 			}
 		});
-		SimpleChapter current = sc.getItem().getCurrentChapter();
+		Chapter current = sc.getItem().getCurrentChapter();
 		if (current != null) {
 			if (current == sc) {
 				holder.title.setTextColor(convertView.getResources().getColor(

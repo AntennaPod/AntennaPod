@@ -22,7 +22,7 @@ public class FeedItem extends FeedComponent {
 	private Feed feed;
 	protected boolean read;
 	private String paymentLink;
-	private ArrayList<SimpleChapter> simpleChapters;
+	private ArrayList<Chapter> chapters;
 
 	public FeedItem() {
 		this.read = true;
@@ -41,11 +41,11 @@ public class FeedItem extends FeedComponent {
 	}
 
 	/** Get the chapter that fits the position. */
-	public SimpleChapter getCurrentChapter(int position) {
-		SimpleChapter current = null;
-		if (simpleChapters != null) {
-			current = simpleChapters.get(0);
-			for (SimpleChapter sc : simpleChapters) {
+	public Chapter getCurrentChapter(int position) {
+		Chapter current = null;
+		if (chapters != null) {
+			current = chapters.get(0);
+			for (Chapter sc : chapters) {
 				if (sc.getStart() > position) {
 					break;
 				} else {
@@ -57,7 +57,7 @@ public class FeedItem extends FeedComponent {
 	}
 
 	/** Calls getCurrentChapter with current position. */
-	public SimpleChapter getCurrentChapter() {
+	public Chapter getCurrentChapter() {
 		return getCurrentChapter(media.getPosition());
 	}
 	
@@ -144,12 +144,12 @@ public class FeedItem extends FeedComponent {
 		this.paymentLink = paymentLink;
 	}
 
-	public ArrayList<SimpleChapter> getSimpleChapters() {
-		return simpleChapters;
+	public ArrayList<Chapter> getChapters() {
+		return chapters;
 	}
 
-	public void setSimpleChapters(ArrayList<SimpleChapter> simpleChapters) {
-		this.simpleChapters = simpleChapters;
+	public void setChapters(ArrayList<Chapter> chapters) {
+		this.chapters = chapters;
 	}
 
 	public String getItemIdentifier() {

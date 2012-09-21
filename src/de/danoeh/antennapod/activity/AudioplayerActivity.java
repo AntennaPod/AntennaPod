@@ -62,7 +62,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		FeedMedia media = controller.getMedia();
 
 		int tabcount = 2;
-		if (media != null && media.getItem().getSimpleChapters() != null) {
+		if (media != null && media.getItem().getChapters() != null) {
 			tabcount = 3;
 		}
 		pagerAdapter = new MediaPlayerPagerAdapter(getSupportFragmentManager(),
@@ -132,7 +132,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					sCChapterFragment.setListAdapter(new SCListAdapter(
 							activity, 0, media.getItem()
-									.getSimpleChapters()));
+									.getChapters()));
 
 					return sCChapterFragment;
 				default:

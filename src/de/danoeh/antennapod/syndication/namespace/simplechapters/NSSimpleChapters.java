@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import org.xml.sax.Attributes;
 
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
@@ -24,15 +25,14 @@ public class NSSimpleChapters extends Namespace {
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
 		if (localName.equals(CHAPTERS)) {
-			state.getCurrentItem().setSimpleChapters(
-					new ArrayList<SimpleChapter>());
+			state.getCurrentItem().setChapters(new ArrayList<Chapter>());
 		} else if (localName.equals(CHAPTER)) {
 			state.getCurrentItem()
-					.getSimpleChapters()
-					.add(new SimpleChapter(state.getCurrentItem(),
-							SyndDateUtils.parseTimeString(attributes
-									.getValue(START)), attributes
-									.getValue(TITLE), attributes.getValue(HREF)));
+					.getChapters()
+					.add(new SimpleChapter(SyndDateUtils
+							.parseTimeString(attributes.getValue(START)),
+							attributes.getValue(TITLE), state.getCurrentItem(),
+							attributes.getValue(HREF)));
 		}
 
 		return new SyndElement(localName, this);

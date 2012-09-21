@@ -114,8 +114,8 @@ public class FeedSearcher {
 	private static void searchFeedItemChaptersSingleFeed(String query,
 			ArrayList<SearchResult> destination, Feed feed) {
 		for (FeedItem item : feed.getItems()) {
-			if (item.getSimpleChapters() != null) {
-				for (SimpleChapter sc : item.getSimpleChapters()) {
+			if (item.getChapters() != null) {
+				for (Chapter sc : item.getChapters()) {
 					SearchResult result = createSearchResult(item, query, sc
 							.getTitle().toLowerCase(), VALUE_ITEM_CHAPTER);
 					if (result != null) {

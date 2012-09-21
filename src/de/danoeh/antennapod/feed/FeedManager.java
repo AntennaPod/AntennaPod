@@ -919,19 +919,22 @@ public class FeedManager {
 					Cursor chapterCursor = adapter
 							.getSimpleChaptersOfFeedItemCursor(item);
 					if (chapterCursor.moveToFirst()) {
-						item.setSimpleChapters(new ArrayList<SimpleChapter>());
+						item.setChapters(new ArrayList<Chapter>());
 						do {
-							SimpleChapter chapter = new SimpleChapter(
-									item,
-									chapterCursor
-											.getLong(PodDBAdapter.KEY_SC_START_INDEX),
-									chapterCursor
-											.getString(PodDBAdapter.KEY_TITLE_INDEX),
-									chapterCursor
-											.getString(PodDBAdapter.KEY_SC_LINK_INDEX));
+							int chapterType = chapterCursor.getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
+							Chapter chapter = null;
+							long start = chapterCursor.getLong(PodDBAdapter.KEY_SC_START_INDEX);
+							String title = chapterCursor.getString(PodDBAdapter.KEY_TITLE_INDEX);
+							String link = chapterCursor.getString(PodDBAdapter.KEY_SC_LINK_INDEX);
+							
+							switch (chapterType) {
+							case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
+								chapter = new SimpleChapter(start, title, item, link);
+								break;
+							}
 							chapter.setId(chapterCursor
 									.getLong(PodDBAdapter.KEY_ID_INDEX));
-							item.getSimpleChapters().add(chapter);
+							item.getChapters().add(chapter);
 						} while (chapterCursor.moveToNext());
 					}
 					chapterCursor.close();

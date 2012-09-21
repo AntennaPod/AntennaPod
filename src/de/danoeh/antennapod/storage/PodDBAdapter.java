@@ -14,6 +14,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -25,7 +26,7 @@ import de.danoeh.antennapod.feed.SimpleChapter;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 7;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -72,10 +73,11 @@ public class PodDBAdapter {
 	// --------- Queue indices
 	public static final int KEY_FEEDITEM_INDEX = 1;
 	public static final int KEY_QUEUE_FEED_INDEX = 2;
-	// --------- Simplechapters indices
+	// --------- Chapters indices
 	public static final int KEY_SC_START_INDEX = 2;
 	public static final int KEY_SC_FEEDITEM_INDEX = 3;
 	public static final int KEY_SC_LINK_INDEX = 4;
+	public static final int KEY_CHAPTER_TYPE_INDEX = 5;
 
 	// Key-constants
 	public static final String KEY_ID = "id";
@@ -113,6 +115,7 @@ public class PodDBAdapter {
 	public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
 	public static final String KEY_REASON_DETAILED = "reason_detailed";
 	public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
+	public static final String KEY_CHAPTER_TYPE = "type";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -170,7 +173,7 @@ public class PodDBAdapter {
 	private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
 			+ TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
 			+ " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
-			+ KEY_LINK + " TEXT)";
+			+ KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
 	private SQLiteDatabase db;
 	private final Context context;
@@ -330,7 +333,7 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_FEED, item.getFeed().getId());
 		values.put(KEY_READ, item.isRead());
-		values.put(KEY_HAS_SIMPLECHAPTERS, item.getSimpleChapters() != null);
+		values.put(KEY_HAS_SIMPLECHAPTERS, item.getChapters() != null);
 		values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
 		if (item.getId() == 0) {
 			item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
@@ -338,7 +341,7 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
 					new String[] { String.valueOf(item.getId()) });
 		}
-		if (item.getSimpleChapters() != null) {
+		if (item.getChapters() != null) {
 			setSimpleChapters(item);
 		}
 		return item.getId();
@@ -346,11 +349,12 @@ public class PodDBAdapter {
 
 	public void setSimpleChapters(FeedItem item) {
 		ContentValues values = new ContentValues();
-		for (SimpleChapter chapter : item.getSimpleChapters()) {
+		for (Chapter chapter : item.getChapters()) {
 			values.put(KEY_TITLE, chapter.getTitle());
 			values.put(KEY_START, chapter.getStart());
 			values.put(KEY_FEEDITEM, item.getId());
 			values.put(KEY_LINK, chapter.getLink());
+			values.put(KEY_CHAPTER_TYPE, chapter.getChapterType());
 			if (chapter.getId() == 0) {
 				chapter.setId(db
 						.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
@@ -669,6 +673,10 @@ public class PodDBAdapter {
 						+ " ADD COLUMN " + KEY_REASON_DETAILED + " TEXT");
 				db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
 						+ " ADD COLUMN " + KEY_DOWNLOADSTATUS_TITLE + " TEXT");
+			}
+			if (oldVersion <= 6) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
+						+ " ADD COLUMN " + KEY_CHAPTER_TYPE + " INTEGER");
 			}
 		}
 	}
