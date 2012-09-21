@@ -16,7 +16,7 @@ import de.danoeh.antennapod.R;
 
 public class QueueFragment extends ItemlistFragment {
 	private static final String TAG = "QueueFragment";
-	
+
 	public QueueFragment() {
 		super(FeedManager.getInstance().getQueue(), true);
 	}
@@ -62,6 +62,8 @@ public class QueueFragment extends ItemlistFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
 				.getString(R.string.clear_queue_label));
+		menu.add(Menu.NONE, R.id.download_all_item, Menu.NONE, getActivity()
+				.getString(R.string.download_all));
 	}
 
 	@Override
@@ -69,6 +71,10 @@ public class QueueFragment extends ItemlistFragment {
 		switch (item.getItemId()) {
 		case R.id.clear_queue_item:
 			manager.clearQueue(getActivity());
+			break;
+		case R.id.download_all_item:
+			manager.downloadAllItemsInQueue(getActivity());
+			fila.notifyDataSetChanged();
 			break;
 		default:
 			return false;

@@ -367,6 +367,17 @@ public class FeedManager {
 
 	}
 
+	public void downloadAllItemsInQueue(final Context context) {
+		DownloadRequester requester = DownloadRequester.getInstance();
+		for (FeedItem item : queue) {
+			if (item.getMedia() != null
+					&& !requester.isDownloadingFile(item.getMedia())
+					&& !item.getMedia().isDownloaded()) {
+				requester.downloadMedia(context, item.getMedia());
+			}
+		}
+	}
+
 	public void enqueueAllNewItems(final Context context) {
 		if (!unreadItems.isEmpty()) {
 			addQueueItem(context,
