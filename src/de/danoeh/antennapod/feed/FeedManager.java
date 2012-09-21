@@ -367,26 +367,40 @@ public class FeedManager {
 
 	}
 
-	public void addQueueItem(final Context context, final FeedItem item) {
-		contentChanger.post(new Runnable() {
+	public void enqueueAllNewItems(final Context context) {
+		if (!unreadItems.isEmpty()) {
+			addQueueItem(context,
+					unreadItems.toArray(new FeedItem[unreadItems.size()]));
+			markAllItemsRead(context);
+		}
+	}
 
-			@Override
-			public void run() {
-				queue.add(item);
-				sendQueueUpdateBroadcast(context, item);
+	public void addQueueItem(final Context context, final FeedItem... items) {
+		if (items.length > 0) {
+			contentChanger.post(new Runnable() {
 
-			}
-		});
-		dbExec.execute(new Runnable() {
+				@Override
+				public void run() {
+					for (FeedItem item : items) {
+						if (!queue.contains(item)) {
+							queue.add(item);
+						}
+					}
+					sendQueueUpdateBroadcast(context, items[0]);
 
-			@Override
-			public void run() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				adapter.open();
-				adapter.setQueue(queue);
-				adapter.close();
-			}
-		});
+				}
+			});
+			dbExec.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					PodDBAdapter adapter = new PodDBAdapter(context);
+					adapter.open();
+					adapter.setQueue(queue);
+					adapter.close();
+				}
+			});
+		}
 
 	}
 
@@ -971,13 +985,16 @@ public class FeedManager {
 				boolean successful = logCursor
 						.getInt(PodDBAdapter.KEY_SUCCESSFUL_INDEX) > 0;
 				int reason = logCursor.getInt(PodDBAdapter.KEY_REASON_INDEX);
-				String reasonDetailed = logCursor.getString(PodDBAdapter.KEY_REASON_DETAILED_INDEX);
-				String title = logCursor.getString(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE_INDEX);
+				String reasonDetailed = logCursor
+						.getString(PodDBAdapter.KEY_REASON_DETAILED_INDEX);
+				String title = logCursor
+						.getString(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE_INDEX);
 				Date completionDate = new Date(
 						logCursor
 								.getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
-				downloadLog.add(new DownloadStatus(id, title, feedfile, feedfileType, successful,
-						reason, completionDate, reasonDetailed));
+				downloadLog.add(new DownloadStatus(id, title, feedfile,
+						feedfileType, successful, reason, completionDate,
+						reasonDetailed));
 
 			} while (logCursor.moveToNext());
 		}

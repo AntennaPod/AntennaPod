@@ -55,6 +55,8 @@
     <string name="remove_from_queue_label">Remove from Queue</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
+    <string name="enqueue_all_new">Enqueue all</string>
+    <string name="download_all">Download all</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">Download successful</string>

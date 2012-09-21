@@ -8,5 +8,6 @@
     <item type="id" name="select_all_item"/>
     <item type="id" name="deselect_all_item"/>
     <item type="id" name="search_item"/>
+    <item name="enqueue_all_item" type="id"/>
 
 </resources>

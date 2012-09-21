@@ -31,6 +31,8 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 		super.onCreateOptionsMenu(menu, inflater);
 		menu.add(Menu.NONE, R.id.mark_all_read_item, Menu.NONE, getActivity()
 				.getString(R.string.mark_all_read_label));
+		menu.add(Menu.NONE, R.id.enqueue_all_item, Menu.NONE, getActivity()
+				.getString(R.string.enqueue_all_new));
 	}
 
 	@Override
@@ -43,6 +45,9 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 		switch (item.getItemId()) {
 		case R.id.mark_all_read_item:
 			manager.markAllItemsRead(getActivity());
+			break;
+		case R.id.enqueue_all_item:
+			manager.enqueueAllNewItems(getActivity());
 			break;
 		default:
 			return false;
