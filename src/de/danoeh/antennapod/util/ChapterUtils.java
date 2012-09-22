@@ -145,6 +145,9 @@ public class ChapterUtils {
 	}
 
 	private static boolean chaptersValid(List<Chapter> chapters) {
+		if (chapters.isEmpty()) {
+			return false;
+		}
 		for (Chapter c : chapters) {
 			if (c.getTitle() == null) {
 				return false;
