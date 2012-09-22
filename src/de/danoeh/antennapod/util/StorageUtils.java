@@ -1,10 +1,10 @@
 package de.danoeh.antennapod.util;
 
-import de.danoeh.antennapod.activity.StorageErrorActivity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Environment;
 import android.os.StatFs;
+import de.danoeh.antennapod.activity.StorageErrorActivity;
 
 /** Utility functions for handling storage errors */
 public class StorageUtils {

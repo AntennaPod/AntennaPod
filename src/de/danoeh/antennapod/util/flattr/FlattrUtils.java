@@ -10,21 +10,16 @@ import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
 import org.shredzone.flattr4j.oauth.Scope;
 
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.net.Uri;
-import android.os.AsyncTask;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;

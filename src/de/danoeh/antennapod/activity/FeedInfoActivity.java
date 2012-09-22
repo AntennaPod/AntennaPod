@@ -10,13 +10,13 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
 
 /** Displays information about a feed. */
 public class FeedInfoActivity extends SherlockActivity {

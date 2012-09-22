@@ -1,24 +1,16 @@
 package de.danoeh.antennapod.syndication.namespace.rss20;
 
-import java.util.ArrayList;
-import java.util.Date;
+import org.xml.sax.Attributes;
 
+import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
-import de.danoeh.antennapod.syndication.handler.SyndHandler;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
 import de.danoeh.antennapod.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
-
-import org.xml.sax.Attributes;
-import org.xml.sax.SAXException;
-import org.xml.sax.helpers.DefaultHandler;
-
-import android.util.Log;
 
 /**
  * SAX-Parser for reading RSS-Feeds

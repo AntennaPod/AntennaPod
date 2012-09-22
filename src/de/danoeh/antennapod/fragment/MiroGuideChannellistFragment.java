@@ -23,7 +23,6 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MiroGuideChannelViewActivity;
 import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;

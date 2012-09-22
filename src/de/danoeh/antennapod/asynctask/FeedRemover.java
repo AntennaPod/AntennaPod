@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.asynctask;
 
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedManager;
 
 /** Removes a feed in the background. */
 public class FeedRemover extends AsyncTask<Void, Void, Void> {

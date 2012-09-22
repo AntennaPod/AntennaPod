@@ -8,7 +8,6 @@ import org.xmlpull.v1.XmlSerializer;
 
 import android.util.Log;
 import android.util.Xml;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 

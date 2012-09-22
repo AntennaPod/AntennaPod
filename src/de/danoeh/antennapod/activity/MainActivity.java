@@ -7,8 +7,8 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
 
@@ -19,6 +19,8 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
@@ -29,8 +31,6 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
 
 /** The activity that is shown when the user launches the app. */
 public class MainActivity extends SherlockFragmentActivity {

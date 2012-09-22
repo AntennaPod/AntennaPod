@@ -8,20 +8,18 @@ import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParserException;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.opml.OpmlElement;
-import de.danoeh.antennapod.opml.OpmlReader;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.opml.OpmlElement;
+import de.danoeh.antennapod.opml.OpmlReader;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {

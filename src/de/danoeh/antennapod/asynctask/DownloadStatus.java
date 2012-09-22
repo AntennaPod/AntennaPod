@@ -2,11 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import java.util.Date;
 
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.PodDBAdapter;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {

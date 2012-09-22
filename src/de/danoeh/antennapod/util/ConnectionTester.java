@@ -4,13 +4,10 @@ import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLConnection;
 
-import de.danoeh.antennapod.AppConfig;
-
-import android.content.Context;
 import android.os.Handler;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 /** Tests a connection before downloading something. */
 public class ConnectionTester implements Runnable {

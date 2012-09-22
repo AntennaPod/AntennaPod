@@ -9,25 +9,23 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
-import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.storage.*;
-import de.danoeh.antennapod.util.FeedtitleComparator;
-import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
-import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.AsyncTask;
-import android.os.Debug;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.util.FeedtitleComparator;
+import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
+import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 
 /**
  * Singleton class Manages all feeds, categories and feeditems

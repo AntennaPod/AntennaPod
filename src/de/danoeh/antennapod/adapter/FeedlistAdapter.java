@@ -1,27 +1,20 @@
 package de.danoeh.antennapod.adapter;
 
-import java.io.File;
 import java.text.DateFormat;
 import java.util.List;
 
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
 import android.content.Context;
-import android.net.Uri;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.graphics.BitmapFactory;
-import android.graphics.Color;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.storage.DownloadRequester;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	private static final String TAG = "FeedlistAdapter";

@@ -12,13 +12,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
 
 /** Updates the state of the player widget */
 public class PlayerWidgetService extends Service {

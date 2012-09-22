@@ -4,20 +4,19 @@ import java.text.DateFormat;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.util.DownloadError;
-import de.danoeh.antennapod.R;
 
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends ArrayAdapter<DownloadStatus> {

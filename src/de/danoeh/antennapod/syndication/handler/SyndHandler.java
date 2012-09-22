@@ -5,7 +5,6 @@ import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
 
 import android.util.Log;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.syndication.namespace.Namespace;

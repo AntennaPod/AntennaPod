@@ -5,21 +5,19 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedMenuHandler {

@@ -1,16 +1,13 @@
 package de.danoeh.antennapod.fragment;
 
+import android.os.Bundle;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.os.Bundle;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedManager;
 
 /** Contains all unread items. */
 public class UnreadItemlistFragment extends ItemlistFragment {

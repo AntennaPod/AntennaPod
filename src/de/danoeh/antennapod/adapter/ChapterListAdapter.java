@@ -21,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.util.Converter;
 
 public class ChapterListAdapter extends ArrayAdapter<Chapter> {

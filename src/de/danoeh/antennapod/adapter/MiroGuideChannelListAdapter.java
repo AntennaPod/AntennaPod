@@ -7,10 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
-import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 
 public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> {

@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;

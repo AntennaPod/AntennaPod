@@ -2,9 +2,6 @@ package de.danoeh.antennapod.syndication.namespace.atom;
 
 import org.xml.sax.Attributes;
 
-import android.util.Log;
-
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;

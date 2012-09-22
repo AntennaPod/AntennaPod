@@ -1,41 +1,39 @@
 package de.danoeh.antennapod.fragment;
 
-import de.danoeh.antennapod.activity.*;
-import de.danoeh.antennapod.adapter.FeedlistAdapter;
-import de.danoeh.antennapod.asynctask.FeedRemover;
-import de.danoeh.antennapod.dialog.ConfirmationDialog;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.download.DownloadService;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.R;
-import android.os.AsyncTask;
-import android.os.Bundle;
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.LayoutInflater;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.BroadcastReceiver;
-import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockListFragment;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
-import android.util.Log;
+
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FeedItemlistActivity;
+import de.danoeh.antennapod.adapter.FeedlistAdapter;
+import de.danoeh.antennapod.asynctask.FeedRemover;
+import de.danoeh.antennapod.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 public class FeedlistFragment extends SherlockFragment implements
 		ActionMode.Callback, AdapterView.OnItemClickListener,

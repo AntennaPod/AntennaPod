@@ -9,9 +9,9 @@ import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockActivity;
 
-import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.util.StorageUtils;
 
 /** Is show if there is now external storage available. */
 public class StorageErrorActivity extends SherlockActivity {

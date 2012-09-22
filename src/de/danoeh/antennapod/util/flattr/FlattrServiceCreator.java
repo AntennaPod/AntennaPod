@@ -4,9 +4,8 @@ import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.oauth.AccessToken;
 
-import de.danoeh.antennapod.AppConfig;
-
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 /** Ensures that only one instance of the FlattrService class exists at a time */
 

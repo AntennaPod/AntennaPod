@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.receiver;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.feed.FeedManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +7,9 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.feed.FeedManager;
 
 /** Refreshes all feeds when it receives an intent */
 public class FeedUpdateReceiver extends BroadcastReceiver {

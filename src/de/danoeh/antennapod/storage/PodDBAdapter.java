@@ -19,7 +19,6 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.SimpleChapter;
 
 /**
  * Implements methods for accessing the database

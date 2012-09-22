@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.util;
 
-import de.danoeh.antennapod.AppConfig;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 public class BitmapDecoder {
 	private static final String TAG = "BitmapDecoder";

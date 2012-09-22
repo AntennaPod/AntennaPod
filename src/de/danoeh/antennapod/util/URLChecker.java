@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.util;
 
-import de.danoeh.antennapod.AppConfig;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 /** Provides methods for checking and editing a URL.*/
 public final class URLChecker {

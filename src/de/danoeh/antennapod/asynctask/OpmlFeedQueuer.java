@@ -2,15 +2,15 @@ package de.danoeh.antennapod.asynctask;
 
 import java.util.Date;
 
+import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
+import android.content.Context;
+import android.os.AsyncTask;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import android.annotation.SuppressLint;
-import android.app.ProgressDialog;
-import android.content.Context;
-import android.os.AsyncTask;
 
 /** Queues items for download in the background. */
 public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {

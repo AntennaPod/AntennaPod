@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -27,7 +25,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.download.DownloadService;
-import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 /**

@@ -1,15 +1,12 @@
 package de.danoeh.antennapod.receiver;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.service.PlaybackService;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.ServiceConnection;
-import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.service.PlaybackService;
 
 /** Receives media button events. */
 public class MediaButtonReceiver extends BroadcastReceiver {

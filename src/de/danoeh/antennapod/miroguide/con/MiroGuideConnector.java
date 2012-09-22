@@ -15,7 +15,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import android.net.Uri;
-import android.net.http.AndroidHttpClient;
 
 /** Executes HTTP requests and returns the results. */
 public class MiroGuideConnector {
