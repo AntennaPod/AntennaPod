@@ -16,6 +16,7 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title" />
+        <CheckBoxPreference android:key="prefAutoDelete" android:summary="@string/pref_auto_delete_sum" android:title="@string/pref_auto_delete_title"/>
         
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >

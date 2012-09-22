@@ -61,7 +61,12 @@ public class PlaybackService extends Service {
 	/** True if last played media was a video. */
 	public static final String PREF_LAST_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 	/** True if playback of last played media has been completed. */
-	public static final String PREF_LAST_PLAYBACK_COMPLETED = "de.danoeh.antennapod.preferences.lastPlaybackCompleted";
+	public static final String PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED = "de.danoeh.antennapod.preferences.lastPlaybackCompleted";
+	/**
+	 * ID of the last played media which should be auto-deleted as soon as
+	 * PREF_LAST_PLAYED_ID changes.
+	 */
+	public static final String PREF_AUTODELETE_MEDIA_ID = "de.danoeh.antennapod.preferences.autoDeleteMediaId";
 
 	/** Contains the id of the FeedMedia object. */
 	public static final String EXTRA_MEDIA_ID = "extra.de.danoeh.antennapod.service.mediaId";
@@ -185,7 +190,7 @@ public class PlaybackService extends Service {
 			return new Intent(context, AudioplayerActivity.class);
 		}
 	}
-	
+
 	/** Get last played FeedMedia object or null if it doesn't exist. */
 	public static FeedMedia getLastPlayedMediaFromPreferences(Context context) {
 		SharedPreferences prefs = PreferenceManager
@@ -201,6 +206,18 @@ public class PlaybackService extends Service {
 			}
 		}
 		return null;
+	}
+
+	private void setLastPlayedMediaId(long mediaId) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		long autoDeleteId = prefs.getLong(PREF_AUTODELETE_MEDIA_ID, -1);
+		SharedPreferences.Editor editor = prefs.edit();
+		if (mediaId == autoDeleteId) {
+			editor.putBoolean(PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED, false);
+		}
+		editor.putLong(PREF_LAST_PLAYED_ID, mediaId);
+		editor.commit();
 	}
 
 	@SuppressLint("NewApi")
@@ -466,7 +483,7 @@ public class PlaybackService extends Service {
 					player.setDataSource(media.getDownload_url());
 					setStatus(PlayerStatus.PREPARING);
 					player.prepareAsync();
-				} else {
+				} else if (media.getFile_url() != null){
 					player.setDataSource(media.getFile_url());
 					setStatus(PlayerStatus.PREPARING);
 					player.prepare();
@@ -610,11 +627,17 @@ public class PlaybackService extends Service {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
 			manager.setFeedMedia(PlaybackService.this, media);
-			
+
+			long autoDeleteMediaId = media.getId();
+
+			if (shouldStream) {
+				autoDeleteMediaId = -1;
+			}
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putBoolean(PREF_LAST_PLAYBACK_COMPLETED, true);
+			editor.putLong(PREF_AUTODELETE_MEDIA_ID, autoDeleteMediaId);
+			editor.putBoolean(PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED, true);
 			editor.commit();
-			
+
 			// Prepare for playing next item
 			boolean followQueue = prefs.getBoolean(
 					PodcastApp.PREF_FOLLOW_QUEUE, false);
@@ -723,13 +746,11 @@ public class PlaybackService extends Service {
 				SharedPreferences.Editor editor = PreferenceManager
 						.getDefaultSharedPreferences(getApplicationContext())
 						.edit();
-				editor.putLong(PREF_LAST_PLAYED_ID, media.getId());
 				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
 				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);
 				editor.putBoolean(PREF_LAST_IS_VIDEO, playingVideo);
-				editor.putBoolean(PREF_LAST_PLAYBACK_COMPLETED, false);
 				editor.commit();
-
+				setLastPlayedMediaId(media.getId());
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo((int) media.getPosition());

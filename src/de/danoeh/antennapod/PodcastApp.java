@@ -16,7 +16,9 @@ import android.util.Log;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.service.PlaybackService;
 
 /** Main application class. */
 public class PodcastApp extends Application implements
@@ -32,6 +34,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
+	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 
 	private static float LOGICAL_DENSITY;
 
@@ -129,6 +132,16 @@ public class PodcastApp extends Application implements
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			if (AppConfig.DEBUG) Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
 			displayOnlyEpisodes = sharedPreferences.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
+		} else if (key.equals(PlaybackService.PREF_LAST_PLAYED_ID)) {
+			if (AppConfig.DEBUG) Log.d(TAG, "PREF_LAST_PLAYED_ID changed");
+			long mediaId = sharedPreferences.getLong(PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
+			if (mediaId != -1) {
+				FeedManager manager = FeedManager.getInstance();
+				FeedMedia media = manager.getFeedMedia(mediaId);
+				if (media != null) {
+					manager.autoDeleteIfPossible(this, media);
+				}
+			}
 		}
 	}
 

@@ -12,6 +12,7 @@ import java.util.concurrent.ThreadFactory;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -461,6 +462,7 @@ public class FeedManager {
 	public void removeQueueItem(final Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
+			autoDeleteIfPossible(context, item.getMedia());
 			dbExec.execute(new Runnable() {
 
 				@Override
@@ -474,6 +476,49 @@ public class FeedManager {
 
 		}
 		sendQueueUpdateBroadcast(context, item);
+	}
+
+	/**
+	 * Delete the episode of this FeedMedia object if auto-delete is enabled and
+	 * it is not the last played media or it is the last played media and
+	 * playback has been completed.
+	 */
+	public void autoDeleteIfPossible(Context context, FeedMedia media) {
+		if (media != null) {
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context
+							.getApplicationContext());
+			boolean autoDelete = prefs.getBoolean(PodcastApp.PREF_AUTO_DELETE,
+					false);
+			if (autoDelete) {
+				long lastPlayedId = prefs.getLong(
+						PlaybackService.PREF_LAST_PLAYED_ID, -1);
+				long autoDeleteId = prefs.getLong(
+						PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
+				boolean playbackCompleted = prefs
+						.getBoolean(
+								PlaybackService.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
+								false);
+				if ((media.getId() != lastPlayedId)
+						&& ((media.getId() != autoDeleteId) || (media.getId() == autoDeleteId && playbackCompleted))) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Performing auto-cleanup");
+					deleteFeedMedia(context, media);
+
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putLong(PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
+					editor.commit();
+				} else {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Didn't do auto-cleanup");
+				}
+			} else {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Auto-delete preference is disabled");
+			}
+		} else {
+			Log.e(TAG, "Could not do auto-cleanup: media was null");
+		}
 	}
 
 	public void moveQueueItem(final Context context, FeedItem item, int delta) {
