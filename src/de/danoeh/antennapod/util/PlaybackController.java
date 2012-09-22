@@ -16,6 +16,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.os.IBinder;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.SurfaceHolder;
 import android.view.View;
@@ -163,8 +164,8 @@ public abstract class PlaybackController {
 	private Intent getPlayLastPlayedMediaIntent() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Trying to restore last played media");
-		SharedPreferences prefs = activity.getApplicationContext()
-				.getSharedPreferences(PodcastApp.PREF_NAME, 0);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(activity.getApplicationContext());
 		long mediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
 		long feedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID,
 				-1);

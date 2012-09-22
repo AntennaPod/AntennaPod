@@ -159,8 +159,9 @@ public class PlaybackService extends Service {
 				return new Intent(context, AudioplayerActivity.class);
 			}
 		} else {
-			SharedPreferences pref = context.getApplicationContext()
-					.getSharedPreferences(PodcastApp.PREF_NAME, 0);
+			SharedPreferences pref = PreferenceManager
+					.getDefaultSharedPreferences(context
+							.getApplicationContext());
 			boolean isVideo = pref.getBoolean(PREF_LAST_IS_VIDEO, false);
 			if (isVideo) {
 				return new Intent(context, VideoplayerActivity.class);
@@ -511,12 +512,17 @@ public class PlaybackService extends Service {
 
 					@Override
 					public void run() {
-						if (AppConfig.DEBUG) Log.d(TAG, "Starting chapterLoader thread");
-						ChapterUtils.readID3ChaptersFromFeedMediaDownloadUrl(media.getItem());
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Starting chapterLoader thread");
+						ChapterUtils
+								.readID3ChaptersFromFeedMediaDownloadUrl(media
+										.getItem());
 						if (media.getItem().getChapters() != null) {
-							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+									0);
 						}
-						if (AppConfig.DEBUG) Log.d(TAG, "ChapterLoaderThread has finished");
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "ChapterLoaderThread has finished");
 					}
 
 				};
@@ -690,8 +696,9 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Audiofocus successfully requested");
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Resuming/Starting playback");
-				SharedPreferences.Editor editor = getApplicationContext()
-						.getSharedPreferences(PodcastApp.PREF_NAME, 0).edit();
+				SharedPreferences.Editor editor = PreferenceManager
+						.getDefaultSharedPreferences(getApplicationContext())
+						.edit();
 				editor.putLong(PREF_LAST_PLAYED_ID, media.getId());
 				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
 				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);

@@ -23,7 +23,6 @@ public class PodcastApp extends Application implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
 
 	private static final String TAG = "PodcastApp";
-	public static final String PREF_NAME = "AntennapodPrefs";
 	public static final String EXPORT_DIR = "export/";
 
 	public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
