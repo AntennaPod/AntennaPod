@@ -101,6 +101,9 @@ public class ID3Reader {
 	 */
 	protected void skipBytes(InputStream input, int number) throws IOException {
 		int skipped = 0;
+		if (number <= 0) {
+			number = 1;
+		}
 		while (skipped < number) {
 			skipped += input.skip(number - skipped);
 		}
