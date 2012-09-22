@@ -71,6 +71,7 @@
     <string name="download_error_parser_exception">Parser Exception</string>
     <string name="download_error_unsupported_type">Unsupported Feed type</string>
     <string name="download_error_connection_error">Connection error</string>
+    <string name="download_error_unknown_host">Unknown host</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_cancelled_msg">Download cancelled</string>
     <string name="download_report_title">Downloads completed</string>

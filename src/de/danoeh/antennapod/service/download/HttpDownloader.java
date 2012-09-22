@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
+import java.net.UnknownHostException;
 
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
@@ -93,6 +94,9 @@ public class HttpDownloader extends Downloader {
 		} catch (SocketTimeoutException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_CONNECTION_ERROR, e.getMessage());
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+			onFail(DownloadError.ERROR_UNKNOWN_HOST, e.getMessage());
 		} catch (IOException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
