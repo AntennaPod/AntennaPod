@@ -60,6 +60,8 @@ public class PlaybackService extends Service {
 	public static final String PREF_LAST_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
 	/** True if last played media was a video. */
 	public static final String PREF_LAST_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
+	/** True if playback of last played media has been completed. */
+	public static final String PREF_LAST_PLAYBACK_COMPLETED = "de.danoeh.antennapod.preferences.lastPlaybackCompleted";
 
 	/** Contains the id of the FeedMedia object. */
 	public static final String EXTRA_MEDIA_ID = "extra.de.danoeh.antennapod.service.mediaId";
@@ -182,6 +184,23 @@ public class PlaybackService extends Service {
 		} else {
 			return new Intent(context, AudioplayerActivity.class);
 		}
+	}
+	
+	/** Get last played FeedMedia object or null if it doesn't exist. */
+	public static FeedMedia getLastPlayedMediaFromPreferences(Context context) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context.getApplicationContext());
+		long mediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+		long feedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID,
+				-1);
+		FeedManager manager = FeedManager.getInstance();
+		if (mediaId != -1 && feedId != -1) {
+			Feed feed = manager.getFeed(feedId);
+			if (feed != null) {
+				return manager.getFeedMedia(mediaId, feed);
+			}
+		}
+		return null;
 	}
 
 	@SuppressLint("NewApi")
@@ -580,6 +599,8 @@ public class PlaybackService extends Service {
 		public void onCompletion(MediaPlayer mp) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Playback completed");
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext());
 			// Save state
 			cancelPositionSaver();
 			media.setPosition(0);
@@ -589,11 +610,14 @@ public class PlaybackService extends Service {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
 			manager.setFeedMedia(PlaybackService.this, media);
-
+			
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putBoolean(PREF_LAST_PLAYBACK_COMPLETED, true);
+			editor.commit();
+			
 			// Prepare for playing next item
-			boolean followQueue = PreferenceManager
-					.getDefaultSharedPreferences(getApplicationContext())
-					.getBoolean(PodcastApp.PREF_FOLLOW_QUEUE, false);
+			boolean followQueue = prefs.getBoolean(
+					PodcastApp.PREF_FOLLOW_QUEUE, false);
 			FeedItem nextItem = manager.getFirstQueueItem();
 			boolean playNextItem = isInQueue && followQueue && nextItem != null;
 			if (playNextItem) {
@@ -703,6 +727,7 @@ public class PlaybackService extends Service {
 				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
 				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);
 				editor.putBoolean(PREF_LAST_IS_VIDEO, playingVideo);
+				editor.putBoolean(PREF_LAST_PLAYBACK_COMPLETED, false);
 				editor.commit();
 
 				player.start();
