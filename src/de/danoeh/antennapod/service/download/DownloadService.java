@@ -695,7 +695,7 @@ public class DownloadService extends Service {
 			}
 
 			if (media.getItem().getChapters() == null) {
-				ChapterUtils.readID3ChaptersFromFeedItem(media.getItem());
+				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media.getItem());
 				if (media.getItem().getChapters() != null) {
 					chaptersRead = true;
 				}

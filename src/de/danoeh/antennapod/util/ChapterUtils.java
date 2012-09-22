@@ -5,6 +5,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +28,63 @@ public class ChapterUtils {
 	private ChapterUtils() {
 	}
 
-	public static void readID3ChaptersFromFeedItem(FeedItem item) {
+	/**
+	 * Uses the download URL of a media object of a feeditem to read its ID3
+	 * chapters.
+	 */
+	public static void readID3ChaptersFromFeedMediaDownloadUrl(FeedItem item) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Reading id3 chapters from item " + item.getTitle());
+		final FeedMedia media = item.getMedia();
+		if (media != null && media.getDownload_url() != null) {
+			InputStream in = null;
+			try {
+				URL url = new URL(media.getDownload_url());
+				ChapterReader reader = new ChapterReader();
+
+				in = url.openStream();
+				reader.readInputStream(in);
+				List<Chapter> chapters = reader.getChapters();
+
+				if (chapters != null) {
+					Collections
+							.sort(chapters, new ChapterStartTimeComparator());
+					processChapters(chapters, item);
+					if (chaptersValid(chapters)) {
+						item.setChapters(chapters);
+						Log.i(TAG, "Chapters loaded");
+					} else {
+						Log.e(TAG, "Chapter data was invalid");
+					}
+				} else {
+					Log.i(TAG, "ChapterReader could not find any ID3 chapters");
+				}
+			} catch (MalformedURLException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (ID3ReaderException e) {
+				e.printStackTrace();
+			} finally {
+				if (in != null) {
+					try {
+						in.close();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		} else {
+			Log.e(TAG,
+					"Unable to read ID3 chapters: media or download URL was null");
+		}
+	}
+
+	/**
+	 * Uses the file URL of a media object of a feeditem to read its ID3
+	 * chapters.
+	 */
+	public static void readID3ChaptersFromFeedMediaFileUrl(FeedItem item) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Reading id3 chapters from item " + item.getTitle());
 		final FeedMedia media = item.getMedia();
@@ -40,17 +99,20 @@ public class ChapterUtils {
 					in = new BufferedInputStream(new FileInputStream(source));
 					reader.readInputStream(in);
 					List<Chapter> chapters = reader.getChapters();
-					
+
 					if (chapters != null) {
-						Collections.sort(chapters, new ChapterStartTimeComparator());
+						Collections.sort(chapters,
+								new ChapterStartTimeComparator());
 						processChapters(chapters, item);
 						if (chaptersValid(chapters)) {
 							item.setChapters(chapters);
+							Log.i(TAG, "Chapters loaded");
 						} else {
 							Log.e(TAG, "Chapter data was invalid");
 						}
 					} else {
-						Log.i(TAG, "ChapterReader could not find any ID3 chapters");
+						Log.i(TAG,
+								"ChapterReader could not find any ID3 chapters");
 					}
 				} catch (IOException e) {
 					e.printStackTrace();
@@ -93,5 +155,5 @@ public class ChapterUtils {
 		}
 		return true;
 	}
-	
+
 }

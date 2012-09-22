@@ -81,7 +81,13 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	@Override
 	protected void loadMediaInfo() {
 		super.loadMediaInfo();
-		if (controller.getMedia() != null) {
+		final FeedMedia media = controller.getMedia();
+		if (media != null) {
+			if (media.getItem().getChapters() != null
+					&& pagerAdapter.getCount() < MediaPlayerPagerAdapter.NUM_ITEMS_WITH_CHAPTERS) {
+				pagerAdapter
+						.setNumItems(MediaPlayerPagerAdapter.NUM_ITEMS_WITH_CHAPTERS);
+			}
 			pagerAdapter.notifyDataSetChanged();
 		}
 	}
@@ -95,6 +101,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		private static final int POS_COVER = 0;
 		private static final int POS_DESCR = 1;
 		private static final int POS_CHAPTERS = 2;
+
+		public static final int NUM_ITEMS_WITH_CHAPTERS = 3;
+		public static final int NUM_ITMEMS_WITHOUT_CHAPTERS = 2;
 
 		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
 				AudioplayerActivity activity) {
@@ -123,8 +132,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 						public void onListItemClick(ListView l, View v,
 								int position, long id) {
 							super.onListItemClick(l, v, position, id);
-							Chapter chapter = (Chapter) this.getListAdapter().getItem(
-									position);
+							Chapter chapter = (Chapter) this.getListAdapter()
+									.getItem(position);
 							controller.seekToChapter(chapter);
 						}
 
@@ -159,6 +168,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		@Override
 		public int getCount() {
 			return numItems;
+		}
+
+		public void setNumItems(int numItems) {
+			this.numItems = numItems;
 		}
 
 		@Override

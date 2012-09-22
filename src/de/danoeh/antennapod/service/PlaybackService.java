@@ -46,6 +46,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
+import de.danoeh.antennapod.util.ChapterUtils;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
@@ -505,6 +506,23 @@ public class PlaybackService extends Service {
 			if (startWhenPrepared) {
 				play();
 			}
+			if (shouldStream && media.getItem().getChapters() == null) {
+				// load chapters if available
+				Thread chapterLoader = new Thread() {
+
+					@Override
+					public void run() {
+						if (AppConfig.DEBUG) Log.d(TAG, "Starting chapterLoader thread");
+						ChapterUtils.readID3ChaptersFromFeedMediaDownloadUrl(media.getItem());
+						if (media.getItem().getChapters() != null) {
+							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+						}
+						if (AppConfig.DEBUG) Log.d(TAG, "ChapterLoaderThread has finished");
+					}
+
+				};
+				chapterLoader.start();
+			}
 		}
 	};
 
@@ -961,7 +979,7 @@ public class PlaybackService extends Service {
 				try {
 					Thread.sleep(UPDATE_INTERVALL);
 					waitingTime -= UPDATE_INTERVALL;
-					
+
 					if (waitingTime <= 0) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Waiting completed");

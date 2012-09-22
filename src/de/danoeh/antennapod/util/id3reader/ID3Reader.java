@@ -43,14 +43,37 @@ public class ID3Reader {
 				while (readerPosition < tagHeader.getSize()) {
 					FrameHeader frameHeader = createFrameHeader(readBytes(
 							input, HEADER_LENGTH));
-					rc = onStartFrameHeader(frameHeader, input);
-					if (rc == ACTION_SKIP) {
-						skipBytes(input, frameHeader.getSize());
+					if (checkForNullString(frameHeader.getId())) {
+						break;
+					} else {
+						rc = onStartFrameHeader(frameHeader, input);
+						if (rc == ACTION_SKIP) {
+							skipBytes(input, frameHeader.getSize());
+						}
 					}
 				}
 				onEndTag();
 			}
 		}
+	}
+
+	/** Returns true if string only contains null-bytes. */
+	private boolean checkForNullString(String s) {
+		if (!s.isEmpty()) {
+			int i = 0;
+			if (s.charAt(i) == 0) {
+				for (i = 1; i < s.length(); i++) {
+					if (s.charAt(i) != 0) {
+						return false;
+					}
+				}
+				return true;
+			}
+			return false;
+		} else {
+			return true;
+		}
+
 	}
 
 	/**
@@ -80,7 +103,6 @@ public class ID3Reader {
 		int skipped = 0;
 		while (skipped < number) {
 			skipped += input.skip(number - skipped);
-			System.out.println("Skipped = " + skipped);
 		}
 
 		readerPosition += number;
