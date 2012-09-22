@@ -8,6 +8,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -28,7 +29,8 @@ public class FeedItemMenuHandler {
 		boolean downloaded = hasMedia && selectedItem.getMedia().isDownloaded();
 		boolean downloading = hasMedia
 				&& requester.isDownloadingFile(selectedItem.getMedia());
-		boolean notLoadedAndNotLoading = hasMedia && (!downloaded) && (!downloading);
+		boolean notLoadedAndNotLoading = hasMedia && (!downloaded)
+				&& (!downloading);
 
 		menu.findItem(R.id.play_item).setVisible(downloaded);
 		menu.findItem(R.id.remove_item).setVisible(downloaded);
@@ -46,11 +48,9 @@ public class FeedItemMenuHandler {
 		menu.findItem(R.id.share_link_item).setVisible(
 				selectedItem.getLink() != null);
 
-		if (selectedItem.isRead()) {
-			menu.findItem(R.id.mark_unread_item).setVisible(true);
-		} else {
-			menu.findItem(R.id.mark_read_item).setVisible(true);
-		}
+		menu.findItem(R.id.mark_unread_item).setVisible(
+				selectedItem.isRead() && AppConfig.DEBUG);
+		menu.findItem(R.id.mark_read_item).setVisible(!selectedItem.isRead());
 
 		if (selectedItem.getLink() != null) {
 			menu.findItem(R.id.visit_website_item).setVisible(true);
