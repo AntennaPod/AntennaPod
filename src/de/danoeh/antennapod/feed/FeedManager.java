@@ -413,17 +413,16 @@ public class FeedManager {
 						}
 					}
 					sendQueueUpdateBroadcast(context, items[0]);
+					dbExec.execute(new Runnable() {
 
-				}
-			});
-			dbExec.execute(new Runnable() {
-
-				@Override
-				public void run() {
-					PodDBAdapter adapter = new PodDBAdapter(context);
-					adapter.open();
-					adapter.setQueue(queue);
-					adapter.close();
+						@Override
+						public void run() {
+							PodDBAdapter adapter = new PodDBAdapter(context);
+							adapter.open();
+							adapter.setQueue(queue);
+							adapter.close();
+						}
+					});
 				}
 			});
 		}
