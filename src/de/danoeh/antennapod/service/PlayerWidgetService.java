@@ -25,7 +25,7 @@ public class PlayerWidgetService extends Service {
 
 	private PlaybackService playbackService;
 	/** True while service is updating the widget */
-	private boolean isUpdating;
+	private volatile boolean isUpdating;
 
 	public PlayerWidgetService() {
 	}
@@ -58,13 +58,11 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		if (!isUpdating) {
-			isUpdating = true;
 			if (playbackService == null && PlaybackService.isRunning) {
 				bindService(new Intent(this, PlaybackService.class),
 						mConnection, 0);
 			} else {
-				updateViews();
-				isUpdating = false;
+				startViewUpdaterIfNotRunning();
 			}
 		} else {
 			if (AppConfig.DEBUG)
@@ -75,6 +73,7 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private void updateViews() {
+		isUpdating = true;
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Updating widget views");
 		ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
@@ -112,6 +111,7 @@ public class PlayerWidgetService extends Service {
 		}
 
 		manager.updateAppWidget(playerWidget, views);
+		isUpdating = false;
 	}
 
 	/** Creates an intent which fakes a mediabutton press */
@@ -137,8 +137,7 @@ public class PlayerWidgetService extends Service {
 				Log.d(TAG, "Connection to service established");
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
-			updateViews();
-			isUpdating = false;
+			startViewUpdaterIfNotRunning();
 		}
 
 		@Override
@@ -149,5 +148,30 @@ public class PlayerWidgetService extends Service {
 		}
 
 	};
+	
+	private void startViewUpdaterIfNotRunning() {
+		if (!isUpdating) {
+			ViewUpdater updateThread = new ViewUpdater(this);
+			updateThread.start();
+		}
+	}
+
+	static class ViewUpdater extends Thread {
+		private static final String THREAD_NAME = "ViewUpdater";
+		private PlayerWidgetService service;
+		
+		public ViewUpdater(PlayerWidgetService service) {
+			super();
+			setName(THREAD_NAME);
+			this.service = service;
+			
+		}
+
+		@Override
+		public void run() {
+			service.updateViews();
+		}
+
+	}
 
 }
