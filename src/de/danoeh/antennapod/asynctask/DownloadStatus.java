@@ -51,6 +51,9 @@ public class DownloadStatus {
 
 	public DownloadStatus(FeedFile feedfile, String title) {
 		this.feedfile = feedfile;
+		if (feedfile != null) {
+			feedfileType = feedfile.getTypeAsInt();
+		}
 		this.title = title;
 	}
 
