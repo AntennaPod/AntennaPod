@@ -10,6 +10,7 @@ import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
@@ -72,16 +73,6 @@ public class CoverFragment extends SherlockFragment {
 		return root;
 	}
 
-	@Override
-	public void onViewCreated(View view, Bundle savedInstanceState) {
-		super.onViewCreated(view, savedInstanceState);
-		if (media != null) {
-			loadMediaInfo();
-		} else {
-			Log.w(TAG, "Unable to load media info: media was null");
-		}
-	}
-
 	private void loadMediaInfo() {
 		imgvCover.post(new Runnable() {
 
@@ -94,6 +85,18 @@ public class CoverFragment extends SherlockFragment {
 
 		txtvTitle.setText(media.getItem().getTitle());
 		txtvFeed.setText(media.getItem().getFeed().getTitle());
+	}
+
+	@Override
+	public void onStart() {
+		super.onStart();
+		if (media != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Loading media info");
+			loadMediaInfo();
+		} else {
+			Log.w(TAG, "Unable to load media info: media was null");
+		}
 	}
 
 }
