@@ -616,6 +616,7 @@ public class PlaybackService extends Service {
 		public void onCompletion(MediaPlayer mp) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Playback completed");
+			audioManager.abandonAudioFocus(audioFocusChangeListener);
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
 			// Save state
