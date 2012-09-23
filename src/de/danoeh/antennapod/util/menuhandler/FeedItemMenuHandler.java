@@ -13,6 +13,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
 
@@ -64,7 +65,7 @@ public class FeedItemMenuHandler {
 	}
 
 	public static boolean onMenuItemClicked(Context context, MenuItem item,
-			FeedItem selectedItem) {
+			FeedItem selectedItem) throws DownloadRequestException {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {

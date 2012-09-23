@@ -23,11 +23,13 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.miroguide.con.MiroGuideException;
 import de.danoeh.antennapod.miroguide.con.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 /**
@@ -154,8 +156,13 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			return true;
 		case R.id.add_feed:
-			DownloadRequester.getInstance().downloadFeed(this,
-					new Feed(channel.getDownloadUrl(), new Date(), channel.getName()));
+			try {
+				DownloadRequester.getInstance().downloadFeed(this,
+						new Feed(channel.getDownloadUrl(), new Date(), channel.getName()));
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
+				DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+			}
 			Toast toast = Toast.makeText(this, R.string.miro_feed_added,
 					Toast.LENGTH_LONG);
 			toast.show();

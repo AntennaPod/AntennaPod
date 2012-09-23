@@ -23,10 +23,12 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
@@ -231,8 +233,15 @@ public class ItemlistFragment extends SherlockListFragment implements
 
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		boolean handled = FeedItemMenuHandler.onMenuItemClicked(
-				getSherlockActivity(), item, selectedItem);
+		boolean handled = false;
+		try {
+			handled = FeedItemMenuHandler.onMenuItemClicked(
+					getSherlockActivity(), item, selectedItem);
+		} catch (DownloadRequestException e) {
+			e.printStackTrace();
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(
+					getActivity(), e.getMessage());
+		}
 		if (handled) {
 			fila.notifyDataSetChanged();
 		}

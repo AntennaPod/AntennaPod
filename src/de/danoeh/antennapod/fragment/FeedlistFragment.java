@@ -29,9 +29,11 @@ import de.danoeh.antennapod.activity.FeedItemlistActivity;
 import de.danoeh.antennapod.adapter.FeedlistAdapter;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
@@ -159,29 +161,40 @@ public class FeedlistFragment extends SherlockFragment implements
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
-		if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(), item,
-				selectedFeed)) {
-			fla.notifyDataSetChanged();
-		} else {
-			switch (item.getItemId()) {
-			case R.id.remove_item:
-				final FeedRemover remover = new FeedRemover(getSherlockActivity(), selectedFeed) {
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						fla.notifyDataSetChanged();
-					}
-				};
-				ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(), R.string.remove_feed_label, R.string.feed_delete_confirmation_msg){
+		try {
+			if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(),
+					item, selectedFeed)) {
+				fla.notifyDataSetChanged();
+			} else {
+				switch (item.getItemId()) {
+				case R.id.remove_item:
+					final FeedRemover remover = new FeedRemover(
+							getSherlockActivity(), selectedFeed) {
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							fla.notifyDataSetChanged();
+						}
+					};
+					ConfirmationDialog conDialog = new ConfirmationDialog(
+							getActivity(), R.string.remove_feed_label,
+							R.string.feed_delete_confirmation_msg) {
 
-					@Override
-					public void onConfirmButtonPressed(DialogInterface dialog) {		
-						dialog.dismiss();
-						remover.executeAsync();
-					}};
-				conDialog.createNewDialog().show();
-				break;
+						@Override
+						public void onConfirmButtonPressed(
+								DialogInterface dialog) {
+							dialog.dismiss();
+							remover.executeAsync();
+						}
+					};
+					conDialog.createNewDialog().show();
+					break;
+				}
 			}
+		} catch (DownloadRequestException e) {
+			e.printStackTrace();
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(
+					getActivity(), e.getMessage());
 		}
 		mode.finish();
 		return true;

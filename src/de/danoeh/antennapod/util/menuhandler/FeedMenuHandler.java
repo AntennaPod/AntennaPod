@@ -16,6 +16,7 @@ import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
 
@@ -51,9 +52,10 @@ public class FeedMenuHandler {
 		return true;
 	}
 
-	/** NOTE: This method does not handle clicks on the 'remove feed' - item. */
+	/** NOTE: This method does not handle clicks on the 'remove feed' - item. 
+	 * @throws DownloadRequestException */
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,
-			Feed selectedFeed) {
+			Feed selectedFeed) throws DownloadRequestException {
 		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {
 		case R.id.show_info_item:

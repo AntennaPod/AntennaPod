@@ -51,6 +51,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
@@ -561,8 +562,18 @@ public class DownloadService extends Service {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
 					savedFeed.getImage().setFeed(savedFeed);
-					requester.downloadImage(DownloadService.this,
-							savedFeed.getImage());
+					try {
+						requester.downloadImage(DownloadService.this,
+								savedFeed.getImage());
+					} catch (DownloadRequestException e) {
+						e.printStackTrace();
+						manager.addDownloadStatus(DownloadService.this,
+								new DownloadStatus(savedFeed.getImage(),
+										savedFeed.getImage()
+												.getHumanReadableIdentifier(),
+										DownloadError.ERROR_REQUEST_ERROR,
+										false, e.getMessage()));
+					}
 				}
 
 			} catch (SAXException e) {
@@ -693,7 +704,8 @@ public class DownloadService extends Service {
 			}
 
 			if (media.getItem().getChapters() == null) {
-				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media.getItem());
+				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media
+						.getItem());
 				if (media.getItem().getChapters() != null) {
 					chaptersRead = true;
 				}

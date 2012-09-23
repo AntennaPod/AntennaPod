@@ -22,8 +22,10 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.FeedtitleComparator;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
@@ -305,7 +307,17 @@ public class FeedManager {
 				@Override
 				protected Void doInBackground(Void... params) {
 					for (Feed feed : feeds) {
-						refreshFeed(context, feed);
+						try {
+							refreshFeed(context, feed);
+						} catch (DownloadRequestException e) {
+							e.printStackTrace();
+							addDownloadStatus(
+									context,
+									new DownloadStatus(feed, feed
+											.getHumanReadableIdentifier(),
+											DownloadError.ERROR_REQUEST_ERROR,
+											false, e.getMessage()));
+						}
 					}
 					return null;
 				}
@@ -327,10 +339,16 @@ public class FeedManager {
 	public void notifyInvalidImageFile(Context context, FeedImage image) {
 		Log.i(TAG,
 				"The feedmanager was notified about an invalid image download. It will now try to redownload the image file");
-		requester.downloadImage(context, image);
+		try {
+			requester.downloadImage(context, image);
+		} catch (DownloadRequestException e) {
+			e.printStackTrace();
+			Log.w(TAG, "Failed to download invalid feed image");
+		}
 	}
 
-	public void refreshFeed(Context context, Feed feed) {
+	public void refreshFeed(Context context, Feed feed)
+			throws DownloadRequestException {
 		requester.downloadFeed(context, new Feed(feed.getDownload_url(),
 				new Date(), feed.getTitle()));
 	}
@@ -370,11 +388,17 @@ public class FeedManager {
 
 	public void downloadAllItemsInQueue(final Context context) {
 		if (!queue.isEmpty()) {
-			downloadFeedItem(context, queue.toArray(new FeedItem[queue.size()]));
+			try {
+				downloadFeedItem(context,
+						queue.toArray(new FeedItem[queue.size()]));
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
-	public void downloadFeedItem(final Context context, FeedItem... items) {
+	public void downloadFeedItem(final Context context, FeedItem... items)
+			throws DownloadRequestException {
 		boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
 				context.getApplicationContext()).getBoolean(
 				PodcastApp.PREF_AUTO_QUEUE, true);
@@ -384,7 +408,21 @@ public class FeedManager {
 			if (item.getMedia() != null
 					&& !requester.isDownloadingFile(item.getMedia())
 					&& !item.getMedia().isDownloaded()) {
-				requester.downloadMedia(context, item.getMedia());
+				if (items.length > 1) {
+					try {
+						requester.downloadMedia(context, item.getMedia());
+					} catch (DownloadRequestException e) {
+						e.printStackTrace();
+						addDownloadStatus(context,
+								new DownloadStatus(item.getMedia(), item
+										.getMedia()
+										.getHumanReadableIdentifier(),
+										DownloadError.ERROR_REQUEST_ERROR,
+										false, e.getMessage()));
+					}
+				} else {
+					requester.downloadMedia(context, item.getMedia());
+				}
 				addToQueue.add(item);
 			}
 		}

@@ -78,6 +78,7 @@
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_device_not_found">External storage unavailable</string>
+    <string name="download_error_request_error">Request error</string>
     <string name="downloads_left">\u0020Downloads left</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_report_content">%1$d downloads succeeded, %2$d failed</string>
@@ -85,7 +86,8 @@
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
-
+	<string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
+    
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
     <string name="player_stopped_msg">No media playing</string>

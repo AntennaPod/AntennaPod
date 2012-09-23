@@ -20,6 +20,7 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ConnectionTester;
 import de.danoeh.antennapod.util.DownloadError;
@@ -123,11 +124,17 @@ public class AddFeedActivity extends SherlockActivity {
 
 						@Override
 						public void onConnectionSuccessful() {
-							requester.downloadFeed(AddFeedActivity.this, feed);
-							if (progDialog.isShowing()) {
-								progDialog.dismiss();
-								finish();
+							try {
+								requester.downloadFeed(AddFeedActivity.this, feed);
+								if (progDialog.isShowing()) {
+									progDialog.dismiss();
+									finish();
+								}
+							} catch (DownloadRequestException e) {
+								e.printStackTrace();
+								onConnectionFailure(DownloadError.ERROR_REQUEST_ERROR);
 							}
+							
 						}
 
 						@Override

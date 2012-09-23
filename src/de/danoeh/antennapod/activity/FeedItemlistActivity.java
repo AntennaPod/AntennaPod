@@ -17,11 +17,13 @@ import com.actionbarsherlock.view.Window;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
@@ -89,40 +91,45 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
-			filf.getListAdapter().notifyDataSetChanged();
-		} else {
-			switch (item.getItemId()) {
-			case R.id.remove_item:
-				final FeedRemover remover = new FeedRemover(
-						FeedItemlistActivity.this, feed) {
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						finish();
-					}
-				};
-				ConfirmationDialog conDialog = new ConfirmationDialog(this,
-						R.string.remove_feed_label,
-						R.string.feed_delete_confirmation_msg) {
+		try {
+			if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
+				filf.getListAdapter().notifyDataSetChanged();
+			} else {
+				switch (item.getItemId()) {
+				case R.id.remove_item:
+					final FeedRemover remover = new FeedRemover(
+							FeedItemlistActivity.this, feed) {
+						@Override
+						protected void onPostExecute(Void result) {
+							super.onPostExecute(result);
+							finish();
+						}
+					};
+					ConfirmationDialog conDialog = new ConfirmationDialog(this,
+							R.string.remove_feed_label,
+							R.string.feed_delete_confirmation_msg) {
 
-					@Override
-					public void onConfirmButtonPressed(DialogInterface dialog) {
-						dialog.dismiss();
-						remover.executeAsync();
-					}
-				};
-				conDialog.createNewDialog().show();
-				break;
-			case R.id.search_item:
-				onSearchRequested();
-				break;
-			case android.R.id.home:
-				Intent intent = new Intent(this, MainActivity.class);
-				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-				startActivity(intent);
-				break;
+						@Override
+						public void onConfirmButtonPressed(DialogInterface dialog) {
+							dialog.dismiss();
+							remover.executeAsync();
+						}
+					};
+					conDialog.createNewDialog().show();
+					break;
+				case R.id.search_item:
+					onSearchRequested();
+					break;
+				case android.R.id.home:
+					Intent intent = new Intent(this, MainActivity.class);
+					intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+					startActivity(intent);
+					break;
+				}
 			}
+		} catch (DownloadRequestException e) {
+			e.printStackTrace();
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
 		}
 		return true;
 	}

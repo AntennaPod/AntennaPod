@@ -19,9 +19,11 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.MediaPlayerError;
 import de.danoeh.antennapod.util.PlaybackController;
@@ -210,8 +212,10 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(MediaplayerActivity.this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			Intent intent = new Intent(MediaplayerActivity.this,
+					MainActivity.class);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 		case R.id.disable_sleeptimer_item:
@@ -259,8 +263,14 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 			}
 		default:
-			return FeedItemMenuHandler.onMenuItemClicked(this, item, controller
-					.getMedia().getItem());
+			try {
+				return FeedItemMenuHandler.onMenuItemClicked(this, item,
+						controller.getMedia().getItem());
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
+				DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+						e.getMessage());
+			}
 		}
 		return true;
 	}

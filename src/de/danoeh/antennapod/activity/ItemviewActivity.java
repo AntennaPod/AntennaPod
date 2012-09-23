@@ -17,12 +17,14 @@ import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
@@ -104,12 +106,17 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
-			switch (menuItem.getItemId()) {
-			case android.R.id.home:
-				finish();
-				break;
+		try {
+			if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
+				switch (menuItem.getItemId()) {
+				case android.R.id.home:
+					finish();
+					break;
+				}
 			}
+		} catch (DownloadRequestException e) {
+			e.printStackTrace();
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
 		}
 		invalidateOptionsMenu();
 		return true;
