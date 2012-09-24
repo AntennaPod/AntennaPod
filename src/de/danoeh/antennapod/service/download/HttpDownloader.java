@@ -13,6 +13,8 @@ import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import org.apache.commons.io.IOUtils;
+
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -100,17 +102,13 @@ public class HttpDownloader extends Downloader {
 		} catch (IOException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
+		}catch (NullPointerException e) {
+			// might be thrown by connection.getInputStream()
+			e.printStackTrace();
+			onFail(DownloadError.ERROR_CONNECTION_ERROR, status.getFeedFile().getDownload_url());
 		} finally {
-			if (connection != null) {
-				connection.disconnect();
-			}
-			if (out != null) {
-				try {
-					out.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-			}
+			IOUtils.close(connection);
+			IOUtils.closeQuietly(out);
 		}
 	}
 
