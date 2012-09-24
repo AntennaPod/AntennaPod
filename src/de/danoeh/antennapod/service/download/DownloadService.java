@@ -49,6 +49,7 @@ import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequestException;
@@ -621,11 +622,32 @@ public class DownloadService extends Service {
 			if (feed.getTitle() == null) {
 				Log.e(TAG, "Feed has no title.");
 				return false;
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Feed appears to be valid.");
-				return true;
 			}
+			if (!hasValidFeedItems(feed)) {
+				Log.e(TAG, "Feed has invalid items");
+				return false;
+			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Feed appears to be valid.");
+			return true;
+
+		}
+
+		private boolean hasValidFeedItems(Feed feed) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.getTitle() == null) {
+					Log.e(TAG, "Item has no title");
+					return false;
+				}
+				if (item.getPubDate() == null) {
+					Log.e(TAG, "Item has no pubDate");
+					if (item.getTitle() != null) {
+						Log.e(TAG, "Title of invalid item: " + item.getTitle());
+					}
+					return false;
+				}
+			}
+			return true;
 		}
 
 		/** Delete files that aren't needed anymore */
