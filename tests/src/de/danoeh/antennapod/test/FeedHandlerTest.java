@@ -24,6 +24,12 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://www.dradio.de/rss/podcast/sendungen/wissenschaftundbildung/",
+			"http://www.dradio.de/rss/podcast/sendungen/wirtschaftundverbraucher/",
+			"http://www.dradio.de/rss/podcast/sendungen/literatur/",
+			"http://www.dradio.de/rss/podcast/sendungen/sport/",
+			"http://www.dradio.de/rss/podcast/sendungen/wirtschaftundgesellschaft/",
+			"http://www.dradio.de/rss/podcast/sendungen/filmederwoche/",
 			"http://feeds.feedburner.com/buildanalyze",
 			"http://www.blacksweetstories.com/feed/podcast/",
 			"http://bitlove.org/ranzzeit/ranz/feed",
@@ -169,7 +175,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/hoaxmaster/hoaxilla/feed",
 			"http://bitlove.org/hoaxmaster/psychotalk/feed",
 			"http://bitlove.org/hoaxmaster/skeptoskop/feed",
-			"http://bitlove.org/hobbykoch-podcast/souffle/feed",
 			"http://bitlove.org/hoersuppe/vorcast/feed",
 			"http://bitlove.org/holgi/wrint/feed",
 			"http://bitlove.org/ich-bin-radio/fir/feed",

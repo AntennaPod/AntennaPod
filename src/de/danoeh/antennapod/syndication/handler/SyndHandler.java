@@ -47,8 +47,7 @@ public class SyndHandler extends DefaultHandler {
 		if (!state.tagstack.empty()) {
 			if (state.getTagstack().size() >= 2) {
 				if (state.contentBuf != null) {
-					String content = new String(ch, start, length);
-					state.contentBuf.append(content);
+					state.contentBuf.append(ch, start, length);
 				}
 			}
 		}
