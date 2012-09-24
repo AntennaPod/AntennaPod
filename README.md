@@ -19,6 +19,7 @@ AntennaPod has the following dependencies:
 - [Apache Commons Lang](http://commons.apache.org/lang/download_lang.cgi)
 - [ActionBarSherlock](https://github.com/JakeWharton/ActionBarSherlock)
 - [ViewPagerIndicator](https://github.com/JakeWharton/Android-ViewPagerIndicator)
+- [Apache Commons IO](http://commons.apache.org/io/download_io.cgi)
 
 ## Building
 
@@ -26,7 +27,7 @@ Before building, make sure you have added FlattrConfig.java as described in the 
 
 ### Building with ant
 
-ActionBarSherlock and ViewPagerIndicator have to be added as library projects. Flattr4j and ApacheCommons Lang are jar-libraries and have to be copied into the libs folder in the root directory. 
+ActionBarSherlock and ViewPagerIndicator have to be added as library projects. Flattr4j, Apache Commons Lang and Apache Commons IO are jar-libraries and have to be copied into the libs folder in the root directory. 
 
 ### Building with maven
 
@@ -46,3 +47,6 @@ You can already build unsigned packages with maven, if you add annotations.jar f
 
 AntennaPod accesses the flattr API for flattring podcasts. In order to gain access, a client ID and a client secret is required, which you can get by registering a new app on the flattr website. The official API credentials have been excluded from the public source code.
 In order to successfully build the project, a java class called FlattrConfig with two fields containing the credentials has to be created in src/de/danoeh/antennapod/util/flattr . You can also use the file called FlattrConfig.java.example to do that. If you leave the two fields blank, everything except the authentication process will work.
+
+## Translating AntennaPod
+If you want to translate AntennaPod into another language, you can visit the [Transifex project page](https://www.transifex.com/projects/p/antennapod/).
