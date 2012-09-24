@@ -141,6 +141,14 @@ public class FeedManager {
 			media.setDownloaded(false);
 			media.setFile_url(null);
 			setFeedMedia(context, media);
+			
+			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+			final long lastPlayedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+			if (media.getId() == lastPlayedId) {
+				SharedPreferences.Editor editor = prefs.edit();
+				editor.putBoolean(PlaybackService.PREF_LAST_IS_STREAM, true);
+				editor.commit();
+			}
 		}
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Deleting File. Result: " + result);
