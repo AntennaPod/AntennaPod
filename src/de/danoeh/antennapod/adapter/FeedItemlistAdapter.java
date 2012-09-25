@@ -20,6 +20,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
@@ -135,11 +136,10 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 					holder.downloading.setVisibility(View.GONE);
 				}
 
-				String type = item.getMedia().getMime_type();
-
-				if (type.startsWith("audio")) {
+				MediaType mediaType = item.getMedia().getMediaType();
+				if (mediaType == MediaType.AUDIO) {
 					holder.type.setImageResource(R.drawable.type_audio);
-				} else if (type.startsWith("video")) {
+				} else if (mediaType == MediaType.VIDEO) {
 					holder.type.setImageResource(R.drawable.type_video);
 				} else {
 					holder.type.setImageBitmap(null);

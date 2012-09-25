@@ -39,7 +39,7 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 
-	public final static String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*";
+	public final static String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*" + "|" + "application/ogg";
 
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,

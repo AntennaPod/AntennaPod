@@ -43,6 +43,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.ChapterUtils;
@@ -184,7 +185,8 @@ public class PlaybackService extends Service {
 	 */
 	public static Intent getPlayerActivityIntent(Context context,
 			FeedMedia media) {
-		if (media.getMime_type().startsWith("video")) {
+		MediaType mt = media.getMediaType();
+		if (mt == MediaType.VIDEO) {
 			return new Intent(context, VideoplayerActivity.class);
 		} else {
 			return new Intent(context, AudioplayerActivity.class);
@@ -475,7 +477,8 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting up media player");
 		try {
-			if (media.getMime_type().startsWith("audio")) {
+			MediaType mediaType = media.getMediaType();
+			if (mediaType == MediaType.AUDIO) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Mime type is audio");
 				playingVideo = false;
@@ -488,7 +491,7 @@ public class PlaybackService extends Service {
 					setStatus(PlayerStatus.PREPARING);
 					player.prepare();
 				}
-			} else if (media.getMime_type().startsWith("video")) {
+			} else if (mediaType == MediaType.VIDEO) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Mime type is video");
 				playingVideo = true;
@@ -660,10 +663,10 @@ public class PlaybackService extends Service {
 				stopWidgetUpdater();
 			}
 			int notificationCode = 0;
-			if (media.getMime_type().startsWith("audio")) {
+			if (media.getMediaType() == MediaType.AUDIO) {
 				notificationCode = EXTRA_CODE_AUDIO;
 				playingVideo = false;
-			} else if (media.getMime_type().startsWith("video")) {
+			} else if (media.getMediaType() == MediaType.VIDEO) {
 				notificationCode = EXTRA_CODE_VIDEO;
 			}
 			resetVideoSurface();
