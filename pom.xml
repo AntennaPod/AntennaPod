@@ -4,7 +4,7 @@
     <groupId>de.danoeh</groupId>
     <artifactId>antennapod</artifactId>
     <packaging>apk</packaging>
-    <version>0.9.4.6</version>
+    <version>0.9.5</version>
     <name>AntennaPod</name>
 
 

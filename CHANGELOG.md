@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.5
+-------------
+* Experimental support for MP3 chapters
+* New menu options for the 'new' list and the queue
+* Auto-delete feature
+* Better Download error reports
+* Several Bugfixes
+
 Version 0.9.4.6
 ---------------
 * Enabled support for small-screen devices
