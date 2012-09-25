@@ -144,6 +144,13 @@ public class ExternalPlayerFragment extends SherlockFragment {
 			@Override
 			public void onServiceQueried() {
 			}
+
+			@Override
+			public void onShutdownNotification() {
+				if (fragmentLayout != null) {
+					fragmentLayout.setVisibility(View.GONE);
+				}
+			}
 		};
 		butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
 	}

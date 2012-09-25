@@ -141,13 +141,19 @@ public class FeedManager {
 			media.setDownloaded(false);
 			media.setFile_url(null);
 			setFeedMedia(context, media);
-			
-			SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-			final long lastPlayedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			final long lastPlayedId = prefs.getLong(
+					PlaybackService.PREF_LAST_PLAYED_ID, -1);
 			if (media.getId() == lastPlayedId) {
 				SharedPreferences.Editor editor = prefs.edit();
 				editor.putBoolean(PlaybackService.PREF_LAST_IS_STREAM, true);
 				editor.commit();
+			}
+			if (lastPlayedId == media.getId()) {
+				context.sendBroadcast(new Intent(
+						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			}
 		}
 		if (AppConfig.DEBUG)
@@ -157,51 +163,71 @@ public class FeedManager {
 
 	/** Remove a feed with all its items and media files and its image. */
 	public void deleteFeed(final Context context, final Feed feed) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context.getApplicationContext());
+		long lastPlayedFeed = prefs.getLong(
+				PlaybackService.PREF_LAST_PLAYED_FEED_ID, -1);
+		if (lastPlayedFeed == feed.getId()) {
+			context.sendBroadcast(new Intent(
+					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+			SharedPreferences.Editor editor = prefs.edit();
+			editor.putLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+			editor.putLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID, -1);
+			editor.commit();
+		}
+
 		contentChanger.post(new Runnable() {
 
 			@Override
 			public void run() {
 				feeds.remove(feed);
 				sendFeedUpdateBroadcast(context);
-			}
-		});
-		dbExec.execute(new Runnable() {
+				dbExec.execute(new Runnable() {
 
-			@Override
-			public void run() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				DownloadRequester requester = DownloadRequester.getInstance();
-				adapter.open();
-				// delete image file
-				if (feed.getImage() != null) {
-					if (feed.getImage().isDownloaded()
-							&& feed.getImage().getFile_url() != null) {
-						File imageFile = new File(feed.getImage().getFile_url());
-						imageFile.delete();
-					} else if (requester.isDownloadingFile(feed.getImage())) {
-						requester.cancelDownload(context, feed.getImage());
-					}
-				}
-				// delete stored media files and mark them as read
-				for (FeedItem item : feed.getItems()) {
-					if (!item.isRead()) {
-						unreadItems.remove(item);
-					}
-					if (queue.contains(item)) {
-						removeQueueItem(item, adapter);
-					}
-					if (item.getMedia() != null
-							&& item.getMedia().isDownloaded()) {
-						File mediaFile = new File(item.getMedia().getFile_url());
-						mediaFile.delete();
-					} else if (item.getMedia() != null
-							&& requester.isDownloadingFile(item.getMedia())) {
-						requester.cancelDownload(context, item.getMedia());
-					}
-				}
+					@Override
+					public void run() {
+						PodDBAdapter adapter = new PodDBAdapter(context);
+						DownloadRequester requester = DownloadRequester
+								.getInstance();
+						adapter.open();
+						// delete image file
+						if (feed.getImage() != null) {
+							if (feed.getImage().isDownloaded()
+									&& feed.getImage().getFile_url() != null) {
+								File imageFile = new File(feed.getImage()
+										.getFile_url());
+								imageFile.delete();
+							} else if (requester.isDownloadingFile(feed
+									.getImage())) {
+								requester.cancelDownload(context,
+										feed.getImage());
+							}
+						}
+						// delete stored media files and mark them as read
+						for (FeedItem item : feed.getItems()) {
+							if (!item.isRead()) {
+								unreadItems.remove(item);
+							}
+							if (queue.contains(item)) {
+								removeQueueItem(item, adapter);
+							}
+							if (item.getMedia() != null
+									&& item.getMedia().isDownloaded()) {
+								File mediaFile = new File(item.getMedia()
+										.getFile_url());
+								mediaFile.delete();
+							} else if (item.getMedia() != null
+									&& requester.isDownloadingFile(item
+											.getMedia())) {
+								requester.cancelDownload(context,
+										item.getMedia());
+							}
+						}
 
-				adapter.removeFeed(feed);
-				adapter.close();
+						adapter.removeFeed(feed);
+						adapter.close();
+					}
+				});
 			}
 		});
 

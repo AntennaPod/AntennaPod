@@ -116,7 +116,16 @@ public abstract class PlaybackController {
 		} catch (IllegalArgumentException e) {
 			// ignore
 		}
+		
+		try {
+			activity.unregisterReceiver(shutdownReceiver);
+		} catch (IllegalArgumentException e) {
+			// ignore
+		}
 		cancelPositionObserver();
+		schedExecutor.shutdownNow();
+		media = null;
+
 	}
 
 	/** Should be called in the activity's onPause() method. */
@@ -226,6 +235,9 @@ public abstract class PlaybackController {
 			activity.registerReceiver(notificationReceiver, new IntentFilter(
 					PlaybackService.ACTION_PLAYER_NOTIFICATION));
 
+			activity.registerReceiver(shutdownReceiver, new IntentFilter(
+					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+
 			queryService();
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Connection to Service established");
@@ -299,6 +311,20 @@ public abstract class PlaybackController {
 		}
 
 	};
+
+	private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(
+					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+				release();
+				onShutdownNotification();
+			}
+		}
+	};
+
+	public abstract void onShutdownNotification();
 
 	/** Called when the currently displayed information should be refreshed. */
 	public abstract void onReloadNotification(int code);

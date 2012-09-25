@@ -122,6 +122,11 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			public void onServiceQueried() {
 				MediaplayerActivity.this.onServiceQueried();
 			}
+
+			@Override
+			public void onShutdownNotification() {
+				finish();
+			}
 		};
 	}
 

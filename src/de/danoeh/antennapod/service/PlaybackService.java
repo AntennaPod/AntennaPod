@@ -87,6 +87,12 @@ public class PlaybackService extends Service {
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
 
+	/**
+	 * If the PlaybackService receives this action, it will stop playback and
+	 * try to shutdown.
+	 */
+	public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.service.actionShutdownPlaybackService";
+
 	/** Used in NOTIFICATION_TYPE_RELOAD. */
 	public static final int EXTRA_CODE_AUDIO = 1;
 	public static final int EXTRA_CODE_VIDEO = 2;
@@ -266,6 +272,8 @@ public class PlaybackService extends Service {
 		}
 		registerReceiver(headsetDisconnected, new IntentFilter(
 				Intent.ACTION_HEADSET_PLUG));
+		registerReceiver(shutdownReceiver, new IntentFilter(
+				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 
 	}
 
@@ -278,6 +286,7 @@ public class PlaybackService extends Service {
 		isRunning = false;
 		disableSleepTimer();
 		unregisterReceiver(headsetDisconnected);
+		unregisterReceiver(shutdownReceiver);
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
 			audioManager.unregisterRemoteControlClient(remoteControlClient);
 		}
@@ -486,7 +495,7 @@ public class PlaybackService extends Service {
 					player.setDataSource(media.getDownload_url());
 					setStatus(PlayerStatus.PREPARING);
 					player.prepareAsync();
-				} else if (media.getFile_url() != null){
+				} else if (media.getFile_url() != null) {
 					player.setDataSource(media.getFile_url());
 					setStatus(PlayerStatus.PREPARING);
 					player.prepare();
@@ -556,9 +565,12 @@ public class PlaybackService extends Service {
 						ChapterUtils
 								.readID3ChaptersFromFeedMediaDownloadUrl(media
 										.getItem());
-						if (media.getItem().getChapters() != null) {
+						if (media.getItem().getChapters() != null
+								&& !interrupted()) {
 							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
 									0);
+							manager.setFeedItem(PlaybackService.this,
+									media.getItem());
 						}
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "ChapterLoaderThread has finished");
@@ -731,7 +743,8 @@ public class PlaybackService extends Service {
 
 	/** Pauses playback and destroys service. Recommended for video playback. */
 	public void stop() {
-		pause(true);
+		if (AppConfig.DEBUG) Log.d(TAG, "Stopping playback");
+		player.stop();
 		stopSelf();
 	}
 
@@ -983,6 +996,20 @@ public class PlaybackService extends Service {
 				}
 			}
 		}
+	};
+
+	private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+				schedExecutor.shutdownNow();
+				stop();
+				media = null;
+				feed = null;
+			}
+		}
+
 	};
 
 	/** Periodically saves the position of the media file */
