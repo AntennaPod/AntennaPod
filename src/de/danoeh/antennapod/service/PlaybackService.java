@@ -134,6 +134,8 @@ public class PlaybackService extends Service {
 
 	private SleepTimer sleepTimer;
 	private Future sleepTimerFuture;
+	
+	private Thread chapterLoader;
 
 	private static final int SCHED_EX_POOL_SIZE = 3;
 	private ScheduledThreadPoolExecutor schedExecutor;
@@ -556,7 +558,10 @@ public class PlaybackService extends Service {
 			}
 			if (shouldStream && media.getItem().getChapters() == null) {
 				// load chapters if available
-				Thread chapterLoader = new Thread() {
+				if (chapterLoader != null) {
+					chapterLoader.interrupt();
+				}
+				chapterLoader = new Thread() {
 
 					@Override
 					public void run() {
@@ -1004,6 +1009,9 @@ public class PlaybackService extends Service {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
 				schedExecutor.shutdownNow();
+				if (chapterLoader != null) {
+					chapterLoader.interrupt();
+				}
 				stop();
 				media = null;
 				feed = null;
