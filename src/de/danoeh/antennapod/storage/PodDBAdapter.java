@@ -144,8 +144,7 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
 			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
 			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
-			+ KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER
-			+ " TEXT)";
+			+ KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT)";
 
 	private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
 			+ TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -412,6 +411,11 @@ public class PodDBAdapter {
 				new String[] { String.valueOf(media.getId()) });
 	}
 
+	public void removeChaptersOfItem(FeedItem item) {
+		db.delete(TABLE_NAME_SIMPLECHAPTERS, KEY_FEEDITEM + "=?",
+				new String[] { String.valueOf(item.getId()) });
+	}
+
 	public void removeFeedImage(FeedImage image) {
 		db.delete(TABLE_NAME_FEED_IMAGES, KEY_ID + "=?",
 				new String[] { String.valueOf(image.getId()) });
@@ -421,6 +425,9 @@ public class PodDBAdapter {
 	public void removeFeedItem(FeedItem item) {
 		if (item.getMedia() != null) {
 			removeFeedMedia(item.getMedia());
+		}
+		if (item.getChapters() != null) {
+			removeChaptersOfItem(item);
 		}
 		db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
 				new String[] { String.valueOf(item.getId()) });
