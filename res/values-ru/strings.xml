@@ -5,7 +5,7 @@
   <string name="feeds_label">Каналы</string>
   <string name="new_label">Новые</string>
   <string name="settings_label">Настройки</string>
-  <string name="add_new_feed_label">Добавить новый канал</string>
+  <string name="add_new_feed_label">Добавить канал</string>
   <string name="downloads_label">Закачки</string>
   <string name="cancel_download_label">Отменить закачку</string>
   <string name="download_log_label">Журнал закачек</string>
@@ -22,7 +22,7 @@
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Описание</string>
   <string name="last_update_prefix">Последнее обновление:\u0020</string>
-  <string name="episodes_suffix">\u0020эпизоды</string>
+  <string name="episodes_suffix">Количество выпусков:\u0020</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
@@ -38,7 +38,7 @@
   <string name="remove_feed_label">Удалить канал</string>
   <string name="share_link_label">Поделиться ссылкой на сайт</string>
   <string name="share_source_label">Поделиться ссылкой на канал</string>
-  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ закачанных эпизодов этого канала.</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ закачанных выпусков этого канала.</string>
   <!--actions on feeditems-->
   <string name="download_label">Закачать</string>
   <string name="play_label">Слушать</string>
@@ -50,6 +50,8 @@
   <string name="remove_from_queue_label">Удалить из очереди</string>
   <string name="visit_website_label">Посетить сайт</string>
   <string name="support_label">Поддержать посредством Flattr</string>
+  <string name="enqueue_all_new">Поставить в очередь все</string>
+  <string name="download_all">Скачать все</string>
   <!--Download messages and labels-->
   <string name="download_successful">Закачка завершилась успешно</string>
   <string name="download_failed">Закачка </string>
@@ -63,15 +65,22 @@
   <string name="download_error_parser_exception">Ошибка парсера</string>
   <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
   <string name="download_error_connection_error">Ошибка соединения</string>
+  <string name="download_error_unknown_host">Неизвестный хост</string>
   <string name="cancel_all_downloads_label">Отменить все закачки</string>
   <string name="download_cancelled_msg">Закачка отменена</string>
   <string name="download_report_title">Закачки завершены</string>
   <string name="download_error_malformed_url">Некорректная ссылка</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
+  <string name="download_error_request_error">Ошибка запроса</string>
   <string name="downloads_left">\u0020закачек осталось</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_report_content">%1$d успешных закачек, %2$d неудачных</string>
+  <string name="download_log_title_unknown">Неизвестное название</string>
+  <string name="download_type_feed">Канал</string>
+  <string name="download_type_media">Медиа файл</string>
+  <string name="download_type_image">Изображение</string>
+  <string name="download_request_error_dialog_message_prefix">Ошибка скачивания файла:\u0020</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Ошибка!</string>
   <string name="player_stopped_msg">Ничего не воспроизводится</string>
@@ -112,7 +121,7 @@
   <string name="no_feeds_label">Вы еще не подписаны ни на один канал</string>
   <!--Preferences-->
   <string name="other_pref">Прочее</string>
-  <string name="about_pref">Информация</string>
+  <string name="about_pref">О программе</string>
   <string name="queue_label">Очередь</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Остановить воспроизведение когда наушники отсоединены</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
@@ -125,7 +134,7 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Закачка по WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
-  <string name="pref_mobileUpdate_sum">Разрешить обновления через мобильное интернет-подключение</string>
+  <string name="pref_mobileUpdate_sum">Обновлять каналы через мобильное интернет-подключение</string>
   <string name="refreshing_label">Обновление</string>
   <string name="flattr_settings_label">Настройки Flattr</string>
   <string name="pref_flattr_auth_title">Авторизация Flattr</string>
@@ -135,13 +144,15 @@
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
   <string name="pref_autoQueue_title">Ставить в очередь автоматически</string>
-  <string name="pref_autoQueue_sum">Ставить эпизод в очередь сразу после закачки.</string>
-  <string name="pref_display_only_episodes_title">Показывать только эпизоды</string>
-  <string name="pref_display_only_episodes_sum">Показывать только элементы списка которые содержат эпизоды</string>
+  <string name="pref_autoQueue_sum">Ставить выпуск в очередь сразу после закачки.</string>
+  <string name="pref_display_only_episodes_title">Показывать только выпуски</string>
+  <string name="pref_display_only_episodes_sum">Показывать только те элементы списка которые содержат выпуски</string>
   <string name="user_interface_label">Интерфейс</string>
+  <string name="pref_auto_delete_title">Автоматическое удаление</string>
+  <string name="pref_auto_delete_sum">Удалять выпуск сразу по окончании прослушивания или при удалении его из очереди</string>
   <!--Search-->
-  <string name="search_hint">Поиск каналов или эпизодов</string>
-  <string name="found_in_shownotes_label">Найдено в описании эпизода</string>
+  <string name="search_hint">Поиск каналов или выпусков</string>
+  <string name="found_in_shownotes_label">Найдено в описании выпуска</string>
   <string name="found_in_chapters_label">Найдено в разделах</string>
   <string name="search_status_searching">Поиск...</string>
   <string name="search_status_no_results">Ничего не найдено</string>
@@ -150,7 +161,7 @@
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
-  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить в следующий каталог и нажать кнопку чтобы начать процесс импорта.</string>
+  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить каталог указанный ниже и нажать кнопку чтобы начать процесс импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
   <string name="opml_directory_error">ОШИБКА!</string>
