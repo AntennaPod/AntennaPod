@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.danoeh.antennapod"
+<manifest package="de.danoeh.antennapod"
     android:versionCode="16"
-    android:versionName="0.9.4.6" >
+    android:versionName="0.9.4.6" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -10,13 +9,19 @@
     <uses-sdk
         android:minSdkVersion="10"
         android:targetSdkVersion="16" />
+
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <supports-screens
+        android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true" android:anyDensity="true"/>
+        android:xlargeScreens="true" />
+
+    <uses-feature
+        android:name="android.hardware.screen.portrait"
+        android:required="false" />
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
@@ -27,8 +32,9 @@
         android:theme="@style/Theme.Sherlock.Light.ForceOverflow" >
         <activity
             android:name=".activity.MainActivity"
+            android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name"
-            android:theme="@style/StyledIndicators" android:configChanges="keyboardHidden|orientation">
+            android:theme="@style/StyledIndicators" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -42,7 +48,8 @@
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/add_new_feed_label" android:windowSoftInputMode="adjustResize">
+            android:label="@string/add_new_feed_label"
+            android:windowSoftInputMode="adjustResize" >
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -59,7 +66,8 @@
                 android:value=".activity.SearchActivity" />
         </activity>
         <activity
-            android:name="de.danoeh.antennapod.activity.ItemviewActivity" android:configChanges="keyboard|orientation"/>
+            android:name="de.danoeh.antennapod.activity.ItemviewActivity"
+            android:configChanges="keyboard|orientation" />
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
             android:label="@string/downloads_label" />
@@ -67,7 +75,8 @@
             android:name=".activity.AudioplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:theme="@style/Theme.MediaPlayer" android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.MediaPlayer" />
 
         <service
             android:name=".service.download.DownloadService"
@@ -116,8 +125,9 @@
             <meta-data
                 android:name="android.appwidget.provider"
                 android:resource="@xml/player_widget_info" />
+
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
+                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE" />
             </intent-filter>
         </receiver>
         <receiver android:name=".receiver.FeedUpdateReceiver" >
@@ -154,7 +164,8 @@
         </activity>
         <activity
             android:name=".activity.OpmlImportActivity"
-            android:label="@string/opml_import_label" android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/opml_import_label" >
         </activity>
         <activity
             android:name=".activity.OpmlFeedChooserActivity"
@@ -183,10 +194,14 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.MiroGuideSearchActivity" />
         </activity>
-        <activity android:name=".activity.MiroGuideSearchActivity" android:launchMode="singleTop" android:configChanges="keyboardHidden|orientation">
+        <activity
+            android:name=".activity.MiroGuideSearchActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:launchMode="singleTop" >
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/miroguide_searchable" />
@@ -194,9 +209,22 @@
                 android:name="android.app.default_searchable"
                 android:value=".activity.MiroGuideSearchActivity" />
         </activity>
-        <activity android:name=".activity.MiroGuideCategoryActivity" android:configChanges="keyboardHidden|orientation" android:theme="@style/StyledIndicators"></activity>
-        <activity android:name=".activity.MiroGuideChannelViewActivity" android:configChanges="keyboard|orientation" android:label="@string/miro_guide_label"></activity>
-        <activity android:name=".activity.VideoplayerActivity" android:configChanges="keyboardHidden|orientation" android:screenOrientation="landscape" android:theme="@style/VideoplayerTheme"></activity>
+        <activity
+            android:name=".activity.MiroGuideCategoryActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:theme="@style/StyledIndicators" >
+        </activity>
+        <activity
+            android:name=".activity.MiroGuideChannelViewActivity"
+            android:configChanges="keyboard|orientation"
+            android:label="@string/miro_guide_label" >
+        </activity>
+        <activity
+            android:name=".activity.VideoplayerActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:screenOrientation="landscape"
+            android:theme="@style/VideoplayerTheme" >
+        </activity>
     </application>
 
 </manifest>
