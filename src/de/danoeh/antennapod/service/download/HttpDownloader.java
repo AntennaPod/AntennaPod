@@ -41,54 +41,62 @@ public class HttpDownloader extends Downloader {
 			URL url = new URL(status.getFeedFile().getDownload_url());
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
-			if (AppConfig.DEBUG) {
-				Log.d(TAG, "Connected to resource");
-			}
-			if (StorageUtils.externalStorageMounted()) {
-				File destination = new File(status.getFeedFile().getFile_url());
-				if (!destination.exists()) {
-					InputStream in = new BufferedInputStream(
-							connection.getInputStream());
-					out = new BufferedOutputStream(new FileOutputStream(
-							destination));
-					byte[] buffer = new byte[BUFFER_SIZE];
-					int count = 0;
-					status.setStatusMsg(R.string.download_running);
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Getting size of download");
-					status.setSize(connection.getContentLength());
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Size is " + status.getSize());
-					if (status.getSize() == -1) {
-						status.setSize(DownloadStatus.SIZE_UNKNOWN);
-					}
-
-					long freeSpace = StorageUtils.getFreeSpaceAvailable();
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Free space is " + freeSpace);
-					if (status.getSize() == DownloadStatus.SIZE_UNKNOWN
-							|| status.getSize() <= freeSpace) {
+			int responseCode = connection.getResponseCode();
+			if (responseCode == HttpURLConnection.HTTP_OK) {
+				if (AppConfig.DEBUG) {
+					Log.d(TAG, "Connected to resource");
+				}
+				if (StorageUtils.externalStorageMounted()) {
+					File destination = new File(status.getFeedFile()
+							.getFile_url());
+					if (!destination.exists()) {
+						InputStream in = new BufferedInputStream(
+								connection.getInputStream());
+						out = new BufferedOutputStream(new FileOutputStream(
+								destination));
+						byte[] buffer = new byte[BUFFER_SIZE];
+						int count = 0;
+						status.setStatusMsg(R.string.download_running);
 						if (AppConfig.DEBUG)
-							Log.d(TAG, "Starting download");
-						while (!cancelled && (count = in.read(buffer)) != -1) {
-							out.write(buffer, 0, count);
-							status.setSoFar(status.getSoFar() + count);
-							status.setProgressPercent((int) (((double) status
-									.getSoFar() / (double) status.getSize()) * 100));
+							Log.d(TAG, "Getting size of download");
+						status.setSize(connection.getContentLength());
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Size is " + status.getSize());
+						if (status.getSize() == -1) {
+							status.setSize(DownloadStatus.SIZE_UNKNOWN);
 						}
-						if (cancelled) {
-							onCancelled();
+
+						long freeSpace = StorageUtils.getFreeSpaceAvailable();
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Free space is " + freeSpace);
+						if (status.getSize() == DownloadStatus.SIZE_UNKNOWN
+								|| status.getSize() <= freeSpace) {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Starting download");
+							while (!cancelled
+									&& (count = in.read(buffer)) != -1) {
+								out.write(buffer, 0, count);
+								status.setSoFar(status.getSoFar() + count);
+								status.setProgressPercent((int) (((double) status
+										.getSoFar() / (double) status.getSize()) * 100));
+							}
+							if (cancelled) {
+								onCancelled();
+							} else {
+								onSuccess();
+							}
 						} else {
-							onSuccess();
+							onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
 						}
 					} else {
-						onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
+						onFail(DownloadError.ERROR_FILE_EXISTS, null);
 					}
 				} else {
-					onFail(DownloadError.ERROR_FILE_EXISTS, null);
+					onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
 				}
 			} else {
-				onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
+				onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
+						String.valueOf(responseCode));
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
@@ -102,10 +110,11 @@ public class HttpDownloader extends Downloader {
 		} catch (IOException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_IO_ERROR, e.getMessage());
-		}catch (NullPointerException e) {
+		} catch (NullPointerException e) {
 			// might be thrown by connection.getInputStream()
 			e.printStackTrace();
-			onFail(DownloadError.ERROR_CONNECTION_ERROR, status.getFeedFile().getDownload_url());
+			onFail(DownloadError.ERROR_CONNECTION_ERROR, status.getFeedFile()
+					.getDownload_url());
 		} finally {
 			IOUtils.close(connection);
 			IOUtils.closeQuietly(out);
