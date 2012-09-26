@@ -72,10 +72,9 @@ public class NSAtom extends Namespace {
 					if (strSize != null)
 						size = Long.parseLong(strSize);
 					String type = attributes.getValue(LINK_TYPE);
-					String download_url = attributes
-							.getValue(LINK_REL_ENCLOSURE);
+					
 					state.getCurrentItem().setMedia(
-							new FeedMedia(state.getCurrentItem(), download_url,
+							new FeedMedia(state.getCurrentItem(), href,
 									size, type));
 				} else if (rel.equals(LINK_REL_PAYMENT)) {
 					state.getCurrentItem().setPaymentLink(href);
