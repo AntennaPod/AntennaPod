@@ -317,18 +317,21 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected abstract void clearStatusMsg();
 
 	protected void onPositionObserverUpdate() {
-		int currentPosition = controller.getPosition();
-		int duration = controller.getDuration();
-		if (currentPosition != PlaybackService.INVALID_TIME
-				&& duration != PlaybackService.INVALID_TIME) {
-			controller.getMedia().setPosition(currentPosition);
-			txtvPosition.setText(Converter
-					.getDurationStringLong(currentPosition));
-			txtvLength.setText(Converter.getDurationStringLong(duration));
-			updateProgressbarPosition(currentPosition, duration);
-		} else {
-			Log.w(TAG,
-					"Could not react to position observer update because of invalid time");
+		if (controller != null) {
+			int currentPosition = controller.getPosition();
+			int duration = controller.getDuration();
+			if (currentPosition != PlaybackService.INVALID_TIME
+					&& duration != PlaybackService.INVALID_TIME
+					&& controller.getMedia() != null) {
+				controller.getMedia().setPosition(currentPosition);
+				txtvPosition.setText(Converter
+						.getDurationStringLong(currentPosition));
+				txtvLength.setText(Converter.getDurationStringLong(duration));
+				updateProgressbarPosition(currentPosition, duration);
+			} else {
+				Log.w(TAG,
+						"Could not react to position observer update because of invalid time");
+			}
 		}
 	}
 
