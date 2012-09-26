@@ -106,6 +106,12 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 
+	/**
+	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
+	 * is in an invalid state.
+	 */
+	public static final int INVALID_TIME = -1;
+
 	/** Is true if service is running. */
 	public static boolean isRunning = false;
 
@@ -134,7 +140,7 @@ public class PlaybackService extends Service {
 
 	private SleepTimer sleepTimer;
 	private Future sleepTimerFuture;
-	
+
 	private Thread chapterLoader;
 
 	private static final int SCHED_EX_POOL_SIZE = 3;
@@ -748,7 +754,8 @@ public class PlaybackService extends Service {
 
 	/** Pauses playback and destroys service. Recommended for video playback. */
 	public void stop() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Stopping playback");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Stopping playback");
 		player.stop();
 		stopSelf();
 	}
@@ -838,7 +845,10 @@ public class PlaybackService extends Service {
 	 *            offset from current position (positive or negative)
 	 * */
 	public void seekDelta(int delta) {
-		seek(player.getCurrentPosition() + delta);
+		int position = getCurrentPositionSafe();
+		if (position != INVALID_TIME) {
+			seek(player.getCurrentPosition() + delta);
+		}
 	}
 
 	public void seek(int i) {
@@ -860,11 +870,13 @@ public class PlaybackService extends Service {
 
 	/** Saves the current position of the media file to the DB */
 	private synchronized void saveCurrentPosition() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG,
-					"Saving current position to " + player.getCurrentPosition());
-		media.setPosition(player.getCurrentPosition());
-		manager.setFeedMedia(this, media);
+		int position = getCurrentPositionSafe();
+		if (position != INVALID_TIME) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Saving current position to " + position);
+			media.setPosition(position);
+			manager.setFeedMedia(this, media);
+		}
 	}
 
 	private void stopWidgetUpdater() {
@@ -1131,6 +1143,48 @@ public class PlaybackService extends Service {
 	public void setStartWhenPrepared(boolean startWhenPrepared) {
 		this.startWhenPrepared = startWhenPrepared;
 		postStatusUpdateIntent();
+	}
+
+	/**
+	 * call getDuration() on mediaplayer or return INVALID_TIME if player is in
+	 * an invalid state. This method should be used instead of calling
+	 * getDuration() directly to avoid an error.
+	 */
+	public int getDurationSafe() {
+		if (status != null && player != null) {
+			switch (status) {
+			case PREPARED:
+			case PLAYING:
+			case PAUSED:
+			case SEEKING:
+				return player.getDuration();
+			default:
+				return INVALID_TIME;
+			}
+		} else {
+			return INVALID_TIME;
+		}
+	}
+
+	/**
+	 * call getCurrentPosition() on mediaplayer or return INVALID_TIME if player
+	 * is in an invalid state. This method should be used instead of calling
+	 * getCurrentPosition() directly to avoid an error.
+	 */
+	public int getCurrentPositionSafe() {
+		if (status != null && player != null) {
+			switch (status) {
+			case PREPARED:
+			case PLAYING:
+			case PAUSED:
+			case SEEKING:
+				return player.getCurrentPosition();
+			default:
+				return INVALID_TIME;
+			}
+		} else {
+			return INVALID_TIME;
+		}
 	}
 
 }

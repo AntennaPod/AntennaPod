@@ -86,14 +86,15 @@ public class PlayerWidgetService extends Service {
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
 		if (playbackService != null) {
 			FeedMedia media = playbackService.getMedia();
-			MediaPlayer player = playbackService.getPlayer();
 			PlayerStatus status = playbackService.getStatus();
 
 			views.setTextViewText(R.id.txtvTitle, media.getItem().getTitle());
 
 			if (status == PlayerStatus.PLAYING) {
-				views.setTextViewText(R.id.txtvProgress,
-						getProgressString(player));
+				String progressString = getProgressString(playbackService);
+				if (progressString != null) {
+					views.setTextViewText(R.id.txtvProgress, progressString);
+				}
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause);
 			} else {
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_play);
@@ -125,10 +126,16 @@ public class PlayerWidgetService extends Service {
 		return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
 	}
 
-	private String getProgressString(MediaPlayer player) {
-
-		return Converter.getDurationStringLong(player.getCurrentPosition())
-				+ " / " + Converter.getDurationStringLong(player.getDuration());
+	private String getProgressString(PlaybackService ps) {
+		int position = ps.getCurrentPositionSafe();
+		int duration = ps.getDurationSafe();
+		if (position != PlaybackService.INVALID_TIME
+				&& duration != PlaybackService.INVALID_TIME) {
+			return Converter.getDurationStringLong(position) + " / "
+					+ Converter.getDurationStringLong(duration);
+		} else {
+			return null;
+		}
 	}
 
 	private ServiceConnection mConnection = new ServiceConnection() {
@@ -148,7 +155,7 @@ public class PlayerWidgetService extends Service {
 		}
 
 	};
-	
+
 	private void startViewUpdaterIfNotRunning() {
 		if (!isUpdating) {
 			ViewUpdater updateThread = new ViewUpdater(this);
@@ -159,12 +166,12 @@ public class PlayerWidgetService extends Service {
 	static class ViewUpdater extends Thread {
 		private static final String THREAD_NAME = "ViewUpdater";
 		private PlayerWidgetService service;
-		
+
 		public ViewUpdater(PlayerWidgetService service) {
 			super();
 			setName(THREAD_NAME);
 			this.service = service;
-			
+
 		}
 
 		@Override

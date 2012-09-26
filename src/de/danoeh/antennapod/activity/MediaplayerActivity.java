@@ -23,6 +23,7 @@ import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.MediaPlayerError;
@@ -309,8 +310,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected void onPositionObserverUpdate() {
 		int currentPosition = controller.getPosition();
 		int duration = controller.getDuration();
-		if (currentPosition != PlaybackController.INVALID_TIME
-				&& duration != PlaybackController.INVALID_TIME) {
+		if (currentPosition != PlaybackService.INVALID_TIME
+				&& duration != PlaybackService.INVALID_TIME) {
 			controller.getMedia().setPosition(currentPosition);
 			txtvPosition.setText(Converter
 					.getDurationStringLong(currentPosition));

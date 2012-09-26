@@ -39,13 +39,8 @@ import de.danoeh.antennapod.service.PlayerStatus;
 public abstract class PlaybackController {
 	private static final String TAG = "PlaybackController";
 
-	/**
-	 * Returned by getPosition() or getDuration() if the playbackService is in
-	 * an invalid state.
-	 */
-	public static final int INVALID_TIME = -1;
-
 	static final int DEFAULT_SEEK_DELTA = 30000;
+	public static final int INVALID_TIME = -1;
 
 	private Activity activity;
 
@@ -533,17 +528,18 @@ public abstract class PlaybackController {
 
 	public int getPosition() {
 		if (playbackService != null) {
-			return playbackService.getPlayer().getCurrentPosition();
+			return playbackService.getCurrentPositionSafe();
 		} else {
-			return INVALID_TIME;
+			return PlaybackService.INVALID_TIME;
 		}
 	}
 
+	
 	public int getDuration() {
 		if (playbackService != null) {
-			return playbackService.getPlayer().getDuration();
+			return playbackService.getDurationSafe();
 		} else {
-			return INVALID_TIME;
+			return PlaybackService.INVALID_TIME;
 		}
 	}
 
