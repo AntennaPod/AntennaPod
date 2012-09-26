@@ -927,8 +927,14 @@ public class PlaybackService extends Service {
 		PendingIntent mediaPendingIntent = PendingIntent.getBroadcast(
 				getApplicationContext(), 0, mediaButtonIntent, 0);
 		remoteControlClient = new RemoteControlClient(mediaPendingIntent);
+		int controlFlags;
+		if (android.os.Build.VERSION.SDK_INT < 16) {
+			controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE | RemoteControlClient.FLAG_KEY_MEDIA_NEXT; 
+		} else {
+			controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE;
+		}
 		remoteControlClient
-				.setTransportControlFlags(RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE);
+				.setTransportControlFlags(controlFlags);
 		return remoteControlClient;
 	}
 
@@ -963,9 +969,9 @@ public class PlaybackService extends Service {
 							.editMetadata(false);
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
 							media.getItem().getTitle());
-					editor.putLong(
+				/*	editor.putLong(
 							MediaMetadataRetriever.METADATA_KEY_DURATION,
-							media.getDuration());
+							media.getDuration());*/
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
 							media.getItem().getFeed().getTitle());
 
