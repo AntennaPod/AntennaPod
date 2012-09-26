@@ -55,6 +55,7 @@ public abstract class PlaybackController {
 	protected ScheduledFuture positionObserverFuture;
 
 	private boolean mediaInfoLoaded = false;
+	private boolean released = false;
 
 	public PlaybackController(Activity activity) {
 		this.activity = activity;
@@ -83,7 +84,12 @@ public abstract class PlaybackController {
 	 * activity's onResume() method.
 	 */
 	public void init() {
-		bindToService();
+		if (!released) {
+			bindToService();
+		} else {
+			throw new IllegalStateException(
+					"Can't call init() after release() has been called");
+		}
 	}
 
 	/**
@@ -111,7 +117,7 @@ public abstract class PlaybackController {
 		} catch (IllegalArgumentException e) {
 			// ignore
 		}
-		
+
 		try {
 			activity.unregisterReceiver(shutdownReceiver);
 		} catch (IllegalArgumentException e) {
@@ -120,6 +126,7 @@ public abstract class PlaybackController {
 		cancelPositionObserver();
 		schedExecutor.shutdownNow();
 		media = null;
+		released = true;
 
 	}
 
@@ -534,7 +541,6 @@ public abstract class PlaybackController {
 		}
 	}
 
-	
 	public int getDuration() {
 		if (playbackService != null) {
 			return playbackService.getDurationSafe();

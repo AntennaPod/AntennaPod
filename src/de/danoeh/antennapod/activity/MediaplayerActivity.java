@@ -186,7 +186,16 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		super.onStop();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Activity stopped");
-		controller.release();
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Activity destroyed");
+		if (controller != null) {
+			controller.release();
+		}
 	}
 
 	@Override
