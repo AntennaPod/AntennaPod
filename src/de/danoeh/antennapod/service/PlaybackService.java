@@ -730,8 +730,8 @@ public class PlaybackService extends Service {
 	}
 
 	/**
-	 * Saves the current position and pauses playback
-	 * 
+	 * Saves the current position and pauses playback. Note that, if audiofocus
+	 * is abandoned, the lockscreen controls will also disapear.
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
 	 */
@@ -760,6 +760,7 @@ public class PlaybackService extends Service {
 		stopSelf();
 	}
 
+	@SuppressLint("NewApi")
 	public void play() {
 		if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED
 				|| status == PlayerStatus.STOPPED) {
@@ -789,6 +790,12 @@ public class PlaybackService extends Service {
 				setupWidgetUpdater();
 				setupNotification();
 				pausedBecauseOfTransientAudiofocusLoss = false;
+				if (android.os.Build.VERSION.SDK_INT >= 14) {
+					audioManager
+							.registerRemoteControlClient(remoteControlClient);
+				}
+				audioManager
+						.registerMediaButtonEventReceiver(mediaButtonReceiver);
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Failed to request Audiofocus");
@@ -929,12 +936,12 @@ public class PlaybackService extends Service {
 		remoteControlClient = new RemoteControlClient(mediaPendingIntent);
 		int controlFlags;
 		if (android.os.Build.VERSION.SDK_INT < 16) {
-			controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE | RemoteControlClient.FLAG_KEY_MEDIA_NEXT; 
+			controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE
+					| RemoteControlClient.FLAG_KEY_MEDIA_NEXT;
 		} else {
 			controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE;
 		}
-		remoteControlClient
-				.setTransportControlFlags(controlFlags);
+		remoteControlClient.setTransportControlFlags(controlFlags);
 		return remoteControlClient;
 	}
 
@@ -969,9 +976,7 @@ public class PlaybackService extends Service {
 							.editMetadata(false);
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
 							media.getItem().getTitle());
-				/*	editor.putLong(
-							MediaMetadataRetriever.METADATA_KEY_DURATION,
-							media.getDuration());*/
+					
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
 							media.getItem().getFeed().getTitle());
 
@@ -1012,7 +1017,7 @@ public class PlaybackService extends Service {
 						if (AppConfig.DEBUG)
 							Log.d(TAG,
 									"Pausing playback because headset was disconnected");
-						pause(true);
+						pause(false);
 					}
 				} else {
 					Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
