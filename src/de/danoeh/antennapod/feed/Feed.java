@@ -122,14 +122,14 @@ public class Feed extends FeedFile {
 	/**
 	 * Returns the value that uniquely identifies this Feed. If the
 	 * feedIdentifier attribute is not null, it will be returned. Else it will
-	 * try to return the link. If the link is not given, it will use the title
-	 * of the entry.
+	 * try to return the download URL. If the download URL is not given, it will use the title
+	 * of the feed.
 	 * */
 	public String getIdentifyingValue() {
 		if (feedIdentifier != null) {
 			return feedIdentifier;
-		} else if (link != null) {
-			return link;
+		} else if (download_url != null) {
+			return download_url;
 		} else {
 			return title;
 		}

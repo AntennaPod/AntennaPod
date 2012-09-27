@@ -63,16 +63,16 @@ public class FeedItem extends FeedComponent {
 	
 	/** Returns the value that uniquely identifies this FeedItem. 
 	 *  If the itemIdentifier attribute is not null, it will be returned.
-	 *  Else it will try to return the link. If the link is not given, it will
-	 *  use the title of the entry.
+	 *  Else it will try to return the title. If the title is not given, it will
+	 *  use the link of the entry.
 	 * */
 	public String getIdentifyingValue() {
 		if (itemIdentifier != null) {
 			return itemIdentifier;
-		} else if (link != null) {
-			return link;
-		} else {
+		} else if (title != null) {
 			return title;
+		} else {
+			return link;
 		}
 	}
 
