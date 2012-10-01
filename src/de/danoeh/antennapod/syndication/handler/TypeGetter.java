@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
 
+import org.apache.commons.io.input.XmlStreamReader;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -72,10 +73,13 @@ public class TypeGetter {
 	}
 
 	private Reader createReader(Feed feed) {
-		FileReader reader;
+		Reader reader;
 		try {
-			reader = new FileReader(new File(feed.getFile_url()));
+			reader = new XmlStreamReader(new File(feed.getFile_url()));
 		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		} catch (IOException e) {
 			e.printStackTrace();
 			return null;
 		}

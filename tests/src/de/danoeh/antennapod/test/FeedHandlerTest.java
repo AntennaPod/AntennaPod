@@ -24,6 +24,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://podcast.homerj.de/podcasts.xml",
 			"http://www.dradio.de/rss/podcast/sendungen/wissenschaftundbildung/",
 			"http://www.dradio.de/rss/podcast/sendungen/wirtschaftundverbraucher/",
 			"http://www.dradio.de/rss/podcast/sendungen/literatur/",
