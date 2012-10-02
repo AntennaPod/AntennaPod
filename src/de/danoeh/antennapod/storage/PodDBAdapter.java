@@ -281,6 +281,8 @@ public class PodDBAdapter {
 		values.put(KEY_FILE_URL, media.getFile_url());
 		if (media.getPlaybackCompletionDate() != null) {
 			values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+		} else {
+			values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
 		}
 		if (media.getId() == 0) {
 			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));

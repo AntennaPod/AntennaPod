@@ -3,6 +3,7 @@ package de.danoeh.antennapod.feed;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -29,6 +30,7 @@ import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.FeedtitleComparator;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 
 /**
  * Singleton class Manages all feeds, categories and feeditems
@@ -42,6 +44,7 @@ public class FeedManager {
 	public static final String ACTION_UNREAD_ITEMS_UPDATE = "de.danoeh.antennapod.action.feed.unreadItemsUpdate";
 	public static final String ACTION_QUEUE_UPDATE = "de.danoeh.antennapod.action.feed.queueUpdate";
 	public static final String ACTION_DOWNLOADLOG_UPDATE = "de.danoeh.antennapod.action.feed.downloadLogUpdate";
+	public static final String ACTION_PLAYBACK_HISTORY_UPDATE = "de.danoeh.antennapod.action.feed.playbackHistoryUpdate";
 	public static final String EXTRA_FEED_ITEM_ID = "de.danoeh.antennapod.extra.feed.feedItemId";
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feed.feedId";
 
@@ -62,6 +65,12 @@ public class FeedManager {
 	/** Contains the queue of items to be played. */
 	private List<FeedItem> queue;
 
+	/** Contains the last played items */
+	private List<FeedItem> playbackHistory;
+
+	/** Maximum number of items in the playback history. */
+	private static final int PLAYBACK_HISTORY_SIZE = 15;
+
 	private DownloadRequester requester;
 
 	/** Should be used to change the content of the arrays from another thread. */
@@ -79,6 +88,8 @@ public class FeedManager {
 		requester = DownloadRequester.getInstance();
 		downloadLog = new ArrayList<DownloadStatus>();
 		queue = Collections.synchronizedList(new ArrayList<FeedItem>());
+		playbackHistory = Collections
+				.synchronizedList(new ArrayList<FeedItem>());
 		contentChanger = new Handler();
 		dbExec = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
@@ -211,6 +222,7 @@ public class FeedManager {
 							if (queue.contains(item)) {
 								removeQueueItem(item, adapter);
 							}
+							removeItemFromPlaybackHistory(context, item);
 							if (item.getMedia() != null
 									&& item.getMedia().isDownloaded()) {
 								File mediaFile = new File(item.getMedia()
@@ -253,6 +265,82 @@ public class FeedManager {
 
 	private void sendFeedUpdateBroadcast(Context context) {
 		context.sendBroadcast(new Intent(ACITON_FEED_LIST_UPDATE));
+	}
+
+	private void sendPlaybackHistoryUpdateBroadcast(Context context) {
+		context.sendBroadcast(new Intent(ACTION_PLAYBACK_HISTORY_UPDATE));
+	}
+
+	/**
+	 * Makes sure that playback history is sorted and is not larger than
+	 * PLAYBACK_HISTORY_SIZE.
+	 * 
+	 * @return an array of all feeditems that were remove from the playback
+	 *         history or null if no items were removed.
+	 */
+	private FeedItem[] cleanupPlaybackHistory() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Cleaning up playback history.");
+
+		Collections.sort(playbackHistory,
+				new PlaybackCompletionDateComparator());
+		final int initialSize = playbackHistory.size();
+		if (initialSize > PLAYBACK_HISTORY_SIZE) {
+			FeedItem[] removed = new FeedItem[initialSize
+					- PLAYBACK_HISTORY_SIZE];
+
+			for (int i = 0; i < removed.length; i++) {
+				removed[i] = playbackHistory.remove(playbackHistory.size() - 1);
+			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Removed " + removed.length
+						+ " items from playback history.");
+			return removed;
+		}
+		return null;
+	}
+
+	/**
+	 * Executes cleanupPlaybackHistory and deletes the playbackCompletionDate of
+	 * all item that were removed from the history.
+	 */
+	private void cleanupPlaybackHistoryWithDBCleanup(final Context context) {
+		final FeedItem[] removedItems = cleanupPlaybackHistory();
+		if (removedItems != null) {
+			dbExec.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					PodDBAdapter adapter = new PodDBAdapter(context);
+					adapter.open();
+					for (FeedItem item : removedItems) {
+						if (item.getMedia() != null) {
+							item.getMedia().setPlaybackCompletionDate(null);
+							adapter.setMedia(item.getMedia());
+						}
+					}
+					adapter.close();
+				}
+			});
+		}
+	}
+
+	public void addItemToPlaybackHistory(Context context, FeedItem item) {
+		if (item.getMedia() != null
+				&& item.getMedia().getPlaybackCompletionDate() != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Adding new item to playback history");
+			if (!playbackHistory.contains(item)) {
+				playbackHistory.add(item);
+			}
+			cleanupPlaybackHistoryWithDBCleanup(context);
+			sendPlaybackHistoryUpdateBroadcast(context);
+		}
+	}
+
+	private void removeItemFromPlaybackHistory(Context context, FeedItem item) {
+		playbackHistory.remove(item);
+		sendPlaybackHistoryUpdateBroadcast(context);
 	}
 
 	/**
@@ -933,6 +1021,7 @@ public class FeedManager {
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
+		cleanupPlaybackHistory();
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
@@ -1102,6 +1191,9 @@ public class FeedManager {
 							cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
 							cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
 							playbackCompletionDate));
+					if (playbackCompletionDate != null) {
+						playbackHistory.add(item);
+					}
 
 				}
 			} while (cursor.moveToNext());
@@ -1202,6 +1294,10 @@ public class FeedManager {
 
 	public List<FeedItem> getQueue() {
 		return queue;
+	}
+
+	public List<FeedItem> getPlaybackHistory() {
+		return playbackHistory;
 	}
 
 }
