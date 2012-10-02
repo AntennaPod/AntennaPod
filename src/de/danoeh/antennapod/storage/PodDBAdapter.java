@@ -25,7 +25,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 7;
+	private static final int DATABASE_VERSION = 8;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -61,6 +61,7 @@ public class PodDBAdapter {
 	public static final int KEY_POSITION_INDEX = 5;
 	public static final int KEY_SIZE_INDEX = 6;
 	public static final int KEY_MIME_TYPE_INDEX = 7;
+	public static final int KEY_PLAYBACK_COMPLETION_DATE_INDEX = 8;
 	// --------- Download log indices
 	public static final int KEY_FEEDFILE_INDEX = 1;
 	public static final int KEY_FEEDFILETYPE_INDEX = 2;
@@ -115,6 +116,7 @@ public class PodDBAdapter {
 	public static final String KEY_REASON_DETAILED = "reason_detailed";
 	public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
 	public static final String KEY_CHAPTER_TYPE = "type";
+	public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
 
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -155,7 +157,8 @@ public class PodDBAdapter {
 			+ TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
 			+ " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
 			+ " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
-			+ " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT)";
+			+ " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
+			+ KEY_PLAYBACK_COMPLETION_DATE + " INTEGER)";
 
 	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
 			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -276,6 +279,9 @@ public class PodDBAdapter {
 		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
 		values.put(KEY_DOWNLOADED, media.isDownloaded());
 		values.put(KEY_FILE_URL, media.getFile_url());
+		if (media.getPlaybackCompletionDate() != null) {
+			values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+		}
 		if (media.getId() == 0) {
 			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));
 		} else {
@@ -529,34 +535,6 @@ public class PodDBAdapter {
 		return c;
 	}
 
-	/**
-	 * Get a FeedMedia object from the Database.
-	 * 
-	 * @param rowIndex
-	 *            DB Index of Media object
-	 * @param owner
-	 *            FeedItem the Media object belongs to
-	 * @return A newly created FeedMedia object
-	 * */
-	public final FeedMedia getFeedMedia(final long rowIndex,
-			final FeedItem owner) throws SQLException {
-		Cursor cursor = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
-				new String[] { String.valueOf(rowIndex) }, null, null, null);
-		if (!cursor.moveToFirst()) {
-			throw new SQLException("No FeedMedia found at index: " + rowIndex);
-		}
-		FeedMedia media = new FeedMedia(rowIndex, owner, cursor.getInt(cursor
-				.getColumnIndex(KEY_DURATION)), cursor.getInt(cursor
-				.getColumnIndex(KEY_POSITION)), cursor.getLong(cursor
-				.getColumnIndex(KEY_SIZE)), cursor.getString(cursor
-				.getColumnIndex(KEY_MIME_TYPE)), cursor.getString(cursor
-				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
-				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
-				.getColumnIndex(KEY_DOWNLOADED)) > 0);
-		cursor.close();
-		return media;
-	}
-
 	public final Cursor getFeedMediaCursor(String... mediaIds) {
 		int length = mediaIds.length;
 		if (length > IN_OPERATOR_MAXIMUM) {
@@ -683,6 +661,11 @@ public class PodDBAdapter {
 			if (oldVersion <= 6) {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
 						+ " ADD COLUMN " + KEY_CHAPTER_TYPE + " INTEGER");
+			}
+			if (oldVersion <= 7) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
+						+ " ADD COLUMN " + KEY_PLAYBACK_COMPLETION_DATE
+						+ " INTEGER");
 			}
 		}
 	}

@@ -1083,6 +1083,14 @@ public class FeedManager {
 				FeedItem item = getMatchingItemForMedia(mediaId, itemsCopy);
 				itemsCopy.remove(item);
 				if (item != null) {
+					Date playbackCompletionDate = null;
+					long playbackCompletionTime = cursor
+							.getLong(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE_INDEX);
+					if (playbackCompletionTime > 0) {
+						playbackCompletionDate = new Date(
+								playbackCompletionTime);
+					}
+
 					item.setMedia(new FeedMedia(
 							mediaId,
 							item,
@@ -1092,7 +1100,8 @@ public class FeedManager {
 							cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
 							cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
 							cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
-							cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0));
+							cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
+							playbackCompletionDate));
 
 				}
 			} while (cursor.moveToNext());

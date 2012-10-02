@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.feed;
 
+import java.util.Date;
+
 public class FeedMedia extends FeedFile {
 
 	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
@@ -9,6 +11,7 @@ public class FeedMedia extends FeedFile {
 	private long size; // File size in Byte
 	private String mime_type;
 	private FeedItem item;
+	private Date playbackCompletionDate;
 
 	public FeedMedia(FeedItem i, String download_url, long size,
 			String mime_type) {
@@ -20,7 +23,7 @@ public class FeedMedia extends FeedFile {
 
 	public FeedMedia(long id, FeedItem item, int duration, int position,
 			long size, String mime_type, String file_url, String download_url,
-			boolean downloaded) {
+			boolean downloaded, Date playbackCompletionDate) {
 		super(file_url, download_url, downloaded);
 		this.id = id;
 		this.item = item;
@@ -28,6 +31,7 @@ public class FeedMedia extends FeedFile {
 		this.position = position;
 		this.size = size;
 		this.mime_type = mime_type;
+		this.playbackCompletionDate = playbackCompletionDate;
 	}
 
 	public FeedMedia(long id, FeedItem item) {
@@ -104,6 +108,14 @@ public class FeedMedia extends FeedFile {
 
 	public void setItem(FeedItem item) {
 		this.item = item;
+	}
+
+	public Date getPlaybackCompletionDate() {
+		return playbackCompletionDate;
+	}
+
+	public void setPlaybackCompletionDate(Date playbackCompletionDate) {
+		this.playbackCompletionDate = playbackCompletionDate;
 	}
 
 }
