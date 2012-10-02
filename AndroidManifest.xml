@@ -96,7 +96,7 @@
             android:label="@string/download_log_label" >
         </activity>
 
-        <receiver android:name=".receiver.MediaButtonReceiver" >
+        <receiver android:name=".receiver.MediaButtonReceiver" android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>

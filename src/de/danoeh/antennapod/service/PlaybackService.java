@@ -411,12 +411,17 @@ public class PlaybackService extends Service {
 
 	/** Handles media button events */
 	private void handleKeycode(int keycode) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Handling keycode: " + keycode);
 		switch (keycode) {
+		case KeyEvent.KEYCODE_HEADSETHOOK:
 		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
 				pause(false);
 			} else if (status == PlayerStatus.PAUSED) {
 				play();
+			} else if (status == PlayerStatus.PREPARING) {
+				setStartWhenPrepared(!startWhenPrepared);
 			}
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
@@ -732,6 +737,7 @@ public class PlaybackService extends Service {
 	/**
 	 * Saves the current position and pauses playback. Note that, if audiofocus
 	 * is abandoned, the lockscreen controls will also disapear.
+	 * 
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
 	 */
@@ -976,7 +982,7 @@ public class PlaybackService extends Service {
 							.editMetadata(false);
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
 							media.getItem().getTitle());
-					
+
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
 							media.getItem().getFeed().getTitle());
 
