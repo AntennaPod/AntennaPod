@@ -55,9 +55,10 @@
             android:summary="@string/pref_flattr_this_app_sum"
             android:title="@string/pref_flattr_this_app_title" >
         </Preference>
-        <Preference
+        <Preference android:key="prefOpmlExport" android:title="@string/opml_export_label"/><Preference
             android:key="prefAbout"
             android:title="@string/about_pref" />
+        
     </PreferenceCategory>
 
 </PreferenceScreen>

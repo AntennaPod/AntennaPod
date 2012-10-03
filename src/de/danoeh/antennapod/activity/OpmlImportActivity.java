@@ -208,7 +208,10 @@ public class OpmlImportActivity extends SherlockActivity {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						finish();
+						Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
+						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+								| Intent.FLAG_ACTIVITY_NEW_TASK);
+						startActivity(intent);
 					}
 
 				};

@@ -14,7 +14,7 @@
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear history</string>
-    
+
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>
@@ -90,8 +90,8 @@
     <string name="download_type_feed">Feed</string>
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
-	<string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
-    
+    <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
+
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
     <string name="player_stopped_msg">No media playing</string>
@@ -178,6 +178,7 @@
     <string name="found_in_title_label">Found in title</string>
 
     <!-- OPML import and export -->
+    <string name="opml_import_txtv_button_lable">You can also import an OPML file. OPML files allow you to move your podcasts from one podcatcher to another:</string>
     <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>

@@ -118,12 +118,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.show_player:
 			startActivity(PlaybackService.getPlayerActivityIntent(this));
 			return true;
-		case R.id.opml_import:
-			startActivity(new Intent(this, OpmlImportActivity.class));
-			return true;
-		case R.id.opml_export:
-			new OpmlExportWorker(this).executeAsync();
-			return false;
 		case R.id.search_item:
 			onSearchRequested();
 			return true;
@@ -146,7 +140,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 		boolean hasFeeds = !manager.getFeeds().isEmpty();
-		menu.findItem(R.id.opml_export).setVisible(hasFeeds);
 		menu.findItem(R.id.all_feed_refresh).setVisible(hasFeeds);
 		return true;
 	}

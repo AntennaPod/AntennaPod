@@ -4,41 +4,6 @@
     android:layout_height="fill_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txtvFeedurl"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:focusable="true"
-        android:focusableInTouchMode="true"
-        android:text="@string/txtvfeedurl_label" />
-
-    <EditText
-        android:id="@+id/etxtFeedurl"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvFeedurl"
-        android:layout_margin="8dp"
-        android:hint="@string/feedurl_label"
-        android:inputType="textUri" />
-
-    <TextView
-        android:id="@+id/txtvBrowseMiroguide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/etxtFeedurl"
-        android:layout_margin="8dp"
-        android:text="@string/txtv_browse_miroguide_label" />
-
-    <Button
-        android:id="@+id/butBrowseMiroguide"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvBrowseMiroguide"
-        android:layout_margin="8dp"
-        android:text="@string/browse_miroguide_label" />
-
     <RelativeLayout
         android:id="@+id/footer"
         android:layout_width="fill_parent"
@@ -83,5 +48,71 @@
             android:background="?android:attr/selectableItemBackground"
             android:text="@string/confirm_label" />
     </RelativeLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_above="@id/footer"
+        android:layout_alignParentTop="true"
+        android:scrollbars="vertical" >
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" >
+
+            <TextView
+                android:id="@+id/txtvFeedurl"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_margin="8dp"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:text="@string/txtvfeedurl_label" />
+
+            <EditText
+                android:id="@+id/etxtFeedurl"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvFeedurl"
+                android:layout_margin="8dp"
+                android:hint="@string/feedurl_label"
+                android:inputType="textUri" />
+
+            <TextView
+                android:id="@+id/txtvBrowseMiroguide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/etxtFeedurl"
+                android:layout_margin="8dp"
+                android:text="@string/txtv_browse_miroguide_label" />
+
+            <Button
+                android:id="@+id/butBrowseMiroguide"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvBrowseMiroguide"
+                android:layout_margin="8dp"
+                android:text="@string/browse_miroguide_label" />
+
+            <TextView
+                android:id="@+id/txtvOpmlImport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/butBrowseMiroguide"
+                android:layout_margin="8dp"
+                android:text="@string/opml_import_txtv_button_lable" />
+
+            <Button
+                android:id="@+id/butOpmlImport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvOpmlImport"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/opml_import_label" />
+        </RelativeLayout>
+    </ScrollView>
 
 </RelativeLayout>

@@ -11,6 +11,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** The main preference activity */
@@ -20,6 +22,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
 	private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
 	private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
+	private static final String PREF_OPML_EXPORT = "prefOpmlExport";
 	private static final String PREF_ABOUT = "prefAbout";
 
 	@SuppressWarnings("deprecation")
@@ -62,6 +65,19 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 
+				});
+
+		findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
+				new OnPreferenceClickListener() {
+
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						if (!FeedManager.getInstance().getFeeds().isEmpty()) {
+							new OpmlExportWorker(PreferenceActivity.this)
+									.executeAsync();
+						}
+						return true;
+					}
 				});
 
 	}

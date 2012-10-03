@@ -35,6 +35,7 @@ public class AddFeedActivity extends SherlockActivity {
 
 	private EditText etxtFeedurl;
 	private Button butBrowseMiroGuide;
+	private Button butOpmlImport;
 	private Button butConfirm;
 	private Button butCancel;
 
@@ -52,6 +53,7 @@ public class AddFeedActivity extends SherlockActivity {
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
+		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
 
@@ -61,6 +63,15 @@ public class AddFeedActivity extends SherlockActivity {
 			public void onClick(View v) {
 				startActivity(new Intent(AddFeedActivity.this,
 						MiroGuideMainActivity.class));
+			}
+		});
+
+		butOpmlImport.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				startActivity(new Intent(AddFeedActivity.this,
+						OpmlImportActivity.class));
 			}
 		});
 
@@ -125,7 +136,8 @@ public class AddFeedActivity extends SherlockActivity {
 						@Override
 						public void onConnectionSuccessful() {
 							try {
-								requester.downloadFeed(AddFeedActivity.this, feed);
+								requester.downloadFeed(AddFeedActivity.this,
+										feed);
 								if (progDialog.isShowing()) {
 									progDialog.dismiss();
 									finish();
@@ -134,7 +146,7 @@ public class AddFeedActivity extends SherlockActivity {
 								e.printStackTrace();
 								onConnectionFailure(DownloadError.ERROR_REQUEST_ERROR);
 							}
-							
+
 						}
 
 						@Override
@@ -159,12 +171,13 @@ public class AddFeedActivity extends SherlockActivity {
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
 				+ DownloadError.getErrorString(this, reason));
-		errorDialog.setButton(getString(android.R.string.ok), new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				errorDialog.dismiss();
-			}
-		});
+		errorDialog.setButton(getString(android.R.string.ok),
+				new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						errorDialog.dismiss();
+					}
+				});
 		if (progDialog.isShowing()) {
 			progDialog.dismiss();
 		}
@@ -181,7 +194,8 @@ public class AddFeedActivity extends SherlockActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			return true;
 		default:
