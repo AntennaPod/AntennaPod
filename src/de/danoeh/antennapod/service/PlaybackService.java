@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.service;
 
 import java.io.IOException;
+import java.util.Date;
 import java.util.concurrent.Future;
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
@@ -653,13 +654,15 @@ public class PlaybackService extends Service {
 			// Save state
 			cancelPositionSaver();
 			media.setPosition(0);
+			media.setPlaybackCompletionDate(new Date());
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
 			boolean isInQueue = manager.isInQueue(media.getItem());
 			if (isInQueue) {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
+			manager.addItemToPlaybackHistory(PlaybackService.this, media.getItem());
 			manager.setFeedMedia(PlaybackService.this, media);
-
+			
 			long autoDeleteMediaId = media.getId();
 
 			if (shouldStream) {
