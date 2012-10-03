@@ -127,6 +127,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		case R.id.search_item:
 			onSearchRequested();
 			return true;
+		case R.id.show_playback_history:
+			startActivity(new Intent(this, PlaybackHistoryActivity.class));
+			return true;
 		default:
 			return super.onOptionsItemSelected(item);
 		}

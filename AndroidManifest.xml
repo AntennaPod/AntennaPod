@@ -225,6 +225,7 @@
             android:screenOrientation="landscape"
             android:theme="@style/VideoplayerTheme" >
         </activity>
+        <activity android:label="@string/playback_history_label" android:name=".activity.PlaybackHistoryActivity"></activity>
     </application>
 
 </manifest>

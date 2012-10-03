@@ -10,7 +10,11 @@
     <string name="downloads_label">Downloads</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="download_log_label">Download log</string>
+    <string name="playback_history_label">Playback history</string>
 
+    <!-- Playback history -->
+    <string name="clear_history_label">Clear history</string>
+    
     <!-- Other -->
     <string name="confirm_label">Confirm</string>
     <string name="cancel_label">Cancel</string>

@@ -10,5 +10,6 @@
     <item type="id" name="search_item"/>
     <item name="enqueue_all_item" type="id"/>
     <item name="download_all_item" type="id"/>
+    <item type="id" name="clear_history_item"/>
 
 </resources>

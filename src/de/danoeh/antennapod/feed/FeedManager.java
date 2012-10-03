@@ -325,6 +325,33 @@ public class FeedManager {
 		}
 	}
 
+	public void clearPlaybackHistory(final Context context) {
+		if (!playbackHistory.isEmpty()) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Clearing playback history.");
+			final FeedItem[] items = playbackHistory
+					.toArray(new FeedItem[playbackHistory.size()]);
+			playbackHistory.clear();
+			sendPlaybackHistoryUpdateBroadcast(context);
+			dbExec.execute(new Runnable() {
+
+				@Override
+				public void run() {
+					PodDBAdapter adapter = new PodDBAdapter(context);
+					adapter.open();
+					for (FeedItem item : items) {
+						if (item.getMedia() != null
+								&& item.getMedia().getPlaybackCompletionDate() != null) {
+							item.getMedia().setPlaybackCompletionDate(null);
+							adapter.setMedia(item.getMedia());
+						}
+					}
+					adapter.close();
+				}
+			});
+		}
+	}
+
 	public void addItemToPlaybackHistory(Context context, FeedItem item) {
 		if (item.getMedia() != null
 				&& item.getMedia().getPlaybackCompletionDate() != null) {
