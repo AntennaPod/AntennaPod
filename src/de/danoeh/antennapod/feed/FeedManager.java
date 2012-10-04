@@ -617,6 +617,20 @@ public class FeedManager {
 
 	}
 
+	/**
+	 * Return the item that comes after this item in the queue or null if this
+	 * item is not in the queue or if this item has no successor.
+	 */
+	public FeedItem getQueueSuccessorOfItem(FeedItem item) {
+		if (isInQueue(item)) {
+			int itemIndex = queue.indexOf(item);
+			if (itemIndex != -1 && itemIndex < (queue.size() - 1)) {
+				return queue.get(itemIndex + 1);
+			}
+		} 
+		return null;
+	}
+
 	/** Removes all items in queue */
 	public void clearQueue(final Context context) {
 		if (AppConfig.DEBUG)

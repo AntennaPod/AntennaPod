@@ -656,6 +656,7 @@ public class PlaybackService extends Service {
 			media.setPosition(0);
 			media.setPlaybackCompletionDate(new Date());
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
+			FeedItem nextItem = manager.getQueueSuccessorOfItem(media.getItem());
 			boolean isInQueue = manager.isInQueue(media.getItem());
 			if (isInQueue) {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
@@ -676,7 +677,6 @@ public class PlaybackService extends Service {
 			// Prepare for playing next item
 			boolean followQueue = prefs.getBoolean(
 					PodcastApp.PREF_FOLLOW_QUEUE, false);
-			FeedItem nextItem = manager.getFirstQueueItem();
 			boolean playNextItem = isInQueue && followQueue && nextItem != null;
 			if (playNextItem) {
 				if (AppConfig.DEBUG)
