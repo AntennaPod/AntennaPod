@@ -44,7 +44,7 @@ import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
-import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.DownloadLogActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
@@ -416,17 +416,13 @@ public class DownloadService extends Service {
 	private void updateReport() {
 		// check if report should be created
 		boolean createReport = false;
-		int successfulFeedDownloads = 0;
 		int successfulDownloads = 0;
 		int failedDownloads = 0;
 
+		// a download report is created if at least one download has failed
+		// (excluding failed image downloads)
 		for (DownloadStatus status : completedDownloads) {
 			if (status.isSuccessful()) {
-				if (status.getFeedFile().getClass() == Feed.class) {
-					successfulFeedDownloads++;
-				} else if (status.getFeedFile().getClass() == FeedMedia.class) {
-					createReport = true;
-				}
 				successfulDownloads++;
 			} else if (!status.isCancelled()) {
 				if (status.getFeedFile().getClass() != FeedImage.class) {
@@ -434,10 +430,6 @@ public class DownloadService extends Service {
 				}
 				failedDownloads++;
 			}
-		}
-
-		if (successfulFeedDownloads > 1) {
-			createReport = true;
 		}
 
 		if (createReport) {
@@ -459,7 +451,7 @@ public class DownloadService extends Service {
 									android.R.drawable.stat_notify_sync))
 					.setContentIntent(
 							PendingIntent.getActivity(this, 0, new Intent(this,
-									MainActivity.class), 0))
+									DownloadLogActivity.class), 0))
 					.setAutoCancel(true).getNotification();
 			NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
 			nm.notify(REPORT_ID, notification);
