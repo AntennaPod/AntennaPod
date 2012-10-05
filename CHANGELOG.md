@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.5.1
+---------------
+* Added playback history
+* Improved behavior of download report notifications
+* Improved support for headset controls
+* Bugfixes in the feed parser
+* Moved 'OPML import' button into the 'add feed' screen and the 'OPML export' button into the settings screen
+
 Version 0.9.5
 -------------
 * Experimental support for MP3 chapters
