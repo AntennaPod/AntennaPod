@@ -9,6 +9,9 @@
   <string name="downloads_label">Закачки</string>
   <string name="cancel_download_label">Отменить закачку</string>
   <string name="download_log_label">Журнал закачек</string>
+  <string name="playback_history_label">История воспроизведения</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Очистить историю</string>
   <!--Other-->
   <string name="confirm_label">Подтвердить</string>
   <string name="cancel_label">Отменить</string>
@@ -22,7 +25,7 @@
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Описание</string>
   <string name="last_update_prefix">Последнее обновление:\u0020</string>
-  <string name="episodes_suffix">Количество выпусков:\u0020</string>
+  <string name="episodes_suffix">\u0020 выпуск(ов)</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
@@ -161,6 +164,7 @@
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Также возможен импорт файла OPML. OPML файлы позволяют переносить ваши подписки с подкастами из одного приложения в другое.</string>
   <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить каталог указанный ниже и нажать кнопку чтобы начать процесс импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>

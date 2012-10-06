@@ -9,6 +9,9 @@
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="download_log_label">Download Log</string>
+  <string name="playback_history_label">Zuletzt gespielt</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Chronik löschen</string>
   <!--Other-->
   <string name="confirm_label">Bestätigen</string>
   <string name="cancel_label">Abbrechen</string>
@@ -161,6 +164,7 @@
   <string name="search_label">Suche</string>
   <string name="found_in_title_label">In Titel gefunden</string>
   <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Du kannst auch eine OPML Datei importieren. Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen.</string>
   <string name="opml_import_explanation">Um eine OPML Datei zu importieren, musst du diese im folgenden Ordner platzieren und den unteren Button antippen, um den Import Prozess zu starten.</string>
   <string name="start_import_label">Import starten</string>
   <string name="opml_import_label">OPML Import</string>
