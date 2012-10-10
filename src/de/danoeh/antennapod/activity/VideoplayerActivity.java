@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import com.actionbarsherlock.view.Window;
+
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -9,6 +11,7 @@ import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.WindowManager;
+import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
@@ -34,6 +37,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 		super.onCreate(savedInstanceState);
 	}
 
@@ -121,10 +125,10 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	private void toggleVideoControlsVisibility() {
 		if (videoControlsShowing) {
 			getSupportActionBar().hide();
-			videoOverlay.setVisibility(View.GONE);
+			hideVideoControls();
 		} else {
 			getSupportActionBar().show();
-			videoOverlay.setVisibility(View.VISIBLE);
+			showVideoControls();
 		}
 		videoControlsShowing = !videoControlsShowing;
 	}
@@ -150,7 +154,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Hiding video controls");
 				getSupportActionBar().hide();
-				videoOverlay.setVisibility(View.GONE);
+				hideVideoControls();
 				videoControlsShowing = false;
 			}
 		}
@@ -230,6 +234,18 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	@Override
 	protected void onBufferEnd() {
 		progressIndicator.setVisibility(View.INVISIBLE);
+	}
+
+	private void showVideoControls() {
+		videoOverlay.setVisibility(View.VISIBLE);
+		videoOverlay.startAnimation(AnimationUtils.loadAnimation(this,
+				R.anim.fade_in));
+	}
+
+	private void hideVideoControls() {
+		videoOverlay.startAnimation(AnimationUtils.loadAnimation(this,
+				R.anim.fade_out));
+		videoOverlay.setVisibility(View.GONE);
 	}
 
 }
