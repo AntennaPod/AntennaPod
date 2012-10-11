@@ -337,7 +337,7 @@ public class PlaybackService extends Service {
 			case AudioManager.AUDIOFOCUS_LOSS:
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Lost audio focus");
-				pause(true);
+				pause(true, true);
 				stopSelf();
 				break;
 			case AudioManager.AUDIOFOCUS_GAIN:
@@ -362,7 +362,7 @@ public class PlaybackService extends Service {
 				if (status == PlayerStatus.PLAYING) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-					pause(false);
+					pause(false, false);
 					pausedBecauseOfTransientAudiofocusLoss = true;
 				}
 			}
@@ -394,7 +394,7 @@ public class PlaybackService extends Service {
 				// check if already playing and playbackType is the same
 			} else if (media == null || mediaId != media.getId()
 					|| playbackType != shouldStream) {
-				pause(true);
+				pause(true, false);
 				player.reset();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 				if (media == null || mediaId != media.getId()) {
@@ -406,7 +406,8 @@ public class PlaybackService extends Service {
 					shouldStream = playbackType;
 					startWhenPrepared = intent.getBooleanExtra(
 							EXTRA_START_WHEN_PREPARED, false);
-					prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
+					prepareImmediately = intent.getBooleanExtra(
+							EXTRA_PREPARE_IMMEDIATELY, false);
 					initMediaplayer();
 
 				} else {
@@ -435,21 +436,27 @@ public class PlaybackService extends Service {
 		case KeyEvent.KEYCODE_HEADSETHOOK:
 		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(false);
+				pause(false, true);
 			} else if (status == PlayerStatus.PAUSED) {
 				play();
 			} else if (status == PlayerStatus.PREPARING) {
 				setStartWhenPrepared(!startWhenPrepared);
+			} else if (status == PlayerStatus.INITIALIZED) {
+				startWhenPrepared = true;
+				prepare();
 			}
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PLAY:
 			if (status == PlayerStatus.PAUSED) {
 				play();
+			} else if (status == PlayerStatus.INITIALIZED) {
+				startWhenPrepared = true;
+				prepare();
 			}
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(false);
+				pause(false, true);
 			}
 			break;
 		}
@@ -647,7 +654,7 @@ public class PlaybackService extends Service {
 		public boolean onError(MediaPlayer mp, int what, int extra) {
 			Log.w(TAG, "An error has occured: " + what);
 			if (mp.isPlaying()) {
-				pause(true);
+				pause(true, true);
 			}
 			sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
 			stopSelf();
@@ -699,12 +706,12 @@ public class PlaybackService extends Service {
 				media = nextItem.getMedia();
 				feed = nextItem.getFeed();
 				shouldStream = !media.isDownloaded();
-				startWhenPrepared = true;
+				prepareImmediately = startWhenPrepared = true;
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG,
 							"No more episodes available to play; Reloading current episode");
-				startWhenPrepared = false;
+				prepareImmediately = startWhenPrepared = false;
 				stopForeground(true);
 				stopWidgetUpdater();
 			}
@@ -758,8 +765,10 @@ public class PlaybackService extends Service {
 	 * 
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
+	 * @param reset
+	 *            is true if service should reinit after pausing if the media file is being streamed
 	 */
-	public void pause(boolean abandonFocus) {
+	public void pause(boolean abandonFocus, boolean reinit) {
 		if (player.isPlaying()) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Pausing playback.");
@@ -773,6 +782,9 @@ public class PlaybackService extends Service {
 			setStatus(PlayerStatus.PAUSED);
 			stopWidgetUpdater();
 			stopForeground(true);
+			if (shouldStream && reinit) {
+				reinit();
+			}
 		}
 	}
 
@@ -1001,6 +1013,7 @@ public class PlaybackService extends Service {
 							.setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
 					break;
 				case PAUSED:
+				case INITIALIZED:
 					remoteControlClient
 							.setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
 					break;
@@ -1062,7 +1075,7 @@ public class PlaybackService extends Service {
 						if (AppConfig.DEBUG)
 							Log.d(TAG,
 									"Pausing playback because headset was disconnected");
-						pause(false);
+						pause(false, true);
 					}
 				} else {
 					Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
@@ -1145,7 +1158,7 @@ public class PlaybackService extends Service {
 						if (status == PlayerStatus.PLAYING) {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Pausing playback");
-							pause(true);
+							pause(true, true);
 						}
 						postExecute();
 					}

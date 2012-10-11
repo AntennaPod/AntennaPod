@@ -52,7 +52,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	public MediaplayerActivity() {
 		super();
-		controller = new PlaybackController(this) {
+		controller = new PlaybackController(this, false) {
 
 			@Override
 			public void setupGUI() {
@@ -151,6 +151,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	@Override
 	protected void onPause() {
 		super.onPause();
+		controller.reinitServiceIfPaused();
 		controller.pause();
 	}
 

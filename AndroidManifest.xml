@@ -25,7 +25,7 @@
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
-        android:debuggable="false"
+        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"

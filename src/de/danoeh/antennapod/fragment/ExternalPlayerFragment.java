@@ -78,7 +78,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 	}
 
 	private PlaybackController setupPlaybackController() {
-		return new PlaybackController(getActivity()) {
+		return new PlaybackController(getActivity(), true) {
 
 			@Override
 			public void setupGUI() {

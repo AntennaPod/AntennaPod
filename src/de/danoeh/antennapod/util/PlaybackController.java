@@ -57,8 +57,15 @@ public abstract class PlaybackController {
 	private boolean mediaInfoLoaded = false;
 	private boolean released = false;
 
-	public PlaybackController(Activity activity) {
+	/**
+	 * True if controller should reinit playback service if 'pause' button is
+	 * pressed.
+	 */
+	private boolean reinitOnPause;
+
+	public PlaybackController(Activity activity, boolean reinitOnPause) {
 		this.activity = activity;
+		this.reinitOnPause = reinitOnPause;
 		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
 				new ThreadFactory() {
 
@@ -134,7 +141,7 @@ public abstract class PlaybackController {
 	public void pause() {
 		mediaInfoLoaded = false;
 		if (playbackService != null && playbackService.isPlayingVideo()) {
-			playbackService.pause(true);
+			playbackService.pause(true, true);
 		}
 	}
 
@@ -185,6 +192,8 @@ public abstract class PlaybackController {
 			serviceIntent.putExtra(PlaybackService.EXTRA_FEED_ID, feedId);
 			serviceIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, mediaId);
 			serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+					false);
+			serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
 					false);
 			serviceIntent
 					.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, prefs
@@ -388,6 +397,11 @@ public abstract class PlaybackController {
 		case AWAITING_VIDEO_SURFACE:
 			onAwaitingVideoSurface();
 			break;
+		case INITIALIZED:
+			checkMediaInfoLoaded();
+			clearStatusMsg();
+			updatePlayButtonAppearance(R.drawable.av_play);
+			break;
 		}
 	}
 
@@ -488,7 +502,7 @@ public abstract class PlaybackController {
 				if (playbackService != null) {
 					switch (status) {
 					case PLAYING:
-						playbackService.pause(true);
+						playbackService.pause(true, reinitOnPause);
 						break;
 					case PAUSED:
 					case PREPARED:
@@ -497,6 +511,15 @@ public abstract class PlaybackController {
 					case PREPARING:
 						playbackService.setStartWhenPrepared(!playbackService
 								.isStartWhenPrepared());
+						if (reinitOnPause
+								&& playbackService.isStartWhenPrepared() == false) {
+							playbackService.reinit();
+						}
+						break;
+					case INITIALIZED:
+						playbackService.setStartWhenPrepared(true);
+						playbackService.prepare();
+						break;
 					}
 				} else {
 					Log.w(TAG,
@@ -607,6 +630,17 @@ public abstract class PlaybackController {
 	public void notifyVideoSurfaceAbandoned() {
 		if (playbackService != null) {
 			playbackService.notifyVideoSurfaceAbandoned();
+		}
+	}
+
+	/** Move service into INITIALIZED state if it's paused to save bandwidth */
+	public void reinitServiceIfPaused() {
+		if (playbackService != null
+				&& playbackService.isShouldStream()
+				&& (playbackService.getStatus() == PlayerStatus.PAUSED || (playbackService
+						.getStatus() == PlayerStatus.PREPARING && playbackService
+						.isStartWhenPrepared() == false))) {
+			playbackService.reinit();
 		}
 	}
 

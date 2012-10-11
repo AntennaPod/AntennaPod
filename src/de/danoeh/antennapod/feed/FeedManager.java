@@ -133,6 +133,7 @@ public class FeedManager {
 				startWhenPrepared);
 		launchIntent
 				.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
+		launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
 		context.startService(launchIntent);
 		if (showPlayer) {
 			// Launch Mediaplayer
