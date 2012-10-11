@@ -82,6 +82,8 @@ public class PlaybackService extends Service {
 	 */
 	public static final String EXTRA_START_WHEN_PREPARED = "extra.de.danoeh.antennapod.service.startWhenPrepared";
 
+	public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.service.prepareImmediately";
+
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
 
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
@@ -129,6 +131,9 @@ public class PlaybackService extends Service {
 	private Feed feed;
 	/** True if media should be streamed (Extracted from Intent Extra) . */
 	private boolean shouldStream;
+
+	/** True if service should prepare playback after it has been initialized */
+	private boolean prepareImmediately;
 	private boolean startWhenPrepared;
 	private FeedManager manager;
 	private PlayerStatus status;
@@ -265,13 +270,8 @@ public class PlaybackService extends Service {
 						Log.w(TAG, "SchedEx rejected submission of new task");
 					}
 				});
-		player = new MediaPlayer();
-		player.setOnPreparedListener(preparedListener);
-		player.setOnCompletionListener(completionListener);
-		player.setOnSeekCompleteListener(onSeekCompleteListener);
-		player.setOnErrorListener(onErrorListener);
-		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
-		player.setOnInfoListener(onInfoListener);
+		player = createMediaPlayer();
+
 		mediaButtonReceiver = new ComponentName(getPackageName(),
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
@@ -284,6 +284,22 @@ public class PlaybackService extends Service {
 		registerReceiver(shutdownReceiver, new IntentFilter(
 				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 
+	}
+
+	private MediaPlayer createMediaPlayer() {
+		return createMediaPlayer(new MediaPlayer());
+	}
+
+	private MediaPlayer createMediaPlayer(MediaPlayer mp) {
+		if (mp != null) {
+			mp.setOnPreparedListener(preparedListener);
+			mp.setOnCompletionListener(completionListener);
+			mp.setOnSeekCompleteListener(onSeekCompleteListener);
+			mp.setOnErrorListener(onErrorListener);
+			mp.setOnBufferingUpdateListener(onBufferingUpdateListener);
+			mp.setOnInfoListener(onInfoListener);
+		}
+		return mp;
 	}
 
 	@SuppressLint("NewApi")
@@ -390,7 +406,8 @@ public class PlaybackService extends Service {
 					shouldStream = playbackType;
 					startWhenPrepared = intent.getBooleanExtra(
 							EXTRA_START_WHEN_PREPARED, false);
-					setupMediaplayer();
+					prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
+					initMediaplayer();
 
 				} else {
 					Log.e(TAG, "Media is null");
@@ -480,15 +497,9 @@ public class PlaybackService extends Service {
 		player.setDisplay(null);
 		player.reset();
 		player.release();
-		player = new MediaPlayer();
-		player.setOnPreparedListener(preparedListener);
-		player.setOnCompletionListener(completionListener);
-		player.setOnSeekCompleteListener(onSeekCompleteListener);
-		player.setOnErrorListener(onErrorListener);
-		player.setOnBufferingUpdateListener(onBufferingUpdateListener);
-		player.setOnInfoListener(onInfoListener);
+		player = createMediaPlayer();
 		status = PlayerStatus.STOPPED;
-		setupMediaplayer();
+		initMediaplayer();
 	}
 
 	public void notifyVideoSurfaceAbandoned() {
@@ -496,7 +507,7 @@ public class PlaybackService extends Service {
 	}
 
 	/** Called after service has extracted the media it is supposed to play. */
-	private void setupMediaplayer() {
+	private void initMediaplayer() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting up media player");
 		try {
@@ -507,12 +518,14 @@ public class PlaybackService extends Service {
 				playingVideo = false;
 				if (shouldStream) {
 					player.setDataSource(media.getDownload_url());
-					setStatus(PlayerStatus.PREPARING);
-					player.prepareAsync();
 				} else if (media.getFile_url() != null) {
 					player.setDataSource(media.getFile_url());
+				}
+				if (prepareImmediately) {
 					setStatus(PlayerStatus.PREPARING);
-					player.prepare();
+					player.prepareAsync();
+				} else {
+					setStatus(PlayerStatus.INITIALIZED);
 				}
 			} else if (mediaType == MediaType.VIDEO) {
 				if (AppConfig.DEBUG)
@@ -656,14 +669,16 @@ public class PlaybackService extends Service {
 			media.setPosition(0);
 			media.setPlaybackCompletionDate(new Date());
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
-			FeedItem nextItem = manager.getQueueSuccessorOfItem(media.getItem());
+			FeedItem nextItem = manager
+					.getQueueSuccessorOfItem(media.getItem());
 			boolean isInQueue = manager.isInQueue(media.getItem());
 			if (isInQueue) {
 				manager.removeQueueItem(PlaybackService.this, media.getItem());
 			}
-			manager.addItemToPlaybackHistory(PlaybackService.this, media.getItem());
+			manager.addItemToPlaybackHistory(PlaybackService.this,
+					media.getItem());
 			manager.setFeedMedia(PlaybackService.this, media);
-			
+
 			long autoDeleteMediaId = media.getId();
 
 			if (shouldStream) {
@@ -767,6 +782,27 @@ public class PlaybackService extends Service {
 			Log.d(TAG, "Stopping playback");
 		player.stop();
 		stopSelf();
+	}
+
+	/**
+	 * Prepared media player for playback if the service is in the INITALIZED
+	 * state.
+	 */
+	public void prepare() {
+		if (status == PlayerStatus.INITIALIZED) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Preparing media player");
+			setStatus(PlayerStatus.PREPARING);
+			player.prepareAsync();
+		}
+	}
+
+	/** Resets the media player and moves into INITIALIZED state. */
+	public void reinit() {
+		player.reset();
+		player = createMediaPlayer(player);
+		prepareImmediately = false;
+		initMediaplayer();
 	}
 
 	@SuppressLint("NewApi")
