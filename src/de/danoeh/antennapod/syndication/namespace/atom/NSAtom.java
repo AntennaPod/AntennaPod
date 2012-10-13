@@ -10,6 +10,7 @@ import de.danoeh.antennapod.syndication.namespace.Namespace;
 import de.danoeh.antennapod.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.syndication.namespace.rss20.NSRSS20;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
+import de.danoeh.antennapod.syndication.util.SyndTypeUtils;
 
 public class NSAtom extends Namespace {
 	private static final String TAG = "NSAtom";
@@ -72,10 +73,13 @@ public class NSAtom extends Namespace {
 					if (strSize != null)
 						size = Long.parseLong(strSize);
 					String type = attributes.getValue(LINK_TYPE);
-					
-					state.getCurrentItem().setMedia(
-							new FeedMedia(state.getCurrentItem(), href,
-									size, type));
+					if (SyndTypeUtils.typeValid(type)
+							|| (type = SyndTypeUtils
+									.getValidMimeTypeFromUrl(href)) != null) {
+						state.getCurrentItem().setMedia(
+								new FeedMedia(state.getCurrentItem(), href,
+										size, type));
+					}
 				} else if (rel.equals(LINK_REL_PAYMENT)) {
 					state.getCurrentItem().setPaymentLink(href);
 				}

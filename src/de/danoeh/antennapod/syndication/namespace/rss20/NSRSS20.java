@@ -11,6 +11,7 @@ import de.danoeh.antennapod.syndication.handler.HandlerState;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
 import de.danoeh.antennapod.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
+import de.danoeh.antennapod.syndication.util.SyndTypeUtils;
 
 /**
  * SAX-Parser for reading RSS-Feeds
@@ -39,8 +40,6 @@ public class NSRSS20 extends Namespace {
 	public final static String ENC_LEN = "length";
 	public final static String ENC_TYPE = "type";
 
-	public final static String VALID_MIMETYPE = "audio/.*" + "|" + "video/.*" + "|" + "application/ogg";
-
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -51,19 +50,20 @@ public class NSRSS20 extends Namespace {
 
 		} else if (localName.equals(ENCLOSURE)) {
 			String type = attributes.getValue(ENC_TYPE);
+			String url = attributes.getValue(ENC_URL);
 			if (state.getCurrentItem().getMedia() == null
-					&& (type.matches(VALID_MIMETYPE))) {
+					&& (SyndTypeUtils.typeValid(type) || ((type = SyndTypeUtils
+							.getValidMimeTypeFromUrl(url)) != null))) {
+
 				long size = 0;
 				try {
-					size = Long.parseLong(attributes
-							.getValue(ENC_LEN));
+					size = Long.parseLong(attributes.getValue(ENC_LEN));
 				} catch (NumberFormatException e) {
-					if (AppConfig.DEBUG) Log.d(TAG, "Length attribute could not be parsed.");
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Length attribute could not be parsed.");
 				}
 				state.getCurrentItem().setMedia(
-						new FeedMedia(state.getCurrentItem(), attributes
-								.getValue(ENC_URL), size, attributes
-								.getValue(ENC_TYPE)));
+						new FeedMedia(state.getCurrentItem(), url, size, type));
 			}
 
 		} else if (localName.equals(IMAGE)) {
@@ -83,7 +83,7 @@ public class NSRSS20 extends Namespace {
 			String top = topElement.getName();
 			SyndElement secondElement = state.getSecondTag();
 			String second = secondElement.getName();
-			
+
 			if (top.equals(GUID) && second.equals(ITEM)) {
 				state.getCurrentItem().setItemIdentifier(content);
 			} else if (top.equals(TITLE)) {
