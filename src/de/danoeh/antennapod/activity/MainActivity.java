@@ -42,6 +42,8 @@ public class MainActivity extends SherlockFragmentActivity {
 	private TabPageIndicator tabs;
 	private ExternalPlayerFragment externalPlayerFragment;
 
+	private static boolean appLaunched = false;
+
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -62,6 +64,16 @@ public class MainActivity extends SherlockFragmentActivity {
 		externalPlayerFragment = new ExternalPlayerFragment();
 		transaction.replace(R.id.playerFragment, externalPlayerFragment);
 		transaction.commit();
+
+		// executed on application start
+		if (!appLaunched && getIntent().getAction() != null
+				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
+			appLaunched = true;
+			if (manager.getUnreadItems().size() > 0) {
+				viewpager.setCurrentItem(MainPagerAdapter.POS_NEW_ITEMS);
+				
+			}
+		}
 	}
 
 	@Override
@@ -154,9 +166,9 @@ public class MainActivity extends SherlockFragmentActivity {
 	public static class MainPagerAdapter extends FragmentStatePagerAdapter {
 		private static final int NUM_ITEMS = 3;
 
-		private static final int POS_FEEDLIST = 0;
-		private static final int POS_NEW_ITEMS = 1;
-		private static final int POS_QUEUE = 2;
+		public static final int POS_FEEDLIST = 0;
+		public static final int POS_NEW_ITEMS = 1;
+		public static final int POS_QUEUE = 2;
 
 		private Context context;
 
