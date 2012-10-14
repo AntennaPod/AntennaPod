@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest package="de.danoeh.antennapod"
-    android:versionCode="18"
-    android:versionName="0.9.5.1" xmlns:android="http://schemas.android.com/apk/res/android">
+    android:versionCode="19"
+    android:versionName="0.9.5.2" xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />

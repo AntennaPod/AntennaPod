@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.9.5.2
+---------------
+* Media player now doesn't use network bandwidth anymore if not in use
+* Other improvements and bugfixes
+
 Version 0.9.5.1
 ---------------
 * Added playback history
