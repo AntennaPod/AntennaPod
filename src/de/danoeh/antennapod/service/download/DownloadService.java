@@ -199,8 +199,8 @@ public class DownloadService extends Service {
 				this, DownloadActivity.class),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Bitmap icon = BitmapFactory.decodeResource(null,
-				android.R.drawable.stat_notify_sync_noanim);
+		Bitmap icon = BitmapFactory.decodeResource(getResources(),
+				R.drawable.stat_notify_sync);
 		notificationBuilder = new NotificationCompat.Builder(this)
 				.setContentTitle(
 						getString(R.string.download_notification_title))
@@ -208,7 +208,7 @@ public class DownloadService extends Service {
 						requester.getNumberOfDownloads()
 								+ getString(R.string.downloads_left))
 				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
-				.setSmallIcon(android.R.drawable.stat_notify_sync_noanim);
+				.setSmallIcon(R.drawable.stat_notify_sync);
 
 		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
 		if (AppConfig.DEBUG)
@@ -445,10 +445,10 @@ public class DownloadService extends Service {
 							String.format(
 									getString(R.string.download_report_content),
 									successfulDownloads, failedDownloads))
-					.setSmallIcon(android.R.drawable.stat_notify_sync)
+					.setSmallIcon(R.drawable.stat_notify_sync)
 					.setLargeIcon(
-							BitmapFactory.decodeResource(null,
-									android.R.drawable.stat_notify_sync))
+							BitmapFactory.decodeResource(getResources(),
+									R.drawable.stat_notify_sync))
 					.setContentIntent(
 							PendingIntent.getActivity(this, 0, new Intent(this,
 									DownloadLogActivity.class), 0))
