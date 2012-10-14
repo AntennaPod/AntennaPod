@@ -28,7 +28,7 @@ public class SyndTypeUtils {
 		if (extension != null) {
 			String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
 					extension);
-			if (typeValid(type)) {
+			if (type != null && typeValid(type)) {
 				return type;
 			}
 		}
