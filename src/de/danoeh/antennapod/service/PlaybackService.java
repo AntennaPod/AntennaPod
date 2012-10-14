@@ -766,7 +766,8 @@ public class PlaybackService extends Service {
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
 	 * @param reset
-	 *            is true if service should reinit after pausing if the media file is being streamed
+	 *            is true if service should reinit after pausing if the media
+	 *            file is being streamed
 	 */
 	public void pause(boolean abandonFocus, boolean reinit) {
 		if (player.isPlaying()) {
@@ -1226,7 +1227,12 @@ public class PlaybackService extends Service {
 			case PLAYING:
 			case PAUSED:
 			case SEEKING:
-				return player.getDuration();
+				try {
+					return player.getDuration();
+				} catch (IllegalStateException e) {
+					e.printStackTrace();
+					return INVALID_TIME;
+				}
 			default:
 				return INVALID_TIME;
 			}
