@@ -20,8 +20,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	private static final String TAG = "BitmapDecodeWorkerTask";
 	private ImageView target;
-	protected Bitmap bitmap;
-	private Bitmap decodedBitmap;
+	protected CachedBitmap cBitmap;
 
 	protected String fileUrl;
 
@@ -45,8 +44,8 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected void onPostExecute() {
 		// check if imageview is still supposed to display this image
-		if (tagsMatching(target) && bitmap != null) {
-			target.setImageBitmap(bitmap);
+		if (tagsMatching(target) && cBitmap.getBitmap() != null) {
+			target.setImageBitmap(cBitmap.getBitmap());
 		} else {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Not displaying image");
@@ -60,13 +59,13 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 			f = new File(fileUrl);
 		}
 		if (fileUrl != null && f.exists()) {
-			bitmap = BitmapDecoder.decodeBitmap(PREFERRED_LENGTH, fileUrl);
-			if (bitmap != null) {
-				storeBitmapInCache(bitmap);
+			cBitmap = new CachedBitmap(BitmapDecoder.decodeBitmap(PREFERRED_LENGTH, fileUrl), PREFERRED_LENGTH);
+			if (cBitmap.getBitmap() != null) {
+				storeBitmapInCache(cBitmap);
 			} else {
 				Log.w(TAG, "Could not load bitmap. Using default image.");
-				bitmap = BitmapFactory.decodeResource(target.getResources(),
-						R.drawable.default_cover);
+				cBitmap = new CachedBitmap(BitmapFactory.decodeResource(target.getResources(),
+						R.drawable.default_cover), PREFERRED_LENGTH);
 			}
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Finished loading bitmaps");
@@ -94,16 +93,16 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 
 	protected void onInvalidFileUrl() {
 		Log.e(TAG, "FeedImage has no valid file url. Using default image");
-		bitmap = BitmapFactory.decodeResource(target.getResources(),
-				R.drawable.default_cover);
+		cBitmap = new CachedBitmap(BitmapFactory.decodeResource(target.getResources(),
+				R.drawable.default_cover), PREFERRED_LENGTH);
 	}
 
-	protected void storeBitmapInCache(Bitmap bitmap) {
+	protected void storeBitmapInCache(CachedBitmap cb) {
 		FeedImageLoader loader = FeedImageLoader.getInstance();
 		if (imageType == FeedImageLoader.IMAGE_TYPE_COVER) {
-			loader.addBitmapToCoverCache(fileUrl, bitmap);
+			loader.addBitmapToCoverCache(fileUrl, cb);
 		} else if (imageType == FeedImageLoader.IMAGE_TYPE_THUMBNAIL) {
-			loader.addBitmapToThumbnailCache(fileUrl, bitmap);
+			loader.addBitmapToThumbnailCache(fileUrl, cb);
 		}
 	}
 }

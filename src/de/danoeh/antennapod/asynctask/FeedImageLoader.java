@@ -28,10 +28,6 @@ public class FeedImageLoader {
 	public static final int IMAGE_TYPE_THUMBNAIL = 0;
 	public static final int IMAGE_TYPE_COVER = 1;
 
-	private static final String CACHE_DIR = "miroguide_thumbnails";
-	private static final int CACHE_SIZE = 20 * 1024 * 1024;
-	private static final int VALUE_SIZE = 500 * 1024;
-
 	private Handler handler;
 	private ExecutorService executor;
 
@@ -47,36 +43,38 @@ public class FeedImageLoader {
 	final int coverCacheSize = 1024 * 1024 * memClass / 8;
 	final int thumbnailCacheSize = 1024 * 1024 * memClass / 8;
 
-	private LruCache<String, Bitmap> coverCache;
-	private LruCache<String, Bitmap> thumbnailCache;
+	private LruCache<String, CachedBitmap> coverCache;
+	private LruCache<String, CachedBitmap> thumbnailCache;
 
 	private FeedImageLoader() {
 		handler = new Handler();
 		executor = createExecutor();
 
-		coverCache = new LruCache<String, Bitmap>(coverCacheSize) {
+		coverCache = new LruCache<String, CachedBitmap>(coverCacheSize) {
 
 			@SuppressLint("NewApi")
 			@Override
-			protected int sizeOf(String key, Bitmap value) {
+			protected int sizeOf(String key, CachedBitmap value) {
 				if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= 12)
-					return value.getByteCount();
+					return value.getBitmap().getByteCount();
 				else
-					return (value.getRowBytes() * value.getHeight());
+					return (value.getBitmap().getRowBytes() * value.getBitmap()
+							.getHeight());
 
 			}
 
 		};
 
-		thumbnailCache = new LruCache<String, Bitmap>(thumbnailCacheSize) {
+		thumbnailCache = new LruCache<String, CachedBitmap>(thumbnailCacheSize) {
 
 			@SuppressLint("NewApi")
 			@Override
-			protected int sizeOf(String key, Bitmap value) {
+			protected int sizeOf(String key, CachedBitmap value) {
 				if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= 12)
-					return value.getByteCount();
+					return value.getBitmap().getByteCount();
 				else
-					return (value.getRowBytes() * value.getHeight());
+					return (value.getBitmap().getRowBytes() * value.getBitmap()
+							.getHeight());
 
 			}
 
@@ -121,9 +119,9 @@ public class FeedImageLoader {
 	 */
 	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
 		if (image != null && image.getFile_url() != null) {
-			Bitmap bitmap = getBitmapFromCoverCache(image.getFile_url());
-			if (bitmap != null) {
-				target.setImageBitmap(bitmap);
+			CachedBitmap cBitmap = getBitmapFromCoverCache(image.getFile_url());
+			if (cBitmap != null && cBitmap.getLength() >= length) {
+				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
@@ -144,44 +142,24 @@ public class FeedImageLoader {
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
 		loadThumbnailBitmap(image, target, target.getHeight());
 	}
-	
+
 	/**
 	 * Load a bitmap from the thumbnail cache. If the bitmap is not in the
 	 * cache, it will be loaded from the disk. This method should either be
 	 * called if the ImageView's size has already been set or inside a Runnable
 	 * which is posted to the ImageView's message queue.
 	 */
-	public void loadThumbnailBitmap(FeedImage image, ImageView target, int length) {
+	public void loadThumbnailBitmap(FeedImage image, ImageView target,
+			int length) {
 		if (image != null && image.getFile_url() != null) {
-			Bitmap bitmap = getBitmapFromThumbnailCache(image.getFile_url());
-			if (bitmap != null) {
-				target.setImageBitmap(bitmap);
+			CachedBitmap cBitmap = getBitmapFromThumbnailCache(image.getFile_url());
+			if (cBitmap != null && cBitmap.getLength() >= length) {
+				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(R.drawable.default_cover);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, length,
-						IMAGE_TYPE_THUMBNAIL);
+						handler, target, image, length, IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
-			}
-		} else {
-			target.setImageResource(R.drawable.default_cover);
-		}
-	}
-
-	public void loadMiroGuideThumbnail(MiroGuideChannel channel,
-			ImageView target) {
-		if (channel.getThumbnailUrl() != null) {
-			Bitmap bitmap = getBitmapFromThumbnailCache(channel
-					.getThumbnailUrl());
-			if (bitmap == null) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Starting new thumbnail download");
-				target.setImageResource(R.drawable.default_cover);
-
-				executor.submit(new MiroGuideThumbnailDownloader(handler,
-						target, channel, target.getHeight(), coverCacheSize));
-			} else {
-				target.setImageBitmap(bitmap);
 			}
 		} else {
 			target.setImageResource(R.drawable.default_cover);
@@ -205,11 +183,11 @@ public class FeedImageLoader {
 		return thumbnailCache.get(image.getFile_url()) != null;
 	}
 
-	public Bitmap getBitmapFromThumbnailCache(String key) {
+	private CachedBitmap getBitmapFromThumbnailCache(String key) {
 		return thumbnailCache.get(key);
 	}
 
-	public void addBitmapToThumbnailCache(String key, Bitmap bitmap) {
+	public void addBitmapToThumbnailCache(String key, CachedBitmap bitmap) {
 		thumbnailCache.put(key, bitmap);
 	}
 
@@ -217,11 +195,11 @@ public class FeedImageLoader {
 		return coverCache.get(image.getFile_url()) != null;
 	}
 
-	public Bitmap getBitmapFromCoverCache(String key) {
+	private CachedBitmap getBitmapFromCoverCache(String key) {
 		return coverCache.get(key);
 	}
 
-	public void addBitmapToCoverCache(String key, Bitmap bitmap) {
+	public void addBitmapToCoverCache(String key, CachedBitmap bitmap) {
 		coverCache.put(key, bitmap);
 	}
 
