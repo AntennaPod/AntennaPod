@@ -24,6 +24,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://bitlove.org/nsemak/mikrodilettanten/feed",
 			"http://bitlove.org/moepmoeporg/riotburnz/feed",
 			"http://bitlove.org/moepmoeporg/schachcast/feed",
 			"http://bitlove.org/moepmoeporg/sundaymoaning/feed",
@@ -37,8 +38,8 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://www.dradio.de/rss/podcast/sendungen/sport/",
 			"http://www.dradio.de/rss/podcast/sendungen/wirtschaftundgesellschaft/",
 			"http://www.dradio.de/rss/podcast/sendungen/filmederwoche/",
-			"http://feeds.feedburner.com/buildanalyze",
 			"http://www.blacksweetstories.com/feed/podcast/",
+			"http://feeds.5by5.tv/buildanalyze",
 			"http://bitlove.org/ranzzeit/ranz/feed",
 			"http://bitlove.org/importthis/mp3/feed",
 			"http://bitlove.org/astro/youtube/feed",
@@ -272,7 +273,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/nsemak/elementarfragen/feed",
 			"http://bitlove.org/nsemak/elementarfragenmp/feed",
 			"http://bitlove.org/nsemak/mikrodilettanten/feed",
-			"http://bitlove.org/nsemak/nicolassemak/feed",
 			"http://bitlove.org/oaad/oaad/feed",
 			"http://bitlove.org/ohrkrampfteam/ohr/feed",
 			"http://bitlove.org/omegatau/all/feed",
@@ -306,7 +306,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/pratfm/strunt/feed",
 			"http://bitlove.org/pressrecord/podcast/feed",
 			"http://bitlove.org/pztv/alle_formate/feed",
-			"http://bitlove.org/pztv/kaffeeodertee/feed",
 			"http://bitlove.org/qbi/datenkanal-mp3/feed",
 			"http://bitlove.org/qbi/datenkanal-ogg/feed",
 			"http://bitlove.org/quotidianitaet/quotidianitaet/feed",
@@ -407,7 +406,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private void downloadFeed(Feed feed) throws IOException {
-		int num_retries = 5;
+		int num_retries = 20;
 		boolean successful = false;
 
 		for (int i = 0; i < num_retries; i++) {
@@ -474,6 +473,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 		if (feed.getIdentifyingValue() != null
 				&& feed.getIdentifyingValue().length() == 0) {
 			Log.e(TAG, "Feed has empty identifying value");
+			return false;
 		}
 		return true;
 	}
