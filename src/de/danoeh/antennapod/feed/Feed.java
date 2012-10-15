@@ -126,9 +126,9 @@ public class Feed extends FeedFile {
 	 * of the feed.
 	 * */
 	public String getIdentifyingValue() {
-		if (feedIdentifier != null) {
+		if (feedIdentifier != null && !feedIdentifier.isEmpty()) {
 			return feedIdentifier;
-		} else if (title != null) {
+		} else if (title != null && !title.isEmpty()) {
 			return title;
 		} else {
 			return link;
