@@ -15,7 +15,11 @@ public class SyndTypeUtils {
 	}
 
 	public static boolean typeValid(String type) {
-		return type.matches(VALID_MIMETYPE);
+		if (type == null) {
+			return false;
+		} else {
+			return type.matches(VALID_MIMETYPE);
+		}
 	}
 
 	/**
@@ -24,12 +28,14 @@ public class SyndTypeUtils {
 	 * the type is not supported, this method will return null.
 	 */
 	public static String getValidMimeTypeFromUrl(String url) {
-		String extension = FilenameUtils.getExtension(url);
-		if (extension != null) {
-			String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(
-					extension);
-			if (type != null && typeValid(type)) {
-				return type;
+		if (url != null) {
+			String extension = FilenameUtils.getExtension(url);
+			if (extension != null) {
+				String type = MimeTypeMap.getSingleton()
+						.getMimeTypeFromExtension(extension);
+				if (type != null && typeValid(type)) {
+					return type;
+				}
 			}
 		}
 		return null;
