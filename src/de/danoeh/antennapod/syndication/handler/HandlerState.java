@@ -57,6 +57,15 @@ public class HandlerState {
 		return second;
 	}
 	
+	public SyndElement getThirdTag() {
+		SyndElement top = tagstack.pop();
+		SyndElement second = tagstack.pop();
+		SyndElement third = tagstack.peek();
+		tagstack.push(second);
+		tagstack.push(top);
+		return third;
+	}
+	
 	public StringBuffer getContentBuf() {
 		return contentBuf;
 	}

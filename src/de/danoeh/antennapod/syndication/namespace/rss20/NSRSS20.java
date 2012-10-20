@@ -67,7 +67,12 @@ public class NSRSS20 extends Namespace {
 			}
 
 		} else if (localName.equals(IMAGE)) {
-			state.getFeed().setImage(new FeedImage());
+			if (state.getTagstack().size() >= 1) {
+				String parent = state.getTagstack().peek().getName();
+				if (parent.equals(CHANNEL)) {
+					state.getFeed().setImage(new FeedImage());
+				}
+			}
 		}
 		return new SyndElement(localName, this);
 	}
@@ -83,6 +88,10 @@ public class NSRSS20 extends Namespace {
 			String top = topElement.getName();
 			SyndElement secondElement = state.getSecondTag();
 			String second = secondElement.getName();
+			String third = null;
+			if (state.getTagstack().size() >= 3) {
+				third = state.getThirdTag().getName();
+			}
 
 			if (top.equals(GUID) && second.equals(ITEM)) {
 				state.getCurrentItem().setItemIdentifier(content);
@@ -91,7 +100,7 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setTitle(content);
 				} else if (second.equals(CHANNEL)) {
 					state.getFeed().setTitle(content);
-				} else if (second.equals(IMAGE)) {
+				} else if (second.equals(IMAGE) && third != null && third.equals(CHANNEL)) {
 					state.getFeed().getImage().setTitle(IMAGE);
 				}
 			} else if (top.equals(LINK)) {
@@ -103,7 +112,7 @@ public class NSRSS20 extends Namespace {
 			} else if (top.equals(PUBDATE) && second.equals(ITEM)) {
 				state.getCurrentItem().setPubDate(
 						SyndDateUtils.parseRFC822Date(content));
-			} else if (top.equals(URL) && second.equals(IMAGE)) {
+			} else if (top.equals(URL) && second.equals(IMAGE) && third != null && third.equals(CHANNEL)) {
 				state.getFeed().getImage().setDownload_url(content);
 			} else if (localName.equals(DESCR)) {
 				if (second.equals(CHANNEL)) {
