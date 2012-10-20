@@ -189,7 +189,7 @@ public class ItemlistFragment extends SherlockListFragment implements
 		public void onClick(View v) {
 			int index = getListView().getPositionForView(v);
 			if (index != ListView.INVALID_POSITION) {
-				FeedItem newSelectedItem = items.get(index);
+				FeedItem newSelectedItem = fila.getItem(index);
 				if (newSelectedItem != selectedItem) {
 					if (mActionMode != null) {
 						mActionMode.finish();
