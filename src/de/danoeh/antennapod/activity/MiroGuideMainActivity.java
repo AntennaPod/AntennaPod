@@ -16,8 +16,8 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.miroguide.con.MiroGuideException;
-import de.danoeh.antennapod.miroguide.con.MiroGuideService;
+import de.danoeh.antennapod.miroguide.conn.MiroGuideException;
+import de.danoeh.antennapod.miroguide.conn.MiroGuideService;
 
 /**
  * Shows a list of available categories and offers a search button. If the user
