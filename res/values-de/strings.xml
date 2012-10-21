@@ -74,7 +74,6 @@
   <string name="download_report_title">Download abgeschlossen</string>
   <string name="download_error_malformed_url">Fehler in URL</string>
   <string name="download_error_io_error">IO Error</string>
-  <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
   <string name="download_error_request_error">Anfragefehler</string>
   <string name="downloads_left">\u0020Downloads übrig</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
