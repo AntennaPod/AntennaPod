@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.miroguide.con;
+package de.danoeh.antennapod.miroguide.conn;
 
 public class MiroGuideException extends Exception {
 	private static final long serialVersionUID = -8834656185748713194L;
