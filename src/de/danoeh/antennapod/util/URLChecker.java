@@ -12,10 +12,6 @@ public final class URLChecker {
 
     /**Logging tag.*/
     private static final String TAG = "URLChecker";
-    /**Indicator for URLs made by Feedburner.*/
-    private static final String FEEDBURNER_URL = "feeds.feedburner.com";
-    /**Prefix that is appended to URLs by Feedburner.*/
-    private static final String FEEDBURNER_PREFIX = "?format=xml";
 
     /** Checks if URL is valid and modifies it if necessary.
      *  @param url The url which is going to be prepared
@@ -33,11 +29,6 @@ public final class URLChecker {
         }
         builder.append(url);
 
-        if (url.contains(FEEDBURNER_URL)) {
-            if (AppConfig.DEBUG) Log.d(TAG,
-            "URL seems to be Feedburner URL; appending prefix");
-            builder.append(FEEDBURNER_PREFIX);
-        }
         return builder.toString();
     }
 }
