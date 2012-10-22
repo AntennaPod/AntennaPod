@@ -888,7 +888,7 @@ public class PlaybackService extends Service {
 				PlaybackService.getPlayerActivityIntent(this),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
-		Bitmap icon = BitmapFactory.decodeResource(null,
+		Bitmap icon = BitmapFactory.decodeResource(getResources(),
 				R.drawable.ic_stat_antenna);
 		notificationBuilder = new NotificationCompat.Builder(this)
 				.setContentTitle(
