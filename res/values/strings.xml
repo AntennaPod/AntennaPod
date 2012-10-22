@@ -81,7 +81,6 @@
     <string name="download_report_title">Downloads completed</string>
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
-    <string name="download_error_device_not_found">External storage unavailable</string>
     <string name="download_error_request_error">Request error</string>
     <string name="downloads_left">\u0020Downloads left</string>
     <string name="download_notification_title">Downloading podcast data</string>
