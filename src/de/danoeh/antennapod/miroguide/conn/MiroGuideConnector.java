@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.miroguide.con;
+package de.danoeh.antennapod.miroguide.conn;
 
 import java.io.BufferedReader;
 import java.io.IOException;
