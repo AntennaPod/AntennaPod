@@ -632,11 +632,11 @@ public class DownloadService extends Service {
 					return false;
 				}
 				if (item.getPubDate() == null) {
-					Log.e(TAG, "Item has no pubDate");
+					Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
 					if (item.getTitle() != null) {
 						Log.e(TAG, "Title of invalid item: " + item.getTitle());
 					}
-					return false;
+					item.setPubDate(new Date());
 				}
 			}
 			return true;
