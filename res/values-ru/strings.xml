@@ -74,7 +74,6 @@
   <string name="download_report_title">Закачки завершены</string>
   <string name="download_error_malformed_url">Некорректная ссылка</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
-  <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_request_error">Ошибка запроса</string>
   <string name="downloads_left">\u0020закачек осталось</string>
   <string name="download_notification_title">Получение данных подкаста</string>
