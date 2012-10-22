@@ -7,7 +7,6 @@ import java.util.concurrent.ThreadFactory;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.util.Log;
@@ -17,7 +16,6 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
 /** Caches and loads FeedImage bitmaps in the background */

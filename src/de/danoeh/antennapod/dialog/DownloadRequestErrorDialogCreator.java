@@ -1,10 +1,9 @@
 package de.danoeh.antennapod.dialog;
 
-import de.danoeh.antennapod.R;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.content.DialogInterface;
+import de.danoeh.antennapod.R;
 
 /** Creates Alert Dialogs if a DownloadRequestException has happened. */
 public class DownloadRequestErrorDialogCreator {

@@ -2,7 +2,6 @@ package de.danoeh.antennapod.asynctask;
 
 import java.io.File;
 
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;

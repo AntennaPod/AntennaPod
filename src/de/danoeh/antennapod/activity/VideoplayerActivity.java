@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import com.actionbarsherlock.view.Window;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -16,6 +14,9 @@ import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
 import android.widget.VideoView;
+
+import com.actionbarsherlock.view.Window;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.service.PlaybackService;
