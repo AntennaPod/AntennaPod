@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.5.3
+---------------
+* Fixed crash when trying to start playback on some devices
+* Fixed problems with some feeds
+* Other bugfixes and improvements
+
 Version 0.9.5.2
 ---------------
 * Media player now doesn't use network bandwidth anymore if not in use
