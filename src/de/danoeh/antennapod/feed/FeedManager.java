@@ -380,6 +380,17 @@ public class FeedManager {
 			Log.d(TAG, "Setting item with title " + item.getTitle()
 					+ " as read/unread");
 		item.read = read;
+
+		FeedMedia media = item.getMedia();
+		if (media != null) {
+			if (read) {
+				media.setPlaybackCompletionDate(new Date());
+			} else {
+				media.setPlaybackCompletionDate(null);
+				media.setPosition(0);
+			}
+		}
+
 		setFeedItem(context, item);
 		contentChanger.post(new Runnable() {
 
