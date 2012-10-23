@@ -75,7 +75,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bobsonbob.de/?feed=rss2",
 			"http://www.blacksweetstories.com/feed/podcast/",
 			"http://www.eurogamer.net/rss/eurogamer_podcast_itunes.rss",
-			"http://www.wikigeeks.de/feed/mp3",
 			"http://diehoppeshow.de/podcast/feed.xml",
 			"http://feeds.feedburner.com/ThisIsMyNextPodcast?format=xml",
 			"http://bitlove.org/343max/maerchenstunde/feed",
@@ -483,13 +482,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 		for (FeedItem item : feed.getItems()) {
 			if (item.getTitle() == null) {
 				Log.e(TAG, "Item has no title");
-				return false;
-			}
-			if (item.getPubDate() == null) {
-				Log.e(TAG, "Item has no pubDate");
-				if (item.getTitle() != null) {
-					Log.e(TAG, "Title of invalid item: " + item.getTitle());
-				}
 				return false;
 			}
 		}
