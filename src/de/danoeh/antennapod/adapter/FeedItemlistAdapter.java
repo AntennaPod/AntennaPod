@@ -71,6 +71,8 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle = (TextView) convertView
 						.findViewById(R.id.txtvFeedname);
 			}
+			holder.statusLabel = (View) convertView
+					.findViewById(R.id.vStatusLabel);
 
 			convertView.setTag(holder);
 		} else {
@@ -90,10 +92,18 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle.setVisibility(View.VISIBLE);
 				holder.feedtitle.setText(item.getFeed().getTitle());
 			}
-			if (!item.isRead()) {
+
+			if (item.isInProgress()) {
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_progress));
+				holder.statusLabel.setVisibility(View.VISIBLE);
+			} else if (!item.isRead()) {
+				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_unread));
+				holder.statusLabel.setVisibility(View.VISIBLE);
 			} else {
 				holder.title.setTypeface(Typeface.DEFAULT);
+				holder.statusLabel.setVisibility(View.INVISIBLE);
 			}
 
 			holder.published.setText(convertView.getResources().getString(
@@ -169,6 +179,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		ImageView type;
 		ImageView downloading;
 		ImageButton butAction;
+		View statusLabel;
 	}
 
 	public int getSelectedItemIndex() {

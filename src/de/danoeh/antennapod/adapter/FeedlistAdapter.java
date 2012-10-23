@@ -79,7 +79,10 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		holder.numberOfEpisodes.setText(feed.getNumOfItems()
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
+		
 		int newItems = feed.getNumOfNewItems();
+		int startedItems = feed.getNumOfStartedItems();
+		
 		if (newItems > 0) {
 			holder.newEpisodes.setText(Integer.toString(newItems));
 			holder.newEpisodes.setVisibility(View.VISIBLE);
