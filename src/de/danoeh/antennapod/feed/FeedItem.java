@@ -128,6 +128,10 @@ public class FeedItem extends FeedComponent {
 		return read;
 	}
 
+	public boolean isInProgress() {
+		return (media != null && media.isInProgress());
+	}
+
 	public String getContentEncoded() {
 		return contentEncoded;
 	}

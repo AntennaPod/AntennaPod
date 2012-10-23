@@ -118,4 +118,8 @@ public class FeedMedia extends FeedFile {
 		this.playbackCompletionDate = playbackCompletionDate;
 	}
 
+	public boolean isInProgress() {
+		return (this.position > 0 && this.playbackCompletionDate == null);
+	}
+
 }
