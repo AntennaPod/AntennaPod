@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:paddingBottom="4dp"
-    android:paddingRight="16dp"
+    android:paddingRight="8dp"
     android:paddingTop="4dp" >
 
     <ImageView
@@ -18,19 +18,61 @@
         android:cropToPadding="true"
         android:scaleType="fitXY" />
 
-    <TextView
-        android:id="@+id/txtvNewEps"
+    <LinearLayout
+        android:id="@+id/lEpisodeCounts"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
+        android:layout_height="fill_parent"
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
-        android:textSize="20dp"
-        android:textStyle="bold" />
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/lNewStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/txtvNewEps"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="4dip"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="5dip"
+                android:layout_height="match_parent"
+                android:background="@color/status_unread"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lProgressStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/txtvProgressEps"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="4dip"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="5dip"
+                android:layout_height="match_parent"
+                android:background="@color/status_progress"
+                android:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
-        android:layout_toLeftOf="@id/txtvNewEps"
+        android:layout_toLeftOf="@id/lEpisodeCounts"
         android:layout_toRightOf="@id/imgvFeedimage"
         android:orientation="vertical" >
 
