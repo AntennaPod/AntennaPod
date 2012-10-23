@@ -80,7 +80,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 					R.string.last_update_prefix)
 					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
 							.getTime(), System.currentTimeMillis(),
-							DateFormat.SHORT, DateFormat.SHORT));
+							DateFormat.MEDIUM, DateFormat.SHORT));
 		}
 		holder.numberOfEpisodes.setText(feed.getNumOfItems()
 				+ convertView.getResources()

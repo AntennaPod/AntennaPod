@@ -109,7 +109,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.published.setText(convertView.getResources().getString(
 					R.string.published_prefix)
 					+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
-							System.currentTimeMillis(), DateFormat.SHORT,
+							System.currentTimeMillis(), DateFormat.MEDIUM,
 							DateFormat.SHORT));
 
 			if (item.getMedia() == null) {
