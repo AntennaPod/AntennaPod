@@ -37,7 +37,6 @@ public class HttpDownloader extends Downloader {
 		HttpURLConnection connection = null;
 		OutputStream out = null;
 		try {
-			status.setStatusMsg(R.string.download_pending);
 			URL url = new URL(status.getFeedFile().getDownload_url());
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);

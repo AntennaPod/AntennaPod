@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.service.download;
 
 import android.os.Handler;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 
 /** Downloads files */
@@ -19,6 +20,7 @@ public abstract class Downloader extends Thread {
 		super();
 		this.downloadService = downloadService;
 		this.status = status;
+		this.status.setStatusMsg(R.string.download_pending);
 		this.cancelled = false;
 		handler = new Handler();
 	}
