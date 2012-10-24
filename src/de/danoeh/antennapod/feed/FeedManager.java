@@ -627,7 +627,7 @@ public class FeedManager {
 			if (itemIndex != -1 && itemIndex < (queue.size() - 1)) {
 				return queue.get(itemIndex + 1);
 			}
-		} 
+		}
 		return null;
 	}
 
@@ -1145,7 +1145,8 @@ public class FeedManager {
 					mediaIds.add(String.valueOf(mediaId));
 					item.setMedia(new FeedMedia(mediaId, item));
 				}
-				item.read = (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
+				item.read = (itemlistCursor
+						.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
 						: false;
 				item.setItemIdentifier(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
@@ -1335,6 +1336,52 @@ public class FeedManager {
 
 	public List<FeedItem> getPlaybackHistory() {
 		return playbackHistory;
+	}
+
+	/** Is called by a FeedManagerTask after completion. */
+	public interface TaskCallback {
+		void onCompletion();
+	}
+
+	/** A runnable that can post a callback to a handler after completion. */
+	abstract class Task implements Runnable {
+		private Handler handler;
+		private TaskCallback callback;
+
+		/**
+		 * Standard contructor. No callbacks are going to be posted to a
+		 * handler.
+		 */
+		public Task() {
+			super();
+		}
+
+		/**
+		 * The Task will post a Runnable to 'handler' that will execute the
+		 * 'callback' after completion.
+		 */
+		public Task(Handler handler, TaskCallback callback) {
+			super();
+			this.handler = handler;
+			this.callback = callback;
+		}
+
+		@Override
+		public final void run() {
+			execute();
+			if (handler != null && callback != null) {
+				handler.post(new Runnable() {
+					@Override
+					public void run() {
+						callback.onCompletion();
+					}
+				});
+			}
+		}
+
+		/** This method will be executed in the same thread as the run() method. */
+		public abstract void execute();
+
 	}
 
 }
