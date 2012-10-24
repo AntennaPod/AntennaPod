@@ -1318,6 +1318,26 @@ public class FeedManager {
 		cursor.close();
 	}
 
+	public void loadExtraInformationOfItem(final Context context,
+			final FeedItem item, FeedManager.TaskCallback callback) {
+		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
+
+			@Override
+			public void execute() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				Cursor extraCursor = adapter.getExtraInformationOfItem(item);
+				if (extraCursor.moveToFirst()) {
+					item.setDescription(extraCursor
+							.getString(PodDBAdapter.IDX_FI_EXTRA_DESCRIPTION));
+					item.setContentEncoded(extraCursor
+							.getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED));
+				}
+				adapter.close();
+			}
+		});
+	}
+
 	public List<Feed> getFeeds() {
 		return feeds;
 	}
