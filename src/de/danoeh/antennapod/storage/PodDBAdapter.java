@@ -180,6 +180,46 @@ public class PodDBAdapter {
 	private final Context context;
 	private PodDBHelper helper;
 
+	/** Select all columns from the feeditems-table except description and content-encoded. */
+	private static final String[] SEL_FI_SMALL = {
+		KEY_ID,
+		KEY_TITLE,
+		KEY_PUBDATE,
+		KEY_READ,
+		KEY_LINK,
+		KEY_PAYMENT_LINK,
+		KEY_MEDIA,
+		KEY_FEED,
+		KEY_HAS_CHAPTERS,
+		KEY_ITEM_IDENTIFIER
+	};
+	
+	// column indices for SEL_FI_SMALL
+	
+	public static final int IDX_FI_SMALL_ID = 0;
+	public static final int IDX_FI_SMALL_TITLE = 1;
+	public static final int IDX_FI_SMALL_PUBDATE = 2;
+	public static final int IDX_FI_SMALL_READ = 3;
+	public static final int IDX_FI_SMALL_LINK = 4;
+	public static final int IDX_FI_SMALL_PAYMENT_LINK = 5;
+	public static final int IDX_FI_SMALL_MEDIA = 6;
+	public static final int IDX_FI_SMALL_FEED = 7;
+	public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
+	public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
+
+	/** Select id, description and content-encoded column from feeditems. */
+	public static final String[] SEL_FI_EXTRA = {
+		KEY_ID,
+		KEY_DESCRIPTION,
+		KEY_CONTENT_ENCODED
+	};
+	
+	//column indices for SEL_FI_EXTRA
+	
+	public static final int IDX_FI_EXTRA_ID = 0;
+	public static final int IDX_FI_EXTRA_DESCRIPTION = 1;
+	public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
+	
 	public PodDBAdapter(Context c) {
 		this.context = c;
 		helper = new PodDBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
