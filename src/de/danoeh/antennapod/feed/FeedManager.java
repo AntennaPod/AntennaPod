@@ -379,17 +379,8 @@ public class FeedManager {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting item with title " + item.getTitle()
 					+ " as read/unread");
-		item.read = read;
 
-		FeedMedia media = item.getMedia();
-		if (media != null) {
-			if (read) {
-				media.setPlaybackCompletionDate(new Date());
-			} else {
-				media.setPlaybackCompletionDate(null);
-				media.setPosition(0);
-			}
-		}
+		item.setRead(read);
 
 		setFeedItem(context, item);
 		contentChanger.post(new Runnable() {
@@ -427,7 +418,7 @@ public class FeedManager {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "marking all items as read");
 		for (FeedItem item : unreadItems) {
-			item.read = true;
+			item.setRead(true);
 		}
 		final ArrayList<FeedItem> unreadItemsCopy = new ArrayList<FeedItem>(
 				unreadItems);

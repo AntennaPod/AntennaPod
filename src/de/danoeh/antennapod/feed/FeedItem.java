@@ -128,6 +128,18 @@ public class FeedItem extends FeedComponent {
 		return read;
 	}
 
+	public void setRead(boolean read) {
+		this.read = read;
+		if (media != null) {
+			media.setPosition(0);
+			if (read) {
+				media.setPlaybackCompletionDate(new Date());
+			} else {
+				media.setPlaybackCompletionDate(null);
+			}
+		}
+	}
+
 	public boolean isInProgress() {
 		return (media != null && media.isInProgress());
 	}

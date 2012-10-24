@@ -119,7 +119,7 @@ public class FeedMedia extends FeedFile {
 	}
 
 	public boolean isInProgress() {
-		return (this.position > 0 && this.playbackCompletionDate == null);
+		return (this.position > 0);
 	}
 
 }
