@@ -125,7 +125,7 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public boolean isRead() {
-		return read;
+		return read || isInProgress();
 	}
 
 	public void setRead(boolean read) {
