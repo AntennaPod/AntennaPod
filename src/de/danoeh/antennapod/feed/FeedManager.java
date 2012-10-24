@@ -1129,37 +1129,33 @@ public class FeedManager {
 			do {
 				FeedItem item = new FeedItem();
 
-				item.id = itemlistCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+				item.id = itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_ID);
 				item.setFeed(feed);
 				item.setTitle(itemlistCursor
-						.getString(PodDBAdapter.KEY_TITLE_INDEX));
+						.getString(PodDBAdapter.IDX_FI_SMALL_TITLE));
 				item.setLink(itemlistCursor
-						.getString(PodDBAdapter.KEY_LINK_INDEX));
-				item.setDescription(itemlistCursor
-						.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
-				item.setContentEncoded(itemlistCursor
-						.getString(PodDBAdapter.KEY_CONTENT_ENCODED_INDEX));
+						.getString(PodDBAdapter.IDX_FI_SMALL_LINK));
 				item.setPubDate(new Date(itemlistCursor
-						.getLong(PodDBAdapter.KEY_PUBDATE_INDEX)));
+						.getLong(PodDBAdapter.IDX_FI_SMALL_PUBDATE)));
 				item.setPaymentLink(itemlistCursor
-						.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
+						.getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK));
 				long mediaId = itemlistCursor
-						.getLong(PodDBAdapter.KEY_MEDIA_INDEX);
+						.getLong(PodDBAdapter.IDX_FI_SMALL_MEDIA);
 				if (mediaId != 0) {
 					mediaIds.add(String.valueOf(mediaId));
 					item.setMedia(new FeedMedia(mediaId, item));
 				}
-				item.read = (itemlistCursor.getInt(PodDBAdapter.KEY_READ_INDEX) > 0) ? true
+				item.read = (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
 						: false;
 				item.setItemIdentifier(itemlistCursor
-						.getString(PodDBAdapter.KEY_ITEM_IDENTIFIER_INDEX));
+						.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
 				if (!item.read) {
 					unreadItems.add(item);
 				}
 
 				// extract chapters
 				boolean hasSimpleChapters = itemlistCursor
-						.getInt(PodDBAdapter.KEY_HAS_SIMPLECHAPTERS_INDEX) > 0;
+						.getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0;
 				if (hasSimpleChapters) {
 					Cursor chapterCursor = adapter
 							.getSimpleChaptersOfFeedItemCursor(item);
