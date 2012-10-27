@@ -104,25 +104,23 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		}
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if (item != null) {
-			FeedManager.getInstance().loadExtraInformationOfItem(getActivity(),
-					item, new FeedManager.TaskCallback() {
-
-						@Override
-						public void onCompletion() {
-							webViewLoader = createLoader();
-							if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-								webViewLoader
-										.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-							} else {
-								webViewLoader.execute();
+			if (item.getDescription() == null && item.getDescription() == null) {
+				Log.i(TAG, "Loading data");
+				FeedManager.getInstance().loadExtraInformationOfItem(
+						getActivity(), item, new FeedManager.TaskCallback() {
+							@Override
+							public void onCompletion() {
+								startLoader();
 							}
-						}
-					});
+						});
+			} else {
+				Log.i(TAG, "Using cached data");
+				startLoader();
+			}
 		} else {
 			Log.e(TAG, "Error in onViewCreated: Item was null");
 		}
@@ -131,6 +129,16 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+	}
+
+	@SuppressLint("NewApi")
+	private void startLoader() {
+		webViewLoader = createLoader();
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			webViewLoader.execute();
+		}
 	}
 
 	private AsyncTask<Void, Void, Void> createLoader() {

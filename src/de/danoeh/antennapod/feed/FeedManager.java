@@ -1331,9 +1331,9 @@ public class FeedManager {
 				adapter.open();
 				Cursor extraCursor = adapter.getExtraInformationOfItem(item);
 				if (extraCursor.moveToFirst()) {
-					item.setDescription(extraCursor
+					item.setCachedDescription(extraCursor
 							.getString(PodDBAdapter.IDX_FI_EXTRA_DESCRIPTION));
-					item.setContentEncoded(extraCursor
+					item.setCachedContentEncoded(extraCursor
 							.getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED));
 				}
 				adapter.close();

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.feed;
 
+import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.List;
 
@@ -11,11 +12,23 @@ import java.util.List;
  */
 public class FeedItem extends FeedComponent {
 
-	/** The id/guid that can be found in the rss/atom feed. Might not be set.*/
+	/** The id/guid that can be found in the rss/atom feed. Might not be set. */
 	private String itemIdentifier;
 	private String title;
+	/**
+	 * The description of a feeditem. This field should only be set by the
+	 * parser.
+	 */
 	private String description;
+	/**
+	 * The content of the content-encoded tag of a feeditem. This field should
+	 * only be set by the parser.
+	 */
 	private String contentEncoded;
+	
+	private SoftReference<String> cachedDescription;
+	private SoftReference<String> cachedContentEncoded;
+	
 	private String link;
 	private Date pubDate;
 	private FeedMedia media;
@@ -60,11 +73,12 @@ public class FeedItem extends FeedComponent {
 	public Chapter getCurrentChapter() {
 		return getCurrentChapter(media.getPosition());
 	}
-	
-	/** Returns the value that uniquely identifies this FeedItem. 
-	 *  If the itemIdentifier attribute is not null, it will be returned.
-	 *  Else it will try to return the title. If the title is not given, it will
-	 *  use the link of the entry.
+
+	/**
+	 * Returns the value that uniquely identifies this FeedItem. If the
+	 * itemIdentifier attribute is not null, it will be returned. Else it will
+	 * try to return the title. If the title is not given, it will use the link
+	 * of the entry.
 	 * */
 	public String getIdentifyingValue() {
 		if (itemIdentifier != null) {
@@ -85,6 +99,9 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public String getDescription() {
+		if (description == null && cachedDescription != null) {
+			return cachedDescription.get();
+		}
 		return description;
 	}
 
@@ -129,6 +146,10 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public String getContentEncoded() {
+		if (contentEncoded == null && cachedContentEncoded != null) {
+				return cachedContentEncoded.get();
+			
+		}
 		return contentEncoded;
 	}
 
@@ -160,5 +181,12 @@ public class FeedItem extends FeedComponent {
 		this.itemIdentifier = itemIdentifier;
 	}
 	
+	public void setCachedDescription(String d) {
+		cachedDescription = new SoftReference<String>(d);
+	}
+	
+	public void setCachedContentEncoded(String c) {
+		cachedContentEncoded = new SoftReference<String>(c);
+	}
 
 }
