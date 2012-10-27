@@ -143,6 +143,15 @@ public class Feed extends FeedFile {
 			return download_url;
 		}
 	}
+	
+	/** Calls cacheDescriptions on all items. */
+	protected void cacheDescriptionsOfItems() {
+		if (items != null) {
+			for (FeedItem item : items) {
+				item.cacheDescriptions();
+			}
+		}
+	}
 
 	@Override
 	public int getTypeAsInt() {

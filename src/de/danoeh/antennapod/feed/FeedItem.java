@@ -25,10 +25,10 @@ public class FeedItem extends FeedComponent {
 	 * only be set by the parser.
 	 */
 	private String contentEncoded;
-	
+
 	private SoftReference<String> cachedDescription;
 	private SoftReference<String> cachedContentEncoded;
-	
+
 	private String link;
 	private Date pubDate;
 	private FeedMedia media;
@@ -39,6 +39,21 @@ public class FeedItem extends FeedComponent {
 
 	public FeedItem() {
 		this.read = true;
+	}
+
+	/**
+	 * Moves the 'description' and 'contentEncoded' field of feeditem to their
+	 * SoftReference fields.
+	 */
+	protected void cacheDescriptions() {
+		if (description != null) {
+			cachedDescription = new SoftReference<String>(description);
+		}
+		if (contentEncoded != null) {
+			cachedContentEncoded = new SoftReference<String>(contentEncoded);
+		}
+		description = null;
+		contentEncoded = null;
 	}
 
 	/** Get the chapter that fits the position. */
@@ -135,8 +150,8 @@ public class FeedItem extends FeedComponent {
 
 	public String getContentEncoded() {
 		if (contentEncoded == null && cachedContentEncoded != null) {
-				return cachedContentEncoded.get();
-			
+			return cachedContentEncoded.get();
+
 		}
 		return contentEncoded;
 	}
@@ -168,11 +183,11 @@ public class FeedItem extends FeedComponent {
 	public void setItemIdentifier(String itemIdentifier) {
 		this.itemIdentifier = itemIdentifier;
 	}
-	
+
 	public void setCachedDescription(String d) {
 		cachedDescription = new SoftReference<String>(d);
 	}
-	
+
 	public void setCachedContentEncoded(String c) {
 		cachedContentEncoded = new SoftReference<String>(c);
 	}

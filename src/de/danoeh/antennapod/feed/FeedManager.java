@@ -774,6 +774,7 @@ public class FeedManager {
 				PodDBAdapter adapter = new PodDBAdapter(context);
 				adapter.open();
 				adapter.setCompleteFeed(feed);
+				feed.cacheDescriptionsOfItems();
 				adapter.close();
 			}
 		});
@@ -867,6 +868,7 @@ public class FeedManager {
 	public void setFeed(Feed feed, PodDBAdapter adapter) {
 		if (adapter != null) {
 			adapter.setFeed(feed);
+			feed.cacheDescriptionsOfItems();
 		} else {
 			Log.w(TAG, "Adapter in setFeed was null");
 		}
@@ -914,6 +916,7 @@ public class FeedManager {
 				PodDBAdapter adapter = new PodDBAdapter(context);
 				adapter.open();
 				adapter.setFeed(feed);
+				feed.cacheDescriptionsOfItems();
 				adapter.close();
 			}
 		});
