@@ -116,7 +116,7 @@ public class FeedlistFragment extends SherlockFragment implements
 		IntentFilter filter = new IntentFilter();
 		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
-		filter.addAction(FeedManager.ACITON_FEED_LIST_UPDATE);
+		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		pActivity.registerReceiver(contentUpdate, filter);
 		fla.notifyDataSetChanged();
