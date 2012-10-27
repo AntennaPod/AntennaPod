@@ -170,6 +170,9 @@ public class FeedItem extends FeedComponent {
 	public void setItemIdentifier(String itemIdentifier) {
 		this.itemIdentifier = itemIdentifier;
 	}
-	
+
+	public boolean hasMedia() {
+		return media != null;
+	}
 
 }

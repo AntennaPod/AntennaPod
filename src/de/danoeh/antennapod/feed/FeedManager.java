@@ -383,6 +383,9 @@ public class FeedManager {
 		item.setRead(read);
 
 		setFeedItem(context, item);
+		if (item.hasMedia())
+			setFeedMedia(context, item.getMedia());
+
 		contentChanger.post(new Runnable() {
 
 			@Override
