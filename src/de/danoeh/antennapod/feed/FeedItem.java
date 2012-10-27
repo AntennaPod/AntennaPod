@@ -132,11 +132,6 @@ public class FeedItem extends FeedComponent {
 		this.read = read;
 		if (media != null) {
 			media.setPosition(0);
-			if (read) {
-				media.setPlaybackCompletionDate(new Date());
-			} else {
-				media.setPlaybackCompletionDate(null);
-			}
 		}
 	}
 
