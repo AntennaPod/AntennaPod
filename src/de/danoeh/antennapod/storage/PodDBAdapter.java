@@ -648,6 +648,47 @@ public class PodDBAdapter {
 		return image;
 	}
 
+	/**
+	 * Searches for the given query in the description of all items or the items
+	 * of a specified feed.
+	 * 
+	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
+	 * */
+	public Cursor searchItemDescriptions(Feed feed, String query) {
+		if (feed != null) {
+			// search items in specific feed
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+					+ "=? AND " + KEY_DESCRIPTION + " LIKE ?", new String[] {
+					String.valueOf(feed.getId()), query }, null, null, null);
+		} else {
+			// search through all items
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+					KEY_DESCRIPTION + " LIKE ?", new String[] { query }, null,
+					null, null);
+		}
+	}
+
+	/**
+	 * Searches for the given query in the content-encoded field of all items or
+	 * the items of a specified feed.
+	 * 
+	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
+	 * */
+	public Cursor searchItemContentEncoded(Feed feed, String query) {
+		if (feed != null) {
+			// search items in specific feed
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE ?",
+					new String[] { String.valueOf(feed.getId()), query }, null,
+					null, null);
+		} else {
+			// search through all items
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+					KEY_CONTENT_ENCODED + " LIKE ?", new String[] { query },
+					null, null, null);
+		}
+	}
+
 	/** Helper class for opening the Antennapod database. */
 	private static class PodDBHelper extends SQLiteOpenHelper {
 		/**
