@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -113,7 +114,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				FeedManager.getInstance().loadExtraInformationOfItem(
 						getActivity(), item, new FeedManager.TaskCallback() {
 							@Override
-							public void onCompletion() {
+							public void onCompletion(Cursor result) {
 								startLoader();
 							}
 						});

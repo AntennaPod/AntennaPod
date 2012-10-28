@@ -1366,13 +1366,16 @@ public class FeedManager {
 
 	/** Is called by a FeedManagerTask after completion. */
 	public interface TaskCallback {
-		void onCompletion();
+		void onCompletion(Cursor result);
 	}
 
 	/** A runnable that can post a callback to a handler after completion. */
 	abstract class Task implements Runnable {
 		private Handler handler;
 		private TaskCallback callback;
+		
+		/** Can be used for returning database query results. */
+		private Cursor result;
 
 		/**
 		 * Standard contructor. No callbacks are going to be posted to a
@@ -1399,7 +1402,7 @@ public class FeedManager {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						callback.onCompletion();
+						callback.onCompletion(result);
 					}
 				});
 			}
@@ -1407,6 +1410,10 @@ public class FeedManager {
 
 		/** This method will be executed in the same thread as the run() method. */
 		public abstract void execute();
+		
+		protected void setResult(Cursor c) {
+			result = c;
+		}
 
 	}
 
