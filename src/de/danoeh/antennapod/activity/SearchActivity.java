@@ -69,8 +69,10 @@ public class SearchActivity extends SherlockListActivity {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting search");
 			String query = intent.getStringExtra(SearchManager.QUERY);
-			getSupportActionBar().setSubtitle(
-					getString(R.string.search_term_label) + "\"" + query + "\"");
+			getSupportActionBar()
+					.setSubtitle(
+							getString(R.string.search_term_label) + "\""
+									+ query + "\"");
 			handleSearchRequest(query);
 		}
 	}
@@ -133,48 +135,46 @@ public class SearchActivity extends SherlockListActivity {
 	}
 
 	@SuppressLint({ "NewApi", "NewApi" })
-	private void handleSearchRequest(String query) {
-		AsyncTask<String, Void, ArrayList<SearchResult>> executor = new AsyncTask<String, Void, ArrayList<SearchResult>>() {
-
-			@Override
-			protected void onPreExecute() {
-				if (searchAdapter != null) {
-					searchAdapter.clear();
-					searchAdapter.notifyDataSetChanged();
-				}
-				txtvStatus.setText(R.string.search_status_searching);
-			}
-
-			@Override
-			protected ArrayList<SearchResult> doInBackground(String... params) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Starting background work");
-				return FeedSearcher.performSearch(SearchActivity.this, params[0], selectedFeed);
-			}
-
-			@Override
-			protected void onPostExecute(ArrayList<SearchResult> result) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Background work finished");
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Found " + result.size() + " results");
-				content = result;
-
-				searchAdapter = new SearchlistAdapter(SearchActivity.this, 0,
-						content);
-				getListView().setAdapter(searchAdapter);
-				searchAdapter.notifyDataSetChanged();
-				if (content.isEmpty()) {
-					txtvStatus.setText(R.string.search_status_no_results);
-				}
-
-			}
-
-		};
-		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-			executor.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, query);
-		} else {
-			executor.execute(query);
+	private void handleSearchRequest(final String query) {
+		if (searchAdapter != null) {
+			searchAdapter.clear();
+			searchAdapter.notifyDataSetChanged();
 		}
+		txtvStatus.setText(R.string.search_status_searching);
+
+		Thread thread = new Thread() {
+
+			@Override
+			public void run() {
+				Log.d(TAG, "Starting background work");
+				final ArrayList<SearchResult> result = FeedSearcher
+						.performSearch(SearchActivity.this, query, selectedFeed);
+				if (SearchActivity.this != null) {
+					SearchActivity.this.runOnUiThread(new Runnable() {
+
+						@Override
+						public void run() {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Background work finished");
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "Found " + result.size()
+										+ " results");
+							content = result;
+
+							searchAdapter = new SearchlistAdapter(
+									SearchActivity.this, 0, content);
+							getListView().setAdapter(searchAdapter);
+							searchAdapter.notifyDataSetChanged();
+							if (content.isEmpty()) {
+								txtvStatus
+										.setText(R.string.search_status_no_results);
+							}
+						}
+					});
+				}
+			}
+		};
+		thread.start();
+
 	}
 }
