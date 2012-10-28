@@ -3,6 +3,8 @@ package de.danoeh.antennapod.feed;
 import java.util.Date;
 import java.util.List;
 
+import de.danoeh.antennapod.PodcastApp;
+
 /**
  * Data Object for a XML message
  * 
@@ -158,6 +160,15 @@ public class FeedItem extends FeedComponent {
 
 	public void setItemIdentifier(String itemIdentifier) {
 		this.itemIdentifier = itemIdentifier;
+	}
+	
+	public boolean isPlaying() {
+		if (media != null) {
+			if (PodcastApp.getLastPlayedMediaId() == media.getId()) {
+				return true;
+			}
+		}
+		return false;
 	}
 	
 
