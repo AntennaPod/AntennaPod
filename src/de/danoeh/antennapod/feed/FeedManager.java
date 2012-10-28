@@ -435,6 +435,8 @@ public class FeedManager {
 				adapter.open();
 				for (FeedItem item : unreadItemsCopy) {
 					setFeedItem(item, adapter);
+					if (item.hasMedia())
+						setFeedMedia(context, item.getMedia());
 				}
 				adapter.close();
 			}
