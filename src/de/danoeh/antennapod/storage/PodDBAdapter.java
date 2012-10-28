@@ -660,12 +660,12 @@ public class PodDBAdapter {
 		if (feed != null) {
 			// search items in specific feed
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
-					+ "=? AND " + KEY_DESCRIPTION + " LIKE ?", new String[] {
-					String.valueOf(feed.getId()), query }, null, null, null);
+					+ "=? AND " + KEY_DESCRIPTION + " LIKE '%" + query + "%'", new String[] {
+					String.valueOf(feed.getId()) }, null, null, null);
 		} else {
 			// search through all items
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
-					KEY_DESCRIPTION + " LIKE ?", new String[] { query }, null,
+					KEY_DESCRIPTION + " LIKE '%" + query + "%'", null, null,
 					null, null);
 		}
 	}
@@ -680,13 +680,13 @@ public class PodDBAdapter {
 		if (feed != null) {
 			// search items in specific feed
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
-					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE ?",
-					new String[] { String.valueOf(feed.getId()), query }, null,
+					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'",
+					new String[] { String.valueOf(feed.getId())}, null,
 					null, null);
 		} else {
 			// search through all items
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
-					KEY_CONTENT_ENCODED + " LIKE ?", new String[] { query },
+					KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'", null,
 					null, null, null);
 		}
 	}

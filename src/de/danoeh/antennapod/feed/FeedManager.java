@@ -1012,6 +1012,19 @@ public class FeedManager {
 		return null;
 	}
 
+	/** Get a FeedItem by its id and the id of its feed. */
+	public FeedItem getFeedItem(long itemId, long feedId) {
+		Feed feed = getFeed(feedId);
+		if (feed != null && feed.getItems() != null) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.getId() == itemId) {
+					return item;
+				}
+			}
+		}
+		return null;
+	}
+
 	/** Get a FeedMedia object by the id of the Media object and the feed object */
 	public FeedMedia getFeedMedia(long id, Feed feed) {
 		if (feed != null) {
@@ -1346,32 +1359,28 @@ public class FeedManager {
 
 	public void searchFeedItemDescription(final Context context,
 			final Feed feed, final String query,
-			FeedManager.TaskCallback callback) {
-		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
-			
+			FeedManager.QueryTaskCallback callback) {
+		dbExec.execute(new FeedManager.QueryTask(context, new Handler(), callback) {
+
 			@Override
-			public void execute() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				adapter.open();
-				Cursor searchResult = adapter.searchItemDescriptions(feed, query);
+			public void execute(PodDBAdapter adapter) {
+				Cursor searchResult = adapter.searchItemDescriptions(feed,
+						query);
 				setResult(searchResult);
-				adapter.close();
 			}
 		});
 	}
-	
+
 	public void searchFeedItemContentEncoded(final Context context,
 			final Feed feed, final String query,
-			FeedManager.TaskCallback callback) {
-		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
-			
+			FeedManager.QueryTaskCallback callback) {
+		dbExec.execute(new FeedManager.QueryTask(context, new Handler(), callback) {
+
 			@Override
-			public void execute() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				adapter.open();
-				Cursor searchResult = adapter.searchItemContentEncoded(feed, query);
+			public void execute(PodDBAdapter adapter) {
+				Cursor searchResult = adapter.searchItemContentEncoded(feed,
+						query);
 				setResult(searchResult);
-				adapter.close();
 			}
 		});
 	}
@@ -1400,14 +1409,17 @@ public class FeedManager {
 	public interface TaskCallback {
 		void onCompletion(Cursor result);
 	}
+	
+	/** Is called by a FeedManager.QueryTask after completion. */
+	public interface QueryTaskCallback {
+		void handleResult(Cursor result);
+		void onCompletion();
+	}
 
 	/** A runnable that can post a callback to a handler after completion. */
 	abstract class Task implements Runnable {
 		private Handler handler;
 		private TaskCallback callback;
-
-		/** Can be used for returning database query results. */
-		private Cursor result;
 
 		/**
 		 * Standard contructor. No callbacks are going to be posted to a
@@ -1434,7 +1446,7 @@ public class FeedManager {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						callback.onCompletion(result);
+						callback.onCompletion(null);
 					}
 				});
 			}
@@ -1442,11 +1454,53 @@ public class FeedManager {
 
 		/** This method will be executed in the same thread as the run() method. */
 		public abstract void execute();
+	}
+
+	/**
+	 * A runnable which should be used for database queries. The onCompletion
+	 * method is executed on the database executor to handle Cursors correctly.
+	 * This class automatically creates a PodDBAdapter object and closes it when
+	 * it is no longer in use.
+	 */
+	abstract class QueryTask implements Runnable {
+		private QueryTaskCallback callback;
+		private Cursor result;
+		private Context context;
+		private Handler handler;
+
+		public QueryTask(Context context, Handler handler, QueryTaskCallback callback) {
+			this.callback = callback;
+			this.context = context;
+			this.handler = handler;
+		}
+
+		@Override
+		public final void run() {
+			PodDBAdapter adapter = new PodDBAdapter(context);
+			adapter.open();
+			execute(adapter);
+			callback.handleResult(result);
+			if (result != null && !result.isClosed()) {
+				result.close();
+			}
+			adapter.close();
+			if (handler != null && callback != null) {
+				handler.post(new Runnable() {
+
+					@Override
+					public void run() {
+						callback.onCompletion();
+					}
+					
+				});
+			}
+		}
+
+		public abstract void execute(PodDBAdapter adapter);
 
 		protected void setResult(Cursor c) {
 			result = c;
 		}
-
 	}
 
 }

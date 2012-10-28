@@ -149,7 +149,7 @@ public class SearchActivity extends SherlockListActivity {
 			protected ArrayList<SearchResult> doInBackground(String... params) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Starting background work");
-				return FeedSearcher.performSearch(params[0], selectedFeed);
+				return FeedSearcher.performSearch(SearchActivity.this, params[0], selectedFeed);
 			}
 
 			@Override
