@@ -1344,6 +1344,38 @@ public class FeedManager {
 		});
 	}
 
+	public void searchFeedItemDescription(final Context context,
+			final Feed feed, final String query,
+			FeedManager.TaskCallback callback) {
+		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
+			
+			@Override
+			public void execute() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				Cursor searchResult = adapter.searchItemDescriptions(feed, query);
+				setResult(searchResult);
+				adapter.close();
+			}
+		});
+	}
+	
+	public void searchFeedItemContentEncoded(final Context context,
+			final Feed feed, final String query,
+			FeedManager.TaskCallback callback) {
+		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
+			
+			@Override
+			public void execute() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				Cursor searchResult = adapter.searchItemContentEncoded(feed, query);
+				setResult(searchResult);
+				adapter.close();
+			}
+		});
+	}
+
 	public List<Feed> getFeeds() {
 		return feeds;
 	}
@@ -1373,7 +1405,7 @@ public class FeedManager {
 	abstract class Task implements Runnable {
 		private Handler handler;
 		private TaskCallback callback;
-		
+
 		/** Can be used for returning database query results. */
 		private Cursor result;
 
@@ -1410,7 +1442,7 @@ public class FeedManager {
 
 		/** This method will be executed in the same thread as the run() method. */
 		public abstract void execute();
-		
+
 		protected void setResult(Cursor c) {
 			result = c;
 		}
