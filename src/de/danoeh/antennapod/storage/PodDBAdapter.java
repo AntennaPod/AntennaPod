@@ -203,13 +203,15 @@ public class PodDBAdapter {
 
 	/** Select id, description and content-encoded column from feeditems. */
 	public static final String[] SEL_FI_EXTRA = { KEY_ID, KEY_DESCRIPTION,
-			KEY_CONTENT_ENCODED };
+			KEY_CONTENT_ENCODED, KEY_FEED };
 
 	// column indices for SEL_FI_EXTRA
 
 	public static final int IDX_FI_EXTRA_ID = 0;
 	public static final int IDX_FI_EXTRA_DESCRIPTION = 1;
 	public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
+	public static final int IDX_FI_EXTRA_FEED = 3;
+
 
 	public PodDBAdapter(Context c) {
 		this.context = c;
