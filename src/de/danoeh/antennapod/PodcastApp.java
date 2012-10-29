@@ -41,6 +41,8 @@ public class PodcastApp extends Application implements
 	private static PodcastApp singleton;
 	
 	private boolean displayOnlyEpisodes;
+	
+	private static long lastPlayedMediaId;
 
 	public static PodcastApp getInstance() {
 		return singleton;
@@ -54,6 +56,7 @@ public class PodcastApp extends Application implements
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
 		displayOnlyEpisodes = prefs.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
+		lastPlayedMediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -135,6 +138,10 @@ public class PodcastApp extends Application implements
 		} else if (key.equals(PlaybackService.PREF_LAST_PLAYED_ID)) {
 			if (AppConfig.DEBUG) Log.d(TAG, "PREF_LAST_PLAYED_ID changed");
 			long mediaId = sharedPreferences.getLong(PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
+			long lastPlayedId = sharedPreferences.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+			if (lastPlayedId != lastPlayedMediaId) {
+				lastPlayedMediaId = lastPlayedId;
+			}
 			if (mediaId != -1) {
 				FeedManager manager = FeedManager.getInstance();
 				FeedMedia media = manager.getFeedMedia(mediaId);
@@ -151,6 +158,10 @@ public class PodcastApp extends Application implements
 	
 	public boolean displayOnlyEpisodes() {
 		return displayOnlyEpisodes;
+	}
+	
+	public static long getLastPlayedMediaId() {
+		return lastPlayedMediaId;
 	}
 
 	public boolean isLargeScreen() {
