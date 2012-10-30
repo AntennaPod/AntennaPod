@@ -58,6 +58,12 @@ public class PlaybackService extends Service {
 	public static final String PREF_LAST_PLAYED_ID = "de.danoeh.antennapod.preferences.lastPlayedId";
 	/** Contains the feed id of the last played item. */
 	public static final String PREF_LAST_PLAYED_FEED_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedId";
+	/**
+	 * ID of the media object that is currently being played. This preference is
+	 * set to NO_MEDIA_PLAYING after playback has been completed and is set as
+	 * soon as the 'play' button is pressed.
+	 */
+	public static final String PREF_CURRENTLY_PLAYING_MEDIA = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
 	/** True if last played media was streamed. */
 	public static final String PREF_LAST_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
 	/** True if last played media was a video. */
@@ -158,6 +164,9 @@ public class PlaybackService extends Service {
 
 	/** True if mediaplayer was paused because it lost audio focus temporarily */
 	private boolean pausedBecauseOfTransientAudiofocusLoss;
+
+	/** Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing. */
+	public static final long NO_MEDIA_PLAYING = -1;
 
 	private final IBinder mBinder = new LocalBinder();
 
@@ -657,6 +666,7 @@ public class PlaybackService extends Service {
 				pause(true, true);
 			}
 			sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
+			setCurrentlyPlayingMedia(NO_MEDIA_PLAYING);
 			stopSelf();
 			return true;
 		}
@@ -692,6 +702,7 @@ public class PlaybackService extends Service {
 				autoDeleteMediaId = -1;
 			}
 			SharedPreferences.Editor editor = prefs.edit();
+			editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, NO_MEDIA_PLAYING);
 			editor.putLong(PREF_AUTODELETE_MEDIA_ID, autoDeleteMediaId);
 			editor.putBoolean(PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED, true);
 			editor.commit();
@@ -794,6 +805,7 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Stopping playback");
 		player.stop();
+		setCurrentlyPlayingMedia(NO_MEDIA_PLAYING);
 		stopSelf();
 	}
 
@@ -834,6 +846,7 @@ public class PlaybackService extends Service {
 				SharedPreferences.Editor editor = PreferenceManager
 						.getDefaultSharedPreferences(getApplicationContext())
 						.edit();
+				editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, media.getId());
 				editor.putLong(PREF_LAST_PLAYED_FEED_ID, feed.getId());
 				editor.putBoolean(PREF_LAST_IS_STREAM, shouldStream);
 				editor.putBoolean(PREF_LAST_IS_VIDEO, playingVideo);
@@ -1261,5 +1274,10 @@ public class PlaybackService extends Service {
 			return INVALID_TIME;
 		}
 	}
-
+	
+	private void setCurrentlyPlayingMedia(long id) {
+		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+		editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, id);
+		editor.commit();
+	}
 }

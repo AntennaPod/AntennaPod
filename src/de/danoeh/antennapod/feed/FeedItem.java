@@ -164,7 +164,7 @@ public class FeedItem extends FeedComponent {
 	
 	public boolean isPlaying() {
 		if (media != null) {
-			if (PodcastApp.getLastPlayedMediaId() == media.getId()) {
+			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
 				return true;
 			}
 		}

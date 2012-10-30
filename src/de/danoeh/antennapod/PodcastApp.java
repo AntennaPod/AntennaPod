@@ -39,10 +39,10 @@ public class PodcastApp extends Application implements
 	private static float LOGICAL_DENSITY;
 
 	private static PodcastApp singleton;
-	
+
 	private boolean displayOnlyEpisodes;
-	
-	private static long lastPlayedMediaId;
+
+	private static long currentlyPlayingMediaId;
 
 	public static PodcastApp getInstance() {
 		return singleton;
@@ -55,8 +55,11 @@ public class PodcastApp extends Application implements
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(this);
-		displayOnlyEpisodes = prefs.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
-		lastPlayedMediaId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
+		displayOnlyEpisodes = prefs.getBoolean(PREF_DISPLAY_ONLY_EPISODES,
+				false);
+		currentlyPlayingMediaId = prefs.getLong(
+				PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA,
+				PlaybackService.NO_MEDIA_PLAYING);
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -74,7 +77,8 @@ public class PodcastApp extends Application implements
 				Log.e(TAG, "Could not create .nomedia file");
 				e.printStackTrace();
 			}
-			if (AppConfig.DEBUG) Log.d(TAG, ".nomedia file created");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, ".nomedia file created");
 		}
 	}
 
@@ -133,15 +137,15 @@ public class PodcastApp extends Application implements
 					Log.d(TAG, "Automatic update was deactivated");
 			}
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
-			if (AppConfig.DEBUG) Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
-			displayOnlyEpisodes = sharedPreferences.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
+			displayOnlyEpisodes = sharedPreferences.getBoolean(
+					PREF_DISPLAY_ONLY_EPISODES, false);
 		} else if (key.equals(PlaybackService.PREF_LAST_PLAYED_ID)) {
-			if (AppConfig.DEBUG) Log.d(TAG, "PREF_LAST_PLAYED_ID changed");
-			long mediaId = sharedPreferences.getLong(PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
-			long lastPlayedId = sharedPreferences.getLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
-			if (lastPlayedId != lastPlayedMediaId) {
-				lastPlayedMediaId = lastPlayedId;
-			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "PREF_LAST_PLAYED_ID changed");
+			long mediaId = sharedPreferences.getLong(
+					PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
 			if (mediaId != -1) {
 				FeedManager manager = FeedManager.getInstance();
 				FeedMedia media = manager.getFeedMedia(mediaId);
@@ -149,23 +153,33 @@ public class PodcastApp extends Application implements
 					manager.autoDeleteIfPossible(this, media);
 				}
 			}
+		} else if (key.equals(PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA)) {
+			long id = sharedPreferences.getLong(
+					PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA,
+					PlaybackService.NO_MEDIA_PLAYING);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Currently playing media set to " + id);
+			if (id != currentlyPlayingMediaId) {
+				currentlyPlayingMediaId = id;
+			}
 		}
 	}
 
 	public static float getLogicalDensity() {
 		return LOGICAL_DENSITY;
 	}
-	
+
 	public boolean displayOnlyEpisodes() {
 		return displayOnlyEpisodes;
 	}
-	
-	public static long getLastPlayedMediaId() {
-		return lastPlayedMediaId;
+
+	public static long getCurrentlyPlayingMediaId() {
+		return currentlyPlayingMediaId;
 	}
 
 	public boolean isLargeScreen() {
-		return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE || (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
+		return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE
+				|| (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
 
 	}
 }
