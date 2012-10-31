@@ -14,7 +14,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadService;
-import de.danoeh.antennapod.util.NumberGenerator;
+import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
 
 public class DownloadRequester {
@@ -94,7 +94,8 @@ public class DownloadRequester {
 		}
 	}
 
-	public void downloadMedia(Context context, FeedMedia feedmedia) throws DownloadRequestException {
+	public void downloadMedia(Context context, FeedMedia feedmedia)
+			throws DownloadRequestException {
 		if (feedFileValid(feedmedia)) {
 			download(context, feedmedia,
 					new File(getMediafilePath(context, feedmedia),
@@ -199,7 +200,8 @@ public class DownloadRequester {
 	}
 
 	public String getFeedfileName(Feed feed) {
-		return "feed-" + NumberGenerator.generateLong(feed.getDownload_url());
+		return "feed-"
+				+ FileNameGenerator.generateFileName(feed.getDownload_url());
 	}
 
 	public String getImagefilePath(Context context)
@@ -209,7 +211,8 @@ public class DownloadRequester {
 	}
 
 	public String getImagefileName(FeedImage image) {
-		return "image-" + NumberGenerator.generateLong(image.getDownload_url());
+		return "image-"
+				+ FileNameGenerator.generateFileName(image.getDownload_url());
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media)
@@ -217,7 +220,7 @@ public class DownloadRequester {
 		File externalStorage = getExternalFilesDirOrThrowException(
 				context,
 				MEDIA_DOWNLOADPATH
-						+ NumberGenerator.generateLong(media.getItem()
+						+ FileNameGenerator.generateFileName(media.getItem()
 								.getFeed().getTitle()) + "/");
 		return externalStorage.toString();
 	}
