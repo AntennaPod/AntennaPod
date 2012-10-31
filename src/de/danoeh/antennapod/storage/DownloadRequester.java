@@ -200,8 +200,12 @@ public class DownloadRequester {
 	}
 
 	public String getFeedfileName(Feed feed) {
+		String filename = feed.getDownload_url();
+		if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
+			filename = feed.getTitle();
+		}
 		return "feed-"
-				+ FileNameGenerator.generateFileName(feed.getDownload_url());
+				+ FileNameGenerator.generateFileName(filename);
 	}
 
 	public String getImagefilePath(Context context)
@@ -211,8 +215,12 @@ public class DownloadRequester {
 	}
 
 	public String getImagefileName(FeedImage image) {
+		String filename = image.getDownload_url();
+		if (image.getFeed() != null && image.getFeed().getTitle() != null) {
+			filename = image.getFeed().getTitle();
+		}
 		return "image-"
-				+ FileNameGenerator.generateFileName(image.getDownload_url());
+				+ FileNameGenerator.generateFileName(filename);
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media)
