@@ -19,7 +19,7 @@ public class TypeGetter {
 	private static final String TAG = "TypeGetter";
 
 	enum Type {
-		RSS20, ATOM, INVALID
+		RSS20, RSS091, ATOM, INVALID
 	}
 
 	private static final String ATOM_ROOT = "feed";
@@ -43,13 +43,25 @@ public class TypeGetter {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Recognized type Atom");
 							return Type.ATOM;
-						} else if (tag.equals(RSS_ROOT)
-								&& (xpp.getAttributeValue(null, "version")
-										.equals("2.0"))) {
-							feed.setType(Feed.TYPE_RSS2);
-							if (AppConfig.DEBUG)
-								Log.d(TAG, "Recognized type RSS 2.0");
-							return Type.RSS20;
+						} else if (tag.equals(RSS_ROOT)) {
+							String strVersion = xpp.getAttributeValue(null,
+									"version");
+							if (strVersion != null) {
+
+								if (strVersion.equals("2.0")) {
+									feed.setType(Feed.TYPE_RSS2);
+									if (AppConfig.DEBUG)
+										Log.d(TAG, "Recognized type RSS 2.0");
+									return Type.RSS20;
+								} else if (strVersion.equals("0.91")
+										|| strVersion.equals("0.92")) {
+									if (AppConfig.DEBUG)
+										Log.d(TAG,
+												"Recognized type RSS 0.91/0.92");
+									return Type.RSS091;
+								}
+							}
+							throw new UnsupportedFeedtypeException(Type.INVALID);
 						} else {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Type is invalid");

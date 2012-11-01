@@ -23,7 +23,7 @@ public class SyndHandler extends DefaultHandler {
 
 	public SyndHandler(Feed feed, TypeGetter.Type type) {
 		state = new HandlerState(feed);
-		if (type == TypeGetter.Type.RSS20) {
+		if (type == TypeGetter.Type.RSS20 || type == TypeGetter.Type.RSS091) {
 			state.defaultNamespaces.push(new NSRSS20());
 		}
 	}
