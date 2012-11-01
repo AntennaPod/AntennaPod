@@ -24,6 +24,13 @@ public class FeedHandlerTest extends AndroidTestCase {
 	private static final String FEEDS_DIR = "testfeeds";
 
 	private static final String[] urls = {
+			"http://rss.sciam.com/sciam/60secsciencepodcast",
+			"http://rss.sciam.com/sciam/60-second-mind",
+			"http://rss.sciam.com/sciam/60-second-space",
+			"http://rss.sciam.com/sciam/60-second-health",
+			"http://rss.sciam.com/sciam/60-second-tech",
+			"http://risky.biz/feeds/risky-business",
+			"http://risky.biz/feeds/rb2",
 			"http://podcast.hr-online.de/lateline/podcast.xml",
 			"http://bitlove.org/nsemak/mikrodilettanten/feed",
 			"http://bitlove.org/moepmoeporg/riotburnz/feed",
