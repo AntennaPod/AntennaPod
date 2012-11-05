@@ -4,6 +4,8 @@ import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
+import org.apache.commons.io.FilenameUtils;
+
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
@@ -14,7 +16,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadService;
-import de.danoeh.antennapod.util.NumberGenerator;
+import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
 
 public class DownloadRequester {
@@ -44,12 +46,40 @@ public class DownloadRequester {
 		return downloader;
 	}
 
-	private void download(Context context, FeedFile item, File dest) {
+	private void download(Context context, FeedFile item, File dest,
+			boolean overwriteIfExists) {
 		if (!isDownloadingFile(item)) {
 			if (dest.exists()) {
 				if (AppConfig.DEBUG)
-					Log.d(TAG, "File already exists. Deleting !");
-				dest.delete();
+					Log.d(TAG, "File already exists.");
+				if (overwriteIfExists) {
+					boolean result = dest.delete();
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Deleting file. Result: " + result);
+				} else {
+					// find different name
+					File newDest = null;
+					for (int i = 1; i < Integer.MAX_VALUE; i++) {
+						String newName = FilenameUtils.getBaseName(dest
+								.getName())
+								+ "-"
+								+ i
+								+ "."
+								+ FilenameUtils.getExtension(dest.getName());
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Testing filename " + newName);
+						newDest = new File(dest.getParent(), newName);
+						if (!newDest.exists()) {
+							if (AppConfig.DEBUG)
+								Log.d(TAG, "File doesn't exist yet. Using "
+										+ newName);
+							break;
+						}
+					}
+					if (newDest != null) {
+						dest = newDest;
+					}
+				}
 			}
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
@@ -82,7 +112,7 @@ public class DownloadRequester {
 			throws DownloadRequestException {
 		if (feedFileValid(feed)) {
 			download(context, feed, new File(getFeedfilePath(context),
-					getFeedfileName(feed)));
+					getFeedfileName(feed)), true);
 		}
 	}
 
@@ -90,15 +120,16 @@ public class DownloadRequester {
 			throws DownloadRequestException {
 		if (feedFileValid(image)) {
 			download(context, image, new File(getImagefilePath(context),
-					getImagefileName(image)));
+					getImagefileName(image)), true);
 		}
 	}
 
-	public void downloadMedia(Context context, FeedMedia feedmedia) throws DownloadRequestException {
+	public void downloadMedia(Context context, FeedMedia feedmedia)
+			throws DownloadRequestException {
 		if (feedFileValid(feedmedia)) {
 			download(context, feedmedia,
 					new File(getMediafilePath(context, feedmedia),
-							getMediafilename(feedmedia)));
+							getMediafilename(feedmedia)), false);
 		}
 	}
 
@@ -199,7 +230,11 @@ public class DownloadRequester {
 	}
 
 	public String getFeedfileName(Feed feed) {
-		return "feed-" + NumberGenerator.generateLong(feed.getDownload_url());
+		String filename = feed.getDownload_url();
+		if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
+			filename = feed.getTitle();
+		}
+		return "feed-" + FileNameGenerator.generateFileName(filename);
 	}
 
 	public String getImagefilePath(Context context)
@@ -209,7 +244,11 @@ public class DownloadRequester {
 	}
 
 	public String getImagefileName(FeedImage image) {
-		return "image-" + NumberGenerator.generateLong(image.getDownload_url());
+		String filename = image.getDownload_url();
+		if (image.getFeed() != null && image.getFeed().getTitle() != null) {
+			filename = image.getFeed().getTitle();
+		}
+		return "image-" + FileNameGenerator.generateFileName(filename);
 	}
 
 	public String getMediafilePath(Context context, FeedMedia media)
@@ -217,7 +256,7 @@ public class DownloadRequester {
 		File externalStorage = getExternalFilesDirOrThrowException(
 				context,
 				MEDIA_DOWNLOADPATH
-						+ NumberGenerator.generateLong(media.getItem()
+						+ FileNameGenerator.generateFileName(media.getItem()
 								.getFeed().getTitle()) + "/");
 		return externalStorage.toString();
 	}
