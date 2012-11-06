@@ -632,7 +632,8 @@ public class DownloadService extends Service {
 					return false;
 				}
 				if (item.getPubDate() == null) {
-					Log.e(TAG, "Item has no pubDate. Using current time as pubDate");
+					Log.e(TAG,
+							"Item has no pubDate. Using current time as pubDate");
 					if (item.getTitle() != null) {
 						Log.e(TAG, "Title of invalid item: " + item.getTitle());
 					}
@@ -720,6 +721,10 @@ public class DownloadService extends Service {
 			if (media.getItem().getChapters() == null) {
 				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media
 						.getItem());
+				if (media.getItem().getChapters() == null) {
+					ChapterUtils.readOggChaptersFromMediaFileUrl(media
+							.getItem());
+				}
 				if (media.getItem().getChapters() != null) {
 					chaptersRead = true;
 				}

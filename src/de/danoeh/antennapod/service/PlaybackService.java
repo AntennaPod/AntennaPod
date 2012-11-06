@@ -611,6 +611,11 @@ public class PlaybackService extends Service {
 						ChapterUtils
 								.readID3ChaptersFromFeedMediaDownloadUrl(media
 										.getItem());
+						if (media.getItem().getChapters() == null) {
+							ChapterUtils
+									.readOggChaptersFromMediaDownloadUrl(media
+											.getItem());
+						}
 						if (media.getItem().getChapters() != null
 								&& !interrupted()) {
 							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
@@ -1274,9 +1279,10 @@ public class PlaybackService extends Service {
 			return INVALID_TIME;
 		}
 	}
-	
+
 	private void setCurrentlyPlayingMedia(long id) {
-		SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(getApplicationContext()).edit();
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext()).edit();
 		editor.putLong(PREF_CURRENTLY_PLAYING_MEDIA, id);
 		editor.commit();
 	}

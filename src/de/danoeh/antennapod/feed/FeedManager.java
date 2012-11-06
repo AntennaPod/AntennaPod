@@ -627,7 +627,7 @@ public class FeedManager {
 			if (itemIndex != -1 && itemIndex < (queue.size() - 1)) {
 				return queue.get(itemIndex + 1);
 			}
-		} 
+		}
 		return null;
 	}
 
@@ -1184,6 +1184,10 @@ public class FeedManager {
 							case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
 								chapter = new ID3Chapter(start, title, item,
 										link);
+								break;
+							case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
+								chapter = new VorbisCommentChapter(start,
+										title, item, link);
 								break;
 							}
 							chapter.setId(chapterCursor
