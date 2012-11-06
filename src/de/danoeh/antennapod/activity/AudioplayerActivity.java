@@ -140,7 +140,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					};
 
 					sCChapterFragment.setListAdapter(new ChapterListAdapter(
-							activity, 0, media.getItem().getChapters()));
+							activity, 0, media.getItem().getChapters(), media));
 
 					return sCChapterFragment;
 				default:

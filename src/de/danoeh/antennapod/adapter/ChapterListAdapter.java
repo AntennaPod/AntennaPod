@@ -21,15 +21,21 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.util.Converter;
 
 public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 	private static final String TAG = "ChapterListAdapter";
 
+	private List<Chapter> chapters;
+	private FeedMedia media;
+
 	public ChapterListAdapter(Context context, int textViewResourceId,
-			List<Chapter> objects) {
+			List<Chapter> objects, FeedMedia media) {
 		super(context, textViewResourceId, objects);
+		this.chapters = objects;
+		this.media = media;
 	}
 
 	@Override
@@ -181,4 +187,36 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 		}
 
 	};
+
+	@Override
+	public int getCount() {
+		// ignore invalid chapters
+		int counter = 0;
+		for (Chapter chapter : chapters) {
+			if (!ignoreChapter(chapter)) {
+				counter++;
+			}
+		}
+		return counter;
+	}
+
+	private boolean ignoreChapter(Chapter c) {
+		return media.getDuration() > 0 && media.getDuration() < c.getStart();
+	}
+
+	@Override
+	public Chapter getItem(int position) {
+		int i = 0;
+		for (Chapter chapter : chapters) {
+			if (!ignoreChapter(chapter)) {
+				if (i == position) {
+					return chapter;
+				} else {
+					i++;
+				}
+			}
+		}
+		return super.getItem(position);
+	}
+
 }
