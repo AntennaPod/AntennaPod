@@ -1,15 +1,22 @@
 package de.danoeh.antennapod.util.vorbiscommentreader;
+
 import java.util.ArrayList;
 import java.util.List;
 
+import android.util.Log;
+
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.VorbisCommentChapter;
 
 public class VorbisCommentChapterReader extends VorbisCommentReader {
+	private static final String TAG = "VorbisCommentChapterReader";
+
 	private static final String CHAPTER_KEY = "chapter\\d\\d\\d.*";
 	private static final String CHAPTER_ATTRIBUTE_TITLE = "name";
 	private static final String CHAPTER_ATTRIBUTE_LINK = "url";
 
-	private List<VorbisCommentChapter> chapters;
+	private List<Chapter> chapters;
 
 	public VorbisCommentChapterReader() {
 	}
@@ -21,7 +28,7 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 
 	@Override
 	public void onVorbisCommentHeaderFound(VorbisCommentHeader header) {
-		chapters = new ArrayList<VorbisCommentChapter>();
+		chapters = new ArrayList<Chapter>();
 		System.out.println(header.toString());
 	}
 
@@ -33,6 +40,8 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 	@Override
 	public void onContentVectorValue(String key, String value)
 			throws VorbisCommentReaderException {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Key: " + key + ", value: " + value);
 		String attribute = VorbisCommentChapter.getAttributeTypeFromKey(key);
 		if (attribute == null) {
 			int id = VorbisCommentChapter.getIDFromKey(key);
@@ -44,11 +53,12 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 				chapters.add(chapter);
 			} else {
 				throw new VorbisCommentReaderException(
-						"Found chapter with duplicate ID (" + key + ", " + value + ")");
+						"Found chapter with duplicate ID (" + key + ", "
+								+ value + ")");
 			}
 		} else if (attribute.equals(CHAPTER_ATTRIBUTE_TITLE)) {
 			int id = VorbisCommentChapter.getIDFromKey(key);
-			VorbisCommentChapter c = getChapterById(id);
+			Chapter c = getChapterById(id);
 			if (c != null) {
 				c.setTitle(value);
 			}
@@ -63,7 +73,7 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 	@Override
 	public void onEndOfComment() {
 		System.out.println("End of comment");
-		for (VorbisCommentChapter c : chapters) {
+		for (Chapter c : chapters) {
 			System.out.println(c.toString());
 		}
 	}
@@ -73,13 +83,17 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 		exception.printStackTrace();
 	}
 
-	private VorbisCommentChapter getChapterById(long id) {
-		for (VorbisCommentChapter c : chapters) {
-			if (c.getId() == id) {
+	private Chapter getChapterById(long id) {
+		for (Chapter c : chapters) {
+			if (((VorbisCommentChapter) c).getVorbisCommentId() == id) {
 				return c;
 			}
 		}
 		return null;
+	}
+
+	public List<Chapter> getChapters() {
+		return chapters;
 	}
 
 }
