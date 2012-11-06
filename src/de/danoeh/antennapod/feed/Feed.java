@@ -84,6 +84,21 @@ public class Feed extends FeedFile {
 	}
 
 	/**
+	 * Returns the number of FeedItems where the media started to play but
+	 * wasn't finished yet.
+	 * */
+	public int getNumOfStartedItems() {
+		int count = 0;
+
+		for (FeedItem item : items) {
+			if (item.isInProgress()) {
+				count++;
+			}
+		}
+		return count;
+	}
+
+	/**
 	 * Returns true if at least one item in the itemlist is unread.If the
 	 * 'display only episodes' - preference is set to true, this method will
 	 * only count items with episodes.

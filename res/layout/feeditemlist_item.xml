@@ -1,102 +1,103 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_margin="8dp" >
+    android:paddingLeft="4dp" >
 
-    <ImageButton
-        android:id="@+id/butAction"
-        android:layout_width="wrap_content"
+    <View
+        android:id="@+id/vStatusLabel"
+        android:layout_width="5dip"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:background="@drawable/borderless_button"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:padding="8dp"
-        android:scaleType="fitXY"
-        android:src="@drawable/navigation_expand" />
+        android:background="@color/status_unread"
+        android:visibility="invisible" />
 
-    <LinearLayout
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:layout_width="0dip"
         android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="8dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/butAction"
-        android:orientation="vertical" >
+        android:layout_weight="1"
+        android:paddingLeft="4dp" >
 
         <TextView
             android:id="@+id/txtvItemname"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@+id/butAction"
             android:textSize="16dp" />
 
         <TextView
             android:id="@+id/txtvFeedname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtvItemname"
             android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@id/butAction"
             android:visibility="gone" />
 
         <TextView
             android:id="@+id/txtvPublished"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtvFeedname"
             android:layout_marginBottom="4dp"
+            android:layout_toLeftOf="@id/butAction"
             android:textColor="@color/gray" />
 
-        <RelativeLayout
-            android:id="@+id/enc_info"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" >
+        <ImageView
+            android:id="@+id/imgvType"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvPublished"
+            android:layout_toLeftOf="@+id/imgvInPlaylist" />
 
-            <LinearLayout
-                android:id="@+id/enc_icons"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/enc_icons_size"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:orientation="horizontal" >
+        <ImageView
+            android:id="@id/imgvInPlaylist"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvPublished"
+            android:layout_toLeftOf="@+id/imgvDownloaded"
+            android:src="@drawable/stat_playlist"
+            android:visibility="visible" />
 
-                <ImageView
-                    android:id="@+id/imgvType"
-                    android:layout_width="@dimen/enc_icons_size"
-                    android:layout_height="match_parent" />
+        <ImageView
+            android:id="@id/imgvDownloaded"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvPublished"
+            android:layout_toLeftOf="@+id/imgvDownloading"
+            android:src="@drawable/av_download"
+            android:visibility="visible" />
 
-                <ImageView
-                    android:id="@+id/imgvInPlaylist"
-                    android:layout_width="@dimen/enc_icons_size"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/stat_playlist"
-                    android:visibility="gone" />
+        <ImageView
+            android:id="@id/imgvDownloading"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvPublished"
+            android:layout_toLeftOf="@id/butAction"
+            android:src="@drawable/navigation_refresh"
+            android:visibility="visible" />
 
-                <ImageView
-                    android:id="@+id/imgvDownloaded"
-                    android:layout_width="@dimen/enc_icons_size"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/av_download"
-                    android:visibility="gone" />
+        <TextView
+            android:id="@+id/txtvLenSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtvPublished"
+            android:maxLines="2" />
 
-                <ImageView
-                    android:id="@+id/imgvDownloading"
-                    android:layout_width="@dimen/enc_icons_size"
-                    android:layout_height="match_parent"
-                    android:src="@drawable/navigation_refresh"
-                    android:visibility="gone" />
-            </LinearLayout>
+        <ImageButton
+            android:id="@id/butAction"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/borderless_button"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:padding="8dp"
+            android:scaleType="center"
+            android:src="@drawable/navigation_expand" />
+    </RelativeLayout>
 
-            <TextView
-                android:id="@+id/txtvLenSize"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true"
-                android:layout_toLeftOf="@id/enc_icons"
-                android:maxLines="2" />
-        </RelativeLayout>
-    </LinearLayout>
-
-</RelativeLayout>
+</LinearLayout>

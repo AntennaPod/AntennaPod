@@ -14,7 +14,6 @@ import android.widget.Adapter;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -68,12 +67,12 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
 			holder.downloading = (ImageView) convertView
 					.findViewById(R.id.imgvDownloading);
-			holder.encInfo = (RelativeLayout) convertView
-					.findViewById(R.id.enc_info);
 			if (showFeedtitle) {
 				holder.feedtitle = (TextView) convertView
 						.findViewById(R.id.txtvFeedname);
 			}
+			holder.statusLabel = (View) convertView
+					.findViewById(R.id.vStatusLabel);
 
 			convertView.setTag(holder);
 		} else {
@@ -93,22 +92,34 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle.setVisibility(View.VISIBLE);
 				holder.feedtitle.setText(item.getFeed().getTitle());
 			}
-			if (!item.isRead()) {
+
+			if (item.isInProgress()) {
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_progress));
+				holder.statusLabel.setVisibility(View.VISIBLE);
+			} else if (!item.isRead()) {
+				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_unread));
+				holder.statusLabel.setVisibility(View.VISIBLE);
 			} else {
 				holder.title.setTypeface(Typeface.DEFAULT);
+				holder.statusLabel.setVisibility(View.INVISIBLE);
 			}
 
 			holder.published.setText(convertView.getResources().getString(
 					R.string.published_prefix)
 					+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
-							System.currentTimeMillis(), DateFormat.SHORT,
+							System.currentTimeMillis(), DateFormat.MEDIUM,
 							DateFormat.SHORT));
 
 			if (item.getMedia() == null) {
-				holder.encInfo.setVisibility(View.GONE);
+				holder.downloaded.setVisibility(View.GONE);
+				holder.downloading.setVisibility(View.GONE);
+				holder.inPlaylist.setVisibility(View.GONE);
+				holder.type.setVisibility(View.GONE);
+				holder.lenSize.setVisibility(View.GONE);
 			} else {
-				holder.encInfo.setVisibility(View.VISIBLE);
+				holder.lenSize.setVisibility(View.VISIBLE);
 				if (FeedManager.getInstance().isInQueue(item)) {
 					holder.inPlaylist.setVisibility(View.VISIBLE);
 				} else {
@@ -139,10 +150,13 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {
 					holder.type.setImageResource(R.drawable.type_audio);
+					holder.type.setVisibility(View.VISIBLE);
 				} else if (mediaType == MediaType.VIDEO) {
 					holder.type.setImageResource(R.drawable.type_video);
+					holder.type.setVisibility(View.VISIBLE);
 				} else {
 					holder.type.setImageBitmap(null);
+					holder.type.setVisibility(View.GONE);
 				}
 			}
 
@@ -165,7 +179,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		ImageView type;
 		ImageView downloading;
 		ImageButton butAction;
-		RelativeLayout encInfo;
+		View statusLabel;
 	}
 
 	public int getSelectedItemIndex() {
