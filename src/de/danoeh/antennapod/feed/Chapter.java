@@ -8,6 +8,9 @@ public abstract class Chapter extends FeedComponent {
 	protected FeedItem item;
 	protected String link;
 
+	public Chapter() {
+	}
+	
 	public Chapter(long start) {
 		super();
 		this.start = start;
