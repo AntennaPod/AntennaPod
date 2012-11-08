@@ -3,6 +3,11 @@ package de.danoeh.antennapod.util.vorbiscommentreader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.nio.ByteBuffer;
+import java.nio.CharBuffer;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
+import java.nio.charset.CoderResult;
 import java.util.Arrays;
 
 import org.apache.commons.io.EndianUtils;
@@ -64,8 +69,7 @@ public abstract class VorbisCommentReader {
 								if (readValue) {
 									String value = readUTF8String(
 											input,
-											(int) (vectorLength - key.length() - 1))
-											.toLowerCase();
+											(int) (vectorLength - key.length() - 1));
 									onContentVectorValue(key, value);
 								} else {
 									IOUtils.skipFully(input,
@@ -92,12 +96,11 @@ public abstract class VorbisCommentReader {
 
 	private String readUTF8String(InputStream input, long length)
 			throws IOException {
-		StringBuffer buffer = new StringBuffer();
-		for (int i = 0; i < length; i++) {
-			char c = (char) input.read();
-			buffer.append(c);
-		}
-		return buffer.toString();
+		byte[] buffer = new byte[(int) length];
+		
+		IOUtils.readFully(input, buffer);
+		Charset charset = Charset.forName("UTF-8");
+		return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
 	}
 
 	/**
