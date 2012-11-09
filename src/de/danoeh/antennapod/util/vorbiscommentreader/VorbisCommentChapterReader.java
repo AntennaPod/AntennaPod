@@ -43,12 +43,13 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Key: " + key + ", value: " + value);
 		String attribute = VorbisCommentChapter.getAttributeTypeFromKey(key);
+		int id = VorbisCommentChapter.getIDFromKey(key);
+		Chapter chapter = getChapterById(id);
 		if (attribute == null) {
-			int id = VorbisCommentChapter.getIDFromKey(key);
 			if (getChapterById(id) == null) {
 				// new chapter
 				long start = VorbisCommentChapter.getStartTimeFromValue(value);
-				VorbisCommentChapter chapter = new VorbisCommentChapter(id);
+				chapter = new VorbisCommentChapter(id);
 				chapter.setStart(start);
 				chapters.add(chapter);
 			} else {
@@ -57,10 +58,12 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 								+ value + ")");
 			}
 		} else if (attribute.equals(CHAPTER_ATTRIBUTE_TITLE)) {
-			int id = VorbisCommentChapter.getIDFromKey(key);
-			Chapter c = getChapterById(id);
-			if (c != null) {
-				c.setTitle(value);
+			if (chapter != null) {
+				chapter.setTitle(value);
+			}
+		} else if (attribute.equals(CHAPTER_ATTRIBUTE_LINK)) {
+			if (chapter != null) {
+				chapter.setLink(value);
 			}
 		}
 	}
