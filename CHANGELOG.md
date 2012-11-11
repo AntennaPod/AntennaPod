@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.6
+-------------
+* Added support for VorbisComment chapters
+* Reduced memory usage
+* Added support for more feed types
+* Several bugfixes
+
+
 Version 0.9.5.3
 ---------------
 * Fixed crash when trying to start playback on some devices
