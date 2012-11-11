@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.util.Log;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.VorbisCommentChapter;

@@ -2,7 +2,6 @@ package de.danoeh.antennapod.util.vorbiscommentreader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Scanner;
 
 import org.apache.commons.io.IOUtils;
 
