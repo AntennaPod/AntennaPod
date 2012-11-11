@@ -180,6 +180,39 @@ public class PodDBAdapter {
 	private final Context context;
 	private PodDBHelper helper;
 
+	/**
+	 * Select all columns from the feeditems-table except description and
+	 * content-encoded.
+	 */
+	private static final String[] SEL_FI_SMALL = { KEY_ID, KEY_TITLE,
+			KEY_PUBDATE, KEY_READ, KEY_LINK, KEY_PAYMENT_LINK, KEY_MEDIA,
+			KEY_FEED, KEY_HAS_CHAPTERS, KEY_ITEM_IDENTIFIER };
+
+	// column indices for SEL_FI_SMALL
+
+	public static final int IDX_FI_SMALL_ID = 0;
+	public static final int IDX_FI_SMALL_TITLE = 1;
+	public static final int IDX_FI_SMALL_PUBDATE = 2;
+	public static final int IDX_FI_SMALL_READ = 3;
+	public static final int IDX_FI_SMALL_LINK = 4;
+	public static final int IDX_FI_SMALL_PAYMENT_LINK = 5;
+	public static final int IDX_FI_SMALL_MEDIA = 6;
+	public static final int IDX_FI_SMALL_FEED = 7;
+	public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
+	public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
+
+	/** Select id, description and content-encoded column from feeditems. */
+	public static final String[] SEL_FI_EXTRA = { KEY_ID, KEY_DESCRIPTION,
+			KEY_CONTENT_ENCODED, KEY_FEED };
+
+	// column indices for SEL_FI_EXTRA
+
+	public static final int IDX_FI_EXTRA_ID = 0;
+	public static final int IDX_FI_EXTRA_DESCRIPTION = 1;
+	public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
+	public static final int IDX_FI_EXTRA_FEED = 3;
+
+
 	public PodDBAdapter(Context c) {
 		this.context = c;
 		helper = new PodDBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -280,7 +313,8 @@ public class PodDBAdapter {
 		values.put(KEY_DOWNLOADED, media.isDownloaded());
 		values.put(KEY_FILE_URL, media.getFile_url());
 		if (media.getPlaybackCompletionDate() != null) {
-			values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+			values.put(KEY_PLAYBACK_COMPLETION_DATE, media
+					.getPlaybackCompletionDate().getTime());
 		} else {
 			values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
 		}
@@ -324,8 +358,12 @@ public class PodDBAdapter {
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, item.getTitle());
 		values.put(KEY_LINK, item.getLink());
-		values.put(KEY_DESCRIPTION, item.getDescription());
-		values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
+		if (item.getDescription() != null) {
+			values.put(KEY_DESCRIPTION, item.getDescription());
+		}
+		if (item.getContentEncoded() != null) {
+			values.put(KEY_CONTENT_ENCODED, item.getContentEncoded());
+		}
 		values.put(KEY_PUBDATE, item.getPubDate().getTime());
 		values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
 		if (item.getMedia() != null) {
@@ -471,7 +509,7 @@ public class PodDBAdapter {
 	}
 
 	/**
-	 * Returns a cursor with all FeedItems of a Feed.
+	 * Returns a cursor with all FeedItems of a Feed. Uses SEL_FI_SMALL
 	 * 
 	 * @param feed
 	 *            The feed you want to get the FeedItems from.
@@ -479,9 +517,18 @@ public class PodDBAdapter {
 	 * */
 	public final Cursor getAllItemsOfFeedCursor(final Feed feed) {
 		open();
+		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+				+ "=?", new String[] { String.valueOf(feed.getId()) }, null,
+				null, null);
+		return c;
+	}
+
+	/** Return a cursor with the SEL_FI_EXTRA selection of a single feeditem. */
+	public final Cursor getExtraInformationOfItem(final FeedItem item) {
+		open();
 		Cursor c = db
-				.query(TABLE_NAME_FEED_ITEMS, null, KEY_FEED + "=?",
-						new String[] { String.valueOf(feed.getId()) }, null,
+				.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_ID + "=?",
+						new String[] { String.valueOf(item.getId()) }, null,
 						null, null);
 		return c;
 	}
@@ -601,6 +648,47 @@ public class PodDBAdapter {
 				.getColumnIndex(KEY_DOWNLOADED)) > 0);
 		cursor.close();
 		return image;
+	}
+
+	/**
+	 * Searches for the given query in the description of all items or the items
+	 * of a specified feed.
+	 * 
+	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
+	 * */
+	public Cursor searchItemDescriptions(Feed feed, String query) {
+		if (feed != null) {
+			// search items in specific feed
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+					+ "=? AND " + KEY_DESCRIPTION + " LIKE '%" + query + "%'", new String[] {
+					String.valueOf(feed.getId()) }, null, null, null);
+		} else {
+			// search through all items
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+					KEY_DESCRIPTION + " LIKE '%" + query + "%'", null, null,
+					null, null);
+		}
+	}
+
+	/**
+	 * Searches for the given query in the content-encoded field of all items or
+	 * the items of a specified feed.
+	 * 
+	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
+	 * */
+	public Cursor searchItemContentEncoded(Feed feed, String query) {
+		if (feed != null) {
+			// search items in specific feed
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'",
+					new String[] { String.valueOf(feed.getId())}, null,
+					null, null);
+		} else {
+			// search through all items
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+					KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'", null,
+					null, null, null);
+		}
 	}
 
 	/** Helper class for opening the Antennapod database. */

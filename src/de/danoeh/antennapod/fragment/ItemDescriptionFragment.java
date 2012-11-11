@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.database.Cursor;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,16 +105,22 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		}
 	}
 
-	@SuppressLint("NewApi")
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if (item != null) {
-			webViewLoader = createLoader();
-			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-				webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+			if (item.getDescription() == null && item.getDescription() == null) {
+				Log.i(TAG, "Loading data");
+				FeedManager.getInstance().loadExtraInformationOfItem(
+						getActivity(), item, new FeedManager.TaskCallback() {
+							@Override
+							public void onCompletion(Cursor result) {
+								startLoader();
+							}
+						});
 			} else {
-				webViewLoader.execute();
+				Log.i(TAG, "Using cached data");
+				startLoader();
 			}
 		} else {
 			Log.e(TAG, "Error in onViewCreated: Item was null");
@@ -123,6 +130,16 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+	}
+
+	@SuppressLint("NewApi")
+	private void startLoader() {
+		webViewLoader = createLoader();
+		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+			webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+		} else {
+			webViewLoader.execute();
+		}
 	}
 
 	private AsyncTask<Void, Void, Void> createLoader() {
@@ -145,8 +162,10 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				// /webvDescription.loadData(url, "text/html", "utf-8");
 				webvDescription.loadDataWithBaseURL(null, data, "text/html",
 						"utf-8", "about:blank");
-				getSherlockActivity()
-						.setSupportProgressBarIndeterminateVisibility(false);
+				if (getSherlockActivity() != null) {
+					getSherlockActivity()
+							.setSupportProgressBarIndeterminateVisibility(false);
+				}
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
@@ -155,8 +174,10 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				getSherlockActivity()
-						.setSupportProgressBarIndeterminateVisibility(true);
+				if (getSherlockActivity() != null) {
+					getSherlockActivity()
+							.setSupportProgressBarIndeterminateVisibility(true);
+				}
 			}
 
 			@Override

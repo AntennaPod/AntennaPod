@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.feed;
 
+import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.List;
 
@@ -13,11 +14,23 @@ import de.danoeh.antennapod.PodcastApp;
  */
 public class FeedItem extends FeedComponent {
 
-	/** The id/guid that can be found in the rss/atom feed. Might not be set.*/
+	/** The id/guid that can be found in the rss/atom feed. Might not be set. */
 	private String itemIdentifier;
 	private String title;
+	/**
+	 * The description of a feeditem. This field should only be set by the
+	 * parser.
+	 */
 	private String description;
+	/**
+	 * The content of the content-encoded tag of a feeditem. This field should
+	 * only be set by the parser.
+	 */
 	private String contentEncoded;
+
+	private SoftReference<String> cachedDescription;
+	private SoftReference<String> cachedContentEncoded;
+
 	private String link;
 	private Date pubDate;
 	private FeedMedia media;
@@ -30,16 +43,19 @@ public class FeedItem extends FeedComponent {
 		this.read = true;
 	}
 
-	public FeedItem(String title, String description, String link,
-			Date pubDate, FeedMedia media, Feed feed) {
-		super();
-		this.title = title;
-		this.description = description;
-		this.link = link;
-		this.pubDate = pubDate;
-		this.media = media;
-		this.feed = feed;
-		this.read = true;
+	/**
+	 * Moves the 'description' and 'contentEncoded' field of feeditem to their
+	 * SoftReference fields.
+	 */
+	protected void cacheDescriptions() {
+		if (description != null) {
+			cachedDescription = new SoftReference<String>(description);
+		}
+		if (contentEncoded != null) {
+			cachedContentEncoded = new SoftReference<String>(contentEncoded);
+		}
+		description = null;
+		contentEncoded = null;
 	}
 
 	/** Get the chapter that fits the position. */
@@ -62,11 +78,12 @@ public class FeedItem extends FeedComponent {
 	public Chapter getCurrentChapter() {
 		return getCurrentChapter(media.getPosition());
 	}
-	
-	/** Returns the value that uniquely identifies this FeedItem. 
-	 *  If the itemIdentifier attribute is not null, it will be returned.
-	 *  Else it will try to return the title. If the title is not given, it will
-	 *  use the link of the entry.
+
+	/**
+	 * Returns the value that uniquely identifies this FeedItem. If the
+	 * itemIdentifier attribute is not null, it will be returned. Else it will
+	 * try to return the title. If the title is not given, it will use the link
+	 * of the entry.
 	 * */
 	public String getIdentifyingValue() {
 		if (itemIdentifier != null) {
@@ -87,6 +104,9 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public String getDescription() {
+		if (description == null && cachedDescription != null) {
+			return cachedDescription.get();
+		}
 		return description;
 	}
 
@@ -131,6 +151,10 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public String getContentEncoded() {
+		if (contentEncoded == null && cachedContentEncoded != null) {
+			return cachedContentEncoded.get();
+
+		}
 		return contentEncoded;
 	}
 
@@ -161,7 +185,7 @@ public class FeedItem extends FeedComponent {
 	public void setItemIdentifier(String itemIdentifier) {
 		this.itemIdentifier = itemIdentifier;
 	}
-	
+
 	public boolean isPlaying() {
 		if (media != null) {
 			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
@@ -170,6 +194,13 @@ public class FeedItem extends FeedComponent {
 		}
 		return false;
 	}
-	
+
+	public void setCachedDescription(String d) {
+		cachedDescription = new SoftReference<String>(d);
+	}
+
+	public void setCachedContentEncoded(String c) {
+		cachedContentEncoded = new SoftReference<String>(c);
+	}
 
 }
