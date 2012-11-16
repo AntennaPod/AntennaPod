@@ -157,7 +157,7 @@ public class FeedItem extends FeedComponent {
 		}
 	}
 
-	public boolean isInProgress() {
+	private boolean isInProgress() {
 		return (media != null && media.isInProgress());
 	}
 
@@ -201,7 +201,7 @@ public class FeedItem extends FeedComponent {
 		return media != null;
 	}
 
-	public boolean isPlaying() {
+	private boolean isPlaying() {
 		if (media != null) {
 			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
 				return true;
@@ -216,5 +216,19 @@ public class FeedItem extends FeedComponent {
 
 	public void setCachedContentEncoded(String c) {
 		cachedContentEncoded = new SoftReference<String>(c);
+	}
+	
+	public enum State {NEW, IN_PROGRESS, READ, PLAYING}
+	
+	public State getState() {
+		if (hasMedia()) {
+			if (isPlaying()) {
+				return State.PLAYING;
+			}
+			if (isInProgress()) {
+				return State.IN_PROGRESS;
+			}
+		}
+		return (isRead() ? State.READ : State.NEW);
 	}
 }

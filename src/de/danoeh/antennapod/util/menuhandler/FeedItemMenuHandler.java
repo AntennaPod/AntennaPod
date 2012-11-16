@@ -12,6 +12,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedItem.State;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -32,6 +33,7 @@ public class FeedItemMenuHandler {
 				&& requester.isDownloadingFile(selectedItem.getMedia());
 		boolean notLoadedAndNotLoading = hasMedia && (!downloaded)
 				&& (!downloading);
+		FeedItem.State state = selectedItem.getState();
 
 		menu.findItem(R.id.play_item).setVisible(downloaded);
 		menu.findItem(R.id.remove_item).setVisible(downloaded);
@@ -50,13 +52,11 @@ public class FeedItemMenuHandler {
 				selectedItem.getLink() != null);
 
 		menu.findItem(R.id.mark_unread_item).setVisible(
-				!selectedItem.isPlaying()
-						&& (selectedItem.isRead() || selectedItem
-								.isInProgress()));
+				state == FeedItem.State.IN_PROGRESS
+						|| state == FeedItem.State.READ);
 		menu.findItem(R.id.mark_read_item).setVisible(
-				!selectedItem.isPlaying()
-						&& (!selectedItem.isRead() || selectedItem
-								.isInProgress()));
+				state == FeedItem.State.NEW
+						|| state == FeedItem.State.IN_PROGRESS);
 
 		if (selectedItem.getLink() != null) {
 			menu.findItem(R.id.visit_website_item).setVisible(true);

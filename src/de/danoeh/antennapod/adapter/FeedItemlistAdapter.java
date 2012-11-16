@@ -92,26 +92,31 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle.setVisibility(View.VISIBLE);
 				holder.feedtitle.setText(item.getFeed().getTitle());
 			}
-
-			if (item.isPlaying()) {
+			
+			FeedItem.State state = item.getState();
+			switch (state) {
+			case PLAYING:
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
 				holder.statusLabel.setBackgroundColor(convertView
 						.getResources().getColor(R.color.status_playing));
 				holder.statusLabel.setVisibility(View.VISIBLE);
-
-			} else if (item.isInProgress()) {
+				break;
+			case IN_PROGRESS:
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
 				holder.statusLabel.setBackgroundColor(convertView
 						.getResources().getColor(R.color.status_progress));
 				holder.statusLabel.setVisibility(View.VISIBLE);
-			} else if (!item.isRead()) {
+				break;
+			case NEW:
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
 				holder.statusLabel.setBackgroundColor(convertView
 						.getResources().getColor(R.color.status_unread));
 				holder.statusLabel.setVisibility(View.VISIBLE);
-			} else {
+				break;
+			default:
 				holder.title.setTypeface(Typeface.DEFAULT);
 				holder.statusLabel.setVisibility(View.INVISIBLE);
+				break;
 			}
 
 			holder.published.setText(convertView.getResources().getString(

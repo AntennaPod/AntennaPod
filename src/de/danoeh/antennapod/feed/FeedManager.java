@@ -216,7 +216,7 @@ public class FeedManager {
 						}
 						// delete stored media files and mark them as read
 						for (FeedItem item : feed.getItems()) {
-							if (!item.isRead()) {
+							if (item.getState() == FeedItem.State.NEW) {
 								unreadItems.remove(item);
 							}
 							if (queue.contains(item)) {
@@ -1173,7 +1173,7 @@ public class FeedManager {
 						: false;
 				item.setItemIdentifier(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
-				if (!item.read) {
+				if (item.getState() == FeedItem.State.NEW) {
 					unreadItems.add(item);
 				}
 

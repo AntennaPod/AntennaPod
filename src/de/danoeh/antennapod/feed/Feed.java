@@ -74,7 +74,7 @@ public class Feed extends FeedFile {
 				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
 
 		for (FeedItem item : items) {
-			if (!item.isRead()) {
+			if (item.getState() == FeedItem.State.NEW) {
 				if (!displayOnlyEpisodes || item.getMedia() != null) {
 					count++;
 				}
@@ -91,7 +91,9 @@ public class Feed extends FeedFile {
 		int count = 0;
 
 		for (FeedItem item : items) {
-			if (item.isInProgress()) {
+			FeedItem.State state = item.getState();
+			if (state == FeedItem.State.IN_PROGRESS
+					|| state == FeedItem.State.PLAYING) {
 				count++;
 			}
 		}
@@ -108,7 +110,7 @@ public class Feed extends FeedFile {
 				.getDefaultSharedPreferences(PodcastApp.getInstance())
 				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
 		for (FeedItem item : items) {
-			if (!item.isRead()) {
+			if (item.getState() == FeedItem.State.NEW) {
 				if (!displayOnlyEpisodes || item.getMedia() != null) {
 					return true;
 				}
@@ -159,7 +161,7 @@ public class Feed extends FeedFile {
 			return download_url;
 		}
 	}
-	
+
 	/** Calls cacheDescriptions on all items. */
 	protected void cacheDescriptionsOfItems() {
 		if (items != null) {
