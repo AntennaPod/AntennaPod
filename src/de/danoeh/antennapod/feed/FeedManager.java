@@ -1347,9 +1347,13 @@ public class FeedManager {
 
 	public void loadExtraInformationOfItem(final Context context,
 			final FeedItem item, FeedManager.TaskCallback callback) {
-		if (AppConfig.DEBUG)
+		if (AppConfig.DEBUG) {
 			Log.d(TAG,
 					"Loading extra information of item with id " + item.getId());
+			if (item.getTitle() != null) {
+				Log.d(TAG, "Title: " + item.getTitle());
+			}
+		}
 		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
 
 			@Override
