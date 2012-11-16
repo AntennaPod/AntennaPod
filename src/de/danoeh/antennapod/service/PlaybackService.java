@@ -689,7 +689,8 @@ public class PlaybackService extends Service {
 			// Save state
 			cancelPositionSaver();
 			media.setPlaybackCompletionDate(new Date());
-			manager.markItemRead(PlaybackService.this, media.getItem(), true);
+			manager.markItemRead(PlaybackService.this, media.getItem(), true,
+					true);
 			FeedItem nextItem = manager
 					.getQueueSuccessorOfItem(media.getItem());
 			boolean isInQueue = manager.isInQueue(media.getItem());
@@ -871,6 +872,9 @@ public class PlaybackService extends Service {
 				}
 				audioManager
 						.registerMediaButtonEventReceiver(mediaButtonReceiver);
+				if (media.getItem().isRead() == false) {
+					manager.markItemRead(this, media.getItem(), true, false);
+				}
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Failed to request Audiofocus");
