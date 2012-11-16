@@ -25,5 +25,6 @@
 	<color name="download_failed_red">#CC0000</color>
 	<color name="status_unread">#99CC00</color>
 	<color name="status_progress">#FFBB33</color>
+	<color name="status_playing">#EE5F52</color>
     
 </resources>

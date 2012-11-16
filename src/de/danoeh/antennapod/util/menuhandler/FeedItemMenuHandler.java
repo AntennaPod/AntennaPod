@@ -50,8 +50,13 @@ public class FeedItemMenuHandler {
 				selectedItem.getLink() != null);
 
 		menu.findItem(R.id.mark_unread_item).setVisible(
-				selectedItem.isRead() || selectedItem.isInProgress());
-		menu.findItem(R.id.mark_read_item).setVisible(!selectedItem.isRead() || selectedItem.isInProgress());
+				!selectedItem.isPlaying()
+						&& (selectedItem.isRead() || selectedItem
+								.isInProgress()));
+		menu.findItem(R.id.mark_read_item).setVisible(
+				!selectedItem.isPlaying()
+						&& (!selectedItem.isRead() || selectedItem
+								.isInProgress()));
 
 		if (selectedItem.getLink() != null) {
 			menu.findItem(R.id.visit_website_item).setVisible(true);

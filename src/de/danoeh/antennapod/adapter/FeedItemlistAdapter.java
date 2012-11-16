@@ -93,13 +93,21 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle.setText(item.getFeed().getTitle());
 			}
 
-			if (item.isInProgress()) {
+			if (item.isPlaying()) {
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_progress));
+				holder.statusLabel.setBackgroundColor(convertView
+						.getResources().getColor(R.color.status_playing));
+				holder.statusLabel.setVisibility(View.VISIBLE);
+
+			} else if (item.isInProgress()) {
+				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
+				holder.statusLabel.setBackgroundColor(convertView
+						.getResources().getColor(R.color.status_progress));
 				holder.statusLabel.setVisibility(View.VISIBLE);
 			} else if (!item.isRead()) {
 				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-				holder.statusLabel.setBackgroundColor(convertView.getResources().getColor(R.color.status_unread));
+				holder.statusLabel.setBackgroundColor(convertView
+						.getResources().getColor(R.color.status_unread));
 				holder.statusLabel.setVisibility(View.VISIBLE);
 			} else {
 				holder.title.setTypeface(Typeface.DEFAULT);
