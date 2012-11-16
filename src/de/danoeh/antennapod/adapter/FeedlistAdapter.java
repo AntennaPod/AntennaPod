@@ -47,6 +47,12 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
 			holder.newEpisodes = (TextView) convertView
 					.findViewById(R.id.txtvNewEps);
+			holder.inProgressEpisodes = (TextView) convertView
+					.findViewById(R.id.txtvProgressEps);
+			holder.newEpisodesLabel = (View) convertView
+					.findViewById(R.id.lNewStatusLabel);
+			holder.inProgressEpisodesLabel = (View) convertView
+					.findViewById(R.id.lProgressStatusLabel);
 			holder.image = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.lastUpdate = (TextView) convertView
@@ -74,18 +80,30 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 					R.string.last_update_prefix)
 					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
 							.getTime(), System.currentTimeMillis(),
-							DateFormat.SHORT, DateFormat.SHORT));
+							DateFormat.MEDIUM, DateFormat.SHORT));
 		}
 		holder.numberOfEpisodes.setText(feed.getNumOfItems()
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
+
 		int newItems = feed.getNumOfNewItems();
+		int inProgressItems = feed.getNumOfStartedItems();
+
 		if (newItems > 0) {
 			holder.newEpisodes.setText(Integer.toString(newItems));
-			holder.newEpisodes.setVisibility(View.VISIBLE);
+			holder.newEpisodesLabel.setVisibility(View.VISIBLE);
 		} else {
-			holder.newEpisodes.setVisibility(View.INVISIBLE);
+			holder.newEpisodesLabel.setVisibility(View.INVISIBLE);
 		}
+
+		if (inProgressItems > 0) {
+			holder.inProgressEpisodes
+					.setText(Integer.toString(inProgressItems));
+			holder.inProgressEpisodesLabel.setVisibility(View.VISIBLE);
+		} else {
+			holder.inProgressEpisodesLabel.setVisibility(View.INVISIBLE);
+		}
+
 		holder.image.setTag(feed.getImage());
 
 		imageLoader.loadThumbnailBitmap(
@@ -102,7 +120,10 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		TextView lastUpdate;
 		TextView numberOfEpisodes;
 		TextView newEpisodes;
+		TextView inProgressEpisodes;
 		ImageView image;
+		View newEpisodesLabel;
+		View inProgressEpisodesLabel;
 	}
 
 	public int getSelectedItemIndex() {

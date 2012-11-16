@@ -688,7 +688,6 @@ public class PlaybackService extends Service {
 					.getDefaultSharedPreferences(getApplicationContext());
 			// Save state
 			cancelPositionSaver();
-			media.setPosition(0);
 			media.setPlaybackCompletionDate(new Date());
 			manager.markItemRead(PlaybackService.this, media.getItem(), true);
 			FeedItem nextItem = manager

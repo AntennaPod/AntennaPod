@@ -147,7 +147,18 @@ public class FeedItem extends FeedComponent {
 	}
 
 	public boolean isRead() {
-		return read;
+		return read || isInProgress();
+	}
+
+	public void setRead(boolean read) {
+		this.read = read;
+		if (media != null) {
+			media.setPosition(0);
+		}
+	}
+
+	public boolean isInProgress() {
+		return (media != null && media.isInProgress());
 	}
 
 	public String getContentEncoded() {
@@ -186,6 +197,10 @@ public class FeedItem extends FeedComponent {
 		this.itemIdentifier = itemIdentifier;
 	}
 
+	public boolean hasMedia() {
+		return media != null;
+	}
+
 	public boolean isPlaying() {
 		if (media != null) {
 			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
@@ -202,5 +217,4 @@ public class FeedItem extends FeedComponent {
 	public void setCachedContentEncoded(String c) {
 		cachedContentEncoded = new SoftReference<String>(c);
 	}
-
 }
