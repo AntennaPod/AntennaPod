@@ -35,7 +35,7 @@ public class FeedItem extends FeedComponent {
 	private Date pubDate;
 	private FeedMedia media;
 	private Feed feed;
-	protected boolean read;
+	private boolean read;
 	private String paymentLink;
 	private List<Chapter> chapters;
 
@@ -152,9 +152,6 @@ public class FeedItem extends FeedComponent {
 
 	public void setRead(boolean read) {
 		this.read = read;
-		if (media != null) {
-			media.setPosition(0);
-		}
 	}
 
 	private boolean isInProgress() {

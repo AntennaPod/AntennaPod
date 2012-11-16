@@ -88,10 +88,10 @@ public class FeedItemMenuHandler {
 			requester.cancelDownload(context, selectedItem.getMedia());
 			break;
 		case R.id.mark_read_item:
-			manager.markItemRead(context, selectedItem, true);
+			manager.markItemRead(context, selectedItem, true, true);
 			break;
 		case R.id.mark_unread_item:
-			manager.markItemRead(context, selectedItem, false);
+			manager.markItemRead(context, selectedItem, false, true);
 			break;
 		case R.id.add_to_queue_item:
 			manager.addQueueItem(context, selectedItem);

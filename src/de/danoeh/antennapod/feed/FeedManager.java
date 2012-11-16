@@ -375,15 +375,17 @@ public class FeedManager {
 	 * instead of the setters of FeedItem.
 	 */
 	public void markItemRead(final Context context, final FeedItem item,
-			final boolean read) {
+			final boolean read, boolean resetMediaPosition) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Setting item with title " + item.getTitle()
 					+ " as read/unread");
 
 		item.setRead(read);
-
+		if (item.hasMedia() && resetMediaPosition) {
+			item.getMedia().setPosition(0);
+		}
 		setFeedItem(context, item);
-		if (item.hasMedia())
+		if (item.hasMedia() && resetMediaPosition)
 			setFeedMedia(context, item.getMedia());
 
 		contentChanger.post(new Runnable() {
@@ -411,7 +413,7 @@ public class FeedManager {
 	public void markFeedRead(Context context, Feed feed) {
 		for (FeedItem item : feed.getItems()) {
 			if (unreadItems.contains(item)) {
-				markItemRead(context, item, true);
+				markItemRead(context, item, true, false);
 			}
 		}
 	}
@@ -825,7 +827,7 @@ public class FeedManager {
 
 						}
 					});
-					markItemRead(context, item, false);
+					markItemRead(context, item, false, false);
 				}
 			}
 			// update attributes
@@ -1168,9 +1170,9 @@ public class FeedManager {
 					mediaIds.add(String.valueOf(mediaId));
 					item.setMedia(new FeedMedia(mediaId, item));
 				}
-				item.read = (itemlistCursor
+				item.setRead((itemlistCursor
 						.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
-						: false;
+						: false);
 				item.setItemIdentifier(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
 				if (item.getState() == FeedItem.State.NEW) {
