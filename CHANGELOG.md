@@ -4,6 +4,7 @@ Change Log
 Version 0.9.6
 -------------
 * Added support for VorbisComment chapters
+* AntennaPod now shows items as 'in progress' when playback has started
 * Reduced memory usage
 * Added support for more feed types
 * Several bugfixes
