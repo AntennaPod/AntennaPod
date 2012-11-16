@@ -33,6 +33,9 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private FeedItem item;
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
+	
+	private String descriptionRef;
+	private String contentEncodedRef;
 
 	public static ItemDescriptionFragment newInstance(FeedItem item) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
@@ -109,12 +112,17 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
 		if (item != null) {
-			if (item.getDescription() == null && item.getContentEncoded() == null) {
+			if (item.getDescription() == null
+					&& item.getContentEncoded() == null) {
 				Log.i(TAG, "Loading data");
 				FeedManager.getInstance().loadExtraInformationOfItem(
 						getActivity(), item, new FeedManager.TaskCallback() {
 							@Override
 							public void onCompletion(Cursor result) {
+								if (item.getDescription() == null
+										&& item.getContentEncoded() == null) {
+									Log.e(TAG, "No description found");
+								}
 								startLoader();
 							}
 						});
@@ -134,6 +142,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 	@SuppressLint("NewApi")
 	private void startLoader() {
+		contentEncodedRef = item.getContentEncoded();
+		descriptionRef = item.getDescription();
 		webViewLoader = createLoader();
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -185,12 +195,11 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading Webview");
 				data = "";
-				if (item.getContentEncoded() == null
-						&& item.getDescription() != null) {
-					data = item.getDescription();
+				if (contentEncodedRef == null
+						&& descriptionRef != null) {
+					data = descriptionRef;
 				} else {
-					data = StringEscapeUtils.unescapeHtml4(item
-							.getContentEncoded());
+					data = StringEscapeUtils.unescapeHtml4(contentEncodedRef);
 				}
 
 				data = WEBVIEW_STYLE + data;
