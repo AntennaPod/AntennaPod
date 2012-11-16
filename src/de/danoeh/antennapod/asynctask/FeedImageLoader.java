@@ -38,7 +38,6 @@ public class FeedImageLoader {
 			.getSystemService(Context.ACTIVITY_SERVICE)).getMemoryClass();
 
 	// Use 1/8th of the available memory for this memory cache.
-	final int coverCacheSize = 1024 * 1024 * memClass / 8;
 	final int thumbnailCacheSize = 1024 * 1024 * memClass / 8;
 
 	private LruCache<String, CachedBitmap> coverCache;
@@ -48,20 +47,7 @@ public class FeedImageLoader {
 		handler = new Handler();
 		executor = createExecutor();
 
-		coverCache = new LruCache<String, CachedBitmap>(coverCacheSize) {
-
-			@SuppressLint("NewApi")
-			@Override
-			protected int sizeOf(String key, CachedBitmap value) {
-				if (Integer.valueOf(android.os.Build.VERSION.SDK_INT) >= 12)
-					return value.getBitmap().getByteCount();
-				else
-					return (value.getBitmap().getRowBytes() * value.getBitmap()
-							.getHeight());
-
-			}
-
-		};
+		coverCache = new LruCache<String, CachedBitmap>(1);
 
 		thumbnailCache = new LruCache<String, CachedBitmap>(thumbnailCacheSize) {
 
