@@ -15,11 +15,63 @@
         android:scaleType="fitXY" />
 
     <LinearLayout
+        android:id="@+id/lEpisodeCounts"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent"
+        android:layout_alignRight="@id/imgvFeedimage"
+        android:layout_below="@id/imgvFeedimage"
+        android:layout_centerVertical="true"
+        android:orientation="vertical" >
+
+        <LinearLayout
+            android:id="@+id/lNewStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/txtvNewEps"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="4dip"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="5dip"
+                android:layout_height="match_parent"
+                android:background="@color/status_unread"
+                android:visibility="visible" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/lProgressStatusLabel"
+            android:layout_width="wrap_content"
+            android:layout_height="0dip"
+            android:layout_weight="1" >
+
+            <TextView
+                android:id="@+id/txtvProgressEps"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_marginRight="4dip"
+                android:textSize="20dp"
+                android:textStyle="bold" />
+
+            <View
+                android:layout_width="5dip"
+                android:layout_height="match_parent"
+                android:background="@color/status_progress"
+                android:visibility="visible" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@id/imgvFeedimage"
-        android:layout_alignRight="@id/imgvFeedimage"
         android:layout_below="@id/imgvFeedimage"
+        android:layout_toLeftOf="@id/lEpisodeCounts"
         android:orientation="vertical" >
 
         <TextView
@@ -27,17 +79,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:gravity="center_horizontal"
             android:maxLines="2"
+            android:textSize="18dp"
             android:textStyle="bold" />
 
         <TextView
             android:id="@+id/txtvLastUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:gravity="center_horizontal"
             android:textColor="@color/gray" />
 
         <TextView
@@ -45,28 +95,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
-            android:gravity="center_horizontal"
             android:textColor="@color/gray" />
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="25dp"
-        android:layout_alignRight="@id/imgvFeedimage"
-        android:layout_alignTop="@id/imgvFeedimage" >
-
-        <TextView
-            android:id="@+id/txtvNewEps"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/badge"
-            android:gravity="center"
-            android:maxLines="1"
-            android:textColor="@color/white"
-            android:textStyle="bold"
-            android:visibility="gone" />
     </LinearLayout>
 
 </RelativeLayout>
