@@ -278,7 +278,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			"http://bitlove.org/nitramred/staatsbuergerkunde/feed",
 			"http://bitlove.org/nitramred/staatsbuergerkunde-mp3/feed",
 			"http://bitlove.org/nsemak/elementarfragen/feed",
-			"http://bitlove.org/nsemak/elementarfragenmp/feed",
 			"http://bitlove.org/nsemak/mikrodilettanten/feed",
 			"http://bitlove.org/oaad/oaad/feed",
 			"http://bitlove.org/ohrkrampfteam/ohr/feed",
