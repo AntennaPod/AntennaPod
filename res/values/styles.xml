@@ -25,12 +25,13 @@
         <item name="attr/stat_playlist">@drawable/stat_playlist</item>
         <item name="attr/type_audio">@drawable/type_audio</item>
         <item name="attr/type_video">@drawable/type_video</item>
+        <item name="attr/non_transparent_background">@color/white</item>
     </style>
-    
+
     <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:textColor">@color/black</item>
     </style>
-    
+
     <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.ForceOverflow">
         <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.DarkTabPageIndicator</item>
         <item name="attr/action_about">@drawable/action_about_dark</item>
@@ -55,8 +56,9 @@
         <item name="attr/stat_playlist">@drawable/stat_playlist_dark</item>
         <item name="attr/type_audio">@drawable/type_audio_dark</item>
         <item name="attr/type_video">@drawable/type_video_dark</item>
+        <item name="attr/non_transparent_background">@color/black</item>
     </style>
-    
+
     <style name="AntennaPod.DarkTabPageIndicator" parent="Widget.TabPageIndicator">
         <item name="android:textColor">#FFFFFF</item>
     </style>
