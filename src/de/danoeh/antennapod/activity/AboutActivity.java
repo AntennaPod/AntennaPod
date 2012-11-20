@@ -15,6 +15,7 @@ public class AboutActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().hide();
 		setContentView(R.layout.about);		
 		webview = (WebView) findViewById(R.id.webvAbout);
 		webview.loadUrl("file:///android_asset/about.html");

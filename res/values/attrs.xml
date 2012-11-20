@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <attr name="action_about" format="reference" />
+    <attr name="action_search" format="reference" />
+    <attr name="action_settings" format="reference" />
+    <attr name="action_stream" format="reference" />
+    <attr name="av_download" format="reference" />
+    <attr name="av_fast_forward" format="reference" />
+    <attr name="av_pause" format="reference" />
+    <attr name="av_play" format="reference" />
+    <attr name="av_rewind" format="reference" />
+    <attr name="content_discard" format="reference" />
+    <attr name="content_new" format="reference" />
+    <attr name="default_cover" format="reference" />
+    <attr name="device_access_time" format="reference" />
+    <attr name="location_web_site" format="reference" />
+    <attr name="navigation_accept" format="reference" />
+    <attr name="navigation_cancel" format="reference" />
+    <attr name="navigation_expand" format="reference" />
+    <attr name="navigation_refresh" format="reference" />
+    <attr name="social_share" format="reference" />
+    <attr name="stat_playlist" format="reference" />
+    <attr name="type_audio" format="reference" />
+    <attr name="type_video" format="reference" />
+
+</resources>

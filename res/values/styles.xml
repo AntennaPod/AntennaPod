@@ -1,18 +1,64 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="PodTheme" parent="@style/Theme.Sherlock.Light.ForceOverflow">
-        <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
+    <style name="Theme.AntennaPod.Light" parent="@style/Theme.Sherlock.Light.ForceOverflow">
+        <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.LightTabPageIndicator</item>
+        <item name="attr/action_about">@drawable/action_about</item>
+        <item name="attr/action_search">@drawable/action_search</item>
+        <item name="attr/action_settings">@drawable/action_settings</item>
+        <item name="attr/action_stream">@drawable/action_stream</item>
+        <item name="attr/av_download">@drawable/av_download</item>
+        <item name="attr/av_fast_forward">@drawable/av_fast_forward</item>
+        <item name="attr/av_pause">@drawable/av_pause</item>
+        <item name="attr/av_play">@drawable/av_play</item>
+        <item name="attr/av_rewind">@drawable/av_rewind</item>
+        <item name="attr/content_discard">@drawable/content_discard</item>
+        <item name="attr/content_new">@drawable/content_new</item>
+        <item name="attr/default_cover">@drawable/default_cover</item>
+        <item name="attr/device_access_time">@drawable/device_access_time</item>
+        <item name="attr/location_web_site">@drawable/location_web_site</item>
+        <item name="attr/navigation_accept">@drawable/navigation_accept</item>
+        <item name="attr/navigation_cancel">@drawable/navigation_cancel</item>
+        <item name="attr/navigation_expand">@drawable/navigation_expand</item>
+        <item name="attr/navigation_refresh">@drawable/navigation_refresh</item>
+        <item name="attr/social_share">@drawable/social_share</item>
+        <item name="attr/stat_playlist">@drawable/stat_playlist</item>
+        <item name="attr/type_audio">@drawable/type_audio</item>
+        <item name="attr/type_video">@drawable/type_video</item>
     </style>
     
-    <style name="StyledIndicators" parent="PodTheme">
-            <item name="vpiTabPageIndicatorStyle">@style/Widget.TabPageIndicator</item>
-            <item name="android:textColor">@color/black</item>
-        </style>
-        
-    
-    <style name="VideoplayerTheme" parent="@style/Theme.Sherlock.Light.ForceOverflow">
-        <item name="android:windowActionBarOverlay">true</item>
+    <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:textColor">@color/black</item>
     </style>
-        
+    
+    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.ForceOverflow">
+        <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.DarkTabPageIndicator</item>
+        <item name="attr/action_about">@drawable/action_about_dark</item>
+        <item name="attr/action_search">@drawable/action_search_dark</item>
+        <item name="attr/action_settings">@drawable/action_settings_dark</item>
+        <item name="attr/action_stream">@drawable/action_stream_dark</item>
+        <item name="attr/av_download">@drawable/av_download_dark</item>
+        <item name="attr/av_fast_forward">@drawable/av_fast_forward_dark</item>
+        <item name="attr/av_pause">@drawable/av_pause_dark</item>
+        <item name="attr/av_play">@drawable/av_play_dark</item>
+        <item name="attr/av_rewind">@drawable/av_rewind_dark</item>
+        <item name="attr/content_discard">@drawable/content_discard_dark</item>
+        <item name="attr/content_new">@drawable/content_new_dark</item>
+        <item name="attr/default_cover">@drawable/default_cover_dark</item>
+        <item name="attr/device_access_time">@drawable/device_access_time_dark</item>
+        <item name="attr/location_web_site">@drawable/location_web_site_dark</item>
+        <item name="attr/navigation_accept">@drawable/navigation_accept_dark</item>
+        <item name="attr/navigation_cancel">@drawable/navigation_cancel_dark</item>
+        <item name="attr/navigation_expand">@drawable/navigation_expand_dark</item>
+        <item name="attr/navigation_refresh">@drawable/navigation_refresh_dark</item>
+        <item name="attr/social_share">@drawable/social_share_dark</item>
+        <item name="attr/stat_playlist">@drawable/stat_playlist_dark</item>
+        <item name="attr/type_audio">@drawable/type_audio_dark</item>
+        <item name="attr/type_video">@drawable/type_video_dark</item>
+    </style>
+    
+    <style name="AntennaPod.DarkTabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:textColor">#FFFFFF</item>
+    </style>
+
 </resources>
