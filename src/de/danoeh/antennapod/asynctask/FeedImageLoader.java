@@ -7,6 +7,7 @@ import java.util.concurrent.ThreadFactory;
 import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.util.Log;
@@ -102,18 +103,20 @@ public class FeedImageLoader {
 	 * posted to the ImageView's message queue.
 	 */
 	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
+		final int defaultCoverResource = getDefaultCoverResource(target.getContext());
+		
 		if (image != null && image.getFile_url() != null) {
 			CachedBitmap cBitmap = getBitmapFromCoverCache(image.getFile_url());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
-				target.setImageResource(R.drawable.default_cover);
+				target.setImageResource(defaultCoverResource);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
 						handler, target, image, length, IMAGE_TYPE_COVER);
 				executor.submit(worker);
 			}
 		} else {
-			target.setImageResource(R.drawable.default_cover);
+			target.setImageResource(defaultCoverResource);
 		}
 	}
 
@@ -135,18 +138,20 @@ public class FeedImageLoader {
 	 */
 	public void loadThumbnailBitmap(FeedImage image, ImageView target,
 			int length) {
+		final int defaultCoverResource = getDefaultCoverResource(target.getContext());
+		
 		if (image != null && image.getFile_url() != null) {
 			CachedBitmap cBitmap = getBitmapFromThumbnailCache(image.getFile_url());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
-				target.setImageResource(R.drawable.default_cover);
+				target.setImageResource(defaultCoverResource);
 				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
 						handler, target, image, length, IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
 			}
 		} else {
-			target.setImageResource(R.drawable.default_cover);
+			target.setImageResource(defaultCoverResource);
 		}
 	}
 
@@ -185,6 +190,13 @@ public class FeedImageLoader {
 
 	public void addBitmapToCoverCache(String key, CachedBitmap bitmap) {
 		coverCache.put(key, bitmap);
+	}
+	
+	private int getDefaultCoverResource(Context context) {
+		TypedArray res = context.obtainStyledAttributes(new int[] {R.attr.default_cover});
+		final int defaultCoverResource = res.getResourceId(0, 0);
+		res.recycle();
+		return defaultCoverResource;
 	}
 
 	class FeedImageDecodeWorkerTask extends BitmapDecodeWorkerTask {

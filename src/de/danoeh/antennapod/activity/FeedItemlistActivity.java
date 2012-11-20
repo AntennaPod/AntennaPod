@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -76,8 +77,9 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.action_search });
 		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
-				.setIcon(R.drawable.action_search)
+				.setIcon(drawables.getDrawable(0))
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return FeedMenuHandler
 				.onCreateOptionsMenu(new MenuInflater(this), menu);
@@ -110,7 +112,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 							R.string.feed_delete_confirmation_msg) {
 
 						@Override
-						public void onConfirmButtonPressed(DialogInterface dialog) {
+						public void onConfirmButtonPressed(
+								DialogInterface dialog) {
 							dialog.dismiss();
 							remover.executeAsync();
 						}
@@ -129,7 +132,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 			}
 		} catch (DownloadRequestException e) {
 			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+					e.getMessage());
 		}
 		return true;
 	}

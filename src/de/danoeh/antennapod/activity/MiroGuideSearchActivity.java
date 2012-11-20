@@ -62,7 +62,10 @@ public class MiroGuideSearchActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
-				.setIcon(R.drawable.action_search)
+				.setIcon(
+						obtainStyledAttributes(
+								new int[] { R.attr.action_search })
+								.getDrawable(0))
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 
 		return true;

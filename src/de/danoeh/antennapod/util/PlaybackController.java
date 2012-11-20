@@ -15,6 +15,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
@@ -354,6 +355,11 @@ public abstract class PlaybackController {
 	 * should be used to update the GUI or start/cancel background threads.
 	 */
 	private void handleStatus() {
+		TypedArray res = activity.obtainStyledAttributes(new int[] {R.attr.av_play, R.attr.av_pause});
+		final int playResource = res.getResourceId(0, R.drawable.av_play);
+		final int pauseResource = res.getResourceId(1, R.drawable.av_pause);
+		res.recycle();
+		
 		switch (status) {
 
 		case ERROR:
@@ -363,22 +369,22 @@ public abstract class PlaybackController {
 			clearStatusMsg();
 			checkMediaInfoLoaded();
 			cancelPositionObserver();
-			updatePlayButtonAppearance(R.drawable.av_play);
+			updatePlayButtonAppearance(playResource);
 			break;
 		case PLAYING:
 			clearStatusMsg();
 			checkMediaInfoLoaded();
 			setupPositionObserver();
-			updatePlayButtonAppearance(R.drawable.av_pause);
+			updatePlayButtonAppearance(pauseResource);
 			break;
 		case PREPARING:
 			postStatusMsg(R.string.player_preparing_msg);
 			checkMediaInfoLoaded();
 			if (playbackService != null) {
 				if (playbackService.isStartWhenPrepared()) {
-					updatePlayButtonAppearance(R.drawable.av_pause);
+					updatePlayButtonAppearance(pauseResource);
 				} else {
-					updatePlayButtonAppearance(R.drawable.av_play);
+					updatePlayButtonAppearance(playResource);
 				}
 			}
 			break;
@@ -388,7 +394,7 @@ public abstract class PlaybackController {
 		case PREPARED:
 			checkMediaInfoLoaded();
 			postStatusMsg(R.string.player_ready_msg);
-			updatePlayButtonAppearance(R.drawable.av_play);
+			updatePlayButtonAppearance(playResource);
 			break;
 		case SEEKING:
 			postStatusMsg(R.string.player_seeking_msg);
@@ -399,7 +405,7 @@ public abstract class PlaybackController {
 		case INITIALIZED:
 			checkMediaInfoLoaded();
 			clearStatusMsg();
-			updatePlayButtonAppearance(R.drawable.av_play);
+			updatePlayButtonAppearance(playResource);
 			break;
 		}
 	}
