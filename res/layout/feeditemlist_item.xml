@@ -56,7 +56,7 @@
             android:layout_height="@dimen/enc_icons_size"
             android:layout_below="@id/txtvPublished"
             android:layout_toLeftOf="@+id/imgvDownloaded"
-            android:src="@drawable/stat_playlist"
+            android:src="?attr/stat_playlist"
             android:visibility="visible" />
 
         <ImageView
@@ -65,7 +65,7 @@
             android:layout_height="@dimen/enc_icons_size"
             android:layout_below="@id/txtvPublished"
             android:layout_toLeftOf="@+id/imgvDownloading"
-            android:src="@drawable/av_download"
+            android:src="?attr/av_download"
             android:visibility="visible" />
 
         <ImageView
@@ -74,7 +74,7 @@
             android:layout_height="@dimen/enc_icons_size"
             android:layout_below="@id/txtvPublished"
             android:layout_toLeftOf="@id/butAction"
-            android:src="@drawable/navigation_refresh"
+            android:src="?attr/navigation_refresh"
             android:visibility="visible" />
 
         <TextView
@@ -97,7 +97,7 @@
             android:focusableInTouchMode="false"
             android:padding="8dp"
             android:scaleType="center"
-            android:src="@drawable/navigation_expand" />
+            android:src="?attr/navigation_expand" />
     </RelativeLayout>
 
 </LinearLayout>

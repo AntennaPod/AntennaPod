@@ -3,35 +3,35 @@
 
     <item
         android:id="@+id/download_item"
-        android:icon="@drawable/av_download"
+        android:icon="?attr/av_download"
         android:showAsAction="ifRoom"
         android:title="@string/download_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/stream_item"
-        android:icon="@drawable/action_stream"
+        android:icon="?attr/action_stream"
         android:showAsAction="ifRoom"
         android:title="@string/stream_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/play_item"
-        android:icon="@drawable/av_play"
+        android:icon="?attr/av_play"
         android:showAsAction="ifRoom"
         android:title="@string/play_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/remove_item"
-        android:icon="@drawable/content_discard"
+        android:icon="?attr/content_discard"
         android:showAsAction="collapseActionView"
         android:title="@string/remove_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/cancel_download_item"
-        android:icon="@drawable/navigation_cancel"
+        android:icon="?attr/navigation_cancel"
         android:showAsAction="ifRoom"
         android:title="@string/cancel_download_label">
     </item>
@@ -66,7 +66,7 @@
     </item>
     <item
         android:id="@+id/visit_website_item"
-        android:icon="@drawable/location_web_site"
+        android:icon="?attr/location_web_site"
         android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="false">

@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.02"
             android:background="@drawable/borderless_button"
-            android:src="@drawable/av_rewind" />
+            android:src="?attr/av_rewind" />
 
         <View
             android:layout_width="0.5dp"
@@ -39,7 +39,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.14"
             android:background="@drawable/borderless_button"
-            android:src="@drawable/av_pause" />
+            android:src="?attr/av_pause" />
 
         <View
             android:layout_width="0.5dp"
@@ -54,7 +54,7 @@
             android:layout_height="match_parent"
             android:layout_weight="0.02"
             android:background="@drawable/borderless_button"
-            android:src="@drawable/av_fast_forward" />
+            android:src="?attr/av_fast_forward" />
     </LinearLayout>
 
     <SeekBar
