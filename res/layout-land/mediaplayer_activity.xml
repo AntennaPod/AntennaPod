@@ -38,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/borderless_button"
+                android:background="?attr/borderless_button"
                 android:src="@drawable/av_pause" />
 
             <ImageButton
@@ -48,7 +48,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/butPlay"
-                android:background="@drawable/borderless_button"
+                android:background="?attr/borderless_button"
                 android:src="@drawable/av_fast_forward" />
 
             <ImageButton
@@ -58,7 +58,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@+id/butPlay"
-                android:background="@drawable/borderless_button"
+                android:background="?attr/borderless_button"
                 android:src="@drawable/av_rewind" />
         </RelativeLayout>
 

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <attr name="action_about" format="reference" />
     <attr name="action_search" format="reference" />
     <attr name="action_settings" format="reference" />
@@ -22,6 +23,8 @@
     <attr name="stat_playlist" format="reference" />
     <attr name="type_audio" format="reference" />
     <attr name="type_video" format="reference" />
-	<!-- Used in itemdescription -->
-	<attr name="non_transparent_background" format="reference" />
+    <attr name="borderless_button" format="reference" />
+    <!-- Used in itemdescription -->
+    <attr name="non_transparent_background" format="reference" />
+
 </resources>

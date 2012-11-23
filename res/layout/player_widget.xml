@@ -15,7 +15,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="12dp"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:src="@drawable/av_play" />
 
         <LinearLayout
@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/butPlay"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:gravity="center_vertical"
             android:orientation="vertical" >
 

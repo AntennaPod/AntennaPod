@@ -26,6 +26,8 @@
         <item name="attr/type_audio">@drawable/type_audio</item>
         <item name="attr/type_video">@drawable/type_video</item>
         <item name="attr/non_transparent_background">@color/white</item>
+        <item name="attr/borderless_button">@drawable/borderless_button</item>
+        
     </style>
 
     <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -57,6 +59,7 @@
         <item name="attr/type_audio">@drawable/type_audio_dark</item>
         <item name="attr/type_video">@drawable/type_video_dark</item>
         <item name="attr/non_transparent_background">@color/black</item>
+        <item name="attr/borderless_button">@drawable/borderless_button_dark</item>
     </style>
 
     <style name="AntennaPod.DarkTabPageIndicator" parent="Widget.TabPageIndicator">

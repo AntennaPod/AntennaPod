@@ -91,7 +91,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"

@@ -23,7 +23,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.02"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:src="?attr/av_rewind" />
 
         <View
@@ -38,7 +38,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.14"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:src="?attr/av_pause" />
 
         <View
@@ -53,7 +53,7 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.02"
-            android:background="@drawable/borderless_button"
+            android:background="?attr/borderless_button"
             android:src="?attr/av_fast_forward" />
     </LinearLayout>
 
