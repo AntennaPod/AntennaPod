@@ -7,7 +7,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/white" >
+        android:background="#262C31" >
 
         <ImageButton
             android:id="@+id/butPlay"
@@ -15,8 +15,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="12dp"
-            android:background="?attr/borderless_button"
-            android:src="@drawable/av_play" />
+            android:background="@drawable/borderless_button_dark"
+            android:src="@drawable/av_play_dark" />
 
         <LinearLayout
             android:id="@+id/layout_left"
@@ -24,7 +24,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/butPlay"
-            android:background="?attr/borderless_button"
+            android:background="@drawable/borderless_button_dark"
             android:gravity="center_vertical"
             android:orientation="vertical" >
 
@@ -35,7 +35,7 @@
                 android:layout_margin="8dp"
                 android:maxLines="1"
                 android:text="@string/no_media_playing_label"
-                android:textColor="@color/black"
+                android:textColor="@color/white"
                 android:textSize="18dp"
                 android:textStyle="bold" />
 
@@ -44,7 +44,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
-                android:textColor="@color/ics_gray" />
+                android:textColor="@color/gray" />
         </LinearLayout>
     </RelativeLayout>
 

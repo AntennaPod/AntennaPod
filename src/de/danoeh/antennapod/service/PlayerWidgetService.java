@@ -94,9 +94,9 @@ public class PlayerWidgetService extends Service {
 				if (progressString != null) {
 					views.setTextViewText(R.id.txtvProgress, progressString);
 				}
-				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause);
+				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause_dark);
 			} else {
-				views.setImageViewResource(R.id.butPlay, R.drawable.av_play);
+				views.setImageViewResource(R.id.butPlay, R.drawable.av_play_dark);
 			}
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());
