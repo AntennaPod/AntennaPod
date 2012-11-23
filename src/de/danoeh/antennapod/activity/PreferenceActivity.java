@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
-import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
@@ -132,12 +131,5 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		}
 		return true;
 	}
-
-	@Override
-	protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
-		theme.applyStyle(PodcastApp.getThemeResourceId(), true);
-	}
-	
-	
 
 }
