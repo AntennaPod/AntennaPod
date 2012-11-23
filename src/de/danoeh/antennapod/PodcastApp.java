@@ -11,6 +11,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.preference.PreferenceActivity;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.activity.OpmlImportActivity;
@@ -35,6 +36,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+	public static final String PREF_THEME = "prefTheme";
 
 	private static float LOGICAL_DENSITY;
 
@@ -43,6 +45,9 @@ public class PodcastApp extends Application implements
 	private boolean displayOnlyEpisodes;
 
 	private static long currentlyPlayingMediaId;
+	
+	/** Resource id of the currently selected theme. */
+	private static int theme;
 
 	public static PodcastApp getInstance() {
 		return singleton;
@@ -60,6 +65,7 @@ public class PodcastApp extends Application implements
 		currentlyPlayingMediaId = prefs.getLong(
 				PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA,
 				PlaybackService.NO_MEDIA_PLAYING);
+		readThemeValue();
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
@@ -162,6 +168,8 @@ public class PodcastApp extends Application implements
 			if (id != currentlyPlayingMediaId) {
 				currentlyPlayingMediaId = id;
 			}
+		} else if (key.equals(PREF_THEME)) {
+			readThemeValue();
 		}
 	}
 
@@ -181,5 +189,23 @@ public class PodcastApp extends Application implements
 		return (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_LARGE
 				|| (getResources().getConfiguration().screenLayout & Configuration.SCREENLAYOUT_SIZE_MASK) == Configuration.SCREENLAYOUT_SIZE_XLARGE;
 
+	}
+	
+	public static int getThemeResourceId() {
+		return theme;
+	}
+	
+	/** Read value of prefTheme and determine the correct resource id. */
+	private void readThemeValue() {
+		SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+		int prefTheme = Integer.parseInt(prefs.getString(PREF_THEME, "0"));
+		switch (prefTheme) {
+		case 0:
+			theme = R.style.Theme_AntennaPod_Light;
+			break;
+		case 1:
+			theme = R.style.Theme_AntennaPod_Dark;
+			break;
+		}
 	}
 }

@@ -20,5 +20,15 @@
         <item>12</item>
         <item>24</item>
     </string-array>
+    
+    <string-array name="theme_options">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    
+    <string-array name="theme_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
 
 </resources>

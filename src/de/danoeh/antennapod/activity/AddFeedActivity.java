@@ -18,6 +18,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.storage.DownloadRequestException;
@@ -44,6 +45,7 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		StorageUtils.checkStorageAvailability(this);
 		setContentView(R.layout.addfeed);

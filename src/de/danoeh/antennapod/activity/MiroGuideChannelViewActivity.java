@@ -6,6 +6,7 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -21,6 +22,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -62,6 +64,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_channelview);
 
@@ -101,6 +104,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			return null;
 		}
 
+		@SuppressLint("NewApi")
 		@Override
 		protected void onPostExecute(Void result) {
 			if (AppConfig.DEBUG)
@@ -115,7 +119,9 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 				listEntries.setAdapter(listAdapter);
 				progLoading.setVisibility(View.GONE);
 				layoutContent.setVisibility(View.VISIBLE);
-				invalidateOptionsMenu();
+				if (Build.VERSION.SDK_INT >= 11) {
+					invalidateOptionsMenu();
+				}
 			} else {
 				finish();
 			}
@@ -145,6 +151,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 		return true;
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
@@ -157,16 +164,21 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			return true;
 		case R.id.add_feed:
 			try {
-				DownloadRequester.getInstance().downloadFeed(this,
-						new Feed(channel.getDownloadUrl(), new Date(), channel.getName()));
+				DownloadRequester.getInstance().downloadFeed(
+						this,
+						new Feed(channel.getDownloadUrl(), new Date(), channel
+								.getName()));
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();
-				DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+				DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+						e.getMessage());
 			}
 			Toast toast = Toast.makeText(this, R.string.miro_feed_added,
 					Toast.LENGTH_LONG);
 			toast.show();
-			invalidateOptionsMenu();
+			if (Build.VERSION.SDK_INT >= 11) {
+				invalidateOptionsMenu();
+			}
 			return true;
 		default:
 			return false;

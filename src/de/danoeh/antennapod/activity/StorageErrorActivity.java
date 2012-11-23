@@ -10,6 +10,7 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockActivity;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.StorageUtils;
 
@@ -20,6 +21,8 @@ public class StorageErrorActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
+
 		setContentView(R.layout.storage_error);
 	}
 
