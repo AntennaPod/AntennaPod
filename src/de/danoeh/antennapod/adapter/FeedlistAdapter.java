@@ -15,6 +15,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	private static final String TAG = "FeedlistAdapter";
@@ -67,7 +68,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 
 		if (position == selectedItemIndex) {
 			convertView.setBackgroundColor(convertView.getResources().getColor(
-					R.color.selection_background));
+					ThemeUtils.getSelectionBackgroundColor()));
 		} else {
 			convertView.setBackgroundResource(0);
 		}

@@ -17,6 +17,7 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.ThemeUtils;
 
 public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 	private int selectedItemIndex;
@@ -57,7 +58,7 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 
 		if (position == selectedItemIndex) {
 			convertView.setBackgroundColor(convertView.getResources().getColor(
-					R.color.selection_background));
+					ThemeUtils.getSelectionBackgroundColor()));
 		} else {
 			convertView.setBackgroundResource(0);
 		}

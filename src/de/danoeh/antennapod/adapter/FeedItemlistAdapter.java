@@ -24,6 +24,7 @@ import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
+import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
@@ -83,7 +84,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			convertView.setVisibility(View.VISIBLE);
 			if (position == selectedItemIndex) {
 				convertView.setBackgroundColor(convertView.getResources()
-						.getColor(R.color.selection_background));
+						.getColor(ThemeUtils.getSelectionBackgroundColor()));
 			} else {
 				convertView.setBackgroundResource(0);
 			}
