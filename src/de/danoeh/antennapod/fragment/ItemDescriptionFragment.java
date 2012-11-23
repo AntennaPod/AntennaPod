@@ -2,7 +2,6 @@ package de.danoeh.antennapod.fragment;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 
-import android.R;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.res.TypedArray;
@@ -19,6 +18,8 @@ import android.webkit.WebView;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -34,7 +35,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private FeedItem item;
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
-	
+
 	private String descriptionRef;
 	private String contentEncodedRef;
 
@@ -53,7 +54,9 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
-		webvDescription.setBackgroundColor(0);
+		if (PodcastApp.getThemeResourceId() == R.style.Theme_AntennaPod_Dark) {
+			webvDescription.setBackgroundColor(0);
+		}
 		webvDescription.getSettings().setUseWideViewPort(false);
 		return webvDescription;
 	}
@@ -153,9 +156,13 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			webViewLoader.execute();
 		}
 	}
-	
-	/** Return the CSS style of the Webview. 
-	 * @param textColor the default color to use for the text in the webview. This value is inserted directly into the CSS String.
+
+	/**
+	 * Return the CSS style of the Webview.
+	 * 
+	 * @param textColor
+	 *            the default color to use for the text in the webview. This
+	 *            value is inserted directly into the CSS String.
 	 * */
 	private String getWebViewStyle(String textColor) {
 		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 12pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
@@ -205,16 +212,18 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading Webview");
 				data = "";
-				if (contentEncodedRef == null
-						&& descriptionRef != null) {
+				if (contentEncodedRef == null && descriptionRef != null) {
 					data = descriptionRef;
 				} else {
 					data = StringEscapeUtils.unescapeHtml4(contentEncodedRef);
 				}
-				
-				TypedArray res = getActivity().getTheme().obtainStyledAttributes(new int[] {android.R.attr.textColorPrimary});
+
+				TypedArray res = getActivity().getTheme()
+						.obtainStyledAttributes(
+								new int[] { android.R.attr.textColorPrimary });
 				int colorResource = res.getColor(0, 0);
-				String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
+				String colorString = String.format("#%06X",
+						0xFFFFFF & colorResource);
 				Log.i(TAG, "text color: " + colorString);
 				res.recycle();
 				data = getWebViewStyle(colorString) + data;
