@@ -26,5 +26,6 @@
     <attr name="borderless_button" format="reference" />
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference" />
+    <attr name="video_overlay_background" format="color" />
 
 </resources>
