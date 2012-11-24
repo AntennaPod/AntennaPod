@@ -33,7 +33,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private FeedItem item;
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
-	
+
 	private String descriptionRef;
 	private String contentEncodedRef;
 
@@ -116,18 +116,25 @@ public class ItemDescriptionFragment extends SherlockFragment {
 					&& item.getContentEncoded() == null) {
 				Log.i(TAG, "Loading data");
 				FeedManager.getInstance().loadExtraInformationOfItem(
-						getActivity(), item, new FeedManager.TaskCallback() {
+						getActivity(), item,
+						new FeedManager.TaskCallback<String[]>() {
 							@Override
-							public void onCompletion(Cursor result) {
-								if (item.getDescription() == null
-										&& item.getContentEncoded() == null) {
+							public void onCompletion(String[] result) {
+								if (result == null || result.length != 2) {
 									Log.e(TAG, "No description found");
+								} else {
+									descriptionRef = result[0];
+									contentEncodedRef = result[1];
 								}
+								
 								startLoader();
 							}
 						});
 			} else {
-				Log.i(TAG, "Using cached data");
+				contentEncodedRef = item.getContentEncoded();
+				descriptionRef = item.getDescription();
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Using cached data");
 				startLoader();
 			}
 		} else {
@@ -142,8 +149,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 	@SuppressLint("NewApi")
 	private void startLoader() {
-		contentEncodedRef = item.getContentEncoded();
-		descriptionRef = item.getDescription();
 		webViewLoader = createLoader();
 		if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
 			webViewLoader.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
@@ -195,8 +200,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading Webview");
 				data = "";
-				if (contentEncodedRef == null
-						&& descriptionRef != null) {
+				if (contentEncodedRef == null && descriptionRef != null) {
 					data = descriptionRef;
 				} else {
 					data = StringEscapeUtils.unescapeHtml4(contentEncodedRef);

@@ -1347,8 +1347,13 @@ public class FeedManager {
 		cursor.close();
 	}
 
+	/**
+	 * Loads description and contentEncoded values from the database and caches it in the feeditem. The task
+	 * callback will contain a String-array with the description at index 0 and
+	 * the value of contentEncoded at index 1.
+	 */
 	public void loadExtraInformationOfItem(final Context context,
-			final FeedItem item, FeedManager.TaskCallback callback) {
+			final FeedItem item, FeedManager.TaskCallback<String[]> callback) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG,
 					"Loading extra information of item with id " + item.getId());
@@ -1356,7 +1361,7 @@ public class FeedManager {
 				Log.d(TAG, "Title: " + item.getTitle());
 			}
 		}
-		dbExec.execute(new FeedManager.Task(new Handler(), callback) {
+		dbExec.execute(new FeedManager.Task<String[]>(new Handler(), callback) {
 
 			@Override
 			public void execute() {
@@ -1364,10 +1369,13 @@ public class FeedManager {
 				adapter.open();
 				Cursor extraCursor = adapter.getExtraInformationOfItem(item);
 				if (extraCursor.moveToFirst()) {
-					item.setCachedDescription(extraCursor
-							.getString(PodDBAdapter.IDX_FI_EXTRA_DESCRIPTION));
-					item.setCachedContentEncoded(extraCursor
-							.getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED));
+					String description = extraCursor
+							.getString(PodDBAdapter.IDX_FI_EXTRA_DESCRIPTION);
+					String contentEncoded = extraCursor
+							.getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED);
+					item.setCachedDescription(description);
+					item.setCachedContentEncoded(contentEncoded);
+					setResult(new String[] {description, contentEncoded});
 				}
 				adapter.close();
 			}
@@ -1377,7 +1385,8 @@ public class FeedManager {
 	public void searchFeedItemDescription(final Context context,
 			final Feed feed, final String query,
 			FeedManager.QueryTaskCallback callback) {
-		dbExec.execute(new FeedManager.QueryTask(context, new Handler(), callback) {
+		dbExec.execute(new FeedManager.QueryTask(context, new Handler(),
+				callback) {
 
 			@Override
 			public void execute(PodDBAdapter adapter) {
@@ -1391,7 +1400,8 @@ public class FeedManager {
 	public void searchFeedItemContentEncoded(final Context context,
 			final Feed feed, final String query,
 			FeedManager.QueryTaskCallback callback) {
-		dbExec.execute(new FeedManager.QueryTask(context, new Handler(), callback) {
+		dbExec.execute(new FeedManager.QueryTask(context, new Handler(),
+				callback) {
 
 			@Override
 			public void execute(PodDBAdapter adapter) {
@@ -1423,20 +1433,22 @@ public class FeedManager {
 	}
 
 	/** Is called by a FeedManagerTask after completion. */
-	public interface TaskCallback {
-		void onCompletion(Cursor result);
+	public interface TaskCallback<V> {
+		void onCompletion(V result);
 	}
-	
+
 	/** Is called by a FeedManager.QueryTask after completion. */
 	public interface QueryTaskCallback {
 		void handleResult(Cursor result);
+
 		void onCompletion();
 	}
 
 	/** A runnable that can post a callback to a handler after completion. */
-	abstract class Task implements Runnable {
+	abstract class Task<V> implements Runnable {
 		private Handler handler;
-		private TaskCallback callback;
+		private TaskCallback<V> callback;
+		private V result;
 
 		/**
 		 * Standard contructor. No callbacks are going to be posted to a
@@ -1450,7 +1462,7 @@ public class FeedManager {
 		 * The Task will post a Runnable to 'handler' that will execute the
 		 * 'callback' after completion.
 		 */
-		public Task(Handler handler, TaskCallback callback) {
+		public Task(Handler handler, TaskCallback<V> callback) {
 			super();
 			this.handler = handler;
 			this.callback = callback;
@@ -1463,7 +1475,7 @@ public class FeedManager {
 				handler.post(new Runnable() {
 					@Override
 					public void run() {
-						callback.onCompletion(null);
+						callback.onCompletion(result);
 					}
 				});
 			}
@@ -1471,6 +1483,10 @@ public class FeedManager {
 
 		/** This method will be executed in the same thread as the run() method. */
 		public abstract void execute();
+
+		public void setResult(V result) {
+			this.result = result;
+		}
 	}
 
 	/**
@@ -1485,7 +1501,8 @@ public class FeedManager {
 		private Context context;
 		private Handler handler;
 
-		public QueryTask(Context context, Handler handler, QueryTaskCallback callback) {
+		public QueryTask(Context context, Handler handler,
+				QueryTaskCallback callback) {
 			this.callback = callback;
 			this.context = context;
 			this.handler = handler;
@@ -1508,7 +1525,7 @@ public class FeedManager {
 					public void run() {
 						callback.onCompletion();
 					}
-					
+
 				});
 			}
 		}
