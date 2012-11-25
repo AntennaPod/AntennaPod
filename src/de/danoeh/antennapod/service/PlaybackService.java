@@ -938,16 +938,22 @@ public class PlaybackService extends Service {
 	}
 
 	public void seek(int i) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Seeking position " + i);
-		if (shouldStream) {
-			if (status != PlayerStatus.SEEKING) {
-				statusBeforeSeek = status;
-			}
-			setStatus(PlayerStatus.SEEKING);
-		}
-		player.seekTo(i);
 		saveCurrentPosition();
+		if (status == PlayerStatus.INITIALIZED) {
+			media.setPosition(i);
+			setStartWhenPrepared(true);
+			prepare();
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Seeking position " + i);
+			if (shouldStream) {
+				if (status != PlayerStatus.SEEKING) {
+					statusBeforeSeek = status;
+				}
+				setStatus(PlayerStatus.SEEKING);
+			}
+			player.seekTo(i);
+		}
 	}
 
 	public void seekToChapter(Chapter chapter) {

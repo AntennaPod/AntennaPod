@@ -355,11 +355,12 @@ public abstract class PlaybackController {
 	 * should be used to update the GUI or start/cancel background threads.
 	 */
 	private void handleStatus() {
-		TypedArray res = activity.obtainStyledAttributes(new int[] {R.attr.av_play, R.attr.av_pause});
+		TypedArray res = activity.obtainStyledAttributes(new int[] {
+				R.attr.av_play, R.attr.av_pause });
 		final int playResource = res.getResourceId(0, R.drawable.av_play);
 		final int pauseResource = res.getResourceId(1, R.drawable.av_pause);
 		res.recycle();
-		
+
 		switch (status) {
 
 		case ERROR:
@@ -472,7 +473,7 @@ public abstract class PlaybackController {
 			boolean fromUser, TextView txtvPosition) {
 		if (fromUser && playbackService != null) {
 			float prog = progress / ((float) seekBar.getMax());
-			int duration = playbackService.getPlayer().getDuration();
+			int duration = media.getDuration();
 			txtvPosition.setText(Converter
 					.getDurationStringLong((int) (prog * duration)));
 			return prog;
@@ -494,8 +495,7 @@ public abstract class PlaybackController {
 	 */
 	public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
 		if (playbackService != null) {
-			playbackService.seek((int) (prog * playbackService.getPlayer()
-					.getDuration()));
+			playbackService.seek((int) (prog * media.getDuration()));
 			setupPositionObserver();
 		}
 	}
