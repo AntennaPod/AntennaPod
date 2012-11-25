@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
@@ -41,6 +43,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
 		StorageUtils.checkStorageAvailability(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
@@ -76,8 +79,9 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+		TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.action_search });
 		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
-				.setIcon(R.drawable.action_search)
+				.setIcon(drawables.getDrawable(0))
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
 		return FeedMenuHandler
 				.onCreateOptionsMenu(new MenuInflater(this), menu);
@@ -110,7 +114,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 							R.string.feed_delete_confirmation_msg) {
 
 						@Override
-						public void onConfirmButtonPressed(DialogInterface dialog) {
+						public void onConfirmButtonPressed(
+								DialogInterface dialog) {
 							dialog.dismiss();
 							remover.executeAsync();
 						}
@@ -129,7 +134,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 			}
 		} catch (DownloadRequestException e) {
 			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+					e.getMessage());
 		}
 		return true;
 	}

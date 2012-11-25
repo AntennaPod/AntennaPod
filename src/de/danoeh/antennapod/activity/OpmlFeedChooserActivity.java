@@ -16,6 +16,7 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
 
@@ -36,6 +37,7 @@ public class OpmlFeedChooserActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
 
 		setContentView(R.layout.opml_selection);
 		butConfirm = (Button) findViewById(R.id.butConfirm);

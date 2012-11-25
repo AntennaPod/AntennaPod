@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="@color/actionbar_gray"
+        android:background="?attr/video_overlay_background"
         android:orientation="vertical" >
 
         <RelativeLayout
@@ -38,8 +38,8 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/borderless_button"
-                android:src="@drawable/av_pause" />
+                android:background="?attr/borderless_button"
+                android:src="?attr/av_pause" />
 
             <ImageButton
                 android:id="@+id/butFF"
@@ -48,8 +48,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@+id/butPlay"
-                android:background="@drawable/borderless_button"
-                android:src="@drawable/av_fast_forward" />
+                android:background="?attr/borderless_button"
+                android:src="?attr/av_fast_forward" />
 
             <ImageButton
                 android:id="@+id/butRev"
@@ -58,8 +58,8 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginRight="8dp"
                 android:layout_toLeftOf="@+id/butPlay"
-                android:background="@drawable/borderless_button"
-                android:src="@drawable/av_rewind" />
+                android:background="?attr/borderless_button"
+                android:src="?attr/av_rewind" />
         </RelativeLayout>
 
         <RelativeLayout

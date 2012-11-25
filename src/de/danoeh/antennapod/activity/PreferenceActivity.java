@@ -1,14 +1,17 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.res.Resources.Theme;
 import android.os.Bundle;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
@@ -29,6 +32,8 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
+		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		addPreferencesFromResource(R.xml.preferences);
 		findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
@@ -79,6 +84,17 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
+		findPreference(PodcastApp.PREF_THEME).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+			
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				Intent i = getIntent();
+				i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+				finish();
+				startActivity(i);
+				return true;
+			}
+		});
 
 	}
 
@@ -116,5 +132,12 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		}
 		return true;
 	}
+
+	@Override
+	protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
+		theme.applyStyle(PodcastApp.getThemeResourceId(), true);
+	}
+	
+	
 
 }

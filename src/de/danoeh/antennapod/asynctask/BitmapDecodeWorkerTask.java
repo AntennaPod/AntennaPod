@@ -2,6 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import java.io.File;
 
+import android.content.res.TypedArray;
 import android.graphics.BitmapFactory;
 import android.os.Handler;
 import android.util.Log;
@@ -24,6 +25,8 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 	protected String fileUrl;
 
 	private Handler handler;
+	
+	private final int defaultCoverResource;
 
 	public BitmapDecodeWorkerTask(Handler handler, ImageView target,
 			String fileUrl, int length, int imageType) {
@@ -33,6 +36,9 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 		this.fileUrl = fileUrl;
 		this.PREFERRED_LENGTH = length;
 		this.imageType = imageType;
+		TypedArray res = target.getContext().obtainStyledAttributes(new int[] {R.attr.default_cover});
+		this.defaultCoverResource = res.getResourceId(0, 0);
+		res.recycle();
 	}
 
 	/**
@@ -64,7 +70,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 			} else {
 				Log.w(TAG, "Could not load bitmap. Using default image.");
 				cBitmap = new CachedBitmap(BitmapFactory.decodeResource(target.getResources(),
-						R.drawable.default_cover), PREFERRED_LENGTH);
+						defaultCoverResource), PREFERRED_LENGTH);
 			}
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Finished loading bitmaps");
@@ -93,7 +99,7 @@ public abstract class BitmapDecodeWorkerTask extends Thread {
 	protected void onInvalidFileUrl() {
 		Log.e(TAG, "FeedImage has no valid file url. Using default image");
 		cBitmap = new CachedBitmap(BitmapFactory.decodeResource(target.getResources(),
-				R.drawable.default_cover), PREFERRED_LENGTH);
+				defaultCoverResource), PREFERRED_LENGTH);
 	}
 
 	protected void storeBitmapInCache(CachedBitmap cb) {

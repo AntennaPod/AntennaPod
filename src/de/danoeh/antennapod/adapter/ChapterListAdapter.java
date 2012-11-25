@@ -30,6 +30,8 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 	private List<Chapter> chapters;
 	private FeedMedia media;
+	
+	private int defaultTextColor;
 
 	public ChapterListAdapter(Context context, int textViewResourceId,
 			List<Chapter> objects, FeedMedia media) {
@@ -52,6 +54,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 			convertView = inflater.inflate(R.layout.simplechapter_item, null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+			defaultTextColor = holder.title.getTextColors().getDefaultColor();
 			holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
 			holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
 			convertView.setTag(holder);
@@ -126,7 +129,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 				holder.title.setTextColor(convertView.getResources().getColor(
 						R.color.bright_blue));
 			} else {
-				holder.title.setTextColor(Color.parseColor("black"));
+				holder.title.setTextColor(defaultTextColor);
 			}
 		} else {
 			Log.w(TAG, "Could not find out what the current chapter is.");

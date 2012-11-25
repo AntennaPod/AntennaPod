@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.ServiceConnection;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
@@ -21,6 +22,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
@@ -51,6 +53,7 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
@@ -185,7 +188,8 @@ public class DownloadActivity extends SherlockListActivity implements
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
 			break;
 		case MENU_SHOW_LOG:
@@ -201,9 +205,10 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
 		if (!selectedDownload.isDone()) {
+			TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.navigation_cancel });
 			menu.add(Menu.NONE, R.id.cancel_download_item, Menu.NONE,
 					R.string.cancel_download_label).setIcon(
-					R.drawable.navigation_cancel);
+					drawables.getDrawable(0));
 		}
 		return true;
 	}

@@ -19,6 +19,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
@@ -42,6 +43,8 @@ public class OpmlImportActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.opml_import);
 

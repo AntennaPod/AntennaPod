@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
+import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	private OnClickListener onButActionClicked;
@@ -82,7 +84,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			convertView.setVisibility(View.VISIBLE);
 			if (position == selectedItemIndex) {
 				convertView.setBackgroundColor(convertView.getResources()
-						.getColor(R.color.selection_background));
+						.getColor(ThemeUtils.getSelectionBackgroundColor()));
 			} else {
 				convertView.setBackgroundResource(0);
 			}
@@ -92,7 +94,7 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 				holder.feedtitle.setVisibility(View.VISIBLE);
 				holder.feedtitle.setText(item.getFeed().getTitle());
 			}
-			
+
 			FeedItem.State state = item.getState();
 			switch (state) {
 			case PLAYING:
@@ -160,12 +162,14 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 					holder.downloading.setVisibility(View.GONE);
 				}
 
+				TypedArray typeDrawables = getContext().obtainStyledAttributes(
+						new int[] { R.attr.type_audio, R.attr.type_video });
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {
-					holder.type.setImageResource(R.drawable.type_audio);
+					holder.type.setImageDrawable(typeDrawables.getDrawable(0));
 					holder.type.setVisibility(View.VISIBLE);
 				} else if (mediaType == MediaType.VIDEO) {
-					holder.type.setImageResource(R.drawable.type_video);
+					holder.type.setImageDrawable(typeDrawables.getDrawable(1));
 					holder.type.setVisibility(View.VISIBLE);
 				} else {
 					holder.type.setImageBitmap(null);

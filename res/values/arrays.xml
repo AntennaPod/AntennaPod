@@ -3,12 +3,12 @@
 
     <string-array name="update_intervall_options">
         <item>Manual</item>
-        <item>1 h</item>
-        <item>2 h</item>
-        <item>4 h</item>
-        <item>8 h</item>
-        <item>12 h</item>
-        <item>24 h</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
     </string-array>
 
     <string-array name="update_intervall_values">
@@ -19,6 +19,16 @@
         <item>8</item>
         <item>12</item>
         <item>24</item>
+    </string-array>
+    
+    <string-array name="theme_options">
+        <item>Light</item>
+        <item>Dark</item>
+    </string-array>
+    
+    <string-array name="theme_values">
+        <item>0</item>
+        <item>1</item>
     </string-array>
 
 </resources>

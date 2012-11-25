@@ -29,12 +29,11 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/Theme.Sherlock.Light.ForceOverflow" >
+        android:theme="@style/Theme.AntennaPod.Light" >
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name"
-            android:theme="@style/StyledIndicators" >
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -75,8 +74,7 @@
             android:name=".activity.AudioplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.MediaPlayer" />
+            android:screenOrientation="portrait"/>
 
         <service
             android:name=".service.download.DownloadService"
@@ -159,8 +157,7 @@
         </activity>
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about_pref"
-            android:theme="@style/Theme.Sherlock.Light.NoActionBar" >
+            android:label="@string/about_pref">
         </activity>
         <activity
             android:name=".activity.OpmlImportActivity"
@@ -211,8 +208,7 @@
         </activity>
         <activity
             android:name=".activity.MiroGuideCategoryActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:theme="@style/StyledIndicators" >
+            android:configChanges="keyboardHidden|orientation">
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"
@@ -222,8 +218,7 @@
         <activity
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape"
-            android:theme="@style/VideoplayerTheme" >
+            android:screenOrientation="landscape">
         </activity>
         <activity android:label="@string/playback_history_label" android:name=".activity.PlaybackHistoryActivity"></activity>
     </application>

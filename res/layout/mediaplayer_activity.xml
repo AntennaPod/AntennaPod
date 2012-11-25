@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
+    android:background="?attr/non_transparent_background"
     android:orientation="vertical" >
 
     <com.viewpagerindicator.TabPageIndicator
@@ -23,8 +23,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.02"
-            android:background="@drawable/borderless_button"
-            android:src="@drawable/av_rewind" />
+            android:background="?attr/borderless_button"
+            android:src="?attr/av_rewind" />
 
         <View
             android:layout_width="0.5dp"
@@ -38,8 +38,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.14"
-            android:background="@drawable/borderless_button"
-            android:src="@drawable/av_pause" />
+            android:background="?attr/borderless_button"
+            android:src="?attr/av_pause" />
 
         <View
             android:layout_width="0.5dp"
@@ -53,8 +53,8 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_weight="0.02"
-            android:background="@drawable/borderless_button"
-            android:src="@drawable/av_fast_forward" />
+            android:background="?attr/borderless_button"
+            android:src="?attr/av_fast_forward" />
     </LinearLayout>
 
     <SeekBar

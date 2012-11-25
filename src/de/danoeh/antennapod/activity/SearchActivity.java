@@ -16,6 +16,7 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
 import de.danoeh.antennapod.feed.Feed;
@@ -43,6 +44,8 @@ public class SearchActivity extends SherlockListActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		setTheme(PodcastApp.getThemeResourceId());
+
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.searchlist);
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
@@ -79,7 +82,10 @@ public class SearchActivity extends SherlockListActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
-				.setIcon(R.drawable.action_search)
+				.setIcon(
+						obtainStyledAttributes(
+								new int[] { R.attr.action_search })
+								.getDrawable(0))
 				.setShowAsAction(MenuItem.SHOW_AS_ACTION_IF_ROOM);
 		return true;
 	}

@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:background="@drawable/borderless_button" >
+            android:background="?attr/borderless_button" >
 
             <ImageView
                 android:id="@+id/imgvCover"
@@ -78,7 +78,7 @@
             android:id="@+id/butPlay"
             android:layout_width="@dimen/external_player_height"
             android:layout_height="@dimen/external_player_height"
-            android:background="@drawable/borderless_button" />
+            android:background="?attr/borderless_button" />
     </LinearLayout>
 
 </LinearLayout>
