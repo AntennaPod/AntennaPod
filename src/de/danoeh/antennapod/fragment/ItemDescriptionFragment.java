@@ -118,7 +118,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		super.onViewCreated(view, savedInstanceState);
 		if (item != null) {
 			if (item.getDescription() == null
-					&& item.getContentEncoded() == null) {
+					|| item.getContentEncoded() == null) {
 				Log.i(TAG, "Loading data");
 				FeedManager.getInstance().loadExtraInformationOfItem(
 						getActivity(), item,
