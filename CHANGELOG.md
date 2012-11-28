@@ -1,6 +1,11 @@
 Change Log
 ==========
 
+Version 0.9.6.1
+---------------
+* Added dark theme
+* Several bugfixes and improvements
+
 Version 0.9.6
 -------------
 * Added support for VorbisComment chapters
