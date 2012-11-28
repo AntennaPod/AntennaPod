@@ -228,16 +228,21 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				} else {
 					data = StringEscapeUtils.unescapeHtml4(contentEncodedRef);
 				}
-
-				TypedArray res = getActivity().getTheme()
-						.obtainStyledAttributes(
-								new int[] { android.R.attr.textColorPrimary });
-				int colorResource = res.getColor(0, 0);
-				String colorString = String.format("#%06X",
-						0xFFFFFF & colorResource);
-				Log.i(TAG, "text color: " + colorString);
-				res.recycle();
-				data = getWebViewStyle(colorString) + data;
+				Activity activity = getActivity();
+				if (activity != null) {
+					TypedArray res = getActivity()
+							.getTheme()
+							.obtainStyledAttributes(
+									new int[] { android.R.attr.textColorPrimary });
+					int colorResource = res.getColor(0, 0);
+					String colorString = String.format("#%06X",
+							0xFFFFFF & colorResource);
+					Log.i(TAG, "text color: " + colorString);
+					res.recycle();
+					data = getWebViewStyle(colorString) + data;
+				} else {
+					cancel(true);
+				}
 				return null;
 			}
 
