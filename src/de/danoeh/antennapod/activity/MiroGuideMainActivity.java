@@ -34,8 +34,8 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_categorylist);
 

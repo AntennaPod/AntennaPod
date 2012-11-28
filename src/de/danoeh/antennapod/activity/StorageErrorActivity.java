@@ -20,8 +20,8 @@ public class StorageErrorActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.storage_error);
 	}

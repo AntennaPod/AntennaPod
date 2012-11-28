@@ -42,8 +42,8 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);

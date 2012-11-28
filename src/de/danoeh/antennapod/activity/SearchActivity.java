@@ -43,8 +43,8 @@ public class SearchActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.searchlist);

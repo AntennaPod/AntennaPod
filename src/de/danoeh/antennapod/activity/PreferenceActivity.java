@@ -31,8 +31,8 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		addPreferencesFromResource(R.xml.preferences);

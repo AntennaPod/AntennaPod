@@ -44,8 +44,8 @@ public class PlaybackHistoryActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(arg0);
 
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Activity created");

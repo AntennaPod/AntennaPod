@@ -26,8 +26,8 @@ public class DownloadLogActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
 
 		dla = new DownloadLogAdapter(this, 0, manager.getDownloadLog());

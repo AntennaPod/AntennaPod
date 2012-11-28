@@ -34,8 +34,8 @@ public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		super.onCreate(arg0);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(arg0);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_category);
 

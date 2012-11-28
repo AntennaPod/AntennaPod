@@ -138,8 +138,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
 		StorageUtils.checkStorageAvailability(this);

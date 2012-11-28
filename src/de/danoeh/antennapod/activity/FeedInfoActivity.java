@@ -37,8 +37,8 @@ public class FeedInfoActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		setContentView(R.layout.feedinfo);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);

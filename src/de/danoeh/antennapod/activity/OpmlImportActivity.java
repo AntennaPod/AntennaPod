@@ -42,8 +42,8 @@ public class OpmlImportActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.opml_import);

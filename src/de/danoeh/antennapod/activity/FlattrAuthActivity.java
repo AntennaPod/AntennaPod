@@ -36,8 +36,8 @@ public class FlattrAuthActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		singleton = this;
 		authSuccessful = false;
 		if (AppConfig.DEBUG) Log.d(TAG, "Activity created");

@@ -42,8 +42,8 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 		setTheme(PodcastApp.getThemeResourceId());
+		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 
