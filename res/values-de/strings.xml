@@ -152,6 +152,8 @@
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="pref_auto_delete_sum">Lösche eine Episode nach dem Anhören oder wenn sie von der Abspielliste entfernt wird.</string>
+  <string name="pref_set_theme_title">Theme auswählen</string>
+  <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>

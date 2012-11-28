@@ -152,6 +152,8 @@
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_auto_delete_title">Автоматическое удаление</string>
   <string name="pref_auto_delete_sum">Удалять выпуск сразу по окончании прослушивания или при удалении его из очереди</string>
+  <string name="pref_set_theme_title">Выбор темы</string>
+  <string name="pref_set_theme_sum">Изменить офмление AntennaPod</string>
   <!--Search-->
   <string name="search_hint">Поиск каналов или выпусков</string>
   <string name="found_in_shownotes_label">Найдено в описании выпуска</string>
