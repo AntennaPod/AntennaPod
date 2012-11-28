@@ -7,6 +7,7 @@ import android.app.Activity;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
@@ -48,13 +49,19 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		return f;
 	}
 
+	@SuppressLint("NewApi")
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
+
 		if (PodcastApp.getThemeResourceId() == R.style.Theme_AntennaPod_Dark) {
+			if (Build.VERSION.SDK_INT >= 11
+					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+				webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+			}
 			webvDescription.setBackgroundColor(0);
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
@@ -99,7 +106,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating fragment");
-		setRetainInstance(true);
 		FeedManager manager = FeedManager.getInstance();
 		Bundle args = getArguments();
 		long feedId = args.getLong(ARG_FEED_ID, -1);
@@ -131,7 +137,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 									descriptionRef = result[0];
 									contentEncodedRef = result[1];
 								}
-								
+
 								startLoader();
 							}
 						});
