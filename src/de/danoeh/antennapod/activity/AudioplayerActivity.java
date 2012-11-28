@@ -59,15 +59,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		txtvStatus = (TextView) findViewById(R.id.txtvStatus);
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		tabs = (TabPageIndicator) findViewById(R.id.tabs);
-
-		FeedMedia media = controller.getMedia();
-
-		int tabcount = 2;
-		if (media != null && media.getItem().getChapters() != null) {
-			tabcount = 3;
-		}
-		pagerAdapter = new MediaPlayerPagerAdapter(getSupportFragmentManager(),
-				tabcount, this);
+		pagerAdapter = new MediaPlayerPagerAdapter(getSupportFragmentManager());
 		viewpager.setAdapter(pagerAdapter);
 		tabs.setViewPager(viewpager);
 	}
@@ -94,7 +86,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	public class MediaPlayerPagerAdapter extends FragmentStatePagerAdapter {
 		private int numItems;
-		private AudioplayerActivity activity;
 
 		private SherlockListFragment sCChapterFragment;
 
@@ -103,13 +94,15 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		private static final int POS_CHAPTERS = 2;
 
 		public static final int NUM_ITEMS_WITH_CHAPTERS = 3;
-		public static final int NUM_ITMEMS_WITHOUT_CHAPTERS = 2;
+		public static final int NUM_ITEMS_WITHOUT_CHAPTERS = 2;
 
-		public MediaPlayerPagerAdapter(FragmentManager fm, int numItems,
-				AudioplayerActivity activity) {
+		public MediaPlayerPagerAdapter(FragmentManager fm) {
 			super(fm);
-			this.numItems = numItems;
-			this.activity = activity;
+			numItems = NUM_ITEMS_WITHOUT_CHAPTERS;
+			FeedMedia media = AudioplayerActivity.this.controller.getMedia();
+			if (media != null && media.getItem().getChapters() != null) {
+				numItems = NUM_ITEMS_WITH_CHAPTERS;
+			}
 		}
 
 		@Override
@@ -118,13 +111,13 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			if (media != null) {
 				switch (position) {
 				case POS_COVER:
-					activity.coverFragment = CoverFragment.newInstance(media
-							.getItem());
-					return activity.coverFragment;
-				case POS_DESCR:
-					activity.descriptionFragment = ItemDescriptionFragment
+					AudioplayerActivity.this.coverFragment = CoverFragment
 							.newInstance(media.getItem());
-					return activity.descriptionFragment;
+					return AudioplayerActivity.this.coverFragment;
+				case POS_DESCR:
+					AudioplayerActivity.this.descriptionFragment = ItemDescriptionFragment
+							.newInstance(media.getItem());
+					return AudioplayerActivity.this.descriptionFragment;
 				case POS_CHAPTERS:
 					sCChapterFragment = new SherlockListFragment() {
 
@@ -140,7 +133,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					};
 
 					sCChapterFragment.setListAdapter(new ChapterListAdapter(
-							activity, 0, media.getItem().getChapters(), media));
+							AudioplayerActivity.this, 0, media.getItem()
+									.getChapters(), media));
 
 					return sCChapterFragment;
 				default:
@@ -155,11 +149,13 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 			case POS_COVER:
-				return activity.getString(R.string.cover_label);
+				return AudioplayerActivity.this.getString(R.string.cover_label);
 			case POS_DESCR:
-				return activity.getString(R.string.shownotes_label);
+				return AudioplayerActivity.this
+						.getString(R.string.shownotes_label);
 			case POS_CHAPTERS:
-				return activity.getString(R.string.chapters_label);
+				return AudioplayerActivity.this
+						.getString(R.string.chapters_label);
 			default:
 				return super.getPageTitle(position);
 			}
