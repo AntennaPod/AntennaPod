@@ -40,6 +40,7 @@ public class HttpDownloader extends Downloader {
 			URL url = new URL(status.getFeedFile().getDownload_url());
 			connection = (HttpURLConnection) url.openConnection();
 			connection.setConnectTimeout(CONNECTION_TIMEOUT);
+			connection.setInstanceFollowRedirects(true);
 			int responseCode = connection.getResponseCode();
 			if (responseCode == HttpURLConnection.HTTP_OK) {
 				if (AppConfig.DEBUG) {
