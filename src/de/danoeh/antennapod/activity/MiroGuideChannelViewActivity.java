@@ -119,9 +119,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 				listEntries.setAdapter(listAdapter);
 				progLoading.setVisibility(View.GONE);
 				layoutContent.setVisibility(View.VISIBLE);
-				if (Build.VERSION.SDK_INT >= 11) {
-					invalidateOptionsMenu();
-				}
+				supportInvalidateOptionsMenu();
 			} else {
 				finish();
 			}
@@ -176,9 +174,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 			Toast toast = Toast.makeText(this, R.string.miro_feed_added,
 					Toast.LENGTH_LONG);
 			toast.show();
-			if (Build.VERSION.SDK_INT >= 11) {
-				invalidateOptionsMenu();
-			}
+			supportInvalidateOptionsMenu();
 			return true;
 		default:
 			return false;
