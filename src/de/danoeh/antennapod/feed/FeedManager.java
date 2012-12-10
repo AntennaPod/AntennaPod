@@ -1086,18 +1086,23 @@ public class FeedManager {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		extractFeedlistFromCursor(context, adapter);
+		populateFeeds(context, adapter);
 		extractDownloadLogFromCursor(context, adapter);
 		extractQueueFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
 		cleanupPlaybackHistory();
+		// broadcast list updates
+		sendUnreadItemsUpdateBroadcast(context,null);
+		sendQueueUpdateBroadcast(context,null);
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Extracting Feedlist");
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
+		List<Feed> loaded=new ArrayList<Feed>();
 		if (feedlistCursor.moveToFirst()) {
 			do {
 				Date lastUpdate = new Date(
@@ -1136,19 +1141,24 @@ public class FeedManager {
 						.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
 				feed.setPriority(feedlistCursor
 						.getInt(PodDBAdapter.KEY_FEED_PRIORITY_INDEX));
-				// Get FeedItem-Object
-				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
-				feed.setItems(extractFeedItemsFromCursor(context, feed,
-						itemlistCursor, adapter));
-				itemlistCursor.close();
-
-				feeds.add(feed);
+				loaded.add(feed);
 			} while (feedlistCursor.moveToNext());
 		}
 		feedlistCursor.close();
-
+		setFeeds(loaded);
 	}
-
+	
+	private void populateFeeds(Context context, PodDBAdapter adapter) {
+		for(Feed feed:feeds) {
+			// Get FeedItem-Object
+			Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
+			feed.setItems(extractFeedItemsFromCursor(context, feed,
+					itemlistCursor, adapter));
+			itemlistCursor.close();
+			this.updateFeed(context,feed);
+		}
+	}
+	
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
 			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
 		if (AppConfig.DEBUG)
@@ -1565,6 +1575,42 @@ public class FeedManager {
 		if(sort) {
 			synchronized(queue) {
 				Collections.sort(queue,new QueuePrioritySort());
+			}
+		}
+	}
+
+	/** Sets the feed list on the UI thread and waits for it to complete */
+	public void setFeeds(final List<Feed> loaded) {
+		// sort the feeds
+		Collections.sort(loaded, new FeedtitleComparator());
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				// copy the list
+				synchronized(feeds) {
+					feeds.clear();
+					for(Feed feed:loaded) {
+						feeds.add(feed);
+					}
+				}
+				// notify the db loader thread we have finished
+				synchronized(loaded) {
+					loaded.notify();
+				}
+			}
+			
+		});
+		
+		// wait for feeds list to catch up
+		for(boolean wait=true;wait;) {
+			synchronized(loaded) {
+				try {
+					loaded.wait();
+					wait=false;
+				}
+				catch(InterruptedException e) {
+				}
 			}
 		}
 	}
