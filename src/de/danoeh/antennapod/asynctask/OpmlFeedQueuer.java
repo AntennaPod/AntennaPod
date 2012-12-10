@@ -46,7 +46,7 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 			OpmlElement element = OpmlImportActivity.getReadElements().get(
 					selection[idx]);
 			Feed feed = new Feed(element.getXmlUrl(), new Date(),
-					element.getText());
+					element.getText(), element.getPriority());
 			try {
 				requester.downloadFeed(context.getApplicationContext(), feed);
 			} catch (DownloadRequestException e) {
