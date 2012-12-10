@@ -1087,8 +1087,10 @@ public class FeedManager {
 		adapter.open();
 		extractFeedlistFromCursor(context, adapter);
 		populateFeeds(context, adapter);
-		extractDownloadLogFromCursor(context, adapter);
 		extractQueueFromCursor(context, adapter);
+		// refresh the queue list
+		sendQueueUpdateBroadcast(context,null);
+		extractDownloadLogFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
