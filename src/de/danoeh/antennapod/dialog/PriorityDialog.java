@@ -117,10 +117,6 @@ public class PriorityDialog extends Dialog {
 		}
 	}
 
-	public void onTimeEntered(long millis) {
-		
-	}
-
 	private int readPriority() {
 		int value = Integer.valueOf(etxtPriority.getText().toString());
 		return(value);
