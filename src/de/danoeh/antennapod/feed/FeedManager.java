@@ -1591,38 +1591,27 @@ public class FeedManager {
 
 	/** Sets the feed list on the UI thread and waits for it to complete */
 	public void setFeeds(final List<Feed> loaded) {
+
 		// sort the feeds
 		Collections.sort(loaded, new FeedtitleComparator());
+		// empty the feed list
+		feeds.clear();
 		contentChanger.post(new Runnable() {
 
 			@Override
 			public void run() {
 				// copy the list
 				synchronized(feeds) {
-					feeds.clear();
 					for(Feed feed:loaded) {
 						feeds.add(feed);
 					}
 				}
-				// notify the db loader thread we have finished
-				synchronized(loaded) {
-					loaded.notify();
-				}
 			}
 			
 		});
-		
+	
 		// wait for feeds list to catch up
-		for(boolean wait=true;wait;) {
-			synchronized(loaded) {
-				try {
-					loaded.wait();
-					wait=false;
-				}
-				catch(InterruptedException e) {
-				}
-			}
-		}
+		for(int n=loaded.size();feeds.size()<n;Thread.yield());
 	}
 
 }
