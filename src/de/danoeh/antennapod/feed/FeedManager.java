@@ -1086,10 +1086,12 @@ public class FeedManager {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		extractFeedlistFromCursor(context, adapter);
-		populateFeeds(context, adapter);
+		// load the queue
 		extractQueueFromCursor(context, adapter);
 		// refresh the queue list
 		sendQueueUpdateBroadcast(context,null);
+		// populate all the feed data
+		populateFeeds(context, adapter);
 		extractDownloadLogFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
@@ -1150,14 +1152,18 @@ public class FeedManager {
 		setFeeds(loaded);
 	}
 	
+	private void populateFeed(Context context, PodDBAdapter adapter, Feed feed) {
+		// Get FeedItem-Object
+		Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
+		feed.setItems(extractFeedItemsFromCursor(context, feed,
+				itemlistCursor, adapter));
+		itemlistCursor.close();
+		this.updateFeed(context,feed);
+	}
+	
 	private void populateFeeds(Context context, PodDBAdapter adapter) {
 		for(Feed feed:feeds) {
-			// Get FeedItem-Object
-			Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
-			feed.setItems(extractFeedItemsFromCursor(context, feed,
-					itemlistCursor, adapter));
-			itemlistCursor.close();
-			this.updateFeed(context,feed);
+			populateFeed(context,adapter,feed);
 		}
 	}
 	
@@ -1352,6 +1358,8 @@ public class FeedManager {
 				Feed feed = getFeed(cursor
 						.getLong(PodDBAdapter.KEY_QUEUE_FEED_INDEX));
 				if (feed != null) {
+					// populate the feed item data for the feed
+					populateFeed(context,adapter,feed);
 					FeedItem item = getFeedItem(
 							cursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX),
 							feed);
