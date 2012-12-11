@@ -3,6 +3,7 @@ package de.danoeh.antennapod.feed;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Executor;
@@ -597,6 +598,8 @@ public class FeedManager {
 			markAllItemsRead(context);
 		}
 	}
+	
+	
 
 	public void addQueueItem(final Context context, final FeedItem... items) {
 		if (items.length > 0) {
@@ -609,6 +612,7 @@ public class FeedManager {
 							queue.add(item);
 						}
 					}
+					sortQueue(context);
 					sendQueueUpdateBroadcast(context, items[0]);
 					dbExec.execute(new Runnable() {
 
@@ -1082,18 +1086,27 @@ public class FeedManager {
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		extractFeedlistFromCursor(context, adapter);
-		extractDownloadLogFromCursor(context, adapter);
+		// load the queue
 		extractQueueFromCursor(context, adapter);
+		// refresh the queue list
+		sendQueueUpdateBroadcast(context,null);
+		// populate all the feed data
+		populateFeeds(context, adapter);
+		extractDownloadLogFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
 		cleanupPlaybackHistory();
+		// broadcast list updates
+		sendUnreadItemsUpdateBroadcast(context,null);
+		sendQueueUpdateBroadcast(context,null);
 	}
 
 	private void extractFeedlistFromCursor(Context context, PodDBAdapter adapter) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Extracting Feedlist");
 		Cursor feedlistCursor = adapter.getAllFeedsCursor();
+		List<Feed> loaded=new ArrayList<Feed>();
 		if (feedlistCursor.moveToFirst()) {
 			do {
 				Date lastUpdate = new Date(
@@ -1130,19 +1143,30 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX);
 				feed.setDownloaded(feedlistCursor
 						.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
-				// Get FeedItem-Object
-				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
-				feed.setItems(extractFeedItemsFromCursor(context, feed,
-						itemlistCursor, adapter));
-				itemlistCursor.close();
-
-				feeds.add(feed);
+				feed.setPriority(feedlistCursor
+						.getInt(PodDBAdapter.KEY_FEED_PRIORITY_INDEX));
+				loaded.add(feed);
 			} while (feedlistCursor.moveToNext());
 		}
 		feedlistCursor.close();
-
+		setFeeds(loaded);
 	}
-
+	
+	private void populateFeed(Context context, PodDBAdapter adapter, Feed feed) {
+		// Get FeedItem-Object
+		Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
+		feed.setItems(extractFeedItemsFromCursor(context, feed,
+				itemlistCursor, adapter));
+		itemlistCursor.close();
+		this.updateFeed(context,feed);
+	}
+	
+	private void populateFeeds(Context context, PodDBAdapter adapter) {
+		for(Feed feed:feeds) {
+			populateFeed(context,adapter,feed);
+		}
+	}
+	
 	private ArrayList<FeedItem> extractFeedItemsFromCursor(Context context,
 			Feed feed, Cursor itemlistCursor, PodDBAdapter adapter) {
 		if (AppConfig.DEBUG)
@@ -1334,6 +1358,8 @@ public class FeedManager {
 				Feed feed = getFeed(cursor
 						.getLong(PodDBAdapter.KEY_QUEUE_FEED_INDEX));
 				if (feed != null) {
+					// populate the feed item data for the feed
+					populateFeed(context,adapter,feed);
 					FeedItem item = getFeedItem(
 							cursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX),
 							feed);
@@ -1343,6 +1369,7 @@ public class FeedManager {
 				}
 
 			} while (cursor.moveToNext());
+			sortQueue(context);
 		}
 		cursor.close();
 	}
@@ -1535,6 +1562,56 @@ public class FeedManager {
 		protected void setResult(Cursor c) {
 			result = c;
 		}
+	}
+	
+	public static class QueuePrioritySort implements Comparator<FeedItem> {
+		@Override
+		public int compare(FeedItem o1, FeedItem o2) {
+			int i=0;
+			Feed feed1=o1.getFeed();
+			Feed feed2=o2.getFeed();
+			if(feed1!=null&&feed2!=null) {
+				// sort descending
+				i=feed2.getPriority()-feed1.getPriority();
+			}
+			return(i);
+		}		
+	}
+	
+	public void sortQueue(Context context) {
+		boolean sort = PreferenceManager.getDefaultSharedPreferences(
+				context.getApplicationContext()).getBoolean(
+					PodcastApp.PREF_QUEUE_PRIORITY_SORT,true);
+		if(sort) {
+			synchronized(queue) {
+				Collections.sort(queue,new QueuePrioritySort());
+			}
+		}
+	}
+
+	/** Sets the feed list on the UI thread and waits for it to complete */
+	public void setFeeds(final List<Feed> loaded) {
+
+		// sort the feeds
+		Collections.sort(loaded, new FeedtitleComparator());
+		// empty the feed list
+		feeds.clear();
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				// copy the list
+				synchronized(feeds) {
+					for(Feed feed:loaded) {
+						feeds.add(feed);
+					}
+				}
+			}
+			
+		});
+	
+		// wait for feeds list to catch up
+		for(int n=loaded.size();feeds.size()<n;Thread.yield());
 	}
 
 }

@@ -34,6 +34,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
+	public static final String PREF_QUEUE_PRIORITY_SORT = "prefQueuePrioritySort";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
@@ -52,10 +53,11 @@ public class PodcastApp extends Application implements
 	public static PodcastApp getInstance() {
 		return singleton;
 	}
-
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
@@ -69,8 +71,16 @@ public class PodcastApp extends Application implements
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
+		// load the database off the UI thread.
+		final FeedManager manager = FeedManager.getInstance();
+		new Thread(new Runnable() {
+
+			@Override
+			public void run() {
+				manager.loadDBData(getApplicationContext());	
+			}
+			
+		}).start();
 	}
 
 	/** Create a .nomedia file to prevent scanning by the media scanner. */
