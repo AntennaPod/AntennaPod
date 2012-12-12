@@ -34,6 +34,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
+	public static final String PREF_QUEUE_PRIORITY_SORT = "prefQueuePrioritySort";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
@@ -52,10 +53,11 @@ public class PodcastApp extends Application implements
 	public static PodcastApp getInstance() {
 		return singleton;
 	}
-
+	
 	@Override
 	public void onCreate() {
 		super.onCreate();
+
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 		SharedPreferences prefs = PreferenceManager
@@ -65,12 +67,25 @@ public class PodcastApp extends Application implements
 		currentlyPlayingMediaId = prefs.getLong(
 				PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA,
 				PlaybackService.NO_MEDIA_PLAYING);
+		// start the update alarm
+		int hours = Integer.parseInt(prefs.getString(
+				PREF_UPDATE_INTERVALL, "0"));
+		restartUpdateAlarm(hours);
 		readThemeValue();
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
+		// load the database off the UI thread.
+ 		final FeedManager manager = FeedManager.getInstance();
+ 		new Thread(new Runnable() {
+ 
+ 			@Override
+ 			public void run() {
+ 				manager.loadDBData(getApplicationContext());	
+ 			}
+ 			
+ 		}).start();
+
 	}
 
 	/** Create a .nomedia file to prevent scanning by the media scanner. */
@@ -126,22 +141,9 @@ public class PodcastApp extends Application implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Registered change of application preferences");
 		if (key.equals(PREF_UPDATE_INTERVALL)) {
-			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			int hours = Integer.parseInt(sharedPreferences.getString(
 					PREF_UPDATE_INTERVALL, "0"));
-			PendingIntent updateIntent = PendingIntent.getBroadcast(this, 0,
-					new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
-			alarmManager.cancel(updateIntent);
-			if (hours != 0) {
-				long newIntervall = TimeUnit.HOURS.toMillis(hours);
-				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-						newIntervall, newIntervall, updateIntent);
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Changed alarm to new intervall");
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Automatic update was deactivated");
-			}
+			restartUpdateAlarm(hours);
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
@@ -170,6 +172,23 @@ public class PodcastApp extends Application implements
 			}
 		} else if (key.equals(PREF_THEME)) {
 			readThemeValue();
+		}
+	}
+	
+	private void restartUpdateAlarm(int hours) {
+		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		PendingIntent updateIntent = PendingIntent.getBroadcast(this, 0,
+				new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
+		alarmManager.cancel(updateIntent);
+		if (hours != 0) {
+			long newIntervall = TimeUnit.HOURS.toMillis(hours);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+					newIntervall, newIntervall, updateIntent);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Changed alarm to new intervall");
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Automatic update was deactivated");
 		}
 	}
 

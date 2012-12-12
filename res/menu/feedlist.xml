@@ -47,5 +47,10 @@
         android:showAsAction="collapseActionView"
         android:title="@string/share_source_label">
     </item>
+    <item
+        android:id="@+id/set_priority_item"
+        android:showAsAction="collapseActionView"
+        android:title="@string/set_priority_label">
+    </item>
 
 </menu>

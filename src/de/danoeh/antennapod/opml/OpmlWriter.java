@@ -54,6 +54,7 @@ public class OpmlWriter {
 			if (feed.getLink() != null) {
 				xs.attribute(null, OpmlSymbols.HTMLURL, feed.getLink());
 			}
+			xs.attribute(null, OpmlSymbols.PRIORITY, Integer.toString(feed.getPriority()));
 			xs.endTag(null, OpmlSymbols.OUTLINE);
 		}
 		xs.endTag(null, OpmlSymbols.BODY);
