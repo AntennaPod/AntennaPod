@@ -56,7 +56,15 @@ public class OpmlReader {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
-					element.setText(xpp.getAttributeValue(null, OpmlSymbols.TEXT));
+					
+					final String title = xpp.getAttributeValue(null, OpmlSymbols.TITLE);
+					if (title != null) {
+						Log.i(TAG, "Using title: " + title);
+						element.setText(title);
+					} else {
+						Log.i(TAG, "Title not found, using text");
+						element.setText(xpp.getAttributeValue(null, OpmlSymbols.TEXT));			
+					}
 					element.setXmlUrl(xpp.getAttributeValue(null, OpmlSymbols.XMLURL));
 					element.setHtmlUrl(xpp.getAttributeValue(null, OpmlSymbols.HTMLURL));
 					element.setType(xpp.getAttributeValue(null, OpmlSymbols.TYPE));
