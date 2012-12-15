@@ -47,6 +47,7 @@ public class OpmlWriter {
 		for (Feed feed : feeds) {
 			xs.startTag(null, OpmlSymbols.OUTLINE);
 			xs.attribute(null, OpmlSymbols.TEXT, feed.getTitle());
+			xs.attribute(null, OpmlSymbols.TITLE, feed.getTitle());
 			if (feed.getType() != null) {
 				xs.attribute(null, OpmlSymbols.TYPE, feed.getType());
 			}
