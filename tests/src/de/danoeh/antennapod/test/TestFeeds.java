@@ -287,7 +287,6 @@ public class TestFeeds {
 		"http://bitlove.org/philipbanse/studienwahl_tv_video/feed",
 		"http://bitlove.org/podsafepilot/pmp/feed",
 		"http://bitlove.org/podsafepilot/psid/feed",
-		"http://bitlove.org/ponytimepodcast/ponytimepodcast/feed",
 		"http://bitlove.org/pratfm/strunt/feed",
 		"http://bitlove.org/pressrecord/podcast/feed",
 		"http://bitlove.org/pztv/alle_formate/feed",
