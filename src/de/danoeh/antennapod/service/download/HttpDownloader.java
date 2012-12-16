@@ -14,6 +14,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpConnection;
+import org.apache.http.HttpStatus;
 
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
@@ -25,6 +27,8 @@ import de.danoeh.antennapod.util.StorageUtils;
 public class HttpDownloader extends Downloader {
 	private static final String TAG = "HttpDownloader";
 
+	private static final int MAX_REDIRECTS = 5;
+
 	private static final int BUFFER_SIZE = 8 * 1024;
 	private static final int CONNECTION_TIMEOUT = 5000;
 
@@ -32,17 +36,70 @@ public class HttpDownloader extends Downloader {
 		super(downloadService, status);
 	}
 
+	/**
+	 * This method is called by establishConnection(String). Don't call it
+	 * directly.
+	 * */
+	private HttpURLConnection establishConnection(String location,
+			int redirectCount) throws MalformedURLException, IOException {
+		URL url = new URL(location);
+		HttpURLConnection connection = null;
+		int responseCode = -1;
+		connection = (HttpURLConnection) url.openConnection();
+		connection.setConnectTimeout(CONNECTION_TIMEOUT);
+		// try with 'follow redirect'
+		connection.setInstanceFollowRedirects(true);
+		try {
+			responseCode = connection.getResponseCode();
+		} catch (IOException e) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"Failed to establish connection with 'follow redirects. Disabling 'follow redirects'");
+			connection.disconnect();
+			connection.setInstanceFollowRedirects(false);
+			responseCode = connection.getResponseCode();
+		}
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Response Code: " + responseCode);
+		switch (responseCode) {
+		case HttpStatus.SC_TEMPORARY_REDIRECT:
+			if (redirectCount < MAX_REDIRECTS) {
+				final String redirect = connection.getHeaderField("Location");
+				if (redirect != null) {
+					return establishConnection(redirect, redirectCount + 1);
+				}
+			}
+		case HttpStatus.SC_OK:
+			return connection;
+		default:
+			onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
+					String.valueOf(responseCode));
+			return null;
+		}
+	}
+
+	/**
+	 * Establish connection to resource. This method will also try to handle
+	 * different response codes / redirect issues.
+	 * 
+	 * @return the HttpURLConnection object if the connection could be opened,
+	 *         null otherwise.
+	 * @throws MalformedURLException
+	 *             , IOException
+	 * */
+	private HttpURLConnection establishConnection(String location)
+			throws MalformedURLException, IOException {
+		return establishConnection(location, 0);
+	}
+
 	@Override
 	protected void download() {
 		HttpURLConnection connection = null;
 		OutputStream out = null;
 		try {
-			URL url = new URL(status.getFeedFile().getDownload_url());
-			connection = (HttpURLConnection) url.openConnection();
-			connection.setConnectTimeout(CONNECTION_TIMEOUT);
-			connection.setInstanceFollowRedirects(true);
-			int responseCode = connection.getResponseCode();
-			if (responseCode == HttpURLConnection.HTTP_OK) {
+			connection = establishConnection(status.getFeedFile()
+					.getDownload_url());
+			if (connection != null) {
 				if (AppConfig.DEBUG) {
 					Log.d(TAG, "Connected to resource");
 				}
@@ -94,9 +151,6 @@ public class HttpDownloader extends Downloader {
 				} else {
 					onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
 				}
-			} else {
-				onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
-						String.valueOf(responseCode));
 			}
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
