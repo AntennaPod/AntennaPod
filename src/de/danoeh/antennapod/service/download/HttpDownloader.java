@@ -32,8 +32,8 @@ public class HttpDownloader extends Downloader {
 	private static final int BUFFER_SIZE = 8 * 1024;
 	private static final int CONNECTION_TIMEOUT = 5000;
 
-	public HttpDownloader(DownloadService downloadService, DownloadStatus status) {
-		super(downloadService, status);
+	public HttpDownloader(DownloaderCallback downloaderCallback, DownloadStatus status) {
+		super(downloaderCallback, status);
 	}
 
 	/**

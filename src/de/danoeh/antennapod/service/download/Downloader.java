@@ -8,7 +8,7 @@ import de.danoeh.antennapod.asynctask.DownloadStatus;
 public abstract class Downloader extends Thread {
 	private static final String TAG = "Downloader";
 	private Handler handler;
-	private DownloadService downloadService;
+	private DownloaderCallback downloaderCallback;
 
 	protected boolean finished;
 	
@@ -16,9 +16,9 @@ public abstract class Downloader extends Thread {
 
 	protected volatile DownloadStatus status;
 
-	public Downloader(DownloadService downloadService, DownloadStatus status) {
+	public Downloader(DownloaderCallback downloaderCallback, DownloadStatus status) {
 		super();
-		this.downloadService = downloadService;
+		this.downloaderCallback = downloaderCallback;
 		this.status = status;
 		this.status.setStatusMsg(R.string.download_pending);
 		this.cancelled = false;
@@ -36,7 +36,7 @@ public abstract class Downloader extends Thread {
 
 				@Override
 				public void run() {
-					downloadService.onDownloadCompleted(Downloader.this);
+					downloaderCallback.onDownloadCompleted(Downloader.this);
 				}
 
 			});
