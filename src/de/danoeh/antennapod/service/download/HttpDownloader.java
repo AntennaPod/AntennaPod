@@ -52,6 +52,7 @@ public class HttpDownloader extends Downloader {
 		try {
 			responseCode = connection.getResponseCode();
 		} catch (IOException e) {
+			e.printStackTrace();
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
 						"Failed to establish connection with 'follow redirects. Disabling 'follow redirects'");
@@ -146,6 +147,7 @@ public class HttpDownloader extends Downloader {
 							onFail(DownloadError.ERROR_NOT_ENOUGH_SPACE, null);
 						}
 					} else {
+						Log.w(TAG, "File already exists");
 						onFail(DownloadError.ERROR_FILE_EXISTS, null);
 					}
 				} else {

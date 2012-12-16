@@ -311,8 +311,13 @@ public class DownloadService extends Service {
 			return new HttpDownloader(new DownloaderCallback() {
 				
 				@Override
-				public void onDownloadCompleted(Downloader downloader) {
-					DownloadService.this.onDownloadCompleted(downloader);
+				public void onDownloadCompleted(final Downloader downloader) {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							DownloadService.this.onDownloadCompleted(downloader);							
+						}});
 				}
 			}, status);
 		}
