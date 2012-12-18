@@ -30,7 +30,6 @@ public class Feed extends FeedFile {
 	/** Name of the author */
 	private String author;
 	private FeedImage image;
-	private FeedCategory category;
 	private List<FeedItem> items;
 	/** Date of last refresh. */
 	private Date lastUpdate;
@@ -272,14 +271,6 @@ public class Feed extends FeedFile {
 
 	public void setImage(FeedImage image) {
 		this.image = image;
-	}
-
-	public FeedCategory getCategory() {
-		return category;
-	}
-
-	public void setCategory(FeedCategory category) {
-		this.category = category;
 	}
 
 	public List<FeedItem> getItems() {

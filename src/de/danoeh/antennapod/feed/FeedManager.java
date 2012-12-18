@@ -53,7 +53,6 @@ public class FeedManager {
 	private static FeedManager singleton;
 
 	private List<Feed> feeds;
-	private ArrayList<FeedCategory> categories;
 
 	/** Contains all items where 'read' is false */
 	private List<FeedItem> unreadItems;
@@ -82,7 +81,6 @@ public class FeedManager {
 
 	private FeedManager() {
 		feeds = Collections.synchronizedList(new ArrayList<Feed>());
-		categories = new ArrayList<FeedCategory>();
 		unreadItems = Collections.synchronizedList(new ArrayList<FeedItem>());
 		requester = DownloadRequester.getInstance();
 		downloadLog = new ArrayList<DownloadStatus>();
@@ -1094,7 +1092,6 @@ public class FeedManager {
 
 	public void updateArrays(Context context) {
 		feeds.clear();
-		categories.clear();
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
 		extractFeedlistFromCursor(context, adapter);
