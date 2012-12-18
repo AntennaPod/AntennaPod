@@ -61,8 +61,10 @@ public class FeedItem extends FeedComponent {
 			pubDate = other.pubDate;
 		}
 		if (other.media != null) {
-			if (media == null || media.compareWithOther(media)) {
-				media.updateFromOther(other.media);
+			if (media == null) {
+				media = other.media;
+			} else if (media.compareWithOther(other)) {
+				media.updateFromOther(other);
 			}
 		}
 		if (other.paymentLink != null) {

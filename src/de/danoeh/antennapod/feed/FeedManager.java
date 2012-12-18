@@ -776,18 +776,7 @@ public class FeedManager {
 				sendFeedUpdateBroadcast(context);
 			}
 		});
-		dbExec.execute(new Runnable() {
-
-			@Override
-			public void run() {
-				PodDBAdapter adapter = new PodDBAdapter(context);
-				adapter.open();
-				adapter.setCompleteFeed(feed);
-				feed.cacheDescriptionsOfItems();
-				adapter.close();
-			}
-		});
-
+		setCompleteFeed(context, feed);
 	}
 
 	/**
@@ -811,6 +800,12 @@ public class FeedManager {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Feed with title " + newFeed.getTitle()
 						+ " already exists. Syncing new with existing one.");
+			if (savedFeed.compareWithOther(newFeed)) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Feed has updated attribute values. Updating old feed's attributes");
+				savedFeed.updateFromOther(newFeed);
+			}
 			// Look for new or updated Items
 			for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
 				final FeedItem item = newFeed.getItems().get(idx);
@@ -828,12 +823,14 @@ public class FeedManager {
 						}
 					});
 					markItemRead(context, item, false, false);
+				} else {
+					oldItem.updateFromOther(item);
 				}
 			}
 			// update attributes
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			savedFeed.setType(newFeed.getType());
-			setFeed(context, savedFeed);
+			setCompleteFeed(context, savedFeed);
 			return savedFeed;
 		}
 
@@ -925,6 +922,25 @@ public class FeedManager {
 				PodDBAdapter adapter = new PodDBAdapter(context);
 				adapter.open();
 				adapter.setFeed(feed);
+				feed.cacheDescriptionsOfItems();
+				adapter.close();
+			}
+		});
+
+	}
+	
+	/**
+	 * Updates Information of an existing Feed and its FeedItems. Creates and opens its own
+	 * adapter.
+	 */
+	public void setCompleteFeed(final Context context, final Feed feed) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setCompleteFeed(feed);
 				feed.cacheDescriptionsOfItems();
 				adapter.close();
 			}
@@ -1348,9 +1364,9 @@ public class FeedManager {
 	}
 
 	/**
-	 * Loads description and contentEncoded values from the database and caches it in the feeditem. The task
-	 * callback will contain a String-array with the description at index 0 and
-	 * the value of contentEncoded at index 1.
+	 * Loads description and contentEncoded values from the database and caches
+	 * it in the feeditem. The task callback will contain a String-array with
+	 * the description at index 0 and the value of contentEncoded at index 1.
 	 */
 	public void loadExtraInformationOfItem(final Context context,
 			final FeedItem item, FeedManager.TaskCallback<String[]> callback) {
@@ -1375,7 +1391,7 @@ public class FeedManager {
 							.getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED);
 					item.setCachedDescription(description);
 					item.setCachedContentEncoded(contentEncoded);
-					setResult(new String[] {description, contentEncoded});
+					setResult(new String[] { description, contentEncoded });
 				}
 				adapter.close();
 			}
