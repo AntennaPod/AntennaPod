@@ -12,4 +12,14 @@ public class SimpleChapter extends Chapter {
 		return CHAPTERTYPE_SIMPLECHAPTER;
 	}
 
+	public void updateFromOther(SimpleChapter other) {
+		super.updateFromOther(other);
+		start = other.start;
+		if (other.title != null) {
+			title = other.title;
+		}
+		if (other.link != null) {
+			link = other.link;
+		}
+	}
 }

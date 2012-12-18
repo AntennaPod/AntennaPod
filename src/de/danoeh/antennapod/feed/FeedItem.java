@@ -43,6 +43,38 @@ public class FeedItem extends FeedComponent {
 		this.read = true;
 	}
 
+	public void updateFromOther(FeedItem other) {
+		super.updateFromOther(other);
+		if (other.title != null) {
+			title = other.title;
+		}
+		if (other.getDescription() != null) {
+			description = other.getDescription();
+		}
+		if (other.getContentEncoded() != null) {
+			contentEncoded = other.contentEncoded;
+		}
+		if (other.link != null) {
+			link = other.link;
+		}
+		if (other.pubDate != null && other.pubDate != pubDate) {
+			pubDate = other.pubDate;
+		}
+		if (other.media != null) {
+			if (media == null || media.compareWithOther(media)) {
+				media.updateFromOther(other.media);
+			}
+		}
+		if (other.paymentLink != null) {
+			paymentLink = other.paymentLink;
+		}
+		if (other.chapters != null) {
+			if (chapters == null) {
+				chapters = other.chapters;
+			}
+		}
+	}
+
 	/**
 	 * Moves the 'description' and 'contentEncoded' field of feeditem to their
 	 * SoftReference fields.
@@ -214,9 +246,11 @@ public class FeedItem extends FeedComponent {
 	public void setCachedContentEncoded(String c) {
 		cachedContentEncoded = new SoftReference<String>(c);
 	}
-	
-	public enum State {NEW, IN_PROGRESS, READ, PLAYING}
-	
+
+	public enum State {
+		NEW, IN_PROGRESS, READ, PLAYING
+	}
+
 	public State getState() {
 		if (hasMedia()) {
 			if (isPlaying()) {

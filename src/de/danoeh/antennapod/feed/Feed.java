@@ -171,6 +171,72 @@ public class Feed extends FeedFile {
 		}
 	}
 
+	public void updateFromOther(Feed other) {
+		super.updateFromOther(other);
+		if (other.title != null) {
+			title = other.title;
+		}
+		if (other.feedIdentifier != null) {
+			feedIdentifier = other.feedIdentifier;
+		}
+		if (other.link != null) {
+			link = other.link;
+		}
+		if (other.description != null) {
+			description = other.description;
+		}
+		if (other.language != null) {
+			language = other.language;
+		}
+		if (other.author != null) {
+			author = other.author;
+		}
+		if (other.paymentLink != null) {
+			paymentLink = other.paymentLink;
+		}
+	}
+
+	public boolean compareWithOther(Feed other) {
+		if (super.compareWithOther(other)) {
+			return true;
+		}
+		if (!title.equals(other.title)) {
+			return true;
+		}
+		if (other.feedIdentifier != null) {
+			if (feedIdentifier == null
+					|| !feedIdentifier.equals(other.feedIdentifier)) {
+				return true;
+			}
+		}
+		if (other.link != null) {
+			if (link == null || !link.equals(other.link)) {
+				return true;
+			}
+		}
+		if (other.description != null) {
+			if (description == null || !description.equals(other.description)) {
+				return true;
+			}
+		}
+		if (other.language != null) {
+			if (language == null || !language.equals(other.language)) {
+				return true;
+			}
+		}
+		if (other.author != null) {
+			if (author == null || !author.equals(other.author)) {
+				return true;
+			}
+		}
+		if (other.paymentLink != null) {
+			if (paymentLink == null || !paymentLink.equals(other.paymentLink)) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	@Override
 	public int getTypeAsInt() {
 		return FEEDFILETYPE_FEED;
