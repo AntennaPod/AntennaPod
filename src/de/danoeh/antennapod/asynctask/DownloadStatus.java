@@ -83,6 +83,18 @@ public class DownloadStatus {
 				new Date(), reasonDetailed);
 	}
 
+	@Override
+	public String toString() {
+		return "DownloadStatus [id=" + id + ", title=" + title + ", reason="
+				+ reason + ", reasonDetailed=" + reasonDetailed
+				+ ", successful=" + successful + ", completionDate="
+				+ completionDate + ", feedfile=" + feedfile + ", feedfileType="
+				+ feedfileType + ", progressPercent=" + progressPercent
+				+ ", soFar=" + soFar + ", size=" + size + ", statusMsg="
+				+ statusMsg + ", done=" + done + ", cancelled=" + cancelled
+				+ "]";
+	}
+
 	public FeedFile getFeedFile() {
 		return feedfile;
 	}

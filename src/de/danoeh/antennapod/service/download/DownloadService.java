@@ -308,7 +308,18 @@ public class DownloadService extends Service {
 
 	private Downloader getDownloader(DownloadStatus status) {
 		if (URLUtil.isHttpUrl(status.getFeedFile().getDownload_url())) {
-			return new HttpDownloader(this, status);
+			return new HttpDownloader(new DownloaderCallback() {
+				
+				@Override
+				public void onDownloadCompleted(final Downloader downloader) {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							DownloadService.this.onDownloadCompleted(downloader);							
+						}});
+				}
+			}, status);
 		}
 		Log.e(TAG, "Could not find appropriate downloader for "
 				+ status.getFeedFile().getDownload_url());
