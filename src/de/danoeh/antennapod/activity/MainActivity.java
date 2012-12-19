@@ -160,7 +160,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = new MenuInflater(this);
-		inflater.inflate(R.menu.podfetcher, menu);
+		inflater.inflate(R.menu.main, menu);
 		return true;
 	}
 
