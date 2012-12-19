@@ -17,7 +17,6 @@ public class OpmlReader {
 	
 	// ATTRIBUTES
 	private boolean isInOpml = false;
-	private boolean isInBody = false;
 	private ArrayList<OpmlElement> elementList;
 
 	/**
@@ -47,12 +46,7 @@ public class OpmlReader {
 					isInOpml = true;
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Reached beginning of OPML tree.");
-				} else if (isInOpml && xpp.getName().equals(OpmlSymbols.BODY)) {
-					isInBody = true;
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Reached beginning of body tree.");
-
-				} else if (isInBody && xpp.getName().equals(OpmlSymbols.OUTLINE)) {
+				} else if (isInOpml && xpp.getName().equals(OpmlSymbols.OUTLINE)) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
