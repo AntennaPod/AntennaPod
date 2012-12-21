@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.9.6.2
+---------------
+* Fixed import problems with some OPML files
+* Fixed download problems
+* AntennaPod now recognizes changes of episode information
+* Other improvements and bugfixes
+
 Version 0.9.6.1
 ---------------
 * Added dark theme
