@@ -21,6 +21,7 @@
         <item name="attr/navigation_cancel">@drawable/navigation_cancel</item>
         <item name="attr/navigation_expand">@drawable/navigation_expand</item>
         <item name="attr/navigation_refresh">@drawable/navigation_refresh</item>
+        <item name="attr/navigation_up">@drawable/navigation_up</item>
         <item name="attr/social_share">@drawable/social_share</item>
         <item name="attr/stat_playlist">@drawable/stat_playlist</item>
         <item name="attr/type_audio">@drawable/type_audio</item>
@@ -28,7 +29,6 @@
         <item name="attr/non_transparent_background">@color/white</item>
         <item name="attr/borderless_button">@drawable/borderless_button</item>
         <item name="attr/video_overlay_background">@color/video_overlay_light</item>
-        
     </style>
 
     <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -55,6 +55,7 @@
         <item name="attr/navigation_cancel">@drawable/navigation_cancel_dark</item>
         <item name="attr/navigation_expand">@drawable/navigation_expand_dark</item>
         <item name="attr/navigation_refresh">@drawable/navigation_refresh_dark</item>
+        <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
         <item name="attr/social_share">@drawable/social_share_dark</item>
         <item name="attr/stat_playlist">@drawable/stat_playlist_dark</item>
         <item name="attr/type_audio">@drawable/type_audio_dark</item>

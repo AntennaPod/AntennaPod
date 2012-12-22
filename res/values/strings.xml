@@ -214,5 +214,10 @@
     <string name="best_rating_label">Best rating</string>
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
-
+    
+    <!-- Directory chooser -->
+	<string name="selected_folder_label">Selected folder:</string>
+	<string name="new_folder_label">New folder</string>
+	<string name="create_folder_label">Create folder</string>
+	<string name="choose_data_directory">Choose data folder</string>
 </resources>

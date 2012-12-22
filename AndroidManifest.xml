@@ -221,6 +221,7 @@
             android:screenOrientation="landscape">
         </activity>
         <activity android:label="@string/playback_history_label" android:name=".activity.PlaybackHistoryActivity"></activity>
+        <activity android:name=".activity.DirectoryChooserActivity" android:label="@string/choose_data_directory"></activity>
     </application>
 
 </manifest>

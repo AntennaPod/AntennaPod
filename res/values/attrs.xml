@@ -19,6 +19,7 @@
     <attr name="navigation_cancel" format="reference" />
     <attr name="navigation_expand" format="reference" />
     <attr name="navigation_refresh" format="reference" />
+    <attr name="navigation_up" format="reference" />
     <attr name="social_share" format="reference" />
     <attr name="stat_playlist" format="reference" />
     <attr name="type_audio" format="reference" />
