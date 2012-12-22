@@ -12,7 +12,7 @@ import de.danoeh.antennapod.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
 
 public class NSSimpleChapters extends Namespace {
-	public static final String NSTAG = "sc";
+	public static final String NSTAG = "psc|sc";
 	public static final String NSURI = "http://podlove.org/simple-chapters";
 
 	public static final String CHAPTERS = "chapters";

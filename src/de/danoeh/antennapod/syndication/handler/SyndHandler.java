@@ -97,7 +97,7 @@ public class SyndHandler extends DefaultHandler {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Recognized ITunes namespace");
 			} else if (uri.equals(NSSimpleChapters.NSURI)
-					&& prefix.equals(NSSimpleChapters.NSTAG)) {
+					&& prefix.matches(NSSimpleChapters.NSTAG)) {
 				state.namespaces.put(uri, new NSSimpleChapters());
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Recognized SimpleChapters namespace");
