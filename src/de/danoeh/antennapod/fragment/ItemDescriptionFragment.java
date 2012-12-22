@@ -14,6 +14,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -65,6 +66,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			webvDescription.setBackgroundColor(0);
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
+		webvDescription.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
 		return webvDescription;
 	}
 

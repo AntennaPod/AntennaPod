@@ -481,6 +481,7 @@ public class PodDBAdapter {
 
 	/** Remove a feed with all its FeedItems and Media entries. */
 	public void removeFeed(Feed feed) {
+		db.beginTransaction();
 		if (feed.getImage() != null) {
 			removeFeedImage(feed.getImage());
 		}
@@ -489,6 +490,8 @@ public class PodDBAdapter {
 		}
 		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
 				new String[] { String.valueOf(feed.getId()) });
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 	public void removeDownloadStatus(DownloadStatus remove) {

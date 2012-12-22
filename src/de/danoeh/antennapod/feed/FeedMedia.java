@@ -65,6 +65,31 @@ public class FeedMedia extends FeedFile {
 		return MediaType.UNKNOWN;
 	}
 
+	public void updateFromOther(FeedMedia other) {
+		super.updateFromOther(other);
+		if (other.size > 0) {
+			size = other.size;
+		}
+		if (other.mime_type != null) {
+			mime_type = other.mime_type;
+		}
+	}
+
+	public boolean compareWithOther(FeedMedia other) {
+		if (super.compareWithOther(other)) {
+			return true;
+		}
+		if (other.mime_type != null) {
+			if (mime_type == null || !mime_type.equals(other.mime_type)) {
+				return true;
+			}
+		}
+		if (other.size > 0 && other.size != size) {
+			return true;
+		}
+		return false;
+	}
+
 	@Override
 	public int getTypeAsInt() {
 		return FEEDFILETYPE_FEEDMEDIA;

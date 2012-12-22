@@ -308,7 +308,20 @@ public class DownloadService extends Service {
 
 	private Downloader getDownloader(DownloadStatus status) {
 		if (URLUtil.isHttpUrl(status.getFeedFile().getDownload_url())) {
-			return new HttpDownloader(this, status);
+			return new HttpDownloader(new DownloaderCallback() {
+
+				@Override
+				public void onDownloadCompleted(final Downloader downloader) {
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							DownloadService.this
+									.onDownloadCompleted(downloader);
+						}
+					});
+				}
+			}, status);
 		}
 		Log.e(TAG, "Could not find appropriate downloader for "
 				+ status.getFeedFile().getDownload_url());
@@ -318,6 +331,21 @@ public class DownloadService extends Service {
 	@SuppressLint("NewApi")
 	public void onDownloadCompleted(final Downloader downloader) {
 		final AsyncTask<Void, Void, Void> handlerTask = new AsyncTask<Void, Void, Void>() {
+			boolean successful;
+
+			@Override
+			protected void onPostExecute(Void result) {
+				super.onPostExecute(result);
+				if (!successful) {
+					queryDownloads();
+				}
+			}
+			
+			@Override
+			protected void onPreExecute() {
+				super.onPreExecute();
+				removeDownload(downloader);
+			}
 
 			@Override
 			protected Void doInBackground(Void... params) {
@@ -326,7 +354,7 @@ public class DownloadService extends Service {
 				downloadsBeingHandled += 1;
 				DownloadStatus status = downloader.getStatus();
 				status.setCompletionDate(new Date());
-				boolean successful = status.isSuccessful();
+				successful = status.isSuccessful();
 
 				FeedFile download = status.getFeedFile();
 				if (download != null) {
@@ -349,10 +377,6 @@ public class DownloadService extends Service {
 						downloadsBeingHandled -= 1;
 					}
 				}
-				removeDownload(downloader);
-				if (!successful) {
-					queryDownloads();
-				}
 				return null;
 			}
 		};
@@ -368,7 +392,9 @@ public class DownloadService extends Service {
 	 * DownloadService list.
 	 */
 	private void removeDownload(final Downloader d) {
-		downloads.remove(d);
+		if (AppConfig.DEBUG) Log.d(TAG, "Removing downloader: " + d.getStatus().getFeedFile().getDownload_url());
+		boolean rc = downloads.remove(d);
+		if (AppConfig.DEBUG) Log.d(TAG, "Result of downloads.remove: " + rc);
 		DownloadRequester.getInstance().removeDownload(
 				d.getStatus().getFeedFile());
 		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
@@ -536,12 +562,12 @@ public class DownloadService extends Service {
 			reason = 0;
 			String reasonDetailed = null;
 			successful = true;
-			FeedManager manager = FeedManager.getInstance();
-			FeedHandler handler = new FeedHandler();
+			final FeedManager manager = FeedManager.getInstance();
+			FeedHandler feedHandler = new FeedHandler();
 			feed.setDownloaded(true);
 
 			try {
-				feed = handler.parseFeed(feed);
+				feed = feedHandler.parseFeed(feed);
 				if (AppConfig.DEBUG)
 					Log.d(TAG, feed.getTitle() + " parsed");
 				if (checkFeedData(feed) == false) {
@@ -555,18 +581,29 @@ public class DownloadService extends Service {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Feed has image; Downloading....");
 					savedFeed.getImage().setFeed(savedFeed);
-					try {
-						requester.downloadImage(DownloadService.this,
-								savedFeed.getImage());
-					} catch (DownloadRequestException e) {
-						e.printStackTrace();
-						manager.addDownloadStatus(DownloadService.this,
-								new DownloadStatus(savedFeed.getImage(),
-										savedFeed.getImage()
-												.getHumanReadableIdentifier(),
-										DownloadError.ERROR_REQUEST_ERROR,
-										false, e.getMessage()));
-					}
+					final Feed savedFeedRef = savedFeed;
+					handler.post(new Runnable() {
+
+						@Override
+						public void run() {
+							try {
+								requester.downloadImage(DownloadService.this,
+										savedFeedRef.getImage());
+							} catch (DownloadRequestException e) {
+								e.printStackTrace();
+								manager.addDownloadStatus(
+										DownloadService.this,
+										new DownloadStatus(
+												savedFeedRef.getImage(),
+												savedFeedRef
+														.getImage()
+														.getHumanReadableIdentifier(),
+												DownloadError.ERROR_REQUEST_ERROR,
+												false, e.getMessage()));
+							}
+						}
+					});
+
 				}
 
 			} catch (SAXException e) {
@@ -606,7 +643,14 @@ public class DownloadService extends Service {
 					reasonDetailed));
 			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
 			downloadsBeingHandled -= 1;
-			queryDownloads();
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					queryDownloads();
+
+				}
+			});
 		}
 
 		/** Checks if the feed was parsed correctly. */
@@ -683,7 +727,14 @@ public class DownloadService extends Service {
 						"Image has no feed, image might not be saved correctly!");
 			}
 			downloadsBeingHandled -= 1;
-			queryDownloads();
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					queryDownloads();
+
+				}
+			});
 		}
 	}
 
@@ -739,7 +790,14 @@ public class DownloadService extends Service {
 			}
 
 			downloadsBeingHandled -= 1;
-			queryDownloads();
+			handler.post(new Runnable() {
+
+				@Override
+				public void run() {
+					queryDownloads();
+
+				}
+			});
 		}
 	}
 
