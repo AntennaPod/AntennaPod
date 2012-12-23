@@ -27,6 +27,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
 	private static final String PREF_OPML_EXPORT = "prefOpmlExport";
 	private static final String PREF_ABOUT = "prefAbout";
+	private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -84,6 +85,15 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
+		
+		findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				startActivity(new Intent(PreferenceActivity.this, DirectoryChooserActivity.class));
+				return true;
+			}
+		});
 		findPreference(PodcastApp.PREF_THEME).setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 			
 			@Override

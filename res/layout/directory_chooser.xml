@@ -38,8 +38,8 @@
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="@drawable/borderless_button"
-            android:src="@attr/navigation_up" />
+            android:background="?attr/borderless_button"
+            android:src="?attr/navigation_up" />
 
         <TextView
             android:id="@+id/txtvSelectedFolderLabel"
@@ -56,10 +56,15 @@
 
         <TextView
             android:id="@+id/txtvSelectedFolder"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/txtvSelectedFolderLabel"
             android:layout_margin="8dp"
             android:layout_toRightOf="@id/butNavUp"
-            android:ellipsize="middle" />
+            android:ellipsize="start"
+            android:scrollHorizontally="true"
+            android:singleLine="true" />
 
         <View
             android:id="@+id/divider"

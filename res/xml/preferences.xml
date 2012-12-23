@@ -51,7 +51,7 @@
             android:title="@string/pref_revokeAccess_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
-        <Preference
+        <Preference android:title="@string/choose_data_directory" android:key="prefChooseDataDir"/><Preference
             android:key="prefFlattrThisApp"
             android:summary="@string/pref_flattr_this_app_sum"
             android:title="@string/pref_flattr_this_app_title" >
@@ -59,6 +59,7 @@
         <Preference android:key="prefOpmlExport" android:title="@string/opml_export_label"/><Preference
             android:key="prefAbout"
             android:title="@string/about_pref" />
+        
         
     </PreferenceCategory>
 
