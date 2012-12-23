@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
@@ -19,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.SlidingDrawer;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
@@ -32,6 +36,8 @@ import de.danoeh.antennapod.R;
 /** Let's the user choose a directory on the storage device. */
 public class DirectoryChooserActivity extends SherlockActivity {
 	private static final String TAG = "DirectoryChooserActivity";
+
+	private static final String CREATE_DIRECTORY_NAME = "AntennaPod";
 
 	private Button butConfirm;
 	private Button butCancel;
@@ -215,7 +221,51 @@ public class DirectoryChooserActivity extends SherlockActivity {
 	}
 
 	private void openNewFolderDialog() {
-		
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setTitle(R.string.create_folder_label);
+		builder.setMessage(String.format(getString(R.string.create_folder_msg),
+				CREATE_DIRECTORY_NAME));
+		builder.setNegativeButton(R.string.cancel_label,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+					}
+				});
+		builder.setPositiveButton(R.string.confirm_label,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.dismiss();
+						int msg = createFolder();
+						Toast t = Toast.makeText(DirectoryChooserActivity.this,
+								msg, Toast.LENGTH_SHORT);
+						t.show();
+					}
+				});
+		builder.create().show();
+	}
+
+	private int createFolder() {
+		if (selectedDir != null && selectedDir.canWrite()) {
+			File newDir = new File(selectedDir, CREATE_DIRECTORY_NAME);
+			if (!newDir.exists()) {
+				boolean result = newDir.mkdir();
+				if (result) {
+					return R.string.create_folder_success;
+				} else {
+					return R.string.create_folder_error;
+				}
+			} else {
+				return R.string.create_folder_error_already_exists;
+			}
+		} else if (selectedDir.canWrite() == false) {
+			return R.string.create_folder_error_no_write_access;
+		} else {
+			return R.string.create_folder_error;
+		}
 	}
 
 }

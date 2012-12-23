@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
-    <item android:id="@+id/new_folder_item" android:title="@string/new_folder_label" android:showAsAction="ifRoom|withText"></item>
+    <item android:id="@+id/new_folder_item" android:title="@string/create_folder_label" android:showAsAction="ifRoom|withText"></item>
     
 
 </menu>
