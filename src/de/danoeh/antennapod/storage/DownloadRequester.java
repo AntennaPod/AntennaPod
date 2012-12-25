@@ -11,6 +11,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
@@ -281,7 +282,7 @@ public class DownloadRequester {
 
 	private File getExternalFilesDirOrThrowException(Context context,
 			String type) throws DownloadRequestException {
-		File result = context.getExternalFilesDir(type);
+		File result = PodcastApp.getDataFolder(context, type);
 		if (result == null) {
 			throw new DownloadRequestException(
 					"Failed to access external storage");

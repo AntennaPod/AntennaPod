@@ -5,9 +5,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
@@ -20,7 +21,6 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
-import android.widget.SlidingDrawer;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -41,6 +41,9 @@ public class DirectoryChooserActivity extends SherlockActivity {
 	private static final String TAG = "DirectoryChooserActivity";
 
 	private static final String CREATE_DIRECTORY_NAME = "AntennaPod";
+
+	public static final String RESULT_SELECTED_DIR = "selected_dir";
+	public static final int RESULT_CODE_DIR_SELECTED = 1;
 
 	private Button butConfirm;
 	private Button butCancel;
@@ -73,6 +76,13 @@ public class DirectoryChooserActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Returning " + selectedDir.getAbsolutePath()
+							+ " as result");
+				Intent resultData = new Intent();
+				resultData.putExtra(RESULT_SELECTED_DIR,
+						selectedDir.getAbsolutePath());
+				setResult(RESULT_CODE_DIR_SELECTED, resultData);
 				finish();
 			}
 		});
@@ -81,6 +91,7 @@ public class DirectoryChooserActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
+				setResult(Activity.RESULT_CANCELED);
 				finish();
 			}
 		});

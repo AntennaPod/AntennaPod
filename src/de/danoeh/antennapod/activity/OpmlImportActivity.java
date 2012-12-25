@@ -72,7 +72,7 @@ public class OpmlImportActivity extends SherlockActivity {
 	 * directory.
 	 */
 	private void setImportPath() {
-		File importDir = getExternalFilesDir(IMPORT_DIR);
+		File importDir = PodcastApp.getDataFolder(this, IMPORT_DIR);
 		boolean success = true;
 		if (!importDir.exists()) {
 			if (AppConfig.DEBUG)
