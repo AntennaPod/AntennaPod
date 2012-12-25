@@ -33,7 +33,10 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 
-/** Let's the user choose a directory on the storage device. */
+/**
+ * Let's the user choose a directory on the storage device. The selected folder
+ * will be sent back to the starting activity as an activity result.
+ */
 public class DirectoryChooserActivity extends SherlockActivity {
 	private static final String TAG = "DirectoryChooserActivity";
 
@@ -47,6 +50,7 @@ public class DirectoryChooserActivity extends SherlockActivity {
 
 	private ArrayAdapter<String> listDirectoriesAdapter;
 	private ArrayList<String> filenames;
+	/** The directory that is currently being shown. */
 	private File selectedDir;
 	private File[] filesInDir;
 
@@ -130,6 +134,14 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		}
 	}
 
+	/**
+	 * Change the directory that is currently being displayed.
+	 * 
+	 * @param dir
+	 *            The file the activity should switch to. This File must be
+	 *            non-null and a directory, otherwise the displayed directory
+	 *            will not be changed
+	 */
 	private void changeDirectory(File dir) {
 		if (dir != null && dir.isDirectory()) {
 			File[] contents = dir.listFiles();
@@ -174,12 +186,14 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		}
 	}
 
+	/** Refresh the contents of the directory that is currently shown. */
 	private void refreshDirectory() {
 		if (selectedDir != null) {
 			changeDirectory(selectedDir);
 		}
 	}
 
+	/** Sets up a FileObserver to watch the current directory. */
 	private FileObserver createFileObserver(String path) {
 		return new FileObserver(path, FileObserver.CREATE | FileObserver.DELETE
 				| FileObserver.MOVED_FROM | FileObserver.MOVED_TO) {
@@ -220,6 +234,10 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		}
 	}
 
+	/**
+	 * Shows a confirmation dialog that asks the user if he wants to create a
+	 * new folder.
+	 */
 	private void openNewFolderDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(this);
 		builder.setTitle(R.string.create_folder_label);
@@ -248,6 +266,10 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		builder.create().show();
 	}
 
+	/**
+	 * Creates a new folder in the current directory with the name
+	 * CREATE_DIRECTORY_NAME.
+	 */
 	private int createFolder() {
 		if (selectedDir != null && selectedDir.canWrite()) {
 			File newDir = new File(selectedDir, CREATE_DIRECTORY_NAME);
