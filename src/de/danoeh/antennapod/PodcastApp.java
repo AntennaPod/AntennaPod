@@ -241,6 +241,19 @@ public class PodcastApp extends Application implements
 			if (type == null) {
 				return dataDir;
 			} else {
+				// handle path separators
+				String[] dirs = type.split("/");
+				for (int i = 0; i < dirs.length; i++) {
+					if (dirs.length > 0) {
+						if (i < dirs.length - 1) {
+							dataDir = getDataFolder(context, dirs[i]);
+							if (dataDir == null) {
+								return null;
+							}
+						}
+						type = dirs[i];
+					}
+				}
 				File typeDir = new File(dataDir, type);
 				if (!typeDir.exists()) {
 					if (dataDir.canWrite()) {
@@ -265,5 +278,6 @@ public class PodcastApp extends Application implements
 		SharedPreferences.Editor editor = prefs.edit();
 		editor.putString(PodcastApp.PREF_DATA_FOLDER, dir);
 		editor.commit();
+		createImportDirectory();
 	}
 }
