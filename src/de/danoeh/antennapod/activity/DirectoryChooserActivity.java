@@ -195,6 +195,17 @@ public class DirectoryChooserActivity extends SherlockActivity {
 					Log.d(TAG, "Could not change folder: dir is no directory");
 			}
 		}
+		refreshButtonState();
+	}
+
+	/**
+	 * Changes the state of the buttons depending on the currently selected file
+	 * or folder.
+	 */
+	private void refreshButtonState() {
+		if (selectedDir != null) {
+			butConfirm.setEnabled(isValidFile(selectedDir));
+		}
 	}
 
 	/** Refresh the contents of the directory that is currently shown. */
@@ -301,4 +312,9 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		}
 	}
 
+	/** Returns true if the selected file or directory would be valid selection. */
+	private boolean isValidFile(File file) {
+		return (file != null && file.isDirectory() && file.canRead() && file
+				.canWrite());
+	}
 }
