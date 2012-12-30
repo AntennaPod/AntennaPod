@@ -19,6 +19,7 @@ import org.apache.http.HttpStatus;
 
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
@@ -104,7 +105,7 @@ public class HttpDownloader extends Downloader {
 				if (AppConfig.DEBUG) {
 					Log.d(TAG, "Connected to resource");
 				}
-				if (StorageUtils.externalStorageMounted()) {
+				if (StorageUtils.storageAvailable(PodcastApp.getInstance())) {
 					File destination = new File(status.getFeedFile()
 							.getFile_url());
 					if (!destination.exists()) {

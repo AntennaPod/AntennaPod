@@ -39,7 +39,7 @@ public class StorageErrorActivity extends SherlockActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (StorageUtils.storageAvailable()) {
+		if (StorageUtils.storageAvailable(this)) {
 			leaveErrorState();
 		} else {
 			registerReceiver(mediaUpdate, new IntentFilter(
