@@ -158,13 +158,19 @@ public class DirectoryChooserActivity extends SherlockActivity {
 		changeDirectory(Environment.getExternalStorageDirectory());
 	}
 
-	/** Finishes the activity and returns the selected folder as a result. */
+	/**
+	 * Finishes the activity and returns the selected folder as a result. The
+	 * selected folder can also be null.
+	 */
 	private void returnSelectedFolder() {
-		if (AppConfig.DEBUG)
+		if (selectedDir != null && AppConfig.DEBUG)
 			Log.d(TAG, "Returning " + selectedDir.getAbsolutePath()
 					+ " as result");
 		Intent resultData = new Intent();
-		resultData.putExtra(RESULT_SELECTED_DIR, selectedDir.getAbsolutePath());
+		if (selectedDir != null) {
+			resultData.putExtra(RESULT_SELECTED_DIR,
+					selectedDir.getAbsolutePath());
+		}
 		setResult(RESULT_CODE_DIR_SELECTED, resultData);
 		finish();
 	}
@@ -298,6 +304,10 @@ public class DirectoryChooserActivity extends SherlockActivity {
 			return true;
 		case R.id.new_folder_item:
 			openNewFolderDialog();
+			return true;
+		case R.id.set_to_default_folder_item:
+			selectedDir = null;
+			returnSelectedFolder();
 			return true;
 		default:
 			return false;

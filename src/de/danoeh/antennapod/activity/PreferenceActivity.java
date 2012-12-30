@@ -177,14 +177,9 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
 			String dir = data
 					.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
-			if (dir != null) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Setting data folder");
-				PodcastApp.getInstance().setDataFolder(dir);
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Result from DirectoryChooser was null");
-			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Setting data folder");
+			PodcastApp.getInstance().setDataFolder(dir);
 		}
 	}
 
