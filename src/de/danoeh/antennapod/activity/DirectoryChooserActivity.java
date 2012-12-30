@@ -5,8 +5,11 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import org.apache.commons.io.FileUtils;
+
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.AlertDialog.Builder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -76,14 +79,40 @@ public class DirectoryChooserActivity extends SherlockActivity {
 
 			@Override
 			public void onClick(View v) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Returning " + selectedDir.getAbsolutePath()
-							+ " as result");
-				Intent resultData = new Intent();
-				resultData.putExtra(RESULT_SELECTED_DIR,
-						selectedDir.getAbsolutePath());
-				setResult(RESULT_CODE_DIR_SELECTED, resultData);
-				finish();
+				if (isValidFile(selectedDir)) {
+					if (selectedDir.list().length == 0) {
+						returnSelectedFolder();
+					} else {
+						showNonEmptyDirectoryWarning();
+					}
+				}
+			}
+
+			private void showNonEmptyDirectoryWarning() {
+				AlertDialog.Builder adb = new AlertDialog.Builder(
+						DirectoryChooserActivity.this);
+				adb.setTitle(R.string.folder_not_empty_dialog_title);
+				adb.setMessage(R.string.folder_not_empty_dialog_msg);
+				adb.setNegativeButton(R.string.cancel_label,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+							}
+						});
+				adb.setPositiveButton(R.string.confirm_label,
+						new DialogInterface.OnClickListener() {
+
+							@Override
+							public void onClick(DialogInterface dialog,
+									int which) {
+								dialog.dismiss();
+								returnSelectedFolder();
+							}
+						});
+				adb.create().show();
 			}
 		});
 
@@ -127,6 +156,17 @@ public class DirectoryChooserActivity extends SherlockActivity {
 				android.R.layout.simple_list_item_1, filenames);
 		listDirectories.setAdapter(listDirectoriesAdapter);
 		changeDirectory(Environment.getExternalStorageDirectory());
+	}
+
+	/** Finishes the activity and returns the selected folder as a result. */
+	private void returnSelectedFolder() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Returning " + selectedDir.getAbsolutePath()
+					+ " as result");
+		Intent resultData = new Intent();
+		resultData.putExtra(RESULT_SELECTED_DIR, selectedDir.getAbsolutePath());
+		setResult(RESULT_CODE_DIR_SELECTED, resultData);
+		finish();
 	}
 
 	@Override
@@ -205,6 +245,7 @@ public class DirectoryChooserActivity extends SherlockActivity {
 	private void refreshButtonState() {
 		if (selectedDir != null) {
 			butConfirm.setEnabled(isValidFile(selectedDir));
+			supportInvalidateOptionsMenu();
 		}
 	}
 
@@ -233,6 +274,13 @@ public class DirectoryChooserActivity extends SherlockActivity {
 				});
 			}
 		};
+	}
+
+	@Override
+	public boolean onPrepareOptionsMenu(Menu menu) {
+		menu.findItem(R.id.new_folder_item)
+				.setVisible(isValidFile(selectedDir));
+		return true;
 	}
 
 	@Override

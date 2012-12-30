@@ -214,14 +214,17 @@
     <string name="best_rating_label">Best rating</string>
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
-    
+
     <!-- Directory chooser -->
-	<string name="selected_folder_label">Selected folder:</string>
-	<string name="create_folder_label">Create folder</string>
-	<string name="choose_data_directory">Choose data folder</string>
-	<string name="create_folder_msg">Create new folder with name "%1$s"?</string>
-	<string name="create_folder_success">Created new folder</string>
-	<string name="create_folder_error_no_write_access">Cannot write to this folder</string>
-	<string name="create_folder_error_already_exists">Folder already exists</string>
-	<string name="create_folder_error">Could not create folder</string>
+    <string name="selected_folder_label">Selected folder:</string>
+    <string name="create_folder_label">Create folder</string>
+    <string name="choose_data_directory">Choose data folder</string>
+    <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
+    <string name="create_folder_success">Created new folder</string>
+    <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
+    <string name="create_folder_error_already_exists">Folder already exists</string>
+    <string name="create_folder_error">Could not create folder</string>
+    <string name="folder_not_empty_dialog_title">Folder is not empty</string>
+    <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other data will be placed directly in this folder. Continue anyway?</string>
+
 </resources>
