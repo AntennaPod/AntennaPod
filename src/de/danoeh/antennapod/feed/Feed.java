@@ -36,6 +36,7 @@ public class Feed extends FeedFile {
 	private String paymentLink;
 	/** Feed type, for example RSS 2 or Atom */
 	private String type;
+	private int priority = 0;
 
 	public Feed(Date lastUpdate) {
 		super();
@@ -59,6 +60,16 @@ public class Feed extends FeedFile {
 	public Feed(String url, Date lastUpdate, String title) {
 		this(url, lastUpdate);
 		this.title = title;
+	}
+	
+	/**
+	 * This constructor is used for creating a feed from opml.
+	 * */
+	public Feed(String url, Date lastUpdate, String title, String priority) {
+		this(url, lastUpdate);
+		this.title = title;
+		// set the priority
+		setPriority(priority);
 	}
 
 	/**
@@ -327,6 +338,25 @@ public class Feed extends FeedFile {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+	
+	public int getPriority() {
+		return(priority);
+	}
+	
+	public void setPriority(int priority) {
+		this.priority=priority;
+	}
+	
+	public void setPriority(String priority) {
+		if(priority!=null) {
+			try {
+				int p=Integer.parseInt(priority);
+				setPriority(p);
+			}
+			catch(NumberFormatException e) {
+			}
+		}
 	}
 
 }
