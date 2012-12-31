@@ -15,8 +15,18 @@ import java.net.UnknownHostException;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpConnection;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.conn.ClientConnectionManager;
+import org.apache.http.params.HttpParams;
+import org.apache.http.protocol.BasicHttpContext;
+import org.apache.http.protocol.HttpContext;
 
+import android.net.http.AndroidHttpClient;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
@@ -33,8 +43,20 @@ public class HttpDownloader extends Downloader {
 	private static final int BUFFER_SIZE = 8 * 1024;
 	private static final int CONNECTION_TIMEOUT = 5000;
 
-	public HttpDownloader(DownloaderCallback downloaderCallback, DownloadStatus status) {
+	public HttpDownloader(DownloaderCallback downloaderCallback,
+			DownloadStatus status) {
 		super(downloaderCallback, status);
+	}
+
+	private AndroidHttpClient createHttpClient() {
+		AndroidHttpClient httpClient = AndroidHttpClient.newInstance("");
+		HttpParams params = httpClient.getParams();
+		params.setIntParameter("http.protocol.max-redirects", MAX_REDIRECTS);
+		params.setBooleanParameter("http.protocol.reject-relative-redirect",
+				false);
+		params.setIntParameter("http.socket.timeout", CONNECTION_TIMEOUT);
+		HttpClientParams.setRedirecting(params, true);
+		return httpClient;
 	}
 
 	/**
@@ -96,21 +118,25 @@ public class HttpDownloader extends Downloader {
 
 	@Override
 	protected void download() {
-		HttpURLConnection connection = null;
+		AndroidHttpClient httpClient = null;
 		OutputStream out = null;
+		InputStream connection = null;
 		try {
-			connection = establishConnection(status.getFeedFile()
+			HttpGet httpGet = new HttpGet(status.getFeedFile()
 					.getDownload_url());
-			if (connection != null) {
-				if (AppConfig.DEBUG) {
-					Log.d(TAG, "Connected to resource");
-				}
+			httpClient = createHttpClient();
+			HttpResponse response = httpClient.execute(httpGet);
+			HttpEntity httpEntity = response.getEntity();
+			int responseCode = response.getStatusLine().getStatusCode();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Response code is " + responseCode);
+			if (responseCode == HttpURLConnection.HTTP_OK && httpEntity != null) {
 				if (StorageUtils.storageAvailable(PodcastApp.getInstance())) {
 					File destination = new File(status.getFeedFile()
 							.getFile_url());
 					if (!destination.exists()) {
-						InputStream in = new BufferedInputStream(
-								connection.getInputStream());
+						connection = httpEntity.getContent();
+						InputStream in = new BufferedInputStream(connection);
 						out = new BufferedOutputStream(new FileOutputStream(
 								destination));
 						byte[] buffer = new byte[BUFFER_SIZE];
@@ -118,10 +144,10 @@ public class HttpDownloader extends Downloader {
 						status.setStatusMsg(R.string.download_running);
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Getting size of download");
-						status.setSize(connection.getContentLength());
+						status.setSize(httpEntity.getContentLength());
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Size is " + status.getSize());
-						if (status.getSize() == -1) {
+						if (status.getSize() < 0) {
 							status.setSize(DownloadStatus.SIZE_UNKNOWN);
 						}
 
@@ -154,8 +180,11 @@ public class HttpDownloader extends Downloader {
 				} else {
 					onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
 				}
+			} else {
+				onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
+						String.valueOf(responseCode));
 			}
-		} catch (MalformedURLException e) {
+		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_MALFORMED_URL, e.getMessage());
 		} catch (SocketTimeoutException e) {
@@ -173,8 +202,11 @@ public class HttpDownloader extends Downloader {
 			onFail(DownloadError.ERROR_CONNECTION_ERROR, status.getFeedFile()
 					.getDownload_url());
 		} finally {
-			IOUtils.close(connection);
+			IOUtils.closeQuietly(connection);
 			IOUtils.closeQuietly(out);
+			if (httpClient != null) {
+				httpClient.close();
+			}
 		}
 	}
 

@@ -6,6 +6,7 @@ public class TestDownloads {
 		"http://httpbin.org/relative-redirect/4",
 		"http://jigsaw.w3.org/HTTP/300/307.html",
 		"http://radiobox.omroep.nl/programme/read_programme_podcast/9168/read.rss",
+		"http://content.zdf.de/podcast/zdf_heute/heute_a.xml",
 		"http://rss.sciam.com/sciam/60secsciencepodcast",
 		"http://rss.sciam.com/sciam/60-second-mind",
 		"http://rss.sciam.com/sciam/60-second-space",
