@@ -9,6 +9,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.syndication.namespace.NSContent;
 import de.danoeh.antennapod.syndication.namespace.NSITunes;
+import de.danoeh.antennapod.syndication.namespace.NSMedia;
 import de.danoeh.antennapod.syndication.namespace.NSRSS20;
 import de.danoeh.antennapod.syndication.namespace.NSSimpleChapters;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
@@ -101,13 +102,19 @@ public class SyndHandler extends DefaultHandler {
 				state.namespaces.put(uri, new NSSimpleChapters());
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Recognized SimpleChapters namespace");
+			} else if (uri.equals(NSMedia.NSURI)
+					&& prefix.equals(NSMedia.NSTAG)) {
+				state.namespaces.put(uri, new NSMedia());
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Recognized media namespace");
 			}
 		}
 	}
 
 	private Namespace getHandlingNamespace(String uri, String qName) {
 		Namespace handler = state.namespaces.get(uri);
-		if (handler == null && !state.defaultNamespaces.empty() && !qName.contains(":")) {
+		if (handler == null && !state.defaultNamespaces.empty()
+				&& !qName.contains(":")) {
 			handler = state.defaultNamespaces.peek();
 		}
 		return handler;

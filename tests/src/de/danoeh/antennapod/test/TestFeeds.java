@@ -3,6 +3,7 @@ package de.danoeh.antennapod.test;
 public class TestFeeds {
 	
 	public static final String[] urls = {
+		"http://www.guardian.co.uk/global-development/series/global-development-podcast/rss",
 		"http://rss.sciam.com/sciam/60secsciencepodcast",
 		"http://rss.sciam.com/sciam/60-second-mind",
 		"http://rss.sciam.com/sciam/60-second-space",
@@ -37,7 +38,6 @@ public class TestFeeds {
 		"http://www.casasola.de/137b/1337motiv/1337motiv.xml",
 		"http://alternativlos.org/ogg.rss", "http://www.bitsundso.de/feed",
 		"http://www.gamesundso.de/feed/",
-		"http://chaosradio.ccc.de/chaosradio-latest.rss",
 		"http://feeds.feedburner.com/cre-podcast",
 		"http://feeds.feedburner.com/NotSafeForWorkPodcast",
 		"http://feeds.feedburner.com/mobile-macs-podcast",
@@ -228,7 +228,6 @@ public class TestFeeds {
 		"http://bitlove.org/mfromm/explorism/feed",
 		"http://bitlove.org/mfromm/transientesichten/feed",
 		"http://bitlove.org/mhpod/pofacs/feed",
-		"http://bitlove.org/michaela_w/michaelaswelt/feed",
 		"http://bitlove.org/michaelgreth/sharepointpdcast/feed",
 		"http://bitlove.org/mintcast/podcast/feed",
 		"http://bitlove.org/mitgezwitschert/brandung/feed",

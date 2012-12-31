@@ -14,7 +14,7 @@ public class SyndTypeUtils {
 
 	}
 
-	public static boolean typeValid(String type) {
+	public static boolean enclosureTypeValid(String type) {
 		if (type == null) {
 			return false;
 		} else {
@@ -33,7 +33,7 @@ public class SyndTypeUtils {
 			if (extension != null) {
 				String type = MimeTypeMap.getSingleton()
 						.getMimeTypeFromExtension(extension);
-				if (type != null && typeValid(type)) {
+				if (type != null && enclosureTypeValid(type)) {
 					return type;
 				}
 			}

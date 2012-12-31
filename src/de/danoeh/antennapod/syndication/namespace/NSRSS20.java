@@ -50,7 +50,7 @@ public class NSRSS20 extends Namespace {
 			String type = attributes.getValue(ENC_TYPE);
 			String url = attributes.getValue(ENC_URL);
 			if (state.getCurrentItem().getMedia() == null
-					&& (SyndTypeUtils.typeValid(type) || ((type = SyndTypeUtils
+					&& (SyndTypeUtils.enclosureTypeValid(type) || ((type = SyndTypeUtils
 							.getValidMimeTypeFromUrl(url)) != null))) {
 
 				long size = 0;

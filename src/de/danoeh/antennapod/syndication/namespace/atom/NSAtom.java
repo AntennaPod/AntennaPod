@@ -73,7 +73,7 @@ public class NSAtom extends Namespace {
 					if (strSize != null)
 						size = Long.parseLong(strSize);
 					String type = attributes.getValue(LINK_TYPE);
-					if (SyndTypeUtils.typeValid(type)
+					if (SyndTypeUtils.enclosureTypeValid(type)
 							|| (type = SyndTypeUtils
 									.getValidMimeTypeFromUrl(href)) != null) {
 						state.getCurrentItem().setMedia(
