@@ -1,11 +1,9 @@
-package de.danoeh.antennapod.syndication.namespace.itunes;
+package de.danoeh.antennapod.syndication.namespace;
 
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
-import de.danoeh.antennapod.syndication.namespace.Namespace;
-import de.danoeh.antennapod.syndication.namespace.SyndElement;
 
 public class NSITunes extends Namespace{
 	public static final String NSTAG = "itunes";
