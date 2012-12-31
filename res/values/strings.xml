@@ -225,7 +225,7 @@
     <string name="create_folder_error_already_exists">Folder already exists</string>
     <string name="create_folder_error">Could not create folder</string>
     <string name="folder_not_empty_dialog_title">Folder is not empty</string>
-    <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other data will be placed directly in this folder. Continue anyway?</string>
-    <string name="set_to_default_folder">Set to default folder</string>
+    <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other files will be placed directly in this folder. Continue anyway?</string>
+    <string name="set_to_default_folder">Choose default folder</string>
 
 </resources>
