@@ -8,23 +8,15 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
 import java.net.SocketTimeoutException;
-import java.net.URL;
 import java.net.UnknownHostException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.http.HttpConnection;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
-import org.apache.http.HttpStatus;
-import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.conn.ClientConnectionManager;
 import org.apache.http.params.HttpParams;
-import org.apache.http.protocol.BasicHttpContext;
-import org.apache.http.protocol.HttpContext;
 
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
@@ -57,63 +49,6 @@ public class HttpDownloader extends Downloader {
 		params.setIntParameter("http.socket.timeout", CONNECTION_TIMEOUT);
 		HttpClientParams.setRedirecting(params, true);
 		return httpClient;
-	}
-
-	/**
-	 * This method is called by establishConnection(String). Don't call it
-	 * directly.
-	 * */
-	private HttpURLConnection establishConnection(String location,
-			int redirectCount) throws MalformedURLException, IOException {
-		URL url = new URL(location);
-		HttpURLConnection connection = null;
-		int responseCode = -1;
-		connection = (HttpURLConnection) url.openConnection();
-		connection.setConnectTimeout(CONNECTION_TIMEOUT);
-		// try with 'follow redirect'
-		connection.setInstanceFollowRedirects(true);
-		try {
-			responseCode = connection.getResponseCode();
-		} catch (IOException e) {
-			e.printStackTrace();
-			if (AppConfig.DEBUG)
-				Log.d(TAG,
-						"Failed to establish connection with 'follow redirects. Disabling 'follow redirects'");
-			connection.disconnect();
-			connection.setInstanceFollowRedirects(false);
-			responseCode = connection.getResponseCode();
-		}
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Response Code: " + responseCode);
-		switch (responseCode) {
-		case HttpStatus.SC_TEMPORARY_REDIRECT:
-			if (redirectCount < MAX_REDIRECTS) {
-				final String redirect = connection.getHeaderField("Location");
-				if (redirect != null) {
-					return establishConnection(redirect, redirectCount + 1);
-				}
-			}
-		case HttpStatus.SC_OK:
-			return connection;
-		default:
-			onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
-					String.valueOf(responseCode));
-			return null;
-		}
-	}
-
-	/**
-	 * Establish connection to resource. This method will also try to handle
-	 * different response codes / redirect issues.
-	 * 
-	 * @return the HttpURLConnection object if the connection could be opened,
-	 *         null otherwise.
-	 * @throws MalformedURLException
-	 *             , IOException
-	 * */
-	private HttpURLConnection establishConnection(String location)
-			throws MalformedURLException, IOException {
-		return establishConnection(location, 0);
 	}
 
 	@Override
