@@ -49,8 +49,8 @@ public class StorageUtils {
 
 	/** Get the number of free bytes that are available on the external storage. */
 	public static long getFreeSpaceAvailable() {
-		StatFs stat = new StatFs(Environment.getExternalStorageDirectory()
-				.getPath());
+		StatFs stat = new StatFs(PodcastApp.getDataFolder(
+				PodcastApp.getInstance(), null).getAbsolutePath());
 		long availableBlocks = stat.getAvailableBlocks();
 		long blockSize = stat.getBlockSize();
 		return availableBlocks * blockSize;
