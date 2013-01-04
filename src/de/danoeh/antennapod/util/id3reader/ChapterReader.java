@@ -33,11 +33,11 @@ public class ChapterReader extends ID3Reader {
 			if (currentChapter != null) {
 				if (!hasId3Chapter(currentChapter)) {
 					chapters.add(currentChapter);
+					System.out.println("Found chapter: " + currentChapter);
 					currentChapter = null;
 				}
 			}
-			System.out.println("Found chapter");
-			String elementId = readString(input, Integer.MAX_VALUE);
+			String elementId = readISOString(input, Integer.MAX_VALUE);
 			char[] startTimeSource = readBytes(input, 4);
 			long startTime = ((int) startTimeSource[0] << 24)
 					| ((int) startTimeSource[1] << 16)
@@ -47,10 +47,10 @@ public class ChapterReader extends ID3Reader {
 			return ID3Reader.ACTION_DONT_SKIP;
 		} else if (header.getId().equals(FRAME_ID_TITLE)) {
 			if (currentChapter != null && currentChapter.getTitle() == null) {
-				System.out.println("Found title");
-				skipBytes(input, 1);
 				currentChapter
-						.setTitle(readString(input, header.getSize() - 1));
+						.setTitle(readString(input, header.getSize()));
+				System.out.println("Found title: " + currentChapter.getTitle());
+
 				return ID3Reader.ACTION_DONT_SKIP;
 			}
 		}
