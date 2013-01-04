@@ -292,6 +292,8 @@ public class PlaybackService extends Service {
 				Intent.ACTION_HEADSET_PLUG));
 		registerReceiver(shutdownReceiver, new IntentFilter(
 				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+		registerReceiver(audioBecomingNoisy, new IntentFilter(
+				AudioManager.ACTION_AUDIO_BECOMING_NOISY));
 
 	}
 
@@ -321,6 +323,7 @@ public class PlaybackService extends Service {
 		disableSleepTimer();
 		unregisterReceiver(headsetDisconnected);
 		unregisterReceiver(shutdownReceiver);
+		unregisterReceiver(audioBecomingNoisy);
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
 			audioManager.unregisterRemoteControlClient(remoteControlClient);
 		}
@@ -1110,6 +1113,27 @@ public class PlaybackService extends Service {
 				}
 			}
 		}
+	};
+	
+	private BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			// sound is about to change, eg. bluetooth -> speaker
+			boolean pauseOnDisconnect = PreferenceManager
+					.getDefaultSharedPreferences(
+							context.getApplicationContext())
+					.getBoolean(
+							PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT,
+							false);
+			if(pauseOnDisconnect&&status==PlayerStatus.PLAYING) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Pausing playback because audio is becoming noisy");
+				pause(false, true);
+			}
+		}
+		//android.media.AUDIO_BECOMING_NOISY
 	};
 
 	private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
