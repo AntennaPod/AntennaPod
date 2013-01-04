@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Canales</string>
+  <string name="new_label">Nuevos</string>
+  <string name="settings_label">Ajustes</string>
+  <string name="add_new_feed_label">Añadir un canal</string>
+  <string name="downloads_label">Descargas</string>
+  <string name="cancel_download_label">Cancelar descarga</string>
+  <string name="download_log_label">Registro de descargas</string>
+  <string name="playback_history_label">Historial de reproducción</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Limpiar el historial</string>
+  <!--Other-->
+  <string name="confirm_label">Confirmar</string>
+  <string name="cancel_label">Cancelar</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Idioma</string>
+  <string name="cover_label">Carátula</string>
+  <string name="error_label">Error</string>
+  <string name="error_msg_prefix">Ha ocurrido un error:</string>
+  <string name="refresh_label">Actualizar</string>
+  <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
+  <string name="chapters_label">Capítulos</string>
+  <string name="shownotes_label">Notas del programa</string>
+  <string name="last_update_prefix">Última actualización:\u0020</string>
+  <string name="episodes_suffix">\u0020 episodios</string>
+  <string name="published_prefix">Publicado:\u0020</string>
+  <string name="length_prefix">Duración:\u0020</string>
+  <string name="size_prefix">Tamaño:\u0020</string>
+  <string name="processing_label">Procesando</string>
+  <string name="loading_label">Cargando...</string>
+  <string name="image_of_prefix">Imagen de:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL del canal</string>
+  <string name="txtvfeedurl_label">Escriba aquí la URL del canal</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Marcar como leído</string>
+  <string name="show_info_label">Información del programa</string>
+  <string name="remove_feed_label">Eliminar canal</string>
+  <string name="share_link_label">Compartir el enlace de la web</string>
+  <string name="share_source_label">Compartir el enlace del canal</string>
+  <string name="feed_delete_confirmation_msg">Confirme que desea borrar este canal y TODOS los episodios descargados del mismo.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Descargar</string>
+  <string name="play_label">Reproducir</string>
+  <string name="stream_label">Reproducir por streaming</string>
+  <string name="remove_label">Borrar</string>
+  <string name="mark_read_label">Marcar como leído</string>
+  <string name="mark_unread_label">Marcar como no leído</string>
+  <string name="add_to_queue_label">Añadir a la cola</string>
+  <string name="remove_from_queue_label">Eliminar de la cola</string>
+  <string name="visit_website_label">Visitar la página web</string>
+  <string name="support_label">Añadir a Flattr</string>
+  <string name="enqueue_all_new">Ponerlos todos en cola</string>
+  <string name="download_all">Descargarlos todos</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Descarga exitosa</string>
+  <string name="download_failed">Descarga errónea</string>
+  <string name="download_pending">Descarga pendiente</string>
+  <string name="download_running">Descarga en curso</string>
+  <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
+  <string name="download_error_insufficient_space">Espacio insuficiente</string>
+  <string name="download_error_file_error">Error de archivo</string>
+  <string name="download_error_http_data_error">Error de datos HTTP</string>
+  <string name="download_error_error_unknown">Error desconocido</string>
+  <string name="download_error_parser_exception">Excepción de parser</string>
+  <string name="download_error_unsupported_type">Tipo de canal no soportado</string>
+  <string name="download_error_connection_error">Error de conexión</string>
+  <string name="download_error_unknown_host">Host desconocido</string>
+  <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
+  <string name="download_cancelled_msg">Descarga cancelada</string>
+  <string name="download_report_title">Descargas completadas</string>
+  <string name="download_error_malformed_url">URL malformada</string>
+  <string name="download_error_io_error">Error IO</string>
+  <string name="download_error_request_error">Error de petición</string>
+  <string name="downloads_left">Quedan \u0020 descargas</string>
+  <string name="download_notification_title">Bajando datos del podcast</string>
+  <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
+  <string name="download_log_title_unknown">Título desconocido</string>
+  <string name="download_type_feed">Canal</string>
+  <string name="download_type_media">Archivo de medios</string>
+  <string name="download_type_image">Imagen</string>
+  <string name="download_request_error_dialog_message_prefix">Ha ocurrido un error al intentar descargar el archivo:\u0020</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">¡Error!</string>
+  <string name="player_stopped_msg">No hay medios en reproducción</string>
+  <string name="player_preparing_msg">Preparando</string>
+  <string name="player_ready_msg">Listo</string>
+  <string name="player_seeking_msg">Buscando</string>
+  <string name="playback_error_server_died">Pérdida de servidor</string>
+  <string name="playback_error_unknown">Error desconocido</string>
+  <string name="no_media_playing_label">No hay medios en reproducción</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Almacenando</string>
+  <string name="playbackservice_notification_title">Reproduciendo el podcast</string>
+  <string name="playbackservice_notification_content">Pulse para obtener más información</string>
+  <!--Navigation-->
+  <string name="show_download_log">Mostrar el registro</string>
+  <string name="show_player_label">Mostrar el reproductor</string>
+  <!--Queue operations-->
+  <string name="move_up_label">Subir</string>
+  <string name="move_down_label">Bajar</string>
+  <string name="clear_queue_label">Limpiar la cola</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Identificarse en Flattr</string>
+  <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
+  <string name="authenticate_label">Autenticarse</string>
+  <string name="return_home_label">Volver a la pantalla principal</string>
+  <string name="flattr_auth_success">Autentificación exitosa. Ya puede valorar cosas en Flattr desde la aplicación.</string>
+  <string name="no_flattr_token_title">No se ha encontrado un token de Flattr</string>
+  <string name="no_flattr_token_msg">Su cuenta de Flattr no está conectada con AntennaPod. Puede conectarla o puede visitar la página web de cada cosa para valorarla desde allí.</string>
+  <string name="authenticate_now_label">Autenticarse</string>
+  <string name="action_forbidden_title">Acción prohibida</string>
+  <string name="action_forbidden_msg">AntennaPod no tiene permiso para realizar esta acción. La razón puede ser que se haya revocado el token de acceso de AntennaPod para su cuenta. Puede re-autenticarse o visitar la página web de la cosa.</string>
+  <string name="access_revoked_title">Acceso revocado</string>
+  <string name="access_revoked_info">Ha revocado el token de acceso de AntennaPod a su cuenta. Para completar el proceso debe eliminar esta aplicación de la lista de aplicaciones aprobadas, en los ajustes de Flattr.</string>
+  <string name="flattr_click_success">Ha valorado esto en Flattr.</string>
+  <string name="flattring_label">Valoración en Flattr</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Esta lista no tiene elementos.</string>
+  <string name="no_feeds_label">No se ha suscrito a ningún canal.</string>
+  <!--Preferences-->
+  <string name="other_pref">Otros</string>
+  <string name="about_pref">Acerca de</string>
+  <string name="queue_label">Cola</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
+  <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
+  <string name="playback_pref">Reproducción</string>
+  <string name="network_pref">Red</string>
+  <string name="pref_autoUpdateIntervall_title">Intervalo de actualización</string>
+  <string name="pref_autoUpdateIntervall_sum">Especificar el intervalo en que se actualizarán automáticamente los canales, o desactivarlo</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Sólo descargar los contenidos por WiFi</string>
+  <string name="pref_followQueue_title">Reproducción continua</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de los cascos</string>
+  <string name="pref_mobileUpdate_title">Actualizaciones por red móvil</string>
+  <string name="pref_mobileUpdate_sum">Permitir actualizaciones por red de datos móvil</string>
+  <string name="refreshing_label">Actualizando</string>
+  <string name="flattr_settings_label">Ajustes de Flattr</string>
+  <string name="pref_flattr_auth_title">Identificación en Flattr</string>
+  <string name="pref_flattr_auth_sum">Identifíquese en Flattr para valorar cosas directamente desde la aplicación</string>
+  <string name="pref_flattr_this_app_title">Valorar esta aplicación en Flattr</string>
+  <string name="pref_flattr_this_app_sum">Apoye el desarrollo de AntennaPod valorándola en Flattr. ¡Gracias!</string>
+  <string name="pref_revokeAccess_title">Rescindir el acceso</string>
+  <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
+  <string name="pref_autoQueue_title">Poner en cola automáticamente</string>
+  <string name="pref_autoQueue_sum">Añadir un episodio a la cola al comenzar a descargarlo.</string>
+  <string name="pref_display_only_episodes_title">Mostrar sólo episodios</string>
+  <string name="pref_display_only_episodes_sum">Mostrar sólo elementos que contengan un episodio.</string>
+  <string name="user_interface_label">Interfaz de usuario</string>
+  <string name="pref_auto_delete_title">Borrar automáticamente</string>
+  <string name="pref_auto_delete_sum">Borrar un episodio al completar su reproducción o eliminarlo de la cola</string>
+  <string name="pref_set_theme_title">Elegir un tema</string>
+  <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
+  <!--Search-->
+  <string name="search_hint">Buscar canales o episodios</string>
+  <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
+  <string name="found_in_chapters_label">Encontrado en los capítulos</string>
+  <string name="search_status_searching">Buscando...</string>
+  <string name="search_status_no_results">No se han encontrado resultados</string>
+  <string name="search_results_label">Resultados de la búsqueda</string>
+  <string name="search_term_label">Ha buscado:\u0020</string>
+  <string name="search_label">Buscar</string>
+  <string name="found_in_title_label">Encontrado en el título</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">También puede importar un archivo OPML. Los archivos OPML le permiten migrar sus podcasts de una aplicación a otra.</string>
+  <string name="opml_import_explanation">Para importar un archivo OPML, debe copiarlo al siguiente directorio y pulsar el botón que se muestra abajo.</string>
+  <string name="start_import_label">Comenzar la importación</string>
+  <string name="opml_import_label">Importación de OPML</string>
+  <string name="opml_directory_error">¡ERROR!</string>
+  <string name="reading_opml_label">Leyendo el archivo OPML</string>
+  <string name="opml_reader_error">Ha ocurrido un error al leer el archivo OPML</string>
+  <string name="opml_import_error_dir_empty">El directorio de importación está vacío</string>
+  <string name="select_all_label">Seleccionar todo</string>
+  <string name="deselect_all_label">Deseleccionar todo</string>
+  <string name="choose_file_to_import_label">Elegir qué archivo importar</string>
+  <string name="opml_export_label">Exportar a OPML</string>
+  <string name="exporting_label">Exportando...</string>
+  <string name="export_error_label">Error en la exportación</string>
+  <string name="opml_export_success_title">Exportación a OPML exitosa</string>
+  <string name="opml_export_success_sum">El archivo OPML se ha escrito en:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Establecer un temporizador</string>
+  <string name="disable_sleeptimer_label">Desactivar el temporizador</string>
+  <string name="enter_time_here_label">Introducir hora</string>
+  <string name="sleep_timer_label">Temporizador</string>
+  <string name="time_left_label">Tiempo restante:\u0020</string>
+  <string name="time_dialog_invalid_input">Input inválido, el tiempo debe ser íntegro</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Cargando categorías...</string>
+  <string name="browse_miroguide_label">Examinar la guía de Miro</string>
+  <string name="txtv_browse_miroguide_label">O examine la guía de Miro:</string>
+  <string name="miro_guide_label">Guía de Miro</string>
+  <string name="miro_search_hint">Buscar en la guía de Miro</string>
+  <string name="popular_label">Popular</string>
+  <string name="best_rating_label">Mejor valoración</string>
+  <string name="add_feed_label">Añadir canal</string>
+  <string name="miro_feed_added">Se está añadiendo el canal</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Carpeta seleccionada</string>
+  <string name="create_folder_label">Crear carpeta</string>
+  <string name="choose_data_directory">Elegir carpeta de datos</string>
+  <string name="create_folder_msg">¿Crear carpeta con nombre \"%1$s\"?</string>
+  <string name="create_folder_success">Carpeta creada</string>
+  <string name="create_folder_error_no_write_access">No se puede escribir a esta carpeta</string>
+  <string name="create_folder_error_already_exists">Ya existe la carpeta</string>
+  <string name="create_folder_error">No se ha podido crear la carpeta</string>
+  <string name="folder_not_empty_dialog_title">La carpeta no está vacía</string>
+  <string name="folder_not_empty_dialog_msg">La carpeta elegida no está vacía. Las descargas y otros archivos se copiarán directamente en esta carpeta. ¿Continuar igualmente?</string>
+  <string name="set_to_default_folder">Elegir carpeta por defecto</string>
+</resources>

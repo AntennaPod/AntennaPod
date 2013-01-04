@@ -140,7 +140,7 @@
   <string name="refreshing_label">Aktualisiere</string>
   <string name="flattr_settings_label">Flattr Einstellungen</string>
   <string name="pref_flattr_auth_title">Flattr Anmeldung</string>
-  <string name="pref_flattr_auth_sum">Melde dich mit deinem Flattr Account an, um direkt in der App flattrn.</string>
+  <string name="pref_flattr_auth_sum">Melde dich mit deinem Flattr Account an, um direkt in der App zu flattrn.</string>
   <string name="pref_flattr_this_app_title">Flattr diese App</string>
   <string name="pref_flattr_this_app_sum">Unterstütze die Entwicklung von AntennaPod mit Flattr. Danke!</string>
   <string name="pref_revokeAccess_title">Zugriff entziehen</string>
@@ -198,4 +198,16 @@
   <string name="best_rating_label">Beste Bewertung</string>
   <string name="add_feed_label">Feed hinzufügen</string>
   <string name="miro_feed_added">Feed wird hinzugefügt</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Ausgewählter Ordner</string>
+  <string name="create_folder_label">Neuer Ordner</string>
+  <string name="choose_data_directory">Wähle Datenordner</string>
+  <string name="create_folder_msg">Neuen Ordner mit Namen \"%1$s\" erstellen?</string>
+  <string name="create_folder_success">Neuer Ordner angelegt</string>
+  <string name="create_folder_error_no_write_access">Kann in diesem Ordner nicht schreiben</string>
+  <string name="create_folder_error_already_exists">Ordner existiert bereits</string>
+  <string name="create_folder_error">Konnte Datenordner nicht erstellen</string>
+  <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
+  <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
+  <string name="set_to_default_folder">Standardordner auswählen</string>
 </resources>

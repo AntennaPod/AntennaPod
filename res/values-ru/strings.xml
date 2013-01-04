@@ -198,4 +198,16 @@
   <string name="best_rating_label">Наивысший рейтинг</string>
   <string name="add_feed_label">Добавить канал</string>
   <string name="miro_feed_added">Канал добавляется</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Выбранная папка:</string>
+  <string name="create_folder_label">Создать папку</string>
+  <string name="choose_data_directory">Выбрать папку для хранения данных</string>
+  <string name="create_folder_msg">Создать папку \"%1$s\"?</string>
+  <string name="create_folder_success">Новая папка создана</string>
+  <string name="create_folder_error_no_write_access">Запись в эту папку невозможна</string>
+  <string name="create_folder_error_already_exists">Папка уже существует</string>
+  <string name="create_folder_error">Невозможно создать папку</string>
+  <string name="folder_not_empty_dialog_title">Папка не пуста</string>
+  <string name="folder_not_empty_dialog_msg">Выбранная папка не пуста. Закачки и прочие файлы будут сохранены в эту папку. Продолжить?</string>
+  <string name="set_to_default_folder">Выберите папку по умолчанию</string>
 </resources>
