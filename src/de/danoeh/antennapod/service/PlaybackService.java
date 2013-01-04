@@ -1092,21 +1092,10 @@ public class PlaybackService extends Service {
 				if (state != -1) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Headset plug event. State is " + state);
-					boolean pauseOnDisconnect = PreferenceManager
-							.getDefaultSharedPreferences(
-									getApplicationContext())
-							.getBoolean(
-									PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT,
-									false);
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "pauseOnDisconnect preference is "
-								+ pauseOnDisconnect);
-					if (state == UNPLUGGED && pauseOnDisconnect
-							&& status == PlayerStatus.PLAYING) {
+					if (state == UNPLUGGED && status == PlayerStatus.PLAYING) {
 						if (AppConfig.DEBUG)
-							Log.d(TAG,
-									"Pausing playback because headset was disconnected");
-						pause(false, true);
+							Log.d(TAG, "Headset was unplugged during playback.");
+						pauseIfPauseOnDisconnect();
 					}
 				} else {
 					Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
@@ -1114,27 +1103,28 @@ public class PlaybackService extends Service {
 			}
 		}
 	};
-	
+
 	private BroadcastReceiver audioBecomingNoisy = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			// sound is about to change, eg. bluetooth -> speaker
-			boolean pauseOnDisconnect = PreferenceManager
-					.getDefaultSharedPreferences(
-							context.getApplicationContext())
-					.getBoolean(
-							PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT,
-							false);
-			if(pauseOnDisconnect&&status==PlayerStatus.PLAYING) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG,
-							"Pausing playback because audio is becoming noisy");
-				pause(false, true);
-			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Pausing playback because audio is becoming noisy");
+			pauseIfPauseOnDisconnect();
 		}
-		//android.media.AUDIO_BECOMING_NOISY
+		// android.media.AUDIO_BECOMING_NOISY
 	};
+
+	/** Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true. */
+	private void pauseIfPauseOnDisconnect() {
+		boolean pauseOnDisconnect = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext())
+				.getBoolean(PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT, false);
+		if (pauseOnDisconnect && status == PlayerStatus.PLAYING) {
+			pause(false, true);
+		}
+	}
 
 	private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
 
