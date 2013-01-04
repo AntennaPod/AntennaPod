@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.PushbackInputStream;
 
+import org.apache.commons.io.IOUtils;
+
 import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
 import de.danoeh.antennapod.util.id3reader.model.TagHeader;
 
@@ -48,7 +50,13 @@ public class ID3Reader {
 					} else {
 						rc = onStartFrameHeader(frameHeader, input);
 						if (rc == ACTION_SKIP) {
-							skipBytes(input, frameHeader.getSize());
+
+							if (frameHeader.getSize() + readerPosition > tagHeader
+									.getSize()) {
+								break;
+							} else {
+								skipBytes(input, frameHeader.getSize());
+							}
 						}
 					}
 				}
@@ -100,13 +108,10 @@ public class ID3Reader {
 	 * changes the readerPosition-attribute.
 	 */
 	protected void skipBytes(InputStream input, int number) throws IOException {
-		int skipped = 0;
 		if (number <= 0) {
 			number = 1;
 		}
-		while (skipped < number) {
-			skipped += input.skip(number - skipped);
-		}
+		IOUtils.skipFully(input, number);
 
 		readerPosition += number;
 	}
