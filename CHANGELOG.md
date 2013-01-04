@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.6.3
+---------------
+* Added the ability change the location of AntennaPod's data folder
+* Added Spanish translation (Thanks frandavid100!)
+* Solved problems with several feeds
+
 Version 0.9.6.2
 ---------------
 * Fixed import problems with some OPML files
