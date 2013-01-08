@@ -39,11 +39,6 @@ ActionBarSherlock and ViewPagerIndicator have to be added as library projects. F
 You can already build unsigned packages with maven, if you add annotations.jar from the Android SDK to your local maven repository. You don't have to do anything described in the 'Building with ant' section in order to build with maven.
 
 - Make sure the ANDROID_HOME variable is set to the location of your Android SDK installation
-- Navigate from your Android SDK directory into tools/support
-- Execute the following command:
-	<pre>
-mvn install:install-file -Dfile=./annotations.jar -DgroupId=android.tools.support -DartifactId=annotations -Dversion=1.0 -Dpackaging=jar
-</pre>
 - In the root directory of this project, you can then execute the following command to build it:	
 	<pre>mvn clean package</pre>
 
