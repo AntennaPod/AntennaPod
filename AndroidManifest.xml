@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest package="de.danoeh.antennapod"
-    android:versionCode="24"
-    android:versionName="0.9.6.3" xmlns:android="http://schemas.android.com/apk/res/android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="de.danoeh.antennapod"
+    android:versionCode="34"
+    android:versionName="0.9.6.3" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -25,7 +26,6 @@
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
-        android:debuggable="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
@@ -33,7 +33,7 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name">
+            android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -74,7 +74,7 @@
             android:name=".activity.AudioplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
 
         <service
             android:name=".service.download.DownloadService"
@@ -94,7 +94,9 @@
             android:label="@string/download_log_label" >
         </activity>
 
-        <receiver android:name=".receiver.MediaButtonReceiver" android:exported="true">
+        <receiver
+            android:name=".receiver.MediaButtonReceiver"
+            android:exported="true" >
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
@@ -157,7 +159,7 @@
         </activity>
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about_pref">
+            android:label="@string/about_pref" >
         </activity>
         <activity
             android:name=".activity.OpmlImportActivity"
@@ -208,7 +210,7 @@
         </activity>
         <activity
             android:name=".activity.MiroGuideCategoryActivity"
-            android:configChanges="keyboardHidden|orientation">
+            android:configChanges="keyboardHidden|orientation" >
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"
@@ -218,10 +220,14 @@
         <activity
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape">
+            android:screenOrientation="landscape" >
         </activity>
-        <activity android:label="@string/playback_history_label" android:name=".activity.PlaybackHistoryActivity"></activity>
-        <activity android:name=".activity.DirectoryChooserActivity" android:label="@string/choose_data_directory"></activity>
+        <activity
+            android:name=".activity.PlaybackHistoryActivity"
+            android:label="@string/playback_history_label" />
+        <activity
+            android:name=".activity.DirectoryChooserActivity"
+            android:label="@string/choose_data_directory" />
     </application>
 
 </manifest>
