@@ -94,13 +94,6 @@
                 <extensions>true</extensions>
                 <executions>
                     <execution>
-                        <id>manifestUpdate</id>
-                        <phase>process-resources</phase>
-                        <goals>
-                            <goal>manifest-update</goal>
-                        </goals>
-                    </execution>
-                    <execution>
                         <id>alignApk</id>
                         <phase>package</phase>
                         <goals>
@@ -198,13 +191,6 @@
                             </proguard>
                         </configuration>
                         <executions>
-                            <execution>
-                                <id>manifestUpdate</id>
-                                <phase>process-resources</phase>
-                                <goals>
-                                    <goal>manifest-update</goal>
-                                </goals>
-                            </execution>
                             <execution>
                                 <id>alignApk</id>
                                 <phase>package</phase>
