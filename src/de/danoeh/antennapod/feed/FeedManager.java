@@ -30,6 +30,7 @@ import de.danoeh.antennapod.util.FeedtitleComparator;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
+import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
 /**
  * Singleton class Manages all feeds, categories and feeditems
@@ -121,21 +122,50 @@ public class FeedManager {
 	 */
 	public void playMedia(Context context, FeedMedia media, boolean showPlayer,
 			boolean startWhenPrepared, boolean shouldStream) {
-		// Start playback Service
-		Intent launchIntent = new Intent(context, PlaybackService.class);
-		launchIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
-		launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media.getItem()
-				.getFeed().getId());
-		launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-				startWhenPrepared);
-		launchIntent
-				.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, shouldStream);
-		launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY, true);
-		context.startService(launchIntent);
-		if (showPlayer) {
-			// Launch Mediaplayer
-			context.startActivity(PlaybackService.getPlayerActivityIntent(
-					context, media));
+		try {
+			if (!shouldStream) {
+				if (media.getFile_url() == null) {
+					throw new MediaFileNotFoundException("Feed URL was null",
+							media);
+				} else {
+					File f = new File(media.getFile_url());
+					if (!f.exists() || !f.canRead()) {
+						throw new MediaFileNotFoundException(
+								"No episode was found at "
+										+ media.getFile_url(), media);
+					}
+				}
+
+			}
+			// Start playback Service
+			Intent launchIntent = new Intent(context, PlaybackService.class);
+			launchIntent
+					.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
+			launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media
+					.getItem().getFeed().getId());
+			launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+					startWhenPrepared);
+			launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
+					shouldStream);
+			launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
+					true);
+			context.startService(launchIntent);
+			if (showPlayer) {
+				// Launch Mediaplayer
+				context.startActivity(PlaybackService.getPlayerActivityIntent(
+						context, media));
+			}
+		} catch (MediaFileNotFoundException e) {
+			e.printStackTrace();
+			SharedPreferences prefs = PreferenceManager
+					.getDefaultSharedPreferences(context);
+			final long lastPlayedId = prefs.getLong(
+					PlaybackService.PREF_LAST_PLAYED_ID, -1);
+			if (lastPlayedId == media.getId()) {
+				context.sendBroadcast(new Intent(
+						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+			}
+			notifyMissingFeedMediaFile(context, media);
 		}
 	}
 
@@ -501,6 +531,19 @@ public class FeedManager {
 			e.printStackTrace();
 			Log.w(TAG, "Failed to download invalid feed image");
 		}
+	}
+
+	/**
+	 * Notifies the feed manager that a downloaded episode doesn't exist
+	 * anymore. It will update the values of the FeedMedia object accordingly.
+	 */
+	public void notifyMissingFeedMediaFile(Context context, FeedMedia media) {
+		Log.i(TAG,
+				"The feedmanager was notified about a missing episode. It will update its database now.");
+		media.setDownloaded(false);
+		media.setFile_url(null);
+		setFeedMedia(context, media);
+		sendFeedUpdateBroadcast(context);
 	}
 
 	public void refreshFeed(Context context, Feed feed)
@@ -926,10 +969,10 @@ public class FeedManager {
 		});
 
 	}
-	
+
 	/**
-	 * Updates Information of an existing Feed and its FeedItems. Creates and opens its own
-	 * adapter.
+	 * Updates Information of an existing Feed and its FeedItems. Creates and
+	 * opens its own adapter.
 	 */
 	public void setCompleteFeed(final Context context, final Feed feed) {
 		dbExec.execute(new Runnable() {
