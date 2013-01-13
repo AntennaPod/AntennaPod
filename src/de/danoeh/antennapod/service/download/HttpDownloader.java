@@ -70,7 +70,7 @@ public class HttpDownloader extends Downloader {
 					File destination = new File(status.getFeedFile()
 							.getFile_url());
 					if (!destination.exists()) {
-						connection = httpEntity.getContent();
+						connection = AndroidHttpClient.getUngzippedContent(httpEntity);
 						InputStream in = new BufferedInputStream(connection);
 						out = new BufferedOutputStream(new FileOutputStream(
 								destination));
