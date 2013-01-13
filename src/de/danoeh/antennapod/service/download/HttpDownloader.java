@@ -16,6 +16,7 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
 import android.net.http.AndroidHttpClient;
@@ -33,7 +34,8 @@ public class HttpDownloader extends Downloader {
 	private static final int MAX_REDIRECTS = 5;
 
 	private static final int BUFFER_SIZE = 8 * 1024;
-	private static final int CONNECTION_TIMEOUT = 5000;
+	private static final int CONNECTION_TIMEOUT = 30000;
+	private static final int SOCKET_TIMEOUT = 30000;
 
 	public HttpDownloader(DownloaderCallback downloaderCallback,
 			DownloadStatus status) {
@@ -46,7 +48,8 @@ public class HttpDownloader extends Downloader {
 		params.setIntParameter("http.protocol.max-redirects", MAX_REDIRECTS);
 		params.setBooleanParameter("http.protocol.reject-relative-redirect",
 				false);
-		params.setIntParameter("http.socket.timeout", CONNECTION_TIMEOUT);
+		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
+		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
 		HttpClientParams.setRedirecting(params, true);
 		return httpClient;
 	}
