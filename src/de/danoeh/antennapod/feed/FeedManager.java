@@ -124,18 +124,11 @@ public class FeedManager {
 			boolean startWhenPrepared, boolean shouldStream) {
 		try {
 			if (!shouldStream) {
-				if (media.getFile_url() == null) {
-					throw new MediaFileNotFoundException("Feed URL was null",
+				if (media.fileExists() == false) {
+					throw new MediaFileNotFoundException(
+							"No episode was found at " + media.getFile_url(),
 							media);
-				} else {
-					File f = new File(media.getFile_url());
-					if (!f.exists() || !f.canRead()) {
-						throw new MediaFileNotFoundException(
-								"No episode was found at "
-										+ media.getFile_url(), media);
-					}
 				}
-
 			}
 			// Start playback Service
 			Intent launchIntent = new Intent(context, PlaybackService.class);

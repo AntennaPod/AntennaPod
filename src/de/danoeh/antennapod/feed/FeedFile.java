@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.feed;
 
+import java.io.File;
+
 /** Represents a component of a Feed that has to be downloaded */
 public abstract class FeedFile extends FeedComponent {
 
@@ -51,6 +53,16 @@ public abstract class FeedFile extends FeedComponent {
 			return true;
 		}
 		return false;
+	}
+	
+	/** Returns true if the file exists at file_url. */
+	public boolean fileExists() {
+		if (file_url == null) {
+			return false;
+		} else {
+			File f = new File(file_url);
+			return f.exists();
+		}
 	}
 
 	public String getFile_url() {

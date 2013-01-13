@@ -28,6 +28,7 @@ import android.widget.TextView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
@@ -188,23 +189,31 @@ public abstract class PlaybackController {
 		long feedId = prefs.getLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID,
 				-1);
 		if (mediaId != -1 && feedId != -1) {
-			Intent serviceIntent = new Intent(activity, PlaybackService.class);
-			serviceIntent.putExtra(PlaybackService.EXTRA_FEED_ID, feedId);
-			serviceIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, mediaId);
-			serviceIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
-					false);
-			serviceIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
-					false);
-			serviceIntent
-					.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, prefs
-							.getBoolean(PlaybackService.PREF_LAST_IS_STREAM,
-									true));
-			return serviceIntent;
-		} else {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "No last played media found");
-			return null;
+			FeedMedia media = FeedManager.getInstance().getFeedMedia(mediaId);
+			if (media != null) {
+				Intent serviceIntent = new Intent(activity,
+						PlaybackService.class);
+				serviceIntent.putExtra(PlaybackService.EXTRA_FEED_ID, feedId);
+				serviceIntent.putExtra(PlaybackService.EXTRA_MEDIA_ID, mediaId);
+				serviceIntent.putExtra(
+						PlaybackService.EXTRA_START_WHEN_PREPARED, false);
+				serviceIntent.putExtra(
+						PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
+				boolean fileExists = media.fileExists();
+				boolean lastIsStream = prefs.getBoolean(
+						PlaybackService.PREF_LAST_IS_STREAM, true);
+				if (!fileExists && !lastIsStream) {
+					FeedManager.getInstance().notifyMissingFeedMediaFile(
+							activity, media);
+				}
+				serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
+						lastIsStream || !fileExists);
+				return serviceIntent;
+			}
 		}
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "No last played media found");
+		return null;
 	}
 
 	public abstract void setupGUI();
