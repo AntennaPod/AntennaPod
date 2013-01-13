@@ -1,0 +1,213 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">订阅</string>
+  <string name="new_label">最新</string>
+  <string name="settings_label">设置</string>
+  <string name="add_new_feed_label">添加新的订阅</string>
+  <string name="downloads_label">下载</string>
+  <string name="cancel_download_label">取消下载</string>
+  <string name="download_log_label">下载日志</string>
+  <string name="playback_history_label">播放历史</string>
+  <!--Playback history-->
+  <string name="clear_history_label">清空历史</string>
+  <!--Other-->
+  <string name="confirm_label">确定</string>
+  <string name="cancel_label">取消</string>
+  <string name="author_label">作者</string>
+  <string name="language_label">语言</string>
+  <string name="cover_label">封面</string>
+  <string name="error_label">错误</string>
+  <string name="error_msg_prefix">出错:</string>
+  <string name="refresh_label">刷新</string>
+  <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
+  <string name="chapters_label">章节</string>
+  <string name="shownotes_label">笔记</string>
+  <string name="last_update_prefix">最后更新:\u0020</string>
+  <string name="episodes_suffix">\u0020 曲</string>
+  <string name="published_prefix">发表:\u0020</string>
+  <string name="length_prefix">长度:\u0020</string>
+  <string name="size_prefix">大小:\u0020</string>
+  <string name="processing_label">处理中</string>
+  <string name="loading_label">加载中...</string>
+  <string name="image_of_prefix">图片:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">订阅 URL</string>
+  <string name="txtvfeedurl_label">输入订阅 URL: </string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">全部标识已读</string>
+  <string name="show_info_label">查看信息</string>
+  <string name="remove_feed_label">删除订阅</string>
+  <string name="share_link_label">共享网站链接</string>
+  <string name="share_source_label">共享订阅链接</string>
+  <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的插曲将一并删除. </string>
+  <!--actions on feeditems-->
+  <string name="download_label">下载</string>
+  <string name="play_label">播放</string>
+  <string name="stream_label">流</string>
+  <string name="remove_label">删除</string>
+  <string name="mark_read_label">标记已读</string>
+  <string name="mark_unread_label">标记未读</string>
+  <string name="add_to_queue_label">添加到队列</string>
+  <string name="remove_from_queue_label">从队列中删除</string>
+  <string name="visit_website_label">访问网站</string>
+  <string name="support_label">Flattr 他</string>
+  <string name="enqueue_all_new">全部添加到队列</string>
+  <string name="download_all">全部下载</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">下载成功</string>
+  <string name="download_failed">下载失败</string>
+  <string name="download_pending">下载等待</string>
+  <string name="download_running">下载中</string>
+  <string name="download_error_device_not_found">没有找到存储设备</string>
+  <string name="download_error_insufficient_space">空间不足</string>
+  <string name="download_error_file_error">文件错误</string>
+  <string name="download_error_http_data_error">HTTP 数据错误</string>
+  <string name="download_error_error_unknown">未知错误</string>
+  <string name="download_error_parser_exception">解析异常</string>
+  <string name="download_error_unsupported_type">未提供的订阅类型</string>
+  <string name="download_error_connection_error">链接错误</string>
+  <string name="download_error_unknown_host">未知主机</string>
+  <string name="cancel_all_downloads_label">取消所有下载</string>
+  <string name="download_cancelled_msg">已取消下载</string>
+  <string name="download_report_title">下载完成</string>
+  <string name="download_error_malformed_url">畸形 URL</string>
+  <string name="download_error_io_error">IO 错误</string>
+  <string name="download_error_request_error">请求出错</string>
+  <string name="downloads_left">\u0020 下载剩余</string>
+  <string name="download_notification_title">下载播客数据</string>
+  <string name="download_report_content">%1$d 下载成功, %2$d 失败</string>
+  <string name="download_log_title_unknown">未知标题</string>
+  <string name="download_type_feed">订阅</string>
+  <string name="download_type_media">媒体文件</string>
+  <string name="download_type_image">图片</string>
+  <string name="download_request_error_dialog_message_prefix">尝试下载文件:\u0020 时出错</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">错误!</string>
+  <string name="player_stopped_msg">没有可播放媒体</string>
+  <string name="player_preparing_msg">预备</string>
+  <string name="player_ready_msg">准备</string>
+  <string name="player_seeking_msg">查找</string>
+  <string name="playback_error_server_died">服务器宕机</string>
+  <string name="playback_error_unknown">未知错误</string>
+  <string name="no_media_playing_label">没有可播放的媒体</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">缓冲</string>
+  <string name="playbackservice_notification_title">播客播放中</string>
+  <string name="playbackservice_notification_content">长按查看更多</string>
+  <!--Navigation-->
+  <string name="show_download_log">下载日志</string>
+  <string name="show_player_label">播放器</string>
+  <!--Queue operations-->
+  <string name="move_up_label">上移</string>
+  <string name="move_down_label">下移</string>
+  <string name="clear_queue_label">清空队列</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Flattr 登录</string>
+  <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
+  <string name="authenticate_label">验证</string>
+  <string name="return_home_label">返回主页</string>
+  <string name="flattr_auth_success">验证成功!  现在可以使用应用内 Flattr 相关功能了.</string>
+  <string name="no_flattr_token_title">没有找到 Flattr 验证令牌信息</string>
+  <string name="no_flattr_token_msg">您的 flattr 账户似乎并没有连接到 AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
+  <string name="authenticate_now_label">验证</string>
+  <string name="action_forbidden_title">被禁止</string>
+  <string name="action_forbidden_msg">AntennaPod 没有权限执行本动作. 原因可能是: AntennaPod 对您账户的访问令牌被撤销. 你可以重新\"验证\"或访问该网站来授权.</string>
+  <string name="access_revoked_title">撤销访问</string>
+  <string name="access_revoked_info">您已经成功撤销 AntennaPod 对账户令牌的访问. 为了完成这个过程, 您必须到 Flattr 网站 \"账户设置-&gt;已批准应用\" 列表内删除本应用.</string>
+  <string name="flattr_click_success">Flattr 成功!</string>
+  <string name="flattring_label">Flattring</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">列表为空.</string>
+  <string name="no_feeds_label">还没有任何订阅.</string>
+  <!--Preferences-->
+  <string name="other_pref">其他</string>
+  <string name="about_pref">关于</string>
+  <string name="queue_label">队列</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">当耳机是断开时暂停播放 </string>
+  <string name="pref_followQueue_sum">播放完成跳转到队列下一项</string>
+  <string name="playback_pref">回放</string>
+  <string name="network_pref">网络</string>
+  <string name="pref_autoUpdateIntervall_title">更新周期</string>
+  <string name="pref_autoUpdateIntervall_sum">设置订阅自动刷新周期</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">仅在 WIFI 情况下载媒体文件</string>
+  <string name="pref_followQueue_title">连续播放</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">仅在 WIFI 情况下载</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">耳机断开</string>
+  <string name="pref_mobileUpdate_title">数据网络更新</string>
+  <string name="pref_mobileUpdate_sum">允许移动数据网络情况下进行数据链接</string>
+  <string name="refreshing_label">刷新中</string>
+  <string name="flattr_settings_label">Flattr 设置</string>
+  <string name="pref_flattr_auth_title">Flattr 登录</string>
+  <string name="pref_flattr_auth_sum">登录 Flattr 账户, 以便直接使用本应用中的相关功能.</string>
+  <string name="pref_flattr_this_app_title">Flattr 本应用</string>
+  <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!\n</string>
+  <string name="pref_revokeAccess_title">撤销访问</string>
+  <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
+  <string name="pref_autoQueue_title">自动添加到队列</string>
+  <string name="pref_autoQueue_sum">当下载开始后添加本曲目到队列</string>
+  <string name="pref_display_only_episodes_title">只显示有插曲的</string>
+  <string name="pref_display_only_episodes_sum">只显示有曲目的项.</string>
+  <string name="user_interface_label">用户界面</string>
+  <string name="pref_auto_delete_title">自动删除</string>
+  <string name="pref_auto_delete_sum">播放完成或者从队列中删除后删除本曲. </string>
+  <string name="pref_set_theme_title">主题选择</string>
+  <string name="pref_set_theme_sum">改变 AntennaPod 外观</string>
+  <!--Search-->
+  <string name="search_hint">搜索订阅或者插曲</string>
+  <string name="found_in_shownotes_label">笔记中查找</string>
+  <string name="found_in_chapters_label">章节中查找</string>
+  <string name="search_status_searching">搜索中...</string>
+  <string name="search_status_no_results">没有找到任何结果</string>
+  <string name="search_results_label">搜索结果</string>
+  <string name="search_term_label">搜索:\u0020</string>
+  <string name="search_label">搜索</string>
+  <string name="found_in_title_label">标题中查找</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">你可以导入 OPML 文件. OPML 文件可以方便的从别的播客转移数据过来:</string>
+  <string name="opml_import_explanation">导入 OPML 文件, 您必须将它放在以下目录, 之后按下面的按钮开始导入处理. </string>
+  <string name="start_import_label">开始导入</string>
+  <string name="opml_import_label">OPML 导入</string>
+  <string name="opml_directory_error">错误!</string>
+  <string name="reading_opml_label">OPML 文件读取中</string>
+  <string name="opml_reader_error">读取 OPML 文件内容出错:</string>
+  <string name="opml_import_error_dir_empty">导入目录为空.</string>
+  <string name="select_all_label">全选</string>
+  <string name="deselect_all_label">取消所有选择</string>
+  <string name="choose_file_to_import_label">选择导入文件</string>
+  <string name="opml_export_label">OPML 导出</string>
+  <string name="exporting_label">导出中...</string>
+  <string name="export_error_label">导出出错</string>
+  <string name="opml_export_success_title">OPML 导出成功.</string>
+  <string name="opml_export_success_sum">.opml 文件被写入到:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">设置休眠计时器</string>
+  <string name="disable_sleeptimer_label">禁用休眠计时器</string>
+  <string name="enter_time_here_label">输入时间</string>
+  <string name="sleep_timer_label">休眠计时器</string>
+  <string name="time_left_label">计时剩余:\u0020</string>
+  <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">加载目录中...</string>
+  <string name="browse_miroguide_label">浏览 Miro 指南</string>
+  <string name="txtv_browse_miroguide_label">或者浏览 Miro 指南</string>
+  <string name="miro_guide_label">Miro 指南</string>
+  <string name="miro_search_hint">搜索 Miro 指南</string>
+  <string name="popular_label">受欢迎的</string>
+  <string name="best_rating_label">评分最高</string>
+  <string name="add_feed_label">添加订阅</string>
+  <string name="miro_feed_added">订阅已被添加</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">已选文件夹:</string>
+  <string name="create_folder_label">穿件文件夹</string>
+  <string name="choose_data_directory">选择数据文件夹</string>
+  <string name="create_folder_msg">确实创建 \"%1$s\" 文件夹?</string>
+  <string name="create_folder_success">创建新文件夹</string>
+  <string name="create_folder_error_no_write_access">本文件夹不能写入</string>
+  <string name="create_folder_error_already_exists">文件夹已存在</string>
+  <string name="create_folder_error">不能创建文件夹</string>
+  <string name="folder_not_empty_dialog_title">文件夹不能为空</string>
+  <string name="folder_not_empty_dialog_msg">您所选择的文件夹不能为空. 媒体下载和其他文件将被直接放在本文件夹. 确认继续吗?</string>
+  <string name="set_to_default_folder">选择默认文件夹</string>
+</resources>
