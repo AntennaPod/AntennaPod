@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.6.4
+---------------
+* Added Chinese translation (Thanks tupunco!)
+* Added Portuguese (Brazil) translation (Thanks mbaltar!)
+* Several bugfixes
+
 Version 0.9.6.3
 ---------------
 * Added the ability change the location of AntennaPod's data folder
