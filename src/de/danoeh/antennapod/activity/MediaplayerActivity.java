@@ -51,9 +51,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected ImageButton butRev;
 	protected ImageButton butFF;
 
-	public MediaplayerActivity() {
-		super();
-		controller = new PlaybackController(this, false) {
+	private PlaybackController newPlaybackController() {
+		return new PlaybackController(this, false) {
 
 			@Override
 			public void setupGUI() {
@@ -130,6 +129,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				finish();
 			}
 		};
+
 	}
 
 	protected void onServiceQueried() {
@@ -185,10 +185,22 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected int orientation;
 
 	@Override
+	protected void onStart() {
+		super.onStart();
+		if (controller != null) {
+			controller.release();
+		}
+		controller = newPlaybackController();
+	}
+
+	@Override
 	protected void onStop() {
 		super.onStop();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Activity stopped");
+		if (controller != null) {
+			controller.release();
+		}
 	}
 
 	@Override
@@ -196,9 +208,6 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		super.onDestroy();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Activity destroyed");
-		if (controller != null) {
-			controller.release();
-		}
 	}
 
 	@Override
