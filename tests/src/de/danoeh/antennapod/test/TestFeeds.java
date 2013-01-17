@@ -264,7 +264,6 @@ public class TestFeeds {
 		"http://bitlove.org/omegatau/german-only/feed",
 		"http://bitlove.org/onatcer/oal/feed",
 		"http://bitlove.org/panikcast/panikcast/feed",
-		"http://bitlove.org/panxatony/aviewinblue/feed",
 		"http://bitlove.org/panxatony/macnemotv/feed",
 		"http://bitlove.org/pattex/megamagisch_m4a/feed",
 		"http://bitlove.org/pattex/megamagisch_mp3/feed",
