@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
     <dimen name="widget_margin">8dp</dimen>
     <dimen name="thumbnail_length">55dp</dimen>
     <dimen name="external_player_height">55dp</dimen>
     <dimen name="enc_icons_size">20dp</dimen>
-    
+    <dimen name="text_size_micro">12sp</dimen>
+    <dimen name="text_size_small">14sp</dimen>
+    <dimen name="text_size_medium">18sp</dimen>
+    <dimen name="text_size_large">22sp</dimen>
+
 </resources>

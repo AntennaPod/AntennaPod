@@ -13,7 +13,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginTop="8dp"
         android:gravity="center_horizontal"
-        android:textSize="18dp"
+        android:textSize="@dimen/text_size_medium"
         android:textStyle="bold" />
 
     <TextView

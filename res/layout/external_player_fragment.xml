@@ -55,7 +55,7 @@
                 android:layout_marginTop="4dp"
                 android:layout_toRightOf="@id/imgvCover"
                 android:maxLines="1"
-                android:textSize="12dp" />
+                android:textSize="@dimen/text_size_micro" />
 
             <TextView
                 android:id="@+id/txtvStatus"
@@ -71,7 +71,7 @@
                 android:ellipsize="end"
                 android:maxLines="1"
                 android:textColor="@color/gray"
-                android:textSize="12dp" />
+                android:textSize="@dimen/text_size_micro" />
         </RelativeLayout>
 
         <ImageButton

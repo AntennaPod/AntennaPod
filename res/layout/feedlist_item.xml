@@ -37,7 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_marginRight="4dip"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <View
@@ -58,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_marginRight="4dip"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <View

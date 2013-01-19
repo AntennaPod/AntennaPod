@@ -36,7 +36,7 @@
                 android:maxLines="1"
                 android:text="@string/no_media_playing_label"
                 android:textColor="@color/white"
-                android:textSize="18dp"
+                android:textSize="@dimen/text_size_medium"
                 android:textStyle="bold" />
 
             <TextView

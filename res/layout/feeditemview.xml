@@ -14,7 +14,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
-            android:textSize="18dp" />
+            android:textSize="@dimen/text_size_medium" />
 
         <TextView
             android:id="@+id/txtvPublished"

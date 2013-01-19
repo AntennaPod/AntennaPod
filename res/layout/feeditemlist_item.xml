@@ -23,7 +23,7 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@+id/butAction"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_size_medium" />
 
         <TextView
             android:id="@+id/txtvFeedname"

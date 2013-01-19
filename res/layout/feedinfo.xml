@@ -25,7 +25,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="4dp"
             android:layout_toRightOf="@id/imgvCover"
-            android:textSize="20dp"
+            android:textSize="@dimen/text_size_large"
             android:textStyle="bold" />
 
         <View

@@ -24,7 +24,7 @@
             android:layout_alignParentTop="true"
             android:layout_margin="8dp"
             android:gravity="center"
-            android:textSize="20dp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
         <View
@@ -41,7 +41,7 @@
             android:layout_below="@id/title_divider"
             android:layout_margin="8dp"
             android:maxLines="8"
-            android:textSize="16dp" />
+            android:textSize="@dimen/text_size_small" />
 
         <View
             android:id="@+id/description_divider"

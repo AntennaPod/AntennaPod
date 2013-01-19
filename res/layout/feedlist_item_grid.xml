@@ -34,7 +34,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_marginRight="4dip"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold" />
 
             <View
@@ -55,7 +55,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="fill_parent"
                 android:layout_marginRight="4dip"
-                android:textSize="20dp"
+                android:textSize="@dimen/text_size_large"
                 android:textStyle="bold" />
 
             <View
@@ -81,7 +81,7 @@
             android:layout_marginBottom="8dp"
             android:layout_marginRight="8dp"
             android:maxLines="2"
-            android:textSize="18dp"
+            android:textSize="@dimen/text_size_medium"
             android:textStyle="bold" />
 
         <TextView
