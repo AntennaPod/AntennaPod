@@ -41,7 +41,7 @@
             android:layout_below="@id/txtvFeedname"
             android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/butAction"
-            android:textColor="@color/gray" />
+            android:textColor="?android:attr/textColorSecondary" />
 
         <ImageView
             android:id="@+id/imgvType"

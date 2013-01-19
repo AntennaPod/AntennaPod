@@ -18,7 +18,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
-            android:textColor="@color/gray" />
+            android:textColor="?android:attr/textColorSecondary" />
 
         <TextView
             android:id="@+id/txtvTitle"

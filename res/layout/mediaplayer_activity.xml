@@ -107,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:textColor="@color/gray" />
+            android:textColor="?android:attr/textColorTertiary" />
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager

@@ -70,7 +70,7 @@
                 android:layout_toRightOf="@id/txtvPosition"
                 android:ellipsize="end"
                 android:maxLines="1"
-                android:textColor="@color/gray"
+                android:textColor="?android:attr/textColorSecondary"
                 android:textSize="@dimen/text_size_micro" />
         </RelativeLayout>
 

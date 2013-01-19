@@ -33,7 +33,7 @@
             android:id="@+id/txtvSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/gray" />
+            android:textColor="?android:attr/textColorSecondary" />
     </LinearLayout>
 
 </RelativeLayout>
