@@ -210,4 +210,6 @@
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
+  <string name="move_top_label">Ganz oben bewegen</string>
+  <string name="move_bottom_label">Ganz unten bewegen</string>
 </resources>
