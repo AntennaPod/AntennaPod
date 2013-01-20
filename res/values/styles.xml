@@ -29,6 +29,7 @@
         <item name="attr/non_transparent_background">@color/white</item>
         <item name="attr/borderless_button">@drawable/borderless_button</item>
         <item name="attr/video_overlay_background">@color/video_overlay_light</item>
+        <item name="attr/spinner_button">@drawable/spinner_button</item>
     </style>
 
     <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
@@ -63,6 +64,7 @@
         <item name="attr/non_transparent_background">@color/black</item>
         <item name="attr/borderless_button">@drawable/borderless_button_dark</item>
         <item name="attr/video_overlay_background">@color/video_overlay_dark</item>
+        <item name="attr/spinner_button">@drawable/spinner_button_dark</item>
     </style>
 
     <style name="AntennaPod.DarkTabPageIndicator" parent="Widget.TabPageIndicator">

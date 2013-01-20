@@ -87,17 +87,19 @@
 
         <ImageButton
             android:id="@id/butAction"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
             android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
+            android:layout_alignParentBottom="true"
             android:background="?attr/borderless_button"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:padding="8dp"
-            android:scaleType="center"
-            android:src="?attr/navigation_expand" />
+            android:paddingLeft="16dp"
+            android:paddingRight="16dp"
+            android:paddingTop="16dp"
+            android:scaleType="centerCrop"
+            android:src="?attr/spinner_button" />
     </RelativeLayout>
 
 </LinearLayout>
