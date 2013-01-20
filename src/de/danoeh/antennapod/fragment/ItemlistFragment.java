@@ -15,6 +15,7 @@ import android.view.View;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
 import android.view.View.OnCreateContextMenuListener;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
@@ -202,13 +203,22 @@ public class ItemlistFragment extends SherlockListFragment {
 		this.getListView().setItemsCanFocus(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		registerForContextMenu(getListView());
-		getListView().setOnItemLongClickListener(null);
+		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+
+			@Override
+			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
+					int position, long id) {
+				adapterCallback.onActionButtonPressed(position);
+				return true;
+			}
+		});
 	}
 
 	@Override
 	public void onCreateContextMenu(final ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		getListView().setOnItemLongClickListener(null);
 		if (selectedPosition != NO_SELECTION) {
 			new MenuInflater(ItemlistFragment.this.getActivity()).inflate(
 					R.menu.feeditem, menu);
