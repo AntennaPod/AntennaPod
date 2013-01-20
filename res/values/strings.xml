@@ -112,7 +112,9 @@
     <string name="move_up_label">Move up</string>
     <string name="move_down_label">Move down</string>
     <string name="clear_queue_label">Clear queue</string>
-
+    <string name="move_top_label">Move to top</string>
+    <string name="move_bottom_label">Move to bottom</string>
+    
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
     <string name="flattr_auth_explanation">Press the button below to start the authentication process. You will be forwarded to the flattr login screen in your browser and be asked to give AntennaPod the permission to flattr things. After you have given permission, you will return to this screen automatically.</string>

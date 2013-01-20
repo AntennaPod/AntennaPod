@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources>
-  <!--Activitiy titles-->
+
+    <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="new_label">Neu</string>
@@ -10,8 +11,10 @@
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="download_log_label">Download Log</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
+
   <!--Playback history-->
   <string name="clear_history_label">Chronik löschen</string>
+
   <!--Other-->
   <string name="confirm_label">Bestätigen</string>
   <string name="cancel_label">Abbrechen</string>
@@ -32,9 +35,11 @@
   <string name="processing_label">Verarbeite</string>
   <string name="loading_label">Lade...</string>
   <string name="image_of_prefix">Bild von:\u0020</string>
+
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Gib die URL des Feeds hier ein:</string>
+
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markiere alle als gelesen</string>
   <string name="show_info_label">Informationen anzeigen</string>
@@ -42,6 +47,7 @@
   <string name="share_link_label">Webseiten-Link teilen</string>
   <string name="share_source_label">Feed-Link teilen</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
@@ -55,6 +61,7 @@
   <string name="support_label">Flattr this</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
   <string name="download_all">Alle herunterladen</string>
+
   <!--Download messages and labels-->
   <string name="download_successful">Download erfolgreich</string>
   <string name="download_failed">Download fehlgeschlagen</string>
@@ -83,6 +90,7 @@
   <string name="download_type_media">Mediendatei</string>
   <string name="download_type_image">Bild</string>
   <string name="download_request_error_dialog_message_prefix">Beim Herunterladen der Datei ist ein Fehler aufgetreten:\u0020</string>
+
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fehler!</string>
   <string name="player_stopped_msg">Keine Medienwiedergabe</string>
@@ -96,13 +104,18 @@
   <string name="player_buffering_msg">Puffert</string>
   <string name="playbackservice_notification_title">Spiele Podcast ab</string>
   <string name="playbackservice_notification_content">Tippe hier für weitere Informationen</string>
+
   <!--Navigation-->
   <string name="show_download_log">Zeige Log</string>
   <string name="show_player_label">Zeige Player</string>
+
   <!--Queue operations-->
   <string name="move_up_label">Nach oben bewegen</string>
   <string name="move_down_label">Nach unten bewegen</string>
   <string name="clear_queue_label">Abspielliste leeren</string>
+  <string name="move_top_label">Ganz oben bewegen</string>
+  <string name="move_bottom_label">Ganz unten bewegen</string>
+  
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
@@ -118,9 +131,11 @@
   <string name="access_revoked_info">Du hast AntennaPod das Zugangstoken zu deinem Account entzogen. Um diesen Prozess abzuschließen, musst du diese App aus der Liste der zugelassenen Anwendungen in deinen Account Einstellungen auf der Flattr Webseite entfernen.</string>
   <string name="flattr_click_success">Du hast erfolgreich diese Sache mit Flattr unterstützt!</string>
   <string name="flattring_label">Flattre diese Sache</string>
+
   <!--Empty list labels-->
   <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
+
   <!--Preferences-->
   <string name="other_pref">Anderes</string>
   <string name="about_pref">Über</string>
@@ -154,6 +169,7 @@
   <string name="pref_auto_delete_sum">Lösche eine Episode nach dem Anhören oder wenn sie von der Abspielliste entfernt wird.</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
+
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>
@@ -164,6 +180,7 @@
   <string name="search_term_label">Suchbegriff:\u0020</string>
   <string name="search_label">Suche</string>
   <string name="found_in_title_label">In Titel gefunden</string>
+
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Du kannst auch eine OPML Datei importieren. Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen.</string>
   <string name="opml_import_explanation">Um eine OPML Datei zu importieren, musst du diese im folgenden Ordner platzieren und den unteren Button antippen, um den Import Prozess zu starten.</string>
@@ -181,6 +198,7 @@
   <string name="export_error_label">Exportfehler</string>
   <string name="opml_export_success_title">OPML Export erfolgreich</string>
   <string name="opml_export_success_sum">Die .opml Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Sleep timer setzen</string>
   <string name="disable_sleeptimer_label">Sleep Timer deaktivieren</string>
@@ -188,6 +206,7 @@
   <string name="sleep_timer_label">Sleep timer</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
+
   <!--Miro Guide-->
   <string name="loading_categories_label">Lade Kategorien</string>
   <string name="browse_miroguide_label">Durchsuche den Miro Guide</string>
@@ -198,6 +217,7 @@
   <string name="best_rating_label">Beste Bewertung</string>
   <string name="add_feed_label">Feed hinzufügen</string>
   <string name="miro_feed_added">Feed wird hinzugefügt</string>
+
   <!--Directory chooser-->
   <string name="selected_folder_label">Ausgewählter Ordner</string>
   <string name="create_folder_label">Neuer Ordner</string>
@@ -210,4 +230,5 @@
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
+
 </resources>
