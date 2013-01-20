@@ -112,7 +112,9 @@
     <string name="move_up_label">Monter</string>
     <string name="move_down_label">Descendre</string>
     <string name="clear_queue_label">Effacer la liste</string>
-
+    <string name="move_top_label">Tout en haut</string>
+    <string name="move_bottom_label">Tout en bas</string>
+ 
     <!-- Flattr -->
     <string name="flattr_auth_label">Connecter à Flattr</string>
     <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
