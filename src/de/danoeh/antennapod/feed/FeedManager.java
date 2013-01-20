@@ -765,6 +765,36 @@ public class FeedManager {
 		}
 	}
 
+	private void updateQueue(final Context context, FeedItem item) {
+		dbExec.execute(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setQueue(queue);
+				adapter.close();
+			}
+		});
+		sendQueueUpdateBroadcast(context, item);
+	}
+	
+	public void moveQueueItemAbsolute(final Context context, FeedItem item, int newIndex) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Moving queue item to absolute position");
+		int itemIndex = queue.indexOf(item);
+		if (newIndex < 0) {
+			// Negative positions are relative to the end of the list
+			// (-1 is the last position)
+			newIndex += queue.size();
+		}
+		if (newIndex >= 0 && newIndex < queue.size()) {
+			queue.remove(itemIndex);
+			queue.add(newIndex, item);
+			updateQueue(context, item);
+		}
+	}
+
 	public void moveQueueItem(final Context context, FeedItem item, int delta) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Moving queue item");
@@ -773,19 +803,8 @@ public class FeedManager {
 		if (newIndex >= 0 && newIndex < queue.size()) {
 			FeedItem oldItem = queue.set(newIndex, item);
 			queue.set(itemIndex, oldItem);
-			dbExec.execute(new Runnable() {
-
-				@Override
-				public void run() {
-					PodDBAdapter adapter = new PodDBAdapter(context);
-					adapter.open();
-					adapter.setQueue(queue);
-					adapter.close();
-				}
-			});
-
+			updateQueue(context, item);
 		}
-		sendQueueUpdateBroadcast(context, item);
 	}
 
 	public boolean isInQueue(FeedItem item) {
