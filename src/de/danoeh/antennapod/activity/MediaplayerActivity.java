@@ -291,7 +291,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			}
 		default:
 			try {
-				return FeedItemMenuHandler.onMenuItemClicked(this, item,
+				return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(),
 						controller.getMedia().getItem());
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();

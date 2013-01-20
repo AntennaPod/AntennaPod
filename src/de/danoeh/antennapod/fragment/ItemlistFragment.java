@@ -8,10 +8,16 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
@@ -33,8 +39,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 /** Displays a list of FeedItems. */
-public class ItemlistFragment extends SherlockListFragment implements
-		ActionMode.Callback {
+public class ItemlistFragment extends SherlockListFragment {
 
 	private static final String TAG = "ItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
@@ -51,8 +56,8 @@ public class ItemlistFragment extends SherlockListFragment implements
 	 */
 	protected Feed feed;
 
-	protected FeedItem selectedItem;
-	protected ActionMode mActionMode;
+	protected static final int NO_SELECTION = -1;
+	protected int selectedPosition = NO_SELECTION;
 
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
@@ -101,16 +106,13 @@ public class ItemlistFragment extends SherlockListFragment implements
 		}
 
 		fila = new FeedItemlistAdapter(getActivity(), 0, items,
-				onButActionClicked, showFeedtitle);
+				adapterCallback, showFeedtitle);
 		setListAdapter(fila);
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		if (mActionMode != null) {
-			mActionMode.finish();
-		}
 	}
 
 	@Override
@@ -184,26 +186,14 @@ public class ItemlistFragment extends SherlockListFragment implements
 		}
 	}
 
-	private final OnClickListener onButActionClicked = new OnClickListener() {
+	private FeedItemlistAdapter.Callback adapterCallback = new FeedItemlistAdapter.Callback() {
+
 		@Override
-		public void onClick(View v) {
-			int index = getListView().getPositionForView(v);
-			if (index != ListView.INVALID_POSITION) {
-				FeedItem newSelectedItem = fila.getItem(index);
-				if (newSelectedItem != selectedItem) {
-					if (mActionMode != null) {
-						mActionMode.finish();
-					}
-
-					selectedItem = newSelectedItem;
-					mActionMode = getSherlockActivity().startActionMode(
-							ItemlistFragment.this);
-					fila.setSelectedItemIndex(index);
-				} else {
-					mActionMode.finish();
-				}
-
-			}
+		public void onActionButtonPressed(int position) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "adapterCallback; position = " + position);
+			selectedPosition = position;
+			getListView().showContextMenu();
 		}
 	};
 
@@ -211,41 +201,56 @@ public class ItemlistFragment extends SherlockListFragment implements
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		this.getListView().setItemsCanFocus(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
+		registerForContextMenu(getListView());
+		getListView().setOnItemLongClickListener(null);
 	}
 
 	@Override
-	public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-		return FeedItemMenuHandler.onPrepareMenu(menu, selectedItem);
+	public void onCreateContextMenu(final ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		super.onCreateContextMenu(menu, v, menuInfo);
+		if (selectedPosition != NO_SELECTION) {
+			new MenuInflater(ItemlistFragment.this.getActivity()).inflate(
+					R.menu.feeditem, menu);
+			FeedItem selection = fila.getItem(selectedPosition);
+			if (selection != null) {
+				menu.setHeaderTitle(selection.getTitle());
+				FeedItemMenuHandler.onPrepareMenu(
+						new FeedItemMenuHandler.MenuInterface() {
+
+							@Override
+							public void setItemVisibility(int id,
+									boolean visible) {
+								menu.findItem(id).setVisible(visible);
+							}
+						}, selection);
+			}
+		}
 	}
 
 	@Override
-	public void onDestroyActionMode(ActionMode mode) {
-		mActionMode = null;
-		selectedItem = null;
-		fila.setSelectedItemIndex(FeedItemlistAdapter.SELECTION_NONE);
-	}
-
-	@Override
-	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		return FeedItemMenuHandler.onCreateMenu(mode.getMenuInflater(), menu);
-
-	}
-
-	@Override
-	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
+	public boolean onContextItemSelected(android.view.MenuItem item) {
 		boolean handled = false;
-		try {
-			handled = FeedItemMenuHandler.onMenuItemClicked(
-					getSherlockActivity(), item, selectedItem);
-		} catch (DownloadRequestException e) {
-			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(
-					getActivity(), e.getMessage());
+
+		if (selectedPosition != NO_SELECTION) {
+			FeedItem selectedItem = fila.getItem(selectedPosition);
+
+			if (selectedItem != null) {
+				try {
+					handled = FeedItemMenuHandler.onMenuItemClicked(
+							getSherlockActivity(), item.getItemId(),
+							selectedItem);
+				} catch (DownloadRequestException e) {
+					e.printStackTrace();
+					DownloadRequestErrorDialogCreator.newRequestErrorDialog(
+							getActivity(), e.getMessage());
+				}
+				if (handled) {
+					fila.notifyDataSetChanged();
+				}
+			}
 		}
-		if (handled) {
-			fila.notifyDataSetChanged();
-		}
-		mode.finish();
+		selectedPosition = NO_SELECTION;
 		return handled;
 	}
 

@@ -3,13 +3,19 @@ package de.danoeh.antennapod.adapter;
 import java.text.DateFormat;
 import java.util.List;
 
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
 import android.text.format.DateUtils;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.MenuInflater;
 import android.view.View;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.View.OnClickListener;
+import android.view.View.OnCreateContextMenuListener;
 import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.ArrayAdapter;
@@ -27,7 +33,7 @@ import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
-	private OnClickListener onButActionClicked;
+	private FeedItemlistAdapter.Callback callback;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
 	private List<FeedItem> objects;
@@ -35,17 +41,17 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	public static final int SELECTION_NONE = -1;
 
 	public FeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects, OnClickListener onButActionClicked,
+			List<FeedItem> objects, FeedItemlistAdapter.Callback callback,
 			boolean showFeedtitle) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
-		this.onButActionClicked = onButActionClicked;
+		this.callback = callback;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder;
 		FeedItem item = getItem(position);
 
@@ -178,7 +184,14 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 			}
 
 			holder.butAction.setFocusable(false);
-			holder.butAction.setOnClickListener(onButActionClicked);
+			holder.butAction.setOnClickListener(new OnClickListener() {
+				
+				@Override
+				public void onClick(View v) {
+					callback.onActionButtonPressed(position);
+				}
+			});
+		
 		} else {
 			convertView.setVisibility(View.GONE);
 		}
@@ -224,6 +237,11 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 		} else {
 			return super.getItem(position);
 		}
+	}
+	
+	public interface Callback {
+		/** Is called when the action button of a list item has been pressed. */
+		abstract void onActionButtonPressed(int position);
 	}
 
 }

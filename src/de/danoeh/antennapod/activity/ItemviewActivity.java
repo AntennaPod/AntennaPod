@@ -62,7 +62,8 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
-		if (AppConfig.DEBUG) Log.d(TAG, "Stopping Activity");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Stopping Activity");
 	}
 
 	/** Extracts FeedItem object the activity is supposed to display */
@@ -76,8 +77,10 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		}
 		Feed feed = manager.getFeed(feedId);
 		item = manager.getFeedItem(itemId, feed);
-		if (AppConfig.DEBUG) Log.d(TAG, "Title of item is " + item.getTitle());
-		if (AppConfig.DEBUG) Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Title of item is " + item.getTitle());
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
 	}
 
 	private void populateUI() {
@@ -95,21 +98,24 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		FragmentManager fragmentManager = getSupportFragmentManager();
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
-		ItemDescriptionFragment fragment = ItemDescriptionFragment.newInstance(
-				item);
+		ItemDescriptionFragment fragment = ItemDescriptionFragment
+				.newInstance(item);
 		fragmentTransaction.replace(R.id.description_fragment, fragment);
 		fragmentTransaction.commit();
 	}
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		return FeedItemMenuHandler.onCreateMenu(new MenuInflater(this), menu);
+		MenuInflater inflater = getSupportMenuInflater();
+		inflater.inflate(R.menu.feeditem, menu);
+		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem menuItem) {
 		try {
-			if (!FeedItemMenuHandler.onMenuItemClicked(this, menuItem, item)) {
+			if (!FeedItemMenuHandler.onMenuItemClicked(this,
+					menuItem.getItemId(), item)) {
 				switch (menuItem.getItemId()) {
 				case android.R.id.home:
 					finish();
@@ -118,15 +124,23 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 			}
 		} catch (DownloadRequestException e) {
 			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this, e.getMessage());
+			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+					e.getMessage());
 		}
 		invalidateOptionsMenu();
 		return true;
 	}
 
 	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
-		return FeedItemMenuHandler.onPrepareMenu(menu, item);
+	public boolean onPrepareOptionsMenu(final Menu menu) {
+		return FeedItemMenuHandler.onPrepareMenu(
+				new FeedItemMenuHandler.MenuInterface() {
+
+					@Override
+					public void setItemVisibility(int id, boolean visible) {
+						menu.findItem(id).setVisible(visible);
+					}
+				}, item);
 	}
 
 }

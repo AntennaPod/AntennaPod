@@ -3,10 +3,9 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -24,7 +23,20 @@ public class FeedItemMenuHandler {
 
 	}
 
-	public static boolean onPrepareMenu(Menu menu, FeedItem selectedItem) {
+	/**
+	 * Used by the MenuHandler to access different types of menus through one
+	 * interface (for example android.view.Menu and com.actionbarsherlock.Menu)
+	 */
+	public interface MenuInterface {
+		/**
+		 * Implementations of this method should call findItem(id) on their
+		 * menu-object and call setVisibility(visibility) on the returned
+		 * MenuItem object.
+		 */
+		abstract void setItemVisibility(int id, boolean visible);
+	}
+
+	public static boolean onPrepareMenu(MenuInterface mi, FeedItem selectedItem) {
 		FeedManager manager = FeedManager.getInstance();
 		DownloadRequester requester = DownloadRequester.getInstance();
 		boolean hasMedia = selectedItem.getMedia() != null;
@@ -35,45 +47,44 @@ public class FeedItemMenuHandler {
 				&& (!downloading);
 		FeedItem.State state = selectedItem.getState();
 
-		menu.findItem(R.id.play_item).setVisible(downloaded);
-		menu.findItem(R.id.remove_item).setVisible(downloaded);
-		menu.findItem(R.id.download_item).setVisible(notLoadedAndNotLoading);
-		menu.findItem(R.id.stream_item).setVisible(
-				notLoadedAndNotLoading | downloading);
-		menu.findItem(R.id.cancel_download_item).setVisible(downloading);
+		mi.setItemVisibility(R.id.play_item, downloaded);
+		mi.setItemVisibility(R.id.remove_item, downloaded);
+		mi.setItemVisibility(R.id.download_item, notLoadedAndNotLoading);
+		mi.setItemVisibility(R.id.stream_item, notLoadedAndNotLoading
+				| downloading);
+		mi.setItemVisibility(R.id.cancel_download_item, downloading);
 
 		boolean isInQueue = manager.isInQueue(selectedItem);
 
-		menu.findItem(R.id.remove_from_queue_item).setVisible(isInQueue);
-		menu.findItem(R.id.add_to_queue_item).setVisible(
+		mi.setItemVisibility(R.id.remove_from_queue_item, isInQueue);
+		mi.setItemVisibility(R.id.add_to_queue_item,
 				!isInQueue && selectedItem.getMedia() != null);
 
-		menu.findItem(R.id.share_link_item).setVisible(
+		mi.setItemVisibility(R.id.share_link_item,
 				selectedItem.getLink() != null);
 
-		menu.findItem(R.id.mark_unread_item).setVisible(
+		mi.setItemVisibility(R.id.mark_unread_item,
 				state == FeedItem.State.IN_PROGRESS
 						|| state == FeedItem.State.READ);
-		menu.findItem(R.id.mark_read_item).setVisible(
-				state == FeedItem.State.NEW
-						|| state == FeedItem.State.IN_PROGRESS);
+		mi.setItemVisibility(R.id.mark_read_item, state == FeedItem.State.NEW
+				|| state == FeedItem.State.IN_PROGRESS);
 
 		if (selectedItem.getLink() != null) {
-			menu.findItem(R.id.visit_website_item).setVisible(true);
+			mi.setItemVisibility(R.id.visit_website_item, true);
 		}
 
 		if (selectedItem.getPaymentLink() != null) {
-			menu.findItem(R.id.support_item).setVisible(true);
+			mi.setItemVisibility(R.id.support_item, true);
 		}
 
 		return true;
 	}
 
-	public static boolean onMenuItemClicked(Context context, MenuItem item,
+	public static boolean onMenuItemClicked(Context context, int menuItemId,
 			FeedItem selectedItem) throws DownloadRequestException {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		FeedManager manager = FeedManager.getInstance();
-		switch (item.getItemId()) {
+		switch (menuItemId) {
 		case R.id.download_item:
 			manager.downloadFeedItem(context, selectedItem);
 			break;
@@ -119,11 +130,6 @@ public class FeedItemMenuHandler {
 		}
 		// Refresh menu state
 
-		return true;
-	}
-
-	public static boolean onCreateMenu(MenuInflater inflater, Menu menu) {
-		inflater.inflate(R.menu.feeditem, menu);
 		return true;
 	}
 
