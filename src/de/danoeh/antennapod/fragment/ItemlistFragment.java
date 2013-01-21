@@ -59,6 +59,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	protected static final int NO_SELECTION = -1;
 	protected int selectedPosition = NO_SELECTION;
+	protected boolean contextMenuClosed = true;
 
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
@@ -194,6 +195,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "adapterCallback; position = " + position);
 			selectedPosition = position;
+			contextMenuClosed = true;
 			getListView().showContextMenu();
 		}
 	};
@@ -203,21 +205,17 @@ public class ItemlistFragment extends SherlockListFragment {
 		this.getListView().setItemsCanFocus(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		registerForContextMenu(getListView());
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
-
-			@Override
-			public boolean onItemLongClick(AdapterView<?> arg0, View arg1,
-					int position, long id) {
-				adapterCallback.onActionButtonPressed(position);
-				return true;
-			}
-		});
+		getListView().setOnItemLongClickListener(null);
 	}
 
 	@Override
 	public void onCreateContextMenu(final ContextMenu menu, View v,
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
+		if (!contextMenuClosed) { // true if context menu was cancelled before
+			selectedPosition = NO_SELECTION;
+		}
+		contextMenuClosed = false;
 		getListView().setOnItemLongClickListener(null);
 		if (selectedPosition != NO_SELECTION) {
 			new MenuInflater(ItemlistFragment.this.getActivity()).inflate(
@@ -233,7 +231,7 @@ public class ItemlistFragment extends SherlockListFragment {
 									boolean visible) {
 								menu.findItem(id).setVisible(visible);
 							}
-						}, selection);
+						}, selection, false);
 			}
 		}
 	}
@@ -261,6 +259,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			}
 		}
 		selectedPosition = NO_SELECTION;
+		contextMenuClosed = true;
 		return handled;
 	}
 

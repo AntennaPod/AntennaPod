@@ -37,7 +37,23 @@ public class FeedItemMenuHandler {
 		abstract void setItemVisibility(int id, boolean visible);
 	}
 
-	public static boolean onPrepareMenu(MenuInterface mi, FeedItem selectedItem) {
+	/**
+	 * This method should be called in the prepare-methods of menus. It changes
+	 * the visibility of the menu items depending on a FeedItem's attributes.
+	 * 
+	 * @param mi
+	 *            An instance of MenuInterface that the method uses to change a
+	 *            MenuItem's visibility
+	 * @param selectedItem
+	 *            The FeedItem for which the menu is supposed to be prepared
+	 * @param showExtendedMenu
+	 *            True if MenuItems that let the user share information about
+	 *            the FeedItem and visit its website should be set visible. This
+	 *            parameter should be set to false if the menu space is limited.
+	 * @return Always returns true
+	 * */
+	public static boolean onPrepareMenu(MenuInterface mi,
+			FeedItem selectedItem, boolean showExtendedMenu) {
 		FeedManager manager = FeedManager.getInstance();
 		DownloadRequester requester = DownloadRequester.getInstance();
 		boolean hasMedia = selectedItem.getMedia() != null;
@@ -69,7 +85,7 @@ public class FeedItemMenuHandler {
 		if (!(!isInQueue && selectedItem.getMedia() != null)) {
 			mi.setItemVisibility(R.id.add_to_queue_item, false);
 		}
-		if (selectedItem.getLink() == null) {
+		if (!showExtendedMenu || selectedItem.getLink() == null) {
 			mi.setItemVisibility(R.id.share_link_item, false);
 		}
 
@@ -80,7 +96,7 @@ public class FeedItemMenuHandler {
 			mi.setItemVisibility(R.id.mark_read_item, false);
 		}
 
-		if (selectedItem.getLink() == null) {
+		if (!showExtendedMenu || selectedItem.getLink() == null) {
 			mi.setItemVisibility(R.id.visit_website_item, false);
 		}
 

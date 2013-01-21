@@ -140,7 +140,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 					public void setItemVisibility(int id, boolean visible) {
 						menu.findItem(id).setVisible(visible);
 					}
-				}, item);
+				}, item, true);
 	}
 
 }
