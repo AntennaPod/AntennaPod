@@ -3,6 +3,7 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Debug;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -47,36 +48,45 @@ public class FeedItemMenuHandler {
 				&& (!downloading);
 		FeedItem.State state = selectedItem.getState();
 
-		mi.setItemVisibility(R.id.play_item, downloaded);
-		mi.setItemVisibility(R.id.remove_item, downloaded);
-		mi.setItemVisibility(R.id.download_item, notLoadedAndNotLoading);
-		mi.setItemVisibility(R.id.stream_item, notLoadedAndNotLoading
-				| downloading);
-		mi.setItemVisibility(R.id.cancel_download_item, downloading);
+		if (!downloaded) {
+			mi.setItemVisibility(R.id.play_item, false);
+			mi.setItemVisibility(R.id.remove_item, false);
+		}
+		if (!notLoadedAndNotLoading) {
+			mi.setItemVisibility(R.id.download_item, false);
+		}
+		if (!(notLoadedAndNotLoading | downloading)) {
+			mi.setItemVisibility(R.id.stream_item, false);
+		}
+		if (!downloading) {
+			mi.setItemVisibility(R.id.cancel_download_item, false);
+		}
 
 		boolean isInQueue = manager.isInQueue(selectedItem);
-
-		mi.setItemVisibility(R.id.remove_from_queue_item, isInQueue);
-		mi.setItemVisibility(R.id.add_to_queue_item,
-				!isInQueue && selectedItem.getMedia() != null);
-
-		mi.setItemVisibility(R.id.share_link_item,
-				selectedItem.getLink() != null);
-
-		mi.setItemVisibility(R.id.mark_unread_item,
-				state == FeedItem.State.IN_PROGRESS
-						|| state == FeedItem.State.READ);
-		mi.setItemVisibility(R.id.mark_read_item, state == FeedItem.State.NEW
-				|| state == FeedItem.State.IN_PROGRESS);
-
-		if (selectedItem.getLink() != null) {
-			mi.setItemVisibility(R.id.visit_website_item, true);
+		if (!isInQueue) {
+			mi.setItemVisibility(R.id.remove_from_queue_item, false);
+		}
+		if (!(!isInQueue && selectedItem.getMedia() != null)) {
+			mi.setItemVisibility(R.id.add_to_queue_item, false);
+		}
+		if (selectedItem.getLink() == null) {
+			mi.setItemVisibility(R.id.share_link_item, false);
 		}
 
-		if (selectedItem.getPaymentLink() != null) {
-			mi.setItemVisibility(R.id.support_item, true);
+		if (!(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
+			mi.setItemVisibility(R.id.mark_unread_item, false);
+		}
+		if (!(state == FeedItem.State.NEW || state == FeedItem.State.IN_PROGRESS)) {
+			mi.setItemVisibility(R.id.mark_read_item, false);
 		}
 
+		if (selectedItem.getLink() == null) {
+			mi.setItemVisibility(R.id.visit_website_item, false);
+		}
+
+		if (selectedItem.getPaymentLink() == null) {
+			mi.setItemVisibility(R.id.support_item, false);
+		}
 		return true;
 	}
 

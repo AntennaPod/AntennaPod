@@ -5,29 +5,25 @@
         android:id="@+id/download_item"
         android:icon="?attr/av_download"
         android:showAsAction="ifRoom"
-        android:title="@string/download_label"
-        android:visible="false">
+        android:title="@string/download_label">
     </item>
     <item
         android:id="@+id/stream_item"
         android:icon="?attr/action_stream"
         android:showAsAction="ifRoom"
-        android:title="@string/stream_label"
-        android:visible="false">
+        android:title="@string/stream_label">
     </item>
     <item
         android:id="@+id/play_item"
         android:icon="?attr/av_play"
         android:showAsAction="ifRoom"
-        android:title="@string/play_label"
-        android:visible="false">
+        android:title="@string/play_label">
     </item>
     <item
         android:id="@+id/remove_item"
         android:icon="?attr/content_discard"
         android:showAsAction="collapseActionView"
-        android:title="@string/remove_label"
-        android:visible="false">
+        android:title="@string/remove_label">
     </item>
     <item
         android:id="@+id/cancel_download_item"
@@ -38,26 +34,22 @@
     <item
         android:id="@+id/mark_read_item"
         android:showAsAction="collapseActionView"
-        android:title="@string/mark_read_label"
-        android:visible="false">
+        android:title="@string/mark_read_label">
     </item>
     <item
         android:id="@+id/mark_unread_item"
         android:showAsAction="collapseActionView"
-        android:title="@string/mark_unread_label"
-        android:visible="false">
+        android:title="@string/mark_unread_label">
     </item>
     <item
         android:id="@+id/add_to_queue_item"
         android:showAsAction="collapseActionView"
-        android:title="@string/add_to_queue_label"
-        android:visible="false">
+        android:title="@string/add_to_queue_label">
     </item>
     <item
         android:id="@+id/remove_from_queue_item"
         android:showAsAction="collapseActionView"
-        android:title="@string/remove_from_queue_label"
-        android:visible="false">
+        android:title="@string/remove_from_queue_label">
     </item>
     <item
         android:id="@+id/share_link_item"
@@ -68,14 +60,12 @@
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
         android:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/visit_website_label"
-        android:visible="false">
+        android:title="@string/visit_website_label">
     </item>
     <item
         android:id="@+id/support_item"
         android:showAsAction="collapseActionView"
-        android:title="@string/support_label"
-        android:visible="false">
+        android:title="@string/support_label">
     </item>
 
 </menu>
