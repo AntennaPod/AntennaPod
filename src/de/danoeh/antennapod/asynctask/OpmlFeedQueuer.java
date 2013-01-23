@@ -7,7 +7,8 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
+import de.danoeh.antennapod.activity.OpmlImportHolder;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.storage.DownloadRequestException;
@@ -43,7 +44,7 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 	protected Void doInBackground(Void... params) {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		for (int idx = 0; idx < selection.length; idx++) {
-			OpmlElement element = OpmlImportActivity.getReadElements().get(
+			OpmlElement element = OpmlImportHolder.getReadElements().get(
 					selection[idx]);
 			Feed feed = new Feed(element.getXmlUrl(), new Date(),
 					element.getText());

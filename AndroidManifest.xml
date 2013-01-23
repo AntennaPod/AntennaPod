@@ -162,7 +162,7 @@
             android:label="@string/about_pref" >
         </activity>
         <activity
-            android:name=".activity.OpmlImportActivity"
+            android:name=".activity.OpmlImportFromPathActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/opml_import_label" >
         </activity>

@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParserException;
@@ -26,35 +23,39 @@ public class OpmlImportWorker extends
 	private static final String TAG = "OpmlImportWorker";
 
 	private Context context;
-	private File file; // path to opml file
 	private Exception exception;
 
 	private ProgressDialog progDialog;
 
+    private Reader mReader;
+
 	public OpmlImportWorker(Context context, File file) {
 		super();
 		this.context = context;
-		this.file = file;
+
+        // Create reader
+        try {
+            mReader = new FileReader(file);
+            if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            exception = e;
+        }
 	}
 
 	@Override
 	protected ArrayList<OpmlElement> doInBackground(Void... params) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Starting background work");
-		FileReader reader = null;
-		// Create reader
-		try {
-			reader = new FileReader(file);
-			if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-			exception = e;
-			return null;
-		}
+
+        if (mReader==null) {
+            return null;
+        }
+
 		OpmlReader opmlReader = new OpmlReader();
 		try {
-			ArrayList<OpmlElement> result = opmlReader.readDocument(reader);
-			reader.close();
+            ArrayList<OpmlElement> result = opmlReader.readDocument(mReader);
+			mReader.close();
 			return result;
 		} catch (XmlPullParserException e) {
 			e.printStackTrace();

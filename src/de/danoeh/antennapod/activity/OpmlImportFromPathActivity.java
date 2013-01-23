@@ -27,7 +27,7 @@ import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /** Lets the user start the OPML-import process. */
-public class OpmlImportActivity extends SherlockActivity {
+public class OpmlImportFromPathActivity extends SherlockActivity {
 	private static final String TAG = "OpmlImportActivity";
 
 	public static final String IMPORT_DIR = "import/";
@@ -37,8 +37,6 @@ public class OpmlImportActivity extends SherlockActivity {
 	private String importPath;
 
 	private OpmlImportWorker importWorker;
-
-	private static ArrayList<OpmlElement> readElements;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -144,9 +142,9 @@ public class OpmlImportActivity extends SherlockActivity {
 					if (result != null) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Parsing was successful");
-						readElements = result;
+						OpmlImportHolder.setReadElements(result);
 						startActivityForResult(new Intent(
-								OpmlImportActivity.this,
+								OpmlImportFromPathActivity.this,
 								OpmlFeedChooserActivity.class), 0);
 					} else {
 						if (AppConfig.DEBUG)
@@ -211,7 +209,7 @@ public class OpmlImportActivity extends SherlockActivity {
 					@Override
 					protected void onPostExecute(Void result) {
 						super.onPostExecute(result);
-						Intent intent = new Intent(OpmlImportActivity.this, MainActivity.class);
+						Intent intent = new Intent(OpmlImportFromPathActivity.this, MainActivity.class);
 						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 								| Intent.FLAG_ACTIVITY_NEW_TASK);
 						startActivity(intent);
@@ -226,8 +224,5 @@ public class OpmlImportActivity extends SherlockActivity {
 		}
 	}
 
-	public static ArrayList<OpmlElement> getReadElements() {
-		return readElements;
-	}
 
 }
