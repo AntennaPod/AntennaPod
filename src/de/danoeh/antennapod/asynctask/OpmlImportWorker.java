@@ -43,6 +43,12 @@ public class OpmlImportWorker extends
         }
 	}
 
+    public OpmlImportWorker(Context context, Reader reader) {
+        super();
+        this.context = context;
+        this.mReader=reader;
+    }
+
 	@Override
 	protected ArrayList<OpmlElement> doInBackground(Void... params) {
 		if (AppConfig.DEBUG)
