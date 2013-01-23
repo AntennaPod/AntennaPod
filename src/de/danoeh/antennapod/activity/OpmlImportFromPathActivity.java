@@ -27,8 +27,8 @@ import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /** Lets the user start the OPML-import process. */
-public class OpmlImportFromPathActivity extends SherlockActivity {
-	private static final String TAG = "OpmlImportActivity";
+public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
+	private static final String TAG = "OpmlImportFromPathActivity";
 
 	public static final String IMPORT_DIR = "import/";
 
@@ -187,41 +187,6 @@ public class OpmlImportFromPathActivity extends SherlockActivity {
 			}
 		});
 		dialog.create().show();
-	}
-
-	/**
-	 * Handles the choices made by the user in the OpmlFeedChooserActivity and
-	 * starts the OpmlFeedQueuer if necessary.
-	 */
-	@Override
-	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Received result");
-		if (resultCode == RESULT_CANCELED) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Activity was cancelled");
-		} else {
-			int[] selected = data
-					.getIntArrayExtra(OpmlFeedChooserActivity.EXTRA_SELECTED_ITEMS);
-			if (selected != null && selected.length > 0) {
-				OpmlFeedQueuer queuer = new OpmlFeedQueuer(this, selected) {
-
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						Intent intent = new Intent(OpmlImportFromPathActivity.this, MainActivity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-								| Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-					}
-
-				};
-				queuer.executeAsync();
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "No items were selected");
-			}
-		}
 	}
 
 
