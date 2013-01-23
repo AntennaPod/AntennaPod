@@ -7,6 +7,8 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.ExternalFeedItemlistAdapter;
 import de.danoeh.antennapod.feed.FeedManager;
 
 /** Contains all unread items. */
@@ -21,6 +23,11 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setHasOptionsMenu(true);
+	}
+
+	protected AbstractFeedItemlistAdapter createListAdapter() {
+		return new ExternalFeedItemlistAdapter(getActivity(), 0, items,
+				adapterCallback);
 	}
 
 	@Override

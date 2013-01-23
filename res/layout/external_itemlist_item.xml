@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <ImageView
+        android:id="@+id/imgvFeedimage"
+        android:layout_width="@dimen/thumbnail_length"
+        android:layout_height="@dimen/thumbnail_length"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop" />
+
+    <ImageButton
+        android:id="@+id/butAction"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="?attr/borderless_button"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:scaleType="fitEnd"
+        android:src="?attr/spinner_button" />
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_margin="8dp"
+        android:layout_toLeftOf="@id/butAction"
+        android:layout_toRightOf="@id/imgvFeedimage"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_medium" />
+
+</RelativeLayout>

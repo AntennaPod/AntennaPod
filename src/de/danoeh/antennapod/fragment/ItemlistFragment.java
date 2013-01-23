@@ -29,6 +29,8 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
+import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
@@ -45,7 +47,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	private static final String TAG = "ItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
-	protected FeedItemlistAdapter fila;
+	protected AbstractFeedItemlistAdapter fila;
 	protected FeedManager manager;
 	protected DownloadRequester requester;
 
@@ -107,9 +109,13 @@ public class ItemlistFragment extends SherlockListFragment {
 			items = feed.getItems();
 		}
 
-		fila = new FeedItemlistAdapter(getActivity(), 0, items,
-				adapterCallback, showFeedtitle);
+		fila = createListAdapter();
 		setListAdapter(fila);
+	}
+	
+	protected AbstractFeedItemlistAdapter createListAdapter() {
+		return new FeedItemlistAdapter(getActivity(), 0, items,
+				adapterCallback, showFeedtitle);
 	}
 
 	@Override
@@ -188,7 +194,7 @@ public class ItemlistFragment extends SherlockListFragment {
 		}
 	}
 
-	private FeedItemlistAdapter.Callback adapterCallback = new FeedItemlistAdapter.Callback() {
+	protected ActionButtonCallback adapterCallback = new ActionButtonCallback() {
 
 		@Override
 		public void onActionButtonPressed(int position) {
@@ -263,7 +269,7 @@ public class ItemlistFragment extends SherlockListFragment {
 		return handled;
 	}
 
-	public FeedItemlistAdapter getListAdapter() {
+	public AbstractFeedItemlistAdapter getListAdapter() {
 		return fila;
 	}
 

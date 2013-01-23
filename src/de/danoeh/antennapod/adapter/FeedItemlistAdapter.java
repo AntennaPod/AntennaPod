@@ -3,7 +3,6 @@ package de.danoeh.antennapod.adapter;
 import java.text.DateFormat;
 import java.util.List;
 
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Typeface;
@@ -32,19 +31,17 @@ import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
-public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
-	private FeedItemlistAdapter.Callback callback;
+public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
+	private ActionButtonCallback callback;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
-	private List<FeedItem> objects;
 
 	public static final int SELECTION_NONE = -1;
 
 	public FeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects, FeedItemlistAdapter.Callback callback,
+			List<FeedItem> objects, ActionButtonCallback callback,
 			boolean showFeedtitle) {
 		super(context, textViewResourceId, objects);
-		this.objects = objects;
 		this.callback = callback;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
@@ -185,13 +182,13 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 
 			holder.butAction.setFocusable(false);
 			holder.butAction.setOnClickListener(new OnClickListener() {
-				
+
 				@Override
 				public void onClick(View v) {
 					callback.onActionButtonPressed(position);
 				}
 			});
-		
+
 		} else {
 			convertView.setVisibility(View.GONE);
 		}
@@ -219,29 +216,6 @@ public class FeedItemlistAdapter extends ArrayAdapter<FeedItem> {
 	public void setSelectedItemIndex(int selectedItemIndex) {
 		this.selectedItemIndex = selectedItemIndex;
 		notifyDataSetChanged();
-	}
-
-	@Override
-	public int getCount() {
-		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
-			return EpisodeFilter.countItemsWithEpisodes(objects);
-		} else {
-			return super.getCount();
-		}
-	}
-
-	@Override
-	public FeedItem getItem(int position) {
-		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
-			return EpisodeFilter.accessEpisodeByIndex(objects, position);
-		} else {
-			return super.getItem(position);
-		}
-	}
-	
-	public interface Callback {
-		/** Is called when the action button of a list item has been pressed. */
-		abstract void onActionButtonPressed(int position);
 	}
 
 }
