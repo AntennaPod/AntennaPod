@@ -1,11 +1,7 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-import java.util.ArrayList;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -13,181 +9,163 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
-import de.danoeh.antennapod.asynctask.OpmlImportWorker;
-import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.util.StorageUtils;
 
-/** Lets the user start the OPML-import process. */
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+
+/**
+ * Lets the user start the OPML-import process from a path
+ */
 public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
-	private static final String TAG = "OpmlImportFromPathActivity";
+    public static final String IMPORT_DIR = "import/";
+    private static final String TAG = "OpmlImportFromPathActivity";
+    private TextView txtvPath;
+    private Button butStart;
+    private String importPath;
 
-	public static final String IMPORT_DIR = "import/";
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        setTheme(PodcastApp.getThemeResourceId());
+        super.onCreate(savedInstanceState);
 
-	private TextView txtvPath;
-	private Button butStart;
-	private String importPath;
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.opml_import);
 
-	private OpmlImportWorker importWorker;
+        txtvPath = (TextView) findViewById(R.id.txtvPath);
+        butStart = (Button) findViewById(R.id.butStartImport);
 
-	@Override
-	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
-		super.onCreate(savedInstanceState);
+        butStart.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkFolderForFiles();
+            }
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.opml_import);
+        });
+    }
 
-		txtvPath = (TextView) findViewById(R.id.txtvPath);
-		butStart = (Button) findViewById(R.id.butStartImport);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StorageUtils.checkStorageAvailability(this);
+        setImportPath();
+    }
 
-		butStart.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				checkFolderForFiles();
-			}
+    /**
+     * Sets the importPath variable and makes txtvPath display the import
+     * directory.
+     */
+    private void setImportPath() {
+        File importDir = PodcastApp.getDataFolder(this, IMPORT_DIR);
+        boolean success = true;
+        if (!importDir.exists()) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Import directory doesn't exist. Creating...");
+            success = importDir.mkdir();
+            if (!success) {
+                Log.e(TAG, "Could not create directory");
+            }
+        }
+        if (success) {
+            txtvPath.setText(importDir.toString());
+            importPath = importDir.toString();
+        } else {
+            txtvPath.setText(R.string.opml_directory_error);
+        }
+    }
 
-		});
-	}
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		StorageUtils.checkStorageAvailability(this);
-		setImportPath();
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return false;
+        }
+    }
 
-	/**
-	 * Sets the importPath variable and makes txtvPath display the import
-	 * directory.
-	 */
-	private void setImportPath() {
-		File importDir = PodcastApp.getDataFolder(this, IMPORT_DIR);
-		boolean success = true;
-		if (!importDir.exists()) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Import directory doesn't exist. Creating...");
-			success = importDir.mkdir();
-			if (!success) {
-				Log.e(TAG, "Could not create directory");
-			}
-		}
-		if (success) {
-			txtvPath.setText(importDir.toString());
-			importPath = importDir.toString();
-		} else {
-			txtvPath.setText(R.string.opml_directory_error);
-		}
-	}
+    /**
+     * Looks at the contents of the import directory and decides what to do. If
+     * more than one file is in the directory, a dialog will be created to let
+     * the user choose which item to import
+     */
+    private void checkFolderForFiles() {
+        File dir = new File(importPath);
+        if (dir.isDirectory()) {
+            File[] fileList = dir.listFiles();
+            if (fileList.length == 1) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Found one file, choosing that one.");
+                startImport(fileList[0]);
+            } else if (fileList.length > 1) {
+                Log.w(TAG, "Import directory contains more than one file.");
+                askForFile(dir);
+            } else {
+                Log.e(TAG, "Import directory is empty");
+                Toast toast = Toast
+                        .makeText(this, R.string.opml_import_error_dir_empty,
+                                Toast.LENGTH_LONG);
+                toast.show();
+            }
+        }
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
-		return true;
-	}
+    private void startImport(File file) {
+        try {
+            Reader mReader = new FileReader(file);
+            if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
+            startImport(mReader);
+        } catch (FileNotFoundException e) {
+            Log.d(TAG, "File not found which really should be there");
+            // this should never happen as it is a file we have just chosen
+        }
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case android.R.id.home:
-			finish();
-			return true;
-		default:
-			return false;
-		}
-	}
+    /**
+     * Asks the user to choose from a list of files in a directory and returns
+     * his choice.
+     */
+    private void askForFile(File dir) {
+        final File[] fileList = dir.listFiles();
+        String[] fileNames = dir.list();
 
-	/**
-	 * Looks at the contents of the import directory and decides what to do. If
-	 * more than one file is in the directory, a dialog will be created to let
-	 * the user choose which item to import
-	 * */
-	private void checkFolderForFiles() {
-		File dir = new File(importPath);
-		if (dir.isDirectory()) {
-			File[] fileList = dir.listFiles();
-			if (fileList.length == 1) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Found one file, choosing that one.");
-				startImport(fileList[0]);
-			} else if (fileList.length > 1) {
-				Log.w(TAG, "Import directory contains more than one file.");
-				askForFile(dir);
-			} else {
-				Log.e(TAG, "Import directory is empty");
-				Toast toast = Toast
-						.makeText(this, R.string.opml_import_error_dir_empty,
-								Toast.LENGTH_LONG);
-				toast.show();
-			}
-		}
-	}
+        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        dialog.setTitle(R.string.choose_file_to_import_label);
+        dialog.setNeutralButton(android.R.string.cancel,
+                new DialogInterface.OnClickListener() {
 
-	/** Starts the import process. */
-	private void startImport(File file) {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Dialog was cancelled");
+                        dialog.dismiss();
+                    }
+                });
+        dialog.setItems(fileNames, new DialogInterface.OnClickListener() {
 
-		if (file != null) {
-			importWorker = new OpmlImportWorker(this, file) {
-
-				@Override
-				protected void onPostExecute(ArrayList<OpmlElement> result) {
-					super.onPostExecute(result);
-					if (result != null) {
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "Parsing was successful");
-						OpmlImportHolder.setReadElements(result);
-						startActivityForResult(new Intent(
-								OpmlImportFromPathActivity.this,
-								OpmlFeedChooserActivity.class), 0);
-					} else {
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "Parser error occured");
-					}
-				}
-			};
-			importWorker.executeAsync();
-		}
-	}
-
-	/**
-	 * Asks the user to choose from a list of files in a directory and returns
-	 * his choice.
-	 */
-	private void askForFile(File dir) {
-		final File[] fileList = dir.listFiles();
-		String[] fileNames = dir.list();
-
-		AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-		dialog.setTitle(R.string.choose_file_to_import_label);
-		dialog.setNeutralButton(android.R.string.cancel,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "Dialog was cancelled");
-						dialog.dismiss();
-					}
-				});
-		dialog.setItems(fileNames, new DialogInterface.OnClickListener() {
-
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "File at index " + which + " was chosen");
-				dialog.dismiss();
-				startImport(fileList[which]);
-			}
-		});
-		dialog.create().show();
-	}
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "File at index " + which + " was chosen");
+                dialog.dismiss();
+                startImport(fileList[which]);
+            }
+        });
+        dialog.create().show();
+    }
 
 
 }

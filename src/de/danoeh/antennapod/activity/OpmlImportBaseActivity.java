@@ -1,27 +1,13 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.opml.OpmlElement;
-import de.danoeh.antennapod.util.StorageUtils;
-
-import java.io.File;
+import java.io.Reader;
 import java.util.ArrayList;
 
 /**
@@ -30,8 +16,9 @@ import java.util.ArrayList;
 public class OpmlImportBaseActivity extends SherlockActivity {
 
     private static final String TAG = "OpmlImportBaseActivity";
+    private OpmlImportWorker importWorker;
 
-	/**
+    /**
 	 * Handles the choices made by the user in the OpmlFeedChooserActivity and
 	 * starts the OpmlFeedQueuer if necessary.
 	 */
@@ -67,6 +54,32 @@ public class OpmlImportBaseActivity extends SherlockActivity {
 			}
 		}
 	}
+
+    /** Starts the import process. */
+    protected void startImport(Reader reader) {
+
+        if (reader != null) {
+            importWorker = new OpmlImportWorker(this, reader) {
+
+                @Override
+                protected void onPostExecute(ArrayList<OpmlElement> result) {
+                    super.onPostExecute(result);
+                    if (result != null) {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Parsing was successful");
+                        OpmlImportHolder.setReadElements(result);
+                        startActivityForResult(new Intent(
+                                OpmlImportBaseActivity.this,
+                                OpmlFeedChooserActivity.class), 0);
+                    } else {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Parser error occured");
+                    }
+                }
+            };
+            importWorker.executeAsync();
+        }
+    }
 
     protected boolean finishWhenCanceled() {
         return false;

@@ -29,20 +29,6 @@ public class OpmlImportWorker extends
 
     private Reader mReader;
 
-	public OpmlImportWorker(Context context, File file) {
-		super();
-		this.context = context;
-
-        // Create reader
-        try {
-            mReader = new FileReader(file);
-            if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-            exception = e;
-        }
-	}
-
     public OpmlImportWorker(Context context, Reader reader) {
         super();
         this.context = context;
