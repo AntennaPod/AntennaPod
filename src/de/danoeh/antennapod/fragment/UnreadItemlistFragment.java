@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.TextView;
 
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -57,6 +60,24 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 			return false;
 		}
 		return true;
+	}
+
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		View headerView = getLayoutInflater(savedInstanceState).inflate(
+				R.layout.feeditemlist_header, null);
+		TextView headerTitle = (TextView) headerView
+				.findViewById(R.id.txtvHeaderTitle);
+		headerTitle.setText(R.string.new_label);
+		headerView.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+			}
+		});
+		getListView().addHeaderView(headerView);
+		super.onViewCreated(view, savedInstanceState);
 	}
 
 }

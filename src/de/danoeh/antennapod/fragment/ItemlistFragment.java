@@ -108,9 +108,6 @@ public class ItemlistFragment extends SherlockListFragment {
 			feed = FeedManager.getInstance().getFeed(feedId);
 			items = feed.getItems();
 		}
-
-		fila = createListAdapter();
-		setListAdapter(fila);
 	}
 	
 	protected AbstractFeedItemlistAdapter createListAdapter() {
@@ -156,7 +153,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	@Override
 	public void onListItemClick(ListView l, View v, int position, long id) {
-		FeedItem selection = fila.getItem(position);
+		FeedItem selection = fila.getItem(position - l.getHeaderViewsCount());
 		Intent showItem = new Intent(getActivity(), ItemviewActivity.class);
 		showItem.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, selection
 				.getFeed().getId());
@@ -208,6 +205,8 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
+		fila = createListAdapter();
+		setListAdapter(fila);
 		this.getListView().setItemsCanFocus(true);
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		registerForContextMenu(getListView());
