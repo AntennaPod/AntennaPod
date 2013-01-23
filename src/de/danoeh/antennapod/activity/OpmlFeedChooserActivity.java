@@ -90,8 +90,8 @@ public class OpmlFeedChooserActivity extends SherlockActivity {
 
 	private List<String> getTitleList() {
 		List<String> result = new ArrayList<String>();
-		if (OpmlImportActivity.getReadElements() != null) {
-			for (OpmlElement element : OpmlImportActivity.getReadElements()) {
+		if (OpmlImportHolder.getReadElements() != null) {
+			for (OpmlElement element : OpmlImportHolder.getReadElements()) {
 				result.add(element.getText());
 			}
 
