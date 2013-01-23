@@ -73,7 +73,7 @@ public class OpmlImportBaseActivity extends SherlockActivity {
                                 OpmlFeedChooserActivity.class), 0);
                     } else {
                         if (AppConfig.DEBUG)
-                            Log.d(TAG, "Parser error occured");
+                            Log.d(TAG, "Parser error occurred");
                     }
                 }
             };
