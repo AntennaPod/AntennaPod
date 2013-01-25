@@ -20,6 +20,7 @@
         <item name="attr/navigation_accept">@drawable/navigation_accept</item>
         <item name="attr/navigation_cancel">@drawable/navigation_cancel</item>
         <item name="attr/navigation_expand">@drawable/navigation_expand</item>
+        <item name="attr/navigation_collapse">@drawable/navigation_collapse</item>
         <item name="attr/navigation_refresh">@drawable/navigation_refresh</item>
         <item name="attr/navigation_up">@drawable/navigation_up</item>
         <item name="attr/social_share">@drawable/social_share</item>
@@ -55,6 +56,7 @@
         <item name="attr/navigation_accept">@drawable/navigation_accept_dark</item>
         <item name="attr/navigation_cancel">@drawable/navigation_cancel_dark</item>
         <item name="attr/navigation_expand">@drawable/navigation_expand_dark</item>
+        <item name="attr/navigation_collapse">@drawable/navigation_collapse_dark</item>
         <item name="attr/navigation_refresh">@drawable/navigation_refresh_dark</item>
         <item name="attr/navigation_up">@drawable/navigation_up_dark</item>
         <item name="attr/social_share">@drawable/social_share_dark</item>

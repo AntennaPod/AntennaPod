@@ -18,6 +18,7 @@
     <attr name="navigation_accept" format="reference" />
     <attr name="navigation_cancel" format="reference" />
     <attr name="navigation_expand" format="reference" />
+    <attr name="navigation_collapse" format="reference" />
     <attr name="navigation_refresh" format="reference" />
     <attr name="navigation_up" format="reference" />
     <attr name="social_share" format="reference" />
