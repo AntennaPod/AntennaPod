@@ -59,8 +59,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	 */
 	protected Feed feed;
 
-	protected static final int NO_SELECTION = -1;
-	protected int selectedPosition = NO_SELECTION;
+	protected FeedItem selectedItem = null;
 	protected boolean contextMenuClosed = true;
 
 	/** Argument for FeeditemlistAdapter */
@@ -109,7 +108,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			items = feed.getItems();
 		}
 	}
-	
+
 	protected AbstractFeedItemlistAdapter createListAdapter() {
 		return new FeedItemlistAdapter(getActivity(), 0, items,
 				adapterCallback, showFeedtitle);
@@ -194,10 +193,8 @@ public class ItemlistFragment extends SherlockListFragment {
 	protected ActionButtonCallback adapterCallback = new ActionButtonCallback() {
 
 		@Override
-		public void onActionButtonPressed(int position) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "adapterCallback; position = " + position);
-			selectedPosition = position;
+		public void onActionButtonPressed(FeedItem item) {
+			selectedItem = item;
 			contextMenuClosed = true;
 			getListView().showContextMenu();
 		}
@@ -218,26 +215,24 @@ public class ItemlistFragment extends SherlockListFragment {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (!contextMenuClosed) { // true if context menu was cancelled before
-			selectedPosition = NO_SELECTION;
+			selectedItem = null;
 		}
 		contextMenuClosed = false;
 		getListView().setOnItemLongClickListener(null);
-		if (selectedPosition != NO_SELECTION) {
+		if (selectedItem != null) {
 			new MenuInflater(ItemlistFragment.this.getActivity()).inflate(
 					R.menu.feeditem, menu);
-			FeedItem selection = fila.getItem(selectedPosition);
-			if (selection != null) {
-				menu.setHeaderTitle(selection.getTitle());
-				FeedItemMenuHandler.onPrepareMenu(
-						new FeedItemMenuHandler.MenuInterface() {
 
-							@Override
-							public void setItemVisibility(int id,
-									boolean visible) {
-								menu.findItem(id).setVisible(visible);
-							}
-						}, selection, false);
-			}
+			menu.setHeaderTitle(selectedItem.getTitle());
+			FeedItemMenuHandler.onPrepareMenu(
+					new FeedItemMenuHandler.MenuInterface() {
+
+						@Override
+						public void setItemVisibility(int id, boolean visible) {
+							menu.findItem(id).setVisible(visible);
+						}
+					}, selectedItem, false);
+
 		}
 	}
 
@@ -245,25 +240,22 @@ public class ItemlistFragment extends SherlockListFragment {
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		boolean handled = false;
 
-		if (selectedPosition != NO_SELECTION) {
-			FeedItem selectedItem = fila.getItem(selectedPosition);
+		if (selectedItem != null) {
 
-			if (selectedItem != null) {
-				try {
-					handled = FeedItemMenuHandler.onMenuItemClicked(
-							getSherlockActivity(), item.getItemId(),
-							selectedItem);
-				} catch (DownloadRequestException e) {
-					e.printStackTrace();
-					DownloadRequestErrorDialogCreator.newRequestErrorDialog(
-							getActivity(), e.getMessage());
-				}
-				if (handled) {
-					fila.notifyDataSetChanged();
-				}
+			try {
+				handled = FeedItemMenuHandler.onMenuItemClicked(
+						getSherlockActivity(), item.getItemId(), selectedItem);
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
+				DownloadRequestErrorDialogCreator.newRequestErrorDialog(
+						getActivity(), e.getMessage());
 			}
+			if (handled) {
+				fila.notifyDataSetChanged();
+			}
+
 		}
-		selectedPosition = NO_SELECTION;
+		selectedItem = null;
 		contextMenuClosed = true;
 		return handled;
 	}

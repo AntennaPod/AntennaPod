@@ -69,13 +69,8 @@ public class UnreadItemlistFragment extends ItemlistFragment {
 		TextView headerTitle = (TextView) headerView
 				.findViewById(R.id.txtvHeaderTitle);
 		headerTitle.setText(R.string.new_label);
-		headerView.setOnClickListener(new OnClickListener() {
+		
 
-			@Override
-			public void onClick(View v) {
-
-			}
-		});
 		getListView().addHeaderView(headerView);
 		super.onViewCreated(view, savedInstanceState);
 	}

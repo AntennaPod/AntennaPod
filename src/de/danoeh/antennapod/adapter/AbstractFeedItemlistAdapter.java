@@ -8,22 +8,28 @@ import de.danoeh.antennapod.util.EpisodeFilter;
 import android.content.Context;
 import android.widget.ArrayAdapter;
 
-public abstract class AbstractFeedItemlistAdapter extends ArrayAdapter<FeedItem> {
-	
+public abstract class AbstractFeedItemlistAdapter extends
+		ArrayAdapter<FeedItem> {
+
 	private List<FeedItem> objects;
+	private boolean isExpanded = true;
 
 	public AbstractFeedItemlistAdapter(Context context, int textViewResourceId,
 			List<FeedItem> objects) {
 		super(context, textViewResourceId, objects);
 		this.objects = objects;
 	}
-	
+
 	@Override
 	public int getCount() {
-		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
-			return EpisodeFilter.countItemsWithEpisodes(objects);
+		if (isExpanded) {
+			if (PodcastApp.getInstance().displayOnlyEpisodes()) {
+				return EpisodeFilter.countItemsWithEpisodes(objects);
+			} else {
+				return super.getCount();
+			}
 		} else {
-			return super.getCount();
+			return 0;
 		}
 	}
 
@@ -34,5 +40,10 @@ public abstract class AbstractFeedItemlistAdapter extends ArrayAdapter<FeedItem>
 		} else {
 			return super.getItem(position);
 		}
+	}
+
+	public void toggleExpandedState() {
+		isExpanded = !isExpanded;
+		notifyDataSetChanged();
 	}
 }

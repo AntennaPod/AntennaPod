@@ -62,7 +62,7 @@ public class ExternalFeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 
 			@Override
 			public void onClick(View v) {
-				callback.onActionButtonPressed(position);
+				//callback.onActionButtonPressed(position);
 			}
 		});
 

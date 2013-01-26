@@ -50,7 +50,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 	@Override
 	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder;
-		FeedItem item = getItem(position);
+		final FeedItem item = getItem(position);
 
 		if (convertView == null) {
 			holder = new Holder();
@@ -185,7 +185,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 
 				@Override
 				public void onClick(View v) {
-					callback.onActionButtonPressed(position);
+					callback.onActionButtonPressed(item);
 				}
 			});
 

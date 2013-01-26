@@ -23,6 +23,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -71,8 +72,8 @@ public class MainActivity extends SherlockFragmentActivity {
 				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
 			appLaunched = true;
 			if (manager.getUnreadItems().size() > 0) {
-				viewpager.setCurrentItem(MainPagerAdapter.POS_NEW_ITEMS);
-				
+				viewpager.setCurrentItem(MainPagerAdapter.POS_EPISODES);
+
 			}
 		}
 	}
@@ -165,11 +166,10 @@ public class MainActivity extends SherlockFragmentActivity {
 	}
 
 	public static class MainPagerAdapter extends FragmentStatePagerAdapter {
-		private static final int NUM_ITEMS = 3;
+		private static final int NUM_ITEMS = 2;
 
 		public static final int POS_FEEDLIST = 0;
-		public static final int POS_NEW_ITEMS = 1;
-		public static final int POS_QUEUE = 2;
+		public static final int POS_EPISODES = 1;
 
 		private Context context;
 
@@ -183,10 +183,9 @@ public class MainActivity extends SherlockFragmentActivity {
 			switch (position) {
 			case POS_FEEDLIST:
 				return new FeedlistFragment();
-			case POS_NEW_ITEMS:
-				return new UnreadItemlistFragment();
-			case POS_QUEUE:
-				return new QueueFragment();
+			case POS_EPISODES:
+				return new EpisodesFragment();
+
 			default:
 				return null;
 			}
@@ -201,11 +200,9 @@ public class MainActivity extends SherlockFragmentActivity {
 		public CharSequence getPageTitle(int position) {
 			switch (position) {
 			case POS_FEEDLIST:
-				return context.getString(R.string.feeds_label);
-			case POS_NEW_ITEMS:
-				return context.getString(R.string.new_label);
-			case POS_QUEUE:
-				return context.getString(R.string.queue_label);
+				return context.getString(R.string.podcasts_label);
+			case POS_EPISODES:
+				return context.getString(R.string.episodes_label);
 			default:
 				return null;
 			}
