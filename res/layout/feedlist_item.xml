@@ -2,9 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingBottom="4dp"
-    android:paddingRight="8dp"
-    android:paddingTop="4dp" >
+    android:paddingRight="8dp" >
 
     <ImageView
         android:id="@+id/imgvFeedimage"
@@ -12,7 +10,6 @@
         android:layout_height="@dimen/thumbnail_length"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="1dip"
         android:layout_marginRight="4dip"
         android:adjustViewBounds="true"
         android:cropToPadding="true"
@@ -72,6 +69,7 @@
     <LinearLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
+        android:layout_centerVertical="true"
         android:layout_toLeftOf="@id/lEpisodeCounts"
         android:layout_toRightOf="@id/imgvFeedimage"
         android:orientation="vertical" >
@@ -80,7 +78,8 @@
             android:id="@+id/txtvFeedname"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_small" />
 

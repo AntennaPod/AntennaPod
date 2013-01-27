@@ -14,7 +14,7 @@
         android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
         android:paddingLeft="8dp"
-        android:textColor="@color/bright_blue"
+        android:textColor="@color/dark_blue"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" />
     

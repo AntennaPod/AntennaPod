@@ -30,11 +30,44 @@
         android:id="@+id/txtvTitle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="8dp"
         android:layout_toLeftOf="@id/butAction"
         android:layout_toRightOf="@id/imgvFeedimage"
+        android:ellipsize="end"
+        android:maxLines="1"
         android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_medium" />
+        android:textSize="@dimen/text_size_small" />
+
+    <TextView
+        android:id="@+id/txtvFeedname"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvTitle"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@id/butAction"
+        android:layout_toRightOf="@id/imgvFeedimage"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_micro" />
+
+    <TextView
+        android:id="@+id/txtvLenSize"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvFeedname"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_toLeftOf="@id/butAction"
+        android:layout_toRightOf="@id/imgvFeedimage"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_micro" />
 
 </RelativeLayout>

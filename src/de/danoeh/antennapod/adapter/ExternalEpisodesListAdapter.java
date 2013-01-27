@@ -15,6 +15,8 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
 
 /**
@@ -92,6 +94,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			convertView = inflater.inflate(R.layout.external_itemlist_item,
 					null);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+			holder.feedTitle = (TextView) convertView
+					.findViewById(R.id.txtvFeedname);
+			holder.lenSize = (TextView) convertView
+					.findViewById(R.id.txtvLenSize);
 			holder.feedImage = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.butAction = (ImageButton) convertView
@@ -102,6 +108,22 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		}
 
 		holder.title.setText(item.getTitle());
+		holder.feedTitle.setText(item.getFeed().getTitle());
+		FeedMedia media = item.getMedia();
+		if (media != null) {
+			holder.lenSize.setVisibility(View.VISIBLE);
+			if (!media.isDownloaded()) {
+				holder.lenSize.setText(context.getString(R.string.size_prefix)
+						+ Converter.byteToString(media.getSize()));
+			} else {
+				holder.lenSize.setText(context
+						.getString(R.string.length_prefix)
+						+ Converter.getDurationStringLong(media.getDuration()));
+			}
+		} else {
+			holder.lenSize.setVisibility(View.INVISIBLE);
+		}
+
 		holder.feedImage.setTag(item.getFeed().getImage());
 		FeedImageLoader.getInstance().loadThumbnailBitmap(
 				item.getFeed().getImage(),
@@ -123,6 +145,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 	static class Holder {
 		TextView title;
+		TextView feedTitle;
+		TextView lenSize;
 		ImageView feedImage;
 		ImageButton butAction;
 	}

@@ -18,6 +18,7 @@
     <color name="navy">#000080</color>
     <color name="black">#000000</color>
     <color name="bright_blue">#33B5E5</color>
+    <color name="dark_blue">#3899C9</color>
     <color name="ics_gray">#858585</color>
     <color name="actionbar_gray">#DDDDDD</color>
     <color name="download_success_green">#669900</color>
