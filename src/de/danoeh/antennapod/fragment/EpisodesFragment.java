@@ -16,6 +16,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 import com.actionbarsherlock.app.SherlockFragment;
+import com.actionbarsherlock.view.Menu;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -37,11 +38,12 @@ public class EpisodesFragment extends SherlockFragment {
 	private ExternalEpisodesListAdapter adapter;
 
 	protected FeedItem selectedItem = null;
+	protected long selectedGroupId = -1;
 	protected boolean contextMenuClosed = true;
 
 	@Override
-	public void onPause() {
-		super.onPause();
+	public void onDestroy() {
+		super.onDestroy();
 		try {
 			getActivity().unregisterReceiver(contentUpdate);
 		} catch (IllegalArgumentException e) {
@@ -73,8 +75,18 @@ public class EpisodesFragment extends SherlockFragment {
 
 		@Override
 		public void onActionButtonPressed(FeedItem item) {
+			resetContextMenuSelection();
 			selectedItem = item;
-			contextMenuClosed = true;
+			listView.showContextMenu();
+		}
+	};
+
+	protected ExternalEpisodesListAdapter.OnGroupActionClicked groupActionCallback = new ExternalEpisodesListAdapter.OnGroupActionClicked() {
+
+		@Override
+		public void onClick(long groupId) {
+			resetContextMenuSelection();
+			selectedGroupId = groupId;
 			listView.showContextMenu();
 		}
 	};
@@ -84,7 +96,8 @@ public class EpisodesFragment extends SherlockFragment {
 		super.onViewCreated(view, savedInstanceState);
 		FeedManager manager = FeedManager.getInstance();
 		adapter = new ExternalEpisodesListAdapter(getActivity(),
-				manager.getUnreadItems(), manager.getQueue(), adapterCallback);
+				manager.getUnreadItems(), manager.getQueue(), adapterCallback,
+				groupActionCallback);
 		listView.setAdapter(adapter);
 		listView.expandGroup(ExternalEpisodesListAdapter.GROUP_POS_QUEUE);
 		listView.expandGroup(ExternalEpisodesListAdapter.GROUP_POS_UNREAD);
@@ -126,7 +139,7 @@ public class EpisodesFragment extends SherlockFragment {
 			ContextMenuInfo menuInfo) {
 		super.onCreateContextMenu(menu, v, menuInfo);
 		if (!contextMenuClosed) { // true if context menu was cancelled before
-			selectedItem = null;
+			resetContextMenuSelection();
 		}
 		contextMenuClosed = false;
 		listView.setOnItemLongClickListener(null);
@@ -143,13 +156,23 @@ public class EpisodesFragment extends SherlockFragment {
 						}
 					}, selectedItem, false);
 
+		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
+			menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
+					.getString(R.string.clear_queue_label));
+			menu.add(Menu.NONE, R.id.download_all_item, Menu.NONE,
+					getActivity().getString(R.string.download_all));
+		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_UNREAD) {
+			menu.add(Menu.NONE, R.id.mark_all_read_item, Menu.NONE,
+					getActivity().getString(R.string.mark_all_read_label));
+			menu.add(Menu.NONE, R.id.enqueue_all_item, Menu.NONE, getActivity()
+					.getString(R.string.enqueue_all_new));
 		}
 	}
 
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		boolean handled = false;
-
+		FeedManager manager = FeedManager.getInstance();
 		if (selectedItem != null) {
 			try {
 				handled = FeedItemMenuHandler.onMenuItemClicked(
@@ -159,13 +182,43 @@ public class EpisodesFragment extends SherlockFragment {
 				DownloadRequestErrorDialogCreator.newRequestErrorDialog(
 						getActivity(), e.getMessage());
 			}
-			if (handled) {
-				adapter.notifyDataSetChanged();
+
+		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
+			handled = true;
+			switch (item.getItemId()) {
+			case R.id.clear_queue_item:
+				manager.clearQueue(getActivity());
+				break;
+			case R.id.download_all_item:
+				manager.downloadAllItemsInQueue(getActivity());
+				break;
+			default:
+				handled = false;
+			}
+		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_UNREAD) {
+			handled = true;
+			switch (item.getItemId()) {
+			case R.id.mark_all_read_item:
+				manager.markAllItemsRead(getActivity());
+				break;
+			case R.id.enqueue_all_item:
+				manager.enqueueAllNewItems(getActivity());
+				break;
+			default:
+				handled = false;
 			}
 		}
-		selectedItem = null;
-		contextMenuClosed = true;
+
+		if (handled) {
+			adapter.notifyDataSetChanged();
+		}
+		resetContextMenuSelection();
 		return handled;
 	}
 
+	private void resetContextMenuSelection() {
+		selectedItem = null;
+		selectedGroupId = -1;
+		contextMenuClosed = true;
+	}
 }

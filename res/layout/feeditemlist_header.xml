@@ -17,5 +17,21 @@
         android:textColor="@color/bright_blue"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" />
+    
+    <ImageButton
+        android:id="@+id/butAction"
+        android:layout_width="48dp"
+        android:layout_height="match_parent"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:background="?attr/borderless_button"
+        android:clickable="false"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingTop="16dp"
+        android:scaleType="fitEnd"
+        android:src="?attr/spinner_button" />
 
 </RelativeLayout>

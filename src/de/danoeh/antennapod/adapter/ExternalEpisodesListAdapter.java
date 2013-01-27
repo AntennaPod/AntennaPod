@@ -23,7 +23,7 @@ import de.danoeh.antennapod.util.EpisodeFilter;
  */
 public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	private static final String TAG = "ExternalEpisodesListAdapter";
-	
+
 	public static final int GROUP_POS_QUEUE = 0;
 	public static final int GROUP_POS_UNREAD = 1;
 
@@ -32,16 +32,19 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	private List<FeedItem> unreadItems;
 	private List<FeedItem> queueItems;
 
-	ActionButtonCallback callback;
+	private ActionButtonCallback feedItemActionCallback;
+	private OnGroupActionClicked groupActionCallback;
 
 	public ExternalEpisodesListAdapter(Context context,
 			List<FeedItem> unreadItems, List<FeedItem> queueItems,
-			ActionButtonCallback callback) {
+			ActionButtonCallback callback,
+			OnGroupActionClicked groupActionCallback) {
 		super();
 		this.context = context;
 		this.unreadItems = unreadItems;
 		this.queueItems = queueItems;
-		this.callback = callback;
+		this.feedItemActionCallback = callback;
+		this.groupActionCallback = groupActionCallback;
 	}
 
 	@Override
@@ -110,7 +113,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 			@Override
 			public void onClick(View v) {
-				callback.onActionButtonPressed(item);
+				feedItemActionCallback.onActionButtonPressed(item);
 			}
 		});
 
@@ -155,13 +158,15 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	}
 
 	@Override
-	public View getGroupView(int groupPosition, boolean isExpanded,
+	public View getGroupView(final int groupPosition, boolean isExpanded,
 			View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = inflater.inflate(R.layout.feeditemlist_header, null);
 		TextView headerTitle = (TextView) convertView
 				.findViewById(R.id.txtvHeaderTitle);
+		ImageButton actionButton = (ImageButton) convertView
+				.findViewById(R.id.butAction);
 		String headerString = null;
 		if (groupPosition == 0) {
 			headerString = context.getString(R.string.queue_label);
@@ -175,7 +180,14 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			}
 		}
 		headerTitle.setText(headerString);
+		actionButton.setFocusable(false);
+		actionButton.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				groupActionCallback.onClick(getGroupId(groupPosition));
+			}
+		});
 		return convertView;
 	}
 
@@ -197,6 +209,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public boolean isChildSelectable(int groupPosition, int childPosition) {
 		return true;
+	}
+
+	public interface OnGroupActionClicked {
+		public void onClick(long groupId);
 	}
 
 }
