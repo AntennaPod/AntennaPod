@@ -98,6 +98,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.txtvFeedname);
 			holder.lenSize = (TextView) convertView
 					.findViewById(R.id.txtvLenSize);
+			holder.downloaded = (ImageView) convertView
+					.findViewById(R.id.imgvDownloaded);
 			holder.feedImage = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.butAction = (ImageButton) convertView
@@ -113,14 +115,17 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		if (media != null) {
 			holder.lenSize.setVisibility(View.VISIBLE);
 			if (!media.isDownloaded()) {
+				holder.downloaded.setVisibility(View.GONE);
 				holder.lenSize.setText(context.getString(R.string.size_prefix)
 						+ Converter.byteToString(media.getSize()));
 			} else {
+				holder.downloaded.setVisibility(View.VISIBLE);
 				holder.lenSize.setText(context
 						.getString(R.string.length_prefix)
 						+ Converter.getDurationStringLong(media.getDuration()));
 			}
 		} else {
+			holder.downloaded.setVisibility(View.GONE);
 			holder.lenSize.setVisibility(View.INVISIBLE);
 		}
 
@@ -147,6 +152,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		TextView title;
 		TextView feedTitle;
 		TextView lenSize;
+		ImageView downloaded;
 		ImageView feedImage;
 		ImageButton butAction;
 	}
