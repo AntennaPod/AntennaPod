@@ -33,7 +33,18 @@
         <item name="attr/spinner_button">@drawable/spinner_button</item>
     </style>
 
-    <style name="AntennaPod.LightTabPageIndicator" parent="Widget.TabPageIndicator">
+    <style name="AntennaPod.TabPageIndicator" parent="Widget.TabPageIndicator">
+        <item name="android:dividerPadding">10dp</item>
+        <item name="android:showDividers">middle</item>
+        <item name="android:paddingTop">16dp</item>
+        <item name="android:paddingLeft">8dp</item>
+        <item name="android:paddingRight">8dp</item>
+        <item name="android:paddingBottom">16dp</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AntennaPod.LightTabPageIndicator" parent="AntennaPod.TabPageIndicator">
         <item name="android:textColor">@color/black</item>
     </style>
 
@@ -69,7 +80,7 @@
         <item name="attr/spinner_button">@drawable/spinner_button_dark</item>
     </style>
 
-    <style name="AntennaPod.DarkTabPageIndicator" parent="Widget.TabPageIndicator">
+    <style name="AntennaPod.DarkTabPageIndicator" parent="AntennaPod.TabPageIndicator">
         <item name="android:textColor">#FFFFFF</item>
     </style>
 

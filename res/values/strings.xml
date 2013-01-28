@@ -4,8 +4,8 @@
     <!-- Activitiy titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
-    <string name="podcasts_label">Podcasts</string>
-    <string name="episodes_label">Episodes</string>
+    <string name="podcasts_label">PODCASTS</string>
+    <string name="episodes_label">EPISODES</string>
     <string name="new_label">New</string>
     <string name="settings_label">Settings</string>
     <string name="add_new_feed_label">Add a new Feed</string>
