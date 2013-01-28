@@ -3,6 +3,7 @@ package de.danoeh.antennapod.adapter;
 import java.util.List;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -16,6 +17,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.EpisodeFilter;
 
@@ -98,8 +100,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.txtvFeedname);
 			holder.lenSize = (TextView) convertView
 					.findViewById(R.id.txtvLenSize);
-			holder.downloaded = (ImageView) convertView
-					.findViewById(R.id.imgvDownloaded);
+			holder.downloadStatus = (ImageView) convertView
+					.findViewById(R.id.imgvDownloadStatus);
 			holder.feedImage = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);
 			holder.butAction = (ImageButton) convertView
@@ -113,19 +115,27 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		holder.feedTitle.setText(item.getFeed().getTitle());
 		FeedMedia media = item.getMedia();
 		if (media != null) {
+			TypedArray drawables = context.obtainStyledAttributes(new int[] {
+					R.attr.av_download, R.attr.navigation_refresh });
 			holder.lenSize.setVisibility(View.VISIBLE);
 			if (!media.isDownloaded()) {
-				holder.downloaded.setVisibility(View.GONE);
+				if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+					holder.downloadStatus.setVisibility(View.VISIBLE);
+					holder.downloadStatus.setImageDrawable(drawables.getDrawable(1));
+				} else {
+					holder.downloadStatus.setVisibility(View.GONE);
+				}
 				holder.lenSize.setText(context.getString(R.string.size_prefix)
 						+ Converter.byteToString(media.getSize()));
 			} else {
-				holder.downloaded.setVisibility(View.VISIBLE);
+				holder.downloadStatus.setVisibility(View.VISIBLE);
+				holder.downloadStatus.setImageDrawable(drawables.getDrawable(0));
 				holder.lenSize.setText(context
 						.getString(R.string.length_prefix)
 						+ Converter.getDurationStringLong(media.getDuration()));
 			}
 		} else {
-			holder.downloaded.setVisibility(View.GONE);
+			holder.downloadStatus.setVisibility(View.GONE);
 			holder.lenSize.setVisibility(View.INVISIBLE);
 		}
 
@@ -152,7 +162,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		TextView title;
 		TextView feedTitle;
 		TextView lenSize;
-		ImageView downloaded;
+		ImageView downloadStatus;
 		ImageView feedImage;
 		ImageButton butAction;
 	}

@@ -70,7 +70,7 @@
         android:textSize="@dimen/text_size_micro" />
 
     <ImageView
-        android:id="@+id/imgvDownloaded"
+        android:id="@+id/imgvDownloadStatus"
         android:layout_width="@dimen/enc_icons_size"
         android:layout_height="@dimen/enc_icons_size"
         android:layout_below="@id/txtvFeedname"
@@ -78,7 +78,6 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@id/butAction"
-        android:src="?attr/av_download" />
+        android:layout_toLeftOf="@id/butAction" />
 
 </RelativeLayout>
