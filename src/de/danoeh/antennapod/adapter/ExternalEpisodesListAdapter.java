@@ -201,12 +201,12 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		if (groupPosition == 0) {
 			headerString = context.getString(R.string.queue_label);
 			if (!queueItems.isEmpty()) {
-				headerString += " (" + queueItems.size() + ")";
+				headerString += " (" + getChildrenCount(GROUP_POS_QUEUE) + ")";
 			}
 		} else {
 			headerString = context.getString(R.string.new_label);
 			if (!unreadItems.isEmpty()) {
-				headerString += " (" + unreadItems.size() + ")";
+				headerString += " (" + getChildrenCount(GROUP_POS_UNREAD) + ")";
 			}
 		}
 		headerTitle.setText(headerString);
