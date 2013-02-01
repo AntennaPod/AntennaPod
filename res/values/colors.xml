@@ -26,8 +26,9 @@
     <color name="status_unread">#99CC00</color>
     <color name="status_progress">#FFBB33</color>
     <color name="status_playing">#EE5F52</color>
-    <color name="video_overlay_dark">#262C31</color>
-    <color name="video_overlay_light">#DDDDDD</color>
+    <color name="overlay_dark">#262C31</color>
+    <color name="overlay_light">#DDDDDD</color>
+    
     <!-- Use Gingerbread-orange -->
     <color name="selection_background_color_dark">#FEBB20</color>
     <color name="selection_background_color_light">#FEBB20</color>

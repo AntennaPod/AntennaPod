@@ -34,7 +34,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	ViewPager viewpager;
 	TabPageIndicator tabs;
 	MediaPlayerPagerAdapter pagerAdapter;
-	TextView txtvStatus;
 
 	@Override
 	protected void onAwaitingVideoSurface() {
@@ -43,20 +42,17 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void postStatusMsg(int resId) {
-		txtvStatus.setText(resId);
 
 	}
 
 	@Override
 	protected void clearStatusMsg() {
-		txtvStatus.setText("");
 
 	}
 
 	@Override
 	protected void setupGUI() {
 		super.setupGUI();
-		txtvStatus = (TextView) findViewById(R.id.txtvStatus);
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		tabs = (TabPageIndicator) findViewById(R.id.tabs);
 		pagerAdapter = new MediaPlayerPagerAdapter(getSupportFragmentManager());

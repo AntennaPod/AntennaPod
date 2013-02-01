@@ -11,87 +11,59 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true" />
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/player_control"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="8dp" >
-
-        <ImageButton
-            android:id="@+id/butRev"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_weight="0.02"
-            android:background="?attr/borderless_button"
-            android:src="?attr/av_rewind" />
-
-        <View
-            android:layout_width="0.5dp"
-            android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/gray" />
+        android:background="?attr/overlay_background" >
 
         <ImageButton
             android:id="@+id/butPlay"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.14"
+            android:layout_centerHorizontal="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
             android:background="?attr/borderless_button"
             android:src="?attr/av_pause" />
 
-        <View
-            android:layout_width="0.5dp"
+        <ImageButton
+            android:id="@+id/butRev"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_marginBottom="8dp"
-            android:layout_marginTop="8dp"
-            android:background="@color/gray" />
+            android:layout_toLeftOf="@id/butPlay"
+            android:background="?attr/borderless_button"
+            android:src="?attr/av_rewind" />
 
         <ImageButton
             android:id="@+id/butFF"
-            android:layout_width="wrap_content"
+            android:layout_width="60dp"
             android:layout_height="match_parent"
-            android:layout_weight="0.02"
+            android:layout_toRightOf="@id/butPlay"
             android:background="?attr/borderless_button"
             android:src="?attr/av_fast_forward" />
-    </LinearLayout>
-
-    <SeekBar
-        android:id="@+id/sbPosition"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/player_control"
-        android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        android:max="500" />
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/sbPosition"
-        android:layout_margin="8dp"
-        android:background="@color/gray" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/playtime_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/sbPosition"
+        android:layout_above="@id/player_control"
         android:layout_alignParentLeft="true"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp" >
+        android:background="?attr/overlay_drawable" >
 
         <TextView
             android:id="@+id/txtvPosition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:text="@string/position_default_label" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/position_default_label"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_micro" />
 
         <TextView
             android:id="@+id/txtvLength"
@@ -99,15 +71,24 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:text="@string/position_default_label" />
+            android:layout_centerVertical="true"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:text="@string/position_default_label"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_micro" />
 
-        <TextView
-            android:id="@+id/txtvStatus"
-            android:layout_width="wrap_content"
+        <SeekBar
+            android:id="@+id/sbPosition"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:textColor="?android:attr/textColorTertiary" />
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="16dp"
+            android:layout_toLeftOf="@id/txtvLength"
+            android:layout_toRightOf="@id/txtvPosition"
+            android:max="500" />
     </RelativeLayout>
 
     <android.support.v4.view.ViewPager
@@ -117,11 +98,5 @@
         android:layout_above="@id/playtime_layout"
         android:layout_below="@id/tabs" >
     </android.support.v4.view.ViewPager>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="0.5dp"
-        android:layout_below="@id/viewpager"
-        android:background="@color/ics_gray" />
 
 </RelativeLayout>

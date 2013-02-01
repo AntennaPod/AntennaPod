@@ -27,8 +27,9 @@
     <attr name="type_video" format="reference" />
     <attr name="borderless_button" format="reference" />
     <attr name="spinner_button" format="reference" />
+    <attr name="overlay_drawable" format="reference" />
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference" />
-    <attr name="video_overlay_background" format="color" />
+    <attr name="overlay_background" format="color" />
 
 </resources>

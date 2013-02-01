@@ -23,7 +23,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="?attr/video_overlay_background"
+        android:background="?attr/overlay_background"
         android:orientation="vertical" >
 
         <RelativeLayout
