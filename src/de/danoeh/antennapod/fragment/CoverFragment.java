@@ -29,8 +29,6 @@ public class CoverFragment extends SherlockFragment implements
 
 	private FeedMedia media;
 
-	private TextView txtvTitle;
-	private TextView txtvFeed;
 	private ImageView imgvCover;
 
 	private boolean viewCreated = false;
@@ -72,8 +70,6 @@ public class CoverFragment extends SherlockFragment implements
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 		View root = inflater.inflate(R.layout.cover_fragment, container, false);
-		txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-		txtvFeed = (TextView) root.findViewById(R.id.txtvFeed);
 		imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
 		viewCreated = true;
 		return root;
@@ -89,9 +85,6 @@ public class CoverFragment extends SherlockFragment implements
 							media.getItem().getFeed().getImage(), imgvCover);
 				}
 			});
-
-			txtvTitle.setText(media.getItem().getTitle());
-			txtvFeed.setText(media.getItem().getFeed().getTitle());
 		} else {
 			Log.w(TAG, "loadMediaInfo was called while media was null");
 		}

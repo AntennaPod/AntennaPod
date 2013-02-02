@@ -3,30 +3,15 @@
 
     <item>
         <shape android:shape="rectangle" >
-            <solid android:color="#20EAEAEA" />
+            <solid android:color="#F0BABABA" />
         </shape>
     </item>
     <item android:top="1dp">
         <shape android:shape="rectangle" >
-            <solid android:color="#20E5E5E5" />
-        </shape>
-    </item>
-    <item android:top="2dp">
-        <shape android:shape="rectangle" >
-            <solid android:color="#20DDDDDD" />
-        </shape>
-    </item>
-    <item android:top="3dp">
-        <shape android:shape="rectangle" >
-            <solid android:color="#10BABABA" />
-        </shape>
-    </item>
-    <item android:top="4dp">
-        <shape android:shape="rectangle" >
             <solid android:color="#D2D2D2" />
         </shape>
     </item>
-    <item android:top="5dp">
+    <item android:top="2dp">
         <shape android:shape="rectangle" >
             <solid android:color="@color/overlay_light" />
         </shape>

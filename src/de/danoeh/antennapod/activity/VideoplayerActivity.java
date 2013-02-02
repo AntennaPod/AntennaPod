@@ -20,6 +20,7 @@ import com.actionbarsherlock.view.Window;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 
@@ -50,6 +51,17 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		super.onPause();
 		if (videoControlsToggler != null) {
 			videoControlsToggler.cancel(true);
+		}
+	}
+
+	@Override
+	protected void loadMediaInfo() {
+		super.loadMediaInfo();
+		FeedMedia media = controller.getMedia();
+		if (media != null) {
+			getSupportActionBar().setSubtitle(media.getItem().getTitle());
+			getSupportActionBar()
+					.setTitle(media.getItem().getFeed().getTitle());
 		}
 	}
 

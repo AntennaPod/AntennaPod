@@ -61,6 +61,7 @@
     </RelativeLayout>
 
     <View
+        android:id="@+id/navBarDivider"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@id/navBar"
@@ -151,7 +152,7 @@
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_above="@id/playtime_layout"
-        android:layout_below="@id/navBar" >
+        android:layout_below="@id/navBarDivider" >
     </FrameLayout>
 
 </RelativeLayout>

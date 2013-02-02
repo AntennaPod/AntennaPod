@@ -74,7 +74,7 @@
             android:name=".activity.AudioplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait" android:label=" "/>
 
         <service
             android:name=".service.download.DownloadService"

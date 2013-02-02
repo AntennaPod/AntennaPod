@@ -5,49 +5,13 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txtvTitle"
+    <ImageView
+        android:id="@+id/imgvCover"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
         android:layout_marginTop="8dp"
-        android:gravity="center_horizontal"
-        android:textSize="@dimen/text_size_medium"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/txtvFeed"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@+id/txtvTitle"
-        android:gravity="center_horizontal" />
-
-    <LinearLayout
-        android:id="@+id/cover_layout"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentRight="true"
-        android:layout_below="@id/txtvFeed"
-        android:gravity="center"
-        android:orientation="vertical" >
-
-        <ImageView
-            android:id="@+id/imgvCover"
-            android:layout_marginLeft="50dp"
-            android:layout_marginRight="50dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="4dp"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_gravity="center"
-            android:layout_weight="1"
-            android:adjustViewBounds="true"
-            android:scaleType="centerInside" />
-
-    </LinearLayout>
+        android:adjustViewBounds="true"
+        android:scaleType="centerInside" />
 
 </RelativeLayout>

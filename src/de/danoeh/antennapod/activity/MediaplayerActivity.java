@@ -365,9 +365,6 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			Log.d(TAG, "Loading media info");
 		FeedMedia media = controller.getMedia();
 		if (media != null) {
-			getSupportActionBar().setSubtitle(media.getItem().getTitle());
-			getSupportActionBar()
-					.setTitle(media.getItem().getFeed().getTitle());
 			txtvPosition.setText(Converter.getDurationStringLong((media
 					.getPosition())));
 
