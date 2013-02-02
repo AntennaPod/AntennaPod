@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.service.download;
 
-import android.os.Handler;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 

@@ -5,7 +5,6 @@ import java.util.concurrent.TimeUnit;
 import org.xml.sax.Attributes;
 
 import android.util.Log;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.syndication.handler.HandlerState;

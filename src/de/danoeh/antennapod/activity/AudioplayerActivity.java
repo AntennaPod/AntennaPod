@@ -1,26 +1,24 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.ViewPager;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageButton;
+import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.app.SherlockListFragment;
-import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
+import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
@@ -44,8 +42,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	private SherlockListFragment chapterFragment;
 
 	private Fragment currentlyShownFragment;
-	/** Fragment that was shown before the chapter fragment was displayed. */
-	private int leftFragmentPosition = -1;
 	private int currentlyShownPosition = -1;
 
 	private TextView txtvTitle;
@@ -57,7 +53,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		super();
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
 	}
-	
+
 	private void resetFragmentView() {
 		currentlyShownFragment = null;
 		coverFragment = null;
@@ -155,7 +151,49 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					}
 					ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
 					ft.commit();
+					updateNavButtonDrawable();
 				}
+			}
+		}
+	}
+
+	private void updateNavButtonDrawable() {
+		TypedArray drawables = obtainStyledAttributes(new int[] {
+				R.attr.navigation_shownotes, R.attr.navigation_chapters });
+		final FeedMedia media = controller.getMedia();
+		if (butNavLeft != null && butNavRight != null && media != null) {
+			switch (currentlyShownPosition) {
+			case POS_COVER:
+				butNavLeft.setScaleType(ScaleType.CENTER);
+				butNavLeft.setImageDrawable(drawables.getDrawable(0));
+				butNavRight.setImageDrawable(drawables.getDrawable(1));
+				break;
+			case POS_DESCR:
+				butNavLeft.setScaleType(ScaleType.CENTER_CROP);
+				butNavLeft.post(new Runnable() {
+
+					@Override
+					public void run() {
+						FeedImageLoader.getInstance().loadThumbnailBitmap(
+								media.getItem().getFeed().getImage(),
+								butNavLeft);
+					}
+				});
+				butNavRight.setImageDrawable(drawables.getDrawable(1));
+				break;
+			case POS_CHAPTERS:
+				butNavLeft.setScaleType(ScaleType.CENTER_CROP);
+				butNavLeft.post(new Runnable() {
+
+					@Override
+					public void run() {
+						FeedImageLoader.getInstance().loadThumbnailBitmap(
+								media.getItem().getFeed().getImage(),
+								butNavLeft);
+					}
+				});
+				butNavRight.setImageDrawable(drawables.getDrawable(0));
+				break;
 			}
 		}
 	}
@@ -176,27 +214,25 @@ public class AudioplayerActivity extends MediaplayerActivity {
 				if (currentlyShownFragment == null
 						|| currentlyShownPosition == POS_DESCR) {
 					switchToFragment(POS_COVER);
-				} else if (currentlyShownPosition == POS_COVER){
+				} else if (currentlyShownPosition == POS_COVER) {
 					switchToFragment(POS_DESCR);
 				} else if (currentlyShownPosition == POS_CHAPTERS) {
-					switchToFragment(leftFragmentPosition);
-					leftFragmentPosition = -1;
+					switchToFragment(POS_COVER);
 				}
 			}
 		});
-		
+
 		butNavRight.setOnClickListener(new OnClickListener() {
 
 			@Override
 			public void onClick(View v) {
 				if (currentlyShownPosition == POS_CHAPTERS) {
-					switchToFragment(leftFragmentPosition);
-					leftFragmentPosition = -1;
+					switchToFragment(POS_DESCR);
 				} else {
-					leftFragmentPosition = currentlyShownPosition;
 					switchToFragment(POS_CHAPTERS);
 				}
-			}});
+			}
+		});
 	}
 
 	@Override

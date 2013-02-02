@@ -5,7 +5,6 @@ import java.io.File;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Environment;
 import android.os.StatFs;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;

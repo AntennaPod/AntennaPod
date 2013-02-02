@@ -2,11 +2,11 @@ package de.danoeh.antennapod.adapter;
 
 import java.util.List;
 
+import android.content.Context;
+import android.widget.ArrayAdapter;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.util.EpisodeFilter;
-import android.content.Context;
-import android.widget.ArrayAdapter;
 
 public abstract class AbstractFeedItemlistAdapter extends
 		ArrayAdapter<FeedItem> {

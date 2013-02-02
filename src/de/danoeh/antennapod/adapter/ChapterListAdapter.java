@@ -3,7 +3,6 @@ package de.danoeh.antennapod.adapter;
 import java.util.List;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.text.Layout;
 import android.text.Selection;
 import android.text.Spannable;

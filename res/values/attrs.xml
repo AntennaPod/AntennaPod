@@ -21,6 +21,8 @@
     <attr name="navigation_collapse" format="reference" />
     <attr name="navigation_refresh" format="reference" />
     <attr name="navigation_up" format="reference" />
+    <attr name="navigation_shownotes" format="reference" />
+    <attr name="navigation_chapters" format="reference" />
     <attr name="social_share" format="reference" />
     <attr name="stat_playlist" format="reference" />
     <attr name="type_audio" format="reference" />
