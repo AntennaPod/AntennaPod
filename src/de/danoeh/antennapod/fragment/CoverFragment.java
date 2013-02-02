@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.provider.MediaStore.Audio.AudioColumns;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -19,7 +21,8 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 
 /** Displays the cover and the title of a FeedItem. */
-public class CoverFragment extends SherlockFragment {
+public class CoverFragment extends SherlockFragment implements
+		AudioplayerContentFragment {
 	private static final String TAG = "CoverFragment";
 	private static final String ARG_FEED_ID = "arg.feedId";
 	private static final String ARG_FEEDITEM_ID = "arg.feedItem";
@@ -29,6 +32,8 @@ public class CoverFragment extends SherlockFragment {
 	private TextView txtvTitle;
 	private TextView txtvFeed;
 	private ImageView imgvCover;
+
+	private boolean viewCreated = false;
 
 	public static CoverFragment newInstance(FeedItem item) {
 		CoverFragment f = new CoverFragment();
@@ -44,7 +49,7 @@ public class CoverFragment extends SherlockFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-
+		setRetainInstance(true);
 		FeedManager manager = FeedManager.getInstance();
 		FeedItem item = null;
 		Bundle args = getArguments();
@@ -70,25 +75,32 @@ public class CoverFragment extends SherlockFragment {
 		txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
 		txtvFeed = (TextView) root.findViewById(R.id.txtvFeed);
 		imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
+		viewCreated = true;
 		return root;
 	}
 
 	private void loadMediaInfo() {
-		imgvCover.post(new Runnable() {
+		if (media != null) {
+			imgvCover.post(new Runnable() {
 
-			@Override
-			public void run() {
-				FeedImageLoader.getInstance().loadCoverBitmap(
-						media.getItem().getFeed().getImage(), imgvCover);
-			}
-		});
+				@Override
+				public void run() {
+					FeedImageLoader.getInstance().loadCoverBitmap(
+							media.getItem().getFeed().getImage(), imgvCover);
+				}
+			});
 
-		txtvTitle.setText(media.getItem().getTitle());
-		txtvFeed.setText(media.getItem().getFeed().getTitle());
+			txtvTitle.setText(media.getItem().getTitle());
+			txtvFeed.setText(media.getItem().getFeed().getTitle());
+		} else {
+			Log.w(TAG, "loadMediaInfo was called while media was null");
+		}
 	}
 
 	@Override
 	public void onStart() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "On Start");
 		super.onStart();
 		if (media != null) {
 			if (AppConfig.DEBUG)
@@ -97,6 +109,15 @@ public class CoverFragment extends SherlockFragment {
 		} else {
 			Log.w(TAG, "Unable to load media info: media was null");
 		}
+	}
+
+	@Override
+	public void onDataSetChanged(FeedMedia media) {
+		this.media = media;
+		if (viewCreated) {
+			loadMediaInfo();
+		}
+
 	}
 
 }

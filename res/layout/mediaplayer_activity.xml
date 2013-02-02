@@ -5,11 +5,66 @@
     android:background="?attr/non_transparent_background"
     android:orientation="vertical" >
 
-    <com.viewpagerindicator.TabPageIndicator
-        android:id="@+id/tabs"
+    <RelativeLayout
+        android:id="@+id/navBar"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true" />
+        android:layout_height="60dp"
+        android:layout_alignParentTop="true" >
+
+        <ImageButton
+            android:id="@+id/butNavLeft"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="true"
+            android:background="?attr/borderless_button"
+            android:src="?attr/default_cover" />
+
+        <ImageButton
+            android:id="@+id/butNavRight"
+            android:layout_width="60dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentRight="true"
+            android:background="?attr/borderless_button"
+            android:src="?attr/default_cover" />
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_toLeftOf="@id/butNavRight"
+            android:layout_toRightOf="@id/butNavLeft"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_medium"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/txtvFeed"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvTitle"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/butNavRight"
+            android:layout_toRightOf="@id/butNavLeft"
+            android:ellipsize="marquee"
+            android:marqueeRepeatLimit="marquee_forever"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@id/navBar"
+        android:background="@color/bright_blue" />
 
     <RelativeLayout
         android:id="@+id/player_control"
@@ -91,12 +146,12 @@
             android:max="500" />
     </RelativeLayout>
 
-    <android.support.v4.view.ViewPager
-        android:id="@+id/viewpager"
+    <FrameLayout
+        android:id="@+id/contentView"
         android:layout_width="match_parent"
         android:layout_height="0px"
         android:layout_above="@id/playtime_layout"
-        android:layout_below="@id/tabs" >
-    </android.support.v4.view.ViewPager>
+        android:layout_below="@id/navBar" >
+    </FrameLayout>
 
 </RelativeLayout>
