@@ -59,7 +59,8 @@ public class EpisodesFragment extends SherlockFragment {
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
 		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
-
+		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
+		
 		getActivity().registerReceiver(contentUpdate, filter);
 	}
 
