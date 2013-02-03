@@ -64,9 +64,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	}
 
 	@Override
-	protected void onPause() {
-		super.onPause();
+	protected void onStop() {
+		super.onStop();
 		resetFragmentView();
+
 	}
 
 	@Override
