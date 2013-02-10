@@ -14,7 +14,12 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import javax.xml.parsers.ParserConfigurationException;
 
@@ -25,6 +30,7 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.app.Notification.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -99,7 +105,8 @@ public class DownloadService extends Service {
 
 	private DownloadRequester requester;
 	private FeedManager manager;
-	private NotificationCompat.Builder notificationBuilder;
+	private NotificationCompat.Builder notificationCompatBuilder;
+	private Notification.BigTextStyle notificationBuilder;
 	private int NOTIFICATION_ID = 2;
 	private int REPORT_ID = 3;
 
@@ -113,6 +120,11 @@ public class DownloadService extends Service {
 	public static boolean isRunning = false;
 
 	private Handler handler;
+
+	private NotificationUpdater notificationUpdater;
+	private ScheduledFuture notificationUpdaterFuture;
+	private static final int SCHED_EX_POOL_SIZE = 1;
+	private ScheduledThreadPoolExecutor schedExecutor;
 
 	private final IBinder mBinder = new LocalBinder();
 
@@ -176,6 +188,24 @@ public class DownloadService extends Service {
 						return t;
 					}
 				});
+		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
+				new ThreadFactory() {
+
+					@Override
+					public Thread newThread(Runnable r) {
+						Thread t = new Thread(r);
+						t.setPriority(Thread.MIN_PRIORITY);
+						return t;
+					}
+				}, new RejectedExecutionHandler() {
+
+					@Override
+					public void rejectedExecution(Runnable r,
+							ThreadPoolExecutor executor) {
+						Log.w(TAG, "SchedEx rejected submission of new task");
+					}
+				});
+		setupNotificationBuilders();
 		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 	}
@@ -194,25 +224,79 @@ public class DownloadService extends Service {
 		unregisterReceiver(downloadQueued);
 	}
 
-	private void setupNotification() {
+	@SuppressLint("NewApi")
+	private void setupNotificationBuilders() {
 		PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
 				this, DownloadActivity.class),
 				PendingIntent.FLAG_UPDATE_CURRENT);
 
 		Bitmap icon = BitmapFactory.decodeResource(getResources(),
 				R.drawable.stat_notify_sync);
-		notificationBuilder = new NotificationCompat.Builder(this)
-				.setContentTitle(
-						getString(R.string.download_notification_title))
-				.setContentText(
-						requester.getNumberOfDownloads()
-								+ getString(R.string.downloads_left))
-				.setOngoing(true).setContentIntent(pIntent).setLargeIcon(icon)
-				.setSmallIcon(R.drawable.stat_notify_sync);
 
-		startForeground(NOTIFICATION_ID, notificationBuilder.getNotification());
+		if (android.os.Build.VERSION.SDK_INT >= 16) {
+			notificationBuilder = new Notification.BigTextStyle(
+					new Notification.Builder(this).setOngoing(true)
+							.setContentIntent(pIntent).setLargeIcon(icon)
+							.setSmallIcon(R.drawable.stat_notify_sync));
+		} else {
+			notificationCompatBuilder = new NotificationCompat.Builder(this)
+					.setOngoing(true).setContentIntent(pIntent)
+					.setLargeIcon(icon)
+					.setSmallIcon(R.drawable.stat_notify_sync);
+		}
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Notification set up");
+	}
+
+	/**
+	 * Updates the contents of the service's notifications. Should be called
+	 * before setupNotificationBuilders.
+	 */
+	@SuppressLint("NewApi")
+	private Notification updateNotifications() {
+		String contentTitle = getString(R.string.download_notification_title);
+		String downloadsLeft = requester.getNumberOfDownloads()
+				+ getString(R.string.downloads_left);
+		if (android.os.Build.VERSION.SDK_INT >= 16) {
+
+			if (notificationBuilder != null) {
+
+				StringBuilder bigText = null;
+				for (Downloader downloader : downloads) {
+					if (bigText == null) {
+						bigText = new StringBuilder();
+					} else {
+						bigText.append("\n");
+					}
+					if (downloader.getStatus() != null) {
+						FeedFile f = downloader.getStatus().getFeedFile();
+						if (f.getClass() == Feed.class) {
+							bigText.append("\u2022 " + ((Feed) f).getTitle());
+						} else if (f.getClass() == FeedMedia.class) {
+							FeedMedia media = (FeedMedia) f;
+							bigText.append("\u2022 "
+									+ media.getItem().getTitle()
+									+ " ("
+									+ downloader.getStatus()
+											.getProgressPercent() + "%)");
+						}
+					}
+				}
+				notificationBuilder.setSummaryText(downloadsLeft);
+				notificationBuilder.setBigContentTitle(contentTitle);
+				if (bigText != null) {
+					notificationBuilder.bigText(bigText.toString());
+				}
+				return notificationBuilder.build();
+			}
+		} else {
+			if (notificationCompatBuilder != null) {
+				notificationCompatBuilder.setContentTitle(contentTitle);
+				notificationCompatBuilder.setContentText(downloadsLeft);
+				return notificationCompatBuilder.getNotification();
+			}
+		}
+		return null;
 	}
 
 	private Downloader getDownloader(String downloadUrl) {
@@ -275,7 +359,6 @@ public class DownloadService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Cancelling shutdown; new download was queued");
 			shutdownInitiated = false;
-			setupNotification();
 		}
 
 		DownloadRequester requester = DownloadRequester.getInstance();
@@ -340,7 +423,7 @@ public class DownloadService extends Service {
 					queryDownloads();
 				}
 			}
-			
+
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
@@ -392,9 +475,12 @@ public class DownloadService extends Service {
 	 * DownloadService list.
 	 */
 	private void removeDownload(final Downloader d) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Removing downloader: " + d.getStatus().getFeedFile().getDownload_url());
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Removing downloader: "
+					+ d.getStatus().getFeedFile().getDownload_url());
 		boolean rc = downloads.remove(d);
-		if (AppConfig.DEBUG) Log.d(TAG, "Result of downloads.remove: " + rc);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Result of downloads.remove: " + rc);
 		DownloadRequester.getInstance().removeDownload(
 				d.getStatus().getFeedFile());
 		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
@@ -502,18 +588,11 @@ public class DownloadService extends Service {
 				Log.d(TAG, "Starting shutdown");
 			shutdownInitiated = true;
 			updateReport();
+			cancelNotificationUpdater();
 			stopForeground(true);
 		} else {
-			if (notificationBuilder != null) {
-				// update notification
-				notificationBuilder.setContentText(numOfDownloads
-						+ " Downloads left");
-				NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-				nm.notify(NOTIFICATION_ID,
-						notificationBuilder.getNotification());
-			} else {
-				setupNotification();
-			}
+			setupNotificationUpdater();
+			startForeground(NOTIFICATION_ID, updateNotifications());
 		}
 	}
 
@@ -846,6 +925,42 @@ public class DownloadService extends Service {
 			return source;
 		}
 
+	}
+
+	/** Schedules the notification updater task if it hasn't been scheduled yet. */
+	private void setupNotificationUpdater() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Setting up notification updater");
+		if (notificationUpdater == null) {
+			notificationUpdater = new NotificationUpdater();
+			notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(
+					notificationUpdater, 5L, 5L, TimeUnit.SECONDS);
+		}
+	}
+
+	private void cancelNotificationUpdater() {
+		boolean result = false;
+		if (notificationUpdaterFuture != null) {
+			result = notificationUpdaterFuture.cancel(true);
+		}
+		notificationUpdater = null;
+		notificationUpdaterFuture = null;
+		Log.d(TAG, "NotificationUpdater cancelled. Result: " + result);
+	}
+
+	private class NotificationUpdater implements Runnable {
+		public void run() {
+			handler.post(new Runnable() {
+				@Override
+				public void run() {
+					Notification n = updateNotifications();
+					if (n != null) {
+						NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+						nm.notify(NOTIFICATION_ID, n);
+					}
+				}
+			});
+		}
 	}
 
 	public List<Downloader> getDownloads() {
