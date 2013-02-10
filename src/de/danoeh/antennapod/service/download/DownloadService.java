@@ -263,22 +263,26 @@ public class DownloadService extends Service {
 
 				StringBuilder bigText = null;
 				for (Downloader downloader : downloads) {
-					if (bigText == null) {
-						bigText = new StringBuilder();
-					} else {
-						bigText.append("\n");
-					}
 					if (downloader.getStatus() != null) {
+						if (bigText == null) {
+							bigText = new StringBuilder("");
+						}
 						FeedFile f = downloader.getStatus().getFeedFile();
 						if (f.getClass() == Feed.class) {
-							bigText.append("\u2022 " + ((Feed) f).getTitle());
+							Feed feed = (Feed) f;
+							if (feed.getTitle() != null) {
+								bigText.append("\u2022 " + feed.getTitle()
+										+ "\n");
+							}
 						} else if (f.getClass() == FeedMedia.class) {
 							FeedMedia media = (FeedMedia) f;
-							bigText.append("\u2022 "
-									+ media.getItem().getTitle()
-									+ " ("
-									+ downloader.getStatus()
-											.getProgressPercent() + "%)");
+							if (media.getItem().getTitle() != null) {
+								bigText.append("\u2022 "
+										+ media.getItem().getTitle()
+										+ " ("
+										+ downloader.getStatus()
+												.getProgressPercent() + "%)\n");
+							}
 						}
 					}
 				}
