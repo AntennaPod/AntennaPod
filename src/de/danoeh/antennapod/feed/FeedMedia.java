@@ -146,5 +146,12 @@ public class FeedMedia extends FeedFile {
 	public boolean isInProgress() {
 		return (this.position > 0);
 	}
+	
+	public FeedImage getImage() {
+		if (item != null && item.getFeed() != null) {
+			return item.getFeed().getImage();
+		}
+		return null;
+	}
 
 }
