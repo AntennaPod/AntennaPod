@@ -68,8 +68,12 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 				holder.feedtitle = (TextView) convertView
 						.findViewById(R.id.txtvFeedname);
 			}
-			holder.statusLabel = (View) convertView
-					.findViewById(R.id.vStatusLabel);
+			holder.statusPlaying = (View) convertView
+					.findViewById(R.id.statusPlaying);
+			holder.statusUnread = (View) convertView
+					.findViewById(R.id.statusUnread);
+			holder.statusInProgress = (TextView) convertView
+					.findViewById(R.id.statusInProgress);
 
 			convertView.setTag(holder);
 		} else {
@@ -93,26 +97,26 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 			FeedItem.State state = item.getState();
 			switch (state) {
 			case PLAYING:
-				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-				holder.statusLabel.setBackgroundColor(convertView
-						.getResources().getColor(R.color.status_playing));
-				holder.statusLabel.setVisibility(View.VISIBLE);
+				holder.statusPlaying.setVisibility(View.VISIBLE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			case IN_PROGRESS:
-				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-				holder.statusLabel.setBackgroundColor(convertView
-						.getResources().getColor(R.color.status_progress));
-				holder.statusLabel.setVisibility(View.VISIBLE);
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.VISIBLE);
+				holder.statusInProgress.setText(Converter
+						.getDurationStringLong(item.getMedia().getPosition()));
 				break;
 			case NEW:
-				holder.title.setTypeface(Typeface.DEFAULT_BOLD);
-				holder.statusLabel.setBackgroundColor(convertView
-						.getResources().getColor(R.color.status_unread));
-				holder.statusLabel.setVisibility(View.VISIBLE);
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.VISIBLE);
+				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			default:
-				holder.title.setTypeface(Typeface.DEFAULT);
-				holder.statusLabel.setVisibility(View.INVISIBLE);
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			}
 
@@ -198,7 +202,9 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 		ImageView type;
 		ImageView downloading;
 		ImageButton butAction;
-		View statusLabel;
+		View statusUnread;
+		View statusPlaying;
+		TextView statusInProgress;
 	}
 
 	public int getSelectedItemIndex() {

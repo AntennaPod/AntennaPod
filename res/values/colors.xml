@@ -25,7 +25,7 @@
     <color name="download_failed_red">#CC0000</color>
     <color name="status_unread">#E099CC00</color>
     <color name="status_progress">#E033B5E5</color>
-    <color name="status_playing">#EE5F52</color>
+    <color name="status_playing">#E0EE5F52</color>
     <color name="overlay_dark">#262C31</color>
     <color name="overlay_light">#DDDDDD</color>
     
