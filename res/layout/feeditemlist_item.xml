@@ -22,7 +22,11 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="4dp"
+            android:layout_marginTop="4dp"
+            android:maxLines="2"
+            android:ellipsize="end"
             android:layout_toLeftOf="@+id/butAction"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_medium" />
 
         <TextView
@@ -32,6 +36,8 @@
             android:layout_below="@id/txtvItemname"
             android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/butAction"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_micro"
             android:visibility="gone" />
 
         <TextView
@@ -41,7 +47,8 @@
             android:layout_below="@id/txtvFeedname"
             android:layout_marginBottom="4dp"
             android:layout_toLeftOf="@id/butAction"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro" />
 
         <ImageView
             android:id="@+id/imgvType"
@@ -83,20 +90,22 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_below="@id/txtvPublished"
-            android:maxLines="2" />
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro" />
 
         <ImageButton
             android:id="@id/butAction"
             android:layout_width="48dp"
             android:layout_height="match_parent"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
             android:background="?attr/borderless_button"
             android:clickable="false"
             android:focusable="false"
             android:focusableInTouchMode="false"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
+            android:paddingLeft="24dp"
+            android:paddingRight="8dp"
             android:paddingTop="16dp"
             android:scaleType="fitEnd"
             android:src="?attr/spinner_button" />

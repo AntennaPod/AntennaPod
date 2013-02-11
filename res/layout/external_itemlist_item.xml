@@ -20,8 +20,8 @@
         android:clickable="false"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:paddingLeft="16dp"
-        android:paddingRight="16dp"
+        android:paddingLeft="24dp"
+        android:paddingRight="8dp"
         android:paddingTop="16dp"
         android:scaleType="fitEnd"
         android:src="?attr/spinner_button" />
