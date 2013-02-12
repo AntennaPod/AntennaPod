@@ -261,27 +261,30 @@ public class DownloadService extends Service {
 
 			if (notificationBuilder != null) {
 
-				StringBuilder bigText = null;
-				for (Downloader downloader : downloads) {
+				StringBuilder bigText = new StringBuilder("");
+				for (int i = 0; i < downloads.size(); i++) {
+					Downloader downloader = downloads.get(i);
 					if (downloader.getStatus() != null) {
-						if (bigText == null) {
-							bigText = new StringBuilder("");
-						}
 						FeedFile f = downloader.getStatus().getFeedFile();
 						if (f.getClass() == Feed.class) {
 							Feed feed = (Feed) f;
 							if (feed.getTitle() != null) {
-								bigText.append("\u2022 " + feed.getTitle()
-										+ "\n");
+								if (i > 0) {
+									bigText.append("\n");
+								}
+								bigText.append("\u2022 " + feed.getTitle());
 							}
 						} else if (f.getClass() == FeedMedia.class) {
 							FeedMedia media = (FeedMedia) f;
 							if (media.getItem().getTitle() != null) {
+								if (i > 0) {
+									bigText.append("\n");
+								}
 								bigText.append("\u2022 "
 										+ media.getItem().getTitle()
 										+ " ("
 										+ downloader.getStatus()
-												.getProgressPercent() + "%)\n");
+												.getProgressPercent() + "%)");
 							}
 						}
 					}
