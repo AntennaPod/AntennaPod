@@ -88,10 +88,6 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 		return cf;
 	}
 
-	private MiroGuideChannellistFragment() {
-		super();
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -162,9 +158,11 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 			MiroGuideChannel selection = listAdapter.getItem(position);
 			Intent launchIntent = new Intent(getActivity(),
 					MiroGuideChannelViewActivity.class);
-			launchIntent.putExtra(MiroGuideChannelViewActivity.EXTRA_CHANNEL_ID,
+			launchIntent.putExtra(
+					MiroGuideChannelViewActivity.EXTRA_CHANNEL_ID,
 					selection.getId());
-			launchIntent.putExtra(MiroGuideChannelViewActivity.EXTRA_CHANNEL_URL,
+			launchIntent.putExtra(
+					MiroGuideChannelViewActivity.EXTRA_CHANNEL_URL,
 					selection.getDownloadUrl());
 			startActivity(launchIntent);
 		}
@@ -237,7 +235,8 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 					}
 
 					@Override
-					protected List<MiroGuideChannel> doInBackground(Void... params) {
+					protected List<MiroGuideChannel> doInBackground(
+							Void... params) {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Background channel loader started");
 						MiroGuideService service = new MiroGuideService();

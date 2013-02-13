@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
@@ -49,11 +50,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	private ImageButton butNavLeft;
 	private ImageButton butNavRight;
 
-	public AudioplayerActivity() {
-		super();
-		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
-	}
-
 	private void resetFragmentView() {
 		currentlyShownFragment = null;
 		coverFragment = null;
@@ -68,6 +64,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		super.onStop();
 		resetFragmentView();
 
+	}
+
+	@Override
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
 	}
 
 	@Override
