@@ -46,14 +46,14 @@ public class FeedMenuHandler {
 			refresh.setVisible(true);
 		}
 
-		menu.findItem(R.id.share_link_item).setVisible(
-				selectedFeed.getLink() != null);
-
 		return true;
 	}
 
-	/** NOTE: This method does not handle clicks on the 'remove feed' - item. 
-	 * @throws DownloadRequestException */
+	/**
+	 * NOTE: This method does not handle clicks on the 'remove feed' - item.
+	 * 
+	 * @throws DownloadRequestException
+	 */
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,
 			Feed selectedFeed) throws DownloadRequestException {
 		FeedManager manager = FeedManager.getInstance();
