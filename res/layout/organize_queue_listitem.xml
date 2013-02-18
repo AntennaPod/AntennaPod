@@ -11,7 +11,7 @@
         android:scaleType="centerCrop" />
 
     <View
-        android:id="@+id/dragHandle"
+        android:id="@id/drag_handle"
         android:layout_width="@dimen/dragview_length"
         android:layout_height="@dimen/dragview_length"
         android:layout_alignParentRight="true"
@@ -32,7 +32,7 @@
         android:layout_alignParentTop="true"
         android:layout_marginLeft="8dp"
         android:layout_marginTop="8dp"
-        android:layout_toLeftOf="@id/dragHandle"
+        android:layout_toLeftOf="@id/drag_handle"
         android:layout_toRightOf="@id/imgvFeedimage"
         android:ellipsize="end"
         android:lines="2"
@@ -46,7 +46,7 @@
         android:layout_below="@id/txtvTitle"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/dragHandle"
+        android:layout_toLeftOf="@id/drag_handle"
         android:layout_toRightOf="@id/imgvFeedimage"
         android:ellipsize="end"
         android:maxLines="1"

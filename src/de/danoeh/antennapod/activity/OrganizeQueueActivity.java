@@ -2,7 +2,10 @@ package de.danoeh.antennapod.activity;
 
 import java.util.List;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -15,6 +18,7 @@ import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.mobeta.android.dslv.DragSortListView;
 
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -26,18 +30,72 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 	private static final String TAG = "OrganizeQueueActivity";
 
 	private static final int MENU_ID_ACCEPT = 2;
-	
+
 	private OrganizeAdapter adapter;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(PodcastApp.getThemeResourceId());
 		super.onCreate(savedInstanceState);
+		setContentView(R.layout.organize_queue);
+
+		DragSortListView listView = (DragSortListView) getListView();
+		listView.setDropListener(dropListener);
+		listView.setRemoveListener(removeListener);
 
 		adapter = new OrganizeAdapter(this, 0, FeedManager.getInstance()
 				.getQueue());
 		setListAdapter(adapter);
 	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		try {
+			unregisterReceiver(contentUpdate);
+		} catch (IllegalArgumentException e) {
+
+		}
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		IntentFilter filter = new IntentFilter(FeedManager.ACTION_QUEUE_UPDATE);
+		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
+		registerReceiver(contentUpdate, filter);
+	}
+
+	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (adapter != null) {
+				adapter.notifyDataSetChanged();
+			}
+		}
+
+	};
+
+	private DragSortListView.DropListener dropListener = new DragSortListView.DropListener() {
+
+		@Override
+		public void drop(int from, int to) {
+			FeedManager manager = FeedManager.getInstance();
+			manager.moveQueueItem(OrganizeQueueActivity.this, from, to, false);
+			adapter.notifyDataSetChanged();
+		}
+	};
+
+	private DragSortListView.RemoveListener removeListener = new DragSortListView.RemoveListener() {
+
+		@Override
+		public void remove(int which) {
+			FeedManager manager = FeedManager.getInstance();
+			manager.removeQueueItem(OrganizeQueueActivity.this,
+					(FeedItem) getListAdapter().getItem(which));
+		}
+	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
@@ -112,7 +170,6 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			TextView title;
 			TextView feedTitle;
 			ImageView feedImage;
-			View dragHandle;
 		}
 
 	}

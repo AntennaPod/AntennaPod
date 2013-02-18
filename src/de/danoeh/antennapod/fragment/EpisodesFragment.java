@@ -63,6 +63,9 @@ public class EpisodesFragment extends SherlockFragment {
 		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
 
 		getActivity().registerReceiver(contentUpdate, filter);
+		if (adapter != null) {
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override

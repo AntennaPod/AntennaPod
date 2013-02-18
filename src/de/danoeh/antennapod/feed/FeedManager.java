@@ -765,16 +765,29 @@ public class FeedManager {
 		}
 	}
 
-	public void moveQueueItem(final Context context, FeedItem item, int delta) {
+	/**
+	 * Moves the queue item at the specified index to another position. If the
+	 * indices are out of range, no operation will be performed.
+	 * 
+	 * @param from
+	 *            index of the item that is going to be moved
+	 * @param to
+	 *            destination index of item
+	 * @param broadcastUpdate
+	 *            true if the method should send a queue update broadcast after
+	 *            the operation has been performed. This should be set to false
+	 *            if the order of the queue is changed through drag & drop
+	 *            reordering to avoid visual glitches.
+	 */
+	public void moveQueueItem(final Context context, int from, int to,
+			boolean broadcastUpdate) {
 		if (AppConfig.DEBUG)
-			Log.d(TAG, "Moving queue item");
-		int itemIndex = queue.indexOf(item);
-		int newIndex = itemIndex + delta;
-		if (newIndex >= 0 && newIndex < queue.size()) {
-			FeedItem oldItem = queue.set(newIndex, item);
-			queue.set(itemIndex, oldItem);
+			Log.d(TAG, "Moving queue item from index " + from + " to index "
+					+ to);
+		if (from >= 0 && from < queue.size() && to >= 0 && to < queue.size()) {
+			FeedItem item = queue.remove(from);
+			queue.add(to, item);
 			dbExec.execute(new Runnable() {
-
 				@Override
 				public void run() {
 					PodDBAdapter adapter = new PodDBAdapter(context);
@@ -783,9 +796,10 @@ public class FeedManager {
 					adapter.close();
 				}
 			});
-
+			if (broadcastUpdate) {
+				sendQueueUpdateBroadcast(context, item);
+			}
 		}
-		sendQueueUpdateBroadcast(context, item);
 	}
 
 	public boolean isInQueue(FeedItem item) {
