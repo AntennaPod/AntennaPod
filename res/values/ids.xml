@@ -2,12 +2,13 @@
 
     <item name="action_bar_refresh" type="id"/>
     <item name="action_bar_add" type="id"/>
-    <item type="id" name="clear_queue_item"/>
-    <item type="id" name="select_all_item"/>
-    <item type="id" name="deselect_all_item"/>
-    <item type="id" name="search_item"/>
+    <item name="clear_queue_item" type="id"/>
+    <item name="select_all_item" type="id"/>
+    <item name="deselect_all_item" type="id"/>
+    <item name="search_item" type="id"/>
     <item name="enqueue_all_item" type="id"/>
     <item name="download_all_item" type="id"/>
-    <item type="id" name="clear_history_item"/>
+    <item name="clear_history_item" type="id"/>
+    <item name="organize_queue_item" type="id"/>
 
 </resources>

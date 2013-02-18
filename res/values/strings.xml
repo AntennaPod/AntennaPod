@@ -112,9 +112,8 @@
     <string name="show_player_label">Show player</string>
 
     <!-- Queue operations -->
-    <string name="move_up_label">Move up</string>
-    <string name="move_down_label">Move down</string>
     <string name="clear_queue_label">Clear queue</string>
+    <string name="organize_queue_label">Organize queue</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
