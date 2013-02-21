@@ -106,6 +106,12 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.imgvFeedimage);
 			holder.butAction = (ImageButton) convertView
 					.findViewById(R.id.butAction);
+			holder.statusPlaying = (View) convertView
+					.findViewById(R.id.statusPlaying);
+			holder.statusUnread = (View) convertView
+					.findViewById(R.id.statusUnread);
+			holder.statusInProgress = (TextView) convertView
+					.findViewById(R.id.statusInProgress);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -113,6 +119,39 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 		holder.title.setText(item.getTitle());
 		holder.feedTitle.setText(item.getFeed().getTitle());
+
+		if (groupPosition == GROUP_POS_QUEUE) {
+			FeedItem.State state = item.getState();
+			switch (state) {
+			case PLAYING:
+				holder.statusPlaying.setVisibility(View.VISIBLE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.GONE);
+				break;
+			case IN_PROGRESS:
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.VISIBLE);
+				holder.statusInProgress.setText(Converter
+						.getDurationStringLong(item.getMedia().getPosition()));
+				break;
+			case NEW:
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.VISIBLE);
+				holder.statusInProgress.setVisibility(View.GONE);
+				break;
+			default:
+				holder.statusPlaying.setVisibility(View.GONE);
+				holder.statusUnread.setVisibility(View.GONE);
+				holder.statusInProgress.setVisibility(View.GONE);
+				break;
+			}
+		} else {
+			holder.statusPlaying.setVisibility(View.GONE);
+			holder.statusUnread.setVisibility(View.GONE);
+			holder.statusInProgress.setVisibility(View.GONE);
+		}
+
 		FeedMedia media = item.getMedia();
 		if (media != null) {
 			TypedArray drawables = context.obtainStyledAttributes(new int[] {
@@ -121,7 +160,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			if (!media.isDownloaded()) {
 				if (DownloadRequester.getInstance().isDownloadingFile(media)) {
 					holder.downloadStatus.setVisibility(View.VISIBLE);
-					holder.downloadStatus.setImageDrawable(drawables.getDrawable(1));
+					holder.downloadStatus.setImageDrawable(drawables
+							.getDrawable(1));
 				} else {
 					holder.downloadStatus.setVisibility(View.GONE);
 				}
@@ -129,7 +169,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 						+ Converter.byteToString(media.getSize()));
 			} else {
 				holder.downloadStatus.setVisibility(View.VISIBLE);
-				holder.downloadStatus.setImageDrawable(drawables.getDrawable(0));
+				holder.downloadStatus
+						.setImageDrawable(drawables.getDrawable(0));
 				holder.lenSize.setText(context
 						.getString(R.string.length_prefix)
 						+ Converter.getDurationStringLong(media.getDuration()));
@@ -165,6 +206,9 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		ImageView downloadStatus;
 		ImageView feedImage;
 		ImageButton butAction;
+		View statusUnread;
+		View statusPlaying;
+		TextView statusInProgress;
 	}
 
 	@Override

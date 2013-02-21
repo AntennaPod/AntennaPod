@@ -80,4 +80,49 @@
         android:layout_marginTop="4dp"
         android:layout_toLeftOf="@id/butAction" />
 
+    <TextView
+        android:id="@+id/statusUnread"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:background="@color/status_unread"
+        android:gravity="center"
+        android:minWidth="@dimen/status_indicator_width"
+        android:text="@string/new_label"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_micro"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/statusPlaying"
+        android:layout_width="@dimen/status_indicator_width"
+        android:layout_height="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:background="@color/status_playing"
+        android:gravity="center"
+        android:padding="2dp"
+        android:src="@drawable/av_play_dark" />
+
+    <TextView
+        android:id="@+id/statusInProgress"
+        android:layout_width="wrap_content"
+        android:layout_height="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:background="@color/status_progress"
+        android:gravity="center"
+        android:minWidth="@dimen/status_indicator_width"
+        android:paddingLeft="2dp"
+        android:paddingRight="2dp"
+        android:textAlignment="center"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_size_micro"
+        android:textStyle="bold" />
+
 </RelativeLayout>
