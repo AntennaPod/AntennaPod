@@ -4,19 +4,28 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ClipData;
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -26,6 +35,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.util.ShareUtils;
 
 /** Displays the description of a FeedItem in a Webview. */
 public class ItemDescriptionFragment extends SherlockFragment {
@@ -41,6 +51,9 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 	private String descriptionRef;
 	private String contentEncodedRef;
+
+	/** URL that was selected via long-press. */
+	private String selectedURL;
 
 	public static ItemDescriptionFragment newInstance(FeedItem item) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
@@ -69,6 +82,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		webvDescription.getSettings().setUseWideViewPort(false);
 		webvDescription.getSettings().setLayoutAlgorithm(
 				LayoutAlgorithm.SINGLE_COLUMN);
+		webvDescription.setOnLongClickListener(webViewLongClickListener);
+		registerForContextMenu(webvDescription);
 		return webvDescription;
 	}
 
@@ -193,6 +208,81 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	private String getWebViewStyle(String textColor) {
 		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; }</style></head>";
 		return String.format(WEBVIEW_STYLE, textColor);
+	}
+
+	private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+
+		@Override
+		public boolean onLongClick(View v) {
+			WebView.HitTestResult r = webvDescription.getHitTestResult();
+			if (r != null
+					&& r.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Link of webview was long-pressed. Extra: "
+									+ r.getExtra());
+				selectedURL = r.getExtra();
+				webvDescription.showContextMenu();
+				return true;
+			}
+			selectedURL = null;
+			return false;
+		}
+	};
+
+	@SuppressLint("NewApi")
+	@Override
+	public boolean onContextItemSelected(MenuItem item) {
+		boolean handled = selectedURL != null;
+		if (selectedURL != null) {
+			switch (item.getItemId()) {
+			case R.id.open_in_browser_item:
+				Uri uri = Uri.parse(selectedURL);
+				getActivity()
+						.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+				break;
+			case R.id.share_url_item:
+				ShareUtils.shareLink(getActivity(), selectedURL);
+				break;
+			case R.id.copy_url_item:
+				if (android.os.Build.VERSION.SDK_INT >= 11) {
+					ClipData clipData = ClipData.newPlainText(selectedURL,
+							selectedURL);
+					android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+							.getSystemService(Context.CLIPBOARD_SERVICE);
+					cm.setPrimaryClip(clipData);
+				} else {
+					android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
+							.getSystemService(Context.CLIPBOARD_SERVICE);
+					cm.setText(selectedURL);
+				}
+				Toast t = Toast.makeText(getActivity(), R.string.copied_url_msg, Toast.LENGTH_SHORT);
+				t.show();
+				break;
+			default:
+				handled = false;
+				break;
+
+			}
+			selectedURL = null;
+		}
+		return handled;
+
+	}
+
+	@Override
+	public void onCreateContextMenu(ContextMenu menu, View v,
+			ContextMenuInfo menuInfo) {
+		if (selectedURL != null) {
+			super.onCreateContextMenu(menu, v, menuInfo);
+			menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
+					R.string.open_in_browser_label);
+			menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
+					R.string.copy_url_label);
+			menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
+					R.string.share_url_label);
+			menu.setHeaderTitle(selectedURL);
+		}
 	}
 
 	private AsyncTask<Void, Void, Void> createLoader() {

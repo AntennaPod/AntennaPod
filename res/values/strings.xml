@@ -14,6 +14,12 @@
     <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
 
+    <!-- Webview actions -->
+    <string name="open_in_browser_label">Open in browser</string>
+    <string name="copy_url_label">Copy URL</string>
+    <string name="share_url_label">Share URL</string>
+    <string name="copied_url_msg">Copied URL to clipboard.</string>
+
     <!-- Playback history -->
     <string name="clear_history_label">Clear history</string>
 

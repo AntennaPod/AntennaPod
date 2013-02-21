@@ -11,7 +11,7 @@ public class ShareUtils {
 	
 	private ShareUtils() {}
 	
-	private static void shareLink(Context context, String link) {
+	public static void shareLink(Context context, String link) {
 		Intent i = new Intent(Intent.ACTION_SEND);
 		i.setType("text/plain");
 		i.putExtra(Intent.EXTRA_SUBJECT, "Sharing URL");
