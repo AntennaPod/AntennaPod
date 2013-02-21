@@ -9,11 +9,14 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 
 import com.actionbarsherlock.app.SherlockFragment;
 
@@ -64,7 +67,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			webvDescription.setBackgroundColor(0);
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
-		webvDescription.getSettings().setLayoutAlgorithm(LayoutAlgorithm.SINGLE_COLUMN);
+		webvDescription.getSettings().setLayoutAlgorithm(
+				LayoutAlgorithm.SINGLE_COLUMN);
 		return webvDescription;
 	}
 
@@ -122,6 +126,17 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+
+		if (webvDescription.getLayoutParams() != null
+				&& webvDescription.getLayoutParams() instanceof FrameLayout.LayoutParams) {
+			FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) webvDescription
+					.getLayoutParams();
+			layoutParams.leftMargin = layoutParams.rightMargin = (int) TypedValue
+					.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
+							getResources().getDisplayMetrics());
+			webvDescription.setLayoutParams(layoutParams);
+		}
+
 		if (item != null) {
 			if (item.getDescription() == null
 					|| item.getContentEncoded() == null) {
@@ -176,7 +191,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	 *            value is inserted directly into the CSS String.
 	 * */
 	private String getWebViewStyle(String textColor) {
-		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 12pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
+		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
 		return String.format(WEBVIEW_STYLE, textColor);
 	}
 
