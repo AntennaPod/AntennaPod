@@ -191,7 +191,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	 *            value is inserted directly into the CSS String.
 	 * */
 	private String getWebViewStyle(String textColor) {
-		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; }</style></head>";
+		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; }</style></head>";
 		return String.format(WEBVIEW_STYLE, textColor);
 	}
 
