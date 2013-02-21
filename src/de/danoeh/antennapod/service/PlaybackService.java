@@ -449,7 +449,7 @@ public class PlaybackService extends Service {
 		case KeyEvent.KEYCODE_HEADSETHOOK:
 		case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(false, true);
+				pause(true, true);
 			} else if (status == PlayerStatus.PAUSED) {
 				play();
 			} else if (status == PlayerStatus.PREPARING) {
@@ -469,7 +469,7 @@ public class PlaybackService extends Service {
 			break;
 		case KeyEvent.KEYCODE_MEDIA_PAUSE:
 			if (status == PlayerStatus.PLAYING) {
-				pause(false, true);
+				pause(true, true);
 			}
 			break;
 		}
@@ -796,6 +796,7 @@ public class PlaybackService extends Service {
 			player.pause();
 			if (abandonFocus) {
 				audioManager.abandonAudioFocus(audioFocusChangeListener);
+				pausedBecauseOfTransientAudiofocusLoss = false;
 				disableSleepTimer();
 			}
 			cancelPositionSaver();
@@ -1158,7 +1159,7 @@ public class PlaybackService extends Service {
 				.getDefaultSharedPreferences(getApplicationContext())
 				.getBoolean(PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT, false);
 		if (pauseOnDisconnect && status == PlayerStatus.PLAYING) {
-			pause(false, true);
+			pause(true, true);
 		}
 	}
 
