@@ -4,3 +4,6 @@
 [submodule "submodules/ViewPagerIndicator"]
 	path = submodules/ViewPagerIndicator
 	url = git://github.com/JakeWharton/Android-ViewPagerIndicator.git
+[submodule "submodules/dslv"]
+	path = submodules/dslv
+	url = git://github.com/bauerca/drag-sort-listview.git

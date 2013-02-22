@@ -12,5 +12,7 @@
     <item name="open_in_browser_item" type="id"/>
     <item name="copy_url_item" type="id"/>
     <item name="share_url_item" type="id"/>
+    <item name="organize_queue_item" type="id"/>
+    <item name="drag_handle" type="id"/>
 
 </resources>

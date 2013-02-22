@@ -21,6 +21,7 @@ import com.actionbarsherlock.view.Menu;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
+import de.danoeh.antennapod.activity.OrganizeQueueActivity;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.ExternalEpisodesListAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -60,8 +61,11 @@ public class EpisodesFragment extends SherlockFragment {
 		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
 		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
-		
+
 		getActivity().registerReceiver(contentUpdate, filter);
+		if (adapter != null) {
+			adapter.notifyDataSetChanged();
+		}
 	}
 
 	@Override
@@ -158,6 +162,8 @@ public class EpisodesFragment extends SherlockFragment {
 					}, selectedItem, false);
 
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
+			menu.add(Menu.NONE, R.id.organize_queue_item, Menu.NONE,
+					R.string.organize_queue_label);
 			menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
 					.getString(R.string.clear_queue_label));
 			menu.add(Menu.NONE, R.id.download_all_item, Menu.NONE,
@@ -187,6 +193,10 @@ public class EpisodesFragment extends SherlockFragment {
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
 			handled = true;
 			switch (item.getItemId()) {
+			case R.id.organize_queue_item:
+				startActivity(new Intent(getActivity(),
+						OrganizeQueueActivity.class));
+				break;
 			case R.id.clear_queue_item:
 				manager.clearQueue(getActivity());
 				break;
