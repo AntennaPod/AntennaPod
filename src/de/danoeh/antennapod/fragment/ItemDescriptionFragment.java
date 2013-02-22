@@ -81,7 +81,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
 		webvDescription.getSettings().setLayoutAlgorithm(
-				LayoutAlgorithm.SINGLE_COLUMN);
+				LayoutAlgorithm.NARROW_COLUMNS);
+		webvDescription.getSettings().setLoadWithOverviewMode(true);
 		webvDescription.setOnLongClickListener(webViewLongClickListener);
 		registerForContextMenu(webvDescription);
 		return webvDescription;
@@ -141,17 +142,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-
-		if (webvDescription.getLayoutParams() != null
-				&& webvDescription.getLayoutParams() instanceof FrameLayout.LayoutParams) {
-			FrameLayout.LayoutParams layoutParams = (FrameLayout.LayoutParams) webvDescription
-					.getLayoutParams();
-			layoutParams.leftMargin = layoutParams.rightMargin = (int) TypedValue
-					.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8,
-							getResources().getDisplayMetrics());
-			webvDescription.setLayoutParams(layoutParams);
-		}
-
 		if (item != null) {
 			if (item.getDescription() == null
 					|| item.getContentEncoded() == null) {
@@ -205,9 +195,10 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	 *            the default color to use for the text in the webview. This
 	 *            value is inserted directly into the CSS String.
 	 * */
-	private String getWebViewStyle(String textColor) {
-		final String WEBVIEW_STYLE = "<head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; }</style></head>";
-		return String.format(WEBVIEW_STYLE, textColor);
+	private String applyWebviewStyle(String textColor, String data) {
+		final String WEBVIEW_STYLE = "<html><head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }</style></head><body>%s</body></html>";
+		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
+		return String.format(WEBVIEW_STYLE, textColor, "100%", pageMargin, pageMargin, pageMargin, pageMargin, data);
 	}
 
 	private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
@@ -344,7 +335,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 							0xFFFFFF & colorResource);
 					Log.i(TAG, "text color: " + colorString);
 					res.recycle();
-					data = getWebViewStyle(colorString) + data;
+					data = applyWebviewStyle(colorString, data);
 				} else {
 					cancel(true);
 				}
