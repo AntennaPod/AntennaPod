@@ -163,6 +163,7 @@ public class HttpDownloader extends Downloader {
 		status.setReasonDetailed(reasonDetailed);
 		status.setDone(true);
 		status.setSuccessful(false);
+		cleanup();
 	}
 
 	private void onCancelled() {
@@ -172,6 +173,20 @@ public class HttpDownloader extends Downloader {
 		status.setDone(true);
 		status.setSuccessful(false);
 		status.setCancelled(true);
+		cleanup();
+	}
+	
+	/** Deletes unfinished downloads. */
+	private void cleanup() {
+		if (status != null && status.getFeedFile() != null && status.getFeedFile().getFile_url() != null) {
+			File dest = new File(status.getFeedFile().getFile_url());
+			if (dest.exists()) {
+				boolean rc = dest.delete();
+				if (AppConfig.DEBUG) Log.d(TAG, "Deleted file " + dest.getName() + "; Result: " + rc);
+			} else {
+				if (AppConfig.DEBUG) Log.d(TAG, "cleanup() didn't delete file: does not exist.");
+			}
+		}
 	}
 
 }
