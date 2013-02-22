@@ -63,7 +63,7 @@ public class FeedItemlistActivity extends SherlockFragmentActivity {
 		FragmentTransaction fT = fragmentManager.beginTransaction();
 
 		filf = ItemlistFragment.newInstance(feed.getId());
-		fT.add(R.id.feeditemlistFragment, filf);
+		fT.replace(R.id.feeditemlistFragment, filf);
 
 		externalPlayerFragment = new ExternalPlayerFragment();
 		fT.replace(R.id.playerFragment, externalPlayerFragment);
