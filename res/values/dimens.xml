@@ -11,5 +11,5 @@
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
     <dimen name="status_indicator_width">36dp</dimen>
-
+	<dimen name="thumbnail_length_itemlist">70dp</dimen>
 </resources>

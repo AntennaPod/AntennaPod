@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="thumbnail_length">225dp</dimen>
-    
+
+    <dimen name="thumbnail_length">260dp</dimen>
+    <dimen name="thumbnail_length_itemlist">70dp</dimen>
+
 </resources>

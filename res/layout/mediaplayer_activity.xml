@@ -17,8 +17,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:background="?attr/borderless_button"
-            android:padding="4dp"
-            android:src="?attr/default_cover" />
+            android:padding="4dp" />
 
         <ImageButton
             android:id="@+id/butNavRight"
@@ -26,8 +25,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:background="?attr/borderless_button"
-            android:padding="4dp"
-            android:src="?attr/default_cover" />
+            android:padding="4dp" />
 
         <TextView
             android:id="@+id/txtvTitle"

@@ -8,16 +8,17 @@
         android:id="@+id/txtvHeaderTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
         android:layout_marginBottom="24dp"
-        android:layout_marginLeft="@dimen/thumbnail_length"
+        android:layout_marginLeft="@dimen/thumbnail_length_itemlist"
         android:layout_marginRight="16dp"
         android:layout_marginTop="24dp"
         android:paddingLeft="8dp"
         android:textColor="@color/dark_blue"
         android:textSize="@dimen/text_size_large"
         android:textStyle="bold" />
-    
+
     <ImageButton
         android:id="@+id/butAction"
         android:layout_width="48dp"
