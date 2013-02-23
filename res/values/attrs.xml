@@ -31,6 +31,7 @@
     <attr name="spinner_button" format="reference" />
     <attr name="overlay_drawable" format="reference" />
     <attr name="dragview_background" format="reference" />
+    <attr name="dragview_float_background" format="reference" />
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference" />
     <attr name="overlay_background" format="color" />

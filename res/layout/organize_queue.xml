@@ -21,6 +21,7 @@
         dslv:slide_shuffle_speed="0.3"
         dslv:sort_enabled="true"
         dslv:track_drag_sort="false"
+        dslv:float_background_color="?attr/dragview_float_background"
         dslv:use_default_controller="true" />
 
     <TextView

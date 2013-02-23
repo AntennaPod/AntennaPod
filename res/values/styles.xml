@@ -35,6 +35,7 @@
         <item name="attr/spinner_button">@drawable/spinner_button</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable</item>
         <item name="attr/dragview_background">@drawable/dragview_background</item>
+        <item name="attr/dragview_float_background">@color/white</item>
     </style>
 
     <style name="AntennaPod.TabPageIndicator" parent="Widget.TabPageIndicator">
@@ -84,6 +85,7 @@
         <item name="attr/spinner_button">@drawable/spinner_button_dark</item>
         <item name="attr/overlay_drawable">@drawable/overlay_drawable_dark</item>
         <item name="attr/dragview_background">@drawable/dragview_background_dark</item>
+        <item name="attr/dragview_float_background">@color/black</item>
     </style>
 
     <style name="AntennaPod.DarkTabPageIndicator" parent="AntennaPod.TabPageIndicator">
