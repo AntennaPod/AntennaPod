@@ -73,7 +73,7 @@ public class AddFeedActivity extends SherlockActivity {
 			@Override
 			public void onClick(View v) {
 				startActivity(new Intent(AddFeedActivity.this,
-						OpmlImportActivity.class));
+						OpmlImportFromPathActivity.class));
 			}
 		});
 

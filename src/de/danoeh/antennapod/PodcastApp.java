@@ -13,7 +13,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.activity.OpmlImportActivity;
+import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -93,7 +93,7 @@ public class PodcastApp extends Application implements
 	 * available
 	 */
 	private void createImportDirectory() {
-		File importDir = getDataFolder(this, OpmlImportActivity.IMPORT_DIR);
+		File importDir = getDataFolder(this, OpmlImportFromPathActivity.IMPORT_DIR);
 		if (importDir != null) {
 			if (importDir.exists()) {
 				if (AppConfig.DEBUG)
