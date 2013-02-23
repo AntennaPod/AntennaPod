@@ -30,7 +30,7 @@
     <string name="language_label">Language</string>
     <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
-    <string name="error_msg_prefix">An error occured:</string>
+    <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
@@ -193,7 +193,7 @@
     <string name="opml_import_label">OPML import</string>
     <string name="opml_directory_error">ERROR!</string>
     <string name="reading_opml_label">Reading OPML file</string>
-    <string name="opml_reader_error">An error has occured while reading the opml document:</string>
+    <string name="opml_reader_error">An error has occurred while reading the opml document:</string>
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
