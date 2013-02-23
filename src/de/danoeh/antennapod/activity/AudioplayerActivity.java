@@ -15,6 +15,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockListFragment;
+import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -68,6 +69,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
 	}
@@ -79,12 +81,14 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void postStatusMsg(int resId) {
-
+		setSupportProgressBarIndeterminateVisibility(resId == R.string.player_preparing_msg
+				|| resId == R.string.player_seeking_msg
+				|| resId == R.string.player_buffering_msg);
 	}
 
 	@Override
 	protected void clearStatusMsg() {
-
+		setSupportProgressBarIndeterminateVisibility(false);
 	}
 
 	/**
