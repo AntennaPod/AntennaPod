@@ -77,7 +77,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 				webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 			}
-			webvDescription.setBackgroundColor(0);
+			webvDescription.setBackgroundColor(getResources().getColor(R.color.black));
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
 		webvDescription.getSettings().setLayoutAlgorithm(
