@@ -33,7 +33,7 @@ public class FeedMenuHandler {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(
-				selectedFeed.hasNewItems());
+				selectedFeed.hasNewItems(true));
 		if (selectedFeed.getPaymentLink() != null) {
 			menu.findItem(R.id.support_item).setVisible(true);
 		}

@@ -120,6 +120,12 @@ public class SyndHandler extends DefaultHandler {
 		return handler;
 	}
 
+	@Override
+	public void endDocument() throws SAXException {
+		super.endDocument();
+		state.getFeed().setItems(state.getItems());
+	}
+
 	public HandlerState getState() {
 		return state;
 	}

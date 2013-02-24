@@ -30,7 +30,7 @@ public class DownloadLogActivity extends SherlockListActivity {
 		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
 
-		dla = new DownloadLogAdapter(this, 0, manager.getDownloadLog());
+		dla = new DownloadLogAdapter(this);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setListAdapter(dla);
 	}

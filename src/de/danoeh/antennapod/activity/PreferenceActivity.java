@@ -82,7 +82,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
-						if (!FeedManager.getInstance().getFeeds().isEmpty()) {
+						if (FeedManager.getInstance().getFeedsSize() > 0) {
 							new OpmlExportWorker(PreferenceActivity.this)
 									.executeAsync();
 						}

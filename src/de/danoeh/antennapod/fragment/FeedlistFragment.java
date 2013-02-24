@@ -45,7 +45,6 @@ public class FeedlistFragment extends SherlockFragment implements
 
 	private FeedManager manager;
 	private FeedlistAdapter fla;
-	private SherlockFragmentActivity pActivity;
 
 	private Feed selectedFeed;
 	private ActionMode mActionMode;
@@ -57,13 +56,11 @@ public class FeedlistFragment extends SherlockFragment implements
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		pActivity = (SherlockFragmentActivity) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		pActivity = null;
 	}
 
 	@Override
@@ -72,7 +69,7 @@ public class FeedlistFragment extends SherlockFragment implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating");
 		manager = FeedManager.getInstance();
-		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
+		fla = new FeedlistAdapter(getActivity());
 
 	}
 
@@ -118,14 +115,14 @@ public class FeedlistFragment extends SherlockFragment implements
 		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
 		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
 		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		pActivity.registerReceiver(contentUpdate, filter);
+		getActivity().registerReceiver(contentUpdate, filter);
 		fla.notifyDataSetChanged();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		pActivity.unregisterReceiver(contentUpdate);
+		getActivity().unregisterReceiver(contentUpdate);
 		if (mActionMode != null) {
 			mActionMode.finish();
 		}
@@ -211,10 +208,10 @@ public class FeedlistFragment extends SherlockFragment implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long id) {
 		Feed selection = fla.getItem(position);
-		Intent showFeed = new Intent(pActivity, FeedItemlistActivity.class);
+		Intent showFeed = new Intent(getActivity(), FeedItemlistActivity.class);
 		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
 
-		pActivity.startActivity(showFeed);
+		getActivity().startActivity(showFeed);
 	}
 
 	@Override

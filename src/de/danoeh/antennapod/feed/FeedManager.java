@@ -19,7 +19,6 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -1472,7 +1471,22 @@ public class FeedManager {
 		});
 	}
 
-	public List<Feed> getFeeds() {
+	/** Returns the number of feeds that are currently in the feeds list. */
+	public int getFeedsSize() {
+		return feeds.size();
+	}
+
+	/** Returns the feed at the specified index of the feeds list. */
+	public Feed getFeedAtIndex(int index) {
+		return feeds.get(index);
+	}
+
+	/** Returns an array that contains all feeds of the feed manager. */
+	public Feed[] getFeedsArray() {
+		return feeds.toArray(new Feed[feeds.size()]);
+	}
+
+	List<Feed> getFeeds() {
 		return feeds;
 	}
 
@@ -1542,12 +1556,31 @@ public class FeedManager {
 		}
 	}
 
-	public ArrayList<DownloadStatus> getDownloadLog() {
-		return downloadLog;
+	/**
+	 * Returns the number of items in the playback history.
+	 * */
+	public int getPlaybackHistorySize() {
+		return playbackHistory.size();
 	}
 
-	public List<FeedItem> getPlaybackHistory() {
-		return playbackHistory;
+	/**
+	 * Returns the FeedItem at the specified index of the playback history.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if index is out of range
+	 * */
+	public FeedItem getPlaybackHistoryItemIndex(int index) {
+		return playbackHistory.get(index);
+	}
+
+	/** Returns the number of items in the download log */
+	public int getDownloadLogSize() {
+		return downloadLog.size();
+	}
+
+	/** Returns the download status at the specified index of the download log. */
+	public DownloadStatus getDownloadStatusFromLogAtIndex(int index) {
+		return downloadLog.get(index);
 	}
 
 	/** Is called by a FeedManagerTask after completion. */

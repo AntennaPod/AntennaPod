@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import java.util.List;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -34,35 +35,30 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 /** Displays a list of FeedItems. */
+@SuppressLint("ValidFragment")
 public class ItemlistFragment extends SherlockListFragment {
 
 	private static final String TAG = "ItemlistFragment";
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 	protected AbstractFeedItemlistAdapter fila;
-	protected FeedManager manager;
-	protected DownloadRequester requester;
+	protected FeedManager manager = FeedManager.getInstance();
+	protected DownloadRequester requester = DownloadRequester.getInstance();
 
-	/** The feed which the activity displays */
-	protected List<FeedItem> items;
-	/**
-	 * This is only not null if the fragment displays the items of a specific
-	 * feed
-	 */
-	protected Feed feed;
+	private AbstractFeedItemlistAdapter.ItemAccess itemAccess;
 
+	private Feed feed;
+	
 	protected FeedItem selectedItem = null;
 	protected boolean contextMenuClosed = true;
 
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
-	public ItemlistFragment(List<FeedItem> items, boolean showFeedtitle) {
+	public ItemlistFragment(AbstractFeedItemlistAdapter.ItemAccess itemAccess, boolean showFeedtitle) {
 		super();
-		this.items = items;
+		this.itemAccess = itemAccess;
 		this.showFeedtitle = showFeedtitle;
-		manager = FeedManager.getInstance();
-		requester = DownloadRequester.getInstance();
 	}
 
 	public ItemlistFragment() {
@@ -94,15 +90,27 @@ public class ItemlistFragment extends SherlockListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (items == null) {
+		if (itemAccess == null) {
 			long feedId = getArguments().getLong(ARGUMENT_FEED_ID);
-			feed = FeedManager.getInstance().getFeed(feedId);
-			items = feed.getItems();
+			final Feed feed = FeedManager.getInstance().getFeed(feedId);
+			this.feed = feed;
+			itemAccess = new AbstractFeedItemlistAdapter.ItemAccess() {
+				
+				@Override
+				public FeedItem getItem(int position) {
+					return feed.getItemAtIndex(true, position);
+				}
+				
+				@Override
+				public int getCount() {
+					return feed.getNumOfItems(true);
+				}
+			};
 		}
 	}
 
 	protected AbstractFeedItemlistAdapter createListAdapter() {
-		return new FeedItemlistAdapter(getActivity(), 0, items,
+		return new FeedItemlistAdapter(getActivity(), itemAccess,
 				adapterCallback, showFeedtitle);
 	}
 
@@ -178,7 +186,7 @@ public class ItemlistFragment extends SherlockListFragment {
 				getSherlockActivity()
 						.setSupportProgressBarIndeterminateVisibility(false);
 			}
-			getSherlockActivity().invalidateOptionsMenu();
+			getSherlockActivity().supportInvalidateOptionsMenu();
 		}
 	}
 

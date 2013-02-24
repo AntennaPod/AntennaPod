@@ -3,6 +3,7 @@ package de.danoeh.antennapod.asynctask;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -50,7 +51,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 		}
 		try {
 			FileWriter writer = new FileWriter(output);
-			opmlWriter.writeDocument(FeedManager.getInstance().getFeeds(),
+			opmlWriter.writeDocument(Arrays.asList(FeedManager.getInstance().getFeedsArray()),
 					writer);
 			writer.close();
 		} catch (IOException e) {

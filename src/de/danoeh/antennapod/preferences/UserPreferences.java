@@ -45,7 +45,7 @@ public class UserPreferences implements
 	private boolean pauseOnHeadsetDisconnect;
 	private boolean followQueue;
 	private boolean downloadMediaOnWifiOnly;
-	private int updateInterval;
+	private long updateInterval;
 	private boolean allowMobileUpdate;
 	private boolean autoQueue;
 	private boolean displayOnlyEpisodes;
@@ -55,10 +55,6 @@ public class UserPreferences implements
 	private UserPreferences(Context context) {
 		this.context = context;
 		loadPreferences();
-		createImportDirectory();
-		createNoMediaFile();
-		PreferenceManager.getDefaultSharedPreferences(context)
-				.registerOnSharedPreferenceChangeListener(this);
 	}
 
 	/**
@@ -73,6 +69,11 @@ public class UserPreferences implements
 		if (context == null)
 			throw new IllegalArgumentException("Context must not be null");
 		instance = new UserPreferences(context);
+
+		createImportDirectory();
+		createNoMediaFile();
+		PreferenceManager.getDefaultSharedPreferences(context)
+				.registerOnSharedPreferenceChangeListener(instance);
 	}
 
 	private void loadPreferences() {
@@ -83,7 +84,8 @@ public class UserPreferences implements
 		followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
 		downloadMediaOnWifiOnly = sp.getBoolean(
 				PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY, true);
-		updateInterval = sp.getInt(PREF_UPDATE_INTERVAL, 0);
+		updateInterval = readUpdateInterval(sp.getString(PREF_UPDATE_INTERVAL,
+				"0"));
 		allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
 		autoQueue = sp.getBoolean(PREF_AUTO_QUEUE, true);
 		displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
@@ -100,6 +102,11 @@ public class UserPreferences implements
 		default:
 			return R.style.Theme_AntennaPod_Light;
 		}
+	}
+
+	private long readUpdateInterval(String valueFromPrefs) {
+		int hours = Integer.parseInt(valueFromPrefs);
+		return TimeUnit.HOURS.toMillis(hours);
 	}
 
 	private static void instanceAvailable() {
@@ -124,7 +131,7 @@ public class UserPreferences implements
 		return instance.downloadMediaOnWifiOnly;
 	}
 
-	public static int getUpdateInterval() {
+	public static long getUpdateInterval() {
 		instanceAvailable();
 		return instance.updateInterval;
 	}
@@ -170,18 +177,16 @@ public class UserPreferences implements
 			followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
 
 		} else if (key.equals(PREF_UPDATE_INTERVAL)) {
-			updateInterval = sp.getInt(PREF_UPDATE_INTERVAL, 0);
 			AlarmManager alarmManager = (AlarmManager) context
 					.getSystemService(Context.ALARM_SERVICE);
-			int hours = Integer.parseInt(sp
-					.getString(PREF_UPDATE_INTERVAL, "0"));
+			updateInterval = readUpdateInterval(sp.getString(
+					PREF_UPDATE_INTERVAL, "0"));
 			PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
 					new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
 			alarmManager.cancel(updateIntent);
-			if (hours != 0) {
-				long newIntervall = TimeUnit.HOURS.toMillis(hours);
+			if (updateInterval != 0) {
 				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-						newIntervall, newIntervall, updateIntent);
+						updateInterval, updateInterval, updateIntent);
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Changed alarm to new intervall");
 			} else {

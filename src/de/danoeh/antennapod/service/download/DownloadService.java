@@ -755,7 +755,7 @@ public class DownloadService extends Service {
 		}
 
 		private boolean hasValidFeedItems(Feed feed) {
-			for (FeedItem item : feed.getItems()) {
+			for (FeedItem item : feed.getItemsArray()) {
 				if (item.getTitle() == null) {
 					Log.e(TAG, "Item has no title");
 					return false;

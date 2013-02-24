@@ -1,13 +1,16 @@
 package de.danoeh.antennapod.feed;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
+import android.content.SyncResult;
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.EpisodeFilter;
 
 /**
  * Data Object for a whole feed
@@ -40,7 +43,7 @@ public class Feed extends FeedFile {
 
 	public Feed(Date lastUpdate) {
 		super();
-		items = new CopyOnWriteArrayList<FeedItem>();
+		items = Collections.synchronizedList(new ArrayList<FeedItem>());
 		this.lastUpdate = lastUpdate;
 	}
 
@@ -71,7 +74,8 @@ public class Feed extends FeedFile {
 		int count = 0;
 		for (FeedItem item : items) {
 			if (item.getState() == FeedItem.State.NEW) {
-				if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
+				if (!UserPreferences.isDisplayOnlyEpisodes()
+						|| item.getMedia() != null) {
 					count++;
 				}
 			}
@@ -97,14 +101,18 @@ public class Feed extends FeedFile {
 	}
 
 	/**
-	 * Returns true if at least one item in the itemlist is unread.If the
-	 * 'display only episodes' - preference is set to true, this method will
-	 * only count items with episodes.
+	 * Returns true if at least one item in the itemlist is unread.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if this method should only count items with episodes if
+	 *            the 'display only episodes' - preference is set to true by the
+	 *            user.
 	 */
-	public boolean hasNewItems() {
+	public boolean hasNewItems(boolean enableEpisodeFilter) {
 		for (FeedItem item : items) {
 			if (item.getState() == FeedItem.State.NEW) {
-				if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
+				if (!(enableEpisodeFilter && UserPreferences
+						.isDisplayOnlyEpisodes()) || item.getMedia() != null) {
 					return true;
 				}
 			}
@@ -113,18 +121,34 @@ public class Feed extends FeedFile {
 	}
 
 	/**
-	 * Returns the number of FeedItems. If the 'display only episodes' -
-	 * preference is set to true, this method will only count items with
-	 * episodes.
+	 * Returns the number of FeedItems.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if this method should only count items with episodes if
+	 *            the 'display only episodes' - preference is set to true by the
+	 *            user.
 	 * */
-	public int getNumOfItems() {
-		int count = 0;
-		for (FeedItem item : items) {
-			if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
-				count++;
-			}
+	public int getNumOfItems(boolean enableEpisodeFilter) {
+		if (enableEpisodeFilter && UserPreferences.isDisplayOnlyEpisodes()) {
+			return EpisodeFilter.countItemsWithEpisodes(items);
+		} else {
+			return items.size();
 		}
-		return count;
+	}
+
+	/**
+	 * Returns the item at the specified index.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if this method should ignore items without episdodes if
+	 *            the episodes filter has been enabled by the user.
+	 */
+	public FeedItem getItemAtIndex(boolean enableEpisodeFilter, int position) {
+		if (enableEpisodeFilter && UserPreferences.isDisplayOnlyEpisodes()) {
+			return EpisodeFilter.accessEpisodeByIndex(items, position);
+		} else {
+			return items.get(position);
+		}
 	}
 
 	/**
@@ -264,12 +288,17 @@ public class Feed extends FeedFile {
 		this.image = image;
 	}
 
-	public List<FeedItem> getItems() {
+	List<FeedItem> getItems() {
 		return items;
 	}
 
 	public void setItems(ArrayList<FeedItem> items) {
-		this.items = items;
+		this.items = Collections.synchronizedList(items);
+	}
+
+	/** Returns an array that contains all the feeditems of this feed. */
+	public FeedItem[] getItemsArray() {
+		return items.toArray(new FeedItem[items.size()]);
 	}
 
 	public Date getLastUpdate() {

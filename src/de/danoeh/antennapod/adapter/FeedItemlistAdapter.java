@@ -23,16 +23,20 @@ import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
+	
+	private Context context;
+	
 	private ActionButtonCallback callback;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
 
 	public static final int SELECTION_NONE = -1;
 
-	public FeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects, ActionButtonCallback callback,
-			boolean showFeedtitle) {
-		super(context, textViewResourceId, objects);
+	public FeedItemlistAdapter(Context context,
+			AbstractFeedItemlistAdapter.ItemAccess itemAccess,
+			ActionButtonCallback callback, boolean showFeedtitle) {
+		super(itemAccess);
+		this.context = context;
 		this.callback = callback;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
@@ -45,7 +49,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 
 		if (convertView == null) {
 			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) getContext()
+			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.feeditemlist_item, null);
 			holder.title = (TextView) convertView
@@ -160,7 +164,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 					holder.downloading.setVisibility(View.GONE);
 				}
 
-				TypedArray typeDrawables = getContext().obtainStyledAttributes(
+				TypedArray typeDrawables = context.obtainStyledAttributes(
 						new int[] { R.attr.type_audio, R.attr.type_video });
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {

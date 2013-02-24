@@ -7,13 +7,27 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 
 public class PlaybackHistoryFragment extends ItemlistFragment {
 	private static final String TAG = "PlaybackHistoryFragment";
 
 	public PlaybackHistoryFragment() {
-		super(FeedManager.getInstance().getPlaybackHistory(), true);
+		super(new AbstractFeedItemlistAdapter.ItemAccess() {
+
+			@Override
+			public FeedItem getItem(int position) {
+				return FeedManager.getInstance().getPlaybackHistoryItemIndex(
+						position);
+			}
+
+			@Override
+			public int getCount() {
+				return FeedManager.getInstance().getPlaybackHistorySize();
+			}
+		}, true);
 	}
 
 	@Override
