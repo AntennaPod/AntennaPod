@@ -10,6 +10,7 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Refreshes all feeds when it receives an intent */
 public class FeedUpdateReceiver extends BroadcastReceiver {
@@ -20,10 +21,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(ACTION_REFRESH_FEEDS)) {
 			if (AppConfig.DEBUG) Log.d(TAG, "Received intent");
-			boolean mobileUpdate = PreferenceManager
-					.getDefaultSharedPreferences(
-							context.getApplicationContext()).getBoolean(
-							PodcastApp.PREF_MOBILE_UPDATE, false);
+			boolean mobileUpdate = UserPreferences.isAllowMobileUpdate();
 			if (mobileUpdate || connectedToWifi(context)) {
 				FeedManager.getInstance().refreshAllFeeds(context);
 			} else {

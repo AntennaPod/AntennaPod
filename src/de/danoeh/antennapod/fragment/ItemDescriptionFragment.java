@@ -23,8 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -35,6 +33,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.ShareUtils;
 
 /** Displays the description of a FeedItem in a Webview. */
@@ -72,7 +71,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
 
-		if (PodcastApp.getThemeResourceId() == R.style.Theme_AntennaPod_Dark) {
+		if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
 			if (Build.VERSION.SDK_INT >= 11
 					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 				webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);

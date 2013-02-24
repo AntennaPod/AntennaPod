@@ -7,7 +7,6 @@ import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.activity.OpmlImportHolder;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.opml.OpmlElement;

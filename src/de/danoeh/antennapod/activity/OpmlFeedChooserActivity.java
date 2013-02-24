@@ -16,9 +16,9 @@ import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /**
  * Displays the feeds that the OPML-Importer has read and lets the user choose
@@ -36,7 +36,7 @@ public class OpmlFeedChooserActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.opml_selection);

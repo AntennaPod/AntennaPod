@@ -16,7 +16,6 @@ import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
@@ -25,6 +24,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
@@ -42,7 +42,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();

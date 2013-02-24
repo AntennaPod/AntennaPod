@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.Reader;
 import java.util.ArrayList;
 
 import org.xmlpull.v1.XmlPullParserException;

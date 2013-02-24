@@ -15,11 +15,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** The main preference activity */
@@ -36,7 +36,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	@SuppressWarnings("deprecation")
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -102,7 +102,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
-		findPreference(PodcastApp.PREF_THEME).setOnPreferenceChangeListener(
+		findPreference(UserPreferences.PREF_THEME).setOnPreferenceChangeListener(
 				new OnPreferenceChangeListener() {
 
 					@Override
@@ -137,7 +137,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	}
 
 	private void setDataFolderText() {
-		File f = PodcastApp.getDataFolder(this, null);
+		File f = UserPreferences.getDataFolder(this, null);
 		if (f != null) {
 			findPreference(PREF_CHOOSE_DATA_DIR)
 					.setSummary(f.getAbsolutePath());
@@ -165,7 +165,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 	@Override
 	protected void onApplyThemeResource(Theme theme, int resid, boolean first) {
-		theme.applyStyle(PodcastApp.getThemeResourceId(), true);
+		theme.applyStyle(UserPreferences.getTheme(), true);
 	}
 
 	@Override
@@ -176,7 +176,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 					.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Setting data folder");
-			PodcastApp.getInstance().setDataFolder(dir);
+			UserPreferences.setDataFolder(dir);
 		}
 	}
 

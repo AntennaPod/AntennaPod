@@ -21,11 +21,13 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.FeedtitleComparator;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
@@ -591,9 +593,6 @@ public class FeedManager {
 
 	public void downloadFeedItem(final Context context, FeedItem... items)
 			throws DownloadRequestException {
-		boolean autoQueue = PreferenceManager.getDefaultSharedPreferences(
-				context.getApplicationContext()).getBoolean(
-				PodcastApp.PREF_AUTO_QUEUE, true);
 		List<FeedItem> addToQueue = new ArrayList<FeedItem>();
 
 		for (FeedItem item : items) {
@@ -618,7 +617,7 @@ public class FeedManager {
 				addToQueue.add(item);
 			}
 		}
-		if (autoQueue) {
+		if (UserPreferences.isAutoQueue()) {
 			addQueueItem(context,
 					addToQueue.toArray(new FeedItem[addToQueue.size()]));
 		}
@@ -732,9 +731,7 @@ public class FeedManager {
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context
 							.getApplicationContext());
-			boolean autoDelete = prefs.getBoolean(PodcastApp.PREF_AUTO_DELETE,
-					false);
-			if (autoDelete) {
+			if (UserPreferences.isAutoDelete()) {
 				long lastPlayedId = prefs.getLong(
 						PlaybackService.PREF_LAST_PLAYED_ID, -1);
 				long autoDeleteId = prefs.getLong(
@@ -1479,16 +1476,74 @@ public class FeedManager {
 		return feeds;
 	}
 
-	public List<FeedItem> getUnreadItems() {
-		return unreadItems;
+	/**
+	 * Returns the number of items that are currently in the queue.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if items without episodes should be ignored by this
+	 *            method if the episode filter was enabled by the user.
+	 * */
+	public int getQueueSize(boolean enableEpisodeFilter) {
+		if (UserPreferences.isDisplayOnlyEpisodes() && enableEpisodeFilter) {
+			return EpisodeFilter.countItemsWithEpisodes(queue);
+		} else {
+			return queue.size();
+		}
+	}
+
+	/**
+	 * Returns the FeedItem at the specified index of the queue.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if items without episodes should be ignored by this
+	 *            method if the episode filter was enabled by the user.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if index is out of range
+	 * */
+	public FeedItem getQueueItemAtIndex(int index, boolean enableEpisodeFilter) {
+		if (UserPreferences.isDisplayOnlyEpisodes() && enableEpisodeFilter) {
+			return EpisodeFilter.accessEpisodeByIndex(queue, index);
+		} else {
+			return queue.get(index);
+		}
+	}
+
+	/**
+	 * Returns the number of unread items.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if items without episodes should be ignored by this
+	 *            method if the episode filter was enabled by the user.
+	 * */
+	public int getUnreadItemsSize(boolean enableEpisodeFilter) {
+		if (UserPreferences.isDisplayOnlyEpisodes() && enableEpisodeFilter) {
+			return EpisodeFilter.countItemsWithEpisodes(unreadItems);
+		} else {
+			return unreadItems.size();
+		}
+	}
+
+	/**
+	 * Returns the FeedItem at the specified index of the unread items list.
+	 * 
+	 * @param enableEpisodeFilter
+	 *            true if items without episodes should be ignored by this
+	 *            method if the episode filter was enabled by the user.
+	 * 
+	 * @throws IndexOutOfBoundsException
+	 *             if index is out of range
+	 * */
+	public FeedItem getUnreadItemAtIndex(int index, boolean enableEpisodeFilter) {
+		if (UserPreferences.isDisplayOnlyEpisodes() && enableEpisodeFilter) {
+			return EpisodeFilter.accessEpisodeByIndex(unreadItems, index);
+		} else {
+			return unreadItems.get(index);
+		}
 	}
 
 	public ArrayList<DownloadStatus> getDownloadLog() {
 		return downloadLog;
-	}
-
-	public List<FeedItem> getQueue() {
-		return queue;
 	}
 
 	public List<FeedItem> getPlaybackHistory() {

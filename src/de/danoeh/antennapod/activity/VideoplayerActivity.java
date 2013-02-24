@@ -18,9 +18,9 @@ import android.widget.VideoView;
 import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
 
@@ -41,7 +41,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 
 		super.onCreate(savedInstanceState);
 	}

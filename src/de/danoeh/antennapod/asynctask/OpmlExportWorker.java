@@ -15,6 +15,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.opml.OpmlWriter;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
@@ -40,7 +41,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 		OpmlWriter opmlWriter = new OpmlWriter();
 		if (output == null) {
 			output = new File(
-					PodcastApp.getDataFolder(context, PodcastApp.EXPORT_DIR),
+					UserPreferences.getDataFolder(context, PodcastApp.EXPORT_DIR),
 					DEFAULT_OUTPUT_NAME);
 			if (output.exists()) {
 				Log.w(TAG, "Overwriting previously exported file.");

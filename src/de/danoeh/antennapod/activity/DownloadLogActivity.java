@@ -10,9 +10,9 @@ import com.actionbarsherlock.app.SherlockListActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /**
  * Displays completed and failed downloads in a list. The data comes from the
@@ -26,7 +26,7 @@ public class DownloadLogActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		manager = FeedManager.getInstance();
 

@@ -46,6 +46,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.BitmapDecoder;
@@ -717,9 +718,7 @@ public class PlaybackService extends Service {
 			editor.commit();
 
 			// Prepare for playing next item
-			boolean followQueue = prefs.getBoolean(
-					PodcastApp.PREF_FOLLOW_QUEUE, false);
-			boolean playNextItem = isInQueue && followQueue && nextItem != null;
+			boolean playNextItem = isInQueue && UserPreferences.isFollowQueue() && nextItem != null;
 			if (playNextItem) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading next item in queue");
@@ -937,8 +936,9 @@ public class PlaybackService extends Service {
 			Intent pauseButtonIntent = new Intent(this, PlaybackService.class);
 			pauseButtonIntent.putExtra(MediaButtonReceiver.EXTRA_KEYCODE,
 					KeyEvent.KEYCODE_MEDIA_PAUSE);
-			PendingIntent pauseButtonPendingIntent = PendingIntent
-					.getService(this, 0, pauseButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+			PendingIntent pauseButtonPendingIntent = PendingIntent.getService(
+					this, 0, pauseButtonIntent,
+					PendingIntent.FLAG_UPDATE_CURRENT);
 			Notification.Builder notificationBuilder = new Notification.Builder(
 					this)
 					.setContentTitle(contentTitle)
@@ -1155,10 +1155,8 @@ public class PlaybackService extends Service {
 
 	/** Pauses playback if PREF_PAUSE_ON_HEADSET_DISCONNECT was set to true. */
 	private void pauseIfPauseOnDisconnect() {
-		boolean pauseOnDisconnect = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext())
-				.getBoolean(PodcastApp.PREF_PAUSE_ON_HEADSET_DISCONNECT, false);
-		if (pauseOnDisconnect && status == PlayerStatus.PLAYING) {
+		if (UserPreferences.isPauseOnHeadsetDisconnect()
+				&& status == PlayerStatus.PLAYING) {
 			pause(true, true);
 		}
 	}

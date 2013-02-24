@@ -20,12 +20,12 @@ import com.actionbarsherlock.view.Window;
 import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -45,7 +45,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
 		manager = FeedManager.getInstance();
@@ -69,7 +69,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		if (!appLaunched && getIntent().getAction() != null
 				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
 			appLaunched = true;
-			if (manager.getUnreadItems().size() > 0) {
+			if (manager.getUnreadItemsSize(true) > 0) {
 				viewpager.setCurrentItem(MainPagerAdapter.POS_EPISODES);
 
 			}
@@ -109,7 +109,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			setSupportProgressBarIndeterminateVisibility(false);
 		}
-		invalidateOptionsMenu();
+		supportInvalidateOptionsMenu();
 	}
 
 	@Override

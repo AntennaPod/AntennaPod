@@ -7,6 +7,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 import android.preference.PreferenceManager;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /**
  * Data Object for a whole feed
@@ -68,13 +69,9 @@ public class Feed extends FeedFile {
 	 * */
 	public int getNumOfNewItems() {
 		int count = 0;
-		boolean displayOnlyEpisodes = PreferenceManager
-				.getDefaultSharedPreferences(PodcastApp.getInstance())
-				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
-
 		for (FeedItem item : items) {
 			if (item.getState() == FeedItem.State.NEW) {
-				if (!displayOnlyEpisodes || item.getMedia() != null) {
+				if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
 					count++;
 				}
 			}
@@ -105,12 +102,9 @@ public class Feed extends FeedFile {
 	 * only count items with episodes.
 	 */
 	public boolean hasNewItems() {
-		boolean displayOnlyEpisodes = PreferenceManager
-				.getDefaultSharedPreferences(PodcastApp.getInstance())
-				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
 		for (FeedItem item : items) {
 			if (item.getState() == FeedItem.State.NEW) {
-				if (!displayOnlyEpisodes || item.getMedia() != null) {
+				if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
 					return true;
 				}
 			}
@@ -125,11 +119,8 @@ public class Feed extends FeedFile {
 	 * */
 	public int getNumOfItems() {
 		int count = 0;
-		boolean displayOnlyEpisodes = PreferenceManager
-				.getDefaultSharedPreferences(PodcastApp.getInstance())
-				.getBoolean(PodcastApp.PREF_DISPLAY_ONLY_EPISODES, false);
 		for (FeedItem item : items) {
-			if (!displayOnlyEpisodes || item.getMedia() != null) {
+			if (!UserPreferences.isDisplayOnlyEpisodes() || item.getMedia() != null) {
 				count++;
 			}
 		}

@@ -12,9 +12,9 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.viewpagerindicator.TabPageIndicator;
 
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /**
  * Shows channels of a category sorted by different criteria in lists. The
@@ -34,7 +34,7 @@ public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(arg0);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_category);

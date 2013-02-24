@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.List;
-
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -11,7 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -20,11 +18,11 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 public class OrganizeQueueActivity extends SherlockListActivity {
 	private static final String TAG = "OrganizeQueueActivity";
@@ -35,7 +33,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organize_queue);
 
@@ -43,8 +41,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		listView.setDropListener(dropListener);
 		listView.setRemoveListener(removeListener);
 
-		adapter = new OrganizeAdapter(this, 0, FeedManager.getInstance()
-				.getQueue());
+		adapter = new OrganizeAdapter(this);
 		setListAdapter(adapter);
 	}
 
@@ -120,13 +117,12 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		}
 	}
 
-	private static class OrganizeAdapter extends ArrayAdapter<FeedItem> {
+	private static class OrganizeAdapter extends BaseAdapter {
 
 		private Context context;
 
-		public OrganizeAdapter(Context context, int textViewResourceId,
-				List<FeedItem> objects) {
-			super(context, textViewResourceId, objects);
+		public OrganizeAdapter(Context context) {
+			super();
 			this.context = context;
 		}
 
@@ -170,6 +166,21 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			TextView title;
 			TextView feedTitle;
 			ImageView feedImage;
+		}
+
+		@Override
+		public int getCount() {
+			return FeedManager.getInstance().getQueueSize(true);
+		}
+
+		@Override
+		public FeedItem getItem(int position) {
+			return FeedManager.getInstance().getQueueItemAtIndex(position, true);
+		}
+
+		@Override
+		public long getItemId(int position) {
+			return position;
 		}
 
 	}

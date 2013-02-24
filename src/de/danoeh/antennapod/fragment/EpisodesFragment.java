@@ -99,10 +99,8 @@ public class EpisodesFragment extends SherlockFragment {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		FeedManager manager = FeedManager.getInstance();
 		adapter = new ExternalEpisodesListAdapter(getActivity(),
-				manager.getUnreadItems(), manager.getQueue(), adapterCallback,
-				groupActionCallback);
+				adapterCallback, groupActionCallback);
 		listView.setAdapter(adapter);
 		listView.expandGroup(ExternalEpisodesListAdapter.GROUP_POS_QUEUE);
 		listView.expandGroup(ExternalEpisodesListAdapter.GROUP_POS_UNREAD);

@@ -5,7 +5,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;

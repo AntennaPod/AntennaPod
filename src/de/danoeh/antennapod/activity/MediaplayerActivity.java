@@ -18,12 +18,12 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.Converter;
@@ -138,7 +138,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
