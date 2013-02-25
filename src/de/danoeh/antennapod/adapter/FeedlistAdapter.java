@@ -108,9 +108,9 @@ public class FeedlistAdapter extends BaseAdapter {
 			holder.inProgressEpisodesLabel.setVisibility(View.INVISIBLE);
 		}
 
-		holder.image.setTag(feed.getImage());
-		final String imageUrl = (feed.getImage() != null) ? 
-				feed.getImage().getFile_url() : null;
+		final String imageUrl = (feed.getImage() != null) ? feed.getImage()
+				.getFile_url() : null;
+		holder.image.setTag(imageUrl);
 		imageLoader.loadThumbnailBitmap(
 				feed.getImage(),
 				holder.image,

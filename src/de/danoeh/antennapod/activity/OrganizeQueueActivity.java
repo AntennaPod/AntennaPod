@@ -56,7 +56,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-		
+
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if (((EventDistributor.QUEUE_UPDATE | EventDistributor.FEED_LIST_UPDATE) & arg) != 0) {
@@ -145,7 +145,8 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			holder.title.setText(item.getTitle());
 			holder.feedTitle.setText(item.getFeed().getTitle());
 
-			holder.feedImage.setTag(item.getFeed().getImage());
+			holder.feedImage.setTag((item.getFeed().getImage() != null) ? item
+					.getFeed().getImage().getFile_url() : null);
 			ImageLoader.getInstance().loadThumbnailBitmap(
 					item.getFeed().getImage(),
 					holder.feedImage,
@@ -168,7 +169,8 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 
 		@Override
 		public FeedItem getItem(int position) {
-			return FeedManager.getInstance().getQueueItemAtIndex(position, true);
+			return FeedManager.getInstance()
+					.getQueueItemAtIndex(position, true);
 		}
 
 		@Override
