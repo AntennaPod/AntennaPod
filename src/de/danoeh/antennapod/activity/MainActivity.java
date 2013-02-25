@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -21,6 +19,7 @@ import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
@@ -34,6 +33,9 @@ import de.danoeh.antennapod.util.StorageUtils;
 /** The activity that is shown when the user launches the app. */
 public class MainActivity extends SherlockFragmentActivity {
 	private static final String TAG = "MainActivity";
+
+	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
+			| EventDistributor.DOWNLOAD_QUEUED;
 
 	private FeedManager manager;
 	private ViewPager viewpager;
@@ -79,7 +81,7 @@ public class MainActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		unregisterReceiver(contentUpdate);
+		EventDistributor.getInstance().unregister(contentUpdate);
 	}
 
 	@Override
@@ -87,18 +89,19 @@ public class MainActivity extends SherlockFragmentActivity {
 		super.onResume();
 		StorageUtils.checkStorageAvailability(this);
 		updateProgressBarVisibility();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
-		registerReceiver(contentUpdate, filter);
+		EventDistributor.getInstance().register(contentUpdate);
+
 	}
 
-	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+
 		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received contentUpdate Intent.");
-			updateProgressBarVisibility();
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if ((EVENTS & arg) != 0) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received contentUpdate Intent.");
+				updateProgressBarVisibility();
+			}
 		}
 	};
 

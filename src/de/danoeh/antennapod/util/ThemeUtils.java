@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.util;
 
 import android.util.Log;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
 

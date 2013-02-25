@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -25,15 +22,20 @@ import de.danoeh.antennapod.activity.OrganizeQueueActivity;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.ExternalEpisodesListAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 public class EpisodesFragment extends SherlockFragment {
 	private static final String TAG = "EpisodesFragment";
+
+	private static final int EVENTS = EventDistributor.QUEUE_UPDATE
+			| EventDistributor.UNREAD_ITEMS_UPDATE
+			| EventDistributor.FEED_LIST_UPDATE
+			| EventDistributor.DOWNLOAD_HANDLED
+			| EventDistributor.DOWNLOAD_QUEUED;
 
 	private ExpandableListView listView;
 	private ExternalEpisodesListAdapter adapter;
@@ -45,24 +47,14 @@ public class EpisodesFragment extends SherlockFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		try {
-			getActivity().unregisterReceiver(contentUpdate);
-		} catch (IllegalArgumentException e) {
-
-		}
+		EventDistributor.getInstance().unregister(contentUpdate);
 	}
 
 	@Override
 	public void onResume() {
 		super.onResume();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
-		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
-		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
-		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
 
-		getActivity().registerReceiver(contentUpdate, filter);
+		EventDistributor.getInstance().register(contentUpdate);
 		if (adapter != null) {
 			adapter.notifyDataSetChanged();
 		}
@@ -128,12 +120,15 @@ public class EpisodesFragment extends SherlockFragment {
 		registerForContextMenu(listView);
 	}
 
-	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+
 		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received contentUpdate Intent.");
-			adapter.notifyDataSetChanged();
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if ((EVENTS & arg) != 0) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received contentUpdate Intent.");
+				adapter.notifyDataSetChanged();
+			}
 		}
 	};
 

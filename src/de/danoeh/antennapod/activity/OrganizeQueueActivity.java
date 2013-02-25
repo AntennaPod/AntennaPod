@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -20,6 +17,7 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -48,30 +46,25 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		try {
-			unregisterReceiver(contentUpdate);
-		} catch (IllegalArgumentException e) {
-
-		}
+		EventDistributor.getInstance().unregister(contentUpdate);
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
-		IntentFilter filter = new IntentFilter(FeedManager.ACTION_QUEUE_UPDATE);
-		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
-		registerReceiver(contentUpdate, filter);
+		EventDistributor.getInstance().register(contentUpdate);
 	}
 
-	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
-
+	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+		
 		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (adapter != null) {
-				adapter.notifyDataSetChanged();
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if (((EventDistributor.QUEUE_UPDATE | EventDistributor.FEED_LIST_UPDATE) & arg) != 0) {
+				if (adapter != null) {
+					adapter.notifyDataSetChanged();
+				}
 			}
 		}
-
 	};
 
 	private DragSortListView.DropListener dropListener = new DragSortListView.DropListener() {

@@ -1,12 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -26,6 +21,7 @@ import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -37,8 +33,13 @@ import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 /** Displays a list of FeedItems. */
 @SuppressLint("ValidFragment")
 public class ItemlistFragment extends SherlockListFragment {
-
 	private static final String TAG = "ItemlistFragment";
+
+	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
+			| EventDistributor.DOWNLOAD_QUEUED
+			| EventDistributor.QUEUE_UPDATE
+			| EventDistributor.UNREAD_ITEMS_UPDATE;
+
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 	protected AbstractFeedItemlistAdapter fila;
@@ -48,14 +49,15 @@ public class ItemlistFragment extends SherlockListFragment {
 	private AbstractFeedItemlistAdapter.ItemAccess itemAccess;
 
 	private Feed feed;
-	
+
 	protected FeedItem selectedItem = null;
 	protected boolean contextMenuClosed = true;
 
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
-	public ItemlistFragment(AbstractFeedItemlistAdapter.ItemAccess itemAccess, boolean showFeedtitle) {
+	public ItemlistFragment(AbstractFeedItemlistAdapter.ItemAccess itemAccess,
+			boolean showFeedtitle) {
 		super();
 		this.itemAccess = itemAccess;
 		this.showFeedtitle = showFeedtitle;
@@ -95,12 +97,12 @@ public class ItemlistFragment extends SherlockListFragment {
 			final Feed feed = FeedManager.getInstance().getFeed(feedId);
 			this.feed = feed;
 			itemAccess = new AbstractFeedItemlistAdapter.ItemAccess() {
-				
+
 				@Override
 				public FeedItem getItem(int position) {
 					return feed.getItemAtIndex(true, position);
 				}
-				
+
 				@Override
 				public int getCount() {
 					return feed.getNumOfItems(true);
@@ -122,12 +124,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		try {
-			getActivity().unregisterReceiver(contentUpdate);
-		} catch (IllegalArgumentException e) {
-			Log.w(TAG,
-					"IllegalArgumentException when trying to unregister contentUpdate receiver.");
-		}
+		EventDistributor.getInstance().unregister(contentUpdate);
 	}
 
 	@Override
@@ -141,13 +138,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			}
 		});
 		updateProgressBarVisibility();
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
-		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		filter.addAction(FeedManager.ACTION_QUEUE_UPDATE);
-		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
-
-		getActivity().registerReceiver(contentUpdate, filter);
+		EventDistributor.getInstance().register(contentUpdate);
 	}
 
 	@Override
@@ -161,17 +152,19 @@ public class ItemlistFragment extends SherlockListFragment {
 		startActivity(showItem);
 	}
 
-	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+
 		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received contentUpdate Intent.");
-			if (intent.getAction().equals(
-					DownloadRequester.ACTION_DOWNLOAD_QUEUED)) {
-				updateProgressBarVisibility();
-			} else {
-				fila.notifyDataSetChanged();
-				updateProgressBarVisibility();
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if ((EVENTS & arg) != 0) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received contentUpdate Intent.");
+				if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
+					updateProgressBarVisibility();
+				} else {
+					fila.notifyDataSetChanged();
+					updateProgressBarVisibility();
+				}
 			}
 		}
 	};

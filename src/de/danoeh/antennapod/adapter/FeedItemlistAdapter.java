@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import java.text.DateFormat;
-import java.util.List;
 
 import android.content.Context;
 import android.content.res.TypedArray;

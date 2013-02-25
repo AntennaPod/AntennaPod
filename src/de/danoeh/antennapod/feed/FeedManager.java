@@ -41,14 +41,6 @@ import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 public class FeedManager {
 	private static final String TAG = "FeedManager";
 
-	public static final String ACTION_FEED_LIST_UPDATE = "de.danoeh.antennapod.action.feed.feedlistUpdate";
-	public static final String ACTION_UNREAD_ITEMS_UPDATE = "de.danoeh.antennapod.action.feed.unreadItemsUpdate";
-	public static final String ACTION_QUEUE_UPDATE = "de.danoeh.antennapod.action.feed.queueUpdate";
-	public static final String ACTION_DOWNLOADLOG_UPDATE = "de.danoeh.antennapod.action.feed.downloadLogUpdate";
-	public static final String ACTION_PLAYBACK_HISTORY_UPDATE = "de.danoeh.antennapod.action.feed.playbackHistoryUpdate";
-	public static final String EXTRA_FEED_ITEM_ID = "de.danoeh.antennapod.extra.feed.feedItemId";
-	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feed.feedId";
-
 	/** Number of completed Download status entries to store. */
 	private static final int DOWNLOAD_LOG_SIZE = 50;
 
@@ -80,6 +72,8 @@ public class FeedManager {
 
 	/** Prevents user from starting several feed updates at the same time. */
 	private static boolean isStartingFeedRefresh = false;
+
+	private EventDistributor eventDist = EventDistributor.getInstance();
 
 	private FeedManager() {
 		feeds = Collections.synchronizedList(new ArrayList<Feed>());
@@ -214,7 +208,7 @@ public class FeedManager {
 			@Override
 			public void run() {
 				feeds.remove(feed);
-				sendFeedUpdateBroadcast(context);
+				eventDist.sendFeedUpdateBroadcast();
 				dbExec.execute(new Runnable() {
 
 					@Override
@@ -265,32 +259,6 @@ public class FeedManager {
 			}
 		});
 
-	}
-
-	private void sendUnreadItemsUpdateBroadcast(Context context, FeedItem item) {
-		Intent update = new Intent(ACTION_UNREAD_ITEMS_UPDATE);
-		if (item != null) {
-			update.putExtra(EXTRA_FEED_ID, item.getFeed().getId());
-			update.putExtra(EXTRA_FEED_ITEM_ID, item.getId());
-		}
-		context.sendBroadcast(update);
-	}
-
-	private void sendQueueUpdateBroadcast(Context context, FeedItem item) {
-		Intent update = new Intent(ACTION_QUEUE_UPDATE);
-		if (item != null) {
-			update.putExtra(EXTRA_FEED_ID, item.getFeed().getId());
-			update.putExtra(EXTRA_FEED_ITEM_ID, item.getId());
-		}
-		context.sendBroadcast(update);
-	}
-
-	private void sendFeedUpdateBroadcast(Context context) {
-		context.sendBroadcast(new Intent(ACTION_FEED_LIST_UPDATE));
-	}
-
-	private void sendPlaybackHistoryUpdateBroadcast(Context context) {
-		context.sendBroadcast(new Intent(ACTION_PLAYBACK_HISTORY_UPDATE));
 	}
 
 	/**
@@ -354,7 +322,7 @@ public class FeedManager {
 			final FeedItem[] items = playbackHistory
 					.toArray(new FeedItem[playbackHistory.size()]);
 			playbackHistory.clear();
-			sendPlaybackHistoryUpdateBroadcast(context);
+			eventDist.sendPlaybackHistoryUpdateBroadcast();
 			dbExec.execute(new Runnable() {
 
 				@Override
@@ -383,13 +351,13 @@ public class FeedManager {
 				playbackHistory.add(item);
 			}
 			cleanupPlaybackHistoryWithDBCleanup(context);
-			sendPlaybackHistoryUpdateBroadcast(context);
+			eventDist.sendPlaybackHistoryUpdateBroadcast();
 		}
 	}
 
 	private void removeItemFromPlaybackHistory(Context context, FeedItem item) {
 		playbackHistory.remove(item);
-		sendPlaybackHistoryUpdateBroadcast(context);
+		eventDist.sendPlaybackHistoryUpdateBroadcast();
 	}
 
 	/**
@@ -421,7 +389,7 @@ public class FeedManager {
 					Collections.sort(unreadItems,
 							new FeedItemPubdateComparator());
 				}
-				sendUnreadItemsUpdateBroadcast(context, item);
+				eventDist.sendUnreadItemsUpdateBroadcast();
 			}
 		});
 
@@ -450,7 +418,7 @@ public class FeedManager {
 		final ArrayList<FeedItem> unreadItemsCopy = new ArrayList<FeedItem>(
 				unreadItems);
 		unreadItems.clear();
-		sendUnreadItemsUpdateBroadcast(context, null);
+		eventDist.sendUnreadItemsUpdateBroadcast();
 		dbExec.execute(new Runnable() {
 
 			@Override
@@ -537,7 +505,7 @@ public class FeedManager {
 		media.setDownloaded(false);
 		media.setFile_url(null);
 		setFeedMedia(context, media);
-		sendFeedUpdateBroadcast(context);
+		eventDist.sendFeedUpdateBroadcast();
 	}
 
 	public void refreshFeed(Context context, Feed feed)
@@ -560,7 +528,7 @@ public class FeedManager {
 				} else {
 					removedStatus = null;
 				}
-				context.sendBroadcast(new Intent(ACTION_DOWNLOADLOG_UPDATE));
+				eventDist.sendDownloadLogUpdateBroadcast();
 				dbExec.execute(new Runnable() {
 
 					@Override
@@ -641,7 +609,7 @@ public class FeedManager {
 							queue.add(item);
 						}
 					}
-					sendQueueUpdateBroadcast(context, items[0]);
+					eventDist.sendQueueUpdateBroadcast();
 					dbExec.execute(new Runnable() {
 
 						@Override
@@ -677,7 +645,7 @@ public class FeedManager {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Clearing queue");
 		queue.clear();
-		sendQueueUpdateBroadcast(context, null);
+		eventDist.sendQueueUpdateBroadcast();
 		dbExec.execute(new Runnable() {
 
 			@Override
@@ -717,7 +685,7 @@ public class FeedManager {
 			});
 
 		}
-		sendQueueUpdateBroadcast(context, item);
+		eventDist.sendQueueUpdateBroadcast();
 	}
 
 	/**
@@ -793,7 +761,7 @@ public class FeedManager {
 				}
 			});
 			if (broadcastUpdate) {
-				sendQueueUpdateBroadcast(context, item);
+				eventDist.sendQueueUpdateBroadcast();
 			}
 		}
 	}
@@ -817,7 +785,7 @@ public class FeedManager {
 			public void run() {
 				feeds.add(feed);
 				Collections.sort(feeds, new FeedtitleComparator());
-				sendFeedUpdateBroadcast(context);
+				eventDist.sendFeedUpdateBroadcast();
 			}
 		});
 		setCompleteFeed(context, feed);

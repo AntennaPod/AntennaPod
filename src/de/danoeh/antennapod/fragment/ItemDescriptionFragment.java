@@ -28,7 +28,6 @@ import android.widget.Toast;
 import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;

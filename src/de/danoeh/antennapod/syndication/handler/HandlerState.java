@@ -2,7 +2,6 @@ package de.danoeh.antennapod.syndication.handler;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Stack;
 
 import de.danoeh.antennapod.feed.Feed;

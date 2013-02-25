@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
 
-import android.content.SyncResult;
-import android.preference.PreferenceManager;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.EpisodeFilter;
 
