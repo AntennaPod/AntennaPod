@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
 
 /**
  * Data Object for a XML message
@@ -234,7 +234,7 @@ public class FeedItem extends FeedComponent {
 
 	private boolean isPlaying() {
 		if (media != null) {
-			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
+			if (PlaybackPreferences.getCurrentlyPlayingMedia() == media.getId()) {
 				return true;
 			}
 		}

@@ -20,6 +20,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
@@ -34,10 +35,10 @@ import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
 /**
- * Singleton class that
- * 	- provides access to all Feeds and FeedItems and to several lists of FeedItems.
- *  - provides methods for modifying the application's data 
- *  - takes care of updating the information stored in the database when something is modified
+ * Singleton class that - provides access to all Feeds and FeedItems and to
+ * several lists of FeedItems. - provides methods for modifying the
+ * application's data - takes care of updating the information stored in the
+ * database when something is modified
  * 
  * An instance of this class can be retrieved via getInstance().
  * */
@@ -153,11 +154,7 @@ public class FeedManager {
 			}
 		} catch (MediaFileNotFoundException e) {
 			e.printStackTrace();
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context);
-			final long lastPlayedId = prefs.getLong(
-					PlaybackService.PREF_LAST_PLAYED_ID, -1);
-			if (lastPlayedId == media.getId()) {
+			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
 				context.sendBroadcast(new Intent(
 						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			}
@@ -179,14 +176,12 @@ public class FeedManager {
 
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			final long lastPlayedId = prefs.getLong(
-					PlaybackService.PREF_LAST_PLAYED_ID, -1);
-			if (media.getId() == lastPlayedId) {
+			if (media.getId() == PlaybackPreferences.getLastPlayedId()) {
 				SharedPreferences.Editor editor = prefs.edit();
-				editor.putBoolean(PlaybackService.PREF_LAST_IS_STREAM, true);
+				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM, true);
 				editor.commit();
 			}
-			if (lastPlayedId == media.getId()) {
+			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
 				context.sendBroadcast(new Intent(
 						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			}
@@ -200,14 +195,12 @@ public class FeedManager {
 	public void deleteFeed(final Context context, final Feed feed) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context.getApplicationContext());
-		long lastPlayedFeed = prefs.getLong(
-				PlaybackService.PREF_LAST_PLAYED_FEED_ID, -1);
-		if (lastPlayedFeed == feed.getId()) {
+		if (PlaybackPreferences.getLastPlayedFeedId() == feed.getId()) {
 			context.sendBroadcast(new Intent(
 					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putLong(PlaybackService.PREF_LAST_PLAYED_ID, -1);
-			editor.putLong(PlaybackService.PREF_LAST_PLAYED_FEED_ID, -1);
+			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, -1);
+			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_FEED_ID, -1);
 			editor.commit();
 		}
 
@@ -717,22 +710,19 @@ public class FeedManager {
 					.getDefaultSharedPreferences(context
 							.getApplicationContext());
 			if (UserPreferences.isAutoDelete()) {
-				long lastPlayedId = prefs.getLong(
-						PlaybackService.PREF_LAST_PLAYED_ID, -1);
-				long autoDeleteId = prefs.getLong(
-						PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
-				boolean playbackCompleted = prefs
-						.getBoolean(
-								PlaybackService.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
-								false);
-				if ((media.getId() != lastPlayedId)
-						&& ((media.getId() != autoDeleteId) || (media.getId() == autoDeleteId && playbackCompleted))) {
+
+				if ((media.getId() != PlaybackPreferences.getLastPlayedId())
+						&& ((media.getId() != PlaybackPreferences
+								.getAutoDeleteMediaId()) || (media.getId() == PlaybackPreferences
+								.getAutoDeleteMediaId() && PlaybackPreferences
+								.isAutoDeleteMediaPlaybackCompleted()))) {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Performing auto-cleanup");
 					deleteFeedMedia(context, media);
 
 					SharedPreferences.Editor editor = prefs.edit();
-					editor.putLong(PlaybackService.PREF_AUTODELETE_MEDIA_ID, -1);
+					editor.putLong(
+							PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID, -1);
 					editor.commit();
 				} else {
 					if (AppConfig.DEBUG)
@@ -1456,8 +1446,8 @@ public class FeedManager {
 	}
 
 	/**
-	 * Searches the 'contentEncoded' field of FeedItems of a specific feed for a given
-	 * string.
+	 * Searches the 'contentEncoded' field of FeedItems of a specific feed for a
+	 * given string.
 	 * 
 	 * @param feed
 	 *            The feed whose items should be searched.
