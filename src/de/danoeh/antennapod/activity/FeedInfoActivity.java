@@ -12,7 +12,7 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -58,7 +58,7 @@ public class FeedInfoActivity extends SherlockActivity {
 
 				@Override
 				public void run() {
-					FeedImageLoader.getInstance().loadThumbnailBitmap(
+					ImageLoader.getInstance().loadThumbnailBitmap(
 							feed.getImage(), imgvCover);
 				}
 			});

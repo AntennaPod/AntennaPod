@@ -16,13 +16,11 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.storage.DownloadRequester;
 
 /** Caches and loads FeedImage bitmaps in the background */
-public class FeedImageLoader {
-	private static final String TAG = "FeedImageLoader";
-	private static FeedImageLoader singleton;
+public class ImageLoader {
+	private static final String TAG = "ImageLoader";
+	private static ImageLoader singleton;
 
 	public static final int IMAGE_TYPE_THUMBNAIL = 0;
 	public static final int IMAGE_TYPE_COVER = 1;
@@ -44,7 +42,7 @@ public class FeedImageLoader {
 	private LruCache<String, CachedBitmap> coverCache;
 	private LruCache<String, CachedBitmap> thumbnailCache;
 
-	private FeedImageLoader() {
+	private ImageLoader() {
 		handler = new Handler();
 		executor = createExecutor();
 
@@ -79,9 +77,9 @@ public class FeedImageLoader {
 		});
 	}
 
-	public static FeedImageLoader getInstance() {
+	public static ImageLoader getInstance() {
 		if (singleton == null) {
-			singleton = new FeedImageLoader();
+			singleton = new ImageLoader();
 		}
 		return singleton;
 	}
@@ -92,8 +90,18 @@ public class FeedImageLoader {
 	 * ImageView's size has already been set or inside a Runnable which is
 	 * posted to the ImageView's message queue.
 	 */
+	public void loadCoverBitmap(String fileUrl, ImageView target) {
+		loadCoverBitmap(fileUrl, target, target.getHeight());
+	}
+
 	public void loadCoverBitmap(FeedImage image, ImageView target) {
-		loadCoverBitmap(image, target, target.getHeight());
+		loadCoverBitmap((image != null) ? image.getFile_url() : null, target,
+				target.getHeight());
+	}
+
+	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
+		loadCoverBitmap((image != null) ? image.getFile_url() : null, target,
+				length);
 	}
 
 	/**
@@ -102,17 +110,18 @@ public class FeedImageLoader {
 	 * ImageView's size has already been set or inside a Runnable which is
 	 * posted to the ImageView's message queue.
 	 */
-	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
-		final int defaultCoverResource = getDefaultCoverResource(target.getContext());
-		
-		if (image != null && image.getFile_url() != null) {
-			CachedBitmap cBitmap = getBitmapFromCoverCache(image.getFile_url());
+	public void loadCoverBitmap(String fileUrl, ImageView target, int length) {
+		final int defaultCoverResource = getDefaultCoverResource(target
+				.getContext());
+
+		if (fileUrl != null) {
+			CachedBitmap cBitmap = getBitmapFromCoverCache(fileUrl);
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(defaultCoverResource);
-				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, length, IMAGE_TYPE_COVER);
+				BitmapDecodeWorkerTask worker = new BitmapDecodeWorkerTask(
+						handler, target, fileUrl, length, IMAGE_TYPE_COVER);
 				executor.submit(worker);
 			}
 		} else {
@@ -126,8 +135,19 @@ public class FeedImageLoader {
 	 * called if the ImageView's size has already been set or inside a Runnable
 	 * which is posted to the ImageView's message queue.
 	 */
+	public void loadThumbnailBitmap(String fileUrl, ImageView target) {
+		loadThumbnailBitmap(fileUrl, target, target.getHeight());
+	}
+
 	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
-		loadThumbnailBitmap(image, target, target.getHeight());
+		loadThumbnailBitmap((image != null) ? image.getFile_url() : null,
+				target, target.getHeight());
+	}
+
+	public void loadThumbnailBitmap(FeedImage image, ImageView target,
+			int length) {
+		loadThumbnailBitmap((image != null) ? image.getFile_url() : null,
+				target, length);
 	}
 
 	/**
@@ -136,18 +156,18 @@ public class FeedImageLoader {
 	 * called if the ImageView's size has already been set or inside a Runnable
 	 * which is posted to the ImageView's message queue.
 	 */
-	public void loadThumbnailBitmap(FeedImage image, ImageView target,
-			int length) {
-		final int defaultCoverResource = getDefaultCoverResource(target.getContext());
-		
-		if (image != null && image.getFile_url() != null) {
-			CachedBitmap cBitmap = getBitmapFromThumbnailCache(image.getFile_url());
+	public void loadThumbnailBitmap(String fileUrl, ImageView target, int length) {
+		final int defaultCoverResource = getDefaultCoverResource(target
+				.getContext());
+
+		if (fileUrl != null) {
+			CachedBitmap cBitmap = getBitmapFromThumbnailCache(fileUrl);
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(defaultCoverResource);
-				FeedImageDecodeWorkerTask worker = new FeedImageDecodeWorkerTask(
-						handler, target, image, length, IMAGE_TYPE_THUMBNAIL);
+				BitmapDecodeWorkerTask worker = new BitmapDecodeWorkerTask(
+						handler, target, fileUrl, length, IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
 			}
 		} else {
@@ -168,8 +188,8 @@ public class FeedImageLoader {
 		thumbnailCache.evictAll();
 	}
 
-	public boolean isInThumbnailCache(FeedImage image) {
-		return thumbnailCache.get(image.getFile_url()) != null;
+	public boolean isInThumbnailCache(String fileUrl) {
+		return thumbnailCache.get(fileUrl) != null;
 	}
 
 	private CachedBitmap getBitmapFromThumbnailCache(String key) {
@@ -180,8 +200,8 @@ public class FeedImageLoader {
 		thumbnailCache.put(key, bitmap);
 	}
 
-	public boolean isInCoverCache(FeedImage image) {
-		return coverCache.get(image.getFile_url()) != null;
+	public boolean isInCoverCache(String fileUrl) {
+		return coverCache.get(fileUrl) != null;
 	}
 
 	private CachedBitmap getBitmapFromCoverCache(String key) {
@@ -191,43 +211,13 @@ public class FeedImageLoader {
 	public void addBitmapToCoverCache(String key, CachedBitmap bitmap) {
 		coverCache.put(key, bitmap);
 	}
-	
+
 	private int getDefaultCoverResource(Context context) {
-		TypedArray res = context.obtainStyledAttributes(new int[] {R.attr.default_cover});
+		TypedArray res = context
+				.obtainStyledAttributes(new int[] { R.attr.default_cover });
 		final int defaultCoverResource = res.getResourceId(0, 0);
 		res.recycle();
 		return defaultCoverResource;
-	}
-
-	class FeedImageDecodeWorkerTask extends BitmapDecodeWorkerTask {
-
-		private static final String TAG = "FeedImageDecodeWorkerTask";
-
-		protected FeedImage image;
-
-		public FeedImageDecodeWorkerTask(Handler handler, ImageView target,
-				FeedImage image, int length, int imageType) {
-			super(handler, target, image.getFile_url(), length, imageType);
-			this.image = image;
-		}
-
-		@Override
-		protected boolean tagsMatching(ImageView target) {
-			return target.getTag() == null || target.getTag() == image;
-		}
-
-		@Override
-		protected void onInvalidFileUrl() {
-			super.onInvalidFileUrl();
-			if (image.getFile_url() != null
-					&& !DownloadRequester.getInstance()
-							.isDownloadingFile(image)) {
-				FeedManager.getInstance().notifyInvalidImageFile(
-						PodcastApp.getInstance(), image);
-			}
-
-		}
-
 	}
 
 }

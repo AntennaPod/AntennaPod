@@ -5,7 +5,7 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -50,7 +50,7 @@ public class PodcastApp extends Application implements
 	public void onLowMemory() {
 		super.onLowMemory();
 		Log.w(TAG, "Received onLowOnMemory warning. Cleaning image cache...");
-		FeedImageLoader.getInstance().wipeImageCache();
+		ImageLoader.getInstance().wipeImageCache();
 	}
 
 	/**

@@ -11,7 +11,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -24,14 +24,14 @@ public class FeedlistAdapter extends BaseAdapter {
 	private FeedManager manager = FeedManager.getInstance();
 
 	private int selectedItemIndex;
-	private FeedImageLoader imageLoader;
+	private ImageLoader imageLoader;
 	public static final int SELECTION_NONE = -1;
 
 	public FeedlistAdapter(Context context) {
 		super();
 		this.context = context;
 		selectedItemIndex = SELECTION_NONE;
-		imageLoader = FeedImageLoader.getInstance();
+		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
@@ -109,7 +109,8 @@ public class FeedlistAdapter extends BaseAdapter {
 		}
 
 		holder.image.setTag(feed.getImage());
-
+		final String imageUrl = (feed.getImage() != null) ? 
+				feed.getImage().getFile_url() : null;
 		imageLoader.loadThumbnailBitmap(
 				feed.getImage(),
 				holder.image,

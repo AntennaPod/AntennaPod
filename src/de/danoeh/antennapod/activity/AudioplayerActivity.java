@@ -20,7 +20,7 @@ import com.actionbarsherlock.view.Window;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.SimpleChapter;
@@ -181,7 +181,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					@Override
 					public void run() {
-						FeedImageLoader.getInstance().loadThumbnailBitmap(
+						ImageLoader.getInstance().loadThumbnailBitmap(
 								media.getItem().getFeed().getImage(),
 								butNavLeft);
 					}
@@ -194,7 +194,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					@Override
 					public void run() {
-						FeedImageLoader.getInstance().loadThumbnailBitmap(
+						ImageLoader.getInstance().loadThumbnailBitmap(
 								media.getItem().getFeed().getImage(),
 								butNavLeft);
 					}

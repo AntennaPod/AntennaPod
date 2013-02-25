@@ -16,7 +16,7 @@ import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -146,7 +146,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			holder.feedTitle.setText(item.getFeed().getTitle());
 
 			holder.feedImage.setTag(item.getFeed().getImage());
-			FeedImageLoader.getInstance().loadThumbnailBitmap(
+			ImageLoader.getInstance().loadThumbnailBitmap(
 					item.getFeed().getImage(),
 					holder.feedImage,
 					(int) convertView.getResources().getDimension(

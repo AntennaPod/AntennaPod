@@ -11,7 +11,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -162,7 +162,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		}
 
 		holder.feedImage.setTag(item.getFeed().getImage());
-		FeedImageLoader.getInstance().loadThumbnailBitmap(
+		ImageLoader.getInstance().loadThumbnailBitmap(
 				item.getFeed().getImage(),
 				holder.feedImage,
 				(int) convertView.getResources().getDimension(

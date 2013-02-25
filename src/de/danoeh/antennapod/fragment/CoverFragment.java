@@ -12,7 +12,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -79,7 +79,7 @@ public class CoverFragment extends SherlockFragment implements
 
 				@Override
 				public void run() {
-					FeedImageLoader.getInstance().loadCoverBitmap(
+					ImageLoader.getInstance().loadCoverBitmap(
 							media.getItem().getFeed().getImage(), imgvCover);
 				}
 			});

@@ -14,7 +14,7 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
@@ -196,7 +196,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 			FeedMedia media = controller.getMedia();
 			if (media != null) {
 				txtvTitle.setText(media.getItem().getTitle());
-				FeedImageLoader.getInstance().loadThumbnailBitmap(
+				ImageLoader.getInstance().loadThumbnailBitmap(
 						media.getItem().getFeed().getImage(),
 						imgvCover,
 						(int) getActivity().getResources().getDimension(
