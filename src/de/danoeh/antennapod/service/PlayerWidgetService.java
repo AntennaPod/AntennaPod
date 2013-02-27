@@ -83,7 +83,7 @@ public class PlayerWidgetService extends Service {
 				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
-		if (playbackService != null) {
+		if (playbackService != null && playbackService.getMedia() != null) {
 			Playable media = playbackService.getMedia();
 			PlayerStatus status = playbackService.getStatus();
 

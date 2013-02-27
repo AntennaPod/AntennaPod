@@ -185,8 +185,7 @@ public class PlaybackService extends Service {
 	 * Same as getPlayerActivityIntent(context), but here the type of activity
 	 * depends on the FeedMedia that is provided as an argument.
 	 */
-	public static Intent getPlayerActivityIntent(Context context,
-			Playable media) {
+	public static Intent getPlayerActivityIntent(Context context, Playable media) {
 		MediaType mt = media.getMediaType();
 		if (mt == MediaType.VIDEO) {
 			return new Intent(context, VideoplayerActivity.class);
@@ -539,17 +538,23 @@ public class PlaybackService extends Service {
 								} else if (media.localFileAvailable()) {
 									player.setDataSource(media.getFileUrl());
 								}
+
+								if (prepareImmediately) {
+									setStatus(PlayerStatus.PREPARING);
+									player.prepareAsync();
+								} else {
+									setStatus(PlayerStatus.INITIALIZED);
+								}
 							} catch (IOException e) {
 								e.printStackTrace();
-							}
-							if (prepareImmediately) {
-								setStatus(PlayerStatus.PREPARING);
-								player.prepareAsync();
-							} else {
-								setStatus(PlayerStatus.INITIALIZED);
+								media = null;
+								setStatus(PlayerStatus.ERROR);
+								sendBroadcast(new Intent(
+										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 							}
 						} else {
 							Log.e(TAG, "InitTask could not load metadata");
+							media = null;
 							setStatus(PlayerStatus.ERROR);
 							sendBroadcast(new Intent(
 									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
@@ -801,7 +806,11 @@ public class PlaybackService extends Service {
 	public void stop() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Stopping playback");
-		player.stop();
+		if (status == PlayerStatus.PREPARED || status == PlayerStatus.PAUSED
+				|| status == PlayerStatus.STOPPED
+				|| status == PlayerStatus.PLAYING) {
+			player.stop();
+		}
 		setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
 		stopSelf();
 	}
@@ -1346,7 +1355,7 @@ public class PlaybackService extends Service {
 				throw new IllegalArgumentException("Playable must not be null");
 			}
 			playable = params[0];
-			
+
 			try {
 				playable.loadMetadata();
 			} catch (PlayableException e) {

@@ -242,7 +242,7 @@ public class ChapterUtils {
 		}
 	}
 
-	public static void loadChapters(Playable media) {
+	public static void loadChaptersFromStreamUrl(Playable media) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Starting chapterLoader thread");
 		ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media);
@@ -252,5 +252,16 @@ public class ChapterUtils {
 
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "ChapterLoaderThread has finished");
+	}
+	
+	public static void loadChaptersFromFileUrl(Playable media) {
+		if (media.localFileAvailable()) {
+			ChapterUtils.readID3ChaptersFromPlayableFileUrl(media);
+			if (media.getChapters() == null) {
+				ChapterUtils.readOggChaptersFromPlayableFileUrl(media);
+			}
+		} else {
+			Log.e(TAG, "Could not load chapters from file url: local file not available");
+		}
 	}
 }

@@ -238,78 +238,79 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		Playable media = controller.getMedia();
-		if (media == null) {
-			return false;
-		}
-		
-		switch (item.getItemId()) {
-		case android.R.id.home:
+		if (item.getItemId() == android.R.id.home) {
 			Intent intent = new Intent(MediaplayerActivity.this,
 					MainActivity.class);
 			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
 					| Intent.FLAG_ACTIVITY_NEW_TASK);
 			startActivity(intent);
-			break;
-		case R.id.disable_sleeptimer_item:
-			if (controller.serviceAvailable()) {
-				AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
-				stDialog.setTitle(R.string.sleep_timer_label);
-				stDialog.setMessage(getString(R.string.time_left_label)
-						+ Converter.getDurationStringLong((int) controller
-								.getSleepTimerTimeLeft()));
-				stDialog.setPositiveButton(R.string.disable_sleeptimer_label,
-						new DialogInterface.OnClickListener() {
+			return true;
+		} else if (media != null) {
+			switch (item.getItemId()) {
+			case R.id.disable_sleeptimer_item:
+				if (controller.serviceAvailable()) {
+					AlertDialog.Builder stDialog = new AlertDialog.Builder(this);
+					stDialog.setTitle(R.string.sleep_timer_label);
+					stDialog.setMessage(getString(R.string.time_left_label)
+							+ Converter.getDurationStringLong((int) controller
+									.getSleepTimerTimeLeft()));
+					stDialog.setPositiveButton(
+							R.string.disable_sleeptimer_label,
+							new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-								controller.disableSleepTimer();
-							}
-						});
-				stDialog.setNegativeButton(R.string.cancel_label,
-						new DialogInterface.OnClickListener() {
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+									controller.disableSleepTimer();
+								}
+							});
+					stDialog.setNegativeButton(R.string.cancel_label,
+							new DialogInterface.OnClickListener() {
 
-							@Override
-							public void onClick(DialogInterface dialog,
-									int which) {
-								dialog.dismiss();
-							}
-						});
-				stDialog.create().show();
-			}
-			break;
-		case R.id.set_sleeptimer_item:
-			if (controller.serviceAvailable()) {
-				TimeDialog td = new TimeDialog(this,
-						R.string.set_sleeptimer_label,
-						R.string.set_sleeptimer_label) {
-
-					@Override
-					public void onTimeEntered(long millis) {
-						controller.setSleepTimer(millis);
-					}
-				};
-				td.show();
+								@Override
+								public void onClick(DialogInterface dialog,
+										int which) {
+									dialog.dismiss();
+								}
+							});
+					stDialog.create().show();
+				}
 				break;
+			case R.id.set_sleeptimer_item:
+				if (controller.serviceAvailable()) {
+					TimeDialog td = new TimeDialog(this,
+							R.string.set_sleeptimer_label,
+							R.string.set_sleeptimer_label) {
 
-			}
-		case R.id.visit_website_item:
-			Uri uri = Uri.parse(media.getWebsiteLink());
-			startActivity(new Intent(Intent.ACTION_VIEW, uri));
-			break;
-		case R.id.support_item:
-			new FlattrClickWorker(this, media.getPaymentLink())
-					.executeAsync();
-			break;
-		case R.id.share_link_item:
-			ShareUtils.shareLink(this, media.getWebsiteLink());
-			break;
+						@Override
+						public void onTimeEntered(long millis) {
+							controller.setSleepTimer(millis);
+						}
+					};
+					td.show();
+					break;
+
+				}
+			case R.id.visit_website_item:
+				Uri uri = Uri.parse(media.getWebsiteLink());
+				startActivity(new Intent(Intent.ACTION_VIEW, uri));
+				break;
+			case R.id.support_item:
+				new FlattrClickWorker(this, media.getPaymentLink())
+						.executeAsync();
+				break;
+			case R.id.share_link_item:
+				ShareUtils.shareLink(this, media.getWebsiteLink());
+				break;
 			default:
 				return false;
-			
+
+			}
+			return true;
+		} else {
+			return false;
 		}
-		return true;
 	}
 
 	@Override

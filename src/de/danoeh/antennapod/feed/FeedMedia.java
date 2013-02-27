@@ -187,7 +187,7 @@ public class FeedMedia extends FeedFile implements Playable {
 	@Override
 	public void loadMetadata() throws PlayableException {
 		if (getChapters() == null) {
-			ChapterUtils.loadChapters(this);
+			ChapterUtils.loadChaptersFromStreamUrl(this);
 		}
 	}
 

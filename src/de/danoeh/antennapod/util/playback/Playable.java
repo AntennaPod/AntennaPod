@@ -150,6 +150,14 @@ public interface Playable extends Parcelable {
 					}
 				}
 				break;
+			case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
+				String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
+				String mediaType = pref.getString(ExternalMedia.PREF_MEDIA_TYPE, null);
+				if (source != null && mediaType != null) {
+					int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
+					return new ExternalMedia(source,MediaType.valueOf(mediaType), position);
+				}
+				break;
 			}
 			Log.e(TAG, "Could not restore Playable object from preferences");
 			return null;

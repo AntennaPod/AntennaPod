@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import java.io.File;
+
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -22,10 +24,12 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
 
 /** Activity for playing audio files. */
@@ -71,7 +75,29 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		super.onCreate(savedInstanceState);
+		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
+	}
+
+	@Override
+	protected void onResume() {
+		super.onResume();
+		if (getIntent().getAction() != null
+				&& getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+			Intent intent = getIntent();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received VIEW intent: "
+						+ intent.getData().getPath());
+			ExternalMedia media = new ExternalMedia(intent.getData().getPath(), MediaType.AUDIO);
+			Intent launchIntent = new Intent(this, PlaybackService.class);
+			launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+			launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+					true);
+			launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
+			launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
+					true);
+			startService(launchIntent);
+		}
 	}
 
 	@Override
@@ -193,8 +219,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					@Override
 					public void run() {
 						ImageLoader.getInstance().loadThumbnailBitmap(
-								media.getImageFileUrl(),
-								butNavLeft);
+								media.getImageFileUrl(), butNavLeft);
 					}
 				});
 				butNavRight.setImageDrawable(drawables.getDrawable(0));

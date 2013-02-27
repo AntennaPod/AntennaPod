@@ -74,7 +74,17 @@
             android:name=".activity.AudioplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:launchMode="singleTask"
-            android:screenOrientation="portrait" android:label=" "/>
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+
+                <data android:scheme="file" />
+                <data android:mimeType="audio/*" />
+            </intent-filter>
+        </activity>
 
         <service
             android:name=".service.download.DownloadService"
@@ -323,7 +333,11 @@
         <activity
             android:name=".activity.DirectoryChooserActivity"
             android:label="@string/choose_data_directory" />
-        <activity android:label="@string/organize_queue_label" android:name=".activity.OrganizeQueueActivity" android:configChanges="orientation"></activity>
+        <activity
+            android:name=".activity.OrganizeQueueActivity"
+            android:configChanges="orientation"
+            android:label="@string/organize_queue_label" >
+        </activity>
     </application>
 
 </manifest>
