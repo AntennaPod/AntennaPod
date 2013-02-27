@@ -92,27 +92,6 @@ public class FeedItem extends FeedComponent {
 		contentEncoded = null;
 	}
 
-	/** Get the chapter that fits the position. */
-	public Chapter getCurrentChapter(int position) {
-		Chapter current = null;
-		if (chapters != null) {
-			current = chapters.get(0);
-			for (Chapter sc : chapters) {
-				if (sc.getStart() > position) {
-					break;
-				} else {
-					current = sc;
-				}
-			}
-		}
-		return current;
-	}
-
-	/** Calls getCurrentChapter with current position. */
-	public Chapter getCurrentChapter() {
-		return getCurrentChapter(media.getPosition());
-	}
-
 	/**
 	 * Returns the value that uniquely identifies this FeedItem. If the
 	 * itemIdentifier attribute is not null, it will be returned. Else it will

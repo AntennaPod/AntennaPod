@@ -28,6 +28,7 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
+import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -41,6 +42,7 @@ import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedComponent;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -50,17 +52,17 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.BitmapDecoder;
-import de.danoeh.antennapod.util.ChapterUtils;
+import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.Playable.PlayableException;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
 	/** Logging tag */
 	private static final String TAG = "PlaybackService";
 
-	/** Contains the id of the FeedMedia object. */
-	public static final String EXTRA_MEDIA_ID = "extra.de.danoeh.antennapod.service.mediaId";
-	/** Contains the id of the Feed object of the FeedMedia. */
-	public static final String EXTRA_FEED_ID = "extra.de.danoeh.antennapod.service.feedId";
+	/** Parcelable of type Playable. */
+	public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
 	/** True if media should be streamed. */
 	public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.service.shouldStream";
 	/**
@@ -113,8 +115,8 @@ public class PlaybackService extends Service {
 	private MediaPlayer player;
 	private RemoteControlClient remoteControlClient;
 
-	private FeedMedia media;
-	private Feed feed;
+	private Playable media;
+
 	/** True if media should be streamed (Extracted from Intent Extra) . */
 	private boolean shouldStream;
 
@@ -132,8 +134,6 @@ public class PlaybackService extends Service {
 
 	private SleepTimer sleepTimer;
 	private Future sleepTimerFuture;
-
-	private Thread chapterLoader;
 
 	private static final int SCHED_EX_POOL_SIZE = 3;
 	private ScheduledThreadPoolExecutor schedExecutor;
@@ -186,7 +186,7 @@ public class PlaybackService extends Service {
 	 * depends on the FeedMedia that is provided as an argument.
 	 */
 	public static Intent getPlayerActivityIntent(Context context,
-			FeedMedia media) {
+			Playable media) {
 		MediaType mt = media.getMediaType();
 		if (mt == MediaType.VIDEO) {
 			return new Intent(context, VideoplayerActivity.class);
@@ -221,7 +221,6 @@ public class PlaybackService extends Service {
 					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
 					false);
 		}
-		editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, mediaId);
 		editor.commit();
 	}
 
@@ -366,26 +365,24 @@ public class PlaybackService extends Service {
 			handleKeycode(keycode);
 		} else {
 
-			long mediaId = intent.getLongExtra(EXTRA_MEDIA_ID, -1);
-			long feedId = intent.getLongExtra(EXTRA_FEED_ID, -1);
+			Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
 			boolean playbackType = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
 					true);
-			if (mediaId == -1 || feedId == -1) {
-				Log.e(TAG,
-						"Media ID or Feed ID wasn't provided to the Service.");
-				if (media == null || feed == null) {
+			if (playable == null) {
+				Log.e(TAG, "Playable extra wasn't sent to the service");
+				if (media == null) {
 					stopSelf();
 				}
 				// Intent values appear to be valid
 				// check if already playing and playbackType is the same
-			} else if (media == null || mediaId != media.getId()
+			} else if (media == null || playable != media
 					|| playbackType != shouldStream) {
 				pause(true, false);
 				player.reset();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-				if (media == null || mediaId != media.getId()) {
-					feed = manager.getFeed(feedId);
-					media = manager.getFeedMedia(mediaId, feed);
+				if (media == null
+						|| playable.getIdentifier() != media.getIdentifier()) {
+					media = playable;
 				}
 
 				if (media != null) {
@@ -460,22 +457,43 @@ public class PlaybackService extends Service {
 		if (status == PlayerStatus.STOPPED
 				|| status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
 			try {
-				if (shouldStream) {
-					player.setDataSource(media.getDownload_url());
-					setStatus(PlayerStatus.PREPARING);
-					player.prepareAsync();
-				} else {
-					player.setDataSource(media.getFile_url());
-					setStatus(PlayerStatus.PREPARING);
-					player.prepare();
-				}
+				InitTask initTask = new InitTask() {
+
+					@Override
+					protected void onPostExecute(Playable result) {
+						if (result != null) {
+							try {
+								if (shouldStream) {
+									player.setDataSource(media.getStreamUrl());
+									setStatus(PlayerStatus.PREPARING);
+									player.prepareAsync();
+								} else {
+									player.setDataSource(media.getFileUrl());
+									setStatus(PlayerStatus.PREPARING);
+									player.prepareAsync();
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+						} else {
+							setStatus(PlayerStatus.ERROR);
+							sendBroadcast(new Intent(
+									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+						}
+					}
+
+					@Override
+					protected void onPreExecute() {
+						setStatus(PlayerStatus.INITIALIZING);
+					}
+
+				};
+				initTask.executeAsync(media);
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
 			} catch (SecurityException e) {
 				e.printStackTrace();
 			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			} catch (IOException e) {
 				e.printStackTrace();
 			}
 		}
@@ -508,18 +526,43 @@ public class PlaybackService extends Service {
 			if (mediaType == MediaType.AUDIO) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Mime type is audio");
-				playingVideo = false;
-				if (shouldStream) {
-					player.setDataSource(media.getDownload_url());
-				} else if (media.getFile_url() != null) {
-					player.setDataSource(media.getFile_url());
-				}
-				if (prepareImmediately) {
-					setStatus(PlayerStatus.PREPARING);
-					player.prepareAsync();
-				} else {
-					setStatus(PlayerStatus.INITIALIZED);
-				}
+
+				InitTask initTask = new InitTask() {
+
+					@Override
+					protected void onPostExecute(Playable result) {
+						if (result != null) {
+							playingVideo = false;
+							try {
+								if (shouldStream) {
+									player.setDataSource(media.getStreamUrl());
+								} else if (media.localFileAvailable()) {
+									player.setDataSource(media.getFileUrl());
+								}
+							} catch (IOException e) {
+								e.printStackTrace();
+							}
+							if (prepareImmediately) {
+								setStatus(PlayerStatus.PREPARING);
+								player.prepareAsync();
+							} else {
+								setStatus(PlayerStatus.INITIALIZED);
+							}
+						} else {
+							Log.e(TAG, "InitTask could not load metadata");
+							setStatus(PlayerStatus.ERROR);
+							sendBroadcast(new Intent(
+									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+						}
+					}
+
+					@Override
+					protected void onPreExecute() {
+						setStatus(PlayerStatus.INITIALIZING);
+					}
+
+				};
+				initTask.executeAsync(media);
 			} else if (mediaType == MediaType.VIDEO) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Mime type is video");
@@ -533,8 +576,6 @@ public class PlaybackService extends Service {
 		} catch (SecurityException e) {
 			e.printStackTrace();
 		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
@@ -573,39 +614,6 @@ public class PlaybackService extends Service {
 			setStatus(PlayerStatus.PREPARED);
 			if (startWhenPrepared) {
 				play();
-			}
-			if (shouldStream && media.getItem().getChapters() == null) {
-				// load chapters if available
-				if (chapterLoader != null) {
-					chapterLoader.interrupt();
-				}
-				chapterLoader = new Thread() {
-
-					@Override
-					public void run() {
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "Starting chapterLoader thread");
-						ChapterUtils
-								.readID3ChaptersFromFeedMediaDownloadUrl(media
-										.getItem());
-						if (media.getItem().getChapters() == null) {
-							ChapterUtils
-									.readOggChaptersFromMediaDownloadUrl(media
-											.getItem());
-						}
-						if (media.getItem().getChapters() != null
-								&& !interrupted()) {
-							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-									0);
-							manager.setFeedItem(PlaybackService.this,
-									media.getItem());
-						}
-						if (AppConfig.DEBUG)
-							Log.d(TAG, "ChapterLoaderThread has finished");
-					}
-
-				};
-				chapterLoader.start();
 			}
 		}
 	};
@@ -663,31 +671,35 @@ public class PlaybackService extends Service {
 			audioManager.abandonAudioFocus(audioFocusChangeListener);
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(getApplicationContext());
+			SharedPreferences.Editor editor = prefs.edit();
+
 			// Save state
 			cancelPositionSaver();
-			media.setPlaybackCompletionDate(new Date());
-			manager.markItemRead(PlaybackService.this, media.getItem(), true,
-					true);
-			FeedItem nextItem = manager
-					.getQueueSuccessorOfItem(media.getItem());
-			boolean isInQueue = manager.isInQueue(media.getItem());
-			if (isInQueue) {
-				manager.removeQueueItem(PlaybackService.this, media.getItem());
-			}
-			manager.addItemToPlaybackHistory(PlaybackService.this,
-					media.getItem());
-			manager.setFeedMedia(PlaybackService.this, media);
 
-			long autoDeleteMediaId = media.getId();
+			boolean isInQueue = false;
+			FeedItem nextItem = null;
 
-			if (shouldStream) {
-				autoDeleteMediaId = -1;
+			if (media instanceof FeedMedia) {
+				FeedItem item = ((FeedMedia) media).getItem();
+				((FeedMedia) media).setPlaybackCompletionDate(new Date());
+				manager.markItemRead(PlaybackService.this, item, true, true);
+				nextItem = manager.getQueueSuccessorOfItem(item);
+				isInQueue = media instanceof FeedMedia
+						&& manager.isInQueue(((FeedMedia) media).getItem());
+				if (isInQueue) {
+					manager.removeQueueItem(PlaybackService.this, item);
+				}
+				manager.addItemToPlaybackHistory(PlaybackService.this, item);
+				manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
+				long autoDeleteMediaId = ((FeedComponent) media).getId();
+				if (shouldStream) {
+					autoDeleteMediaId = -1;
+				}
+				editor.putLong(PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID,
+						autoDeleteMediaId);
 			}
-			SharedPreferences.Editor editor = prefs.edit();
 			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
 					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.putLong(PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID,
-					autoDeleteMediaId);
 			editor.putBoolean(
 					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
 					true);
@@ -700,8 +712,7 @@ public class PlaybackService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading next item in queue");
 				media = nextItem.getMedia();
-				feed = nextItem.getFeed();
-				shouldStream = !media.isDownloaded();
+				shouldStream = !media.localFileAvailable();
 				prepareImmediately = startWhenPrepared = true;
 			} else {
 				if (AppConfig.DEBUG)
@@ -832,12 +843,21 @@ public class PlaybackService extends Service {
 				SharedPreferences.Editor editor = PreferenceManager
 						.getDefaultSharedPreferences(getApplicationContext())
 						.edit();
-				editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA, media.getId());
-				editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_FEED_ID, feed.getId());
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM, shouldStream);
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_VIDEO, playingVideo);
+				editor.putLong(
+						PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+						media.getPlayableType());
+				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM,
+						shouldStream);
+				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_VIDEO,
+						playingVideo);
+				editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID,
+						media.getPlayableType());
+				media.writeToPreferences(editor);
+
 				editor.commit();
-				setLastPlayedMediaId(media.getId());
+				if (media instanceof FeedMedia) {
+					setLastPlayedMediaId(((FeedMedia) media).getId());
+				}
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo((int) media.getPosition());
@@ -853,9 +873,7 @@ public class PlaybackService extends Service {
 				}
 				audioManager
 						.registerMediaButtonEventReceiver(mediaButtonReceiver);
-				if (media.getItem().isRead() == false) {
-					manager.markItemRead(this, media.getItem(), true, false);
-				}
+				media.onPlaybackStart();
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Failed to request Audiofocus");
@@ -893,12 +911,11 @@ public class PlaybackService extends Service {
 
 		Bitmap icon = null;
 		if (android.os.Build.VERSION.SDK_INT >= 11) {
-			if (media != null && media.getImage() != null
-					&& media.getImage().getFile_url() != null) {
+			if (media != null && media.getImageFileUrl() != null) {
 				int iconSize = getResources().getDimensionPixelSize(
 						android.R.dimen.notification_large_icon_width);
-				icon = BitmapDecoder.decodeBitmap(iconSize, media.getImage()
-						.getFile_url());
+				icon = BitmapDecoder.decodeBitmap(iconSize,
+						media.getImageFileUrl());
 			}
 		}
 		if (icon == null) {
@@ -906,8 +923,8 @@ public class PlaybackService extends Service {
 					R.drawable.ic_stat_antenna);
 		}
 
-		String contentText = media.getItem().getFeed().getTitle();
-		String contentTitle = media.getItem().getTitle();
+		String contentText = media.getFeedTitle();
+		String contentTitle = media.getEpisodeTitle();
 		Notification notification = null;
 		if (android.os.Build.VERSION.SDK_INT >= 16) {
 			Intent pauseButtonIntent = new Intent(this, PlaybackService.class);
@@ -983,8 +1000,9 @@ public class PlaybackService extends Service {
 		if (position != INVALID_TIME) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Saving current position to " + position);
-			media.setPosition(position);
-			manager.setFeedMedia(this, media);
+			media.saveCurrentPosition(PreferenceManager
+					.getDefaultSharedPreferences(getApplicationContext()),
+					position);
 		}
 	}
 
@@ -1078,10 +1096,10 @@ public class PlaybackService extends Service {
 					MetadataEditor editor = remoteControlClient
 							.editMetadata(false);
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
-							media.getItem().getTitle());
+							media.getEpisodeTitle());
 
 					editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
-							media.getItem().getFeed().getTitle());
+							media.getFeedTitle());
 
 					editor.apply();
 				}
@@ -1144,12 +1162,8 @@ public class PlaybackService extends Service {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction().equals(ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
 				schedExecutor.shutdownNow();
-				if (chapterLoader != null) {
-					chapterLoader.interrupt();
-				}
 				stop();
 				media = null;
-				feed = null;
 			}
 		}
 
@@ -1251,7 +1265,7 @@ public class PlaybackService extends Service {
 		return status;
 	}
 
-	public FeedMedia getMedia() {
+	public Playable getMedia() {
 		return media;
 	}
 
@@ -1320,5 +1334,38 @@ public class PlaybackService extends Service {
 				.getDefaultSharedPreferences(getApplicationContext()).edit();
 		editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA, id);
 		editor.commit();
+	}
+
+	private static class InitTask extends AsyncTask<Playable, Void, Playable> {
+		private Playable playable;
+		public PlayableException exception;
+
+		@Override
+		protected Playable doInBackground(Playable... params) {
+			if (params[0] == null) {
+				throw new IllegalArgumentException("Playable must not be null");
+			}
+			playable = params[0];
+			
+			try {
+				playable.loadMetadata();
+			} catch (PlayableException e) {
+				e.printStackTrace();
+				exception = e;
+				return null;
+			}
+			return playable;
+		}
+
+		@SuppressLint("NewApi")
+		public void executeAsync(Playable playable) {
+			FlattrUtils.hasToken();
+			if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+				executeOnExecutor(THREAD_POOL_EXECUTOR, playable);
+			} else {
+				execute(playable);
+			}
+		}
+
 	}
 }

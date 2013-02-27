@@ -136,10 +136,7 @@ public class FeedManager {
 			}
 			// Start playback Service
 			Intent launchIntent = new Intent(context, PlaybackService.class);
-			launchIntent
-					.putExtra(PlaybackService.EXTRA_MEDIA_ID, media.getId());
-			launchIntent.putExtra(PlaybackService.EXTRA_FEED_ID, media
-					.getItem().getFeed().getId());
+			launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
 			launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
 					startWhenPrepared);
 			launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,

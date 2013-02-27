@@ -833,11 +833,9 @@ public class DownloadService extends Service {
 			}
 
 			if (media.getItem().getChapters() == null) {
-				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media
-						.getItem());
+				ChapterUtils.readID3ChaptersFromPlayableFileUrl(media);
 				if (media.getItem().getChapters() == null) {
-					ChapterUtils.readOggChaptersFromMediaFileUrl(media
-							.getItem());
+					ChapterUtils.readOggChaptersFromPlayableFileUrl(media);
 				}
 				if (media.getItem().getChapters() != null) {
 					chaptersRead = true;

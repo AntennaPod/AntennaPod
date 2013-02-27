@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.graphics.PixelFormat;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.ImageButton;
@@ -19,18 +20,17 @@ import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.MediaPlayerError;
+import de.danoeh.antennapod.util.Playable;
 import de.danoeh.antennapod.util.PlaybackController;
+import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -91,7 +91,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 			@Override
 			public void onSleepTimerUpdate() {
-				invalidateOptionsMenu();
+				supportInvalidateOptionsMenu();
 			}
 
 			@Override
@@ -133,7 +133,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	}
 
 	protected void onServiceQueried() {
-		invalidateOptionsMenu();
+		supportInvalidateOptionsMenu();
 	}
 
 	@Override
@@ -219,14 +219,14 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
-		FeedMedia media = controller.getMedia();
+		Playable media = controller.getMedia();
 
 		menu.findItem(R.id.support_item).setVisible(
-				media != null && media.getItem().getPaymentLink() != null);
+				media != null && media.getPaymentLink() != null);
 		menu.findItem(R.id.share_link_item).setVisible(
-				media != null && media.getItem().getLink() != null);
+				media != null && media.getWebsiteLink() != null);
 		menu.findItem(R.id.visit_website_item).setVisible(
-				media != null && media.getItem().getLink() != null);
+				media != null && media.getWebsiteLink() != null);
 
 		boolean sleepTimerSet = controller.sleepTimerActive();
 		boolean sleepTimerNotSet = controller.sleepTimerNotActive();
@@ -237,6 +237,11 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
+		Playable media = controller.getMedia();
+		if (media == null) {
+			return false;
+		}
+		
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			Intent intent = new Intent(MediaplayerActivity.this,
@@ -289,15 +294,20 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				break;
 
 			}
-		default:
-			try {
-				return FeedItemMenuHandler.onMenuItemClicked(this, item.getItemId(),
-						controller.getMedia().getItem());
-			} catch (DownloadRequestException e) {
-				e.printStackTrace();
-				DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
-						e.getMessage());
-			}
+		case R.id.visit_website_item:
+			Uri uri = Uri.parse(media.getWebsiteLink());
+			startActivity(new Intent(Intent.ACTION_VIEW, uri));
+			break;
+		case R.id.support_item:
+			new FlattrClickWorker(this, media.getPaymentLink())
+					.executeAsync();
+			break;
+		case R.id.share_link_item:
+			ShareUtils.shareLink(this, media.getWebsiteLink());
+			break;
+			default:
+				return false;
+			
 		}
 		return true;
 	}
@@ -363,7 +373,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	protected void loadMediaInfo() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
-		FeedMedia media = controller.getMedia();
+		Playable media = controller.getMedia();
 		if (media != null) {
 			txtvPosition.setText(Converter.getDurationStringLong((media
 					.getPosition())));

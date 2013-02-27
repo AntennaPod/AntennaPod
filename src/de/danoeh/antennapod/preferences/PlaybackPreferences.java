@@ -17,14 +17,14 @@ public class PlaybackPreferences implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String TAG = "PlaybackPreferences";
 
-	/** Contains the id of the media that was played last. */
+	/** Contains the type of the media that was played last. */
 	public static final String PREF_LAST_PLAYED_ID = "de.danoeh.antennapod.preferences.lastPlayedId";
 
 	/** Contains the feed id of the last played item. */
 	public static final String PREF_LAST_PLAYED_FEED_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedId";
 
 	/**
-	 * ID of the media object that is currently being played. This preference is
+	 * Type of the media object that is currently being played. This preference is
 	 * set to NO_MEDIA_PLAYING after playback has been completed and is set as
 	 * soon as the 'play' button is pressed.
 	 */
