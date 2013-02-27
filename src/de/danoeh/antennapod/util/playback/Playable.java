@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.util;
+package de.danoeh.antennapod.util.playback;
 
 import java.util.List;
 

@@ -9,7 +9,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.util.ChapterUtils;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
 

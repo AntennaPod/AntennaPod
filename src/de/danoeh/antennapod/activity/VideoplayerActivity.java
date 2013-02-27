@@ -22,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Activity for playing audio files. */
 public class VideoplayerActivity extends MediaplayerActivity implements

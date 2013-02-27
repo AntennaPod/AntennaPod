@@ -22,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 

@@ -13,7 +13,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.asynctask.ImageLoader;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Displays the cover and the title of a FeedItem. */
 public class CoverFragment extends SherlockFragment implements

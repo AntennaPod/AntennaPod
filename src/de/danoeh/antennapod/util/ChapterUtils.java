@@ -19,6 +19,7 @@ import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.util.id3reader.ChapterReader;
 import de.danoeh.antennapod.util.id3reader.ID3ReaderException;
+import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentChapterReader;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentReaderException;
 

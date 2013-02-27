@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.util;
+package de.danoeh.antennapod.util.playback;
 
 import java.util.concurrent.RejectedExecutionHandler;
 import java.util.concurrent.ScheduledFuture;
@@ -33,7 +33,8 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
-import de.danoeh.antennapod.util.Playable.PlayableUtils;
+import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to

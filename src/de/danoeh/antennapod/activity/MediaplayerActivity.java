@@ -26,11 +26,11 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.MediaPlayerError;
-import de.danoeh.antennapod.util.Playable;
-import de.danoeh.antennapod.util.PlaybackController;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.playback.MediaPlayerError;
+import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
  * Provides general features which are both needed for playing audio and video

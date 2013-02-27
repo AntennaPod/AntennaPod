@@ -52,9 +52,9 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.BitmapDecoder;
-import de.danoeh.antennapod.util.Playable;
-import de.danoeh.antennapod.util.Playable.PlayableException;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.Playable.PlayableException;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {

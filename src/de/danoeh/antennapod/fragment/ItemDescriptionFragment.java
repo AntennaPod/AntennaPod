@@ -33,8 +33,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.Playable;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Displays the description of a Playable object in a Webview. */
 public class ItemDescriptionFragment extends SherlockFragment {

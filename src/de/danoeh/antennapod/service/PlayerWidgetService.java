@@ -16,7 +16,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Updates the state of the player widget */
 public class PlayerWidgetService extends Service {

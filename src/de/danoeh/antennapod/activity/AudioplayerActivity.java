@@ -26,7 +26,7 @@ import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.util.Playable;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Activity for playing audio files. */
 public class AudioplayerActivity extends MediaplayerActivity {

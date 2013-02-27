@@ -17,8 +17,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.Playable;
-import de.danoeh.antennapod.util.PlaybackController;
+import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
