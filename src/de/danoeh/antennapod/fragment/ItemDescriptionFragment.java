@@ -186,6 +186,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 						});
 			} else {
 				shownotes = item.getContentEncoded();
+				startLoader();
 			}
 		} else {
 			Log.e(TAG, "Error in onViewCreated: Item and media were null");

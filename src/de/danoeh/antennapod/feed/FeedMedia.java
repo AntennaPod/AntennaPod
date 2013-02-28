@@ -285,7 +285,8 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	@Override
 	public void loadShownotes(final ShownoteLoaderCallback callback) {
-		if (item.getDescription() == null || item.getContentEncoded() == null) {
+		String contentEncoded = item.getContentEncoded();
+		if (item.getDescription() == null || contentEncoded == null) {
 			FeedManager.getInstance().loadExtraInformationOfItem(
 					PodcastApp.getInstance(), item,
 					new FeedManager.TaskCallback<String[]>() {
@@ -301,7 +302,7 @@ public class FeedMedia extends FeedFile implements Playable {
 						}
 					});
 		} else {
-			callback.onShownotesLoaded(item.getContentEncoded());
+			callback.onShownotesLoaded(contentEncoded);
 		}
 	}
 
