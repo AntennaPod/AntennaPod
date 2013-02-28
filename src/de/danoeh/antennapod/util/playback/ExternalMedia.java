@@ -161,7 +161,7 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public String getFileUrl() {
+	public String getLocalMediaUrl() {
 		return source;
 	}
 

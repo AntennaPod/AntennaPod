@@ -467,7 +467,7 @@ public class PlaybackService extends Service {
 									setStatus(PlayerStatus.PREPARING);
 									player.prepareAsync();
 								} else {
-									player.setDataSource(media.getFileUrl());
+									player.setDataSource(media.getLocalMediaUrl());
 									setStatus(PlayerStatus.PREPARING);
 									player.prepareAsync();
 								}
@@ -536,7 +536,7 @@ public class PlaybackService extends Service {
 								if (shouldStream) {
 									player.setDataSource(media.getStreamUrl());
 								} else if (media.localFileAvailable()) {
-									player.setDataSource(media.getFileUrl());
+									player.setDataSource(media.getLocalMediaUrl());
 								}
 
 								if (prepareImmediately) {

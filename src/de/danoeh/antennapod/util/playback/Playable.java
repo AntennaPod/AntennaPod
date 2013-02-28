@@ -77,7 +77,7 @@ public interface Playable extends Parcelable {
 	 * Returns an url to a local file that can be played or null if this file
 	 * does not exist.
 	 */
-	public String getFileUrl();
+	public String getLocalMediaUrl();
 
 	/**
 	 * Returns an url to a file that can be streamed by the player or null if

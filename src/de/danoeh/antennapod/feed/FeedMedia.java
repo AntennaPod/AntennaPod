@@ -230,7 +230,7 @@ public class FeedMedia extends FeedFile implements Playable {
 	}
 
 	@Override
-	public String getFileUrl() {
+	public String getLocalMediaUrl() {
 		return file_url;
 	}
 

@@ -88,8 +88,8 @@ public class ChapterUtils {
 	public static void readID3ChaptersFromPlayableFileUrl(Playable p) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
-		if (p != null && p.localFileAvailable() && p.getFileUrl() != null) {
-			File source = new File(p.getFileUrl());
+		if (p != null && p.localFileAvailable() && p.getLocalMediaUrl() != null) {
+			File source = new File(p.getLocalMediaUrl());
 			if (source.exists()) {
 				ChapterReader reader = new ChapterReader();
 				InputStream in = null;
@@ -152,8 +152,8 @@ public class ChapterUtils {
 	}
 
 	public static void readOggChaptersFromPlayableFileUrl(Playable media) {
-		if (media != null && media.getFileUrl() != null) {
-			File source = new File(media.getFileUrl());
+		if (media != null && media.getLocalMediaUrl() != null) {
+			File source = new File(media.getLocalMediaUrl());
 			if (source.exists()) {
 				InputStream input = null;
 				try {
