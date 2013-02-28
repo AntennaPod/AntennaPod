@@ -67,7 +67,10 @@ public interface Playable extends Parcelable {
 	/** Return position of object or 0 if position is unknown. */
 	public int getPosition();
 
-	/** Returns the type of media. */
+	/**
+	 * Returns the type of media. This method should return the correct value
+	 * BEFORE loadMetadata() is called.
+	 */
 	public MediaType getMediaType();
 
 	/**
@@ -151,11 +154,14 @@ public interface Playable extends Parcelable {
 				}
 				break;
 			case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:
-				String source = pref.getString(ExternalMedia.PREF_SOURCE_URL, null);
-				String mediaType = pref.getString(ExternalMedia.PREF_MEDIA_TYPE, null);
+				String source = pref.getString(ExternalMedia.PREF_SOURCE_URL,
+						null);
+				String mediaType = pref.getString(
+						ExternalMedia.PREF_MEDIA_TYPE, null);
 				if (source != null && mediaType != null) {
 					int position = pref.getInt(ExternalMedia.PREF_POSITION, 0);
-					return new ExternalMedia(source,MediaType.valueOf(mediaType), position);
+					return new ExternalMedia(source,
+							MediaType.valueOf(mediaType), position);
 				}
 				break;
 			}
