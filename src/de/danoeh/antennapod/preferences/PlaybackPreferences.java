@@ -20,13 +20,22 @@ public class PlaybackPreferences implements
 	/** Contains the type of the media that was played last. */
 	public static final String PREF_LAST_PLAYED_ID = "de.danoeh.antennapod.preferences.lastPlayedId";
 
-	/** Contains the feed id of the last played item. */
-	public static final String PREF_LAST_PLAYED_FEED_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedId";
+	/**
+	 * Contains the feed id of the currently playing item if it is a FeedMedia
+	 * object.
+	 */
+	public static final String PREF_CURRENTLY_PLAYING_FEED_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedId";
 
 	/**
-	 * Type of the media object that is currently being played. This preference is
-	 * set to NO_MEDIA_PLAYING after playback has been completed and is set as
-	 * soon as the 'play' button is pressed.
+	 * Contains the id of the currently playing FeedMedia object or
+	 * NO_MEDIA_PLAYING if the currently playing media is no FeedMedia object.
+	 */
+	public static final String PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID = "de.danoeh.antennapod.preferences.lastPlayedFeedMediaId";
+
+	/**
+	 * Type of the media object that is currently being played. This preference
+	 * is set to NO_MEDIA_PLAYING after playback has been completed and is set
+	 * as soon as the 'play' button is pressed.
 	 */
 	public static final String PREF_CURRENTLY_PLAYING_MEDIA = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
 
@@ -49,7 +58,8 @@ public class PlaybackPreferences implements
 	public static final long NO_MEDIA_PLAYING = -1;
 
 	private long lastPlayedId;
-	private long lastPlayedFeedId;
+	private long currentlyPlayingFeedId;
+	private long currentlyPlayingFeedMediaId;
 	private long currentlyPlayingMedia;
 	private boolean lastIsStream;
 	private boolean lastIsVideo;
@@ -85,7 +95,9 @@ public class PlaybackPreferences implements
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(context);
 		lastPlayedId = sp.getLong(PREF_LAST_PLAYED_ID, -1);
-		lastPlayedFeedId = sp.getLong(PREF_LAST_PLAYED_FEED_ID, -1);
+		currentlyPlayingFeedId = sp.getLong(PREF_CURRENTLY_PLAYING_FEED_ID, -1);
+		currentlyPlayingFeedMediaId = sp.getLong(
+				PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
 		currentlyPlayingMedia = sp.getLong(PREF_CURRENTLY_PLAYING_MEDIA,
 				NO_MEDIA_PLAYING);
 		lastIsStream = sp.getBoolean(PREF_LAST_IS_STREAM, true);
@@ -108,8 +120,9 @@ public class PlaybackPreferences implements
 					manager.autoDeleteIfPossible(context, media);
 				}
 			}
-		} else if (key.equals(PREF_LAST_PLAYED_FEED_ID)) {
-			lastPlayedFeedId = sp.getLong(PREF_LAST_PLAYED_FEED_ID, -1);
+		} else if (key.equals(PREF_CURRENTLY_PLAYING_FEED_ID)) {
+			currentlyPlayingFeedId = sp.getLong(PREF_CURRENTLY_PLAYING_FEED_ID,
+					-1);
 
 		} else if (key.equals(PREF_CURRENTLY_PLAYING_MEDIA)) {
 			currentlyPlayingMedia = sp
@@ -126,6 +139,9 @@ public class PlaybackPreferences implements
 					PREF_AUTODELETE_MEDIA_ID, false);
 		} else if (key.equals(PREF_AUTODELETE_MEDIA_ID)) {
 			autoDeleteMediaId = sp.getLong(PREF_AUTODELETE_MEDIA_ID, -1);
+		} else if (key.equals(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID)) {
+			currentlyPlayingFeedMediaId = sp.getLong(
+					PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
 		}
 	}
 
@@ -147,12 +163,16 @@ public class PlaybackPreferences implements
 
 	public static long getLastPlayedFeedId() {
 		instanceAvailable();
-		return instance.lastPlayedFeedId;
+		return instance.currentlyPlayingFeedId;
 	}
 
 	public static long getCurrentlyPlayingMedia() {
 		instanceAvailable();
 		return instance.currentlyPlayingMedia;
+	}
+
+	public static long getCurrentlyPlayingFeedMediaId() {
+		return instance.currentlyPlayingFeedMediaId;
 	}
 
 	public static boolean isLastIsStream() {

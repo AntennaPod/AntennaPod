@@ -197,7 +197,7 @@ public class FeedManager {
 					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, -1);
-			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_FEED_ID, -1);
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID, -1);
 			editor.commit();
 		}
 

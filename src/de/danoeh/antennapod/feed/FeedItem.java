@@ -213,7 +213,7 @@ public class FeedItem extends FeedComponent {
 
 	private boolean isPlaying() {
 		if (media != null) {
-			if (PlaybackPreferences.getCurrentlyPlayingMedia() == media.getId()) {
+			if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
 				return true;
 			}
 		}

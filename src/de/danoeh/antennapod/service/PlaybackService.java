@@ -321,7 +321,7 @@ public class PlaybackService extends Service {
 			case AudioManager.AUDIOFOCUS_LOSS:
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Lost audio focus");
-				pause(true, true);
+				pause(true, false);
 				stopSelf();
 				break;
 			case AudioManager.AUDIOFOCUS_GAIN:
@@ -467,7 +467,8 @@ public class PlaybackService extends Service {
 									setStatus(PlayerStatus.PREPARING);
 									player.prepareAsync();
 								} else {
-									player.setDataSource(media.getLocalMediaUrl());
+									player.setDataSource(media
+											.getLocalMediaUrl());
 									setStatus(PlayerStatus.PREPARING);
 									player.prepareAsync();
 								}
@@ -536,7 +537,8 @@ public class PlaybackService extends Service {
 								if (shouldStream) {
 									player.setDataSource(media.getStreamUrl());
 								} else if (media.localFileAvailable()) {
-									player.setDataSource(media.getLocalMediaUrl());
+									player.setDataSource(media
+											.getLocalMediaUrl());
 								}
 
 								if (prepareImmediately) {
@@ -708,6 +710,11 @@ public class PlaybackService extends Service {
 			editor.putBoolean(
 					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
 					true);
+			editor.putLong(
+					PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+					PlaybackPreferences.NO_MEDIA_PLAYING);
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+					PlaybackPreferences.NO_MEDIA_PLAYING);
 			editor.commit();
 
 			// Prepare for playing next item
@@ -861,6 +868,22 @@ public class PlaybackService extends Service {
 						playingVideo);
 				editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID,
 						media.getPlayableType());
+				if (media instanceof FeedMedia) {
+					FeedMedia fMedia = (FeedMedia) media;
+					editor.putLong(
+							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+							fMedia.getItem().getFeed().getId());
+					editor.putLong(
+							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+							fMedia.getId());
+				} else {
+					editor.putLong(
+							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+							PlaybackPreferences.NO_MEDIA_PLAYING);
+					editor.putLong(
+							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+							PlaybackPreferences.NO_MEDIA_PLAYING);
+				}
 				media.writeToPreferences(editor);
 
 				editor.commit();
