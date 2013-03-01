@@ -3,6 +3,8 @@
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
+  <string name="podcasts_label">PODCASTS</string>
+  <string name="episodes_label">EPISODEN</string>
   <string name="new_label">Neu</string>
   <string name="settings_label">Einstellungen</string>
   <string name="add_new_feed_label">Feed hinzufügen</string>
@@ -10,6 +12,11 @@
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="download_log_label">Download Log</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Im Browser öffnen</string>
+  <string name="copy_url_label">URL kopieren</string>
+  <string name="share_url_label">URL teilen</string>
+  <string name="copied_url_msg">URL wurde in die Zwischenablage kopiert.</string>
   <!--Playback history-->
   <string name="clear_history_label">Chronik löschen</string>
   <!--Other-->
@@ -45,6 +52,7 @@
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
+  <string name="pause_label">Pausieren</string>
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="mark_read_label">Als gelesen markieren</string>
@@ -100,9 +108,8 @@
   <string name="show_download_log">Zeige Log</string>
   <string name="show_player_label">Zeige Player</string>
   <!--Queue operations-->
-  <string name="move_up_label">Nach oben bewegen</string>
-  <string name="move_down_label">Nach unten bewegen</string>
   <string name="clear_queue_label">Abspielliste leeren</string>
+  <string name="organize_queue_label">Abspielliste organisieren</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>

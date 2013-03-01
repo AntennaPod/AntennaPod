@@ -3,6 +3,8 @@
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Каналы</string>
+  <string name="podcasts_label">ПОДКАСТЫ</string>
+  <string name="episodes_label">ВЫПУСКИ</string>
   <string name="new_label">Новые</string>
   <string name="settings_label">Настройки</string>
   <string name="add_new_feed_label">Добавить канал</string>
@@ -10,6 +12,11 @@
   <string name="cancel_download_label">Отменить закачку</string>
   <string name="download_log_label">Журнал закачек</string>
   <string name="playback_history_label">История воспроизведения</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Открыть в браузере</string>
+  <string name="copy_url_label">Скопировать ссылку</string>
+  <string name="share_url_label">Поделиться ссылкой</string>
+  <string name="copied_url_msg">Ссылка скопирована в буфер</string>
   <!--Playback history-->
   <string name="clear_history_label">Очистить историю</string>
   <!--Other-->
@@ -45,6 +52,7 @@
   <!--actions on feeditems-->
   <string name="download_label">Закачать</string>
   <string name="play_label">Слушать</string>
+  <string name="pause_label">Пауза</string>
   <string name="stream_label">Воспроизвести из сети</string>
   <string name="remove_label">Удалить</string>
   <string name="mark_read_label">Отметить как прочитанное</string>
@@ -100,9 +108,8 @@
   <string name="show_download_log">Показать журнал</string>
   <string name="show_player_label">Показать проигрыватель</string>
   <!--Queue operations-->
-  <string name="move_up_label">Поднять</string>
-  <string name="move_down_label">Опустить</string>
   <string name="clear_queue_label">Очистить очередь</string>
+  <string name="organize_queue_label">Упорядочить очередь</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Авторизоваться в Flattr</string>
   <string name="flattr_auth_explanation">Нажмите кнопку чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr где вам нужно будет подключить AntennaPod к вашему аккаунту. После этого вы автоматически будете перенаправлены обратно.</string>

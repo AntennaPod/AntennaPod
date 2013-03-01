@@ -1,0 +1,220 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Канали</string>
+  <string name="podcasts_label">Подкасти</string>
+  <string name="episodes_label">Епізоди</string>
+  <string name="new_label">Нові</string>
+  <string name="settings_label">Налаштування</string>
+  <string name="add_new_feed_label">Додати канал</string>
+  <string name="downloads_label">Завантаження</string>
+  <string name="cancel_download_label">Скасувати завантаження</string>
+  <string name="download_log_label">Завантаження</string>
+  <string name="playback_history_label">Що грало</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Відкрити в браузері</string>
+  <string name="copy_url_label">Копія URL</string>
+  <string name="share_url_label">Поділитися URL</string>
+  <string name="copied_url_msg">Копіювати URL в clipboard</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Забути</string>
+  <!--Other-->
+  <string name="confirm_label"> Підтвердити</string>
+  <string name="cancel_label">Скасувати</string>
+  <string name="author_label">Автор</string>
+  <string name="language_label">Мова</string>
+  <string name="cover_label">Обкладинка</string>
+  <string name="error_label">Помилка</string>
+  <string name="error_msg_prefix">Трапилась помілка:</string>
+  <string name="refresh_label">Оновити</string>
+  <string name="external_storage_error_msg">Немає доступної флешки. Зовнішній носій потрібен для коректної роботи додатку</string>
+  <string name="chapters_label">Глави</string>
+  <string name="shownotes_label">Нотатки до епізода</string>
+  <string name="last_update_prefix">Останнє оновлення:\u0020</string>
+  <string name="episodes_suffix">\u0020епізодів</string>
+  <string name="published_prefix">Опубліковано:\u0020</string>
+  <string name="length_prefix">Довжина:\u0020</string>
+  <string name="size_prefix">Розмір:\u0020</string>
+  <string name="processing_label">Обробка</string>
+  <string name="loading_label">Завантаження категорій ...</string>
+  <string name="image_of_prefix">Зображення:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Посилання на канал</string>
+  <string name="txtvfeedurl_label">Введіть адресу URL каналу тут:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Все прочитано</string>
+  <string name="show_info_label">Інформація</string>
+  <string name="remove_feed_label">Видалити канал</string>
+  <string name="share_link_label">Поділитися URL сайту</string>
+  <string name="share_source_label">Поділитися URL каналу</string>
+  <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Завантажити</string>
+  <string name="play_label">Грати</string>
+  <string name="pause_label">Пауза</string>
+  <string name="stream_label">Поток</string>
+  <string name="remove_label">Видалити</string>
+  <string name="mark_read_label">Прочитано</string>
+  <string name="mark_unread_label">Непрочитано</string>
+  <string name="add_to_queue_label">Додати канал</string>
+  <string name="remove_from_queue_label">Видалити з черги</string>
+  <string name="visit_website_label">Відкрити сайт</string>
+  <string name="support_label">Підтримати за допомогою Flattr</string>
+  <string name="enqueue_all_new">Додати до черги</string>
+  <string name="download_all">Завантажити все</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Успішне завантаження</string>
+  <string name="download_failed">Помилка завантаження</string>
+  <string name="download_pending">Потрібно завантажити</string>
+  <string name="download_running">Завантаження</string>
+  <string name="download_error_device_not_found">Немає куди зберігати</string>
+  <string name="download_error_insufficient_space">Мало місця</string>
+  <string name="download_error_file_error">Помилка файлу</string>
+  <string name="download_error_http_data_error">Помилка HTTP</string>
+  <string name="download_error_error_unknown">Щось трапилось</string>
+  <string name="download_error_parser_exception">Помилка парсера</string>
+  <string name="download_error_unsupported_type">Непідтримую такий канал</string>
+  <string name="download_error_connection_error">Помилка з\'єднання</string>
+  <string name="download_error_unknown_host">Невідомий host</string>
+  <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
+  <string name="download_cancelled_msg">Відмінено завантаження</string>
+  <string name="download_report_title">Завантажили</string>
+  <string name="download_error_malformed_url">Невірний URL</string>
+  <string name="download_error_io_error">Помилка IO</string>
+  <string name="download_error_request_error">Помилка запиту</string>
+  <string name="downloads_left">\0020 залишилось завантажити</string>
+  <string name="download_notification_title">Завантаження даних подкасту</string>
+  <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
+  <string name="download_log_title_unknown">Невідома назва</string>
+  <string name="download_type_feed">Канал</string>
+  <string name="download_type_media">Файл з медіа</string>
+  <string name="download_type_image">Зображення</string>
+  <string name="download_request_error_dialog_message_prefix">Помилка при завантажені файлу:\u0020</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Помилка!</string>
+  <string name="player_stopped_msg"> Нічого грати</string>
+  <string name="player_preparing_msg">Підготовка</string>
+  <string name="player_ready_msg">Готов</string>
+  <string name="player_seeking_msg">Шукаю</string>
+  <string name="playback_error_server_died">Сервер помер</string>
+  <string name="playback_error_unknown">Невідома помилка</string>
+  <string name="no_media_playing_label">Німає що грати</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Буферізую</string>
+  <string name="playbackservice_notification_title">Грає подкаст</string>
+  <string name="playbackservice_notification_content">Додаткова інформація</string>
+  <!--Navigation-->
+  <string name="show_download_log">Що було</string>
+  <string name="show_player_label">До керування</string>
+  <!--Queue operations-->
+  <string name="clear_queue_label">Очистити чергу</string>
+  <string name="organize_queue_label">Впорядкувати чергу</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Увійти дл Flattr</string>
+  <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
+  <string name="authenticate_label">Ввісти ім\'я та пароль</string>
+  <string name="return_home_label">Повернення до початку</string>
+  <string name="flattr_auth_success">Вийшло авторізуватись. Тепер ви можете flattr things за допомогою додатку</string>
+  <string name="no_flattr_token_title">Не має flattr token</string>
+  <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не підєднано до AntennaPod. Ви можете або підєднати її або відкривати web сторінку в браузері</string>
+  <string name="authenticate_now_label">Пароль та логін</string>
+  <string name="action_forbidden_title">Заборонено</string>
+  <string name="action_forbidden_msg">AntennaPod не маэ дозвілу це зробити. Можливо відкликаний доступ до AntennaPod. Або ввідіть логін пароль в налаштуваннях або зробить це на сайті</string>
+  <string name="access_revoked_title">Доступ відкликано</string>
+  <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
+  <string name="flattr_click_success">Успішно flattr це</string>
+  <string name="flattring_label">Йде flattr</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Нічного в цьому списку</string>
+  <string name="no_feeds_label">Немає підписаних каналів </string>
+  <!--Preferences-->
+  <string name="other_pref">Інше</string>
+  <string name="about_pref">О</string>
+  <string name="queue_label">Черга</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Зупинятись коли навушники витягнуті</string>
+  <string name="pref_followQueue_sum">До наступної черги коли дограє до кінця</string>
+  <string name="playback_pref">Грає</string>
+  <string name="network_pref">Мережа</string>
+  <string name="pref_autoUpdateIntervall_title">Коли оновлювати</string>
+  <string name="pref_autoUpdateIntervall_sum">Визначати як час для автооновлювання або відключити автооновлення</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
+  <string name="pref_followQueue_title">Грати безперервно</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Навушники витягнуті</string>
+  <string name="pref_mobileUpdate_title">Мобільне оновлення</string>
+  <string name="pref_mobileUpdate_sum">Дозволити оновлення через оператора зв\'язку</string>
+  <string name="refreshing_label">Оновлення</string>
+  <string name="flattr_settings_label">Налаштування Flattr</string>
+  <string name="pref_flattr_auth_title">Увійти до Flattr</string>
+  <string name="pref_flattr_auth_sum">Увійти в облікову flattr в flattr things напряму з додатку</string>
+  <string name="pref_flattr_this_app_title">Flattr цій додаток</string>
+  <string name="pref_flattr_this_app_sum">Підтримайте розробку AntennaPod за допомогою flattr. Дякую!</string>
+  <string name="pref_revokeAccess_title">Відкликати доступ</string>
+  <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
+  <string name="pref_autoQueue_title">Автододавати до черги</string>
+  <string name="pref_autoQueue_sum">Додати епізод до черги коли починається завантаження.</string>
+  <string name="pref_display_only_episodes_title">Показувати тільки епізоди</string>
+  <string name="pref_display_only_episodes_sum">Відображати тільки канали з наявними епізодами</string>
+  <string name="user_interface_label">Зовнішній вид</string>
+  <string name="pref_auto_delete_title">Автовидалення</string>
+  <string name="pref_auto_delete_sum">Видаляти після повного прослуховування або видалення з черги</string>
+  <string name="pref_set_theme_title">Обрати тему</string>
+  <string name="pref_set_theme_sum">Змінти появу AntennaPod</string>
+  <!--Search-->
+  <string name="search_hint">Пошук каналів та епізодів</string>
+  <string name="found_in_shownotes_label">Знайдено у примітках</string>
+  <string name="found_in_chapters_label">Знайдено в главах</string>
+  <string name="search_status_searching">Пошук ...</string>
+  <string name="search_status_no_results">Жодних результатів немає</string>
+  <string name="search_results_label">Результати пошуку</string>
+  <string name="search_term_label">Ви шукали:\u0020</string>
+  <string name="search_label">Пошук</string>
+  <string name="found_in_title_label">Знайдено у назві</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Ви можете імпортувати OPML файл. Такі файли дозволяют переходити з однієї програми до іншої:</string>
+  <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
+  <string name="start_import_label">Почати імпорт</string>
+  <string name="opml_import_label">OPML імпорт</string>
+  <string name="opml_directory_error">Помилка!</string>
+  <string name="reading_opml_label">Читаємо OPML файл</string>
+  <string name="opml_reader_error">Трапилась помілка коли читали OPML документ:</string>
+  <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
+  <string name="select_all_label">Обрати все</string>
+  <string name="deselect_all_label">Убрати виділення</string>
+  <string name="choose_file_to_import_label">Обрати файл для імпорту</string>
+  <string name="opml_export_label">OPML экспорт</string>
+  <string name="exporting_label">Експорт ...</string>
+  <string name="export_error_label">Помилка експорту</string>
+  <string name="opml_export_success_title">OPML експорт успішний</string>
+  <string name="opml_export_success_sum">OPML файл записаний в:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Таймер сну</string>
+  <string name="disable_sleeptimer_label">Вимкнути засинання</string>
+  <string name="enter_time_here_label">Встановити час</string>
+  <string name="sleep_timer_label">Таймер сну</string>
+  <string name="time_left_label">Залишилось:\u0020</string>
+  <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Завантаження категорій ...</string>
+  <string name="browse_miroguide_label">Перегляд Miro Guide</string>
+  <string name="txtv_browse_miroguide_label">Або проглянути Miro Guide</string>
+  <string name="miro_guide_label">Miro Guide</string>
+  <string name="miro_search_hint">Пошук Mirog Guide</string>
+  <string name="popular_label">Популярні</string>
+  <string name="best_rating_label">Кращі</string>
+  <string name="add_feed_label">Додати канал</string>
+  <string name="miro_feed_added">Канал додано</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Обрати папку:</string>
+  <string name="create_folder_label">Нова папка</string>
+  <string name="choose_data_directory">Обрати папку</string>
+  <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
+  <string name="create_folder_success">Створена нова папка</string>
+  <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
+  <string name="create_folder_error_already_exists">Папка вже є</string>
+  <string name="create_folder_error">Не можу создати папку</string>
+  <string name="folder_not_empty_dialog_title">В папці щось є</string>
+  <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
+  <string name="set_to_default_folder">Обрати папку по замовчанню</string>
+</resources>

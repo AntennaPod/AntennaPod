@@ -3,6 +3,8 @@
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
+  <string name="podcasts_label">PODCASTS</string>
+  <string name="episodes_label">EPISODIOS</string>
   <string name="new_label">Nuevos</string>
   <string name="settings_label">Ajustes</string>
   <string name="add_new_feed_label">Añadir un canal</string>
@@ -10,6 +12,11 @@
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="download_log_label">Registro de descargas</string>
   <string name="playback_history_label">Historial de reproducción</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Abrir en el navegador</string>
+  <string name="copy_url_label">Copiar URL</string>
+  <string name="share_url_label">Compartir URL</string>
+  <string name="copied_url_msg">URL copiada al portapapeles.</string>
   <!--Playback history-->
   <string name="clear_history_label">Limpiar el historial</string>
   <!--Other-->
@@ -25,7 +32,7 @@
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas del programa</string>
   <string name="last_update_prefix">Última actualización:\u0020</string>
-  <string name="episodes_suffix">\u0020 episodios</string>
+  <string name="episodes_suffix">\u0020episodios</string>
   <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duración:\u0020</string>
   <string name="size_prefix">Tamaño:\u0020</string>
@@ -36,22 +43,23 @@
   <string name="feedurl_label">URL del canal</string>
   <string name="txtvfeedurl_label">Escriba aquí la URL del canal</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar como leído</string>
+  <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar canal</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_source_label">Compartir el enlace del canal</string>
-  <string name="feed_delete_confirmation_msg">Confirme que desea borrar este canal y TODOS los episodios descargados del mismo.</string>
+  <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
-  <string name="stream_label">Reproducir por streaming</string>
-  <string name="remove_label">Borrar</string>
+  <string name="pause_label">Pausar</string>
+  <string name="stream_label">Transmitir</string>
+  <string name="remove_label">Quitar</string>
   <string name="mark_read_label">Marcar como leído</string>
   <string name="mark_unread_label">Marcar como no leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
-  <string name="remove_from_queue_label">Eliminar de la cola</string>
-  <string name="visit_website_label">Visitar la página web</string>
+  <string name="remove_from_queue_label">Quitar de la cola</string>
+  <string name="visit_website_label">Visitar el sitio web</string>
   <string name="support_label">Añadir a Flattr</string>
   <string name="enqueue_all_new">Ponerlos todos en cola</string>
   <string name="download_all">Descargarlos todos</string>
@@ -65,18 +73,18 @@
   <string name="download_error_file_error">Error de archivo</string>
   <string name="download_error_http_data_error">Error de datos HTTP</string>
   <string name="download_error_error_unknown">Error desconocido</string>
-  <string name="download_error_parser_exception">Excepción de parser</string>
-  <string name="download_error_unsupported_type">Tipo de canal no soportado</string>
+  <string name="download_error_parser_exception">Excepción del analizador</string>
+  <string name="download_error_unsupported_type">Tipo de canal no admitido</string>
   <string name="download_error_connection_error">Error de conexión</string>
   <string name="download_error_unknown_host">Host desconocido</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
   <string name="download_cancelled_msg">Descarga cancelada</string>
   <string name="download_report_title">Descargas completadas</string>
   <string name="download_error_malformed_url">URL malformada</string>
-  <string name="download_error_io_error">Error IO</string>
+  <string name="download_error_io_error">Error de E/S</string>
   <string name="download_error_request_error">Error de petición</string>
-  <string name="downloads_left">Quedan \u0020 descargas</string>
-  <string name="download_notification_title">Bajando datos del podcast</string>
+  <string name="downloads_left">\u0020descargas restantes</string>
+  <string name="download_notification_title">Descargando datos del podcast</string>
   <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
   <string name="download_log_title_unknown">Título desconocido</string>
   <string name="download_type_feed">Canal</string>
@@ -89,7 +97,7 @@
   <string name="player_preparing_msg">Preparando</string>
   <string name="player_ready_msg">Listo</string>
   <string name="player_seeking_msg">Buscando</string>
-  <string name="playback_error_server_died">Pérdida de servidor</string>
+  <string name="playback_error_server_died">El servidor está inactivo</string>
   <string name="playback_error_unknown">Error desconocido</string>
   <string name="no_media_playing_label">No hay medios en reproducción</string>
   <string name="position_default_label">00:00:00</string>
@@ -100,9 +108,8 @@
   <string name="show_download_log">Mostrar el registro</string>
   <string name="show_player_label">Mostrar el reproductor</string>
   <!--Queue operations-->
-  <string name="move_up_label">Subir</string>
-  <string name="move_down_label">Bajar</string>
   <string name="clear_queue_label">Limpiar la cola</string>
+  <string name="organize_queue_label">Organizar cola</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Identificarse en Flattr</string>
   <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
@@ -131,7 +138,7 @@
   <string name="network_pref">Red</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo de actualización</string>
   <string name="pref_autoUpdateIntervall_sum">Especificar el intervalo en que se actualizarán automáticamente los canales, o desactivarlo</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Sólo descargar los contenidos por WiFi</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Solo descargar los contenidos por WiFi</string>
   <string name="pref_followQueue_title">Reproducción continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de los cascos</string>
@@ -143,14 +150,14 @@
   <string name="pref_flattr_auth_sum">Identifíquese en Flattr para valorar cosas directamente desde la aplicación</string>
   <string name="pref_flattr_this_app_title">Valorar esta aplicación en Flattr</string>
   <string name="pref_flattr_this_app_sum">Apoye el desarrollo de AntennaPod valorándola en Flattr. ¡Gracias!</string>
-  <string name="pref_revokeAccess_title">Rescindir el acceso</string>
+  <string name="pref_revokeAccess_title">Revocar el acceso</string>
   <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
   <string name="pref_autoQueue_title">Poner en cola automáticamente</string>
   <string name="pref_autoQueue_sum">Añadir un episodio a la cola al comenzar a descargarlo.</string>
-  <string name="pref_display_only_episodes_title">Mostrar sólo episodios</string>
-  <string name="pref_display_only_episodes_sum">Mostrar sólo elementos que contengan un episodio.</string>
+  <string name="pref_display_only_episodes_title">Mostrar solo episodios</string>
+  <string name="pref_display_only_episodes_sum">Mostrar solo elementos que contengan un episodio.</string>
   <string name="user_interface_label">Interfaz de usuario</string>
-  <string name="pref_auto_delete_title">Borrar automáticamente</string>
+  <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="pref_auto_delete_sum">Borrar un episodio al completar su reproducción o eliminarlo de la cola</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
   <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
@@ -187,7 +194,7 @@
   <string name="enter_time_here_label">Introducir hora</string>
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tiempo restante:\u0020</string>
-  <string name="time_dialog_invalid_input">Input inválido, el tiempo debe ser íntegro</string>
+  <string name="time_dialog_invalid_input">Entrada no válida, el tiempo debe ser un entero</string>
   <!--Miro Guide-->
   <string name="loading_categories_label">Cargando categorías...</string>
   <string name="browse_miroguide_label">Examinar la guía de Miro</string>
@@ -202,12 +209,12 @@
   <string name="selected_folder_label">Carpeta seleccionada</string>
   <string name="create_folder_label">Crear carpeta</string>
   <string name="choose_data_directory">Elegir carpeta de datos</string>
-  <string name="create_folder_msg">¿Crear carpeta con nombre \"%1$s\"?</string>
+  <string name="create_folder_msg">¿Crear carpeta con nombre «%1$s»?</string>
   <string name="create_folder_success">Carpeta creada</string>
   <string name="create_folder_error_no_write_access">No se puede escribir a esta carpeta</string>
   <string name="create_folder_error_already_exists">Ya existe la carpeta</string>
   <string name="create_folder_error">No se ha podido crear la carpeta</string>
   <string name="folder_not_empty_dialog_title">La carpeta no está vacía</string>
   <string name="folder_not_empty_dialog_msg">La carpeta elegida no está vacía. Las descargas y otros archivos se copiarán directamente en esta carpeta. ¿Continuar igualmente?</string>
-  <string name="set_to_default_folder">Elegir carpeta por defecto</string>
+  <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
 </resources>

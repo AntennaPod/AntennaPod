@@ -10,6 +10,7 @@
   <string name="cancel_download_label">Cancelar Download</string>
   <string name="download_log_label">Log de Downloads</string>
   <string name="playback_history_label">Histórico do playback</string>
+  <!--Webview actions-->
   <!--Playback history-->
   <string name="clear_history_label">Apagar histórico</string>
   <!--Other-->
@@ -100,8 +101,6 @@
   <string name="show_download_log">Mostrar Log</string>
   <string name="show_player_label">Mostrar player</string>
   <!--Queue operations-->
-  <string name="move_up_label">Mover para cima</string>
-  <string name="move_down_label">Mover para baixo</string>
   <string name="clear_queue_label">Limpar fila</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Logar no Flattr</string>

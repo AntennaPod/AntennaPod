@@ -3,13 +3,20 @@
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">订阅</string>
+  <string name="podcasts_label">播客</string>
+  <string name="episodes_label">曲目</string>
   <string name="new_label">最新</string>
   <string name="settings_label">设置</string>
-  <string name="add_new_feed_label">添加新的订阅</string>
+  <string name="add_new_feed_label">添加新订阅</string>
   <string name="downloads_label">下载</string>
   <string name="cancel_download_label">取消下载</string>
   <string name="download_log_label">下载日志</string>
   <string name="playback_history_label">播放历史</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">在浏览器打开</string>
+  <string name="copy_url_label">复制 URL</string>
+  <string name="share_url_label">分享 URL</string>
+  <string name="copied_url_msg">复制 URL 到剪贴板.</string>
   <!--Playback history-->
   <string name="clear_history_label">清空历史</string>
   <!--Other-->
@@ -39,12 +46,13 @@
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除订阅</string>
-  <string name="share_link_label">共享网站链接</string>
-  <string name="share_source_label">共享订阅链接</string>
+  <string name="share_link_label">分享网站链接</string>
+  <string name="share_source_label">分享订阅链接</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的插曲将一并删除. </string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
+  <string name="pause_label">暂停</string>
   <string name="stream_label">流</string>
   <string name="remove_label">删除</string>
   <string name="mark_read_label">标记已读</string>
@@ -93,16 +101,15 @@
   <string name="playback_error_unknown">未知错误</string>
   <string name="no_media_playing_label">没有可播放的媒体</string>
   <string name="position_default_label">00:00:00</string>
-  <string name="player_buffering_msg">缓冲</string>
+  <string name="player_buffering_msg">缓冲中</string>
   <string name="playbackservice_notification_title">播客播放中</string>
   <string name="playbackservice_notification_content">长按查看更多</string>
   <!--Navigation-->
   <string name="show_download_log">下载日志</string>
   <string name="show_player_label">播放器</string>
   <!--Queue operations-->
-  <string name="move_up_label">上移</string>
-  <string name="move_down_label">下移</string>
   <string name="clear_queue_label">清空队列</string>
+  <string name="organize_queue_label">组织队列</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 登录</string>
   <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
@@ -127,7 +134,7 @@
   <string name="queue_label">队列</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">当耳机是断开时暂停播放 </string>
   <string name="pref_followQueue_sum">播放完成跳转到队列下一项</string>
-  <string name="playback_pref">回放</string>
+  <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
   <string name="pref_autoUpdateIntervall_title">更新周期</string>
   <string name="pref_autoUpdateIntervall_sum">设置订阅自动刷新周期</string>
@@ -135,7 +142,7 @@
   <string name="pref_followQueue_title">连续播放</string>
   <string name="pref_downloadMediaOnWifiOnly_title">仅在 WIFI 情况下载</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳机断开</string>
-  <string name="pref_mobileUpdate_title">数据网络更新</string>
+  <string name="pref_mobileUpdate_title">数据网络时更新</string>
   <string name="pref_mobileUpdate_sum">允许移动数据网络情况下进行数据链接</string>
   <string name="refreshing_label">刷新中</string>
   <string name="flattr_settings_label">Flattr 设置</string>
@@ -147,9 +154,9 @@
   <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
   <string name="pref_autoQueue_title">自动添加到队列</string>
   <string name="pref_autoQueue_sum">当下载开始后添加本曲目到队列</string>
-  <string name="pref_display_only_episodes_title">只显示有插曲的</string>
+  <string name="pref_display_only_episodes_title">只显示有曲目的</string>
   <string name="pref_display_only_episodes_sum">只显示有曲目的项.</string>
-  <string name="user_interface_label">用户界面</string>
+  <string name="user_interface_label">界面</string>
   <string name="pref_auto_delete_title">自动删除</string>
   <string name="pref_auto_delete_sum">播放完成或者从队列中删除后删除本曲. </string>
   <string name="pref_set_theme_title">主题选择</string>
@@ -180,7 +187,7 @@
   <string name="exporting_label">导出中...</string>
   <string name="export_error_label">导出出错</string>
   <string name="opml_export_success_title">OPML 导出成功.</string>
-  <string name="opml_export_success_sum">.opml 文件被写入到:\u0020</string>
+  <string name="opml_export_success_sum">.opml 文件已保存到:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">设置休眠计时器</string>
   <string name="disable_sleeptimer_label">禁用休眠计时器</string>
