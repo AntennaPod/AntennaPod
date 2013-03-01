@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.9.7
+-------------
+* Improved user interface
+* OPML files can now be imported by selecting them in a file browser
+* The queue can now be organized via drag & drop
+* Added expandable notifications (only supported on Android 4.1 and above)
+* Added Danish, French, Romanian (Romania) and Ukrainian (Ukraine) translation (thanks to all translators!)
+* Several bugfixes and minor improvements
+
 Version 0.9.6.4
 ---------------
 * Added Chinese translation (Thanks tupunco!)
