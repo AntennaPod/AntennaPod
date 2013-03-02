@@ -30,6 +30,6 @@
         android:layout_height="match_parent"
         android:layout_gravity="center"
         android:gravity="center"
-        android:text="@string/no_feeds_label" />
+        android:text="@string/no_items_label" />
 
 </LinearLayout>
