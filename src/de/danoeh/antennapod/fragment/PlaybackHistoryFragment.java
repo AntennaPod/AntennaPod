@@ -3,7 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.DefaultFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -12,7 +13,7 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
 	private static final String TAG = "PlaybackHistoryFragment";
 
 	public PlaybackHistoryFragment() {
-		super(new AbstractFeedItemlistAdapter.ItemAccess() {
+		super(new DefaultFeedItemlistAdapter.ItemAccess() {
 
 			@Override
 			public FeedItem getItem(int position) {
@@ -40,7 +41,7 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
 	}
 
 	private EventDistributor.EventListener historyUpdate = new EventDistributor.EventListener() {
-		
+
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EventDistributor.PLAYBACK_HISTORY_UPDATE & arg) != 0) {
@@ -48,7 +49,7 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
 					Log.d(TAG, "Received content update");
 				fila.notifyDataSetChanged();
 			}
-			
+
 		}
 	};
 

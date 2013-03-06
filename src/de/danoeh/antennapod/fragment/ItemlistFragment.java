@@ -17,9 +17,9 @@ import com.actionbarsherlock.app.SherlockListFragment;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
-import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.DefaultFeedItemlistAdapter;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
-import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
@@ -42,11 +42,11 @@ public class ItemlistFragment extends SherlockListFragment {
 
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
-	protected AbstractFeedItemlistAdapter fila;
+	protected InternalFeedItemlistAdapter fila;
 	protected FeedManager manager = FeedManager.getInstance();
 	protected DownloadRequester requester = DownloadRequester.getInstance();
 
-	private AbstractFeedItemlistAdapter.ItemAccess itemAccess;
+	private DefaultFeedItemlistAdapter.ItemAccess itemAccess;
 
 	private Feed feed;
 
@@ -56,7 +56,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
-	public ItemlistFragment(AbstractFeedItemlistAdapter.ItemAccess itemAccess,
+	public ItemlistFragment(DefaultFeedItemlistAdapter.ItemAccess itemAccess,
 			boolean showFeedtitle) {
 		super();
 		this.itemAccess = itemAccess;
@@ -96,7 +96,7 @@ public class ItemlistFragment extends SherlockListFragment {
 			long feedId = getArguments().getLong(ARGUMENT_FEED_ID);
 			final Feed feed = FeedManager.getInstance().getFeed(feedId);
 			this.feed = feed;
-			itemAccess = new AbstractFeedItemlistAdapter.ItemAccess() {
+			itemAccess = new DefaultFeedItemlistAdapter.ItemAccess() {
 
 				@Override
 				public FeedItem getItem(int position) {
@@ -111,8 +111,8 @@ public class ItemlistFragment extends SherlockListFragment {
 		}
 	}
 
-	protected AbstractFeedItemlistAdapter createListAdapter() {
-		return new FeedItemlistAdapter(getActivity(), itemAccess,
+	protected InternalFeedItemlistAdapter createListAdapter() {
+		return new InternalFeedItemlistAdapter(getActivity(), itemAccess,
 				adapterCallback, showFeedtitle);
 	}
 
@@ -253,7 +253,7 @@ public class ItemlistFragment extends SherlockListFragment {
 		return handled;
 	}
 
-	public AbstractFeedItemlistAdapter getListAdapter() {
+	public InternalFeedItemlistAdapter getListAdapter() {
 		return fila;
 	}
 

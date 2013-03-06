@@ -21,21 +21,19 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
-public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
-	
-	private Context context;
-	
+/** List adapter for items of feeds that the user has already subscribed to. */
+public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
+
 	private ActionButtonCallback callback;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
 
 	public static final int SELECTION_NONE = -1;
 
-	public FeedItemlistAdapter(Context context,
-			AbstractFeedItemlistAdapter.ItemAccess itemAccess,
+	public InternalFeedItemlistAdapter(Context context,
+			DefaultFeedItemlistAdapter.ItemAccess itemAccess,
 			ActionButtonCallback callback, boolean showFeedtitle) {
-		super(itemAccess);
-		this.context = context;
+		super(context, itemAccess);
 		this.callback = callback;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
@@ -48,7 +46,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 
 		if (convertView == null) {
 			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) context
+			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.feeditemlist_item, null);
 			holder.title = (TextView) convertView
@@ -163,7 +161,7 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 					holder.downloading.setVisibility(View.GONE);
 				}
 
-				TypedArray typeDrawables = context.obtainStyledAttributes(
+				TypedArray typeDrawables = getContext().obtainStyledAttributes(
 						new int[] { R.attr.type_audio, R.attr.type_video });
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {
@@ -194,14 +192,10 @@ public class FeedItemlistAdapter extends AbstractFeedItemlistAdapter {
 
 	}
 
-	static class Holder {
-		TextView title;
+	static class Holder extends DefaultFeedItemlistAdapter.Holder {
 		TextView feedtitle;
-		TextView published;
-		TextView lenSize;
 		ImageView inPlaylist;
 		ImageView downloaded;
-		ImageView type;
 		ImageView downloading;
 		ImageButton butAction;
 		View statusUnread;
