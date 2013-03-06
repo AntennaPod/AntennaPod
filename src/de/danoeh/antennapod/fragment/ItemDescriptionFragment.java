@@ -23,8 +23,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -32,34 +30,46 @@ import com.actionbarsherlock.app.SherlockFragment;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.playback.Playable;
 
-/** Displays the description of a FeedItem in a Webview. */
+/** Displays the description of a Playable object in a Webview. */
 public class ItemDescriptionFragment extends SherlockFragment {
 
 	private static final String TAG = "ItemDescriptionFragment";
+	private static final String ARG_PLAYABLE = "arg.playable";
+
 	private static final String ARG_FEED_ID = "arg.feedId";
-	private static final String ARG_FEEDITEM_ID = "arg.feedItemId";
+	private static final String ARG_FEED_ITEM_ID = "arg.feeditemId";
 
 	private WebView webvDescription;
+	private Playable media;
+
 	private FeedItem item;
 
 	private AsyncTask<Void, Void, Void> webViewLoader;
 
-	private String descriptionRef;
-	private String contentEncodedRef;
+	private String shownotes;
 
 	/** URL that was selected via long-press. */
 	private String selectedURL;
+
+	public static ItemDescriptionFragment newInstance(Playable media) {
+		ItemDescriptionFragment f = new ItemDescriptionFragment();
+		Bundle args = new Bundle();
+		args.putParcelable(ARG_PLAYABLE, media);
+		f.setArguments(args);
+		return f;
+	}
 
 	public static ItemDescriptionFragment newInstance(FeedItem item) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
 		args.putLong(ARG_FEED_ID, item.getFeed().getId());
-		args.putLong(ARG_FEEDITEM_ID, item.getId());
+		args.putLong(ARG_FEED_ITEM_ID, item.getId());
 		f.setArguments(args);
 		return f;
 	}
@@ -72,12 +82,13 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
 
-		if (PodcastApp.getThemeResourceId() == R.style.Theme_AntennaPod_Dark) {
+		if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
 			if (Build.VERSION.SDK_INT >= 11
 					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
 				webvDescription.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
 			}
-			webvDescription.setBackgroundColor(getResources().getColor(R.color.black));
+			webvDescription.setBackgroundColor(getResources().getColor(
+					R.color.black));
 		}
 		webvDescription.getSettings().setUseWideViewPort(false);
 		webvDescription.getSettings().setLayoutAlgorithm(
@@ -126,50 +137,59 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating fragment");
-		FeedManager manager = FeedManager.getInstance();
 		Bundle args = getArguments();
-		long feedId = args.getLong(ARG_FEED_ID, -1);
-		long itemId = args.getLong(ARG_FEEDITEM_ID, -1);
-		if (feedId != -1 && itemId != -1) {
-			Feed feed = manager.getFeed(feedId);
-			item = manager.getFeedItem(itemId, feed);
-
-		} else {
-			Log.e(TAG, TAG + " was called with invalid arguments");
+		if (args.containsKey(ARG_PLAYABLE)) {
+			media = args.getParcelable(ARG_PLAYABLE);
+		} else if (args.containsKey(ARG_FEED_ID)
+				&& args.containsKey(ARG_FEED_ITEM_ID)) {
+			long feedId = args.getLong(ARG_FEED_ID);
+			long itemId = args.getLong(ARG_FEED_ITEM_ID);
+			FeedItem f = FeedManager.getInstance().getFeedItem(itemId, feedId);
+			if (f != null) {
+				item = f;
+			}
 		}
 	}
 
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		if (item != null) {
+		if (media != null) {
+			media.loadShownotes(new Playable.ShownoteLoaderCallback() {
+
+				@Override
+				public void onShownotesLoaded(String shownotes) {
+					ItemDescriptionFragment.this.shownotes = shownotes;
+					if (ItemDescriptionFragment.this.shownotes != null) {
+						startLoader();
+					}
+				}
+			});
+		} else if (item != null) {
 			if (item.getDescription() == null
 					|| item.getContentEncoded() == null) {
-				Log.i(TAG, "Loading data");
 				FeedManager.getInstance().loadExtraInformationOfItem(
-						getActivity(), item,
+						PodcastApp.getInstance(), item,
 						new FeedManager.TaskCallback<String[]>() {
 							@Override
 							public void onCompletion(String[] result) {
-								if (result == null || result.length != 2) {
-									Log.e(TAG, "No description found");
+								if (result[1] != null) {
+									shownotes = result[1];
 								} else {
-									descriptionRef = result[0];
-									contentEncodedRef = result[1];
+									shownotes = result[0];
+								}
+								if (shownotes != null) {
+									startLoader();
 								}
 
-								startLoader();
 							}
 						});
 			} else {
-				contentEncodedRef = item.getContentEncoded();
-				descriptionRef = item.getDescription();
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Using cached data");
+				shownotes = item.getContentEncoded();
 				startLoader();
 			}
 		} else {
-			Log.e(TAG, "Error in onViewCreated: Item was null");
+			Log.e(TAG, "Error in onViewCreated: Item and media were null");
 		}
 	}
 
@@ -197,8 +217,11 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	 * */
 	private String applyWebviewStyle(String textColor, String data) {
 		final String WEBVIEW_STYLE = "<html><head><style type=\"text/css\"> * { color: %s; font-family: Helvetica; line-height: 1.5em; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }</style></head><body>%s</body></html>";
-		final int pageMargin = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 8, getResources().getDisplayMetrics());
-		return String.format(WEBVIEW_STYLE, textColor, "100%", pageMargin, pageMargin, pageMargin, pageMargin, data);
+		final int pageMargin = (int) TypedValue.applyDimension(
+				TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
+						.getDisplayMetrics());
+		return String.format(WEBVIEW_STYLE, textColor, "100%", pageMargin,
+				pageMargin, pageMargin, pageMargin, data);
 	}
 
 	private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
@@ -247,7 +270,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 							.getSystemService(Context.CLIPBOARD_SERVICE);
 					cm.setText(selectedURL);
 				}
-				Toast t = Toast.makeText(getActivity(), R.string.copied_url_msg, Toast.LENGTH_SHORT);
+				Toast t = Toast.makeText(getActivity(),
+						R.string.copied_url_msg, Toast.LENGTH_SHORT);
 				t.show();
 				break;
 			default:
@@ -319,11 +343,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Loading Webview");
 				data = "";
-				if (contentEncodedRef == null && descriptionRef != null) {
-					data = descriptionRef;
-				} else {
-					data = StringEscapeUtils.unescapeHtml4(contentEncodedRef);
-				}
+				data = StringEscapeUtils.unescapeHtml4(shownotes);
 				Activity activity = getActivity();
 				if (activity != null) {
 					TypedArray res = getActivity()

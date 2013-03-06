@@ -18,11 +18,13 @@ import android.widget.VideoView;
 import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.PlayerStatus;
+import de.danoeh.antennapod.util.playback.ExternalMedia;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Activity for playing audio files. */
 public class VideoplayerActivity extends MediaplayerActivity implements
@@ -41,7 +43,7 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 
 		super.onCreate(savedInstanceState);
 	}
@@ -55,13 +57,34 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 	}
 
 	@Override
+	protected void onResume() {
+		super.onResume();
+		if (getIntent().getAction() != null
+				&& getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+			Intent intent = getIntent();
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received VIEW intent: "
+						+ intent.getData().getPath());
+			ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
+					MediaType.VIDEO);
+			Intent launchIntent = new Intent(this, PlaybackService.class);
+			launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+			launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
+					true);
+			launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM, false);
+			launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
+					true);
+			startService(launchIntent);
+		}
+	}
+
+	@Override
 	protected void loadMediaInfo() {
 		super.loadMediaInfo();
-		FeedMedia media = controller.getMedia();
+		Playable media = controller.getMedia();
 		if (media != null) {
-			getSupportActionBar().setSubtitle(media.getItem().getTitle());
-			getSupportActionBar()
-					.setTitle(media.getItem().getFeed().getTitle());
+			getSupportActionBar().setSubtitle(media.getEpisodeTitle());
+			getSupportActionBar().setTitle(media.getFeedTitle());
 		}
 	}
 

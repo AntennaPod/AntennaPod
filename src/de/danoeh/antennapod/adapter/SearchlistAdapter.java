@@ -10,7 +10,7 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedComponent;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -51,7 +51,7 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 			final Feed feed = (Feed) component;
 			holder.title.setText(feed.getTitle());
 			holder.subtitle.setVisibility(View.GONE);
-			FeedImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(),
+			ImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(),
 					holder.cover, (int) convertView.getResources().getDimension(R.dimen.thumbnail_length));
 		} else if (component.getClass() == FeedItem.class) {
 			final FeedItem item = (FeedItem) component;
@@ -61,7 +61,7 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 				holder.subtitle.setText(result.getSubtitle());
 			}
 
-			FeedImageLoader.getInstance().loadThumbnailBitmap(
+			ImageLoader.getInstance().loadThumbnailBitmap(
 					item.getFeed().getImage(),
 					holder.cover,
 					(int) convertView.getResources().getDimension(

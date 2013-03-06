@@ -1,49 +1,39 @@
 package de.danoeh.antennapod.adapter;
 
-import java.util.List;
-
-import android.content.Context;
-import android.widget.ArrayAdapter;
-import de.danoeh.antennapod.PodcastApp;
+import android.widget.BaseAdapter;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.util.EpisodeFilter;
 
-public abstract class AbstractFeedItemlistAdapter extends
-		ArrayAdapter<FeedItem> {
+public abstract class AbstractFeedItemlistAdapter extends BaseAdapter {
 
-	private List<FeedItem> objects;
-	private boolean isExpanded = true;
+	ItemAccess itemAccess;
 
-	public AbstractFeedItemlistAdapter(Context context, int textViewResourceId,
-			List<FeedItem> objects) {
-		super(context, textViewResourceId, objects);
-		this.objects = objects;
+	public AbstractFeedItemlistAdapter(ItemAccess itemAccess) {
+		super();
+		if (itemAccess == null) {
+			throw new IllegalArgumentException("itemAccess must not be null");
+		}
+		this.itemAccess = itemAccess;
 	}
 
 	@Override
 	public int getCount() {
-		if (isExpanded) {
-			if (PodcastApp.getInstance().displayOnlyEpisodes()) {
-				return EpisodeFilter.countItemsWithEpisodes(objects);
-			} else {
-				return super.getCount();
-			}
-		} else {
-			return 0;
-		}
+		return itemAccess.getCount();
+
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
 	}
 
 	@Override
 	public FeedItem getItem(int position) {
-		if (PodcastApp.getInstance().displayOnlyEpisodes()) {
-			return EpisodeFilter.accessEpisodeByIndex(objects, position);
-		} else {
-			return super.getItem(position);
-		}
+		return itemAccess.getItem(position);
 	}
 
-	public void toggleExpandedState() {
-		isExpanded = !isExpanded;
-		notifyDataSetChanged();
+	public static interface ItemAccess {
+		int getCount();
+
+		FeedItem getItem(int position);
 	}
 }

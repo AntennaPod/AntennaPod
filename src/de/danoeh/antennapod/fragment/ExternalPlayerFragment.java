@@ -14,11 +14,11 @@ import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.PlaybackController;
+import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
@@ -193,11 +193,11 @@ public class ExternalPlayerFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
 		if (controller.serviceAvailable()) {
-			FeedMedia media = controller.getMedia();
+			Playable media = controller.getMedia();
 			if (media != null) {
-				txtvTitle.setText(media.getItem().getTitle());
-				FeedImageLoader.getInstance().loadThumbnailBitmap(
-						media.getItem().getFeed().getImage(),
+				txtvTitle.setText(media.getEpisodeTitle());
+				ImageLoader.getInstance().loadThumbnailBitmap(
+						media.getImageFileUrl(),
 						imgvCover,
 						(int) getActivity().getResources().getDimension(
 								R.dimen.external_player_height));

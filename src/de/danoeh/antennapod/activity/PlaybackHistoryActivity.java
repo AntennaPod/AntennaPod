@@ -10,10 +10,10 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 public class PlaybackHistoryActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PlaybackHistoryActivity";
@@ -44,7 +44,7 @@ public class PlaybackHistoryActivity extends SherlockFragmentActivity {
 
 	@Override
 	protected void onCreate(Bundle arg0) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(arg0);
 
 		if (AppConfig.DEBUG)

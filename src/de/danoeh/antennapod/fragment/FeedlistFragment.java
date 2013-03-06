@@ -2,11 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.ActionMode;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
@@ -30,22 +26,26 @@ import de.danoeh.antennapod.adapter.FeedlistAdapter;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 public class FeedlistFragment extends SherlockFragment implements
 		ActionMode.Callback, AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener {
 	private static final String TAG = "FeedlistFragment";
+
+	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
+			| EventDistributor.DOWNLOAD_QUEUED
+			| EventDistributor.FEED_LIST_UPDATE
+			| EventDistributor.UNREAD_ITEMS_UPDATE;
+	
 	public static final String EXTRA_SELECTED_FEED = "extra.de.danoeh.antennapod.activity.selected_feed";
 
 	private FeedManager manager;
 	private FeedlistAdapter fla;
-	private SherlockFragmentActivity pActivity;
 
 	private Feed selectedFeed;
 	private ActionMode mActionMode;
@@ -57,13 +57,11 @@ public class FeedlistFragment extends SherlockFragment implements
 	@Override
 	public void onAttach(Activity activity) {
 		super.onAttach(activity);
-		pActivity = (SherlockFragmentActivity) activity;
 	}
 
 	@Override
 	public void onDetach() {
 		super.onDetach();
-		pActivity = null;
 	}
 
 	@Override
@@ -72,7 +70,7 @@ public class FeedlistFragment extends SherlockFragment implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating");
 		manager = FeedManager.getInstance();
-		fla = new FeedlistAdapter(pActivity, 0, manager.getFeeds());
+		fla = new FeedlistAdapter(getActivity());
 
 	}
 
@@ -113,36 +111,28 @@ public class FeedlistFragment extends SherlockFragment implements
 		super.onResume();
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Resuming");
-		IntentFilter filter = new IntentFilter();
-		filter.addAction(DownloadRequester.ACTION_DOWNLOAD_QUEUED);
-		filter.addAction(FeedManager.ACTION_UNREAD_ITEMS_UPDATE);
-		filter.addAction(FeedManager.ACTION_FEED_LIST_UPDATE);
-		filter.addAction(DownloadService.ACTION_DOWNLOAD_HANDLED);
-		pActivity.registerReceiver(contentUpdate, filter);
+		EventDistributor.getInstance().register(contentUpdate);
 		fla.notifyDataSetChanged();
 	}
 
 	@Override
 	public void onPause() {
 		super.onPause();
-		pActivity.unregisterReceiver(contentUpdate);
+		EventDistributor.getInstance().unregister(contentUpdate);
 		if (mActionMode != null) {
 			mActionMode.finish();
 		}
 	}
 
-	private BroadcastReceiver contentUpdate = new BroadcastReceiver() {
+	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+		
 		@Override
-		public void onReceive(Context context, final Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received contentUpdate Intent.");
-			getActivity().runOnUiThread(new Runnable() {
-
-				@Override
-				public void run() {
-					fla.notifyDataSetChanged();
-				}
-			});
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if ((EVENTS & arg) != 0) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received contentUpdate Intent.");
+				fla.notifyDataSetChanged();
+			}
 		}
 	};
 
@@ -211,10 +201,10 @@ public class FeedlistFragment extends SherlockFragment implements
 	public void onItemClick(AdapterView<?> arg0, View arg1, int position,
 			long id) {
 		Feed selection = fla.getItem(position);
-		Intent showFeed = new Intent(pActivity, FeedItemlistActivity.class);
+		Intent showFeed = new Intent(getActivity(), FeedItemlistActivity.class);
 		showFeed.putExtra(EXTRA_SELECTED_FEED, selection.getId());
 
-		pActivity.startActivity(showFeed);
+		getActivity().startActivity(showFeed);
 	}
 
 	@Override

@@ -30,7 +30,6 @@ import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.app.Notification.Builder;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -52,6 +51,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.DownloadLogActivity;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
@@ -78,7 +78,6 @@ public class DownloadService extends Service {
 	/** Extra for ACTION_CANCEL_DOWNLOAD */
 	public static final String EXTRA_DOWNLOAD_URL = "downloadUrl";
 
-	public static final String ACTION_DOWNLOAD_HANDLED = "action.de.danoeh.antennapod.service.download_handled";
 	/**
 	 * Sent by the DownloadService when the content of the downloads list
 	 * changes.
@@ -89,12 +88,6 @@ public class DownloadService extends Service {
 
 	/** Extra for ACTION_ENQUEUE_DOWNLOAD intent. */
 	public static final String EXTRA_REQUEST = "request";
-
-	// Download types for ACTION_DOWNLOAD_HANDLED
-	public static final String EXTRA_DOWNLOAD_TYPE = "extra.de.danoeh.antennapod.service.downloadType";
-	public static final int DOWNLOAD_TYPE_FEED = 1;
-	public static final int DOWNLOAD_TYPE_MEDIA = 2;
-	public static final int DOWNLOAD_TYPE_IMAGE = 3;
 
 	private CopyOnWriteArrayList<DownloadStatus> completedDownloads;
 
@@ -463,7 +456,7 @@ public class DownloadService extends Service {
 							Log.e(TAG, "Download failed");
 							saveDownloadStatus(status);
 						}
-						sendDownloadHandledIntent(getDownloadType(download));
+						sendDownloadHandledIntent();
 						downloadsBeingHandled -= 1;
 					}
 				}
@@ -505,24 +498,8 @@ public class DownloadService extends Service {
 		manager.addDownloadStatus(this, status);
 	}
 
-	/** Returns correct value for EXTRA_DOWNLOAD_TYPE. */
-	private int getDownloadType(FeedFile f) {
-		if (f.getClass() == Feed.class) {
-			return DOWNLOAD_TYPE_FEED;
-		} else if (f.getClass() == FeedImage.class) {
-			return DOWNLOAD_TYPE_IMAGE;
-		} else if (f.getClass() == FeedMedia.class) {
-			return DOWNLOAD_TYPE_MEDIA;
-		} else {
-			return 0;
-		}
-	}
-
-	private void sendDownloadHandledIntent(int type) {
-		Intent intent = new Intent(ACTION_DOWNLOAD_HANDLED);
-		intent.putExtra(EXTRA_DOWNLOAD_TYPE, type);
-
-		sendBroadcast(intent);
+	private void sendDownloadHandledIntent() {
+		EventDistributor.getInstance().sendDownloadHandledBroadcast();
 	}
 
 	/**
@@ -727,7 +704,7 @@ public class DownloadService extends Service {
 			saveDownloadStatus(new DownloadStatus(savedFeed,
 					savedFeed.getHumanReadableIdentifier(), reason, successful,
 					reasonDetailed));
-			sendDownloadHandledIntent(DOWNLOAD_TYPE_FEED);
+			sendDownloadHandledIntent();
 			downloadsBeingHandled -= 1;
 			handler.post(new Runnable() {
 
@@ -756,7 +733,7 @@ public class DownloadService extends Service {
 		}
 
 		private boolean hasValidFeedItems(Feed feed) {
-			for (FeedItem item : feed.getItems()) {
+			for (FeedItem item : feed.getItemsArray()) {
 				if (item.getTitle() == null) {
 					Log.e(TAG, "Item has no title");
 					return false;
@@ -804,7 +781,7 @@ public class DownloadService extends Service {
 			image.setDownloaded(true);
 
 			saveDownloadStatus(status);
-			sendDownloadHandledIntent(DOWNLOAD_TYPE_IMAGE);
+			sendDownloadHandledIntent();
 			manager.setFeedImage(DownloadService.this, image);
 			if (image.getFeed() != null) {
 				manager.setFeed(DownloadService.this, image.getFeed());
@@ -854,21 +831,16 @@ public class DownloadService extends Service {
 			} finally {
 				mediaplayer.release();
 			}
-
+			
 			if (media.getItem().getChapters() == null) {
-				ChapterUtils.readID3ChaptersFromFeedMediaFileUrl(media
-						.getItem());
-				if (media.getItem().getChapters() == null) {
-					ChapterUtils.readOggChaptersFromMediaFileUrl(media
-							.getItem());
-				}
+				ChapterUtils.loadChaptersFromFileUrl(media);
 				if (media.getItem().getChapters() != null) {
 					chaptersRead = true;
 				}
 			}
 
 			saveDownloadStatus(status);
-			sendDownloadHandledIntent(DOWNLOAD_TYPE_MEDIA);
+			sendDownloadHandledIntent();
 			if (chaptersRead) {
 				manager.setFeedItem(DownloadService.this, media.getItem());
 			} else {

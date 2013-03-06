@@ -1,47 +1,55 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.BroadcastReceiver;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.os.Bundle;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.adapter.AbstractFeedItemlistAdapter;
+import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 
 public class PlaybackHistoryFragment extends ItemlistFragment {
 	private static final String TAG = "PlaybackHistoryFragment";
 
 	public PlaybackHistoryFragment() {
-		super(FeedManager.getInstance().getPlaybackHistory(), true);
+		super(new AbstractFeedItemlistAdapter.ItemAccess() {
+
+			@Override
+			public FeedItem getItem(int position) {
+				return FeedManager.getInstance().getPlaybackHistoryItemIndex(
+						position);
+			}
+
+			@Override
+			public int getCount() {
+				return FeedManager.getInstance().getPlaybackHistorySize();
+			}
+		}, true);
 	}
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		getActivity().registerReceiver(historyUpdate,
-				new IntentFilter(FeedManager.ACTION_PLAYBACK_HISTORY_UPDATE));
+		EventDistributor.getInstance().register(historyUpdate);
 	}
 
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		try {
-			getActivity().unregisterReceiver(historyUpdate);
-		} catch (IllegalArgumentException e) {
-			// ignore
-		}
+		EventDistributor.getInstance().unregister(historyUpdate);
 	}
 
-	private BroadcastReceiver historyUpdate = new BroadcastReceiver() {
-
+	private EventDistributor.EventListener historyUpdate = new EventDistributor.EventListener() {
+		
 		@Override
-		public void onReceive(Context context, Intent intent) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received content update");
-			fila.notifyDataSetChanged();
+		public void update(EventDistributor eventDistributor, Integer arg) {
+			if ((EventDistributor.PLAYBACK_HISTORY_UPDATE & arg) != 0) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received content update");
+				fila.notifyDataSetChanged();
+			}
+			
 		}
-
 	};
 
 }

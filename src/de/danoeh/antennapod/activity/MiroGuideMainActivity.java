@@ -15,10 +15,10 @@ import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideException;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideService;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /**
  * Shows a list of available categories and offers a search button. If the user
@@ -34,7 +34,7 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_categorylist);

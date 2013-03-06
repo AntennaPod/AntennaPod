@@ -5,7 +5,6 @@ public abstract class Chapter extends FeedComponent {
 	/** Defines starting point in milliseconds. */
 	protected long start;
 	protected String title;
-	protected FeedItem item;
 	protected String link;
 
 	public Chapter() {
@@ -20,7 +19,6 @@ public abstract class Chapter extends FeedComponent {
 		super();
 		this.start = start;
 		this.title = title;
-		this.item = item;
 		this.link = link;
 	}
 
@@ -34,10 +32,6 @@ public abstract class Chapter extends FeedComponent {
 		return title;
 	}
 
-	public FeedItem getItem() {
-		return item;
-	}
-
 	public String getLink() {
 		return link;
 	}
@@ -48,10 +42,6 @@ public abstract class Chapter extends FeedComponent {
 
 	public void setTitle(String title) {
 		this.title = title;
-	}
-
-	public void setItem(FeedItem item) {
-		this.item = item;
 	}
 
 	public void setLink(String link) {

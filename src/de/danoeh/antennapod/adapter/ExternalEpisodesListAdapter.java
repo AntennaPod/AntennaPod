@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.LayoutInflater;
@@ -12,14 +10,13 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.EpisodeFilter;
 
 /**
  * Displays unread items and items in the queue in one combined list. The
@@ -32,21 +29,17 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	public static final int GROUP_POS_UNREAD = 1;
 
 	private Context context;
-
-	private List<FeedItem> unreadItems;
-	private List<FeedItem> queueItems;
+	private FeedManager manager = FeedManager.getInstance();
 
 	private ActionButtonCallback feedItemActionCallback;
 	private OnGroupActionClicked groupActionCallback;
 
 	public ExternalEpisodesListAdapter(Context context,
-			List<FeedItem> unreadItems, List<FeedItem> queueItems,
 			ActionButtonCallback callback,
 			OnGroupActionClicked groupActionCallback) {
 		super();
 		this.context = context;
-		this.unreadItems = unreadItems;
-		this.queueItems = queueItems;
+
 		this.feedItemActionCallback = callback;
 		this.groupActionCallback = groupActionCallback;
 	}
@@ -58,22 +51,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public FeedItem getChild(int groupPosition, int childPosition) {
-		final boolean displayOnlyEpisodes = PodcastApp.getInstance()
-				.displayOnlyEpisodes();
 		if (groupPosition == GROUP_POS_QUEUE) {
-			if (displayOnlyEpisodes) {
-				return EpisodeFilter.accessEpisodeByIndex(queueItems,
-						childPosition);
-			} else {
-				return queueItems.get(childPosition);
-			}
+			return manager.getQueueItemAtIndex(childPosition, true);
 		} else if (groupPosition == GROUP_POS_UNREAD) {
-			if (displayOnlyEpisodes) {
-				return EpisodeFilter.accessEpisodeByIndex(unreadItems,
-						childPosition);
-			} else {
-				return unreadItems.get(childPosition);
-			}
+			return manager.getUnreadItemAtIndex(childPosition, true);
 		}
 		return null;
 	}
@@ -180,8 +161,9 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			holder.lenSize.setVisibility(View.INVISIBLE);
 		}
 
-		holder.feedImage.setTag(item.getFeed().getImage());
-		FeedImageLoader.getInstance().loadThumbnailBitmap(
+		holder.feedImage.setTag((item.getFeed().getImage() != null) ? item
+				.getFeed().getImage().getFile_url() : null);
+		ImageLoader.getInstance().loadThumbnailBitmap(
 				item.getFeed().getImage(),
 				holder.feedImage,
 				(int) convertView.getResources().getDimension(
@@ -213,20 +195,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public int getChildrenCount(int groupPosition) {
-		final boolean displayOnlyEpisodes = PodcastApp.getInstance()
-				.displayOnlyEpisodes();
 		if (groupPosition == GROUP_POS_QUEUE) {
-			if (displayOnlyEpisodes) {
-				return EpisodeFilter.countItemsWithEpisodes(queueItems);
-			} else {
-				return queueItems.size();
-			}
+			return manager.getQueueSize(true);
 		} else if (groupPosition == GROUP_POS_UNREAD) {
-			if (displayOnlyEpisodes) {
-				return EpisodeFilter.countItemsWithEpisodes(unreadItems);
-			} else {
-				return unreadItems.size();
-			}
+			return manager.getUnreadItemsSize(true);
 		}
 		return 0;
 	}
@@ -254,12 +226,12 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		String headerString = null;
 		if (groupPosition == 0) {
 			headerString = context.getString(R.string.queue_label);
-			if (!queueItems.isEmpty()) {
+			if (manager.getQueueSize(true) > 0) {
 				headerString += " (" + getChildrenCount(GROUP_POS_QUEUE) + ")";
 			}
 		} else {
 			headerString = context.getString(R.string.new_label);
-			if (!unreadItems.isEmpty()) {
+			if (manager.getUnreadItemsSize(true) > 0) {
 				headerString += " (" + getChildrenCount(GROUP_POS_UNREAD) + ")";
 			}
 		}
@@ -277,7 +249,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isEmpty() {
-		return unreadItems.isEmpty() && queueItems.isEmpty();
+		return manager.getUnreadItemsSize(true) == 0
+				&& manager.getQueueSize(true) == 0;
 	}
 
 	@Override

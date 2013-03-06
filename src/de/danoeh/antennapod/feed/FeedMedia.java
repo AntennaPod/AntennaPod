@@ -1,10 +1,23 @@
 package de.danoeh.antennapod.feed;
 
 import java.util.Date;
+import java.util.List;
 
-public class FeedMedia extends FeedFile {
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Parcel;
+import android.os.Parcelable;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.util.ChapterUtils;
+import de.danoeh.antennapod.util.playback.Playable;
+
+public class FeedMedia extends FeedFile implements Playable {
 
 	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
+	public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
+
+	public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
+	public static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
 	private int duration;
 	private int position; // Current position in file
@@ -146,7 +159,7 @@ public class FeedMedia extends FeedFile {
 	public boolean isInProgress() {
 		return (this.position > 0);
 	}
-	
+
 	public FeedImage getImage() {
 		if (item != null && item.getFeed() != null) {
 			return item.getFeed().getImage();
@@ -154,4 +167,160 @@ public class FeedMedia extends FeedFile {
 		return null;
 	}
 
+	@Override
+	public int describeContents() {
+		return 0;
+	}
+
+	@Override
+	public void writeToParcel(Parcel dest, int flags) {
+		dest.writeLong(item.getFeed().getId());
+		dest.writeLong(item.getId());
+	}
+
+	@Override
+	public void writeToPreferences(Editor prefEditor) {
+		prefEditor.putLong(PREF_FEED_ID, item.getFeed().getId());
+		prefEditor.putLong(PREF_MEDIA_ID, id);
+	}
+
+	@Override
+	public void loadMetadata() throws PlayableException {
+		if (getChapters() == null) {
+			ChapterUtils.loadChaptersFromStreamUrl(this);
+		}
+	}
+
+	@Override
+	public String getEpisodeTitle() {
+		if (getItem().getTitle() != null) {
+			return getItem().getTitle();
+		} else {
+			return getItem().getIdentifyingValue();
+		}
+	}
+
+	@Override
+	public List<Chapter> getChapters() {
+		return getItem().getChapters();
+	}
+
+	@Override
+	public String getWebsiteLink() {
+		return getItem().getLink();
+	}
+
+	@Override
+	public String getFeedTitle() {
+		return getItem().getFeed().getTitle();
+	}
+
+	@Override
+	public String getImageFileUrl() {
+		if (getItem().getFeed().getImage() != null) {
+			return getItem().getFeed().getImage().getFile_url();
+		} else {
+			return null;
+		}
+	}
+
+	@Override
+	public Object getIdentifier() {
+		return id;
+	}
+
+	@Override
+	public String getLocalMediaUrl() {
+		return file_url;
+	}
+
+	@Override
+	public String getStreamUrl() {
+		return download_url;
+	}
+
+	@Override
+	public boolean localFileAvailable() {
+		return isDownloaded() && file_url != null;
+	}
+
+	@Override
+	public boolean streamAvailable() {
+		return download_url != null;
+	}
+
+	@Override
+	public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
+		position = newPosition;
+		FeedManager.getInstance().setFeedMedia(PodcastApp.getInstance(), this);
+	}
+
+	@Override
+	public void onPlaybackStart() {
+		if (getItem().isRead() == false) {
+			FeedManager.getInstance().markItemRead(PodcastApp.getInstance(),
+					getItem(), true, false);
+		}
+	}
+
+	@Override
+	public void onPlaybackCompleted() {
+
+	}
+
+	@Override
+	public int getPlayableType() {
+		return PLAYABLE_TYPE_FEEDMEDIA;
+	}
+
+	@Override
+	public void setChapters(List<Chapter> chapters) {
+		getItem().setChapters(chapters);
+	}
+
+	@Override
+	public String getPaymentLink() {
+		return getItem().getPaymentLink();
+	}
+
+	@Override
+	public void loadShownotes(final ShownoteLoaderCallback callback) {
+		String contentEncoded = item.getContentEncoded();
+		if (item.getDescription() == null || contentEncoded == null) {
+			FeedManager.getInstance().loadExtraInformationOfItem(
+					PodcastApp.getInstance(), item,
+					new FeedManager.TaskCallback<String[]>() {
+						@Override
+						public void onCompletion(String[] result) {
+							if (result[1] != null) {
+								callback.onShownotesLoaded(result[1]);
+							} else {
+								callback.onShownotesLoaded(result[0]);
+
+							}
+
+						}
+					});
+		} else {
+			callback.onShownotesLoaded(contentEncoded);
+		}
+	}
+
+	public static final Parcelable.Creator<FeedMedia> CREATOR = new Parcelable.Creator<FeedMedia>() {
+		public FeedMedia createFromParcel(Parcel in) {
+			long feedId = in.readLong();
+			long itemId = in.readLong();
+			FeedItem item = FeedManager.getInstance().getFeedItem(itemId,
+					feedId);
+			if (item != null) {
+				return item.getMedia();
+			} else {
+				return null;
+			}
+		}
+
+		public FeedMedia[] newArray(int size) {
+			return new FeedMedia[size];
+		}
+	};
 }

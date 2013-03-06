@@ -10,13 +10,14 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.StorageErrorActivity;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Utility functions for handling storage errors */
 public class StorageUtils {
 	private static final String TAG = "StorageUtils";
 
 	public static boolean storageAvailable(Context context) {
-		File dir = PodcastApp.getDataFolder(context, null);
+		File dir = UserPreferences.getDataFolder(context, null);
 		if (dir != null) {
 			return dir.exists() && dir.canRead() && dir.canWrite();
 		} else {
@@ -48,7 +49,7 @@ public class StorageUtils {
 
 	/** Get the number of free bytes that are available on the external storage. */
 	public static long getFreeSpaceAvailable() {
-		StatFs stat = new StatFs(PodcastApp.getDataFolder(
+		StatFs stat = new StatFs(UserPreferences.getDataFolder(
 				PodcastApp.getInstance(), null).getAbsolutePath());
 		long availableBlocks = stat.getAvailableBlocks();
 		long blockSize = stat.getBlockSize();

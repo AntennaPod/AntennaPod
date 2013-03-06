@@ -93,10 +93,6 @@ public class FeedHandlerTest extends AndroidTestCase {
 			Log.e(TAG, "Feed has no title");
 			return false;
 		}
-		if (feed.getItems() == null) {
-			Log.e(TAG, "Feed has no items");
-			return false;
-		}
 		if (!hasValidFeedItems(feed)) {
 			Log.e(TAG, "Feed has invalid items");
 			return false;
@@ -122,7 +118,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private boolean hasValidFeedItems(Feed feed) {
-		for (FeedItem item : feed.getItems()) {
+		for (FeedItem item : feed.getItemsArray()) {
 			if (item.getTitle() == null) {
 				Log.e(TAG, "Item has no title");
 				return false;

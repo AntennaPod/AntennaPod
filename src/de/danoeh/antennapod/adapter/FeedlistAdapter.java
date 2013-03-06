@@ -1,34 +1,37 @@
 package de.danoeh.antennapod.adapter;
 
 import java.text.DateFormat;
-import java.util.List;
 
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ThemeUtils;
 
-public class FeedlistAdapter extends ArrayAdapter<Feed> {
+public class FeedlistAdapter extends BaseAdapter {
 	private static final String TAG = "FeedlistAdapter";
 
+	private Context context;
+	private FeedManager manager = FeedManager.getInstance();
+
 	private int selectedItemIndex;
-	private FeedImageLoader imageLoader;
+	private ImageLoader imageLoader;
 	public static final int SELECTION_NONE = -1;
 
-	public FeedlistAdapter(Context context, int textViewResourceId,
-			List<Feed> objects) {
-		super(context, textViewResourceId, objects);
+	public FeedlistAdapter(Context context) {
+		super();
+		this.context = context;
 		selectedItemIndex = SELECTION_NONE;
-		imageLoader = FeedImageLoader.getInstance();
+		imageLoader = ImageLoader.getInstance();
 	}
 
 	@Override
@@ -39,7 +42,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 		// Inflate Layout
 		if (convertView == null) {
 			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) getContext()
+			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			convertView = inflater.inflate(R.layout.feedlist_item, null);
@@ -83,7 +86,7 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 							.getTime(), System.currentTimeMillis(),
 							DateFormat.MEDIUM, DateFormat.SHORT));
 		}
-		holder.numberOfEpisodes.setText(feed.getNumOfItems()
+		holder.numberOfEpisodes.setText(feed.getNumOfItems(true)
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
 
@@ -105,8 +108,9 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 			holder.inProgressEpisodesLabel.setVisibility(View.INVISIBLE);
 		}
 
-		holder.image.setTag(feed.getImage());
-
+		final String imageUrl = (feed.getImage() != null) ? feed.getImage()
+				.getFile_url() : null;
+		holder.image.setTag(imageUrl);
 		imageLoader.loadThumbnailBitmap(
 				feed.getImage(),
 				holder.image,
@@ -134,6 +138,21 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 	public void setSelectedItemIndex(int selectedItemIndex) {
 		this.selectedItemIndex = selectedItemIndex;
 		notifyDataSetChanged();
+	}
+
+	@Override
+	public int getCount() {
+		return manager.getFeedsSize();
+	}
+
+	@Override
+	public Feed getItem(int position) {
+		return manager.getFeedAtIndex(position);
+	}
+
+	@Override
+	public long getItemId(int position) {
+		return position;
 	}
 
 }

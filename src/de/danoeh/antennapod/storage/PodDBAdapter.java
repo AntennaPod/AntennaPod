@@ -334,7 +334,7 @@ public class PodDBAdapter {
 	public void setCompleteFeed(Feed feed) {
 		db.beginTransaction();
 		setFeed(feed);
-		for (FeedItem item : feed.getItems()) {
+		for (FeedItem item : feed.getItemsArray()) {
 			setFeedItem(item);
 		}
 		db.setTransactionSuccessful();
@@ -485,7 +485,7 @@ public class PodDBAdapter {
 		if (feed.getImage() != null) {
 			removeFeedImage(feed.getImage());
 		}
-		for (FeedItem item : feed.getItems()) {
+		for (FeedItem item : feed.getItemsArray()) {
 			removeFeedItem(item);
 		}
 		db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",

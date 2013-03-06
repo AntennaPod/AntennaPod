@@ -21,7 +21,6 @@ import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -30,6 +29,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideException;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
@@ -62,7 +62,7 @@ public class MiroGuideChannelViewActivity extends SherlockActivity {
 	@SuppressLint("NewApi")
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.miroguide_channelview);

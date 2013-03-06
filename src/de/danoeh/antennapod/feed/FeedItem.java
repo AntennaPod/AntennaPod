@@ -4,7 +4,7 @@ import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
 
 /**
  * Data Object for a XML message
@@ -90,27 +90,6 @@ public class FeedItem extends FeedComponent {
 		}
 		description = null;
 		contentEncoded = null;
-	}
-
-	/** Get the chapter that fits the position. */
-	public Chapter getCurrentChapter(int position) {
-		Chapter current = null;
-		if (chapters != null) {
-			current = chapters.get(0);
-			for (Chapter sc : chapters) {
-				if (sc.getStart() > position) {
-					break;
-				} else {
-					current = sc;
-				}
-			}
-		}
-		return current;
-	}
-
-	/** Calls getCurrentChapter with current position. */
-	public Chapter getCurrentChapter() {
-		return getCurrentChapter(media.getPosition());
 	}
 
 	/**
@@ -234,7 +213,7 @@ public class FeedItem extends FeedComponent {
 
 	private boolean isPlaying() {
 		if (media != null) {
-			if (PodcastApp.getCurrentlyPlayingMediaId() == media.getId()) {
+			if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media.getId()) {
 				return true;
 			}
 		}

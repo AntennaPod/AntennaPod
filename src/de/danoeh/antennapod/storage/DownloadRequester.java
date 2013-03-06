@@ -11,22 +11,18 @@ import android.content.Intent;
 import android.util.Log;
 import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
 
 public class DownloadRequester {
 	private static final String TAG = "DownloadRequester";
-
-	public static String EXTRA_DOWNLOAD_ID = "extra.de.danoeh.antennapod.storage.download_id";
-	public static String EXTRA_ITEM_ID = "extra.de.danoeh.antennapod.storage.item_id";
-
-	public static String ACTION_DOWNLOAD_QUEUED = "action.de.danoeh.antennapod.storage.downloadQueued";
 
 	public static String IMAGE_DOWNLOADPATH = "images/";
 	public static String FEED_DOWNLOADPATH = "cache/";
@@ -70,7 +66,8 @@ public class DownloadRequester {
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Testing filename " + newName);
 						newDest = new File(dest.getParent(), newName);
-						if (!newDest.exists() && isFilenameAvailable(newDest.toString())) {
+						if (!newDest.exists()
+								&& isFilenameAvailable(newDest.toString())) {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "File doesn't exist yet. Using "
 										+ newName);
@@ -102,7 +99,7 @@ public class DownloadRequester {
 				queueIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
 				context.sendBroadcast(queueIntent);
 			}
-			context.sendBroadcast(new Intent(ACTION_DOWNLOAD_QUEUED));
+			EventDistributor.getInstance().sendDownloadQueuedBroadcast();
 		} else {
 			Log.e(TAG, "URL " + item.getDownload_url()
 					+ " is already being downloaded");
@@ -123,7 +120,8 @@ public class DownloadRequester {
 				return false;
 			}
 		}
-		if (AppConfig.DEBUG) Log.d(TAG, path + " is available as a download destination");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, path + " is available as a download destination");
 		return true;
 	}
 
@@ -282,7 +280,7 @@ public class DownloadRequester {
 
 	private File getExternalFilesDirOrThrowException(Context context,
 			String type) throws DownloadRequestException {
-		File result = PodcastApp.getDataFolder(context, type);
+		File result = UserPreferences.getDataFolder(context, type);
 		if (result == null) {
 			throw new DownloadRequestException(
 					"Failed to access external storage");

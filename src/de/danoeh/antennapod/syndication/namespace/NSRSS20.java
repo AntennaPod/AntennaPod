@@ -43,7 +43,7 @@ public class NSRSS20 extends Namespace {
 			Attributes attributes) {
 		if (localName.equals(ITEM)) {
 			state.setCurrentItem(new FeedItem());
-			state.getFeed().getItems().add(state.getCurrentItem());
+			state.getItems().add(state.getCurrentItem());
 			state.getCurrentItem().setFeed(state.getFeed());
 
 		} else if (localName.equals(ENCLOSURE)) {

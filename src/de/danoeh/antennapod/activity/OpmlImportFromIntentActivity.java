@@ -1,17 +1,19 @@
 package de.danoeh.antennapod.activity;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.URL;
+
 import android.app.AlertDialog;
 import android.os.Bundle;
-import de.danoeh.antennapod.PodcastApp;
-import java.io.*;
-import java.net.URL;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Lets the user start the OPML-import process. */
 public class OpmlImportFromIntentActivity extends OpmlImportBaseActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(PodcastApp.getThemeResourceId());
+		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);

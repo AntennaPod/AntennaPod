@@ -3,6 +3,7 @@ package de.danoeh.antennapod.asynctask;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.Arrays;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -15,6 +16,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.opml.OpmlWriter;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
@@ -40,7 +42,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 		OpmlWriter opmlWriter = new OpmlWriter();
 		if (output == null) {
 			output = new File(
-					PodcastApp.getDataFolder(context, PodcastApp.EXPORT_DIR),
+					UserPreferences.getDataFolder(context, PodcastApp.EXPORT_DIR),
 					DEFAULT_OUTPUT_NAME);
 			if (output.exists()) {
 				Log.w(TAG, "Overwriting previously exported file.");
@@ -49,7 +51,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 		}
 		try {
 			FileWriter writer = new FileWriter(output);
-			opmlWriter.writeDocument(FeedManager.getInstance().getFeeds(),
+			opmlWriter.writeDocument(Arrays.asList(FeedManager.getInstance().getFeedsArray()),
 					writer);
 			writer.close();
 		} catch (IOException e) {

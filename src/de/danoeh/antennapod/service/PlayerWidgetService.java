@@ -13,10 +13,10 @@ import android.view.View;
 import android.widget.RemoteViews;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Updates the state of the player widget */
 public class PlayerWidgetService extends Service {
@@ -83,11 +83,11 @@ public class PlayerWidgetService extends Service {
 				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
-		if (playbackService != null) {
-			FeedMedia media = playbackService.getMedia();
+		if (playbackService != null && playbackService.getMedia() != null) {
+			Playable media = playbackService.getMedia();
 			PlayerStatus status = playbackService.getStatus();
 
-			views.setTextViewText(R.id.txtvTitle, media.getItem().getTitle());
+			views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
 
 			if (status == PlayerStatus.PLAYING) {
 				String progressString = getProgressString(playbackService);

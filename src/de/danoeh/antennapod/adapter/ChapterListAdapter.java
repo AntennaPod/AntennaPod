@@ -20,20 +20,21 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.util.playback.Playable;
 
 public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 	private static final String TAG = "ChapterListAdapter";
 
 	private List<Chapter> chapters;
-	private FeedMedia media;
+	private Playable media;
 	
 	private int defaultTextColor;
 
 	public ChapterListAdapter(Context context, int textViewResourceId,
-			List<Chapter> objects, FeedMedia media) {
+			List<Chapter> objects, Playable media) {
 		super(context, textViewResourceId, objects);
 		this.chapters = objects;
 		this.media = media;
@@ -122,7 +123,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 			}
 		});
-		Chapter current = sc.getItem().getCurrentChapter();
+		Chapter current = ChapterUtils.getCurrentChapter(media);
 		if (current != null) {
 			if (current == sc) {
 				holder.title.setTextColor(convertView.getResources().getColor(

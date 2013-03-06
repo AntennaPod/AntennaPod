@@ -1,5 +1,10 @@
 package de.danoeh.antennapod.activity;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.Reader;
+
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -9,17 +14,14 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.util.StorageUtils;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.Reader;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.StorageUtils;
 
 /**
  * Lets the user start the OPML-import process from a path
@@ -33,7 +35,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        setTheme(PodcastApp.getThemeResourceId());
+        setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -63,7 +65,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
      * directory.
      */
     private void setImportPath() {
-        File importDir = PodcastApp.getDataFolder(this, IMPORT_DIR);
+        File importDir = UserPreferences.getDataFolder(this, IMPORT_DIR);
         boolean success = true;
         if (!importDir.exists()) {
             if (AppConfig.DEBUG)

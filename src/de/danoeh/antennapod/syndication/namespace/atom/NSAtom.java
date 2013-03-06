@@ -55,7 +55,7 @@ public class NSAtom extends Namespace {
 			Attributes attributes) {
 		if (localName.equals(ENTRY)) {
 			state.setCurrentItem(new FeedItem());
-			state.getFeed().getItems().add(state.getCurrentItem());
+			state.getItems().add(state.getCurrentItem());
 			state.getCurrentItem().setFeed(state.getFeed());
 		} else if (localName.matches(isText)) {
 			String type = attributes.getValue(TEXT_TYPE);

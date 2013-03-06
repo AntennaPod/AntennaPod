@@ -12,31 +12,26 @@ import com.actionbarsherlock.app.SherlockFragment;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
-import de.danoeh.antennapod.asynctask.FeedImageLoader;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.util.playback.Playable;
 
 /** Displays the cover and the title of a FeedItem. */
 public class CoverFragment extends SherlockFragment implements
 		AudioplayerContentFragment {
 	private static final String TAG = "CoverFragment";
-	private static final String ARG_FEED_ID = "arg.feedId";
-	private static final String ARG_FEEDITEM_ID = "arg.feedItem";
+	private static final String ARG_PLAYABLE = "arg.playable";
 
-	private FeedMedia media;
+	private Playable media;
 
 	private ImageView imgvCover;
 
 	private boolean viewCreated = false;
 
-	public static CoverFragment newInstance(FeedItem item) {
+	public static CoverFragment newInstance(Playable item) {
 		CoverFragment f = new CoverFragment();
 		if (item != null) {
 			Bundle args = new Bundle();
-			args.putLong(ARG_FEED_ID, item.getFeed().getId());
-			args.putLong(ARG_FEEDITEM_ID, item.getId());
+			args.putParcelable(ARG_PLAYABLE, item);
 			f.setArguments(args);
 		}
 		return f;
@@ -46,21 +41,11 @@ public class CoverFragment extends SherlockFragment implements
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setRetainInstance(true);
-		FeedManager manager = FeedManager.getInstance();
-		FeedItem item = null;
 		Bundle args = getArguments();
 		if (args != null) {
-			long feedId = args.getLong(ARG_FEED_ID, -1);
-			long itemId = args.getLong(ARG_FEEDITEM_ID, -1);
-			if (feedId != -1 && itemId != -1) {
-				Feed feed = manager.getFeed(feedId);
-				item = manager.getFeedItem(itemId, feed);
-				if (item != null) {
-					media = item.getMedia();
-				}
-			} else {
-				Log.e(TAG, TAG + " was called with invalid arguments");
-			}
+			media = args.getParcelable(ARG_PLAYABLE);
+		} else {
+			Log.e(TAG, TAG + " was called with invalid arguments");
 		}
 	}
 
@@ -79,8 +64,8 @@ public class CoverFragment extends SherlockFragment implements
 
 				@Override
 				public void run() {
-					FeedImageLoader.getInstance().loadCoverBitmap(
-							media.getItem().getFeed().getImage(), imgvCover);
+					ImageLoader.getInstance().loadCoverBitmap(
+							media.getImageFileUrl(), imgvCover);
 				}
 			});
 		} else {
@@ -103,7 +88,7 @@ public class CoverFragment extends SherlockFragment implements
 	}
 
 	@Override
-	public void onDataSetChanged(FeedMedia media) {
+	public void onDataSetChanged(Playable media) {
 		this.media = media;
 		if (viewCreated) {
 			loadMediaInfo();
