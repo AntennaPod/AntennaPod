@@ -570,7 +570,6 @@ public class FeedManager {
 	/** Downloads FeedItems if they have not been downloaded yet. */
 	public void downloadFeedItem(final Context context, FeedItem... items)
 			throws DownloadRequestException {
-		List<FeedItem> addToQueue = new ArrayList<FeedItem>();
 
 		for (FeedItem item : items) {
 			if (item.getMedia() != null
@@ -591,12 +590,7 @@ public class FeedManager {
 				} else {
 					requester.downloadMedia(context, item.getMedia());
 				}
-				addToQueue.add(item);
 			}
-		}
-		if (UserPreferences.isAutoQueue()) {
-			addQueueItem(context,
-					addToQueue.toArray(new FeedItem[addToQueue.size()]));
 		}
 	}
 

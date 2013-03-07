@@ -58,6 +58,7 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
@@ -831,7 +832,7 @@ public class DownloadService extends Service {
 			} finally {
 				mediaplayer.release();
 			}
-			
+
 			if (media.getItem().getChapters() == null) {
 				ChapterUtils.loadChaptersFromFileUrl(media);
 				if (media.getItem().getChapters() != null) {
@@ -845,6 +846,12 @@ public class DownloadService extends Service {
 				manager.setFeedItem(DownloadService.this, media.getItem());
 			} else {
 				manager.setFeedMedia(DownloadService.this, media);
+			}
+
+			if (UserPreferences.isAutoQueue()
+					&& !FeedManager.getInstance().isInQueue(media.getItem())) {
+				FeedManager.getInstance().addQueueItem(DownloadService.this,
+						media.getItem());
 			}
 
 			downloadsBeingHandled -= 1;
