@@ -1561,6 +1561,22 @@ public class FeedManager {
 	}
 
 	/**
+	 * Returns true if the first item in the queue is currently being played or
+	 * false otherwise. If the queue is empty, this method will also return
+	 * false.
+	 * */
+	public boolean firstQueueItemIsPlaying() {
+		FeedManager manager = FeedManager.getInstance();
+		int queueSize = manager.getQueueSize(true);
+		if (queueSize == 0) {
+			return false;
+		} else {
+			FeedItem item = getQueueItemAtIndex(0, true);
+			return item.getState() == FeedItem.State.PLAYING;
+		}
+	}
+
+	/**
 	 * Returns the number of unread items.
 	 * 
 	 * @param enableEpisodeFilter

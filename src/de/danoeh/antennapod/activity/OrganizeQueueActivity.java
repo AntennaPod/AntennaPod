@@ -72,7 +72,10 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public void drop(int from, int to) {
 			FeedManager manager = FeedManager.getInstance();
-			manager.moveQueueItem(OrganizeQueueActivity.this, from, to, false);
+			int offset = (manager.firstQueueItemIsPlaying()) ? 1 : 0;
+
+			manager.moveQueueItem(OrganizeQueueActivity.this, from + offset, to
+					+ offset, false);
 			adapter.notifyDataSetChanged();
 		}
 	};
@@ -82,6 +85,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public void remove(int which) {
 			FeedManager manager = FeedManager.getInstance();
+
 			manager.removeQueueItem(OrganizeQueueActivity.this,
 					(FeedItem) getListAdapter().getItem(which));
 		}
@@ -110,9 +114,15 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		}
 	}
 
+	/**
+	 * WARNING: If the PlaybackService is playing an episode from the queue,
+	 * this list adapter will ignore the first item in the list to make sure
+	 * that the position of the first queue item cannot be changed.
+	 */
 	private static class OrganizeAdapter extends BaseAdapter {
 
 		private Context context;
+		private FeedManager manager = FeedManager.getInstance();
 
 		public OrganizeAdapter(Context context) {
 			super();
@@ -164,13 +174,22 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 
 		@Override
 		public int getCount() {
-			return FeedManager.getInstance().getQueueSize(true);
+			int queueSize = manager.getQueueSize(true);
+			if (manager.firstQueueItemIsPlaying()) {
+				return queueSize - 1;
+			} else {
+				return queueSize;
+			}
 		}
 
 		@Override
 		public FeedItem getItem(int position) {
-			return FeedManager.getInstance()
-					.getQueueItemAtIndex(position, true);
+			if (manager.firstQueueItemIsPlaying() && position < getCount()) {
+				return manager.getQueueItemAtIndex(position + 1, true);
+			} else {
+				return manager.getQueueItemAtIndex(position, true);
+			}
+
 		}
 
 		@Override
