@@ -673,78 +673,7 @@ public class PlaybackService extends Service {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Playback completed");
-			audioManager.abandonAudioFocus(audioFocusChangeListener);
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(getApplicationContext());
-			SharedPreferences.Editor editor = prefs.edit();
-
-			// Save state
-			cancelPositionSaver();
-
-			boolean isInQueue = false;
-			FeedItem nextItem = null;
-
-			if (media instanceof FeedMedia) {
-				FeedItem item = ((FeedMedia) media).getItem();
-				((FeedMedia) media).setPlaybackCompletionDate(new Date());
-				manager.markItemRead(PlaybackService.this, item, true, true);
-				nextItem = manager.getQueueSuccessorOfItem(item);
-				isInQueue = media instanceof FeedMedia
-						&& manager.isInQueue(((FeedMedia) media).getItem());
-				if (isInQueue) {
-					manager.removeQueueItem(PlaybackService.this, item);
-				}
-				manager.addItemToPlaybackHistory(PlaybackService.this, item);
-				manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
-				long autoDeleteMediaId = ((FeedComponent) media).getId();
-				if (shouldStream) {
-					autoDeleteMediaId = -1;
-				}
-				editor.putLong(PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID,
-						autoDeleteMediaId);
-			}
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.putBoolean(
-					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
-					true);
-			editor.putLong(
-					PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.commit();
-
-			// Prepare for playing next item
-			boolean playNextItem = isInQueue && UserPreferences.isFollowQueue()
-					&& nextItem != null;
-			if (playNextItem) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Loading next item in queue");
-				media = nextItem.getMedia();
-				shouldStream = !media.localFileAvailable();
-				prepareImmediately = startWhenPrepared = true;
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG,
-							"No more episodes available to play; Reloading current episode");
-				prepareImmediately = startWhenPrepared = false;
-				stopForeground(true);
-				stopWidgetUpdater();
-			}
-			int notificationCode = 0;
-			if (media.getMediaType() == MediaType.AUDIO) {
-				notificationCode = EXTRA_CODE_AUDIO;
-				playingVideo = false;
-			} else if (media.getMediaType() == MediaType.VIDEO) {
-				notificationCode = EXTRA_CODE_VIDEO;
-			}
-			resetVideoSurface();
-			refreshRemoteControlClientState();
-			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-					notificationCode);
+			endPlayback(true);
 		}
 	};
 
@@ -756,6 +685,88 @@ public class PlaybackService extends Service {
 
 		}
 	};
+
+	private void endPlayback(boolean playNextEpisode) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Playback completed");
+		audioManager.abandonAudioFocus(audioFocusChangeListener);
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext());
+		SharedPreferences.Editor editor = prefs.edit();
+
+		// Save state
+		cancelPositionSaver();
+
+		boolean isInQueue = false;
+		FeedItem nextItem = null;
+
+		if (media instanceof FeedMedia) {
+			FeedItem item = ((FeedMedia) media).getItem();
+			((FeedMedia) media).setPlaybackCompletionDate(new Date());
+			manager.markItemRead(PlaybackService.this, item, true, true);
+			nextItem = manager.getQueueSuccessorOfItem(item);
+			isInQueue = media instanceof FeedMedia
+					&& manager.isInQueue(((FeedMedia) media).getItem());
+			if (isInQueue) {
+				manager.removeQueueItem(PlaybackService.this, item);
+			}
+			manager.addItemToPlaybackHistory(PlaybackService.this, item);
+			manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
+			long autoDeleteMediaId = ((FeedComponent) media).getId();
+			if (shouldStream) {
+				autoDeleteMediaId = -1;
+			}
+			editor.putLong(PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID,
+					autoDeleteMediaId);
+		}
+		editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+				PlaybackPreferences.NO_MEDIA_PLAYING);
+		editor.putBoolean(
+				PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
+				true);
+		editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+				PlaybackPreferences.NO_MEDIA_PLAYING);
+		editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+				PlaybackPreferences.NO_MEDIA_PLAYING);
+		editor.commit();
+
+		// Load next episode if previous episode was in the queue and if there
+		// is an episode in the queue left.
+		// Start playback immediately if continuous playback is enabled
+		boolean loadNextItem = isInQueue && nextItem != null;
+		playNextEpisode = playNextEpisode && loadNextItem
+				&& UserPreferences.isFollowQueue();
+		if (loadNextItem) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Loading next item in queue");
+			media = nextItem.getMedia();
+		}
+
+		if (playNextEpisode) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Playback of next episode will start immediately.");
+			prepareImmediately = startWhenPrepared = true;
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"No more episodes available to play; Reloading current episode");
+			prepareImmediately = startWhenPrepared = false;
+			stopForeground(true);
+			stopWidgetUpdater();
+		}
+
+		int notificationCode = 0;
+		shouldStream = !media.localFileAvailable();
+		if (media.getMediaType() == MediaType.AUDIO) {
+			notificationCode = EXTRA_CODE_AUDIO;
+			playingVideo = false;
+		} else if (media.getMediaType() == MediaType.VIDEO) {
+			notificationCode = EXTRA_CODE_VIDEO;
+		}
+		resetVideoSurface();
+		refreshRemoteControlClientState();
+		sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+	}
 
 	public void setSleepTimer(long waitingTime) {
 		if (AppConfig.DEBUG)
