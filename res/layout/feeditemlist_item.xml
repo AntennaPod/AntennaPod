@@ -87,6 +87,19 @@
         android:textColor="?android:attr/textColorTertiary"
         android:textSize="@dimen/text_size_micro" />
 
+    <ProgressBar
+        android:id="@+id/pbar_episode_progress"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvPublished"
+        android:layout_marginBottom="4dp"
+        android:layout_marginLeft="4dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_toLeftOf="@id/imgvType"
+        android:layout_toRightOf="@id/txtvLenSize" />
+
     <ImageButton
         android:id="@id/butAction"
         android:layout_width="48dp"
@@ -130,22 +143,5 @@
         android:gravity="center"
         android:padding="2dp"
         android:src="@drawable/av_play_dark" />
-
-    <TextView
-        android:id="@+id/statusInProgress"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:background="@color/status_progress"
-        android:gravity="center"
-        android:minWidth="@dimen/status_indicator_width"
-        android:paddingLeft="2dp"
-        android:paddingRight="2dp"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_micro"
-        android:textStyle="bold" />
 
 </RelativeLayout>
