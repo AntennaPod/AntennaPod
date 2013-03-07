@@ -111,7 +111,8 @@ public class FeedManager {
 
 	/**
 	 * Play FeedMedia and start the playback service + launch Mediaplayer
-	 * Activity.
+	 * Activity. The FeedItem belonging to the media is moved to the top of the
+	 * queue.
 	 * 
 	 * @param context
 	 *            for starting the playbackservice
@@ -148,6 +149,11 @@ public class FeedManager {
 				// Launch Mediaplayer
 				context.startActivity(PlaybackService.getPlayerActivityIntent(
 						context, media));
+			}
+			if (queue.contains(media.getItem())) {
+				moveQueueItem(context, queue.indexOf(media.getItem()), 0, true);
+			} else {
+				addQueueItemAt(context, media.getItem(), 0);
 			}
 		} catch (MediaFileNotFoundException e) {
 			e.printStackTrace();
@@ -197,7 +203,8 @@ public class FeedManager {
 					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			SharedPreferences.Editor editor = prefs.edit();
 			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, -1);
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID, -1);
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+					-1);
 			editor.commit();
 		}
 
@@ -605,7 +612,43 @@ public class FeedManager {
 		}
 	}
 
-	/** Adds FeedItems to the queue if they are not in the queue yet. */
+	/**
+	 * Adds a feeditem to the queue at the specified index if it is not in the
+	 * queue yet. The item is marked as 'read'.
+	 */
+	public void addQueueItemAt(final Context context, final FeedItem item,
+			final int index) {
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				if (!queue.contains(item)) {
+					queue.add(index, item);
+					if (!item.isRead()) {
+						markItemRead(context, item, true, false);
+					}
+				}
+				eventDist.sendQueueUpdateBroadcast();
+
+				dbExec.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						PodDBAdapter adapter = new PodDBAdapter(context);
+						adapter.open();
+						adapter.setQueue(queue);
+						adapter.close();
+					}
+				});
+			}
+		});
+
+	}
+
+	/**
+	 * Adds FeedItems to the queue if they are not in the queue yet. The items
+	 * are marked as 'read'.
+	 */
 	public void addQueueItem(final Context context, final FeedItem... items) {
 		if (items.length > 0) {
 			contentChanger.post(new Runnable() {
@@ -615,6 +658,9 @@ public class FeedManager {
 					for (FeedItem item : items) {
 						if (!queue.contains(item)) {
 							queue.add(item);
+							if (!item.isRead()) {
+								markItemRead(context, item, true, false);
+							}
 						}
 					}
 					eventDist.sendQueueUpdateBroadcast();

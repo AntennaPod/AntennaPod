@@ -257,10 +257,6 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	@Override
 	public void onPlaybackStart() {
-		if (getItem().isRead() == false) {
-			FeedManager.getInstance().markItemRead(PodcastApp.getInstance(),
-					getItem(), true, false);
-		}
 	}
 
 	@Override
