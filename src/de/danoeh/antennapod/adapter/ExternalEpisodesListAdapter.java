@@ -89,8 +89,6 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.butAction);
 			holder.statusPlaying = (View) convertView
 					.findViewById(R.id.statusPlaying);
-			holder.statusUnread = (View) convertView
-					.findViewById(R.id.statusUnread);
 			holder.statusInProgress = (TextView) convertView
 					.findViewById(R.id.statusInProgress);
 			convertView.setTag(holder);
@@ -106,30 +104,25 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			switch (state) {
 			case PLAYING:
 				holder.statusPlaying.setVisibility(View.VISIBLE);
-				holder.statusUnread.setVisibility(View.GONE);
 				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			case IN_PROGRESS:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.GONE);
 				holder.statusInProgress.setVisibility(View.VISIBLE);
 				holder.statusInProgress.setText(Converter
 						.getDurationStringLong(item.getMedia().getPosition()));
 				break;
 			case NEW:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.VISIBLE);
 				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			default:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.GONE);
 				holder.statusInProgress.setVisibility(View.GONE);
 				break;
 			}
 		} else {
 			holder.statusPlaying.setVisibility(View.GONE);
-			holder.statusUnread.setVisibility(View.GONE);
 			holder.statusInProgress.setVisibility(View.GONE);
 		}
 
@@ -188,7 +181,6 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		ImageView downloadStatus;
 		ImageView feedImage;
 		ImageButton butAction;
-		View statusUnread;
 		View statusPlaying;
 		TextView statusInProgress;
 	}

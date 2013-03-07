@@ -81,22 +81,6 @@
         android:layout_marginTop="4dp"
         android:layout_toLeftOf="@id/butAction" />
 
-    <TextView
-        android:id="@+id/statusUnread"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:background="@color/status_unread"
-        android:gravity="center"
-        android:minWidth="@dimen/status_indicator_width"
-        android:text="@string/new_label"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_micro"
-        android:textStyle="bold" />
-
     <ImageView
         android:id="@+id/statusPlaying"
         android:layout_width="@dimen/status_indicator_width"
