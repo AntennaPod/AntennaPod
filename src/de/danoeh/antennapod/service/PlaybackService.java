@@ -1005,7 +1005,9 @@ public class PlaybackService extends Service {
 
 	public void seek(int i) {
 		saveCurrentPosition();
-		if (status == PlayerStatus.INITIALIZED) {
+		if (status == PlayerStatus.INITIALIZED
+				|| status == PlayerStatus.INITIALIZING
+				|| status == PlayerStatus.PREPARING) {
 			media.setPosition(i);
 			setStartWhenPrepared(true);
 			prepare();
