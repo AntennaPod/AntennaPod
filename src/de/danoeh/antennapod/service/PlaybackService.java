@@ -85,6 +85,12 @@ public class PlaybackService extends Service {
 	 */
 	public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.service.actionShutdownPlaybackService";
 
+	/**
+	 * If the PlaybackService receives this action, it will end playback of the
+	 * current episode and load the next episode if there is one available.
+	 * */
+	public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.service.skipCurrentEpisode";
+
 	/** Used in NOTIFICATION_TYPE_RELOAD. */
 	public static final int EXTRA_CODE_AUDIO = 1;
 	public static final int EXTRA_CODE_VIDEO = 2;
@@ -266,6 +272,7 @@ public class PlaybackService extends Service {
 				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 		registerReceiver(audioBecomingNoisy, new IntentFilter(
 				AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+		registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(ACTION_SKIP_CURRENT_EPISODE));
 
 	}
 
@@ -296,6 +303,7 @@ public class PlaybackService extends Service {
 		unregisterReceiver(headsetDisconnected);
 		unregisterReceiver(shutdownReceiver);
 		unregisterReceiver(audioBecomingNoisy);
+		unregisterReceiver(skipCurrentEpisodeReceiver);
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
 			audioManager.unregisterRemoteControlClient(remoteControlClient);
 		}
@@ -460,25 +468,28 @@ public class PlaybackService extends Service {
 
 					@Override
 					protected void onPostExecute(Playable result) {
-						if (result != null) {
-							try {
-								if (shouldStream) {
-									player.setDataSource(media.getStreamUrl());
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
-								} else {
-									player.setDataSource(media
-											.getLocalMediaUrl());
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
+						if (status == PlayerStatus.INITIALIZING) {
+							if (result != null) {
+								try {
+									if (shouldStream) {
+										player.setDataSource(media
+												.getStreamUrl());
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									} else {
+										player.setDataSource(media
+												.getLocalMediaUrl());
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									}
+								} catch (IOException e) {
+									e.printStackTrace();
 								}
-							} catch (IOException e) {
-								e.printStackTrace();
+							} else {
+								setStatus(PlayerStatus.ERROR);
+								sendBroadcast(new Intent(
+										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 							}
-						} else {
-							setStatus(PlayerStatus.ERROR);
-							sendBroadcast(new Intent(
-									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 						}
 					}
 
@@ -531,35 +542,45 @@ public class PlaybackService extends Service {
 
 					@Override
 					protected void onPostExecute(Playable result) {
-						if (result != null) {
-							playingVideo = false;
-							try {
-								if (shouldStream) {
-									player.setDataSource(media.getStreamUrl());
-								} else if (media.localFileAvailable()) {
-									player.setDataSource(media
-											.getLocalMediaUrl());
-								}
+						// check if state of service has changed. If it has
+						// changed, assume that loaded metadata is not needed
+						// anymore.
+						if (status == PlayerStatus.INITIALIZING) {
+							if (result != null) {
+								playingVideo = false;
+								try {
+									if (shouldStream) {
+										player.setDataSource(media
+												.getStreamUrl());
+									} else if (media.localFileAvailable()) {
+										player.setDataSource(media
+												.getLocalMediaUrl());
+									}
 
-								if (prepareImmediately) {
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
-								} else {
-									setStatus(PlayerStatus.INITIALIZED);
+									if (prepareImmediately) {
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									} else {
+										setStatus(PlayerStatus.INITIALIZED);
+									}
+								} catch (IOException e) {
+									e.printStackTrace();
+									media = null;
+									setStatus(PlayerStatus.ERROR);
+									sendBroadcast(new Intent(
+											ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 								}
-							} catch (IOException e) {
-								e.printStackTrace();
+							} else {
+								Log.e(TAG, "InitTask could not load metadata");
 								media = null;
 								setStatus(PlayerStatus.ERROR);
 								sendBroadcast(new Intent(
 										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 							}
 						} else {
-							Log.e(TAG, "InitTask could not load metadata");
-							media = null;
-							setStatus(PlayerStatus.ERROR);
-							sendBroadcast(new Intent(
-									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+							if (AppConfig.DEBUG)
+								Log.d(TAG,
+										"Status of player has changed during initialization. Stopping init process.");
 						}
 					}
 
@@ -688,7 +709,7 @@ public class PlaybackService extends Service {
 
 	private void endPlayback(boolean playNextEpisode) {
 		if (AppConfig.DEBUG)
-			Log.d(TAG, "Playback completed");
+			Log.d(TAG, "Playback ended");
 		audioManager.abandonAudioFocus(audioFocusChangeListener);
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(getApplicationContext());
@@ -1212,6 +1233,22 @@ public class PlaybackService extends Service {
 			}
 		}
 
+	};
+
+	private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
+
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
+				if (media != null) {
+					setStatus(PlayerStatus.STOPPED);
+					player.reset();
+					endPlayback(false);
+				}
+			}
+		}
 	};
 
 	/** Periodically saves the position of the media file */
