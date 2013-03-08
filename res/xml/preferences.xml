@@ -36,6 +36,9 @@
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
         <CheckBoxPreference android:summary="@string/pref_autoQueue_sum" android:defaultValue="true" android:key="prefAutoQueue" android:title="@string/pref_autoQueue_title"/>
+        <PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
+            <CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
+        </PreferenceScreen>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/flattr_settings_label" >
         <PreferenceScreen

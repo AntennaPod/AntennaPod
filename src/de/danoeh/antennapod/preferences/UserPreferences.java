@@ -2,7 +2,10 @@ package de.danoeh.antennapod.preferences;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -36,6 +39,8 @@ public class UserPreferences implements
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
+	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
+	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 
 	private static UserPreferences instance;
 	private Context context;
@@ -50,6 +55,8 @@ public class UserPreferences implements
 	private boolean displayOnlyEpisodes;
 	private boolean autoDelete;
 	private int theme;
+	private boolean enableAutodownloadWifiFilter;
+	private String[] autodownloadSelectedNetworks;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -90,6 +97,10 @@ public class UserPreferences implements
 		displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
 		theme = readThemeValue(sp.getString(PREF_THEME, "0"));
+		enableAutodownloadWifiFilter = sp.getBoolean(
+				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+		autodownloadSelectedNetworks = StringUtils.split(
+				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -160,6 +171,16 @@ public class UserPreferences implements
 		return instance.theme;
 	}
 
+	public static boolean isEnableAutodownloadWifiFilter() {
+		instanceAvailable();
+		return instance.enableAutodownloadWifiFilter;
+	}
+
+	public static String[] getAutodownloadSelectedNetworks() {
+		instanceAvailable();
+		return instance.autodownloadSelectedNetworks;
+	}
+
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
 		if (AppConfig.DEBUG)
@@ -204,7 +225,22 @@ public class UserPreferences implements
 					false);
 		} else if (key.equals(PREF_THEME)) {
 			theme = readThemeValue(sp.getString(PREF_THEME, ""));
+		} else if (key.equals(PREF_ENABLE_AUTODL_WIFI_FILTER)) {
+			enableAutodownloadWifiFilter = sp.getBoolean(
+					PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+		} else if (key.equals(PREF_AUTODL_SELECTED_NETWORKS)) {
+			autodownloadSelectedNetworks = StringUtils.split(
+					sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
 		}
+	}
+
+	public static void setAutodownloadSelectedNetworks(Context context, String[] value) {
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(context.getApplicationContext())
+				.edit();
+		editor.putString(PREF_AUTODL_SELECTED_NETWORKS,
+				StringUtils.join(value, ','));
+		editor.commit();
 	}
 
 	/**

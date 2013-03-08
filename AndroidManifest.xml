@@ -23,6 +23,7 @@
     <uses-feature
         android:name="android.hardware.screen.portrait"
         android:required="false" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
