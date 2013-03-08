@@ -8,6 +8,7 @@ import android.content.SharedPreferences.Editor;
 import android.os.Parcel;
 import android.os.Parcelable;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 
@@ -101,6 +102,15 @@ public class FeedMedia extends FeedFile implements Playable {
 			return true;
 		}
 		return false;
+	}
+
+	/**
+	 * Reads playback preferences to determine whether this FeedMedia object is
+	 * currently being played.
+	 */
+	public boolean isPlaying() {
+		return PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
+				&& PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
 	}
 
 	@Override

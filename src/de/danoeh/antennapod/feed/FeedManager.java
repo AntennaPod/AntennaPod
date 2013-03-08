@@ -157,7 +157,7 @@ public class FeedManager {
 			}
 		} catch (MediaFileNotFoundException e) {
 			e.printStackTrace();
-			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
+			if (media.isPlaying()) {
 				context.sendBroadcast(new Intent(
 						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			}
@@ -179,14 +179,20 @@ public class FeedManager {
 
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			if (media.getId() == PlaybackPreferences.getLastPlayedId()) {
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM, true);
-				editor.commit();
-			}
-			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
-				context.sendBroadcast(new Intent(
-						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+			if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
+				if (media.getId() == PlaybackPreferences
+						.getCurrentlyPlayingFeedMediaId()) {
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putBoolean(
+							PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
+							true);
+					editor.commit();
+				}
+				if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media
+						.getId()) {
+					context.sendBroadcast(new Intent(
+							PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+				}
 			}
 		}
 		if (AppConfig.DEBUG)
@@ -198,11 +204,11 @@ public class FeedManager {
 	public void deleteFeed(final Context context, final Feed feed) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context.getApplicationContext());
-		if (PlaybackPreferences.getLastPlayedFeedId() == feed.getId()) {
+		if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
+				&& PlaybackPreferences.getLastPlayedFeedId() == feed.getId()) {
 			context.sendBroadcast(new Intent(
 					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, -1);
 			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
 					-1);
 			editor.commit();
@@ -748,7 +754,7 @@ public class FeedManager {
 							.getApplicationContext());
 			if (UserPreferences.isAutoDelete()) {
 
-				if ((media.getId() != PlaybackPreferences.getLastPlayedId())
+				if (!media.isPlaying()
 						&& ((media.getId() != PlaybackPreferences
 								.getAutoDeleteMediaId()) || (media.getId() == PlaybackPreferences
 								.getAutoDeleteMediaId() && PlaybackPreferences
