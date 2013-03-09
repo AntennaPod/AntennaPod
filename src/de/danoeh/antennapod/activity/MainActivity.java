@@ -1,15 +1,23 @@
 package de.danoeh.antennapod.activity;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.util.Log;
+import android.view.View;
 
+import com.actionbarsherlock.app.ActionBar;
+import com.actionbarsherlock.app.ActionBar.Tab;
+import com.actionbarsherlock.app.ActionBar.TabListener;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
@@ -39,8 +47,7 @@ public class MainActivity extends SherlockFragmentActivity {
 
 	private FeedManager manager;
 	private ViewPager viewpager;
-	private MainPagerAdapter pagerAdapter;
-	private TabPageIndicator tabs;
+	private TabsAdapter pagerAdapter;
 	private ExternalPlayerFragment externalPlayerFragment;
 
 	private static boolean appLaunched = false;
@@ -53,13 +60,21 @@ public class MainActivity extends SherlockFragmentActivity {
 		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
-		pagerAdapter = new MainPagerAdapter(getSupportFragmentManager(), this);
+
+		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
-		tabs = (TabPageIndicator) findViewById(R.id.tabs);
+		pagerAdapter = new TabsAdapter(this, viewpager);
 
 		viewpager.setAdapter(pagerAdapter);
-		tabs.setViewPager(viewpager);
+
+		Tab feedsTab = getSupportActionBar().newTab();
+		feedsTab.setText(R.string.feeds_label);
+		Tab episodesTab = getSupportActionBar().newTab();
+		episodesTab.setText(R.string.episodes_label);
+
+		pagerAdapter.addTab(feedsTab, FeedlistFragment.class, null);
+		pagerAdapter.addTab(episodesTab, EpisodesFragment.class, null);
 
 		FragmentTransaction transaction = getSupportFragmentManager()
 				.beginTransaction();
@@ -72,10 +87,21 @@ public class MainActivity extends SherlockFragmentActivity {
 				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
 			appLaunched = true;
 			if (manager.getUnreadItemsSize(true) > 0) {
-				viewpager.setCurrentItem(MainPagerAdapter.POS_EPISODES);
-
+				// select 'episodes' tab
+				getSupportActionBar().setSelectedNavigationItem(1);
 			}
 		}
+		if (savedInstanceState != null) {
+			getSupportActionBar().setSelectedNavigationItem(
+					savedInstanceState.getInt("tab", 0));
+		}
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		super.onSaveInstanceState(outState);
+		outState.putInt("tab", getSupportActionBar()
+				.getSelectedNavigationIndex());
 	}
 
 	@Override
@@ -166,48 +192,85 @@ public class MainActivity extends SherlockFragmentActivity {
 		return true;
 	}
 
-	public static class MainPagerAdapter extends FragmentStatePagerAdapter {
-		private static final int NUM_ITEMS = 2;
+	public static class TabsAdapter extends FragmentPagerAdapter implements
+			ActionBar.TabListener, ViewPager.OnPageChangeListener {
+		private final Context mContext;
+		private final ActionBar mActionBar;
+		private final ViewPager mViewPager;
+		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
 
-		public static final int POS_FEEDLIST = 0;
-		public static final int POS_EPISODES = 1;
+		static final class TabInfo {
+			private final Class<?> clss;
+			private final Bundle args;
 
-		private Context context;
-
-		public MainPagerAdapter(FragmentManager fm, Context context) {
-			super(fm);
-			this.context = context;
+			TabInfo(Class<?> _class, Bundle _args) {
+				clss = _class;
+				args = _args;
+			}
 		}
 
-		@Override
-		public Fragment getItem(int position) {
-			switch (position) {
-			case POS_FEEDLIST:
-				return new FeedlistFragment();
-			case POS_EPISODES:
-				return new EpisodesFragment();
+		public TabsAdapter(MainActivity activity, ViewPager pager) {
+			super(activity.getSupportFragmentManager());
+			mContext = activity;
+			mActionBar = activity.getSupportActionBar();
+			mViewPager = pager;
+			mViewPager.setAdapter(this);
+			mViewPager.setOnPageChangeListener(this);
+		}
 
-			default:
-				return null;
-			}
+		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
+			TabInfo info = new TabInfo(clss, args);
+			tab.setTag(info);
+			tab.setTabListener(this);
+			mTabs.add(info);
+			mActionBar.addTab(tab);
+			notifyDataSetChanged();
 		}
 
 		@Override
 		public int getCount() {
-			return NUM_ITEMS;
+			return mTabs.size();
 		}
 
 		@Override
-		public CharSequence getPageTitle(int position) {
-			switch (position) {
-			case POS_FEEDLIST:
-				return context.getString(R.string.podcasts_label);
-			case POS_EPISODES:
-				return context.getString(R.string.episodes_label);
-			default:
-				return null;
+		public Fragment getItem(int position) {
+			TabInfo info = mTabs.get(position);
+			return Fragment.instantiate(mContext, info.clss.getName(),
+					info.args);
+		}
+
+		@Override
+		public void onPageScrolled(int position, float positionOffset,
+				int positionOffsetPixels) {
+		}
+
+		@Override
+		public void onPageSelected(int position) {
+			mActionBar.setSelectedNavigationItem(position);
+		}
+
+		@Override
+		public void onPageScrollStateChanged(int state) {
+		}
+
+		@Override
+		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+			Object tag = tab.getTag();
+			for (int i = 0; i < mTabs.size(); i++) {
+				if (mTabs.get(i) == tag) {
+					mViewPager.setCurrentItem(i);
+				}
 			}
 		}
 
+		@Override
+		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+
+		}
+
+		@Override
+		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		}
 	}
+
 }
