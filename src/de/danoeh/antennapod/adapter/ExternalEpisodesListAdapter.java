@@ -235,7 +235,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 				headerString += " (" + getChildrenCount(GROUP_POS_QUEUE) + ")";
 			}
 		} else {
-			headerString = context.getString(R.string.new_label);
+			headerString = context.getString(R.string.waiting_list_label);
 			if (manager.getUnreadItemsSize(true) > 0) {
 				headerString += " (" + getChildrenCount(GROUP_POS_UNREAD) + ")";
 			}
