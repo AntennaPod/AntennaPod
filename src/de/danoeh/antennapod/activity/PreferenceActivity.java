@@ -144,6 +144,20 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 								}
 							}
 						});
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
+				.setOnPreferenceChangeListener(
+						new OnPreferenceChangeListener() {
+
+							@Override
+							public boolean onPreferenceChange(
+									Preference preference, Object newValue) {
+								if (newValue instanceof String) {
+									setEpisodeCacheSizeText(Integer
+											.valueOf((String) newValue));
+								}
+								return true;
+							}
+						});
 		buildAutodownloadSelectedNetworsPreference();
 		setSelectedNetworksEnabled(UserPreferences
 				.isEnableAutodownloadWifiFilter());
@@ -162,6 +176,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	protected void onResume() {
 		super.onResume();
 		checkItemVisibility();
+		setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
 		setDataFolderText();
 	}
 
@@ -173,6 +188,12 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
 		findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
 
+	}
+
+	private void setEpisodeCacheSizeText(int cacheSize) {
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(
+				Integer.toString(cacheSize)
+						+ getString(R.string.episodes_suffix));
 	}
 
 	private void setDataFolderText() {

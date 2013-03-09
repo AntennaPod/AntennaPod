@@ -41,6 +41,7 @@ public class UserPreferences implements
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
+	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
 
 	private static UserPreferences instance;
 	private Context context;
@@ -57,6 +58,7 @@ public class UserPreferences implements
 	private int theme;
 	private boolean enableAutodownloadWifiFilter;
 	private String[] autodownloadSelectedNetworks;
+	private int episodeCacheSize;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -101,6 +103,8 @@ public class UserPreferences implements
 				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
 		autodownloadSelectedNetworks = StringUtils.split(
 				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+		episodeCacheSize = Integer.valueOf(sp.getString(
+				PREF_EPISODE_CACHE_SIZE, "20"));
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -181,6 +185,11 @@ public class UserPreferences implements
 		return instance.autodownloadSelectedNetworks;
 	}
 
+	public static int getEpisodeCacheSize() {
+		instanceAvailable();
+		return instance.episodeCacheSize;
+	}
+
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
 		if (AppConfig.DEBUG)
@@ -231,10 +240,14 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_AUTODL_SELECTED_NETWORKS)) {
 			autodownloadSelectedNetworks = StringUtils.split(
 					sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+		} else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
+			episodeCacheSize = Integer.valueOf(sp.getString(
+					PREF_EPISODE_CACHE_SIZE, "20"));
 		}
 	}
 
-	public static void setAutodownloadSelectedNetworks(Context context, String[] value) {
+	public static void setAutodownloadSelectedNetworks(Context context,
+			String[] value) {
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(context.getApplicationContext())
 				.edit();
