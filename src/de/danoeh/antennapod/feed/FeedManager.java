@@ -726,7 +726,6 @@ public class FeedManager {
 	public void removeQueueItem(final Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
-			autoDeleteIfPossible(context, item.getMedia());
 			dbExec.execute(new Runnable() {
 
 				@Override
@@ -740,44 +739,6 @@ public class FeedManager {
 
 		}
 		eventDist.sendQueueUpdateBroadcast();
-	}
-
-	/**
-	 * Delete the episode of this FeedMedia object if auto-delete is enabled and
-	 * it is not the last played media or it is the last played media and
-	 * playback has been completed.
-	 */
-	public void autoDeleteIfPossible(Context context, FeedMedia media) {
-		if (media != null) {
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context
-							.getApplicationContext());
-			if (UserPreferences.isAutoDelete()) {
-
-				if (!media.isPlaying()
-						&& ((media.getId() != PlaybackPreferences
-								.getAutoDeleteMediaId()) || (media.getId() == PlaybackPreferences
-								.getAutoDeleteMediaId() && PlaybackPreferences
-								.isAutoDeleteMediaPlaybackCompleted()))) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Performing auto-cleanup");
-					deleteFeedMedia(context, media);
-
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putLong(
-							PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID, -1);
-					editor.commit();
-				} else {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Didn't do auto-cleanup");
-				}
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Auto-delete preference is disabled");
-			}
-		} else {
-			Log.e(TAG, "Could not do auto-cleanup: media was null");
-		}
 	}
 
 	/**

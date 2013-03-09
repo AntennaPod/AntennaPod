@@ -171,15 +171,13 @@
     <string name="pref_display_only_episodes_title">Display only episodes</string>
     <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="pref_auto_delete_title">Auto-delete</string>
-    <string name="pref_auto_delete_sum">Delete an episode when playback completes or when it is removed from the queue.</string>
     <string name="pref_set_theme_title">Select theme</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
-    
+
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>
     <string name="found_in_shownotes_label">Found in shownotes</string>
