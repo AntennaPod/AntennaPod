@@ -69,7 +69,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		viewpager.setAdapter(pagerAdapter);
 
 		Tab feedsTab = getSupportActionBar().newTab();
-		feedsTab.setText(R.string.feeds_label);
+		feedsTab.setText(R.string.podcasts_label);
 		Tab episodesTab = getSupportActionBar().newTab();
 		episodesTab.setText(R.string.episodes_label);
 
