@@ -34,7 +34,6 @@ public class UserPreferences implements
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
-	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
@@ -52,7 +51,6 @@ public class UserPreferences implements
 	private boolean downloadMediaOnWifiOnly;
 	private long updateInterval;
 	private boolean allowMobileUpdate;
-	private boolean autoQueue;
 	private boolean displayOnlyEpisodes;
 	private boolean autoDelete;
 	private int theme;
@@ -95,7 +93,6 @@ public class UserPreferences implements
 		updateInterval = readUpdateInterval(sp.getString(PREF_UPDATE_INTERVAL,
 				"0"));
 		allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
-		autoQueue = sp.getBoolean(PREF_AUTO_QUEUE, true);
 		displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
 		theme = readThemeValue(sp.getString(PREF_THEME, "0"));
@@ -153,11 +150,6 @@ public class UserPreferences implements
 	public static boolean isAllowMobileUpdate() {
 		instanceAvailable();
 		return instance.allowMobileUpdate;
-	}
-
-	public static boolean isAutoQueue() {
-		instanceAvailable();
-		return instance.autoQueue;
 	}
 
 	public static boolean isDisplayOnlyEpisodes() {
@@ -225,9 +217,6 @@ public class UserPreferences implements
 
 		} else if (key.equals(PREF_AUTO_DELETE)) {
 			autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
-
-		} else if (key.equals(PREF_AUTO_QUEUE)) {
-			autoQueue = sp.getBoolean(PREF_AUTO_QUEUE, true);
 
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES,

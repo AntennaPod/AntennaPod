@@ -848,8 +848,7 @@ public class DownloadService extends Service {
 				manager.setFeedMedia(DownloadService.this, media);
 			}
 
-			if (UserPreferences.isAutoQueue()
-					&& !FeedManager.getInstance().isInQueue(media.getItem())) {
+			if (!FeedManager.getInstance().isInQueue(media.getItem())) {
 				FeedManager.getInstance().addQueueItem(DownloadService.this,
 						media.getItem());
 			}
