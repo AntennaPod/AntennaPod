@@ -627,57 +627,51 @@ public class FeedManager {
 			Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 		if (NetworkUtils.autodownloadNetworkAvailable(context)) {
 			int undownloadedEpisodes = getNumberOfUndownloadedEpisodes();
-			if (undownloadedEpisodes > 0) {
-				int downloadedEpisodes = getNumberOfDownloadedEpisodes();
-				int deletedEpisodes = performAutoCleanup(context,
-						getPerformAutoCleanupArgs(undownloadedEpisodes));
-				int episodeSpaceLeft = undownloadedEpisodes;
-				if (UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
-						+ undownloadedEpisodes) {
-					episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
-							- (downloadedEpisodes - deletedEpisodes);
-				}
+			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
+			int deletedEpisodes = performAutoCleanup(context,
+					getPerformAutoCleanupArgs(undownloadedEpisodes));
+			int episodeSpaceLeft = undownloadedEpisodes;
+			if (UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
+					+ undownloadedEpisodes) {
+				episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
+						- (downloadedEpisodes - deletedEpisodes);
+			}
 
-				List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
-				if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-					for (FeedItem item : queue) {
-						if (item.hasMedia() && !item.getMedia().isDownloaded()) {
-							itemsToDownload.add(item);
-							episodeSpaceLeft--;
-							undownloadedEpisodes--;
-							if (episodeSpaceLeft == 0
-									|| undownloadedEpisodes == 0) {
-								break;
-							}
+			List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
+			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+				for (FeedItem item : queue) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+						itemsToDownload.add(item);
+						episodeSpaceLeft--;
+						undownloadedEpisodes--;
+						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+							break;
 						}
 					}
 				}
-				if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-					for (FeedItem item : unreadItems) {
-						if (item.hasMedia() && !item.getMedia().isDownloaded()) {
-							itemsToDownload.add(item);
-							episodeSpaceLeft--;
-							undownloadedEpisodes--;
-							if (episodeSpaceLeft == 0
-									|| undownloadedEpisodes == 0) {
-								break;
-							}
+			}
+			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+				for (FeedItem item : unreadItems) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+						itemsToDownload.add(item);
+						episodeSpaceLeft--;
+						undownloadedEpisodes--;
+						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+							break;
 						}
 					}
 				}
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Enqueueing " + itemsToDownload.size()
-							+ " items for download");
+			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Enqueueing " + itemsToDownload.size()
+						+ " items for download");
 
-				try {
-					downloadFeedItem(false, context,
-							itemsToDownload
-									.toArray(new FeedItem[itemsToDownload
-											.size()]));
-				} catch (DownloadRequestException e) {
-					e.printStackTrace();
-				}
-
+			try {
+				downloadFeedItem(false, context,
+						itemsToDownload.toArray(new FeedItem[itemsToDownload
+								.size()]));
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
 			}
 
 		}
@@ -818,6 +812,12 @@ public class FeedManager {
 						adapter.close();
 					}
 				});
+				new Thread() {
+					@Override
+					public void run() {
+						autodownloadUndownloadedItems(context);
+					}
+				}.start();
 			}
 		});
 
@@ -852,6 +852,12 @@ public class FeedManager {
 							adapter.close();
 						}
 					});
+					new Thread() {
+						@Override
+						public void run() {
+							autodownloadUndownloadedItems(context);
+						}
+					}.start();
 				}
 			});
 		}
@@ -897,7 +903,6 @@ public class FeedManager {
 		if (removed) {
 			adapter.setQueue(queue);
 		}
-
 	}
 
 	/** Removes a FeedItem from the queue. */
@@ -916,6 +921,12 @@ public class FeedManager {
 			});
 
 		}
+		new Thread() {
+			@Override
+			public void run() {
+				autodownloadUndownloadedItems(context);
+			}
+		}.start();
 		eventDist.sendQueueUpdateBroadcast();
 	}
 
@@ -991,7 +1002,7 @@ public class FeedManager {
 	 * 
 	 * @return The saved Feed with a database ID
 	 */
-	public Feed updateFeed(Context context, final Feed newFeed) {
+	public Feed updateFeed(final Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
 		final Feed savedFeed = searchFeedByIdentifyingValue(newFeed
 				.getIdentifyingValue());
@@ -1038,6 +1049,12 @@ public class FeedManager {
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			savedFeed.setType(newFeed.getType());
 			setCompleteFeed(context, savedFeed);
+			new Thread() {
+				@Override
+				public void run() {
+					autodownloadUndownloadedItems(context);
+				}
+			}.start();
 			return savedFeed;
 		}
 
