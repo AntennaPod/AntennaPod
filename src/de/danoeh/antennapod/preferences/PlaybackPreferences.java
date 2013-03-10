@@ -17,9 +17,6 @@ public class PlaybackPreferences implements
 		SharedPreferences.OnSharedPreferenceChangeListener {
 	private static final String TAG = "PlaybackPreferences";
 
-	/** Contains the type of the media that was played last. */
-	public static final String PREF_LAST_PLAYED_ID = "de.danoeh.antennapod.preferences.lastPlayedId";
-
 	/**
 	 * Contains the feed id of the currently playing item if it is a FeedMedia
 	 * object.
@@ -40,31 +37,19 @@ public class PlaybackPreferences implements
 	public static final String PREF_CURRENTLY_PLAYING_MEDIA = "de.danoeh.antennapod.preferences.currentlyPlayingMedia";
 
 	/** True if last played media was streamed. */
-	public static final String PREF_LAST_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
+	public static final String PREF_CURRENT_EPISODE_IS_STREAM = "de.danoeh.antennapod.preferences.lastIsStream";
 
 	/** True if last played media was a video. */
-	public static final String PREF_LAST_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
-
-	/** True if playback of last played media has been completed. */
-	public static final String PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED = "de.danoeh.antennapod.preferences.lastPlaybackCompleted";
-
-	/**
-	 * ID of the last played media which should be auto-deleted as soon as
-	 * PREF_LAST_PLAYED_ID changes.
-	 */
-	public static final String PREF_AUTODELETE_MEDIA_ID = "de.danoeh.antennapod.preferences.autoDeleteMediaId";
+	public static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
 	/** Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing. */
 	public static final long NO_MEDIA_PLAYING = -1;
 
-	private long lastPlayedId;
 	private long currentlyPlayingFeedId;
 	private long currentlyPlayingFeedMediaId;
 	private long currentlyPlayingMedia;
-	private boolean lastIsStream;
-	private boolean lastIsVideo;
-	private boolean autoDeleteMediaPlaybackCompleted;
-	private long autoDeleteMediaId;
+	private boolean currentEpisodeIsStream;
+	private boolean currentEpisodeIsVideo;
 
 	private static PlaybackPreferences instance;
 	private Context context;
@@ -94,33 +79,18 @@ public class PlaybackPreferences implements
 	private void loadPreferences() {
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(context);
-		lastPlayedId = sp.getLong(PREF_LAST_PLAYED_ID, -1);
 		currentlyPlayingFeedId = sp.getLong(PREF_CURRENTLY_PLAYING_FEED_ID, -1);
 		currentlyPlayingFeedMediaId = sp.getLong(
 				PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
 		currentlyPlayingMedia = sp.getLong(PREF_CURRENTLY_PLAYING_MEDIA,
 				NO_MEDIA_PLAYING);
-		lastIsStream = sp.getBoolean(PREF_LAST_IS_STREAM, true);
-		lastIsVideo = sp.getBoolean(PREF_LAST_IS_VIDEO, false);
-		autoDeleteMediaPlaybackCompleted = sp.getBoolean(
-				PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED, false);
-		autoDeleteMediaId = sp.getLong(PREF_AUTODELETE_MEDIA_ID, -1);
+		currentEpisodeIsStream = sp.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
+		currentEpisodeIsVideo = sp.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
 	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-		if (key.equals(PREF_LAST_PLAYED_ID)) {
-			lastPlayedId = sp.getLong(PREF_LAST_PLAYED_ID, -1);
-			long mediaId = sp.getLong(
-					PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID, -1);
-			if (mediaId != -1) {
-				FeedManager manager = FeedManager.getInstance();
-				FeedMedia media = manager.getFeedMedia(mediaId);
-				if (media != null) {
-					manager.autoDeleteIfPossible(context, media);
-				}
-			}
-		} else if (key.equals(PREF_CURRENTLY_PLAYING_FEED_ID)) {
+		if (key.equals(PREF_CURRENTLY_PLAYING_FEED_ID)) {
 			currentlyPlayingFeedId = sp.getLong(PREF_CURRENTLY_PLAYING_FEED_ID,
 					-1);
 
@@ -128,17 +98,12 @@ public class PlaybackPreferences implements
 			currentlyPlayingMedia = sp
 					.getLong(PREF_CURRENTLY_PLAYING_MEDIA, -1);
 
-		} else if (key.equals(PREF_LAST_IS_STREAM)) {
-			lastIsStream = sp.getBoolean(PREF_LAST_IS_STREAM, true);
+		} else if (key.equals(PREF_CURRENT_EPISODE_IS_STREAM)) {
+			currentEpisodeIsStream = sp.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
 
-		} else if (key.equals(PREF_LAST_IS_VIDEO)) {
-			lastIsVideo = sp.getBoolean(PREF_LAST_IS_VIDEO, false);
+		} else if (key.equals(PREF_CURRENT_EPISODE_IS_VIDEO)) {
+			currentEpisodeIsVideo = sp.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
 
-		} else if (key.equals(PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED)) {
-			autoDeleteMediaPlaybackCompleted = sp.getBoolean(
-					PREF_AUTODELETE_MEDIA_ID, false);
-		} else if (key.equals(PREF_AUTODELETE_MEDIA_ID)) {
-			autoDeleteMediaId = sp.getLong(PREF_AUTODELETE_MEDIA_ID, -1);
 		} else if (key.equals(PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID)) {
 			currentlyPlayingFeedMediaId = sp.getLong(
 					PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
@@ -152,14 +117,6 @@ public class PlaybackPreferences implements
 		}
 	}
 
-	public static long getLastPlayedId() {
-		instanceAvailable();
-		return instance.lastPlayedId;
-	}
-
-	public static long getAutoDeleteMediaId() {
-		return instance.autoDeleteMediaId;
-	}
 
 	public static long getLastPlayedFeedId() {
 		instanceAvailable();
@@ -175,19 +132,14 @@ public class PlaybackPreferences implements
 		return instance.currentlyPlayingFeedMediaId;
 	}
 
-	public static boolean isLastIsStream() {
+	public static boolean getCurrentEpisodeIsStream() {
 		instanceAvailable();
-		return instance.lastIsStream;
+		return instance.currentEpisodeIsStream;
 	}
 
-	public static boolean isLastIsVideo() {
+	public static boolean getCurrentEpisodeIsVideo() {
 		instanceAvailable();
-		return instance.lastIsVideo;
-	}
-
-	public static boolean isAutoDeleteMediaPlaybackCompleted() {
-		instanceAvailable();
-		return instance.autoDeleteMediaPlaybackCompleted;
+		return instance.currentEpisodeIsVideo;
 	}
 
 }

@@ -3,10 +3,12 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
@@ -55,16 +57,22 @@ public class FeedItemMenuHandler {
 				&& requester.isDownloadingFile(selectedItem.getMedia());
 		boolean notLoadedAndNotLoading = hasMedia && (!downloaded)
 				&& (!downloading);
+		boolean isPlaying = hasMedia
+				&& selectedItem.getState() == FeedItem.State.PLAYING;
+
 		FeedItem.State state = selectedItem.getState();
 
-		if (!downloaded) {
+		if (!isPlaying) {
+			mi.setItemVisibility(R.id.skip_episode_item, false);
+		}
+		if (!downloaded || isPlaying) {
 			mi.setItemVisibility(R.id.play_item, false);
 			mi.setItemVisibility(R.id.remove_item, false);
 		}
 		if (!notLoadedAndNotLoading) {
 			mi.setItemVisibility(R.id.download_item, false);
 		}
-		if (!(notLoadedAndNotLoading | downloading)) {
+		if (!(notLoadedAndNotLoading | downloading) | isPlaying) {
 			mi.setItemVisibility(R.id.stream_item, false);
 		}
 		if (!downloading) {
@@ -82,7 +90,8 @@ public class FeedItemMenuHandler {
 			mi.setItemVisibility(R.id.share_link_item, false);
 		}
 
-		if (!(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
+		if (!AppConfig.DEBUG
+				|| !(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
 			mi.setItemVisibility(R.id.mark_unread_item, false);
 		}
 		if (!(state == FeedItem.State.NEW || state == FeedItem.State.IN_PROGRESS)) {
@@ -104,6 +113,10 @@ public class FeedItemMenuHandler {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		FeedManager manager = FeedManager.getInstance();
 		switch (menuItemId) {
+		case R.id.skip_episode_item:
+			context.sendBroadcast(new Intent(
+					PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
+			break;
 		case R.id.download_item:
 			manager.downloadFeedItem(context, selectedItem);
 			break;

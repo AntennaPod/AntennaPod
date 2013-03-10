@@ -1,13 +1,22 @@
 package de.danoeh.antennapod.activity;
 
 import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Resources.Theme;
+import android.net.wifi.WifiConfiguration;
+import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.preference.PreferenceScreen;
 import android.util.Log;
 
 import com.actionbarsherlock.app.SherlockPreferenceActivity;
@@ -32,6 +41,9 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_OPML_EXPORT = "prefOpmlExport";
 	private static final String PREF_ABOUT = "prefAbout";
 	private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
+	private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+
+	private CheckBoxPreference[] selectedNetworks;
 
 	@SuppressWarnings("deprecation")
 	@Override
@@ -102,27 +114,69 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
-		findPreference(UserPreferences.PREF_THEME).setOnPreferenceChangeListener(
-				new OnPreferenceChangeListener() {
+		findPreference(UserPreferences.PREF_THEME)
+				.setOnPreferenceChangeListener(
+						new OnPreferenceChangeListener() {
 
-					@Override
-					public boolean onPreferenceChange(Preference preference,
-							Object newValue) {
-						Intent i = getIntent();
-						i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
-								| Intent.FLAG_ACTIVITY_NEW_TASK);
-						finish();
-						startActivity(i);
-						return true;
-					}
-				});
+							@Override
+							public boolean onPreferenceChange(
+									Preference preference, Object newValue) {
+								Intent i = getIntent();
+								i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
+										| Intent.FLAG_ACTIVITY_NEW_TASK);
+								finish();
+								startActivity(i);
+								return true;
+							}
+						});
+		findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
+				.setOnPreferenceChangeListener(
+						new OnPreferenceChangeListener() {
 
+							@Override
+							public boolean onPreferenceChange(
+									Preference preference, Object newValue) {
+								if (newValue instanceof Boolean) {
+									setSelectedNetworksEnabled((Boolean) newValue);
+									return true;
+								} else {
+									return false;
+								}
+							}
+						});
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
+				.setOnPreferenceChangeListener(
+						new OnPreferenceChangeListener() {
+
+							@Override
+							public boolean onPreferenceChange(
+									Preference preference, Object newValue) {
+								if (newValue instanceof String) {
+									setEpisodeCacheSizeText(Integer
+											.valueOf((String) newValue));
+								}
+								return true;
+							}
+						});
+		buildAutodownloadSelectedNetworsPreference();
+		setSelectedNetworksEnabled(UserPreferences
+				.isEnableAutodownloadWifiFilter());
+
+	}
+
+	private void setSelectedNetworksEnabled(boolean b) {
+		if (selectedNetworks != null) {
+			for (Preference p : selectedNetworks) {
+				p.setEnabled(b);
+			}
+		}
 	}
 
 	@Override
 	protected void onResume() {
 		super.onResume();
 		checkItemVisibility();
+		setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
 		setDataFolderText();
 	}
 
@@ -134,6 +188,12 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
 		findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
 
+	}
+
+	private void setEpisodeCacheSizeText(int cacheSize) {
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(
+				Integer.toString(cacheSize)
+						+ getString(R.string.episodes_suffix));
 	}
 
 	private void setDataFolderText() {
@@ -180,4 +240,81 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		}
 	}
 
+	private void buildAutodownloadSelectedNetworsPreference() {
+		if (selectedNetworks != null) {
+			clearAutodownloadSelectedNetworsPreference();
+		}
+		// get configured networks
+		WifiManager wifiservice = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+		List<WifiConfiguration> networks = wifiservice.getConfiguredNetworks();
+
+		if (networks != null) {
+			selectedNetworks = new CheckBoxPreference[networks.size()];
+			List<String> prefValues = Arrays.asList(UserPreferences
+					.getAutodownloadSelectedNetworks());
+			PreferenceScreen prefScreen = (PreferenceScreen) findPreference(AUTO_DL_PREF_SCREEN);
+			OnPreferenceClickListener clickListener = new OnPreferenceClickListener() {
+
+				@Override
+				public boolean onPreferenceClick(Preference preference) {
+					if (preference instanceof CheckBoxPreference) {
+						String key = preference.getKey();
+						ArrayList<String> prefValuesList = new ArrayList<String>(
+								Arrays.asList(UserPreferences
+										.getAutodownloadSelectedNetworks()));
+						boolean newValue = ((CheckBoxPreference) preference)
+								.isChecked();
+						if (AppConfig.DEBUG)
+							Log.d(TAG, "Selected network " + key
+									+ ". New state: " + newValue);
+
+						int index = prefValuesList.indexOf(key);
+						if (index >= 0 && newValue == false) {
+							// remove network
+							prefValuesList.remove(index);
+						} else if (index < 0 && newValue == true) {
+							prefValuesList.add(key);
+						}
+
+						UserPreferences.setAutodownloadSelectedNetworks(
+								PreferenceActivity.this, prefValuesList
+										.toArray(new String[prefValuesList
+												.size()]));
+						return true;
+					} else {
+						return false;
+					}
+				}
+			};
+			// create preference for each known network. attach listener and set
+			// value
+			for (int i = 0; i < networks.size(); i++) {
+				WifiConfiguration config = networks.get(i);
+
+				CheckBoxPreference pref = new CheckBoxPreference(this);
+				String key = Integer.toString(config.networkId);
+				pref.setTitle(config.SSID);
+				pref.setKey(key);
+				pref.setOnPreferenceClickListener(clickListener);
+				pref.setPersistent(false);
+				pref.setChecked(prefValues.contains(key));
+				selectedNetworks[i] = pref;
+				prefScreen.addPreference(pref);
+			}
+		} else {
+			Log.e(TAG, "Couldn't get list of configure Wi-Fi networks");
+		}
+	}
+
+	private void clearAutodownloadSelectedNetworsPreference() {
+		if (selectedNetworks != null) {
+			PreferenceScreen prefScreen = (PreferenceScreen) findPreference(AUTO_DL_PREF_SCREEN);
+
+			for (int i = 0; i < selectedNetworks.length; i++) {
+				if (selectedNetworks[i] != null) {
+					prefScreen.removePreference(selectedNetworks[i]);
+				}
+			}
+		}
+	}
 }

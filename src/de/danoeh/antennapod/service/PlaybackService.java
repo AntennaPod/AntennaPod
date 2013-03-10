@@ -85,6 +85,12 @@ public class PlaybackService extends Service {
 	 */
 	public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.service.actionShutdownPlaybackService";
 
+	/**
+	 * If the PlaybackService receives this action, it will end playback of the
+	 * current episode and load the next episode if there is one available.
+	 * */
+	public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.service.skipCurrentEpisode";
+
 	/** Used in NOTIFICATION_TYPE_RELOAD. */
 	public static final int EXTRA_CODE_AUDIO = 1;
 	public static final int EXTRA_CODE_VIDEO = 2;
@@ -97,6 +103,8 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
 	public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
+	/** No more episodes are going to be played. */
+	public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
 
 	/**
 	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -173,7 +181,7 @@ public class PlaybackService extends Service {
 				return new Intent(context, AudioplayerActivity.class);
 			}
 		} else {
-			if (PlaybackPreferences.isLastIsVideo()) {
+			if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
 				return new Intent(context, VideoplayerActivity.class);
 			} else {
 				return new Intent(context, AudioplayerActivity.class);
@@ -192,35 +200,6 @@ public class PlaybackService extends Service {
 		} else {
 			return new Intent(context, AudioplayerActivity.class);
 		}
-	}
-
-	/** Get last played FeedMedia object or null if it doesn't exist. */
-	public static FeedMedia getLastPlayedMediaFromPreferences(Context context) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context.getApplicationContext());
-		long mediaId = PlaybackPreferences.getLastPlayedId();
-		long feedId = PlaybackPreferences.getLastPlayedFeedId();
-		FeedManager manager = FeedManager.getInstance();
-		if (mediaId != -1 && feedId != -1) {
-			Feed feed = manager.getFeed(feedId);
-			if (feed != null) {
-				return manager.getFeedMedia(mediaId, feed);
-			}
-		}
-		return null;
-	}
-
-	private void setLastPlayedMediaId(long mediaId) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(getApplicationContext());
-		long autoDeleteId = PlaybackPreferences.getAutoDeleteMediaId();
-		SharedPreferences.Editor editor = prefs.edit();
-		if (mediaId == autoDeleteId) {
-			editor.putBoolean(
-					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
-					false);
-		}
-		editor.commit();
 	}
 
 	@SuppressLint("NewApi")
@@ -266,6 +245,8 @@ public class PlaybackService extends Service {
 				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 		registerReceiver(audioBecomingNoisy, new IntentFilter(
 				AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+		registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
+				ACTION_SKIP_CURRENT_EPISODE));
 
 	}
 
@@ -296,6 +277,7 @@ public class PlaybackService extends Service {
 		unregisterReceiver(headsetDisconnected);
 		unregisterReceiver(shutdownReceiver);
 		unregisterReceiver(audioBecomingNoisy);
+		unregisterReceiver(skipCurrentEpisodeReceiver);
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
 			audioManager.unregisterRemoteControlClient(remoteControlClient);
 		}
@@ -460,25 +442,28 @@ public class PlaybackService extends Service {
 
 					@Override
 					protected void onPostExecute(Playable result) {
-						if (result != null) {
-							try {
-								if (shouldStream) {
-									player.setDataSource(media.getStreamUrl());
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
-								} else {
-									player.setDataSource(media
-											.getLocalMediaUrl());
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
+						if (status == PlayerStatus.INITIALIZING) {
+							if (result != null) {
+								try {
+									if (shouldStream) {
+										player.setDataSource(media
+												.getStreamUrl());
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									} else {
+										player.setDataSource(media
+												.getLocalMediaUrl());
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									}
+								} catch (IOException e) {
+									e.printStackTrace();
 								}
-							} catch (IOException e) {
-								e.printStackTrace();
+							} else {
+								setStatus(PlayerStatus.ERROR);
+								sendBroadcast(new Intent(
+										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 							}
-						} else {
-							setStatus(PlayerStatus.ERROR);
-							sendBroadcast(new Intent(
-									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 						}
 					}
 
@@ -510,7 +495,9 @@ public class PlaybackService extends Service {
 		player.release();
 		player = createMediaPlayer();
 		status = PlayerStatus.STOPPED;
-		initMediaplayer();
+		if (media != null) {
+			initMediaplayer();
+		}
 	}
 
 	public void notifyVideoSurfaceAbandoned() {
@@ -531,35 +518,45 @@ public class PlaybackService extends Service {
 
 					@Override
 					protected void onPostExecute(Playable result) {
-						if (result != null) {
-							playingVideo = false;
-							try {
-								if (shouldStream) {
-									player.setDataSource(media.getStreamUrl());
-								} else if (media.localFileAvailable()) {
-									player.setDataSource(media
-											.getLocalMediaUrl());
-								}
+						// check if state of service has changed. If it has
+						// changed, assume that loaded metadata is not needed
+						// anymore.
+						if (status == PlayerStatus.INITIALIZING) {
+							if (result != null) {
+								playingVideo = false;
+								try {
+									if (shouldStream) {
+										player.setDataSource(media
+												.getStreamUrl());
+									} else if (media.localFileAvailable()) {
+										player.setDataSource(media
+												.getLocalMediaUrl());
+									}
 
-								if (prepareImmediately) {
-									setStatus(PlayerStatus.PREPARING);
-									player.prepareAsync();
-								} else {
-									setStatus(PlayerStatus.INITIALIZED);
+									if (prepareImmediately) {
+										setStatus(PlayerStatus.PREPARING);
+										player.prepareAsync();
+									} else {
+										setStatus(PlayerStatus.INITIALIZED);
+									}
+								} catch (IOException e) {
+									e.printStackTrace();
+									media = null;
+									setStatus(PlayerStatus.ERROR);
+									sendBroadcast(new Intent(
+											ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 								}
-							} catch (IOException e) {
-								e.printStackTrace();
+							} else {
+								Log.e(TAG, "InitTask could not load metadata");
 								media = null;
 								setStatus(PlayerStatus.ERROR);
 								sendBroadcast(new Intent(
 										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 							}
 						} else {
-							Log.e(TAG, "InitTask could not load metadata");
-							media = null;
-							setStatus(PlayerStatus.ERROR);
-							sendBroadcast(new Intent(
-									ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+							if (AppConfig.DEBUG)
+								Log.d(TAG,
+										"Status of player has changed during initialization. Stopping init process.");
 						}
 					}
 
@@ -673,78 +670,7 @@ public class PlaybackService extends Service {
 
 		@Override
 		public void onCompletion(MediaPlayer mp) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Playback completed");
-			audioManager.abandonAudioFocus(audioFocusChangeListener);
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(getApplicationContext());
-			SharedPreferences.Editor editor = prefs.edit();
-
-			// Save state
-			cancelPositionSaver();
-
-			boolean isInQueue = false;
-			FeedItem nextItem = null;
-
-			if (media instanceof FeedMedia) {
-				FeedItem item = ((FeedMedia) media).getItem();
-				((FeedMedia) media).setPlaybackCompletionDate(new Date());
-				manager.markItemRead(PlaybackService.this, item, true, true);
-				nextItem = manager.getQueueSuccessorOfItem(item);
-				isInQueue = media instanceof FeedMedia
-						&& manager.isInQueue(((FeedMedia) media).getItem());
-				if (isInQueue) {
-					manager.removeQueueItem(PlaybackService.this, item);
-				}
-				manager.addItemToPlaybackHistory(PlaybackService.this, item);
-				manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
-				long autoDeleteMediaId = ((FeedComponent) media).getId();
-				if (shouldStream) {
-					autoDeleteMediaId = -1;
-				}
-				editor.putLong(PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID,
-						autoDeleteMediaId);
-			}
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.putBoolean(
-					PlaybackPreferences.PREF_AUTO_DELETE_MEDIA_PLAYBACK_COMPLETED,
-					true);
-			editor.putLong(
-					PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-					PlaybackPreferences.NO_MEDIA_PLAYING);
-			editor.commit();
-
-			// Prepare for playing next item
-			boolean playNextItem = isInQueue && UserPreferences.isFollowQueue()
-					&& nextItem != null;
-			if (playNextItem) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Loading next item in queue");
-				media = nextItem.getMedia();
-				shouldStream = !media.localFileAvailable();
-				prepareImmediately = startWhenPrepared = true;
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG,
-							"No more episodes available to play; Reloading current episode");
-				prepareImmediately = startWhenPrepared = false;
-				stopForeground(true);
-				stopWidgetUpdater();
-			}
-			int notificationCode = 0;
-			if (media.getMediaType() == MediaType.AUDIO) {
-				notificationCode = EXTRA_CODE_AUDIO;
-				playingVideo = false;
-			} else if (media.getMediaType() == MediaType.VIDEO) {
-				notificationCode = EXTRA_CODE_VIDEO;
-			}
-			resetVideoSurface();
-			refreshRemoteControlClientState();
-			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-					notificationCode);
+			endPlayback(true);
 		}
 	};
 
@@ -756,6 +682,82 @@ public class PlaybackService extends Service {
 
 		}
 	};
+
+	private void endPlayback(boolean playNextEpisode) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Playback ended");
+		audioManager.abandonAudioFocus(audioFocusChangeListener);
+
+		// Save state
+		cancelPositionSaver();
+
+		boolean isInQueue = false;
+		FeedItem nextItem = null;
+
+		if (media instanceof FeedMedia) {
+			FeedItem item = ((FeedMedia) media).getItem();
+			((FeedMedia) media).setPlaybackCompletionDate(new Date());
+			manager.markItemRead(PlaybackService.this, item, true, true);
+			nextItem = manager.getQueueSuccessorOfItem(item);
+			isInQueue = media instanceof FeedMedia
+					&& manager.isInQueue(((FeedMedia) media).getItem());
+			if (isInQueue) {
+				manager.removeQueueItem(PlaybackService.this, item);
+			}
+			manager.addItemToPlaybackHistory(PlaybackService.this, item);
+			manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
+			long autoDeleteMediaId = ((FeedComponent) media).getId();
+			if (shouldStream) {
+				autoDeleteMediaId = -1;
+			}
+		}
+
+		// Load next episode if previous episode was in the queue and if there
+		// is an episode in the queue left.
+		// Start playback immediately if continuous playback is enabled
+		boolean loadNextItem = isInQueue && nextItem != null;
+		playNextEpisode = playNextEpisode && loadNextItem
+				&& UserPreferences.isFollowQueue();
+		if (loadNextItem) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Loading next item in queue");
+			media = nextItem.getMedia();
+		}
+
+		if (playNextEpisode) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Playback of next episode will start immediately.");
+			prepareImmediately = startWhenPrepared = true;
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"No more episodes available to play");
+			media = null;
+			prepareImmediately = startWhenPrepared = false;
+			stopForeground(true);
+			stopWidgetUpdater();
+		}
+
+		int notificationCode = 0;
+		if (media != null) {
+			shouldStream = !media.localFileAvailable();
+			if (media.getMediaType() == MediaType.AUDIO) {
+				notificationCode = EXTRA_CODE_AUDIO;
+				playingVideo = false;
+			} else if (media.getMediaType() == MediaType.VIDEO) {
+				notificationCode = EXTRA_CODE_VIDEO;
+			}
+		}
+		writePlaybackPreferences();
+		if (media != null) {
+			resetVideoSurface();
+			refreshRemoteControlClientState();
+			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+		} else {
+			sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+			stopSelf();
+		}
+	}
 
 	public void setSleepTimer(long waitingTime) {
 		if (AppConfig.DEBUG)
@@ -856,40 +858,8 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Audiofocus successfully requested");
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Resuming/Starting playback");
-				SharedPreferences.Editor editor = PreferenceManager
-						.getDefaultSharedPreferences(getApplicationContext())
-						.edit();
-				editor.putLong(
-						PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
-						media.getPlayableType());
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM,
-						shouldStream);
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_VIDEO,
-						playingVideo);
-				editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID,
-						media.getPlayableType());
-				if (media instanceof FeedMedia) {
-					FeedMedia fMedia = (FeedMedia) media;
-					editor.putLong(
-							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-							fMedia.getItem().getFeed().getId());
-					editor.putLong(
-							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-							fMedia.getId());
-				} else {
-					editor.putLong(
-							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
-							PlaybackPreferences.NO_MEDIA_PLAYING);
-					editor.putLong(
-							PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
-							PlaybackPreferences.NO_MEDIA_PLAYING);
-				}
-				media.writeToPreferences(editor);
+				writePlaybackPreferences();
 
-				editor.commit();
-				if (media instanceof FeedMedia) {
-					setLastPlayedMediaId(((FeedMedia) media).getId());
-				}
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo((int) media.getPosition());
@@ -911,6 +881,51 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Failed to request Audiofocus");
 			}
 		}
+	}
+
+	private void writePlaybackPreferences() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Writing playback preferences");
+
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(getApplicationContext()).edit();
+		if (media != null) {
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+					media.getPlayableType());
+			editor.putBoolean(
+					PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
+					shouldStream);
+			editor.putBoolean(
+					PlaybackPreferences.PREF_CURRENT_EPISODE_IS_VIDEO,
+					playingVideo);
+			if (media instanceof FeedMedia) {
+				FeedMedia fMedia = (FeedMedia) media;
+				editor.putLong(
+						PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+						fMedia.getItem().getFeed().getId());
+				editor.putLong(
+						PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+						fMedia.getId());
+			} else {
+				editor.putLong(
+						PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+						PlaybackPreferences.NO_MEDIA_PLAYING);
+				editor.putLong(
+						PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+						PlaybackPreferences.NO_MEDIA_PLAYING);
+			}
+			media.writeToPreferences(editor);
+		} else {
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+					PlaybackPreferences.NO_MEDIA_PLAYING);
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+					PlaybackPreferences.NO_MEDIA_PLAYING);
+			editor.putLong(
+					PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+					PlaybackPreferences.NO_MEDIA_PLAYING);
+		}
+
+		editor.commit();
 	}
 
 	private void setStatus(PlayerStatus newStatus) {
@@ -1005,7 +1020,9 @@ public class PlaybackService extends Service {
 
 	public void seek(int i) {
 		saveCurrentPosition();
-		if (status == PlayerStatus.INITIALIZED) {
+		if (status == PlayerStatus.INITIALIZED
+				|| status == PlayerStatus.INITIALIZING
+				|| status == PlayerStatus.PREPARING) {
 			media.setPosition(i);
 			setStartWhenPrepared(true);
 			prepare();
@@ -1199,6 +1216,22 @@ public class PlaybackService extends Service {
 			}
 		}
 
+	};
+
+	private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
+
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
+				if (media != null) {
+					setStatus(PlayerStatus.STOPPED);
+					player.reset();
+					endPlayback(false);
+				}
+			}
+		}
 	};
 
 	/** Periodically saves the position of the media file */

@@ -188,9 +188,9 @@ public abstract class PlaybackController {
 			Log.d(TAG, "Trying to restore last played media");
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(activity.getApplicationContext());
-		long lastPlayedId = PlaybackPreferences.getLastPlayedId();
-		if (lastPlayedId != PlaybackPreferences.NO_MEDIA_PLAYING) {
-			Playable media = PlayableUtils.createInstanceFromPreferences((int) lastPlayedId, prefs);
+		long currentlyPlayingMedia = PlaybackPreferences.getCurrentlyPlayingMedia();
+		if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
+			Playable media = PlayableUtils.createInstanceFromPreferences((int) currentlyPlayingMedia, prefs);
 			if (media != null) {
 				Intent serviceIntent = new Intent(activity,
 						PlaybackService.class);
@@ -200,7 +200,7 @@ public abstract class PlaybackController {
 				serviceIntent.putExtra(
 						PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
 				boolean fileExists = media.localFileAvailable();
-				boolean lastIsStream = PlaybackPreferences.isLastIsStream();
+				boolean lastIsStream = PlaybackPreferences.getCurrentEpisodeIsStream();
 				if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
 					FeedManager.getInstance().notifyMissingFeedMediaFile(
 							activity, (FeedMedia) media);
@@ -320,6 +320,9 @@ public abstract class PlaybackController {
 				case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
 					onBufferEnd();
 					break;
+				case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
+					onPlaybackEnd();
+					break;
 				}
 
 			} else {
@@ -357,6 +360,8 @@ public abstract class PlaybackController {
 	public abstract void onSleepTimerUpdate();
 
 	public abstract void handleError(int code);
+	
+	public abstract void onPlaybackEnd();
 
 	/**
 	 * Is called whenever the PlaybackService changes it's status. This method

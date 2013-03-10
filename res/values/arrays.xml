@@ -21,6 +21,23 @@
         <item>24</item>
     </string-array>
     
+    <string-array name="episode_cache_size">
+        <item>10</item>
+        <item>20</item>
+        <item>40</item>
+        <item>60</item>
+        <item>80</item>
+        <item>100</item>
+    </string-array>
+    
+    <string-array name="autodl_select_networks_default_entries">
+        <item>N/A</item>
+    </string-array>
+    
+    <string-array name="autodl_select_networks_default_values">
+        <item>0</item>
+    </string-array>
+    
     <string-array name="theme_options">
         <item>Light</item>
         <item>Dark</item>

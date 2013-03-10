@@ -29,6 +29,7 @@ import de.danoeh.antennapod.storage.PodDBAdapter;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.FeedtitleComparator;
+import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
@@ -111,7 +112,8 @@ public class FeedManager {
 
 	/**
 	 * Play FeedMedia and start the playback service + launch Mediaplayer
-	 * Activity.
+	 * Activity. The FeedItem belonging to the media is moved to the top of the
+	 * queue.
 	 * 
 	 * @param context
 	 *            for starting the playbackservice
@@ -149,9 +151,14 @@ public class FeedManager {
 				context.startActivity(PlaybackService.getPlayerActivityIntent(
 						context, media));
 			}
+			if (queue.contains(media.getItem())) {
+				moveQueueItem(context, queue.indexOf(media.getItem()), 0, true);
+			} else {
+				addQueueItemAt(context, media.getItem(), 0);
+			}
 		} catch (MediaFileNotFoundException e) {
 			e.printStackTrace();
-			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
+			if (media.isPlaying()) {
 				context.sendBroadcast(new Intent(
 						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			}
@@ -173,14 +180,20 @@ public class FeedManager {
 
 			SharedPreferences prefs = PreferenceManager
 					.getDefaultSharedPreferences(context);
-			if (media.getId() == PlaybackPreferences.getLastPlayedId()) {
-				SharedPreferences.Editor editor = prefs.edit();
-				editor.putBoolean(PlaybackPreferences.PREF_LAST_IS_STREAM, true);
-				editor.commit();
-			}
-			if (PlaybackPreferences.getLastPlayedId() == media.getId()) {
-				context.sendBroadcast(new Intent(
-						PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+			if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA) {
+				if (media.getId() == PlaybackPreferences
+						.getCurrentlyPlayingFeedMediaId()) {
+					SharedPreferences.Editor editor = prefs.edit();
+					editor.putBoolean(
+							PlaybackPreferences.PREF_CURRENT_EPISODE_IS_STREAM,
+							true);
+					editor.commit();
+				}
+				if (PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == media
+						.getId()) {
+					context.sendBroadcast(new Intent(
+							PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+				}
 			}
 		}
 		if (AppConfig.DEBUG)
@@ -192,12 +205,13 @@ public class FeedManager {
 	public void deleteFeed(final Context context, final Feed feed) {
 		SharedPreferences prefs = PreferenceManager
 				.getDefaultSharedPreferences(context.getApplicationContext());
-		if (PlaybackPreferences.getLastPlayedFeedId() == feed.getId()) {
+		if (PlaybackPreferences.getCurrentlyPlayingMedia() == FeedMedia.PLAYABLE_TYPE_FEEDMEDIA
+				&& PlaybackPreferences.getLastPlayedFeedId() == feed.getId()) {
 			context.sendBroadcast(new Intent(
 					PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 			SharedPreferences.Editor editor = prefs.edit();
-			editor.putLong(PlaybackPreferences.PREF_LAST_PLAYED_ID, -1);
-			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID, -1);
+			editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+					-1);
 			editor.commit();
 		}
 
@@ -560,11 +574,26 @@ public class FeedManager {
 		}
 	}
 
-	/** Downloads FeedItems if they have not been downloaded yet. */
 	public void downloadFeedItem(final Context context, FeedItem... items)
 			throws DownloadRequestException {
-		List<FeedItem> addToQueue = new ArrayList<FeedItem>();
+		downloadFeedItem(true, context, items);
+	}
 
+	/** Downloads FeedItems if they have not been downloaded yet. */
+	private void downloadFeedItem(boolean performAutoCleanup,
+			final Context context, final FeedItem... items)
+			throws DownloadRequestException {
+		if (performAutoCleanup) {
+			new Thread() {
+
+				@Override
+				public void run() {
+					performAutoCleanup(context,
+							getPerformAutoCleanupArgs(items.length));
+				}
+
+			}.start();
+		}
 		for (FeedItem item : items) {
 			if (item.getMedia() != null
 					&& !requester.isDownloadingFile(item.getMedia())
@@ -584,13 +613,163 @@ public class FeedManager {
 				} else {
 					requester.downloadMedia(context, item.getMedia());
 				}
-				addToQueue.add(item);
 			}
 		}
-		if (UserPreferences.isAutoQueue()) {
-			addQueueItem(context,
-					addToQueue.toArray(new FeedItem[addToQueue.size()]));
+	}
+
+	/**
+	 * This method will try to download undownloaded items in the queue or the
+	 * unread items list. If not enough space is available, an episode cleanup
+	 * will be performed first.
+	 */
+	public void autodownloadUndownloadedItems(Context context) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Performing auto-dl of undownloaded episodes");
+		if (NetworkUtils.autodownloadNetworkAvailable(context)) {
+			int undownloadedEpisodes = getNumberOfUndownloadedEpisodes();
+			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
+			int deletedEpisodes = performAutoCleanup(context,
+					getPerformAutoCleanupArgs(undownloadedEpisodes));
+			int episodeSpaceLeft = undownloadedEpisodes;
+			if (UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
+					+ undownloadedEpisodes) {
+				episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
+						- (downloadedEpisodes - deletedEpisodes);
+			}
+
+			List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
+			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+				for (FeedItem item : queue) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+						itemsToDownload.add(item);
+						episodeSpaceLeft--;
+						undownloadedEpisodes--;
+						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+							break;
+						}
+					}
+				}
+			}
+			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+				for (FeedItem item : unreadItems) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+						itemsToDownload.add(item);
+						episodeSpaceLeft--;
+						undownloadedEpisodes--;
+						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+							break;
+						}
+					}
+				}
+			}
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Enqueueing " + itemsToDownload.size()
+						+ " items for download");
+
+			try {
+				downloadFeedItem(false, context,
+						itemsToDownload.toArray(new FeedItem[itemsToDownload
+								.size()]));
+			} catch (DownloadRequestException e) {
+				e.printStackTrace();
+			}
+
 		}
+	}
+
+	/**
+	 * This method will determine the number of episodes that have to be deleted
+	 * depending on a given number of episodes.
+	 * 
+	 * @return The argument that has to be passed to performAutoCleanup() so
+	 *         that the number of episodes fits into the episode cache.
+	 * */
+	private int getPerformAutoCleanupArgs(final int episodeNumber) {
+		if (episodeNumber >= 0) {
+			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
+			if (downloadedEpisodes + episodeNumber >= UserPreferences
+					.getEpisodeCacheSize()) {
+
+				return downloadedEpisodes + episodeNumber
+						- UserPreferences.getEpisodeCacheSize();
+			}
+		}
+		return 0;
+	}
+
+	/**
+	 * Performs an auto-cleanup so that the number of downloaded episodes is
+	 * below or equal to the episode cache size. The method will be executed in
+	 * the caller's thread.
+	 */
+	public void performAutoCleanup(Context context) {
+		performAutoCleanup(context, getPerformAutoCleanupArgs(0));
+	}
+
+	/**
+	 * This method will try to delete a given number of episodes. An episode
+	 * will only be deleted if it is not in the queue.
+	 * 
+	 * @return The number of episodes that were actually deleted
+	 * */
+	private int performAutoCleanup(Context context, final int episodeNumber) {
+		int counter = 0;
+		int episodesLeft = episodeNumber;
+		feedloop: for (Feed feed : feeds) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.hasMedia() && item.getMedia().isDownloaded()) {
+					if (!isInQueue(item) && item.isRead()) {
+						deleteFeedMedia(context, item.getMedia());
+						counter++;
+						episodesLeft--;
+						if (episodesLeft == 0) {
+							break feedloop;
+						}
+					}
+				}
+			}
+		}
+		if (AppConfig.DEBUG)
+			Log.d(TAG, String.format(
+					"Auto-delete deleted %d episodes (%d requested)", counter,
+					episodeNumber));
+
+		return counter;
+	}
+
+	/**
+	 * Counts items in the queue and the unread items list which haven't been
+	 * downloaded yet.
+	 */
+	private int getNumberOfUndownloadedEpisodes() {
+		int counter = 0;
+		for (FeedItem item : queue) {
+			if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+				counter++;
+			}
+		}
+		for (FeedItem item : unreadItems) {
+			if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+				counter++;
+			}
+		}
+		return counter;
+
+	}
+
+	/** Counts all downloaded items. */
+	private int getNumberOfDownloadedEpisodes() {
+		int counter = 0;
+		for (Feed feed : feeds) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.hasMedia() && item.getMedia().isDownloaded()) {
+					counter++;
+				}
+			}
+		}
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Number of downloaded episodes: " + counter);
+		return counter;
 	}
 
 	/**
@@ -605,7 +784,49 @@ public class FeedManager {
 		}
 	}
 
-	/** Adds FeedItems to the queue if they are not in the queue yet. */
+	/**
+	 * Adds a feeditem to the queue at the specified index if it is not in the
+	 * queue yet. The item is marked as 'read'.
+	 */
+	public void addQueueItemAt(final Context context, final FeedItem item,
+			final int index) {
+		contentChanger.post(new Runnable() {
+
+			@Override
+			public void run() {
+				if (!queue.contains(item)) {
+					queue.add(index, item);
+					if (!item.isRead()) {
+						markItemRead(context, item, true, false);
+					}
+				}
+				eventDist.sendQueueUpdateBroadcast();
+
+				dbExec.execute(new Runnable() {
+
+					@Override
+					public void run() {
+						PodDBAdapter adapter = new PodDBAdapter(context);
+						adapter.open();
+						adapter.setQueue(queue);
+						adapter.close();
+					}
+				});
+				new Thread() {
+					@Override
+					public void run() {
+						autodownloadUndownloadedItems(context);
+					}
+				}.start();
+			}
+		});
+
+	}
+
+	/**
+	 * Adds FeedItems to the queue if they are not in the queue yet. The items
+	 * are marked as 'read'.
+	 */
 	public void addQueueItem(final Context context, final FeedItem... items) {
 		if (items.length > 0) {
 			contentChanger.post(new Runnable() {
@@ -615,6 +836,9 @@ public class FeedManager {
 					for (FeedItem item : items) {
 						if (!queue.contains(item)) {
 							queue.add(item);
+							if (!item.isRead()) {
+								markItemRead(context, item, true, false);
+							}
 						}
 					}
 					eventDist.sendQueueUpdateBroadcast();
@@ -628,6 +852,12 @@ public class FeedManager {
 							adapter.close();
 						}
 					});
+					new Thread() {
+						@Override
+						public void run() {
+							autodownloadUndownloadedItems(context);
+						}
+					}.start();
 				}
 			});
 		}
@@ -673,14 +903,12 @@ public class FeedManager {
 		if (removed) {
 			adapter.setQueue(queue);
 		}
-
 	}
 
 	/** Removes a FeedItem from the queue. */
 	public void removeQueueItem(final Context context, FeedItem item) {
 		boolean removed = queue.remove(item);
 		if (removed) {
-			autoDeleteIfPossible(context, item.getMedia());
 			dbExec.execute(new Runnable() {
 
 				@Override
@@ -693,45 +921,13 @@ public class FeedManager {
 			});
 
 		}
-		eventDist.sendQueueUpdateBroadcast();
-	}
-
-	/**
-	 * Delete the episode of this FeedMedia object if auto-delete is enabled and
-	 * it is not the last played media or it is the last played media and
-	 * playback has been completed.
-	 */
-	public void autoDeleteIfPossible(Context context, FeedMedia media) {
-		if (media != null) {
-			SharedPreferences prefs = PreferenceManager
-					.getDefaultSharedPreferences(context
-							.getApplicationContext());
-			if (UserPreferences.isAutoDelete()) {
-
-				if ((media.getId() != PlaybackPreferences.getLastPlayedId())
-						&& ((media.getId() != PlaybackPreferences
-								.getAutoDeleteMediaId()) || (media.getId() == PlaybackPreferences
-								.getAutoDeleteMediaId() && PlaybackPreferences
-								.isAutoDeleteMediaPlaybackCompleted()))) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Performing auto-cleanup");
-					deleteFeedMedia(context, media);
-
-					SharedPreferences.Editor editor = prefs.edit();
-					editor.putLong(
-							PlaybackPreferences.PREF_AUTODELETE_MEDIA_ID, -1);
-					editor.commit();
-				} else {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Didn't do auto-cleanup");
-				}
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Auto-delete preference is disabled");
+		new Thread() {
+			@Override
+			public void run() {
+				autodownloadUndownloadedItems(context);
 			}
-		} else {
-			Log.e(TAG, "Could not do auto-cleanup: media was null");
-		}
+		}.start();
+		eventDist.sendQueueUpdateBroadcast();
 	}
 
 	/**
@@ -806,7 +1002,7 @@ public class FeedManager {
 	 * 
 	 * @return The saved Feed with a database ID
 	 */
-	public Feed updateFeed(Context context, final Feed newFeed) {
+	public Feed updateFeed(final Context context, final Feed newFeed) {
 		// Look up feed in the feedslist
 		final Feed savedFeed = searchFeedByIdentifyingValue(newFeed
 				.getIdentifyingValue());
@@ -853,6 +1049,12 @@ public class FeedManager {
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			savedFeed.setType(newFeed.getType());
 			setCompleteFeed(context, savedFeed);
+			new Thread() {
+				@Override
+				public void run() {
+					autodownloadUndownloadedItems(context);
+				}
+			}.start();
 			return savedFeed;
 		}
 
@@ -1517,6 +1719,22 @@ public class FeedManager {
 			return EpisodeFilter.accessEpisodeByIndex(queue, index);
 		} else {
 			return queue.get(index);
+		}
+	}
+
+	/**
+	 * Returns true if the first item in the queue is currently being played or
+	 * false otherwise. If the queue is empty, this method will also return
+	 * false.
+	 * */
+	public boolean firstQueueItemIsPlaying() {
+		FeedManager manager = FeedManager.getInstance();
+		int queueSize = manager.getQueueSize(true);
+		if (queueSize == 0) {
+			return false;
+		} else {
+			FeedItem item = getQueueItemAtIndex(0, true);
+			return item.getState() == FeedItem.State.PLAYING;
 		}
 	}
 

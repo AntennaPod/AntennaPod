@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <item
+    <item android:id="@id/skip_episode_item" android:title="@string/skip_episode_label" android:showAsAction="collapseActionView"></item><item
         android:id="@+id/download_item"
         android:icon="?attr/av_download"
         android:showAsAction="ifRoom"
@@ -67,5 +67,6 @@
         android:showAsAction="collapseActionView"
         android:title="@string/support_label">
     </item>
+    
 
 </menu>

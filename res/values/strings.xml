@@ -7,6 +7,7 @@
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">EPISODES</string>
     <string name="new_label">New</string>
+    <string name="waiting_list_label">Waiting list</string>
     <string name="settings_label">Settings</string>
     <string name="add_new_feed_label">Add a new Feed</string>
     <string name="downloads_label">Downloads</string>
@@ -70,6 +71,7 @@
     <string name="support_label">Flattr this</string>
     <string name="enqueue_all_new">Enqueue all</string>
     <string name="download_all">Download all</string>
+    <string name="skip_episode_label">Skip episode</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">Download successful</string>
@@ -165,15 +167,16 @@
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
-    <string name="pref_autoQueue_title">Auto-enqueue</string>
-    <string name="pref_autoQueue_sum">Add an episode to the queue when you start to download it.</string>
     <string name="pref_display_only_episodes_title">Display only episodes</string>
     <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>
-    <string name="pref_auto_delete_title">Auto-delete</string>
-    <string name="pref_auto_delete_sum">Delete an episode when playback completes or when it is removed from the queue.</string>
     <string name="pref_set_theme_title">Select theme</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
+    <string name="pref_automatic_download_title">Automatic download</string>
+    <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
+    <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
+    <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
+    <string name="pref_episode_cache_title">Episode cache</string>
 
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>

@@ -128,6 +128,11 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			public void onShutdownNotification() {
 				finish();
 			}
+
+			@Override
+			public void onPlaybackEnd() {
+				finish();
+			}
 		};
 
 	}
@@ -227,7 +232,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				media != null && media.getWebsiteLink() != null);
 		menu.findItem(R.id.visit_website_item).setVisible(
 				media != null && media.getWebsiteLink() != null);
-
+		menu.findItem(R.id.skip_episode_item).setVisible(media != null);
 		boolean sleepTimerSet = controller.sleepTimerActive();
 		boolean sleepTimerNotSet = controller.sleepTimerNotActive();
 		menu.findItem(R.id.set_sleeptimer_item).setVisible(sleepTimerNotSet);
@@ -302,6 +307,10 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				break;
 			case R.id.share_link_item:
 				ShareUtils.shareLink(this, media.getWebsiteLink());
+				break;
+			case R.id.skip_episode_item:
+				sendBroadcast(new Intent(
+						PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
 				break;
 			default:
 				return false;

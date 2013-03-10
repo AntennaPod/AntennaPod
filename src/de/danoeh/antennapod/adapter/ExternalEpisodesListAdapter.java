@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
@@ -89,10 +90,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					.findViewById(R.id.butAction);
 			holder.statusPlaying = (View) convertView
 					.findViewById(R.id.statusPlaying);
-			holder.statusUnread = (View) convertView
-					.findViewById(R.id.statusUnread);
-			holder.statusInProgress = (TextView) convertView
-					.findViewById(R.id.statusInProgress);
+			holder.episodeProgress = (ProgressBar) convertView
+					.findViewById(R.id.pbar_episode_progress);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -100,41 +99,53 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 		holder.title.setText(item.getTitle());
 		holder.feedTitle.setText(item.getFeed().getTitle());
+		FeedItem.State state = item.getState();
 
 		if (groupPosition == GROUP_POS_QUEUE) {
-			FeedItem.State state = item.getState();
 			switch (state) {
 			case PLAYING:
 				holder.statusPlaying.setVisibility(View.VISIBLE);
-				holder.statusUnread.setVisibility(View.GONE);
-				holder.statusInProgress.setVisibility(View.GONE);
+				holder.episodeProgress.setVisibility(View.VISIBLE);
 				break;
 			case IN_PROGRESS:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.GONE);
-				holder.statusInProgress.setVisibility(View.VISIBLE);
-				holder.statusInProgress.setText(Converter
-						.getDurationStringLong(item.getMedia().getPosition()));
+				holder.episodeProgress.setVisibility(View.VISIBLE);
 				break;
 			case NEW:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.VISIBLE);
-				holder.statusInProgress.setVisibility(View.GONE);
+				holder.episodeProgress.setVisibility(View.GONE);
 				break;
 			default:
 				holder.statusPlaying.setVisibility(View.GONE);
-				holder.statusUnread.setVisibility(View.GONE);
-				holder.statusInProgress.setVisibility(View.GONE);
+				holder.episodeProgress.setVisibility(View.GONE);
 				break;
 			}
 		} else {
 			holder.statusPlaying.setVisibility(View.GONE);
-			holder.statusUnread.setVisibility(View.GONE);
-			holder.statusInProgress.setVisibility(View.GONE);
+			holder.episodeProgress.setVisibility(View.GONE);
 		}
 
 		FeedMedia media = item.getMedia();
 		if (media != null) {
+
+			if (state == FeedItem.State.PLAYING
+					|| state == FeedItem.State.IN_PROGRESS) {
+				if (media.getDuration() > 0) {
+					holder.episodeProgress.setProgress((int) (((double) media
+							.getPosition()) / media.getDuration() * 100));
+					holder.lenSize.setText(Converter
+							.getDurationStringLong(media.getDuration()
+									- media.getPosition()));
+				}
+			} else if (!media.isDownloaded()) {
+				holder.lenSize.setText(context.getString(R.string.size_prefix)
+						+ Converter.byteToString(media.getSize()));
+			} else {
+				holder.lenSize.setText(context
+						.getString(R.string.length_prefix)
+						+ Converter.getDurationStringLong(media.getDuration()));
+			}
+
 			TypedArray drawables = context.obtainStyledAttributes(new int[] {
 					R.attr.av_download, R.attr.navigation_refresh });
 			holder.lenSize.setVisibility(View.VISIBLE);
@@ -144,20 +155,15 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 					holder.downloadStatus.setImageDrawable(drawables
 							.getDrawable(1));
 				} else {
-					holder.downloadStatus.setVisibility(View.GONE);
+					holder.downloadStatus.setVisibility(View.INVISIBLE);
 				}
-				holder.lenSize.setText(context.getString(R.string.size_prefix)
-						+ Converter.byteToString(media.getSize()));
 			} else {
 				holder.downloadStatus.setVisibility(View.VISIBLE);
 				holder.downloadStatus
 						.setImageDrawable(drawables.getDrawable(0));
-				holder.lenSize.setText(context
-						.getString(R.string.length_prefix)
-						+ Converter.getDurationStringLong(media.getDuration()));
 			}
 		} else {
-			holder.downloadStatus.setVisibility(View.GONE);
+			holder.downloadStatus.setVisibility(View.INVISIBLE);
 			holder.lenSize.setVisibility(View.INVISIBLE);
 		}
 
@@ -188,9 +194,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		ImageView downloadStatus;
 		ImageView feedImage;
 		ImageButton butAction;
-		View statusUnread;
 		View statusPlaying;
-		TextView statusInProgress;
+		ProgressBar episodeProgress;
 	}
 
 	@Override
@@ -230,7 +235,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 				headerString += " (" + getChildrenCount(GROUP_POS_QUEUE) + ")";
 			}
 		} else {
-			headerString = context.getString(R.string.new_label);
+			headerString = context.getString(R.string.waiting_list_label);
 			if (manager.getUnreadItemsSize(true) > 0) {
 				headerString += " (" + getChildrenCount(GROUP_POS_UNREAD) + ")";
 			}

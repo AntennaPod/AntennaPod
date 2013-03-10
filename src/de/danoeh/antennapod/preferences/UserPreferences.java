@@ -2,7 +2,10 @@ package de.danoeh.antennapod.preferences;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
+import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -31,11 +34,13 @@ public class UserPreferences implements
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
-	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
+	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
+	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
+	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
 
 	private static UserPreferences instance;
 	private Context context;
@@ -46,10 +51,12 @@ public class UserPreferences implements
 	private boolean downloadMediaOnWifiOnly;
 	private long updateInterval;
 	private boolean allowMobileUpdate;
-	private boolean autoQueue;
 	private boolean displayOnlyEpisodes;
 	private boolean autoDelete;
 	private int theme;
+	private boolean enableAutodownloadWifiFilter;
+	private String[] autodownloadSelectedNetworks;
+	private int episodeCacheSize;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -86,10 +93,15 @@ public class UserPreferences implements
 		updateInterval = readUpdateInterval(sp.getString(PREF_UPDATE_INTERVAL,
 				"0"));
 		allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
-		autoQueue = sp.getBoolean(PREF_AUTO_QUEUE, true);
 		displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
 		theme = readThemeValue(sp.getString(PREF_THEME, "0"));
+		enableAutodownloadWifiFilter = sp.getBoolean(
+				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+		autodownloadSelectedNetworks = StringUtils.split(
+				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+		episodeCacheSize = Integer.valueOf(sp.getString(
+				PREF_EPISODE_CACHE_SIZE, "20"));
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -140,11 +152,6 @@ public class UserPreferences implements
 		return instance.allowMobileUpdate;
 	}
 
-	public static boolean isAutoQueue() {
-		instanceAvailable();
-		return instance.autoQueue;
-	}
-
 	public static boolean isDisplayOnlyEpisodes() {
 		instanceAvailable();
 		return instance.displayOnlyEpisodes;
@@ -158,6 +165,21 @@ public class UserPreferences implements
 	public static int getTheme() {
 		instanceAvailable();
 		return instance.theme;
+	}
+
+	public static boolean isEnableAutodownloadWifiFilter() {
+		instanceAvailable();
+		return instance.enableAutodownloadWifiFilter;
+	}
+
+	public static String[] getAutodownloadSelectedNetworks() {
+		instanceAvailable();
+		return instance.autodownloadSelectedNetworks;
+	}
+
+	public static int getEpisodeCacheSize() {
+		instanceAvailable();
+		return instance.episodeCacheSize;
 	}
 
 	@Override
@@ -196,15 +218,31 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_AUTO_DELETE)) {
 			autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
 
-		} else if (key.equals(PREF_AUTO_QUEUE)) {
-			autoQueue = sp.getBoolean(PREF_AUTO_QUEUE, true);
-
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES,
 					false);
 		} else if (key.equals(PREF_THEME)) {
 			theme = readThemeValue(sp.getString(PREF_THEME, ""));
+		} else if (key.equals(PREF_ENABLE_AUTODL_WIFI_FILTER)) {
+			enableAutodownloadWifiFilter = sp.getBoolean(
+					PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+		} else if (key.equals(PREF_AUTODL_SELECTED_NETWORKS)) {
+			autodownloadSelectedNetworks = StringUtils.split(
+					sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+		} else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
+			episodeCacheSize = Integer.valueOf(sp.getString(
+					PREF_EPISODE_CACHE_SIZE, "20"));
 		}
+	}
+
+	public static void setAutodownloadSelectedNetworks(Context context,
+			String[] value) {
+		SharedPreferences.Editor editor = PreferenceManager
+				.getDefaultSharedPreferences(context.getApplicationContext())
+				.edit();
+		editor.putString(PREF_AUTODL_SELECTED_NETWORKS,
+				StringUtils.join(value, ','));
+		editor.commit();
 	}
 
 	/**
