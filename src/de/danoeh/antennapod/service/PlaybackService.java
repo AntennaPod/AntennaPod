@@ -103,6 +103,8 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
 	public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
+	/** No more episodes are going to be played. */
+	public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
 
 	/**
 	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -493,7 +495,9 @@ public class PlaybackService extends Service {
 		player.release();
 		player = createMediaPlayer();
 		status = PlayerStatus.STOPPED;
-		initMediaplayer();
+		if (media != null) {
+			initMediaplayer();
+		}
 	}
 
 	public void notifyVideoSurfaceAbandoned() {
@@ -727,24 +731,32 @@ public class PlaybackService extends Service {
 		} else {
 			if (AppConfig.DEBUG)
 				Log.d(TAG,
-						"No more episodes available to play; Reloading current episode");
+						"No more episodes available to play");
+			media = null;
 			prepareImmediately = startWhenPrepared = false;
 			stopForeground(true);
 			stopWidgetUpdater();
 		}
 
 		int notificationCode = 0;
-		shouldStream = !media.localFileAvailable();
-		if (media.getMediaType() == MediaType.AUDIO) {
-			notificationCode = EXTRA_CODE_AUDIO;
-			playingVideo = false;
-		} else if (media.getMediaType() == MediaType.VIDEO) {
-			notificationCode = EXTRA_CODE_VIDEO;
+		if (media != null) {
+			shouldStream = !media.localFileAvailable();
+			if (media.getMediaType() == MediaType.AUDIO) {
+				notificationCode = EXTRA_CODE_AUDIO;
+				playingVideo = false;
+			} else if (media.getMediaType() == MediaType.VIDEO) {
+				notificationCode = EXTRA_CODE_VIDEO;
+			}
 		}
 		writePlaybackPreferences();
-		resetVideoSurface();
-		refreshRemoteControlClientState();
-		sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+		if (media != null) {
+			resetVideoSurface();
+			refreshRemoteControlClientState();
+			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+		} else {
+			sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+			stopSelf();
+		}
 	}
 
 	public void setSleepTimer(long waitingTime) {

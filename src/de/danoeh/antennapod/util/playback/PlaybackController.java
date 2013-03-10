@@ -320,6 +320,9 @@ public abstract class PlaybackController {
 				case PlaybackService.NOTIFICATION_TYPE_BUFFER_END:
 					onBufferEnd();
 					break;
+				case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
+					onPlaybackEnd();
+					break;
 				}
 
 			} else {
@@ -357,6 +360,8 @@ public abstract class PlaybackController {
 	public abstract void onSleepTimerUpdate();
 
 	public abstract void handleError(int code);
+	
+	public abstract void onPlaybackEnd();
 
 	/**
 	 * Is called whenever the PlaybackService changes it's status. This method

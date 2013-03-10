@@ -162,6 +162,18 @@ public class ExternalPlayerFragment extends SherlockFragment {
 				}
 
 			}
+
+			@Override
+			public void onPlaybackEnd() {
+				if (fragmentLayout != null) {
+					fragmentLayout.setVisibility(View.GONE);
+				}
+				controller = setupPlaybackController();
+				if (butPlay != null) {
+					butPlay.setOnClickListener(controller
+							.newOnPlayButtonClickListener());
+				}
+			}
 		};
 	}
 

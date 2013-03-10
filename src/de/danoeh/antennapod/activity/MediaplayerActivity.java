@@ -128,6 +128,11 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			public void onShutdownNotification() {
 				finish();
 			}
+
+			@Override
+			public void onPlaybackEnd() {
+				finish();
+			}
 		};
 
 	}
