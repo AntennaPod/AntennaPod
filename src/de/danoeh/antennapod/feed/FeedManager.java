@@ -714,16 +714,18 @@ public class FeedManager {
 	 * */
 	private int performAutoCleanup(Context context, final int episodeNumber) {
 		int counter = 0;
-		int episodesLeft = episodeNumber;
-		feedloop: for (Feed feed : feeds) {
-			for (FeedItem item : feed.getItems()) {
-				if (item.hasMedia() && item.getMedia().isDownloaded()) {
-					if (!isInQueue(item) && item.isRead()) {
-						deleteFeedMedia(context, item.getMedia());
-						counter++;
-						episodesLeft--;
-						if (episodesLeft == 0) {
-							break feedloop;
+		if (episodeNumber > 0) {
+			int episodesLeft = episodeNumber;
+			feedloop: for (Feed feed : feeds) {
+				for (FeedItem item : feed.getItems()) {
+					if (item.hasMedia() && item.getMedia().isDownloaded()) {
+						if (!isInQueue(item) && item.isRead()) {
+							deleteFeedMedia(context, item.getMedia());
+							counter++;
+							episodesLeft--;
+							if (episodesLeft == 0) {
+								break feedloop;
+							}
 						}
 					}
 				}
