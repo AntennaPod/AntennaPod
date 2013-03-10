@@ -88,7 +88,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Received VIEW intent: "
 						+ intent.getData().getPath());
-			ExternalMedia media = new ExternalMedia(intent.getData().getPath(), MediaType.AUDIO);
+			ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
+					MediaType.AUDIO);
 			Intent launchIntent = new Intent(this, PlaybackService.class);
 			launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
 			launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
@@ -98,6 +99,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					true);
 			startService(launchIntent);
 		}
+	}
+
+	@Override
+	protected void onNewIntent(Intent intent) {
+		super.onNewIntent(intent);
+		setIntent(intent);
 	}
 
 	@Override
