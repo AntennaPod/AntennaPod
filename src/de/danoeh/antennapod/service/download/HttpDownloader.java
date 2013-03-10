@@ -16,6 +16,8 @@ import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.params.HttpClientParams;
+import org.apache.http.impl.client.AbstractHttpClient;
+import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 
@@ -25,6 +27,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.service.download.APRedirectHandler;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 
@@ -42,8 +45,8 @@ public class HttpDownloader extends Downloader {
 		super(downloaderCallback, status);
 	}
 
-	private AndroidHttpClient createHttpClient() {
-		AndroidHttpClient httpClient = AndroidHttpClient.newInstance("");
+	private DefaultHttpClient createHttpClient() {
+		DefaultHttpClient httpClient = new DefaultHttpClient();
 		HttpParams params = httpClient.getParams();
 		params.setIntParameter("http.protocol.max-redirects", MAX_REDIRECTS);
 		params.setBooleanParameter("http.protocol.reject-relative-redirect",
@@ -51,12 +54,15 @@ public class HttpDownloader extends Downloader {
 		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
 		HttpClientParams.setRedirecting(params, true);
+		
+		// Workaround for broken URLs in redirection
+		((AbstractHttpClient)httpClient).setRedirectHandler(new APRedirectHandler());
 		return httpClient;
 	}
 
 	@Override
 	protected void download() {
-		AndroidHttpClient httpClient = null;
+		DefaultHttpClient httpClient = null;
 		OutputStream out = null;
 		InputStream connection = null;
 		try {
@@ -142,9 +148,6 @@ public class HttpDownloader extends Downloader {
 		} finally {
 			IOUtils.closeQuietly(connection);
 			IOUtils.closeQuietly(out);
-			if (httpClient != null) {
-				httpClient.close();
-			}
 		}
 	}
 
