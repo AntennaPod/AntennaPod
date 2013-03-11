@@ -6,6 +6,7 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <uses-sdk
         android:minSdkVersion="10"
@@ -135,7 +136,12 @@
                 <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds" />
             </intent-filter>
         </receiver>
-
+        <receiver android:permission="android.permission.RECEIVE_BOOT_COMPLETED" android:name=".receiver.OnBootReceiver">
+            <intent-filter>  
+        		<action android:name="android.intent.action.BOOT_COMPLETED" />  
+    		</intent-filter> 
+        </receiver>
+        
         <activity android:name=".activity.StorageErrorActivity" >
         </activity>
         <activity

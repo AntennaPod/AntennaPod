@@ -69,8 +69,17 @@ public class PodcastApp extends Application implements
 		createImportDirectory();
 		createNoMediaFile();
 		prefs.registerOnSharedPreferenceChangeListener(this);
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
+		// load the database off the UI thread.
+ 		final FeedManager manager = FeedManager.getInstance();
+ 		new Thread(new Runnable() {
+ 
+ 			@Override
+ 			public void run() {
+ 				manager.loadDBData(getApplicationContext());	
+ 			}
+ 			
+ 		}).start();
+
 	}
 
 	/** Create a .nomedia file to prevent scanning by the media scanner. */
