@@ -54,9 +54,10 @@ public class HttpDownloader extends Downloader {
 		HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
 		HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
 		HttpClientParams.setRedirecting(params, true);
-		
+
 		// Workaround for broken URLs in redirection
-		((AbstractHttpClient)httpClient).setRedirectHandler(new APRedirectHandler());
+		((AbstractHttpClient) httpClient)
+				.setRedirectHandler(new APRedirectHandler());
 		return httpClient;
 	}
 
@@ -79,7 +80,8 @@ public class HttpDownloader extends Downloader {
 					File destination = new File(status.getFeedFile()
 							.getFile_url());
 					if (!destination.exists()) {
-						connection = AndroidHttpClient.getUngzippedContent(httpEntity);
+						connection = AndroidHttpClient
+								.getUngzippedContent(httpEntity);
 						InputStream in = new BufferedInputStream(connection);
 						out = new BufferedOutputStream(new FileOutputStream(
 								destination));
@@ -148,6 +150,9 @@ public class HttpDownloader extends Downloader {
 		} finally {
 			IOUtils.closeQuietly(connection);
 			IOUtils.closeQuietly(out);
+			if (httpClient != null) {
+				httpClient.getConnectionManager().shutdown();
+			}
 		}
 	}
 
@@ -178,16 +183,20 @@ public class HttpDownloader extends Downloader {
 		status.setCancelled(true);
 		cleanup();
 	}
-	
+
 	/** Deletes unfinished downloads. */
 	private void cleanup() {
-		if (status != null && status.getFeedFile() != null && status.getFeedFile().getFile_url() != null) {
+		if (status != null && status.getFeedFile() != null
+				&& status.getFeedFile().getFile_url() != null) {
 			File dest = new File(status.getFeedFile().getFile_url());
 			if (dest.exists()) {
 				boolean rc = dest.delete();
-				if (AppConfig.DEBUG) Log.d(TAG, "Deleted file " + dest.getName() + "; Result: " + rc);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
+							+ rc);
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG, "cleanup() didn't delete file: does not exist.");
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "cleanup() didn't delete file: does not exist.");
 			}
 		}
 	}
