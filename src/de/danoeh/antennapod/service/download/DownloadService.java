@@ -844,9 +844,8 @@ public class DownloadService extends Service {
 			sendDownloadHandledIntent();
 			if (chaptersRead) {
 				manager.setFeedItem(DownloadService.this, media.getItem());
-			} else {
-				manager.setFeedMedia(DownloadService.this, media);
 			}
+			manager.setFeedMedia(DownloadService.this, media);
 
 			if (!FeedManager.getInstance().isInQueue(media.getItem())) {
 				FeedManager.getInstance().addQueueItem(DownloadService.this,
