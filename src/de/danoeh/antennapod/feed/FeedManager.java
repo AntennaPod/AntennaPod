@@ -621,6 +621,9 @@ public class FeedManager {
 	 * This method will try to download undownloaded items in the queue or the
 	 * unread items list. If not enough space is available, an episode cleanup
 	 * will be performed first.
+	 * 
+	 * This method assumes that the item that is currently being played is at
+	 * index 0 in the queue and therefore will not try to download it.
 	 */
 	public void autodownloadUndownloadedItems(Context context) {
 		if (AppConfig.DEBUG)
@@ -639,7 +642,9 @@ public class FeedManager {
 
 			List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
 			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-				for (FeedItem item : queue) {
+				for (int i = 1; i < queue.size(); i++) { // ignore first item in
+															// queue
+					FeedItem item = queue.get(i);
 					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
 						itemsToDownload.add(item);
 						episodeSpaceLeft--;
