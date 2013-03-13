@@ -37,6 +37,7 @@ public class AddFeedActivity extends SherlockActivity {
 	private EditText etxtFeedurl;
 	private Button butBrowseMiroGuide;
 	private Button butOpmlImport;
+    private Button butGreaderImport;
 	private Button butConfirm;
 	private Button butCancel;
 
@@ -56,6 +57,7 @@ public class AddFeedActivity extends SherlockActivity {
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
+        butGreaderImport = (Button) findViewById(R.id.butGreaderImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
 
@@ -70,11 +72,20 @@ public class AddFeedActivity extends SherlockActivity {
 
 		butOpmlImport.setOnClickListener(new OnClickListener() {
 
-			@Override
-			public void onClick(View v) {
-				startActivity(new Intent(AddFeedActivity.this,
-						OpmlImportFromPathActivity.class));
-			}
+		    @Override
+		    public void onClick(View v) {
+		        startActivity(new Intent(AddFeedActivity.this,
+		                OpmlImportFromPathActivity.class));
+		    }
+		});
+
+		butGreaderImport.setOnClickListener(new OnClickListener() {
+
+		    @Override
+		    public void onClick(View v) {
+		        startActivity(new Intent(AddFeedActivity.this,
+		                GoogleReaderImportActivity.class));
+		    }
 		});
 
 		butConfirm.setOnClickListener(new View.OnClickListener() {

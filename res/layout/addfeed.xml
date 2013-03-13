@@ -90,6 +90,24 @@
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
                 android:text="@string/opml_import_label" />
+            
+            <TextView
+                android:id="@+id/txtvGreaderImport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/butOpmlImport"
+                android:layout_margin="8dp"
+                android:text="@string/greader_import_txtv_button_lable" />
+
+            <Button
+                android:id="@+id/butGreaderImport"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvGreaderImport"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:text="@string/greader_import_label" />
         </RelativeLayout>
     </ScrollView>
 

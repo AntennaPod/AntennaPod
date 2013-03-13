@@ -1,0 +1,11 @@
+package de.danoeh.antennapod.googlereader;
+
+public class GoogleConfig {
+	//get key from https://code.google.com/apis/console/
+    static final String API_KEY = "";
+    static final String CLIENT_SECRET = "";
+    static final String CLIENT_ID = "";
+    static final String API_ENDPOINT = "https://www.google.com/reader/api/0/subscription/list?output=json&key="+API_KEY;
+    static final String OAUTH2_SCOPE = "oauth2:http://www.google.com/reader/api/";
+
+}
