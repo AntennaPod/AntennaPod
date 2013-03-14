@@ -65,6 +65,10 @@ public class PodcastApp extends Application implements
 		currentlyPlayingMediaId = prefs.getLong(
 				PlaybackService.PREF_CURRENTLY_PLAYING_MEDIA,
 				PlaybackService.NO_MEDIA_PLAYING);
+		// start the update alarm
+		int hours = Integer.parseInt(prefs.getString(
+				PREF_UPDATE_INTERVALL, "0"));
+		restartUpdateAlarm(hours);
 		readThemeValue();
 		createImportDirectory();
 		createNoMediaFile();
@@ -126,22 +130,9 @@ public class PodcastApp extends Application implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Registered change of application preferences");
 		if (key.equals(PREF_UPDATE_INTERVALL)) {
-			AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
 			int hours = Integer.parseInt(sharedPreferences.getString(
-					PREF_UPDATE_INTERVALL, "0"));
-			PendingIntent updateIntent = PendingIntent.getBroadcast(this, 0,
-					new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
-			alarmManager.cancel(updateIntent);
-			if (hours != 0) {
-				long newIntervall = TimeUnit.HOURS.toMillis(hours);
-				alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
-						newIntervall, newIntervall, updateIntent);
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Changed alarm to new intervall");
-			} else {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Automatic update was deactivated");
-			}
+				PREF_UPDATE_INTERVALL, "0"));
+			restartUpdateAlarm(hours);
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "PREF_DISPLAY_ONLY_EPISODES changed");
@@ -209,6 +200,7 @@ public class PodcastApp extends Application implements
 			break;
 		}
 	}
+
 
 	/**
 	 * Return the folder where the app stores all of its data. This method will
@@ -279,4 +271,22 @@ public class PodcastApp extends Application implements
 		editor.commit();
 		createImportDirectory();
 	}
+	
+	private void restartUpdateAlarm(int hours) {
+		AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
+		PendingIntent updateIntent = PendingIntent.getBroadcast(this, 0,
+				new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
+		alarmManager.cancel(updateIntent);
+		if (hours != 0) {
+			long newIntervall = TimeUnit.HOURS.toMillis(hours);
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+					newIntervall, newIntervall, updateIntent);
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Changed alarm to new intervall");
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Automatic update was deactivated");
+		}
+	}
+	
 }
