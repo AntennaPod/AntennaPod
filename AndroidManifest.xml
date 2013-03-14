@@ -23,7 +23,9 @@
     <uses-feature
         android:name="android.hardware.screen.portrait"
         android:required="false" />
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
@@ -348,9 +350,21 @@
             android:configChanges="orientation"
             android:label="@string/organize_queue_label" >
         </activity>
-        <receiver android:name=".receiver.ConnectivityActionReceiver">
+
+        <receiver android:name=".receiver.ConnectivityActionReceiver" >
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+            </intent-filter>
+        </receiver>
+        <receiver android:name=".receiver.AlarmUpdateReceiver" >
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data
+                    android:path="de.danoeh.antennapod"
+                    android:scheme="package" />
             </intent-filter>
         </receiver>
     </application>

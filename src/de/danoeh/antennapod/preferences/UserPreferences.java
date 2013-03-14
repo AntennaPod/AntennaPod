@@ -198,11 +198,9 @@ public class UserPreferences implements
 			followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
 
 		} else if (key.equals(PREF_UPDATE_INTERVAL)) {
-			int hours = Integer.parseInt(sp
-					.getString(PREF_UPDATE_INTERVAL, "0"));
-			updateInterval = readUpdateInterval(sp
-					.getString(PREF_UPDATE_INTERVAL, "0"));
-			restartUpdateAlarm(hours);
+			updateInterval = readUpdateInterval(sp.getString(
+					PREF_UPDATE_INTERVAL, "0"));
+			restartUpdateAlarm(updateInterval);
 
 		} else if (key.equals(PREF_AUTO_DELETE)) {
 			autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
@@ -347,20 +345,23 @@ public class UserPreferences implements
 	/**
 	 * Updates alarm registered with the AlarmManager service or deactivates it.
 	 * 
-	 * @param hours
-	 *            new value to register with AlarmManager. If hours is 0, the
+	 * @param millis
+	 *            new value to register with AlarmManager. If millis is 0, the
 	 *            alarm is deactivated.
 	 * */
-	public void restartUpdateAlarm(int hours) {
-		AlarmManager alarmManager = (AlarmManager) context
+	public static void restartUpdateAlarm(long millis) {
+		instanceAvailable();
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Restarting update alarm. New value: " + millis);
+		AlarmManager alarmManager = (AlarmManager) instance.context
 				.getSystemService(Context.ALARM_SERVICE);
-		PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
-				new Intent(FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
+		PendingIntent updateIntent = PendingIntent.getBroadcast(
+				instance.context, 0, new Intent(
+						FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
 		alarmManager.cancel(updateIntent);
-		if (hours != 0) {
-			long newIntervall = TimeUnit.HOURS.toMillis(hours);
-			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, newIntervall,
-					newIntervall, updateIntent);
+		if (millis != 0) {
+			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, millis, millis,
+					updateIntent);
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Changed alarm to new intervall");
 		} else {
