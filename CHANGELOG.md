@@ -1,5 +1,12 @@
 Change Log
 ==========
+Version 0.9.7.1
+---------------
+* Added automatic download of new episodes
+* Added option to specify the number of downloaded episodes to keep on the device
+*  Added support for playback of external media files
+*  Several improvements and bugfixes
+*  Added Catalan translation
 
 Version 0.9.7
 -------------
