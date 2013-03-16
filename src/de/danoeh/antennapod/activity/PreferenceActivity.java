@@ -7,7 +7,6 @@ import java.util.List;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.Resources.Theme;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;

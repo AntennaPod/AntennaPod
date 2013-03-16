@@ -209,7 +209,7 @@ public class ExternalPlayerFragment extends SherlockFragment {
 			if (media != null) {
 				txtvTitle.setText(media.getEpisodeTitle());
 				ImageLoader.getInstance().loadThumbnailBitmap(
-						media.getImageFileUrl(),
+						media,
 						imgvCover,
 						(int) getActivity().getResources().getDimension(
 								R.dimen.external_player_height));

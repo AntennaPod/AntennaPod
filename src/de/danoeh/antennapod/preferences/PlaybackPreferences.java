@@ -5,8 +5,6 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.feed.FeedMedia;
 
 /**
  * Provides access to preferences set by the playback service. A private

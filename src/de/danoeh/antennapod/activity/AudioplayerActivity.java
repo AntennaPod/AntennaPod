@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -214,7 +212,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					@Override
 					public void run() {
 						ImageLoader.getInstance().loadThumbnailBitmap(
-								media.getImageFileUrl(), butNavLeft);
+								media, butNavLeft);
 					}
 				});
 				butNavRight.setImageDrawable(drawables.getDrawable(1));
@@ -226,7 +224,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					@Override
 					public void run() {
 						ImageLoader.getInstance().loadThumbnailBitmap(
-								media.getImageFileUrl(), butNavLeft);
+								media, butNavLeft);
 					}
 				});
 				butNavRight.setImageDrawable(drawables.getDrawable(0));

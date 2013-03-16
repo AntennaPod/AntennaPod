@@ -1,24 +1,16 @@
 package de.danoeh.antennapod.util.playback;
 
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.InputStream;
 import java.util.List;
-
-import org.apache.commons.io.IOUtils;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
 import android.os.Parcel;
 import android.os.Parcelable;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.util.ChapterUtils;
-import de.danoeh.antennapod.util.FileNameGenerator;
 
 /** Represents a media file that is stored on the local storage device. */
 public class ExternalMedia implements Playable {
@@ -35,7 +27,6 @@ public class ExternalMedia implements Playable {
 	private String shownotes;
 	private MediaType mediaType = MediaType.AUDIO;
 	private List<Chapter> chapters;
-	private String imageUrl;
 	private int duration;
 	private int position;
 
@@ -71,12 +62,15 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public void loadMetadata() throws PlayableException {
+		final String tmpFileName = "tmpExternalMediaimage";
+
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 		try {
-		mmr.setDataSource(source);
+			mmr.setDataSource(source);
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-			throw new PlayableException("IllegalArgumentException when setting up MediaMetadataReceiver");
+			throw new PlayableException(
+					"IllegalArgumentException when setting up MediaMetadataReceiver");
 		}
 		episodeTitle = mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
@@ -85,24 +79,6 @@ public class ExternalMedia implements Playable {
 		duration = Integer.parseInt(mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
 		ChapterUtils.loadChaptersFromFileUrl(this);
-		byte[] imgData = mmr.getEmbeddedPicture();
-		File cacheDir = PodcastApp.getInstance().getExternalCacheDir();
-		if (cacheDir != null) {
-			OutputStream out = null;
-			try {
-				File tmpFile = File.createTempFile(
-						FileNameGenerator.generateFileName(source) + "-img",
-						null, cacheDir);
-				out = new BufferedOutputStream(new FileOutputStream(tmpFile));
-				IOUtils.write(imgData, out);
-				imageUrl = tmpFile.getAbsolutePath();
-			} catch (IOException e) {
-				e.printStackTrace();
-				throw new PlayableException("IOException during loadMetadata()");
-			} finally {
-				IOUtils.closeQuietly(out);
-			}
-		}
 	}
 
 	@Override
@@ -133,11 +109,6 @@ public class ExternalMedia implements Playable {
 	@Override
 	public String getFeedTitle() {
 		return feedTitle;
-	}
-
-	@Override
-	public String getImageFileUrl() {
-		return imageUrl;
 	}
 
 	@Override
@@ -234,5 +205,21 @@ public class ExternalMedia implements Playable {
 			return new ExternalMedia[size];
 		}
 	};
+
+	@Override
+	public InputStream openImageInputStream() {
+		return new Playable.DefaultPlayableImageLoader(this)
+				.openImageInputStream();
+	}
+
+	@Override
+	public String getImageLoaderCacheKey() {
+		return new Playable.DefaultPlayableImageLoader(this).getImageLoaderCacheKey();
+	}
+
+	@Override
+	public InputStream reopenImageInputStream(InputStream input) {
+		return new Playable.DefaultPlayableImageLoader(this).reopenImageInputStream(input);
+	}
 
 }

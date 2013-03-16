@@ -27,7 +27,6 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
-import de.danoeh.antennapod.service.download.APRedirectHandler;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 

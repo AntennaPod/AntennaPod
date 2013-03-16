@@ -8,20 +8,14 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.widget.Adapter;
 import android.widget.BaseAdapter;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter.Holder;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.ThemeUtils;
 
 public class DefaultFeedItemlistAdapter extends BaseAdapter {
 

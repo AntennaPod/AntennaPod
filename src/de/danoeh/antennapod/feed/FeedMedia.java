@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.feed;
 
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 
@@ -226,15 +228,6 @@ public class FeedMedia extends FeedFile implements Playable {
 	}
 
 	@Override
-	public String getImageFileUrl() {
-		if (getItem().getFeed().getImage() != null) {
-			return getItem().getFeed().getImage().getFile_url();
-		} else {
-			return null;
-		}
-	}
-
-	@Override
 	public Object getIdentifier() {
 		return id;
 	}
@@ -329,4 +322,37 @@ public class FeedMedia extends FeedFile implements Playable {
 			return new FeedMedia[size];
 		}
 	};
+
+	@Override
+	public InputStream openImageInputStream() {
+		InputStream out = new Playable.DefaultPlayableImageLoader(this)
+				.openImageInputStream();
+		if (out == null) {
+			if (item.getFeed().getImage() != null) {
+				return item.getFeed().getImage().openImageInputStream();
+			}
+		}
+		return out;
+	}
+
+	@Override
+	public String getImageLoaderCacheKey() {
+		String out = new Playable.DefaultPlayableImageLoader(this).getImageLoaderCacheKey();
+		if (out == null) {
+			if (item.getFeed().getImage() != null) {
+				return item.getFeed().getImage().getImageLoaderCacheKey();
+			}
+		}
+		return out;
+	}
+
+	@Override
+	public InputStream reopenImageInputStream(InputStream input) {
+		if (input instanceof FileInputStream) {
+			return item.getFeed().getImage().reopenImageInputStream(input);
+		} else {
+			return new Playable.DefaultPlayableImageLoader(this)
+					.reopenImageInputStream(input);
+		}
+	}
 }

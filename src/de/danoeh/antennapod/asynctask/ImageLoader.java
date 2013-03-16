@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -15,7 +16,6 @@ import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedImage;
 
 /** Caches and loads FeedImage bitmaps in the background */
 public class ImageLoader {
@@ -90,18 +90,8 @@ public class ImageLoader {
 	 * ImageView's size has already been set or inside a Runnable which is
 	 * posted to the ImageView's message queue.
 	 */
-	public void loadCoverBitmap(String fileUrl, ImageView target) {
-		loadCoverBitmap(fileUrl, target, target.getHeight());
-	}
-
-	public void loadCoverBitmap(FeedImage image, ImageView target) {
-		loadCoverBitmap((image != null) ? image.getFile_url() : null, target,
-				target.getHeight());
-	}
-
-	public void loadCoverBitmap(FeedImage image, ImageView target, int length) {
-		loadCoverBitmap((image != null) ? image.getFile_url() : null, target,
-				length);
+	public void loadCoverBitmap(ImageWorkerTaskResource source, ImageView target) {
+		loadCoverBitmap(source, target, target.getHeight());
 	}
 
 	/**
@@ -110,18 +100,19 @@ public class ImageLoader {
 	 * ImageView's size has already been set or inside a Runnable which is
 	 * posted to the ImageView's message queue.
 	 */
-	public void loadCoverBitmap(String fileUrl, ImageView target, int length) {
+	public void loadCoverBitmap(ImageWorkerTaskResource source,
+			ImageView target, int length) {
 		final int defaultCoverResource = getDefaultCoverResource(target
 				.getContext());
 
-		if (fileUrl != null) {
-			CachedBitmap cBitmap = getBitmapFromCoverCache(fileUrl);
+		if (source != null && source.getImageLoaderCacheKey() != null) {
+			CachedBitmap cBitmap = getBitmapFromCoverCache(source.getImageLoaderCacheKey());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(defaultCoverResource);
 				BitmapDecodeWorkerTask worker = new BitmapDecodeWorkerTask(
-						handler, target, fileUrl, length, IMAGE_TYPE_COVER);
+						handler, target, source, length, IMAGE_TYPE_COVER);
 				executor.submit(worker);
 			}
 		} else {
@@ -135,19 +126,9 @@ public class ImageLoader {
 	 * called if the ImageView's size has already been set or inside a Runnable
 	 * which is posted to the ImageView's message queue.
 	 */
-	public void loadThumbnailBitmap(String fileUrl, ImageView target) {
-		loadThumbnailBitmap(fileUrl, target, target.getHeight());
-	}
-
-	public void loadThumbnailBitmap(FeedImage image, ImageView target) {
-		loadThumbnailBitmap((image != null) ? image.getFile_url() : null,
-				target, target.getHeight());
-	}
-
-	public void loadThumbnailBitmap(FeedImage image, ImageView target,
-			int length) {
-		loadThumbnailBitmap((image != null) ? image.getFile_url() : null,
-				target, length);
+	public void loadThumbnailBitmap(ImageWorkerTaskResource source,
+			ImageView target) {
+		loadThumbnailBitmap(source, target, target.getHeight());
 	}
 
 	/**
@@ -156,18 +137,19 @@ public class ImageLoader {
 	 * called if the ImageView's size has already been set or inside a Runnable
 	 * which is posted to the ImageView's message queue.
 	 */
-	public void loadThumbnailBitmap(String fileUrl, ImageView target, int length) {
+	public void loadThumbnailBitmap(ImageWorkerTaskResource source,
+			ImageView target, int length) {
 		final int defaultCoverResource = getDefaultCoverResource(target
 				.getContext());
 
-		if (fileUrl != null) {
-			CachedBitmap cBitmap = getBitmapFromThumbnailCache(fileUrl);
+		if (source != null && source.getImageLoaderCacheKey() != null) {
+			CachedBitmap cBitmap = getBitmapFromThumbnailCache(source.getImageLoaderCacheKey());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(defaultCoverResource);
 				BitmapDecodeWorkerTask worker = new BitmapDecodeWorkerTask(
-						handler, target, fileUrl, length, IMAGE_TYPE_THUMBNAIL);
+						handler, target, source, length, IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
 			}
 		} else {
@@ -218,6 +200,33 @@ public class ImageLoader {
 		final int defaultCoverResource = res.getResourceId(0, 0);
 		res.recycle();
 		return defaultCoverResource;
+	}
+
+	/**
+	 * Used by the BitmapDecodeWorker task to retrieve the source of the bitmap.
+	 */
+	public interface ImageWorkerTaskResource {
+		/**
+		 * Opens a new InputStream that can be decoded as a bitmap by the
+		 * BitmapFactory.
+		 */
+		public InputStream openImageInputStream();
+
+		/**
+		 * Returns an InputStream that points to the beginning of the image
+		 * resource. Implementations can either create a new InputStream or
+		 * reset the existing one, depending on their implementation of
+		 * openInputStream. If a new InputStream is returned, the one given as a
+		 * parameter MUST be closed.
+		 * @param input The input stream that was returned by openImageInputStream()
+		 * */
+		public InputStream reopenImageInputStream(InputStream input);
+
+		/**
+		 * Returns a string that identifies the image resource. Example: file
+		 * path of an image
+		 */
+		public String getImageLoaderCacheKey();
 	}
 
 }

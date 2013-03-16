@@ -155,10 +155,9 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			holder.title.setText(item.getTitle());
 			holder.feedTitle.setText(item.getFeed().getTitle());
 
-			holder.feedImage.setTag((item.getFeed().getImage() != null) ? item
-					.getFeed().getImage().getFile_url() : null);
+			holder.feedImage.setTag(item.getImageLoaderCacheKey());
 			ImageLoader.getInstance().loadThumbnailBitmap(
-					item.getFeed().getImage(),
+					item,
 					holder.feedImage,
 					(int) convertView.getResources().getDimension(
 							R.dimen.thumbnail_length));

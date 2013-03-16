@@ -7,8 +7,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.protocol.HttpContext;
 
-import de.danoeh.antennapod.AppConfig;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 
 public class APRedirectHandler extends DefaultRedirectHandler {
 	// Identifier for logger

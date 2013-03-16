@@ -41,7 +41,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
 import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedComponent;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -730,8 +729,7 @@ public class PlaybackService extends Service {
 			prepareImmediately = startWhenPrepared = true;
 		} else {
 			if (AppConfig.DEBUG)
-				Log.d(TAG,
-						"No more episodes available to play");
+				Log.d(TAG, "No more episodes available to play");
 			media = null;
 			prepareImmediately = startWhenPrepared = false;
 			stopForeground(true);
@@ -752,7 +750,8 @@ public class PlaybackService extends Service {
 		if (media != null) {
 			resetVideoSurface();
 			refreshRemoteControlClientState();
-			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, notificationCode);
+			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+					notificationCode);
 		} else {
 			sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
 			stopSelf();
@@ -958,12 +957,12 @@ public class PlaybackService extends Service {
 
 		Bitmap icon = null;
 		if (android.os.Build.VERSION.SDK_INT >= 11) {
-			if (media != null && media.getImageFileUrl() != null) {
+			if (media != null && media != null) {
 				int iconSize = getResources().getDimensionPixelSize(
 						android.R.dimen.notification_large_icon_width);
-				icon = BitmapDecoder.decodeBitmap(iconSize,
-						media.getImageFileUrl());
+				icon = BitmapDecoder.decodeBitmapFromWorkerTaskResource(iconSize, media);
 			}
+
 		}
 		if (icon == null) {
 			icon = BitmapFactory.decodeResource(getResources(),

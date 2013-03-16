@@ -65,7 +65,7 @@ public class CoverFragment extends SherlockFragment implements
 				@Override
 				public void run() {
 					ImageLoader.getInstance().loadCoverBitmap(
-							media.getImageFileUrl(), imgvCover);
+							media, imgvCover);
 				}
 			});
 		} else {

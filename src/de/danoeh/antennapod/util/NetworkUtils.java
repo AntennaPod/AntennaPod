@@ -3,14 +3,14 @@ package de.danoeh.antennapod.util;
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.preferences.UserPreferences;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 public class NetworkUtils {
 	private static final String TAG = "NetworkUtils";

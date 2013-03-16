@@ -1,6 +1,18 @@
 package de.danoeh.antennapod.feed;
 
-public class FeedImage extends FeedFile {
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
+
+import de.danoeh.antennapod.asynctask.ImageLoader;
+
+;
+
+public class FeedImage extends FeedFile implements
+		ImageLoader.ImageWorkerTaskResource {
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
 	protected String title;
@@ -51,6 +63,32 @@ public class FeedImage extends FeedFile {
 
 	public void setFeed(Feed feed) {
 		this.feed = feed;
+	}
+
+	@Override
+	public InputStream openImageInputStream() {
+		if (file_url != null) {
+			File file = new File(file_url);
+			if (file.exists()) {
+				try {
+					return new FileInputStream(file_url);
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public String getImageLoaderCacheKey() {
+		return file_url;
+	}
+
+	@Override
+	public InputStream reopenImageInputStream(InputStream input) {
+		IOUtils.closeQuietly(input);
+		return openImageInputStream();
 	}
 
 }

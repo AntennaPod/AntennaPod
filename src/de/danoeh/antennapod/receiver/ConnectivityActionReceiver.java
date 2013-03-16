@@ -1,15 +1,15 @@
 package de.danoeh.antennapod.receiver;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.NetworkUtils;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.NetworkUtils;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {
 	private static final String TAG = "ConnectivityActionReceiver";

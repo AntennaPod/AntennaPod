@@ -1,11 +1,15 @@
 package de.danoeh.antennapod.util;
 
-import java.io.File;
+import java.io.InputStream;
+
+import org.apache.commons.io.IOUtils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Rect;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 
 public class BitmapDecoder {
 	private static final String TAG = "BitmapDecoder";
@@ -18,11 +22,13 @@ public class BitmapDecoder {
 		return sampleSize;
 	}
 
-	public static Bitmap decodeBitmap(int preferredLength, String fileUrl) {
-		if (fileUrl != null && new File(fileUrl).exists()) {
+	public static Bitmap decodeBitmapFromWorkerTaskResource(int preferredLength,
+			ImageLoader.ImageWorkerTaskResource source) {
+		InputStream input = source.openImageInputStream();
+		if (input != null) {
 			BitmapFactory.Options options = new BitmapFactory.Options();
 			options.inJustDecodeBounds = true;
-			BitmapFactory.decodeFile(fileUrl, options);
+			BitmapFactory.decodeStream(input, new Rect(), options);
 			int srcWidth = options.outWidth;
 			int srcHeight = options.outHeight;
 			int length = Math.max(srcWidth, srcHeight);
@@ -32,17 +38,14 @@ public class BitmapDecoder {
 			options.inJustDecodeBounds = false;
 			options.inSampleSize = sampleSize;
 			options.inPreferredConfig = Bitmap.Config.ARGB_8888;
-
-			Bitmap decodedBitmap = BitmapFactory.decodeFile(fileUrl, options);
+			Bitmap decodedBitmap = BitmapFactory.decodeStream(source.reopenImageInputStream(input),
+					null, options);
 			if (decodedBitmap == null) {
-				Log.i(TAG,
-						"Bitmap could not be decoded in custom sample size. Trying default sample size (path was "
-								+ fileUrl + ")");
-				decodedBitmap = BitmapFactory.decodeFile(fileUrl);
+				decodedBitmap = BitmapFactory.decodeStream(source.reopenImageInputStream(input));
 			}
+			IOUtils.closeQuietly(input);
 			return decodedBitmap;
-		} else {
-			return null;
 		}
+		return null;
 	}
 }

@@ -1,10 +1,11 @@
 package de.danoeh.antennapod.feed;
 
+import java.io.InputStream;
 import java.lang.ref.SoftReference;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 
 /**
  * Data Object for a XML message
@@ -12,7 +13,8 @@ import de.danoeh.antennapod.preferences.PlaybackPreferences;
  * @author daniel
  * 
  */
-public class FeedItem extends FeedComponent {
+public class FeedItem extends FeedComponent implements
+		ImageLoader.ImageWorkerTaskResource {
 
 	/** The id/guid that can be found in the rss/atom feed. Might not be set. */
 	private String itemIdentifier;
@@ -240,5 +242,41 @@ public class FeedItem extends FeedComponent {
 			}
 		}
 		return (isRead() ? State.READ : State.NEW);
+	}
+
+	@Override
+	public InputStream openImageInputStream() {
+		InputStream out = null;
+		if (hasMedia()) {
+			out = media.openImageInputStream();
+		}
+		if (out == null && feed.getImage() != null) {
+			out = feed.getImage().openImageInputStream();
+		}
+		return out;
+	}
+
+	@Override
+	public InputStream reopenImageInputStream(InputStream input) {
+		InputStream out = null;
+		if (hasMedia()) {
+			out = media.reopenImageInputStream(input);
+		}
+		if (out == null && feed.getImage() != null) {
+			out = feed.getImage().reopenImageInputStream(input);
+		}
+		return out;
+	}
+
+	@Override
+	public String getImageLoaderCacheKey() {
+		String out = null;
+		if (hasMedia()) {
+			out = media.getImageLoaderCacheKey();
+		}
+		if (out == null && feed.getImage() != null) {
+			out = feed.getImage().getImageLoaderCacheKey();
+		}
+		return out;
 	}
 }

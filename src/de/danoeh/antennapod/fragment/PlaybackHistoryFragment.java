@@ -4,7 +4,6 @@ import android.os.Bundle;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.adapter.DefaultFeedItemlistAdapter;
-import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;

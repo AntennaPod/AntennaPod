@@ -58,7 +58,6 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;

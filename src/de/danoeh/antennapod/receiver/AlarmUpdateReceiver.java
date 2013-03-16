@@ -1,11 +1,11 @@
 package de.danoeh.antennapod.receiver;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.preferences.UserPreferences;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Listens for events that make it necessary to reset the update alarm. */
 public class AlarmUpdateReceiver extends BroadcastReceiver {
