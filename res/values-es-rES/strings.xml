@@ -54,7 +54,7 @@
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
-  <string name="stream_label">Reproducir por streaming</string>
+  <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
   <string name="mark_read_label">Marcar como leído</string>
   <string name="mark_unread_label">Marcar como no leído</string>

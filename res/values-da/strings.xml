@@ -6,6 +6,7 @@
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODER</string>
   <string name="new_label">Nye</string>
+  <string name="waiting_list_label">Venteliste</string>
   <string name="settings_label">Indstillinger</string>
   <string name="add_new_feed_label">Tilføj et nyt feed</string>
   <string name="downloads_label">Downloads</string>
@@ -63,6 +64,7 @@
   <string name="support_label">Flattr dette</string>
   <string name="enqueue_all_new">Sæt alle i kø</string>
   <string name="download_all">Download alle</string>
+  <string name="skip_episode_label">Spring episode over</string>
   <!--Download messages and labels-->
   <string name="download_successful">Download lykkedes</string>
   <string name="download_failed">Download fejlet</string>
@@ -152,15 +154,16 @@
   <string name="pref_flattr_this_app_sum">Støt udviklingen af AntennaPod ved at flattr den. Tak!</string>
   <string name="pref_revokeAccess_title">Tilbagekald adgang</string>
   <string name="pref_revokeAccess_sum">Tilbagekald adgangen til din flattr konto fra denne app.</string>
-  <string name="pref_autoQueue_title">Sæt automatisk i kø</string>
-  <string name="pref_autoQueue_sum">Tilføj en episode til køen når du begynder at downlade den.</string>
   <string name="pref_display_only_episodes_title">Vis kun episoder</string>
   <string name="pref_display_only_episodes_sum">Vis kun emner der også har en episode.</string>
   <string name="user_interface_label">Brugerflade</string>
-  <string name="pref_auto_delete_title">Fjern automatisk</string>
-  <string name="pref_auto_delete_sum">Fjern en episode når afspilningen er færdig eller den er fjernet fra køen.</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_set_theme_sum">Skift AntennaPods udseende.</string>
+  <string name="pref_automatic_download_title">Download automatisk</string>
+  <string name="pref_automatic_download_sum">Konfigurer automatisk download af episoder</string>
+  <string name="pref_autodl_wifi_filter_title">Sæt Wi-Fi filter til</string>
+  <string name="pref_autodl_wifi_filter_sum">Tillad kun automatisk download for de valgte Wi-Fi netværk</string>
+  <string name="pref_episode_cache_title">Episode cache</string>
   <!--Search-->
   <string name="search_hint">Søg efter feeds eller episoder</string>
   <string name="found_in_shownotes_label">Funder i showets noter</string>

@@ -6,6 +6,7 @@
   <string name="podcasts_label">Подкасти</string>
   <string name="episodes_label">Епізоди</string>
   <string name="new_label">Нові</string>
+  <string name="waiting_list_label">Черга</string>
   <string name="settings_label">Налаштування</string>
   <string name="add_new_feed_label">Додати канал</string>
   <string name="downloads_label">Завантаження</string>
@@ -63,6 +64,7 @@
   <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="enqueue_all_new">Додати до черги</string>
   <string name="download_all">Завантажити все</string>
+  <string name="skip_episode_label">Пропустити епізод</string>
   <!--Download messages and labels-->
   <string name="download_successful">Успішне завантаження</string>
   <string name="download_failed">Помилка завантаження</string>
@@ -152,15 +154,16 @@
   <string name="pref_flattr_this_app_sum">Підтримайте розробку AntennaPod за допомогою flattr. Дякую!</string>
   <string name="pref_revokeAccess_title">Відкликати доступ</string>
   <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
-  <string name="pref_autoQueue_title">Автододавати до черги</string>
-  <string name="pref_autoQueue_sum">Додати епізод до черги коли починається завантаження.</string>
   <string name="pref_display_only_episodes_title">Показувати тільки епізоди</string>
   <string name="pref_display_only_episodes_sum">Відображати тільки канали з наявними епізодами</string>
   <string name="user_interface_label">Зовнішній вид</string>
-  <string name="pref_auto_delete_title">Автовидалення</string>
-  <string name="pref_auto_delete_sum">Видаляти після повного прослуховування або видалення з черги</string>
   <string name="pref_set_theme_title">Обрати тему</string>
   <string name="pref_set_theme_sum">Змінти появу AntennaPod</string>
+  <string name="pref_automatic_download_title">Автоматичне завантаження</string>
+  <string name="pref_automatic_download_sum">Налаштування автоматичного завантаження епізодів</string>
+  <string name="pref_autodl_wifi_filter_title">Увімкнути фільтр Wi-Fi</string>
+  <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки для окремих Wi-Fi мережах</string>
+  <string name="pref_episode_cache_title">Кеш епізодів</string>
   <!--Search-->
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>

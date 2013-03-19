@@ -6,6 +6,7 @@
   <string name="podcasts_label">播客</string>
   <string name="episodes_label">曲目</string>
   <string name="new_label">最新</string>
+  <string name="waiting_list_label">等待列表</string>
   <string name="settings_label">设置</string>
   <string name="add_new_feed_label">添加新订阅</string>
   <string name="downloads_label">下载</string>
@@ -63,6 +64,7 @@
   <string name="support_label">Flattr 他</string>
   <string name="enqueue_all_new">全部添加到队列</string>
   <string name="download_all">全部下载</string>
+  <string name="skip_episode_label">跳过曲目</string>
   <!--Download messages and labels-->
   <string name="download_successful">下载成功</string>
   <string name="download_failed">下载失败</string>
@@ -152,15 +154,16 @@
   <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!\n</string>
   <string name="pref_revokeAccess_title">撤销访问</string>
   <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
-  <string name="pref_autoQueue_title">自动添加到队列</string>
-  <string name="pref_autoQueue_sum">当下载开始后添加本曲目到队列</string>
   <string name="pref_display_only_episodes_title">只显示有曲目的</string>
   <string name="pref_display_only_episodes_sum">只显示有曲目的项.</string>
   <string name="user_interface_label">界面</string>
-  <string name="pref_auto_delete_title">自动删除</string>
-  <string name="pref_auto_delete_sum">播放完成或者从队列中删除后删除本曲. </string>
   <string name="pref_set_theme_title">主题选择</string>
   <string name="pref_set_theme_sum">改变 AntennaPod 外观</string>
+  <string name="pref_automatic_download_title">自动下载</string>
+  <string name="pref_automatic_download_sum">配置自动下载的曲目</string>
+  <string name="pref_autodl_wifi_filter_title">打开 Wi-Fi 过滤器</string>
+  <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
+  <string name="pref_episode_cache_title">曲目缓存</string>
   <!--Search-->
   <string name="search_hint">搜索订阅或者插曲</string>
   <string name="found_in_shownotes_label">笔记中查找</string>

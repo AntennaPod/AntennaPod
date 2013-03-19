@@ -6,6 +6,7 @@
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODEN</string>
   <string name="new_label">Neu</string>
+  <string name="waiting_list_label">Warteliste</string>
   <string name="settings_label">Einstellungen</string>
   <string name="add_new_feed_label">Feed hinzufügen</string>
   <string name="downloads_label">Downloads</string>
@@ -63,6 +64,7 @@
   <string name="support_label">Flattr this</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
   <string name="download_all">Alle herunterladen</string>
+  <string name="skip_episode_label">Episode überspringen</string>
   <!--Download messages and labels-->
   <string name="download_successful">Download erfolgreich</string>
   <string name="download_failed">Download fehlgeschlagen</string>
@@ -152,15 +154,16 @@
   <string name="pref_flattr_this_app_sum">Unterstütze die Entwicklung von AntennaPod mit Flattr. Danke!</string>
   <string name="pref_revokeAccess_title">Zugriff entziehen</string>
   <string name="pref_revokeAccess_sum">Entziehe dieser App die Zugriffserlaubnis für deinen Flattr account</string>
-  <string name="pref_autoQueue_title">Automatisches Einreihen</string>
-  <string name="pref_autoQueue_sum">Füge eine Episode nach dem Herunterladen der Abspielliste hinzu.</string>
   <string name="pref_display_only_episodes_title">Nur Episoden anzeigen</string>
   <string name="pref_display_only_episodes_sum">Zeige nur Feed-Einträge mit Episoden an.</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
-  <string name="pref_auto_delete_title">Automatisches Löschen</string>
-  <string name="pref_auto_delete_sum">Lösche eine Episode nach dem Anhören oder wenn sie von der Abspielliste entfernt wird.</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
+  <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
+  <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
+  <string name="pref_autodl_wifi_filter_title">W-LAN-Filter aktivieren</string>
+  <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
+  <string name="pref_episode_cache_title">Episodenspeicher</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>

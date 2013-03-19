@@ -6,6 +6,7 @@
   <string name="podcasts_label">PODCASTURI</string>
   <string name="episodes_label">EPISOADE</string>
   <string name="new_label">Nou</string>
+  <string name="waiting_list_label">Listă de așteptare</string>
   <string name="settings_label">Setări</string>
   <string name="add_new_feed_label">Adaugă feed</string>
   <string name="downloads_label">Descărcări</string>
@@ -63,6 +64,7 @@
   <string name="support_label">Flattr aceasta</string>
   <string name="enqueue_all_new">Adaugă toate în coadă</string>
   <string name="download_all">Descarcă toate</string>
+  <string name="skip_episode_label">Sari peste episod</string>
   <!--Download messages and labels-->
   <string name="download_successful">Descărcare cu succes</string>
   <string name="download_failed">Descărcare eșuată</string>
@@ -152,15 +154,16 @@
   <string name="pref_flattr_this_app_sum">Ajutați dezvoltarea AntennaPod prin flattr. Mulțumesc!</string>
   <string name="pref_revokeAccess_title">Revocare acces</string>
   <string name="pref_revokeAccess_sum">Revocă accesul permisiunilor pentru contul de flattr.</string>
-  <string name="pref_autoQueue_title">Adaugă la coadă automat</string>
-  <string name="pref_autoQueue_sum">Adaugă un episod la coadă când începe descărcarea lui.</string>
   <string name="pref_display_only_episodes_title">Afișează doar episoade</string>
   <string name="pref_display_only_episodes_sum">Afișează doar elemente ce au un episod.</string>
   <string name="user_interface_label">Interfața grafică</string>
-  <string name="pref_auto_delete_title">Ștergere automată</string>
-  <string name="pref_auto_delete_sum">Șterge un episod când playbackul este terminat sau când este eliminată din coadă.</string>
   <string name="pref_set_theme_title">Alege temă</string>
   <string name="pref_set_theme_sum">Schimbă aspectul AntennaPod.</string>
+  <string name="pref_automatic_download_title">Descărcare automată</string>
+  <string name="pref_automatic_download_sum">Configurează descărcarea automată a episoadelor.</string>
+  <string name="pref_autodl_wifi_filter_title">Pornește filtru Wi-Fi</string>
+  <string name="pref_autodl_wifi_filter_sum">Pornește descărcarea automată doar pentru rețele Wi-Fi selectate.</string>
+  <string name="pref_episode_cache_title">Cache de episoade</string>
   <!--Search-->
   <string name="search_hint">Caută feeduri sau episoade</string>
   <string name="found_in_shownotes_label">Găsit în notițe</string>
