@@ -213,9 +213,6 @@ public class EpisodesFragment extends SherlockFragment {
 			}
 		}
 
-		if (handled) {
-			adapter.notifyDataSetChanged();
-		}
 		resetContextMenuSelection();
 		return handled;
 	}
