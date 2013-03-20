@@ -72,7 +72,13 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 				return EpisodeFilter.accessEpisodeByIndex(unreadItems,
 						childPosition);
 			} else {
-				return unreadItems.get(childPosition);
+				int sz=unreadItems.size();
+				if(sz>0) {
+					if(childPosition>=sz) {
+						childPosition=sz-1;
+					}
+					return unreadItems.get(childPosition);
+				}
 			}
 		}
 		return null;
@@ -88,7 +94,11 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			boolean isLastChild, View convertView, ViewGroup parent) {
 		Holder holder;
 		final FeedItem item = getChild(groupPosition, childPosition);
-
+		
+		if(item==null) {
+			return(convertView);
+		}
+		
 		if (convertView == null) {
 			holder = new Holder();
 			LayoutInflater inflater = (LayoutInflater) context
