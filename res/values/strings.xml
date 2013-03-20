@@ -147,12 +147,14 @@
     <string name="queue_label">Queue</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
+    <string name="pref_queuePrioritySort_sum">Sort the playback queue by priority</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervall_title">Update interval</string>
     <string name="pref_autoUpdateIntervall_sum">Specify an interval in which the feeds are refreshed automatically or disable it</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous playback</string>
+    <string name="pref_queuePrioritySort_title">Queue Priority</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
@@ -222,6 +224,12 @@
     <string name="best_rating_label">Best rating</string>
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
+
+	<!--  Feed Priority -->
+    <string name="set_priority_label">Set Feed Priority</string>
+    <string name="enter_priority_here_label">Enter priority here</string>
+    <string name="okay_label">Okay</string>
+    <string name="priority_dialog_invalid_input">Invalid input, priority has to be an integer</string>
 
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>

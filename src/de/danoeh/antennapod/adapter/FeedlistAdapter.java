@@ -83,9 +83,12 @@ public class FeedlistAdapter extends ArrayAdapter<Feed> {
 							.getTime(), System.currentTimeMillis(),
 							DateFormat.MEDIUM, DateFormat.SHORT));
 		}
+		
+		String suffix=feed.getPriority()!=0?" ["+feed.getPriority()+"]":"";
 		holder.numberOfEpisodes.setText(feed.getNumOfItems()
 				+ convertView.getResources()
-						.getString(R.string.episodes_suffix));
+						.getString(R.string.episodes_suffix)
+						  +suffix);
 
 		int newItems = feed.getNumOfNewItems();
 		int inProgressItems = feed.getNumOfStartedItems();

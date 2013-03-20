@@ -33,6 +33,7 @@ public class PodcastApp extends Application implements
 	public static final String PREF_UPDATE_INTERVALL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 	public static final String PREF_AUTO_QUEUE = "prefAutoQueue";
+	public static final String PREF_QUEUE_PRIORITY_SORT = "prefQueuePrioritySort";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
