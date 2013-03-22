@@ -6,6 +6,7 @@
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">ÉPISODES</string>
   <string name="new_label">Nouveau</string>
+  <string name="waiting_list_label">Liste d\'attente</string>
   <string name="settings_label">Préférences</string>
   <string name="add_new_feed_label">Ajouter un flux</string>
   <string name="downloads_label">Téléchargements</string>
@@ -63,10 +64,11 @@
   <string name="support_label">Flattr ça!</string>
   <string name="enqueue_all_new">Ajouter tous à la liste</string>
   <string name="download_all">Tous télécharger</string>
+  <string name="skip_episode_label">Passer cet épisode</string>
   <!--Download messages and labels-->
   <string name="download_successful">Téléchargement réussi</string>
   <string name="download_failed">Téléchargement échoué</string>
-  <string name="download_pending">Téléchargement prévu</string>
+  <string name="download_pending">Téléchargement en attente</string>
   <string name="download_running">Téléchargement en cours</string>
   <string name="download_error_device_not_found">Volume de stockage non trouvé</string>
   <string name="download_error_insufficient_space">Espace insuffisant</string>
@@ -109,7 +111,7 @@
   <string name="show_player_label">Voir le lecteur</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Effacer la liste</string>
-  <string name="organize_queue_label">Organiser la file</string>
+  <string name="organize_queue_label">Ordre de lecture</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
   <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
@@ -144,7 +146,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
   <string name="pref_mobileUpdate_title">Mise à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile.</string>
-  <string name="refreshing_label">Mise à jour</string>
+  <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
   <string name="pref_flattr_auth_title">Connexion à Flattr</string>
   <string name="pref_flattr_auth_sum">Connectez-vous à votre compte Flattr pour pouvoir flattr directement depuis l\'application.</string>
@@ -157,11 +159,16 @@
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
   <string name="pref_set_theme_sum">Modifier l\'apparence d\'AntennaPod.</string>
+  <string name="pref_automatic_download_title">Téléchargement automatique</string>
+  <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
+  <string name="pref_autodl_wifi_filter_title">Activer le filtre Wi-Fi</string>
+  <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
+  <string name="pref_episode_cache_title">Épisodes stockés localement</string>
   <!--Search-->
   <string name="search_hint">Chercher des flux ou épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes</string>
   <string name="found_in_chapters_label">Trouvé dans les titres de chapitre</string>
-  <string name="search_status_searching">Recherche...</string>
+  <string name="search_status_searching">Recherche en cours...</string>
   <string name="search_status_no_results">Aucun résultat trouvé</string>
   <string name="search_results_label">Résultats trouvés</string>
   <string name="search_term_label">Votre recherche :\u0020</string>
@@ -180,7 +187,7 @@
   <string name="deselect_all_label">Ne rien choisir</string>
   <string name="choose_file_to_import_label">Choisir le fichier à importer</string>
   <string name="opml_export_label">Exportation OPML</string>
-  <string name="exporting_label">Exportation...</string>
+  <string name="exporting_label">Exportation en cours...</string>
   <string name="export_error_label">Erreur d\'exportation</string>
   <string name="opml_export_success_title">Exportation OPML réussie.</string>
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
@@ -200,7 +207,7 @@
   <string name="popular_label">Populaire</string>
   <string name="best_rating_label">Meilleure note</string>
   <string name="add_feed_label">Ajouter le flux</string>
-  <string name="miro_feed_added">Ajout du flux</string>
+  <string name="miro_feed_added">Ajout du flux en cours</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Répertoire choisi :</string>
   <string name="create_folder_label">Créer répertoire</string>
