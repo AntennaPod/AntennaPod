@@ -220,7 +220,6 @@ public class FeedManager {
 			@Override
 			public void run() {
 				feeds.remove(feed);
-				eventDist.sendFeedUpdateBroadcast();
 				dbExec.execute(new Runnable() {
 
 					@Override
@@ -266,7 +265,9 @@ public class FeedManager {
 
 						adapter.removeFeed(feed);
 						adapter.close();
+						eventDist.sendFeedUpdateBroadcast();
 					}
+
 				});
 			}
 		});
