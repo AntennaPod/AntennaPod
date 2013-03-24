@@ -21,7 +21,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 			if (AppConfig.DEBUG) Log.d(TAG, "Received intent");
 			boolean mobileUpdate = UserPreferences.isAllowMobileUpdate();
 			if (mobileUpdate || connectedToWifi(context)) {
-				FeedManager.getInstance().refreshAllFeeds(context);
+				FeedManager.getInstance().refreshExpiredFeeds(context);
 			} else {
 				if (AppConfig.DEBUG) Log.d(TAG,
 						"Blocking automatic update: no wifi available / no mobile updates allowed");
