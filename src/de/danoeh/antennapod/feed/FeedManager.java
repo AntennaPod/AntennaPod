@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -890,7 +891,17 @@ public class FeedManager {
 	public void clearQueue(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Clearing queue");
-		queue.clear();
+		Iterator<FeedItem> iter = queue.iterator();
+		while (iter.hasNext()) {
+			FeedItem item = iter.next();
+			if (item.getState() != FeedItem.State.PLAYING) {
+				iter.remove();
+			} else {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"FeedItem is playing and is therefore not removed from the queue");
+			}
+		}
 		eventDist.sendQueueUpdateBroadcast();
 		dbExec.execute(new Runnable() {
 

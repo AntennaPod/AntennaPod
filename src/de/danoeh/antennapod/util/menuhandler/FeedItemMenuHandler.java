@@ -80,7 +80,7 @@ public class FeedItemMenuHandler {
 		}
 
 		boolean isInQueue = manager.isInQueue(selectedItem);
-		if (!isInQueue) {
+		if (!isInQueue || isPlaying) {
 			mi.setItemVisibility(R.id.remove_from_queue_item, false);
 		}
 		if (!(!isInQueue && selectedItem.getMedia() != null)) {
