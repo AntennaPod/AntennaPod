@@ -24,7 +24,7 @@ public class FileNameGenerator {
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
 			if (Arrays.binarySearch(ILLEGAL_CHARACTERS, c) < 0) {
-				builder.append(c);
+				builder.append(c).replaceFirst("  *$","");
 			}
 		}
 		return builder.toString();
