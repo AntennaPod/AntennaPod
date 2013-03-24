@@ -24,10 +24,10 @@ public class FileNameGenerator {
 		for (int i = 0; i < string.length(); i++) {
 			char c = string.charAt(i);
 			if (Arrays.binarySearch(ILLEGAL_CHARACTERS, c) < 0) {
-				builder.append(c).replaceFirst("  *$","");
+				builder.append(c);
 			}
 		}
-		return builder.toString();
+		return builder.toString().replaceFirst("  *$","");
 	}
 
 	public static long generateLong(final String str) {
