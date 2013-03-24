@@ -155,7 +155,7 @@ public class FeedManager {
 			if (queue.contains(media.getItem())) {
 				moveQueueItem(context, queue.indexOf(media.getItem()), 0, true);
 			} else {
-				addQueueItemAt(context, media.getItem(), 0);
+				addQueueItemAt(context, media.getItem(), 0, false);
 			}
 		} catch (MediaFileNotFoundException e) {
 			e.printStackTrace();
@@ -624,8 +624,7 @@ public class FeedManager {
 	 * unread items list. If not enough space is available, an episode cleanup
 	 * will be performed first.
 	 * 
-	 * This method assumes that the item that is currently being played is at
-	 * index 0 in the queue and therefore will not try to download it.
+	 * This method will not try to download the currently playing item.
 	 */
 	public void autodownloadUndownloadedItems(Context context) {
 		if (AppConfig.DEBUG)
@@ -644,10 +643,10 @@ public class FeedManager {
 
 			List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
 			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-				for (int i = 1; i < queue.size(); i++) { // ignore first item in
-															// queue
+				for (int i = 0; i < queue.size(); i++) { // ignore playing item
 					FeedItem item = queue.get(i);
-					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()
+							&& !item.getMedia().isPlaying()) {
 						itemsToDownload.add(item);
 						episodeSpaceLeft--;
 						undownloadedEpisodes--;
@@ -749,11 +748,14 @@ public class FeedManager {
 	/**
 	 * Counts items in the queue and the unread items list which haven't been
 	 * downloaded yet.
+	 * 
+	 * This method will not count the playing item
 	 */
 	private int getNumberOfUndownloadedEpisodes() {
 		int counter = 0;
 		for (FeedItem item : queue) {
-			if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+			if (item.hasMedia() && !item.getMedia().isDownloaded()
+					&& !item.getMedia().isPlaying()) {
 				counter++;
 			}
 		}
@@ -798,7 +800,7 @@ public class FeedManager {
 	 * queue yet. The item is marked as 'read'.
 	 */
 	public void addQueueItemAt(final Context context, final FeedItem item,
-			final int index) {
+			final int index, final boolean performAutoDownload) {
 		contentChanger.post(new Runnable() {
 
 			@Override
@@ -821,12 +823,14 @@ public class FeedManager {
 						adapter.close();
 					}
 				});
-				new Thread() {
-					@Override
-					public void run() {
-						autodownloadUndownloadedItems(context);
-					}
-				}.start();
+				if (performAutoDownload) {
+					new Thread() {
+						@Override
+						public void run() {
+							autodownloadUndownloadedItems(context);
+						}
+					}.start();
+				}
 			}
 		});
 
