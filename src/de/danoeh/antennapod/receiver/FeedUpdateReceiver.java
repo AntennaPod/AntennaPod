@@ -18,20 +18,24 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if (intent.getAction().equals(ACTION_REFRESH_FEEDS)) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received intent");
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Received intent");
 			boolean mobileUpdate = UserPreferences.isAllowMobileUpdate();
 			if (mobileUpdate || connectedToWifi(context)) {
 				FeedManager.getInstance().refreshExpiredFeeds(context);
 			} else {
-				if (AppConfig.DEBUG) Log.d(TAG,
-						"Blocking automatic update: no wifi available / no mobile updates allowed");
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Blocking automatic update: no wifi available / no mobile updates allowed");
 			}
 		}
 	}
 
 	private boolean connectedToWifi(Context context) {
-		ConnectivityManager connManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-		NetworkInfo mWifi = connManager.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+		ConnectivityManager connManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
 
 		return mWifi.isConnected();
 	}
