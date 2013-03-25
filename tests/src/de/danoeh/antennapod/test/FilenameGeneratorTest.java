@@ -10,6 +10,7 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 
 	private static final String VALID1 = "abc abc";
 	private static final String INVALID1 = "ab/c: <abc";
+	private static final String INVALID2 = "abc abc ";
 
 	public void testGenerateFileName() throws IOException {
 		String result = FileNameGenerator.generateFileName(VALID1);
@@ -19,6 +20,12 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 
 	public void testGenerateFileName1() throws IOException {
 		String result = FileNameGenerator.generateFileName(INVALID1);
+		assertEquals(result, VALID1);
+		createFiles(result);
+	}
+	
+	public void testGenerateFileName2() throws IOException {
+		String result = FileNameGenerator.generateFileName(INVALID2);
 		assertEquals(result, VALID1);
 		createFiles(result);
 	}
