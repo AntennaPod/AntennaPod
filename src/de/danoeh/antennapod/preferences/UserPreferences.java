@@ -372,7 +372,7 @@ public class UserPreferences implements
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, millis, millis,
 					updateIntent);
 			if (AppConfig.DEBUG)
-				Log.d(TAG, "Changed alarm to new intervall");
+				Log.d(TAG, "Changed alarm to new interval");
 		} else {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Automatic update was deactivated");

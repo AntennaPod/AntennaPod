@@ -2,6 +2,7 @@ package de.danoeh.antennapod.feed;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -451,11 +453,54 @@ public class FeedManager {
 	}
 
 	/** Updates all feeds in the feed list. */
-	@SuppressLint("NewApi")
 	public void refreshAllFeeds(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Refreshing all feeds.");
+		refreshFeeds(context,feeds);
+	}
+	
+	/** Updates all feeds in the feed list. */
+	public void refreshExpiredFeeds(final Context context) {
+		long millis=UserPreferences.getUpdateInterval();
+		
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Refreshing expired feeds, "+millis+" ms");
+		
+		if(millis>0) {
+			List<Feed> feedList=new ArrayList<Feed>();
+			long now=Calendar.getInstance().getTime().getTime();
+			
+			// Allow a 10 minute window..
+			millis-=10*60*1000;
+			for(Feed feed:feeds) {
+				Date date=feed.getLastUpdate();
+				if(date!=null) {
+					if(date.getTime()+millis<=now) {
+						if(AppConfig.DEBUG) {
+							Log.d(TAG,
+									"Adding expired feed "+feed.getTitle());
+						}
+						feedList.add(feed);
+					}
+					else {
+						if(AppConfig.DEBUG) {
+							Log.d(TAG,
+									"Skipping feed "+feed.getTitle());
+						}
+					}
+				}
+			}
+			if(feedList.size()>0) {
+				refreshFeeds(context,feedList);
+			}
+		}
+	}
+	
+	@SuppressLint("NewApi")
+	private void refreshFeeds(Context context,List<Feed> feeds) {
 		if (!isStartingFeedRefresh) {
+			final Context ctx=context;
+			final List<Feed> feedList=feeds;
 			isStartingFeedRefresh = true;
 			AsyncTask<Void, Void, Void> updateWorker = new AsyncTask<Void, Void, Void>() {
 
@@ -469,13 +514,13 @@ public class FeedManager {
 
 				@Override
 				protected Void doInBackground(Void... params) {
-					for (Feed feed : feeds) {
+					for (Feed feed : feedList) {
 						try {
-							refreshFeed(context, feed);
+							refreshFeed(ctx, feed);
 						} catch (DownloadRequestException e) {
 							e.printStackTrace();
 							addDownloadStatus(
-									context,
+									ctx,
 									new DownloadStatus(feed, feed
 											.getHumanReadableIdentifier(),
 											DownloadError.ERROR_REQUEST_ERROR,
