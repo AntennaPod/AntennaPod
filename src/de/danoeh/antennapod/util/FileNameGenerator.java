@@ -27,7 +27,7 @@ public class FileNameGenerator {
 				builder.append(c);
 			}
 		}
-		return builder.toString();
+		return builder.toString().replaceFirst("  *$","");
 	}
 
 	public static long generateLong(final String str) {
