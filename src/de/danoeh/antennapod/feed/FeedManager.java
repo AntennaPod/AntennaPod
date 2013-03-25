@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -687,27 +688,33 @@ public class FeedManager {
 					FeedItem item = queue.get(i);
 					if (item.hasMedia() && !item.getMedia().isDownloaded()
 							&& !item.getMedia().isPlaying()) {
-						itemsToDownload.add(item);
-						episodeSpaceLeft--;
-						undownloadedEpisodes--;
-						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
-							break;
+						if(item.getFeed().getPriority()>0) {
+							itemsToDownload.add(item);
+							episodeSpaceLeft--;
+							undownloadedEpisodes--;
+							if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+								break;
+							}
 						}
 					}
 				}
 			}
+
 			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
 				for (FeedItem item : unreadItems) {
 					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
-						itemsToDownload.add(item);
-						episodeSpaceLeft--;
-						undownloadedEpisodes--;
-						if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
-							break;
+						if(item.getFeed().getPriority()>0) {
+							itemsToDownload.add(item);
+							episodeSpaceLeft--;
+							undownloadedEpisodes--;
+							if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+								break;
+							}
 						}
 					}
 				}
 			}
+
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Enqueueing " + itemsToDownload.size()
 						+ " items for download");
@@ -894,7 +901,10 @@ public class FeedManager {
 							}
 						}
 					}
+
+					sortQueue(context);
 					eventDist.sendQueueUpdateBroadcast();
+
 					dbExec.execute(new Runnable() {
 
 						@Override
@@ -1429,6 +1439,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX);
 				feed.setDownloaded(feedlistCursor
 						.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
+				feed.setPriority(feedlistCursor
+						.getInt(PodDBAdapter.KEY_FEED_PRIORITY_INDEX));
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed,
@@ -1642,6 +1654,7 @@ public class FeedManager {
 				}
 
 			} while (cursor.moveToNext());
+			sortQueue(context);
 		}
 		cursor.close();
 	}
@@ -1963,6 +1976,32 @@ public class FeedManager {
 
 		protected void setResult(Cursor c) {
 			result = c;
+		}
+	}
+	
+	public static class QueuePrioritySort implements Comparator<FeedItem> {
+		@Override
+		public int compare(FeedItem o1, FeedItem o2) {
+			int i=0;
+			Feed feed1=o1.getFeed();
+			Feed feed2=o2.getFeed();
+			if(feed1!=null&&feed2!=null) {
+				// sort descending
+				i=feed2.getPriority()-feed1.getPriority();
+			}
+			return(i);
+		}		
+	}
+	
+	public void sortQueue(Context context) {
+		boolean sort = PreferenceManager.getDefaultSharedPreferences(
+				context.getApplicationContext()).getBoolean(
+					UserPreferences.PREF_QUEUE_PRIORITY_SORT,true);
+		
+		if(sort) {
+			synchronized(queue) {
+				Collections.sort(queue,new QueuePrioritySort());
+			}
 		}
 	}
 

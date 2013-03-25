@@ -13,6 +13,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.dialog.PriorityDialog;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
@@ -83,6 +84,10 @@ public class FeedMenuHandler {
 			break;
 		case R.id.share_source_item:
 			ShareUtils.shareFeedDownloadLink(context, selectedFeed);
+			break;
+		case R.id.set_priority_item:
+			PriorityDialog pd = new PriorityDialog(context, selectedFeed);
+			pd.show();
 			break;
 		default:
 			return false;

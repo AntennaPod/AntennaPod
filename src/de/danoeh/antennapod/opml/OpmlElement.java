@@ -6,6 +6,7 @@ public class OpmlElement {
 	private String xmlUrl;
 	private String htmlUrl;
 	private String type;
+	private String priority;
 
 	public OpmlElement() {
 
@@ -41,6 +42,14 @@ public class OpmlElement {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public void setPriority(String priority) {
+		this.priority=priority;
+	}
+	
+	public String getPriority() {
+		return priority;
 	}
 
 }
