@@ -37,6 +37,7 @@ public class UserPreferences implements
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
 	public static final String PREF_THEME = "prefTheme";
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
+	public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
@@ -53,6 +54,7 @@ public class UserPreferences implements
 	private boolean displayOnlyEpisodes;
 	private boolean autoDelete;
 	private int theme;
+	private boolean enableAutodownload;
 	private boolean enableAutodownloadWifiFilter;
 	private String[] autodownloadSelectedNetworks;
 	private int episodeCacheSize;
@@ -101,6 +103,7 @@ public class UserPreferences implements
 				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
 		episodeCacheSize = Integer.valueOf(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
+		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -181,6 +184,11 @@ public class UserPreferences implements
 		return instance.episodeCacheSize;
 	}
 
+	public static boolean isEnableAutodownload() {
+		instanceAvailable();
+		return instance.enableAutodownload;
+	}
+
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
 		if (AppConfig.DEBUG)
@@ -218,6 +226,8 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
 			episodeCacheSize = Integer.valueOf(sp.getString(
 					PREF_EPISODE_CACHE_SIZE, "20"));
+		} else if (key.equals(PREF_ENABLE_AUTODL)) {
+			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
 		}
 	}
 

@@ -629,7 +629,8 @@ public class FeedManager {
 	public void autodownloadUndownloadedItems(Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Performing auto-dl of undownloaded episodes");
-		if (NetworkUtils.autodownloadNetworkAvailable(context)) {
+		if (NetworkUtils.autodownloadNetworkAvailable(context)
+				&& UserPreferences.isEnableAutodownload()) {
 			int undownloadedEpisodes = getNumberOfUndownloadedEpisodes();
 			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
 			int deletedEpisodes = performAutoCleanup(context,
