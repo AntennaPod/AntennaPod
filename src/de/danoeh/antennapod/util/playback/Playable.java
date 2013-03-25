@@ -31,10 +31,18 @@ public interface Playable extends Parcelable,
 
 	/**
 	 * This method is called from a separate thread by the PlaybackService.
-	 * Playable objects should load their metadata in this method (for example:
-	 * chapter marks).
+	 * Playable objects should load their metadata in this method. This method
+	 * should execute as quickly as possible and NOT load chapter marks if no
+	 * local file is available.
 	 */
 	public void loadMetadata() throws PlayableException;
+
+	/**
+	 * This method is called from a separate thread by the PlaybackService.
+	 * Playable objects should load their chapter marks in this method if no
+	 * local file was available when loadMetadata() was called.
+	 */
+	public void loadChapterMarks();
 
 	/** Returns the title of the episode that this playable represents */
 	public String getEpisodeTitle();
@@ -240,7 +248,8 @@ public interface Playable extends Parcelable,
 		public InputStream reopenImageInputStream(InputStream input) {
 			if (input instanceof PublicByteArrayInputStream) {
 				IOUtils.closeQuietly(input);
-				byte[] imgData = ((PublicByteArrayInputStream) input).getByteArray();
+				byte[] imgData = ((PublicByteArrayInputStream) input)
+						.getByteArray();
 				if (imgData != null) {
 					ByteArrayInputStream out = new ByteArrayInputStream(imgData);
 					return out;

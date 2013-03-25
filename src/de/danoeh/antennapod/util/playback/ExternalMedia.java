@@ -62,8 +62,6 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public void loadMetadata() throws PlayableException {
-		final String tmpFileName = "tmpExternalMediaimage";
-
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();
 		try {
 			mmr.setDataSource(source);
@@ -79,6 +77,11 @@ public class ExternalMedia implements Playable {
 		duration = Integer.parseInt(mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
 		ChapterUtils.loadChaptersFromFileUrl(this);
+	}
+	
+	@Override
+	public void loadChapterMarks() {
+		
 	}
 
 	@Override
@@ -214,12 +217,14 @@ public class ExternalMedia implements Playable {
 
 	@Override
 	public String getImageLoaderCacheKey() {
-		return new Playable.DefaultPlayableImageLoader(this).getImageLoaderCacheKey();
+		return new Playable.DefaultPlayableImageLoader(this)
+				.getImageLoaderCacheKey();
 	}
 
 	@Override
 	public InputStream reopenImageInputStream(InputStream input) {
-		return new Playable.DefaultPlayableImageLoader(this).reopenImageInputStream(input);
+		return new Playable.DefaultPlayableImageLoader(this)
+				.reopenImageInputStream(input);
 	}
 
 }

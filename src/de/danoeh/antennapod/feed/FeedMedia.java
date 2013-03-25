@@ -198,9 +198,18 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	@Override
 	public void loadMetadata() throws PlayableException {
-		if (getChapters() == null) {
+	}
+
+	@Override
+	public void loadChapterMarks() {
+		if (getChapters() == null && !localFileAvailable()) {
 			ChapterUtils.loadChaptersFromStreamUrl(this);
+			if (getChapters() != null) {
+				FeedManager.getInstance().setFeedItem(PodcastApp.getInstance(),
+						item);
+			}
 		}
+
 	}
 
 	@Override
@@ -337,7 +346,8 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	@Override
 	public String getImageLoaderCacheKey() {
-		String out = new Playable.DefaultPlayableImageLoader(this).getImageLoaderCacheKey();
+		String out = new Playable.DefaultPlayableImageLoader(this)
+				.getImageLoaderCacheKey();
 		if (out == null) {
 			if (item.getFeed().getImage() != null) {
 				return item.getFeed().getImage().getImageLoaderCacheKey();

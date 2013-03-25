@@ -152,6 +152,8 @@ public class PlaybackService extends Service {
 	/** True if mediaplayer was paused because it lost audio focus temporarily */
 	private boolean pausedBecauseOfTransientAudiofocusLoss;
 
+	private Thread chapterLoader;
+
 	private final IBinder mBinder = new LocalBinder();
 
 	public class LocalBinder extends Binder {
@@ -272,6 +274,9 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Service is about to be destroyed");
 		isRunning = false;
+		if (chapterLoader != null) {
+			chapterLoader.interrupt();
+		}
 		disableSleepTimer();
 		unregisterReceiver(headsetDisconnected);
 		unregisterReceiver(shutdownReceiver);
@@ -337,7 +342,7 @@ public class PlaybackService extends Service {
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId) {
 		super.onStartCommand(intent, flags, startId);
-		
+
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "OnStartCommand called");
 		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
@@ -617,6 +622,27 @@ public class PlaybackService extends Service {
 				media.setDuration(mp.getDuration());
 			}
 			setStatus(PlayerStatus.PREPARED);
+			if (chapterLoader != null) {
+				chapterLoader.interrupt();
+			}
+			chapterLoader = new Thread() {
+				@Override
+				public void run() {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Chapter loader started");
+					if (media != null && media.getChapters() == null) {
+						media.loadChapterMarks();
+						if (!isInterrupted() && media.getChapters() != null) {
+							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+									0);
+						}
+					}
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Chapter loader stopped");
+				}
+			};
+			chapterLoader.start();
+
 			if (startWhenPrepared) {
 				play();
 			}
@@ -962,7 +988,8 @@ public class PlaybackService extends Service {
 			if (media != null && media != null) {
 				int iconSize = getResources().getDimensionPixelSize(
 						android.R.dimen.notification_large_icon_width);
-				icon = BitmapDecoder.decodeBitmapFromWorkerTaskResource(iconSize, media);
+				icon = BitmapDecoder.decodeBitmapFromWorkerTaskResource(
+						iconSize, media);
 			}
 
 		}
