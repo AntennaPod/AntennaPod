@@ -30,6 +30,7 @@ public class UserPreferences implements
 
 	public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
 	public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
+	public static final String PREF_QUEUE_PRIORITY_SORT = "prefQueuePrioritySort";
 	public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
 	public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
@@ -38,6 +39,7 @@ public class UserPreferences implements
 	public static final String PREF_THEME = "prefTheme";
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
 	public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
+	public static final String PREF_ENABLE_AUTODL_PRIORITY = "prefEnableAutoDlPriority";
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
@@ -56,6 +58,7 @@ public class UserPreferences implements
 	private int theme;
 	private boolean enableAutodownload;
 	private boolean enableAutodownloadWifiFilter;
+	private boolean enablePriorityload;
 	private String[] autodownloadSelectedNetworks;
 	private int episodeCacheSize;
 
@@ -188,6 +191,11 @@ public class UserPreferences implements
 		instanceAvailable();
 		return instance.enableAutodownload;
 	}
+	
+	public static boolean isEnablePriorityDownload() {
+		instanceAvailable();
+		return instance.enablePriorityload;
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
@@ -228,6 +236,8 @@ public class UserPreferences implements
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		} else if (key.equals(PREF_ENABLE_AUTODL_PRIORITY)) {
+			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL_PRIORITY, false);
 		}
 	}
 

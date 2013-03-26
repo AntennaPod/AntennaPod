@@ -688,7 +688,8 @@ public class FeedManager {
 					FeedItem item = queue.get(i);
 					if (item.hasMedia() && !item.getMedia().isDownloaded()
 							&& !item.getMedia().isPlaying()) {
-						if(item.getFeed().getPriority()>0) {
+						if(!UserPreferences.isEnablePriorityDownload()
+								||item.getFeed().getPriority()>0) {
 							itemsToDownload.add(item);
 							episodeSpaceLeft--;
 							undownloadedEpisodes--;
@@ -703,7 +704,8 @@ public class FeedManager {
 			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
 				for (FeedItem item : unreadItems) {
 					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
-						if(item.getFeed().getPriority()>0) {
+						if(!UserPreferences.isEnablePriorityDownload()
+								||item.getFeed().getPriority()>0) {
 							itemsToDownload.add(item);
 							episodeSpaceLeft--;
 							undownloadedEpisodes--;
