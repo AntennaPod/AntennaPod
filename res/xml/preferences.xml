@@ -43,7 +43,7 @@
           
           <PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
             <CheckBoxPreference android:key="prefEnableAutoDl" android:title="@string/pref_automatic_download_title" android:defaultValue="false"/>
-            <CheckBoxPreference android:key="prefEnableAutoDlPriority" android:title="@string/pref_automatic_download_priority" android:defaultValue="false"/>
+            <CheckBoxPreference android:key="prefEnableAutoDlPriority" android:title="@string/pref_automatic_download_priority" android:dependency="prefEnableAutoDl" android:defaultValue="false"/>
             <CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
           </PreferenceScreen>
         
