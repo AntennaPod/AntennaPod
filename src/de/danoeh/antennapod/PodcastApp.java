@@ -1,14 +1,7 @@
 package de.danoeh.antennapod;
 
-import java.util.Calendar;
-import java.util.Date;
-
-import com.corewerx.app.tn.TNDelta;
-import com.corewerx.app.tnfile.TNFileAppend;
-
 import android.app.Application;
 import android.content.res.Configuration;
-import android.os.Environment;
 import android.util.Log;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -35,24 +28,11 @@ public class PodcastApp extends Application {
 		super.onCreate();
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
-TNDelta delta=new TNDelta();
 		UserPreferences.createInstance(this);
 		PlaybackPreferences.createInstance(this);
 		EventDistributor.getInstance();
 		FeedManager manager = FeedManager.getInstance();
 		manager.loadDBData(getApplicationContext());
-{
-       Date now=Calendar.getInstance().getTime();
-       
-       TNFileAppend.append(Environment.getExternalStorageDirectory(),
-                                   "apod.txt",
-                                   (now.getTime()/1000)
-                                   +","
-                                   +delta.delta()
-                                   +","
-                                   +now.toLocaleString()
-                                   +"\n");
-}  
 	}
 
 	@Override
