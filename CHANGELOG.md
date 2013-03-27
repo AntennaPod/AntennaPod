@@ -1,5 +1,11 @@
 Change Log
 ==========
+
+Version 0.9.7.2
+---------------
+* Automatic download can now be disabled
+* Several bugfixes
+
 Version 0.9.7.1
 ---------------
 * Added automatic download of new episodes
