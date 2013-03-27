@@ -4,6 +4,7 @@ Change Log
 Version 0.9.7.2
 ---------------
 * Automatic download can now be disabled
+* Added Italian (Italy) translation
 * Several bugfixes
 
 Version 0.9.7.1
