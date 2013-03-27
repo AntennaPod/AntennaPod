@@ -107,6 +107,7 @@ public class UserPreferences implements
 		episodeCacheSize = Integer.valueOf(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		enablePriorityload = sp.getBoolean(PREF_ENABLE_AUTODL_PRIORITY, false);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -237,7 +238,7 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
 		} else if (key.equals(PREF_ENABLE_AUTODL_PRIORITY)) {
-			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL_PRIORITY, false);
+			enablePriorityload = sp.getBoolean(PREF_ENABLE_AUTODL_PRIORITY, false);
 		}
 	}
 
