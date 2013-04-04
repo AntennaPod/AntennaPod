@@ -75,9 +75,7 @@
             android:label="@string/downloads_label" />
         <activity
             android:name=".activity.AudioplayerActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait" >
+            android:launchMode="singleTask" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -362,6 +360,7 @@
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PACKAGE_REPLACED" />
+
                 <data
                     android:path="de.danoeh.antennapod"
                     android:scheme="package" />

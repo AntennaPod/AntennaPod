@@ -287,4 +287,9 @@ public class VideoplayerActivity extends MediaplayerActivity implements
 		videoOverlay.setVisibility(View.GONE);
 	}
 
+	@Override
+	protected int getContentViewResourceId() {
+		return R.layout.videoplayer_activity;
+	}
+
 }

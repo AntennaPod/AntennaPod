@@ -3,7 +3,6 @@ package de.danoeh.antennapod.activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.res.Configuration;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
@@ -331,13 +330,6 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		controller.init();
 	}
 
-	@Override
-	public void onConfigurationChanged(Configuration newConfig) {
-		super.onConfigurationChanged(newConfig);
-		// ignore orientation change
-
-	}
-
 	/**
 	 * Called by 'handleStatus()' when the PlaybackService is in the
 	 * AWAITING_VIDEO_SURFACE state.
@@ -399,7 +391,7 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 	}
 
 	protected void setupGUI() {
-		setContentView(R.layout.mediaplayer_activity);
+		setContentView(getContentViewResourceId());
 		sbPosition = (SeekBar) findViewById(R.id.sbPosition);
 		txtvPosition = (TextView) findViewById(R.id.txtvPosition);
 		txtvLength = (TextView) findViewById(R.id.txtvLength);
@@ -420,6 +412,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		butRev.setOnClickListener(controller.newOnRevButtonClickListener());
 
 	}
+
+	protected abstract int getContentViewResourceId();
 
 	void handleError(int errorCode) {
 		final AlertDialog.Builder errorDialog = new AlertDialog.Builder(this);

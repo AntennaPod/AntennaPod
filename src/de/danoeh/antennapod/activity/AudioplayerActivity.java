@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -47,6 +48,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private Fragment currentlyShownFragment;
 	private int currentlyShownPosition = -1;
+	/** Saved and restored on orientation change. */
+	private int savedPosition = -1;
 
 	private TextView txtvTitle;
 	private TextView txtvFeed;
@@ -54,6 +57,37 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	private ImageButton butNavRight;
 
 	private void resetFragmentView() {
+		FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
+
+		if (coverFragment != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Removing cover fragment");
+			fT.remove(coverFragment);
+		}
+		if (descriptionFragment != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Removing description fragment");
+			fT.remove(descriptionFragment);
+		}
+		if (chapterFragment != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Removing chapter fragment");
+			fT.remove(chapterFragment);
+		}
+		if (currentlyShownFragment != null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Removing currently shown fragment");
+			fT.remove(currentlyShownFragment);
+		}
+		for (int i = 0; i < detachedFragments.length; i++) {
+			Fragment f = detachedFragments[i];
+			if (f != null) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Removing detached fragment");
+				fT.remove(f);
+			}
+		}
+		fT.commit();
 		currentlyShownFragment = null;
 		coverFragment = null;
 		descriptionFragment = null;
@@ -65,7 +99,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		resetFragmentView();
+		if (AppConfig.DEBUG) Log.d(TAG, "onStop");
 
 	}
 
@@ -75,6 +109,33 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+
+		super.onConfigurationChanged(newConfig);
+	}
+
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		outState.putInt("selectedPosition", currentlyShownPosition);
+		resetFragmentView();
+		super.onSaveInstanceState(outState);
+	}
+
+	@Override
+	protected void onRestoreInstanceState(Bundle savedInstanceState) {
+		super.onRestoreInstanceState(savedInstanceState);
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Restoring instance state");
+		if (savedInstanceState != null) {
+			int p = savedInstanceState.getInt("selectedPosition", -1);
+			if (p != -1) {
+				savedPosition = p;
+				switchToFragment(savedPosition);
+			}
+		}
 	}
 
 	@Override
@@ -187,6 +248,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 						ft.add(R.id.contentView, currentlyShownFragment);
 					}
 					ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
+					ft.disallowAddToBackStack();
 					ft.commit();
 					updateNavButtonDrawable();
 				}
@@ -211,8 +273,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					@Override
 					public void run() {
-						ImageLoader.getInstance().loadThumbnailBitmap(
-								media, butNavLeft);
+						ImageLoader.getInstance().loadThumbnailBitmap(media,
+								butNavLeft);
 					}
 				});
 				butNavRight.setImageDrawable(drawables.getDrawable(1));
@@ -223,8 +285,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 					@Override
 					public void run() {
-						ImageLoader.getInstance().loadThumbnailBitmap(
-								media, butNavLeft);
+						ImageLoader.getInstance().loadThumbnailBitmap(media,
+								butNavLeft);
 					}
 				});
 				butNavRight.setImageDrawable(drawables.getDrawable(0));
@@ -291,7 +353,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 		}
 		if (currentlyShownPosition == -1) {
-			switchToFragment(POS_COVER);
+			if (savedPosition != -1) {
+				switchToFragment(savedPosition);
+				savedPosition = -1;
+			} else {
+				switchToFragment(POS_COVER);
+			}
 		}
 		if (currentlyShownFragment instanceof AudioplayerContentFragment) {
 			((AudioplayerContentFragment) currentlyShownFragment)
@@ -331,6 +398,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	public interface AudioplayerContentFragment {
 		public void onDataSetChanged(Playable media);
+	}
+
+	@Override
+	protected int getContentViewResourceId() {
+		return R.layout.audioplayer_activity;
 	}
 
 }
