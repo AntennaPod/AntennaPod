@@ -99,7 +99,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (AppConfig.DEBUG) Log.d(TAG, "onStop");
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "onStop");
 
 	}
 
@@ -119,9 +120,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void onSaveInstanceState(Bundle outState) {
+		// super.onSaveInstanceState(outState); would cause crash
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "onSaveInstanceState");
 		outState.putInt("selectedPosition", currentlyShownPosition);
+		savedPosition = currentlyShownPosition;
 		resetFragmentView();
-		super.onSaveInstanceState(outState);
 	}
 
 	@Override
@@ -157,6 +161,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
 					true);
 			startService(launchIntent);
+		}
+		if (savedPosition != -1) {
+			switchToFragment(savedPosition);
 		}
 	}
 
