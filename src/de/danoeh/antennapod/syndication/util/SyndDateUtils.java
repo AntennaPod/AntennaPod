@@ -11,8 +11,7 @@ import android.util.Log;
 public class SyndDateUtils {
 	private static final String TAG = "DateUtils";
 
-	public static final String[] RFC822DATES = { "dd MMM yyyy HH:mm:ss Z",
-			"dd MMM yy HH:mm:ss Z", };
+	public static final String[] RFC822DATES = { "dd MMM yy HH:mm:ss Z", };
 
 	/** RFC 3339 date format for UTC dates. */
 	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
