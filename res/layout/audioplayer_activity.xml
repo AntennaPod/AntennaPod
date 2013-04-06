@@ -41,7 +41,7 @@
             android:marqueeRepeatLimit="marquee_forever"
             android:maxLines="1"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_medium"
+            android:textSize="@dimen/text_size_small"
             android:textStyle="bold" />
 
         <TextView
@@ -70,23 +70,23 @@
     <RelativeLayout
         android:id="@+id/player_control"
         android:layout_width="match_parent"
-        android:layout_height="60dp"
+        android:layout_height="80dp"
         android:layout_alignParentBottom="true"
         android:background="?attr/overlay_background" >
 
         <ImageButton
             android:id="@+id/butPlay"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
             android:background="?attr/borderless_button"
             android:src="?attr/av_pause" />
 
         <ImageButton
             android:id="@+id/butRev"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_toLeftOf="@id/butPlay"
             android:background="?attr/borderless_button"
@@ -94,7 +94,7 @@
 
         <ImageButton
             android:id="@+id/butFF"
-            android:layout_width="60dp"
+            android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/butPlay"
             android:background="?attr/borderless_button"
