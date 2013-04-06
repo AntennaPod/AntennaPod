@@ -75,7 +75,7 @@
             android:label="@string/downloads_label" />
         <activity
             android:name=".activity.AudioplayerActivity"
-            android:launchMode="singleTask" >
+            android:launchMode="standard" >
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 

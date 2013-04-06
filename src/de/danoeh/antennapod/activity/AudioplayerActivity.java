@@ -110,6 +110,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
+		if (savedInstanceState != null) {
+			restoreSavedInstanceState(savedInstanceState);
+		}
 	}
 
 	@Override
@@ -131,6 +134,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
+		restoreSavedInstanceState(savedInstanceState);
+	}
+	
+	private void restoreSavedInstanceState(Bundle savedInstanceState) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Restoring instance state");
 		if (savedInstanceState != null) {
@@ -199,7 +206,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	private void switchToFragment(int pos) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Switching contentView to position " + pos);
-		if (currentlyShownPosition != pos) {
+		if (currentlyShownPosition != pos && controller != null) {
 			Playable media = controller.getMedia();
 			if (media != null) {
 				FragmentTransaction ft = getSupportFragmentManager()
