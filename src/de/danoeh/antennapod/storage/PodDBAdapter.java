@@ -441,6 +441,7 @@ public class PodDBAdapter {
 
 	public void setQueue(List<FeedItem> queue) {
 		ContentValues values = new ContentValues();
+		db.beginTransaction();
 		db.delete(TABLE_NAME_QUEUE, null, null);
 		for (int i = 0; i < queue.size(); i++) {
 			FeedItem item = queue.get(i);
@@ -450,6 +451,8 @@ public class PodDBAdapter {
 			db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values,
 					SQLiteDatabase.CONFLICT_REPLACE);
 		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 	public void removeFeedMedia(FeedMedia media) {
