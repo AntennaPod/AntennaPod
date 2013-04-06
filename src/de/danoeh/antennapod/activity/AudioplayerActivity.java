@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
@@ -39,6 +40,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	private static final int NUM_CONTENT_FRAGMENTS = 3;
 
 	final String TAG = "AudioplayerActivity";
+	private static final String PREFS = "AudioPlayerActivityPreferences";
+	private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
+	private static final String PREF_PLAYABLE_ID = "playableId";
 
 	private Fragment[] detachedFragments;
 
@@ -48,8 +52,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private Fragment currentlyShownFragment;
 	private int currentlyShownPosition = -1;
-	/** Saved and restored on orientation change. */
-	private int savedPosition = -1;
 
 	private TextView txtvTitle;
 	private TextView txtvFeed;
@@ -110,14 +112,29 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
-		if (savedInstanceState != null) {
-			restoreSavedInstanceState(savedInstanceState);
+	}
+
+	private void savePreferences() {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Saving preferences");
+		SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+		SharedPreferences.Editor editor = prefs.edit();
+		if (currentlyShownPosition >= 0 && controller != null
+				&& controller.getMedia() != null) {
+			editor.putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
+					currentlyShownPosition);
+			editor.putString(PREF_PLAYABLE_ID, controller.getMedia()
+					.getIdentifier().toString());
+		} else {
+			editor.putInt(PREF_KEY_SELECTED_FRAGMENT_POSITION, -1);
+			editor.putString(PREF_PLAYABLE_ID, "");
 		}
+		editor.commit();
+
 	}
 
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
-
 		super.onConfigurationChanged(newConfig);
 	}
 
@@ -126,27 +143,52 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		// super.onSaveInstanceState(outState); would cause crash
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "onSaveInstanceState");
-		outState.putInt("selectedPosition", currentlyShownPosition);
-		savedPosition = currentlyShownPosition;
+	}
+
+	@Override
+	protected void onPause() {
+		savePreferences();
 		resetFragmentView();
+		super.onPause();
 	}
 
 	@Override
 	protected void onRestoreInstanceState(Bundle savedInstanceState) {
 		super.onRestoreInstanceState(savedInstanceState);
-		restoreSavedInstanceState(savedInstanceState);
+		restoreFromPreferences();
 	}
-	
-	private void restoreSavedInstanceState(Bundle savedInstanceState) {
+
+	/**
+	 * Tries to restore the selected fragment position from the Activity's
+	 * preferences.
+	 * 
+	 * @return true if restoreFromPrefernces changed the activity's state
+	 * */
+	private boolean restoreFromPreferences() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Restoring instance state");
-		if (savedInstanceState != null) {
-			int p = savedInstanceState.getInt("selectedPosition", -1);
-			if (p != -1) {
-				savedPosition = p;
-				switchToFragment(savedPosition);
-			}
+		SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
+		int savedPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
+				-1);
+		String playableId = prefs.getString(PREF_PLAYABLE_ID, "");
+
+		if (savedPosition != -1 && controller != null
+				&& controller.getMedia() != null
+				&& controller.getMedia().getIdentifier().toString().equals(playableId)) {
+			switchToFragment(savedPosition);
+			return true;
+		} else if (controller == null || controller.getMedia() == null) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"Couldn't restore from preferences: controller or media was null");
+		} else {
+			if (AppConfig.DEBUG)
+				Log.d(TAG,
+						"Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
+								+ savedPosition + ", id: " + playableId);
+
 		}
+		return false;
 	}
 
 	@Override
@@ -168,9 +210,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			launchIntent.putExtra(PlaybackService.EXTRA_PREPARE_IMMEDIATELY,
 					true);
 			startService(launchIntent);
-		}
-		if (savedPosition != -1) {
-			switchToFragment(savedPosition);
 		}
 	}
 
@@ -367,10 +406,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 		}
 		if (currentlyShownPosition == -1) {
-			if (savedPosition != -1) {
-				switchToFragment(savedPosition);
-				savedPosition = -1;
-			} else {
+			if (!restoreFromPreferences()) {
 				switchToFragment(POS_COVER);
 			}
 		}
