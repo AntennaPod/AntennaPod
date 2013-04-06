@@ -7,7 +7,9 @@ import android.app.Activity;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
+import android.graphics.Picture;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -21,8 +23,10 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebChromeClient;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
+import android.webkit.WebView.PictureListener;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -40,10 +44,16 @@ import de.danoeh.antennapod.util.playback.Playable;
 public class ItemDescriptionFragment extends SherlockFragment {
 
 	private static final String TAG = "ItemDescriptionFragment";
+
+	private static final String PREF = "ItemDescriptionFragmentPrefs";
+	private static final String PREF_SCROLL_Y = "prefScrollY";
+	private static final String PREF_PLAYABLE_ID = "prefPlayableId";
+
 	private static final String ARG_PLAYABLE = "arg.playable";
 
 	private static final String ARG_FEED_ID = "arg.feedId";
 	private static final String ARG_FEED_ITEM_ID = "arg.feeditemId";
+	private static final String ARG_SAVE_STATE = "arg.saveState";
 
 	private WebView webvDescription;
 	private Playable media;
@@ -57,19 +67,29 @@ public class ItemDescriptionFragment extends SherlockFragment {
 	/** URL that was selected via long-press. */
 	private String selectedURL;
 
-	public static ItemDescriptionFragment newInstance(Playable media) {
+	/**
+	 * True if Fragment should save its state (e.g. scrolling position) in a
+	 * shared preference.
+	 */
+	private boolean saveState;
+
+	public static ItemDescriptionFragment newInstance(Playable media,
+			boolean saveState) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
 		args.putParcelable(ARG_PLAYABLE, media);
+		args.putBoolean(ARG_SAVE_STATE, saveState);
 		f.setArguments(args);
 		return f;
 	}
 
-	public static ItemDescriptionFragment newInstance(FeedItem item) {
+	public static ItemDescriptionFragment newInstance(FeedItem item,
+			boolean saveState) {
 		ItemDescriptionFragment f = new ItemDescriptionFragment();
 		Bundle args = new Bundle();
 		args.putLong(ARG_FEED_ID, item.getFeed().getId());
 		args.putLong(ARG_FEED_ITEM_ID, item.getId());
+		args.putBoolean(ARG_SAVE_STATE, saveState);
 		f.setArguments(args);
 		return f;
 	}
@@ -138,6 +158,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating fragment");
 		Bundle args = getArguments();
+		saveState = args.getBoolean(ARG_SAVE_STATE, false);
 		if (args.containsKey(ARG_PLAYABLE)) {
 			media = args.getParcelable(ARG_PLAYABLE);
 		} else if (args.containsKey(ARG_FEED_ID)
@@ -244,6 +265,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		}
 	};
 
+	@SuppressWarnings("deprecation")
 	@SuppressLint("NewApi")
 	@Override
 	public boolean onContextItemSelected(MenuItem item) {
@@ -314,6 +336,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 			String data;
 
+			@SuppressWarnings("deprecation")
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -327,6 +350,16 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
+				webvDescription.setPictureListener(new PictureListener() {
+
+					@Override
+					@Deprecated
+					public void onNewPicture(WebView view, Picture picture) {
+						restoreFromPreference();
+
+					}
+				});
+
 			}
 
 			@Override
@@ -363,5 +396,57 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			}
 
 		};
+	}
+
+	@Override
+	public void onPause() {
+		super.onPause();
+		savePreference();
+	}
+
+	private void savePreference() {
+		if (saveState) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Saving preferences");
+			SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
+					Activity.MODE_PRIVATE);
+			SharedPreferences.Editor editor = prefs.edit();
+			if (media != null && webvDescription != null) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"Saving scroll position: "
+									+ webvDescription.getScrollY());
+				editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
+				editor.putString(PREF_PLAYABLE_ID, media.getIdentifier()
+						.toString());
+			} else {
+				if (AppConfig.DEBUG)
+					Log.d(TAG,
+							"savePreferences was called while media or webview was null");
+				editor.putInt(PREF_SCROLL_Y, -1);
+				editor.putString(PREF_PLAYABLE_ID, "");
+			}
+			editor.commit();
+		}
+	}
+
+	private boolean restoreFromPreference() {
+		if (saveState) {
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Restoring from preferences");
+			SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
+					Activity.MODE_PRIVATE);
+			String id = prefs.getString(PREF_PLAYABLE_ID, "");
+			int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
+			if (scrollY != -1 && media != null
+					&& id.equals(media.getIdentifier().toString())
+					&& webvDescription != null) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Restored scroll Position: " + scrollY);
+				webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
+				return true;
+			}
+		}
+		return false;
 	}
 }

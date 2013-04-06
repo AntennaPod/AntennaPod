@@ -99,7 +99,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		FragmentTransaction fragmentTransaction = fragmentManager
 				.beginTransaction();
 		ItemDescriptionFragment fragment = ItemDescriptionFragment
-				.newInstance(item);
+				.newInstance(item, false);
 		fragmentTransaction.replace(R.id.description_fragment, fragment);
 		fragmentTransaction.commit();
 	}
@@ -127,7 +127,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
 					e.getMessage());
 		}
-		invalidateOptionsMenu();
+		supportInvalidateOptionsMenu();
 		return true;
 	}
 

@@ -172,9 +172,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
 				-1);
 		String playableId = prefs.getString(PREF_PLAYABLE_ID, "");
 
-		if (savedPosition != -1 && controller != null
+		if (savedPosition != -1
+				&& controller != null
 				&& controller.getMedia() != null
-				&& controller.getMedia().getIdentifier().toString().equals(playableId)) {
+				&& controller.getMedia().getIdentifier().toString()
+						.equals(playableId)) {
 			switchToFragment(savedPosition);
 			return true;
 		} else if (controller == null || controller.getMedia() == null) {
@@ -265,7 +267,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 				case POS_DESCR:
 					if (descriptionFragment == null) {
 						descriptionFragment = ItemDescriptionFragment
-								.newInstance(media);
+								.newInstance(media, true);
 					}
 					currentlyShownFragment = descriptionFragment;
 					break;
