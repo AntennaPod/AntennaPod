@@ -7,6 +7,9 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -1627,6 +1630,10 @@ public class FeedManager {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Extracting Queue");
 		Cursor cursor = adapter.getQueueCursor();
+		
+		// Sort cursor results by ID with TreeMap
+		TreeMap<Integer, FeedItem> map = new TreeMap<Integer, FeedItem>();
+		
 		if (cursor.moveToFirst()) {
 			do {
 				int index = cursor.getInt(PodDBAdapter.KEY_ID_INDEX);
@@ -1637,13 +1644,17 @@ public class FeedManager {
 							cursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX),
 							feed);
 					if (item != null) {
-						queue.add(index, item);
+						map.put(index, item);
 					}
 				}
-
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
+		
+		for (Map.Entry<Integer, FeedItem> entry : map.entrySet()) {
+			FeedItem item = entry.getValue();
+			queue.add(item);
+		}
 	}
 
 	/**
