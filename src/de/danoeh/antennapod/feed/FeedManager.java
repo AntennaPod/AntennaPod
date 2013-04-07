@@ -117,8 +117,8 @@ public class FeedManager {
 
 	/**
 	 * Play FeedMedia and start the playback service + launch Mediaplayer
-	 * Activity. The FeedItem belonging to the media is moved to the top of the
-	 * queue.
+	 * Activity. The FeedItem will be added at the top of the queue if it isn't
+	 * in there yet.
 	 * 
 	 * @param context
 	 *            for starting the playbackservice
@@ -156,9 +156,7 @@ public class FeedManager {
 				context.startActivity(PlaybackService.getPlayerActivityIntent(
 						context, media));
 			}
-			if (queue.contains(media.getItem())) {
-				moveQueueItem(context, queue.indexOf(media.getItem()), 0, true);
-			} else {
+			if (!queue.contains(media.getItem())) {
 				addQueueItemAt(context, media.getItem(), 0, false);
 			}
 		} catch (MediaFileNotFoundException e) {
@@ -1630,10 +1628,10 @@ public class FeedManager {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Extracting Queue");
 		Cursor cursor = adapter.getQueueCursor();
-		
+
 		// Sort cursor results by ID with TreeMap
 		TreeMap<Integer, FeedItem> map = new TreeMap<Integer, FeedItem>();
-		
+
 		if (cursor.moveToFirst()) {
 			do {
 				int index = cursor.getInt(PodDBAdapter.KEY_ID_INDEX);
@@ -1650,7 +1648,7 @@ public class FeedManager {
 			} while (cursor.moveToNext());
 		}
 		cursor.close();
-		
+
 		for (Map.Entry<Integer, FeedItem> entry : map.entrySet()) {
 			FeedItem item = entry.getValue();
 			queue.add(item);
@@ -1797,18 +1795,23 @@ public class FeedManager {
 	}
 
 	/**
-	 * Returns true if the first item in the queue is currently being played or
-	 * false otherwise. If the queue is empty, this method will also return
-	 * false.
+	 * Returns the index of the episode that is currently being played in the
+	 * queue or -1 if the queue is empty or no episode in the queue is being
+	 * played.
 	 * */
-	public boolean firstQueueItemIsPlaying() {
+	public int getQueuePlayingEpisodeIndex() {
 		FeedManager manager = FeedManager.getInstance();
 		int queueSize = manager.getQueueSize(true);
 		if (queueSize == 0) {
-			return false;
+			return -1;
 		} else {
-			FeedItem item = getQueueItemAtIndex(0, true);
-			return item.getState() == FeedItem.State.PLAYING;
+			for (int x = 0; x < queueSize; x++) {
+				FeedItem item = getQueueItemAtIndex(x, true);
+				if (item.getState() == FeedItem.State.PLAYING) {
+					return x;
+				}
+			}
+			return -1;
 		}
 	}
 

@@ -72,10 +72,7 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public void drop(int from, int to) {
 			FeedManager manager = FeedManager.getInstance();
-			int offset = (manager.firstQueueItemIsPlaying()) ? 1 : 0;
-
-			manager.moveQueueItem(OrganizeQueueActivity.this, from + offset, to
-					+ offset, false);
+			manager.moveQueueItem(OrganizeQueueActivity.this, from, to, false);
 			adapter.notifyDataSetChanged();
 		}
 	};
@@ -85,7 +82,6 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public void remove(int which) {
 			FeedManager manager = FeedManager.getInstance();
-
 			manager.removeQueueItem(OrganizeQueueActivity.this,
 					(FeedItem) getListAdapter().getItem(which));
 		}
@@ -174,21 +170,12 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public int getCount() {
 			int queueSize = manager.getQueueSize(true);
-			if (manager.firstQueueItemIsPlaying()) {
-				return queueSize - 1;
-			} else {
-				return queueSize;
-			}
+			return queueSize;
 		}
 
 		@Override
 		public FeedItem getItem(int position) {
-			if (manager.firstQueueItemIsPlaying() && position < getCount()) {
-				return manager.getQueueItemAtIndex(position + 1, true);
-			} else {
-				return manager.getQueueItemAtIndex(position, true);
-			}
-
+			return manager.getQueueItemAtIndex(position, true);
 		}
 
 		@Override
