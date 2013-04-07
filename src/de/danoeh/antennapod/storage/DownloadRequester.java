@@ -113,7 +113,7 @@ public class DownloadRequester {
 	private boolean isFilenameAvailable(String path) {
 		for (String key : downloads.keySet()) {
 			FeedFile f = downloads.get(key);
-			if (f.getFile_url().equals(path)) {
+			if (f.getFile_url() != null && f.getFile_url().equals(path)) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, path
 							+ " is already used by another requested download");
