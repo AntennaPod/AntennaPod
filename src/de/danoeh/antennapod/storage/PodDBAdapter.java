@@ -6,6 +6,7 @@ import java.util.List;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.DatabaseUtils;
 import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
@@ -211,7 +212,6 @@ public class PodDBAdapter {
 	public static final int IDX_FI_EXTRA_DESCRIPTION = 1;
 	public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
 	public static final int IDX_FI_EXTRA_FEED = 3;
-
 
 	public PodDBAdapter(Context c) {
 		this.context = c;
@@ -657,6 +657,18 @@ public class PodDBAdapter {
 	}
 
 	/**
+	 * Uses DatabaseUtils to escape a search query and removes ' at the
+	 * beginning and the end of the string returned by the escape method.
+	 */
+	private String prepareSearchQuery(String query) {
+		StringBuilder builder = new StringBuilder();
+		DatabaseUtils.appendEscapedSQLString(builder, query);
+		builder.deleteCharAt(0);
+		builder.deleteCharAt(builder.length() - 1);
+		return builder.toString();
+	}
+
+	/**
 	 * Searches for the given query in the description of all items or the items
 	 * of a specified feed.
 	 * 
@@ -666,13 +678,15 @@ public class PodDBAdapter {
 		if (feed != null) {
 			// search items in specific feed
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
-					+ "=? AND " + KEY_DESCRIPTION + " LIKE '%" + query + "%'", new String[] {
-					String.valueOf(feed.getId()) }, null, null, null);
+					+ "=? AND " + KEY_DESCRIPTION + " LIKE '%"
+					+ prepareSearchQuery(query) + "%'",
+					new String[] { String.valueOf(feed.getId()) }, null, null,
+					null);
 		} else {
 			// search through all items
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
-					KEY_DESCRIPTION + " LIKE '%" + query + "%'", null, null,
-					null, null);
+					KEY_DESCRIPTION + " LIKE '%" + prepareSearchQuery(query)
+							+ "%'", null, null, null, null);
 		}
 	}
 
@@ -686,14 +700,16 @@ public class PodDBAdapter {
 		if (feed != null) {
 			// search items in specific feed
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
-					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'",
-					new String[] { String.valueOf(feed.getId())}, null,
-					null, null);
+					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
+					+ prepareSearchQuery(query) + "%'",
+					new String[] { String.valueOf(feed.getId()) }, null, null,
+					null);
 		} else {
 			// search through all items
 			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
-					KEY_CONTENT_ENCODED + " LIKE '%" + query + "%'", null,
-					null, null, null);
+					KEY_CONTENT_ENCODED + " LIKE '%"
+							+ prepareSearchQuery(query) + "%'", null, null,
+					null, null);
 		}
 	}
 
