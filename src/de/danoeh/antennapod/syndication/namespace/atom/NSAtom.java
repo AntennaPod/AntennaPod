@@ -42,6 +42,10 @@ public class NSAtom extends Namespace {
 	private static final String LINK_REL_PAYMENT = "payment";
 	private static final String LINK_REL_RELATED = "related";
 	private static final String LINK_REL_SELF = "self";
+	// type-values
+	private static final String LINK_TYPE_ATOM = "application/atom+xml";
+	private static final String LINK_TYPE_HTML = "text/html";
+	private static final String LINK_TYPE_RSS = "application/rss+xml";
 
 	/** Regexp to test whether an Element is a Text Element. */
 	private static final String isText = TITLE + "|" + CONTENT + "|" + "|"
@@ -85,7 +89,10 @@ public class NSAtom extends Namespace {
 				}
 			} else if (parent.getName().matches(isFeed)) {
 				if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
-					state.getFeed().setLink(href);
+					String type = attributes.getValue(LINK_TYPE);
+					if (type != null && type.equals(LINK_TYPE_HTML)) {
+						state.getFeed().setLink(href);
+					}
 				} else if (rel.equals(LINK_REL_PAYMENT)) {
 					state.getFeed().setPaymentLink(href);
 				}
