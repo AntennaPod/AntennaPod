@@ -15,10 +15,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="24dp"
+            android:layout_marginBottom="32dp"
             android:layout_marginLeft="28dp"
             android:layout_marginRight="16dp"
-            android:layout_marginTop="24dp"
+            android:layout_marginTop="32dp"
             android:paddingLeft="8dp"
             android:textAllCaps="true"
             android:textColor="@color/dark_blue"
@@ -40,6 +40,16 @@
             android:paddingTop="16dp"
             android:scaleType="fitEnd"
             android:src="?attr/spinner_button" />
+
+        <TextView
+            android:id="@+id/txtvNumItems"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/butAction"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/text_size_large"
+            android:textStyle="normal" />
     </RelativeLayout>
 
 </LinearLayout>
