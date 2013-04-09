@@ -1,38 +1,45 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="?attr/borderless_button" >
+    android:background="?attr/borderless_button"
+    android:orientation="vertical" >
 
-    <TextView
-        android:id="@+id/txtvHeaderTitle"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_centerVertical="true"
-        android:layout_marginBottom="24dp"
-        android:layout_marginLeft="@dimen/thumbnail_length_itemlist"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="24dp"
-        android:paddingLeft="8dp"
-        android:textColor="@color/dark_blue"
-        android:textSize="@dimen/text_size_large"
-        android:textStyle="bold" />
+        android:layout_height="match_parent" >
 
-    <ImageButton
-        android:id="@+id/butAction"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="?attr/borderless_button"
-        android:clickable="false"
-        android:focusable="false"
-        android:focusableInTouchMode="false"
-        android:paddingLeft="24dp"
-        android:paddingRight="8dp"
-        android:paddingTop="16dp"
-        android:scaleType="fitEnd"
-        android:src="?attr/spinner_button" />
+        <TextView
+            android:id="@+id/txtvHeaderTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="24dp"
+            android:layout_marginLeft="28dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="24dp"
+            android:paddingLeft="8dp"
+            android:textAllCaps="true"
+            android:textColor="@color/dark_blue"
+            android:textSize="@dimen/text_size_large"
+            android:typeface="sans" />
 
-</RelativeLayout>
+        <ImageButton
+            android:id="@+id/butAction"
+            android:layout_width="48dp"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:background="?attr/borderless_button"
+            android:clickable="false"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:paddingLeft="24dp"
+            android:paddingRight="8dp"
+            android:paddingTop="16dp"
+            android:scaleType="fitEnd"
+            android:src="?attr/spinner_button" />
+    </RelativeLayout>
+
+</LinearLayout>
