@@ -14,7 +14,7 @@
         android:layout_marginTop="4dp"
         android:layout_toLeftOf="@+id/butAction"
         android:ellipsize="end"
-        android:maxLines="2"
+        android:lines="2"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_medium" />
 
