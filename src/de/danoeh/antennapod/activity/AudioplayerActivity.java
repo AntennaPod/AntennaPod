@@ -52,6 +52,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private Fragment currentlyShownFragment;
 	private int currentlyShownPosition = -1;
+	/** Used if onResume was called without loadMediaInfo. */
+	private int savedPosition = -1;
 
 	private TextView txtvTitle;
 	private TextView txtvFeed;
@@ -131,6 +133,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		}
 		editor.commit();
 
+		savedPosition = currentlyShownPosition;
 	}
 
 	@Override
@@ -213,6 +216,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					true);
 			startService(launchIntent);
 		}
+		if (savedPosition != -1) {
+			switchToFragment(savedPosition);
+		}
+		
 	}
 
 	@Override
