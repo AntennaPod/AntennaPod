@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.7.3
+---------------
+* Bluetooth devices now display metadata during playback (requires AVRCP 1.3 or higher)
+* User interface improvements
+* Several bugfixes
+
 Version 0.9.7.2
 ---------------
 * Automatic download can now be disabled
