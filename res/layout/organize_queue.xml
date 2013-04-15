@@ -32,4 +32,9 @@
         android:gravity="center"
         android:text="@string/no_items_label" />
 
+    <LinearLayout android:id="@+id/undobar" style="@style/UndoBar">
+      <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
+      <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
+    </LinearLayout>
+
 </LinearLayout>

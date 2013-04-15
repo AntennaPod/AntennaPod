@@ -122,6 +122,8 @@
     <!-- Queue operations -->
     <string name="clear_queue_label">Clear queue</string>
     <string name="organize_queue_label">Organize queue</string>
+    <string name="undo">Undo</string>
+    <string name="removed_from_queue">Item removed</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
