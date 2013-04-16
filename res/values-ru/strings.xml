@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Внешний носитель данных недоступен. Убедитесь что внешний носитель смонтирован, иначе это приложение не сможет нормально работать.</string>
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Описание</string>
-  <string name="last_update_prefix">Последнее обновление:\u0020</string>
   <string name="episodes_suffix">\u0020 выпуск(ов)</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>

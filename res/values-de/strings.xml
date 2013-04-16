@@ -33,7 +33,7 @@
   <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="shownotes_label">Notizen</string>
-  <string name="last_update_prefix">Letztes Update:\u0020</string>
+  <string name="most_recent_prefix">Letzte Episode:\u0020</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="published_prefix">Veröffentlicht:\u0020</string>
   <string name="length_prefix">Länge:\u0020</string>

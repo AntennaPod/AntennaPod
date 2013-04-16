@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="shownotes_label">Notes d\'épisode</string>
-  <string name="last_update_prefix">Dernière mise à jour :\u0020</string>
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="published_prefix">Publié :\u0020</string>
   <string name="length_prefix">Durée :\u0020</string>

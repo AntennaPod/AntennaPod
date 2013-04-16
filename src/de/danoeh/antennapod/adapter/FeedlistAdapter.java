@@ -75,15 +75,18 @@ public class FeedlistAdapter extends BaseAdapter {
 		}
 
 		holder.title.setText(feed.getTitle());
+		int numOfItems = feed.getNumOfItems(true);
 		if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
 			holder.lastUpdate.setText(R.string.refreshing_label);
 		} else {
-			holder.lastUpdate.setText(convertView.getResources().getString(
-					R.string.last_update_prefix)
-					+ Converter.getRelativeTimeSpanString(context,
-							feed.getLastUpdate().getTime()));
+			if (numOfItems > 0) {
+				holder.lastUpdate.setText(convertView.getResources().getString(
+						R.string.most_recent_prefix)
+						+ Converter.getRelativeTimeSpanString(context,
+								feed.getItemAtIndex(true, 0).getPubDate().getTime()));
+			}
 		}
-		holder.numberOfEpisodes.setText(feed.getNumOfItems(true)
+		holder.numberOfEpisodes.setText(numOfItems
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
 

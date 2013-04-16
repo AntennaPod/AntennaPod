@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Немає доступної флешки. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
   <string name="shownotes_label">Нотатки до епізода</string>
-  <string name="last_update_prefix">Останнє оновлення:\u0020</string>
   <string name="episodes_suffix">\u0020епізодів</string>
   <string name="published_prefix">Опубліковано:\u0020</string>
   <string name="length_prefix">Довжина:\u0020</string>
