@@ -44,6 +44,7 @@
     <string name="processing_label">Processing</string>
     <string name="loading_label">Loading...</string>
     <string name="image_of_prefix">Image of:\u0020</string>
+    <string name="a_moment_ago">a moment ago</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>

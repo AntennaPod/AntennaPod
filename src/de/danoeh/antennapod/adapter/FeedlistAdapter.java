@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
-
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedlistAdapter extends BaseAdapter {
@@ -82,9 +80,8 @@ public class FeedlistAdapter extends BaseAdapter {
 		} else {
 			holder.lastUpdate.setText(convertView.getResources().getString(
 					R.string.last_update_prefix)
-					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
-							.getTime(), System.currentTimeMillis(),
-							DateFormat.MEDIUM, DateFormat.SHORT));
+					+ Converter.getRelativeTimeSpanString(context,
+							feed.getLastUpdate().getTime()));
 		}
 		holder.numberOfEpisodes.setText(feed.getNumOfItems(true)
 				+ convertView.getResources()

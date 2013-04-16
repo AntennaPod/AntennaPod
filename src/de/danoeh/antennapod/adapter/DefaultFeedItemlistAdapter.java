@@ -1,10 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
-
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,10 +72,8 @@ public class DefaultFeedItemlistAdapter extends BaseAdapter {
 			holder.title.setText(item.getTitle());
 			holder.published.setText(convertView.getResources().getString(
 					R.string.published_prefix)
-					+ DateUtils.formatSameDayTime(item.getPubDate().getTime(),
-							System.currentTimeMillis(), DateFormat.MEDIUM,
-							DateFormat.SHORT));
-
+					+ Converter.getRelativeTimeSpanString(context,
+							item.getPubDate().getTime()));
 			if (item.getMedia() == null) {
 				holder.type.setVisibility(View.GONE);
 				holder.lenSize.setVisibility(View.GONE);

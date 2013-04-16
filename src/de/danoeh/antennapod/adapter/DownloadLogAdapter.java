@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
-
 import android.content.Context;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +12,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.DownloadError;
 
 /** Displays a list of DownloadStatus entries. */
@@ -60,9 +58,8 @@ public class DownloadLogAdapter extends BaseAdapter {
 		} else {
 			holder.title.setText(R.string.download_log_title_unknown);
 		}
-		holder.date.setText(DateUtils.formatSameDayTime(status
-				.getCompletionDate().getTime(), System.currentTimeMillis(),
-				DateFormat.SHORT, DateFormat.SHORT));
+		holder.date.setText(Converter.getRelativeTimeSpanString(context,
+				status.getCompletionDate().getTime()));
 		if (status.isSuccessful()) {
 			holder.successful.setTextColor(convertView.getResources().getColor(
 					R.color.download_success_green));
