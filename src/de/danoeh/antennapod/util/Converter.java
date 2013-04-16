@@ -82,7 +82,7 @@ public final class Converter {
     	return String.format("%02d:%02d", h, m);
     }
     
-    /** Converts milliseconds to a relative time span, */
+    /** Converts milliseconds to a relative time span */
     public static String getRelativeTimeSpanString(Context context, long millis) {
     	long now = System.currentTimeMillis();
     	return DateUtils.getRelativeTimeSpanString(
