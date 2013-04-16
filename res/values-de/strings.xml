@@ -21,7 +21,6 @@
   <!--Playback history-->
   <string name="clear_history_label">Chronik löschen</string>
   <!--Other-->
-  <string name="a_moment_ago">Vor Kurzem</string>
   <string name="confirm_label">Bestätigen</string>
   <string name="cancel_label">Abbrechen</string>
   <string name="author_label">Autor</string>
