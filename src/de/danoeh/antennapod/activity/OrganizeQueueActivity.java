@@ -91,7 +91,7 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 			FeedItem item = (FeedItem) getListAdapter().getItem(which);
 			manager.removeQueueItem(OrganizeQueueActivity.this, item);
 			undoBarController.showUndoBar(false, getString(R.string.removed_from_queue),
-					new UndoItem(item, which));
+					new UndoToken(item, which));
 		}
 	};
 
@@ -121,9 +121,9 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 	@Override
 	public void onUndo(Parcelable token) {
 		// Perform the undo
-		UndoItem undoItem = (UndoItem) token;
-		FeedItem feedItem = undoItem.getFeedItem();
-		int position = undoItem.getPosition();
+		UndoToken undoToken = (UndoToken) token;
+		FeedItem feedItem = undoToken.getFeedItem();
+		int position = undoToken.getPosition();
 
 		FeedManager manager = FeedManager.getInstance();
 		manager.addQueueItemAt(OrganizeQueueActivity.this, feedItem, position, false);
@@ -204,32 +204,32 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 
 	}
 
-	private static class UndoItem implements Parcelable {
+	private static class UndoToken implements Parcelable {
 		private long itemId;
 		private long feedId;
 		private int position;
 
-		public UndoItem(FeedItem item, int position) {
+		public UndoToken(FeedItem item, int position) {
 			FeedManager manager = FeedManager.getInstance();
 			this.itemId = item.getId();
 			this.feedId = item.getFeed().getId();
 			this.position = position;
 		}
 
-		private UndoItem(Parcel in) {
+		private UndoToken(Parcel in) {
 			itemId = in.readLong();
 			feedId = in.readLong();
 			position = in.readInt();
 		}
 
-		public static final Parcelable.Creator<UndoItem> CREATOR
-			= new Parcelable.Creator<UndoItem>() {
-				public UndoItem createFromParcel(Parcel in) {
-					return new UndoItem(in);
+		public static final Parcelable.Creator<UndoToken> CREATOR
+			= new Parcelable.Creator<UndoToken>() {
+				public UndoToken createFromParcel(Parcel in) {
+					return new UndoToken(in);
 				}
 
-				public UndoItem[] newArray(int size) {
-					return new UndoItem[size];
+				public UndoToken[] newArray(int size) {
+					return new UndoToken[size];
 				}
 			};
 
