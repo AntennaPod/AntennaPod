@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas del programa</string>
-  <string name="last_update_prefix">Última actualización:\u0020</string>
   <string name="episodes_suffix">\u0020episodios</string>
   <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duración:\u0020</string>

@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">L\'emmagatzemament extern no està disponible. Assegureu-vos que està muntat per què l\'aplicació funcioni correctament.</string>
   <string name="chapters_label">Capítols</string>
   <string name="shownotes_label">Notes del programa</string>
-  <string name="last_update_prefix">Darrera actualització:\u0020</string>
   <string name="episodes_suffix">\u0020episodis</string>
   <string name="published_prefix">Publicat:\u0020</string>
   <string name="length_prefix">Durada:\u0020</string>

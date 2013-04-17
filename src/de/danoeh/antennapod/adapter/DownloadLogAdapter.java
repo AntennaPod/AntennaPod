@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
-
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -60,9 +58,9 @@ public class DownloadLogAdapter extends BaseAdapter {
 		} else {
 			holder.title.setText(R.string.download_log_title_unknown);
 		}
-		holder.date.setText(DateUtils.formatSameDayTime(status
-				.getCompletionDate().getTime(), System.currentTimeMillis(),
-				DateFormat.SHORT, DateFormat.SHORT));
+		holder.date.setText(DateUtils.getRelativeTimeSpanString(
+				status.getCompletionDate().getTime(),
+				System.currentTimeMillis(), 0, 0));
 		if (status.isSuccessful()) {
 			holder.successful.setTextColor(convertView.getResources().getColor(
 					R.color.download_success_green));

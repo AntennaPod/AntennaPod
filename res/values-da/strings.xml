@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Ingen ekstern harddisk er tilgængelig. Vær venlig at sørge for at den eksterne hukommelse er monteret så app\'en kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
   <string name="shownotes_label">Afsnitsnoter</string>
-  <string name="last_update_prefix">Sidste opdateringer:\u0020</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="published_prefix">Offentliggjort:\u0020</string>
   <string name="length_prefix">Længde:\u0020</string>

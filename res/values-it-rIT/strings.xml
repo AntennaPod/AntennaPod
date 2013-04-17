@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Non risulta disponibile lo spazio di archiviazione esterno. Assicurati che lo spazio di archiviazione sia montato per permettere all\'applicazione di funzionare correttamente.</string>
   <string name="chapters_label">Capitoli</string>
   <string name="shownotes_label">Note dell\'episodio</string>
-  <string name="last_update_prefix">Ultimo aggiornamento:\u0020</string>
   <string name="episodes_suffix">\u0020episodi</string>
   <string name="published_prefix">Pubblicato:\u0020</string>
   <string name="length_prefix">Durata:\u0020</string>

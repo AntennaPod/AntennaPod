@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
-
 import android.content.Context;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -77,16 +75,19 @@ public class FeedlistAdapter extends BaseAdapter {
 		}
 
 		holder.title.setText(feed.getTitle());
+		int numOfItems = feed.getNumOfItems(true);
 		if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
 			holder.lastUpdate.setText(R.string.refreshing_label);
 		} else {
-			holder.lastUpdate.setText(convertView.getResources().getString(
-					R.string.last_update_prefix)
-					+ DateUtils.formatSameDayTime(feed.getLastUpdate()
-							.getTime(), System.currentTimeMillis(),
-							DateFormat.MEDIUM, DateFormat.SHORT));
+			if (numOfItems > 0) {
+				holder.lastUpdate.setText(convertView.getResources().getString(
+						R.string.most_recent_prefix)
+						+ DateUtils.getRelativeTimeSpanString(
+								feed.getItemAtIndex(true, 0).getPubDate().getTime(),
+								System.currentTimeMillis(), 0, 0));
+			}
 		}
-		holder.numberOfEpisodes.setText(feed.getNumOfItems(true)
+		holder.numberOfEpisodes.setText(numOfItems
 				+ convertView.getResources()
 						.getString(R.string.episodes_suffix));
 

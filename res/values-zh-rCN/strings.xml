@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
   <string name="chapters_label">章节</string>
   <string name="shownotes_label">笔记</string>
-  <string name="last_update_prefix">最后更新:\u0020</string>
   <string name="episodes_suffix">\u0020 曲</string>
   <string name="published_prefix">发表:\u0020</string>
   <string name="length_prefix">长度:\u0020</string>
