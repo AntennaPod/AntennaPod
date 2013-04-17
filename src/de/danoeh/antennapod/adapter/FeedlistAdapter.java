@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +13,6 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedlistAdapter extends BaseAdapter {
@@ -82,8 +82,9 @@ public class FeedlistAdapter extends BaseAdapter {
 			if (numOfItems > 0) {
 				holder.lastUpdate.setText(convertView.getResources().getString(
 						R.string.most_recent_prefix)
-						+ Converter.getRelativeTimeSpanString(context,
-								feed.getItemAtIndex(true, 0).getPubDate().getTime()));
+						+ DateUtils.getRelativeTimeSpanString(
+								feed.getItemAtIndex(true, 0).getPubDate().getTime(),
+								System.currentTimeMillis(), 0, 0));
 			}
 		}
 		holder.numberOfEpisodes.setText(numOfItems

@@ -2,6 +2,7 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -119,8 +120,9 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 			holder.published.setText(convertView.getResources().getString(
 					R.string.published_prefix)
-					+ Converter.getRelativeTimeSpanString(getContext(),
-							item.getPubDate().getTime()));
+					+ DateUtils.getRelativeTimeSpanString(
+							item.getPubDate().getTime(),
+							System.currentTimeMillis(), 0, 0));
 
 			FeedMedia media = item.getMedia();
 			if (media == null) {

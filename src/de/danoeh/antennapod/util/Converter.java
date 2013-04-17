@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.util;
 
-import android.content.Context;
-import android.text.format.DateUtils;
 import android.util.Log;
-import de.danoeh.antennapod.R;
 
 /** Provides methods for converting various units. */
 public final class Converter {
@@ -82,10 +79,4 @@ public final class Converter {
     	return String.format("%02d:%02d", h, m);
     }
     
-    /** Converts milliseconds to a relative time span */
-    public static String getRelativeTimeSpanString(Context context, long millis) {
-    	long now = System.currentTimeMillis();
-    	return DateUtils.getRelativeTimeSpanString(
-    			millis, now, 0, 0).toString();
-    }
 }
