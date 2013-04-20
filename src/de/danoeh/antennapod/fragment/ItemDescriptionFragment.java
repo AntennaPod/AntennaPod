@@ -23,10 +23,12 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebBackForwardList;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebView.PictureListener;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -101,7 +103,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
-
 		if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
 			if (Build.VERSION.SDK_INT >= 11
 					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -115,6 +116,24 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				LayoutAlgorithm.NARROW_COLUMNS);
 		webvDescription.getSettings().setLoadWithOverviewMode(true);
 		webvDescription.setOnLongClickListener(webViewLongClickListener);
+		webvDescription.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Page finished");
+				// Restoring the scroll position might not always work
+				view.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						restoreFromPreference();
+					}
+
+				}, 50);
+			}
+
+		});
 		registerForContextMenu(webvDescription);
 		return webvDescription;
 	}
@@ -336,7 +355,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 			String data;
 
-			@SuppressWarnings("deprecation")
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -350,16 +368,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
-				webvDescription.setPictureListener(new PictureListener() {
-
-					@Override
-					@Deprecated
-					public void onNewPicture(WebView view, Picture picture) {
-						restoreFromPreference();
-
-					}
-				});
-
 			}
 
 			@Override
