@@ -32,7 +32,6 @@
   <string name="external_storage_error_msg">Não há dispositivos de armazenamento disponíveis. Por favor, certifique-se de que um dispositivo de armazenamento externo está montado para que o aplicativo possa funcionar adequadamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas do podcast</string>
-  <string name="last_update_prefix">Última atualização:\u0020</string>
   <string name="episodes_suffix">\u0020episódios</string>
   <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duração:\u0020</string>

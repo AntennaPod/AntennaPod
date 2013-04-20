@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.text.DateFormat;
 import java.util.List;
 
 import android.content.Context;
@@ -42,9 +41,8 @@ public class MiroGuideItemlistAdapter extends ArrayAdapter<MiroGuideItem> {
 
 		holder.title.setText(item.getName());
 		if (item.getDate() != null) {
-			holder.date.setText(DateUtils.formatSameDayTime(item.getDate()
-					.getTime(), System.currentTimeMillis(), DateFormat.SHORT,
-					DateFormat.SHORT));
+			holder.date.setText(DateUtils.getRelativeTimeSpanString(
+					item.getDate().getTime(), System.currentTimeMillis(), 0, 0));
 			holder.date.setVisibility(View.VISIBLE);
 		} else {
 			holder.date.setVisibility(View.GONE);
