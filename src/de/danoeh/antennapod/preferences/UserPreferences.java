@@ -42,6 +42,8 @@ public class UserPreferences implements
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
 
+	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
+
 	private static UserPreferences instance;
 	private Context context;
 
@@ -86,6 +88,8 @@ public class UserPreferences implements
 	private void loadPreferences() {
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(context);
+		EPISODE_CACHE_SIZE_UNLIMITED = context.getResources().getInteger(
+				R.integer.episode_cache_size_unlimited);
 		pauseOnHeadsetDisconnect = sp.getBoolean(
 				PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
 		followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
@@ -101,7 +105,7 @@ public class UserPreferences implements
 				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
 		autodownloadSelectedNetworks = StringUtils.split(
 				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
-		episodeCacheSize = Integer.valueOf(sp.getString(
+		episodeCacheSize = readEpisodeCacheSize(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
 	}
@@ -120,6 +124,15 @@ public class UserPreferences implements
 	private long readUpdateInterval(String valueFromPrefs) {
 		int hours = Integer.parseInt(valueFromPrefs);
 		return TimeUnit.HOURS.toMillis(hours);
+	}
+
+	private int readEpisodeCacheSize(String valueFromPrefs) {
+		if (valueFromPrefs.equals(context
+				.getString(R.string.pref_episode_cache_unlimited))) {
+			return EPISODE_CACHE_SIZE_UNLIMITED;
+		} else {
+			return Integer.valueOf(valueFromPrefs);
+		}
 	}
 
 	private static void instanceAvailable() {
@@ -179,6 +192,15 @@ public class UserPreferences implements
 		return instance.autodownloadSelectedNetworks;
 	}
 
+	public static int getEpisodeCacheSizeUnlimited() {
+		return EPISODE_CACHE_SIZE_UNLIMITED;
+	}
+
+	/**
+	 * Returns the capacity of the episode cache. This method will return the
+	 * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
+	 * 'unlimited'.
+	 */
 	public static int getEpisodeCacheSize() {
 		instanceAvailable();
 		return instance.episodeCacheSize;
@@ -224,7 +246,7 @@ public class UserPreferences implements
 			autodownloadSelectedNetworks = StringUtils.split(
 					sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
 		} else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
-			episodeCacheSize = Integer.valueOf(sp.getString(
+			episodeCacheSize = readEpisodeCacheSize(sp.getString(
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);

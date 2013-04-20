@@ -733,7 +733,7 @@ public class FeedManager {
 	 *         that the number of episodes fits into the episode cache.
 	 * */
 	private int getPerformAutoCleanupArgs(final int episodeNumber) {
-		if (episodeNumber >= 0) {
+		if (episodeNumber >= 0 && UserPreferences.getEpisodeCacheSize() != UserPreferences.getEpisodeCacheSizeUnlimited()) {
 			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
 			if (downloadedEpisodes + episodeNumber >= UserPreferences
 					.getEpisodeCacheSize()) {

@@ -205,9 +205,15 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	}
 
 	private void setEpisodeCacheSizeText(int cacheSize) {
-		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(
-				Integer.toString(cacheSize)
-						+ getString(R.string.episodes_suffix));
+		String s;
+		if (cacheSize == getResources().getInteger(
+				R.integer.episode_cache_size_unlimited)) {
+			s = getString(R.string.pref_episode_cache_unlimited);
+		} else {
+			s = Integer.toString(cacheSize)
+					+ getString(R.string.episodes_suffix);
+		}
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(s);
 	}
 
 	private void setDataFolderText() {
