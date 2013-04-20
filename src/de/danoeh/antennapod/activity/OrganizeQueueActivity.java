@@ -39,6 +39,7 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organize_queue);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		DragSortListView listView = (DragSortListView) getListView();
 		listView.setDropListener(dropListener);
@@ -52,9 +53,17 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 	}
 
 	@Override
-	protected void onPause() {
+	protected void onStop() {
 		super.onPause();
 		EventDistributor.getInstance().unregister(contentUpdate);
+	}
+
+	@Override
+	protected void onDestroy() {
+		super.onDestroy();
+		FeedManager.getInstance().autodownloadUndownloadedItems(
+				getApplicationContext());
+
 	}
 
 	@Override
@@ -101,21 +110,13 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.navigation_accept });
-		menu.add(Menu.NONE, MENU_ID_ACCEPT, Menu.NONE, R.string.confirm_label)
-				.setIcon(drawables.getDrawable(0))
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_IF_ROOM
-								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ID_ACCEPT:
-			FeedManager.getInstance().autodownloadUndownloadedItems(
-					getApplicationContext());
+		case android.R.id.home:
 			finish();
 			return true;
 		default:
