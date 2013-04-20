@@ -53,17 +53,16 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 	}
 
 	@Override
-	protected void onStop() {
+	protected void onPause() {
 		super.onPause();
 		EventDistributor.getInstance().unregister(contentUpdate);
 	}
 
 	@Override
-	protected void onDestroy() {
-		super.onDestroy();
+	protected void onStop() {
+		super.onStop();
 		FeedManager.getInstance().autodownloadUndownloadedItems(
 				getApplicationContext());
-
 	}
 
 	@Override
