@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Picture;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,11 +22,8 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebBackForwardList;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.webkit.WebView.PictureListener;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
@@ -119,7 +115,15 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		webvDescription.setWebViewClient(new WebViewClient() {
 
 			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				startActivity(intent);
+				return true;
+			}
+
+			@Override
 			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Page finished");
 				// Restoring the scroll position might not always work
