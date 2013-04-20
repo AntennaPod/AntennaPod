@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
+import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
@@ -760,24 +761,44 @@ public class FeedManager {
 	 * @return The number of episodes that were actually deleted
 	 * */
 	private int performAutoCleanup(Context context, final int episodeNumber) {
-		int counter = 0;
-		if (episodeNumber > 0) {
-			int episodesLeft = episodeNumber;
-			feedloop: for (Feed feed : feeds) {
-				for (FeedItem item : feed.getItems()) {
-					if (item.hasMedia() && item.getMedia().isDownloaded()) {
-						if (!isInQueue(item) && item.isRead()) {
-							deleteFeedMedia(context, item.getMedia());
-							counter++;
-							episodesLeft--;
-							if (episodesLeft == 0) {
-								break feedloop;
-							}
-						}
-					}
+		List<FeedItem> candidates = new ArrayList<FeedItem>();
+		List<FeedItem> delete;
+		for (Feed feed : feeds) {
+			for (FeedItem item : feed.getItems()) {
+				if (item.hasMedia() && item.getMedia().isDownloaded() && !isInQueue(item) && item.isRead()) {
+					candidates.add(item);
 				}
 			}
 		}
+
+		Collections.sort(candidates, new Comparator<FeedItem>() {
+			@Override
+			public int compare(FeedItem lhs, FeedItem rhs) {
+				Date l = lhs.getMedia().getPlaybackCompletionDate();
+				Date r = rhs.getMedia().getPlaybackCompletionDate();
+
+				if (l == null) {
+					l = new Date(0);
+				}
+				if (r == null) {
+					r = new Date(0);
+				}
+				return l.compareTo(r);
+			}
+		});
+
+		if (candidates.size() > episodeNumber) {
+			delete = candidates.subList(0, episodeNumber);
+		} else {
+			delete = candidates;
+		}
+
+		for (FeedItem item : delete) {
+			deleteFeedMedia(context, item.getMedia());
+		}
+
+		int counter = delete.size();
+
 		if (AppConfig.DEBUG)
 			Log.d(TAG, String.format(
 					"Auto-delete deleted %d episodes (%d requested)", counter,
