@@ -92,10 +92,11 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 			holder.title.setText(item.getTitle());
 			if (showFeedtitle) {
+				String suffix=item.getFeed().getPriority()!=0?" ["+item.getFeed().getPriority()+"]":"";
 				holder.feedtitle.setVisibility(View.VISIBLE);
-				holder.feedtitle.setText(item.getFeed().getTitle());
+				holder.feedtitle.setText(item.getFeed().getTitle()+suffix);
 			}
-
+			
 			FeedItem.State state = item.getState();
 			switch (state) {
 			case PLAYING:

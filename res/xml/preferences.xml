@@ -17,7 +17,12 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title" />
-        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefQueuePrioritySort"
+            android:summary="@string/pref_queuePrioritySort_sum"
+            android:title="@string/pref_queuePrioritySort_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >
         <ListPreference
@@ -34,10 +39,13 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
-        <ListPreference android:defaultValue="20" android:entries="@array/episode_cache_size" android:key="prefEpisodeCacheSize" android:title="@string/pref_episode_cache_title" android:entryValues="@array/episode_cache_size"/><PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
-            <CheckBoxPreference android:key="prefEnableAutoDl" android:title="@string/pref_automatic_download_title" android:defaultValue="false"/><CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
-            
-        </PreferenceScreen>
+        <ListPreference android:defaultValue="20" android:entries="@array/episode_cache_size" android:key="prefEpisodeCacheSize" android:title="@string/pref_episode_cache_title" android:entryValues="@array/episode_cache_size"/>
+          
+          <PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
+            <CheckBoxPreference android:key="prefEnableAutoDl" android:title="@string/pref_automatic_download_title" android:defaultValue="false"/>
+            <CheckBoxPreference android:key="prefEnableAutoDlPriority" android:title="@string/pref_automatic_download_priority" android:dependency="prefEnableAutoDl" android:defaultValue="false"/>
+            <CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
+          </PreferenceScreen>
         
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/flattr_settings_label" >

@@ -26,7 +26,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -49,6 +49,7 @@ public class PodDBAdapter {
 	public static final int KEY_IMAGE_INDEX = 11;
 	public static final int KEY_TYPE_INDEX = 12;
 	public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
+	public static final int KEY_FEED_PRIORITY_INDEX = 14;
 	// ----------- FeedItem indices
 	public static final int KEY_CONTENT_ENCODED_INDEX = 2;
 	public static final int KEY_PUBDATE_INDEX = 3;
@@ -118,7 +119,8 @@ public class PodDBAdapter {
 	public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
 	public static final String KEY_CHAPTER_TYPE = "type";
 	public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
-
+	public static final String KEY_FEED_PRIORITY = "priority";
+	
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
@@ -139,7 +141,7 @@ public class PodDBAdapter {
 			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
 			+ KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
 			+ " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
-			+ KEY_FEED_IDENTIFIER + " TEXT)";;
+			+ KEY_FEED_IDENTIFIER + " TEXT, "+ KEY_FEED_PRIORITY + " INTEGER)";
 
 	private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
 			+ TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -264,6 +266,7 @@ public class PodDBAdapter {
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
 		values.put(KEY_TYPE, feed.getType());
 		values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
+		values.put(KEY_FEED_PRIORITY, feed.getPriority());
 		if (feed.getId() == 0) {
 			// Create new entry
 			if (AppConfig.DEBUG)
@@ -778,6 +781,10 @@ public class PodDBAdapter {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
 						+ " ADD COLUMN " + KEY_PLAYBACK_COMPLETION_DATE
 						+ " INTEGER");
+			}
+			if (oldVersion <= 8) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
+						+ KEY_FEED_PRIORITY + " INTEGER");
 			}
 		}
 	}

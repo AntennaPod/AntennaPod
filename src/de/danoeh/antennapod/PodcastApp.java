@@ -28,7 +28,6 @@ public class PodcastApp extends Application {
 		super.onCreate();
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
-
 		UserPreferences.createInstance(this);
 		PlaybackPreferences.createInstance(this);
 		EventDistributor.getInstance();
