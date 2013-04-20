@@ -25,7 +25,8 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.UndoBarController;
 
-public class OrganizeQueueActivity extends SherlockListActivity implements UndoBarController.UndoListener {
+public class OrganizeQueueActivity extends SherlockListActivity implements
+		UndoBarController.UndoListener {
 	private static final String TAG = "OrganizeQueueActivity";
 
 	private static final int MENU_ID_ACCEPT = 2;
@@ -46,7 +47,8 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 		adapter = new OrganizeAdapter(this);
 		setListAdapter(adapter);
 
-		undoBarController = new UndoBarController(findViewById(R.id.undobar), this);
+		undoBarController = new UndoBarController(findViewById(R.id.undobar),
+				this);
 	}
 
 	@Override
@@ -89,9 +91,10 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 		public void remove(int which) {
 			FeedManager manager = FeedManager.getInstance();
 			FeedItem item = (FeedItem) getListAdapter().getItem(which);
-			manager.removeQueueItem(OrganizeQueueActivity.this, item);
-			undoBarController.showUndoBar(false, getString(R.string.removed_from_queue),
-					new UndoToken(item, which));
+			manager.removeQueueItem(OrganizeQueueActivity.this, item, false);
+			undoBarController.showUndoBar(false,
+					getString(R.string.removed_from_queue), new UndoToken(item,
+							which));
 		}
 	};
 
@@ -111,6 +114,8 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case MENU_ID_ACCEPT:
+			FeedManager.getInstance().autodownloadUndownloadedItems(
+					getApplicationContext());
 			finish();
 			return true;
 		default:
@@ -126,14 +131,10 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 		int position = undoToken.getPosition();
 
 		FeedManager manager = FeedManager.getInstance();
-		manager.addQueueItemAt(OrganizeQueueActivity.this, feedItem, position, false);
+		manager.addQueueItemAt(OrganizeQueueActivity.this, feedItem, position,
+				false);
 	}
 
-	/**
-	 * WARNING: If the PlaybackService is playing an episode from the queue,
-	 * this list adapter will ignore the first item in the list to make sure
-	 * that the position of the first queue item cannot be changed.
-	 */
 	private static class OrganizeAdapter extends BaseAdapter {
 
 		private Context context;
@@ -222,16 +223,15 @@ public class OrganizeQueueActivity extends SherlockListActivity implements UndoB
 			position = in.readInt();
 		}
 
-		public static final Parcelable.Creator<UndoToken> CREATOR
-			= new Parcelable.Creator<UndoToken>() {
-				public UndoToken createFromParcel(Parcel in) {
-					return new UndoToken(in);
-				}
+		public static final Parcelable.Creator<UndoToken> CREATOR = new Parcelable.Creator<UndoToken>() {
+			public UndoToken createFromParcel(Parcel in) {
+				return new UndoToken(in);
+			}
 
-				public UndoToken[] newArray(int size) {
-					return new UndoToken[size];
-				}
-			};
+			public UndoToken[] newArray(int size) {
+				return new UndoToken[size];
+			}
+		};
 
 		public int describeContents() {
 			return 0;

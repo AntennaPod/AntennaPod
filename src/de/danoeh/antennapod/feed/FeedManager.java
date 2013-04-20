@@ -970,7 +970,8 @@ public class FeedManager {
 	}
 
 	/** Removes a FeedItem from the queue. */
-	public void removeQueueItem(final Context context, FeedItem item) {
+	public void removeQueueItem(final Context context, FeedItem item,
+			final boolean performAutoDownload) {
 		boolean removed = queue.remove(item);
 		if (removed) {
 			dbExec.execute(new Runnable() {
@@ -985,12 +986,14 @@ public class FeedManager {
 			});
 
 		}
-		new Thread() {
-			@Override
-			public void run() {
-				autodownloadUndownloadedItems(context);
-			}
-		}.start();
+		if (performAutoDownload) {
+			new Thread() {
+				@Override
+				public void run() {
+					autodownloadUndownloadedItems(context);
+				}
+			}.start();
+		}
 		eventDist.sendQueueUpdateBroadcast();
 	}
 

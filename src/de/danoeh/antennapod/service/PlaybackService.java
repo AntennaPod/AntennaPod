@@ -730,7 +730,7 @@ public class PlaybackService extends Service {
 			isInQueue = media instanceof FeedMedia
 					&& manager.isInQueue(((FeedMedia) media).getItem());
 			if (isInQueue) {
-				manager.removeQueueItem(PlaybackService.this, item);
+				manager.removeQueueItem(PlaybackService.this, item, true);
 			}
 			manager.addItemToPlaybackHistory(PlaybackService.this, item);
 			manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);

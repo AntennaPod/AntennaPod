@@ -140,7 +140,7 @@ public class FeedItemMenuHandler {
 			manager.addQueueItem(context, selectedItem);
 			break;
 		case R.id.remove_from_queue_item:
-			manager.removeQueueItem(context, selectedItem);
+			manager.removeQueueItem(context, selectedItem, true);
 			break;
 		case R.id.stream_item:
 			manager.playMedia(context, selectedItem.getMedia(), true, true,
