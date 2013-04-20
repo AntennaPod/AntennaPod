@@ -22,6 +22,7 @@
     </string-array>
     
     <string-array name="episode_cache_size">
+        <item>@string/pref_episode_cache_unlimited</item>
         <item>10</item>
         <item>20</item>
         <item>40</item>
@@ -39,8 +40,8 @@
     </string-array>
     
     <string-array name="theme_options">
-        <item>Light</item>
-        <item>Dark</item>
+        <item>@string/pref_theme_title_light</item>
+        <item>@string/pref_theme_title_dark</item>
     </string-array>
     
     <string-array name="theme_values">

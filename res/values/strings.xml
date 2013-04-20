@@ -179,6 +179,9 @@
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_episode_cache_title">Episode cache</string>
+    <string name="pref_theme_title_light">Light</string>
+    <string name="pref_theme_title_dark">Dark</string>
+    <string name="pref_episode_cache_unlimited">Unlimited</string>
 
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>
