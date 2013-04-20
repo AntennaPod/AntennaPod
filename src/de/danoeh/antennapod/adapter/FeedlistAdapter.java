@@ -85,6 +85,8 @@ public class FeedlistAdapter extends BaseAdapter {
 						+ DateUtils.getRelativeTimeSpanString(
 								feed.getItemAtIndex(true, 0).getPubDate().getTime(),
 								System.currentTimeMillis(), 0, 0));
+			} else {
+				holder.lastUpdate.setText("");
 			}
 		}
 		holder.numberOfEpisodes.setText(numOfItems
