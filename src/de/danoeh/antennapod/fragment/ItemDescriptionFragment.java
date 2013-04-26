@@ -446,17 +446,21 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (saveState) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Restoring from preferences");
-			SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
-					Activity.MODE_PRIVATE);
-			String id = prefs.getString(PREF_PLAYABLE_ID, "");
-			int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
-			if (scrollY != -1 && media != null
-					&& id.equals(media.getIdentifier().toString())
-					&& webvDescription != null) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Restored scroll Position: " + scrollY);
-				webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
-				return true;
+			Activity activity = getActivity();
+			if (activity != null) {
+				SharedPreferences prefs = activity.getSharedPreferences(
+						PREF, Activity.MODE_PRIVATE);
+				String id = prefs.getString(PREF_PLAYABLE_ID, "");
+				int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
+				if (scrollY != -1 && media != null
+						&& id.equals(media.getIdentifier().toString())
+						&& webvDescription != null) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Restored scroll Position: " + scrollY);
+					webvDescription.scrollTo(webvDescription.getScrollX(),
+							scrollY);
+					return true;
+				}
 			}
 		}
 		return false;
