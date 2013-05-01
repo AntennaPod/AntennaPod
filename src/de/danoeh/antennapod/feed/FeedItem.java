@@ -36,7 +36,10 @@ public class FeedItem extends FeedComponent implements
 	private String link;
 	private Date pubDate;
 	private FeedMedia media;
+
 	private Feed feed;
+	private long feedId;
+
 	private boolean read;
 	private String paymentLink;
 	private List<Chapter> chapters;
@@ -279,4 +282,13 @@ public class FeedItem extends FeedComponent implements
 		}
 		return out;
 	}
+
+	public long getFeedId() {
+		return feedId;
+	}
+
+	public void setFeedId(long feedId) {
+		this.feedId = feedId;
+	}
+
 }

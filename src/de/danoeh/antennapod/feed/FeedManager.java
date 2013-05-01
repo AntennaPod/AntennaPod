@@ -29,6 +29,7 @@ import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.storage.PodDBAdapter;
@@ -1452,7 +1453,7 @@ public class FeedManager {
 				long imageIndex = feedlistCursor
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {
-					feed.setImage(adapter.getFeedImage(imageIndex));
+				//	feed.setImage(DBReader.getFeedImage(adapter, imageIndex));
 					feed.getImage().setFeed(feed);
 				}
 				feed.file_url = feedlistCursor
@@ -1645,7 +1646,7 @@ public class FeedManager {
 				Date completionDate = new Date(
 						logCursor
 								.getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
-				downloadLog.add(new DownloadStatus(id, title, feedfile,
+				downloadLog.add(new DownloadStatus(id, title, feedfileId,
 						feedfileType, successful, reason, completionDate,
 						reasonDetailed));
 

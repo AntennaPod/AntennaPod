@@ -34,6 +34,7 @@ public class DownloadStatus {
 	protected boolean successful;
 	protected Date completionDate;
 	protected FeedFile feedfile;
+	protected long feedfileId;
 	/**
 	 * Is used to determine the type of the feedfile even if the feedfile does
 	 * not exist anymore. The value should be FEEDFILETYPE_FEED,
@@ -58,7 +59,7 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, String title, FeedFile feedfile,
+	public DownloadStatus(long id, String title, long feedfileId,
 			int feedfileType, boolean successful, int reason,
 			Date completionDate, String reasonDetailed) {
 		progressPercent = 100;
@@ -68,7 +69,7 @@ public class DownloadStatus {
 		this.id = id;
 		this.title = title;
 		this.done = true;
-		this.feedfile = feedfile;
+		this.feedfileId = feedfileId;
 		this.reason = reason;
 		this.successful = successful;
 		this.completionDate = completionDate;
@@ -79,8 +80,18 @@ public class DownloadStatus {
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, int reason,
 			boolean successful, String reasonDetailed) {
-		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason,
-				new Date(), reasonDetailed);
+		progressPercent = 100;
+		soFar = 0;
+		size = 0;
+
+		this.title = title;
+		this.done = true;
+		this.feedfile = feedfile;
+		this.reason = reason;
+		this.successful = successful;
+		this.completionDate = new Date();
+		this.reasonDetailed = reasonDetailed;
+		this.feedfileType = feedfile.getTypeAsInt();
 	}
 
 	@Override
@@ -185,6 +196,10 @@ public class DownloadStatus {
 
 	public int getFeedfileType() {
 		return feedfileType;
+	}
+
+	public long getFeedfileId() {
+		return feedfileId;
 	}
 
 	public boolean isCancelled() {

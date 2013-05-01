@@ -583,10 +583,49 @@ public class PodDBAdapter {
 		return c;
 	}
 
+	/**
+	 * Returns a cursor which contains all feed items in the queue. The returned
+	 * cursor uses the SEL_FI_SMALL selection.
+	 */
 	public final Cursor getQueueCursor() {
 		open();
-		Cursor c = db.query(TABLE_NAME_QUEUE, null, null, null, null, null,
-				null);
+		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+				"INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
+						TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+						TABLE_NAME_QUEUE + "." + KEY_FEEDITEM }, null, null,
+				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
+		return c;
+	}
+
+	/**
+	 * Returns a cursor which contains all feed items in the unread items list.
+	 * The returned cursor uses the SEL_FI_SMALL selection.
+	 */
+	public final Cursor getUnreadItemsCursor() {
+		open();
+		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_READ
+				+ "=0", null, null, null, KEY_PUBDATE + " DESC");
+		return c;
+	}
+
+	/**
+	 * Returns a cursor which contains feed media objects with a playback
+	 * completion date in descending order.
+	 * 
+	 * @param limit
+	 *            The maximum row count of the returned cursor. Must be an
+	 *            integer >= 0.
+	 * @throws IllegalArgumentException
+	 *             if limit < 0
+	 */
+	public final Cursor getCompletedMediaCursor(int limit) {
+		if (limit < 0) {
+			throw new IllegalArgumentException("Limit must be >= 0");
+		}
+		open();
+		Cursor c = db.query(CREATE_TABLE_FEED_MEDIA, null,
+				KEY_PLAYBACK_COMPLETION_DATE + " IS NOT NULL", null, null,
+				null, KEY_PLAYBACK_COMPLETION_DATE + " DESC LIMIT " + limit);
 		return c;
 	}
 
@@ -635,25 +674,18 @@ public class PodDBAdapter {
 		return buffer.toString();
 	}
 
-	/**
-	 * Searches the DB for a FeedImage of the given id.
-	 * 
-	 * @param id
-	 *            The id of the object
-	 * @return The found object
-	 * */
-	public final FeedImage getFeedImage(final long id) throws SQLException {
-		Cursor cursor = this.getImageOfFeedCursor(id);
-		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-			throw new SQLException("No FeedImage found at index: " + id);
-		}
-		FeedImage image = new FeedImage(id, cursor.getString(cursor
-				.getColumnIndex(KEY_TITLE)), cursor.getString(cursor
-				.getColumnIndex(KEY_FILE_URL)), cursor.getString(cursor
-				.getColumnIndex(KEY_DOWNLOAD_URL)), cursor.getInt(cursor
-				.getColumnIndex(KEY_DOWNLOADED)) > 0);
-		cursor.close();
-		return image;
+	public final Cursor getFeedCursor(final long id) {
+		open();
+		Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_ID + "=" + id, null,
+				null, null, null);
+		return c;
+	}
+
+	public final Cursor getFeedItemCursor(final long id) {
+		open();
+		Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_ID + "=" + id, null,
+				null, null, null);
+		return c;
 	}
 
 	/**

@@ -288,8 +288,8 @@ public class Feed extends FeedFile {
 		return items;
 	}
 
-	public void setItems(ArrayList<FeedItem> items) {
-		this.items = Collections.synchronizedList(items);
+	public void setItems(List<FeedItem> list) {
+		this.items = Collections.synchronizedList(list);
 	}
 
 	/** Returns an array that contains all the feeditems of this feed. */
