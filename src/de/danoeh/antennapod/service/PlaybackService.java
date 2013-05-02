@@ -1553,6 +1553,16 @@ public class PlaybackService extends Service {
 			}
 		}
 	}
+	
+	public double getCurrentPlaybackSpeed() {
+		if (media.getMediaType() == MediaType.AUDIO && player instanceof AudioPlayer) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				return audioPlayer.getCurrentSpeedMultiplier();
+			}
+		}
+		return -1;
+	}
 
 	/**
 	 * call getDuration() on mediaplayer or return INVALID_TIME if player is in
