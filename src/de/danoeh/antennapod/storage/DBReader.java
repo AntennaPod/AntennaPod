@@ -246,6 +246,20 @@ public final class DBReader {
 		}
 		return null;
 	}
+	
+	static List<FeedItem> getQueue(Context context, PodDBAdapter adapter) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Extracting queue");
+
+		Cursor itemlistCursor = adapter.getQueueCursor();
+		List<FeedItem> items = extractItemlistFromCursor(adapter,
+				itemlistCursor);
+		itemlistCursor.close();
+		loadFeedDataOfFeedItemlist(context, items);
+		Collections.sort(items, new FeedItemPubdateComparator());
+
+		return items;
+	}
 
 	public static List<FeedItem> getQueue(Context context) {
 		if (AppConfig.DEBUG)
@@ -253,18 +267,8 @@ public final class DBReader {
 
 		PodDBAdapter adapter = new PodDBAdapter(context);
 		adapter.open();
-
-		Cursor itemlistCursor = adapter.getQueueCursor();
-		List<FeedItem> items = extractItemlistFromCursor(adapter,
-				itemlistCursor);
-		itemlistCursor.close();
-
-		loadFeedDataOfFeedItemlist(context, items);
-
+		List<FeedItem> items = getQueue(context, adapter);
 		adapter.close();
-
-		Collections.sort(items, new FeedItemPubdateComparator());
-
 		return items;
 	}
 
@@ -287,8 +291,26 @@ public final class DBReader {
 		return items;
 	}
 
-	public static List<FeedItem> getPlaybackHistory() {
-		return null;
+	public static List<FeedItem> getPlaybackHistory(final Context context) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Loading playback history");
+		final int PLAYBACK_HISTORY_SIZE = 50;
+		
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		
+		Cursor mediaCursor = adapter.getCompletedMediaCursor(PLAYBACK_HISTORY_SIZE);
+		String[] itemIds = new String[mediaCursor.getCount()];
+		for (int i = 0; i < itemIds.length; i++) {
+			itemIds[i] = Long.toString(mediaCursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX));
+		}
+		mediaCursor.close();
+		Cursor itemCursor = adapter.getFeedItemCursor(itemIds);
+		List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
+		itemCursor.close();
+		
+		adapter.close();
+		return items;
 	}
 
 	public static List<DownloadStatus> getDownloadLog(Context context) {
@@ -345,21 +367,30 @@ public final class DBReader {
 		adapter.close();
 		return feed;
 	}
-
-	public FeedItem getFeedItem(final Context context, final long itemId) {
+	
+	static FeedItem getFeedItem(final Context context, final long itemId, PodDBAdapter adapter) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading feeditem with id " + itemId);
 		FeedItem item = null;
 
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		Cursor itemCursor = adapter.getFeedItemCursor(itemId);
+		Cursor itemCursor = adapter.getFeedItemCursor(Long.toString(itemId));
 		if (itemCursor.moveToFirst()) {
 			List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
 			if (list.size() > 0) {
 				item = list.get(0);
 			}
 		}
+		return item;
+
+	}
+
+	public static FeedItem getFeedItem(final Context context, final long itemId) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Loading feeditem with id " + itemId);
+
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		FeedItem item = getFeedItem(context, itemId, adapter);
 		adapter.close();
 		return item;
 

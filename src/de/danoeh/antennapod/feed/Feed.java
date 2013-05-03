@@ -284,7 +284,7 @@ public class Feed extends FeedFile {
 		this.image = image;
 	}
 
-	List<FeedItem> getItems() {
+	public List<FeedItem> getItems() {
 		return items;
 	}
 

@@ -340,6 +340,15 @@ public class PodDBAdapter {
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
+	
+	public void setFeedItemlist(List<FeedItem> items) {
+		db.beginTransaction();
+		for (FeedItem item : items) {
+			setFeedItem(item);
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
 
 	public long setSingleFeedItem(FeedItem item) {
 		db.beginTransaction();
@@ -439,6 +448,22 @@ public class PodDBAdapter {
 		return status.getId();
 	}
 
+	public long getDownloadLogSize() {
+		Cursor result = db.rawQuery("SELECT COUNT(?) AS ? FROM ?",
+				new String[] { KEY_ID, KEY_ID, TABLE_NAME_DOWNLOAD_LOG });
+		long count = result.getLong(KEY_ID_INDEX);
+		result.close();
+		return count;
+	}
+
+	public void removeDownloadLogItems(long count) {
+		if (count > 0) {
+			db.rawQuery("DELETE FROM ? ORDER BY ? ASC LIMIT ?",
+					new String[] { TABLE_NAME_DOWNLOAD_LOG,
+							KEY_COMPLETION_DATE, Long.toString(count) });
+		}
+	}
+
 	public void setQueue(List<FeedItem> queue) {
 		ContentValues values = new ContentValues();
 		db.beginTransaction();
@@ -453,6 +478,10 @@ public class PodDBAdapter {
 		}
 		db.setTransactionSuccessful();
 		db.endTransaction();
+	}
+	
+	public void clearQueue() {
+		db.delete(TABLE_NAME_QUEUE, null, null);
 	}
 
 	public void removeFeedMedia(FeedMedia media) {
@@ -500,6 +529,12 @@ public class PodDBAdapter {
 	public void removeDownloadStatus(DownloadStatus remove) {
 		db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_ID + "=?",
 				new String[] { String.valueOf(remove.getId()) });
+	}
+
+	public void clearPlaybackHistory() {
+		ContentValues values = new ContentValues();
+		values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
+		db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
 	}
 
 	/**
@@ -681,11 +716,17 @@ public class PodDBAdapter {
 		return c;
 	}
 
-	public final Cursor getFeedItemCursor(final long id) {
+	public final Cursor getFeedItemCursor(final String... ids) {
+		if (ids.length > IN_OPERATOR_MAXIMUM) {
+			throw new IllegalArgumentException(
+					"number of IDs must not be larger than "
+							+ IN_OPERATOR_MAXIMUM);
+		}
+
 		open();
-		Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_ID + "=" + id, null,
-				null, null, null);
-		return c;
+		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_ID + " IN "
+				+ buildInOperator(ids.length), ids, null, null, null);
+
 	}
 
 	/**
