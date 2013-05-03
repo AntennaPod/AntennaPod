@@ -132,7 +132,16 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 			public void onPlaybackEnd() {
 				finish();
 			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				MediaplayerActivity.this.onPlaybackSpeedChange();
+			}
 		};
+
+	}
+
+	protected void onPlaybackSpeedChange() {
 
 	}
 

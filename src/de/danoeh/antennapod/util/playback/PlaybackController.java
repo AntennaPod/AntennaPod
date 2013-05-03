@@ -327,6 +327,8 @@ public abstract class PlaybackController {
 						break;
 					case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
 						onPlaybackEnd();
+					case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
+						onPlaybackSpeedChange();
 						break;
 					}
 
@@ -354,6 +356,8 @@ public abstract class PlaybackController {
 			}
 		}
 	};
+	
+	public abstract void onPlaybackSpeedChange();
 
 	public abstract void onShutdownNotification();
 
@@ -657,13 +661,13 @@ public abstract class PlaybackController {
 	public boolean canSetPlaybackSpeed() {
 		return playbackService != null && playbackService.canSetSpeed();
 	}
-	
+
 	public void setPlaybackSpeed(double speed) {
 		if (playbackService != null) {
 			playbackService.setSpeed(speed);
 		}
 	}
-	
+
 	public double getCurrentPlaybackSpeedMultiplier() {
 		if (canSetPlaybackSpeed()) {
 			return playbackService.getCurrentPlaybackSpeed();

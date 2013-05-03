@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
@@ -57,6 +58,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private TextView txtvTitle;
 	private TextView txtvFeed;
+	private Button butPlaybackSpeed;
 	private ImageButton butNavLeft;
 	private ImageButton butNavRight;
 
@@ -219,7 +221,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		if (savedPosition != -1) {
 			switchToFragment(savedPosition);
 		}
-		
+
 	}
 
 	@Override
@@ -365,6 +367,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		txtvFeed = (TextView) findViewById(R.id.txtvFeed);
 		butNavLeft = (ImageButton) findViewById(R.id.butNavLeft);
 		butNavRight = (ImageButton) findViewById(R.id.butNavRight);
+		butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
 
 		butNavLeft.setOnClickListener(new OnClickListener() {
 
@@ -392,6 +395,50 @@ public class AudioplayerActivity extends MediaplayerActivity {
 				}
 			}
 		});
+
+		butPlaybackSpeed.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+				final double PLAYBACK_SPEED_STEP = 0.5;
+				final double PLAYBACK_SPEED_MAX = 2.0;
+				final double PLAYBACK_SPEED_DEFAULT = 1.0;
+
+				if (controller != null && controller.canSetPlaybackSpeed()) {
+					double currentPlaybackSpeed = controller
+							.getCurrentPlaybackSpeedMultiplier();
+					if (currentPlaybackSpeed != -1) {
+						if (currentPlaybackSpeed >= PLAYBACK_SPEED_MAX) {
+							controller.setPlaybackSpeed(PLAYBACK_SPEED_DEFAULT);
+						} else {
+							controller.setPlaybackSpeed(currentPlaybackSpeed
+									+ PLAYBACK_SPEED_STEP);
+						}
+					} else {
+						controller.setPlaybackSpeed(PLAYBACK_SPEED_DEFAULT);
+					}
+
+				}
+			}
+		});
+	}
+
+	@Override
+	protected void onPlaybackSpeedChange() {
+		super.onPlaybackSpeedChange();
+		updateButPlaybackSpeed();
+	}
+
+	private void updateButPlaybackSpeed() {
+		double playbackSpeed;
+		if (controller == null
+				|| (playbackSpeed = controller
+						.getCurrentPlaybackSpeedMultiplier()) == -1) {
+			butPlaybackSpeed.setVisibility(View.GONE);
+		} else {
+			butPlaybackSpeed.setVisibility(View.VISIBLE);
+			butPlaybackSpeed.setText(String.format("%.1fx", playbackSpeed));
+		}
 	}
 
 	@Override
@@ -423,7 +470,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			((AudioplayerContentFragment) currentlyShownFragment)
 					.onDataSetChanged(media);
 		}
-
+		updateButPlaybackSpeed();
 	}
 
 	public void notifyMediaPositionChanged() {

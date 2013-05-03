@@ -109,6 +109,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 	/** No more episodes are going to be played. */
 	public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
+	public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
 	/**
 	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -1541,6 +1542,10 @@ public class PlaybackService extends Service {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetSpeed()) {
 				audioPlayer.setPlaybackSpeed((float) speed);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Playback speed was set to " + speed);
+				sendNotificationBroadcast(
+						NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
 			}
 		}
 	}
@@ -1553,9 +1558,10 @@ public class PlaybackService extends Service {
 			}
 		}
 	}
-	
+
 	public double getCurrentPlaybackSpeed() {
-		if (media.getMediaType() == MediaType.AUDIO && player instanceof AudioPlayer) {
+		if (media.getMediaType() == MediaType.AUDIO
+				&& player instanceof AudioPlayer) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetSpeed()) {
 				return audioPlayer.getCurrentSpeedMultiplier();

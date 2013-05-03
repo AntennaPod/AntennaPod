@@ -92,14 +92,12 @@
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
                 android:background="?attr/borderless_button"
                 android:src="?attr/av_pause" />
 
             <ImageButton
                 android:id="@+id/butRev"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/butPlay"
                 android:background="?attr/borderless_button"
@@ -107,11 +105,22 @@
 
             <ImageButton
                 android:id="@+id/butFF"
-                android:layout_width="80dp"
+                android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/butPlay"
                 android:background="?attr/borderless_button"
                 android:src="?attr/av_fast_forward" />
+
+            <Button
+                android:id="@+id/butPlaybackSpeed"
+                android:layout_width="60dp"
+                android:layout_height="match_parent"
+                android:layout_toRightOf="@id/butFF"
+                android:background="?attr/borderless_button"
+                android:src="?attr/av_fast_forward"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/text_size_medium"
+                android:visibility="gone" />
         </RelativeLayout>
 
         <RelativeLayout
