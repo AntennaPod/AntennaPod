@@ -17,6 +17,10 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title" />
+        <Preference
+            android:key="prefPlaybackSpeedLauncher"
+            android:summary="@string/pref_playback_speed_sum"
+            android:title="@string/pref_playback_speed_title" />
         
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >

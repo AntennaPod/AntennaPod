@@ -17,6 +17,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
+import de.danoeh.antennapod.service.PlaybackService;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -41,11 +42,12 @@ public class UserPreferences implements
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
+	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
 
 	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
 
 	private static UserPreferences instance;
-	private Context context;
+	private final Context context;
 
 	// Preferences
 	private boolean pauseOnHeadsetDisconnect;
@@ -60,6 +62,7 @@ public class UserPreferences implements
 	private boolean enableAutodownloadWifiFilter;
 	private String[] autodownloadSelectedNetworks;
 	private int episodeCacheSize;
+	private float playbackSpeed;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -108,6 +111,7 @@ public class UserPreferences implements
 		episodeCacheSize = readEpisodeCacheSize(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		playbackSpeed = sp.getFloat(PREF_PLAYBACK_SPEED, (float) 1.0);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -196,6 +200,11 @@ public class UserPreferences implements
 		return EPISODE_CACHE_SIZE_UNLIMITED;
 	}
 
+	public static float getPlaybackSpeed() {
+		instanceAvailable();
+		return instance.playbackSpeed;
+	}
+
 	/**
 	 * Returns the capacity of the episode cache. This method will return the
 	 * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
@@ -250,7 +259,21 @@ public class UserPreferences implements
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		} else if (key.equals(PREF_PLAYBACK_SPEED)) {
+			playbackSpeed = sp.getFloat(PREF_PLAYBACK_SPEED, (float) 1.0);
 		}
+	}
+
+	public static void setPlaybackSpeed(Context context, float speed) {
+		SharedPreferences prefs = PreferenceManager
+				.getDefaultSharedPreferences(context.getApplicationContext());
+		SharedPreferences.Editor editor = prefs.edit();
+		editor.putFloat(PREF_PLAYBACK_SPEED, speed);
+		editor.apply();
+
+		Intent intent = new Intent(context, PlaybackService.class);
+		intent.putExtra(PlaybackService.EXTRA_PLAYBACK_SPEED, speed);
+		context.startService(intent);
 	}
 
 	public static void setAutodownloadSelectedNetworks(Context context,

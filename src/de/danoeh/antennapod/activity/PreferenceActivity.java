@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.net.wifi.WifiConfiguration;
@@ -26,6 +28,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.dialog.GetSpeedPlaybackPlugin;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
@@ -41,6 +44,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_ABOUT = "prefAbout";
 	private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
 	private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+	private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
 
 	private CheckBoxPreference[] selectedNetworks;
 
@@ -166,6 +170,14 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
+		findPreference(PREF_PLAYBACK_SPEED_LAUNCHER)
+				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						setPlaybackSpeed();
+						return true;
+					}
+				});
 
 		buildAutodownloadSelectedNetworsPreference();
 		setSelectedNetworksEnabled(UserPreferences
@@ -221,6 +233,40 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		if (f != null) {
 			findPreference(PREF_CHOOSE_DATA_DIR)
 					.setSummary(f.getAbsolutePath());
+		}
+	}
+
+	private void setPlaybackSpeed() {
+		if (com.aocate.media.MediaPlayer
+				.isPrestoLibraryInstalled(PreferenceActivity.this)) {
+			int currentIndex = 0;
+			final String[] speedValues = getResources().getStringArray(
+					R.array.playback_speed_values);
+			for (int i = 0; i < speedValues.length; i++) {
+				// Probably shouldn't float compare here...
+				if (Float.parseFloat(speedValues[i]) == UserPreferences
+						.getPlaybackSpeed()) {
+					currentIndex = i;
+				}
+			}
+			AlertDialog.Builder builder = new AlertDialog.Builder(
+					PreferenceActivity.this);
+			builder.setTitle(R.string.set_playback_speed_label);
+			builder.setSingleChoiceItems(R.array.playback_speed_values,
+					currentIndex, new DialogInterface.OnClickListener() {
+						@Override
+						public void onClick(DialogInterface dialog, int which) {
+							UserPreferences.setPlaybackSpeed(
+									PreferenceActivity.this,
+									Float.valueOf(speedValues[which]));
+							dialog.dismiss();
+
+						}
+					});
+			builder.create().show();
+
+		} else {
+			GetSpeedPlaybackPlugin.showDialog(this);
 		}
 	}
 
