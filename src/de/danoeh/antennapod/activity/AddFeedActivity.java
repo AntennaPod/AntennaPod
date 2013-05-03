@@ -44,8 +44,10 @@ public class AddFeedActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Was started with Intent "+getIntent().getAction()+" and Data "+getIntent().getDataString());		
 		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);		
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		StorageUtils.checkStorageAvailability(this);
 		setContentView(R.layout.addfeed);
@@ -54,6 +56,10 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog = new ProgressDialog(this);
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
+		if (getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+			etxtFeedurl.setText(getIntent().getDataString());
+		}
+		
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
@@ -101,7 +107,7 @@ public class AddFeedActivity extends SherlockActivity {
 		if (intent.getAction() != null
 				&& intent.getAction().equals(Intent.ACTION_SEND)) {
 			if (AppConfig.DEBUG)
-				Log.d(TAG, "Was started with ACTION_SEND intent");
+				Log.d(TAG, "Resuming with ACTION_SEND intent");
 			String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 			if (text != null) {
 				etxtFeedurl.setText(text);
