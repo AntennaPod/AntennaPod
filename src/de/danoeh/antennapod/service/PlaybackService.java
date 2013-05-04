@@ -1524,21 +1524,21 @@ public class PlaybackService extends Service {
 	}
 
 	public boolean canSetSpeed() {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			return ((AudioPlayer) player).canSetSpeed();
 		}
 		return false;
 	}
 
 	public boolean canSetPitch() {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			return ((AudioPlayer) player).canSetPitch();
 		}
 		return false;
 	}
 
 	public void setSpeed(double speed) {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetSpeed()) {
 				audioPlayer.setPlaybackSpeed((float) speed);
@@ -1551,7 +1551,7 @@ public class PlaybackService extends Service {
 	}
 
 	public void setPitch(double pitch) {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetPitch()) {
 				audioPlayer.setPlaybackPitch((float) pitch);
