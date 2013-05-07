@@ -677,8 +677,12 @@ public class FeedManager {
 			int deletedEpisodes = performAutoCleanup(context,
 					getPerformAutoCleanupArgs(undownloadedEpisodes));
 			int episodeSpaceLeft = undownloadedEpisodes;
-			if (UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
-					+ undownloadedEpisodes) {
+			boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
+					.getEpisodeCacheSizeUnlimited();
+
+			if (!cacheIsUnlimited
+					&& UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
+							+ undownloadedEpisodes) {
 				episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
 						- (downloadedEpisodes - deletedEpisodes);
 			}
@@ -733,7 +737,9 @@ public class FeedManager {
 	 *         that the number of episodes fits into the episode cache.
 	 * */
 	private int getPerformAutoCleanupArgs(final int episodeNumber) {
-		if (episodeNumber >= 0 && UserPreferences.getEpisodeCacheSize() != UserPreferences.getEpisodeCacheSizeUnlimited()) {
+		if (episodeNumber >= 0
+				&& UserPreferences.getEpisodeCacheSize() != UserPreferences
+						.getEpisodeCacheSizeUnlimited()) {
 			int downloadedEpisodes = getNumberOfDownloadedEpisodes();
 			if (downloadedEpisodes + episodeNumber >= UserPreferences
 					.getEpisodeCacheSize()) {
@@ -765,7 +771,8 @@ public class FeedManager {
 		List<FeedItem> delete;
 		for (Feed feed : feeds) {
 			for (FeedItem item : feed.getItems()) {
-				if (item.hasMedia() && item.getMedia().isDownloaded() && !isInQueue(item) && item.isRead()) {
+				if (item.hasMedia() && item.getMedia().isDownloaded()
+						&& !isInQueue(item) && item.isRead()) {
 					candidates.add(item);
 				}
 			}

@@ -174,6 +174,12 @@ public class ExternalPlayerFragment extends SherlockFragment {
 							.newOnPlayButtonClickListener());
 				}
 			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				// TODO Auto-generated method stub
+
+			}
 		};
 	}
 

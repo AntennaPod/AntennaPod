@@ -20,7 +20,6 @@
         <item>12</item>
         <item>24</item>
     </string-array>
-    
     <string-array name="episode_cache_size_entries">
         <item>@string/pref_episode_cache_unlimited</item>
         <item>10</item>
@@ -30,7 +29,6 @@
         <item>80</item>
         <item>100</item>
     </string-array>
-    
     <string-array name="episode_cache_size_values">
         <item>-1</item>
         <item>10</item>
@@ -40,7 +38,6 @@
         <item>80</item>
         <item>100</item>
     </string-array>
-    
     <string-array name="playback_speed_values">
         <item>1.0</item>
         <item>1.10</item>
@@ -58,16 +55,13 @@
     <string-array name="autodl_select_networks_default_entries">
         <item>N/A</item>
     </string-array>
-    
     <string-array name="autodl_select_networks_default_values">
         <item>0</item>
     </string-array>
-    
     <string-array name="theme_options">
         <item>@string/pref_theme_title_light</item>
         <item>@string/pref_theme_title_dark</item>
     </string-array>
-    
     <string-array name="theme_values">
         <item>0</item>
         <item>1</item>

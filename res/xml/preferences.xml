@@ -26,7 +26,7 @@
     <PreferenceCategory android:title="@string/network_pref" >
         <ListPreference
             android:defaultValue="0"
-            android:entries="@array/update_intervall_options"
+            android:entries="@array/update_intervall_values"
             android:entryValues="@array/update_intervall_values"
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervall_sum"

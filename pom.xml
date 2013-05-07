@@ -70,6 +70,14 @@
 			<version>0.6.1-SNAPSHOT</version>
 			<type>apklib</type>
 		</dependency>
+        <dependency>
+            <groupId>com.aocate</groupId>
+            <artifactId>presto_client</artifactId>
+            <version>0.8.5</version>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/presto_client-0.8.5.jar</systemPath>
+        </dependency>
 	</dependencies>
 
 	<build>

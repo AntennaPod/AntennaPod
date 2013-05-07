@@ -110,6 +110,7 @@ public class PlaybackService extends Service {
 	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
 	/** No more episodes are going to be played. */
 	public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
+	public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
 
 	/**
 	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
@@ -395,12 +396,14 @@ public class PlaybackService extends Service {
 				}
 				// Intent values appear to be valid
 				// check if already playing and playbackType is the same
-			} else if (media == null || playable != media
+			} else if (media == null
+					|| !playable.getIdentifier().equals(media.getIdentifier())
 					|| playbackType != shouldStream) {
 				pause(true, false);
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 				if (media == null
-						|| playable.getIdentifier() != media.getIdentifier()) {
+						|| !playable.getIdentifier().equals(
+								media.getIdentifier())) {
 					media = playable;
 				}
 
@@ -1531,35 +1534,50 @@ public class PlaybackService extends Service {
 	}
 
 	public boolean canSetSpeed() {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			return ((AudioPlayer) player).canSetSpeed();
 		}
 		return false;
 	}
 
 	public boolean canSetPitch() {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			return ((AudioPlayer) player).canSetPitch();
 		}
 		return false;
 	}
 
 	public void setSpeed(float speed) {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetSpeed()) {
 				audioPlayer.setPlaybackSpeed(speed);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Playback speed was set to " + speed);
+				sendNotificationBroadcast(
+						NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
 			}
 		}
 	}
 
 	public void setPitch(float pitch) {
-		if (media.getMediaType() == MediaType.AUDIO) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetPitch()) {
 				audioPlayer.setPlaybackPitch(pitch);
 			}
 		}
+	}
+
+	public double getCurrentPlaybackSpeed() {
+		if (media.getMediaType() == MediaType.AUDIO
+				&& player instanceof AudioPlayer) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				return audioPlayer.getCurrentSpeedMultiplier();
+			}
+		}
+		return -1;
 	}
 
 	/**
