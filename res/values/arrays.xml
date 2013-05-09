@@ -40,15 +40,25 @@
     </string-array>
     <string-array name="playback_speed_values">
         <item>1.0</item>
+        <item>1.05</item>
         <item>1.10</item>
+        <item>1.15</item>
         <item>1.20</item>
+        <item>1.25</item>
         <item>1.30</item>
+        <item>1.35</item>
         <item>1.40</item>
+        <item>1.45</item>
         <item>1.50</item>
+        <item>1.55</item>
         <item>1.60</item>
+        <item>1.65</item>
         <item>1.70</item>
+        <item>1.75</item>
         <item>1.80</item>
+        <item>1.85</item>
         <item>1.90</item>
+        <item>1.95</item>
         <item>2.0</item>
     </string-array>
     

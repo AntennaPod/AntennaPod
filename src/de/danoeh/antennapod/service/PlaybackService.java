@@ -82,7 +82,6 @@ public class PlaybackService extends Service {
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
-	public static final String EXTRA_PLAYBACK_SPEED = "extra.de.danoeh.antennapod.service.playbackSpeed";
 
 	/**
 	 * If the PlaybackService receives this action, it will stop playback and
@@ -373,17 +372,10 @@ public class PlaybackService extends Service {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "OnStartCommand called");
 		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
-		float playbackSpeed = intent.getFloatExtra(EXTRA_PLAYBACK_SPEED, -1);
 		if (keycode != -1) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Received media button event");
 			handleKeycode(keycode);
-		} else if (playbackSpeed > 0) {
-			if (media == null) {
-				stopSelf();
-			} else {
-				setSpeed(playbackSpeed);
-			}
 		} else {
 
 			Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
@@ -988,7 +980,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Resuming/Starting playback");
 				writePlaybackPreferences();
 
-				setSpeed(UserPreferences.getPlaybackSpeed());
+				setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo(media.getPosition());
@@ -1569,7 +1561,7 @@ public class PlaybackService extends Service {
 		}
 	}
 
-	public double getCurrentPlaybackSpeed() {
+	public float getCurrentPlaybackSpeed() {
 		if (media.getMediaType() == MediaType.AUDIO
 				&& player instanceof AudioPlayer) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
