@@ -2,6 +2,8 @@ package de.danoeh.antennapod.activity;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -45,9 +47,10 @@ public class AddFeedActivity extends SherlockActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		if (AppConfig.DEBUG)
-			Log.d(TAG, "Was started with Intent "+getIntent().getAction()+" and Data "+getIntent().getDataString());		
+			Log.d(TAG, "Was started with Intent " + getIntent().getAction()
+					+ " and Data " + getIntent().getDataString());
 		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);		
+		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		StorageUtils.checkStorageAvailability(this);
 		setContentView(R.layout.addfeed);
@@ -56,10 +59,10 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog = new ProgressDialog(this);
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
-		if (getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+		if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
 			etxtFeedurl.setText(getIntent().getDataString());
 		}
-		
+
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
