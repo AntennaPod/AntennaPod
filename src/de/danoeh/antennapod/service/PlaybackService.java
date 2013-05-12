@@ -422,6 +422,7 @@ public class PlaybackService extends Service {
 				stopSelf();
 			}
 		}
+
 		return Service.START_NOT_STICKY;
 	}
 
@@ -979,6 +980,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Resuming/Starting playback");
 				writePlaybackPreferences();
 
+				setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo(media.getPosition());
@@ -1537,11 +1539,11 @@ public class PlaybackService extends Service {
 		return false;
 	}
 
-	public void setSpeed(double speed) {
+	public void setSpeed(float speed) {
 		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetSpeed()) {
-				audioPlayer.setPlaybackSpeed((float) speed);
+				audioPlayer.setPlaybackSpeed(speed);
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Playback speed was set to " + speed);
 				sendNotificationBroadcast(
@@ -1550,16 +1552,16 @@ public class PlaybackService extends Service {
 		}
 	}
 
-	public void setPitch(double pitch) {
+	public void setPitch(float pitch) {
 		if (media != null && media.getMediaType() == MediaType.AUDIO) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;
 			if (audioPlayer.canSetPitch()) {
-				audioPlayer.setPlaybackPitch((float) pitch);
+				audioPlayer.setPlaybackPitch(pitch);
 			}
 		}
 	}
 
-	public double getCurrentPlaybackSpeed() {
+	public float getCurrentPlaybackSpeed() {
 		if (media.getMediaType() == MediaType.AUDIO
 				&& player instanceof AudioPlayer) {
 			AudioPlayer audioPlayer = (AudioPlayer) player;

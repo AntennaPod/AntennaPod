@@ -27,6 +27,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
@@ -42,6 +43,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_ABOUT = "prefAbout";
 	private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
 	private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+	private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
 
 	private CheckBoxPreference[] selectedNetworks;
 
@@ -164,6 +166,14 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						checkItemVisibility();
+						return true;
+					}
+				});
+		findPreference(PREF_PLAYBACK_SPEED_LAUNCHER)
+				.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+					@Override
+					public boolean onPreferenceClick(Preference preference) {
+						VariableSpeedDialog.showDialog(PreferenceActivity.this);
 						return true;
 					}
 				});

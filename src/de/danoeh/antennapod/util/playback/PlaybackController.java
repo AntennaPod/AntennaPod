@@ -255,7 +255,8 @@ public abstract class PlaybackController {
 
 	public abstract void onPositionObserverUpdate();
 
-	private ServiceConnection mConnection = new ServiceConnection() {
+	private final ServiceConnection mConnection = new ServiceConnection() {
+		@Override
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
@@ -343,7 +344,7 @@ public abstract class PlaybackController {
 
 	};
 
-	private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
+	private final BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
@@ -356,7 +357,7 @@ public abstract class PlaybackController {
 			}
 		}
 	};
-	
+
 	public abstract void onPlaybackSpeedChange();
 
 	public abstract void onShutdownNotification();
@@ -662,13 +663,13 @@ public abstract class PlaybackController {
 		return playbackService != null && playbackService.canSetSpeed();
 	}
 
-	public void setPlaybackSpeed(double speed) {
+	public void setPlaybackSpeed(float speed) {
 		if (playbackService != null) {
 			playbackService.setSpeed(speed);
 		}
 	}
 
-	public double getCurrentPlaybackSpeedMultiplier() {
+	public float getCurrentPlaybackSpeedMultiplier() {
 		if (canSetPlaybackSpeed()) {
 			return playbackService.getCurrentPlaybackSpeed();
 		} else {

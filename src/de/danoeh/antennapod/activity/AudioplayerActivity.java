@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -24,11 +25,13 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
@@ -400,25 +403,43 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 			@Override
 			public void onClick(View v) {
-				final double PLAYBACK_SPEED_STEP = 0.5;
-				final double PLAYBACK_SPEED_MAX = 2.0;
-				final double PLAYBACK_SPEED_DEFAULT = 1.0;
-
 				if (controller != null && controller.canSetPlaybackSpeed()) {
-					double currentPlaybackSpeed = controller
-							.getCurrentPlaybackSpeedMultiplier();
-					if (currentPlaybackSpeed != -1) {
-						if (currentPlaybackSpeed >= PLAYBACK_SPEED_MAX) {
-							controller.setPlaybackSpeed(PLAYBACK_SPEED_DEFAULT);
-						} else {
-							controller.setPlaybackSpeed(currentPlaybackSpeed
-									+ PLAYBACK_SPEED_STEP);
-						}
+					String[] availableSpeeds = UserPreferences
+							.getPlaybackSpeedArray();
+					String currentSpeed = UserPreferences.getPlaybackSpeed();
+
+					// Provide initial value in case the speed list has changed
+					// out from under us
+					// and our current speed isn't in the new list
+					String newSpeed;
+					if (availableSpeeds.length > 0) {
+						newSpeed = availableSpeeds[0];
 					} else {
-						controller.setPlaybackSpeed(PLAYBACK_SPEED_DEFAULT);
+						newSpeed = "1.0";
 					}
 
+					for (int i = 0; i < availableSpeeds.length; i++) {
+						if (availableSpeeds[i].equals(currentSpeed)) {
+							if (i == availableSpeeds.length - 1) {
+								newSpeed = availableSpeeds[0];
+							} else {
+								newSpeed = availableSpeeds[i + 1];
+							}
+							break;
+						}
+					}
+					UserPreferences.setPlaybackSpeed(AudioplayerActivity.this,
+							newSpeed);
+					controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
 				}
+			}
+		});
+
+		butPlaybackSpeed.setOnLongClickListener(new OnLongClickListener() {
+			@Override
+			public boolean onLongClick(View v) {
+				VariableSpeedDialog.showDialog(AudioplayerActivity.this);
+				return true;
 			}
 		});
 	}
@@ -430,14 +451,12 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	}
 
 	private void updateButPlaybackSpeed() {
-		double playbackSpeed;
 		if (controller == null
-				|| (playbackSpeed = controller
-						.getCurrentPlaybackSpeedMultiplier()) == -1) {
+				|| (controller.getCurrentPlaybackSpeedMultiplier() == -1)) {
 			butPlaybackSpeed.setVisibility(View.GONE);
 		} else {
 			butPlaybackSpeed.setVisibility(View.VISIBLE);
-			butPlaybackSpeed.setText(String.format("%.1fx", playbackSpeed));
+			butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
 		}
 	}
 
