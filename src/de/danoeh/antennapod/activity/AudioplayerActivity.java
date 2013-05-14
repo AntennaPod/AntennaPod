@@ -428,8 +428,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 							break;
 						}
 					}
-					UserPreferences.setPlaybackSpeed(AudioplayerActivity.this,
-							newSpeed);
+					UserPreferences.setPlaybackSpeed(newSpeed);
 					controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
 				}
 			}

@@ -2,6 +2,8 @@ package de.danoeh.antennapod.preferences;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
@@ -89,6 +91,7 @@ public class UserPreferences implements
 		createNoMediaFile();
 		PreferenceManager.getDefaultSharedPreferences(context)
 				.registerOnSharedPreferenceChangeListener(instance);
+
 	}
 
 	private void loadPreferences() {
@@ -145,17 +148,25 @@ public class UserPreferences implements
 	}
 
 	private String[] readPlaybackSpeedArray(String valueFromPrefs) {
-		String[] playbackSpeeds = null;
-		// If this preference hasn't been set yet, return all options
+		String[] selectedSpeeds = null;
+		// If this preference hasn't been set yet, return the default options
 		if (valueFromPrefs == null) {
-			playbackSpeeds = context.getResources().getStringArray(
+			String[] allSpeeds = context.getResources().getStringArray(
 					R.array.playback_speed_values);
+			List<String> speedList = new LinkedList<String>();
+			for (String speedStr : allSpeeds) {
+				float speed = Float.parseFloat(speedStr);
+				if (speed < 2.0001 && speed * 10 % 1 == 0) {
+					speedList.add(speedStr);
+				}
+			}
+			selectedSpeeds = speedList.toArray(new String[speedList.size()]);
 		} else {
 			try {
 				JSONArray jsonArray = new JSONArray(valueFromPrefs);
-				playbackSpeeds = new String[jsonArray.length()];
+				selectedSpeeds = new String[jsonArray.length()];
 				for (int i = 0; i < jsonArray.length(); i++) {
-					playbackSpeeds[i] = jsonArray.getString(i);
+					selectedSpeeds[i] = jsonArray.getString(i);
 				}
 			} catch (JSONException e) {
 				Log.e(TAG,
@@ -163,7 +174,7 @@ public class UserPreferences implements
 				e.printStackTrace();
 			}
 		}
-		return playbackSpeeds;
+		return selectedSpeeds;
 	}
 
 	private static void instanceAvailable() {
@@ -299,24 +310,19 @@ public class UserPreferences implements
 		}
 	}
 
-	public static void setPlaybackSpeed(Context context, String speed) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context.getApplicationContext());
-		SharedPreferences.Editor editor = prefs.edit();
-		editor.putString(PREF_PLAYBACK_SPEED, speed);
-		editor.apply();
+	public static void setPlaybackSpeed(String speed) {
+		PreferenceManager.getDefaultSharedPreferences(instance.context).edit()
+				.putString(PREF_PLAYBACK_SPEED, speed).apply();
 	}
 
-	public static void setPlaybackSpeedArray(Context context, String[] speeds) {
-		SharedPreferences prefs = PreferenceManager
-				.getDefaultSharedPreferences(context.getApplicationContext());
-		SharedPreferences.Editor editor = prefs.edit();
+	public static void setPlaybackSpeedArray(String[] speeds) {
 		JSONArray jsonArray = new JSONArray();
 		for (String speed : speeds) {
 			jsonArray.put(speed);
 		}
-		editor.putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString());
-		editor.apply();
+		PreferenceManager.getDefaultSharedPreferences(instance.context).edit()
+				.putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
+				.apply();
 	}
 
 	public static void setAutodownloadSelectedNetworks(Context context,

@@ -85,8 +85,7 @@ public class VariableSpeedDialog {
 							}
 						}
 
-						UserPreferences.setPlaybackSpeedArray(context,
-								newSpeedValues);
+						UserPreferences.setPlaybackSpeedArray(newSpeedValues);
 
 					}
 				});

@@ -59,7 +59,27 @@
         <item>1.85</item>
         <item>1.90</item>
         <item>1.95</item>
-        <item>2.0</item>
+        <item>2.00</item>
+        <item>2.10</item>
+        <item>2.20</item>
+        <item>2.30</item>
+        <item>2.40</item>
+        <item>2.50</item>
+        <item>2.60</item>
+        <item>2.70</item>
+        <item>2.80</item>
+        <item>2.90</item>
+        <item>3.00</item>
+        <item>3.10</item>
+        <item>3.20</item>
+        <item>3.30</item>
+        <item>3.40</item>
+        <item>3.50</item>
+        <item>3.60</item>
+        <item>3.70</item>
+        <item>3.80</item>
+        <item>3.90</item>
+        <item>4.00</item>
     </string-array>
     
     <string-array name="autodl_select_networks_default_entries">
