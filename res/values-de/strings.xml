@@ -43,6 +43,8 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Gib die URL des Feeds hier ein:</string>
+  <string name="txtv_scan_qr_code_label">Oder scanne einen QR-Code der URL:</string>
+  <string name="scan_qr_code_label">Scanne QR-Code</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markiere alle als gelesen</string>
   <string name="show_info_label">Informationen anzeigen</string>
