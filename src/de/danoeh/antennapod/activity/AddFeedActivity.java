@@ -141,10 +141,6 @@ public class AddFeedActivity extends SherlockActivity {
 	/** Read the url text field and start downloading a new feed. */
 	private void addNewFeed() {
 		String url = etxtFeedurl.getText().toString();
-		addNewFeed(url);
-	}
-	
-	private void addNewFeed(String url) {
 		url = URLChecker.prepareURL(url);
 
 		if (url != null) {
