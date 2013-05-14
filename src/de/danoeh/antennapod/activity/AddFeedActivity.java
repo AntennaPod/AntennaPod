@@ -16,6 +16,8 @@ import android.widget.EditText;
 import com.actionbarsherlock.app.SherlockActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
+import com.google.zxing.integration.android.IntentIntegrator;
+import com.google.zxing.integration.android.IntentResult;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -35,6 +37,7 @@ public class AddFeedActivity extends SherlockActivity {
 	private DownloadRequester requester;
 
 	private EditText etxtFeedurl;
+	private Button butScanQrCode;
 	private Button butBrowseMiroGuide;
 	private Button butOpmlImport;
 	private Button butConfirm;
@@ -54,10 +57,20 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog = new ProgressDialog(this);
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
+		butScanQrCode = (Button) findViewById(R.id.butScanQrCode);
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
+		
+		butScanQrCode.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				IntentIntegrator intentIntegrater = new IntentIntegrator(AddFeedActivity.this);
+				intentIntegrater.initiateScan();
+			}
+		});
 
 		butBrowseMiroGuide.setOnClickListener(new OnClickListener() {
 
@@ -203,6 +216,16 @@ public class AddFeedActivity extends SherlockActivity {
 		default:
 			return false;
 		}
+	}
+	
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		IntentResult scanResult = IntentIntegrator.parseActivityResult(requestCode, resultCode, intent);
+		if (scanResult == null) {
+			return;
+		}
+		
+		etxtFeedurl.setText(scanResult.getContents());
 	}
 
 }

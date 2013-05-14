@@ -56,12 +56,28 @@
                 android:layout_margin="8dp"
                 android:hint="@string/feedurl_label"
                 android:inputType="textUri" />
+            
+            <TextView
+                android:id="@+id/txtvScanQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/etxtFeedurl"
+                android:layout_margin="8dp"
+                android:text="@string/txtv_scan_qr_code_label" />
+
+            <Button
+                android:id="@+id/butScanQrCode"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/txtvScanQrCode"
+                android:layout_margin="8dp"
+                android:text="@string/scan_qr_code_label" />            
 
             <TextView
                 android:id="@+id/txtvBrowseMiroguide"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/etxtFeedurl"
+                android:layout_below="@id/butScanQrCode"
                 android:layout_margin="8dp"
                 android:text="@string/txtv_browse_miroguide_label" />
 
