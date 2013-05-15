@@ -41,7 +41,7 @@ public class NSMedia extends Namespace {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Length attribute could not be parsed.");
 				}
-				
+
 				int duration = 0;
 				try {
 					String durationStr = attributes.getValue(DURATION);
@@ -53,7 +53,7 @@ public class NSMedia extends Namespace {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Duration attribute could not be parsed");
 				}
-				
+
 				state.getCurrentItem().setMedia(
 						new FeedMedia(state.getCurrentItem(), url, size, type));
 			}

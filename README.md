@@ -21,7 +21,7 @@ If you want to translate AntennaPod into another language, you can visit the [Tr
 Information on how to build AntennaPod can be found in the [Wiki](https://github.com/danieloeh/AntennaPod/wiki/Building-AntennaPod).
 
 ## Donate
-  
+
 [![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/745609/Antennapod "AntennaPod")
 
 Bitcoin donations can be sent to this address: <pre>1DzvtuvdW8VhDsq9GUytMyALmsHeaHEKbg</pre>

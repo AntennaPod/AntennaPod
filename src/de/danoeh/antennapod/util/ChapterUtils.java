@@ -253,7 +253,7 @@ public class ChapterUtils {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "ChapterLoaderThread has finished");
 	}
-	
+
 	public static void loadChaptersFromFileUrl(Playable media) {
 		if (media.localFileAvailable()) {
 			ChapterUtils.readID3ChaptersFromPlayableFileUrl(media);

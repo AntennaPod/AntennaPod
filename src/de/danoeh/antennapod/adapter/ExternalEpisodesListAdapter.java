@@ -231,12 +231,12 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 		TextView headerTitle = (TextView) convertView
 				.findViewById(R.id.txtvHeaderTitle);
 		ImageButton actionButton = (ImageButton) convertView
-				.findViewById(R.id.butAction);	
+				.findViewById(R.id.butAction);
 		TextView numItems = (TextView) convertView.findViewById(R.id.txtvNumItems);
-		
+
 		String headerString = null;
 		int childrenCount = 0;
-		
+
 		if (groupPosition == 0) {
 			headerString = context.getString(R.string.queue_label);
 			childrenCount = getChildrenCount(GROUP_POS_QUEUE);

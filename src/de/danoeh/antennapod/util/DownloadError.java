@@ -17,7 +17,7 @@ public class DownloadError {
 	public static final int ERROR_NOT_ENOUGH_SPACE = 10;
 	public static final int ERROR_UNKNOWN_HOST = 11;
 	public static final int ERROR_REQUEST_ERROR = 12;
-	
+
 	/** Get a human-readable string for a specific error code. */
 	public static String getErrorString(Context context, int code) {
 		int resId;

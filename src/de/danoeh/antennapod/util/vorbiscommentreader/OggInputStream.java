@@ -23,7 +23,7 @@ public class OggInputStream extends InputStream {
 		if (!isInPage) {
 			readOggPage();
 		}
-		
+
 		if (isInPage && bytesLeft > 0) {
 			int result = input.read();
 			bytesLeft -= 1;
@@ -31,7 +31,7 @@ public class OggInputStream extends InputStream {
 				isInPage = false;
 			}
 			return result;
-		} 
+		}
 		return -1;
 	}
 

@@ -9,9 +9,9 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
 
 /**
  * Data Object for a XML message
- * 
+ *
  * @author daniel
- * 
+ *
  */
 public class FeedItem extends FeedComponent implements
 		ImageLoader.ImageWorkerTaskResource {

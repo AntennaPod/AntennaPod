@@ -30,7 +30,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 	private List<Chapter> chapters;
 	private Playable media;
-	
+
 	private int defaultTextColor;
 
 	public ChapterListAdapter(Context context, int textViewResourceId,

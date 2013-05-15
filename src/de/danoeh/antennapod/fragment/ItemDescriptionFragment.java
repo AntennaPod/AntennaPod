@@ -231,7 +231,7 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 	/**
 	 * Return the CSS style of the Webview.
-	 * 
+	 *
 	 * @param textColor
 	 *            the default color to use for the text in the webview. This
 	 *            value is inserted directly into the CSS String.

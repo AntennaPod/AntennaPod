@@ -11,13 +11,13 @@ import de.danoeh.antennapod.AppConfig;
 
 public class FlattrServiceCreator {
 	public static final String TAG = "FlattrServiceCreator";
-	
+
 	private static volatile FlattrService flattrService;
-	
+
 	public static FlattrService getService(AccessToken token) {
 		return FlattrFactory.getInstance().createFlattrService(token);
 	}
-	
+
 	public static void deleteFlattrService() {
 		if (AppConfig.DEBUG) Log.d(TAG, "Deleting service instance");
 		flattrService = null;

@@ -64,7 +64,7 @@ public class MiroGuideChannellistFragment extends SherlockListFragment {
 
 	/**
 	 * Creates a new instance of Channellist fragment.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if filter, filterValue or sort is null
 	 * */

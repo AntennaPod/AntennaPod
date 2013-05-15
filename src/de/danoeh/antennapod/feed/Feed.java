@@ -10,9 +10,9 @@ import de.danoeh.antennapod.util.EpisodeFilter;
 
 /**
  * Data Object for a whole feed
- * 
+ *
  * @author daniel
- * 
+ *
  */
 public class Feed extends FeedFile {
 	public static final int FEEDFILETYPE_FEED = 0;
@@ -98,7 +98,7 @@ public class Feed extends FeedFile {
 
 	/**
 	 * Returns true if at least one item in the itemlist is unread.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if this method should only count items with episodes if
 	 *            the 'display only episodes' - preference is set to true by the
@@ -118,7 +118,7 @@ public class Feed extends FeedFile {
 
 	/**
 	 * Returns the number of FeedItems.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if this method should only count items with episodes if
 	 *            the 'display only episodes' - preference is set to true by the
@@ -134,7 +134,7 @@ public class Feed extends FeedFile {
 
 	/**
 	 * Returns the item at the specified index.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if this method should ignore items without episdodes if
 	 *            the episodes filter has been enabled by the user.

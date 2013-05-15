@@ -59,7 +59,7 @@ public class PlaybackPreferences implements
 
 	/**
 	 * Sets up the UserPreferences class.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if context is null
 	 * */

@@ -29,9 +29,9 @@ public class FlattrAuthActivity extends SherlockActivity {
 	private TextView txtvExplanation;
 	private Button butAuthenticate;
 	private Button butReturn;
-	
+
 	private boolean authSuccessful;
-	
+
 	private static FlattrAuthActivity singleton;
 
 	@Override
@@ -55,7 +55,7 @@ public class FlattrAuthActivity extends SherlockActivity {
 				startActivity(intent);
 			}
 		});
-		
+
 		butAuthenticate.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -64,10 +64,10 @@ public class FlattrAuthActivity extends SherlockActivity {
 				} catch (FlattrException e) {
 					e.printStackTrace();
 				}
-			}	
+			}
 		});
 	}
-	
+
 	public static FlattrAuthActivity getInstance() {
 		return singleton;
 	}
@@ -94,8 +94,8 @@ public class FlattrAuthActivity extends SherlockActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;
 	}
-	
-	
+
+
 
 	@Override
 	protected void onPause() {
@@ -122,6 +122,6 @@ public class FlattrAuthActivity extends SherlockActivity {
 		}
 		return true;
 	}
-	
+
 
 }

@@ -28,6 +28,6 @@ public class SearchResult {
 	public int getValue() {
 		return value;
 	}
-	
+
 
 }

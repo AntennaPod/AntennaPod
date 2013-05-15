@@ -18,7 +18,7 @@ import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 /** Provides methods to communicate with the Miroguide API on an abstract level. */
 public class MiroGuideService {
 	private static final String TAG = "MiroGuideService";
-	
+
 	public static final int DEFAULT_CHANNEL_LIMIT = 20;
 
 	public static final String FILTER_CATEGORY = "category";
@@ -42,7 +42,7 @@ public class MiroGuideService {
 	public MiroGuideService() {
 		connector = new MiroGuideConnector();
 	}
-	
+
 	public void close() {
 		connector.shutdown();
 	}
@@ -87,7 +87,7 @@ public class MiroGuideService {
 
 	/**
 	 * Get a single channel with its items.
-	 * 
+	 *
 	 * @throws MiroGuideException
 	 */
 	public MiroGuideChannel getChannel(long id) throws MiroGuideException {
@@ -106,7 +106,7 @@ public class MiroGuideService {
 	/**
 	 * Get a MiroGuideChannel object from it's JSON source. The itemlist of the
 	 * channel can be included or excluded
-	 * 
+	 *
 	 * @throws JSONException
 	 */
 	private MiroGuideChannel extractMiroChannel(JSONObject content, boolean withItems)

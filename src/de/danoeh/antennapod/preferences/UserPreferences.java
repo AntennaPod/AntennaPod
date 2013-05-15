@@ -66,7 +66,7 @@ public class UserPreferences implements
 
 	/**
 	 * Sets up the UserPreferences class.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if context is null
 	 * */
@@ -244,7 +244,7 @@ public class UserPreferences implements
 	/**
 	 * Return the folder where the app stores all of its data. This method will
 	 * return the standard data folder if none has been set by the user.
-	 * 
+	 *
 	 * @param type
 	 *            The name of the folder inside the data folder. May be null
 	 *            when accessing the root of the data folder.
@@ -353,7 +353,7 @@ public class UserPreferences implements
 
 	/**
 	 * Updates alarm registered with the AlarmManager service or deactivates it.
-	 * 
+	 *
 	 * @param millis
 	 *            new value to register with AlarmManager. If millis is 0, the
 	 *            alarm is deactivated.

@@ -41,7 +41,7 @@ public class APRedirectHandler extends DefaultRedirectHandler {
 			{
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Original URL: " + h[0].getValue());
-				
+
 				response.setHeader(LOC, s);
 
 				if (AppConfig.DEBUG)

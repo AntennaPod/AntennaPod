@@ -20,7 +20,7 @@ public class FeedComponent {
 	public void setId(long id) {
 		this.id = id;
 	}
-	
+
 	/**
 	 * Update this FeedComponent's attributes with the attributes from another
 	 * FeedComponent. This method should only update attributes which where read from
@@ -33,13 +33,13 @@ public class FeedComponent {
 	 * Compare's this FeedComponent's attribute values with another FeedComponent's
 	 * attribute values. This method will only compare attributes which were
 	 * read from the feed.
-	 * 
+	 *
 	 * @return true if attribute values are different, false otherwise
 	 */
 	public boolean compareWithOther(FeedComponent other) {
 		return false;
 	}
-	
-	
+
+
 
 }

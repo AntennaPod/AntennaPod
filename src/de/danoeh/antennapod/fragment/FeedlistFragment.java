@@ -41,7 +41,7 @@ public class FeedlistFragment extends SherlockFragment implements
 			| EventDistributor.DOWNLOAD_QUEUED
 			| EventDistributor.FEED_LIST_UPDATE
 			| EventDistributor.UNREAD_ITEMS_UPDATE;
-	
+
 	public static final String EXTRA_SELECTED_FEED = "extra.de.danoeh.antennapod.activity.selected_feed";
 
 	private FeedManager manager;
@@ -125,7 +125,7 @@ public class FeedlistFragment extends SherlockFragment implements
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-		
+
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EVENTS & arg) != 0) {

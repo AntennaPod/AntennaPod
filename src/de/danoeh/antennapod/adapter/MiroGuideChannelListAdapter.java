@@ -17,7 +17,7 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> 
 			List<MiroGuideChannel> objects) {
 		super(context, textViewResourceId, objects);
 	}
-	
+
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
@@ -36,7 +36,7 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> 
 		} else {
 			holder = (Holder) convertView.getTag();
 		}
-		
+
 		holder.title.setText(channel.getName());
 		return convertView;
 	}
@@ -45,6 +45,6 @@ public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> 
 		TextView title;
 	}
 
-	
+
 
 }

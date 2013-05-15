@@ -26,7 +26,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 	Uri uri;
 	ProgressDialog dialog;
 	FlattrException exception;
-	
+
 	public FlattrTokenFetcher(Context context, AndroidAuthenticator auth, Uri uri) {
 		super();
 		this.context = context;
@@ -61,7 +61,7 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 		dialog.setMessage(context.getString(R.string.processing_label));
 		dialog.setIndeterminate(true);
 		dialog.setCancelable(false);
-		dialog.show();			
+		dialog.show();
 	}
 
 
@@ -92,5 +92,5 @@ public class FlattrTokenFetcher extends AsyncTask<Void, Void, AccessToken> {
 			execute();
 		}
 	}
-	
+
 }
