@@ -2,7 +2,7 @@ package de.danoeh.antennapod.opml;
 
 /** Contains symbols for reading and writing OPML documents. */
 public final class OpmlSymbols {
-	
+
 	public static final String OPML = "opml";
 	public static final String BODY = "body";
 	public static final String OUTLINE = "outline";
@@ -13,9 +13,9 @@ public final class OpmlSymbols {
 	public static final String VERSION = "version";
 	public static final String HEAD = "head";
 	public static final String TITLE = "title";
-	
+
 	private OpmlSymbols() {
-		
+
 	}
 
 }

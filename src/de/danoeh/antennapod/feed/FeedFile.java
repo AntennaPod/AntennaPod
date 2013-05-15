@@ -42,7 +42,7 @@ public abstract class FeedFile extends FeedComponent {
 	 * Compare's this FeedFile's attribute values with another FeedFile's
 	 * attribute values. This method will only compare attributes which were
 	 * read from the feed.
-	 * 
+	 *
 	 * @return true if attribute values are different, false otherwise
 	 */
 	public boolean compareWithOther(FeedFile other) {
@@ -54,7 +54,7 @@ public abstract class FeedFile extends FeedComponent {
 		}
 		return false;
 	}
-	
+
 	/** Returns true if the file exists at file_url. */
 	public boolean fileExists() {
 		if (file_url == null) {

@@ -164,7 +164,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	/**
 	 * Tries to restore the selected fragment position from the Activity's
 	 * preferences.
-	 * 
+	 *
 	 * @return true if restoreFromPrefernces changed the activity's state
 	 * */
 	private boolean restoreFromPreferences() {
@@ -219,7 +219,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		if (savedPosition != -1) {
 			switchToFragment(savedPosition);
 		}
-		
+
 	}
 
 	@Override
@@ -247,7 +247,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	/**
 	 * Changes the currently displayed fragment.
-	 * 
+	 *
 	 * @param Must
 	 *            be POS_COVER, POS_DESCR, or POS_CHAPTERS
 	 * */

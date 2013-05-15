@@ -31,7 +31,7 @@ public abstract class VorbisCommentReader {
 
 	/**
 	 * Is called if onContentVectorKey returned true for the key.
-	 * 
+	 *
 	 * @throws VorbisCommentReaderException
 	 */
 	public abstract void onContentVectorValue(String key, String value)
@@ -48,7 +48,7 @@ public abstract class VorbisCommentReader {
 		try {
 			// look for identification header
 			if (findIdentificationHeader(input)) {
-				
+
 				onVorbisCommentFound();
 				input = new OggInputStream(input);
 				if (findCommentHeader(input)) {
@@ -94,7 +94,7 @@ public abstract class VorbisCommentReader {
 	private String readUTF8String(InputStream input, long length)
 			throws IOException {
 		byte[] buffer = new byte[(int) length];
-		
+
 		IOUtils.readFully(input, buffer);
 		Charset charset = Charset.forName("UTF-8");
 		return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
@@ -104,7 +104,7 @@ public abstract class VorbisCommentReader {
 	 * Looks for an identification header in the first page of the file. If an
 	 * identification header is found, it will be skipped completely and the
 	 * method will return true, otherwise false.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	private boolean findIdentificationHeader(InputStream input)

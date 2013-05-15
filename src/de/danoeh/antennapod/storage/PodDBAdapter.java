@@ -240,7 +240,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Inserts or updates a feed entry
-	 * 
+	 *
 	 * @return the id of the entry
 	 * */
 	public long setFeed(Feed feed) {
@@ -280,7 +280,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Inserts or updates an image entry
-	 * 
+	 *
 	 * @return the id of the entry
 	 * */
 	public long setImage(FeedImage image) {
@@ -300,7 +300,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Inserts or updates an image entry
-	 * 
+	 *
 	 * @return the id of the entry
 	 */
 	public long setMedia(FeedMedia media) {
@@ -351,7 +351,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Inserts or updates a feeditem entry
-	 * 
+	 *
 	 * @return the id of the entry
 	 */
 	private long setFeedItem(FeedItem item) {
@@ -504,7 +504,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Get all Feeds from the Feed Table.
-	 * 
+	 *
 	 * @return The cursor of the query
 	 * */
 	public final Cursor getAllFeedsCursor() {
@@ -516,7 +516,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Returns a cursor with all FeedItems of a Feed. Uses SEL_FI_SMALL
-	 * 
+	 *
 	 * @param feed
 	 *            The feed you want to get the FeedItems from.
 	 * @return The cursor of the query
@@ -541,7 +541,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Returns a cursor for a DB query in the FeedMedia table for a given ID.
-	 * 
+	 *
 	 * @param item
 	 *            The item you want to get the FeedMedia from
 	 * @return The cursor of the query
@@ -556,7 +556,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Returns a cursor for a DB query in the FeedImages table for a given ID.
-	 * 
+	 *
 	 * @param id
 	 *            ID of the FeedImage
 	 * @return The cursor of the query
@@ -637,7 +637,7 @@ public class PodDBAdapter {
 
 	/**
 	 * Searches the DB for a FeedImage of the given id.
-	 * 
+	 *
 	 * @param id
 	 *            The id of the object
 	 * @return The found object
@@ -671,7 +671,7 @@ public class PodDBAdapter {
 	/**
 	 * Searches for the given query in the description of all items or the items
 	 * of a specified feed.
-	 * 
+	 *
 	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
 	 * */
 	public Cursor searchItemDescriptions(Feed feed, String query) {
@@ -693,7 +693,7 @@ public class PodDBAdapter {
 	/**
 	 * Searches for the given query in the content-encoded field of all items or
 	 * the items of a specified feed.
-	 * 
+	 *
 	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
 	 * */
 	public Cursor searchItemContentEncoded(Feed feed, String query) {
@@ -717,7 +717,7 @@ public class PodDBAdapter {
 	private static class PodDBHelper extends SQLiteOpenHelper {
 		/**
 		 * Constructor.
-		 * 
+		 *
 		 * @param context
 		 *            Context to use
 		 * @param name

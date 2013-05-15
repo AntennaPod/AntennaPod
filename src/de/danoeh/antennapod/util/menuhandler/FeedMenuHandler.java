@@ -51,7 +51,7 @@ public class FeedMenuHandler {
 
 	/**
 	 * NOTE: This method does not handle clicks on the 'remove feed' - item.
-	 * 
+	 *
 	 * @throws DownloadRequestException
 	 */
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,

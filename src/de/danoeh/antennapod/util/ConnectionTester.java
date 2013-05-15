@@ -37,7 +37,7 @@ public class ConnectionTester implements Runnable {
 				@Override
 				public void run() {
 					callback.onConnectionSuccessful();
-				}	
+				}
 			});			if (AppConfig.DEBUG)
 				Log.d(TAG, "Connection seems to work");
 		} catch (MalformedURLException e) {

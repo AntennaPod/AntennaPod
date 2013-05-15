@@ -45,7 +45,7 @@ import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
  * several lists of FeedItems. - provides methods for modifying the
  * application's data - takes care of updating the information stored in the
  * database when something is modified
- * 
+ *
  * An instance of this class can be retrieved via getInstance().
  * */
 public class FeedManager {
@@ -119,7 +119,7 @@ public class FeedManager {
 	 * Play FeedMedia and start the playback service + launch Mediaplayer
 	 * Activity. The FeedItem will be added at the top of the queue if it isn't
 	 * in there yet.
-	 * 
+	 *
 	 * @param context
 	 *            for starting the playbackservice
 	 * @param media
@@ -280,7 +280,7 @@ public class FeedManager {
 	/**
 	 * Makes sure that playback history is sorted and is not larger than
 	 * PLAYBACK_HISTORY_SIZE.
-	 * 
+	 *
 	 * @return an array of all feeditems that were remove from the playback
 	 *         history or null if no items were removed.
 	 */
@@ -663,7 +663,7 @@ public class FeedManager {
 	 * This method will try to download undownloaded items in the queue or the
 	 * unread items list. If not enough space is available, an episode cleanup
 	 * will be performed first.
-	 * 
+	 *
 	 * This method will not try to download the currently playing item.
 	 */
 	public void autodownloadUndownloadedItems(Context context) {
@@ -727,7 +727,7 @@ public class FeedManager {
 	/**
 	 * This method will determine the number of episodes that have to be deleted
 	 * depending on a given number of episodes.
-	 * 
+	 *
 	 * @return The argument that has to be passed to performAutoCleanup() so
 	 *         that the number of episodes fits into the episode cache.
 	 * */
@@ -756,7 +756,7 @@ public class FeedManager {
 	/**
 	 * This method will try to delete a given number of episodes. An episode
 	 * will only be deleted if it is not in the queue.
-	 * 
+	 *
 	 * @return The number of episodes that were actually deleted
 	 * */
 	private int performAutoCleanup(Context context, final int episodeNumber) {
@@ -789,7 +789,7 @@ public class FeedManager {
 	/**
 	 * Counts items in the queue and the unread items list which haven't been
 	 * downloaded yet.
-	 * 
+	 *
 	 * This method will not count the playing item
 	 */
 	private int getNumberOfUndownloadedEpisodes() {
@@ -997,7 +997,7 @@ public class FeedManager {
 	/**
 	 * Moves the queue item at the specified index to another position. If the
 	 * indices are out of range, no operation will be performed.
-	 * 
+	 *
 	 * @param from
 	 *            index of the item that is going to be moved
 	 * @param to
@@ -1063,7 +1063,7 @@ public class FeedManager {
 
 	/**
 	 * Updates an existing feed or adds it as a new one if it doesn't exist.
-	 * 
+	 *
 	 * @return The saved Feed with a database ID
 	 */
 	public Feed updateFeed(final Context context, final Feed newFeed) {
@@ -1693,7 +1693,7 @@ public class FeedManager {
 	/**
 	 * Searches the descriptions of FeedItems of a specific feed for a given
 	 * string.
-	 * 
+	 *
 	 * @param feed
 	 *            The feed whose items should be searched.
 	 * @param query
@@ -1719,7 +1719,7 @@ public class FeedManager {
 	/**
 	 * Searches the 'contentEncoded' field of FeedItems of a specific feed for a
 	 * given string.
-	 * 
+	 *
 	 * @param feed
 	 *            The feed whose items should be searched.
 	 * @param query
@@ -1763,7 +1763,7 @@ public class FeedManager {
 
 	/**
 	 * Returns the number of items that are currently in the queue.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if items without episodes should be ignored by this
 	 *            method if the episode filter was enabled by the user.
@@ -1778,11 +1778,11 @@ public class FeedManager {
 
 	/**
 	 * Returns the FeedItem at the specified index of the queue.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if items without episodes should be ignored by this
 	 *            method if the episode filter was enabled by the user.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException
 	 *             if index is out of range
 	 * */
@@ -1817,7 +1817,7 @@ public class FeedManager {
 
 	/**
 	 * Returns the number of unread items.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if items without episodes should be ignored by this
 	 *            method if the episode filter was enabled by the user.
@@ -1832,11 +1832,11 @@ public class FeedManager {
 
 	/**
 	 * Returns the FeedItem at the specified index of the unread items list.
-	 * 
+	 *
 	 * @param enableEpisodeFilter
 	 *            true if items without episodes should be ignored by this
 	 *            method if the episode filter was enabled by the user.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException
 	 *             if index is out of range
 	 * */
@@ -1857,7 +1857,7 @@ public class FeedManager {
 
 	/**
 	 * Returns the FeedItem at the specified index of the playback history.
-	 * 
+	 *
 	 * @throws IndexOutOfBoundsException
 	 *             if index is out of range
 	 * */

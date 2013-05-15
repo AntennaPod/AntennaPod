@@ -18,12 +18,12 @@ import android.util.Log;
 public class HttpDownloaderTest extends AndroidTestCase {
 	private static final String TAG = "HttpDownloaderTest";
 	private static final String DOWNLOAD_DIR = "testdownloads";
-	
+
 	private static boolean successful = true;
 	private static ExecutorService es;
-	
+
 	private static DownloaderCallback downloaderCallback = new DownloaderCallback() {
-		
+
 		@Override
 		public void onDownloadCompleted(Downloader downloader) {
 			DownloadStatus status = downloader.getStatus();
@@ -46,7 +46,7 @@ public class HttpDownloaderTest extends AndroidTestCase {
 			}
 		}
 	};
-	
+
 	public void testDownload() throws InterruptedException {
 		es = Executors.newFixedThreadPool(5);
 		int i = 0;
@@ -66,5 +66,5 @@ public class HttpDownloaderTest extends AndroidTestCase {
 		es.awaitTermination(Long.MAX_VALUE, TimeUnit.DAYS);
 		assertTrue(successful);
 	}
-	
+
 }

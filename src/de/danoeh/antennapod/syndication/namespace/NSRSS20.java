@@ -13,9 +13,9 @@ import de.danoeh.antennapod.syndication.util.SyndTypeUtils;
 
 /**
  * SAX-Parser for reading RSS-Feeds
- * 
+ *
  * @author daniel
- * 
+ *
  */
 public class NSRSS20 extends Namespace {
 	private static final String TAG = "NSRSS20";

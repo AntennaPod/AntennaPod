@@ -61,12 +61,12 @@ public class DefaultFeedItemlistAdapter extends BaseAdapter {
 					.findViewById(R.id.txtvItemname);
 			holder.lenSize = (TextView) convertView
 					.findViewById(R.id.txtvLenSize);
-			
+
 			holder.published = (TextView) convertView
 					.findViewById(R.id.txtvPublished);
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
 			convertView.setTag(holder);
-			
+
 		} else {
 			holder = (Holder) convertView.getTag();
 		}

@@ -4,13 +4,13 @@ import java.util.Arrays;
 
 /** Generates valid filenames for a given string. */
 public class FileNameGenerator {
-	
+
 	private static final char[] ILLEGAL_CHARACTERS = { '/', '\\', '?', '%',
 			'*', ':', '|', '"', '<', '>' };
 	static {
 		Arrays.sort(ILLEGAL_CHARACTERS);
 	}
-	
+
 	private FileNameGenerator() {
 
 	}

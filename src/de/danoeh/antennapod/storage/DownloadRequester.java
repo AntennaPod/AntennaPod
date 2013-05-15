@@ -153,7 +153,7 @@ public class DownloadRequester {
 	/**
 	 * Throws a DownloadRequestException if the feedfile or the download url of
 	 * the feedfile is null.
-	 * 
+	 *
 	 * @throws DownloadRequestException
 	 */
 	private boolean feedFileValid(FeedFile f) throws DownloadRequestException {

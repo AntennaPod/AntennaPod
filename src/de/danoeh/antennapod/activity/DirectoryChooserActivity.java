@@ -190,7 +190,7 @@ public class DirectoryChooserActivity extends SherlockActivity {
 
 	/**
 	 * Change the directory that is currently being displayed.
-	 * 
+	 *
 	 * @param dir
 	 *            The file the activity should switch to. This File must be
 	 *            non-null and a directory, otherwise the displayed directory

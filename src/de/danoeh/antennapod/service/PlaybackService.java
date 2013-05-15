@@ -74,7 +74,7 @@ public class PlaybackService extends Service {
 
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
 	private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED= "com.android.music.playstatechanged";
-	
+
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
@@ -811,7 +811,7 @@ public class PlaybackService extends Service {
 	/**
 	 * Saves the current position and pauses playback. Note that, if audiofocus
 	 * is abandoned, the lockscreen controls will also disapear.
-	 * 
+	 *
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
 	 * @param reset
@@ -1073,7 +1073,7 @@ public class PlaybackService extends Service {
 
 	/**
 	 * Seek a specific position from the current position
-	 * 
+	 *
 	 * @param delta
 	 *            offset from current position (positive or negative)
 	 * */
@@ -1226,23 +1226,23 @@ public class PlaybackService extends Service {
 
 	private void bluetoothNotifyChange() {
 		boolean isPlaying = false;
-		
+
 		if (status == PlayerStatus.PLAYING) {
 			isPlaying = true;
 		}
-		
+
 	    Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
 	    i.putExtra("id", 1);
 	    i.putExtra("artist", "");
 	    i.putExtra("album", media.getFeedTitle());
 	    i.putExtra("track", media.getEpisodeTitle());
-	    i.putExtra("playing", isPlaying);        
+	    i.putExtra("playing", isPlaying);
 	    i.putExtra("ListSize", manager.getQueueSize(false));
 	    i.putExtra("duration", media.getDuration());
 	    i.putExtra("position", media.getPosition());
 	    sendBroadcast(i);
 	}
-	
+
 	/**
 	 * Pauses playback when the headset is disconnected and the preference is
 	 * set

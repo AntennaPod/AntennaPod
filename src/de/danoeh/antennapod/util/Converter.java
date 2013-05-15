@@ -22,8 +22,8 @@ public final class Converter {
     private static final int GB_RANGE = 3;
     /** Determines the length of the number for best readability.*/
     private static final int NUM_LENGTH = 1000;
-    
-    
+
+
     private static final int HOURS_MIL = 3600000;
 	private static final int MINUTES_MIL = 60000;
 	private static final int SECONDS_MIL = 1000;
@@ -58,24 +58,24 @@ public final class Converter {
                 return "ERROR";
         }
     }
-    
+
     /** Converts milliseconds to a string containing hours, minutes and seconds */
-    public static String getDurationStringLong(int duration) {	
+    public static String getDurationStringLong(int duration) {
     	int h = duration / HOURS_MIL;
     	int rest = duration - h * HOURS_MIL;
     	int m = rest / MINUTES_MIL;
     	rest -= m * MINUTES_MIL;
     	int s = rest / SECONDS_MIL;
-    	
+
     	return String.format("%02d:%02d:%02d", h, m, s);
     }
-    
+
     /** Converts milliseconds to a string containing hours and minutes */
     public static String getDurationStringShort(int duration) {
     	int h = duration / HOURS_MIL;
     	int rest = duration - h * HOURS_MIL;
     	int m = rest / MINUTES_MIL;
-    	
+
     	return String.format("%02d:%02d", h, m);
     }
 }

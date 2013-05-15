@@ -104,7 +104,7 @@ public class LangUtils {
 		languages.put("tr", "Turkish");
 		languages.put("uk", "Ukranian");
 	}
-	
+
 	/** Finds language string for key or returns the language key if it can't be found. */
 	public static String getLanguageString(String key) {
 		String language = languages.get(key);

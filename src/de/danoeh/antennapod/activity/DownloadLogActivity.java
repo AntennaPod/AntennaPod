@@ -63,7 +63,7 @@ public class DownloadLogActivity extends SherlockListActivity {
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-		
+
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((arg & EventDistributor.DOWNLOADLOG_UPDATE) != 0) {

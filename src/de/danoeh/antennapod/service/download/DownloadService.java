@@ -1,5 +1,5 @@
-/** 
- * Registers a DownloadReceiver and waits for all Downloads 
+/**
+ * Registers a DownloadReceiver and waits for all Downloads
  * to complete, then stops
  * */
 
@@ -489,7 +489,7 @@ public class DownloadService extends Service {
 	/**
 	 * Adds a new DownloadStatus object to the list of completed downloads and
 	 * saves it in the database
-	 * 
+	 *
 	 * @param status
 	 *            the download that is going to be saved
 	 */

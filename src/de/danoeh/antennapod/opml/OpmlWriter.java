@@ -21,7 +21,7 @@ public class OpmlWriter {
 	/**
 	 * Takes a list of feeds and a writer and writes those into an OPML
 	 * document.
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws IllegalStateException
 	 * @throws IllegalArgumentException

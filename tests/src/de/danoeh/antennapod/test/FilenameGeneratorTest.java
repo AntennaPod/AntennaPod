@@ -23,7 +23,7 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 		assertEquals(result, VALID1);
 		createFiles(result);
 	}
-	
+
 	public void testGenerateFileName2() throws IOException {
 		String result = FileNameGenerator.generateFileName(INVALID2);
 		assertEquals(result, VALID1);
@@ -32,7 +32,7 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 
 	/**
 	 * Tests if files can be created.
-	 * 
+	 *
 	 * @throws IOException
 	 */
 	private void createFiles(String name) throws IOException {

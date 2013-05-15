@@ -8,14 +8,14 @@ import de.danoeh.antennapod.syndication.handler.HandlerState;
 public class NSITunes extends Namespace{
 	public static final String NSTAG = "itunes";
 	public static final String NSURI = "http://www.itunes.com/dtds/podcast-1.0.dtd";
-	
+
 	private static final String IMAGE = "image";
 	private static final String IMAGE_TITLE = "image";
 	private static final String IMAGE_HREF = "href";
-	
+
 	private static final String AUTHOR = "author";
-	
-	
+
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {
@@ -25,7 +25,7 @@ public class NSITunes extends Namespace{
 			image.setDownload_url(attributes.getValue(IMAGE_HREF));
 			state.getFeed().setImage(image);
 		}
-		
+
 		return new SyndElement(localName, this);
 	}
 
@@ -34,7 +34,7 @@ public class NSITunes extends Namespace{
 		if (localName.equals(AUTHOR)) {
 			state.getFeed().setAuthor(state.getContentBuf().toString());
 		}
-		
+
 	}
 
 }

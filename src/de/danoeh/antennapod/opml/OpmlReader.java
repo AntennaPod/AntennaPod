@@ -14,7 +14,7 @@ import de.danoeh.antennapod.AppConfig;
 /** Reads OPML documents. */
 public class OpmlReader {
 	private static final String TAG = "OpmlReader";
-	
+
 	// ATTRIBUTES
 	private boolean isInOpml = false;
 	private ArrayList<OpmlElement> elementList;
@@ -22,7 +22,7 @@ public class OpmlReader {
 	/**
 	 * Reads an Opml document and returns a list of all OPML elements it can
 	 * find
-	 * 
+	 *
 	 * @throws IOException
 	 * @throws XmlPullParserException
 	 */
@@ -50,14 +50,14 @@ public class OpmlReader {
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
-					
+
 					final String title = xpp.getAttributeValue(null, OpmlSymbols.TITLE);
 					if (title != null) {
 						Log.i(TAG, "Using title: " + title);
 						element.setText(title);
 					} else {
 						Log.i(TAG, "Title not found, using text");
-						element.setText(xpp.getAttributeValue(null, OpmlSymbols.TEXT));			
+						element.setText(xpp.getAttributeValue(null, OpmlSymbols.TEXT));
 					}
 					element.setXmlUrl(xpp.getAttributeValue(null, OpmlSymbols.XMLURL));
 					element.setHtmlUrl(xpp.getAttributeValue(null, OpmlSymbols.HTMLURL));

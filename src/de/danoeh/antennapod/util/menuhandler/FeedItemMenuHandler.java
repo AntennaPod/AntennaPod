@@ -35,7 +35,7 @@ public class FeedItemMenuHandler {
 	/**
 	 * This method should be called in the prepare-methods of menus. It changes
 	 * the visibility of the menu items depending on a FeedItem's attributes.
-	 * 
+	 *
 	 * @param mi
 	 *            An instance of MenuInterface that the method uses to change a
 	 *            MenuItem's visibility

@@ -51,7 +51,7 @@ public class VorbisCommentChapter extends Chapter {
 
 	/**
 	 * Return the id of a vorbiscomment chapter from a string like CHAPTERxxx*
-	 * 
+	 *
 	 * @return the id of the chapter key or -1 if the id couldn't be read.
 	 * @throws VorbisCommentReaderException
 	 * */
@@ -103,7 +103,7 @@ public class VorbisCommentChapter extends Chapter {
 	public void setVorbisCommentId(int vorbisCommentId) {
 		this.vorbisCommentId = vorbisCommentId;
 	}
-	
-	
+
+
 
 }

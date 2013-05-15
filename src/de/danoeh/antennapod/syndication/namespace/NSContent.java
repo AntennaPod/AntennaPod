@@ -7,9 +7,9 @@ import de.danoeh.antennapod.syndication.handler.HandlerState;
 public class NSContent extends Namespace {
 	public static final String NSTAG = "content";
 	public static final String NSURI = "http://purl.org/rss/1.0/modules/content/";
-	
+
 	private static final String ENCODED = "encoded";
-	
+
 	@Override
 	public SyndElement handleElementStart(String localName, HandlerState state,
 			Attributes attributes) {

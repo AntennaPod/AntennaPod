@@ -155,7 +155,7 @@ public class ID3Reader {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
 			max--;
-			
+
 			if (encoding[0] == ENCODING_UNICODE) {
 				return readUnicodeString(input, max);
 			} else {

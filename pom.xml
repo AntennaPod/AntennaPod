@@ -114,7 +114,7 @@
 	<profiles>
 		<profile>
 			<id>development</id>
-			<!-- using this since activeByDefault does not work well with multiple 
+			<!-- using this since activeByDefault does not work well with multiple
 				profiles -->
 			<activation>
 				<property>
@@ -134,7 +134,7 @@
 		</profile>
 		<profile>
 			<id>release</id>
-			<!-- via this activation the profile is automatically used when the release 
+			<!-- via this activation the profile is automatically used when the release
 				is done with the maven release plugin -->
 			<activation>
 				<property>
@@ -171,7 +171,7 @@
 							</execution>
 						</executions>
 					</plugin>
-					<!-- the signed apk then needs to be zipaligned and we activate proguard 
+					<!-- the signed apk then needs to be zipaligned and we activate proguard
 						and we run the manifest update -->
 					<plugin>
 						<groupId>com.jayway.maven.plugins.android.generation2</groupId>

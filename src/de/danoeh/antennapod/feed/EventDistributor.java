@@ -15,7 +15,7 @@ import de.danoeh.antennapod.AppConfig;
  * EventListener. When new events arrive, the EventDistributor will process the
  * event queue in a handler that runs on the main thread. The observers will only
  * be notified once if the event queue contains multiple elements.
- * 
+ *
  * Events can be sent with the send* methods.
  */
 public class EventDistributor extends Observable {

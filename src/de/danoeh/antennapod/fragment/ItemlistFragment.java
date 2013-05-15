@@ -69,7 +69,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	/**
 	 * Creates new ItemlistFragment which shows the Feeditems of a specific
 	 * feed. Sets 'showFeedtitle' to false
-	 * 
+	 *
 	 * @param feedId
 	 *            The id of the feed to show
 	 * @return the newly created instance of an ItemlistFragment

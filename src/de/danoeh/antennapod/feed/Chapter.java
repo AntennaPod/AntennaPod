@@ -9,7 +9,7 @@ public abstract class Chapter extends FeedComponent {
 
 	public Chapter() {
 	}
-	
+
 	public Chapter(long start) {
 		super();
 		this.start = start;

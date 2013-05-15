@@ -79,7 +79,7 @@ public class SyndDateUtils {
 					second = date.substring(date.indexOf("-"));
 				}
 			}
-			
+
 			date = first + second;
 		}
 		if (isLocal) {

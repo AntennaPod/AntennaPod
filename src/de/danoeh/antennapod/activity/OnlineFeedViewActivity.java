@@ -38,14 +38,14 @@ import de.danoeh.antennapod.util.URLChecker;
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
  * feed object that was parsed. This activity MUST be started with a given URL
  * or an Exception will be thrown.
- * 
+ *
  * If the feed cannot be downloaded or parsed, an error dialog will be displayed
  * and the activity will finish as soon as the error dialog is closed.
  */
 public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 	private static final String TAG = "OnlineFeedViewActivity";
 	private static final String ARG_FEEDURL = "arg.feedurl";
-	
+
 	public static final int RESULT_ERROR = 2;
 
 	private Feed feed;
@@ -218,7 +218,7 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 			builder.setMessage(R.string.error_msg_prefix);
 		}
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			
+
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.cancel();

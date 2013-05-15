@@ -62,7 +62,7 @@ public class MiroGuideConnector {
 	/**
 	 * Executes a HTTP GET request with the given URI and returns the content of
 	 * the return value.
-	 * 
+	 *
 	 * @throws MiroGuideException
 	 */
 	private String executeRequest(Uri uri) throws MiroGuideException {
