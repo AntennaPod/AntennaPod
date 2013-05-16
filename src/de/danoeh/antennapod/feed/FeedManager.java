@@ -1399,6 +1399,7 @@ public class FeedManager {
 		extractFeedlistFromCursor(context, adapter);
 		extractDownloadLogFromCursor(context, adapter);
 		extractQueueFromCursor(context, adapter);
+		extractFlattrQueueFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
@@ -1669,6 +1670,25 @@ public class FeedManager {
 			queue.add(item);
 		}
 	}
+	
+	void extractFlattrQueueFromCursor(Context context, PodDBAdapter adapter) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Extracting FlattrQueue");
+		Cursor cursor = adapter.getFlattrQueueCursor();
+
+		if (cursor.moveToFirst()) {
+			do {
+				flattrQueue.add(new FlattrThing(
+					cursor.getLong(PodDBAdapter.KEY_FLATTR_QUEUE_FEED_INDEX),
+					cursor.getLong(PodDBAdapter.KEY_FLATTR_QUEUE_FEEDITEM_INDEX),
+					cursor.getString(PodDBAdapter.KEY_FLATTR_QUEUE_TITLE_INDEX),
+					cursor.getString(PodDBAdapter.KEY_FLATTR_QUEUE_PAYMENT_LINK_INDEX)
+						));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+	}
+	
 
 	/**
 	 * Loads description and contentEncoded values from the database and caches
@@ -2004,4 +2024,19 @@ public class FeedManager {
 		}
 	}
 
+
+	/**
+	 * Store the current flattr queue to database
+	 */
+	public void storeFlattrQueue(final Context context) {
+		dbExec.execute(new Runnable() {
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setFlattrQueue(flattrQueue);
+				adapter.close();
+			}
+		});
+	}
 }

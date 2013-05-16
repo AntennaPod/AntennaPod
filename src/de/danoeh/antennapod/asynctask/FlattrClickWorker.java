@@ -145,6 +145,9 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 				exitCode = NO_TOKEN;
 			}
 		}
+		
+		FeedManager.getInstance().storeFlattrQueue(context);
+
 		return null;
 	}
 	
