@@ -27,6 +27,7 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;
@@ -301,8 +302,14 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				startActivity(new Intent(Intent.ACTION_VIEW, uri));
 				break;
 			case R.id.support_item:
-				new FlattrClickWorker(this, media.getPaymentLink())
-						.executeAsync();
+				try {
+					new FlattrClickWorker(this, 
+							new FlattrThing(0, (Long) media.getIdentifier(), media.getEpisodeTitle(), media.getPaymentLink()))
+					.executeAsync();
+				} 
+				catch (ClassCastException e) {
+					Log.d(TAG, "Could not flattr item - most likely external media: " + e.toString());
+				}
 				break;
 			case R.id.share_link_item:
 				ShareUtils.shareLink(this, media.getWebsiteLink());

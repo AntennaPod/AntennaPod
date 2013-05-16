@@ -19,6 +19,7 @@ import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedMenuHandler {
@@ -75,7 +76,8 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedFeed.getPaymentLink())
+			new FlattrClickWorker(context, 
+					new FlattrThing(selectedFeed.getId(), 0, selectedFeed.getTitle(), selectedFeed.getPaymentLink()))
 					.executeAsync();
 			break;
 		case R.id.share_link_item:
