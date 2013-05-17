@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Zdroje</string>
+  <string name="podcasts_label">PODCASTY</string>
+  <string name="episodes_label">EPIZODY</string>
+  <string name="new_label">Nový</string>
+  <string name="waiting_list_label">Seznam nepřečtených</string>
+  <string name="settings_label">Nastavení</string>
+  <string name="add_new_feed_label">Přidat nový zdroj</string>
+  <string name="downloads_label">Stahování</string>
+  <string name="cancel_download_label">Zrušit stahování</string>
+  <string name="download_log_label">Historie stáhnování</string>
+  <string name="playback_history_label">Historie přehrávání</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Otevřít v prohlížeči</string>
+  <string name="copy_url_label">Kopírovat URL</string>
+  <string name="share_url_label">Sdílet URL</string>
+  <string name="copied_url_msg">URL zkopírováno do schránky.</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Vymazat historii</string>
+  <!--Other-->
+  <string name="confirm_label">Potvrdit</string>
+  <string name="cancel_label">Zrušit</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Jazyk</string>
+  <string name="cover_label">Obal</string>
+  <string name="error_label">Chyba</string>
+  <string name="error_msg_prefix">Nastala chyba:</string>
+  <string name="refresh_label">Obnovit</string>
+  <string name="external_storage_error_msg">Není dostupné žádné externí uložiště. Pro správnou funkci aplikace se prosím ujistěte, že je připojeno externí úložiště.</string>
+  <string name="chapters_label">Kapitoly</string>
+  <string name="shownotes_label">Poznámky</string>
+  <string name="most_recent_prefix">Poslední epizoda:\u0020</string>
+  <string name="episodes_suffix">\u0020epizod</string>
+  <string name="published_prefix">Publikováno:\u0020</string>
+  <string name="length_prefix">Délka:\u0020</string>
+  <string name="size_prefix">Velikost:\u0020</string>
+  <string name="processing_label">Zpracovávám</string>
+  <string name="loading_label">Načítám...</string>
+  <string name="image_of_prefix">Obrázek:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL zdroje</string>
+  <string name="txtvfeedurl_label">Zadejte URL zdroje:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Označit vše jako přečtené</string>
+  <string name="show_info_label">Informace o zdroji</string>
+  <string name="remove_feed_label">Odstranit zdroj</string>
+  <string name="share_link_label">Sdílet odkaz</string>
+  <string name="share_source_label">Sdílet adresu zdroje</string>
+  <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento zdroj včetně všech stažených epizod.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Stáhnout</string>
+  <string name="play_label">Přehrát</string>
+  <string name="pause_label">Pozastavit</string>
+  <string name="stream_label">Streamovat</string>
+  <string name="remove_label">Odstranit</string>
+  <string name="mark_read_label">Označit jako přečtené</string>
+  <string name="mark_unread_label">Označit jako nepřečtené</string>
+  <string name="add_to_queue_label">Přidat do fronty</string>
+  <string name="remove_from_queue_label">Odebrat z fronty</string>
+  <string name="visit_website_label">Navštívit stránku</string>
+  <string name="support_label">Flattr</string>
+  <string name="enqueue_all_new">Vše do fronty</string>
+  <string name="download_all">Stáhnout vše</string>
+  <string name="skip_episode_label">Přeskočit epizodu</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Stahování dokončeno</string>
+  <string name="download_failed">Stahování selhalo</string>
+  <string name="download_pending">Čekající na stažení</string>
+  <string name="download_running">Probíhající stahování</string>
+  <string name="download_error_device_not_found">Úložné zařízení nenalezeno</string>
+  <string name="download_error_insufficient_space">Nedostatek volného místa</string>
+  <string name="download_error_file_error">Souborová chyba</string>
+  <string name="download_error_http_data_error">HTTP chyba</string>
+  <string name="download_error_error_unknown">Neznámá chyba</string>
+  <string name="download_error_parser_exception">Výjimka parseru</string>
+  <string name="download_error_unsupported_type">Nepodporovaný typ zdroje</string>
+  <string name="download_error_connection_error">Chyba spojení</string>
+  <string name="download_error_unknown_host">Neznámý host</string>
+  <string name="cancel_all_downloads_label">Zrušit všechna stahování</string>
+  <string name="download_cancelled_msg">Stahování zrušeno</string>
+  <string name="download_report_title">Všechna stahování dokončena</string>
+  <string name="download_error_malformed_url">Chybné URL</string>
+  <string name="download_error_io_error">IO chyba</string>
+  <string name="download_error_request_error">Chyba požadavku</string>
+  <string name="downloads_left">\u0020Stahování zbývá</string>
+  <string name="download_notification_title">Stahuji podcast data</string>
+  <string name="download_report_content">%1$d úspěšných stahování, %2$d selhalo</string>
+  <string name="download_log_title_unknown">Neznámý název</string>
+  <string name="download_type_feed">Zdroj</string>
+  <string name="download_type_media">Soubor</string>
+  <string name="download_type_image">Obrázek</string>
+  <string name="download_request_error_dialog_message_prefix">Nastala chyba při pokusu o stažení souboru:\u0020</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Chyba!</string>
+  <string name="player_stopped_msg">Žádné probíhající přehrávání</string>
+  <string name="player_preparing_msg">Připravuji</string>
+  <string name="player_ready_msg">Připraven</string>
+  <string name="player_seeking_msg">Přetáčím</string>
+  <string name="playback_error_server_died">Server nereaguje</string>
+  <string name="playback_error_unknown">Neznámá chyba</string>
+  <string name="no_media_playing_label">Žádné probíhající přehrávání</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Načítání</string>
+  <string name="playbackservice_notification_title">Přehrávaný podcast</string>
+  <string name="playbackservice_notification_content">Stiskni zde pro více informací</string>
+  <!--Navigation-->
+  <string name="show_download_log">Historie stahování</string>
+  <string name="show_player_label">Přehrávač</string>
+  <!--Queue operations-->
+  <string name="clear_queue_label">Vyprázdnit frontu</string>
+  <string name="organize_queue_label">Přeuspořádat frontu</string>
+  <string name="undo">Zpět</string>
+  <string name="removed_from_queue">Položka odebrána</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Flattr přihlášení</string>
+  <string name="flattr_auth_explanation">Stiskněte následující tlačítko pro spuštění autentizačního procesu. Budete přesměrováni na přihlašovací obrazovku flattru a vyzváni k potvrzení udělení práv pro použití flattru aplikací AntennaPod. Po udělení práv se automaticky vrátíte na tuto obrazovku.</string>
+  <string name="authenticate_label">Přihlásit</string>
+  <string name="return_home_label">Návrat domů</string>
+  <string name="flattr_auth_success">Úspěšně přihlášen. Nyní můžete využít flattru přímo v aplikaci. </string>
+  <string name="no_flattr_token_title">Nenalezen Flattr token</string>
+  <string name="no_flattr_token_msg">Váš flattr učet není napojen do AntenaPodu. Můžete buďto napojit váš flattr účet do AntennaPodu a využít flattru přímo v aplikaci a nebo použít flattr přímo na webových stránkách zdroje v prohlížeči.  </string>
+  <string name="authenticate_now_label">Přihlásit</string>
+  <string name="action_forbidden_title">Akce zakázána</string>
+  <string name="action_forbidden_msg">AntennaPod nemá oprávnění pro tuto akci. Důvodem může být revokování přístupového tokenu AntennaPodu k vašemu účtu. Přístup můžete obnovit nebo využít prohlížeče k návštěvě stránky zdroje.</string>
+  <string name="access_revoked_title">Přístup revokován</string>
+  <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
+  <string name="flattr_click_success">Úspěšně flattrováno!</string>
+  <string name="flattring_label">Flattruji</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Žádné položky v seznamu.</string>
+  <string name="no_feeds_label">Zatím nebyly přidány žádné zdroje.</string>
+  <!--Preferences-->
+  <string name="other_pref">Ostatní</string>
+  <string name="about_pref">O aplikaci</string>
+  <string name="queue_label">Fronta</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek automaticky pozastavit přehrávání.</string>
+  <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další.</string>
+  <string name="playback_pref">Přehrávání</string>
+  <string name="network_pref">Síť</string>
+  <string name="pref_autoUpdateIntervall_title">Interval aktualizace zdrojů</string>
+  <string name="pref_autoUpdateIntervall_sum">Udává interval, ve kterém se zdroje automaticky aktualizují nebo tuto funkci deaktivuje.</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Stahovat soubory pouze pomocí WiFi</string>
+  <string name="pref_followQueue_title">Kontinuální přehrávání</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">WiFi stahování</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Odpojení sluchátek</string>
+  <string name="pref_mobileUpdate_title">Mobilní aktualizace</string>
+  <string name="pref_mobileUpdate_sum">Povolit aktualizace pomocí mobilního připojení.</string>
+  <string name="refreshing_label">Obnovuji</string>
+  <string name="flattr_settings_label">Nastavení Flattr</string>
+  <string name="pref_flattr_auth_title">Flattr přihlášení</string>
+  <string name="pref_flattr_auth_sum">Přihlásit se k flattr účtu a umožnit flattrování přímo z aplikace.</string>
+  <string name="pref_flattr_this_app_title">Flattrovat tuto aplikaci</string>
+  <string name="pref_flattr_this_app_sum">Podpořit vývoj AntennaPodu na flatteru. Děkujeme!</string>
+  <string name="pref_revokeAccess_title">Odebrat přístup</string>
+  <string name="pref_revokeAccess_sum">Odebere aplikaci přístupová práva k vašemu flattr účtu.</string>
+  <string name="pref_display_only_episodes_title">Zobrazit pouze epizody</string>
+  <string name="pref_display_only_episodes_sum">Zobrazit pouze položky obsahující epizody.</string>
+  <string name="user_interface_label">Uživatelské rozhraní</string>
+  <string name="pref_set_theme_title">Vybrat motiv</string>
+  <string name="pref_set_theme_sum">Změnit vzhled AntennaPod.</string>
+  <string name="pref_automatic_download_title">Automatické stahování</string>
+  <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
+  <string name="pref_autodl_wifi_filter_title">Zapnout Wi-Fi filtr</string>
+  <string name="pref_autodl_wifi_filter_sum">Povolit automatické stahování pouze pomocí vybraných Wi-Fi sítí.</string>
+  <string name="pref_episode_cache_title">Historie epizod</string>
+  <string name="pref_theme_title_light">Světlý</string>
+  <string name="pref_theme_title_dark">Tmavý</string>
+  <string name="pref_episode_cache_unlimited">Bez omezení</string>
+  <string name="pref_update_interval_hours_plural">hodin</string>
+  <string name="pref_update_interval_hours_singular">hodina</string>
+  <string name="pref_update_interval_hours_manual">Ručně</string>
+  <!--Search-->
+  <string name="search_hint">Hledat zdroje a epizody</string>
+  <string name="found_in_shownotes_label">Nalezeno v poznámkách k show</string>
+  <string name="found_in_chapters_label">Nalezeno v kapitolách</string>
+  <string name="search_status_searching">Vyhledávám...</string>
+  <string name="search_status_no_results">Žádné výsledky</string>
+  <string name="search_results_label">Výsledky vyhledávání</string>
+  <string name="search_term_label">Vyhledáváno:\u0020</string>
+  <string name="search_label">Vyhledat</string>
+  <string name="found_in_title_label">Nalezeno v názvu</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Můžete také importovat OPML soubor. OPML soubory umožňují přenést vaše podcasty z jednoho podcast manažera do jiného:</string>
+  <string name="opml_import_explanation">Pro import OPML souboru je třeba ho nejdříve umístit do následujícího adresáře a poté pro zahájení procesu importu stisknout tlačítko. </string>
+  <string name="start_import_label">Importovat</string>
+  <string name="opml_import_label">OPML import</string>
+  <string name="opml_directory_error">CHYBA!</string>
+  <string name="reading_opml_label">Načítání OPML souboru</string>
+  <string name="opml_reader_error">Nastala chyba při čtení OPML souboru:</string>
+  <string name="opml_import_error_dir_empty">Adresář importu je prázdný.</string>
+  <string name="select_all_label">Označit vše</string>
+  <string name="deselect_all_label">Zrušit výběr</string>
+  <string name="choose_file_to_import_label">Vyberte soubor k importování</string>
+  <string name="opml_export_label">OPML export</string>
+  <string name="exporting_label">Exportuji...</string>
+  <string name="export_error_label">Chyba exportu</string>
+  <string name="opml_export_success_title">OPML export byl úspěšný.</string>
+  <string name="opml_export_success_sum">OPML soubor byl zapsán do:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Nastavit časovač vypnutí</string>
+  <string name="disable_sleeptimer_label">Deaktivovat časovač vypnutí</string>
+  <string name="enter_time_here_label">Zadejte čas</string>
+  <string name="sleep_timer_label">Časovač vypnutí</string>
+  <string name="time_left_label">Zbývá času:\u0020</string>
+  <string name="time_dialog_invalid_input">Neplatný vstup, musí být zadáno celé číslo</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Načítám kategorie...</string>
+  <string name="browse_miroguide_label">Procházet Miro Guide</string>
+  <string name="txtv_browse_miroguide_label">Nebo procházet Miro Guide:</string>
+  <string name="miro_guide_label">Miro Guide</string>
+  <string name="miro_search_hint">Vyhledávat v Miro Guide</string>
+  <string name="popular_label">Populární</string>
+  <string name="best_rating_label">Nejlépe hodnocené</string>
+  <string name="add_feed_label">Přidat zdroj</string>
+  <string name="miro_feed_added">Přidávám zdroj</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Vybraný adresář:</string>
+  <string name="create_folder_label">Vytvořit adresář</string>
+  <string name="choose_data_directory">Vybrat umístění dat</string>
+  <string name="create_folder_msg">Vytvořit adresář \"%1$s\"?</string>
+  <string name="create_folder_success">Nový adresář vytvořen</string>
+  <string name="create_folder_error_no_write_access">Nelze zapisovat do adresáře</string>
+  <string name="create_folder_error_already_exists">Adresář již existuje</string>
+  <string name="create_folder_error">Nelze vytvořit adresář</string>
+  <string name="folder_not_empty_dialog_title">Adresář není prázdný</string>
+  <string name="folder_not_empty_dialog_msg">Vybraný adresář není prázdný. Stažená media a ostatní soubory budou umístěny přímo do tohoto adresáře. Přesto pokračovat?</string>
+  <string name="set_to_default_folder">Vybrat hlavní adresář</string>
+</resources>
