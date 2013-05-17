@@ -10,6 +10,7 @@ import java.util.concurrent.ThreadFactory;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
@@ -406,7 +407,76 @@ public class DBWriter {
 		});
 	}
 
-	void addNewFeed(final Context context, final Feed feed) {
+	public static void markItemRead(final Context context, final long itemId,
+			final boolean read) {
+		markItemRead(context, itemId, read, 0, false);
+	}
+
+	public static void markItemRead(final Context context, final long itemId,
+			final boolean read, final long mediaId,
+			final boolean resetMediaPosition) {
+		dbExec.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				final PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setFeedItemRead(read, itemId, mediaId,
+						resetMediaPosition);
+				adapter.close();
+
+				EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+			}
+		});
+	}
+
+	public static void markFeedRead(final Context context, final long feedId) {
+		dbExec.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				final PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				Cursor itemCursor = adapter.getAllItemsOfFeedCursor(feedId);
+				long[] itemIds = new long[itemCursor.getCount()];
+				itemCursor.moveToFirst();
+				for (int i = 0; i < itemIds.length; i++) {
+					itemIds[i] = itemCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+				}
+				itemCursor.close();
+				adapter.setFeedItemRead(true, itemIds);
+				adapter.close();
+
+				EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+			}
+		});
+
+	}
+
+	public static void markAllItemsRead(final Context context) {
+		dbExec.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				final PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				Cursor itemCursor = adapter.getUnreadItemsCursor();
+				long[] itemIds = new long[itemCursor.getCount()];
+				itemCursor.moveToFirst();
+				for (int i = 0; i < itemIds.length; i++) {
+					itemIds[i] = itemCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+				}
+				itemCursor.close();
+				adapter.setFeedItemRead(true, itemIds);
+				adapter.close();
+
+				EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+			}
+		});
+
+	}
+
+	static void addNewFeed(final Context context, final Feed feed) {
 		dbExec.submit(new Runnable() {
 
 			@Override
@@ -420,13 +490,34 @@ public class DBWriter {
 			}
 		});
 	}
+	
+	static void setCompleteFeed(final Context context, final Feed feed) {
+		dbExec.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setCompleteFeed(feed);
+				adapter.close();
+				
+				EventDistributor.getInstance().sendFeedUpdateBroadcast();
+			}});
+
+	}
 
 	private static void setFeedMedia(final Context context,
 			final FeedMedia media) {
-		PodDBAdapter adapter = new PodDBAdapter(context);
-		adapter.open();
-		adapter.setMedia(media);
-		adapter.close();
+		dbExec.submit(new Runnable() {
+
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setMedia(media);
+				adapter.close();
+			}});
+		
 
 	}
 

@@ -340,7 +340,7 @@ public class PodDBAdapter {
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
-	
+
 	public void setFeedItemlist(List<FeedItem> items) {
 		db.beginTransaction();
 		for (FeedItem item : items) {
@@ -398,6 +398,39 @@ public class PodDBAdapter {
 			setChapters(item);
 		}
 		return item.getId();
+	}
+
+	public void setFeedItemRead(boolean read, long itemId, long mediaId,
+			boolean resetMediaPosition) {
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+
+		values.put(KEY_READ, read);
+		db.update(TABLE_NAME_FEED_ITEMS, values, "?=?", new String[] { KEY_ID,
+				Long.toString(itemId) });
+
+		if (resetMediaPosition) {
+			values.clear();
+			values.put(KEY_POSITION, 0);
+			db.update(TABLE_NAME_FEED_MEDIA, values, "?=?", new String[] {
+					KEY_ID, Long.toString(mediaId) });
+		}
+
+		db.setTransactionSuccessful();
+		db.endTransaction();
+	}
+
+	public void setFeedItemRead(boolean read, long... itemIds) {
+		db.beginTransaction();
+		ContentValues values = new ContentValues();
+		for (long id : itemIds) {
+			values.clear();
+			values.put(KEY_READ, read);
+			db.update(TABLE_NAME_FEED_ITEMS, values, "?=?", new String[] {
+					KEY_ID, Long.toString(id) });
+		}
+		db.setTransactionSuccessful();
+		db.endTransaction();
 	}
 
 	public void setChapters(FeedItem item) {
@@ -479,7 +512,7 @@ public class PodDBAdapter {
 		db.setTransactionSuccessful();
 		db.endTransaction();
 	}
-	
+
 	public void clearQueue() {
 		db.delete(TABLE_NAME_QUEUE, null, null);
 	}
@@ -557,10 +590,14 @@ public class PodDBAdapter {
 	 * @return The cursor of the query
 	 * */
 	public final Cursor getAllItemsOfFeedCursor(final Feed feed) {
+		return getAllItemsOfFeedCursor(feed.getId());
+	}
+
+	public final Cursor getAllItemsOfFeedCursor(final long feedId) {
 		open();
 		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
-				+ "=?", new String[] { String.valueOf(feed.getId()) }, null,
-				null, null);
+				+ "=?", new String[] { String.valueOf(feedId) }, null, null,
+				null);
 		return c;
 	}
 
@@ -641,6 +678,14 @@ public class PodDBAdapter {
 		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_READ
 				+ "=0", null, null, null, KEY_PUBDATE + " DESC");
 		return c;
+	}
+	
+	public final Cursor getUnreadItemIdsCursor() {
+		open();
+		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID}, KEY_READ
+				+ "=0", null, null, null, KEY_PUBDATE + " DESC");
+		return c;
+
 	}
 
 	/**

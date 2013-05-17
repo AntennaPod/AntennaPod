@@ -290,6 +290,21 @@ public final class DBReader {
 
 		return items;
 	}
+	
+	public static long[] getUnreadItemIds(Context context) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		Cursor cursor = adapter.getUnreadItemIdsCursor();
+		long[] itemIds = new long[cursor.getCount()];
+		int i = 0;
+		if (cursor.moveToFirst()) {
+			do {
+				itemIds[i] = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+				i++;
+			} while (cursor.moveToNext());
+		}
+		return itemIds;
+	}
 
 	public static List<FeedItem> getPlaybackHistory(final Context context) {
 		if (AppConfig.DEBUG)
