@@ -1,0 +1,24 @@
+[main]
+host = https://www.transifex.com
+
+[antennapod.english]
+source_file = res/values/strings.xml
+source_lang = en
+trans.az = res/values-az/strings.xml
+trans.ca = res/values-ca/strings.xml
+trans.cs_CZ = res/values-cs-rCZ/strings.xml
+trans.da = res/values-da/strings.xml
+trans.de = res/values-de/strings.xml
+trans.es = res/values-es/strings.xml
+trans.es_ES = res/values-es-rES/strings.xml
+trans.fr = res/values-fr/strings.xml
+trans.it_IT = res/values-it-rIT/strings.xml
+trans.pt = res/values-pt/strings.xml
+trans.pt_BR = res/values-pt-rBR/strings.xml
+trans.ro_RO = res/values-ro-rRO/strings.xml
+trans.ru = res/values-ru/strings.xml
+trans.ru-RU = res/values-ru/strings.xml
+trans.ru_RU = res/values-ru/strings.xml
+trans.uk_UA = res/values-uk-rUA/strings.xml
+trans.zh_CN = res/values-zh-rCN/strings.xml
+
