@@ -5,6 +5,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import android.content.Context;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
@@ -30,10 +32,10 @@ public class DownloadRequester {
 
 	private static DownloadRequester downloader;
 
-	Map<String, FeedFile> downloads;
+	Map<String, DownloadRequest> downloads;
 
 	private DownloadRequester() {
-		downloads = new ConcurrentHashMap<String, FeedFile>();
+		downloads = new ConcurrentHashMap<String, DownloadRequest>();
 	}
 
 	public static DownloadRequester getInstance() {
@@ -83,11 +85,13 @@ public class DownloadRequester {
 				Log.d(TAG,
 						"Requesting download of url " + item.getDownload_url());
 			item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
-			item.setFile_url(dest.toString());
-			downloads.put(item.getDownload_url(), item);
 
-			DownloadService.Request request = new DownloadService.Request(
-					item.getFile_url(), item.getDownload_url());
+			DownloadRequest request = new DownloadRequest(item.getFile_url(),
+					item.getDownload_url(), item.getHumanReadableIdentifier(),
+					item.getId(), item.getTypeAsInt());
+			
+			downloads.put(request.getSource(), request);
+
 
 			if (!DownloadService.isRunning) {
 				Intent launchIntent = new Intent(context, DownloadService.class);
@@ -112,8 +116,8 @@ public class DownloadRequester {
 	 */
 	private boolean isFilenameAvailable(String path) {
 		for (String key : downloads.keySet()) {
-			FeedFile f = downloads.get(key);
-			if (f.getFile_url() != null && f.getFile_url().equals(path)) {
+			DownloadRequest r = downloads.get(key);
+			if (StringUtils.equals(r.getDestination(), path)) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, path
 							+ " is already used by another requested download");
@@ -194,8 +198,8 @@ public class DownloadRequester {
 
 	/** Returns true if there is at least one Feed in the downloads queue. */
 	public boolean isDownloadingFeeds() {
-		for (FeedFile f : downloads.values()) {
-			if (f.getClass() == Feed.class) {
+		for (DownloadRequest r : downloads.values()) {
+			if (r.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
 				return true;
 			}
 		}
@@ -210,7 +214,7 @@ public class DownloadRequester {
 		return false;
 	}
 
-	public FeedFile getDownload(String downloadUrl) {
+	public DownloadRequest getDownload(String downloadUrl) {
 		return downloads.get(downloadUrl);
 	}
 
@@ -223,15 +227,11 @@ public class DownloadRequester {
 		return downloads.isEmpty();
 	}
 
-	public FeedFile getDownloadAt(int index) {
-		return downloads.get(index);
-	}
-
 	/** Remove an object from the downloads-list of the requester. */
-	public void removeDownload(FeedFile f) {
-		if (downloads.remove(f.getDownload_url()) == null) {
+	public void removeDownload(DownloadRequest r) {
+		if (downloads.remove(r.getSource()) == null) {
 			Log.e(TAG,
-					"Could not remove object with url " + f.getDownload_url());
+					"Could not remove object with url " + r.getSource());
 		}
 	}
 

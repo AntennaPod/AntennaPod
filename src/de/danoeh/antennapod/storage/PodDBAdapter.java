@@ -14,12 +14,12 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 
 /**
  * Implements methods for accessing the database
@@ -456,16 +456,8 @@ public class PodDBAdapter {
 	 * */
 	public long setDownloadStatus(DownloadStatus status) {
 		ContentValues values = new ContentValues();
-		if (status.getFeedFile() != null) {
-			values.put(KEY_FEEDFILE, status.getFeedFile().getId());
-			if (status.getFeedFile().getClass() == Feed.class) {
-				values.put(KEY_FEEDFILETYPE, Feed.FEEDFILETYPE_FEED);
-			} else if (status.getFeedFile().getClass() == FeedImage.class) {
-				values.put(KEY_FEEDFILETYPE, FeedImage.FEEDFILETYPE_FEEDIMAGE);
-			} else if (status.getFeedFile().getClass() == FeedMedia.class) {
-				values.put(KEY_FEEDFILETYPE, FeedMedia.FEEDFILETYPE_FEEDMEDIA);
-			}
-		}
+		values.put(KEY_FEEDFILE, status.getFeedfileId());
+		values.put(KEY_FEEDFILETYPE, status.getFeedfileType());
 		values.put(KEY_REASON, status.getReason());
 		values.put(KEY_SUCCESSFUL, status.isSuccessful());
 		values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
@@ -679,11 +671,11 @@ public class PodDBAdapter {
 				+ "=0", null, null, null, KEY_PUBDATE + " DESC");
 		return c;
 	}
-	
+
 	public final Cursor getUnreadItemIdsCursor() {
 		open();
-		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID}, KEY_READ
-				+ "=0", null, null, null, KEY_PUBDATE + " DESC");
+		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[] { KEY_ID },
+				KEY_READ + "=0", null, null, null, KEY_PUBDATE + " DESC");
 		return c;
 
 	}

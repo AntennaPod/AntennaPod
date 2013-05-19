@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.service.download;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 
 /** Downloads files */
 public abstract class Downloader extends Thread {
@@ -12,14 +11,15 @@ public abstract class Downloader extends Thread {
 
 	protected volatile boolean cancelled;
 
-	protected volatile DownloadStatus status;
+	protected volatile DownloadRequest request;
+	protected volatile DownloadStatus result;
 
 	public Downloader(DownloaderCallback downloaderCallback,
-			DownloadStatus status) {
+			DownloadRequest request) {
 		super();
 		this.downloaderCallback = downloaderCallback;
-		this.status = status;
-		this.status.setStatusMsg(R.string.download_pending);
+		this.request = request;
+		this.request.setStatusMsg(R.string.download_pending);
 		this.cancelled = false;
 	}
 
@@ -39,11 +39,23 @@ public abstract class Downloader extends Thread {
 	@Override
 	public final void run() {
 		download();
+		if (result == null) {
+			throw new IllegalStateException(
+					"Downloader hasn't created DownloadStatus object");
+		}
 		finish();
 	}
 
-	public DownloadStatus getStatus() {
-		return status;
+	public DownloadRequest getDownloadRequest() {
+		return request;
+	}
+
+	public DownloadStatus getResult() {
+		return result;
+	}
+
+	public boolean isFinished() {
+		return finished;
 	}
 
 	public void cancel() {

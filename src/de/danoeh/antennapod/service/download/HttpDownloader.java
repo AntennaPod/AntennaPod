@@ -26,7 +26,6 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 
@@ -40,8 +39,8 @@ public class HttpDownloader extends Downloader {
 	private static final int SOCKET_TIMEOUT = 30000;
 
 	public HttpDownloader(DownloaderCallback downloaderCallback,
-			DownloadStatus status) {
-		super(downloaderCallback, status);
+			DownloadRequest request) {
+		super(downloaderCallback, request);
 	}
 
 	private DefaultHttpClient createHttpClient() {
@@ -66,8 +65,7 @@ public class HttpDownloader extends Downloader {
 		OutputStream out = null;
 		InputStream connection = null;
 		try {
-			HttpGet httpGet = new HttpGet(status.getFeedFile()
-					.getDownload_url());
+			HttpGet httpGet = new HttpGet(request.getSource());
 			httpClient = createHttpClient();
 			HttpResponse response = httpClient.execute(httpGet);
 			HttpEntity httpEntity = response.getEntity();
@@ -76,8 +74,7 @@ public class HttpDownloader extends Downloader {
 				Log.d(TAG, "Response code is " + responseCode);
 			if (responseCode == HttpURLConnection.HTTP_OK && httpEntity != null) {
 				if (StorageUtils.storageAvailable(PodcastApp.getInstance())) {
-					File destination = new File(status.getFeedFile()
-							.getFile_url());
+					File destination = new File(request.getDestination());
 					if (!destination.exists()) {
 						connection = AndroidHttpClient
 								.getUngzippedContent(httpEntity);
@@ -86,29 +83,30 @@ public class HttpDownloader extends Downloader {
 								destination));
 						byte[] buffer = new byte[BUFFER_SIZE];
 						int count = 0;
-						status.setStatusMsg(R.string.download_running);
+						request.setStatusMsg(R.string.download_running);
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Getting size of download");
-						status.setSize(httpEntity.getContentLength());
+						request.setSize(httpEntity.getContentLength());
 						if (AppConfig.DEBUG)
-							Log.d(TAG, "Size is " + status.getSize());
-						if (status.getSize() < 0) {
-							status.setSize(DownloadStatus.SIZE_UNKNOWN);
+							Log.d(TAG, "Size is " + request.getSize());
+						if (request.getSize() < 0) {
+							request.setSize(DownloadStatus.SIZE_UNKNOWN);
 						}
 
 						long freeSpace = StorageUtils.getFreeSpaceAvailable();
 						if (AppConfig.DEBUG)
 							Log.d(TAG, "Free space is " + freeSpace);
-						if (status.getSize() == DownloadStatus.SIZE_UNKNOWN
-								|| status.getSize() <= freeSpace) {
+						if (request.getSize() == DownloadStatus.SIZE_UNKNOWN
+								|| request.getSize() <= freeSpace) {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Starting download");
 							while (!cancelled
 									&& (count = in.read(buffer)) != -1) {
 								out.write(buffer, 0, count);
-								status.setSoFar(status.getSoFar() + count);
-								status.setProgressPercent((int) (((double) status
-										.getSoFar() / (double) status.getSize()) * 100));
+								request.setSoFar(request.getSoFar() + count);
+								request.setProgressPercent((int) (((double) request
+										.getSoFar() / (double) request
+										.getSize()) * 100));
 							}
 							if (cancelled) {
 								onCancelled();
@@ -144,8 +142,7 @@ public class HttpDownloader extends Downloader {
 		} catch (NullPointerException e) {
 			// might be thrown by connection.getInputStream()
 			e.printStackTrace();
-			onFail(DownloadError.ERROR_CONNECTION_ERROR, status.getFeedFile()
-					.getDownload_url());
+			onFail(DownloadError.ERROR_CONNECTION_ERROR, request.getSource());
 		} finally {
 			IOUtils.closeQuietly(connection);
 			IOUtils.closeQuietly(out);
@@ -158,36 +155,30 @@ public class HttpDownloader extends Downloader {
 	private void onSuccess() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was successful");
-		status.setSuccessful(true);
-		status.setDone(true);
+		result = new DownloadStatus(request, 0, true, false, null);
 	}
 
 	private void onFail(int reason, String reasonDetailed) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG, "Download failed");
 		}
-		status.setReason(reason);
-		status.setReasonDetailed(reasonDetailed);
-		status.setDone(true);
-		status.setSuccessful(false);
+		result = new DownloadStatus(request, reason, false, false,
+				reasonDetailed);
 		cleanup();
 	}
 
 	private void onCancelled() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was cancelled");
-		status.setReason(DownloadError.ERROR_DOWNLOAD_CANCELLED);
-		status.setDone(true);
-		status.setSuccessful(false);
-		status.setCancelled(true);
+		result = new DownloadStatus(request,
+				DownloadError.ERROR_DOWNLOAD_CANCELLED, false, true, null);
 		cleanup();
 	}
 
 	/** Deletes unfinished downloads. */
 	private void cleanup() {
-		if (status != null && status.getFeedFile() != null
-				&& status.getFeedFile().getFile_url() != null) {
-			File dest = new File(status.getFeedFile().getFile_url());
+		if (request.getDestination() != null) {
+			File dest = new File(request.getDestination());
 			if (dest.exists()) {
 				boolean rc = dest.delete();
 				if (AppConfig.DEBUG)

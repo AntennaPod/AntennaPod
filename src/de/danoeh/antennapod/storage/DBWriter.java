@@ -14,13 +14,13 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 
 public class DBWriter {
 	private static final String TAG = "DBWriter";

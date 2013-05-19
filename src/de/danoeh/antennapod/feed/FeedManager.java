@@ -25,10 +25,10 @@ import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -1400,11 +1400,6 @@ public class FeedManager {
 
 	/** Get a download status object from the download log by its FeedFile. */
 	public DownloadStatus getDownloadStatus(FeedFile feedFile) {
-		for (DownloadStatus status : downloadLog) {
-			if (status.getFeedFile() == feedFile) {
-				return status;
-			}
-		}
 		return null;
 	}
 

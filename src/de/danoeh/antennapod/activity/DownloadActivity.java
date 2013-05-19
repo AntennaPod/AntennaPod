@@ -24,8 +24,8 @@ import com.actionbarsherlock.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
@@ -43,7 +43,7 @@ public class DownloadActivity extends SherlockListActivity implements
 	private DownloadRequester requester;
 
 	private ActionMode mActionMode;
-	private DownloadStatus selectedDownload;
+	private DownloadRequest selectedDownload;
 
 	private DownloadService downloadService = null;
 	boolean mIsBound;
@@ -159,7 +159,8 @@ public class DownloadActivity extends SherlockListActivity implements
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View view,
 					int position, long id) {
-				DownloadStatus selection = dla.getItem(position).getStatus();
+				DownloadRequest selection = dla.getItem(position)
+						.getDownloadRequest();
 				if (selection != null && mActionMode != null) {
 					mActionMode.finish();
 				}
@@ -204,7 +205,7 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	@Override
 	public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-		if (!selectedDownload.isDone()) {
+		if (selectedDownload != null) {
 			TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.navigation_cancel });
 			menu.add(Menu.NONE, R.id.cancel_download_item, Menu.NONE,
 					R.string.cancel_download_label).setIcon(
@@ -223,7 +224,7 @@ public class DownloadActivity extends SherlockListActivity implements
 		boolean handled = false;
 		switch (item.getItemId()) {
 		case R.id.cancel_download_item:
-			requester.cancelDownload(this, selectedDownload.getFeedFile());
+			requester.cancelDownload(this, selectedDownload.getSource());
 			handled = true;
 			break;
 		}

@@ -41,8 +41,6 @@ import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.webkit.URLUtil;
@@ -50,10 +48,8 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.DownloadLogActivity;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -257,30 +253,26 @@ public class DownloadService extends Service {
 				StringBuilder bigText = new StringBuilder("");
 				for (int i = 0; i < downloads.size(); i++) {
 					Downloader downloader = downloads.get(i);
-					if (downloader.getStatus() != null) {
-						FeedFile f = downloader.getStatus().getFeedFile();
-						if (f.getClass() == Feed.class) {
-							Feed feed = (Feed) f;
-							if (feed.getTitle() != null) {
-								if (i > 0) {
-									bigText.append("\n");
-								}
-								bigText.append("\u2022 " + feed.getTitle());
+					final DownloadRequest request = downloader
+							.getDownloadRequest();
+					if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+						if (request.getTitle() != null) {
+							if (i > 0) {
+								bigText.append("\n");
 							}
-						} else if (f.getClass() == FeedMedia.class) {
-							FeedMedia media = (FeedMedia) f;
-							if (media.getItem().getTitle() != null) {
-								if (i > 0) {
-									bigText.append("\n");
-								}
-								bigText.append("\u2022 "
-										+ media.getItem().getTitle()
-										+ " ("
-										+ downloader.getStatus()
-												.getProgressPercent() + "%)");
+							bigText.append("\u2022 " + request.getTitle());
+						}
+					} else if (request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+						if (request.getTitle() != null) {
+							if (i > 0) {
+								bigText.append("\n");
 							}
+							bigText.append("\u2022 " + request.getTitle()
+									+ " (" + request.getProgressPercent()
+									+ "%)");
 						}
 					}
+
 				}
 				notificationBuilder.setSummaryText(downloadsLeft);
 				notificationBuilder.setBigContentTitle(contentTitle);
@@ -301,8 +293,7 @@ public class DownloadService extends Service {
 
 	private Downloader getDownloader(String downloadUrl) {
 		for (Downloader downloader : downloads) {
-			if (downloader.getStatus().getFeedFile().getDownload_url()
-					.equals(downloadUrl)) {
+			if (downloader.getDownloadRequest().getSource().equals(downloadUrl)) {
 				return downloader;
 			}
 		}
@@ -333,8 +324,7 @@ public class DownloadService extends Service {
 				for (Downloader d : downloads) {
 					d.cancel();
 					DownloadRequester.getInstance().removeDownload(
-							d.getStatus().getFeedFile());
-					d.getStatus().getFeedFile().setFile_url(null);
+							d.getDownloadRequest());
 					if (AppConfig.DEBUG)
 						Log.d(TAG, "Cancelled all downloads");
 				}
@@ -350,7 +340,7 @@ public class DownloadService extends Service {
 	private void onDownloadQueued(Intent intent) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Received enqueue request");
-		Request request = intent.getParcelableExtra(EXTRA_REQUEST);
+		DownloadRequest request = intent.getParcelableExtra(EXTRA_REQUEST);
 		if (request == null) {
 			throw new IllegalArgumentException(
 					"ACTION_ENQUEUE_DOWNLOAD intent needs request extra");
@@ -361,22 +351,13 @@ public class DownloadService extends Service {
 			shutdownInitiated = false;
 		}
 
-		DownloadRequester requester = DownloadRequester.getInstance();
-		FeedFile feedfile = requester.getDownload(request.source);
-		if (feedfile != null) {
-
-			DownloadStatus status = new DownloadStatus(feedfile,
-					feedfile.getHumanReadableIdentifier());
-			Downloader downloader = getDownloader(status);
-			if (downloader != null) {
-				downloads.add(downloader);
-				downloadExecutor.submit(downloader);
-				sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
-			}
-		} else {
-			Log.e(TAG,
-					"Could not find feedfile in download requester when trying to enqueue new download");
+		Downloader downloader = getDownloader(request);
+		if (downloader != null) {
+			downloads.add(downloader);
+			downloadExecutor.submit(downloader);
+			sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 		}
+
 		queryDownloads();
 	}
 
@@ -389,8 +370,8 @@ public class DownloadService extends Service {
 
 	};
 
-	private Downloader getDownloader(DownloadStatus status) {
-		if (URLUtil.isHttpUrl(status.getFeedFile().getDownload_url())) {
+	private Downloader getDownloader(DownloadRequest request) {
+		if (URLUtil.isHttpUrl(request.getSource())) {
 			return new HttpDownloader(new DownloaderCallback() {
 
 				@Override
@@ -404,10 +385,11 @@ public class DownloadService extends Service {
 						}
 					});
 				}
-			}, status);
+			}, request);
 		}
-		Log.e(TAG, "Could not find appropriate downloader for "
-				+ status.getFeedFile().getDownload_url());
+		Log.e(TAG,
+				"Could not find appropriate downloader for "
+						+ request.getSource());
 		return null;
 	}
 
@@ -435,31 +417,28 @@ public class DownloadService extends Service {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Received 'Download Complete' - message.");
 				downloadsBeingHandled += 1;
-				DownloadStatus status = downloader.getStatus();
-				status.setCompletionDate(new Date());
+				DownloadStatus status = downloader.getResult();
 				successful = status.isSuccessful();
 
-				FeedFile download = status.getFeedFile();
-				if (download != null) {
-					if (successful) {
-						if (download.getClass() == Feed.class) {
-							handleCompletedFeedDownload(status);
-						} else if (download.getClass() == FeedImage.class) {
-							handleCompletedImageDownload(status);
-						} else if (download.getClass() == FeedMedia.class) {
-							handleCompletedFeedMediaDownload(status);
-						}
-					} else {
-						download.setFile_url(null);
-						download.setDownloaded(false);
-						if (!successful && !status.isCancelled()) {
-							Log.e(TAG, "Download failed");
-							saveDownloadStatus(status);
-						}
-						sendDownloadHandledIntent();
-						downloadsBeingHandled -= 1;
+				final int type = status.getFeedfileType();
+				if (successful) {
+					if (type == Feed.FEEDFILETYPE_FEED) {
+						handleCompletedFeedDownload(downloader
+								.getDownloadRequest());
+					} else if (type == FeedImage.FEEDFILETYPE_FEEDIMAGE) {
+						handleCompletedImageDownload(status, downloader.getDownloadRequest());
+					} else if (type == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+						handleCompletedFeedMediaDownload(status, downloader.getDownloadRequest());
 					}
+				} else {
+					if (!successful && !status.isCancelled()) {
+						Log.e(TAG, "Download failed");
+						saveDownloadStatus(status);
+					}
+					sendDownloadHandledIntent();
+					downloadsBeingHandled -= 1;
 				}
+
 				return null;
 			}
 		};
@@ -477,12 +456,11 @@ public class DownloadService extends Service {
 	private void removeDownload(final Downloader d) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Removing downloader: "
-					+ d.getStatus().getFeedFile().getDownload_url());
+					+ d.getDownloadRequest().getSource());
 		boolean rc = downloads.remove(d);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Result of downloads.remove: " + rc);
-		DownloadRequester.getInstance().removeDownload(
-				d.getStatus().getFeedFile());
+		DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
 		sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 	}
 
@@ -521,7 +499,7 @@ public class DownloadService extends Service {
 			if (status.isSuccessful()) {
 				successfulDownloads++;
 			} else if (!status.isCancelled()) {
-				if (status.getFeedFile().getClass() != FeedImage.class) {
+				if (status.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
 					createReport = true;
 				}
 				failedDownloads++;
@@ -581,25 +559,25 @@ public class DownloadService extends Service {
 	}
 
 	/** Is called whenever a Feed is downloaded */
-	private void handleCompletedFeedDownload(DownloadStatus status) {
+	private void handleCompletedFeedDownload(DownloadRequest request) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Handling completed Feed Download");
-		syncExecutor.execute(new FeedSyncThread(status));
+		syncExecutor.execute(new FeedSyncThread(request));
 
 	}
 
 	/** Is called whenever a Feed-Image is downloaded */
-	private void handleCompletedImageDownload(DownloadStatus status) {
+	private void handleCompletedImageDownload(DownloadStatus status, DownloadRequest request) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Handling completed Image Download");
-		syncExecutor.execute(new ImageHandlerThread(status));
+		syncExecutor.execute(new ImageHandlerThread(status, request));
 	}
 
 	/** Is called whenever a FeedMedia is downloaded. */
-	private void handleCompletedFeedMediaDownload(DownloadStatus status) {
+	private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Handling completed FeedMedia Download");
-		syncExecutor.execute(new MediaHandlerThread(status));
+		syncExecutor.execute(new MediaHandlerThread(status, request));
 	}
 
 	/**
@@ -609,25 +587,31 @@ public class DownloadService extends Service {
 	class FeedSyncThread implements Runnable {
 		private static final String TAG = "FeedSyncThread";
 
-		private Feed feed;
-		private DownloadStatus status;
+		private DownloadRequest request;
 
 		private int reason;
 		private boolean successful;
 
-		public FeedSyncThread(DownloadStatus status) {
-			this.feed = (Feed) status.getFeedFile();
-			this.status = status;
+		public FeedSyncThread(DownloadRequest request) {
+			if (request == null) {
+				throw new IllegalArgumentException("Request must not be null");
+			}
+
+			this.request = request;
 		}
 
 		public void run() {
 			Feed savedFeed = null;
+
+			Feed feed = new Feed(request.getSource(), new Date());
+			feed.setFile_url(request.getDestination());
+			feed.setDownloaded(true);
+
 			reason = 0;
 			String reasonDetailed = null;
 			successful = true;
 			final FeedManager manager = FeedManager.getInstance();
 			FeedHandler feedHandler = new FeedHandler();
-			feed.setDownloaded(true);
 
 			try {
 				feed = feedHandler.parseFeed(feed);
@@ -751,7 +735,7 @@ public class DownloadService extends Service {
 		}
 
 		/** Delete files that aren't needed anymore */
-		private void cleanup() {
+		private void cleanup(Feed feed) {
 			if (feed.getFile_url() != null) {
 				if (new File(feed.getFile_url()).delete())
 					if (AppConfig.DEBUG)
@@ -768,16 +752,29 @@ public class DownloadService extends Service {
 
 	/** Handles a completed image download. */
 	class ImageHandlerThread implements Runnable {
-		private FeedImage image;
+		
+		private DownloadRequest request;
 		private DownloadStatus status;
 
-		public ImageHandlerThread(DownloadStatus status) {
-			this.image = (FeedImage) status.getFeedFile();
+		public ImageHandlerThread(DownloadStatus status, DownloadRequest request) {
+			if (status == null) {
+				throw new IllegalArgumentException("Status must not be null");
+			}
+			if (request == null) {
+				throw new IllegalArgumentException("Request must not be null");
+			}
 			this.status = status;
+			this.request = request;
 		}
 
 		@Override
 		public void run() {
+			FeedImage image = FeedManager.getInstance().getFeedImage(request.getFeedfileId());
+			if (image == null) {
+				throw new IllegalStateException("Could not find downloaded image in database");
+			}
+			
+			image.setFile_url(request.getDestination());
 			image.setDownloaded(true);
 
 			saveDownloadStatus(status);
@@ -803,20 +800,34 @@ public class DownloadService extends Service {
 
 	/** Handles a completed media download. */
 	class MediaHandlerThread implements Runnable {
-		private FeedMedia media;
-		private DownloadStatus status;
 
-		public MediaHandlerThread(DownloadStatus status) {
-			super();
-			this.media = (FeedMedia) status.getFeedFile();
+		private DownloadRequest request;
+		private DownloadStatus status;
+		
+		public MediaHandlerThread(DownloadStatus status, DownloadRequest request) {
+			if (status == null) {
+				throw new IllegalArgumentException("Status must not be null");
+			}
+			if (request == null) {
+				throw new IllegalArgumentException("Request must not be null");
+			}
+			
 			this.status = status;
+			this.request = request;
 		}
 
 		@Override
 		public void run() {
+			FeedMedia media = FeedManager.getInstance().getFeedMedia(
+					request.getFeedfileId());
+			if (media == null) {
+				throw new IllegalStateException(
+						"Could not find downloaded media object in database");
+			}
 			boolean chaptersRead = false;
-
 			media.setDownloaded(true);
+			media.setFile_url(request.getDestination());
+			
 			// Get duration
 			MediaPlayer mediaplayer = new MediaPlayer();
 			try {
@@ -861,53 +872,6 @@ public class DownloadService extends Service {
 				}
 			});
 		}
-	}
-
-	/** Is used to request a new download. */
-	public static class Request implements Parcelable {
-		private String destination;
-		private String source;
-
-		public Request(String destination, String source) {
-			super();
-			this.destination = destination;
-			this.source = source;
-		}
-
-		private Request(Parcel in) {
-			destination = in.readString();
-			source = in.readString();
-		}
-
-		@Override
-		public int describeContents() {
-			return 0;
-		}
-
-		@Override
-		public void writeToParcel(Parcel dest, int flags) {
-			dest.writeString(destination);
-			dest.writeString(source);
-		}
-
-		public static final Parcelable.Creator<Request> CREATOR = new Parcelable.Creator<Request>() {
-			public Request createFromParcel(Parcel in) {
-				return new Request(in);
-			}
-
-			public Request[] newArray(int size) {
-				return new Request[size];
-			}
-		};
-
-		public String getDestination() {
-			return destination;
-		}
-
-		public String getSource() {
-			return source;
-		}
-
 	}
 
 	/** Schedules the notification updater task if it hasn't been scheduled yet. */

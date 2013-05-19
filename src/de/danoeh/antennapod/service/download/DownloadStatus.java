@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.asynctask;
+package de.danoeh.antennapod.service.download;
 
 import java.util.Date;
 
@@ -11,10 +11,6 @@ public class DownloadStatus {
 	 * so that the listadapters etc. can react properly.
 	 */
 	public static final int SIZE_UNKNOWN = -1;
-
-	public Date getCompletionDate() {
-		return completionDate;
-	}
 
 	// ----------------------------------- ATTRIBUTES STORED IN DB
 	/** Unique id for storing the object in database. */
@@ -33,7 +29,6 @@ public class DownloadStatus {
 	protected String reasonDetailed;
 	protected boolean successful;
 	protected Date completionDate;
-	protected FeedFile feedfile;
 	protected long feedfileId;
 	/**
 	 * Is used to determine the type of the feedfile even if the feedfile does
@@ -43,29 +38,13 @@ public class DownloadStatus {
 	protected int feedfileType;
 
 	// ------------------------------------ NOT STORED IN DB
-	protected int progressPercent;
-	protected long soFar;
-	protected long size;
-	protected int statusMsg;
 	protected boolean done;
 	protected boolean cancelled;
-
-	public DownloadStatus(FeedFile feedfile, String title) {
-		this.feedfile = feedfile;
-		if (feedfile != null) {
-			feedfileType = feedfile.getTypeAsInt();
-		}
-		this.title = title;
-	}
 
 	/** Constructor for restoring Download status entries from DB. */
 	public DownloadStatus(long id, String title, long feedfileId,
 			int feedfileType, boolean successful, int reason,
 			Date completionDate, String reasonDetailed) {
-		progressPercent = 100;
-		soFar = 0;
-		size = 0;
-
 		this.id = id;
 		this.title = title;
 		this.done = true;
@@ -77,21 +56,49 @@ public class DownloadStatus {
 		this.feedfileType = feedfileType;
 	}
 
+	public DownloadStatus(DownloadRequest request, int reason,
+			boolean successful, boolean cancelled, String reasonDetailed) {
+		if (request == null) {
+			throw new IllegalArgumentException("request must not be null");
+		}
+		this.title = request.getTitle();
+		this.feedfileId = request.getFeedfileId();
+		this.feedfileType = request.getFeedfileType();
+		this.reason = reason;
+		this.successful = successful;
+		this.cancelled = cancelled;
+		this.reasonDetailed = reasonDetailed;
+		this.completionDate = new Date();
+	}
+
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, int reason,
 			boolean successful, String reasonDetailed) {
-		progressPercent = 100;
-		soFar = 0;
-		size = 0;
+		if (feedfile == null) {
+			throw new IllegalArgumentException("feedfile must not be null");
+		}
 
 		this.title = title;
 		this.done = true;
-		this.feedfile = feedfile;
+		this.feedfileId = feedfile.getId();
+		this.feedfileType = feedfile.getTypeAsInt();
 		this.reason = reason;
 		this.successful = successful;
 		this.completionDate = new Date();
 		this.reasonDetailed = reasonDetailed;
-		this.feedfileType = feedfile.getTypeAsInt();
+	}
+
+	/** Constructor for creating new completed downloads. */
+	public DownloadStatus(long feedfileId, int feedfileType, String title,
+			int reason, boolean successful, String reasonDetailed) {
+		this.title = title;
+		this.done = true;
+		this.feedfileId = feedfileId;
+		this.feedfileType = feedfileType;
+		this.reason = reason;
+		this.successful = successful;
+		this.completionDate = new Date();
+		this.reasonDetailed = reasonDetailed;
 	}
 
 	@Override
@@ -99,115 +106,53 @@ public class DownloadStatus {
 		return "DownloadStatus [id=" + id + ", title=" + title + ", reason="
 				+ reason + ", reasonDetailed=" + reasonDetailed
 				+ ", successful=" + successful + ", completionDate="
-				+ completionDate + ", feedfile=" + feedfile + ", feedfileType="
-				+ feedfileType + ", progressPercent=" + progressPercent
-				+ ", soFar=" + soFar + ", size=" + size + ", statusMsg="
-				+ statusMsg + ", done=" + done + ", cancelled=" + cancelled
-				+ "]";
-	}
-
-	public FeedFile getFeedFile() {
-		return feedfile;
-	}
-
-	public int getProgressPercent() {
-		return progressPercent;
-	}
-
-	public long getSoFar() {
-		return soFar;
-	}
-
-	public long getSize() {
-		return size;
-	}
-
-	public int getStatusMsg() {
-		return statusMsg;
-	}
-
-	public int getReason() {
-		return reason;
-	}
-
-	public boolean isSuccessful() {
-		return successful;
+				+ completionDate + ", feedfileId=" + feedfileId
+				+ ", feedfileType=" + feedfileType + ", done=" + done
+				+ ", cancelled=" + cancelled + "]";
 	}
 
 	public long getId() {
 		return id;
 	}
 
-	public void setId(long id) {
-		this.id = id;
+	public String getTitle() {
+		return title;
 	}
 
-	public boolean isDone() {
-		return done;
-	}
-
-	public void setProgressPercent(int progressPercent) {
-		this.progressPercent = progressPercent;
-	}
-
-	public void setSoFar(long soFar) {
-		this.soFar = soFar;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
-
-	public void setStatusMsg(int statusMsg) {
-		this.statusMsg = statusMsg;
-	}
-
-	public void setReason(int reason) {
-		this.reason = reason;
-	}
-
-	public void setSuccessful(boolean successful) {
-		this.successful = successful;
-	}
-
-	public void setDone(boolean done) {
-		this.done = done;
-	}
-
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
+	public int getReason() {
+		return reason;
 	}
 
 	public String getReasonDetailed() {
 		return reasonDetailed;
 	}
 
-	public void setReasonDetailed(String reasonDetailed) {
-		this.reasonDetailed = reasonDetailed;
+	public boolean isSuccessful() {
+		return successful;
 	}
 
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getFeedfileType() {
-		return feedfileType;
+	public Date getCompletionDate() {
+		return completionDate;
 	}
 
 	public long getFeedfileId() {
 		return feedfileId;
 	}
 
+	public int getFeedfileType() {
+		return feedfileType;
+	}
+
+	public boolean isDone() {
+		return done;
+	}
+
 	public boolean isCancelled() {
 		return cancelled;
 	}
 
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 }

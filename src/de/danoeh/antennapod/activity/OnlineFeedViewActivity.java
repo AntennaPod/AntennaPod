@@ -21,9 +21,10 @@ import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.download.DownloadRequest;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.service.download.DownloaderCallback;
 import de.danoeh.antennapod.service.download.HttpDownloader;
@@ -45,7 +46,7 @@ import de.danoeh.antennapod.util.URLChecker;
 public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 	private static final String TAG = "OnlineFeedViewActivity";
 	private static final String ARG_FEEDURL = "arg.feedurl";
-	
+
 	public static final int RESULT_ERROR = 2;
 
 	private Feed feed;
@@ -70,7 +71,7 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 	@Override
 	protected void onStop() {
 		super.onStop();
-		if (downloader != null && downloader.getStatus().isDone() == false) {
+		if (downloader != null && !downloader.isFinished()) {
 			downloader.cancel();
 		}
 	}
@@ -82,7 +83,7 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 
 				@Override
 				public void run() {
-					DownloadStatus status = downloader.getStatus();
+					DownloadStatus status = downloader.getResult();
 					if (status != null) {
 						if (!status.isCancelled()) {
 							if (status.isSuccessful()) {
@@ -119,9 +120,10 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 				FileNameGenerator.generateFileName(feed.getDownload_url()))
 				.toString();
 		feed.setFile_url(fileUrl);
-		DownloadStatus status = new DownloadStatus(feed, "OnlineFeed");
+		DownloadRequest request = new DownloadRequest(feed.getFile_url(),
+				feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED);
 		HttpDownloader httpDownloader = new HttpDownloader(downloaderCallback,
-				status);
+				request);
 		httpDownloader.start();
 	}
 
@@ -217,13 +219,14 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 		} else {
 			builder.setMessage(R.string.error_msg_prefix);
 		}
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
-				dialog.cancel();
-			}
-		});
+		builder.setNeutralButton(android.R.string.ok,
+				new DialogInterface.OnClickListener() {
+
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						dialog.cancel();
+					}
+				});
 		builder.setOnCancelListener(new OnCancelListener() {
 			@Override
 			public void onCancel(DialogInterface dialog) {

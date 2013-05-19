@@ -6,8 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.service.download.DownloaderCallback;
 import de.danoeh.antennapod.service.download.HttpDownloader;
