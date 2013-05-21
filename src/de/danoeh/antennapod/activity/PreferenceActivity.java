@@ -28,6 +28,7 @@ import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** The main preference activity */
@@ -58,7 +59,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 					@Override
 					public boolean onPreferenceClick(Preference preference) {
 						new FlattrClickWorker(PreferenceActivity.this,
-								FlattrUtils.APP_URL).executeAsync();
+								new FlattrThing()).executeAsync();
 
 						return true;
 					}

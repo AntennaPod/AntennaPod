@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -39,6 +40,7 @@ import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Singleton class that - provides access to all Feeds and FeedItems and to
@@ -70,12 +72,14 @@ public class FeedManager {
 	/** Contains the last played items */
 	private List<FeedItem> playbackHistory;
 
+	private List<FlattrThing> flattrQueue;
+	
 	/** Maximum number of items in the playback history. */
 	private static final int PLAYBACK_HISTORY_SIZE = 15;
 
 	private DownloadRequester requester = DownloadRequester.getInstance();
 	private EventDistributor eventDist = EventDistributor.getInstance();
-
+	
 	/**
 	 * Should be used to change the content of the arrays from another thread to
 	 * ensure that arrays are only modified on the main thread.
@@ -93,6 +97,7 @@ public class FeedManager {
 		unreadItems = Collections.synchronizedList(new ArrayList<FeedItem>());
 		downloadLog = new ArrayList<DownloadStatus>();
 		queue = Collections.synchronizedList(new ArrayList<FeedItem>());
+		flattrQueue = Collections.synchronizedList(new ArrayList<FlattrThing>());
 		playbackHistory = Collections
 				.synchronizedList(new ArrayList<FeedItem>());
 		contentChanger = new Handler();
@@ -837,6 +842,16 @@ public class FeedManager {
 	}
 
 	/**
+	 * Append an item to the queue of objects that need flattring
+	 * 
+	 * @param thing
+	 */
+	public void addFlattrQueue(FlattrThing thing) {
+		Log.d(TAG, "Adding item to flattr queue: FeedId: " + thing.getTitle());
+		flattrQueue.add(thing);
+	}
+
+	/**
 	 * Adds a feeditem to the queue at the specified index if it is not in the
 	 * queue yet. The item is marked as 'read'.
 	 */
@@ -1384,6 +1399,7 @@ public class FeedManager {
 		extractFeedlistFromCursor(context, adapter);
 		extractDownloadLogFromCursor(context, adapter);
 		extractQueueFromCursor(context, adapter);
+		extractFlattrQueueFromCursor(context, adapter);
 		adapter.close();
 		Collections.sort(feeds, new FeedtitleComparator());
 		Collections.sort(unreadItems, new FeedItemPubdateComparator());
@@ -1654,6 +1670,25 @@ public class FeedManager {
 			queue.add(item);
 		}
 	}
+	
+	void extractFlattrQueueFromCursor(Context context, PodDBAdapter adapter) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Extracting FlattrQueue");
+		Cursor cursor = adapter.getFlattrQueueCursor();
+
+		if (cursor.moveToFirst()) {
+			do {
+				flattrQueue.add(new FlattrThing(
+					cursor.getLong(PodDBAdapter.KEY_FLATTR_QUEUE_FEED_INDEX),
+					cursor.getLong(PodDBAdapter.KEY_FLATTR_QUEUE_FEEDITEM_INDEX),
+					cursor.getString(PodDBAdapter.KEY_FLATTR_QUEUE_TITLE_INDEX),
+					cursor.getString(PodDBAdapter.KEY_FLATTR_QUEUE_PAYMENT_LINK_INDEX)
+						));
+			} while (cursor.moveToNext());
+		}
+		cursor.close();
+	}
+	
 
 	/**
 	 * Loads description and contentEncoded values from the database and caches
@@ -1759,6 +1794,15 @@ public class FeedManager {
 
 	List<Feed> getFeeds() {
 		return feeds;
+	}
+
+	/** 
+	 * Return iterator that provides access to the flattr queue
+	 * @return
+	 */
+	public ListIterator<FlattrThing> getFlattrQueueIterator() {
+		Log.d(TAG, "Returning flattrQueueIterator for queue with " + flattrQueue.size() + " items.");
+		return flattrQueue.listIterator();
 	}
 
 	/**
@@ -1980,4 +2024,19 @@ public class FeedManager {
 		}
 	}
 
+
+	/**
+	 * Store the current flattr queue to database
+	 */
+	public void storeFlattrQueue(final Context context) {
+		dbExec.execute(new Runnable() {
+			@Override
+			public void run() {
+				PodDBAdapter adapter = new PodDBAdapter(context);
+				adapter.open();
+				adapter.setFlattrQueue(flattrQueue);
+				adapter.close();
+			}
+		});
+	}
 }

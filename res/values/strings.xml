@@ -137,6 +137,8 @@
     <string name="access_revoked_title">Access revoked</string>
     <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
     <string name="flattr_click_success">Successfully flattred this thing!</string>
+    <string name="flattr_click_success_queue">Successfully flattred %d things from queue!</string>
+    <string name="flattr_click_enqueued">No network connection - added to flattr queue!</string>
     <string name="flattring_label">Flattring</string>
 
     <!-- Empty list labels -->

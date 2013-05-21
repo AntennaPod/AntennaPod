@@ -1,55 +1,76 @@
 package de.danoeh.antennapod.asynctask;
 
+import java.util.Iterator;
+import java.util.ListIterator;
+
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /** Performs a click action in a background thread. */
 
-public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
+public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected static final String TAG = "FlattrClickWorker";
 	protected Context context;
-	protected String url;
+	protected FlattrThing thing;
+	
 	protected String errorMsg;
 	protected int exitCode;
+	protected int flattred;
 	protected ProgressDialog progDialog;
 
 	protected final static int SUCCESS = 0;
 	protected final static int NO_TOKEN = 1;
 	protected final static int FLATTR_ERROR = 2;
+	protected final static int ENQUEUED = 3;
 
-	public FlattrClickWorker(Context context, String url) {
+	public FlattrClickWorker(Context context, FlattrThing thing) {
 		super();
 		this.context = context;
-		this.url = url;
+		this.thing = thing;
 		exitCode = SUCCESS;
+		flattred = 0;
 		errorMsg = "";
 	}
 
 	protected void onNoAccessToken() {
 		Log.w(TAG, "No access token was available");
-		if (url.equals(FlattrUtils.APP_URL)) {
+		if (thing.getPaymentLink().equals(FlattrUtils.APP_URL)) {
 			FlattrUtils.showNoTokenDialog(context, FlattrUtils.APP_LINK);
 		} else {
-			FlattrUtils.showNoTokenDialog(context, url);
+			FlattrUtils.showNoTokenDialog(context, thing.getPaymentLink());
 		}
 	}
 
 	protected void onFlattrError() {
 		FlattrUtils.showErrorDialog(context, errorMsg);
 	}
-
+	
 	protected void onSuccess() {
-		Toast toast = Toast.makeText(context.getApplicationContext(),
-				R.string.flattr_click_success, Toast.LENGTH_LONG);
+		Toast toast;
+		
+		if (flattred == 0)
+			toast = Toast.makeText(context.getApplicationContext(),
+					R.string.flattr_click_enqueued, Toast.LENGTH_LONG);
+		else if (flattred == 1)
+			toast = Toast.makeText(context.getApplicationContext(),
+					R.string.flattr_click_success, Toast.LENGTH_LONG);
+		else // flattred pending items from queue
+			toast = Toast.makeText(context.getApplicationContext(),
+				String.format(context.getString(R.string.flattr_click_success_queue), flattred), Toast.LENGTH_LONG);
+
 		toast.show();
 	}
 
@@ -85,23 +106,56 @@ public class FlattrClickWorker extends AsyncTask<Void, Void, Void> {
 		onSetupProgDialog();
 	}
 
+	private static boolean haveInternetAccess(Context context) {
+		ConnectivityManager cm =
+				(ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
+		return (networkInfo != null && networkInfo.isConnectedOrConnecting());
+	}
+	
 	@Override
 	protected Void doInBackground(Void... params) {
 		if (AppConfig.DEBUG) Log.d(TAG, "Starting background work");
-		if (FlattrUtils.hasToken()) {
-			try {
-				FlattrUtils.clickUrl(context, url);
-			} catch (FlattrException e) {
-				e.printStackTrace();
-				exitCode = FLATTR_ERROR;
-				errorMsg = e.getMessage();
+		
+		FeedManager.getInstance().addFlattrQueue(thing); // enqueue new thing for flattring
+
+		if (haveInternetAccess(context)) {
+			if (FlattrUtils.hasToken()) {
+				Iterator<FlattrThing> it = FeedManager.getInstance().getFlattrQueueIterator();
+				FlattrThing thing = null;
+				while (it.hasNext()) {
+					try {
+						thing = it.next();
+						Log.e(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
+						publishProgress(thing.getTitle());
+						it.remove(); // remove from queue first so we don't get stuck in case an exception is thrown (i.e. due to flattring the same thing twice)
+						FlattrUtils.clickUrl(context, thing.getPaymentLink());
+						flattred++;
+					} 
+					catch (FlattrException e) {
+						Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
+						//e.printStackTrace();
+						exitCode = FLATTR_ERROR;
+						errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
+					} 
+				}
+
+			} else {
+				exitCode = NO_TOKEN;
 			}
-		} else {
-			exitCode = NO_TOKEN;
 		}
+		
+		FeedManager.getInstance().storeFlattrQueue(context);
+
 		return null;
 	}
-
+	
+	@Override
+	protected void onProgressUpdate(String... names) {
+		progDialog.setMessage(context.getString(R.string.flattring_label) + " " + names[0]);
+	}
+	
 	@SuppressLint("NewApi")
 	public void executeAsync() {
 		FlattrUtils.hasToken();
