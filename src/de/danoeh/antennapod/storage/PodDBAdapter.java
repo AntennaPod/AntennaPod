@@ -81,11 +81,6 @@ public class PodDBAdapter {
 	public static final int KEY_CHAPTER_FEEDITEM_INDEX = 3;
 	public static final int KEY_CHAPTER_LINK_INDEX = 4;
 	public static final int KEY_CHAPTER_TYPE_INDEX = 5;
-	// --------- Flattr queue indices
-	public static final int KEY_FLATTR_QUEUE_FEED_INDEX = 1;
-	public static final int KEY_FLATTR_QUEUE_FEEDITEM_INDEX = 2;
-	public static final int KEY_FLATTR_QUEUE_TITLE_INDEX = 3;
-	public static final int KEY_FLATTR_QUEUE_PAYMENT_LINK_INDEX = 4;
 	
 	// Key-constants
 	public static final String KEY_ID = "id";
@@ -279,6 +274,7 @@ public class PodDBAdapter {
 		values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
 		values.put(KEY_TYPE, feed.getType());
 		values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
+		values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
 		if (feed.getId() == 0) {
 			// Create new entry
 			if (AppConfig.DEBUG)
