@@ -16,6 +16,8 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
@@ -123,7 +125,17 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 					try {
 						Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
 						publishProgress(thing.getTitle());
-						thing.getFlattrStatus().setFlattred();
+						
+						thing.getFlattrStatus().setFlattred(); 
+
+						// must propagate this to back db
+						if (thing instanceof FeedItem)
+							FeedManager.getInstance().setFeedItem(context, (FeedItem) thing);
+						else if (thing instanceof Feed)
+							FeedManager.getInstance().setFeed(context, (Feed) thing);
+						else
+							Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
+						
 						FlattrUtils.clickUrl(context, thing.getPaymentLink());
 						flattred++;
 					} 
