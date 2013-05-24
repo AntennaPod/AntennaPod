@@ -141,6 +141,7 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
 			+ KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
 			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
+			+ KEY_FLATTR_STATUS + " LONG, "
 			+ KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
 			+ " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
 			+ KEY_FEED_IDENTIFIER + " TEXT)";;
@@ -150,6 +151,7 @@ public class PodDBAdapter {
 			+ " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
 			+ " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
 			+ KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
+			+ KEY_FLATTR_STATUS + " LONG, "
 			+ KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
 			+ KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT)";
 
@@ -816,7 +818,12 @@ public class PodDBAdapter {
 						+ " INTEGER");
 			}
 			if (oldVersion <= 8) {
-				db.execSQL(CREATE_TABLE_FLATTR_QUEUE);
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+						+ " ADD COLUMN " + KEY_FLATTR_STATUS
+						+ " LONG");
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
+						+ " ADD COLUMN " + KEY_FLATTR_STATUS
+						+ " LONG");
 			}
 		}
 	}
