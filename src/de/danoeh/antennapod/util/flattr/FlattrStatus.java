@@ -28,6 +28,10 @@ public class FlattrStatus {
 		status = STATUS_UNFLATTERED;
 	}
 	
+	public boolean getUnflattred() {
+		return status == STATUS_UNFLATTERED;
+	}
+	
 	public void setFlattrQueue() {
 		if (flattrable())
 			status = STATUS_QUEUE;

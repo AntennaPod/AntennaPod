@@ -1597,6 +1597,7 @@ public class FeedManager {
 							item,
 							cursor.getInt(PodDBAdapter.KEY_DURATION_INDEX),
 							cursor.getInt(PodDBAdapter.KEY_POSITION_INDEX),
+							cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX),
 							cursor.getLong(PodDBAdapter.KEY_SIZE_INDEX),
 							cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
 							cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),

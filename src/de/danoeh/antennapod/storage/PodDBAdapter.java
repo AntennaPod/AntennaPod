@@ -28,7 +28,7 @@ import de.danoeh.antennapod.util.flattr.FlattrStatus;
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 9;
+	private static final int DATABASE_VERSION = 10;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -65,6 +65,7 @@ public class PodDBAdapter {
 	public static final int KEY_SIZE_INDEX = 6;
 	public static final int KEY_MIME_TYPE_INDEX = 7;
 	public static final int KEY_PLAYBACK_COMPLETION_DATE_INDEX = 8;
+	public static final int KEY_PLAYED_DURATION_INDEX = 9;
 	// --------- Download log indices
 	public static final int KEY_FEEDFILE_INDEX = 1;
 	public static final int KEY_FEEDFILETYPE_INDEX = 2;
@@ -121,7 +122,8 @@ public class PodDBAdapter {
 	public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
 	public static final String KEY_CHAPTER_TYPE = "type";
 	public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
-
+	public static final String KEY_PLAYED_DURATION = "played_duration";
+	
 	// Table names
 	public static final String TABLE_NAME_FEEDS = "Feeds";
 	public static final String TABLE_NAME_FEED_ITEMS = "FeedItems";
@@ -165,7 +167,8 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
 			+ " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
 			+ " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
-			+ KEY_PLAYBACK_COMPLETION_DATE + " INTEGER)";
+			+ KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
+			+ KEY_PLAYED_DURATION + " INTEGER)";
 
 	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
 			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -320,6 +323,7 @@ public class PodDBAdapter {
 		ContentValues values = new ContentValues();
 		values.put(KEY_DURATION, media.getDuration());
 		values.put(KEY_POSITION, media.getPosition());
+		values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
 		values.put(KEY_SIZE, media.getSize());
 		values.put(KEY_MIME_TYPE, media.getMime_type());
 		values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
@@ -824,6 +828,11 @@ public class PodDBAdapter {
 				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
 						+ " ADD COLUMN " + KEY_FLATTR_STATUS
 						+ " LONG");
+			}
+			if (oldVersion <= 9) {
+				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
+						+ " ADD COLUMN " + KEY_PLAYED_DURATION
+						+ " INTEGER");
 			}
 		}
 	}
