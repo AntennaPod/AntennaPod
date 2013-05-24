@@ -21,13 +21,15 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.util.flattr.FlattrThing;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;
@@ -303,9 +305,10 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 				break;
 			case R.id.support_item:
 				try {
-					new FlattrClickWorker(this, 
-							new FlattrThing(0, (Long) media.getIdentifier(), media.getEpisodeTitle(), media.getPaymentLink()))
-					.executeAsync();
+					FeedItem feedItem = ((FeedMedia) media).getItem();
+					feedItem.getFlattrStatus().setFlattrQueue();
+					FeedManager.getInstance().setFeedItem(this, feedItem);
+					new FlattrClickWorker(this).executeAsync();
 				} 
 				catch (ClassCastException e) {
 					Log.d(TAG, "Could not flattr item - most likely external media: " + e.toString());

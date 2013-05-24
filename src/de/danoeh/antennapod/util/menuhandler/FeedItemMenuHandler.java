@@ -12,7 +12,7 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
-import de.danoeh.antennapod.util.flattr.FlattrThing;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedItemMenuHandler {
@@ -152,9 +152,9 @@ public class FeedItemMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, 
-					new FlattrThing(selectedItem.getFeed().getId(), selectedItem.getId(), selectedItem.getTitle(), selectedItem.getPaymentLink()))
-					.executeAsync();
+			selectedItem.getFlattrStatus().setFlattrQueue();
+			FeedManager.getInstance().setFeedItem(context, selectedItem);
+			new FlattrClickWorker(context).executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);

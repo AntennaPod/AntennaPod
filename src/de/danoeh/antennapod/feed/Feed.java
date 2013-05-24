@@ -7,6 +7,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.EpisodeFilter;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Data Object for a whole feed
@@ -14,7 +16,7 @@ import de.danoeh.antennapod.util.EpisodeFilter;
  * @author daniel
  * 
  */
-public class Feed extends FeedFile {
+public class Feed extends FeedFile implements FlattrThing {
 	public static final int FEEDFILETYPE_FEED = 0;
 	public static final String TYPE_RSS2 = "rss";
 	public static final String TYPE_RSS091 = "rss";
@@ -31,6 +33,7 @@ public class Feed extends FeedFile {
 	private String author;
 	private FeedImage image;
 	private List<FeedItem> items;
+	private FlattrStatus flattrStatus;
 	/** Date of last refresh. */
 	private Date lastUpdate;
 	private String paymentLink;
@@ -311,6 +314,14 @@ public class Feed extends FeedFile {
 
 	public void setFeedIdentifier(String feedIdentifier) {
 		this.feedIdentifier = feedIdentifier;
+	}
+
+	public void setFlattrStatus(FlattrStatus status) {
+		this.flattrStatus = status;
+	}
+	
+	public FlattrStatus getFlattrStatus() {
+		return flattrStatus;
 	}
 
 	public String getPaymentLink() {
