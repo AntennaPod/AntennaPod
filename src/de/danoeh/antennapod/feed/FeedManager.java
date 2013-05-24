@@ -28,6 +28,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -502,6 +503,7 @@ public class FeedManager {
 	private void refreshFeeds(final Context context, final List<Feed> feedList) {
 		if (!isStartingFeedRefresh) {
 			isStartingFeedRefresh = true;
+			
 			AsyncTask<Void, Void, Void> updateWorker = new AsyncTask<Void, Void, Void>() {
 
 				@Override
@@ -513,7 +515,7 @@ public class FeedManager {
 				}
 
 				@Override
-				protected Void doInBackground(Void... params) {
+				protected Void doInBackground(Void... params) {					
 					for (Feed feed : feedList) {
 						try {
 							refreshFeed(context, feed);
@@ -536,6 +538,10 @@ public class FeedManager {
 			} else {
 				updateWorker.execute();
 			}
+
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "Flattring all pending things.");
+			new FlattrClickWorker(context).executeAsync(); // flattr pending things
 		}
 
 	}
@@ -1818,6 +1824,19 @@ public class FeedManager {
 
 		Log.d(TAG, "Returning flattrQueueIterator for queue with " + l.size() + " items.");
 		return l;
+	}
+	
+	public boolean getFlattrQueueEmpty() {
+		for (Feed feed: feeds) {
+			if (feed.getFlattrStatus().getFlattrQueue())
+				return false;
+			
+			for (FeedItem item: feed.getItems())
+				if (item.getFlattrStatus().getFlattrQueue())
+					return false;
+		}
+		
+		return true;
 	}
 
 	/**

@@ -38,6 +38,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected final static int NO_TOKEN = 1;
 	protected final static int FLATTR_ERROR = 2;
 	protected final static int ENQUEUED = 3;
+	protected final static int NO_THINGS = 4;
 
 	public FlattrClickWorker(Context context) {
 		super();
@@ -96,6 +97,8 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		case SUCCESS:
 			onSuccess();
 			break;
+		case NO_THINGS: // FlattrClickWorker called automatically somewhere to empty flattr queue
+			break;
 		}
 	}
 
@@ -116,41 +119,48 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected Void doInBackground(Void... params) {
 		if (AppConfig.DEBUG) Log.d(TAG, "Starting background work");
 
-		if (haveInternetAccess(context)) {
-			if (FlattrUtils.hasToken()) {
-				List<FlattrThing> flattrList = FeedManager.getInstance().getFlattrQueue();
-				Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
+		exitCode = SUCCESS;
 
-				for (FlattrThing thing: flattrList) {
-					try {
-						Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
-						publishProgress(thing.getTitle());
-						
-						thing.getFlattrStatus().setFlattred(); 
+		if (!FlattrUtils.hasToken()) {
+			exitCode = NO_TOKEN;
+		}
+		else if (FeedManager.getInstance().getFlattrQueueEmpty()) {
+			exitCode = NO_THINGS;
+		}
+		else if (!haveInternetAccess(context)) {
+			exitCode = ENQUEUED;
+		}
+		else {
+			List<FlattrThing> flattrList = FeedManager.getInstance().getFlattrQueue();
+			Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
 
-						// must propagate this to back db
-						if (thing instanceof FeedItem)
-							FeedManager.getInstance().setFeedItem(context, (FeedItem) thing);
-						else if (thing instanceof Feed)
-							FeedManager.getInstance().setFeed(context, (Feed) thing);
-						else
-							Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
-						
-						FlattrUtils.clickUrl(context, thing.getPaymentLink());
-						flattred++;
-					} 
-					catch (FlattrException e) {
-						Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
-						//e.printStackTrace();
-						exitCode = FLATTR_ERROR;
-						errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
-					} 
-				}
-			} else {
-				exitCode = NO_TOKEN;
+			for (FlattrThing thing: flattrList) {
+				try {
+					Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
+					publishProgress(thing.getTitle());
+
+					thing.getFlattrStatus().setFlattred(); 
+
+					// must propagate this to back db
+					if (thing instanceof FeedItem)
+						FeedManager.getInstance().setFeedItem(context, (FeedItem) thing);
+					else if (thing instanceof Feed)
+						FeedManager.getInstance().setFeed(context, (Feed) thing);
+					else
+						Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
+
+					FlattrUtils.clickUrl(context, thing.getPaymentLink());
+					flattred++;
+				} 
+				catch (FlattrException e) {
+					Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
+					//e.printStackTrace();
+					exitCode = FLATTR_ERROR;
+					errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
+				} 
 			}
 		}
-
+		
 		return null;
 	}
 	

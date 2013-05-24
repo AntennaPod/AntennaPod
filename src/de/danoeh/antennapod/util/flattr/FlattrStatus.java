@@ -29,7 +29,8 @@ public class FlattrStatus {
 	}
 	
 	public void setFlattrQueue() {
-		status = STATUS_QUEUE;
+		if (flattrable())
+			status = STATUS_QUEUE;
 	}
 	
 	public void fromLong(long status) {
