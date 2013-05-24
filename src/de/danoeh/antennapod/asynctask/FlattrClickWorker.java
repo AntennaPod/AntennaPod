@@ -117,21 +117,23 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		if (haveInternetAccess(context)) {
 			if (FlattrUtils.hasToken()) {
 				List<FlattrThing> flattrList = FeedManager.getInstance().getFlattrQueue();
+				Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
 
-				for (FlattrThing thing: flattrList)
+				for (FlattrThing thing: flattrList) {
 					try {
-						Log.e(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
+						Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
 						publishProgress(thing.getTitle());
 						thing.getFlattrStatus().setFlattred();
 						FlattrUtils.clickUrl(context, thing.getPaymentLink());
 						flattred++;
 					} 
-				catch (FlattrException e) {
-					Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
-					//e.printStackTrace();
-					exitCode = FLATTR_ERROR;
-					errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
-				} 
+					catch (FlattrException e) {
+						Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
+						//e.printStackTrace();
+						exitCode = FLATTR_ERROR;
+						errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
+					} 
+				}
 			} else {
 				exitCode = NO_TOKEN;
 			}

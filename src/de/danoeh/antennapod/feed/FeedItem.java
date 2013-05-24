@@ -46,6 +46,7 @@ public class FeedItem extends FeedComponent implements
 
 	public FeedItem() {
 		this.read = true;
+		this.flattrStatus = new FlattrStatus();
 	}
 
 	public void updateFromOther(FeedItem other) {

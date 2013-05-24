@@ -1445,6 +1445,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
 				feed.setPaymentLink(feedlistCursor
 						.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
+				feed.setFlattrStatus(new FlattrStatus(feedlistCursor
+						.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS))));
 				feed.setAuthor(feedlistCursor
 						.getString(PodDBAdapter.KEY_AUTHOR_INDEX));
 				feed.setLanguage(feedlistCursor
@@ -1499,6 +1501,8 @@ public class FeedManager {
 						.getLong(PodDBAdapter.IDX_FI_SMALL_PUBDATE)));
 				item.setPaymentLink(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK));
+				item.setFlattrStatus(new FlattrStatus(itemlistCursor
+						.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS))));
 				long mediaId = itemlistCursor
 						.getLong(PodDBAdapter.IDX_FI_SMALL_MEDIA);
 				if (mediaId != 0) {
@@ -1804,17 +1808,12 @@ public class FeedManager {
 		List<FlattrThing> l = new LinkedList<FlattrThing>();
 		
 		for (Feed feed: feeds) {
-			/* TODO
-			 * if (feed.getFlattrStatus().getFlattrQueue()) {
-			 * 		l.add(feed);
-			 * }
-			 */
+			if (feed.getFlattrStatus().getFlattrQueue())
+				l.add(feed);
 			
-			for (FeedItem item: feed.getItems()) {
-				if (item.getFlattrStatus().getFlattrQueue()) {
+			for (FeedItem item: feed.getItems())
+				if (item.getFlattrStatus().getFlattrQueue())
 					l.add(item);
-				}
-			}
 		}
 
 		Log.d(TAG, "Returning flattrQueueIterator for queue with " + l.size() + " items.");

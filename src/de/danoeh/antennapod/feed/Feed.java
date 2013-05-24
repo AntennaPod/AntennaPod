@@ -44,6 +44,7 @@ public class Feed extends FeedFile implements FlattrThing {
 		super();
 		items = Collections.synchronizedList(new ArrayList<FeedItem>());
 		this.lastUpdate = lastUpdate;
+		this.flattrStatus = new FlattrStatus();
 	}
 
 	/**
@@ -53,6 +54,7 @@ public class Feed extends FeedFile implements FlattrThing {
 	public Feed(String url, Date lastUpdate) {
 		this(lastUpdate);
 		this.download_url = url;
+		this.flattrStatus = new FlattrStatus();
 	}
 
 	/**
@@ -62,6 +64,7 @@ public class Feed extends FeedFile implements FlattrThing {
 	public Feed(String url, Date lastUpdate, String title) {
 		this(url, lastUpdate);
 		this.title = title;
+		this.flattrStatus = new FlattrStatus();
 	}
 
 	/**
