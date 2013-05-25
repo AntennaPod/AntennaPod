@@ -161,7 +161,7 @@ public class AddFeedActivity extends SherlockActivity {
 						}
 
 						@Override
-						public void onConnectionFailure(int reason) {
+						public void onConnectionFailure(DownloadError reason) {
 							handleDownloadError(reason);
 						}
 					});
@@ -177,11 +177,11 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog.setMessage(getString(R.string.loading_label));
 	}
 
-	private void handleDownloadError(int reason) {
+	private void handleDownloadError(DownloadError reason) {
 		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
-				+ DownloadError.getErrorString(this, reason));
+				+ reason.getErrorString(this));
 		errorDialog.setButton(getString(android.R.string.ok),
 				new DialogInterface.OnClickListener() {
 					@Override

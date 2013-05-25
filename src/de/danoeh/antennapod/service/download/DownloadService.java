@@ -612,7 +612,7 @@ public class DownloadService extends Service {
 		private Feed feed;
 		private DownloadStatus status;
 
-		private int reason;
+		private DownloadError reason;
 		private boolean successful;
 
 		public FeedSyncThread(DownloadStatus status) {
@@ -622,7 +622,7 @@ public class DownloadService extends Service {
 
 		public void run() {
 			Feed savedFeed = null;
-			reason = 0;
+			reason = DownloadError.SUCCESS;
 			String reasonDetailed = null;
 			successful = true;
 			final FeedManager manager = FeedManager.getInstance();
