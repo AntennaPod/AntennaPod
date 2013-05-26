@@ -10,6 +10,7 @@ import android.database.DatabaseUtils;
 import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteStatement;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -574,6 +575,14 @@ public class PodDBAdapter {
 		return c;
 	}
 
+	public final Cursor getExpiredFeedsCursor(long expirationTime) {
+		open();
+		Cursor c = db.query(TABLE_NAME_FEEDS, null, "?<?", new String[] {
+				KEY_LASTUPDATE, Long.toString(expirationTime) }, null, null,
+				null);
+		return c;
+	}
+
 	/**
 	 * Returns a cursor with all FeedItems of a Feed. Uses SEL_FI_SMALL
 	 * 
@@ -680,6 +689,17 @@ public class PodDBAdapter {
 
 	}
 
+	public Cursor getDownloadedItemsCursor() {
+		open();
+		Cursor c = db.rawQuery("SELECT ? FROM " + TABLE_NAME_FEED_ITEMS
+				+ "FULL JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+				+ TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+				+ TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " WHERE "
+				+ TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0",
+				SEL_FI_SMALL);
+		return c;
+	}
+
 	/**
 	 * Returns a cursor which contains feed media objects with a playback
 	 * completion date in descending order.
@@ -764,6 +784,16 @@ public class PodDBAdapter {
 		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_ID + " IN "
 				+ buildInOperator(ids.length), ids, null, null, null);
 
+	}
+
+	public final int getNumberOfDownloadedEpisodes() {
+
+		Cursor c = db.rawQuery(
+				"SELECT COUNT(DISTINCT ?) AS count FROM ? WHERE ?>0",
+				new String[] { KEY_ID, TABLE_NAME_FEED_MEDIA, KEY_DOWNLOADED });
+		final int result = c.getInt(0);
+		c.close();
+		return result;
 	}
 
 	/**

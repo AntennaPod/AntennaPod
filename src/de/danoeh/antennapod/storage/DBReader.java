@@ -47,6 +47,26 @@ public final class DBReader {
 		feedlistCursor.close();
 		return feeds;
 	}
+	
+	static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
+		
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+
+		Cursor feedlistCursor = adapter.getExpiredFeedsCursor(expirationTime);
+		List<Feed> feeds = new ArrayList<Feed>(feedlistCursor.getCount());
+
+		if (feedlistCursor.moveToFirst()) {
+			do {
+				Feed feed = extractFeedFromCursorRow(adapter, feedlistCursor);
+				feeds.add(feed);
+			} while (feedlistCursor.moveToNext());
+		}
+		feedlistCursor.close();
+		return feeds;
+	}
 
 	public static void loadFeedDataOfFeedItemlist(Context context,
 			List<FeedItem> items) {
@@ -271,6 +291,25 @@ public final class DBReader {
 		adapter.close();
 		return items;
 	}
+	
+	public static List<FeedItem> getDownloadedItems(Context context) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Extracting downloaded items");
+
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		
+		Cursor itemlistCursor = adapter.getDownloadedItemsCursor();
+		List<FeedItem> items = extractItemlistFromCursor(adapter,
+				itemlistCursor);
+		itemlistCursor.close();
+		loadFeedDataOfFeedItemlist(context, items);
+		Collections.sort(items, new FeedItemPubdateComparator());
+
+		adapter.close();
+		return items;
+
+	}
 
 	public static List<FeedItem> getUnreadItemsList(Context context) {
 		if (AppConfig.DEBUG)
@@ -409,6 +448,14 @@ public final class DBReader {
 		adapter.close();
 		return item;
 
+	}
+	
+	public static int getNumberOfDownloadedEpisodes(final Context context) {
+		PodDBAdapter adapter = new PodDBAdapter(context);
+		adapter.open();
+		final int result = adapter.getNumberOfDownloadedEpisodes();
+		adapter.close();
+		return result;
 	}
 
 	/**

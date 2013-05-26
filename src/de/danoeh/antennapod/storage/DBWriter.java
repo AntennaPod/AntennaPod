@@ -506,7 +506,7 @@ public class DBWriter {
 
 	}
 
-	private static void setFeedMedia(final Context context,
+	static void setFeedMedia(final Context context,
 			final FeedMedia media) {
 		dbExec.submit(new Runnable() {
 
