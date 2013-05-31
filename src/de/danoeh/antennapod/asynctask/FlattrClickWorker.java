@@ -78,7 +78,6 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		progDialog.setMessage(context.getString(R.string.flattring_label));
 		progDialog.setIndeterminate(true);
 		progDialog.setCancelable(false);
-		progDialog.show();
 	}
 
 	@Override
@@ -141,6 +140,8 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
 					thing.getFlattrStatus().setFlattred(); 
 
+					Log.d(TAG, "flattrQueue processing - going to write thing back to db with flattr_status " + Long.toString(thing.getFlattrStatus().toLong()));
+					
 					// must propagate this to back db
 					if (thing instanceof FeedItem)
 						FeedManager.getInstance().setFeedItem(context, (FeedItem) thing);
@@ -166,6 +167,9 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	
 	@Override
 	protected void onProgressUpdate(String... names) {
+		if (progDialog != null && !progDialog.isShowing())
+			progDialog.show();
+					
 		progDialog.setMessage(context.getString(R.string.flattring_label) + " " + names[0]);
 	}
 	
