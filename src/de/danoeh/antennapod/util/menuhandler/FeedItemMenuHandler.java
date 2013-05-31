@@ -103,7 +103,7 @@ public class FeedItemMenuHandler {
 			mi.setItemVisibility(R.id.visit_website_item, false);
 		}
 
-		if (selectedItem.getPaymentLink() == null) {
+		if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
 			mi.setItemVisibility(R.id.support_item, false);
 		}
 		return true;

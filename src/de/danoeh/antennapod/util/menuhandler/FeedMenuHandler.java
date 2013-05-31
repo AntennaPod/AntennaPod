@@ -35,9 +35,10 @@ public class FeedMenuHandler {
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(
 				selectedFeed.hasNewItems(true));
-		if (selectedFeed.getPaymentLink() != null) {
+		if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) 
 			menu.findItem(R.id.support_item).setVisible(true);
-		}
+		else
+			menu.findItem(R.id.support_item).setVisible(false);	
 		MenuItem refresh = menu.findItem(R.id.refresh_item);
 		if (DownloadService.isRunning
 				&& DownloadRequester.getInstance().isDownloadingFile(
