@@ -73,9 +73,6 @@ public class FeedItem extends FeedComponent implements
 				media.updateFromOther(other);
 			}
 		}
-		if (other.flattrStatus != null) {
-			flattrStatus = other.flattrStatus;
-		}
 		if (other.paymentLink != null) {
 			paymentLink = other.paymentLink;
 		}
