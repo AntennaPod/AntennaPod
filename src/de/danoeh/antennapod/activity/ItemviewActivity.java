@@ -1,55 +1,56 @@
 package de.danoeh.antennapod.activity;
 
-import java.text.DateFormat;
-
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.text.format.DateUtils;
 import android.util.Log;
 import android.widget.TextView;
-
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuInflater;
 import com.actionbarsherlock.view.MenuItem;
 import com.actionbarsherlock.view.Window;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
+
+import java.text.DateFormat;
 
 /** Displays a single FeedItem and provides various actions */
 public class ItemviewActivity extends SherlockFragmentActivity {
 	private static final String TAG = "ItemviewActivity";
 
-	private FeedManager manager;
-	private FeedItem item;
+    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED;
 
-	// Widgets
-	private TextView txtvTitle;
-	private TextView txtvPublished;
+	private FeedItem item;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
-		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
-		extractFeeditem();
-		populateUI();
+        EventDistributor.getInstance().register(contentUpdate);
+
+        long itemId = getIntent().getLongExtra(
+                ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
+        if (itemId == -1) {
+            Log.e(TAG, "Received invalid selection of either feeditem or feed.");
+        } else {
+            loadData(itemId);
+        }
 	}
 
 	@Override
@@ -66,28 +67,38 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 			Log.d(TAG, "Stopping Activity");
 	}
 
-	/** Extracts FeedItem object the activity is supposed to display */
-	private void extractFeeditem() {
-		long itemId = getIntent().getLongExtra(
-				ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
-		long feedId = getIntent().getLongExtra(
-				FeedlistFragment.EXTRA_SELECTED_FEED, -1);
-		if (itemId == -1 || feedId == -1) {
-			Log.e(TAG, "Received invalid selection of either feeditem or feed.");
-		}
-		Feed feed = manager.getFeed(feedId);
-		item = manager.getFeedItem(itemId, feed);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Title of item is " + item.getTitle());
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Title of feed is " + item.getFeed().getTitle());
-	}
+    private void loadData(long itemId) {
+        AsyncTask<Long, Void, FeedItem> loadTask = new AsyncTask<Long, Void, FeedItem>() {
+
+            @Override
+            protected FeedItem doInBackground(Long... longs) {
+                return DBReader.getFeedItem(ItemviewActivity.this, longs[0]);
+            }
+
+            @Override
+            protected void onPostExecute(FeedItem feedItem) {
+                super.onPostExecute(feedItem);
+                if (feedItem != null && feedItem.getFeed() != null) {
+                    item = feedItem;
+                    populateUI();
+                    supportInvalidateOptionsMenu();
+                } else {
+                    if (feedItem == null) {
+                        Log.e(TAG, "Error: FeedItem was null");
+                    } else if (feedItem.getFeed() == null) {
+                        Log.e(TAG, "Error: Feed was null");
+                    }
+                }
+            }
+        };
+        loadTask.execute(itemId);
+    }
 
 	private void populateUI() {
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.feeditemview);
-		txtvTitle = (TextView) findViewById(R.id.txtvItemname);
-		txtvPublished = (TextView) findViewById(R.id.txtvPublished);
+		TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
+		TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
 		setTitle(item.getFeed().getTitle());
 
 		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
@@ -106,9 +117,13 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = getSupportMenuInflater();
-		inflater.inflate(R.menu.feeditem, menu);
-		return true;
+        if (item != null) {
+            MenuInflater inflater = getSupportMenuInflater();
+            inflater.inflate(R.menu.feeditem, menu);
+            return true;
+        } else {
+            return false;
+        }
 	}
 
 	@Override
@@ -142,5 +157,20 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 					}
 				}, item, true);
 	}
+
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EVENTS & arg) != 0) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Received contentUpdate Intent.");
+                if (item != null) {
+                    loadData(item.getId());
+                }
+            }
+        }
+    };
+
 
 }

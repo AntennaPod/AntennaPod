@@ -1448,7 +1448,7 @@ public class FeedManager {
 				long imageIndex = feedlistCursor
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {
-				//	feed.setImage(DBReader.getFeedImage(adapter, imageIndex));
+					feed.setImage(DBReader.getFeedImage(adapter, imageIndex));
 					feed.getImage().setFeed(feed);
 				}
 				feed.file_url = feedlistCursor

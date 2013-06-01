@@ -86,7 +86,7 @@ public class DownloadRequester {
 						"Requesting download of url " + item.getDownload_url());
 			item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
 
-			DownloadRequest request = new DownloadRequest(item.getFile_url(),
+			DownloadRequest request = new DownloadRequest(dest.toString(),
 					item.getDownload_url(), item.getHumanReadableIdentifier(),
 					item.getId(), item.getTypeAsInt());
 			

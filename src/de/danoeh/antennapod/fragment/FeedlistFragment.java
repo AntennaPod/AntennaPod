@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.fragment;
 
+import java.util.List;
+
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -28,7 +30,7 @@ import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
@@ -41,11 +43,11 @@ public class FeedlistFragment extends SherlockFragment implements
 			| EventDistributor.DOWNLOAD_QUEUED
 			| EventDistributor.FEED_LIST_UPDATE
 			| EventDistributor.UNREAD_ITEMS_UPDATE;
-	
+
 	public static final String EXTRA_SELECTED_FEED = "extra.de.danoeh.antennapod.activity.selected_feed";
 
-	private FeedManager manager;
 	private FeedlistAdapter fla;
+	private List<Feed> feeds;
 
 	private Feed selectedFeed;
 	private ActionMode mActionMode;
@@ -54,24 +56,57 @@ public class FeedlistFragment extends SherlockFragment implements
 	private ListView listView;
 	private TextView txtvEmpty;
 
-	@Override
-	public void onAttach(Activity activity) {
-		super.onAttach(activity);
-	}
+	private FeedlistAdapter.ItemAccess itemAccess = new FeedlistAdapter.ItemAccess() {
 
-	@Override
-	public void onDetach() {
-		super.onDetach();
-	}
+		@Override
+		public Feed getItem(int position) {
+			if (feeds != null) {
+				return feeds.get(position);
+			} else {
+				return null;
+			}
+		}
+
+		@Override
+		public int getCount() {
+			if (feeds != null) {
+				return feeds.size();
+			} else {
+				return 0;
+			}
+		}
+	};
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating");
-		manager = FeedManager.getInstance();
-		fla = new FeedlistAdapter(getActivity());
+		fla = new FeedlistAdapter(getActivity(), itemAccess);
+		loadFeeds();
+	}
 
+	private void loadFeeds() {
+		AsyncTask<Void, Void, List<Feed>> loadTask = new AsyncTask<Void, Void, List<Feed>>() {
+			@Override
+			protected List<Feed> doInBackground(Void... params) {
+				return DBReader.getFeedList(getActivity());
+			}
+
+			@Override
+			protected void onPostExecute(List<Feed> result) {
+				super.onPostExecute(result);
+				if (result != null) {
+					feeds = result;
+					if (fla != null) {
+						fla.notifyDataSetChanged();
+					}
+				} else {
+					Log.e(TAG, "Failed to load feeds");
+				}
+			}
+		};
+		loadTask.execute();
 	}
 
 	@Override
@@ -112,7 +147,6 @@ public class FeedlistFragment extends SherlockFragment implements
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Resuming");
 		EventDistributor.getInstance().register(contentUpdate);
-		fla.notifyDataSetChanged();
 	}
 
 	@Override
@@ -125,13 +159,13 @@ public class FeedlistFragment extends SherlockFragment implements
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
-		
+
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EVENTS & arg) != 0) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Received contentUpdate Intent.");
-				fla.notifyDataSetChanged();
+				loadFeeds();
 			}
 		}
 	};
@@ -154,7 +188,7 @@ public class FeedlistFragment extends SherlockFragment implements
 		try {
 			if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(),
 					item, selectedFeed)) {
-				fla.notifyDataSetChanged();
+				loadFeeds();
 			} else {
 				switch (item.getItemId()) {
 				case R.id.remove_item:
@@ -163,7 +197,7 @@ public class FeedlistFragment extends SherlockFragment implements
 						@Override
 						protected void onPostExecute(Void result) {
 							super.onPostExecute(result);
-							fla.notifyDataSetChanged();
+							loadFeeds();
 						}
 					};
 					ConfirmationDialog conDialog = new ConfirmationDialog(

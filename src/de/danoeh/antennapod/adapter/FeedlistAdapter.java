@@ -11,7 +11,6 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ThemeUtils;
 
@@ -19,15 +18,23 @@ public class FeedlistAdapter extends BaseAdapter {
 	private static final String TAG = "FeedlistAdapter";
 
 	private Context context;
-	private FeedManager manager = FeedManager.getInstance();
+	protected ItemAccess itemAccess;
 
 	private int selectedItemIndex;
 	private ImageLoader imageLoader;
 	public static final int SELECTION_NONE = -1;
 
-	public FeedlistAdapter(Context context) {
+	public FeedlistAdapter(Context context, ItemAccess itemAccess) {
 		super();
+		if (context == null) {
+			throw new IllegalArgumentException("context must not be null");
+		}
+		if (itemAccess == null) {
+			throw new IllegalArgumentException("itemAccess must not be null");
+		}
+
 		this.context = context;
+		this.itemAccess = itemAccess;
 		selectedItemIndex = SELECTION_NONE;
 		imageLoader = ImageLoader.getInstance();
 	}
@@ -145,12 +152,12 @@ public class FeedlistAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return manager.getFeedsSize();
+		return itemAccess.getCount();
 	}
 
 	@Override
 	public Feed getItem(int position) {
-		return manager.getFeedAtIndex(position);
+		return itemAccess.getItem(position);
 	}
 
 	@Override
@@ -158,4 +165,9 @@ public class FeedlistAdapter extends BaseAdapter {
 		return position;
 	}
 
+    public interface ItemAccess {
+        int getCount();
+
+        Feed getItem(int position);
+    }
 }

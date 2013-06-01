@@ -5,6 +5,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
 
 import android.content.Context;
@@ -88,8 +89,8 @@ public class DBWriter {
 		});
 	}
 
-	public static void deleteFeed(final Context context, final long feedId) {
-		dbExec.submit(new Runnable() {
+	public static Future<?> deleteFeed(final Context context, final long feedId) {
+		return dbExec.submit(new Runnable() {
 			@Override
 			public void run() {
 				DownloadRequester requester = DownloadRequester.getInstance();
@@ -378,7 +379,7 @@ public class DBWriter {
 
 	}
 
-	public void moveQueueItem(final Context context, final int from,
+	public static void moveQueueItem(final Context context, final int from,
 			final int to, final boolean broadcastUpdate) {
 		dbExec.submit(new Runnable() {
 

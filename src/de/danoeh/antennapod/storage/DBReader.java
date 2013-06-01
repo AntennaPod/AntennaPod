@@ -78,6 +78,9 @@ public final class DBReader {
 					break;
 				}
 			}
+            if (item.getFeed() == null) {
+                Log.w(TAG, "No match found for item with ID " + item.getId() + ". Feed ID was " + item.getFeedId());
+            }
 		}
 	}
 
@@ -107,7 +110,7 @@ public final class DBReader {
 
 	private static List<FeedItem> extractItemlistFromCursor(
 			PodDBAdapter adapter, Cursor itemlistCursor) {
-		ArrayList<String> mediaIds = new ArrayList<String>();
+		ArrayList<String> itemIds = new ArrayList<String>();
 		List<FeedItem> items = new ArrayList<FeedItem>(
 				itemlistCursor.getCount());
 
@@ -126,12 +129,8 @@ public final class DBReader {
 						.getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK));
 				item.setFeedId(itemlistCursor
 						.getLong(PodDBAdapter.IDX_FI_SMALL_FEED));
-				long mediaId = itemlistCursor
-						.getLong(PodDBAdapter.IDX_FI_SMALL_MEDIA);
-				if (mediaId != 0) {
-					mediaIds.add(String.valueOf(mediaId));
-					item.setMedia(new FeedMedia(mediaId, item));
-				}
+				itemIds.add(String.valueOf(item.getId()));
+
 				item.setRead((itemlistCursor
 						.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
 						: false);
@@ -182,23 +181,23 @@ public final class DBReader {
 			} while (itemlistCursor.moveToNext());
 		}
 
-		extractMediafromItemlist(adapter, items, mediaIds);
+		extractMediafromItemlist(adapter, items, itemIds);
 		Collections.sort(items, new FeedItemPubdateComparator());
 		return items;
 	}
 
 	private static void extractMediafromItemlist(PodDBAdapter adapter,
-			List<FeedItem> items, ArrayList<String> mediaIds) {
+			List<FeedItem> items, ArrayList<String> itemIds) {
 
 		List<FeedItem> itemsCopy = new ArrayList<FeedItem>(items);
-		Cursor cursor = adapter.getFeedMediaCursor(mediaIds
-				.toArray(new String[mediaIds.size()]));
+		Cursor cursor = adapter.getFeedMediaCursor(itemIds
+				.toArray(new String[itemIds.size()]));
 		if (cursor.moveToFirst()) {
 			do {
 				long mediaId = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                long itemId = cursor.getLong(PodDBAdapter.KEY_MEDIA_FEEDITEM_INDEX);
 				// find matching feed item
-				FeedItem item = getMatchingItemForMedia(mediaId, itemsCopy);
-				itemsCopy.remove(item);
+				FeedItem item = getMatchingItemForMedia(itemId, itemsCopy);
 				if (item != null) {
 					Date playbackCompletionDate = null;
 					long playbackCompletionTime = cursor
@@ -257,10 +256,10 @@ public final class DBReader {
 		return feed;
 	}
 
-	private static FeedItem getMatchingItemForMedia(long mediaId,
+	private static FeedItem getMatchingItemForMedia(long itemId,
 			List<FeedItem> items) {
 		for (FeedItem item : items) {
-			if (item.getMedia() != null && item.getMedia().getId() == mediaId) {
+			if (item.getId() == itemId) {
 				return item;
 			}
 		}
@@ -355,12 +354,13 @@ public final class DBReader {
 		
 		Cursor mediaCursor = adapter.getCompletedMediaCursor(PLAYBACK_HISTORY_SIZE);
 		String[] itemIds = new String[mediaCursor.getCount()];
-		for (int i = 0; i < itemIds.length; i++) {
-			itemIds[i] = Long.toString(mediaCursor.getLong(PodDBAdapter.KEY_FEEDITEM_INDEX));
+		for (int i = 0; i < itemIds.length && mediaCursor.moveToPosition(i); i++) {
+			itemIds[i] = Long.toString(mediaCursor.getLong(PodDBAdapter.KEY_MEDIA_FEEDITEM_INDEX));
 		}
 		mediaCursor.close();
 		Cursor itemCursor = adapter.getFeedItemCursor(itemIds);
 		List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
+        loadFeedDataOfFeedItemlist(context, items);
 		itemCursor.close();
 		
 		adapter.close();
@@ -417,7 +417,9 @@ public final class DBReader {
 		if (feedCursor.moveToFirst()) {
 			feed = extractFeedFromCursorRow(adapter, feedCursor);
 			feed.setItems(getFeedItemList(context, feed));
-		}
+		} else {
+            Log.e(TAG, "getFeed could not find feed with id " + feedId);
+        }
 		adapter.close();
 		return feed;
 	}
@@ -432,6 +434,7 @@ public final class DBReader {
 			List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
 			if (list.size() > 0) {
 				item = list.get(0);
+                loadFeedDataOfFeedItemlist(context, list);
 			}
 		}
 		return item;
@@ -465,7 +468,7 @@ public final class DBReader {
 	 *            The id of the object
 	 * @return The found object
 	 * */
-	private static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
+	public static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
 		Cursor cursor = adapter.getImageOfFeedCursor(id);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
 			throw new SQLException("No FeedImage found at index: " + id);

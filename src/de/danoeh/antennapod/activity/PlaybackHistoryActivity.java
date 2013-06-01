@@ -14,6 +14,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBWriter;
 
 public class PlaybackHistoryActivity extends SherlockFragmentActivity {
 	private static final String TAG = "PlaybackHistoryActivity";
@@ -36,7 +37,7 @@ public class PlaybackHistoryActivity extends SherlockFragmentActivity {
 			startActivity(intent);
 			return true;
 		case R.id.clear_history_item:
-			FeedManager.getInstance().clearPlaybackHistory(this);
+			DBWriter.clearPlaybackHistory(this);
 			return true;
 		}
 		return super.onOptionsItemSelected(item);

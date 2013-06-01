@@ -22,12 +22,14 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 
+// TODO Remove media column from feeditem table
+
 /**
  * Implements methods for accessing the database
  * */
 public class PodDBAdapter {
 	private static final String TAG = "PodDBAdapter";
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 9;
 	private static final String DATABASE_NAME = "Antennapod.db";
 
 	/** Maximum number of arguments for IN-operator. */
@@ -64,6 +66,7 @@ public class PodDBAdapter {
 	public static final int KEY_SIZE_INDEX = 6;
 	public static final int KEY_MIME_TYPE_INDEX = 7;
 	public static final int KEY_PLAYBACK_COMPLETION_DATE_INDEX = 8;
+    public static final int KEY_MEDIA_FEEDITEM_INDEX = 9;
 	// --------- Download log indices
 	public static final int KEY_FEEDFILE_INDEX = 1;
 	public static final int KEY_FEEDFILETYPE_INDEX = 2;
@@ -160,7 +163,8 @@ public class PodDBAdapter {
 			+ " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
 			+ " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
 			+ " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
-			+ KEY_PLAYBACK_COMPLETION_DATE + " INTEGER)";
+			+ KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
+            + KEY_FEEDITEM + " INTEGER)";
 
 	private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
 			+ TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -186,9 +190,16 @@ public class PodDBAdapter {
 	 * Select all columns from the feeditems-table except description and
 	 * content-encoded.
 	 */
-	private static final String[] SEL_FI_SMALL = { KEY_ID, KEY_TITLE,
-			KEY_PUBDATE, KEY_READ, KEY_LINK, KEY_PAYMENT_LINK, KEY_MEDIA,
-			KEY_FEED, KEY_HAS_CHAPTERS, KEY_ITEM_IDENTIFIER };
+	private static final String[] SEL_FI_SMALL = {
+			TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_READ,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_LINK,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_PAYMENT_LINK, KEY_MEDIA,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
+			TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER };
 
 	// column indices for SEL_FI_SMALL
 
@@ -214,9 +225,18 @@ public class PodDBAdapter {
 	public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
 	public static final int IDX_FI_EXTRA_FEED = 3;
 
+    static PodDBHelper dbHelperSingleton;
+
+    private static synchronized PodDBHelper getDbHelperSingleton(Context appContext) {
+        if (dbHelperSingleton == null) {
+            dbHelperSingleton = new PodDBHelper(appContext, DATABASE_NAME, null, DATABASE_VERSION);
+        }
+        return dbHelperSingleton;
+    }
+
 	public PodDBAdapter(Context c) {
 		this.context = c;
-		helper = new PodDBHelper(context, DATABASE_NAME, null, DATABASE_VERSION);
+		helper = getDbHelperSingleton(c.getApplicationContext());
 	}
 
 	public PodDBAdapter open() {
@@ -236,7 +256,7 @@ public class PodDBAdapter {
 	public void close() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Closing DB");
-		db.close();
+		//db.close();
 	}
 
 	/**
@@ -319,6 +339,9 @@ public class PodDBAdapter {
 		} else {
 			values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
 		}
+        if (media.getItem() != null) {
+            values.put(KEY_FEEDITEM, media.getItem().getId());
+        }
 		if (media.getId() == 0) {
 			media.setId(db.insert(TABLE_NAME_FEED_MEDIA, null, values));
 		} else {
@@ -376,12 +399,6 @@ public class PodDBAdapter {
 		}
 		values.put(KEY_PUBDATE, item.getPubDate().getTime());
 		values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
-		if (item.getMedia() != null) {
-			if (item.getMedia().getId() == 0) {
-				setMedia(item.getMedia());
-			}
-			values.put(KEY_MEDIA, item.getMedia().getId());
-		}
 		if (item.getFeed().getId() == 0) {
 			setFeed(item.getFeed());
 		}
@@ -395,6 +412,11 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
 					new String[] { String.valueOf(item.getId()) });
 		}
+        if (item.getMedia() != null) {
+            if (item.getMedia().getId() == 0) {
+                setMedia(item.getMedia());
+            }
+        }
 		if (item.getChapters() != null) {
 			setChapters(item);
 		}
@@ -662,11 +684,22 @@ public class PodDBAdapter {
 	 */
 	public final Cursor getQueueCursor() {
 		open();
-		Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
-				"INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
-						TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
-						TABLE_NAME_QUEUE + "." + KEY_FEEDITEM }, null, null,
-				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
+		String selFiSmall = Arrays.toString(SEL_FI_SMALL);
+		Object[] args = (Object[]) new String[] {
+				selFiSmall.substring(1, selFiSmall.length() - 1),
+				TABLE_NAME_FEED_ITEMS, TABLE_NAME_QUEUE,
+				TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
+				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM,
+				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM };
+		String query = String.format(
+				"SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
+		Cursor c = db.rawQuery(query, null);
+		/*
+		 * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+		 * "INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
+		 * TABLE_NAME_FEED_ITEMS + "." + KEY_ID, TABLE_NAME_QUEUE + "." +
+		 * KEY_FEEDITEM }, null, null, TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
+		 */
 		return c;
 	}
 
@@ -715,7 +748,7 @@ public class PodDBAdapter {
 			throw new IllegalArgumentException("Limit must be >= 0");
 		}
 		open();
-		Cursor c = db.query(CREATE_TABLE_FEED_MEDIA, null,
+		Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
 				KEY_PLAYBACK_COMPLETION_DATE + " IS NOT NULL", null, null,
 				null, KEY_PLAYBACK_COMPLETION_DATE + " DESC LIMIT " + limit);
 		return c;
@@ -746,12 +779,12 @@ public class PodDBAdapter {
 				}
 
 				cursors[i] = db.rawQuery("SELECT * FROM "
-						+ TABLE_NAME_FEED_MEDIA + " WHERE " + KEY_ID + " IN "
+						+ TABLE_NAME_FEED_MEDIA + " WHERE " + KEY_FEEDITEM + " IN "
 						+ buildInOperator(neededLength), parts);
 			}
 			return new MergeCursor(cursors);
 		} else {
-			return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + " IN "
+			return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_FEEDITEM + " IN "
 					+ buildInOperator(length), mediaIds, null, null, null);
 		}
 	}
@@ -781,7 +814,7 @@ public class PodDBAdapter {
 		}
 
 		open();
-		return db.query(TABLE_NAME_FEED_ITEMS, null, KEY_ID + " IN "
+		return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_ID + " IN "
 				+ buildInOperator(ids.length), ids, null, null, null);
 
 	}
@@ -883,43 +916,65 @@ public class PodDBAdapter {
 			db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
 		}
 
-		@Override
-		public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-				final int newVersion) {
-			Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
-					+ newVersion + ".");
-			if (oldVersion <= 1) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
-						+ KEY_TYPE + " TEXT");
-			}
-			if (oldVersion <= 2) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
-						+ " ADD COLUMN " + KEY_LINK + " TEXT");
-			}
-			if (oldVersion <= 3) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
-						+ " ADD COLUMN " + KEY_ITEM_IDENTIFIER + " TEXT");
-			}
-			if (oldVersion <= 4) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
-						+ KEY_FEED_IDENTIFIER + " TEXT");
-			}
-			if (oldVersion <= 5) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
-						+ " ADD COLUMN " + KEY_REASON_DETAILED + " TEXT");
-				db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
-						+ " ADD COLUMN " + KEY_DOWNLOADSTATUS_TITLE + " TEXT");
-			}
-			if (oldVersion <= 6) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
-						+ " ADD COLUMN " + KEY_CHAPTER_TYPE + " INTEGER");
-			}
-			if (oldVersion <= 7) {
-				db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
-						+ " ADD COLUMN " + KEY_PLAYBACK_COMPLETION_DATE
-						+ " INTEGER");
-			}
-		}
-	}
+        @Override
+    public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
+                          final int newVersion) {
+        Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
+                + newVersion + ".");
+        if (oldVersion <= 1) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
+                    + KEY_TYPE + " TEXT");
+        }
+        if (oldVersion <= 2) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
+                    + " ADD COLUMN " + KEY_LINK + " TEXT");
+        }
+        if (oldVersion <= 3) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + KEY_ITEM_IDENTIFIER + " TEXT");
+        }
+        if (oldVersion <= 4) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS + " ADD COLUMN "
+                    + KEY_FEED_IDENTIFIER + " TEXT");
+        }
+        if (oldVersion <= 5) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
+                    + " ADD COLUMN " + KEY_REASON_DETAILED + " TEXT");
+            db.execSQL("ALTER TABLE " + TABLE_NAME_DOWNLOAD_LOG
+                    + " ADD COLUMN " + KEY_DOWNLOADSTATUS_TITLE + " TEXT");
+        }
+        if (oldVersion <= 6) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_SIMPLECHAPTERS
+                    + " ADD COLUMN " + KEY_CHAPTER_TYPE + " INTEGER");
+        }
+        if (oldVersion <= 7) {
+            db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
+                    + " ADD COLUMN " + KEY_PLAYBACK_COMPLETION_DATE
+                    + " INTEGER");
+        }
+        if (oldVersion <= 8) {
+            final int KEY_ID_POSITION = 0;
+            final int KEY_MEDIA_POSITION = 1;
 
+            // Add feeditem column to feedmedia table
+            db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
+                    + " ADD COLUMN " + KEY_FEEDITEM
+                    + " INTEGER");
+            Cursor feeditemCursor = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID, KEY_MEDIA}, "? > 0", new String[] {KEY_MEDIA}, null, null, null);
+            if (feeditemCursor.moveToFirst()) {
+                db.beginTransaction();
+                ContentValues contentValues = new ContentValues();
+                do {
+                    long mediaId = feeditemCursor.getLong(KEY_MEDIA_POSITION);
+                    contentValues.put(KEY_FEEDITEM, feeditemCursor.getLong(KEY_ID_POSITION));
+                    db.update(TABLE_NAME_FEED_MEDIA, contentValues, "?=?", new String[] {KEY_ID, Long.toString(mediaId)});
+                    contentValues.clear();
+                } while (feeditemCursor.moveToNext());
+                db.setTransactionSuccessful();
+                db.endTransaction();
+            }
+            feeditemCursor.close();
+        }
+    }
+    }
 }
