@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.ListIterator;
 
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Flattr;
 
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
@@ -136,7 +137,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 			for (FlattrThing thing: flattrList) {
 				try {
 					Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
-					publishProgress(thing.getTitle());
+					publishProgress(context.getString(R.string.flattring_label) + " " + thing.getTitle());
 
 					thing.getFlattrStatus().setFlattred(); 
 
@@ -160,6 +161,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 					errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
 				} 
 			}
+			
 		}
 		
 		return null;
@@ -170,7 +172,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		if (progDialog != null && !progDialog.isShowing())
 			progDialog.show();
 					
-		progDialog.setMessage(context.getString(R.string.flattring_label) + " " + names[0]);
+		progDialog.setMessage(names[0]);
 	}
 	
 	@SuppressLint("NewApi")

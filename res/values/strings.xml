@@ -142,6 +142,7 @@
     <string name="flattr_click_success_queue">Successfully flattred %d things from queue!</string>
     <string name="flattr_click_enqueued">No network connection - added to flattr queue!</string>
     <string name="flattring_label">Flattring</string>
+    <string name="flattr_retrieving_status">Retrieving flattred things</string>
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>

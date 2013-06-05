@@ -1,6 +1,12 @@
 package de.danoeh.antennapod.feed;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -16,12 +22,17 @@ import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.shredzone.flattr4j.model.Flattr;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
@@ -29,6 +40,7 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -539,9 +551,11 @@ public class FeedManager {
 				updateWorker.execute();
 			}
 
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Flattring all pending things.");
+			if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
 			new FlattrClickWorker(context).executeAsync(); // flattr pending things
+			
+			if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+			new FlattrStatusFetcher(context).executeAsync();
 		}
 
 	}
@@ -1838,6 +1852,86 @@ public class FeedManager {
 		}
 		
 		return true;
+	}
+	
+	private String normalizeURI(String uri) {
+		String normalizedURI = null;
+		if (uri != null) {
+			try {
+				normalizedURI = (new URI(uri)).normalize().toString();
+				if (! normalizedURI.endsWith("/"))
+					normalizedURI = normalizedURI + "/";
+			}
+			catch (URISyntaxException e) {
+			}
+		}
+		return normalizedURI;
+	}
+
+	/*
+	 * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp
+	 */
+	public void setFlattredStatus(Context context, List<Flattr> flattrList) {
+		class FlattrLinkTime {
+			public String paymentLink;
+			public long time;
+			
+			FlattrLinkTime(String paymentLink, long time) {
+				this.paymentLink = paymentLink;
+				this.time = time;
+			}
+		}
+		
+		// build list with flattred things having normalized URLs
+		ArrayList<FlattrLinkTime> flattrLinkTime = new ArrayList<FlattrLinkTime>(flattrList.size());
+		for (Flattr flattr: flattrList) {
+			flattrLinkTime.add(new FlattrLinkTime(normalizeURI(flattr.getThing().getUrl()), flattr.getCreated().getTime()));
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "FlattredUrl: " + flattr.getThing().getUrl());
+		}
+		
+		
+		String paymentLink;
+		for (Feed feed: feeds) {
+			// check if the feed has been flattred
+			paymentLink = feed.getPaymentLink();
+			if (paymentLink != null) {
+				String feedThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+				feed.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Feed: Trying to match " + feedThingUrl);
+				for (FlattrLinkTime flattr: flattrLinkTime) {
+					if (flattr.paymentLink.equals(feedThingUrl)) {
+						feed.setFlattrStatus(new FlattrStatus(flattr.time));
+						setFeed(context, feed);
+						break;
+					}
+				}
+			}
+
+			// check if any of the feeditems have been flattred
+			for (FeedItem item: feed.getItems()) {
+				paymentLink = item.getPaymentLink();
+				
+				if (paymentLink != null) {
+					String feedItemThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+					item.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "FeedItem: Trying to match " + feedItemThingUrl);
+					for (FlattrLinkTime flattr: flattrLinkTime) {
+						if (flattr.paymentLink.equals(feedItemThingUrl)) {
+							item.setFlattrStatus(new FlattrStatus(flattr.time));
+							setFeedItem(context, item);
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
