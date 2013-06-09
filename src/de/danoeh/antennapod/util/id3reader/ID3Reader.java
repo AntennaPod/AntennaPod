@@ -150,40 +150,64 @@ public class ID3Reader {
 		return new FrameHeader(id, size, flags);
 	}
 
-	protected String readString(InputStream input, int max) throws IOException,
+	protected int readString(StringBuffer buffer, InputStream input, int max) throws IOException,
 			ID3ReaderException {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
 			max--;
 			
 			if (encoding[0] == ENCODING_UNICODE) {
-				return readUnicodeString(input, max);
+				return readUnicodeString(buffer, input, max) + 1; // take encoding byte into account
 			} else {
-				return readISOString(input, max);
+				return readISOString(buffer, input, max) + 1; // take encoding byte into account
 			}
 		} else {
-			return "";
+            if (buffer != null) {
+                buffer.append("");
+            }
+			return 0;
 		}
 	}
 
-	protected String readISOString(InputStream input, int max)
+	protected int readISOString(StringBuffer buffer, InputStream input, int max)
 			throws IOException, ID3ReaderException {
 
 		int bytesRead = 0;
-		StringBuilder builder = new StringBuilder();
 		char c;
 		while (++bytesRead <= max && (c = (char) input.read()) > 0) {
-			builder.append(c);
+            if (buffer != null) {
+			    buffer.append(c);
+            }
 		}
-		return builder.toString();
+		return bytesRead;
 	}
 
-	private String readUnicodeString(InputStream input, int max)
+	private int readUnicodeString(StringBuffer strBuffer, InputStream input, int max)
 			throws IOException, ID3ReaderException {
 		byte[] buffer = new byte[max];
-		IOUtils.readFully(input, buffer);
+        int c, cZero = -1;
+        int i = 0;
+        for (; i < max; i++) {
+            c = input.read();
+            if (c == -1) {
+                break;
+            } else if (c == 0) {
+                if (cZero == 0) {
+                    // termination character found
+                    break;
+                } else {
+                    cZero = 0;
+                }
+            } else {
+                buffer[i] = (byte) c;
+                cZero = -1;
+            }
+        }
 		Charset charset = Charset.forName("UTF-16");
-		return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
+        if (strBuffer != null) {
+		    strBuffer.append(charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString());
+        }
+        return i;
 	}
 
 	public int onStartTagHeader(TagHeader header) {
