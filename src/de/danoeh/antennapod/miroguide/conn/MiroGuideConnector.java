@@ -20,7 +20,7 @@ import android.net.Uri;
 public class MiroGuideConnector {
 	private HttpClient httpClient;
 
-	private static final String HOST_URL = "https://www.miroguide.com/api/";
+	private static final String HOST_URL = "http://www.miroguide.com/api/";
 	private static final String PATH_GET_CHANNELS = "get_channels";
 	private static final String PATH_LIST_CATEGORIES = "list_categories";
 	private static final String PATH_GET_CHANNEL = "get_channel";
