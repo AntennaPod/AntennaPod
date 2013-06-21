@@ -2,6 +2,7 @@ package de.danoeh.antennapod.util.id3reader;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -67,7 +68,10 @@ public class ChapterReader extends ID3Reader {
                 int descriptionLength = readString(null, input, header.getSize());
                 StringBuffer link = new StringBuffer();
                 readISOString(link, input, header.getSize() - descriptionLength);
-                currentChapter.setLink(link.toString());
+                String decodedLink = URLDecoder.decode(link.toString(), "UTF-8");
+
+                currentChapter.setLink(decodedLink);
+
                 if (AppConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
                 return ID3Reader.ACTION_DONT_SKIP;
             }
