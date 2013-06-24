@@ -238,8 +238,10 @@ public class PlaybackService extends Service {
 				MediaButtonReceiver.class.getName());
 		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
 		if (android.os.Build.VERSION.SDK_INT >= 14) {
+			if (UserPreferences.isNoLockscreenControl()){
 			audioManager
 					.registerRemoteControlClient(setupRemoteControlClient());
+			}
 		}
 		registerReceiver(headsetDisconnected, new IntentFilter(
 				Intent.ACTION_HEADSET_PLUG));

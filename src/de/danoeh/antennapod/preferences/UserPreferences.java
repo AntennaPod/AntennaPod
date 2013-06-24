@@ -41,11 +41,13 @@ public class UserPreferences implements
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
+	public static final String PREF_LOCKSCREEN_CONTROL = "prefLockscreenControl";
 
 	private static UserPreferences instance;
 	private Context context;
 
 	// Preferences
+	private boolean noLockscreenControl;
 	private boolean pauseOnHeadsetDisconnect;
 	private boolean followQueue;
 	private boolean downloadMediaOnWifiOnly;
@@ -86,6 +88,7 @@ public class UserPreferences implements
 	private void loadPreferences() {
 		SharedPreferences sp = PreferenceManager
 				.getDefaultSharedPreferences(context);
+		noLockscreenControl = sp.getBoolean(PREF_LOCKSCREEN_CONTROL, true);
 		pauseOnHeadsetDisconnect = sp.getBoolean(
 				PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
 		followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
@@ -129,6 +132,11 @@ public class UserPreferences implements
 		}
 	}
 
+	public static boolean isNoLockscreenControl() {
+		instanceAvailable();
+		return instance.noLockscreenControl;
+	}
+	
 	public static boolean isPauseOnHeadsetDisconnect() {
 		instanceAvailable();
 		return instance.pauseOnHeadsetDisconnect;

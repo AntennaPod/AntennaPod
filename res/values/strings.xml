@@ -148,6 +148,7 @@
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
+    <string name="pref_LockscreenControl_sum">Disable lockscreen control</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
@@ -156,6 +157,7 @@
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
+    <string name="pref_LockscreenControl_title">Lockscreen control</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
