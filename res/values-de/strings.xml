@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="shownotes_label">Notizen</string>
-  <string name="last_update_prefix">Letztes Update:\u0020</string>
+  <string name="most_recent_prefix">Letzte Episode:\u0020</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="published_prefix">Veröffentlicht:\u0020</string>
   <string name="length_prefix">Länge:\u0020</string>
@@ -112,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Abspielliste leeren</string>
   <string name="organize_queue_label">Abspielliste organisieren</string>
+  <string name="undo">Rückgängig</string>
+  <string name="removed_from_queue">Element entfernt</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
@@ -164,6 +166,12 @@
   <string name="pref_autodl_wifi_filter_title">W-LAN-Filter aktivieren</string>
   <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
   <string name="pref_episode_cache_title">Episodenspeicher</string>
+  <string name="pref_theme_title_light">Hell</string>
+  <string name="pref_theme_title_dark">Dunkel</string>
+  <string name="pref_episode_cache_unlimited">Unbegrenzt</string>
+  <string name="pref_update_interval_hours_plural">Stunden</string>
+  <string name="pref_update_interval_hours_singular">Stunde</string>
+  <string name="pref_update_interval_hours_manual">Manuell</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>

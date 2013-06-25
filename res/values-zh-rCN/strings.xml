@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
   <string name="chapters_label">章节</string>
   <string name="shownotes_label">笔记</string>
-  <string name="last_update_prefix">最后更新:\u0020</string>
+  <string name="most_recent_prefix">最近曲目:\u0020</string>
   <string name="episodes_suffix">\u0020 曲</string>
   <string name="published_prefix">发表:\u0020</string>
   <string name="length_prefix">长度:\u0020</string>
@@ -49,20 +49,20 @@
   <string name="remove_feed_label">删除订阅</string>
   <string name="share_link_label">分享网站链接</string>
   <string name="share_source_label">分享订阅链接</string>
-  <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的插曲将一并删除. </string>
+  <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>
-  <string name="stream_label">流</string>
+  <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
   <string name="mark_read_label">标记已读</string>
   <string name="mark_unread_label">标记未读</string>
-  <string name="add_to_queue_label">添加到队列</string>
-  <string name="remove_from_queue_label">从队列中删除</string>
+  <string name="add_to_queue_label">添加到播放列表</string>
+  <string name="remove_from_queue_label">从播放列表中删除</string>
   <string name="visit_website_label">访问网站</string>
   <string name="support_label">Flattr 他</string>
-  <string name="enqueue_all_new">全部添加到队列</string>
+  <string name="enqueue_all_new">全部添加到播放列表</string>
   <string name="download_all">全部下载</string>
   <string name="skip_episode_label">跳过曲目</string>
   <!--Download messages and labels-->
@@ -110,8 +110,10 @@
   <string name="show_download_log">下载日志</string>
   <string name="show_player_label">播放器</string>
   <!--Queue operations-->
-  <string name="clear_queue_label">清空队列</string>
-  <string name="organize_queue_label">组织队列</string>
+  <string name="clear_queue_label">清空播放列表</string>
+  <string name="organize_queue_label">组织播放列表</string>
+  <string name="undo">撤消</string>
+  <string name="removed_from_queue">已删除项</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 登录</string>
   <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
@@ -133,9 +135,9 @@
   <!--Preferences-->
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
-  <string name="queue_label">队列</string>
+  <string name="queue_label">清空播放</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">当耳机是断开时暂停播放 </string>
-  <string name="pref_followQueue_sum">播放完成跳转到队列下一项</string>
+  <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
   <string name="pref_autoUpdateIntervall_title">更新周期</string>
@@ -164,8 +166,14 @@
   <string name="pref_autodl_wifi_filter_title">打开 Wi-Fi 过滤器</string>
   <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
   <string name="pref_episode_cache_title">曲目缓存</string>
+  <string name="pref_theme_title_light">浅色</string>
+  <string name="pref_theme_title_dark">暗色</string>
+  <string name="pref_episode_cache_unlimited">无限</string>
+  <string name="pref_update_interval_hours_plural">小时</string>
+  <string name="pref_update_interval_hours_singular">时</string>
+  <string name="pref_update_interval_hours_manual">手动</string>
   <!--Search-->
-  <string name="search_hint">搜索订阅或者插曲</string>
+  <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>
   <string name="found_in_chapters_label">章节中查找</string>
   <string name="search_status_searching">搜索中...</string>
@@ -200,11 +208,11 @@
   <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
   <!--Miro Guide-->
   <string name="loading_categories_label">加载目录中...</string>
-  <string name="browse_miroguide_label">浏览 Miro 指南</string>
-  <string name="txtv_browse_miroguide_label">或者浏览 Miro 指南</string>
-  <string name="miro_guide_label">Miro 指南</string>
-  <string name="miro_search_hint">搜索 Miro 指南</string>
-  <string name="popular_label">受欢迎的</string>
+  <string name="browse_miroguide_label">浏览 Miro 频道</string>
+  <string name="txtv_browse_miroguide_label">或者浏览 Miro 频道</string>
+  <string name="miro_guide_label">Miro 频道</string>
+  <string name="miro_search_hint">搜索 Miro 频道</string>
+  <string name="popular_label">流行</string>
   <string name="best_rating_label">评分最高</string>
   <string name="add_feed_label">添加订阅</string>
   <string name="miro_feed_added">订阅已被添加</string>

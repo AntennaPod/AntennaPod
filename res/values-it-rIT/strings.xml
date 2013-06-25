@@ -3,7 +3,7 @@
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feed</string>
-  <string name="podcasts_label">PODCASTS</string>
+  <string name="podcasts_label">PODCAST</string>
   <string name="episodes_label">EPISODI</string>
   <string name="new_label">Nuovo</string>
   <string name="waiting_list_label">Lista d\'attesa</string>
@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">Non risulta disponibile lo spazio di archiviazione esterno. Assicurati che lo spazio di archiviazione sia montato per permettere all\'applicazione di funzionare correttamente.</string>
   <string name="chapters_label">Capitoli</string>
   <string name="shownotes_label">Note dell\'episodio</string>
-  <string name="last_update_prefix">Ultimo aggiornamento:\u0020</string>
+  <string name="most_recent_prefix">Episodi Recenti:\u0020</string>
   <string name="episodes_suffix">\u0020episodi</string>
   <string name="published_prefix">Pubblicato:\u0020</string>
   <string name="length_prefix">Durata:\u0020</string>
@@ -86,7 +86,7 @@
   <string name="download_error_io_error">IO Error</string>
   <string name="download_error_request_error">Request error</string>
   <string name="downloads_left">\u0020Download rimasti</string>
-  <string name="download_notification_title">Download dati dei podcast in corso</string>
+  <string name="download_notification_title">Download dati podcast in corso</string>
   <string name="download_report_content">%1$d download con successo, %2$d ko</string>
   <string name="download_log_title_unknown">Titolo sconosciuto</string>
   <string name="download_type_feed">Feed</string>
@@ -112,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Svuota la coda</string>
   <string name="organize_queue_label">Riordina la coda</string>
+  <string name="undo">Undo</string>
+  <string name="removed_from_queue">Oggetto rimosso</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr sign-in</string>
   <string name="flattr_auth_explanation">Premi il tasto seguente per iniziare il processo di autenticazione. Sarai trasferito alla pagina di login di flattr sul tuo browser e ti sarà richiesto di garantire ad AntennaPod il permesso di effettuare microdonazioni. Dopo la tua autorizzazione, sarai riportato alla seguente schermata in modo automatico.</string>
@@ -138,13 +140,13 @@
   <string name="pref_followQueue_sum">Passa al prossimo episodio in coda quanto si completa una riproduzione</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
-  <string name="pref_autoUpdateIntervall_title">Intervallo di aggiornamento</string>
+  <string name="pref_autoUpdateIntervall_title">Intervallo di update</string>
   <string name="pref_autoUpdateIntervall_sum">Specifica un intervallo per l\'aggiornamento automatico dei feed o disabilitalo</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
   <string name="pref_followQueue_title">Playback continuo</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Disconnessione cuffie</string>
-  <string name="pref_mobileUpdate_title">Aggiornamenti su rete mobile</string>
+  <string name="pref_mobileUpdate_title">Update su rete mobile</string>
   <string name="pref_mobileUpdate_sum">Permetti gli aggiornamenti tramite connessione dati mobile</string>
   <string name="refreshing_label">Aggiornamento</string>
   <string name="flattr_settings_label">Impostazioni Flattr</string>
@@ -164,6 +166,12 @@
   <string name="pref_autodl_wifi_filter_title">Abilita il filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
   <string name="pref_episode_cache_title">Cache degli episodi</string>
+  <string name="pref_theme_title_light">Light</string>
+  <string name="pref_theme_title_dark">Dark</string>
+  <string name="pref_episode_cache_unlimited">Illimitato</string>
+  <string name="pref_update_interval_hours_plural">ore</string>
+  <string name="pref_update_interval_hours_singular">ora</string>
+  <string name="pref_update_interval_hours_manual">Manuale</string>
   <!--Search-->
   <string name="search_hint">Ricerca per Feed o Episodi</string>
   <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>
@@ -192,9 +200,9 @@
   <string name="opml_export_success_title">Esportazione OPML avvenuta con successo.</string>
   <string name="opml_export_success_sum">Il file .opml è stato scritto su:\u0020</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Imposta il timer di spegnimento</string>
+  <string name="set_sleeptimer_label">Imposta timer</string>
   <string name="disable_sleeptimer_label">Disabilita il timer di spegnimento</string>
-  <string name="enter_time_here_label">Inserisci il tempo</string>
+  <string name="enter_time_here_label">Tempo di spegnimento</string>
   <string name="sleep_timer_label">Timer di spegnimento</string>
   <string name="time_left_label">Tempo residuo:\u0020</string>
   <string name="time_dialog_invalid_input">Input non valido, il campo deve essere un numero intero.</string>

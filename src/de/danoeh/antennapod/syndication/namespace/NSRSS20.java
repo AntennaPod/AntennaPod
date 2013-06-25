@@ -78,6 +78,15 @@ public class NSRSS20 extends Namespace {
 	@Override
 	public void handleElementEnd(String localName, HandlerState state) {
 		if (localName.equals(ITEM)) {
+			if (state.getCurrentItem() != null) {
+				// the title tag is optional in RSS 2.0. The description is used
+				// as a
+				// title if the item has no title-tag.
+				if (state.getCurrentItem().getTitle() == null) {
+					state.getCurrentItem().setTitle(
+							state.getCurrentItem().getDescription());
+				}
+			}
 			state.setCurrentItem(null);
 		} else if (state.getTagstack().size() >= 2
 				&& state.getContentBuf() != null) {
@@ -98,7 +107,8 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setTitle(content);
 				} else if (second.equals(CHANNEL)) {
 					state.getFeed().setTitle(content);
-				} else if (second.equals(IMAGE) && third != null && third.equals(CHANNEL)) {
+				} else if (second.equals(IMAGE) && third != null
+						&& third.equals(CHANNEL)) {
 					state.getFeed().getImage().setTitle(content);
 				}
 			} else if (top.equals(LINK)) {
@@ -110,7 +120,8 @@ public class NSRSS20 extends Namespace {
 			} else if (top.equals(PUBDATE) && second.equals(ITEM)) {
 				state.getCurrentItem().setPubDate(
 						SyndDateUtils.parseRFC822Date(content));
-			} else if (top.equals(URL) && second.equals(IMAGE) && third != null && third.equals(CHANNEL)) {
+			} else if (top.equals(URL) && second.equals(IMAGE) && third != null
+					&& third.equals(CHANNEL)) {
 				state.getFeed().getImage().setDownload_url(content);
 			} else if (localName.equals(DESCR)) {
 				if (second.equals(CHANNEL)) {

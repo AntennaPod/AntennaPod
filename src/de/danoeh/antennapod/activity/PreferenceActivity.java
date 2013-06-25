@@ -12,6 +12,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -166,10 +167,37 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 						return true;
 					}
 				});
-
+		buildUpdateIntervalPreference();
 		buildAutodownloadSelectedNetworsPreference();
 		setSelectedNetworksEnabled(UserPreferences
 				.isEnableAutodownloadWifiFilter());
+
+	}
+
+	private void buildUpdateIntervalPreference() {
+		ListPreference pref = (ListPreference) findPreference(UserPreferences.PREF_UPDATE_INTERVAL);
+		String[] values = getResources().getStringArray(
+				R.array.update_intervall_values);
+		String[] entries = new String[values.length];
+		for (int x = 0; x < values.length; x++) {
+			Integer v = Integer.parseInt(values[x]);
+			switch (v) {
+			case 0:
+				entries[x] = getString(R.string.pref_update_interval_hours_manual);
+				break;
+			case 1:
+				entries[x] = v
+						+ " "
+						+ getString(R.string.pref_update_interval_hours_singular);
+				break;
+			default:
+				entries[x] = v + " "
+						+ getString(R.string.pref_update_interval_hours_plural);
+				break;
+
+			}
+		}
+		pref.setEntries(entries);
 
 	}
 
@@ -205,9 +233,15 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	}
 
 	private void setEpisodeCacheSizeText(int cacheSize) {
-		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(
-				Integer.toString(cacheSize)
-						+ getString(R.string.episodes_suffix));
+		String s;
+		if (cacheSize == getResources().getInteger(
+				R.integer.episode_cache_size_unlimited)) {
+			s = getString(R.string.pref_episode_cache_unlimited);
+		} else {
+			s = Integer.toString(cacheSize)
+					+ getString(R.string.episodes_suffix);
+		}
+		findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE).setSummary(s);
 	}
 
 	private void setDataFolderText() {

@@ -1,14 +1,12 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:dslv="http://schemas.android.com/apk/res/de.danoeh.antennapod"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:orientation="vertical" >
+    android:layout_height="fill_parent" >
 
     <com.mobeta.android.dslv.DragSortListView
         android:id="@android:id/list"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_height="match_parent"
         dslv:collapsed_height="2dp"
         dslv:drag_enabled="true"
         dslv:drag_handle_id="@id/drag_handle"
@@ -32,4 +30,9 @@
         android:gravity="center"
         android:text="@string/no_items_label" />
 
-</LinearLayout>
+    <LinearLayout android:id="@+id/undobar" style="@style/UndoBar">
+      <TextView android:id="@+id/undobar_message" style="@style/UndoBarMessage" />
+      <Button android:id="@+id/undobar_button" style="@style/UndoBarButton" />
+    </LinearLayout>
+
+</FrameLayout>

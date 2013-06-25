@@ -3,6 +3,8 @@ package de.danoeh.antennapod.activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,19 +23,23 @@ import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.UndoBarController;
 
-public class OrganizeQueueActivity extends SherlockListActivity {
+public class OrganizeQueueActivity extends SherlockListActivity implements
+		UndoBarController.UndoListener {
 	private static final String TAG = "OrganizeQueueActivity";
 
 	private static final int MENU_ID_ACCEPT = 2;
 
 	private OrganizeAdapter adapter;
+	private UndoBarController undoBarController;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.organize_queue);
+		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		DragSortListView listView = (DragSortListView) getListView();
 		listView.setDropListener(dropListener);
@@ -41,12 +47,22 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 
 		adapter = new OrganizeAdapter(this);
 		setListAdapter(adapter);
+
+		undoBarController = new UndoBarController(findViewById(R.id.undobar),
+				this);
 	}
 
 	@Override
 	protected void onPause() {
 		super.onPause();
 		EventDistributor.getInstance().unregister(contentUpdate);
+	}
+
+	@Override
+	protected void onStop() {
+		super.onStop();
+		FeedManager.getInstance().autodownloadUndownloadedItems(
+				getApplicationContext());
 	}
 
 	@Override
@@ -82,27 +98,24 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		@Override
 		public void remove(int which) {
 			FeedManager manager = FeedManager.getInstance();
-			manager.removeQueueItem(OrganizeQueueActivity.this,
-					(FeedItem) getListAdapter().getItem(which));
+			FeedItem item = (FeedItem) getListAdapter().getItem(which);
+			manager.removeQueueItem(OrganizeQueueActivity.this, item, false);
+			undoBarController.showUndoBar(false,
+					getString(R.string.removed_from_queue), new UndoToken(item,
+							which));
 		}
 	};
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		super.onCreateOptionsMenu(menu);
-		TypedArray drawables = obtainStyledAttributes(new int[] { R.attr.navigation_accept });
-		menu.add(Menu.NONE, MENU_ID_ACCEPT, Menu.NONE, R.string.confirm_label)
-				.setIcon(drawables.getDrawable(0))
-				.setShowAsAction(
-						MenuItem.SHOW_AS_ACTION_IF_ROOM
-								| MenuItem.SHOW_AS_ACTION_WITH_TEXT);
 		return true;
 	}
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
-		case MENU_ID_ACCEPT:
+		case android.R.id.home:
 			finish();
 			return true;
 		default:
@@ -110,11 +123,18 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 		}
 	}
 
-	/**
-	 * WARNING: If the PlaybackService is playing an episode from the queue,
-	 * this list adapter will ignore the first item in the list to make sure
-	 * that the position of the first queue item cannot be changed.
-	 */
+	@Override
+	public void onUndo(Parcelable token) {
+		// Perform the undo
+		UndoToken undoToken = (UndoToken) token;
+		FeedItem feedItem = undoToken.getFeedItem();
+		int position = undoToken.getPosition();
+
+		FeedManager manager = FeedManager.getInstance();
+		manager.addQueueItemAt(OrganizeQueueActivity.this, feedItem, position,
+				false);
+	}
+
 	private static class OrganizeAdapter extends BaseAdapter {
 
 		private Context context;
@@ -183,6 +203,54 @@ public class OrganizeQueueActivity extends SherlockListActivity {
 			return position;
 		}
 
+	}
+
+	private static class UndoToken implements Parcelable {
+		private long itemId;
+		private long feedId;
+		private int position;
+
+		public UndoToken(FeedItem item, int position) {
+			FeedManager manager = FeedManager.getInstance();
+			this.itemId = item.getId();
+			this.feedId = item.getFeed().getId();
+			this.position = position;
+		}
+
+		private UndoToken(Parcel in) {
+			itemId = in.readLong();
+			feedId = in.readLong();
+			position = in.readInt();
+		}
+
+		public static final Parcelable.Creator<UndoToken> CREATOR = new Parcelable.Creator<UndoToken>() {
+			public UndoToken createFromParcel(Parcel in) {
+				return new UndoToken(in);
+			}
+
+			public UndoToken[] newArray(int size) {
+				return new UndoToken[size];
+			}
+		};
+
+		public int describeContents() {
+			return 0;
+		}
+
+		public void writeToParcel(Parcel out, int flags) {
+			out.writeLong(itemId);
+			out.writeLong(feedId);
+			out.writeInt(position);
+		}
+
+		public FeedItem getFeedItem() {
+			FeedManager manager = FeedManager.getInstance();
+			return manager.getFeedItem(itemId, feedId);
+		}
+
+		public int getPosition() {
+			return position;
+		}
 	}
 
 }

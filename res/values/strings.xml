@@ -36,7 +36,7 @@
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
     <string name="shownotes_label">Shownotes</string>
-    <string name="last_update_prefix">Last Update:\u0020</string>
+    <string name="most_recent_prefix">Most Recent Episode:\u0020</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="published_prefix">Published:\u0020</string>
     <string name="length_prefix">Length:\u0020</string>
@@ -122,6 +122,8 @@
     <!-- Queue operations -->
     <string name="clear_queue_label">Clear queue</string>
     <string name="organize_queue_label">Organize queue</string>
+    <string name="undo">Undo</string>
+    <string name="removed_from_queue">Item removed</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
@@ -177,6 +179,13 @@
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_episode_cache_title">Episode cache</string>
+    <string name="pref_theme_title_light">Light</string>
+    <string name="pref_theme_title_dark">Dark</string>
+    <string name="pref_episode_cache_unlimited">Unlimited</string>
+	<string name="pref_update_interval_hours_plural">hours</string>
+	<string name="pref_update_interval_hours_singular">hour</string>
+	<string name="pref_update_interval_hours_manual">Manual</string>
+   
 
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>

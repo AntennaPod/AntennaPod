@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.7.4
+---------------
+* Episode cache size can now be set to unlimited
+* Removing an episode in the queue via sliding can now be undone
+* Added support for Links in MP3 chapters
+* Added Czech(Czech Republic), Azerbaijani and Portuguese translations
+* Several bugfixes and improvements
+
 Version 0.9.7.3
 ---------------
 * Bluetooth devices now display metadata during playback (requires AVRCP 1.3 or higher)

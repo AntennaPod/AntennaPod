@@ -3,6 +3,7 @@ package de.danoeh.antennapod.test;
 public class TestFeeds {
 
 	public static final String[] urls = {
+			"http://savoirsenmultimedia.ens.fr/podcast.php?id=30",
 			"http://bitlove.org/apollo40/ps3newsroom/feed",
 			"http://bitlove.org/beapirate/hauptstadtpiraten/feed",
 			"http://bitlove.org/benni/besondereumstaende/feed",

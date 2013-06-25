@@ -73,8 +73,8 @@ public class PlaybackService extends Service {
 	public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.service.prepareImmediately";
 
 	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
-	private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED= "com.android.music.playstatechanged";
-	
+	private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
+
 	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
 	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
 	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
@@ -363,13 +363,15 @@ public class PlaybackService extends Service {
 				}
 				// Intent values appear to be valid
 				// check if already playing and playbackType is the same
-			} else if (media == null || playable != media
+			} else if (media == null
+					|| !playable.getIdentifier().equals(media.getIdentifier())
 					|| playbackType != shouldStream) {
 				pause(true, false);
 				player.reset();
 				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
 				if (media == null
-						|| playable.getIdentifier() != media.getIdentifier()) {
+						|| !playable.getIdentifier().equals(
+								media.getIdentifier())) {
 					media = playable;
 				}
 
@@ -730,7 +732,7 @@ public class PlaybackService extends Service {
 			isInQueue = media instanceof FeedMedia
 					&& manager.isInQueue(((FeedMedia) media).getItem());
 			if (isInQueue) {
-				manager.removeQueueItem(PlaybackService.this, item);
+				manager.removeQueueItem(PlaybackService.this, item, true);
 			}
 			manager.addItemToPlaybackHistory(PlaybackService.this, item);
 			manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
@@ -1226,23 +1228,23 @@ public class PlaybackService extends Service {
 
 	private void bluetoothNotifyChange() {
 		boolean isPlaying = false;
-		
+
 		if (status == PlayerStatus.PLAYING) {
 			isPlaying = true;
 		}
-		
-	    Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
-	    i.putExtra("id", 1);
-	    i.putExtra("artist", "");
-	    i.putExtra("album", media.getFeedTitle());
-	    i.putExtra("track", media.getEpisodeTitle());
-	    i.putExtra("playing", isPlaying);        
-	    i.putExtra("ListSize", manager.getQueueSize(false));
-	    i.putExtra("duration", media.getDuration());
-	    i.putExtra("position", media.getPosition());
-	    sendBroadcast(i);
+
+		Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
+		i.putExtra("id", 1);
+		i.putExtra("artist", "");
+		i.putExtra("album", media.getFeedTitle());
+		i.putExtra("track", media.getEpisodeTitle());
+		i.putExtra("playing", isPlaying);
+		i.putExtra("ListSize", manager.getQueueSize(false));
+		i.putExtra("duration", media.getDuration());
+		i.putExtra("position", media.getPosition());
+		sendBroadcast(i);
 	}
-	
+
 	/**
 	 * Pauses playback when the headset is disconnected and the preference is
 	 * set

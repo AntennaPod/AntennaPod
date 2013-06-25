@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Picture;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -23,10 +22,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebChromeClient;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
-import android.webkit.WebView.PictureListener;
+import android.webkit.WebViewClient;
 import android.widget.Toast;
 
 import com.actionbarsherlock.app.SherlockFragment;
@@ -101,7 +99,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating view");
 		webvDescription = new WebView(getActivity());
-
 		if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
 			if (Build.VERSION.SDK_INT >= 11
 					&& Build.VERSION.SDK_INT <= Build.VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
@@ -115,6 +112,32 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				LayoutAlgorithm.NARROW_COLUMNS);
 		webvDescription.getSettings().setLoadWithOverviewMode(true);
 		webvDescription.setOnLongClickListener(webViewLongClickListener);
+		webvDescription.setWebViewClient(new WebViewClient() {
+
+			@Override
+			public boolean shouldOverrideUrlLoading(WebView view, String url) {
+				Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+				startActivity(intent);
+				return true;
+			}
+
+			@Override
+			public void onPageFinished(WebView view, String url) {
+				super.onPageFinished(view, url);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Page finished");
+				// Restoring the scroll position might not always work
+				view.postDelayed(new Runnable() {
+
+					@Override
+					public void run() {
+						restoreFromPreference();
+					}
+
+				}, 50);
+			}
+
+		});
 		registerForContextMenu(webvDescription);
 		return webvDescription;
 	}
@@ -336,7 +359,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 
 			String data;
 
-			@SuppressWarnings("deprecation")
 			@Override
 			protected void onPostExecute(Void result) {
 				super.onPostExecute(result);
@@ -350,16 +372,6 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Webview loaded");
 				webViewLoader = null;
-				webvDescription.setPictureListener(new PictureListener() {
-
-					@Override
-					@Deprecated
-					public void onNewPicture(WebView view, Picture picture) {
-						restoreFromPreference();
-
-					}
-				});
-
 			}
 
 			@Override
@@ -434,17 +446,21 @@ public class ItemDescriptionFragment extends SherlockFragment {
 		if (saveState) {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Restoring from preferences");
-			SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
-					Activity.MODE_PRIVATE);
-			String id = prefs.getString(PREF_PLAYABLE_ID, "");
-			int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
-			if (scrollY != -1 && media != null
-					&& id.equals(media.getIdentifier().toString())
-					&& webvDescription != null) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Restored scroll Position: " + scrollY);
-				webvDescription.scrollTo(webvDescription.getScrollX(), scrollY);
-				return true;
+			Activity activity = getActivity();
+			if (activity != null) {
+				SharedPreferences prefs = activity.getSharedPreferences(
+						PREF, Activity.MODE_PRIVATE);
+				String id = prefs.getString(PREF_PLAYABLE_ID, "");
+				int scrollY = prefs.getInt(PREF_SCROLL_Y, -1);
+				if (scrollY != -1 && media != null
+						&& id.equals(media.getIdentifier().toString())
+						&& webvDescription != null) {
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "Restored scroll Position: " + scrollY);
+					webvDescription.scrollTo(webvDescription.getScrollX(),
+							scrollY);
+					return true;
+				}
 			}
 		}
 		return false;

@@ -24,7 +24,11 @@ public class ID3Reader {
 
 	protected int readerPosition;
 
-	private static final byte ENCODING_UNICODE = 1;
+	private static final byte ENCODING_UTF16_WITH_BOM = 1;
+    private static final byte ENCODING_UTF16_WITHOUT_BOM = 2;
+    private static final byte ENCODING_UTF8 = 3;
+
+    private TagHeader tagHeader;
 
 	public ID3Reader() {
 	}
@@ -34,7 +38,7 @@ public class ID3Reader {
 		int rc;
 		readerPosition = 0;
 		char[] tagHeaderSource = readBytes(input, HEADER_LENGTH);
-		TagHeader tagHeader = createTagHeader(tagHeaderSource);
+		tagHeader = createTagHeader(tagHeaderSource);
 		if (tagHeader == null) {
 			onNoTagHeaderFound();
 		} else {
@@ -124,12 +128,12 @@ public class ID3Reader {
 					+ HEADER_LENGTH);
 		}
 		if (hasTag) {
-			String id = null;
-			id = new String(source, 0, ID3_LENGTH);
+			String id = new String(source, 0, ID3_LENGTH);
 			char version = (char) ((source[3] << 8) | source[4]);
 			byte flags = (byte) source[5];
 			int size = (source[6] << 24) | (source[7] << 16) | (source[8] << 8)
 					| source[9];
+            size = unsynchsafe(size);
 			return new TagHeader(id, size, version, flags);
 		} else {
 			return null;
@@ -142,48 +146,89 @@ public class ID3Reader {
 			throw new ID3ReaderException("Length of header must be "
 					+ HEADER_LENGTH);
 		}
-		String id = null;
-		id = new String(source, 0, FRAME_ID_LENGTH);
-		int size = (((int) source[4]) << 24) | (((int) source[5]) << 16)
-				| (((int) source[6]) << 8) | source[7];
+		String id = new String(source, 0, FRAME_ID_LENGTH);
+
+        int size = (((int) source[4]) << 24) | (((int) source[5]) << 16)
+                    | (((int) source[6]) << 8) | source[7];
+        if (tagHeader != null && tagHeader.getVersion() >= 0x0400) {
+            size = unsynchsafe(size);
+        }
 		char flags = (char) ((source[8] << 8) | source[9]);
 		return new FrameHeader(id, size, flags);
 	}
 
-	protected String readString(InputStream input, int max) throws IOException,
+    private int unsynchsafe(int in) {
+        int out = 0;
+        int mask = 0x7F000000;
+
+        while (mask != 0) {
+            out >>= 1;
+            out |= in & mask;
+            mask >>= 8;
+        }
+
+        return out;
+    }
+
+	protected int readString(StringBuffer buffer, InputStream input, int max) throws IOException,
 			ID3ReaderException {
 		if (max > 0) {
 			char[] encoding = readBytes(input, 1);
 			max--;
 			
-			if (encoding[0] == ENCODING_UNICODE) {
-				return readUnicodeString(input, max);
-			} else {
-				return readISOString(input, max);
+			if (encoding[0] == ENCODING_UTF16_WITH_BOM || encoding[0] == ENCODING_UTF16_WITHOUT_BOM) {
+                return readUnicodeString(buffer, input, max, Charset.forName("UTF-16")) + 1; // take encoding byte into account
+			} else if (encoding[0] == ENCODING_UTF8) {
+                return readUnicodeString(buffer, input, max, Charset.forName("UTF-8")) + 1; // take encoding byte into account
+            } else {
+				return readISOString(buffer, input, max) + 1; // take encoding byte into account
 			}
 		} else {
-			return "";
+            if (buffer != null) {
+                buffer.append("");
+            }
+			return 0;
 		}
 	}
 
-	protected String readISOString(InputStream input, int max)
+	protected int readISOString(StringBuffer buffer, InputStream input, int max)
 			throws IOException, ID3ReaderException {
 
 		int bytesRead = 0;
-		StringBuilder builder = new StringBuilder();
 		char c;
 		while (++bytesRead <= max && (c = (char) input.read()) > 0) {
-			builder.append(c);
+            if (buffer != null) {
+			    buffer.append(c);
+            }
 		}
-		return builder.toString();
+		return bytesRead;
 	}
 
-	private String readUnicodeString(InputStream input, int max)
+	private int readUnicodeString(StringBuffer strBuffer, InputStream input, int max, Charset charset)
 			throws IOException, ID3ReaderException {
 		byte[] buffer = new byte[max];
-		IOUtils.readFully(input, buffer);
-		Charset charset = Charset.forName("UTF-16");
-		return charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString();
+        int c, cZero = -1;
+        int i = 0;
+        for (; i < max; i++) {
+            c = input.read();
+            if (c == -1) {
+                break;
+            } else if (c == 0) {
+                if (cZero == 0) {
+                    // termination character found
+                    break;
+                } else {
+                    cZero = 0;
+                }
+            } else {
+                buffer[i] = (byte) c;
+                cZero = -1;
+            }
+        }
+        if (strBuffer != null) {
+		    strBuffer.append(charset.newDecoder().decode(ByteBuffer.wrap(buffer)).toString());
+        }
+        return i;
 	}
 
 	public int onStartTagHeader(TagHeader header) {

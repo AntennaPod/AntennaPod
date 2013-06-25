@@ -11,7 +11,7 @@
   <string name="add_new_feed_label">Додати канал</string>
   <string name="downloads_label">Завантаження</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
-  <string name="download_log_label">Завантаження</string>
+  <string name="download_log_label">Історія завантажень</string>
   <string name="playback_history_label">Що грало</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">Немає доступної флешки. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
   <string name="shownotes_label">Нотатки до епізода</string>
-  <string name="last_update_prefix">Останнє оновлення:\u0020</string>
+  <string name="most_recent_prefix">Найновіший епізод:\u0020</string>
   <string name="episodes_suffix">\u0020епізодів</string>
   <string name="published_prefix">Опубліковано:\u0020</string>
   <string name="length_prefix">Довжина:\u0020</string>
@@ -54,11 +54,11 @@
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
   <string name="pause_label">Пауза</string>
-  <string name="stream_label">Поток</string>
+  <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
   <string name="mark_read_label">Прочитано</string>
   <string name="mark_unread_label">Непрочитано</string>
-  <string name="add_to_queue_label">Додати канал</string>
+  <string name="add_to_queue_label">Додати до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
@@ -112,14 +112,16 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="organize_queue_label">Впорядкувати чергу</string>
+  <string name="undo">Скасувати</string>
+  <string name="removed_from_queue">Видалено</string>
   <!--Flattr-->
-  <string name="flattr_auth_label">Увійти дл Flattr</string>
+  <string name="flattr_auth_label">Увійти до Flattr</string>
   <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
   <string name="authenticate_label">Ввісти ім\'я та пароль</string>
   <string name="return_home_label">Повернення до початку</string>
   <string name="flattr_auth_success">Вийшло авторізуватись. Тепер ви можете flattr things за допомогою додатку</string>
-  <string name="no_flattr_token_title">Не має flattr token</string>
-  <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не підєднано до AntennaPod. Ви можете або підєднати її або відкривати web сторінку в браузері</string>
+  <string name="no_flattr_token_title">Немає flattr token</string>
+  <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не під\'єднано до AntennaPod. Ви можете або під\'єднати її або відкривати web сторінку в браузері</string>
   <string name="authenticate_now_label">Пароль та логін</string>
   <string name="action_forbidden_title">Заборонено</string>
   <string name="action_forbidden_msg">AntennaPod не маэ дозвілу це зробити. Можливо відкликаний доступ до AntennaPod. Або ввідіть логін пароль в налаштуваннях або зробить це на сайті</string>
@@ -158,12 +160,18 @@
   <string name="pref_display_only_episodes_sum">Відображати тільки канали з наявними епізодами</string>
   <string name="user_interface_label">Зовнішній вид</string>
   <string name="pref_set_theme_title">Обрати тему</string>
-  <string name="pref_set_theme_sum">Змінти появу AntennaPod</string>
+  <string name="pref_set_theme_sum">Змінити появу AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматичне завантаження</string>
   <string name="pref_automatic_download_sum">Налаштування автоматичного завантаження епізодів</string>
   <string name="pref_autodl_wifi_filter_title">Увімкнути фільтр Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки для окремих Wi-Fi мережах</string>
+  <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки в цих Wi-Fi мережах</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
+  <string name="pref_theme_title_light">Світла</string>
+  <string name="pref_theme_title_dark">Темна</string>
+  <string name="pref_episode_cache_unlimited">Без обмежень</string>
+  <string name="pref_update_interval_hours_plural">годин</string>
+  <string name="pref_update_interval_hours_singular">година</string>
+  <string name="pref_update_interval_hours_manual">Інструкція</string>
   <!--Search-->
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>
@@ -175,7 +183,7 @@
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Ви можете імпортувати OPML файл. Такі файли дозволяют переходити з однієї програми до іншої:</string>
+  <string name="opml_import_txtv_button_lable">Ви можете імпортувати OPML файл. Такі файли дозволяют переходити з однієї програми для подкастів до іншої:</string>
   <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
   <string name="start_import_label">Почати імпорт</string>
   <string name="opml_import_label">OPML імпорт</string>
@@ -203,7 +211,7 @@
   <string name="browse_miroguide_label">Перегляд Miro Guide</string>
   <string name="txtv_browse_miroguide_label">Або проглянути Miro Guide</string>
   <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Пошук Mirog Guide</string>
+  <string name="miro_search_hint">Пошук в Mirog Guide</string>
   <string name="popular_label">Популярні</string>
   <string name="best_rating_label">Кращі</string>
   <string name="add_feed_label">Додати канал</string>

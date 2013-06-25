@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="shownotes_label">Notes d\'épisode</string>
-  <string name="last_update_prefix">Dernière mise à jour :\u0020</string>
+  <string name="most_recent_prefix">Episode le plus récent :\u0020</string>
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="published_prefix">Publié :\u0020</string>
   <string name="length_prefix">Durée :\u0020</string>
@@ -112,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Effacer la liste</string>
   <string name="organize_queue_label">Ordre de lecture</string>
+  <string name="undo">Annuler</string>
+  <string name="removed_from_queue">Élément retiré</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
   <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
@@ -164,6 +166,12 @@
   <string name="pref_autodl_wifi_filter_title">Activer le filtre Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
   <string name="pref_episode_cache_title">Épisodes stockés localement</string>
+  <string name="pref_theme_title_light">Clair</string>
+  <string name="pref_theme_title_dark">Sombre</string>
+  <string name="pref_episode_cache_unlimited">Illimité</string>
+  <string name="pref_update_interval_hours_plural">heures</string>
+  <string name="pref_update_interval_hours_singular">heure</string>
+  <string name="pref_update_interval_hours_manual">Manuel</string>
   <!--Search-->
   <string name="search_hint">Chercher des flux ou épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes</string>

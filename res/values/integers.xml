@@ -1,0 +1,4 @@
+<resources>
+  <integer name="undobar_hide_delay">5000</integer>
+  <integer name="episode_cache_size_unlimited">-1</integer>
+</resources>

@@ -22,7 +22,7 @@
     <PreferenceCategory android:title="@string/network_pref" >
         <ListPreference
             android:defaultValue="0"
-            android:entries="@array/update_intervall_options"
+            android:entries="@array/update_intervall_values"
             android:entryValues="@array/update_intervall_values"
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervall_sum"
@@ -34,7 +34,7 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title" />
-        <ListPreference android:defaultValue="20" android:entries="@array/episode_cache_size" android:key="prefEpisodeCacheSize" android:title="@string/pref_episode_cache_title" android:entryValues="@array/episode_cache_size"/><PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
+        <ListPreference android:defaultValue="20" android:entries="@array/episode_cache_size_entries" android:key="prefEpisodeCacheSize" android:title="@string/pref_episode_cache_title" android:entryValues="@array/episode_cache_size_values"/><PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
             <CheckBoxPreference android:key="prefEnableAutoDl" android:title="@string/pref_automatic_download_title" android:defaultValue="false"/><CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
             
         </PreferenceScreen>

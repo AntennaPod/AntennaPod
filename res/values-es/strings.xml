@@ -32,9 +32,9 @@
   <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas del programa</string>
-  <string name="last_update_prefix">Última actualización:\u0020</string>
+  <string name="most_recent_prefix">Episodio más reciente:\u0020</string>
   <string name="episodes_suffix">\u0020episodios</string>
-  <string name="published_prefix">Publicado:\u0020</string>
+  <string name="published_prefix">Publicado el:\u0020</string>
   <string name="length_prefix">Duración:\u0020</string>
   <string name="size_prefix">Tamaño:\u0020</string>
   <string name="processing_label">Procesando</string>
@@ -42,7 +42,7 @@
   <string name="image_of_prefix">Imagen de:\u0020</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
-  <string name="txtvfeedurl_label">Escriba aquí la URL del canal</string>
+  <string name="txtvfeedurl_label">Escriba aquí la URL del canal:</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="show_info_label">Información del programa</string>
@@ -112,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Limpiar la cola</string>
   <string name="organize_queue_label">Organizar cola</string>
+  <string name="undo">Deshacer</string>
+  <string name="removed_from_queue">Artículo eliminado</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Identificarse en Flattr</string>
   <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
@@ -164,6 +166,12 @@
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
+  <string name="pref_theme_title_light">Claro</string>
+  <string name="pref_theme_title_dark">Oscuro</string>
+  <string name="pref_episode_cache_unlimited">Ilimitado</string>
+  <string name="pref_update_interval_hours_plural">horas</string>
+  <string name="pref_update_interval_hours_singular">hora</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
