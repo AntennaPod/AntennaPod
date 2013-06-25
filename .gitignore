@@ -27,6 +27,10 @@ build.xml
 .idea
 *.iml
 gen-external-apklibs
+#transifex downloads
+changelog
+description
+
 # other
 *.odg#
 proguard
