@@ -3,6 +3,7 @@ package de.danoeh.antennapod.asynctask;
 import java.util.Date;
 
 import de.danoeh.antennapod.feed.FeedFile;
+import de.danoeh.antennapod.util.DownloadError;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {
@@ -25,7 +26,7 @@ public class DownloadStatus {
 	 * URL if the download has no other title.
 	 */
 	protected String title;
-	protected int reason;
+	protected DownloadError reason;
 	/**
 	 * A message which can be presented to the user to give more information.
 	 * Should be null if Download was successful.
@@ -59,7 +60,7 @@ public class DownloadStatus {
 
 	/** Constructor for restoring Download status entries from DB. */
 	public DownloadStatus(long id, String title, FeedFile feedfile,
-			int feedfileType, boolean successful, int reason,
+			int feedfileType, boolean successful, DownloadError reason,
 			Date completionDate, String reasonDetailed) {
 		progressPercent = 100;
 		soFar = 0;
@@ -77,7 +78,7 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(FeedFile feedfile, String title, int reason,
+	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
 			boolean successful, String reasonDetailed) {
 		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason,
 				new Date(), reasonDetailed);
@@ -115,7 +116,7 @@ public class DownloadStatus {
 		return statusMsg;
 	}
 
-	public int getReason() {
+	public DownloadError getReason() {
 		return reason;
 	}
 
@@ -151,7 +152,7 @@ public class DownloadStatus {
 		this.statusMsg = statusMsg;
 	}
 
-	public void setReason(int reason) {
+	public void setReason(DownloadError reason) {
 		this.reason = reason;
 	}
 

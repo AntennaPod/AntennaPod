@@ -162,7 +162,7 @@ public class HttpDownloader extends Downloader {
 		status.setDone(true);
 	}
 
-	private void onFail(int reason, String reasonDetailed) {
+	private void onFail(DownloadError reason, String reasonDetailed) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG, "Download failed");
 		}

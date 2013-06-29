@@ -14,7 +14,7 @@ public class ConnectionTester implements Runnable {
 	private static final String TAG = "ConnectionTester";
 	private String strUrl;
 	private Callback callback;
-	private int reason;
+	private DownloadError reason;
 
 	private Handler handler;
 
@@ -68,10 +68,10 @@ public class ConnectionTester implements Runnable {
 	public static abstract class Callback {
 		public abstract void onConnectionSuccessful();
 
-		public abstract void onConnectionFailure(int reason);
+		public abstract void onConnectionFailure(DownloadError reason);
 	}
 
-	public int getReason() {
+	public DownloadError getReason() {
 		return reason;
 	}
 
