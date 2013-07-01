@@ -63,7 +63,7 @@ public class HttpDownloader extends Downloader {
 	@Override
 	protected void download() {
 		DefaultHttpClient httpClient = null;
-		OutputStream out = null;
+		BufferedOutputStream out = null;
 		InputStream connection = null;
 		try {
 			HttpGet httpGet = new HttpGet(status.getFeedFile()
@@ -113,6 +113,7 @@ public class HttpDownloader extends Downloader {
 							if (cancelled) {
 								onCancelled();
 							} else {
+								out.flush();
 								onSuccess();
 							}
 						} else {
