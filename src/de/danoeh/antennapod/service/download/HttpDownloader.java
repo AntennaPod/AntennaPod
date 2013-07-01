@@ -114,6 +114,15 @@ public class HttpDownloader extends Downloader {
 								onCancelled();
 							} else {
 								out.flush();
+								if (status.getSize() != DownloadStatus.SIZE_UNKNOWN &&
+										status.getSoFar() != status.getSize()) {
+									onFail(DownloadError.ERROR_IO_ERROR,
+										"Download completed but size: " +
+										status.getSoFar() +
+										" does not equal expected size " +
+										status.getSize());
+									return;
+								}
 								onSuccess();
 							}
 						} else {
