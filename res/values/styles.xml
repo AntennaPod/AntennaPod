@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources xmlns:android="http://schemas.android.com/apk/res/android">
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
 
-    <style name="Theme.AntennaPod.Light" parent="@style/Theme.Sherlock.Light.ForceOverflow">
+    <style name="Theme.AntennaPod.Light" parent="@style/Theme.Sherlock.Light">
         <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.LightTabPageIndicator</item>
         <item name="attr/action_about">@drawable/action_about</item>
         <item name="attr/action_search">@drawable/action_search</item>
@@ -51,7 +51,7 @@
         <item name="android:textColor">@color/black</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.ForceOverflow">
+    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.Light">
         <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.DarkTabPageIndicator</item>
         <item name="attr/action_about">@drawable/action_about_dark</item>
         <item name="attr/action_search">@drawable/action_search_dark</item>
@@ -102,9 +102,9 @@
       <item name="android:orientation">horizontal</item>
       <item name="android:background">@drawable/undobar</item>
       <item name="android:clickable">true</item>
-      <item name="android:showDividers">middle</item>
+      <item name="android:showDividers" tools:ignore="NewApi">middle</item>
       <item name="android:divider">@drawable/undobar_divider</item>
-      <item name="android:dividerPadding">10dp</item>
+      <item name="android:dividerPadding" tools:ignore="NewApi">10dp</item>
     </style>
     <style name="UndoBarMessage">
       <item name="android:layout_width">0dp</item>
@@ -125,7 +125,7 @@
       <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
       <item name="android:drawablePadding">12dp</item>
       <item name="android:textAppearance">?android:textAppearanceSmall</item>
-      <item name="android:textAllCaps">true</item>
+      <item name="android:textAllCaps" tools:ignore="NewApi">true</item>
       <item name="android:textStyle">bold</item>
       <item name="android:textColor">#fff</item>
       <item name="android:text">@string/undo</item>
