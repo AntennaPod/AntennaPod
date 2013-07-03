@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <style name="Theme.MediaPlayer" parent="@style/Theme.Sherlock.Light.ForceOverflow">
-        	<item name="android:windowActionBarOverlay">true</item>
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <style name="Theme.MediaPlayer" parent="@style/Theme.Sherlock.Light">
+        	<item name="android:windowActionBarOverlay" tools:ignore="NewApi">true</item>
     </style>
 </resources>
