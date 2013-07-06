@@ -27,6 +27,7 @@ build.xml
 .idea
 *.iml
 gen-external-apklibs
+out
 #transifex downloads
 changelog
 description
