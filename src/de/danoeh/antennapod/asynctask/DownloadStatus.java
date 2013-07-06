@@ -152,17 +152,24 @@ public class DownloadStatus {
 		this.statusMsg = statusMsg;
 	}
 
-	public void setReason(DownloadError reason) {
-		this.reason = reason;
-	}
+    public void setSuccessful() {
+        this.successful = true;
+        this.reason = DownloadError.SUCCESS;
+        this.done = true;
+    }
 
-	public void setSuccessful(boolean successful) {
-		this.successful = successful;
-	}
+    public void setFailed(DownloadError reason, String reasonDetailed) {
+        this.successful = false;
+        this.reason = reason;
+        this.reasonDetailed = reasonDetailed;
+    }
 
-	public void setDone(boolean done) {
-		this.done = done;
-	}
+    public void setCancelled() {
+        this.successful = false;
+        this.reason = DownloadError.ERROR_DOWNLOAD_CANCELLED;
+        this.done = true;
+        this.cancelled = true;
+    }
 
 	public void setCompletionDate(Date completionDate) {
 		this.completionDate = completionDate;
