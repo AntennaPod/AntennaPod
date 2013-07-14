@@ -348,7 +348,9 @@ public class DirectoryChooserActivity extends SherlockActivity {
 	 * CREATE_DIRECTORY_NAME.
 	 */
 	private int createFolder() {
-		if (selectedDir != null && selectedDir.canWrite()) {
+		if (selectedDir == null) {
+			return R.string.create_folder_error;
+		} else if (selectedDir.canWrite()) {
 			File newDir = new File(selectedDir, CREATE_DIRECTORY_NAME);
 			if (!newDir.exists()) {
 				boolean result = newDir.mkdir();
@@ -360,10 +362,8 @@ public class DirectoryChooserActivity extends SherlockActivity {
 			} else {
 				return R.string.create_folder_error_already_exists;
 			}
-		} else if (selectedDir.canWrite() == false) {
-			return R.string.create_folder_error_no_write_access;
 		} else {
-			return R.string.create_folder_error;
+			return R.string.create_folder_error_no_write_access;
 		}
 	}
 

@@ -47,7 +47,7 @@ public class BitmapDecodeWorkerTask extends Thread {
 	 */
 	protected boolean tagsMatching(ImageView target) {
 		return target.getTag() == null
-				|| target.getTag() == imageResource.getImageLoaderCacheKey();
+				|| target.getTag().equals(imageResource.getImageLoaderCacheKey());
 	}
 
 	protected void onPostExecute() {

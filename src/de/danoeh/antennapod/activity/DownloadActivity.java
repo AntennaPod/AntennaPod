@@ -113,7 +113,7 @@ public class DownloadActivity extends SherlockListActivity implements
 			contentRefresher.cancel(true);
 		}
 		contentRefresher = new AsyncTask<Void, Void, Void>() {
-			private final int WAITING_INTERVALL = 1000;
+			private final static int WAITING_INTERVALL = 1000;
 
 			@Override
 			protected void onProgressUpdate(Void... values) {

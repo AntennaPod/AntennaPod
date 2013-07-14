@@ -40,7 +40,7 @@ public class Feed extends FeedFile {
 	public Feed(Date lastUpdate) {
 		super();
 		items = Collections.synchronizedList(new ArrayList<FeedItem>());
-		this.lastUpdate = lastUpdate;
+		this.lastUpdate = (Date) lastUpdate.clone();
 	}
 
 	/**
@@ -298,11 +298,11 @@ public class Feed extends FeedFile {
 	}
 
 	public Date getLastUpdate() {
-		return lastUpdate;
+		return (Date) lastUpdate.clone();
 	}
 
 	public void setLastUpdate(Date lastUpdate) {
-		this.lastUpdate = lastUpdate;
+		this.lastUpdate = (Date) lastUpdate.clone();
 	}
 
 	public String getFeedIdentifier() {

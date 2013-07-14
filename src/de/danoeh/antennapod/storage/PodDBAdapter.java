@@ -203,7 +203,7 @@ public class PodDBAdapter {
 	public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
 
 	/** Select id, description and content-encoded column from feeditems. */
-	public static final String[] SEL_FI_EXTRA = { KEY_ID, KEY_DESCRIPTION,
+	private static final String[] SEL_FI_EXTRA = { KEY_ID, KEY_DESCRIPTION,
 			KEY_CONTENT_ENCODED, KEY_FEED };
 
 	// column indices for SEL_FI_EXTRA

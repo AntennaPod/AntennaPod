@@ -79,9 +79,8 @@ public class HttpDownloader extends Downloader {
 					File destination = new File(status.getFeedFile()
 							.getFile_url());
 					if (!destination.exists()) {
-						connection = AndroidHttpClient
-								.getUngzippedContent(httpEntity);
-						InputStream in = new BufferedInputStream(connection);
+						connection = new BufferedInputStream(AndroidHttpClient
+								.getUngzippedContent(httpEntity));
 						out = new BufferedOutputStream(new FileOutputStream(
 								destination));
 						byte[] buffer = new byte[BUFFER_SIZE];
@@ -104,7 +103,7 @@ public class HttpDownloader extends Downloader {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Starting download");
 							while (!cancelled
-									&& (count = in.read(buffer)) != -1) {
+									&& (count = connection.read(buffer)) != -1) {
 								out.write(buffer, 0, count);
 								status.setSoFar(status.getSoFar() + count);
 								status.setProgressPercent((int) (((double) status
