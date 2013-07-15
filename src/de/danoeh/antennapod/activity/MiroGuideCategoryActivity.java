@@ -24,7 +24,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 	private static final String TAG = "MiroGuideCategoryActivity";
 
-	public static String EXTRA_CATEGORY = "category";
+	public static final String EXTRA_CATEGORY = "category";
 
 	private ViewPager viewpager;
 	private CategoryPagerAdapter pagerAdapter;

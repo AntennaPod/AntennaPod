@@ -24,7 +24,6 @@ public class ExternalMedia implements Playable {
 
 	private String episodeTitle;
 	private String feedTitle;
-	private String shownotes;
 	private MediaType mediaType = MediaType.AUDIO;
 	private List<Chapter> chapters;
 	private int duration;

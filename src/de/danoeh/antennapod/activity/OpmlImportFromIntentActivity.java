@@ -7,6 +7,7 @@ import java.net.URL;
 import android.app.AlertDialog;
 import android.os.Bundle;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.LangUtils;
 
 /** Lets the user start the OPML-import process. */
 public class OpmlImportFromIntentActivity extends OpmlImportBaseActivity {
@@ -20,7 +21,8 @@ public class OpmlImportFromIntentActivity extends OpmlImportBaseActivity {
 
         try {
             URL mOpmlURL = new URL(getIntent().getData().toString());
-            BufferedReader in = new BufferedReader(new InputStreamReader(mOpmlURL.openStream()));
+            BufferedReader in = new BufferedReader(new InputStreamReader(mOpmlURL.openStream(),
+                LangUtils.UTF_8));
             startImport(in);
         } catch (Exception e) {
             new AlertDialog.Builder(this).setMessage("Cannot open XML - Reason: " + e.getMessage()).show();

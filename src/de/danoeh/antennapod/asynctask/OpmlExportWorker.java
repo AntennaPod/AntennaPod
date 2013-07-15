@@ -1,8 +1,9 @@
 package de.danoeh.antennapod.asynctask;
 
 import java.io.File;
-import java.io.FileWriter;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.util.Arrays;
 
 import android.annotation.SuppressLint;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.opml.OpmlWriter;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.LangUtils;
 
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
@@ -49,14 +51,22 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 				output.delete();
 			}
 		}
+		OutputStreamWriter writer = null;
 		try {
-			FileWriter writer = new FileWriter(output);
+			writer = new OutputStreamWriter(new FileOutputStream(output), LangUtils.UTF_8);
 			opmlWriter.writeDocument(Arrays.asList(FeedManager.getInstance().getFeedsArray()),
 					writer);
-			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();
 			exception = e;
+		} finally {
+			if (writer != null) {
+				try {
+					writer.close();
+				} catch (IOException ioe) {
+					exception = ioe;
+				}
+			}
 		}
 		return null;
 	}

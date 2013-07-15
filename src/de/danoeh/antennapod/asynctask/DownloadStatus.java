@@ -14,7 +14,7 @@ public class DownloadStatus {
 	public static final int SIZE_UNKNOWN = -1;
 
 	public Date getCompletionDate() {
-		return completionDate;
+		return (Date) completionDate.clone();
 	}
 
 	// ----------------------------------- ATTRIBUTES STORED IN DB
@@ -72,7 +72,7 @@ public class DownloadStatus {
 		this.feedfile = feedfile;
 		this.reason = reason;
 		this.successful = successful;
-		this.completionDate = completionDate;
+		this.completionDate = (Date) completionDate.clone();
 		this.reasonDetailed = reasonDetailed;
 		this.feedfileType = feedfileType;
 	}
@@ -172,7 +172,7 @@ public class DownloadStatus {
     }
 
 	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
+		this.completionDate = (Date) completionDate.clone();
 	}
 
 	public String getReasonDetailed() {
