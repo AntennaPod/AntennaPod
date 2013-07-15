@@ -1637,7 +1637,8 @@ public class FeedManager {
 				}
 				boolean successful = logCursor
 						.getInt(PodDBAdapter.KEY_SUCCESSFUL_INDEX) > 0;
-				int reason = logCursor.getInt(PodDBAdapter.KEY_REASON_INDEX);
+				DownloadError reason = DownloadError.fromCode(
+						logCursor.getInt(PodDBAdapter.KEY_REASON_INDEX));
 				String reasonDetailed = logCursor
 						.getString(PodDBAdapter.KEY_REASON_DETAILED_INDEX);
 				String title = logCursor

@@ -63,7 +63,7 @@ public class HttpDownloader extends Downloader {
 	@Override
 	protected void download() {
 		DefaultHttpClient httpClient = null;
-		OutputStream out = null;
+		BufferedOutputStream out = null;
 		InputStream connection = null;
 		try {
 			HttpGet httpGet = new HttpGet(status.getFeedFile()
@@ -113,6 +113,16 @@ public class HttpDownloader extends Downloader {
 							if (cancelled) {
 								onCancelled();
 							} else {
+								out.flush();
+								if (status.getSize() != DownloadStatus.SIZE_UNKNOWN &&
+										status.getSoFar() != status.getSize()) {
+									onFail(DownloadError.ERROR_IO_ERROR,
+										"Download completed but size: " +
+										status.getSoFar() +
+										" does not equal expected size " +
+										status.getSize());
+									return;
+								}
 								onSuccess();
 							}
 						} else {
@@ -158,28 +168,21 @@ public class HttpDownloader extends Downloader {
 	private void onSuccess() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was successful");
-		status.setSuccessful(true);
-		status.setDone(true);
+		status.setSuccessful();
 	}
 
-	private void onFail(int reason, String reasonDetailed) {
+	private void onFail(DownloadError reason, String reasonDetailed) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG, "Download failed");
 		}
-		status.setReason(reason);
-		status.setReasonDetailed(reasonDetailed);
-		status.setDone(true);
-		status.setSuccessful(false);
+        status.setFailed(reason, reasonDetailed);
 		cleanup();
 	}
 
 	private void onCancelled() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was cancelled");
-		status.setReason(DownloadError.ERROR_DOWNLOAD_CANCELLED);
-		status.setDone(true);
-		status.setSuccessful(false);
-		status.setCancelled(true);
+        status.setCancelled();
 		cleanup();
 	}
 
