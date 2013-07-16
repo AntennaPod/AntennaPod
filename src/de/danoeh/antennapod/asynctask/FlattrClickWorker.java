@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -8,15 +9,22 @@ import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Flattr;
 
 import android.annotation.SuppressLint;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FeedItemlistActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedManager;
@@ -30,22 +38,31 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected static final String TAG = "FlattrClickWorker";
 	protected Context context;
 	
+	private final int NOTIFICATION_ID = 4;
+	
 	protected String errorMsg;
 	protected int exitCode;
-	protected int flattred;
+	protected ArrayList<String> flattrd;
+	protected ArrayList<String> flattr_failed;
+	
+	protected NotificationCompat.Builder notificationBuilder;
+	protected NotificationManager notificationManager;
+	
 	protected ProgressDialog progDialog;
 
-	protected final static int SUCCESS = 0;
+	protected final static int EXIT_DEFAULT = 0;
 	protected final static int NO_TOKEN = 1;
-	protected final static int FLATTR_ERROR = 2;
-	protected final static int ENQUEUED = 3;
-	protected final static int NO_THINGS = 4;
+	protected final static int ENQUEUED = 2;
+	protected final static int NO_THINGS = 3;
 
 	public FlattrClickWorker(Context context) {
 		super();
 		this.context = context;
-		exitCode = SUCCESS;
-		flattred = 0;
+		exitCode = EXIT_DEFAULT;
+
+		flattrd = new ArrayList<String>();
+		flattr_failed = new ArrayList<String>();
+		
 		errorMsg = "";
 	}
 
@@ -58,53 +75,93 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		FlattrUtils.showErrorDialog(context, errorMsg);
 	}
 	
-	protected void onSuccess() {
-		Toast toast;
+	protected void onFlattred() {
+		String notificationTitle = context.getString(R.string.flattrd_label);
+		String notificationText = "", notificationSubText = "";
 		
-		if (flattred == 0)
-			toast = Toast.makeText(context.getApplicationContext(),
-					R.string.flattr_click_enqueued, Toast.LENGTH_LONG);
-		else if (flattred == 1)
-			toast = Toast.makeText(context.getApplicationContext(),
-					R.string.flattr_click_success, Toast.LENGTH_LONG);
-		else // flattred pending items from queue
-			toast = Toast.makeText(context.getApplicationContext(),
-				String.format(context.getString(R.string.flattr_click_success_queue), flattred), Toast.LENGTH_LONG);
-
-		toast.show();
+		// text for successfully flattred items
+		if (flattrd.size() == 1)
+			notificationText = String.format(context.getString(R.string.flattr_click_success));
+		else if (flattrd.size() > 1) // flattred pending items from queue
+			notificationText = String.format(context.getString(R.string.flattr_click_success_count, flattrd.size()));
+			
+		if (flattrd.size() > 0) {
+			String acc = "";
+			for (String s: flattrd)
+				acc += s + ", ";
+			acc = acc.substring(0, acc.length()-2);
+			
+			notificationSubText = String.format(context.getString(R.string.flattr_click_success_queue), acc);
+		}
+		
+		// add text for failures
+		if (flattr_failed.size() > 0) {
+			notificationTitle = context.getString(R.string.flattrd_failed_label);
+			notificationText = String.format(context.getString(R.string.flattr_click_failure_count), flattr_failed.size()) 
+					+ " " + notificationText;
+			
+			String acc = "";
+			for (String s: flattr_failed)
+				acc += s + ", ";
+			acc = acc.substring(0, acc.length()-2);
+			
+			notificationSubText = String.format(context.getString(R.string.flattr_click_failure), acc)
+					+ " " + notificationSubText;
+		}
+		
+		notificationBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
+							.setContentTitle(notificationTitle)
+							.setContentText(notificationText)
+							.setSubText(notificationSubText)
+							.setTicker(notificationTitle)
+							.setSmallIcon(R.drawable.stat_notify_sync)
+							.setOngoing(false);
+		notificationManager.cancel(NOTIFICATION_ID);
+		notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+	}
+	
+	protected void onEnqueue() {
+		Toast.makeText(context.getApplicationContext(), 
+									 R.string.flattr_click_enqueued, 
+									 Toast.LENGTH_LONG)
+							.show();
 	}
 
-	protected void onSetupProgDialog() {
-		progDialog = new ProgressDialog(context);
-		progDialog.setMessage(context.getString(R.string.flattring_label));
-		progDialog.setIndeterminate(true);
-		progDialog.setCancelable(false);
+	protected void onSetupNotification() {
+		notificationBuilder = new NotificationCompat.Builder(context)
+							.setContentTitle(context.getString(R.string.flattring_label))
+                            .setAutoCancel(true)
+							.setSmallIcon(R.drawable.stat_notify_sync)
+							.setProgress(0,  0, true)
+                            .setOngoing(true);
+		
+		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
 	@Override
 	protected void onPostExecute(Void result) {
 		if (AppConfig.DEBUG) Log.d(TAG, "Exit code was " + exitCode);
-		if (progDialog != null) {
-			progDialog.dismiss();
-		}
+
 		switch (exitCode) {
 		case NO_TOKEN:
+			notificationManager.cancel(NOTIFICATION_ID);
 			onNoAccessToken();
 			break;
-		case FLATTR_ERROR:
-			onFlattrError();
+		case ENQUEUED:
+			onEnqueue();
 			break;
-		case SUCCESS:
-			onSuccess();
+		case EXIT_DEFAULT:
+			onFlattred();
 			break;
 		case NO_THINGS: // FlattrClickWorker called automatically somewhere to empty flattr queue
+			notificationManager.cancel(NOTIFICATION_ID);
 			break;
 		}
 	}
 
 	@Override
 	protected void onPreExecute() {
-		onSetupProgDialog();
+		onSetupNotification();
 	}
 
 	private static boolean haveInternetAccess(Context context) {
@@ -119,7 +176,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected Void doInBackground(Void... params) {
 		if (AppConfig.DEBUG) Log.d(TAG, "Starting background work");
 
-		exitCode = SUCCESS;
+		exitCode = EXIT_DEFAULT;
 
 		if (!FlattrUtils.hasToken()) {
 			exitCode = NO_TOKEN;
@@ -134,12 +191,14 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 			List<FlattrThing> flattrList = FeedManager.getInstance().getFlattrQueue();
 			Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
 
+			flattrd.ensureCapacity(flattrList.size());
+			
 			for (FlattrThing thing: flattrList) {
 				try {
 					Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
-					publishProgress(context.getString(R.string.flattring_label) + " " + thing.getTitle());
+					publishProgress(String.format(context.getString(R.string.flattring_thing), thing.getTitle()));
 
-					thing.getFlattrStatus().setFlattred(); 
+					thing.getFlattrStatus().setUnflattred();  // pop from queue to prevent unflattrable things from getting stuck in flattr queue infinitely
 
 					Log.d(TAG, "flattrQueue processing - going to write thing back to db with flattr_status " + Long.toString(thing.getFlattrStatus().toLong()));
 					
@@ -152,13 +211,14 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 						Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
 
 					FlattrUtils.clickUrl(context, thing.getPaymentLink());
-					flattred++;
+					flattrd.add(thing.getTitle());
+					
+					thing.getFlattrStatus().setFlattred();
 				} 
 				catch (FlattrException e) {
 					Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
-					//e.printStackTrace();
-					exitCode = FLATTR_ERROR;
-					errorMsg = errorMsg + thing.getTitle() + ": " + e.getMessage() + "\n";
+					flattr_failed.ensureCapacity(flattrList.size());
+					flattr_failed.add(thing.getTitle());
 				} 
 			}
 			
@@ -169,10 +229,8 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	
 	@Override
 	protected void onProgressUpdate(String... names) {
-		if (progDialog != null && !progDialog.isShowing())
-			progDialog.show();
-					
-		progDialog.setMessage(names[0]);
+		notificationBuilder.setContentText(names[0]);
+		notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
 	}
 	
 	@SuppressLint("NewApi")
