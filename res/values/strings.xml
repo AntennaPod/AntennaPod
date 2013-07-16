@@ -29,6 +29,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
+    <string name="auto_download_label">Auto Download</string>
     <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>

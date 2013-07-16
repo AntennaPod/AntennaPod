@@ -692,7 +692,8 @@ public class FeedManager {
 				for (int i = 0; i < queue.size(); i++) { // ignore playing item
 					FeedItem item = queue.get(i);
 					if (item.hasMedia() && !item.getMedia().isDownloaded()
-							&& !item.getMedia().isPlaying()) {
+							&& !item.getMedia().isPlaying()
+							&& item.getFeed().getAutoDownload()) {
 						itemsToDownload.add(item);
 						episodeSpaceLeft--;
 						undownloadedEpisodes--;
@@ -704,7 +705,8 @@ public class FeedManager {
 			}
 			if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
 				for (FeedItem item : unreadItems) {
-					if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+					if (item.hasMedia() && !item.getMedia().isDownloaded()
+							&& item.getFeed().getAutoDownload()) {
 						itemsToDownload.add(item);
 						episodeSpaceLeft--;
 						undownloadedEpisodes--;
@@ -1461,6 +1463,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX);
 				feed.setDownloaded(feedlistCursor
 						.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
+				feed.setAutoDownload(feedlistCursor
+						.getInt(PodDBAdapter.KEY_AUTO_DOWNLOAD_INDEX) > 0);
 				// Get FeedItem-Object
 				Cursor itemlistCursor = adapter.getAllItemsOfFeedCursor(feed);
 				feed.setItems(extractFeedItemsFromCursor(context, feed,

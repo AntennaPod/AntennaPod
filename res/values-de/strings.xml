@@ -25,6 +25,7 @@
   <string name="cancel_label">Abbrechen</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Sprache</string>
+  <string name="auto_download_label">Auto Download</string>
   <string name="cover_label">Cover</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
