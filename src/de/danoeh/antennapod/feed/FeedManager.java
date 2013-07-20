@@ -831,7 +831,8 @@ public class FeedManager {
 			}
 		}
 		for (FeedItem item : unreadItems) {
-			if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+			if (item.hasMedia() && !item.getMedia().isDownloaded()
+					&& item.getFeed().getAutoDownload()) {
 				counter++;
 			}
 		}
