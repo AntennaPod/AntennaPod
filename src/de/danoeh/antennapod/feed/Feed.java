@@ -36,6 +36,7 @@ public class Feed extends FeedFile {
 	private String paymentLink;
 	/** Feed type, for example RSS 2 or Atom */
 	private String type;
+	private boolean autoDownload = true;
 
 	public Feed(Date lastUpdate) {
 		super();
@@ -204,6 +205,7 @@ public class Feed extends FeedFile {
 		if (other.paymentLink != null) {
 			paymentLink = other.paymentLink;
 		}
+		autoDownload = other.autoDownload;
 	}
 
 	public boolean compareWithOther(Feed other) {
@@ -343,6 +345,14 @@ public class Feed extends FeedFile {
 
 	public void setType(String type) {
 		this.type = type;
+	}
+
+	public boolean getAutoDownload() {
+		return autoDownload;
+	}
+
+	public void setAutoDownload(boolean autoDownload) {
+		this.autoDownload = autoDownload;
 	}
 
 }

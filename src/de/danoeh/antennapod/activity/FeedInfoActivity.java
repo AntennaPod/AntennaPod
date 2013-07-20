@@ -2,6 +2,8 @@ package de.danoeh.antennapod.activity;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -34,6 +36,7 @@ public class FeedInfoActivity extends SherlockActivity {
 	private TextView txtvDescription;
 	private TextView txtvLanguage;
 	private TextView txtvAuthor;
+	private CheckBox cbxAutoDownload;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +57,7 @@ public class FeedInfoActivity extends SherlockActivity {
 			txtvDescription = (TextView) findViewById(R.id.txtvDescription);
 			txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
 			txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+			cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
 			imgvCover.post(new Runnable() {
 
 				@Override
@@ -72,6 +76,15 @@ public class FeedInfoActivity extends SherlockActivity {
 				txtvLanguage.setText(LangUtils.getLanguageString(feed
 						.getLanguage()));
 			}
+			cbxAutoDownload.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+				@Override
+				public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
+					feed.setAutoDownload(b);
+					FeedManager.getInstance().setFeed(FeedInfoActivity.this, feed);
+				}
+			});
+			cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
+			cbxAutoDownload.setChecked(feed.getAutoDownload());
 		} else {
 			Log.e(TAG, "Activity was started with invalid arguments");
 		}
