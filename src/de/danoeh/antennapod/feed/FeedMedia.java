@@ -282,7 +282,7 @@ public class FeedMedia extends FeedFile implements Playable {
 	    	Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(played_duration) + " is 80% of file duration " + Integer.toString(duration));
 	    	item.getFlattrStatus().setFlattrQueue();
 	    	FeedManager.getInstance().setFeedItem(PodcastApp.getInstance(), item);			
-	    	new FlattrClickWorker(PodcastApp.getInstance()).executeAsync();
+	    	new FlattrClickWorker(PodcastApp.getInstance(), true).executeAsync();
 	    }
 			
 		FeedManager.getInstance().setFeedMedia(PodcastApp.getInstance(), this);

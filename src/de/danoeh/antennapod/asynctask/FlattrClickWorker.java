@@ -54,7 +54,14 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected final static int NO_TOKEN = 1;
 	protected final static int ENQUEUED = 2;
 	protected final static int NO_THINGS = 3;
+	
+	private boolean enqueue_only = false;
 
+	public FlattrClickWorker(Context context, boolean enqueue_only) {
+		this(context);
+		this.enqueue_only = enqueue_only;
+	}
+	
 	public FlattrClickWorker(Context context) {
 		super();
 		this.context = context;
@@ -184,7 +191,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		else if (FeedManager.getInstance().getFlattrQueueEmpty()) {
 			exitCode = NO_THINGS;
 		}
-		else if (!haveInternetAccess(context)) {
+		else if (!haveInternetAccess(context) || enqueue_only) {
 			exitCode = ENQUEUED;
 		}
 		else {
