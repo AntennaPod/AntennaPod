@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import java.text.DateFormat;
 
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -50,6 +51,7 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
 		extractFeeditem();
 		populateUI();
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 	}
 
 	@Override

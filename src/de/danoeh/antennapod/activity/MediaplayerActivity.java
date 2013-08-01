@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -147,6 +148,8 @@ public abstract class MediaplayerActivity extends SherlockFragmentActivity
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
 		StorageUtils.checkStorageAvailability(this);
+
+		setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
 		orientation = getResources().getConfiguration().orientation;
 		manager = FeedManager.getInstance();
