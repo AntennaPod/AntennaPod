@@ -9,7 +9,7 @@ import org.apache.commons.io.IOUtils;
 
 import de.danoeh.antennapod.asynctask.ImageLoader;
 
-;
+
 
 public class FeedImage extends FeedFile implements
 		ImageLoader.ImageWorkerTaskResource {

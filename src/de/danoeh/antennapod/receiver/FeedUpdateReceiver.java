@@ -9,6 +9,7 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBTasks;
 
 /** Refreshes all feeds when it receives an intent */
 public class FeedUpdateReceiver extends BroadcastReceiver {
@@ -22,7 +23,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 				Log.d(TAG, "Received intent");
 			boolean mobileUpdate = UserPreferences.isAllowMobileUpdate();
 			if (mobileUpdate || connectedToWifi(context)) {
-				FeedManager.getInstance().refreshExpiredFeeds(context);
+				DBTasks.refreshExpiredFeeds(context);
 			} else {
 				if (AppConfig.DEBUG)
 					Log.d(TAG,

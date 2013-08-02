@@ -113,9 +113,10 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 
 		@Override
 		public void drop(int from, int to) {
-
+            final FeedItem item = queue.remove(from);
+            queue.add(to, item);
+            adapter.notifyDataSetChanged();
             DBWriter.moveQueueItem(OrganizeQueueActivity.this, from, to, true);
-			//adapter.notifyDataSetChanged();
 		}
 	};
 

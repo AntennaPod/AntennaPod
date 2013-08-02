@@ -87,7 +87,7 @@ public final class DBTasks {
 		}
 	}
 
-	public void refreshExpiredFeeds(final Context context) {
+	public static void refreshExpiredFeeds(final Context context) {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Refreshing expired feeds");
 
@@ -130,7 +130,7 @@ public final class DBTasks {
 	}
 
 	/** Updates a specific feed. */
-	private static void refreshFeed(Context context, Feed feed)
+	public static void refreshFeed(Context context, Feed feed)
 			throws DownloadRequestException {
 		DownloadRequester.getInstance().downloadFeed(context,
 				new Feed(feed.getDownload_url(), new Date(), feed.getTitle()));

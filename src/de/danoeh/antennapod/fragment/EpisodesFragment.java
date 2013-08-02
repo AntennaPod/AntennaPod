@@ -31,6 +31,7 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 import java.util.List;
@@ -220,13 +221,13 @@ public class EpisodesFragment extends SherlockFragment {
 
 			menu.setHeaderTitle(selectedItem.getTitle());
 			FeedItemMenuHandler.onPrepareMenu(
-					new FeedItemMenuHandler.MenuInterface() {
+                    new FeedItemMenuHandler.MenuInterface() {
 
-						@Override
-						public void setItemVisibility(int id, boolean visible) {
-							menu.findItem(id).setVisible(visible);
-						}
-					}, selectedItem, false);
+                        @Override
+                        public void setItemVisibility(int id, boolean visible) {
+                            menu.findItem(id).setVisible(visible);
+                        }
+                    }, selectedItem, false, QueueAccess.ItemListAccess(queue));
 
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
 			menu.add(Menu.NONE, R.id.organize_queue_item, Menu.NONE,

@@ -18,7 +18,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.ID3Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.feed.VorbisCommentChapter;
-import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.service.download.*;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 
@@ -132,8 +132,7 @@ public final class DBReader {
 				itemIds.add(String.valueOf(item.getId()));
 
 				item.setRead((itemlistCursor
-						.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0) ? true
-						: false);
+                        .getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0));
 				item.setItemIdentifier(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
 
@@ -182,7 +181,6 @@ public final class DBReader {
 		}
 
 		extractMediafromItemlist(adapter, items, itemIds);
-		Collections.sort(items, new FeedItemPubdateComparator());
 		return items;
 	}
 
@@ -275,10 +273,32 @@ public final class DBReader {
 				itemlistCursor);
 		itemlistCursor.close();
 		loadFeedDataOfFeedItemlist(context, items);
-		Collections.sort(items, new FeedItemPubdateComparator());
 
 		return items;
 	}
+
+    public static List<Long> getQueueIDList(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+
+        adapter.open();
+        List<Long> result = getQueueIDList(adapter);
+        adapter.close();
+
+        return result;
+    }
+
+    static List<Long> getQueueIDList(PodDBAdapter adapter) {
+        adapter.open();
+        Cursor queueCursor = adapter.getQueueIDCursor();
+
+        List<Long> queueIds = new ArrayList<Long>(queueCursor.getCount());
+        if (queueCursor.moveToFirst()) {
+            do {
+                queueIds.add(queueCursor.getLong(0));
+            } while (queueCursor.moveToNext());
+        }
+        return queueIds;
+    }
 
 	public static List<FeedItem> getQueue(Context context) {
 		if (AppConfig.DEBUG)

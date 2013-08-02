@@ -29,6 +29,7 @@ import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 import java.util.Iterator;
@@ -50,7 +51,7 @@ public class ItemlistFragment extends SherlockListFragment {
 	protected DownloadRequester requester = DownloadRequester.getInstance();
 
 	private Feed feed;
-    protected List<FeedItem> queue;
+    protected List<Long> queue;
 
 	protected FeedItem selectedItem = null;
 	protected boolean contextMenuClosed = true;
@@ -99,8 +100,8 @@ public class ItemlistFragment extends SherlockListFragment {
                 }
 
                 @Override
-                public Iterator<FeedItem> queueIterator() {
-                    return (queue != null) ? queue.iterator() : null;
+                public boolean isInQueue(FeedItem item) {
+                    return (queue != null) && queue.contains(item.getId());
                 }
             };
         }
@@ -127,7 +128,7 @@ public class ItemlistFragment extends SherlockListFragment {
             feedId = feed.getId();
         }
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>(){
-            private volatile List<FeedItem> queueRef;
+            private volatile List<Long> queueRef;
 
             @Override
             protected Feed doInBackground(Long... longs) {
@@ -136,7 +137,7 @@ public class ItemlistFragment extends SherlockListFragment {
                     Feed result = DBReader.getFeed(context, longs[0]);
                     if (result != null) {
                         result.setItems(DBReader.getFeedItemList(context, result));
-                        queueRef = DBReader.getQueue(context);
+                        queueRef = DBReader.getQueueIDList(context);
                         return result;
                     }
                 }
@@ -277,13 +278,13 @@ public class ItemlistFragment extends SherlockListFragment {
 
 			menu.setHeaderTitle(selectedItem.getTitle());
 			FeedItemMenuHandler.onPrepareMenu(
-					new FeedItemMenuHandler.MenuInterface() {
+                    new FeedItemMenuHandler.MenuInterface() {
 
-						@Override
-						public void setItemVisibility(int id, boolean visible) {
-							menu.findItem(id).setVisible(visible);
-						}
-					}, selectedItem, false);
+                        @Override
+                        public void setItemVisibility(int id, boolean visible) {
+                            menu.findItem(id).setVisible(visible);
+                        }
+                    }, selectedItem, false, QueueAccess.IDListAccess(queue));
 
 		}
 	}

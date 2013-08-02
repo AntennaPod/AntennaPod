@@ -22,6 +22,7 @@ import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
@@ -149,13 +150,13 @@ public class ItemviewActivity extends SherlockFragmentActivity {
 	@Override
 	public boolean onPrepareOptionsMenu(final Menu menu) {
 		return FeedItemMenuHandler.onPrepareMenu(
-				new FeedItemMenuHandler.MenuInterface() {
+                new FeedItemMenuHandler.MenuInterface() {
 
-					@Override
-					public void setItemVisibility(int id, boolean visible) {
-						menu.findItem(id).setVisible(visible);
-					}
-				}, item, true);
+                    @Override
+                    public void setItemVisibility(int id, boolean visible) {
+                        menu.findItem(id).setVisible(visible);
+                    }
+                }, item, true, QueueAccess.NotInQueueAccess());
 	}
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

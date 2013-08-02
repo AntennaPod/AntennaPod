@@ -305,6 +305,7 @@ public class PodDBAdapter {
 	 * @return the id of the entry
 	 * */
 	public long setImage(FeedImage image) {
+        db.beginTransaction();
 		ContentValues values = new ContentValues();
 		values.put(KEY_TITLE, image.getTitle());
 		values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
@@ -316,6 +317,13 @@ public class PodDBAdapter {
 			db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
 					new String[] { String.valueOf(image.getId()) });
 		}
+        if (image.getFeed() != null && image.getFeed().getId() != 0 ) {
+            values.clear();
+            values.put(KEY_IMAGE, image.getId());
+            db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[] {String.valueOf(image.getFeed().getId())});
+        }
+        db.setTransactionSuccessful();
+        db.endTransaction();
 		return image.getId();
 	}
 
@@ -686,11 +694,11 @@ public class PodDBAdapter {
 		open();
 		String selFiSmall = Arrays.toString(SEL_FI_SMALL);
 		Object[] args = (Object[]) new String[] {
-				selFiSmall.substring(1, selFiSmall.length() - 1),
+				selFiSmall.substring(1, selFiSmall.length() - 1) + "," + TABLE_NAME_QUEUE + "." + KEY_ID,
 				TABLE_NAME_FEED_ITEMS, TABLE_NAME_QUEUE,
 				TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
 				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM,
-				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM };
+				TABLE_NAME_QUEUE + "." + KEY_ID };
 		String query = String.format(
 				"SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
 		Cursor c = db.rawQuery(query, null);
@@ -702,6 +710,12 @@ public class PodDBAdapter {
 		 */
 		return c;
 	}
+
+    public Cursor getQueueIDCursor() {
+        open();
+        Cursor c = db.query(TABLE_NAME_QUEUE, new String[]{KEY_FEEDITEM}, null, null, null, null, KEY_ID + " ASC", null);
+        return c;
+    }
 
 	/**
 	 * Returns a cursor which contains all feed items in the unread items list.
@@ -791,8 +805,11 @@ public class PodDBAdapter {
 
 	/** Builds an IN-operator argument depending on the number of items. */
 	private String buildInOperator(int size) {
+        if (size == 1) {
+            return "(?)";
+        }
 		StringBuffer buffer = new StringBuffer("(");
-		for (int i = 0; i <= size; i++) {
+		for (int i = 0; i < size - 1; i++) {
 			buffer.append("?,");
 		}
 		buffer.append("?)");

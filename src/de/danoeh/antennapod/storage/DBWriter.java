@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.storage;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -15,13 +16,11 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.util.QueueAccess;
 
 public class DBWriter {
 	private static final String TAG = "DBWriter";
@@ -349,20 +348,23 @@ public class DBWriter {
 
 				if (queue != null) {
 					boolean queueModified = false;
-
-					if (itemListContains(queue, itemId)) {
+                    QueueAccess queueAccess = QueueAccess.ItemListAccess(queue);
+                    if (queueAccess.contains(itemId)) {
 						item = DBReader.getFeedItem(context, itemId);
 						if (item != null) {
-							queue.remove(item);
-							queueModified = true;
+							queueModified = queueAccess.remove(itemId);
 						}
 					}
 					if (queueModified) {
 						adapter.setQueue(queue);
 						EventDistributor.getInstance()
 								.sendQueueUpdateBroadcast();
-					}
-				}
+					} else {
+                        Log.w(TAG, "Queue was not modified by call to removeQueueItem");
+                    }
+				} else {
+                    Log.e(TAG, "removeQueueItem: Could not load queue");
+                }
 				adapter.close();
 				if (performAutoDownload) {
 
@@ -393,20 +395,29 @@ public class DBWriter {
 				if (queue != null) {
 					if (from >= 0 && from < queue.size() && to >= 0
 							&& to < queue.size()) {
+
 						final FeedItem item = queue.remove(from);
 						queue.add(to, item);
-						adapter.setQueue(queue);
+
+                        adapter.setQueue(queue);
 						if (broadcastUpdate) {
 							EventDistributor.getInstance()
 									.sendQueueUpdateBroadcast();
 						}
 
 					}
-				}
+				} else {
+                    Log.e(TAG, "moveQueueItem: Could not load queue");
+                }
 				adapter.close();
 			}
 		});
 	}
+
+    public static void markItemRead(Context context, FeedItem item, boolean read, boolean resetMediaPosition) {
+        long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
+        markItemRead(context, item.getId(), read, mediaId, resetMediaPosition);
+    }
 
 	public static void markItemRead(final Context context, final long itemId,
 			final boolean read) {
@@ -507,9 +518,9 @@ public class DBWriter {
 
 	}
 
-	static void setFeedMedia(final Context context,
+	public static Future<?> setFeedMedia(final Context context,
 			final FeedMedia media) {
-		dbExec.submit(new Runnable() {
+		return dbExec.submit(new Runnable() {
 
 			@Override
 			public void run() {
@@ -521,6 +532,32 @@ public class DBWriter {
 		
 
 	}
+
+    public static Future<?> setFeedItem(final Context context,
+                                  final FeedItem item) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setSingleFeedItem(item);
+                adapter.close();
+            }});
+    }
+
+    public static Future<?> setFeedImage(final Context context,
+                                        final FeedImage image) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setImage(image);
+                adapter.close();
+            }});
+    }
 
 	private static boolean itemListContains(List<FeedItem> items, long itemId) {
 		for (FeedItem item : items) {

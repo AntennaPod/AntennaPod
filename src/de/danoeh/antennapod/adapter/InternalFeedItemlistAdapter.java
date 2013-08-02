@@ -156,7 +156,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 				}
 
 				holder.lenSize.setVisibility(View.VISIBLE);
-				if (isInQueue(item)) {
+				if (((ItemAccess) itemAccess).isInQueue(item)) {
 					holder.inPlaylist.setVisibility(View.VISIBLE);
 				} else {
 					holder.inPlaylist.setVisibility(View.GONE);
@@ -205,19 +205,6 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 	}
 
-    private boolean isInQueue(FeedItem item) {
-        Iterator<FeedItem> iter = ((ItemAccess) itemAccess).queueIterator();
-        if (iter != null) {
-            while (iter.hasNext()) {
-                FeedItem current = iter.next();
-                if (current.getId() == item.getId()) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
-
 	static class Holder extends DefaultFeedItemlistAdapter.Holder {
 		TextView feedtitle;
 		ImageView inPlaylist;
@@ -239,7 +226,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 	}
 
     public static interface ItemAccess extends DefaultFeedItemlistAdapter.ItemAccess {
-        public Iterator<FeedItem> queueIterator();
+        public boolean isInQueue(FeedItem item);
     }
 
 }

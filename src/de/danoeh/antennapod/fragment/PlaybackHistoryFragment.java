@@ -39,8 +39,8 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
                 }
 
                 @Override
-                public Iterator<FeedItem> queueIterator() {
-                    return (queue != null) ? queue.iterator() : null;
+                public boolean isInQueue(FeedItem item) {
+                    return (queue != null) ? queue.contains(item.getId()) : false;
                 }
             };
         }
@@ -76,13 +76,13 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
     protected void loadData() {
         AsyncTask<Void, Void, Void> loadTask = new AsyncTask<Void, Void, Void>() {
             private volatile List<FeedItem> phRef;
-            private volatile List<FeedItem> queueRef;
+            private volatile List<Long> queueRef;
 
             @Override
             protected Void doInBackground(Void... voids) {
                 Context context = PlaybackHistoryFragment.this.getActivity();
                 if (context != null) {
-                    queueRef = DBReader.getQueue(context);
+                    queueRef = DBReader.getQueueIDList(context);
                     phRef = DBReader.getPlaybackHistory(context);
                 }
                 return null;

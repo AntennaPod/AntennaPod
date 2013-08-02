@@ -11,18 +11,12 @@ import java.lang.Thread.UncaughtExceptionHandler;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.CopyOnWriteArrayList;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import org.xml.sax.SAXException;
 
 import android.annotation.SuppressLint;
@@ -93,7 +87,6 @@ public class DownloadService extends Service {
 	private static final int NUM_PARALLEL_DOWNLOADS = 4;
 
 	private DownloadRequester requester;
-	private FeedManager manager;
 	private NotificationCompat.Builder notificationCompatBuilder;
 	private Notification.BigTextStyle notificationBuilder;
 	private int NOTIFICATION_ID = 2;
@@ -150,23 +143,23 @@ public class DownloadService extends Service {
 		registerReceiver(cancelDownloadReceiver, cancelDownloadReceiverFilter);
 		syncExecutor = Executors.newSingleThreadExecutor(new ThreadFactory() {
 
-			@Override
-			public Thread newThread(Runnable r) {
-				Thread t = new Thread(r);
-				t.setPriority(Thread.MIN_PRIORITY);
-				t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(r);
+                t.setPriority(Thread.MIN_PRIORITY);
+                t.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
 
-					@Override
-					public void uncaughtException(Thread thread, Throwable ex) {
-						Log.e(TAG, "Thread exited with uncaught exception");
-						ex.printStackTrace();
-						downloadsBeingHandled -= 1;
-						queryDownloads();
-					}
-				});
-				return t;
-			}
-		});
+                    @Override
+                    public void uncaughtException(Thread thread, Throwable ex) {
+                        Log.e(TAG, "Thread exited with uncaught exception");
+                        ex.printStackTrace();
+                        downloadsBeingHandled -= 1;
+                        queryDownloads();
+                    }
+                });
+                return t;
+            }
+        });
 		downloadExecutor = Executors.newFixedThreadPool(NUM_PARALLEL_DOWNLOADS,
 				new ThreadFactory() {
 
@@ -195,7 +188,6 @@ public class DownloadService extends Service {
 					}
 				});
 		setupNotificationBuilders();
-		manager = FeedManager.getInstance();
 		requester = DownloadRequester.getInstance();
 	}
 
@@ -473,7 +465,7 @@ public class DownloadService extends Service {
 	 */
 	private void saveDownloadStatus(DownloadStatus status) {
 		completedDownloads.add(status);
-		manager.addDownloadStatus(this, status);
+		DBWriter.addDownloadStatus(this, status);
 	}
 
 	private void sendDownloadHandledIntent() {
@@ -610,7 +602,6 @@ public class DownloadService extends Service {
 			reason = 0;
 			String reasonDetailed = null;
 			successful = true;
-			final FeedManager manager = FeedManager.getInstance();
 			FeedHandler feedHandler = new FeedHandler();
 
 			try {
@@ -621,7 +612,7 @@ public class DownloadService extends Service {
 					throw new InvalidFeedException();
 				}
 				// Save information of feed in DB
-				savedFeed = manager.updateFeed(DownloadService.this, feed);
+				savedFeed = DBTasks.updateFeed(DownloadService.this, feed);
 				// Download Feed Image if provided and not downloaded
 				if (savedFeed.getImage() != null
 						&& savedFeed.getImage().isDownloaded() == false) {
@@ -638,15 +629,15 @@ public class DownloadService extends Service {
 										savedFeedRef.getImage());
 							} catch (DownloadRequestException e) {
 								e.printStackTrace();
-								manager.addDownloadStatus(
-										DownloadService.this,
-										new DownloadStatus(
-												savedFeedRef.getImage(),
-												savedFeedRef
-														.getImage()
-														.getHumanReadableIdentifier(),
-												DownloadError.ERROR_REQUEST_ERROR,
-												false, e.getMessage()));
+								DBWriter.addDownloadStatus(
+                                        DownloadService.this,
+                                        new DownloadStatus(
+                                                savedFeedRef.getImage(),
+                                                savedFeedRef
+                                                        .getImage()
+                                                        .getHumanReadableIdentifier(),
+                                                DownloadError.ERROR_REQUEST_ERROR,
+                                                false, e.getMessage()));
 							}
 						}
 					});
@@ -779,13 +770,7 @@ public class DownloadService extends Service {
 
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent();
-			manager.setFeedImage(DownloadService.this, image);
-			if (image.getFeed() != null) {
-				manager.setFeed(DownloadService.this, image.getFeed());
-			} else {
-				Log.e(TAG,
-						"Image has no feed, image might not be saved correctly!");
-			}
+			DBWriter.setFeedImage(DownloadService.this, image);
 			downloadsBeingHandled -= 1;
 			handler.post(new Runnable() {
 
@@ -852,12 +837,19 @@ public class DownloadService extends Service {
 
 			saveDownloadStatus(status);
 			sendDownloadHandledIntent();
-			if (chaptersRead) {
-				manager.setFeedItem(DownloadService.this, media.getItem());
-			}
-			manager.setFeedMedia(DownloadService.this, media);
 
-			if (!FeedManager.getInstance().isInQueue(media.getItem())) {
+            try {
+                if (chaptersRead) {
+                    DBWriter.setFeedItem(DownloadService.this, media.getItem()).get();
+                }
+                DBWriter.setFeedMedia(DownloadService.this, media).get();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            if (!FeedManager.getInstance().isInQueue(media.getItem())) {
 				FeedManager.getInstance().addQueueItem(DownloadService.this,
 						media.getItem());
 			}
