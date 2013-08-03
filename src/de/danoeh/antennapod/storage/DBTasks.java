@@ -7,6 +7,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
@@ -25,6 +26,7 @@ import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.NetworkUtils;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
 public final class DBTasks {
@@ -397,6 +399,11 @@ public final class DBTasks {
 		return result;
 	}
 
+    public static boolean isInQueue(Context context, final long feedItemId) {
+        List<Long> queue = DBReader.getQueueIDList(context);
+        return QueueAccess.IDListAccess(queue).contains(feedItemId);
+    }
+
 	private static Feed searchFeedByIdentifyingValue(Context context,
 			String identifier) {
 		List<Feed> feeds = DBReader.getFeedList(context);
@@ -430,7 +437,13 @@ public final class DBTasks {
 						"Found no existing Feed with title "
 								+ newFeed.getTitle() + ". Adding as new one.");
 			// Add a new Feed
-			DBWriter.addNewFeed(context, newFeed);
+            try {
+			    DBWriter.addNewFeed(context, newFeed).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 			return newFeed;
 		} else {
 			if (AppConfig.DEBUG)
@@ -462,7 +475,13 @@ public final class DBTasks {
 			// update attributes
 			savedFeed.setLastUpdate(newFeed.getLastUpdate());
 			savedFeed.setType(newFeed.getType());
-			DBWriter.setCompleteFeed(context, savedFeed);
+            try {
+			    DBWriter.setCompleteFeed(context, savedFeed).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
 			new Thread() {
 				@Override
 				public void run() {

@@ -188,40 +188,44 @@ public final class DBReader {
 			List<FeedItem> items, ArrayList<String> itemIds) {
 
 		List<FeedItem> itemsCopy = new ArrayList<FeedItem>(items);
-		Cursor cursor = adapter.getFeedMediaCursor(itemIds
-				.toArray(new String[itemIds.size()]));
+		Cursor cursor = adapter.getFeedMediaCursorByItemID(itemIds
+                .toArray(new String[itemIds.size()]));
 		if (cursor.moveToFirst()) {
 			do {
-				long mediaId = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
                 long itemId = cursor.getLong(PodDBAdapter.KEY_MEDIA_FEEDITEM_INDEX);
 				// find matching feed item
 				FeedItem item = getMatchingItemForMedia(itemId, itemsCopy);
 				if (item != null) {
-					Date playbackCompletionDate = null;
-					long playbackCompletionTime = cursor
-							.getLong(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE_INDEX);
-					if (playbackCompletionTime > 0) {
-						playbackCompletionDate = new Date(
-								playbackCompletionTime);
-					}
-
-					item.setMedia(new FeedMedia(
-							mediaId,
-							item,
-							cursor.getInt(PodDBAdapter.KEY_DURATION_INDEX),
-							cursor.getInt(PodDBAdapter.KEY_POSITION_INDEX),
-							cursor.getLong(PodDBAdapter.KEY_SIZE_INDEX),
-							cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
-							cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
-							cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
-							cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
-							playbackCompletionDate));
-
+					item.setMedia(extractFeedMediaFromCursorRow(cursor));
+                    item.getMedia().setItem(item);
 				}
 			} while (cursor.moveToNext());
 			cursor.close();
 		}
 	}
+
+    private static FeedMedia extractFeedMediaFromCursorRow(final Cursor cursor) {
+            long mediaId = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+            Date playbackCompletionDate = null;
+            long playbackCompletionTime = cursor
+                    .getLong(PodDBAdapter.KEY_PLAYBACK_COMPLETION_DATE_INDEX);
+            if (playbackCompletionTime > 0) {
+                playbackCompletionDate = new Date(
+                        playbackCompletionTime);
+            }
+
+            return new FeedMedia(
+                    mediaId,
+                    null,
+                    cursor.getInt(PodDBAdapter.KEY_DURATION_INDEX),
+                    cursor.getInt(PodDBAdapter.KEY_POSITION_INDEX),
+                    cursor.getLong(PodDBAdapter.KEY_SIZE_INDEX),
+                    cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
+                    cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
+                    cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
+                    cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
+                    playbackCompletionDate);
+    }
 
 	private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,
 			Cursor cursor) {
@@ -481,6 +485,21 @@ public final class DBReader {
 		return result;
 	}
 
+    /**
+     * Searches the DB for a FeedImage of the given id.
+     *
+     * @param imageId
+     *            The id of the object
+     * @return The found object
+     * */
+    public static FeedImage getFeedImage(final Context context, final long imageId) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        FeedImage result = getFeedImage(adapter, imageId);
+        adapter.close();
+        return result;
+    }
+
 	/**
 	 * Searches the DB for a FeedImage of the given id.
 	 * 
@@ -488,7 +507,7 @@ public final class DBReader {
 	 *            The id of the object
 	 * @return The found object
 	 * */
-	public static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
+	 static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
 		Cursor cursor = adapter.getImageOfFeedCursor(id);
 		if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
 			throw new SQLException("No FeedImage found at index: " + id);
@@ -504,4 +523,34 @@ public final class DBReader {
 		cursor.close();
 		return image;
 	}
+
+    /**
+     * Searches the DB for a FeedMedia of the given id.
+     *
+     * @param mediaId
+     *            The id of the object
+     * @return The found object
+     * */
+    public static FeedMedia getFeedMedia(final Context context, final long mediaId) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+
+        adapter.open();
+        Cursor mediaCursor = adapter.getSingleFeedMediaCursor(mediaId);
+
+        FeedMedia media = null;
+        if (mediaCursor.moveToFirst()) {
+            final long itemId = mediaCursor.getLong(PodDBAdapter.KEY_MEDIA_FEEDITEM_INDEX);
+            media = extractFeedMediaFromCursorRow(mediaCursor);
+            FeedItem item = getFeedItem(context, itemId);
+            if (media != null && item != null) {
+                media.setItem(item);
+                item.setMedia(media);
+            }
+        }
+
+        mediaCursor.close();
+        adapter.close();
+
+        return media;
+    }
 }

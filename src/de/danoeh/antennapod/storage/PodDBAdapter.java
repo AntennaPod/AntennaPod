@@ -201,6 +201,13 @@ public class PodDBAdapter {
 			TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
 			TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER };
 
+   /** Contains SEL_FI_SMALL as comma-separated list. Useful for raw queries. */
+   private static final String SEL_FI_SMALL_STR;
+   static {
+       String selFiSmall = Arrays.toString(SEL_FI_SMALL);
+       SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
+   }
+
 	// column indices for SEL_FI_SMALL
 
 	public static final int IDX_FI_SMALL_ID = 0;
@@ -601,7 +608,7 @@ public class PodDBAdapter {
 	public final Cursor getAllFeedsCursor() {
 		open();
 		Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null,
-				null);
+				KEY_TITLE + " ASC");
 		return c;
 	}
 
@@ -692,9 +699,8 @@ public class PodDBAdapter {
 	 */
 	public final Cursor getQueueCursor() {
 		open();
-		String selFiSmall = Arrays.toString(SEL_FI_SMALL);
 		Object[] args = (Object[]) new String[] {
-				selFiSmall.substring(1, selFiSmall.length() - 1) + "," + TABLE_NAME_QUEUE + "." + KEY_ID,
+				SEL_FI_SMALL_STR + "," + TABLE_NAME_QUEUE + "." + KEY_ID,
 				TABLE_NAME_FEED_ITEMS, TABLE_NAME_QUEUE,
 				TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
 				TABLE_NAME_QUEUE + "." + KEY_FEEDITEM,
@@ -738,12 +744,12 @@ public class PodDBAdapter {
 
 	public Cursor getDownloadedItemsCursor() {
 		open();
-		Cursor c = db.rawQuery("SELECT ? FROM " + TABLE_NAME_FEED_ITEMS
-				+ "FULL JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
-				+ TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-				+ TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " WHERE "
-				+ TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0",
-				SEL_FI_SMALL);
+        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " WHERE "
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
+		Cursor c = db.rawQuery(query, null);
 		return c;
 	}
 
@@ -768,7 +774,11 @@ public class PodDBAdapter {
 		return c;
 	}
 
-	public final Cursor getFeedMediaCursor(String... mediaIds) {
+    public final Cursor getSingleFeedMediaCursor(long id) {
+        return db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?", new String[] {Long.toString(id)}, null, null, null);
+    }
+
+	public final Cursor getFeedMediaCursorByItemID(String... mediaIds) {
 		int length = mediaIds.length;
 		if (length > IN_OPERATOR_MAXIMUM) {
 			Log.w(TAG, "Length of id array is larger than "
@@ -837,11 +847,14 @@ public class PodDBAdapter {
 	}
 
 	public final int getNumberOfDownloadedEpisodes() {
+        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_MEDIA +
+                             " WHERE " + KEY_DOWNLOADED + " > 0";
 
-		Cursor c = db.rawQuery(
-				"SELECT COUNT(DISTINCT ?) AS count FROM ? WHERE ?>0",
-				new String[] { KEY_ID, TABLE_NAME_FEED_MEDIA, KEY_DOWNLOADED });
-		final int result = c.getInt(0);
+		Cursor c = db.rawQuery(query, null);
+        int result = 0;
+        if (c.moveToFirst()) {
+		    result = c.getInt(0);
+        }
 		c.close();
 		return result;
 	}

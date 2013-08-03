@@ -122,9 +122,11 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 		feed.setFile_url(fileUrl);
 		DownloadRequest request = new DownloadRequest(feed.getFile_url(),
 				feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED);
+        /* TODO update
 		HttpDownloader httpDownloader = new HttpDownloader(downloaderCallback,
 				request);
 		httpDownloader.start();
+		*/
 	}
 
 	/** Displays a progress indicator. */

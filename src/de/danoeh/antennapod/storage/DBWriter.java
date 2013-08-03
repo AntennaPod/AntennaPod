@@ -488,8 +488,8 @@ public class DBWriter {
 
 	}
 
-	static void addNewFeed(final Context context, final Feed feed) {
-		dbExec.submit(new Runnable() {
+	static Future<?> addNewFeed(final Context context, final Feed feed) {
+		return dbExec.submit(new Runnable() {
 
 			@Override
 			public void run() {
@@ -503,8 +503,8 @@ public class DBWriter {
 		});
 	}
 	
-	static void setCompleteFeed(final Context context, final Feed feed) {
-		dbExec.submit(new Runnable() {
+	static Future<?> setCompleteFeed(final Context context, final Feed feed) {
+		return dbExec.submit(new Runnable() {
 
 			@Override
 			public void run() {

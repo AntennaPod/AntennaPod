@@ -38,9 +38,8 @@ public class HttpDownloader extends Downloader {
 	private static final int CONNECTION_TIMEOUT = 30000;
 	private static final int SOCKET_TIMEOUT = 30000;
 
-	public HttpDownloader(DownloaderCallback downloaderCallback,
-			DownloadRequest request) {
-		super(downloaderCallback, request);
+	public HttpDownloader(DownloadRequest request) {
+		super(request);
 	}
 
 	private DefaultHttpClient createHttpClient() {
@@ -144,7 +143,6 @@ public class HttpDownloader extends Downloader {
 			e.printStackTrace();
 			onFail(DownloadError.ERROR_CONNECTION_ERROR, request.getSource());
 		} finally {
-			IOUtils.closeQuietly(connection);
 			IOUtils.closeQuietly(out);
 			if (httpClient != null) {
 				httpClient.getConnectionManager().shutdown();

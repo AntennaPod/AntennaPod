@@ -9,7 +9,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
-import java.util.TreeSet;
 import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -1448,7 +1447,7 @@ public class FeedManager {
 				long imageIndex = feedlistCursor
 						.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
 				if (imageIndex != 0) {
-					feed.setImage(DBReader.getFeedImage(adapter, imageIndex));
+					feed.setImage(DBReader.getFeedImage(context, imageIndex));
 					feed.getImage().setFeed(feed);
 				}
 				feed.file_url = feedlistCursor
@@ -1557,8 +1556,8 @@ public class FeedManager {
 	private void extractMediafromFeedItemlist(PodDBAdapter adapter,
 			ArrayList<FeedItem> items, ArrayList<String> mediaIds) {
 		ArrayList<FeedItem> itemsCopy = new ArrayList<FeedItem>(items);
-		Cursor cursor = adapter.getFeedMediaCursor(mediaIds
-				.toArray(new String[mediaIds.size()]));
+		Cursor cursor = adapter.getFeedMediaCursorByItemID(mediaIds
+                .toArray(new String[mediaIds.size()]));
 		if (cursor.moveToFirst()) {
 			do {
 				long mediaId = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
