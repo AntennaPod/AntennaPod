@@ -54,6 +54,7 @@ import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.Playable.PlayableException;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /** Controls the MediaPlayer that plays a FeedMedia-file */
 public class PlaybackService extends Service {
@@ -433,25 +434,11 @@ public class PlaybackService extends Service {
 			}
 			break;
 		case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-			int currentPos = getCurrentPositionSafe();
-			int duration = getDurationSafe();
-
-			if (currentPos != INVALID_TIME && duration != INVALID_TIME) {
-				if (currentPos < duration) {
-					seek(currentPos + 10000);
-				}
-			}
+			seekDelta(PlaybackController.DEFAULT_SEEK_DELTA);
 			break;
 		}
 		case KeyEvent.KEYCODE_MEDIA_REWIND: {
-			int currentPos = getCurrentPositionSafe();
-			int duration = getDurationSafe();
-
-			if (currentPos != INVALID_TIME && duration != INVALID_TIME) {
-				if (currentPos > 10000) {
-					seek(currentPos - 10000);
-				}
-			}
+			seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
 			break;
  		  }
 		} 
