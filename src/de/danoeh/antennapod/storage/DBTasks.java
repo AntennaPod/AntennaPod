@@ -381,9 +381,11 @@ public final class DBTasks {
 	}
 
 	public static FeedItem getQueueSuccessorOfItem(Context context,
-			final long itemId) {
+			final long itemId, List<FeedItem> queue) {
 		FeedItem result = null;
-		List<FeedItem> queue = DBReader.getQueue(context);
+        if (queue == null) {
+		    queue = DBReader.getQueue(context);
+        }
 		if (queue != null) {
 			Iterator<FeedItem> iterator = queue.iterator();
 			while (iterator.hasNext()) {

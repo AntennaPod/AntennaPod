@@ -48,6 +48,9 @@ public abstract class QueueAccess {
         return new QueueAccess() {
             @Override
             public boolean contains(long id) {
+                if (items == null) {
+                    return false;
+                }
                 Iterator<FeedItem> it = items.iterator();
                 for (FeedItem i = it.next(); it.hasNext(); i = it.next()) {
                     if (i.getId() == id) {
