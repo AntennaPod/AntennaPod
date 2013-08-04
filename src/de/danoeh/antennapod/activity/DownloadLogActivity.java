@@ -17,8 +17,7 @@ import de.danoeh.antennapod.storage.DBReader;
 import java.util.List;
 
 /**
- * Displays completed and failed downloads in a list. The data comes from the
- * FeedManager.
+ * Displays completed and failed downloads in a list.
  */
 public class DownloadLogActivity extends SherlockListActivity {
 	private static final String TAG = "DownloadLogActivity";
