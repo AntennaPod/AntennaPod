@@ -3,9 +3,11 @@ package de.danoeh.antennapod.util.playback;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.FutureTask;
 
 import android.content.Context;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.util.ShownotesProvider;
 import org.apache.commons.io.IOUtils;
 
 import android.content.SharedPreferences;
@@ -14,7 +16,6 @@ import android.os.Parcelable;
 import android.util.Log;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 
@@ -22,7 +23,7 @@ import de.danoeh.antennapod.feed.MediaType;
  * Interface for objects that can be played by the PlaybackService.
  */
 public interface Playable extends Parcelable,
-        ImageLoader.ImageWorkerTaskResource {
+        ImageLoader.ImageWorkerTaskResource, ShownotesProvider {
 
     /**
      * Save information about the playable in a preference so that it can be
@@ -51,13 +52,6 @@ public interface Playable extends Parcelable,
      * Returns the title of the episode that this playable represents
      */
     public String getEpisodeTitle();
-
-    /**
-     * Loads shownotes. If the shownotes have to be loaded from a file or from a
-     * database, it should be done in a separate thread. After the shownotes
-     * have been loaded, callback.onShownotesLoaded should be called.
-     */
-    public void loadShownotes(ShownoteLoaderCallback callback);
 
     /**
      * Returns a list of chapter marks or null if this Playable has no chapters.
@@ -214,10 +208,6 @@ public interface Playable extends Parcelable,
             super(throwable);
         }
 
-    }
-
-    public static interface ShownoteLoaderCallback {
-        void onShownotesLoaded(String shownotes);
     }
 
     /**

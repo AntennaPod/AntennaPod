@@ -476,6 +476,21 @@ public final class DBReader {
 		return item;
 
 	}
+
+    public static void loadExtraInformationOfFeedItem(final Context context, final FeedItem item) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor extraCursor = adapter.getExtraInformationOfItem(item);
+        if (extraCursor.moveToFirst()) {
+            String description = extraCursor
+                    .getString(PodDBAdapter.IDX_FI_EXTRA_DESCRIPTION);
+            String contentEncoded = extraCursor
+                    .getString(PodDBAdapter.IDX_FI_EXTRA_CONTENT_ENCODED);
+            item.setDescription(description);
+            item.setContentEncoded(contentEncoded);
+        }
+        adapter.close();
+    }
 	
 	public static int getNumberOfDownloadedEpisodes(final Context context) {
 		PodDBAdapter adapter = new PodDBAdapter(context);

@@ -366,6 +366,17 @@ public class PodDBAdapter {
 		return media.getId();
 	}
 
+    public void setFeedMediaPosition(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_POSITION, media.getPosition());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[] { String.valueOf(media.getId()) });
+        } else {
+            Log.e(TAG, "setFeedMediaPosition: ID of media was 0");
+        }
+    }
+
 	/**
 	 * Insert all FeedItems of a feed and the feed object itself in a single
 	 * transaction

@@ -529,9 +529,19 @@ public class DBWriter {
 				adapter.setMedia(media);
 				adapter.close();
 			}});
-		
-
 	}
+
+    public static Future<?> setFeedMediaPosition(final Context context, final FeedMedia media) {
+        return dbExec.submit(new Runnable(){
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedMediaPosition(media);
+                adapter.close();
+            }
+        });
+    }
 
     public static Future<?> setFeedItem(final Context context,
                                   final FeedItem item) {
