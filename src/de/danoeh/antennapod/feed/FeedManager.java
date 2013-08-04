@@ -1715,8 +1715,10 @@ public class FeedManager {
 			}
 		});
 	}
+/*
 
-	/**
+	*/
+/**
 	 * Searches the descriptions of FeedItems of a specific feed for a given
 	 * string.
 	 * 
@@ -1726,7 +1728,8 @@ public class FeedManager {
 	 *            The search string
 	 * @param callback
 	 *            A callback which will be used to return the search result
-	 * */
+	 * *//*
+
 	public void searchFeedItemDescription(final Context context,
 			final Feed feed, final String query,
 			FeedManager.QueryTaskCallback callback) {
@@ -1741,8 +1744,13 @@ public class FeedManager {
 			}
 		});
 	}
+*/
+/*
 
-	/**
+	*//*
+
+*/
+/**
 	 * Searches the 'contentEncoded' field of FeedItems of a specific feed for a
 	 * given string.
 	 * 
@@ -1752,7 +1760,10 @@ public class FeedManager {
 	 *            The search string
 	 * @param callback
 	 *            A callback which will be used to return the search result
-	 * */
+	 * *//*
+*/
+/*
+
 	public void searchFeedItemContentEncoded(final Context context,
 			final Feed feed, final String query,
 			FeedManager.QueryTaskCallback callback) {
@@ -1767,6 +1778,8 @@ public class FeedManager {
 			}
 		});
 	}
+*//*
+
 
 	/** Returns the number of feeds that are currently in the feeds list. */
 	public int getFeedsSize() {

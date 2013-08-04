@@ -1,32 +1,62 @@
-package de.danoeh.antennapod.feed;
+package de.danoeh.antennapod.storage;
+
+import android.content.Context;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.SearchResult;
+import de.danoeh.antennapod.util.comparator.SearchResultValueComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
 
-import android.content.Context;
-import android.database.Cursor;
-import android.os.Looper;
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.storage.PodDBAdapter;
-import de.danoeh.antennapod.util.comparator.SearchResultValueComparator;
-
-/** Performs search on Feeds and FeedItems */
+/**
+ * Performs search on Feeds and FeedItems
+ */
 public class FeedSearcher {
-	private static final String TAG = "FeedSearcher";
+    private static final String TAG = "FeedSearcher";
 
-	// Search result values
-	private static final int VALUE_FEED_TITLE = 3;
-	private static final int VALUE_ITEM_TITLE = 2;
-	private static final int VALUE_ITEM_CHAPTER = 1;
-	private static final int VALUE_ITEM_DESCRIPTION = 0;
-	private static final int VALUE_WORD_MATCH = 4;
 
-	/** Performs a search in all feeds or one specific feed. */
+    /**
+     * Performs a search in all feeds or one specific feed.
+     */
+    public static List<SearchResult> performSearch(final Context context,
+                                                   final String query, final long selectedFeed) {
+        final int values[] = {0, 0, 1, 2};
+        final String[] subtitles = {context.getString(R.string.found_in_shownotes_label),
+                context.getString(R.string.found_in_shownotes_label),
+                context.getString(R.string.found_in_chapters_label),
+                context.getString(R.string.found_in_title_label)};
+
+        List<SearchResult> result = new ArrayList<SearchResult>();
+
+        FutureTask<List<FeedItem>>[] tasks = new FutureTask[4];
+        (tasks[0] = DBTasks.searchFeedItemContentEncoded(context, selectedFeed, query)).run();
+        (tasks[1] = DBTasks.searchFeedItemDescription(context, selectedFeed, query)).run();
+        (tasks[2] = DBTasks.searchFeedItemChapters(context, selectedFeed, query)).run();
+        (tasks[3] = DBTasks.searchFeedItemTitle(context, selectedFeed, query)).run();
+        try {
+            for (int i = 0; i < tasks.length; i++) {
+                FutureTask task = tasks[i];
+                List<FeedItem> items = (List<FeedItem>) task.get();
+                for (FeedItem item : items) {
+                    result.add(new SearchResult(item, values[i], subtitles[i]));
+                }
+
+            }
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+        Collections.sort(result, new SearchResultValueComparator());
+        return result;
+    }
+  /*
+    *//** Performs a search in all feeds or one specific feed. *//*
 	public static ArrayList<SearchResult> performSearch(final Context context,
 			final String query, final Feed selectedFeed) {
 		final String lcQuery = query.toLowerCase();
@@ -49,38 +79,37 @@ public class FeedSearcher {
 			Log.d(TAG, "Searching item-chaptertitles");
 		searchFeedItemChapters(lcQuery, result, selectedFeed);
 
-		final FeedManager manager = FeedManager.getInstance();
 		Looper.prepare();
-		manager.searchFeedItemDescription(context, selectedFeed, lcQuery,
-				new FeedManager.QueryTaskCallback() {
+		DBTasks.searchFeedItemDescription(context, selectedFeed, lcQuery,
+                new DBTasks.QueryTaskCallback() {
 
-					@Override
-					public void handleResult(Cursor cResult) {
-						searchFeedItemContentEncodedCursor(lcQuery, result,
-								selectedFeed, cResult);
+                    @Override
+                    public void handleResult(Cursor cResult) {
+                        searchFeedItemContentEncodedCursor(context, lcQuery, result,
+                                selectedFeed, cResult);
 
-					}
+                    }
 
-					@Override
-					public void onCompletion() {
-						manager.searchFeedItemContentEncoded(context,
-								selectedFeed, lcQuery,
-								new FeedManager.QueryTaskCallback() {
+                    @Override
+                    public void onCompletion() {
+                        DBTasks.searchFeedItemContentEncoded(context,
+                                selectedFeed, lcQuery,
+                                new DBTasks.QueryTaskCallback() {
 
-									@Override
-									public void handleResult(Cursor cResult) {
-										searchFeedItemDescriptionCursor(
-												lcQuery, result, selectedFeed,
-												cResult);
-									}
+                                    @Override
+                                    public void handleResult(Cursor cResult) {
+                                        searchFeedItemDescriptionCursor(context,
+                                                lcQuery, result, selectedFeed,
+                                                cResult);
+                                    }
 
-									@Override
-									public void onCompletion() {
-										Looper.myLooper().quit();
-									}
-								});
-					}
-				});
+                                    @Override
+                                    public void onCompletion() {
+                                        Looper.myLooper().quit();
+                                    }
+                                });
+                    }
+                });
 
 		Looper.loop();
 		if (AppConfig.DEBUG)
@@ -130,7 +159,6 @@ public class FeedSearcher {
 
 	private static void searchFeedItemChapters(String query,
 			ArrayList<SearchResult> destination, Feed selectedFeed) {
-		FeedManager manager = FeedManager.getInstance();
 		if (selectedFeed == null) {
 			for (Feed feed : manager.getFeeds()) {
 				searchFeedItemChaptersSingleFeed(query, destination, feed);
@@ -157,10 +185,11 @@ public class FeedSearcher {
 		}
 	}
 
-	private static void searchFeedItemDescriptionCursor(String query,
+	private static void searchFeedItemDescriptionCursor(Context context, String query,
 			ArrayList<SearchResult> destination, Feed feed, Cursor cursor) {
 		FeedManager manager = FeedManager.getInstance();
-		if (cursor.moveToFirst()) {
+        List<FeedItem> items = DBReader.extractItemlistFromCursor(cursor);
+        if (cursor.moveToFirst()) {
 			do {
 				final long itemId = cursor
 						.getLong(PodDBAdapter.IDX_FI_EXTRA_ID);
@@ -193,9 +222,8 @@ public class FeedSearcher {
 		}
 	}
 
-	private static void searchFeedItemContentEncodedCursor(String query,
+	private static void searchFeedItemContentEncodedCursor(Context context, String query,
 			ArrayList<SearchResult> destination, Feed feed, Cursor cursor) {
-		FeedManager manager = FeedManager.getInstance();
 		if (cursor.moveToFirst()) {
 			do {
 				final long itemId = cursor
@@ -248,6 +276,6 @@ public class FeedSearcher {
 		} else {
 			return null;
 		}
-	}
+	}*/
 
 }

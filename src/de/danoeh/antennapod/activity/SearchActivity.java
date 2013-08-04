@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
@@ -20,8 +20,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.feed.FeedSearcher;
+import de.danoeh.antennapod.storage.FeedSearcher;
 import de.danoeh.antennapod.feed.SearchResult;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
@@ -34,10 +33,10 @@ public class SearchActivity extends SherlockListActivity {
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.searchactivity.extra.feedId";
 
 	private SearchlistAdapter searchAdapter;
-	private ArrayList<SearchResult> content;
+	private List<SearchResult> content;
 
-	/** Feed that is being searched or null if the search is global. */
-	private Feed selectedFeed;
+	/** ID of the feed that is being searched or null if the search is global. */
+    private long feedID;
 
 	private TextView txtvStatus;
 
@@ -65,8 +64,7 @@ public class SearchActivity extends SherlockListActivity {
 			if (extra != null) {
 				if (AppConfig.DEBUG)
 					Log.d(TAG, "Found bundle extra");
-				long feedId = extra.getLong(EXTRA_FEED_ID);
-				selectedFeed = FeedManager.getInstance().getFeed(feedId);
+				feedID = extra.getLong(EXTRA_FEED_ID);
 			}
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Starting search");
@@ -109,9 +107,9 @@ public class SearchActivity extends SherlockListActivity {
 	@Override
 	public boolean onSearchRequested() {
 		Bundle extra = null;
-		if (selectedFeed != null) {
+		if (feedID != 0) {
 			extra = new Bundle();
-			extra.putLong(EXTRA_FEED_ID, selectedFeed.getId());
+			extra.putLong(EXTRA_FEED_ID, feedID);
 		}
 		startSearch(null, false, extra, false);
 		return true;
@@ -152,8 +150,8 @@ public class SearchActivity extends SherlockListActivity {
 			@Override
 			public void run() {
 				Log.d(TAG, "Starting background work");
-				final ArrayList<SearchResult> result = FeedSearcher
-						.performSearch(SearchActivity.this, query, selectedFeed);
+				final List<SearchResult> result = FeedSearcher
+						.performSearch(SearchActivity.this, query, feedID);
 				if (SearchActivity.this != null) {
 					SearchActivity.this.runOnUiThread(new Runnable() {
 

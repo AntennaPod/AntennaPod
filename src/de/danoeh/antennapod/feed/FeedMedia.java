@@ -284,6 +284,14 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     @Override
+    public String getPaymentLink() {
+        if (item == null) {
+            return null;
+        }
+        return getItem().getPaymentLink();
+    }
+
+    @Override
     public boolean localFileAvailable() {
         return isDownloaded() && file_url != null;
     }
@@ -316,11 +324,6 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setChapters(List<Chapter> chapters) {
         getItem().setChapters(chapters);
-    }
-
-    @Override
-    public String getPaymentLink() {
-        return getItem().getPaymentLink();
     }
 
     @Override

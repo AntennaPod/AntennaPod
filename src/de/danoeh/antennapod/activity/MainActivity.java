@@ -22,13 +22,14 @@ import com.actionbarsherlock.view.Window;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
 
@@ -39,7 +40,6 @@ public class MainActivity extends SherlockFragmentActivity {
 	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
 			| EventDistributor.DOWNLOAD_QUEUED;
 
-	private FeedManager manager;
 	private ViewPager viewpager;
 	private TabsAdapter pagerAdapter;
 	private ExternalPlayerFragment externalPlayerFragment;
@@ -51,7 +51,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
-		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
 
@@ -80,7 +79,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		if (!appLaunched && getIntent().getAction() != null
 				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
 			appLaunched = true;
-			if (manager.getUnreadItemsSize(true) > 0) {
+			if (DBReader.getNumberOfUnreadItems(this) > 0) {
 				// select 'episodes' tab
 				getSupportActionBar().setSelectedNavigationItem(1);
 			}
@@ -142,7 +141,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			startActivity(new Intent(this, AddFeedActivity.class));
 			return true;
 		case R.id.all_feed_refresh:
-			manager.refreshAllFeeds(this);
+			DBTasks.refreshAllFeeds(this, null);
 			return true;
 		case R.id.show_downloads:
 			startActivity(new Intent(this, DownloadActivity.class));
@@ -173,9 +172,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			refreshAll.setVisible(true);
 		}
-
-		boolean hasFeeds = manager.getFeedsSize() > 0;
-		menu.findItem(R.id.all_feed_refresh).setVisible(hasFeeds);
 		return true;
 	}
 

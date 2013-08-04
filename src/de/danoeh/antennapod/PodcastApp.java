@@ -5,7 +5,6 @@ import android.content.res.Configuration;
 import android.util.Log;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 
@@ -32,8 +31,6 @@ public class PodcastApp extends Application {
 		UserPreferences.createInstance(this);
 		PlaybackPreferences.createInstance(this);
 		EventDistributor.getInstance();
-		FeedManager manager = FeedManager.getInstance();
-		manager.loadDBData(getApplicationContext());
 	}
 
 	@Override

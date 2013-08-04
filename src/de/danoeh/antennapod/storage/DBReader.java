@@ -108,6 +108,14 @@ public final class DBReader {
 		return items;
 	}
 
+    static List<FeedItem> extractItemlistFromCursor(Context context, Cursor itemlistCursor) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<FeedItem> result = extractItemlistFromCursor(adapter, itemlistCursor);
+        adapter.close();
+        return result;
+    }
+
 	private static List<FeedItem> extractItemlistFromCursor(
 			PodDBAdapter adapter, Cursor itemlistCursor) {
 		ArrayList<String> itemIds = new ArrayList<String>();
@@ -499,6 +507,14 @@ public final class DBReader {
 		adapter.close();
 		return result;
 	}
+
+    public static int getNumberOfUnreadItems(final Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        final int result = adapter.getNumberOfUnreadItems();
+        adapter.close();
+        return result;
+    }
 
     /**
      * Searches the DB for a FeedImage of the given id.

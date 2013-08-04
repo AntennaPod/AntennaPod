@@ -35,6 +35,9 @@ public class PodDBAdapter {
 	/** Maximum number of arguments for IN-operator. */
 	public static final int IN_OPERATOR_MAXIMUM = 800;
 
+    /** Maximum number of entries per search request. */
+    public static final int SEARCH_LIMIT = 30;
+
 	// ----------- Column indices
 	// ----------- General indices
 	public static final int KEY_ID_INDEX = 0;
@@ -857,6 +860,18 @@ public class PodDBAdapter {
 
 	}
 
+    public final int getNumberOfUnreadItems() {
+        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_ITEMS +
+                " WHERE " + KEY_READ + " = 0";
+        Cursor c = db.rawQuery(query, null);
+        int result = 0;
+        if (c.moveToFirst()) {
+            result = c.getInt(0);
+        }
+        c.close();
+        return result;
+    }
+
 	public final int getNumberOfDownloadedEpisodes() {
         final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_MEDIA +
                              " WHERE " + KEY_DOWNLOADED + " > 0";
@@ -888,17 +903,17 @@ public class PodDBAdapter {
 	 * 
 	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
 	 * */
-	public Cursor searchItemDescriptions(Feed feed, String query) {
-		if (feed != null) {
+	public Cursor searchItemDescriptions(long feedID, String query) {
+		if (feedID != 0) {
 			// search items in specific feed
-			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
 					+ "=? AND " + KEY_DESCRIPTION + " LIKE '%"
 					+ prepareSearchQuery(query) + "%'",
-					new String[] { String.valueOf(feed.getId()) }, null, null,
+					new String[] { String.valueOf(feedID) }, null, null,
 					null);
 		} else {
 			// search through all items
-			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
 					KEY_DESCRIPTION + " LIKE '%" + prepareSearchQuery(query)
 							+ "%'", null, null, null, null);
 		}
@@ -910,22 +925,56 @@ public class PodDBAdapter {
 	 * 
 	 * @return A cursor with all search results in SEL_FI_EXTRA selection.
 	 * */
-	public Cursor searchItemContentEncoded(Feed feed, String query) {
-		if (feed != null) {
+	public Cursor searchItemContentEncoded(long feedID, String query) {
+		if (feedID != 0) {
 			// search items in specific feed
-			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_FEED
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
 					+ "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
 					+ prepareSearchQuery(query) + "%'",
-					new String[] { String.valueOf(feed.getId()) }, null, null,
+					new String[] { String.valueOf(feedID) }, null, null,
 					null);
 		} else {
 			// search through all items
-			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA,
+			return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
 					KEY_CONTENT_ENCODED + " LIKE '%"
 							+ prepareSearchQuery(query) + "%'", null, null,
 					null, null);
 		}
 	}
+
+    public Cursor searchItemTitles(long feedID, String query) {
+        if (feedID != 0) {
+            // search items in specific feed
+            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+                    + "=? AND " + KEY_TITLE + " LIKE '%"
+                    + prepareSearchQuery(query) + "%'",
+                    new String[] { String.valueOf(feedID) }, null, null,
+                    null);
+        } else {
+            // search through all items
+            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+                    KEY_TITLE + " LIKE '%"
+                            + prepareSearchQuery(query) + "%'", null, null,
+                    null, null);
+        }
+    }
+
+    public Cursor searchItemChapters(long feedID, String searchQuery) {
+        final String query;
+        if (feedID != 0) {
+        query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
+                TABLE_NAME_SIMPLECHAPTERS  + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
+                TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
+                feedID + " AND "+ TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
+                + prepareSearchQuery(searchQuery) + "%'";
+        } else {
+         query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS + " INNER JOIN " +
+                    TABLE_NAME_SIMPLECHAPTERS  + " ON " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_FEEDITEM + "=" +
+                    TABLE_NAME_FEED_ITEMS + "." + KEY_ID + " WHERE " + TABLE_NAME_SIMPLECHAPTERS + "." + KEY_TITLE + " LIKE '%"
+                    + prepareSearchQuery(searchQuery) + "%'";
+        }
+        return db.rawQuery(query, null);
+    }
 
 	/** Helper class for opening the Antennapod database. */
 	private static class PodDBHelper extends SQLiteOpenHelper {
