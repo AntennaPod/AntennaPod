@@ -14,7 +14,6 @@ import android.os.AsyncTask;
 import android.util.Log;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.opml.OpmlWriter;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;

@@ -224,8 +224,8 @@ public class FeedMedia extends FeedFile implements Playable {
     public void loadChapterMarks() {
         if (getChapters() == null && !localFileAvailable()) {
             ChapterUtils.loadChaptersFromStreamUrl(this);
-            if (getChapters() != null) {
-                FeedManager.getInstance().setFeedItem(PodcastApp.getInstance(),
+            if (getChapters() != null && item != null) {
+                DBWriter.setFeedItem(PodcastApp.getInstance(),
                         item);
             }
         }
