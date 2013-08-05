@@ -608,7 +608,7 @@ public class DownloadService extends Service {
 
         private DownloadRequest request;
 
-        private int reason;
+        private DownloadError reason;
         private boolean successful;
 
         public FeedSyncThread(DownloadRequest request) {
@@ -626,7 +626,7 @@ public class DownloadService extends Service {
             feed.setFile_url(request.getDestination());
             feed.setDownloaded(true);
 
-            reason = 0;
+            reason = null;
             String reasonDetailed = null;
             successful = true;
             FeedHandler feedHandler = new FeedHandler();

@@ -54,7 +54,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 
 		for (int i = 0; i < num_retries; i++) {
 			InputStream in = null;
-			OutputStream out = null;
+			BufferedOutputStream out = null;
 			try {
 				in = getInputStream(feed.getDownload_url());
 				assertNotNull(in);
@@ -65,6 +65,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 				while ((count = in.read(buffer)) != -1) {
 					out.write(buffer, 0, count);
 				}
+				out.flush();
 				successful = true;
 			} catch (IOException e) {
 				e.printStackTrace();

@@ -20,6 +20,7 @@ public abstract class Downloader implements Callable<Downloader> {
 		this.request = request;
 		this.request.setStatusMsg(R.string.download_pending);
 		this.cancelled = false;
+        this.result = new DownloadStatus(request, null, false, false, null);
 	}
 
 	protected abstract void download();

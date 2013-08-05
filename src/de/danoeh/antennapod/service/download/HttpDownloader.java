@@ -153,23 +153,21 @@ public class HttpDownloader extends Downloader {
 	private void onSuccess() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was successful");
-		result = new DownloadStatus(request, 0, true, false, null);
+		result.setSuccessful();
 	}
 
-	private void onFail(int reason, String reasonDetailed) {
+	private void onFail(DownloadError reason, String reasonDetailed) {
 		if (AppConfig.DEBUG) {
 			Log.d(TAG, "Download failed");
 		}
-		result = new DownloadStatus(request, reason, false, false,
-				reasonDetailed);
+        result.setFailed(reason, reasonDetailed);
 		cleanup();
 	}
 
 	private void onCancelled() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Download was cancelled");
-		result = new DownloadStatus(request,
-				DownloadError.ERROR_DOWNLOAD_CANCELLED, false, true, null);
+        result.setCancelled();
 		cleanup();
 	}
 

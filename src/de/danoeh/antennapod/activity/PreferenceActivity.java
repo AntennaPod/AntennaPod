@@ -12,6 +12,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
+import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
@@ -147,29 +148,44 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
 
+
                             @Override
-                            public boolean onPreferenceChange(
-                                    Preference preference, Object newValue) {
-                                if (newValue instanceof String) {
-                                    setEpisodeCacheSizeText(Integer
-                                            .valueOf((String) newValue));
-                                }
+                            public boolean onPreferenceChange(Preference preference, Object o) {
+                                checkItemVisibility();
                                 return true;
                             }
                         });
-        findPreference(UserPreferences.PREF_ENABLE_AUTODL)
-                .setOnPreferenceClickListener(new OnPreferenceClickListener() {
-
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        checkItemVisibility();
-                        return true;
-                    }
-                });
-
+        buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
+
+    }
+
+    private void buildUpdateIntervalPreference() {
+        ListPreference pref = (ListPreference) findPreference(UserPreferences.PREF_UPDATE_INTERVAL);
+        String[] values = getResources().getStringArray(
+                R.array.update_intervall_values);
+        String[] entries = new String[values.length];
+        for (int x = 0; x < values.length; x++) {
+            Integer v = Integer.parseInt(values[x]);
+            switch (v) {
+                case 0:
+                    entries[x] = getString(R.string.pref_update_interval_hours_manual);
+                    break;
+                case 1:
+                    entries[x] = v
+                            + " "
+                            + getString(R.string.pref_update_interval_hours_singular);
+                    break;
+                default:
+                    entries[x] = v + " "
+                            + getString(R.string.pref_update_interval_hours_plural);
+                    break;
+
+            }
+        }
+        pref.setEntries(entries);
 
     }
 

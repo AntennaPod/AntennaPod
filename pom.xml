@@ -5,7 +5,7 @@
 	<groupId>de.danoeh</groupId>
 	<artifactId>antennapod</artifactId>
 	<packaging>apk</packaging>
-	<version>0.9.7.3</version>
+	<version>0.9.7.4</version>
 	<name>AntennaPod</name>
 
 
@@ -70,6 +70,11 @@
 			<version>0.6.1-SNAPSHOT</version>
 			<type>apklib</type>
 		</dependency>
+		<dependency>
+			<groupId>com.nineoldandroids</groupId>
+			<artifactId>library</artifactId>
+			<version>2.4.0</version>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -87,7 +92,7 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<version>3.5.0</version>
+				<version>3.6.1</version>
 				<configuration>
 					<sdk>
 						<path>${env.ANDROID_HOME}</path>
@@ -167,6 +172,10 @@
 									<storepass>${sign.storepass}</storepass>
 									<keypass>${sign.keypass}</keypass>
 									<verbose>true</verbose>
+                                    <arguments>
+                                        <argument>-sigalg</argument><argument>MD5withRSA</argument>
+                                        <argument>-digestalg</argument><argument>SHA1</argument>
+                                    </arguments>
 								</configuration>
 							</execution>
 						</executions>
@@ -190,10 +199,11 @@
 							</zipalign>
 							<manifest>
 								<debuggable>false</debuggable>
-								<versionCodeAutoIncrement>true</versionCodeAutoIncrement>
+								<versionCodeAutoIncrement>false</versionCodeAutoIncrement>
 							</manifest>
 							<proguard>
-								<skip>true</skip>
+                                <skip>false</skip>
+                                <config>proguard.cfg</config>
 							</proguard>
 						</configuration>
 						<executions>

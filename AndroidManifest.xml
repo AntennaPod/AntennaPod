@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="30"
-    android:versionName="0.9.7.3" >
+    android:versionCode="31"
+    android:versionName="0.9.7.4" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -22,6 +22,9 @@
 
     <uses-feature
         android:name="android.hardware.screen.portrait"
+        android:required="false" />
+    <uses-feature
+        android:name="android.hardware.touchscreen"
         android:required="false" />
 
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -52,6 +55,37 @@
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/add_new_feed_label"
             android:windowSoftInputMode="adjustResize" >
+            <intent-filter>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <category android:name="android.intent.category.BROWSABLE"/>
+			    <data android:scheme="http"/>
+			    <data android:host="*"/>
+			    <data android:pathPattern=".*\\.xml"/>
+			    <data android:pathPattern=".*\\.rss"/>
+			</intent-filter>
+			
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <category android:name="android.intent.category.BROWSABLE"/>
+			    <data android:scheme="http"/>
+			    <data android:host="feeds.feedburner.com"/>
+			    <data android:host="feedproxy.google.com"/>
+			    <data android:host="feeds2.feedburner.com"/>
+			    <data android:host="feedsproxy.google.com"/>
+			</intent-filter>
+			
+			<intent-filter>
+			    <action android:name="android.intent.action.VIEW"/>
+			    <category android:name="android.intent.category.DEFAULT"/>
+			    <category android:name="android.intent.category.BROWSABLE"/>
+			    <data android:scheme="http"/>
+			    <data android:mimeType="text/xml"/>
+			    <data android:mimeType="application/rss+xml"/>
+			    <data android:mimeType="application/atom+xml"/>
+			    <data android:mimeType="application/xml"/>
+			</intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
 
@@ -189,76 +223,6 @@
 
                 <data
                     android:host="*"
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:pathPattern=".*\\.xml"
-                    android:scheme="file" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:mimeType="application/xml" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data android:mimeType="text/xml" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="https" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
-                    android:pathPattern=".*\\.opml"
-                    android:scheme="http" />
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <data
-                    android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
                     android:scheme="file" />
@@ -269,7 +233,11 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
 
-                <data android:mimeType="text/x-opml" />
+                <data
+                    android:host="*"
+                    android:pathPattern=".*\\.opml"
+                    android:scheme="file"
+                    android:mimeType="text/x-opml" />
             </intent-filter>
         </activity>
         <activity

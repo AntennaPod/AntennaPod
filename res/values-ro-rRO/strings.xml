@@ -32,6 +32,7 @@
   <string name="external_storage_error_msg">Nu exista stocare externă. Asigurați-vă că stocarea externă este conectată pentru ca aplicația să funcționeze corespunzător.</string>
   <string name="chapters_label">Capitole</string>
   <string name="shownotes_label">Notițe</string>
+  <string name="most_recent_prefix">Cel mai recent episod:\u0020</string>
   <string name="episodes_suffix">\u0020episoade</string>
   <string name="published_prefix">Publicat:\u0020</string>
   <string name="length_prefix">Durată:\u0020</string>
@@ -111,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Golește coada</string>
   <string name="organize_queue_label">Organizează coada</string>
+  <string name="undo">Refă</string>
+  <string name="removed_from_queue">Element înlăturat</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr sign-in</string>
   <string name="flattr_auth_explanation">Apăsați butonul de mai jos pentru a începe procesul de autentificare. Veți fi îndreptat spre pagina de logare flattr în browser și veți fi rugat să acordați permisiuni AntennaPod sa flattr. După ce veți acorda permisiunile veți fi readuși la acest ecran automat.</string>
@@ -163,6 +166,12 @@
   <string name="pref_autodl_wifi_filter_title">Pornește filtru Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Pornește descărcarea automată doar pentru rețele Wi-Fi selectate.</string>
   <string name="pref_episode_cache_title">Cache de episoade</string>
+  <string name="pref_theme_title_light">Deschis</string>
+  <string name="pref_theme_title_dark">Întunecat</string>
+  <string name="pref_episode_cache_unlimited">Nelimitat</string>
+  <string name="pref_update_interval_hours_plural">ore</string>
+  <string name="pref_update_interval_hours_singular">oră</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
   <!--Search-->
   <string name="search_hint">Caută feeduri sau episoade</string>
   <string name="found_in_shownotes_label">Găsit în notițe</string>

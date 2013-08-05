@@ -2,6 +2,8 @@ package de.danoeh.antennapod.activity;
 
 import java.util.Date;
 
+import org.apache.commons.lang3.StringUtils;
+
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -44,6 +46,9 @@ public class AddFeedActivity extends SherlockActivity {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		if (AppConfig.DEBUG)
+			Log.d(TAG, "Was started with Intent " + getIntent().getAction()
+					+ " and Data " + getIntent().getDataString());
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -54,6 +59,10 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog = new ProgressDialog(this);
 
 		etxtFeedurl = (EditText) findViewById(R.id.etxtFeedurl);
+		if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+			etxtFeedurl.setText(getIntent().getDataString());
+		}
+
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
@@ -101,7 +110,7 @@ public class AddFeedActivity extends SherlockActivity {
 		if (intent.getAction() != null
 				&& intent.getAction().equals(Intent.ACTION_SEND)) {
 			if (AppConfig.DEBUG)
-				Log.d(TAG, "Was started with ACTION_SEND intent");
+				Log.d(TAG, "Resuming with ACTION_SEND intent");
 			String text = intent.getStringExtra(Intent.EXTRA_TEXT);
 			if (text != null) {
 				etxtFeedurl.setText(text);
@@ -152,7 +161,7 @@ public class AddFeedActivity extends SherlockActivity {
 						}
 
 						@Override
-						public void onConnectionFailure(int reason) {
+						public void onConnectionFailure(DownloadError reason) {
 							handleDownloadError(reason);
 						}
 					});
@@ -168,11 +177,11 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog.setMessage(getString(R.string.loading_label));
 	}
 
-	private void handleDownloadError(int reason) {
+	private void handleDownloadError(DownloadError reason) {
 		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
-				+ DownloadError.getErrorString(this, reason));
+				+ reason.getErrorString(this));
 		errorDialog.setButton(getString(android.R.string.ok),
 				new DialogInterface.OnClickListener() {
 					@Override

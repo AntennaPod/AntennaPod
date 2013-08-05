@@ -519,7 +519,7 @@ public class PodDBAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_FEEDFILE, status.getFeedfileId());
         values.put(KEY_FEEDFILETYPE, status.getFeedfileType());
-        values.put(KEY_REASON, status.getReason());
+        values.put(KEY_REASON, status.getReason().getCode());
         values.put(KEY_SUCCESSFUL, status.isSuccessful());
         values.put(KEY_COMPLETION_DATE, status.getCompletionDate().getTime());
         values.put(KEY_REASON_DETAILED, status.getReasonDetailed());

@@ -3,6 +3,7 @@ package de.danoeh.antennapod.service.download;
 import java.util.Date;
 
 import de.danoeh.antennapod.feed.FeedFile;
+import de.danoeh.antennapod.util.DownloadError;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {
@@ -21,7 +22,7 @@ public class DownloadStatus {
 	 * URL if the download has no other title.
 	 */
 	protected String title;
-	protected int reason;
+	protected DownloadError reason;
 	/**
 	 * A message which can be presented to the user to give more information.
 	 * Should be null if Download was successful.
@@ -43,7 +44,7 @@ public class DownloadStatus {
 
 	/** Constructor for restoring Download status entries from DB. */
 	public DownloadStatus(long id, String title, long feedfileId,
-			int feedfileType, boolean successful, int reason,
+			int feedfileType, boolean successful, DownloadError reason,
 			Date completionDate, String reasonDetailed) {
 		this.id = id;
 		this.title = title;
@@ -56,7 +57,7 @@ public class DownloadStatus {
 		this.feedfileType = feedfileType;
 	}
 
-	public DownloadStatus(DownloadRequest request, int reason,
+	public DownloadStatus(DownloadRequest request, DownloadError reason,
 			boolean successful, boolean cancelled, String reasonDetailed) {
 		if (request == null) {
 			throw new IllegalArgumentException("request must not be null");
@@ -72,7 +73,7 @@ public class DownloadStatus {
 	}
 
 	/** Constructor for creating new completed downloads. */
-	public DownloadStatus(FeedFile feedfile, String title, int reason,
+	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
 			boolean successful, String reasonDetailed) {
 		if (feedfile == null) {
 			throw new IllegalArgumentException("feedfile must not be null");
@@ -90,7 +91,7 @@ public class DownloadStatus {
 
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(long feedfileId, int feedfileType, String title,
-			int reason, boolean successful, String reasonDetailed) {
+			DownloadError reason, boolean successful, String reasonDetailed) {
 		this.title = title;
 		this.done = true;
 		this.feedfileId = feedfileId;
@@ -111,48 +112,70 @@ public class DownloadStatus {
 				+ ", cancelled=" + cancelled + "]";
 	}
 
-	public long getId() {
-		return id;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public String getTitle() {
-		return title;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public int getReason() {
-		return reason;
-	}
+    public DownloadError getReason() {
+        return reason;
+    }
 
-	public String getReasonDetailed() {
-		return reasonDetailed;
-	}
+    public String getReasonDetailed() {
+        return reasonDetailed;
+    }
 
-	public boolean isSuccessful() {
-		return successful;
-	}
+    public boolean isSuccessful() {
+        return successful;
+    }
 
-	public Date getCompletionDate() {
-		return completionDate;
-	}
+    public Date getCompletionDate() {
+        return completionDate;
+    }
 
-	public long getFeedfileId() {
-		return feedfileId;
-	}
+    public long getFeedfileId() {
+        return feedfileId;
+    }
 
-	public int getFeedfileType() {
-		return feedfileType;
-	}
+    public int getFeedfileType() {
+        return feedfileType;
+    }
 
-	public boolean isDone() {
-		return done;
-	}
+    public boolean isDone() {
+        return done;
+    }
 
-	public boolean isCancelled() {
-		return cancelled;
-	}
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setSuccessful() {
+        this.successful = true;
+        this.reason = DownloadError.SUCCESS;
+        this.done = true;
+    }
 
+    public void setFailed(DownloadError reason, String reasonDetailed) {
+        this.successful = false;
+        this.reason = reason;
+        this.reasonDetailed = reasonDetailed;
+    }
+
+    public void setCancelled() {
+        this.successful = false;
+        this.reason = DownloadError.ERROR_DOWNLOAD_CANCELLED;
+        this.done = true;
+        this.cancelled = true;
+    }
+
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
 }

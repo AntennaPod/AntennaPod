@@ -23,6 +23,15 @@ build.xml
 #eclipse project files
 .metadata
 .settings
+#IntelliJ project files
+.idea
+*.iml
+gen-external-apklibs
+out
+#transifex downloads
+changelog
+description
+
 # other
 *.odg#
 proguard

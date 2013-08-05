@@ -19,6 +19,7 @@ import de.danoeh.antennapod.feed.ID3Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.feed.VorbisCommentChapter;
 import de.danoeh.antennapod.service.download.*;
+import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 
@@ -428,7 +429,7 @@ public final class DBReader {
                         logCursor
                                 .getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
                 downloadLog.add(new DownloadStatus(id, title, feedfileId,
-                        feedfileType, successful, reason, completionDate,
+                        feedfileType, successful, DownloadError.fromCode(reason), completionDate,
                         reasonDetailed));
 
             } while (logCursor.moveToNext());

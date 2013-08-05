@@ -89,9 +89,8 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 							if (status.isSuccessful()) {
 								parseFeed();
 							} else {
-								String errorMsg = DownloadError.getErrorString(
-										OnlineFeedViewActivity.this,
-										status.getReason());
+								String errorMsg = status.getReason().getErrorString(
+										OnlineFeedViewActivity.this);
 								if (errorMsg != null
 										&& status.getReasonDetailed() != null) {
 									errorMsg += " ("
@@ -191,9 +190,9 @@ public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
 						}
 					});
 				} else {
-					final String errorMsg = DownloadError.getErrorString(
-							OnlineFeedViewActivity.this,
-							DownloadError.ERROR_PARSER_EXCEPTION)
+					final String errorMsg =
+							DownloadError.ERROR_PARSER_EXCEPTION.getErrorString(
+							OnlineFeedViewActivity.this)
 							+ " (" + reasonDetailed + ")";
 					runOnUiThread(new Runnable() {
 

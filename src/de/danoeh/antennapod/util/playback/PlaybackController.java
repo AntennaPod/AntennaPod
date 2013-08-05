@@ -44,8 +44,8 @@ import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
 public abstract class PlaybackController {
     private static final String TAG = "PlaybackController";
 
-    static final int DEFAULT_SEEK_DELTA = 30000;
-    public static final int INVALID_TIME = -1;
+	public static final int DEFAULT_SEEK_DELTA = 30000;
+	public static final int INVALID_TIME = -1;
 
     private Activity activity;
 

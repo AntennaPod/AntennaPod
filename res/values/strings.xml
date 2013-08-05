@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"
+    >
 
     <!-- Activitiy titles -->
     <string name="app_name">AntennaPod</string>
@@ -182,6 +185,10 @@
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
+	<string name="pref_update_interval_hours_plural">hours</string>
+	<string name="pref_update_interval_hours_singular">hour</string>
+	<string name="pref_update_interval_hours_manual">Manual</string>
+   
 
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>
