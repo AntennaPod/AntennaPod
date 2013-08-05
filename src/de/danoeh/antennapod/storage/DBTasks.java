@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
@@ -73,11 +74,10 @@ public final class DBTasks {
         }
     }
 
-    private static ReentrantLock refreshAllFeedsLock = new ReentrantLock();
-
+    private static AtomicBoolean isRefreshing = new AtomicBoolean(false);
     public static void refreshAllFeeds(final Context context,
                                        final List<Feed> feeds) {
-        if (refreshAllFeedsLock.tryLock()) {
+        if (isRefreshing.compareAndSet(false, true)) {
             new Thread() {
                 public void run() {
                     if (feeds != null) {
@@ -85,7 +85,7 @@ public final class DBTasks {
                     } else {
                         refreshFeeds(context, DBReader.getFeedList(context));
                     }
-                    refreshAllFeedsLock.unlock();
+                    isRefreshing.set(false);
                 }
             }.start();
         } else {
