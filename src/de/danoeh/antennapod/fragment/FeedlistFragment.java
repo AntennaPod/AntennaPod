@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -11,10 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 
 import com.actionbarsherlock.app.SherlockFragment;
 import com.actionbarsherlock.view.ActionMode;
@@ -56,7 +54,7 @@ public class FeedlistFragment extends SherlockFragment implements
 
     private GridView gridView;
     private ListView listView;
-    private TextView txtvEmpty;
+    private TextView emptyView;
 
     private FeedlistAdapter.ItemAccess itemAccess = new FeedlistAdapter.ItemAccess() {
 
@@ -105,12 +103,15 @@ public class FeedlistFragment extends SherlockFragment implements
                         DBReader.getFeedStatisticsList(getActivity())};
             }
 
+
+
             @Override
             protected void onPostExecute(List[] result) {
                 super.onPostExecute(result);
                 if (result != null) {
                     feeds = result[0];
                     feedItemStatistics = result[1];
+                    setEmptyViewIfListIsEmpty();
                     if (fla != null) {
                         fla.notifyDataSetChanged();
                     }
@@ -128,7 +129,7 @@ public class FeedlistFragment extends SherlockFragment implements
         View result = inflater.inflate(R.layout.feedlist, container, false);
         listView = (ListView) result.findViewById(android.R.id.list);
         gridView = (GridView) result.findViewById(R.id.grid);
-        txtvEmpty = (TextView) result.findViewById(android.R.id.empty);
+        emptyView = (TextView) result.findViewById(android.R.id.empty);
 
         return result;
 
@@ -141,17 +142,18 @@ public class FeedlistFragment extends SherlockFragment implements
             listView.setOnItemClickListener(this);
             listView.setOnItemLongClickListener(this);
             listView.setAdapter(fla);
-            listView.setEmptyView(txtvEmpty);
+            listView.setEmptyView(emptyView);
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Using ListView");
         } else {
             gridView.setOnItemClickListener(this);
             gridView.setOnItemLongClickListener(this);
             gridView.setAdapter(fla);
-            gridView.setEmptyView(txtvEmpty);
+            gridView.setEmptyView(emptyView);
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Using GridView");
         }
+        setEmptyViewIfListIsEmpty();
     }
 
     @Override
@@ -271,5 +273,17 @@ public class FeedlistFragment extends SherlockFragment implements
 
         }
         return true;
+    }
+
+    private AbsListView getMainView() {
+        return (listView != null) ? listView : gridView;
+    }
+
+    private void setEmptyViewIfListIsEmpty() {
+        if (getMainView() != null && emptyView != null && feeds != null) {
+            if (feeds.isEmpty()) {
+                emptyView.setText(R.string.no_feeds_label);
+            }
+        }
     }
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
+import android.widget.TextView;
 import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.danoeh.antennapod.AppConfig;
@@ -154,6 +155,9 @@ public class ItemlistFragment extends SherlockListFragment {
                     } else {
                         Log.e(TAG, "Could not load queue");
                     }
+                    if (result.getItems().isEmpty()) {
+                    }
+                    setEmptyViewIfListIsEmpty();
                     if (fila != null) {
                         fila.notifyDataSetChanged();
                     }
@@ -167,6 +171,14 @@ public class ItemlistFragment extends SherlockListFragment {
             }
         };
         loadTask.execute(feedId);
+    }
+
+    private void setEmptyViewIfListIsEmpty() {
+        if (getListView() != null && feed != null && feed.getItems() != null) {
+            if (feed.getItems().isEmpty()) {
+                ((TextView) getActivity().findViewById(android.R.id.empty)).setText(R.string.no_items_label);
+            }
+        }
     }
 
 	protected InternalFeedItemlistAdapter createListAdapter() {
@@ -261,6 +273,7 @@ public class ItemlistFragment extends SherlockListFragment {
 		getListView().setChoiceMode(ListView.CHOICE_MODE_SINGLE);
 		registerForContextMenu(getListView());
 		getListView().setOnItemLongClickListener(null);
+        setEmptyViewIfListIsEmpty();
 	}
 
 	@Override
