@@ -473,8 +473,7 @@ public class PodDBAdapter {
         if (resetMediaPosition) {
             values.clear();
             values.put(KEY_POSITION, 0);
-            db.update(TABLE_NAME_FEED_MEDIA, values, "?=?", new String[]{
-                    KEY_ID, String.valueOf(mediaId)});
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
         }
 
         db.setTransactionSuccessful();
@@ -487,8 +486,7 @@ public class PodDBAdapter {
         for (long id : itemIds) {
             values.clear();
             values.put(KEY_READ, read);
-            db.update(TABLE_NAME_FEED_ITEMS, values, "?=?", new String[]{
-                    KEY_ID, String.valueOf(id)});
+            db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(id)});
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -793,7 +791,7 @@ public class PodDBAdapter {
         }
         open();
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
-                KEY_PLAYBACK_COMPLETION_DATE + " IS NOT NULL", null, null,
+                KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
                 null, KEY_PLAYBACK_COMPLETION_DATE + " DESC LIMIT " + limit);
         return c;
     }
@@ -1091,7 +1089,7 @@ public class PodDBAdapter {
                     do {
                         long mediaId = feeditemCursor.getLong(KEY_MEDIA_POSITION);
                         contentValues.put(KEY_FEEDITEM, feeditemCursor.getLong(KEY_ID_POSITION));
-                        db.update(TABLE_NAME_FEED_MEDIA, contentValues, "?=?", new String[]{KEY_ID, String.valueOf(mediaId)});
+                        db.update(TABLE_NAME_FEED_MEDIA, contentValues, KEY_ID + "=?", new String[]{String.valueOf(mediaId)});
                         contentValues.clear();
                     } while (feeditemCursor.moveToNext());
                     db.setTransactionSuccessful();
