@@ -10,7 +10,6 @@ import android.util.Log;
 import com.actionbarsherlock.app.SherlockFragmentActivity;
 import com.actionbarsherlock.view.Menu;
 import com.actionbarsherlock.view.MenuItem;
-import com.viewpagerindicator.TabPageIndicator;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
@@ -28,7 +27,6 @@ public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 
 	private ViewPager viewpager;
 	private CategoryPagerAdapter pagerAdapter;
-	private TabPageIndicator tabs;
 
 	private String category;
 
@@ -40,14 +38,12 @@ public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
 		setContentView(R.layout.miroguide_category);
 
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
-		tabs = (TabPageIndicator) findViewById(R.id.tabs);
 
 		category = getIntent().getStringExtra(EXTRA_CATEGORY);
 		if (category != null) {
 			getSupportActionBar().setTitle(category);
 			pagerAdapter = new CategoryPagerAdapter(getSupportFragmentManager());
 			viewpager.setAdapter(pagerAdapter);
-			tabs.setViewPager(viewpager);
 		} else {
 			Log.e(TAG, "Activity was started with invalid arguments");
 		}

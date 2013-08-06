@@ -49,12 +49,6 @@
 			<type>apklib</type>
 		</dependency>
 		<dependency>
-			<groupId>com.viewpagerindicator</groupId>
-			<artifactId>library</artifactId>
-			<version>2.3.1</version>
-			<type>apklib</type>
-		</dependency>
-		<dependency>
 			<groupId>com.google.android</groupId>
 			<artifactId>annotations</artifactId>
 			<version>4.1.1.4</version>
