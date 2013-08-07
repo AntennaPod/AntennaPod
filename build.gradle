@@ -1,0 +1,55 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.5.5'
+    }
+}
+apply plugin: 'android'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'com.android.support:appcompat-v7:18.0.+'
+    compile 'org.apache.commons:commons-lang3:3.1'
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.4') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpcore'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile project(':submodules:dslv:library')
+}
+
+android {
+    compileSdkVersion 17
+    buildToolsVersion "17"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 17
+    }
+
+    sourceSets {
+        main {
+            manifest.srcFile 'AndroidManifest.xml'
+            java.srcDirs = ['src']
+            resources.srcDirs = ['src']
+            aidl.srcDirs = ['src']
+            renderscript.srcDirs = ['src']
+            res.srcDirs = ['res']
+            assets.srcDirs = ['assets']
+        }
+
+        instrumentTest.setRoot('tests')
+    }
+
+    buildTypes {
+        debug {
+            packageNameSuffix ".debug"
+        }
+    }
+}
