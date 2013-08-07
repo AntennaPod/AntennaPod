@@ -6,6 +6,7 @@ import java.util.Date;
 
 import javax.xml.parsers.ParserConfigurationException;
 
+import android.support.v7.app.ActionBarActivity;
 import org.xml.sax.SAXException;
 
 import android.app.AlertDialog;
@@ -16,8 +17,6 @@ import android.util.Log;
 import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -42,7 +41,7 @@ import de.danoeh.antennapod.util.URLChecker;
  * If the feed cannot be downloaded or parsed, an error dialog will be displayed
  * and the activity will finish as soon as the error dialog is closed.
  */
-public abstract class OnlineFeedViewActivity extends SherlockFragmentActivity {
+public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 	private static final String TAG = "OnlineFeedViewActivity";
 	private static final String ARG_FEEDURL = "arg.feedurl";
 	

@@ -11,15 +11,16 @@ import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
+import android.widget.ListView;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -33,7 +34,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
  * Shows all running downloads in a list. The list objects are DownloadStatus
  * objects created by a DownloadObserver.
  */
-public class DownloadActivity extends SherlockListActivity implements
+public class DownloadActivity extends ActionBarActivity implements
 		ActionMode.Callback {
 
 	private static final String TAG = "DownloadActivity";
@@ -50,10 +51,16 @@ public class DownloadActivity extends SherlockListActivity implements
 
 	private AsyncTask<Void, Void, Void> contentRefresher;
 
+    private ListView listview;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
+        setContentView(R.layout.listview_activity);
+
+        listview = (ListView) findViewById(R.id.listview);
+
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
 		requester = DownloadRequester.getInstance();
@@ -102,7 +109,7 @@ public class DownloadActivity extends SherlockListActivity implements
 				Log.d(TAG, "Connection to service established");
 			dla = new DownloadlistAdapter(DownloadActivity.this, 0,
 					downloadService.getDownloads());
-			setListAdapter(dla);
+			listview.setAdapter(dla);
 			dla.notifyDataSetChanged();
 		}
 	};
@@ -154,7 +161,7 @@ public class DownloadActivity extends SherlockListActivity implements
 	@Override
 	protected void onPostCreate(Bundle savedInstanceState) {
 		super.onPostCreate(savedInstanceState);
-		getListView().setOnItemLongClickListener(new OnItemLongClickListener() {
+		listview.setOnItemLongClickListener(new OnItemLongClickListener() {
 
 			@Override
 			public boolean onItemLongClick(AdapterView<?> arg0, View view,
@@ -165,7 +172,7 @@ public class DownloadActivity extends SherlockListActivity implements
 				}
 				dla.setSelectedItemIndex(position);
 				selectedDownload = selection;
-				mActionMode = startActionMode(DownloadActivity.this);
+				mActionMode = startSupportActionMode(DownloadActivity.this);
 				return true;
 			}
 

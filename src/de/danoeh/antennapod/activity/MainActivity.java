@@ -9,16 +9,14 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -33,7 +31,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /** The activity that is shown when the user launches the app. */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends ActionBarActivity {
 	private static final String TAG = "MainActivity";
 
 	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
@@ -62,9 +60,9 @@ public class MainActivity extends SherlockFragmentActivity {
 
 		viewpager.setAdapter(pagerAdapter);
 
-		Tab feedsTab = getSupportActionBar().newTab();
+		ActionBar.Tab feedsTab = getSupportActionBar().newTab();
 		feedsTab.setText(R.string.podcasts_label);
-		Tab episodesTab = getSupportActionBar().newTab();
+		ActionBar.Tab episodesTab = getSupportActionBar().newTab();
 		episodesTab.setText(R.string.episodes_label);
 
 		pagerAdapter.addTab(feedsTab, FeedlistFragment.class, null);
@@ -248,7 +246,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			Object tag = tab.getTag();
 			for (int i = 0; i < mTabs.size(); i++) {
 				if (mTabs.get(i) == tag) {
@@ -258,12 +256,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 	}
 

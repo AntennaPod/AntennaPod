@@ -5,19 +5,15 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.view.ActionMode;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.ActionMode;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -32,7 +28,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
-public class FeedlistFragment extends SherlockFragment implements
+public class FeedlistFragment extends Fragment implements
 		ActionMode.Callback, AdapterView.OnItemClickListener,
 		AdapterView.OnItemLongClickListener {
 	private static final String TAG = "FeedlistFragment";
@@ -152,14 +148,14 @@ public class FeedlistFragment extends SherlockFragment implements
 	@Override
 	public boolean onActionItemClicked(ActionMode mode, MenuItem item) {
 		try {
-			if (FeedMenuHandler.onOptionsItemClicked(getSherlockActivity(),
+			if (FeedMenuHandler.onOptionsItemClicked(getActivity(),
 					item, selectedFeed)) {
 				fla.notifyDataSetChanged();
 			} else {
 				switch (item.getItemId()) {
 				case R.id.remove_item:
 					final FeedRemover remover = new FeedRemover(
-							getSherlockActivity(), selectedFeed) {
+							getActivity(), selectedFeed) {
 						@Override
 						protected void onPostExecute(Void result) {
 							super.onPostExecute(result);
@@ -219,8 +215,7 @@ public class FeedlistFragment extends SherlockFragment implements
 			}
 			fla.setSelectedItemIndex(position);
 			selectedFeed = selection;
-			mActionMode = getSherlockActivity().startActionMode(
-					FeedlistFragment.this);
+			mActionMode = ((ActionBarActivity) getActivity()).startSupportActionMode(FeedlistFragment.this);
 
 		}
 		return true;

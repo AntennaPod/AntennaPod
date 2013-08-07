@@ -4,15 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -24,13 +24,14 @@ import de.danoeh.antennapod.preferences.UserPreferences;
  * Shows a list of available categories and offers a search button. If the user
  * selects a category, the MiroGuideCategoryActivity is started.
  */
-public class MiroGuideMainActivity extends SherlockListActivity {
+public class MiroGuideMainActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 	private static final String TAG = "MiroGuideMainActivity";
 
 	private static String[] categories;
 	private ArrayAdapter<String> listAdapter;
 
 	private TextView txtvStatus;
+    private ListView listView;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -40,6 +41,8 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		setContentView(R.layout.miroguide_categorylist);
 
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
+        listView = (ListView) findViewById(android.R.id.list);
+        listView.setOnItemClickListener(this);
 	}
 
 	@Override
@@ -57,22 +60,12 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		}
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		String selection = listAdapter.getItem(position);
-		Intent launchIntent = new Intent(this, MiroGuideCategoryActivity.class);
-		launchIntent.putExtra(MiroGuideCategoryActivity.EXTRA_CATEGORY,
-				selection);
-		startActivity(launchIntent);
-	}
-
 	private void createAdapter() {
 		if (categories != null) {
 			listAdapter = new ArrayAdapter<String>(this,
 					android.R.layout.simple_list_item_1, categories);
 			txtvStatus.setText(R.string.no_items_label);
-			setListAdapter(listAdapter);
+			listView.setAdapter(listAdapter);
 		}
 	}
 
@@ -152,4 +145,12 @@ public class MiroGuideMainActivity extends SherlockListActivity {
 		}
 	}
 
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        String selection = listAdapter.getItem(position);
+        Intent launchIntent = new Intent(this, MiroGuideCategoryActivity.class);
+        launchIntent.putExtra(MiroGuideCategoryActivity.EXTRA_CATEGORY,
+                selection);
+        startActivity(launchIntent);
+    }
 }

@@ -6,14 +6,14 @@ import android.annotation.SuppressLint;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -28,7 +28,7 @@ import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 
 /** Displays the results when the user searches for FeedItems or Feeds. */
-public class SearchActivity extends SherlockListActivity {
+public class SearchActivity extends ActionBarActivity implements AdapterView.OnItemClickListener{
 	private static final String TAG = "SearchActivity";
 
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.searchactivity.extra.feedId";
@@ -39,6 +39,7 @@ public class SearchActivity extends SherlockListActivity {
 	/** Feed that is being searched or null if the search is global. */
 	private Feed selectedFeed;
 
+    private ListView listView;
 	private TextView txtvStatus;
 
 	@Override
@@ -48,8 +49,11 @@ public class SearchActivity extends SherlockListActivity {
 
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.searchlist);
+        listView = (ListView) findViewById(android.R.id.list);
 		txtvStatus = (TextView) findViewById(android.R.id.empty);
-	}
+
+        listView.setOnItemClickListener(this);
+    }
 
 	@Override
 	protected void onNewIntent(Intent intent) {
@@ -117,28 +121,6 @@ public class SearchActivity extends SherlockListActivity {
 		return true;
 	}
 
-	@Override
-	protected void onListItemClick(ListView l, View v, int position, long id) {
-		super.onListItemClick(l, v, position, id);
-		SearchResult selection = searchAdapter.getItem(position);
-		if (selection.getComponent().getClass() == Feed.class) {
-			Feed feed = (Feed) selection.getComponent();
-			Intent launchIntent = new Intent(this, FeedItemlistActivity.class);
-			launchIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED,
-					feed.getId());
-			startActivity(launchIntent);
-
-		} else if (selection.getComponent().getClass() == FeedItem.class) {
-			FeedItem item = (FeedItem) selection.getComponent();
-			Intent launchIntent = new Intent(this, ItemviewActivity.class);
-			launchIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, item
-					.getFeed().getId());
-			launchIntent.putExtra(ItemlistFragment.EXTRA_SELECTED_FEEDITEM,
-					item.getId());
-			startActivity(launchIntent);
-		}
-	}
-
 	@SuppressLint({ "NewApi", "NewApi" })
 	private void handleSearchRequest(final String query) {
 		if (searchAdapter != null) {
@@ -168,7 +150,7 @@ public class SearchActivity extends SherlockListActivity {
 
 							searchAdapter = new SearchlistAdapter(
 									SearchActivity.this, 0, content);
-							getListView().setAdapter(searchAdapter);
+							listView.setAdapter(searchAdapter);
 							searchAdapter.notifyDataSetChanged();
 							if (content.isEmpty()) {
 								txtvStatus
@@ -182,4 +164,25 @@ public class SearchActivity extends SherlockListActivity {
 		thread.start();
 
 	}
+
+    @Override
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
+        SearchResult selection = searchAdapter.getItem(position);
+        if (selection.getComponent().getClass() == Feed.class) {
+            Feed feed = (Feed) selection.getComponent();
+            Intent launchIntent = new Intent(this, FeedItemlistActivity.class);
+            launchIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED,
+                    feed.getId());
+            startActivity(launchIntent);
+
+        } else if (selection.getComponent().getClass() == FeedItem.class) {
+            FeedItem item = (FeedItem) selection.getComponent();
+            Intent launchIntent = new Intent(this, ItemviewActivity.class);
+            launchIntent.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, item
+                    .getFeed().getId());
+            launchIntent.putExtra(ItemlistFragment.EXTRA_SELECTED_FEEDITEM,
+                    item.getId());
+            startActivity(launchIntent);
+        }
+    }
 }

@@ -1,14 +1,13 @@
 package de.danoeh.antennapod.activity;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -22,7 +21,7 @@ import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 /** Displays information about a feed. */
-public class FeedInfoActivity extends SherlockActivity {
+public class FeedInfoActivity extends ActionBarActivity {
 	private static final String TAG = "FeedInfoActivity";
 
 	public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";

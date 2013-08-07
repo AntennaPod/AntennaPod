@@ -19,10 +19,8 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockPreferenceActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
@@ -32,7 +30,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** The main preference activity */
-public class PreferenceActivity extends SherlockPreferenceActivity {
+public class PreferenceActivity extends android.preference.PreferenceActivity {
 	private static final String TAG = "PreferenceActivity";
 
 	private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
@@ -51,7 +49,10 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (android.os.Build.VERSION.SDK_INT >= 11) {
+            getActionBar().setDisplayHomeAsUpEnabled(true);
+        }
+
 		addPreferencesFromResource(R.xml.preferences);
 		findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
 				new OnPreferenceClickListener() {

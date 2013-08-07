@@ -5,12 +5,11 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -20,7 +19,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
  * activity uses MiroGuideChannelListFragments for these lists. If the user
  * selects a channel, the MiroGuideChannelViewActivity is started.
  */
-public class MiroGuideCategoryActivity extends SherlockFragmentActivity {
+public class MiroGuideCategoryActivity extends ActionBarActivity {
 	private static final String TAG = "MiroGuideCategoryActivity";
 
 	public static String EXTRA_CATEGORY = "category";

@@ -2,18 +2,12 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-
-import com.actionbarsherlock.app.SherlockFragment;
-import com.actionbarsherlock.view.Menu;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -28,7 +22,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
-public class EpisodesFragment extends SherlockFragment {
+public class EpisodesFragment extends Fragment {
 	private static final String TAG = "EpisodesFragment";
 
 	private static final int EVENTS = EventDistributor.QUEUE_UPDATE
@@ -176,7 +170,7 @@ public class EpisodesFragment extends SherlockFragment {
 		if (selectedItem != null) {
 			try {
 				handled = FeedItemMenuHandler.onMenuItemClicked(
-						getSherlockActivity(), item.getItemId(), selectedItem);
+						getActivity(), item.getItemId(), selectedItem);
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();
 				DownloadRequestErrorDialogCreator.newRequestErrorDialog(

@@ -7,14 +7,13 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
@@ -30,7 +29,7 @@ import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 /** Displays a List of FeedItems */
-public class FeedItemlistActivity extends SherlockFragmentActivity {
+public class FeedItemlistActivity extends ActionBarActivity {
 	private static final String TAG = "FeedItemlistActivity";
 
 	private FeedManager manager;

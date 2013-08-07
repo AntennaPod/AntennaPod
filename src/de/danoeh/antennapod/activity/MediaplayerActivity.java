@@ -6,16 +6,15 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -35,7 +34,7 @@ import de.danoeh.antennapod.util.playback.PlaybackController;
  * Provides general features which are both needed for playing audio and video
  * files.
  */
-public abstract class MediaplayerActivity extends SherlockFragmentActivity
+public abstract class MediaplayerActivity extends ActionBarActivity
 		implements OnSeekBarChangeListener {
 	private static final String TAG = "MediaplayerActivity";
 

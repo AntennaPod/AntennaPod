@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AntennaPod.Light" parent="@style/Theme.Sherlock.Light.ForceOverflow">
+    <style name="Theme.AntennaPod.Light" parent="@style/Theme.AppCompat.Light">
         <item name="attr/action_about">@drawable/action_about</item>
         <item name="attr/action_search">@drawable/action_search</item>
         <item name="attr/action_settings">@drawable/action_settings</item>
@@ -37,7 +37,7 @@
         <item name="attr/dragview_float_background">@color/white</item>
     </style>
 
-    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.ForceOverflow">
+    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
         <item name="attr/action_about">@drawable/action_about_dark</item>
         <item name="attr/action_search">@drawable/action_search_dark</item>
         <item name="attr/action_settings">@drawable/action_settings_dark</item>

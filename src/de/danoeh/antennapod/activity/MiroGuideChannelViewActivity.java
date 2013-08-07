@@ -7,18 +7,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -37,7 +36,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
  * Displays information about one channel and lets the user add this channel to
  * his library.
  */
-public class MiroGuideChannelViewActivity extends SherlockActivity {
+public class MiroGuideChannelViewActivity extends ActionBarActivity {
 	private static final String TAG = "MiroGuideChannelViewActivity";
 
 	public static final String EXTRA_CHANNEL_ID = "id";

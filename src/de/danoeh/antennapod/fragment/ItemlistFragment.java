@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -11,8 +13,6 @@ import android.view.MenuInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
-
-import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -32,7 +32,7 @@ import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 /** Displays a list of FeedItems. */
 @SuppressLint("ValidFragment")
-public class ItemlistFragment extends SherlockListFragment {
+public class ItemlistFragment extends ListFragment {
 	private static final String TAG = "ItemlistFragment";
 
 	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
@@ -173,13 +173,13 @@ public class ItemlistFragment extends SherlockListFragment {
 		if (feed != null) {
 			if (DownloadService.isRunning
 					&& DownloadRequester.getInstance().isDownloadingFile(feed)) {
-				getSherlockActivity()
+                ((ActionBarActivity) getActivity())
 						.setSupportProgressBarIndeterminateVisibility(true);
 			} else {
-				getSherlockActivity()
+                ((ActionBarActivity) getActivity())
 						.setSupportProgressBarIndeterminateVisibility(false);
 			}
-			getSherlockActivity().supportInvalidateOptionsMenu();
+            getActivity().supportInvalidateOptionsMenu();
 		}
 	}
 
@@ -237,7 +237,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 			try {
 				handled = FeedItemMenuHandler.onMenuItemClicked(
-						getSherlockActivity(), item.getItemId(), selectedItem);
+						getActivity(), item.getItemId(), selectedItem);
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();
 				DownloadRequestErrorDialogCreator.newRequestErrorDialog(

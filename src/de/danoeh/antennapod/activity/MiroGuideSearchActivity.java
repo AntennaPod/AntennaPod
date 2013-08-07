@@ -4,12 +4,11 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.view.Menu;
+import android.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
@@ -19,7 +18,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
  * Displays results when a search for miroguide channels has been performed. It
  * uses a MiroGuideChannelListFragment to display the results.
  */
-public class MiroGuideSearchActivity extends SherlockFragmentActivity {
+public class MiroGuideSearchActivity extends ActionBarActivity {
 	private static final String TAG = "MiroGuideSearchActivity";
 
 	private MiroGuideChannellistFragment listFragment;

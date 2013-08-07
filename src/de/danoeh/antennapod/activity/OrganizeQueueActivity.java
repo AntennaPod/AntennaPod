@@ -1,20 +1,15 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.app.ActionBarActivity;
+import android.view.*;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockListActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
 import com.mobeta.android.dslv.DragSortListView;
 
 import de.danoeh.antennapod.R;
@@ -25,7 +20,7 @@ import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.UndoBarController;
 
-public class OrganizeQueueActivity extends SherlockListActivity implements
+public class OrganizeQueueActivity extends ActionBarActivity implements
 		UndoBarController.UndoListener {
 	private static final String TAG = "OrganizeQueueActivity";
 
@@ -34,6 +29,8 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 	private OrganizeAdapter adapter;
 	private UndoBarController undoBarController;
 
+    private DragSortListView listView;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(UserPreferences.getTheme());
@@ -41,12 +38,12 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 		setContentView(R.layout.organize_queue);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-		DragSortListView listView = (DragSortListView) getListView();
+		listView = (DragSortListView) findViewById(android.R.id.list);
 		listView.setDropListener(dropListener);
 		listView.setRemoveListener(removeListener);
 
 		adapter = new OrganizeAdapter(this);
-		setListAdapter(adapter);
+        listView.setAdapter(adapter);
 
 		undoBarController = new UndoBarController(findViewById(R.id.undobar),
 				this);
@@ -98,7 +95,7 @@ public class OrganizeQueueActivity extends SherlockListActivity implements
 		@Override
 		public void remove(int which) {
 			FeedManager manager = FeedManager.getInstance();
-			FeedItem item = (FeedItem) getListAdapter().getItem(which);
+			FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
 			manager.removeQueueItem(OrganizeQueueActivity.this, item, false);
 			undoBarController.showUndoBar(false,
 					getString(R.string.removed_from_queue), new UndoToken(item,

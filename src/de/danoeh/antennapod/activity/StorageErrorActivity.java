@@ -5,9 +5,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -15,7 +14,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /** Is show if there is now external storage available. */
-public class StorageErrorActivity extends SherlockActivity {
+public class StorageErrorActivity extends ActionBarActivity {
 	private static final String TAG = "StorageErrorActivity";
 
 	@Override

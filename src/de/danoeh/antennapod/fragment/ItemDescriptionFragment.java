@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;
@@ -27,8 +29,6 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockFragment;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -39,7 +39,7 @@ import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 
 /** Displays the description of a Playable object in a Webview. */
-public class ItemDescriptionFragment extends SherlockFragment {
+public class ItemDescriptionFragment extends Fragment {
 
 	private static final String TAG = "ItemDescriptionFragment";
 
@@ -350,8 +350,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			@Override
 			protected void onCancelled() {
 				super.onCancelled();
-				if (getSherlockActivity() != null) {
-					getSherlockActivity()
+				if (getActivity() != null) {
+                    ((ActionBarActivity) getActivity())
 							.setSupportProgressBarIndeterminateVisibility(false);
 				}
 				webViewLoader = null;
@@ -365,8 +365,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 				// /webvDescription.loadData(url, "text/html", "utf-8");
 				webvDescription.loadDataWithBaseURL(null, data, "text/html",
 						"utf-8", "about:blank");
-				if (getSherlockActivity() != null) {
-					getSherlockActivity()
+				if (getActivity() != null) {
+                    ((ActionBarActivity) getActivity())
 							.setSupportProgressBarIndeterminateVisibility(false);
 				}
 				if (AppConfig.DEBUG)
@@ -377,8 +377,8 @@ public class ItemDescriptionFragment extends SherlockFragment {
 			@Override
 			protected void onPreExecute() {
 				super.onPreExecute();
-				if (getSherlockActivity() != null) {
-					getSherlockActivity()
+				if (getActivity() != null) {
+                    ((ActionBarActivity) getActivity())
 							.setSupportProgressBarIndeterminateVisibility(true);
 				}
 			}

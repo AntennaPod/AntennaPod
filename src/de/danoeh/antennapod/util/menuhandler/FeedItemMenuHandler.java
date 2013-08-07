@@ -21,7 +21,7 @@ public class FeedItemMenuHandler {
 
 	/**
 	 * Used by the MenuHandler to access different types of menus through one
-	 * interface (for example android.view.Menu and com.actionbarsherlock.Menu)
+	 * interface
 	 */
 	public interface MenuInterface {
 		/**
