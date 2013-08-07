@@ -100,7 +100,7 @@
                 <configuration>
                     <sdk>
                         <path>${env.ANDROID_HOME}</path>
-                        <platform>17</platform>
+                        <platform>18</platform>
                     </sdk>
                     <manifest>
                         <debuggable>true</debuggable>
