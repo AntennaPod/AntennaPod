@@ -25,18 +25,13 @@ public class FeedItem extends FeedComponent implements
     private String itemIdentifier;
     private String title;
     /**
-     * The description of a feeditem. This field should only be set by the
-     * parser.
+     * The description of a feeditem.
      */
     private String description;
     /**
-     * The content of the content-encoded tag of a feeditem. This field should
-     * only be set by the parser.
+     * The content of the content-encoded tag of a feeditem.
      */
     private String contentEncoded;
-
-    private SoftReference<String> cachedDescription;
-    private SoftReference<String> cachedContentEncoded;
 
     private String link;
     private Date pubDate;
@@ -88,21 +83,6 @@ public class FeedItem extends FeedComponent implements
     }
 
     /**
-     * Moves the 'description' and 'contentEncoded' field of feeditem to their
-     * SoftReference fields.
-     */
-    protected void cacheDescriptions() {
-        if (description != null) {
-            cachedDescription = new SoftReference<String>(description);
-        }
-        if (contentEncoded != null) {
-            cachedContentEncoded = new SoftReference<String>(contentEncoded);
-        }
-        description = null;
-        contentEncoded = null;
-    }
-
-    /**
      * Returns the value that uniquely identifies this FeedItem. If the
      * itemIdentifier attribute is not null, it will be returned. Else it will
      * try to return the title. If the title is not given, it will use the link
@@ -127,9 +107,6 @@ public class FeedItem extends FeedComponent implements
     }
 
     public String getDescription() {
-        if (description == null && cachedDescription != null) {
-            return cachedDescription.get();
-        }
         return description;
     }
 
@@ -182,10 +159,6 @@ public class FeedItem extends FeedComponent implements
     }
 
     public String getContentEncoded() {
-        if (contentEncoded == null && cachedContentEncoded != null) {
-            return cachedContentEncoded.get();
-
-        }
         return contentEncoded;
     }
 
@@ -226,14 +199,6 @@ public class FeedItem extends FeedComponent implements
             return media.isPlaying();
         }
         return false;
-    }
-
-    public void setCachedDescription(String d) {
-        cachedDescription = new SoftReference<String>(d);
-    }
-
-    public void setCachedContentEncoded(String c) {
-        cachedContentEncoded = new SoftReference<String>(c);
     }
 
     @Override
