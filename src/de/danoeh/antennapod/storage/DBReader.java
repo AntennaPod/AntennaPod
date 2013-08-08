@@ -23,12 +23,36 @@ import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 
+/**
+ * Provides methods for reading data from the AntennaPod database.
+ * In general, all database calls in DBReader-methods are executed on the caller's thread.
+ * This means that the caller should make sure that DBReader-methods are not executed on the GUI-thread.
+ */
 public final class DBReader {
     private static final String TAG = "DBReader";
+
+    /**
+     * Maximum size of the list returned by {@link #getPlaybackHistory(android.content.Context)}.
+     */
+    public static final int PLAYBACK_HISTORY_SIZE = 50;
+
+    /**
+     * Maximum size of the list returned by {@link #getDownloadLog(android.content.Context)}.
+     */
+    public static final int DOWNLOAD_LOG_SIZE = 200;
+
 
     private DBReader() {
     }
 
+    /**
+     * Returns a list of Feeds, sorted alphabetically by their title.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of Feeds, sorted alphabetically by their title. A Feed-object
+     * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
+     * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)}.
+     */
     public static List<Feed> getFeedList(final Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Extracting Feedlist");
@@ -49,6 +73,16 @@ public final class DBReader {
         return feeds;
     }
 
+    /**
+     * Returns a list of 'expired Feeds', i.e. Feeds that have not been updated for a certain amount of time.
+     *
+     * @param context        A context that is used for opening a database connection.
+     * @param expirationTime Time that is used for determining whether a feed is outdated or not.
+     *                       A Feed is considered expired if 'lastUpdate < (currentTime - expirationTime)' evaluates to true.
+     * @return A list of Feeds, sorted alphabetically by their title. A Feed-object
+     * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
+     * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)}.
+     */
     static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
         if (AppConfig.DEBUG)
             Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
@@ -69,6 +103,12 @@ public final class DBReader {
         return feeds;
     }
 
+    /**
+     * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param items   The FeedItems whose Feed-objects should be loaded.
+     */
     public static void loadFeedDataOfFeedItemlist(Context context,
                                                   List<FeedItem> items) {
         List<Feed> feeds = getFeedList(context);
@@ -85,6 +125,15 @@ public final class DBReader {
         }
     }
 
+    /**
+     * Loads the list of FeedItems for a certain Feed-object. This method should NOT be used if the FeedItems are not
+     * used. In order to get information ABOUT the list of FeedItems, consider using {@link #getFeedStatisticsList(android.content.Context)} instead.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feed    The Feed whose items should be loaded
+     * @return A list with the FeedItems of the Feed. The Feed-attribute of the FeedItems will already be set correctly.
+     * The method does NOT change the items-attribute of the feed.
+     */
     public static List<FeedItem> getFeedItemList(Context context,
                                                  final Feed feed) {
         if (AppConfig.DEBUG)
@@ -290,6 +339,14 @@ public final class DBReader {
         return items;
     }
 
+    /**
+     * Loads the IDs of the FeedItems in the queue. This method should be preferred over
+     * {@link #getQueue(android.content.Context)} if the FeedItems of the queue are not needed.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of IDs sorted by the same order as the queue. The caller can wrap the returned
+     * list in a {@link de.danoeh.antennapod.util.QueueAccess} object for easier access to the queue's properties.
+     */
     public static List<Long> getQueueIDList(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
 
@@ -313,6 +370,15 @@ public final class DBReader {
         return queueIds;
     }
 
+
+    /**
+     * Loads a list of the FeedItems in the queue. If the FeedItems of the queue are not used directly, consider using
+     * {@link #getQueueIDList(android.content.Context)} instead.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedItems sorted by the same order as the queue. The caller can wrap the returned
+     * list in a {@link de.danoeh.antennapod.util.QueueAccess} object for easier access to the queue's properties.
+     */
     public static List<FeedItem> getQueue(Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Extracting queue");
@@ -324,6 +390,12 @@ public final class DBReader {
         return items;
     }
 
+    /**
+     * Loads a list of FeedItems whose episode has been downloaded.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedItems whose episdoe has been downloaded.
+     */
     public static List<FeedItem> getDownloadedItems(Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Extracting downloaded items");
@@ -343,6 +415,13 @@ public final class DBReader {
 
     }
 
+    /**
+     * Loads a list of FeedItems whose 'read'-attribute is set to false.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedItems whose 'read'-attribute it set to false. If the FeedItems in the list are not used,
+     * consider using {@link #getUnreadItemIds(android.content.Context)} instead.
+     */
     public static List<FeedItem> getUnreadItemsList(Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Extracting unread items list");
@@ -362,6 +441,13 @@ public final class DBReader {
         return items;
     }
 
+    /**
+     * Loads the IDs of the FeedItems whose 'read'-attribute is set to false.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of IDs of the FeedItems whose 'read'-attribute is set to false. This method should be preferred
+     * over {@link #getUnreadItemsList(android.content.Context)} if the FeedItems in the UnreadItems list are not used.
+     */
     public static long[] getUnreadItemIds(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -377,6 +463,14 @@ public final class DBReader {
         return itemIds;
     }
 
+    /**
+     * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
+     * has been completed at least once.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The playback history. The FeedItems are sorted by their media's playbackCompletionDate in descending order.
+     * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
+     */
     public static List<FeedItem> getPlaybackHistory(final Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Loading playback history");
@@ -400,13 +494,20 @@ public final class DBReader {
         return items;
     }
 
+    /**
+     * Loads the download log from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list with DownloadStatus objects that represent the download log.
+     * The size of the returned list is limited by {@link #DOWNLOAD_LOG_SIZE}.
+     */
     public static List<DownloadStatus> getDownloadLog(Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Extracting DownloadLog");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        Cursor logCursor = adapter.getDownloadLogCursor();
+        Cursor logCursor = adapter.getDownloadLogCursor(DOWNLOAD_LOG_SIZE);
         List<DownloadStatus> downloadLog = new ArrayList<DownloadStatus>(
                 logCursor.getCount());
 
@@ -439,6 +540,14 @@ public final class DBReader {
         return downloadLog;
     }
 
+    /**
+     * Loads the FeedItemStatistics objects of all Feeds in the database. This method should be preferred over
+     * {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)} if only metadata about
+     * the FeedItems is needed.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedItemStatistics objects sorted alphabetically by their Feed's title.
+     */
     public static List<FeedItemStatistics> getFeedStatisticsList(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -459,6 +568,14 @@ public final class DBReader {
         return result;
     }
 
+    /**
+     * Loads a specific Feed from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedId  The ID of the Feed
+     * @return The Feed or null if the Feed could not be found. The Feeds FeedItems will also be loaded from the
+     * database and the items-attribute will be set correctly.
+     */
     public static Feed getFeed(final Context context, final long feedId) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Loading feed with id " + feedId);
@@ -494,6 +611,14 @@ public final class DBReader {
 
     }
 
+    /**
+     * Loads a specific FeedItem from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param itemId  The ID of the FeedItem
+     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes of the FeedItem will
+     * also be loaded from the database.
+     */
     public static FeedItem getFeedItem(final Context context, final long itemId) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Loading feeditem with id " + itemId);
@@ -506,6 +631,12 @@ public final class DBReader {
 
     }
 
+    /**
+     * Loads additional information about a FeedItem, e.g. shownotes
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param item    The FeedItem
+     */
     public static void loadExtraInformationOfFeedItem(final Context context, final FeedItem item) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -521,6 +652,12 @@ public final class DBReader {
         adapter.close();
     }
 
+    /**
+     * Returns the number of downloaded episodes.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The number of downloaded episodes.
+     */
     public static int getNumberOfDownloadedEpisodes(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -529,6 +666,12 @@ public final class DBReader {
         return result;
     }
 
+    /**
+     * Returns the number of unread items.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The number of unread items.
+     */
     public static int getNumberOfUnreadItems(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -540,6 +683,7 @@ public final class DBReader {
     /**
      * Searches the DB for a FeedImage of the given id.
      *
+     * @param context A context that is used for opening a database connection.
      * @param imageId The id of the object
      * @return The found object
      */
@@ -577,6 +721,7 @@ public final class DBReader {
     /**
      * Searches the DB for a FeedMedia of the given id.
      *
+     * @param context A context that is used for opening a database connection.
      * @param mediaId The id of the object
      * @return The found object
      */

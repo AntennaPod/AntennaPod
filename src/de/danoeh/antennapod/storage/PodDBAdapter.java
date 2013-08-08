@@ -640,7 +640,7 @@ public class PodDBAdapter {
     public final Cursor getExpiredFeedsCursor(long expirationTime) {
         open();
         Cursor c = db.query(TABLE_NAME_FEEDS, null, "?<?", new String[]{
-                KEY_LASTUPDATE, String.valueOf(expirationTime)}, null, null,
+                KEY_LASTUPDATE, String.valueOf(System.currentTimeMillis() - expirationTime)}, null, null,
                 null);
         return c;
     }
@@ -710,10 +710,10 @@ public class PodDBAdapter {
         return c;
     }
 
-    public final Cursor getDownloadLogCursor() {
+    public final Cursor getDownloadLogCursor(final int limit) {
         open();
         Cursor c = db.query(TABLE_NAME_DOWNLOAD_LOG, null, null, null, null,
-                null, null);
+                null, KEY_COMPLETION_DATE + " DESC LIMIT " + limit);
         return c;
     }
 
