@@ -775,7 +775,6 @@ public class PlaybackService extends Service {
 
         if (media instanceof FeedMedia) {
             FeedItem item = ((FeedMedia) media).getItem();
-            ((FeedMedia) media).setPlaybackCompletionDate(new Date());
             DBWriter.markItemRead(PlaybackService.this, item, true, true);
             nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
             isInQueue = media instanceof FeedMedia
@@ -783,7 +782,7 @@ public class PlaybackService extends Service {
             if (isInQueue) {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
-            DBWriter.addItemToPlaybackHistory(PlaybackService.this, item);
+            DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
             DBWriter.setFeedMedia(PlaybackService.this, (FeedMedia) media);
             long autoDeleteMediaId = ((FeedComponent) media).getId();
             if (shouldStream) {

@@ -438,7 +438,7 @@ public class PodDBAdapter {
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
         values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
-        if (item.getFeed().getId() == 0) {
+        if (item.getFeed() != null) {
             setFeed(item.getFeed());
         }
         values.put(KEY_FEED, item.getFeed().getId());
@@ -452,9 +452,7 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(item.getId())});
         }
         if (item.getMedia() != null) {
-            if (item.getMedia().getId() == 0) {
                 setMedia(item.getMedia());
-            }
         }
         if (item.getChapters() != null) {
             setChapters(item);
