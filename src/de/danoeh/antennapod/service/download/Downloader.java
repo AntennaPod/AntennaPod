@@ -1,49 +1,50 @@
 package de.danoeh.antennapod.service.download;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
+
+import java.util.concurrent.Callable;
 
 /** Downloads files */
-public abstract class Downloader extends Thread {
+public abstract class Downloader implements Callable<Downloader> {
 	private static final String TAG = "Downloader";
-	private DownloaderCallback downloaderCallback;
 
-	protected boolean finished;
+	protected volatile boolean finished;
 
 	protected volatile boolean cancelled;
 
-	protected volatile DownloadStatus status;
+	protected DownloadRequest request;
+	protected DownloadStatus result;
 
-	public Downloader(DownloaderCallback downloaderCallback,
-			DownloadStatus status) {
+	public Downloader(DownloadRequest request) {
 		super();
-		this.downloaderCallback = downloaderCallback;
-		this.status = status;
-		this.status.setStatusMsg(R.string.download_pending);
+		this.request = request;
+		this.request.setStatusMsg(R.string.download_pending);
 		this.cancelled = false;
-	}
-
-	/**
-	 * This method must be called when the download was completed, failed, or
-	 * was cancelled
-	 */
-	protected void finish() {
-		if (!finished) {
-			finished = true;
-			downloaderCallback.onDownloadCompleted(this);
-		}
+        this.result = new DownloadStatus(request, null, false, false, null);
 	}
 
 	protected abstract void download();
 
-	@Override
-	public final void run() {
+	public final Downloader call() {
 		download();
-		finish();
+		if (result == null) {
+			throw new IllegalStateException(
+					"Downloader hasn't created DownloadStatus object");
+		}
+        finished = true;
+		return this;
 	}
 
-	public DownloadStatus getStatus() {
-		return status;
+	public DownloadRequest getDownloadRequest() {
+		return request;
+	}
+
+	public DownloadStatus getResult() {
+		return result;
+	}
+
+	public boolean isFinished() {
+		return finished;
 	}
 
 	public void cancel() {

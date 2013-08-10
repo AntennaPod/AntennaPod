@@ -13,8 +13,9 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
@@ -55,7 +56,6 @@ public class FeedMenuHandler {
 	 */
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,
 			Feed selectedFeed) throws DownloadRequestException {
-		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {
 		case R.id.show_info_item:
 			Intent startIntent = new Intent(context, FeedInfoActivity.class);
@@ -64,10 +64,10 @@ public class FeedMenuHandler {
 			context.startActivity(startIntent);
 			break;
 		case R.id.refresh_item:
-			manager.refreshFeed(context, selectedFeed);
+			DBTasks.refreshFeed(context, selectedFeed);
 			break;
 		case R.id.mark_all_read_item:
-			manager.markFeedRead(context, selectedFeed);
+			DBWriter.markFeedRead(context, selectedFeed.getId());
 			break;
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedFeed.getLink());

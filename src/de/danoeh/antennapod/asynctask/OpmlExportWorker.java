@@ -14,9 +14,9 @@ import android.os.AsyncTask;
 import android.util.Log;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.opml.OpmlWriter;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
 
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
@@ -51,8 +51,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
 		}
 		try {
 			FileWriter writer = new FileWriter(output);
-			opmlWriter.writeDocument(Arrays.asList(FeedManager.getInstance().getFeedsArray()),
-					writer);
+			opmlWriter.writeDocument(DBReader.getFeedList(context), writer);
 			writer.close();
 		} catch (IOException e) {
 			e.printStackTrace();

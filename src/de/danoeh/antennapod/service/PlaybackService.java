@@ -2,13 +2,8 @@ package de.danoeh.antennapod.service;
 
 import java.io.IOException;
 import java.util.Date;
-import java.util.concurrent.Future;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.List;
+import java.util.concurrent.*;
 
 import android.annotation.SuppressLint;
 import android.app.Notification;
@@ -40,367 +35,406 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.FeedComponent;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.BitmapDecoder;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.Playable.PlayableException;
 import de.danoeh.antennapod.util.playback.PlaybackController;
 
-/** Controls the MediaPlayer that plays a FeedMedia-file */
+/**
+ * Controls the MediaPlayer that plays a FeedMedia-file
+ */
 public class PlaybackService extends Service {
-	/** Logging tag */
-	private static final String TAG = "PlaybackService";
+    /**
+     * Logging tag
+     */
+    private static final String TAG = "PlaybackService";
 
-	/** Parcelable of type Playable. */
-	public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
-	/** True if media should be streamed. */
-	public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.service.shouldStream";
-	/**
-	 * True if playback should be started immediately after media has been
-	 * prepared.
-	 */
-	public static final String EXTRA_START_WHEN_PREPARED = "extra.de.danoeh.antennapod.service.startWhenPrepared";
+    /**
+     * Parcelable of type Playable.
+     */
+    public static final String EXTRA_PLAYABLE = "PlaybackService.PlayableExtra";
+    /**
+     * True if media should be streamed.
+     */
+    public static final String EXTRA_SHOULD_STREAM = "extra.de.danoeh.antennapod.service.shouldStream";
+    /**
+     * True if playback should be started immediately after media has been
+     * prepared.
+     */
+    public static final String EXTRA_START_WHEN_PREPARED = "extra.de.danoeh.antennapod.service.startWhenPrepared";
 
-	public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.service.prepareImmediately";
+    public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.service.prepareImmediately";
 
-	public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
-	private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
+    public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
+    private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
 
-	public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
-	public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
-	public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
+    public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
+    public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
+    public static final String EXTRA_NOTIFICATION_TYPE = "extra.de.danoeh.antennapod.service.notificationType";
 
-	/**
-	 * If the PlaybackService receives this action, it will stop playback and
-	 * try to shutdown.
-	 */
-	public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.service.actionShutdownPlaybackService";
+    /**
+     * If the PlaybackService receives this action, it will stop playback and
+     * try to shutdown.
+     */
+    public static final String ACTION_SHUTDOWN_PLAYBACK_SERVICE = "action.de.danoeh.antennapod.service.actionShutdownPlaybackService";
 
-	/**
-	 * If the PlaybackService receives this action, it will end playback of the
-	 * current episode and load the next episode if there is one available.
-	 * */
-	public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.service.skipCurrentEpisode";
+    /**
+     * If the PlaybackService receives this action, it will end playback of the
+     * current episode and load the next episode if there is one available.
+     */
+    public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.service.skipCurrentEpisode";
 
-	/** Used in NOTIFICATION_TYPE_RELOAD. */
-	public static final int EXTRA_CODE_AUDIO = 1;
-	public static final int EXTRA_CODE_VIDEO = 2;
+    /**
+     * Used in NOTIFICATION_TYPE_RELOAD.
+     */
+    public static final int EXTRA_CODE_AUDIO = 1;
+    public static final int EXTRA_CODE_VIDEO = 2;
 
-	public static final int NOTIFICATION_TYPE_ERROR = 0;
-	public static final int NOTIFICATION_TYPE_INFO = 1;
-	public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
-	public static final int NOTIFICATION_TYPE_RELOAD = 3;
-	/** The state of the sleeptimer changed. */
-	public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
-	public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
-	public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
-	/** No more episodes are going to be played. */
-	public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
+    public static final int NOTIFICATION_TYPE_ERROR = 0;
+    public static final int NOTIFICATION_TYPE_INFO = 1;
+    public static final int NOTIFICATION_TYPE_BUFFER_UPDATE = 2;
 
-	/**
-	 * Returned by getPositionSafe() or getDurationSafe() if the playbackService
-	 * is in an invalid state.
-	 */
-	public static final int INVALID_TIME = -1;
+    /**
+     * Receivers of this intent should update their information about the curently playing media
+     */
+    public static final int NOTIFICATION_TYPE_RELOAD = 3;
+    /**
+     * The state of the sleeptimer changed.
+     */
+    public static final int NOTIFICATION_TYPE_SLEEPTIMER_UPDATE = 4;
+    public static final int NOTIFICATION_TYPE_BUFFER_START = 5;
+    public static final int NOTIFICATION_TYPE_BUFFER_END = 6;
+    /**
+     * No more episodes are going to be played.
+     */
+    public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
 
-	/** Is true if service is running. */
-	public static boolean isRunning = false;
+    /**
+     * Returned by getPositionSafe() or getDurationSafe() if the playbackService
+     * is in an invalid state.
+     */
+    public static final int INVALID_TIME = -1;
 
-	private static final int NOTIFICATION_ID = 1;
+    /**
+     * Is true if service is running.
+     */
+    public static boolean isRunning = false;
 
-	private AudioManager audioManager;
-	private ComponentName mediaButtonReceiver;
+    private static final int NOTIFICATION_ID = 1;
 
-	private MediaPlayer player;
-	private RemoteControlClient remoteControlClient;
+    private AudioManager audioManager;
+    private ComponentName mediaButtonReceiver;
 
-	private Playable media;
+    private MediaPlayer player;
+    private RemoteControlClient remoteControlClient;
 
-	/** True if media should be streamed (Extracted from Intent Extra) . */
-	private boolean shouldStream;
+    private Playable media;
 
-	/** True if service should prepare playback after it has been initialized */
-	private boolean prepareImmediately;
-	private boolean startWhenPrepared;
-	private FeedManager manager;
-	private PlayerStatus status;
+    /**
+     * True if media should be streamed (Extracted from Intent Extra) .
+     */
+    private boolean shouldStream;
 
-	private PositionSaver positionSaver;
-	private ScheduledFuture positionSaverFuture;
+    private boolean startWhenPrepared;
+    private PlayerStatus status;
 
-	private WidgetUpdateWorker widgetUpdater;
-	private ScheduledFuture widgetUpdaterFuture;
+    private PositionSaver positionSaver;
+    private ScheduledFuture positionSaverFuture;
 
-	private SleepTimer sleepTimer;
-	private Future sleepTimerFuture;
+    private WidgetUpdateWorker widgetUpdater;
+    private ScheduledFuture widgetUpdaterFuture;
 
-	private static final int SCHED_EX_POOL_SIZE = 3;
-	private ScheduledThreadPoolExecutor schedExecutor;
+    private SleepTimer sleepTimer;
+    private Future sleepTimerFuture;
 
-	private volatile PlayerStatus statusBeforeSeek;
+    private static final int SCHED_EX_POOL_SIZE = 3;
+    private ScheduledThreadPoolExecutor schedExecutor;
+    private ExecutorService dbLoaderExecutor;
 
-	private static boolean playingVideo;
+    private volatile PlayerStatus statusBeforeSeek;
 
-	/** True if mediaplayer was paused because it lost audio focus temporarily */
-	private boolean pausedBecauseOfTransientAudiofocusLoss;
+    private static boolean playingVideo;
 
-	private Thread chapterLoader;
+    /**
+     * True if mediaplayer was paused because it lost audio focus temporarily
+     */
+    private boolean pausedBecauseOfTransientAudiofocusLoss;
 
-	private final IBinder mBinder = new LocalBinder();
+    private Thread chapterLoader;
 
-	public class LocalBinder extends Binder {
-		public PlaybackService getService() {
-			return PlaybackService.this;
-		}
-	}
+    private final IBinder mBinder = new LocalBinder();
 
-	@Override
-	public boolean onUnbind(Intent intent) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Received onUnbind event");
-		return super.onUnbind(intent);
-	}
+    private volatile List<FeedItem> queue;
 
-	/**
-	 * Returns an intent which starts an audio- or videoplayer, depending on the
-	 * type of media that is being played. If the playbackservice is not
-	 * running, the type of the last played media will be looked up.
-	 * */
-	public static Intent getPlayerActivityIntent(Context context) {
-		if (isRunning) {
-			if (playingVideo) {
-				return new Intent(context, VideoplayerActivity.class);
-			} else {
-				return new Intent(context, AudioplayerActivity.class);
-			}
-		} else {
-			if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
-				return new Intent(context, VideoplayerActivity.class);
-			} else {
-				return new Intent(context, AudioplayerActivity.class);
-			}
-		}
-	}
+    public class LocalBinder extends Binder {
+        public PlaybackService getService() {
+            return PlaybackService.this;
+        }
+    }
 
-	/**
-	 * Same as getPlayerActivityIntent(context), but here the type of activity
-	 * depends on the FeedMedia that is provided as an argument.
-	 */
-	public static Intent getPlayerActivityIntent(Context context, Playable media) {
-		MediaType mt = media.getMediaType();
-		if (mt == MediaType.VIDEO) {
-			return new Intent(context, VideoplayerActivity.class);
-		} else {
-			return new Intent(context, AudioplayerActivity.class);
-		}
-	}
+    @Override
+    public boolean onUnbind(Intent intent) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Received onUnbind event");
+        return super.onUnbind(intent);
+    }
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onCreate() {
-		super.onCreate();
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Service created.");
-		isRunning = true;
-		pausedBecauseOfTransientAudiofocusLoss = false;
-		status = PlayerStatus.STOPPED;
-		audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-		manager = FeedManager.getInstance();
-		schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
-				new ThreadFactory() {
+    /**
+     * Returns an intent which starts an audio- or videoplayer, depending on the
+     * type of media that is being played. If the playbackservice is not
+     * running, the type of the last played media will be looked up.
+     */
+    public static Intent getPlayerActivityIntent(Context context) {
+        if (isRunning) {
+            if (playingVideo) {
+                return new Intent(context, VideoplayerActivity.class);
+            } else {
+                return new Intent(context, AudioplayerActivity.class);
+            }
+        } else {
+            if (PlaybackPreferences.getCurrentEpisodeIsVideo()) {
+                return new Intent(context, VideoplayerActivity.class);
+            } else {
+                return new Intent(context, AudioplayerActivity.class);
+            }
+        }
+    }
 
-					@Override
-					public Thread newThread(Runnable r) {
-						Thread t = new Thread(r);
-						t.setPriority(Thread.MIN_PRIORITY);
-						return t;
-					}
-				}, new RejectedExecutionHandler() {
+    /**
+     * Same as getPlayerActivityIntent(context), but here the type of activity
+     * depends on the FeedMedia that is provided as an argument.
+     */
+    public static Intent getPlayerActivityIntent(Context context, Playable media) {
+        MediaType mt = media.getMediaType();
+        if (mt == MediaType.VIDEO) {
+            return new Intent(context, VideoplayerActivity.class);
+        } else {
+            return new Intent(context, AudioplayerActivity.class);
+        }
+    }
 
-					@Override
-					public void rejectedExecution(Runnable r,
-							ThreadPoolExecutor executor) {
-						Log.w(TAG, "SchedEx rejected submission of new task");
-					}
-				});
-		player = createMediaPlayer();
+    @SuppressLint("NewApi")
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Service created.");
+        isRunning = true;
+        pausedBecauseOfTransientAudiofocusLoss = false;
+        status = PlayerStatus.STOPPED;
+        audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+        schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
+                new ThreadFactory() {
 
-		mediaButtonReceiver = new ComponentName(getPackageName(),
-				MediaButtonReceiver.class.getName());
-		audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
-		if (android.os.Build.VERSION.SDK_INT >= 14) {
-			audioManager
-					.registerRemoteControlClient(setupRemoteControlClient());
-		}
-		registerReceiver(headsetDisconnected, new IntentFilter(
-				Intent.ACTION_HEADSET_PLUG));
-		registerReceiver(shutdownReceiver, new IntentFilter(
-				ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-		registerReceiver(audioBecomingNoisy, new IntentFilter(
-				AudioManager.ACTION_AUDIO_BECOMING_NOISY));
-		registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
-				ACTION_SKIP_CURRENT_EPISODE));
+                    @Override
+                    public Thread newThread(Runnable r) {
+                        Thread t = new Thread(r);
+                        t.setPriority(Thread.MIN_PRIORITY);
+                        return t;
+                    }
+                }, new RejectedExecutionHandler() {
 
-	}
+            @Override
+            public void rejectedExecution(Runnable r,
+                                          ThreadPoolExecutor executor) {
+                Log.w(TAG, "SchedEx rejected submission of new task");
+            }
+        }
+        );
+        dbLoaderExecutor = Executors.newSingleThreadExecutor();
+        player = createMediaPlayer();
 
-	private MediaPlayer createMediaPlayer() {
-		return createMediaPlayer(new MediaPlayer());
-	}
+        mediaButtonReceiver = new ComponentName(getPackageName(),
+                MediaButtonReceiver.class.getName());
+        audioManager.registerMediaButtonEventReceiver(mediaButtonReceiver);
+        if (android.os.Build.VERSION.SDK_INT >= 14) {
+            audioManager
+                    .registerRemoteControlClient(setupRemoteControlClient());
+        }
+        registerReceiver(headsetDisconnected, new IntentFilter(
+                Intent.ACTION_HEADSET_PLUG));
+        registerReceiver(shutdownReceiver, new IntentFilter(
+                ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(audioBecomingNoisy, new IntentFilter(
+                AudioManager.ACTION_AUDIO_BECOMING_NOISY));
+        registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
+                ACTION_SKIP_CURRENT_EPISODE));
+        EventDistributor.getInstance().register(eventDistributorListener);
+        loadQueue();
+    }
 
-	private MediaPlayer createMediaPlayer(MediaPlayer mp) {
-		if (mp != null) {
-			mp.setOnPreparedListener(preparedListener);
-			mp.setOnCompletionListener(completionListener);
-			mp.setOnSeekCompleteListener(onSeekCompleteListener);
-			mp.setOnErrorListener(onErrorListener);
-			mp.setOnBufferingUpdateListener(onBufferingUpdateListener);
-			mp.setOnInfoListener(onInfoListener);
-		}
-		return mp;
-	}
+    private MediaPlayer createMediaPlayer() {
+        return createMediaPlayer(new MediaPlayer());
+    }
 
-	@SuppressLint("NewApi")
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Service is about to be destroyed");
-		isRunning = false;
-		if (chapterLoader != null) {
-			chapterLoader.interrupt();
-		}
-		disableSleepTimer();
-		unregisterReceiver(headsetDisconnected);
-		unregisterReceiver(shutdownReceiver);
-		unregisterReceiver(audioBecomingNoisy);
-		unregisterReceiver(skipCurrentEpisodeReceiver);
-		if (android.os.Build.VERSION.SDK_INT >= 14) {
-			audioManager.unregisterRemoteControlClient(remoteControlClient);
-		}
-		audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
-		audioManager.abandonAudioFocus(audioFocusChangeListener);
-		player.release();
-		stopWidgetUpdater();
-		updateWidget();
-	}
+    private MediaPlayer createMediaPlayer(MediaPlayer mp) {
+        if (mp != null) {
+            mp.setOnPreparedListener(preparedListener);
+            mp.setOnCompletionListener(completionListener);
+            mp.setOnSeekCompleteListener(onSeekCompleteListener);
+            mp.setOnErrorListener(onErrorListener);
+            mp.setOnBufferingUpdateListener(onBufferingUpdateListener);
+            mp.setOnInfoListener(onInfoListener);
+        }
+        return mp;
+    }
 
-	@Override
-	public IBinder onBind(Intent intent) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Received onBind event");
-		return mBinder;
-	}
+    @SuppressLint("NewApi")
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Service is about to be destroyed");
+        isRunning = false;
+        if (chapterLoader != null) {
+            chapterLoader.interrupt();
+        }
+        disableSleepTimer();
+        unregisterReceiver(headsetDisconnected);
+        unregisterReceiver(shutdownReceiver);
+        unregisterReceiver(audioBecomingNoisy);
+        unregisterReceiver(skipCurrentEpisodeReceiver);
+        EventDistributor.getInstance().unregister(eventDistributorListener);
+        if (android.os.Build.VERSION.SDK_INT >= 14) {
+            audioManager.unregisterRemoteControlClient(remoteControlClient);
+        }
+        audioManager.unregisterMediaButtonEventReceiver(mediaButtonReceiver);
+        audioManager.abandonAudioFocus(audioFocusChangeListener);
+        player.release();
+        stopWidgetUpdater();
+        updateWidget();
+    }
 
-	private final OnAudioFocusChangeListener audioFocusChangeListener = new OnAudioFocusChangeListener() {
+    @Override
+    public IBinder onBind(Intent intent) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Received onBind event");
+        return mBinder;
+    }
 
-		@Override
-		public void onAudioFocusChange(int focusChange) {
-			switch (focusChange) {
-			case AudioManager.AUDIOFOCUS_LOSS:
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Lost audio focus");
-				pause(true, false);
-				stopSelf();
-				break;
-			case AudioManager.AUDIOFOCUS_GAIN:
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Gained audio focus");
-				if (pausedBecauseOfTransientAudiofocusLoss) {
-					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-							AudioManager.ADJUST_RAISE, 0);
-					play();
-				}
-				break;
-			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-				if (status == PlayerStatus.PLAYING) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-					audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-							AudioManager.ADJUST_LOWER, 0);
-					pausedBecauseOfTransientAudiofocusLoss = true;
-				}
-				break;
-			case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-				if (status == PlayerStatus.PLAYING) {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Lost audio focus temporarily. Pausing...");
-					pause(false, false);
-					pausedBecauseOfTransientAudiofocusLoss = true;
-				}
-			}
-		}
-	};
+    private final EventDistributor.EventListener eventDistributorListener = new EventDistributor.EventListener() {
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EventDistributor.QUEUE_UPDATE & arg) != 0) {
+                loadQueue();
+            }
+        }
+    };
 
-	@Override
-	public int onStartCommand(Intent intent, int flags, int startId) {
-		super.onStartCommand(intent, flags, startId);
+    private final OnAudioFocusChangeListener audioFocusChangeListener = new OnAudioFocusChangeListener() {
 
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "OnStartCommand called");
-		int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
-		if (keycode != -1) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Received media button event");
-			handleKeycode(keycode);
-		} else {
+        @Override
+        public void onAudioFocusChange(int focusChange) {
+            switch (focusChange) {
+                case AudioManager.AUDIOFOCUS_LOSS:
+                    if (AppConfig.DEBUG)
+                        Log.d(TAG, "Lost audio focus");
+                    pause(true, false);
+                    stopSelf();
+                    break;
+                case AudioManager.AUDIOFOCUS_GAIN:
+                    if (AppConfig.DEBUG)
+                        Log.d(TAG, "Gained audio focus");
+                    if (pausedBecauseOfTransientAudiofocusLoss) {
+                        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                AudioManager.ADJUST_RAISE, 0);
+                        play();
+                    }
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
+                    if (status == PlayerStatus.PLAYING) {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+                        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                AudioManager.ADJUST_LOWER, 0);
+                        pausedBecauseOfTransientAudiofocusLoss = true;
+                    }
+                    break;
+                case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
+                    if (status == PlayerStatus.PLAYING) {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+                        pause(false, false);
+                        pausedBecauseOfTransientAudiofocusLoss = true;
+                    }
+            }
+        }
+    };
 
-			Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
-			boolean playbackType = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-					true);
-			if (playable == null) {
-				Log.e(TAG, "Playable extra wasn't sent to the service");
-				if (media == null) {
-					stopSelf();
-				}
-				// Intent values appear to be valid
-				// check if already playing and playbackType is the same
-			} else if (media == null
-					|| !playable.getIdentifier().equals(media.getIdentifier())
-					|| playbackType != shouldStream) {
-				pause(true, false);
-				player.reset();
-				sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-				if (media == null
-						|| !playable.getIdentifier().equals(
-								media.getIdentifier())) {
-					media = playable;
-				}
+    /**
+     * 1. Check type of intent
+     * 1.1 Keycode -> handle keycode -> done
+     * 1.2 Playable -> Step 2
+     * 2. Handle playable
+     * 2.1 Check current status
+     * 2.1.1 Not playing -> play new playable
+     * 2.1.2 Playing, new playable is the same -> play if playback is currently paused
+     * 2.1.3 Playing, new playable different -> Stop playback of old media
+     *
+     * @param intent
+     * @param flags
+     * @param startId
+     * @return
+     */
+    @Override
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        super.onStartCommand(intent, flags, startId);
 
-				if (media != null) {
-					shouldStream = playbackType;
-					startWhenPrepared = intent.getBooleanExtra(
-							EXTRA_START_WHEN_PREPARED, false);
-					prepareImmediately = intent.getBooleanExtra(
-							EXTRA_PREPARE_IMMEDIATELY, false);
-					initMediaplayer();
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "OnStartCommand called");
+        final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
+        final Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
+        if (keycode == -1 && playable == null) {
+            Log.e(TAG, "PlaybackService was started with no arguments");
+            stopSelf();
+        }
 
-				} else {
-					Log.e(TAG, "Media is null");
-					stopSelf();
-				}
+        if (keycode != -1) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Received media button event");
+            handleKeycode(keycode);
+        } else {
+            boolean playbackType = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
+                    true);
+            if (media == null) {
+                media = playable;
+                shouldStream = playbackType;
+                startWhenPrepared = intent.getBooleanExtra(
+                        EXTRA_START_WHEN_PREPARED, false);
+                initMediaplayer(intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false));
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+            }
+            if (media != null) {
+                if (!playable.getIdentifier().equals(media.getIdentifier())) {
+                    // different media or different playback type
+                    pause(true, false);
+                    player.reset();
+                    media = playable;
+                    shouldStream = playbackType;
+                    startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
+                    initMediaplayer(intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false));
+                    sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+                } else {
+                    // same media and same playback type
+                    if (status == PlayerStatus.PAUSED) {
+                        play();
+                    }
+                }
+            }
+        }
 
-			} else if (media != null) {
-				if (status == PlayerStatus.PAUSED) {
-					play();
-				}
-
-			} else {
-				Log.w(TAG, "Something went wrong. Shutting down...");
-				stopSelf();
-			}
-		}
-		return Service.START_NOT_STICKY;
-	}
+        return Service.START_NOT_STICKY;
+    }
 
 	/** Handles media button events */
 	private void handleKeycode(int keycode) {
@@ -444,163 +478,169 @@ public class PlaybackService extends Service {
 		} 
 	}
 
-	/**
-	 * Called by a mediaplayer Activity as soon as it has prepared its
-	 * mediaplayer.
-	 */
-	public void setVideoSurface(SurfaceHolder sh) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Setting display");
-		player.setDisplay(null);
-		player.setDisplay(sh);
-		if (status == PlayerStatus.STOPPED
-				|| status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
-			try {
-				InitTask initTask = new InitTask() {
+    /**
+     * Called by a mediaplayer Activity as soon as it has prepared its
+     * mediaplayer.
+     */
+    public void setVideoSurface(SurfaceHolder sh) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Setting display");
+        player.setDisplay(null);
+        player.setDisplay(sh);
+        if (status == PlayerStatus.STOPPED
+                || status == PlayerStatus.AWAITING_VIDEO_SURFACE) {
+            try {
+                InitTask initTask = new InitTask() {
 
-					@Override
-					protected void onPostExecute(Playable result) {
-						if (status == PlayerStatus.INITIALIZING) {
-							if (result != null) {
-								try {
-									if (shouldStream) {
-										player.setDataSource(media
-												.getStreamUrl());
-										setStatus(PlayerStatus.PREPARING);
-										player.prepareAsync();
-									} else {
-										player.setDataSource(media
-												.getLocalMediaUrl());
-										setStatus(PlayerStatus.PREPARING);
-										player.prepareAsync();
-									}
-								} catch (IOException e) {
-									e.printStackTrace();
-								}
-							} else {
-								setStatus(PlayerStatus.ERROR);
-								sendBroadcast(new Intent(
-										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-							}
-						}
-					}
+                    @Override
+                    protected void onPostExecute(Playable result) {
+                        if (status == PlayerStatus.INITIALIZING) {
+                            if (result != null) {
+                                try {
+                                    if (shouldStream) {
+                                        player.setDataSource(media
+                                                .getStreamUrl());
+                                        setStatus(PlayerStatus.PREPARING);
+                                        player.prepareAsync();
+                                    } else {
+                                        player.setDataSource(media
+                                                .getLocalMediaUrl());
+                                        setStatus(PlayerStatus.PREPARING);
+                                        player.prepareAsync();
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                }
+                            } else {
+                                setStatus(PlayerStatus.ERROR);
+                                sendBroadcast(new Intent(
+                                        ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                            }
+                        }
+                    }
 
-					@Override
-					protected void onPreExecute() {
-						setStatus(PlayerStatus.INITIALIZING);
-					}
+                    @Override
+                    protected void onPreExecute() {
+                        setStatus(PlayerStatus.INITIALIZING);
+                    }
 
-				};
-				initTask.executeAsync(media);
-			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
-			} catch (SecurityException e) {
-				e.printStackTrace();
-			} catch (IllegalStateException e) {
-				e.printStackTrace();
-			}
-		}
+                };
+                initTask.executeAsync(media);
+            } catch (IllegalArgumentException e) {
+                e.printStackTrace();
+            } catch (SecurityException e) {
+                e.printStackTrace();
+            } catch (IllegalStateException e) {
+                e.printStackTrace();
+            }
+        }
 
-	}
+    }
 
-	/** Called when the surface holder of the mediaplayer has to be changed. */
-	private void resetVideoSurface() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Resetting video surface");
-		cancelPositionSaver();
-		player.setDisplay(null);
-		player.reset();
-		player.release();
-		player = createMediaPlayer();
-		status = PlayerStatus.STOPPED;
-		if (media != null) {
-			initMediaplayer();
-		}
-	}
+    /**
+     * Called when the surface holder of the mediaplayer has to be changed.
+     */
+    private void resetVideoSurface() {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Resetting video surface");
+        cancelPositionSaver();
+        player.setDisplay(null);
+        player.reset();
+        player.release();
+        player = createMediaPlayer();
+        status = PlayerStatus.STOPPED;
+    }
 
 	public void notifyVideoSurfaceAbandoned() {
 		resetVideoSurface();
+        if (media != null) {
+            initMediaplayer(true);
+        }
 	}
 
-	/** Called after service has extracted the media it is supposed to play. */
-	private void initMediaplayer() {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Setting up media player");
-		try {
-			MediaType mediaType = media.getMediaType();
-			if (mediaType == MediaType.AUDIO) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Mime type is audio");
+    /**
+     * Called after service has extracted the media it is supposed to play.
+     *
+     * @param prepareImmediately True if service should prepare playback after it has been initialized
+     */
+    private void initMediaplayer(final boolean prepareImmediately) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Setting up media player");
+        try {
+            MediaType mediaType = media.getMediaType();
+            if (mediaType == MediaType.AUDIO) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Mime type is audio");
 
-				InitTask initTask = new InitTask() {
+                InitTask initTask = new InitTask() {
 
-					@Override
-					protected void onPostExecute(Playable result) {
-						// check if state of service has changed. If it has
-						// changed, assume that loaded metadata is not needed
-						// anymore.
-						if (status == PlayerStatus.INITIALIZING) {
-							if (result != null) {
-								playingVideo = false;
-								try {
-									if (shouldStream) {
-										player.setDataSource(media
-												.getStreamUrl());
-									} else if (media.localFileAvailable()) {
-										player.setDataSource(media
-												.getLocalMediaUrl());
-									}
+                    @Override
+                    protected void onPostExecute(Playable result) {
+                        // check if state of service has changed. If it has
+                        // changed, assume that loaded metadata is not needed
+                        // anymore.
+                        if (status == PlayerStatus.INITIALIZING) {
+                            if (result != null) {
+                                playingVideo = false;
+                                try {
+                                    if (shouldStream) {
+                                        player.setDataSource(media
+                                                .getStreamUrl());
+                                    } else if (media.localFileAvailable()) {
+                                        player.setDataSource(media
+                                                .getLocalMediaUrl());
+                                    }
 
-									if (prepareImmediately) {
-										setStatus(PlayerStatus.PREPARING);
-										player.prepareAsync();
-									} else {
-										setStatus(PlayerStatus.INITIALIZED);
-									}
-								} catch (IOException e) {
-									e.printStackTrace();
-									media = null;
-									setStatus(PlayerStatus.ERROR);
-									sendBroadcast(new Intent(
-											ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-								}
-							} else {
-								Log.e(TAG, "InitTask could not load metadata");
-								media = null;
-								setStatus(PlayerStatus.ERROR);
-								sendBroadcast(new Intent(
-										ACTION_SHUTDOWN_PLAYBACK_SERVICE));
-							}
-						} else {
-							if (AppConfig.DEBUG)
-								Log.d(TAG,
-										"Status of player has changed during initialization. Stopping init process.");
-						}
-					}
+                                    if (prepareImmediately) {
+                                        setStatus(PlayerStatus.PREPARING);
+                                        player.prepareAsync();
+                                    } else {
+                                        setStatus(PlayerStatus.INITIALIZED);
+                                    }
+                                } catch (IOException e) {
+                                    e.printStackTrace();
+                                    media = null;
+                                    setStatus(PlayerStatus.ERROR);
+                                    sendBroadcast(new Intent(
+                                            ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                                }
+                            } else {
+                                Log.e(TAG, "InitTask could not load metadata");
+                                media = null;
+                                setStatus(PlayerStatus.ERROR);
+                                sendBroadcast(new Intent(
+                                        ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+                            }
+                        } else {
+                            if (AppConfig.DEBUG)
+                                Log.d(TAG,
+                                        "Status of player has changed during initialization. Stopping init process.");
+                        }
+                    }
 
-					@Override
-					protected void onPreExecute() {
-						setStatus(PlayerStatus.INITIALIZING);
-					}
+                    @Override
+                    protected void onPreExecute() {
+                        setStatus(PlayerStatus.INITIALIZING);
+                    }
 
-				};
-				initTask.executeAsync(media);
-			} else if (mediaType == MediaType.VIDEO) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Mime type is video");
-				playingVideo = true;
-				setStatus(PlayerStatus.AWAITING_VIDEO_SURFACE);
-				player.setScreenOnWhilePlaying(true);
-			}
+                };
+                initTask.executeAsync(media);
+            } else if (mediaType == MediaType.VIDEO) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Mime type is video");
+                playingVideo = true;
+                setStatus(PlayerStatus.AWAITING_VIDEO_SURFACE);
+                player.setScreenOnWhilePlaying(true);
+            }
 
-		} catch (IllegalArgumentException e) {
-			e.printStackTrace();
-		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (IllegalStateException e) {
-			e.printStackTrace();
-		}
-	}
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        } catch (SecurityException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        }
+    }
 
 	private void setupPositionSaver() {
 		if (positionSaverFuture == null
@@ -722,81 +762,82 @@ public class PlaybackService extends Service {
 		}
 	};
 
-	private void endPlayback(boolean playNextEpisode) {
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Playback ended");
-		audioManager.abandonAudioFocus(audioFocusChangeListener);
+    private void endPlayback(boolean playNextEpisode) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Playback ended");
+        audioManager.abandonAudioFocus(audioFocusChangeListener);
 
-		// Save state
-		cancelPositionSaver();
+        // Save state
+        cancelPositionSaver();
 
-		boolean isInQueue = false;
-		FeedItem nextItem = null;
+        boolean isInQueue = false;
+        FeedItem nextItem = null;
 
-		if (media instanceof FeedMedia) {
-			FeedItem item = ((FeedMedia) media).getItem();
-			((FeedMedia) media).setPlaybackCompletionDate(new Date());
-			manager.markItemRead(PlaybackService.this, item, true, true);
-			nextItem = manager.getQueueSuccessorOfItem(item);
-			isInQueue = media instanceof FeedMedia
-					&& manager.isInQueue(((FeedMedia) media).getItem());
-			if (isInQueue) {
-				manager.removeQueueItem(PlaybackService.this, item, true);
-			}
-			manager.addItemToPlaybackHistory(PlaybackService.this, item);
-			manager.setFeedMedia(PlaybackService.this, (FeedMedia) media);
-			long autoDeleteMediaId = ((FeedComponent) media).getId();
-			if (shouldStream) {
-				autoDeleteMediaId = -1;
-			}
-		}
+        if (media instanceof FeedMedia) {
+            FeedItem item = ((FeedMedia) media).getItem();
+            DBWriter.markItemRead(PlaybackService.this, item, true, true);
+            nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
+            isInQueue = media instanceof FeedMedia
+                    && QueueAccess.ItemListAccess(queue).contains(((FeedMedia) media).getItem().getId());
+            if (isInQueue) {
+                DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
+            }
+            DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
+            DBWriter.setFeedMedia(PlaybackService.this, (FeedMedia) media);
+            long autoDeleteMediaId = ((FeedComponent) media).getId();
+            if (shouldStream) {
+                autoDeleteMediaId = -1;
+            }
+        }
 
-		// Load next episode if previous episode was in the queue and if there
-		// is an episode in the queue left.
-		// Start playback immediately if continuous playback is enabled
-		boolean loadNextItem = isInQueue && nextItem != null;
-		playNextEpisode = playNextEpisode && loadNextItem
-				&& UserPreferences.isFollowQueue();
-		if (loadNextItem) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Loading next item in queue");
-			media = nextItem.getMedia();
-		}
+        // Load next episode if previous episode was in the queue and if there
+        // is an episode in the queue left.
+        // Start playback immediately if continuous playback is enabled
+        boolean loadNextItem = isInQueue && nextItem != null;
+        playNextEpisode = playNextEpisode && loadNextItem
+                && UserPreferences.isFollowQueue();
+        if (loadNextItem) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Loading next item in queue");
+            media = nextItem.getMedia();
+        }
+        final boolean prepareImmediately;
+        if (playNextEpisode) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Playback of next episode will start immediately.");
+            prepareImmediately = startWhenPrepared = true;
+        } else {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "No more episodes available to play");
+            media = null;
+            prepareImmediately = startWhenPrepared = false;
+            stopForeground(true);
+            stopWidgetUpdater();
+        }
 
-		if (playNextEpisode) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Playback of next episode will start immediately.");
-			prepareImmediately = startWhenPrepared = true;
-		} else {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "No more episodes available to play");
-			media = null;
-			prepareImmediately = startWhenPrepared = false;
-			stopForeground(true);
-			stopWidgetUpdater();
-		}
+        int notificationCode = 0;
+        if (media != null) {
+            shouldStream = !media.localFileAvailable();
+            if (media.getMediaType() == MediaType.AUDIO) {
+                notificationCode = EXTRA_CODE_AUDIO;
+                playingVideo = false;
+            } else if (media.getMediaType() == MediaType.VIDEO) {
+                notificationCode = EXTRA_CODE_VIDEO;
+            }
+        }
+        writePlaybackPreferences();
+        if (media != null) {
+            resetVideoSurface();
+            refreshRemoteControlClientState();
+            initMediaplayer(prepareImmediately);
 
-		int notificationCode = 0;
-		if (media != null) {
-			shouldStream = !media.localFileAvailable();
-			if (media.getMediaType() == MediaType.AUDIO) {
-				notificationCode = EXTRA_CODE_AUDIO;
-				playingVideo = false;
-			} else if (media.getMediaType() == MediaType.VIDEO) {
-				notificationCode = EXTRA_CODE_VIDEO;
-			}
-		}
-		writePlaybackPreferences();
-		if (media != null) {
-			resetVideoSurface();
-			refreshRemoteControlClientState();
-			sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-					notificationCode);
-		} else {
-			sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
-			stopSelf();
-		}
-	}
+            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+                    notificationCode);
+        } else {
+            sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+            stopSelf();
+        }
+    }
 
 	public void setSleepTimer(long waitingTime) {
 		if (AppConfig.DEBUG)
@@ -825,7 +866,7 @@ public class PlaybackService extends Service {
 	 * 
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
-	 * @param reset
+	 * @param reinit
 	 *            is true if service should reinit after pausing if the media
 	 *            file is being streamed
 	 */
@@ -880,8 +921,7 @@ public class PlaybackService extends Service {
 	public void reinit() {
 		player.reset();
 		player = createMediaPlayer(player);
-		prepareImmediately = false;
-		initMediaplayer();
+		initMediaplayer(false);
 	}
 
 	@SuppressLint("NewApi")
@@ -1248,8 +1288,10 @@ public class PlaybackService extends Service {
 		i.putExtra("album", media.getFeedTitle());
 		i.putExtra("track", media.getEpisodeTitle());
 		i.putExtra("playing", isPlaying);
-		i.putExtra("ListSize", manager.getQueueSize(false));
-		i.putExtra("duration", media.getDuration());
+        if (queue != null) {
+            i.putExtra("ListSize", queue.size());
+        }
+        i.putExtra("duration", media.getDuration());
 		i.putExtra("position", media.getPosition());
 		sendBroadcast(i);
 	}
@@ -1529,4 +1571,16 @@ public class PlaybackService extends Service {
 		}
 
 	}
+
+    private void loadQueue() {
+        dbLoaderExecutor.submit(new QueueLoaderTask());
+    }
+
+    private class QueueLoaderTask implements Runnable {
+        @Override
+        public void run() {
+            List<FeedItem> queueRef = DBReader.getQueue(PlaybackService.this);
+            queue = queueRef;
+        }
+    }
 }

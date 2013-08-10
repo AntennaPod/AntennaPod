@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.asynctask;
+package de.danoeh.antennapod.service.download;
 
 import java.util.Date;
 
@@ -12,10 +12,6 @@ public class DownloadStatus {
 	 * so that the listadapters etc. can react properly.
 	 */
 	public static final int SIZE_UNKNOWN = -1;
-
-	public Date getCompletionDate() {
-		return completionDate;
-	}
 
 	// ----------------------------------- ATTRIBUTES STORED IN DB
 	/** Unique id for storing the object in database. */
@@ -34,7 +30,7 @@ public class DownloadStatus {
 	protected String reasonDetailed;
 	protected boolean successful;
 	protected Date completionDate;
-	protected FeedFile feedfile;
+	protected long feedfileId;
 	/**
 	 * Is used to determine the type of the feedfile even if the feedfile does
 	 * not exist anymore. The value should be FEEDFILETYPE_FEED,
@@ -43,33 +39,17 @@ public class DownloadStatus {
 	protected int feedfileType;
 
 	// ------------------------------------ NOT STORED IN DB
-	protected int progressPercent;
-	protected long soFar;
-	protected long size;
-	protected int statusMsg;
 	protected boolean done;
 	protected boolean cancelled;
 
-	public DownloadStatus(FeedFile feedfile, String title) {
-		this.feedfile = feedfile;
-		if (feedfile != null) {
-			feedfileType = feedfile.getTypeAsInt();
-		}
-		this.title = title;
-	}
-
 	/** Constructor for restoring Download status entries from DB. */
-	public DownloadStatus(long id, String title, FeedFile feedfile,
+	public DownloadStatus(long id, String title, long feedfileId,
 			int feedfileType, boolean successful, DownloadError reason,
 			Date completionDate, String reasonDetailed) {
-		progressPercent = 100;
-		soFar = 0;
-		size = 0;
-
 		this.id = id;
 		this.title = title;
 		this.done = true;
-		this.feedfile = feedfile;
+		this.feedfileId = feedfileId;
 		this.reason = reason;
 		this.successful = successful;
 		this.completionDate = completionDate;
@@ -77,11 +57,49 @@ public class DownloadStatus {
 		this.feedfileType = feedfileType;
 	}
 
+	public DownloadStatus(DownloadRequest request, DownloadError reason,
+			boolean successful, boolean cancelled, String reasonDetailed) {
+		if (request == null) {
+			throw new IllegalArgumentException("request must not be null");
+		}
+		this.title = request.getTitle();
+		this.feedfileId = request.getFeedfileId();
+		this.feedfileType = request.getFeedfileType();
+		this.reason = reason;
+		this.successful = successful;
+		this.cancelled = cancelled;
+		this.reasonDetailed = reasonDetailed;
+		this.completionDate = new Date();
+	}
+
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
 			boolean successful, String reasonDetailed) {
-		this(0, title, feedfile, feedfile.getTypeAsInt(), successful, reason,
-				new Date(), reasonDetailed);
+		if (feedfile == null) {
+			throw new IllegalArgumentException("feedfile must not be null");
+		}
+
+		this.title = title;
+		this.done = true;
+		this.feedfileId = feedfile.getId();
+		this.feedfileType = feedfile.getTypeAsInt();
+		this.reason = reason;
+		this.successful = successful;
+		this.completionDate = new Date();
+		this.reasonDetailed = reasonDetailed;
+	}
+
+	/** Constructor for creating new completed downloads. */
+	public DownloadStatus(long feedfileId, int feedfileType, String title,
+			DownloadError reason, boolean successful, String reasonDetailed) {
+		this.title = title;
+		this.done = true;
+		this.feedfileId = feedfileId;
+		this.feedfileType = feedfileType;
+		this.reason = reason;
+		this.successful = successful;
+		this.completionDate = new Date();
+		this.reasonDetailed = reasonDetailed;
 	}
 
 	@Override
@@ -89,68 +107,50 @@ public class DownloadStatus {
 		return "DownloadStatus [id=" + id + ", title=" + title + ", reason="
 				+ reason + ", reasonDetailed=" + reasonDetailed
 				+ ", successful=" + successful + ", completionDate="
-				+ completionDate + ", feedfile=" + feedfile + ", feedfileType="
-				+ feedfileType + ", progressPercent=" + progressPercent
-				+ ", soFar=" + soFar + ", size=" + size + ", statusMsg="
-				+ statusMsg + ", done=" + done + ", cancelled=" + cancelled
-				+ "]";
+				+ completionDate + ", feedfileId=" + feedfileId
+				+ ", feedfileType=" + feedfileType + ", done=" + done
+				+ ", cancelled=" + cancelled + "]";
 	}
 
-	public FeedFile getFeedFile() {
-		return feedfile;
-	}
+    public long getId() {
+        return id;
+    }
 
-	public int getProgressPercent() {
-		return progressPercent;
-	}
+    public String getTitle() {
+        return title;
+    }
 
-	public long getSoFar() {
-		return soFar;
-	}
+    public DownloadError getReason() {
+        return reason;
+    }
 
-	public long getSize() {
-		return size;
-	}
+    public String getReasonDetailed() {
+        return reasonDetailed;
+    }
 
-	public int getStatusMsg() {
-		return statusMsg;
-	}
+    public boolean isSuccessful() {
+        return successful;
+    }
 
-	public DownloadError getReason() {
-		return reason;
-	}
+    public Date getCompletionDate() {
+        return completionDate;
+    }
 
-	public boolean isSuccessful() {
-		return successful;
-	}
+    public long getFeedfileId() {
+        return feedfileId;
+    }
 
-	public long getId() {
-		return id;
-	}
+    public int getFeedfileType() {
+        return feedfileType;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public boolean isDone() {
+        return done;
+    }
 
-	public boolean isDone() {
-		return done;
-	}
-
-	public void setProgressPercent(int progressPercent) {
-		this.progressPercent = progressPercent;
-	}
-
-	public void setSoFar(long soFar) {
-		this.soFar = soFar;
-	}
-
-	public void setSize(long size) {
-		this.size = size;
-	}
-
-	public void setStatusMsg(int statusMsg) {
-		this.statusMsg = statusMsg;
-	}
+    public boolean isCancelled() {
+        return cancelled;
+    }
 
     public void setSuccessful() {
         this.successful = true;
@@ -171,36 +171,11 @@ public class DownloadStatus {
         this.cancelled = true;
     }
 
-	public void setCompletionDate(Date completionDate) {
-		this.completionDate = completionDate;
-	}
+    public void setCompletionDate(Date completionDate) {
+        this.completionDate = completionDate;
+    }
 
-	public String getReasonDetailed() {
-		return reasonDetailed;
-	}
-
-	public void setReasonDetailed(String reasonDetailed) {
-		this.reasonDetailed = reasonDetailed;
-	}
-
-	public String getTitle() {
-		return title;
-	}
-
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
-	public int getFeedfileType() {
-		return feedfileType;
-	}
-
-	public boolean isCancelled() {
-		return cancelled;
-	}
-
-	public void setCancelled(boolean cancelled) {
-		this.cancelled = cancelled;
-	}
-
+    public void setId(long id) {
+        this.id = id;
+    }
 }

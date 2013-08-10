@@ -20,7 +20,6 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
@@ -37,8 +36,6 @@ import de.danoeh.antennapod.util.playback.PlaybackController;
 public abstract class MediaplayerActivity extends ActionBarActivity
 		implements OnSeekBarChangeListener {
 	private static final String TAG = "MediaplayerActivity";
-
-	protected FeedManager manager;
 
 	protected PlaybackController controller;
 
@@ -148,7 +145,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 		StorageUtils.checkStorageAvailability(this);
 
 		orientation = getResources().getConfiguration().orientation;
-		manager = FeedManager.getInstance();
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}
