@@ -11,12 +11,10 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.os.Handler;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -32,12 +30,30 @@ import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
+/**
+ * Provides methods for doing common tasks that use DBReader and DBWriter.
+ */
 public final class DBTasks {
     private static final String TAG = "DBTasks";
 
     private DBTasks() {
     }
 
+    /**
+     * Starts playback of a FeedMedia object's file. This method will build an Intent based on the given parameters to
+     * start the {@link PlaybackService}.
+     *
+     * @param context           Used for sending starting Services and Activities.
+     * @param media             The FeedMedia object.
+     * @param showPlayer        If true, starts the appropriate player activity ({@link de.danoeh.antennapod.activity.AudioplayerActivity}
+     *                          or {@link de.danoeh.antennapod.activity.VideoplayerActivity}
+     * @param startWhenPrepared Parameter for the {@link PlaybackService} start intent. If true, playback will start as
+     *                          soon as the PlaybackService has finished loading the FeedMedia object's file.
+     * @param shouldStream      Parameter for the {@link PlaybackService} start intent. If true, the FeedMedia object's file
+     *                          will be streamed, otherwise the downloaded file will be used. If the downloaded file cannot be
+     *                          found, the PlaybackService will shutdown and the database entry of the FeedMedia object will be
+     *                          corrected.
+     */
     public static void playMedia(final Context context, final FeedMedia media,
                                  boolean showPlayer, boolean startWhenPrepared, boolean shouldStream) {
         try {
@@ -59,7 +75,7 @@ public final class DBTasks {
                     true);
             context.startService(launchIntent);
             if (showPlayer) {
-                // Launch Mediaplayer
+                // Launch media player
                 context.startActivity(PlaybackService.getPlayerActivityIntent(
                         context, media));
             }
@@ -75,6 +91,14 @@ public final class DBTasks {
     }
 
     private static AtomicBoolean isRefreshing = new AtomicBoolean(false);
+
+    /**
+     * Refreshes a given list of Feeds in a separate Thread. This method might ignore subsequent calls if it is still
+     * enqueuing Feeds for download from a previous call
+     *
+     * @param context Might be used for accessing the database
+     * @param feeds   List of Feeds that should be refreshed.
+     */
     public static void refreshAllFeeds(final Context context,
                                        final List<Feed> feeds) {
         if (isRefreshing.compareAndSet(false, true)) {
@@ -95,6 +119,12 @@ public final class DBTasks {
         }
     }
 
+    /**
+     * Refreshes expired Feeds in the list returned by the getExpiredFeedsList(Context, long) method in DBReader.
+     * The expiration date parameter is determined by the update interval specified in {@link UserPreferences}.
+     *
+     * @param context Used for DB access.
+     */
     public static void refreshExpiredFeeds(final Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Refreshing expired feeds");
@@ -138,7 +168,10 @@ public final class DBTasks {
     }
 
     /**
-     * Updates a specific feed.
+     * Updates a specific Feed.
+     *
+     * @param context Used for requesting the download.
+     * @param feed    The Feed object.
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
@@ -146,10 +179,16 @@ public final class DBTasks {
                 new Feed(feed.getDownload_url(), new Date(), feed.getTitle()));
     }
 
+    /**
+     * Notifies the database about a missing FeedImage file. This method will attempt to re-download the file.
+     *
+     * @param context Used for requesting the download.
+     * @param image   The FeedImage object.
+     */
     public static void notifyInvalidImageFile(final Context context,
                                               final FeedImage image) {
         Log.i(TAG,
-                "The feedmanager was notified about an invalid image download. It will now try to redownload the image file");
+                "The DB was notified about an invalid image download. It will now try to re-download the image file");
         try {
             DownloadRequester.getInstance().downloadImage(context, image);
         } catch (DownloadRequestException e) {
@@ -158,6 +197,10 @@ public final class DBTasks {
         }
     }
 
+    /**
+     * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's values in the
+     * DB and send a FeedUpdateBroadcast.
+     */
     public static void notifyMissingFeedMediaFile(final Context context,
                                                   final FeedMedia media) {
         Log.i(TAG,
@@ -168,6 +211,11 @@ public final class DBTasks {
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
     }
 
+    /**
+     * Request the download of all objects in the queue. from a separate Thread.
+     *
+     * @param context Used for requesting the download an accessing the database.
+     */
     public static void downloadAllItemsInQueue(final Context context) {
         new Thread() {
             public void run() {
@@ -184,6 +232,12 @@ public final class DBTasks {
         }.start();
     }
 
+    /**
+     * Requests the download of a list of FeedItem objects.
+     *
+     * @param context Used for requesting the download and accessing the DB.
+     * @param items   The FeedItem objects.
+     */
     public static void downloadFeedItems(final Context context,
                                          FeedItem... items) throws DownloadRequestException {
         downloadFeedItems(true, context, items);
@@ -245,6 +299,14 @@ public final class DBTasks {
         return counter;
     }
 
+    /**
+     * Looks for undownloaded episodes in the queue or list of unread items and request a download if
+     * 1. Network is available
+     * 2. There is free space in the episode cache
+     * This method should NOT be executed on the GUI thread.
+     *
+     * @param context Used for accessing the DB.
+     */
     public static void autodownloadUndownloadedItems(final Context context) {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Performing auto-dl of undownloaded episodes");
@@ -330,6 +392,14 @@ public final class DBTasks {
         return 0;
     }
 
+    /**
+     * Removed downloaded episodes outside of the queue if the episode cache is full. Episodes with a smaller
+     * 'playbackCompletionDate'-value will be deleted first.
+     * <p/>
+     * This method should NOT be executed on the GUI thread.
+     *
+     * @param context Used for accessing the DB.
+     */
     public static void performAutoCleanup(final Context context) {
         performAutoCleanup(context, getPerformAutoCleanupArgs(context, 0));
     }
@@ -383,11 +453,23 @@ public final class DBTasks {
         return counter;
     }
 
+    /**
+     * Adds all FeedItem objects whose 'read'-attribute is false to the queue in a separate thread.
+     */
     public static void enqueueAllNewItems(final Context context) {
         long[] unreadItems = DBReader.getUnreadItemIds(context);
         DBWriter.addQueueItem(context, unreadItems);
     }
 
+    /**
+     * Returns the successor of a FeedItem in the queue.
+     *
+     * @param context Used for accessing the DB.
+     * @param itemId  ID of the FeedItem
+     * @param queue   Used for determining the successor of the item. If this parameter is null, the method will load
+     *                the queue from the database in the same thread.
+     * @return Successor of the FeedItem or null if the FeedItem is not in the queue or has no successor.
+     */
     public static FeedItem getQueueSuccessorOfItem(Context context,
                                                    final long itemId, List<FeedItem> queue) {
         FeedItem result = null;
@@ -409,6 +491,13 @@ public final class DBTasks {
         return result;
     }
 
+    /**
+     * Loads the queue from the database and checks if the specified FeedItem is in the queue.
+     * This method should NOT be executed in the GUI thread.
+     *
+     * @param context    Used for accessing the DB.
+     * @param feedItemId ID of the FeedItem
+     */
     public static boolean isInQueue(Context context, final long feedItemId) {
         List<Long> queue = DBReader.getQueueIDList(context);
         return QueueAccess.IDListAccess(queue).contains(feedItemId);
@@ -438,6 +527,16 @@ public final class DBTasks {
         return null;
     }
 
+    /**
+     * Adds a new Feed to the database or updates the old version if it already exists. If another Feed with the same
+     * identifying value already exists, this method will add new FeedItems from the new Feed to the existing Feed.
+     * These FeedItems will be marked as unread.
+     * This method should NOT be executed on the GUI thread.
+     *
+     * @param context Used for accessing the DB.
+     * @param newFeed The new Feed object.
+     * @return The updated Feed from the database if it already existed, or the new Feed from the parameters otherwise.
+     */
     public static synchronized Feed updateFeed(final Context context,
                                                final Feed newFeed) {
         // Look up feed in the feedslist
@@ -505,11 +604,13 @@ public final class DBTasks {
     }
 
     /**
-     * Searches the titles of FeedItems of a specific feed for a given
+     * Searches the titles of FeedItems of a specific Feed for a given
      * string.
      *
+     * @param context Used for accessing the DB.
      * @param feedID  The id of the feed whose items should be searched.
-     * @param query The search string
+     * @param query   The search string.
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
      */
     public static FutureTask<List<FeedItem>> searchFeedItemTitle(final Context context,
                                                                  final long feedID, final String query) {
@@ -527,11 +628,13 @@ public final class DBTasks {
     }
 
     /**
-     * Searches the descriptions of FeedItems of a specific feed for a given
+     * Searches the descriptions of FeedItems of a specific Feed for a given
      * string.
      *
-     * @param feedID The id of the feed whose items should be searched.
-     * @param query The search string
+     * @param context Used for accessing the DB.
+     * @param feedID  The id of the feed whose items should be searched.
+     * @param query   The search string
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
      */
     public static FutureTask<List<FeedItem>> searchFeedItemDescription(final Context context,
                                                                        final long feedID, final String query) {
@@ -549,11 +652,13 @@ public final class DBTasks {
     }
 
     /**
-     * Searches the 'contentEncoded' field of FeedItems of a specific feed for a
-     * given string.
+     * Searches the contentEncoded-value of FeedItems of a specific Feed for a given
+     * string.
      *
+     * @param context Used for accessing the DB.
      * @param feedID  The id of the feed whose items should be searched.
-     * @param query The search string
+     * @param query   The search string
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
      */
     public static FutureTask<List<FeedItem>> searchFeedItemContentEncoded(final Context context,
                                                                           final long feedID, final String query) {
@@ -571,10 +676,12 @@ public final class DBTasks {
     }
 
     /**
-     * Searches chapters for a given string.
+     * Searches chapters of the FeedItems of a specific Feed for a given string.
      *
+     * @param context Used for accessing the DB.
      * @param feedID  The id of the feed whose items should be searched.
-     * @param query The search string
+     * @param query   The search string
+     * @return A FutureTask object that executes the search request and returns the search result as a List of FeedItems.
      */
     public static FutureTask<List<FeedItem>> searchFeedItemChapters(final Context context,
                                                                     final long feedID, final String query) {
