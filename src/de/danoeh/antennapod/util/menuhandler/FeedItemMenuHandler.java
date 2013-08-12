@@ -3,6 +3,7 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
@@ -15,6 +16,8 @@ import de.danoeh.antennapod.util.ShareUtils;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedItemMenuHandler {
+	private static final String TAG = "FeedItemMenuHandler";
+	
 	private FeedItemMenuHandler() {
 
 	}
@@ -156,6 +159,9 @@ public class FeedItemMenuHandler {
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);
+			break;
+		case R.id.move_to_top_item:
+			Log.d(TAG, "move to top");
 			break;
 		default:
 			return false;
