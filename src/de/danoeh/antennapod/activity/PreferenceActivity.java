@@ -39,6 +39,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 	private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
 	private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
 	private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
+	private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
 	private static final String PREF_OPML_EXPORT = "prefOpmlExport";
 	private static final String PREF_ABOUT = "prefAbout";
 	private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
@@ -225,6 +226,7 @@ public class PreferenceActivity extends SherlockPreferenceActivity {
 
 		findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
 		findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
+		findPreference(PREF_AUTO_FLATTR).setEnabled(hasFlattrToken);
 
 		findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
 				.setEnabled(UserPreferences.isEnableAutodownload());

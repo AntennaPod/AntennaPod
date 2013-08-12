@@ -178,6 +178,8 @@
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
+	<string name="pref_auto_flattr_title">Automatic Flattr</string>
+    <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
     <string name="pref_display_only_episodes_title">Display only episodes</string>
     <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>

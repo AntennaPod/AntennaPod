@@ -13,6 +13,7 @@ import android.util.Log;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 
@@ -278,7 +279,7 @@ public class FeedMedia extends FeedFile implements Playable {
 	    setPosition(newPosition);
 
 	    // Auto flattr
-	    if (item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() && (played_duration > 0.8*duration)) {
+	    if (UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() && (played_duration > 0.8*duration)) {
 	    	Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(played_duration) + " is 80% of file duration " + Integer.toString(duration));
 	    	item.getFlattrStatus().setFlattrQueue();
 	    	FeedManager.getInstance().setFeedItem(PodcastApp.getInstance(), item);			
