@@ -17,7 +17,12 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title" />
-        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefPauseForNotifications"
+            android:summary="@string/pref_pausePlaybackForNotifications_sum"
+            android:title="@string/pref_pausePlaybackForNotifications_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref" >
         <ListPreference
