@@ -67,6 +67,11 @@
         android:showAsAction="collapseActionView"
         android:title="@string/support_label">
     </item>
+    <item
+        android:id="@+id/move_to_top_item"
+        android:showAsAction="collapseActionView"
+        android:title="move to top">
+    </item>
     
 
 </menu>
