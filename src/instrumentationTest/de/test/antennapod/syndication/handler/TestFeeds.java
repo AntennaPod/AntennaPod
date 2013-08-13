@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.test;
+package instrumentationTest.de.test.antennapod.syndication.handler;
 
 public class TestFeeds {
 

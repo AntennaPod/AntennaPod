@@ -170,16 +170,7 @@ public class Feed extends FeedFile {
 		} else {
 			return download_url;
 		}
-	}
-
-	/** Calls cacheDescriptions on all items. */
-	protected void cacheDescriptionsOfItems() {
-		if (items != null) {
-			for (FeedItem item : items) {
-				item.cacheDescriptions();
-			}
-		}
-	}
+    }
 
 	public void updateFromOther(Feed other) {
 		super.updateFromOther(other);
@@ -284,12 +275,12 @@ public class Feed extends FeedFile {
 		this.image = image;
 	}
 
-	List<FeedItem> getItems() {
+	public List<FeedItem> getItems() {
 		return items;
 	}
 
-	public void setItems(ArrayList<FeedItem> items) {
-		this.items = Collections.synchronizedList(items);
+	public void setItems(List<FeedItem> list) {
+		this.items = Collections.synchronizedList(list);
 	}
 
 	/** Returns an array that contains all the feeditems of this feed. */

@@ -1,30 +1,40 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.UndoBarController;
+
+import java.util.List;
 
 public class OrganizeQueueActivity extends ActionBarActivity implements
 		UndoBarController.UndoListener {
 	private static final String TAG = "OrganizeQueueActivity";
 
 	private static final int MENU_ID_ACCEPT = 2;
+
+    private List<FeedItem> queue;
 
 	private OrganizeAdapter adapter;
 	private UndoBarController undoBarController;
@@ -42,12 +52,36 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 		listView.setDropListener(dropListener);
 		listView.setRemoveListener(removeListener);
 
-		adapter = new OrganizeAdapter(this);
-        listView.setAdapter(adapter);
-
+		loadData();
 		undoBarController = new UndoBarController(findViewById(R.id.undobar),
 				this);
 	}
+
+    private void loadData() {
+        AsyncTask<Void, Void, List<FeedItem>> loadTask = new AsyncTask<Void, Void, List<FeedItem>>() {
+
+            @Override
+            protected List<FeedItem> doInBackground(Void... voids) {
+                return DBReader.getQueue(OrganizeQueueActivity.this);
+            }
+
+            @Override
+            protected void onPostExecute(List<FeedItem> feedItems) {
+                super.onPostExecute(feedItems);
+                if (feedItems != null) {
+                    queue = feedItems;
+                    if (adapter == null) {
+                        adapter = new OrganizeAdapter(OrganizeQueueActivity.this);
+                        listView.setAdapter(adapter);
+                    }
+                    adapter.notifyDataSetChanged();
+                } else {
+                    Log.e(TAG, "Queue was null");
+                }
+            }
+        };
+        loadTask.execute();
+    }
 
 	@Override
 	protected void onPause() {
@@ -58,8 +92,7 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 	@Override
 	protected void onStop() {
 		super.onStop();
-		FeedManager.getInstance().autodownloadUndownloadedItems(
-				getApplicationContext());
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
 	}
 
 	@Override
@@ -73,9 +106,7 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if (((EventDistributor.QUEUE_UPDATE | EventDistributor.FEED_LIST_UPDATE) & arg) != 0) {
-				if (adapter != null) {
-					adapter.notifyDataSetChanged();
-				}
+				loadData();
 			}
 		}
 	};
@@ -84,9 +115,10 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 
 		@Override
 		public void drop(int from, int to) {
-			FeedManager manager = FeedManager.getInstance();
-			manager.moveQueueItem(OrganizeQueueActivity.this, from, to, false);
-			adapter.notifyDataSetChanged();
+            final FeedItem item = queue.remove(from);
+            queue.add(to, item);
+            adapter.notifyDataSetChanged();
+            DBWriter.moveQueueItem(OrganizeQueueActivity.this, from, to, true);
 		}
 	};
 
@@ -94,9 +126,8 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 
 		@Override
 		public void remove(int which) {
-			FeedManager manager = FeedManager.getInstance();
 			FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-			manager.removeQueueItem(OrganizeQueueActivity.this, item, false);
+            DBWriter.removeQueueItem(OrganizeQueueActivity.this, item.getId(), true);
 			undoBarController.showUndoBar(false,
 					getString(R.string.removed_from_queue), new UndoToken(item,
 							which));
@@ -124,22 +155,18 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 	public void onUndo(Parcelable token) {
 		// Perform the undo
 		UndoToken undoToken = (UndoToken) token;
-		FeedItem feedItem = undoToken.getFeedItem();
+		long itemId = undoToken.getFeedItemId();
 		int position = undoToken.getPosition();
-
-		FeedManager manager = FeedManager.getInstance();
-		manager.addQueueItemAt(OrganizeQueueActivity.this, feedItem, position,
-				false);
+        DBWriter.addQueueItemAt(OrganizeQueueActivity.this, itemId, position, false);
 	}
 
 	private static class OrganizeAdapter extends BaseAdapter {
 
-		private Context context;
-		private FeedManager manager = FeedManager.getInstance();
+		private OrganizeQueueActivity organizeQueueActivity;
 
-		public OrganizeAdapter(Context context) {
+		public OrganizeAdapter(OrganizeQueueActivity organizeQueueActivity) {
 			super();
-			this.context = context;
+			this.organizeQueueActivity = organizeQueueActivity;
 		}
 
 		@Override
@@ -149,7 +176,7 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 
 			if (convertView == null) {
 				holder = new Holder();
-				LayoutInflater inflater = (LayoutInflater) context
+				LayoutInflater inflater = (LayoutInflater) organizeQueueActivity
 						.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 				convertView = inflater.inflate(
 						R.layout.organize_queue_listitem, null);
@@ -186,13 +213,20 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 
 		@Override
 		public int getCount() {
-			int queueSize = manager.getQueueSize(true);
-			return queueSize;
+			if (organizeQueueActivity.queue != null) {
+                return organizeQueueActivity.queue.size();
+            } else {
+                return 0;
+            }
 		}
 
 		@Override
 		public FeedItem getItem(int position) {
-			return manager.getQueueItemAtIndex(position, true);
+            if (organizeQueueActivity.queue != null) {
+                return organizeQueueActivity.queue.get(position);
+            } else {
+                return null;
+            }
 		}
 
 		@Override
@@ -208,7 +242,6 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 		private int position;
 
 		public UndoToken(FeedItem item, int position) {
-			FeedManager manager = FeedManager.getInstance();
 			this.itemId = item.getId();
 			this.feedId = item.getFeed().getId();
 			this.position = position;
@@ -240,9 +273,8 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 			out.writeInt(position);
 		}
 
-		public FeedItem getFeedItem() {
-			FeedManager manager = FeedManager.getInstance();
-			return manager.getFeedItem(itemId, feedId);
+		public long getFeedItemId() {
+			return itemId;
 		}
 
 		public int getPosition() {

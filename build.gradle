@@ -31,6 +31,8 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 18
+        testPackageName "de.test.antennapod"
+        testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
     }
 
     sourceSets {
@@ -43,8 +45,6 @@ android {
             res.srcDirs = ['res']
             assets.srcDirs = ['assets']
         }
-
-        instrumentTest.setRoot('tests')
     }
 
     buildTypes {

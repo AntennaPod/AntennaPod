@@ -10,11 +10,12 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.DownloadStatus;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.download.DownloadRequest;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
@@ -33,8 +34,7 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 	@Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		Holder holder;
-		DownloadStatus status = getItem(position).getStatus();
-		FeedFile feedFile = status.getFeedFile();
+		DownloadRequest request = getItem(position).getDownloadRequest();
 		// Inflate layout
 		if (convertView == null) {
 			holder = new Holder();
@@ -62,31 +62,16 @@ public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 		} else {
 			convertView.setBackgroundResource(0);
 		}
-
-		String titleText = null;
-		if (feedFile.getClass() == FeedMedia.class) {
-			titleText = ((FeedMedia) feedFile).getItem().getTitle();
-		} else if (feedFile.getClass() == Feed.class) {
-			titleText = ((Feed) feedFile).getTitle();
-		} else if (feedFile.getClass() == FeedImage.class) {
-			FeedImage image = (FeedImage) feedFile;
-			if (image.getFeed() != null) {
-				titleText = convertView.getResources().getString(
-						R.string.image_of_prefix)
-						+ image.getFeed().getTitle();
-			} else {
-				titleText = ((FeedImage) feedFile).getTitle();
-			}
+		
+		holder.title.setText(request.getTitle());
+		if (request.getStatusMsg() != 0) {
+			holder.message.setText(request.getStatusMsg());
 		}
-		holder.title.setText(titleText);
-		if (status.getStatusMsg() != 0) {
-			holder.message.setText(status.getStatusMsg());
-		}
-		String strDownloaded = Converter.byteToString(status.getSoFar());
-		if (status.getSize() != DownloadStatus.SIZE_UNKNOWN) {
-			strDownloaded += " / " + Converter.byteToString(status.getSize());
-			holder.percent.setText(status.getProgressPercent() + "%");
-			holder.progbar.setProgress(status.getProgressPercent());
+		String strDownloaded = Converter.byteToString(request.getSoFar());
+		if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
+			strDownloaded += " / " + Converter.byteToString(request.getSize());
+			holder.percent.setText(request.getProgressPercent() + "%");
+			holder.progbar.setProgress(request.getProgressPercent());
 			holder.percent.setVisibility(View.VISIBLE);
 		} else {
 			holder.progbar.setProgress(0);

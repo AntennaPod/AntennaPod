@@ -2,6 +2,7 @@ package de.danoeh.antennapod.util.playback;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -95,8 +96,13 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void loadShownotes(ShownoteLoaderCallback callback) {
-		callback.onShownotesLoaded(null);
+	public Callable<String> loadShownotes() {
+		return new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return "";
+            }
+        };
 	}
 
 	@Override

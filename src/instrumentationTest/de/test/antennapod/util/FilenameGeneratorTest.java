@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.test;
+package instrumentationTest.de.test.antennapod.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,6 +11,10 @@ public class FilenameGeneratorTest extends AndroidTestCase {
 	private static final String VALID1 = "abc abc";
 	private static final String INVALID1 = "ab/c: <abc";
 	private static final String INVALID2 = "abc abc ";
+
+    public FilenameGeneratorTest() {
+        super();
+    }
 
 	public void testGenerateFileName() throws IOException {
 		String result = FileNameGenerator.generateFileName(VALID1);
