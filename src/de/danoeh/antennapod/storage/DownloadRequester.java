@@ -63,7 +63,7 @@ public class DownloadRequester {
                                 .getName())
                                 + "-"
                                 + i
-                                + "."
+                                + FilenameUtils.EXTENSION_SEPARATOR
                                 + FilenameUtils.getExtension(dest.getName());
                         if (AppConfig.DEBUG)
                             Log.d(TAG, "Testing filename " + newName);
@@ -293,8 +293,28 @@ public class DownloadRequester {
     }
 
     public String getMediafilename(FeedMedia media) {
-        return URLUtil.guessFileName(media.getDownload_url(), null,
-                media.getMime_type());
-    }
+        String filename;
+        String titleBaseFilename = "";
 
+        // Try to generate the filename by the item title
+        if (media.getItem() != null && media.getItem().getTitle() != null) {
+            String title = media.getItem().getTitle();
+            // Delete reserved characters
+            titleBaseFilename = title.replaceAll("[\\\\/%\\?\\*:|<>\"\\p{Cntrl}]", "");
+            titleBaseFilename = titleBaseFilename.trim();
+        }
+
+        String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),
+                null, media.getMime_type());;
+
+        if (titleBaseFilename != "") {
+            // Append extension
+            filename = titleBaseFilename + FilenameUtils.EXTENSION_SEPARATOR +
+                    FilenameUtils.getExtension(URLBaseFilename);
+        } else {
+            // Fall back on URL file name
+            filename = URLBaseFilename;
+        }
+        return filename;
+    }
 }
