@@ -2,15 +2,19 @@ package de.danoeh.antennapod.activity;
 
 import java.util.ArrayList;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
 import android.view.Menu;
@@ -150,9 +154,6 @@ public class MainActivity extends ActionBarActivity {
 		case R.id.show_player:
 			startActivity(PlaybackService.getPlayerActivityIntent(this));
 			return true;
-		case R.id.search_item:
-			onSearchRequested();
-			return true;
 		case R.id.show_playback_history:
 			startActivity(new Intent(this, PlaybackHistoryActivity.class));
 			return true;
@@ -177,7 +178,18 @@ public class MainActivity extends ActionBarActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = new MenuInflater(this);
 		inflater.inflate(R.menu.main, menu);
-		return true;
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+        searchView.setIconifiedByDefault(true);
+
+        SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+
+        return true;
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements

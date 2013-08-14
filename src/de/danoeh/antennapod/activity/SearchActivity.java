@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
@@ -36,7 +37,6 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.searchactivity.extra.feedId";
 
     private SearchlistAdapter searchAdapter;
-    private List<SearchResult> content;
 
     /**
      * ID of the feed that is being searched or null if the search is global.
@@ -45,6 +45,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
     private ListView listView;
     private TextView txtvStatus;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +58,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         txtvStatus = (TextView) findViewById(android.R.id.empty);
 
         listView.setOnItemClickListener(this);
+        searchAdapter = new SearchlistAdapter(this, 0, new ArrayList<SearchResult>());
+        listView.setAdapter(searchAdapter);
+        listView.setEmptyView(txtvStatus);
     }
 
     @Override
@@ -69,11 +73,10 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         super.onResume();
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
-            Bundle extra = intent.getBundleExtra(SearchManager.APP_DATA);
-            if (extra != null) {
+            if (intent.hasExtra(SearchActivity.EXTRA_FEED_ID)) {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Found bundle extra");
-                feedID = extra.getLong(EXTRA_FEED_ID);
+                feedID = intent.getLongExtra(SearchActivity.EXTRA_FEED_ID, 0);
             }
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Starting search");
@@ -149,15 +152,16 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
                             if (AppConfig.DEBUG)
                                 Log.d(TAG, "Found " + result.size()
                                         + " results");
-                            content = result;
 
-                            searchAdapter = new SearchlistAdapter(
-                                    SearchActivity.this, 0, content);
-                            listView.setAdapter(searchAdapter);
+                            searchAdapter.clear();
+                            searchAdapter.addAll(result);
                             searchAdapter.notifyDataSetChanged();
-                            if (content.isEmpty()) {
-                                txtvStatus
-                                        .setText(R.string.search_status_no_results);
+                            txtvStatus
+                                    .setText(R.string.search_status_no_results);
+                            if (!searchAdapter.isEmpty()) {
+                                txtvStatus.setVisibility(View.GONE);
+                            } else {
+                                txtvStatus.setVisibility(View.VISIBLE);
                             }
                         }
                     });

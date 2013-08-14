@@ -65,6 +65,7 @@ public class ItemviewActivity extends ActionBarActivity {
 	@Override
 	public void onStop() {
 		super.onStop();
+        EventDistributor.getInstance().unregister(contentUpdate);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Stopping Activity");
 	}

@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
@@ -10,6 +13,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
 import android.view.Menu;
@@ -113,6 +117,15 @@ public class FeedItemlistActivity extends ActionBarActivity {
             MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
                     .setIcon(drawables.getDrawable(0)),
                     MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            MenuItemCompat.setActionView(menu.findItem(R.id.search_item), new SearchView(this));
+
+            SearchManager searchManager =
+                    (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+            SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+            searchView.setIconifiedByDefault(true);
+
+            searchView.setSearchableInfo(
+                    searchManager.getSearchableInfo(getComponentName()));
             return FeedMenuHandler
                     .onCreateOptionsMenu(new MenuInflater(this), menu);
         } else {
@@ -155,9 +168,6 @@ public class FeedItemlistActivity extends ActionBarActivity {
                         };
                         conDialog.createNewDialog().show();
                         break;
-                    case R.id.search_item:
-                        onSearchRequested();
-                        break;
                     case android.R.id.home:
                         Intent intent = new Intent(this, MainActivity.class);
                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
@@ -183,6 +193,19 @@ public class FeedItemlistActivity extends ActionBarActivity {
         } else {
             return false;
         }
+    }
+
+    @Override
+    public void startActivity(Intent intent) {
+        if (intent.getAction() != null &&
+                intent.getAction().equals(Intent.ACTION_SEARCH)) {
+            addSearchInformation(intent);
+        }
+        super.startActivity(intent);
+    }
+
+    private void addSearchInformation(Intent startIntent) {
+        startIntent.putExtra(SearchActivity.EXTRA_FEED_ID, feed.getId());
     }
 
 }

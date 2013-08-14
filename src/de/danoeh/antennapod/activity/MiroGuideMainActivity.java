@@ -1,11 +1,15 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
+import android.app.SearchManager;
+import android.app.SearchableInfo;
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -44,6 +48,7 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
         txtvStatus = (TextView) findViewById(android.R.id.empty);
         listView = (ListView) findViewById(android.R.id.list);
         listView.setOnItemClickListener(this);
+        listView.setEmptyView(txtvStatus);
     }
 
     @Override
@@ -129,6 +134,15 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
                                 new int[]{R.attr.action_search})
                                 .getDrawable(0)),
                 MenuItem.SHOW_AS_ACTION_IF_ROOM);
+        MenuItemCompat.setActionView(menu.findItem(R.id.search_item), new SearchView(this));
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+        searchView.setIconifiedByDefault(true);
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
         return true;
     }
 
@@ -137,9 +151,6 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
         switch (item.getItemId()) {
             case android.R.id.home:
                 finish();
-                return true;
-            case R.id.search_item:
-                onSearchRequested();
                 return true;
             default:
                 return false;
