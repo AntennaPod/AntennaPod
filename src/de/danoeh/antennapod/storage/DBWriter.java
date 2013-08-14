@@ -456,7 +456,41 @@ public class DBWriter {
         });
 
     }
+    
+    /**
+     * Moves the specified item to the top of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param selectedItem    The item to move to the top of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
+     */
+    public static Future<?> moveQueueItemToTop(final Context context, final FeedItem selectedItem, final boolean broadcastUpdate) {
+        return dbExec.submit(new Runnable() {
 
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                final List<FeedItem> queue = DBReader
+                        .getQueue(context, adapter);
+
+                if (queue != null) {
+                    if (queue.remove(selectedItem)) {
+                    	// it was removed, put it on the front
+                    	queue.add(0, selectedItem);
+                    } else {
+                    	Log.e(TAG, "moveQueueItemToTop: Could not move to top, no such item");
+                    }
+                } else {
+                    Log.e(TAG, "moveQueueItemToTop: Could not move to top, no queue");
+                }
+                adapter.close();
+            }
+        });
+    }
+    
     /**
      * Changes the position of a FeedItem in the queue.
      *
