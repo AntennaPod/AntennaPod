@@ -353,7 +353,7 @@ public class PlaybackService extends Service {
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     if (status == PlayerStatus.PLAYING) {
-                        if (!UserPreferences.shouldPauseForNotifications()) {
+                        if (!UserPreferences.shouldPauseForFocusLoss()) {
                             if (AppConfig.DEBUG)
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
                             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,

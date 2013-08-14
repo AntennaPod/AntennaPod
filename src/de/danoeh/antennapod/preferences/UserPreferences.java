@@ -41,7 +41,7 @@ public class UserPreferences implements
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
-	public static final String PREF_PAUSE_PLAYBACK_FOR_NOTIFICATIONS = "prefPauseForNotifications";
+	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
 
 	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
 
@@ -61,7 +61,7 @@ public class UserPreferences implements
 	private boolean enableAutodownloadWifiFilter;
 	private String[] autodownloadSelectedNetworks;
 	private int episodeCacheSize;
-	private boolean pauseForNotifications;
+	private boolean pauseForFocusLoss;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -110,7 +110,7 @@ public class UserPreferences implements
 		episodeCacheSize = readEpisodeCacheSize(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
-		pauseForNotifications = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_NOTIFICATIONS, false);
+		pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -214,9 +214,9 @@ public class UserPreferences implements
 		return instance.enableAutodownload;
 	}
 	
-	public static boolean shouldPauseForNotifications() {
+	public static boolean shouldPauseForFocusLoss() {
 		instanceAvailable();
-		return instance.pauseForNotifications;
+		return instance.pauseForFocusLoss;
 	}
 
 	@Override
@@ -258,8 +258,8 @@ public class UserPreferences implements
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
-		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_NOTIFICATIONS)) {
-			pauseForNotifications = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_NOTIFICATIONS, false);
+		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
+			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 		}
 	}
 
