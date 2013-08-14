@@ -291,30 +291,32 @@ public final class DBReader {
                                                  Cursor cursor) {
         Date lastUpdate = new Date(
                 cursor.getLong(PodDBAdapter.KEY_LAST_UPDATE_INDEX));
-        Feed feed = new Feed(lastUpdate);
 
-        feed.setId(cursor.getLong(PodDBAdapter.KEY_ID_INDEX));
-        feed.setTitle(cursor.getString(PodDBAdapter.KEY_TITLE_INDEX));
-        feed.setLink(cursor.getString(PodDBAdapter.KEY_LINK_INDEX));
-        feed.setDescription(cursor
-                .getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
-        feed.setPaymentLink(cursor
-                .getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
-        feed.setAuthor(cursor.getString(PodDBAdapter.KEY_AUTHOR_INDEX));
-        feed.setLanguage(cursor.getString(PodDBAdapter.KEY_LANGUAGE_INDEX));
-        feed.setType(cursor.getString(PodDBAdapter.KEY_TYPE_INDEX));
-        feed.setFeedIdentifier(cursor
-                .getString(PodDBAdapter.KEY_FEED_IDENTIFIER_INDEX));
+        final FeedImage image;
         long imageIndex = cursor.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
         if (imageIndex != 0) {
-            feed.setImage(getFeedImage(adapter, imageIndex));
-            feed.getImage().setFeed(feed);
+            image = getFeedImage(adapter, imageIndex);
+        } else {
+            image = null;
         }
-        feed.setFile_url(cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX));
-        feed.setDownload_url(cursor
-                .getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX));
-        feed.setDownloaded(cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
+        Feed feed = new Feed(cursor.getLong(PodDBAdapter.KEY_ID_INDEX),
+                lastUpdate,
+                cursor.getString(PodDBAdapter.KEY_TITLE_INDEX),
+                cursor.getString(PodDBAdapter.KEY_LINK_INDEX),
+                cursor.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX),
+                cursor.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX),
+                cursor.getString(PodDBAdapter.KEY_AUTHOR_INDEX),
+                cursor.getString(PodDBAdapter.KEY_LANGUAGE_INDEX),
+                cursor.getString(PodDBAdapter.KEY_TYPE_INDEX),
+                cursor.getString(PodDBAdapter.KEY_FEED_IDENTIFIER_INDEX),
+                image,
+                cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
+                cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
+                cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
 
+        if (image  != null) {
+            image.setFeed(feed);
+        }
         return feed;
     }
 
@@ -592,6 +594,7 @@ public final class DBReader {
         } else {
             Log.e(TAG, "getFeed could not find feed with id " + feedId);
         }
+        feedCursor.close();
         adapter.close();
         return feed;
     }

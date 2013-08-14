@@ -30,7 +30,7 @@ import de.danoeh.antennapod.service.download.DownloadStatus;
 public class PodDBAdapter {
     private static final String TAG = "PodDBAdapter";
     private static final int DATABASE_VERSION = 9;
-    private static final String DATABASE_NAME = "Antennapod.db";
+    public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
      * Maximum number of arguments for IN-operator.
@@ -629,14 +629,12 @@ public class PodDBAdapter {
      * @return The cursor of the query
      */
     public final Cursor getAllFeedsCursor() {
-        open();
         Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null,
                 KEY_TITLE + " ASC");
         return c;
     }
 
     public final Cursor getExpiredFeedsCursor(long expirationTime) {
-        open();
         Cursor c = db.query(TABLE_NAME_FEEDS, null, "?<?", new String[]{
                 KEY_LASTUPDATE, String.valueOf(System.currentTimeMillis() - expirationTime)}, null, null,
                 null);
@@ -654,7 +652,6 @@ public class PodDBAdapter {
     }
 
     public final Cursor getAllItemsOfFeedCursor(final long feedId) {
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
                 + "=?", new String[]{String.valueOf(feedId)}, null, null,
                 null);
@@ -665,7 +662,6 @@ public class PodDBAdapter {
      * Return a cursor with the SEL_FI_EXTRA selection of a single feeditem.
      */
     public final Cursor getExtraInformationOfItem(final FeedItem item) {
-        open();
         Cursor c = db
                 .query(TABLE_NAME_FEED_ITEMS, SEL_FI_EXTRA, KEY_ID + "=?",
                         new String[]{String.valueOf(item.getId())}, null,
@@ -680,7 +676,6 @@ public class PodDBAdapter {
      * @return The cursor of the query
      */
     public final Cursor getFeedMediaOfItemCursor(final FeedItem item) {
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getMedia().getId())}, null,
                 null, null);
@@ -694,14 +689,12 @@ public class PodDBAdapter {
      * @return The cursor of the query
      */
     public final Cursor getImageOfFeedCursor(final long id) {
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
         return c;
     }
 
     public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
-        open();
         Cursor c = db.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_FEEDITEM
                 + "=?", new String[]{String.valueOf(item.getId())}, null,
                 null, null);
@@ -709,7 +702,6 @@ public class PodDBAdapter {
     }
 
     public final Cursor getDownloadLogCursor(final int limit) {
-        open();
         Cursor c = db.query(TABLE_NAME_DOWNLOAD_LOG, null, null, null, null,
                 null, KEY_COMPLETION_DATE + " DESC LIMIT " + limit);
         return c;
@@ -720,7 +712,6 @@ public class PodDBAdapter {
      * cursor uses the SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
-        open();
         Object[] args = (Object[]) new String[]{
                 SEL_FI_SMALL_STR + "," + TABLE_NAME_QUEUE + "." + KEY_ID,
                 TABLE_NAME_FEED_ITEMS, TABLE_NAME_QUEUE,
@@ -740,7 +731,6 @@ public class PodDBAdapter {
     }
 
     public Cursor getQueueIDCursor() {
-        open();
         Cursor c = db.query(TABLE_NAME_QUEUE, new String[]{KEY_FEEDITEM}, null, null, null, null, KEY_ID + " ASC", null);
         return c;
     }
@@ -750,14 +740,12 @@ public class PodDBAdapter {
      * The returned cursor uses the SEL_FI_SMALL selection.
      */
     public final Cursor getUnreadItemsCursor() {
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_READ
                 + "=0", null, null, null, KEY_PUBDATE + " DESC");
         return c;
     }
 
     public final Cursor getUnreadItemIdsCursor() {
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID},
                 KEY_READ + "=0", null, null, null, KEY_PUBDATE + " DESC");
         return c;
@@ -765,7 +753,6 @@ public class PodDBAdapter {
     }
 
     public Cursor getDownloadedItemsCursor() {
-        open();
         final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
@@ -787,7 +774,6 @@ public class PodDBAdapter {
         if (limit < 0) {
             throw new IllegalArgumentException("Limit must be >= 0");
         }
-        open();
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
                 null, KEY_PLAYBACK_COMPLETION_DATE + " DESC LIMIT " + limit);
@@ -849,7 +835,6 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedCursor(final long id) {
-        open();
         Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_ID + "=" + id, null,
                 null, null, null);
         return c;
@@ -862,7 +847,6 @@ public class PodDBAdapter {
                             + IN_OPERATOR_MAXIMUM);
         }
 
-        open();
         return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_ID + " IN "
                 + buildInOperator(ids.length), ids, null, null, null);
 

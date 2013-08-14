@@ -131,8 +131,6 @@ public class DBWriter {
                         editor.commit();
                     }
 
-                    PodDBAdapter adapter = new PodDBAdapter(context);
-                    adapter.open();
                     // delete image file
                     if (feed.getImage() != null) {
                         if (feed.getImage().isDownloaded()
@@ -163,6 +161,8 @@ public class DBWriter {
                             requester.cancelDownload(context, item.getMedia());
                         }
                     }
+                    PodDBAdapter adapter = new PodDBAdapter(context);
+                    adapter.open();
                     if (queueWasModified) {
                         adapter.setQueue(queue);
                     }
