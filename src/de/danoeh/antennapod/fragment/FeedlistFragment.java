@@ -160,9 +160,14 @@ public class FeedlistFragment extends Fragment implements
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventDistributor.getInstance().unregister(contentUpdate);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (mActionMode != null) {
             mActionMode.finish();
         }

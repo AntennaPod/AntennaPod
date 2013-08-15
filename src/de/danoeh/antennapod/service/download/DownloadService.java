@@ -561,7 +561,7 @@ public class DownloadService extends Service {
             Log.d(TAG, numberOfDownloads.get() + " downloads left");
         }
 
-        if (numberOfDownloads.get() <= 0) {
+        if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
@@ -647,28 +647,21 @@ public class DownloadService extends Service {
                         Log.d(TAG, "Feed has image; Downloading....");
                     savedFeed.getImage().setFeed(savedFeed);
                     final Feed savedFeedRef = savedFeed;
-                    handler.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                requester.downloadImage(DownloadService.this,
-                                        savedFeedRef.getImage());
-                            } catch (DownloadRequestException e) {
-                                e.printStackTrace();
-                                DBWriter.addDownloadStatus(
-                                        DownloadService.this,
-                                        new DownloadStatus(
-                                                savedFeedRef.getImage(),
-                                                savedFeedRef
-                                                        .getImage()
-                                                        .getHumanReadableIdentifier(),
-                                                DownloadError.ERROR_REQUEST_ERROR,
-                                                false, e.getMessage()));
-                            }
-                        }
-                    });
-
+                    try {
+                        requester.downloadImage(DownloadService.this,
+                                savedFeedRef.getImage());
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                        DBWriter.addDownloadStatus(
+                                DownloadService.this,
+                                new DownloadStatus(
+                                        savedFeedRef.getImage(),
+                                        savedFeedRef
+                                                .getImage()
+                                                .getHumanReadableIdentifier(),
+                                        DownloadError.ERROR_REQUEST_ERROR,
+                                        false, e.getMessage()));
+                    }
                 }
 
             } catch (SAXException e) {
@@ -730,7 +723,7 @@ public class DownloadService extends Service {
         }
 
         private boolean hasValidFeedItems(Feed feed) {
-            for (FeedItem item : feed.getItemsArray()) {
+            for (FeedItem item : feed.getItems()) {
                 if (item.getTitle() == null) {
                     Log.e(TAG, "Item has no title");
                     return false;

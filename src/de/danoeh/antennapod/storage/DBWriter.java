@@ -73,7 +73,10 @@ public class DBWriter {
                         }
                         media.setDownloaded(false);
                         media.setFile_url(null);
-                        setFeedMedia(context, media);
+                        PodDBAdapter adapter = new PodDBAdapter(context);
+                        adapter.open();
+                        adapter.setMedia(media);
+                        adapter.close();
 
                         // If media is currently being played, change playback
                         // type to 'stream' and shutdown playback service
@@ -654,18 +657,18 @@ public class DBWriter {
     }
 
     /**
-     * Saves only value of the 'position'-attribute of a FeedMedia object.
+     * Saves the 'position' and 'duration' attributes of a FeedMedia object
      *
      * @param context A context that is used for opening a database connection.
      * @param media   The FeedMedia object.
      */
-    public static Future<?> setFeedMediaPosition(final Context context, final FeedMedia media) {
+    public static Future<?> setFeedMediaPlaybackInformation(final Context context, final FeedMedia media) {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                adapter.setFeedMediaPosition(media);
+                adapter.setFeedMediaPlaybackInformation(media);
                 adapter.close();
             }
         });

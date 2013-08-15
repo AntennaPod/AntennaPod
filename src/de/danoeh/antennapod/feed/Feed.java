@@ -314,13 +314,6 @@ public class Feed extends FeedFile {
         this.items = list;
     }
 
-    /**
-     * Returns an array that contains all the feeditems of this feed.
-     */
-    public FeedItem[] getItemsArray() {
-        return items.toArray(new FeedItem[items.size()]);
-    }
-
     public Date getLastUpdate() {
         return lastUpdate;
     }

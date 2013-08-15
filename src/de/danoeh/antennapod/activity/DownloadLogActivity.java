@@ -37,7 +37,7 @@ public class DownloadLogActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 
-        listview = (ListView) findViewById(R.layout.listview_activity);
+        listview = (ListView) findViewById(R.id.listview);
 
 		dla = new DownloadLogAdapter(this, itemAccess);
 		listview.setAdapter(dla);

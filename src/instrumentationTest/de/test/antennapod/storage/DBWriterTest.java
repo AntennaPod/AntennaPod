@@ -84,37 +84,6 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertNull(media.getFile_url());
     }
 
-    public void testDeleteFeedMediaOfItemFileDoesNotExists() throws IOException, ExecutionException, InterruptedException {
-        File dest = new File(getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER), "testFile");
-
-        Feed feed = new Feed("url", new Date(), "title");
-        List<FeedItem> items = new ArrayList<FeedItem>();
-        feed.setItems(items);
-        FeedItem item = new FeedItem();
-        item.setTitle("title");
-        item.setPubDate(new Date());
-        item.setFeed(feed);
-
-        FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", dest.getAbsolutePath(), "download_url", false, null);
-        item.setMedia(media);
-
-        items.add(item);
-
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-        assertTrue(media.getId() != 0);
-        assertTrue(item.getId() != 0);
-
-        DBWriter.deleteFeedMediaOfItem(getInstrumentation().getTargetContext(), media.getId()).get();
-        media = DBReader.getFeedMedia(getInstrumentation().getTargetContext(), media.getId());
-        assertNotNull(media);
-        assertFalse(dest.exists());
-        assertFalse(media.isDownloaded());
-        assertNull(media.getFile_url());
-    }
-
     public void testDeleteFeed() throws IOException, ExecutionException, InterruptedException, TimeoutException {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);

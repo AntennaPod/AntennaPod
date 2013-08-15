@@ -304,7 +304,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
         position = newPosition;
-        DBWriter.setFeedMediaPosition(PodcastApp.getInstance(), this);
+        DBWriter.setFeedMediaPlaybackInformation(PodcastApp.getInstance(), this);
     }
 
     @Override
