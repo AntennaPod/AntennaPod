@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -55,8 +56,9 @@ public class MainActivity extends ActionBarActivity {
 		StorageUtils.checkStorageAvailability(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		pagerAdapter = new TabsAdapter(this, viewpager);
