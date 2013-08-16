@@ -151,7 +151,10 @@ public class FeedItemMenuHandler {
 					true);
 			break;
 		case R.id.move_to_top_item:
-			DBWriter.moveQueueItemToTop(context, selectedItem, true);
+			DBWriter.moveQueueItemToTop(context, selectedItem.getId(), true);
+			break;
+		case R.id.move_to_bottom_item:
+			DBWriter.moveQueueItemToBottom(context, selectedItem.getId(), true);
 			break;
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedItem.getLink());

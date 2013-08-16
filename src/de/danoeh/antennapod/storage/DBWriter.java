@@ -467,44 +467,39 @@ public class DBWriter {
      * @param selectedItem    The item to move to the top of the queue
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      *                        false if the caller wants to avoid unexpected updates of the GUI.
-     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
      */
-    public static Future<?> moveQueueItemToTop(final Context context, final FeedItem selectedItem, final boolean broadcastUpdate) {
-        return dbExec.submit(new Runnable() {
-
-            @Override
-            public void run() {
-                final PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
-
-                if (queue != null) {
-                    // it seems like there should be a better way to get
-                    // the item we need, but iterating seems to be the
-                    // only way
-                    for (FeedItem item : queue) {
-                        if (item.getId() == selectedItem.getId()) {
-                            if (queue.remove(item)) {
-                                queue.add(0, item);
-                                Log.d(TAG, "moveQueueItemToTop: moved");
-                                adapter.setQueue(queue);
-                                if (broadcastUpdate) {
-                                    EventDistributor.getInstance()
-                                            .sendQueueUpdateBroadcast();
-                                }
-                            } else {
-                                Log.e(TAG, "moveQueueItemToTop: Could not move to top, no such item");
-                            }
-                            break;
-                        }
-                    }
-                } else {
-                    Log.e(TAG, "moveQueueItemToTop: Could not move to top, no queue");
-                }
-                adapter.close();
+    public static Future<?> moveQueueItemToTop(final Context context, final long itemId, final boolean broadcastUpdate) {
+        List<Long> queueIdList = DBReader.getQueueIDList(context);
+        int currentLocation = 0;
+        for (long id : queueIdList) {
+            if (id == itemId) {
+                return moveQueueItem(context, currentLocation, 0, true);
             }
-        });
+            currentLocation++;
+        }
+        Log.e(TAG, "moveQueueItemToTop: item not found");
+        return null;
+    }
+    
+    /**
+     * Moves the specified item to the bottom of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param selectedItem    The item to move to the bottom of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> moveQueueItemToBottom(final Context context, final long itemId, final boolean broadcastUpdate) {
+        List<Long> queueIdList = DBReader.getQueueIDList(context);
+        int currentLocation = 0;
+        for (long id : queueIdList) {
+            if (id == itemId) {
+                return moveQueueItem(context, currentLocation, queueIdList.size() - 1, true);
+            }
+            currentLocation++;
+        }
+        Log.e(TAG, "moveQueueItemToBottom: item not found");
+        return null;
     }
     
     /**

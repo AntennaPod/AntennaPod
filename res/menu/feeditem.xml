@@ -72,5 +72,10 @@
         android:showAsAction="collapseActionView"
         android:title="@string/move_to_top_label">
     </item>
+    <item
+        android:id="@+id/move_to_bottom_item"
+        android:showAsAction="collapseActionView"
+        android:title="@string/move_to_bottom_label">
+    </item>
 
 </menu>
