@@ -124,6 +124,8 @@ public class FeedItemlistActivity extends ActionBarActivity {
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+
+
             searchView.setIconifiedByDefault(true);
 
             searchView.setSearchableInfo(

@@ -154,7 +154,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
                                         + " results");
 
                             searchAdapter.clear();
-                            searchAdapter.addAll(result);
+                            for (SearchResult s : result) {
+                                searchAdapter.add(s);
+                            }
                             searchAdapter.notifyDataSetChanged();
                             txtvStatus
                                     .setText(R.string.search_status_no_results);

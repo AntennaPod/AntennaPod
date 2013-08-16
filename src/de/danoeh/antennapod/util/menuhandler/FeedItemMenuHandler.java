@@ -51,10 +51,13 @@ public class FeedItemMenuHandler {
 	 *            parameter should be set to false if the menu space is limited.
      * @param queueAccess
      *            Used for testing if the queue contains the selected item
-	 * @return Always returns true
+	 * @return Returns true if selectedItem is not null.
 	 * */
 	public static boolean onPrepareMenu(MenuInterface mi,
 			FeedItem selectedItem, boolean showExtendedMenu, QueueAccess queueAccess) {
+        if (selectedItem == null) {
+            return false;
+        }
 		DownloadRequester requester = DownloadRequester.getInstance();
 		boolean hasMedia = selectedItem.getMedia() != null;
 		boolean downloaded = hasMedia && selectedItem.getMedia().isDownloaded();
