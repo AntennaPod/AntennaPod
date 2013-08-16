@@ -51,6 +51,7 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 		listView = (DragSortListView) findViewById(android.R.id.list);
 		listView.setDropListener(dropListener);
 		listView.setRemoveListener(removeListener);
+        listView.setEmptyView(findViewById(android.R.id.empty));
 
 		loadData();
 		undoBarController = new UndoBarController(findViewById(R.id.undobar),
@@ -155,9 +156,11 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 	public void onUndo(Parcelable token) {
 		// Perform the undo
 		UndoToken undoToken = (UndoToken) token;
-		long itemId = undoToken.getFeedItemId();
-		int position = undoToken.getPosition();
-        DBWriter.addQueueItemAt(OrganizeQueueActivity.this, itemId, position, false);
+        if (token != null) {
+		    long itemId = undoToken.getFeedItemId();
+		    int position = undoToken.getPosition();
+            DBWriter.addQueueItemAt(OrganizeQueueActivity.this, itemId, position, false);
+        }
 	}
 
 	private static class OrganizeAdapter extends BaseAdapter {

@@ -124,7 +124,7 @@ public class FeedHandlerTest extends AndroidTestCase {
 	}
 
 	private boolean hasValidFeedItems(Feed feed) {
-		for (FeedItem item : feed.getItemsArray()) {
+		for (FeedItem item : feed.getItems()) {
 			if (item.getTitle() == null) {
 				Log.e(TAG, "Item has no title");
 				return false;

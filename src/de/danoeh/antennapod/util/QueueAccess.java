@@ -51,9 +51,8 @@ public abstract class QueueAccess {
                 if (items == null) {
                     return false;
                 }
-                Iterator<FeedItem> it = items.iterator();
-                for (FeedItem i = it.next(); it.hasNext(); i = it.next()) {
-                    if (i.getId() == id) {
+                for (FeedItem item : items) {
+                    if (item.getId() == id) {
                         return true;
                     }
                 }
@@ -63,8 +62,10 @@ public abstract class QueueAccess {
             @Override
             public boolean remove(long id) {
                 Iterator<FeedItem> it = items.iterator();
-                for (FeedItem i = it.next(); it.hasNext(); i = it.next()) {
-                    if (i.getId() == id) {
+                FeedItem item;
+                while (it.hasNext()) {
+                    item = it.next();
+                    if (item.getId() == id) {
                         it.remove();
                         return true;
                     }
