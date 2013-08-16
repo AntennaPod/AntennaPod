@@ -668,6 +668,24 @@ public abstract class PlaybackController {
         return status;
     }
 
+    public boolean canSetPlaybackSpeed() {
+        return playbackService != null && playbackService.canSetSpeed();
+    }
+
+	public void setPlaybackSpeed(float speed) {
+		if (playbackService != null) {
+			playbackService.setSpeed(speed);
+		}
+	}
+    
+	public float getCurrentPlaybackSpeedMultiplier() {
+		if (canSetPlaybackSpeed()) {
+			return playbackService.getCurrentPlaybackSpeed();
+		} else {
+			return -1;
+		}
+	}
+
     public boolean isPlayingVideo() {
         if (playbackService != null) {
             return PlaybackService.isPlayingVideo();
@@ -675,23 +693,6 @@ public abstract class PlaybackController {
         return false;
     }
 
-    public boolean canSetPlaybackSpeed() {
-        return playbackService != null && playbackService.canSetSpeed();
-    }
-
-    public void setPlaybackSpeed(double speed) {
-        if (playbackService != null) {
-            playbackService.setSpeed(speed);
-        }
-    }
-
-    public double getCurrentPlaybackSpeedMultiplier() {
-        if (canSetPlaybackSpeed()) {
-            return playbackService.getCurrentPlaybackSpeed();
-        } else {
-            return -1;
-        }
-    }
 
     /**
      * Returns true if PlaybackController can communicate with the playback

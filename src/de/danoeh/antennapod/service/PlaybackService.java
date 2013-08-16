@@ -141,12 +141,12 @@ public class PlaybackService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
 
-	private IPlayer player;
+	private volatile IPlayer player;
 	private RemoteControlClient remoteControlClient;
     private AudioManager audioManager;
     private ComponentName mediaButtonReceiver;
 
-    private Playable media;
+    private volatile Playable media;
 
     /**
      * True if media should be streamed (Extracted from Intent Extra) .
@@ -260,8 +260,6 @@ public class PlaybackService extends Service {
         }
         );
         dbLoaderExecutor = Executors.newSingleThreadExecutor();
-        player = createMediaPlayer();
-
 
         mediaButtonReceiver = new ComponentName(getPackageName(),
                 MediaButtonReceiver.class.getName());
@@ -598,6 +596,7 @@ public class PlaybackService extends Service {
             Log.d(TAG, "Setting up media player");
         try {
             MediaType mediaType = media.getMediaType();
+            player = createMediaPlayer();
             if (mediaType == MediaType.AUDIO) {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Mime type is audio");
@@ -1033,6 +1032,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Resuming/Starting playback");
 				writePlaybackPreferences();
 
+				setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo((int) media.getPosition());
@@ -1579,6 +1579,53 @@ public class PlaybackService extends Service {
 		postStatusUpdateIntent();
 	}
 
+	public boolean canSetSpeed() {
+		if (player != null && media != null && media.getMediaType() == MediaType.AUDIO) {
+			return ((AudioPlayer) player).canSetSpeed();
+		}
+		return false;
+	}
+
+	public boolean canSetPitch() {
+		if (player != null && media != null && media.getMediaType() == MediaType.AUDIO) {
+			return ((AudioPlayer) player).canSetPitch();
+		}
+		return false;
+	}
+
+	public void setSpeed(float speed) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				audioPlayer.setPlaybackSpeed((float) speed);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Playback speed was set to " + speed);
+				sendNotificationBroadcast(
+						NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
+			}
+		}
+	}
+
+	public void setPitch(float pitch) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetPitch()) {
+				audioPlayer.setPlaybackPitch((float) pitch);
+			}
+		}
+	}
+
+	public float getCurrentPlaybackSpeed() {
+		if (media.getMediaType() == MediaType.AUDIO
+				&& player instanceof AudioPlayer) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				return audioPlayer.getCurrentSpeedMultiplier();
+			}
+		}
+		return -1;
+	}
+
 	/**
 	 * call getDuration() on mediaplayer or return INVALID_TIME if player is in
 	 * an invalid state. This method should be used instead of calling
@@ -1632,52 +1679,6 @@ public class PlaybackService extends Service {
 		editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA, id);
 		editor.commit();
 	}
-
-    public boolean canSetSpeed() {
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            return player.canSetSpeed();
-        }
-        return false;
-    }
-
-    public boolean canSetPitch() {
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            return player.canSetPitch();
-        }
-        return false;
-    }
-
-    public void setSpeed(double speed) {
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            AudioPlayer audioPlayer = (AudioPlayer) player;
-            if (audioPlayer.canSetSpeed()) {
-                audioPlayer.setPlaybackSpeed((float) speed);
-                if (AppConfig.DEBUG)
-                    Log.d(TAG, "Playback speed was set to " + speed);
-                sendNotificationBroadcast(
-                        NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
-            }
-        }
-    }
-
-    public void setPitch(double pitch) {
-        if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            if (player.canSetPitch()) {
-                player.setPlaybackPitch((float) pitch);
-            }
-        }
-    }
-
-    public double getCurrentPlaybackSpeed() {
-        if (media.getMediaType() == MediaType.AUDIO
-                && player instanceof AudioPlayer) {
-            AudioPlayer audioPlayer = (AudioPlayer) player;
-            if (audioPlayer.canSetSpeed()) {
-                return audioPlayer.getCurrentSpeedMultiplier();
-            }
-        }
-        return -1;
-    }
 
 	private static class InitTask extends AsyncTask<Playable, Void, Playable> {
 		private Playable playable;
