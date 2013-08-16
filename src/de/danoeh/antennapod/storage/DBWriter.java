@@ -480,11 +480,24 @@ public class DBWriter {
                         .getQueue(context, adapter);
 
                 if (queue != null) {
-                    if (queue.remove(selectedItem)) {
-                    	// it was removed, put it on the front
-                    	queue.add(0, selectedItem);
-                    } else {
-                    	Log.e(TAG, "moveQueueItemToTop: Could not move to top, no such item");
+                    // it seems like there should be a better way to get
+                    // the item we need, but iterating seems to be the
+                    // only way
+                    for (FeedItem item : queue) {
+                        if (item.getId() == selectedItem.getId()) {
+                            if (queue.remove(item)) {
+                                queue.add(0, item);
+                                Log.d(TAG, "moveQueueItemToTop: moved");
+                                adapter.setQueue(queue);
+                                if (broadcastUpdate) {
+                                    EventDistributor.getInstance()
+                                            .sendQueueUpdateBroadcast();
+                                }
+                            } else {
+                                Log.e(TAG, "moveQueueItemToTop: Could not move to top, no such item");
+                            }
+                            break;
+                        }
                     }
                 } else {
                     Log.e(TAG, "moveQueueItemToTop: Could not move to top, no queue");
