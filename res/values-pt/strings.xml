@@ -1,0 +1,231 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Fontes</string>
+  <string name="podcasts_label">Podcasts</string>
+  <string name="episodes_label">Episódios</string>
+  <string name="new_label">Novo</string>
+  <string name="waiting_list_label">Lista de espera</string>
+  <string name="settings_label">Definições</string>
+  <string name="add_new_feed_label">Adicionar fonte</string>
+  <string name="downloads_label">Transferências</string>
+  <string name="cancel_download_label">Cancelar transferência</string>
+  <string name="download_log_label">Registo de transferências</string>
+  <string name="playback_history_label">Histórico de reprodução</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Abrir no navegador</string>
+  <string name="copy_url_label">Copiar URL</string>
+  <string name="share_url_label">Partilhar URL</string>
+  <string name="copied_url_msg">URL copiado para a área de transferência.</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Limpar histórico</string>
+  <!--Other-->
+  <string name="confirm_label">Confirmar</string>
+  <string name="cancel_label">Cancelar</string>
+  <string name="author_label">Autor</string>
+  <string name="language_label">Idioma</string>
+  <string name="cover_label">Imagem</string>
+  <string name="error_label">Erro</string>
+  <string name="error_msg_prefix">Ocorreu um erro:</string>
+  <string name="refresh_label">Atualizar</string>
+  <string name="external_storage_error_msg">Não existe um cartão SD. Certifique-se que inseriu o cartão corretamente.</string>
+  <string name="chapters_label">Capítulos</string>
+  <string name="shownotes_label">Notas</string>
+  <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
+  <string name="episodes_suffix">\u0020episódios</string>
+  <string name="published_prefix">Publicado:\u0020</string>
+  <string name="length_prefix">Duração:\u0020</string>
+  <string name="size_prefix">Tamanho:\u0020</string>
+  <string name="processing_label">A processar...</string>
+  <string name="loading_label">A carregar...</string>
+  <string name="image_of_prefix">Imagem de:\u0020</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">URL da fonte</string>
+  <string name="txtvfeedurl_label">Introduza o URL da fonte:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Marcar tudo como lido</string>
+  <string name="show_info_label">Mostrar informações</string>
+  <string name="remove_feed_label">Remover fonte</string>
+  <string name="share_link_label">Partilhar ligação do sítio web</string>
+  <string name="share_source_label">Partilhar ligação da fonte</string>
+  <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela petencentes.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Transferir</string>
+  <string name="play_label">Reproduzir</string>
+  <string name="pause_label">Pausa</string>
+  <string name="stream_label">Emitir</string>
+  <string name="remove_label">Remover</string>
+  <string name="mark_read_label">Marcar como lido</string>
+  <string name="mark_unread_label">Marcar como novo</string>
+  <string name="add_to_queue_label">Adicionar à fila</string>
+  <string name="remove_from_queue_label">Remover da fila</string>
+  <string name="visit_website_label">Aceder ao sítio web</string>
+  <string name="support_label">Flattr</string>
+  <string name="enqueue_all_new">Colocar tudo na fila</string>
+  <string name="download_all">Transferir tudo</string>
+  <string name="skip_episode_label">Ignorar episódio</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Transferência terminada</string>
+  <string name="download_failed">Erro ao transferir</string>
+  <string name="download_pending">Transferência pendente</string>
+  <string name="download_running">Transferência atual</string>
+  <string name="download_error_device_not_found">Cartão SD não encontrado</string>
+  <string name="download_error_insufficient_space">Espaço insuficiente</string>
+  <string name="download_error_file_error">Erro no ficheiro</string>
+  <string name="download_error_http_data_error">Erro HTTP</string>
+  <string name="download_error_error_unknown">Erro desconhecido</string>
+  <string name="download_error_parser_exception">Exceção do processador</string>
+  <string name="download_error_unsupported_type">Fonte não suportada</string>
+  <string name="download_error_connection_error">Erro de ligação</string>
+  <string name="download_error_unknown_host">Servidor desconhecido</string>
+  <string name="cancel_all_downloads_label">Cancelar transferências</string>
+  <string name="download_cancelled_msg">Transferência cancelada</string>
+  <string name="download_report_title">Transferências terminadas</string>
+  <string name="download_error_malformed_url">URL inválido</string>
+  <string name="download_error_io_error">Erro I/O</string>
+  <string name="download_error_request_error">Erro de pedido</string>
+  <string name="downloads_left">\u0020Transferências em falta</string>
+  <string name="download_notification_title">A transferir dados...</string>
+  <string name="download_report_content">%1$d transferências efetuadas, %2$d falhadas</string>
+  <string name="download_log_title_unknown">Título desconhecido</string>
+  <string name="download_type_feed">Fonte</string>
+  <string name="download_type_media">Ficheiro multimédia</string>
+  <string name="download_type_image">Imagem</string>
+  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao transferir o ficheiro:\u0020</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Erro!</string>
+  <string name="player_stopped_msg">Nada em reprodução</string>
+  <string name="player_preparing_msg">A preparar</string>
+  <string name="player_ready_msg">Pronto</string>
+  <string name="player_seeking_msg">A procurar</string>
+  <string name="playback_error_server_died">Erro de servidor</string>
+  <string name="playback_error_unknown">Erro desconhecido</string>
+  <string name="no_media_playing_label">Nada em reprodução</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">A processar...</string>
+  <string name="playbackservice_notification_title">Reproduzir podcast</string>
+  <string name="playbackservice_notification_content">Clique para mais informações</string>
+  <!--Navigation-->
+  <string name="show_download_log">Mostrar registo</string>
+  <string name="show_player_label">Mostrar reprodutor</string>
+  <!--Queue operations-->
+  <string name="clear_queue_label">Limpar fila</string>
+  <string name="organize_queue_label">Organizar fila</string>
+  <string name="undo">Anular</string>
+  <string name="removed_from_queue">Item removido</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Sessão Flattr</string>
+  <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
+  <string name="authenticate_label">Autenticar</string>
+  <string name="return_home_label">Voltar ao ecrã</string>
+  <string name="flattr_auth_success">Autenticação efetuada! Já pode fazer o flattr com a aplicação.</string>
+  <string name="no_flattr_token_title">Token flattr não encontrado</string>
+  <string name="no_flattr_token_msg">Parece que a sua conta flattr não está vinculada ao AntennaPod. Pode vincular a sua conta ao AntennaPod ou aceder ao sítio web para fazer o flattr.</string>
+  <string name="authenticate_now_label">Autenticar</string>
+  <string name="action_forbidden_title">Ação negada</string>
+  <string name="action_forbidden_msg">O AntennaPod não possui as permissões para esta ação. É possível que o token de acesso ao flattr via AntennaPod tenha sido revogado. Pode efetuar nova autenticação ou aceder ao sítio web do item.</string>
+  <string name="access_revoked_title">Acesso revogado</string>
+  <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod à sua conta. Para concluir o processo, tem que remover esta aplicação da lista de aplicações presentes nas definições de conta no sítio web do flattr.</string>
+  <string name="flattr_click_success">Flattered com sucesso!</string>
+  <string name="flattring_label">Flattring</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Não existem itens na lista.</string>
+  <string name="no_feeds_label">Ainda não possui quaisquer fontes.</string>
+  <!--Preferences-->
+  <string name="other_pref">Outras</string>
+  <string name="about_pref">Sobre</string>
+  <string name="queue_label">Fila</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Parar reprodução ao remover os auscultadores</string>
+  <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
+  <string name="playback_pref">Reprodução</string>
+  <string name="network_pref">Rede</string>
+  <string name="pref_autoUpdateIntervall_title">Intervalo entre atualizações</string>
+  <string name="pref_autoUpdateIntervall_sum">Indique o intervalo de tempo entre as atualizações de fontes ou desative a opção</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Apenas transferir pelas redes sem fios</string>
+  <string name="pref_followQueue_title">Reprodução contínua</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Transferência Wi-Fi</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Auscultadores removidos</string>
+  <string name="pref_mobileUpdate_title">Atualizações móveis</string>
+  <string name="pref_mobileUpdate_sum">Permitir atualizações através da rede de dados</string>
+  <string name="refreshing_label">A atualizar</string>
+  <string name="flattr_settings_label">Definições flattr</string>
+  <string name="pref_flattr_auth_title">Sessão flattr</string>
+  <string name="pref_flattr_auth_sum">Inicie sessão na sua conta flattr para fazer o flattr através do AntennaPod.</string>
+  <string name="pref_flattr_this_app_title">Flattr desta aplicação</string>
+  <string name="pref_flattr_this_app_sum">Ajude no desenvolvimento do AntennaPod através do Flattr. Obrigado!</string>
+  <string name="pref_revokeAccess_title">Revogar acesso</string>
+  <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr.</string>
+  <string name="pref_display_only_episodes_title">Mostrar apenas episódios</string>
+  <string name="pref_display_only_episodes_sum">Apenas mostrar itens que possuam episódios.</string>
+  <string name="user_interface_label">Interface</string>
+  <string name="pref_set_theme_title">Escolha o tema</string>
+  <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod.</string>
+  <string name="pref_automatic_download_title">Transferência automática</string>
+  <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios.</string>
+  <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
+  <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios.</string>
+  <string name="pref_episode_cache_title">Cache de episódios</string>
+  <string name="pref_theme_title_light">Claro</string>
+  <string name="pref_theme_title_dark">Escuro</string>
+  <string name="pref_episode_cache_unlimited">Sem limite</string>
+  <string name="pref_update_interval_hours_plural">horas</string>
+  <string name="pref_update_interval_hours_singular">hora</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
+  <!--Search-->
+  <string name="search_hint">Procurar fontes ou episódios</string>
+  <string name="found_in_shownotes_label">Encontrado nas notas</string>
+  <string name="found_in_chapters_label">Encontrado nos capítulos</string>
+  <string name="search_status_searching">A procurar...</string>
+  <string name="search_status_no_results">Nenhum resultado</string>
+  <string name="search_results_label">Resultados da procura</string>
+  <string name="search_term_label">Você procurou:\u0020</string>
+  <string name="search_label">Procura</string>
+  <string name="found_in_title_label">Encontrado no título</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Também pode importar ficheiros OPML. Estes ficheiros permitem-lhe mover os seus podcasts entre aplicações.</string>
+  <string name="opml_import_explanation">Para importar um ficheiro OPML, tem que o colocar neste diretório e premir o botão abaixo para iniciar o processo.</string>
+  <string name="start_import_label">Iniciar importação</string>
+  <string name="opml_import_label">Importação OPML</string>
+  <string name="opml_directory_error">Erro!</string>
+  <string name="reading_opml_label">A ler OPML</string>
+  <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro OPML:</string>
+  <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
+  <string name="select_all_label">Marcar tudo</string>
+  <string name="deselect_all_label">Desmarcar tudo</string>
+  <string name="choose_file_to_import_label">Escolha o ficheiro a importar</string>
+  <string name="opml_export_label">Exportação OPML</string>
+  <string name="exporting_label">A exportar...</string>
+  <string name="export_error_label">Erro de exportação</string>
+  <string name="opml_export_success_title">Exportação efetuada.</string>
+  <string name="opml_export_success_sum">O ficheiro .opml foi gravado em:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Definir temporizador</string>
+  <string name="disable_sleeptimer_label">Desativar temporizador</string>
+  <string name="enter_time_here_label">Introduza o tempo</string>
+  <string name="sleep_timer_label">Temporizador</string>
+  <string name="time_left_label">Tempo restante:\u0020</string>
+  <string name="time_dialog_invalid_input">Valor inválido. Tem que ser um inteiro.</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">A carregar categorias...</string>
+  <string name="browse_miroguide_label">Explorar o guia Miro</string>
+  <string name="txtv_browse_miroguide_label">Ou explore o guia Miro:</string>
+  <string name="miro_guide_label">Guia Miro</string>
+  <string name="miro_search_hint">Procurar no guia Miro</string>
+  <string name="popular_label">Popular</string>
+  <string name="best_rating_label">Melhor avaliados</string>
+  <string name="add_feed_label">Adicionar fonte</string>
+  <string name="miro_feed_added">A fonte está a ser adicionada</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Diretório escolhido:</string>
+  <string name="create_folder_label">Criar diretório</string>
+  <string name="choose_data_directory">Escolha o diretório</string>
+  <string name="create_folder_msg">Criar um diretório com o nome \"%1$s\"?</string>
+  <string name="create_folder_success">Novo diretório criado</string>
+  <string name="create_folder_error_no_write_access">Não é possível gravar neste diretório</string>
+  <string name="create_folder_error_already_exists">O diretório já existe</string>
+  <string name="create_folder_error">Não é possível criar o diretório</string>
+  <string name="folder_not_empty_dialog_title">Diretório não vazio</string>
+  <string name="folder_not_empty_dialog_msg">O diretório escolhido não está vazio. As transferências serão colocadas neste diretório. Continuar?</string>
+  <string name="set_to_default_folder">Escolha a pasta pré-definida</string>
+</resources>

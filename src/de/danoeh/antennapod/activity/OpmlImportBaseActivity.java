@@ -4,9 +4,8 @@ import java.io.Reader;
 import java.util.ArrayList;
 
 import android.content.Intent;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
-import com.actionbarsherlock.app.SherlockActivity;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
@@ -16,7 +15,7 @@ import de.danoeh.antennapod.opml.OpmlElement;
 /**
  * Base activity for Opml Import - e.g. with code what to do afterwards
  * */
-public class OpmlImportBaseActivity extends SherlockActivity {
+public class OpmlImportBaseActivity extends ActionBarActivity {
 
     private static final String TAG = "OpmlImportBaseActivity";
     private OpmlImportWorker importWorker;

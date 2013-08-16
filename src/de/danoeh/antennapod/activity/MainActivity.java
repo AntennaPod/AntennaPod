@@ -2,44 +2,47 @@ package de.danoeh.antennapod.activity;
 
 import java.util.ArrayList;
 
+import android.app.SearchManager;
+import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
 
-import com.actionbarsherlock.app.ActionBar;
-import com.actionbarsherlock.app.ActionBar.Tab;
-import com.actionbarsherlock.app.SherlockFragmentActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-import com.actionbarsherlock.view.Window;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.Window;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /** The activity that is shown when the user launches the app. */
-public class MainActivity extends SherlockFragmentActivity {
+public class MainActivity extends ActionBarActivity {
 	private static final String TAG = "MainActivity";
 
 	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
 			| EventDistributor.DOWNLOAD_QUEUED;
 
-	private FeedManager manager;
 	private ViewPager viewpager;
 	private TabsAdapter pagerAdapter;
 	private ExternalPlayerFragment externalPlayerFragment;
@@ -51,20 +54,20 @@ public class MainActivity extends SherlockFragmentActivity {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(savedInstanceState);
 		StorageUtils.checkStorageAvailability(this);
-		manager = FeedManager.getInstance();
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		pagerAdapter = new TabsAdapter(this, viewpager);
 
 		viewpager.setAdapter(pagerAdapter);
 
-		Tab feedsTab = getSupportActionBar().newTab();
+		ActionBar.Tab feedsTab = getSupportActionBar().newTab();
 		feedsTab.setText(R.string.podcasts_label);
-		Tab episodesTab = getSupportActionBar().newTab();
+		ActionBar.Tab episodesTab = getSupportActionBar().newTab();
 		episodesTab.setText(R.string.episodes_label);
 
 		pagerAdapter.addTab(feedsTab, FeedlistFragment.class, null);
@@ -80,7 +83,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		if (!appLaunched && getIntent().getAction() != null
 				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
 			appLaunched = true;
-			if (manager.getUnreadItemsSize(true) > 0) {
+			if (DBReader.getNumberOfUnreadItems(this) > 0) {
 				// select 'episodes' tab
 				getSupportActionBar().setSelectedNavigationItem(1);
 			}
@@ -142,7 +145,7 @@ public class MainActivity extends SherlockFragmentActivity {
 			startActivity(new Intent(this, AddFeedActivity.class));
 			return true;
 		case R.id.all_feed_refresh:
-			manager.refreshAllFeeds(this);
+			DBTasks.refreshAllFeeds(this, null);
 			return true;
 		case R.id.show_downloads:
 			startActivity(new Intent(this, DownloadActivity.class));
@@ -152,9 +155,6 @@ public class MainActivity extends SherlockFragmentActivity {
 			return true;
 		case R.id.show_player:
 			startActivity(PlaybackService.getPlayerActivityIntent(this));
-			return true;
-		case R.id.search_item:
-			onSearchRequested();
 			return true;
 		case R.id.show_playback_history:
 			startActivity(new Intent(this, PlaybackHistoryActivity.class));
@@ -173,9 +173,6 @@ public class MainActivity extends SherlockFragmentActivity {
 		} else {
 			refreshAll.setVisible(true);
 		}
-
-		boolean hasFeeds = manager.getFeedsSize() > 0;
-		menu.findItem(R.id.all_feed_refresh).setVisible(hasFeeds);
 		return true;
 	}
 
@@ -183,7 +180,18 @@ public class MainActivity extends SherlockFragmentActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		MenuInflater inflater = new MenuInflater(this);
 		inflater.inflate(R.menu.main, menu);
-		return true;
+
+        SearchManager searchManager =
+                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+        searchView.setIconifiedByDefault(true);
+
+        SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
+        searchView.setSearchableInfo(
+                searchManager.getSearchableInfo(getComponentName()));
+
+
+        return true;
 	}
 
 	public static class TabsAdapter extends FragmentPagerAdapter implements
@@ -248,7 +256,7 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 		@Override
-		public void onTabSelected(Tab tab, FragmentTransaction ft) {
+		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
 			Object tag = tab.getTag();
 			for (int i = 0; i < mTabs.size(); i++) {
 				if (mTabs.get(i) == tag) {
@@ -258,12 +266,12 @@ public class MainActivity extends SherlockFragmentActivity {
 		}
 
 		@Override
-		public void onTabUnselected(Tab tab, FragmentTransaction ft) {
+		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
 
 		}
 
 		@Override
-		public void onTabReselected(Tab tab, FragmentTransaction ft) {
+		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
 		}
 	}
 

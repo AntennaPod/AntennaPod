@@ -10,14 +10,13 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
-import com.actionbarsherlock.app.SherlockListFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -33,7 +32,7 @@ import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
  * entries will be loaded until all entries have been loaded or the maximum
  * number of channels has been reached.
  * */
-public class MiroGuideChannellistFragment extends SherlockListFragment {
+public class MiroGuideChannellistFragment extends ListFragment {
 	private static final String TAG = "MiroGuideChannellistFragment";
 
 	private static final String ARG_FILTER = "filter";

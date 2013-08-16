@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="Theme.AntennaPod.Light" parent="@style/Theme.Sherlock.Light.ForceOverflow">
-        <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.LightTabPageIndicator</item>
+    <style name="Theme.AntennaPod.Light" parent="@style/Theme.AppCompat.Light">
         <item name="attr/action_about">@drawable/action_about</item>
         <item name="attr/action_search">@drawable/action_search</item>
         <item name="attr/action_settings">@drawable/action_settings</item>
@@ -38,21 +37,7 @@
         <item name="attr/dragview_float_background">@color/white</item>
     </style>
 
-    <style name="AntennaPod.TabPageIndicator" parent="Widget.TabPageIndicator">
-        <item name="android:paddingTop">16dp</item>
-        <item name="android:paddingLeft">8dp</item>
-        <item name="android:paddingRight">8dp</item>
-        <item name="android:paddingBottom">16dp</item>
-        <item name="android:textSize">12sp</item>
-        <item name="android:textStyle">bold</item>
-    </style>
-
-    <style name="AntennaPod.LightTabPageIndicator" parent="AntennaPod.TabPageIndicator">
-        <item name="android:textColor">@color/black</item>
-    </style>
-
-    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.Sherlock.ForceOverflow">
-        <item name="vpiTabPageIndicatorStyle">@style/AntennaPod.DarkTabPageIndicator</item>
+    <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
         <item name="attr/action_about">@drawable/action_about_dark</item>
         <item name="attr/action_search">@drawable/action_search_dark</item>
         <item name="attr/action_settings">@drawable/action_settings_dark</item>
@@ -88,10 +73,6 @@
         <item name="attr/dragview_float_background">@color/black</item>
     </style>
 
-    <style name="AntennaPod.DarkTabPageIndicator" parent="AntennaPod.TabPageIndicator">
-        <item name="android:textColor">#FFFFFF</item>
-    </style>
-
     <style name="UndoBar">
       <item name="android:layout_width">match_parent</item>
       <item name="android:layout_height">48dp</item>
@@ -102,9 +83,7 @@
       <item name="android:orientation">horizontal</item>
       <item name="android:background">@drawable/undobar</item>
       <item name="android:clickable">true</item>
-      <item name="android:showDividers">middle</item>
       <item name="android:divider">@drawable/undobar_divider</item>
-      <item name="android:dividerPadding">10dp</item>
     </style>
     <style name="UndoBarMessage">
       <item name="android:layout_width">0dp</item>
@@ -125,7 +104,6 @@
       <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
       <item name="android:drawablePadding">12dp</item>
       <item name="android:textAppearance">?android:textAppearanceSmall</item>
-      <item name="android:textAllCaps">true</item>
       <item name="android:textStyle">bold</item>
       <item name="android:textColor">#fff</item>
       <item name="android:text">@string/undo</item>

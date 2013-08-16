@@ -7,18 +7,17 @@ import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.ListFragment;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.Window;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockListFragment;
-import com.actionbarsherlock.view.Window;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -49,7 +48,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private CoverFragment coverFragment;
 	private ItemDescriptionFragment descriptionFragment;
-	private SherlockListFragment chapterFragment;
+	private ListFragment chapterFragment;
 
 	private Fragment currentlyShownFragment;
 	private int currentlyShownPosition = -1;
@@ -250,8 +249,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 	/**
 	 * Changes the currently displayed fragment.
 	 * 
-	 * @param Must
-	 *            be POS_COVER, POS_DESCR, or POS_CHAPTERS
+	 * @param pos Must be POS_COVER, POS_DESCR, or POS_CHAPTERS
 	 * */
 	private void switchToFragment(int pos) {
 		if (AppConfig.DEBUG)
@@ -282,7 +280,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 					break;
 				case POS_CHAPTERS:
 					if (chapterFragment == null) {
-						chapterFragment = new SherlockListFragment() {
+						chapterFragment = new ListFragment() {
 
 							@Override
 							public void onListItemClick(ListView l, View v,

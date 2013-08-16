@@ -1,8 +1,12 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ListFragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -12,27 +16,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
 
-import com.actionbarsherlock.app.SherlockListFragment;
+import android.widget.TextView;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
-import de.danoeh.antennapod.adapter.DefaultFeedItemlistAdapter;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
+
+import java.util.Iterator;
+import java.util.List;
 
 /** Displays a list of FeedItems. */
 @SuppressLint("ValidFragment")
-public class ItemlistFragment extends SherlockListFragment {
+public class ItemlistFragment extends ListFragment {
 	private static final String TAG = "ItemlistFragment";
 
 	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
@@ -43,12 +50,10 @@ public class ItemlistFragment extends SherlockListFragment {
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 	protected InternalFeedItemlistAdapter fila;
-	protected FeedManager manager = FeedManager.getInstance();
 	protected DownloadRequester requester = DownloadRequester.getInstance();
 
-	private DefaultFeedItemlistAdapter.ItemAccess itemAccess;
-
 	private Feed feed;
+    protected List<Long> queue;
 
 	protected FeedItem selectedItem = null;
 	protected boolean contextMenuClosed = true;
@@ -56,10 +61,8 @@ public class ItemlistFragment extends SherlockListFragment {
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
-	public ItemlistFragment(DefaultFeedItemlistAdapter.ItemAccess itemAccess,
-			boolean showFeedtitle) {
+	public ItemlistFragment(boolean showFeedtitle) {
 		super();
-		this.itemAccess = itemAccess;
 		this.showFeedtitle = showFeedtitle;
 	}
 
@@ -83,6 +86,30 @@ public class ItemlistFragment extends SherlockListFragment {
 		return i;
 	}
 
+    private InternalFeedItemlistAdapter.ItemAccess itemAccessRef;
+    protected InternalFeedItemlistAdapter.ItemAccess itemAccess() {
+        if (itemAccessRef == null) {
+            itemAccessRef = new InternalFeedItemlistAdapter.ItemAccess() {
+
+                @Override
+                public FeedItem getItem(int position) {
+                    return (feed != null) ? feed.getItemAtIndex(true, position) : null;
+                }
+
+                @Override
+                public int getCount() {
+                    return (feed != null) ? feed.getNumOfItems(true) : 0;
+                }
+
+                @Override
+                public boolean isInQueue(FeedItem item) {
+                    return (queue != null) && queue.contains(item.getId());
+                }
+            };
+        }
+        return itemAccessRef;
+    }
+
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
@@ -92,27 +119,71 @@ public class ItemlistFragment extends SherlockListFragment {
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		if (itemAccess == null) {
-			long feedId = getArguments().getLong(ARGUMENT_FEED_ID);
-			final Feed feed = FeedManager.getInstance().getFeed(feedId);
-			this.feed = feed;
-			itemAccess = new DefaultFeedItemlistAdapter.ItemAccess() {
-
-				@Override
-				public FeedItem getItem(int position) {
-					return feed.getItemAtIndex(true, position);
-				}
-
-				@Override
-				public int getCount() {
-					return feed.getNumOfItems(true);
-				}
-			};
-		}
+		loadData();
 	}
 
+    protected void loadData() {
+        final long feedId;
+        if (feed == null) {
+            feedId = getArguments().getLong(ARGUMENT_FEED_ID);
+        } else {
+            feedId = feed.getId();
+        }
+        AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>(){
+            private volatile List<Long> queueRef;
+
+            @Override
+            protected Feed doInBackground(Long... longs) {
+                Context context = ItemlistFragment.this.getActivity();
+                if (context != null) {
+                    Feed result = DBReader.getFeed(context, longs[0]);
+                    if (result != null) {
+                        result.setItems(DBReader.getFeedItemList(context, result));
+                        queueRef = DBReader.getQueueIDList(context);
+                        return result;
+                    }
+                }
+                return null;
+            }
+
+            @Override
+            protected void onPostExecute(Feed result) {
+                super.onPostExecute(result);
+                if (result != null && result.getItems() != null) {
+                    feed = result;
+                    if (queueRef != null) {
+                        queue = queueRef;
+                    } else {
+                        Log.e(TAG, "Could not load queue");
+                    }
+                    if (result.getItems().isEmpty()) {
+                    }
+                    setEmptyViewIfListIsEmpty();
+                    if (fila != null) {
+                        fila.notifyDataSetChanged();
+                    }
+                } else {
+                    if (result == null) {
+                        Log.e(TAG, "Could not load feed with id " + feedId);
+                    } else if (result.getItems() == null) {
+                        Log.e(TAG, "Could not load feed items");
+                    }
+                }
+            }
+        };
+        loadTask.execute(feedId);
+    }
+
+    private void setEmptyViewIfListIsEmpty() {
+        if (getListView() != null && feed != null && feed.getItems() != null) {
+            if (feed.getItems().isEmpty()) {
+                ((TextView) getActivity().findViewById(android.R.id.empty)).setText(R.string.no_items_label);
+            }
+        }
+    }
+
 	protected InternalFeedItemlistAdapter createListAdapter() {
-		return new InternalFeedItemlistAdapter(getActivity(), itemAccess,
+		return new InternalFeedItemlistAdapter(getActivity(), itemAccess(),
 				adapterCallback, showFeedtitle);
 	}
 
@@ -162,7 +233,9 @@ public class ItemlistFragment extends SherlockListFragment {
 				if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
 					updateProgressBarVisibility();
 				} else {
-					fila.notifyDataSetChanged();
+                    if (feed != null) {
+                        loadData();
+                    }
 					updateProgressBarVisibility();
 				}
 			}
@@ -173,13 +246,13 @@ public class ItemlistFragment extends SherlockListFragment {
 		if (feed != null) {
 			if (DownloadService.isRunning
 					&& DownloadRequester.getInstance().isDownloadingFile(feed)) {
-				getSherlockActivity()
+                ((ActionBarActivity) getActivity())
 						.setSupportProgressBarIndeterminateVisibility(true);
 			} else {
-				getSherlockActivity()
+                ((ActionBarActivity) getActivity())
 						.setSupportProgressBarIndeterminateVisibility(false);
 			}
-			getSherlockActivity().supportInvalidateOptionsMenu();
+            getActivity().supportInvalidateOptionsMenu();
 		}
 	}
 
@@ -218,13 +291,13 @@ public class ItemlistFragment extends SherlockListFragment {
 
 			menu.setHeaderTitle(selectedItem.getTitle());
 			FeedItemMenuHandler.onPrepareMenu(
-					new FeedItemMenuHandler.MenuInterface() {
+                    new FeedItemMenuHandler.MenuInterface() {
 
-						@Override
-						public void setItemVisibility(int id, boolean visible) {
-							menu.findItem(id).setVisible(visible);
-						}
-					}, selectedItem, false);
+                        @Override
+                        public void setItemVisibility(int id, boolean visible) {
+                            menu.findItem(id).setVisible(visible);
+                        }
+                    }, selectedItem, false, QueueAccess.IDListAccess(queue));
 
 		}
 	}
@@ -237,7 +310,7 @@ public class ItemlistFragment extends SherlockListFragment {
 
 			try {
 				handled = FeedItemMenuHandler.onMenuItemClicked(
-						getSherlockActivity(), item.getItemId(), selectedItem);
+						getActivity(), item.getItemId(), selectedItem);
 			} catch (DownloadRequestException e) {
 				e.printStackTrace();
 				DownloadRequestErrorDialogCreator.newRequestErrorDialog(

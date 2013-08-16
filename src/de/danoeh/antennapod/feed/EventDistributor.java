@@ -92,7 +92,7 @@ public class EventDistributor extends Observable {
 		super.addObserver(observer);
 		if (!(observer instanceof EventListener)) {
 			throw new IllegalArgumentException(
-					"Observer must be instance of FeedManager.EventListener");
+					"Observer must be instance of EventListener");
 		}
 	}
 

@@ -7,11 +7,15 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShareUtils;
+
+import java.util.List;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedItemMenuHandler {
@@ -21,7 +25,7 @@ public class FeedItemMenuHandler {
 
 	/**
 	 * Used by the MenuHandler to access different types of menus through one
-	 * interface (for example android.view.Menu and com.actionbarsherlock.Menu)
+	 * interface
 	 */
 	public interface MenuInterface {
 		/**
@@ -45,11 +49,12 @@ public class FeedItemMenuHandler {
 	 *            True if MenuItems that let the user share information about
 	 *            the FeedItem and visit its website should be set visible. This
 	 *            parameter should be set to false if the menu space is limited.
+     * @param queueAccess
+     *            Used for testing if the queue contains the selected item
 	 * @return Always returns true
 	 * */
 	public static boolean onPrepareMenu(MenuInterface mi,
-			FeedItem selectedItem, boolean showExtendedMenu) {
-		FeedManager manager = FeedManager.getInstance();
+			FeedItem selectedItem, boolean showExtendedMenu, QueueAccess queueAccess) {
 		DownloadRequester requester = DownloadRequester.getInstance();
 		boolean hasMedia = selectedItem.getMedia() != null;
 		boolean downloaded = hasMedia && selectedItem.getMedia().isDownloaded();
@@ -79,7 +84,7 @@ public class FeedItemMenuHandler {
 			mi.setItemVisibility(R.id.cancel_download_item, false);
 		}
 
-		boolean isInQueue = manager.isInQueue(selectedItem);
+		boolean isInQueue = queueAccess.contains(selectedItem.getId());
 		if (!isInQueue || isPlaying) {
 			mi.setItemVisibility(R.id.remove_from_queue_item, false);
 		}
@@ -111,39 +116,38 @@ public class FeedItemMenuHandler {
 	public static boolean onMenuItemClicked(Context context, int menuItemId,
 			FeedItem selectedItem) throws DownloadRequestException {
 		DownloadRequester requester = DownloadRequester.getInstance();
-		FeedManager manager = FeedManager.getInstance();
 		switch (menuItemId) {
 		case R.id.skip_episode_item:
 			context.sendBroadcast(new Intent(
 					PlaybackService.ACTION_SKIP_CURRENT_EPISODE));
 			break;
 		case R.id.download_item:
-			manager.downloadFeedItem(context, selectedItem);
+			DBTasks.downloadFeedItems(context, selectedItem);
 			break;
 		case R.id.play_item:
-			manager.playMedia(context, selectedItem.getMedia(), true, true,
+			DBTasks.playMedia(context, selectedItem.getMedia(), true, true,
 					false);
 			break;
 		case R.id.remove_item:
-			manager.deleteFeedMedia(context, selectedItem.getMedia());
+			DBWriter.deleteFeedMediaOfItem(context, selectedItem.getId());
 			break;
 		case R.id.cancel_download_item:
 			requester.cancelDownload(context, selectedItem.getMedia());
 			break;
 		case R.id.mark_read_item:
-			manager.markItemRead(context, selectedItem, true, true);
+            DBWriter.markItemRead(context, selectedItem, true, true);
 			break;
 		case R.id.mark_unread_item:
-			manager.markItemRead(context, selectedItem, false, true);
+            DBWriter.markItemRead(context, selectedItem, false, true);
 			break;
 		case R.id.add_to_queue_item:
-			manager.addQueueItem(context, selectedItem);
+			DBWriter.addQueueItem(context, selectedItem.getId());
 			break;
 		case R.id.remove_from_queue_item:
-			manager.removeQueueItem(context, selectedItem, true);
+            DBWriter.removeQueueItem(context, selectedItem.getId(), true);
 			break;
 		case R.id.stream_item:
-			manager.playMedia(context, selectedItem.getMedia(), true, true,
+			DBTasks.playMedia(context, selectedItem.getMedia(), true, true,
 					true);
 			break;
 		case R.id.visit_website_item:

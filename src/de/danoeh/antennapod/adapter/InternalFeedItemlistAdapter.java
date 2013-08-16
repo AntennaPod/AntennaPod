@@ -14,12 +14,13 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
+
+import java.util.Iterator;
 
 /** List adapter for items of feeds that the user has already subscribed to. */
 public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
@@ -31,7 +32,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 	public static final int SELECTION_NONE = -1;
 
 	public InternalFeedItemlistAdapter(Context context,
-			DefaultFeedItemlistAdapter.ItemAccess itemAccess,
+			ItemAccess itemAccess,
 			ActionButtonCallback callback, boolean showFeedtitle) {
 		super(context, itemAccess);
 		this.callback = callback;
@@ -155,7 +156,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 				}
 
 				holder.lenSize.setVisibility(View.VISIBLE);
-				if (FeedManager.getInstance().isInQueue(item)) {
+				if (((ItemAccess) itemAccess).isInQueue(item)) {
 					holder.inPlaylist.setVisibility(View.VISIBLE);
 				} else {
 					holder.inPlaylist.setVisibility(View.GONE);
@@ -223,5 +224,9 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 		this.selectedItemIndex = selectedItemIndex;
 		notifyDataSetChanged();
 	}
+
+    public static interface ItemAccess extends DefaultFeedItemlistAdapter.ItemAccess {
+        public boolean isInQueue(FeedItem item);
+    }
 
 }

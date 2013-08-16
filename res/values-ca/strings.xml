@@ -32,6 +32,7 @@
   <string name="external_storage_error_msg">L\'emmagatzemament extern no està disponible. Assegureu-vos que està muntat per què l\'aplicació funcioni correctament.</string>
   <string name="chapters_label">Capítols</string>
   <string name="shownotes_label">Notes del programa</string>
+  <string name="most_recent_prefix">Episodi més recent: \u0020</string>
   <string name="episodes_suffix">\u0020episodis</string>
   <string name="published_prefix">Publicat:\u0020</string>
   <string name="length_prefix">Durada:\u0020</string>
@@ -50,10 +51,10 @@
   <string name="share_source_label">Comparteix l\'enllaç del canal</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
   <!--actions on feeditems-->
-  <string name="download_label">Baixades</string>
+  <string name="download_label">Baixa</string>
   <string name="play_label">Reprodueix</string>
   <string name="pause_label">Pausa</string>
-  <string name="stream_label">Flux</string>
+  <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="mark_unread_label">Marca com a pendent</string>
@@ -111,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Buida la cua</string>
   <string name="organize_queue_label">Ordena la cua</string>
+  <string name="undo">Desfés</string>
+  <string name="removed_from_queue">Ítem esborrat</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Inici de sessió a Flattr</string>
   <string name="flattr_auth_explanation">Premeu el botó per iniciar el procés d\'autenticació. Quan s\'obri la pantalla d\'inici de sessió de Flattr al vostre navegador, introduïu les vostres credencials i concediu a AntennaPod els permisos de compartir mitjançant Flattr. En finalitzar el procés, tornareu automàticament a aquesta pantalla.</string>
@@ -133,18 +136,18 @@
   <string name="other_pref">Altres</string>
   <string name="about_pref">Quant a</string>
   <string name="queue_label">Cua</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa la reproducció en desconnectar els auriculars</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa la reproducció en desconnectar els auriculars.</string>
   <string name="pref_followQueue_sum">Salta al següent element de la cua en acabar la reproducció</string>
   <string name="playback_pref">Reproducció</string>
   <string name="network_pref">Xarxa</string>
   <string name="pref_autoUpdateIntervall_title">Interval d\'actualització</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifiqueu l\'interval en què els canals s\'actualitzen de forma automàtica, o deshabiliteu la funcionalitat</string>
+  <string name="pref_autoUpdateIntervall_sum">Especifiqueu l\'interval en què els canals s\'actualitzen de forma automàtica, o deshabiliteu la funcionalitat.</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Només baixa fitxers a través d\'una xarxa sense fils</string>
   <string name="pref_followQueue_title">Reproducció continuada</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Baixa a través de xarxes sense fils</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconnexió d\'auriculars</string>
   <string name="pref_mobileUpdate_title">Actualitzacions sobre xarxes mòbils</string>
-  <string name="pref_mobileUpdate_sum">Permet actualitzacions a través de xarxes mòbils</string>
+  <string name="pref_mobileUpdate_sum">Permet actualitzacions a través de xarxes mòbils.</string>
   <string name="refreshing_label">S\'està actualitzant</string>
   <string name="flattr_settings_label">Configuració de Flattr</string>
   <string name="pref_flattr_auth_title">Inici de sessió Flattr</string>
@@ -152,17 +155,23 @@
   <string name="pref_flattr_this_app_title">Compartiu aquesta aplicació amb Flattr</string>
   <string name="pref_flattr_this_app_sum">Doneu suport al desenvolupament d\'AntennaPod compartint l\'aplicació a través de Flattr. Gràcies!</string>
   <string name="pref_revokeAccess_title">Revoca l\'accés</string>
-  <string name="pref_revokeAccess_sum">Revoca el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
+  <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
   <string name="pref_display_only_episodes_title">Mostra només episodis</string>
   <string name="pref_display_only_episodes_sum">Mostra només els elements que tenen algun episodi.</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
-  <string name="pref_set_theme_title">Seleccioneu un tema</string>
+  <string name="pref_set_theme_title">Selecció de tema</string>
   <string name="pref_set_theme_sum">Canvieu l\'aparença d\'AntennaPod.</string>
   <string name="pref_automatic_download_title">Baixada automàtica</string>
-  <string name="pref_automatic_download_sum">Configura la baixada automàtica d\'episodis.</string>
+  <string name="pref_automatic_download_sum">Configureu la baixada automàtica d\'episodis.</string>
   <string name="pref_autodl_wifi_filter_title">Activa el filtre de la xarxa sense fils</string>
   <string name="pref_autodl_wifi_filter_sum">Permet les baixades automàtiques només per a les xarxes sense fils seleccionades.</string>
   <string name="pref_episode_cache_title">Memòria d\'episodis</string>
+  <string name="pref_theme_title_light">Clar</string>
+  <string name="pref_theme_title_dark">Fosc</string>
+  <string name="pref_episode_cache_unlimited">Sense límits</string>
+  <string name="pref_update_interval_hours_plural">hores</string>
+  <string name="pref_update_interval_hours_singular">hora</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
   <!--Search-->
   <string name="search_hint">Cerca canals o episodis</string>
   <string name="found_in_shownotes_label">Trobat a notes del programa</string>
@@ -175,7 +184,7 @@
   <string name="found_in_title_label">Trobat al títol</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">També podeu importar fitxers OPML. Els fitxers OPML us permeten moure els podcasts d\'una aplicació a una altra:</string>
-  <string name="opml_import_explanation">Per importar un fitxer OPML, l\'heu d\'ubicar al següent directori i prémer el botó de sota per iniciar el procés. </string>
+  <string name="opml_import_explanation">Per importar un fitxer OPML, ubiqueu-lo al següent directori i premeu el botó de sota per iniciar el procés. </string>
   <string name="start_import_label">Inicia la importació</string>
   <string name="opml_import_label">Importació OPML</string>
   <string name="opml_directory_error">Error!</string>

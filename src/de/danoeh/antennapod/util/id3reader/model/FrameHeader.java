@@ -11,8 +11,7 @@ public class FrameHeader extends Header {
 
 	@Override
 	public String toString() {
-		return "FrameHeader [flags=" + Integer.toString(flags) + ", id=" + id + ", size=" + size
-				+ "]";
-	}
+        return String.format("FrameHeader [flags=%s, id=%s, size=%s]", Integer.toBinaryString(flags), id, Integer.toBinaryString(size));
+    }
 
 }
