@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
@@ -61,7 +60,7 @@ public class HttpDownloader extends Downloader {
 	@Override
 	protected void download() {
 		DefaultHttpClient httpClient = null;
-		OutputStream out = null;
+		BufferedOutputStream out = null;
 		InputStream connection = null;
 		try {
 			HttpGet httpGet = new HttpGet(request.getSource());
@@ -110,6 +109,16 @@ public class HttpDownloader extends Downloader {
 							if (cancelled) {
 								onCancelled();
 							} else {
+								out.flush();
+								if (request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
+										request.getSoFar() != request.getSize()) {
+									onFail(DownloadError.ERROR_IO_ERROR,
+										"Download completed but size: " +
+										request.getSoFar() +
+										" does not equal expected size " +
+										request.getSize());
+									return;
+								}
 								onSuccess();
 							}
 						} else {
