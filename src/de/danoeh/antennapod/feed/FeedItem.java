@@ -123,11 +123,19 @@ public class FeedItem extends FeedComponent implements
     }
 
     public Date getPubDate() {
-        return pubDate;
+        if (pubDate != null) {
+            return (Date) pubDate.clone();
+        } else {
+            return null;
+        }
     }
 
     public void setPubDate(Date pubDate) {
-        this.pubDate = pubDate;
+        if (pubDate != null) {
+            this.pubDate = (Date) pubDate.clone();
+        } else {
+            this.pubDate = null;
+        }
     }
 
     public FeedMedia getMedia() {

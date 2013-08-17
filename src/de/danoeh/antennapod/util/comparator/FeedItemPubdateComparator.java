@@ -13,7 +13,7 @@ public class FeedItemPubdateComparator implements Comparator<FeedItem> {
 	}*/
 	@Override
 	public int compare(FeedItem lhs, FeedItem rhs) {
-		return -lhs.getPubDate().compareTo(rhs.getPubDate());
+		return rhs.getPubDate().compareTo(lhs.getPubDate());
 	}
 
 }

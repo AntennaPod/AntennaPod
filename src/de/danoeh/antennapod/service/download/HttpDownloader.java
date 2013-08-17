@@ -74,9 +74,8 @@ public class HttpDownloader extends Downloader {
 				if (StorageUtils.storageAvailable(PodcastApp.getInstance())) {
 					File destination = new File(request.getDestination());
 					if (!destination.exists()) {
-						connection = AndroidHttpClient
-								.getUngzippedContent(httpEntity);
-						InputStream in = new BufferedInputStream(connection);
+						connection = new BufferedInputStream(AndroidHttpClient
+								.getUngzippedContent(httpEntity));
 						out = new BufferedOutputStream(new FileOutputStream(
 								destination));
 						byte[] buffer = new byte[BUFFER_SIZE];
@@ -99,7 +98,7 @@ public class HttpDownloader extends Downloader {
 							if (AppConfig.DEBUG)
 								Log.d(TAG, "Starting download");
 							while (!cancelled
-									&& (count = in.read(buffer)) != -1) {
+									&& (count = connection.read(buffer)) != -1) {
 								out.write(buffer, 0, count);
 								request.setSoFar(request.getSoFar() + count);
 								request.setProgressPercent((int) (((double) request

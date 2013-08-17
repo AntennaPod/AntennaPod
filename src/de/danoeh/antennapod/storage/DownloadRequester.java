@@ -26,9 +26,9 @@ import de.danoeh.antennapod.util.URLChecker;
 public class DownloadRequester {
     private static final String TAG = "DownloadRequester";
 
-    public static String IMAGE_DOWNLOADPATH = "images/";
-    public static String FEED_DOWNLOADPATH = "cache/";
-    public static String MEDIA_DOWNLOADPATH = "media/";
+    public static final String IMAGE_DOWNLOADPATH = "images/";
+    public static final String FEED_DOWNLOADPATH = "cache/";
+    public static final String MEDIA_DOWNLOADPATH = "media/";
 
     private static DownloadRequester downloader;
 

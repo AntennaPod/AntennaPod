@@ -157,7 +157,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
 			@Override
 			public void run() {
-				String reasonDetailed = new String();
+				String reasonDetailed = "";
 				boolean successful = false;
 				FeedHandler handler = new FeedHandler();
 				try {

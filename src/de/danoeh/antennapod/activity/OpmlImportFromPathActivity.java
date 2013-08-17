@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.activity;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.Reader;
 
 import android.app.AlertDialog;
@@ -20,6 +22,7 @@ import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /**
@@ -125,13 +128,24 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     }
 
     private void startImport(File file) {
+        Reader mReader = null;
         try {
-            Reader mReader = new FileReader(file);
+            mReader = new InputStreamReader(new FileInputStream(file),
+                LangUtils.UTF_8);
             if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
             startImport(mReader);
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found which really should be there");
             // this should never happen as it is a file we have just chosen
+        } finally {
+            if (mReader != null) {
+                try {
+                    mReader.close();
+                } catch (IOException ioe) {
+                    Log.w(TAG, "IOException while importing OPML: " +
+                        ioe.getMessage());
+                }
+            }
         }
     }
 

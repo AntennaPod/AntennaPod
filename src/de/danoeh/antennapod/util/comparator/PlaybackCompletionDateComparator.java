@@ -11,8 +11,8 @@ public class PlaybackCompletionDateComparator implements Comparator<FeedItem> {
 				&& lhs.getMedia().getPlaybackCompletionDate() != null
 				&& rhs.getMedia() != null
 				&& rhs.getMedia().getPlaybackCompletionDate() != null) {
-			return -lhs.getMedia().getPlaybackCompletionDate()
-					.compareTo(rhs.getMedia().getPlaybackCompletionDate());
+			return rhs.getMedia().getPlaybackCompletionDate()
+					.compareTo(lhs.getMedia().getPlaybackCompletionDate());
 		}
 		return 0;
 	}

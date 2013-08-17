@@ -10,7 +10,6 @@ import android.database.DatabaseUtils;
 import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -235,7 +234,7 @@ public class PodDBAdapter {
     /**
      * Select id, description and content-encoded column from feeditems.
      */
-    public static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
+    private static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
             KEY_CONTENT_ENCODED, KEY_FEED};
 
     // column indices for SEL_FI_EXTRA

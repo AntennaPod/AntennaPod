@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.asynctask;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import android.annotation.SuppressLint;
@@ -22,7 +23,7 @@ public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {
 	public OpmlFeedQueuer(Context context, int[] selection) {
 		super();
 		this.context = context;
-		this.selection = selection;
+		this.selection = Arrays.copyOf(selection, selection.length);
 	}
 
 	@Override

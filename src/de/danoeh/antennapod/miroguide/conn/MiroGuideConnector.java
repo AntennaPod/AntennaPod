@@ -16,6 +16,8 @@ import org.json.JSONObject;
 
 import android.net.Uri;
 
+import de.danoeh.antennapod.util.LangUtils;
+
 /** Executes HTTP requests and returns the results. */
 public class MiroGuideConnector {
 	private HttpClient httpClient;
@@ -73,12 +75,14 @@ public class MiroGuideConnector {
 			if (response.getStatusLine().getStatusCode() == 200) {
 				HttpEntity entity = response.getEntity();
 				if (entity != null) {
-					InputStream in = entity.getContent();
-
 					BufferedReader reader = new BufferedReader(
-							new InputStreamReader(in));
-					result = reader.readLine();
-					in.close();
+							new InputStreamReader(entity.getContent(),
+							LangUtils.UTF_8));
+					try {
+						result = reader.readLine();
+					} finally {
+						reader.close();
+					}
 				}
 			} else {
 				throw new MiroGuideException(response.getStatusLine()

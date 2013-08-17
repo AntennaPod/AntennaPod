@@ -11,7 +11,7 @@ import android.util.Log;
 public class SyndDateUtils {
 	private static final String TAG = "DateUtils";
 
-	public static final String[] RFC822DATES = { "dd MMM yy HH:mm:ss Z", };
+	private static final String[] RFC822DATES = { "dd MMM yy HH:mm:ss Z", };
 
 	/** RFC 3339 date format for UTC dates. */
 	public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
@@ -123,12 +123,12 @@ public class SyndDateUtils {
 		int idx = 0;
 		if (parts.length == 3) {
 			// string has hours
-			result += Integer.valueOf(parts[idx]) * 3600000;
+			result += Integer.valueOf(parts[idx]) * 3600000L;
 			idx++;
 		}
-		result += Integer.valueOf(parts[idx]) * 60000;
+		result += Integer.valueOf(parts[idx]) * 60000L;
 		idx++;
-		result += (Float.valueOf(parts[idx])) * 1000;
+		result += (Float.valueOf(parts[idx])) * 1000L;
 		return result;
 	}
 }

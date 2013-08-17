@@ -53,7 +53,8 @@ public class FeedMedia extends FeedFile implements Playable {
         this.position = position;
         this.size = size;
         this.mime_type = mime_type;
-        this.playbackCompletionDate = playbackCompletionDate;
+        this.playbackCompletionDate = playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();
     }
 
     public FeedMedia(long id, FeedItem item) {
@@ -169,11 +170,12 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public Date getPlaybackCompletionDate() {
-        return playbackCompletionDate;
-    }
+        return playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();    }
 
     public void setPlaybackCompletionDate(Date playbackCompletionDate) {
-        this.playbackCompletionDate = playbackCompletionDate;
+        this.playbackCompletionDate = playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();
     }
 
     public boolean isInProgress() {
