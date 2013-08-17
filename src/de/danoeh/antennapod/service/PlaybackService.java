@@ -1282,18 +1282,20 @@ public class PlaybackService extends Service {
 			isPlaying = true;
 		}
 
-		Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
-		i.putExtra("id", 1);
-		i.putExtra("artist", "");
-		i.putExtra("album", media.getFeedTitle());
-		i.putExtra("track", media.getEpisodeTitle());
-		i.putExtra("playing", isPlaying);
-        if (queue != null) {
-            i.putExtra("ListSize", queue.size());
+        if (media != null) {
+		    Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
+		    i.putExtra("id", 1);
+		    i.putExtra("artist", "");
+		    i.putExtra("album", media.getFeedTitle());
+		    i.putExtra("track", media.getEpisodeTitle());
+		    i.putExtra("playing", isPlaying);
+            if (queue != null) {
+                i.putExtra("ListSize", queue.size());
+            }
+            i.putExtra("duration", media.getDuration());
+		    i.putExtra("position", media.getPosition());
+		    sendBroadcast(i);
         }
-        i.putExtra("duration", media.getDuration());
-		i.putExtra("position", media.getPosition());
-		sendBroadcast(i);
 	}
 
 	/**

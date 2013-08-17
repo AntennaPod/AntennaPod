@@ -80,8 +80,13 @@ public class ExternalMedia implements Playable {
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
 		feedTitle = mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-		duration = Integer.parseInt(mmr
+        try {
+		    duration = Integer.parseInt(mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new PlayableException("NumberFormatException when reading duration of media file");
+        }
 		ChapterUtils.loadChaptersFromFileUrl(this);
 	}
 
