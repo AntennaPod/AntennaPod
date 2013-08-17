@@ -35,6 +35,31 @@ android {
         testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
     }
 
+    signingConfigs {
+        releaseConfig {
+            if (project.hasProperty('releaseStoreFile')) {
+                storeFile file(releaseStoreFile)
+            } else {
+                storeFile file('keystore')
+            }
+            if (project.hasProperty('releaseStorePassword')) {
+                storePassword releaseStorePassword
+            } else {
+                storePassword "password"
+            }
+            if (project.hasProperty('releaseKeyAlias')) {
+                keyAlias releaseKeyAlias
+            } else {
+                keyAlias "alias"
+            }
+            if (project.hasProperty('releaseKeyPassword')) {
+                keyPassword releaseKeyPassword
+            } else {
+                keyPassword "password"
+            }
+        }
+    }
+
     sourceSets {
         main {
             manifest.srcFile 'AndroidManifest.xml'
@@ -50,6 +75,11 @@ android {
     buildTypes {
         debug {
             packageNameSuffix ".debug"
+        }
+        release {
+            runProguard true
+            proguardFile 'proguard.cfg'
+            signingConfig signingConfigs.releaseConfig
         }
     }
 }
