@@ -39,7 +39,7 @@ public class EventDistributor extends Observable {
 		events = new ConcurrentLinkedQueue<Integer>();
 	}
 
-	public static EventDistributor getInstance() {
+	public static synchronized EventDistributor getInstance() {
 		if (instance == null) {
 			instance = new EventDistributor();
 		}

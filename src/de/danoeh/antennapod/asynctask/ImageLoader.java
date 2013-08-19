@@ -77,7 +77,7 @@ public class ImageLoader {
 		});
 	}
 
-	public static ImageLoader getInstance() {
+	public static synchronized ImageLoader getInstance() {
 		if (singleton == null) {
 			singleton = new ImageLoader();
 		}

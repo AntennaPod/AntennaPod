@@ -87,11 +87,7 @@ public class Feed extends FeedFile {
      */
     public Feed(String url, Date lastUpdate) {
         super(null, url, false);
-        if (lastUpdate != null) {
-            this.lastUpdate = lastUpdate;
-        } else {
-            this.lastUpdate = null;
-        }
+        this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }
 
     /**
@@ -323,19 +319,11 @@ public class Feed extends FeedFile {
     }
 
     public Date getLastUpdate() {
-        if (lastUpdate != null) {
-            return (Date) lastUpdate.clone();
-        } else {
-            return null;
-        }
+        return (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }
 
     public void setLastUpdate(Date lastUpdate) {
-        if (lastUpdate != null) {
-            this.lastUpdate = (Date) lastUpdate.clone();
-        } else {
-            this.lastUpdate = null;
-        }
+        this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }
 
     public String getFeedIdentifier() {

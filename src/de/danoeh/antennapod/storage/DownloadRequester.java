@@ -38,7 +38,7 @@ public class DownloadRequester {
         downloads = new ConcurrentHashMap<String, DownloadRequest>();
     }
 
-    public static DownloadRequester getInstance() {
+    public static synchronized DownloadRequester getInstance() {
         if (downloader == null) {
             downloader = new DownloadRequester();
         }

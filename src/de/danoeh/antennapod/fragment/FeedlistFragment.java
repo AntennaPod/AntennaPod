@@ -265,9 +265,9 @@ public class FeedlistFragment extends Fragment implements
     public boolean onItemLongClick(AdapterView<?> parent, View view,
                                    int position, long id) {
         Feed selection = fla.getItem(position);
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Selected Feed with title " + selection.getTitle());
         if (selection != null) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Selected Feed with title " + selection.getTitle());
             if (mActionMode != null) {
                 mActionMode.finish();
             }

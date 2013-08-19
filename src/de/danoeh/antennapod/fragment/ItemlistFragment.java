@@ -50,7 +50,6 @@ public class ItemlistFragment extends ListFragment {
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 	protected InternalFeedItemlistAdapter fila;
-	protected DownloadRequester requester = DownloadRequester.getInstance();
 
 	private Feed feed;
     protected List<Long> queue;
@@ -155,8 +154,6 @@ public class ItemlistFragment extends ListFragment {
                         queue = queueRef;
                     } else {
                         Log.e(TAG, "Could not load queue");
-                    }
-                    if (result.getItems().isEmpty()) {
                     }
                     setEmptyViewIfListIsEmpty();
                     if (fila != null) {

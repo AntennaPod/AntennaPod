@@ -374,11 +374,10 @@ public class ItemDescriptionFragment extends Fragment {
                     Callable<String> shownotesLoadTask = shownotesProvider.loadShownotes();
                     final String shownotes = shownotesLoadTask.call();
 
-                    data = "";
                     data = StringEscapeUtils.unescapeHtml4(shownotes);
                     Activity activity = getActivity();
                     if (activity != null) {
-                        TypedArray res = getActivity()
+                        TypedArray res = activity
                                 .getTheme()
                                 .obtainStyledAttributes(
                                         new int[]{android.R.attr.textColorPrimary});

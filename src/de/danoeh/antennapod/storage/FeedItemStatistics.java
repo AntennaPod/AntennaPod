@@ -17,7 +17,7 @@ public class FeedItemStatistics {
         this.numberOfItems = numberOfItems;
         this.numberOfNewItems = numberOfNewItems;
         this.numberOfInProgressItems = numberOfInProgressItems;
-        this.lastUpdate = lastUpdate;
+        this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }
 
     public long getFeedID() {
@@ -37,6 +37,6 @@ public class FeedItemStatistics {
     }
 
     public Date getLastUpdate() {
-        return lastUpdate;
+        return (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
     }
 }

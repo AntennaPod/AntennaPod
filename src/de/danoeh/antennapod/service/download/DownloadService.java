@@ -184,7 +184,7 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
             onDownloadQueued(intent);
-        } else if (numberOfDownloads.equals(0)) {
+        } else if (numberOfDownloads.get() == 0) {
             stopSelf();
         }
         return Service.START_NOT_STICKY;
