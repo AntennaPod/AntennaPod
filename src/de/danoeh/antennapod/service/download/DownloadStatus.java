@@ -162,6 +162,7 @@ public class DownloadStatus {
         this.successful = false;
         this.reason = reason;
         this.reasonDetailed = reasonDetailed;
+        this.done = true;
     }
 
     public void setCancelled() {
