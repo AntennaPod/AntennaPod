@@ -48,6 +48,19 @@ public class FeedItem extends FeedComponent implements
         this.read = true;
     }
 
+    /**
+     * This constructor should be used for creating test objects.
+     * */
+    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, boolean read, Feed feed) {
+        this.id = id;
+        this.title = title;
+        this.itemIdentifier = itemIdentifier;
+        this.link = link;
+        this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
+        this.read = read;
+        this.feed = feed;
+    }
+
     public void updateFromOther(FeedItem other) {
         super.updateFromOther(other);
         if (other.title != null) {
@@ -142,8 +155,16 @@ public class FeedItem extends FeedComponent implements
         return media;
     }
 
+    /**
+     * Sets the media object of this FeedItem. If the given
+     * FeedMedia object is not null, it's 'item'-attribute value
+     * will also be set to this item.
+     * */
     public void setMedia(FeedMedia media) {
         this.media = media;
+        if (media != null && media.getItem() != this) {
+            media.setItem(this);
+        }
     }
 
     public Feed getFeed() {

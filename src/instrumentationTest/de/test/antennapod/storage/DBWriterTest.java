@@ -59,10 +59,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         Feed feed = new Feed("url", new Date(), "title");
         List<FeedItem> items = new ArrayList<FeedItem>();
         feed.setItems(items);
-        FeedItem item = new FeedItem();
-        item.setTitle("title");
-        item.setPubDate(new Date());
-        item.setFeed(feed);
+        FeedItem item = new FeedItem(0, "Item", "Item", "url", new Date(), true, feed);
 
         FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", dest.getAbsolutePath(), "download_url", true, null);
         item.setMedia(media);
@@ -101,10 +98,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         List<File> itemFiles = new ArrayList<File>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem();
-            item.setTitle("Item " + i);
-            item.setPubDate(new Date(System.currentTimeMillis()));
-            item.setFeed(feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
             feed.getItems().add(item);
 
             File enc = new File(destFolder, "file " + i);
@@ -165,16 +159,13 @@ public class DBWriterTest extends InstrumentationTestCase {
         List<File> itemFiles = new ArrayList<File>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem();
-            item.setTitle("Item " + i);
-            item.setPubDate(new Date(System.currentTimeMillis()));
-            item.setFeed(feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
             feed.getItems().add(item);
 
             File enc = new File(destFolder, "file " + i);
             assertTrue(enc.createNewFile());
-            itemFiles.add(enc);
 
+            itemFiles.add(enc);
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null);
             item.setMedia(media);
         }
@@ -265,10 +256,7 @@ public class DBWriterTest extends InstrumentationTestCase {
 
         // create items
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem();
-            item.setTitle("Item " + i);
-            item.setPubDate(new Date(System.currentTimeMillis()));
-            item.setFeed(feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
             feed.getItems().add(item);
 
         }
@@ -320,10 +308,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         List<File> itemFiles = new ArrayList<File>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem();
-            item.setTitle("Item " + i);
-            item.setPubDate(new Date(System.currentTimeMillis()));
-            item.setFeed(feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
             feed.getItems().add(item);
 
             File enc = new File(destFolder, "file " + i);
@@ -395,10 +380,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         List<File> itemFiles = new ArrayList<File>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem();
-            item.setTitle("Item " + i);
-            item.setPubDate(new Date(System.currentTimeMillis()));
-            item.setFeed(feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
             feed.getItems().add(item);
 
             File enc = new File(destFolder, "file " + i);

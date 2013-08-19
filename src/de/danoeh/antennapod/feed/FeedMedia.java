@@ -165,8 +165,16 @@ public class FeedMedia extends FeedFile implements Playable {
         return item;
     }
 
+    /**
+     * Sets the item object of this FeedMedia. If the given
+     * FeedItem object is not null, it's 'media'-attribute value
+     * will also be set to this media object.
+     * */
     public void setItem(FeedItem item) {
         this.item = item;
+        if (item != null && item.getMedia() != this) {
+            item.setMedia(this);
+        }
     }
 
     public Date getPlaybackCompletionDate() {
