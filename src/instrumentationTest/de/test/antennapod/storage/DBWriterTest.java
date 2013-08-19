@@ -421,4 +421,33 @@ public class DBWriterTest extends InstrumentationTestCase {
             c.close();
         }
     }
+
+    public void testAddItemToPlaybackHistoryNotPlayedYet() throws ExecutionException, InterruptedException {
+        FeedMedia media = new FeedMedia(0, null, 10, 0, 1, "mime", null, "url", false, null);
+        DBWriter.addItemToPlaybackHistory(getInstrumentation().getTargetContext(), media).get();
+        assertTrue(media.getId() != 0);
+        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        adapter.open();
+        media = DBReader.getFeedMedia(getInstrumentation().getTargetContext(), media.getId());
+        adapter.close();
+
+        assertNotNull(media);
+        assertNotNull(media.getPlaybackCompletionDate());
+    }
+
+    public void testAddItemToPlaybackHistoryAlreadyPlayed() throws ExecutionException, InterruptedException {
+        final long OLD_DATE = 0;
+        FeedMedia media = new FeedMedia(0, null, 10, 0, 1, "mime", null, "url", false, new Date(OLD_DATE));
+        DBWriter.addItemToPlaybackHistory(getInstrumentation().getTargetContext(), media).get();
+        assertTrue(media.getId() != 0);
+        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        adapter.open();
+        media = DBReader.getFeedMedia(getInstrumentation().getTargetContext(), media.getId());
+        adapter.close();
+
+        assertNotNull(media);
+        assertNotNull(media.getPlaybackCompletionDate());
+        assertFalse(OLD_DATE == media.getPlaybackCompletionDate().getTime());
+    }
+
 }
