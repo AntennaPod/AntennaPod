@@ -421,52 +421,24 @@ public class DownloadService extends Service {
         return null;
     }
 
-    @SuppressLint("NewApi")
-    public void onDownloadCompleted(final Downloader downloader) {
-        final AsyncTask<Void, Void, Void> handlerTask = new AsyncTask<Void, Void, Void>() {
-            boolean successful;
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                if (!successful) {
-                    queryDownloads();
-                }
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                removeDownload(downloader);
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-
-                return null;
-            }
-        };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            handlerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            handlerTask.execute();
-        }
-    }
-
     /**
      * Remove download from the DownloadRequester list and from the
      * DownloadService list.
      */
     private void removeDownload(final Downloader d) {
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Removing downloader: "
-                    + d.getDownloadRequest().getSource());
-        boolean rc = downloads.remove(d);
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Result of downloads.remove: " + rc);
-        DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
-        sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Removing downloader: "
+                            + d.getDownloadRequest().getSource());
+                boolean rc = downloads.remove(d);
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Result of downloads.remove: " + rc);
+                DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+            }
+        });
     }
 
     /**
