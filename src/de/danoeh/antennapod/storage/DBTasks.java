@@ -406,10 +406,11 @@ public final class DBTasks {
 
     private static int performAutoCleanup(final Context context,
                                           final int episodeNumber) {
-        List<FeedItem> candidates = DBReader.getDownloadedItems(context);
+        List<FeedItem> candidates = new ArrayList<FeedItem>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(context);
         List<FeedItem> queue = DBReader.getQueue(context);
         List<FeedItem> delete;
-        for (FeedItem item : candidates) {
+        for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
                     && !queue.contains(item) && item.isRead()) {
                 candidates.add(item);
