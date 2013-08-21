@@ -278,6 +278,13 @@ public class PodDBAdapter {
         //db.close();
     }
 
+    public static boolean deleteDatabase(Context context) {
+        Log.w(TAG, "Deleting database");
+        dbHelperSingleton.close();
+        dbHelperSingleton = null;
+        return context.deleteDatabase(DATABASE_NAME);
+    }
+
     /**
      * Inserts or updates a feed entry
      *
@@ -763,7 +770,7 @@ public class PodDBAdapter {
         final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " WHERE "
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " WHERE "
                 + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
         Cursor c = db.rawQuery(query, null);
         return c;

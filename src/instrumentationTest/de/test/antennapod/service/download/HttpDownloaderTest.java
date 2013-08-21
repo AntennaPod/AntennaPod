@@ -2,17 +2,20 @@ package instrumentationTest.de.test.antennapod.service.download;
 
 import java.io.File;
 
+import android.test.InstrumentationTestCase;
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.service.download.*;
 
 import android.test.AndroidTestCase;
 import android.util.Log;
 
-public class HttpDownloaderTest extends AndroidTestCase {
+public class HttpDownloaderTest extends InstrumentationTestCase {
     private static final String TAG = "HttpDownloaderTest";
     private static final String DOWNLOAD_DIR = "testdownloads";
 
     private static boolean successful = true;
+
+    private File destDir;
 
     public HttpDownloaderTest() {
         super();
@@ -21,17 +24,23 @@ public class HttpDownloaderTest extends AndroidTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        File externalDir = getContext().getExternalFilesDir(DOWNLOAD_DIR);
-        assertNotNull(externalDir);
-        File[] contents = externalDir.listFiles();
+        File[] contents = destDir.listFiles();
         for (File f : contents) {
             assertTrue(f.delete());
         }
     }
 
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
+        assertNotNull(destDir);
+        assertTrue(destDir.exists());
+    }
+
     private FeedFileImpl setupFeedFile(String downloadUrl, String title) {
         FeedFileImpl feedfile = new FeedFileImpl(downloadUrl);
-        String fileUrl = new File(getContext().getExternalFilesDir(DOWNLOAD_DIR).getAbsolutePath(), title).getAbsolutePath();
+        String fileUrl = new File(destDir, title).getAbsolutePath();
         File file = new File(fileUrl);
         Log.d(TAG, "Deleting file: " + file.delete());
         feedfile.setFile_url(fileUrl);

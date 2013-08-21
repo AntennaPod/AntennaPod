@@ -31,7 +31,7 @@ public class DBWriterTest extends InstrumentationTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         final Context context = getInstrumentation().getTargetContext();
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
+        assertTrue(PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext()));
 
         File testDir = context.getExternalFilesDir(TEST_FOLDER);
         assertNotNull(testDir);

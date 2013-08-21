@@ -406,12 +406,13 @@ public final class DBTasks {
 
     private static int performAutoCleanup(final Context context,
                                           final int episodeNumber) {
-        List<FeedItem> candidates = DBReader.getDownloadedItems(context);
-        List<FeedItem> queue = DBReader.getQueue(context);
+        List<FeedItem> candidates = new ArrayList<FeedItem>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(context);
+        QueueAccess queue = QueueAccess.IDListAccess(DBReader.getQueueIDList(context));
         List<FeedItem> delete;
-        for (FeedItem item : candidates) {
+        for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
-                    && !queue.contains(item) && item.isRead()) {
+                    && !queue.contains(item.getId()) && item.isRead()) {
                 candidates.add(item);
             }
 
@@ -440,7 +441,13 @@ public final class DBTasks {
         }
 
         for (FeedItem item : delete) {
-            DBWriter.deleteFeedMediaOfItem(context, item.getId());
+            try {
+                DBWriter.deleteFeedMediaOfItem(context, item.getId()).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         int counter = delete.size();
