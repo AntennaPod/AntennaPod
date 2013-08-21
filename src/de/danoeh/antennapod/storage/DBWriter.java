@@ -215,7 +215,7 @@ public class DBWriter {
                 media.setPlaybackCompletionDate(new Date());
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                adapter.setMedia(media);
+                adapter.setFeedMediaPlaybackCompletionDate(media);
                 adapter.close();
                 EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
 

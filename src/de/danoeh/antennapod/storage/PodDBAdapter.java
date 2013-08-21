@@ -398,6 +398,17 @@ public class PodDBAdapter {
         }
     }
 
+    public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(media.getId())});
+        } else {
+            Log.e(TAG, "setFeedMediaPlaybackCompletionDate: ID of media was 0");
+        }
+    }
+
     /**
      * Insert all FeedItems of a feed and the feed object itself in a single
      * transaction

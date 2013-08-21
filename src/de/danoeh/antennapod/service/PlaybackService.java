@@ -783,7 +783,6 @@ public class PlaybackService extends Service {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
             DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
-            DBWriter.setFeedMedia(PlaybackService.this, (FeedMedia) media);
             long autoDeleteMediaId = ((FeedComponent) media).getId();
             if (shouldStream) {
                 autoDeleteMediaId = -1;
