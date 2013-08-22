@@ -17,6 +17,7 @@
     <string name="cancel_download_label">Cancel Download</string>
     <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
+    <string name="gpodnet_main_label">gpodder.net</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -50,7 +51,8 @@
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
-    <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
+    <string name="txtvfeedurl_label">Add Podcast by URL</string>
+    <string name="podcastdirectories_label">Podcast directories</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as read</string>
@@ -229,8 +231,6 @@
 
     <!-- Miro Guide -->
     <string name="loading_categories_label">Loading categories...</string>
-    <string name="browse_miroguide_label">Browse Miro Guide</string>
-    <string name="txtv_browse_miroguide_label">Or browse the Miro Guide:</string>
     <string name="miro_guide_label">Miro Guide</string>
     <string name="miro_search_hint">Search Miro Guide</string>
     <string name="popular_label">Popular</string>

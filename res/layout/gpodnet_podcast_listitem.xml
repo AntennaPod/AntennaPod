@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:layout_width="@dimen/thumbnail_length"
+        android:layout_height="@dimen/thumbnail_length"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:layout_marginRight="4dip"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitXY" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/thumbnail_length"
+        android:layout_centerVertical="true"
+        android:layout_toRightOf="@id/imgvCover"
+        android:layout_marginRight="8dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_small" />
+
+        <TextView
+            android:id="@+id/txtvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro" />
+
+    </LinearLayout>
+</RelativeLayout>

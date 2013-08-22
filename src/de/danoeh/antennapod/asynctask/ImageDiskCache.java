@@ -5,6 +5,7 @@ import android.util.Pair;
 import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
@@ -59,7 +60,6 @@ public class ImageDiskCache {
     /**
      * Filename - cache object mapping
      */
-    private static final int KEY_IMAGE_DISK_CACHE = 2;
     private static final String CACHE_FILE_NAME = "cachefile";
     private ExecutorService executor;
     private ConcurrentHashMap<String, DiskCacheObject> diskCache;
@@ -79,7 +79,8 @@ public class ImageDiskCache {
     }
 
     private synchronized void initCacheFolder() {
-        if (diskCache != null) {
+        if (diskCache == null) {
+            if (AppConfig.DEBUG) Log.d(TAG, "Initializing cache folder");
             File cacheFile = new File(cacheFolder, CACHE_FILE_NAME);
             if (cacheFile.exists()) {
                 try {
@@ -178,21 +179,21 @@ public class ImageDiskCache {
      * be loaded from the disk. Otherwise, the image will be downloaded first.
      * The image will be stored in the thumbnail cache.
      */
-    public synchronized void loadThumbnailBitmap(final String url, final ImageView target) {
+    public void loadThumbnailBitmap(final String url, final ImageView target, final int length) {
         final ImageLoader il = ImageLoader.getInstance();
         if (diskCache != null) {
             DiskCacheObject dco = getFromCacheIfAvailable(url);
             if (dco != null) {
-                il.loadThumbnailBitmap(dco.loadImage(), target);
+                il.loadThumbnailBitmap(dco.loadImage(), target, length);
                 return;
             }
         }
-        target.setTag(KEY_IMAGE_DISK_CACHE, url);
+        target.setTag(R.id.image_disk_cache_key, url);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(KEY_IMAGE_DISK_CACHE) == url) {
-                    il.loadThumbnailBitmap(diskCacheObject.loadImage(), target);
+                if (target.getTag(R.id.image_disk_cache_key) == url) {
+                    il.loadThumbnailBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
         });
@@ -204,21 +205,21 @@ public class ImageDiskCache {
      * be loaded from the disk. Otherwise, the image will be downloaded first.
      * The image will be stored in the cover cache.
      */
-    public synchronized void loadCoverBitmap(final String url, final ImageView target) {
+    public void loadCoverBitmap(final String url, final ImageView target, final int length) {
         final ImageLoader il = ImageLoader.getInstance();
         if (diskCache != null) {
             DiskCacheObject dco = getFromCacheIfAvailable(url);
             if (dco != null) {
-                il.loadThumbnailBitmap(dco.loadImage(), target);
+                il.loadThumbnailBitmap(dco.loadImage(), target, length);
                 return;
             }
         }
-        target.setTag(KEY_IMAGE_DISK_CACHE, url);
+        target.setTag(R.id.image_disk_cache_key, url);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(KEY_IMAGE_DISK_CACHE) == url) {
-                    il.loadCoverBitmap(diskCacheObject.loadImage(), target);
+                if (target.getTag(R.id.image_disk_cache_key) == url) {
+                    il.loadCoverBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
         });
@@ -233,6 +234,20 @@ public class ImageDiskCache {
         cacheSize += obj.size;
         if (cacheSize > maxCacheSize) {
             cleanup();
+        }
+        saveCacheInfoFile();
+    }
+
+    private synchronized void saveCacheInfoFile() {
+        OutputStream out = null;
+        try {
+            out = new BufferedOutputStream(new FileOutputStream(new File(cacheFolder, CACHE_FILE_NAME)));
+            ObjectOutputStream objOut = new ObjectOutputStream(out);
+            objOut.writeObject(diskCache);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+            IOUtils.closeQuietly(out);
         }
     }
 
@@ -275,6 +290,7 @@ public class ImageDiskCache {
 
                 final DiskCacheObject dco = new DiskCacheObject(newFile.getAbsolutePath(), size);
                 addToDiskCache(downloadUrl, dco);
+                if (AppConfig.DEBUG) Log.d(TAG, "Image was downloaded");
                 onImageLoaded(dco);
             } catch (MalformedURLException e) {
                 e.printStackTrace();
@@ -287,7 +303,7 @@ public class ImageDiskCache {
         }
     }
 
-    private static class DiskCacheObject {
+    private static class DiskCacheObject implements Serializable{
         private final String fileUrl;
 
         /**
@@ -311,7 +327,6 @@ public class ImageDiskCache {
 
         public ImageLoader.ImageWorkerTaskResource loadImage() {
             return new ImageLoader.ImageWorkerTaskResource() {
-                FileInputStream in = null;
 
                 @Override
                 public InputStream openImageInputStream() {
@@ -325,15 +340,8 @@ public class ImageDiskCache {
 
                 @Override
                 public InputStream reopenImageInputStream(InputStream input) {
-                    if (in != null) {
-                        try {
-                            in.close();
-                            return openImageInputStream();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    return null;
+                    IOUtils.closeQuietly(input);
+                    return openImageInputStream();
                 }
 
                 @Override

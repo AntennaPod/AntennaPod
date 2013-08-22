@@ -320,6 +320,10 @@
             android:configChanges="orientation"
             android:label="@string/organize_queue_label" >
         </activity>
+        <activity
+            android:name=".activity.gpoddernet.GpodnetMainActivity"
+            android:configChanges="orientation"
+            android:label="@string/gpodnet_main_label"/>
 
         <receiver android:name=".receiver.ConnectivityActionReceiver" >
             <intent-filter>
