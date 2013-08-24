@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,7 +13,10 @@ import android.widget.AdapterView;
 import android.widget.GridView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
+import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.gpodnet.PodcastListAdapter;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
@@ -49,11 +54,17 @@ public abstract class PodcastListFragment extends Fragment {
         return root;
     }
 
-    protected abstract void onPodcastSelected(GpodnetPodcast selection);
+    protected void onPodcastSelected(GpodnetPodcast selection) {
+        if (AppConfig.DEBUG) Log.d(TAG, "Selected podcast: " + selection.toString());
+        Intent intent = new Intent(getActivity(), DefaultOnlineFeedViewActivity.class);
+        intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
+        intent.putExtra(DefaultOnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));
+        startActivity(intent);
+    }
 
     protected abstract List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException;
 
-    private void loadData() {
+    protected final void loadData() {
         AsyncTask<Void, Void, List<GpodnetPodcast>> loaderTask = new AsyncTask<Void, Void, List<GpodnetPodcast>>() {
             volatile Exception exception = null;
 
@@ -95,7 +106,7 @@ public abstract class PodcastListFragment extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-               // gridView.setVisibility(View.GONE);
+                gridView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
             }
         };

@@ -49,11 +49,16 @@ public class ImageDiskCache {
         if (path == null) {
             throw new NullPointerException();
         }
+        if (cacheSingletons.containsKey(path)) {
+            return cacheSingletons.get(path);
+        }
+
         ImageDiskCache cache = cacheSingletons.get(path);
         if (cache == null) {
             cache = new ImageDiskCache(path, maxCacheSize);
             cacheSingletons.put(new File(path).getAbsolutePath(), cache);
         }
+        cacheSingletons.put(path, cache);
         return cache;
     }
 
@@ -75,7 +80,7 @@ public class ImageDiskCache {
         }
 
         executor = Executors.newFixedThreadPool(Runtime.getRuntime()
-                .availableProcessors());
+                .availableProcessors() * 2);
     }
 
     private synchronized void initCacheFolder() {
@@ -189,10 +194,11 @@ public class ImageDiskCache {
             }
         }
         target.setTag(R.id.image_disk_cache_key, url);
+        target.setImageResource(R.color.default_image_color);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(R.id.image_disk_cache_key) == url) {
+                if (target.getTag(R.id.image_disk_cache_key).equals(url)) {
                     il.loadThumbnailBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
@@ -215,10 +221,11 @@ public class ImageDiskCache {
             }
         }
         target.setTag(R.id.image_disk_cache_key, url);
+        target.setImageResource(R.color.default_image_color);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(R.id.image_disk_cache_key) == url) {
+                if (target.getTag(R.id.image_disk_cache_key).equals(url)) {
                     il.loadCoverBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }

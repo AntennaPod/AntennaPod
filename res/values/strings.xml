@@ -238,6 +238,11 @@
     <string name="add_feed_label">Add feed</string>
     <string name="miro_feed_added">Feed is being added</string>
 
+    <!-- gpodder.net -->
+    <string name="gpodnet_taglist_header">CATEGORIES</string>
+    <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+    <string name="gpodnet_search_hint">Search gpodder.net</string>
+
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>
     <string name="create_folder_label">Create folder</string>

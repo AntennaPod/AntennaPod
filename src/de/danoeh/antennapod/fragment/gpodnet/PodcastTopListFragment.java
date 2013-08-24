@@ -16,11 +16,6 @@ public class PodcastTopListFragment extends PodcastListFragment {
     private static final int PODCAST_COUNT = 50;
 
     @Override
-    protected void onPodcastSelected(GpodnetPodcast selection) {
-        if (AppConfig.DEBUG) Log.d(TAG, "Selected: " + selection.getTitle());
-    }
-
-    @Override
     protected List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException {
         return service.getPodcastToplist(PODCAST_COUNT);
     }
