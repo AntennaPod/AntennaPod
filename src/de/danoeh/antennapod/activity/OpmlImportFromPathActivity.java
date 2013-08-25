@@ -137,15 +137,6 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found which really should be there");
             // this should never happen as it is a file we have just chosen
-        } finally {
-            if (mReader != null) {
-                try {
-                    mReader.close();
-                } catch (IOException ioe) {
-                    Log.w(TAG, "IOException while importing OPML: " +
-                        ioe.getMessage());
-                }
-            }
         }
     }
 
