@@ -800,8 +800,9 @@ public class DownloadService extends Service {
             media.setFile_url(request.getDestination());
 
             // Get duration
-            MediaPlayer mediaplayer = new MediaPlayer();
+            MediaPlayer mediaplayer = null;
             try {
+                mediaplayer = new MediaPlayer();
                 mediaplayer.setDataSource(media.getFile_url());
                 mediaplayer.prepare();
                 media.setDuration(mediaplayer.getDuration());
@@ -810,8 +811,13 @@ public class DownloadService extends Service {
                 mediaplayer.reset();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (RuntimeException e) {
+                // Thrown by MediaPlayer initialization on some devices
+                e.printStackTrace();
             } finally {
-                mediaplayer.release();
+                if (mediaplayer != null) {
+                    mediaplayer.release();
+                }
             }
 
             if (media.getItem().getChapters() == null) {

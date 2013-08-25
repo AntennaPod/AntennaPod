@@ -84,6 +84,14 @@
             <artifactId>library</artifactId>
             <version>2.4.0</version>
         </dependency>
+        <dependency>
+            <groupId>com.aocate</groupId>
+            <artifactId>presto_client</artifactId>
+            <version>0.8.5</version>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/presto_client-0.8.5.jar</systemPath>
+        </dependency>
     </dependencies>
 
     <build>
@@ -212,7 +220,7 @@
                             </manifest>
                             <proguard>
                                 <skip>false</skip>
-                                <config>proguard.cfg</config>
+                                <config>proguard-mvn.cfg</config>
                             </proguard>
                         </configuration>
                         <executions>

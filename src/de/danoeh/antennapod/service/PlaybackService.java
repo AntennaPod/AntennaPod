@@ -45,9 +45,13 @@ import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.DuckType;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.util.playback.AudioPlayer;
+import de.danoeh.antennapod.util.playback.IPlayer;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.Playable.PlayableException;
+import de.danoeh.antennapod.util.playback.VideoPlayer;
 import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
@@ -119,7 +123,12 @@ public class PlaybackService extends Service {
      */
     public static final int NOTIFICATION_TYPE_PLAYBACK_END = 7;
 
-    /**
+    /** 
+     * Playback speed has changed
+     * */
+    public static final int NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE = 8;
+    
+     /**
      * Returned by getPositionSafe() or getDurationSafe() if the playbackService
      * is in an invalid state.
      */
@@ -132,13 +141,12 @@ public class PlaybackService extends Service {
 
     private static final int NOTIFICATION_ID = 1;
 
+	private volatile IPlayer player;
+	private RemoteControlClient remoteControlClient;
     private AudioManager audioManager;
     private ComponentName mediaButtonReceiver;
 
-    private MediaPlayer player;
-    private RemoteControlClient remoteControlClient;
-
-    private Playable media;
+    private volatile Playable media;
 
     /**
      * True if media should be streamed (Extracted from Intent Extra) .
@@ -252,7 +260,6 @@ public class PlaybackService extends Service {
         }
         );
         dbLoaderExecutor = Executors.newSingleThreadExecutor();
-        player = createMediaPlayer();
 
         mediaButtonReceiver = new ComponentName(getPackageName(),
                 MediaButtonReceiver.class.getName());
@@ -273,21 +280,42 @@ public class PlaybackService extends Service {
         loadQueue();
     }
 
-    private MediaPlayer createMediaPlayer() {
-        return createMediaPlayer(new MediaPlayer());
+    private IPlayer createMediaPlayer() {
+        IPlayer player;
+        if (media == null || media.getMediaType() == MediaType.VIDEO) {
+            player = new VideoPlayer();
+        } else {
+            player = new AudioPlayer(this);
+        }
+        return createMediaPlayer(player);
     }
 
-    private MediaPlayer createMediaPlayer(MediaPlayer mp) {
-        if (mp != null) {
-            mp.setOnPreparedListener(preparedListener);
-            mp.setOnCompletionListener(completionListener);
-            mp.setOnSeekCompleteListener(onSeekCompleteListener);
-            mp.setOnErrorListener(onErrorListener);
-            mp.setOnBufferingUpdateListener(onBufferingUpdateListener);
-            mp.setOnInfoListener(onInfoListener);
-        }
-        return mp;
-    }
+	private IPlayer createMediaPlayer(IPlayer mp) {
+		if (mp != null && media != null) {
+			if (media.getMediaType() == MediaType.AUDIO) {
+				((AudioPlayer) mp).setOnPreparedListener(audioPreparedListener);
+				((AudioPlayer) mp)
+						.setOnCompletionListener(audioCompletionListener);
+				((AudioPlayer) mp)
+						.setOnSeekCompleteListener(audioSeekCompleteListener);
+				((AudioPlayer) mp).setOnErrorListener(audioErrorListener);
+				((AudioPlayer) mp)
+						.setOnBufferingUpdateListener(audioBufferingUpdateListener);
+				((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
+			} else {
+				((VideoPlayer) mp).setOnPreparedListener(videoPreparedListener);
+				((VideoPlayer) mp)
+						.setOnCompletionListener(videoCompletionListener);
+				((VideoPlayer) mp)
+						.setOnSeekCompleteListener(videoSeekCompleteListener);
+				((VideoPlayer) mp).setOnErrorListener(videoErrorListener);
+				((VideoPlayer) mp)
+						.setOnBufferingUpdateListener(videoBufferingUpdateListener);
+				((VideoPlayer) mp).setOnInfoListener(videoInfoListener);
+			}
+		}
+		return mp;
+	}
 
     @SuppressLint("NewApi")
     @Override
@@ -475,7 +503,7 @@ public class PlaybackService extends Service {
 			seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
 			break;
  		  }
-		} 
+		}
 	}
 
     /**
@@ -568,6 +596,7 @@ public class PlaybackService extends Service {
             Log.d(TAG, "Setting up media player");
         try {
             MediaType mediaType = media.getMediaType();
+            player = createMediaPlayer();
             if (mediaType == MediaType.AUDIO) {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Mime type is audio");
@@ -662,105 +691,169 @@ public class PlaybackService extends Service {
 		}
 	}
 
-	private MediaPlayer.OnPreparedListener preparedListener = new MediaPlayer.OnPreparedListener() {
-		@Override
-		public void onPrepared(MediaPlayer mp) {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "Resource prepared");
-			mp.seekTo(media.getPosition());
-			if (media.getDuration() == 0) {
-				if (AppConfig.DEBUG)
-					Log.d(TAG, "Setting duration of media");
-				media.setDuration(mp.getDuration());
-			}
-			setStatus(PlayerStatus.PREPARED);
-			if (chapterLoader != null) {
-				chapterLoader.interrupt();
-			}
-			chapterLoader = new Thread() {
-				@Override
-				public void run() {
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Chapter loader started");
-					if (media != null && media.getChapters() == null) {
-						media.loadChapterMarks();
-						if (!isInterrupted() && media.getChapters() != null) {
-							sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-									0);
-						}
-					}
-					if (AppConfig.DEBUG)
-						Log.d(TAG, "Chapter loader stopped");
-				}
-			};
-			chapterLoader.start();
+    private final com.aocate.media.MediaPlayer.OnPreparedListener audioPreparedListener = new com.aocate.media.MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(com.aocate.media.MediaPlayer mp) {
+            genericOnPrepared(mp);
+        }
+    };
 
-			if (startWhenPrepared) {
-				play();
-			}
-		}
-	};
+    private final android.media.MediaPlayer.OnPreparedListener videoPreparedListener = new android.media.MediaPlayer.OnPreparedListener() {
+        @Override
+        public void onPrepared(android.media.MediaPlayer mp) {
+            genericOnPrepared(mp);
+        }
+    };
 
-	private MediaPlayer.OnSeekCompleteListener onSeekCompleteListener = new MediaPlayer.OnSeekCompleteListener() {
+    private final void genericOnPrepared(Object inObj) {
+        IPlayer mp = DuckType.coerce(inObj).to(IPlayer.class);
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Resource prepared");
+        mp.seekTo(media.getPosition());
+        if (media.getDuration() == 0) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Setting duration of media");
+            media.setDuration(mp.getDuration());
+        }
+        setStatus(PlayerStatus.PREPARED);
+        if (chapterLoader != null) {
+            chapterLoader.interrupt();
+        }
+        chapterLoader = new Thread() {
+            @Override
+            public void run() {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Chapter loader started");
+                if (media != null && media.getChapters() == null) {
+                    media.loadChapterMarks();
+                    if (!isInterrupted() && media.getChapters() != null) {
+                        sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
+                                0);
+                    }
+                }
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Chapter loader stopped");
+            }
+        };
+        chapterLoader.start();
 
-		@Override
-		public void onSeekComplete(MediaPlayer mp) {
-			if (status == PlayerStatus.SEEKING) {
-				setStatus(statusBeforeSeek);
-			}
+        if (startWhenPrepared) {
+            play();
+        }
+    }
 
-		}
-	};
+    private final com.aocate.media.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener = new com.aocate.media.MediaPlayer.OnSeekCompleteListener() {
+        @Override
+        public void onSeekComplete(com.aocate.media.MediaPlayer mp) {
+            genericSeekCompleteListener();
+        }
+    };
 
-	private MediaPlayer.OnInfoListener onInfoListener = new MediaPlayer.OnInfoListener() {
+    private final android.media.MediaPlayer.OnSeekCompleteListener videoSeekCompleteListener = new android.media.MediaPlayer.OnSeekCompleteListener() {
+        @Override
+        public void onSeekComplete(android.media.MediaPlayer mp) {
+            genericSeekCompleteListener();
+        }
+    };
 
-		@Override
-		public boolean onInfo(MediaPlayer mp, int what, int extra) {
-			switch (what) {
-			case MediaPlayer.MEDIA_INFO_BUFFERING_START:
-				sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
-				return true;
-			case MediaPlayer.MEDIA_INFO_BUFFERING_END:
-				sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
-				return true;
-			default:
-				return false;
-			}
-		}
-	};
+    private final void genericSeekCompleteListener() {
+        if (status == PlayerStatus.SEEKING) {
+            setStatus(statusBeforeSeek);
+        }
+    }
 
-	private MediaPlayer.OnErrorListener onErrorListener = new MediaPlayer.OnErrorListener() {
-		private static final String TAG = "PlaybackService.onErrorListener";
+    private final com.aocate.media.MediaPlayer.OnInfoListener audioInfoListener = new com.aocate.media.MediaPlayer.OnInfoListener() {
+        @Override
+        public boolean onInfo(com.aocate.media.MediaPlayer mp, int what,
+                              int extra) {
+            return genericInfoListener(what);
+        }
+    };
 
-		@Override
-		public boolean onError(MediaPlayer mp, int what, int extra) {
-			Log.w(TAG, "An error has occured: " + what);
-			if (mp.isPlaying()) {
-				pause(true, true);
-			}
-			sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
-			setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
-			stopSelf();
-			return true;
-		}
-	};
+    private final android.media.MediaPlayer.OnInfoListener videoInfoListener = new android.media.MediaPlayer.OnInfoListener() {
+        @Override
+        public boolean onInfo(android.media.MediaPlayer mp, int what, int extra) {
+            return genericInfoListener(what);
+        }
+    };
 
-	private MediaPlayer.OnCompletionListener completionListener = new MediaPlayer.OnCompletionListener() {
+    private boolean genericInfoListener(int what) {
+        switch (what) {
+            case MediaPlayer.MEDIA_INFO_BUFFERING_START:
+                sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_START, 0);
+                return true;
+            case MediaPlayer.MEDIA_INFO_BUFFERING_END:
+                sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_END, 0);
+                return true;
+            default:
+                return false;
+        }
+    }
 
-		@Override
-		public void onCompletion(MediaPlayer mp) {
-			endPlayback(true);
-		}
-	};
+    private final com.aocate.media.MediaPlayer.OnErrorListener audioErrorListener = new com.aocate.media.MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(com.aocate.media.MediaPlayer mp, int what,
+                               int extra) {
+            return genericOnError(mp, what, extra);
+        }
+    };
 
-	private MediaPlayer.OnBufferingUpdateListener onBufferingUpdateListener = new MediaPlayer.OnBufferingUpdateListener() {
+    private final android.media.MediaPlayer.OnErrorListener videoErrorListener = new android.media.MediaPlayer.OnErrorListener() {
+        @Override
+        public boolean onError(android.media.MediaPlayer mp, int what, int extra) {
+            return genericOnError(mp, what, extra);
+        }
+    };
 
-		@Override
-		public void onBufferingUpdate(MediaPlayer mp, int percent) {
-			sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
+    private boolean genericOnError(Object inObj, int what, int extra) {
+        final String TAG = "PlaybackService.onErrorListener";
+        Log.w(TAG, "An error has occured: " + what + " " + extra);
+        IPlayer mp = DuckType.coerce(inObj).to(IPlayer.class);
+        if (mp.isPlaying()) {
+            pause(true, true);
+        }
+        sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
+        setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
+        stopSelf();
+        return true;
+    }
 
-		}
-	};
+    private final com.aocate.media.MediaPlayer.OnCompletionListener audioCompletionListener = new com.aocate.media.MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(com.aocate.media.MediaPlayer mp) {
+            genericOnCompletion();
+        }
+    };
+
+    private final android.media.MediaPlayer.OnCompletionListener videoCompletionListener = new android.media.MediaPlayer.OnCompletionListener() {
+        @Override
+        public void onCompletion(android.media.MediaPlayer mp) {
+            genericOnCompletion();
+        }
+    };
+
+    private void genericOnCompletion() {
+        endPlayback(true);
+    }
+
+    private final com.aocate.media.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new com.aocate.media.MediaPlayer.OnBufferingUpdateListener() {
+        @Override
+        public void onBufferingUpdate(com.aocate.media.MediaPlayer mp,
+                                      int percent) {
+            genericOnBufferingUpdate(percent);
+        }
+    };
+
+    private final android.media.MediaPlayer.OnBufferingUpdateListener videoBufferingUpdateListener = new android.media.MediaPlayer.OnBufferingUpdateListener() {
+        @Override
+        public void onBufferingUpdate(android.media.MediaPlayer mp, int percent) {
+            genericOnBufferingUpdate(percent);
+        }
+    };
+
+    private void genericOnBufferingUpdate(int percent) {
+        sendNotificationBroadcast(NOTIFICATION_TYPE_BUFFER_UPDATE, percent);
+    }
 
     private void endPlayback(boolean playNextEpisode) {
         if (AppConfig.DEBUG)
@@ -862,7 +955,7 @@ public class PlaybackService extends Service {
 	/**
 	 * Saves the current position and pauses playback. Note that, if audiofocus
 	 * is abandoned, the lockscreen controls will also disapear.
-	 * 
+	 *
 	 * @param abandonFocus
 	 *            is true if the service should release audio focus
 	 * @param reinit
@@ -938,6 +1031,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Resuming/Starting playback");
 				writePlaybackPreferences();
 
+				setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
 				player.start();
 				if (status != PlayerStatus.PAUSED) {
 					player.seekTo((int) media.getPosition());
@@ -1123,7 +1217,7 @@ public class PlaybackService extends Service {
 
 	/**
 	 * Seek a specific position from the current position
-	 * 
+	 *
 	 * @param delta
 	 *            offset from current position (positive or negative)
 	 * */
@@ -1371,7 +1465,7 @@ public class PlaybackService extends Service {
 				}
 			}
 		}
-	};
+    };
 
 	/** Periodically saves the position of the media file */
 	class PositionSaver implements Runnable {
@@ -1473,7 +1567,7 @@ public class PlaybackService extends Service {
 		return media;
 	}
 
-	public MediaPlayer getPlayer() {
+	public IPlayer getPlayer() {
 		return player;
 	}
 
@@ -1484,6 +1578,53 @@ public class PlaybackService extends Service {
 	public void setStartWhenPrepared(boolean startWhenPrepared) {
 		this.startWhenPrepared = startWhenPrepared;
 		postStatusUpdateIntent();
+	}
+
+	public boolean canSetSpeed() {
+		if (player != null && media != null && media.getMediaType() == MediaType.AUDIO) {
+			return ((AudioPlayer) player).canSetSpeed();
+		}
+		return false;
+	}
+
+	public boolean canSetPitch() {
+		if (player != null && media != null && media.getMediaType() == MediaType.AUDIO) {
+			return ((AudioPlayer) player).canSetPitch();
+		}
+		return false;
+	}
+
+	public void setSpeed(float speed) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				audioPlayer.setPlaybackSpeed((float) speed);
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Playback speed was set to " + speed);
+				sendNotificationBroadcast(
+						NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE, 0);
+			}
+		}
+	}
+
+	public void setPitch(float pitch) {
+		if (media != null && media.getMediaType() == MediaType.AUDIO) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetPitch()) {
+				audioPlayer.setPlaybackPitch((float) pitch);
+			}
+		}
+	}
+
+	public float getCurrentPlaybackSpeed() {
+		if (media.getMediaType() == MediaType.AUDIO
+				&& player instanceof AudioPlayer) {
+			AudioPlayer audioPlayer = (AudioPlayer) player;
+			if (audioPlayer.canSetSpeed()) {
+				return audioPlayer.getCurrentSpeedMultiplier();
+			}
+		}
+		return -1;
 	}
 
 	/**

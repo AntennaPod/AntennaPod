@@ -173,6 +173,12 @@ public class ExternalPlayerFragment extends Fragment {
 							.newOnPlayButtonClickListener());
 				}
 			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				// TODO Auto-generated method stub
+
+			}
 		};
 	}
 
