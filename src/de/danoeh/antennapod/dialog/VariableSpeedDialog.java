@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -32,10 +33,15 @@ public class VariableSpeedDialog {
 				new DialogInterface.OnClickListener() {
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
-						Intent playStoreIntent = new Intent(
-								Intent.ACTION_VIEW,
-								Uri.parse("market://details?id=com.falconware.prestissimo"));
-						context.startActivity(playStoreIntent);
+                        try {
+						    Intent playStoreIntent = new Intent(
+								    Intent.ACTION_VIEW,
+							    	Uri.parse("market://details?id=com.falconware.prestissimo"));
+						    context.startActivity(playStoreIntent);
+                        } catch (ActivityNotFoundException e) {
+                            // this is usually thrown on an emulator if the Android market is not installed
+                            e.printStackTrace();
+                        }
 					}
 				});
 		builder.create().show();
