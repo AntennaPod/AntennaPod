@@ -11,6 +11,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 
 import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.methods.HttpGet;
@@ -68,6 +69,11 @@ public class HttpDownloader extends Downloader {
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
+            Header contentEncodingHeader = response.getFirstHeader("Content-Encoding");
+
+            final boolean isGzip = contentEncodingHeader != null &&
+                    contentEncodingHeader.getValue().equalsIgnoreCase("gzip");
+
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Response code is " + responseCode);
 
@@ -129,7 +135,9 @@ public class HttpDownloader extends Downloader {
                 onCancelled();
             } else {
                 out.flush();
-                if (request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
+                // check if size specified in the response header is the same as the size of the
+                // written file. This check cannot be made if compression was used
+                if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
                         request.getSoFar() != request.getSize()) {
                     onFail(DownloadError.ERROR_IO_ERROR,
                             "Download completed but size: " +

@@ -441,7 +441,13 @@ public final class DBTasks {
         }
 
         for (FeedItem item : delete) {
-            DBWriter.deleteFeedMediaOfItem(context, item.getId());
+            try {
+                DBWriter.deleteFeedMediaOfItem(context, item.getId()).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         int counter = delete.size();

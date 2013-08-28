@@ -3,6 +3,7 @@ package instrumentationTest.de.test.antennapod.storage;
 import android.content.Context;
 import android.database.Cursor;
 import android.test.InstrumentationTestCase;
+import android.util.Log;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -14,10 +15,10 @@ import de.danoeh.antennapod.storage.PodDBAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
@@ -25,7 +26,9 @@ import java.util.concurrent.TimeoutException;
  * Test class for DBWriter
  */
 public class DBWriterTest extends InstrumentationTestCase {
+    private static final String TAG = "DBWriterTest";
     private static final String TEST_FOLDER = "testDBWriter";
+    private static final long TIMEOUT = 5L;
 
     @Override
     protected void tearDown() throws Exception {
@@ -85,7 +88,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         // create Feed image
@@ -121,7 +124,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getMedia().getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         // check if files still exist
         assertFalse(imgFile.exists());
@@ -151,7 +154,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         feed.setImage(null);
@@ -181,7 +184,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getMedia().getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         // check if files still exist
         for (File f : itemFiles) {
@@ -207,7 +210,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(null);
 
         // create Feed image
@@ -225,7 +228,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         assertTrue(feed.getId() != 0);
         assertTrue(feed.getImage().getId() != 0);
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         // check if files still exist
         assertFalse(imgFile.exists());
@@ -244,7 +247,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         // create Feed image
@@ -272,7 +275,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         // check if files still exist
         assertFalse(imgFile.exists());
@@ -296,7 +299,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         // create Feed image
@@ -341,7 +344,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         queueCursor.close();
 
         adapter.close();
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
         adapter.open();
 
         Cursor c = adapter.getFeedCursor(feed.getId());
@@ -368,7 +371,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         File destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
         assertNotNull(destFolder);
 
-        Feed feed = new Feed ("url", new Date(), "title");
+        Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
 
         // create Feed image
@@ -402,7 +405,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getMedia().getId() != 0);
         }
 
-        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(5, TimeUnit.SECONDS);
+        DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
 
         adapter = new PodDBAdapter(getInstrumentation().getContext());
         adapter.open();
@@ -422,13 +425,30 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
-    public void testAddItemToPlaybackHistoryNotPlayedYet() throws ExecutionException, InterruptedException {
-        FeedMedia media = new FeedMedia(0, null, 10, 0, 1, "mime", null, "url", false, null);
-        DBWriter.addItemToPlaybackHistory(getInstrumentation().getTargetContext(), media).get();
-        assertTrue(media.getId() != 0);
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+    private FeedMedia playbackHistorySetup(Date playbackCompletionDate) {
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+        FeedMedia media = new FeedMedia(0, item, 10, 0, 1, "mime", null, "url", false, playbackCompletionDate);
+        feed.getItems().add(item);
+        item.setMedia(media);
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        media = DBReader.getFeedMedia(getInstrumentation().getTargetContext(), media.getId());
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+        assertTrue(media.getId() != 0);
+        return media;
+    }
+
+    public void testAddItemToPlaybackHistoryNotPlayedYet() throws ExecutionException, InterruptedException {
+        final Context context = getInstrumentation().getTargetContext();
+
+        FeedMedia media = playbackHistorySetup(null);
+        DBWriter.addItemToPlaybackHistory(context, media).get();
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        media = DBReader.getFeedMedia(context, media.getId());
         adapter.close();
 
         assertNotNull(media);
@@ -437,17 +457,228 @@ public class DBWriterTest extends InstrumentationTestCase {
 
     public void testAddItemToPlaybackHistoryAlreadyPlayed() throws ExecutionException, InterruptedException {
         final long OLD_DATE = 0;
-        FeedMedia media = new FeedMedia(0, null, 10, 0, 1, "mime", null, "url", false, new Date(OLD_DATE));
+        final Context context = getInstrumentation().getTargetContext();
+
+        FeedMedia media = playbackHistorySetup(new Date(OLD_DATE));
         DBWriter.addItemToPlaybackHistory(getInstrumentation().getTargetContext(), media).get();
-        assertTrue(media.getId() != 0);
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        media = DBReader.getFeedMedia(getInstrumentation().getTargetContext(), media.getId());
+        media = DBReader.getFeedMedia(context, media.getId());
         adapter.close();
 
         assertNotNull(media);
         assertNotNull(media.getPlaybackCompletionDate());
         assertFalse(OLD_DATE == media.getPlaybackCompletionDate().getTime());
+    }
+
+    private Feed queueTestSetupMultipleItems(final int NUM_ITEMS) throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), true, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+        List<Future<?>> futures = new ArrayList<Future<?>>();
+        for (FeedItem item : feed.getItems()) {
+            futures.add(DBWriter.addQueueItem(context, item.getId()));
+        }
+        for (Future<?> f : futures) {
+            f.get(TIMEOUT, TimeUnit.SECONDS);
+        }
+        return feed;
+    }
+
+    public void testAddQueueItemSingleItem() throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+        feed.getItems().add(item);
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(item.getId() != 0);
+        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+
+        adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getQueueIDCursor();
+        assertTrue(cursor.moveToFirst());
+        assertTrue(cursor.getLong(0) == item.getId());
+        cursor.close();
+        adapter.close();
+    }
+
+    public void testAddQueueItemSingleItemAlreadyInQueue() throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+        feed.getItems().add(item);
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(item.getId() != 0);
+        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+
+        adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getQueueIDCursor();
+        assertTrue(cursor.moveToFirst());
+        assertTrue(cursor.getLong(0) == item.getId());
+        cursor.close();
+        adapter.close();
+
+        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        adapter = new PodDBAdapter(context);
+        adapter.open();
+        cursor = adapter.getQueueIDCursor();
+        assertTrue(cursor.moveToFirst());
+        assertTrue(cursor.getLong(0) == item.getId());
+        assertTrue(cursor.getCount() == 1);
+        cursor.close();
+        adapter.close();
+    }
+
+    public void testAddQueueItemMultipleItems() throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+
+        Feed feed = queueTestSetupMultipleItems(NUM_ITEMS);
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getQueueIDCursor();
+        assertTrue(cursor.moveToFirst());
+        assertTrue(cursor.getCount() == NUM_ITEMS);
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            assertTrue(cursor.moveToPosition(i));
+            assertTrue(cursor.getLong(0) == feed.getItems().get(i).getId());
+        }
+        cursor.close();
+        adapter.close();
+    }
+
+    public void testClearQueue() throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+
+        Feed feed = queueTestSetupMultipleItems(NUM_ITEMS);
+        DBWriter.clearQueue(context).get(TIMEOUT, TimeUnit.SECONDS);
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getQueueIDCursor();
+        assertFalse(cursor.moveToFirst());
+        cursor.close();
+        adapter.close();
+    }
+
+    public void testRemoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
+        final int NUM_ITEMS = 10;
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), true, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+        for (int removeIndex = 0; removeIndex < NUM_ITEMS; removeIndex++) {
+            final long id = feed.getItems().get(removeIndex).getId();
+            adapter = new PodDBAdapter(context);
+            adapter.open();
+            adapter.setQueue(feed.getItems());
+            adapter.close();
+
+            DBWriter.removeQueueItem(context, id, false).get(TIMEOUT, TimeUnit.SECONDS);
+            adapter = new PodDBAdapter(context);
+            adapter.open();
+            Cursor queue = adapter.getQueueIDCursor();
+            assertTrue(queue.getCount() == NUM_ITEMS - 1);
+            for (int i = 0; i < queue.getCount(); i++) {
+                assertTrue(queue.moveToPosition(i));
+                final long queueID = queue.getLong(0);
+                assertTrue(queueID != id);  // removed item is no longer in queue
+                boolean idFound = false;
+                for (FeedItem item : feed.getItems()) { // items that were not removed are still in the queue
+                    idFound = idFound | (item.getId() == queueID);
+                }
+                assertTrue(idFound);
+            }
+
+            queue.close();
+            adapter.close();
+        }
+    }
+
+    public void testMoveQueueItem() throws InterruptedException, ExecutionException, TimeoutException {
+        final int NUM_ITEMS = 10;
+        final Context context = getInstrumentation().getTargetContext();
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), true, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+        for (int from = 0; from < NUM_ITEMS; from++) {
+            for (int to = 0; to < NUM_ITEMS; to++) {
+                if (from == to) {
+                    continue;
+                }
+                Log.d(TAG, String.format("testMoveQueueItem: From=%d, To=%d", from, to));
+                final long fromID = feed.getItems().get(from).getId();
+
+                adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setQueue(feed.getItems());
+                adapter.close();
+
+                DBWriter.moveQueueItem(context, from, to, false).get(TIMEOUT, TimeUnit.SECONDS);
+                adapter = new PodDBAdapter(context);
+                adapter.open();
+                Cursor queue = adapter.getQueueIDCursor();
+                assertTrue(queue.getCount() == NUM_ITEMS);
+                assertTrue(queue.moveToPosition(from));
+                assertFalse(queue.getLong(0) == fromID);
+                assertTrue(queue.moveToPosition(to));
+                assertTrue(queue.getLong(0) == fromID);
+
+                queue.close();
+                adapter.close();
+            }
+        }
     }
 
 }
