@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Data Object for a XML message
@@ -14,7 +16,7 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
  * 
  */
 public class FeedItem extends FeedComponent implements
-		ImageLoader.ImageWorkerTaskResource {
+		ImageLoader.ImageWorkerTaskResource, FlattrThing {
 
 	/** The id/guid that can be found in the rss/atom feed. Might not be set. */
 	private String itemIdentifier;
@@ -39,10 +41,12 @@ public class FeedItem extends FeedComponent implements
 	private Feed feed;
 	private boolean read;
 	private String paymentLink;
+	private FlattrStatus flattrStatus;
 	private List<Chapter> chapters;
 
 	public FeedItem() {
 		this.read = true;
+		this.flattrStatus = new FlattrStatus();
 	}
 
 	public void updateFromOther(FeedItem other) {
@@ -185,6 +189,14 @@ public class FeedItem extends FeedComponent implements
 		this.contentEncoded = contentEncoded;
 	}
 
+	public void setFlattrStatus(FlattrStatus status) {
+		this.flattrStatus = status;
+	}
+	
+	public FlattrStatus getFlattrStatus() {
+		return flattrStatus;
+	}
+	
 	public String getPaymentLink() {
 		return paymentLink;
 	}

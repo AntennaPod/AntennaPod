@@ -9,12 +9,16 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 
 public class FeedMedia extends FeedFile implements Playable {
+	private static final String TAG = "FeedMedia";
 
 	public static final int FEEDFILETYPE_FEEDMEDIA = 2;
 	public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
@@ -24,6 +28,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	private int duration;
 	private int position; // Current position in file
+	private int played_duration; 
 	private long size; // File size in Byte
 	private String mime_type;
 	private FeedItem item;
@@ -37,7 +42,7 @@ public class FeedMedia extends FeedFile implements Playable {
 		this.mime_type = mime_type;
 	}
 
-	public FeedMedia(long id, FeedItem item, int duration, int position,
+	public FeedMedia(long id, FeedItem item, int duration, int position, int played_duration,
 			long size, String mime_type, String file_url, String download_url,
 			boolean downloaded, Date playbackCompletionDate) {
 		super(file_url, download_url, downloaded);
@@ -45,6 +50,7 @@ public class FeedMedia extends FeedFile implements Playable {
 		this.item = item;
 		this.duration = duration;
 		this.position = position;
+		this.played_duration = played_duration;
 		this.size = size;
 		this.mime_type = mime_type;
 		this.playbackCompletionDate = playbackCompletionDate;
@@ -128,11 +134,18 @@ public class FeedMedia extends FeedFile implements Playable {
 		this.duration = duration;
 	}
 
+	public int getPlayedDuration() {
+		return played_duration;
+	}
+	
 	public int getPosition() {
 		return position;
 	}
 
 	public void setPosition(int position) {
+		if (position > this.position)
+			played_duration += (position - this.position);
+			
 		this.position = position;
 	}
 
@@ -263,7 +276,16 @@ public class FeedMedia extends FeedFile implements Playable {
 
 	@Override
 	public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
-		position = newPosition;
+	    setPosition(newPosition);
+
+	    // Auto flattr
+	    if (UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() && (played_duration > 0.8*duration)) {
+	    	Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(played_duration) + " is 80% of file duration " + Integer.toString(duration));
+	    	item.getFlattrStatus().setFlattrQueue();
+	    	FeedManager.getInstance().setFeedItem(PodcastApp.getInstance(), item);			
+	    	new FlattrClickWorker(PodcastApp.getInstance(), true).executeAsync();
+	    }
+			
 		FeedManager.getInstance().setFeedMedia(PodcastApp.getInstance(), this);
 	}
 

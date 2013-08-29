@@ -52,6 +52,12 @@
             android:key="prefRevokeAccess"
             android:summary="@string/pref_revokeAccess_sum"
             android:title="@string/pref_revokeAccess_title" />
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="pref_auto_flattr"
+            android:summary="@string/pref_auto_flattr_sum"
+            android:title="@string/pref_auto_flattr_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref" >
         <Preference android:title="@string/choose_data_directory" android:key="prefChooseDataDir"/><Preference

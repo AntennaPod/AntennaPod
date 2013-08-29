@@ -1,12 +1,20 @@
 package de.danoeh.antennapod.feed;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.net.URL;
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.ListIterator;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.TreeSet;
@@ -14,18 +22,25 @@ import java.util.Comparator;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import org.shredzone.flattr4j.model.Flattr;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Handler;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.DownloadStatus;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -40,6 +55,8 @@ import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Singleton class that - provides access to all Feeds and FeedItems and to
@@ -70,13 +87,13 @@ public class FeedManager {
 
 	/** Contains the last played items */
 	private List<FeedItem> playbackHistory;
-
+	
 	/** Maximum number of items in the playback history. */
 	private static final int PLAYBACK_HISTORY_SIZE = 15;
 
 	private DownloadRequester requester = DownloadRequester.getInstance();
 	private EventDistributor eventDist = EventDistributor.getInstance();
-
+	
 	/**
 	 * Should be used to change the content of the arrays from another thread to
 	 * ensure that arrays are only modified on the main thread.
@@ -498,6 +515,7 @@ public class FeedManager {
 	private void refreshFeeds(final Context context, final List<Feed> feedList) {
 		if (!isStartingFeedRefresh) {
 			isStartingFeedRefresh = true;
+			
 			AsyncTask<Void, Void, Void> updateWorker = new AsyncTask<Void, Void, Void>() {
 
 				@Override
@@ -509,7 +527,7 @@ public class FeedManager {
 				}
 
 				@Override
-				protected Void doInBackground(Void... params) {
+				protected Void doInBackground(Void... params) {					
 					for (Feed feed : feedList) {
 						try {
 							refreshFeed(context, feed);
@@ -532,6 +550,12 @@ public class FeedManager {
 			} else {
 				updateWorker.execute();
 			}
+
+			if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+			new FlattrClickWorker(context).executeAsync(); // flattr pending things
+			
+			if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+			new FlattrStatusFetcher(context).executeAsync();
 		}
 
 	}
@@ -1441,6 +1465,8 @@ public class FeedManager {
 						.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX));
 				feed.setPaymentLink(feedlistCursor
 						.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX));
+				feed.setFlattrStatus(new FlattrStatus(feedlistCursor
+						.getLong(feedlistCursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS))));
 				feed.setAuthor(feedlistCursor
 						.getString(PodDBAdapter.KEY_AUTHOR_INDEX));
 				feed.setLanguage(feedlistCursor
@@ -1495,6 +1521,8 @@ public class FeedManager {
 						.getLong(PodDBAdapter.IDX_FI_SMALL_PUBDATE)));
 				item.setPaymentLink(itemlistCursor
 						.getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK));
+				item.setFlattrStatus(new FlattrStatus(itemlistCursor
+						.getLong(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS))));
 				long mediaId = itemlistCursor
 						.getLong(PodDBAdapter.IDX_FI_SMALL_MEDIA);
 				if (mediaId != 0) {
@@ -1583,6 +1611,7 @@ public class FeedManager {
 							item,
 							cursor.getInt(PodDBAdapter.KEY_DURATION_INDEX),
 							cursor.getInt(PodDBAdapter.KEY_POSITION_INDEX),
+							cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX),
 							cursor.getLong(PodDBAdapter.KEY_SIZE_INDEX),
 							cursor.getString(PodDBAdapter.KEY_MIME_TYPE_INDEX),
 							cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
@@ -1790,6 +1819,119 @@ public class FeedManager {
 
 	List<Feed> getFeeds() {
 		return feeds;
+	}
+
+	/** 
+	 * Return List of things to flattr
+	 * @return
+	 */
+	public List<FlattrThing> getFlattrQueue() {
+		List<FlattrThing> l = new LinkedList<FlattrThing>();
+		
+		for (Feed feed: feeds) {
+			if (feed.getFlattrStatus().getFlattrQueue())
+				l.add(feed);
+			
+			for (FeedItem item: feed.getItems())
+				if (item.getFlattrStatus().getFlattrQueue())
+					l.add(item);
+		}
+
+		Log.d(TAG, "Returning flattrQueueIterator for queue with " + l.size() + " items.");
+		return l;
+	}
+	
+	public boolean getFlattrQueueEmpty() {
+		for (Feed feed: feeds) {
+			if (feed.getFlattrStatus().getFlattrQueue())
+				return false;
+			
+			for (FeedItem item: feed.getItems())
+				if (item.getFlattrStatus().getFlattrQueue())
+					return false;
+		}
+		
+		return true;
+	}
+	
+	private String normalizeURI(String uri) {
+		String normalizedURI = null;
+		if (uri != null) {
+			try {
+				normalizedURI = (new URI(uri)).normalize().toString();
+				if (! normalizedURI.endsWith("/"))
+					normalizedURI = normalizedURI + "/";
+			}
+			catch (URISyntaxException e) {
+			}
+		}
+		return normalizedURI;
+	}
+
+	/*
+	 * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp
+	 */
+	public void setFlattredStatus(Context context, List<Flattr> flattrList) {
+		class FlattrLinkTime {
+			public String paymentLink;
+			public long time;
+			
+			FlattrLinkTime(String paymentLink, long time) {
+				this.paymentLink = paymentLink;
+				this.time = time;
+			}
+		}
+		
+		// build list with flattred things having normalized URLs
+		ArrayList<FlattrLinkTime> flattrLinkTime = new ArrayList<FlattrLinkTime>(flattrList.size());
+		for (Flattr flattr: flattrList) {
+			flattrLinkTime.add(new FlattrLinkTime(normalizeURI(flattr.getThing().getUrl()), flattr.getCreated().getTime()));
+			if (AppConfig.DEBUG)
+				Log.d(TAG, "FlattredUrl: " + flattr.getThing().getUrl());
+		}
+		
+		
+		String paymentLink;
+		for (Feed feed: feeds) {
+			// check if the feed has been flattred
+			paymentLink = feed.getPaymentLink();
+			if (paymentLink != null) {
+				String feedThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+				feed.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+				if (AppConfig.DEBUG)
+					Log.d(TAG, "Feed: Trying to match " + feedThingUrl);
+				for (FlattrLinkTime flattr: flattrLinkTime) {
+					if (flattr.paymentLink.equals(feedThingUrl)) {
+						feed.setFlattrStatus(new FlattrStatus(flattr.time));
+						setFeed(context, feed);
+						break;
+					}
+				}
+			}
+
+			// check if any of the feeditems have been flattred
+			for (FeedItem item: feed.getItems()) {
+				paymentLink = item.getPaymentLink();
+				
+				if (paymentLink != null) {
+					String feedItemThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+					item.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+					if (AppConfig.DEBUG)
+						Log.d(TAG, "FeedItem: Trying to match " + feedItemThingUrl);
+					for (FlattrLinkTime flattr: flattrLinkTime) {
+						if (flattr.paymentLink.equals(feedItemThingUrl)) {
+							item.setFlattrStatus(new FlattrStatus(flattr.time));
+							setFeedItem(context, item);
+							break;
+						}
+					}
+				}
+			}
+		}
 	}
 
 	/**
@@ -2010,5 +2152,4 @@ public class FeedManager {
 			result = c;
 		}
 	}
-
 }
