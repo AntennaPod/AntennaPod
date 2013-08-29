@@ -459,7 +459,49 @@ public class DBWriter {
         });
 
     }
-
+    
+    /**
+     * Moves the specified item to the top of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param selectedItem    The item to move to the top of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> moveQueueItemToTop(final Context context, final long itemId, final boolean broadcastUpdate) {
+        List<Long> queueIdList = DBReader.getQueueIDList(context);
+        int currentLocation = 0;
+        for (long id : queueIdList) {
+            if (id == itemId) {
+                return moveQueueItem(context, currentLocation, 0, true);
+            }
+            currentLocation++;
+        }
+        Log.e(TAG, "moveQueueItemToTop: item not found");
+        return null;
+    }
+    
+    /**
+     * Moves the specified item to the bottom of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param selectedItem    The item to move to the bottom of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> moveQueueItemToBottom(final Context context, final long itemId, final boolean broadcastUpdate) {
+        List<Long> queueIdList = DBReader.getQueueIDList(context);
+        int currentLocation = 0;
+        for (long id : queueIdList) {
+            if (id == itemId) {
+                return moveQueueItem(context, currentLocation, queueIdList.size() - 1, true);
+            }
+            currentLocation++;
+        }
+        Log.e(TAG, "moveQueueItemToBottom: item not found");
+        return null;
+    }
+    
     /**
      * Changes the position of a FeedItem in the queue.
      *
