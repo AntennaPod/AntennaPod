@@ -115,11 +115,11 @@ public class ItemlistFragment extends ListFragment {
 		return inflater.inflate(R.layout.feeditemlist, container, false);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		loadData();
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        loadData();
+    }
 
     protected void loadData() {
         final long feedId;
