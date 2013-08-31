@@ -256,4 +256,8 @@
     <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other files will be placed directly in this folder. Continue anyway?</string>
     <string name="set_to_default_folder">Choose default folder</string>
 
+    <!-- Online feed view -->
+    <string name="subscribe_label">Subscribe</string>
+    <string name="subscribed_label">Subscribed</string>
+    <string name="downloading_label">Downloading...</string>
 </resources>

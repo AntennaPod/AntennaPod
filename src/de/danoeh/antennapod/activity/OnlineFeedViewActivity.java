@@ -129,6 +129,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
         new Thread() {
             @Override
             public void run() {
+                loadData();
                 downloader.call();
                 onDownloadCompleted(downloader);
             }
@@ -216,6 +217,13 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
             }
         };
         thread.start();
+    }
+
+    /**
+     * Can be used to load data asynchronously.
+     * */
+    protected void loadData() {
+
     }
 
     /**
