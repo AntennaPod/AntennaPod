@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.gpoddernet;
 
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetSubscriptionChange;
@@ -17,6 +18,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.params.CoreProtocolPNames;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -43,6 +45,7 @@ public class GpodnetService {
 
     public GpodnetService() {
         httpClient = new GpodnetClient();
+        httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);
     }
 
     /**
