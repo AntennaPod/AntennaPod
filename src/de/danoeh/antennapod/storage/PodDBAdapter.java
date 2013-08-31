@@ -1010,7 +1010,7 @@ public class PodDBAdapter {
             " MAX(pubDate) AS latest_episode," +
             " COUNT(CASE WHEN position>0 THEN 1 END) AS in_progress," +
             " COUNT(CASE WHEN downloaded=1 THEN 1 END) AS episodes_downloaded " +
-            " FROM FeedItems INNER JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
+            " FROM FeedItems LEFT JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
             " INNER JOIN Feeds ON Feeds.id = feed ORDER BY Feeds.title;";
 
     public Cursor getFeedStatisticsCursor() {
