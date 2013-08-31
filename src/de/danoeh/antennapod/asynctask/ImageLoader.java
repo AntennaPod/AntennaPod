@@ -66,7 +66,7 @@ public class ImageLoader {
 
 	private ExecutorService createExecutor() {
 		return Executors.newFixedThreadPool(Runtime.getRuntime()
-				.availableProcessors() + 1, new ThreadFactory() {
+				.availableProcessors(), new ThreadFactory() {
 
 			@Override
 			public Thread newThread(Runnable r) {
@@ -196,11 +196,7 @@ public class ImageLoader {
 	}
 
 	private int getDefaultCoverResource(Context context) {
-		TypedArray res = context
-				.obtainStyledAttributes(new int[] { R.attr.default_cover });
-		final int defaultCoverResource = res.getResourceId(0, 0);
-		res.recycle();
-		return defaultCoverResource;
+		return android.R.color.transparent;
 	}
 
 	/**
