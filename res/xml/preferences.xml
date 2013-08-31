@@ -2,7 +2,7 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
 
     <PreferenceCategory android:title="@string/user_interface_label">
-        <CheckBoxPreference android:title="@string/pref_display_only_episodes_title" android:summary="@string/pref_display_only_episodes_sum" android:key="prefDisplayOnlyEpisodes"/>
+        <!--<CheckBoxPreference android:title="@string/pref_display_only_episodes_title" android:summary="@string/pref_display_only_episodes_sum" android:key="prefDisplayOnlyEpisodes" android:visibility="gone"/>-->
         <ListPreference android:entryValues="@array/theme_values" android:entries="@array/theme_options" android:title="@string/pref_set_theme_title" android:key="prefTheme" android:summary="@string/pref_set_theme_sum" android:defaultValue="0"/>
     </PreferenceCategory><PreferenceCategory android:title="@string/playback_pref" >
         <CheckBoxPreference
