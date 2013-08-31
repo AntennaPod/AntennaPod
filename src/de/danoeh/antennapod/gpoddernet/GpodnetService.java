@@ -453,10 +453,16 @@ public class GpodnetService {
     }
 
     /**
-     * Shuts down the GpodnetService's HTTP client.
+     * Shuts down the GpodnetService's HTTP client. The service will be shut down in a separate thread to avoid
+     * NetworkOnMainThreadExceptions.
      */
     public void shutdown() {
-        httpClient.getConnectionManager().shutdown();
+        new Thread() {
+            @Override
+            public void run() {
+                httpClient.getConnectionManager().shutdown();
+            }
+        }.start();
     }
 
     private String executeRequest(HttpRequestBase request)

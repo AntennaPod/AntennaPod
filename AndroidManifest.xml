@@ -348,7 +348,7 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/gpodnet_searchable"/>
-            </activity>
+        </activity>
 
         <activity
             android:name=".activity.gpoddernet.GpodnetSearchActivity"
@@ -366,6 +366,16 @@
         <activity
             android:name=".activity.DefaultOnlineFeedViewActivity"
             android:configChanges="orientation"/>
+
+        <activity
+            android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
+            android:configChanges="orientation"
+            android:label="@string/gpodnet_auth_label">
+            <intent-filter>
+                <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </activity>
 
         <receiver android:name=".receiver.ConnectivityActionReceiver">
             <intent-filter>

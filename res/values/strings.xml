@@ -18,6 +18,7 @@
     <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
     <string name="gpodnet_main_label">gpodder.net</string>
+    <string name="gpodnet_auth_label">gpodder.net login</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -154,6 +155,8 @@
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
+    <string name="services_label">Services</string>
+    <string name="flattr_label">Flattr</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
@@ -190,6 +193,8 @@
 	<string name="pref_update_interval_hours_plural">hours</string>
 	<string name="pref_update_interval_hours_singular">hour</string>
 	<string name="pref_update_interval_hours_manual">Manual</string>
+    <string name="pref_gpodnet_authenticate_title">Login</string>
+    <string name="pref_gpodnet_authenticate_sum">Login with your gpodder.net account in order to sync your subscriptions.</string>
    
 
     <!-- Search -->
@@ -242,6 +247,26 @@
     <string name="gpodnet_taglist_header">CATEGORIES</string>
     <string name="gpodnet_toplist_header">TOP PODCASTS</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
+    <string name="gpodnetauth_login_title">Login</string>
+    <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
+    <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="gpodnetauth_login_register">If you do not have an account yet, you can create one here:\nhttps://gpodder.net/register/</string>
+    <string name="gpodnet_username_label">Username</string>
+    <string name="gpodnet_password_label">Password</string>
+    <string name="gpodnetauth_device_title">Device Selection</string>
+    <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
+    <string name="gpodnetauth_device_deviceID">Device ID</string>
+    <string name="gpodnetauth_device_caption">Caption</string>
+    <string name="gpodnetauth_device_butCreateNewDevice">Create new device</string>
+    <string name="gpodnetauth_device_chooseExistingDevice">Choose existring device:</string>
+    <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
+    <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+
+    <string name="gpodnetauth_device_butChoose">Choose</string>
+    <string name="gpodnetauth_finish_title">Login successful!</string>
+    <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automagically sync subscriptions on your device with your gpodder.net account.</string>
+    <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
+    <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
 
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>
