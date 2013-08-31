@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.asynctask;
 
+import android.os.Handler;
 import android.util.Log;
 import android.util.Pair;
 import android.widget.ImageView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.service.download.DownloadRequest;
+import de.danoeh.antennapod.service.download.HttpDownloader;
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -71,6 +72,7 @@ public class ImageDiskCache {
     private final long maxCacheSize;
     private int cacheSize;
     private final File cacheFolder;
+    private Handler handler;
 
     private ImageDiskCache(String path, long maxCacheSize) {
         this.maxCacheSize = maxCacheSize;
@@ -80,7 +82,8 @@ public class ImageDiskCache {
         }
 
         executor = Executors.newFixedThreadPool(Runtime.getRuntime()
-                .availableProcessors() * 2);
+                .availableProcessors());
+        handler = new Handler();
     }
 
     private synchronized void initCacheFolder() {
@@ -194,7 +197,7 @@ public class ImageDiskCache {
             }
         }
         target.setTag(R.id.image_disk_cache_key, url);
-        target.setImageResource(R.color.default_image_color);
+        target.setImageResource(android.R.color.transparent);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
@@ -221,7 +224,7 @@ public class ImageDiskCache {
             }
         }
         target.setTag(R.id.image_disk_cache_key, url);
-        target.setImageResource(R.color.default_image_color);
+        target.setImageResource(android.R.color.transparent);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
@@ -269,6 +272,8 @@ public class ImageDiskCache {
         return dco;
     }
 
+    ConcurrentHashMap<String, File> runningDownloads = new ConcurrentHashMap<String, File>();
+
     private abstract class ImageDownloader implements Runnable {
         private String downloadUrl;
 
@@ -285,32 +290,54 @@ public class ImageDiskCache {
                 return;
             }
 
-            InputStream input = null;
-            OutputStream output = null;
-            try {
-                URL url = new URL(downloadUrl);
-                input = url.openStream();
+            DiskCacheObject dco = null;
+            File newFile = new File(cacheFolder, Integer.toString(downloadUrl.hashCode()));
+            synchronized (ImageDiskCache.this) {
+                if (runningDownloads.containsKey(newFile.getAbsolutePath())) {
+                    Log.d(TAG, "Download is already running: " + newFile.getAbsolutePath());
+                    return;
+                } else {
+                    runningDownloads.put(newFile.getAbsolutePath(), newFile);
+                }
+            }
+            if (newFile.exists()) {
+                newFile.delete();
+            }
 
-                File newFile = new File(cacheFolder, Integer.toString(downloadUrl.hashCode()));
-                output = new FileOutputStream(newFile);
-                long size = IOUtils.copy(input, output);
+            HttpDownloader result = downloadFile(newFile.getAbsolutePath(), downloadUrl);
+            if (result.getResult().isSuccessful()) {
+                long size = result.getDownloadRequest().getSoFar();
 
-                final DiskCacheObject dco = new DiskCacheObject(newFile.getAbsolutePath(), size);
+                dco = new DiskCacheObject(newFile.getAbsolutePath(), size);
                 addToDiskCache(downloadUrl, dco);
                 if (AppConfig.DEBUG) Log.d(TAG, "Image was downloaded");
-                onImageLoaded(dco);
-            } catch (MalformedURLException e) {
-                e.printStackTrace();
-            } catch (IOException e) {
-                e.printStackTrace();
-            } finally {
-                IOUtils.closeQuietly(input);
-                IOUtils.closeQuietly(output);
+            } else {
+                Log.w(TAG, "Download of url " + downloadUrl + " failed. Reason: " + result.getResult().getReasonDetailed() + "(" + result.getResult().getReason() + ")");
             }
+
+            if (dco != null) {
+                final DiskCacheObject dcoRef = dco;
+                handler.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        onImageLoaded(dcoRef);
+                    }
+                });
+
+            }
+            runningDownloads.remove(newFile.getAbsolutePath());
+
+        }
+
+        private HttpDownloader downloadFile(String destination, String source) {
+            DownloadRequest request = new DownloadRequest(destination, source, "", 0, 0);
+            HttpDownloader downloader = new HttpDownloader(request);
+            downloader.call();
+            return downloader;
         }
     }
 
-    private static class DiskCacheObject implements Serializable{
+    private static class DiskCacheObject implements Serializable {
         private final String fileUrl;
 
         /**

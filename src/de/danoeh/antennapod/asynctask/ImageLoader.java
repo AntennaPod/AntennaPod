@@ -148,6 +148,7 @@ public class ImageLoader {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
 				target.setImageResource(defaultCoverResource);
+                target.setTag(R.id.imageloader_key, source.getImageLoaderCacheKey());
 				BitmapDecodeWorkerTask worker = new BitmapDecodeWorkerTask(
 						handler, target, source, length, IMAGE_TYPE_THUMBNAIL);
 				executor.submit(worker);
