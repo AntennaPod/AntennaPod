@@ -252,6 +252,7 @@
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
     <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+    <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
     <string name="gpodnet_search_hint">Search gpodder.net</string>
     <string name="gpodnetauth_login_title">Login</string>
     <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
