@@ -195,6 +195,8 @@
 	<string name="pref_update_interval_hours_manual">Manual</string>
     <string name="pref_gpodnet_authenticate_title">Login</string>
     <string name="pref_gpodnet_authenticate_sum">Login with your gpodder.net account in order to sync your subscriptions.</string>
+    <string name="pref_gpodnet_logout_title">Logout</string>
+    <string name="pref_gpodnet_logout_toast">Logout was successful</string>
    
 
     <!-- Search -->
@@ -267,6 +269,11 @@
     <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automagically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
     <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
+
+    <string name="gpodnetsync_auth_error_title">gpodder.net authentication error</string>
+    <string name="gpodnetsync_auth_error_descr">Wrong username or password</string>
+    <string name="gpodnetsync_error_title">gpodder.net sync error</string>
+    <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
 
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>

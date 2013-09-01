@@ -18,6 +18,7 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.QueueAccess;
@@ -171,6 +172,8 @@ public class DBWriter {
                     }
                     adapter.removeFeed(feed);
                     adapter.close();
+
+                    GpodnetSyncService.sendActionUploadIntent(context);
                     EventDistributor.getInstance().sendFeedUpdateBroadcast();
                 }
             }
@@ -614,6 +617,7 @@ public class DBWriter {
                 adapter.setCompleteFeed(feed);
                 adapter.close();
 
+                GpodnetSyncService.sendActionUploadIntent(context);
                 EventDistributor.getInstance().sendFeedUpdateBroadcast();
             }
         });

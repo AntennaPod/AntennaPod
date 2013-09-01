@@ -143,6 +143,11 @@
             android:enabled="true">
         </service>
 
+        <service
+            android:name=".service.GpodnetSyncService"
+            android:enabled="true">
+        </service>
+
         <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -376,6 +381,7 @@
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
         </activity>
+
 
         <receiver android:name=".receiver.ConnectivityActionReceiver">
             <intent-filter>

@@ -92,6 +92,9 @@
                 android:summary="@string/pref_gpodnet_authenticate_sum">
                 <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
             </PreferenceScreen>
+            <Preference
+                android:key="pref_gpodnet_logout"
+                android:title="@string/pref_gpodnet_logout_title"/>
         </PreferenceScreen>
 
     </PreferenceCategory>

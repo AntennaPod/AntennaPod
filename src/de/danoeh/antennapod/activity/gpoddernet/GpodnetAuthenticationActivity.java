@@ -17,6 +17,7 @@ import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.GpodnetSyncService;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -280,13 +281,19 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         final Button sync = (Button) view.findViewById(R.id.butSyncNow);
         final Button back = (Button) view.findViewById(R.id.butGoMainscreen);
 
+        sync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                GpodnetSyncService.sendSyncIntent(GpodnetAuthenticationActivity.this);
+                finish();
+            }
+        });
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(GpodnetAuthenticationActivity.this, MainActivity.class);
                 intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
-
             }
         });
     }

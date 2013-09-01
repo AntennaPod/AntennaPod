@@ -21,10 +21,12 @@ import android.util.Log;
 
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
@@ -41,6 +43,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+    private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
+    private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
 
     private CheckBoxPreference[] selectedNetworks;
 
@@ -156,11 +160,29 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 return true;
                             }
                         });
+        findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                GpodnetPreferences.logout();
+                Toast toast = Toast.makeText(PreferenceActivity.this, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
+                toast.show();
+                updateGpodnetPreferenceScreen();
+                return true;
+            }
+        });
+        updateGpodnetPreferenceScreen();
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
 
+
+    }
+
+    private void updateGpodnetPreferenceScreen() {
+        final boolean loggedIn = GpodnetPreferences.loggedIn();
+        findPreference(PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
+        findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
     }
 
     private void buildUpdateIntervalPreference() {
