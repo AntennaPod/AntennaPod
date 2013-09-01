@@ -49,6 +49,7 @@
     <string name="processing_label">Processing</string>
     <string name="loading_label">Loading...</string>
     <string name="image_of_prefix">Image of:\u0020</string>
+    <string name="save_username_password_label">Save username and password</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -197,7 +198,10 @@
     <string name="pref_gpodnet_authenticate_sum">Login with your gpodder.net account in order to sync your subscriptions.</string>
     <string name="pref_gpodnet_logout_title">Logout</string>
     <string name="pref_gpodnet_logout_toast">Logout was successful</string>
-   
+    <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
+
+
 
     <!-- Search -->
     <string name="search_hint">Search for Feeds or Episodes</string>
@@ -253,8 +257,8 @@
     <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
     <string name="gpodnetauth_login_butLabel">Login</string>
     <string name="gpodnetauth_login_register">If you do not have an account yet, you can create one here:\nhttps://gpodder.net/register/</string>
-    <string name="gpodnet_username_label">Username</string>
-    <string name="gpodnet_password_label">Password</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
     <string name="gpodnetauth_device_title">Device Selection</string>
     <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
     <string name="gpodnetauth_device_deviceID">Device ID</string>
