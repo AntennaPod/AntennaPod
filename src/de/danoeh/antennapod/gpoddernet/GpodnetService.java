@@ -1,10 +1,7 @@
 package de.danoeh.antennapod.gpoddernet;
 
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetSubscriptionChange;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.gpoddernet.model.*;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -30,6 +27,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -385,6 +383,55 @@ public class GpodnetService {
             e.printStackTrace();
             throw new IllegalStateException(e);
         }
+    }
+
+    /**
+     * Updates the subscription list of a specific device.
+     * <p/>
+     * This method requires authentication.
+     *
+     * @param username The username. Must be the same user as the one which is
+     *                 currently logged in.
+     * @param deviceId The ID of the device whose subscriptions should be updated.
+     * @param added    Collection of feed URLs of added feeds. This Collection MUST NOT contain any duplicates
+     * @param removed  Collection of feed URLs of removed feeds. This Collection MUST NOT contain any duplicates
+     * @return a GpodnetUploadChangesResponse. See {@link de.danoeh.antennapod.gpoddernet.model.GpodnetUploadChangesResponse}
+     * for details.
+     * @throws java.lang.IllegalArgumentException                      if username, deviceId, added or removed is null.
+     * @throws de.danoeh.antennapod.gpoddernet.GpodnetServiceException if added or removed contain duplicates or if there
+     *                                                                 is an authentication error.
+     */
+    public GpodnetUploadChangesResponse uploadChanges(String username, String deviceId, Collection<String> added,
+                                                      Collection<String> removed) throws GpodnetServiceException {
+        if (username == null || deviceId == null || added == null || removed == null) {
+            throw new IllegalArgumentException(
+                    "Username, device ID, added and removed must not be null");
+        }
+        try {
+            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/subscriptions/%s/%s.json", username, deviceId), null);
+
+            final JSONObject requestObject = new JSONObject();
+            requestObject.put("add", new JSONArray(added));
+            requestObject.put("remove", new JSONArray(removed));
+
+            HttpPost request = new HttpPost(uri);
+            StringEntity entity = new StringEntity(requestObject.toString(), "UTF-8");
+            request.setEntity(entity);
+
+            final String response = executeRequest(request);
+            return GpodnetUploadChangesResponse.fromJSONObject(response);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e);
+        } catch (JSONException e) {
+            e.printStackTrace();
+            throw new GpodnetServiceException(e);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e);
+        }
+
     }
 
     /**

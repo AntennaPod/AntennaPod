@@ -425,6 +425,15 @@ public class PodDBAdapter {
         db.endTransaction();
     }
 
+    /**
+     * Updates the download URL of a Feed.
+     */
+    public void setFeedDownloadUrl(String original, String updated) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_DOWNLOAD_URL, updated);
+        db.update(TABLE_NAME_FEEDS, values, KEY_DOWNLOAD_URL + "=?", new String[]{original});
+    }
+
     public void setFeedItemlist(List<FeedItem> items) {
         db.beginTransaction();
         for (FeedItem item : items) {

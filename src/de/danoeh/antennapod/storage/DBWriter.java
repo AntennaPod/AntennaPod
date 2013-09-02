@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -17,6 +18,7 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -173,7 +175,7 @@ public class DBWriter {
                     adapter.removeFeed(feed);
                     adapter.close();
 
-                    GpodnetSyncService.sendActionUploadIntent(context);
+                    GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                     EventDistributor.getInstance().sendFeedUpdateBroadcast();
                 }
             }
@@ -617,7 +619,7 @@ public class DBWriter {
                 adapter.setCompleteFeed(feed);
                 adapter.close();
 
-                GpodnetSyncService.sendActionUploadIntent(context);
+                GpodnetPreferences.addAddedFeed(feed.getDownload_url());
                 EventDistributor.getInstance().sendFeedUpdateBroadcast();
             }
         });
@@ -715,6 +717,26 @@ public class DBWriter {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 adapter.setImage(image);
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Updates download URLs of feeds from a given Map. The key of the Map is the original URL of the feed
+     * and the value is the updated URL
+     * */
+    public static Future<?> updateFeedDownloadURLs(final Context context, final Map<String, String> urls) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                for (String key : urls.keySet()) {
+                    if (AppConfig.DEBUG) Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
+
+                    adapter.setFeedDownloadUrl(key, urls.get(key));
+                }
                 adapter.close();
             }
         });

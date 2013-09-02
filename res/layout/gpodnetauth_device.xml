@@ -26,19 +26,19 @@
         android:layout_margin="16dp"/>
 
     <EditText
-        android:id="@+id/etxtDeviceID"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/gpodnetauth_device_deviceID"
-        android:layout_below="@id/txtvDescription"
-        android:layout_margin="8dp"/>
-
-    <EditText
         android:id="@+id/etxtCaption"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/gpodnetauth_device_caption"
-        android:layout_below="@id/etxtDeviceID"
+        android:layout_below="@id/txtvDescription"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/etxtDeviceID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/gpodnetauth_device_deviceID"
+        android:layout_below="@id/etxtCaption"
         android:layout_margin="8dp"/>
 
     <Button
@@ -47,7 +47,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:layout_alignParentRight="true"
-        android:layout_below="@id/etxtCaption"
+        android:layout_below="@id/etxtDeviceID"
         android:text="@string/gpodnetauth_device_butCreateNewDevice"/>
 
     <TextView
@@ -89,10 +89,10 @@
         android:id="@+id/butChooseExistingDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/txtvChooseExistingDevice"
-        android:layout_alignParentRight="true"
         android:layout_margin="16dp"
-        android:text="@string/gpodnetauth_device_butChoose"/>
+        android:text="@string/gpodnetauth_device_butChoose"
+        android:layout_alignTop="@+id/spinnerChooseDevice"
+        android:layout_alignRight="@+id/txtvChooseExistingDevice"/>
 
     <Spinner
         android:id="@+id/spinnerChooseDevice"

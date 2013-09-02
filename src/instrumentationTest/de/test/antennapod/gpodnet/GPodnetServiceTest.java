@@ -1,12 +1,14 @@
 package instrumentationTest.de.test.antennapod.gpodnet;
 
 import android.test.AndroidTestCase;
+import android.util.Log;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -47,6 +49,16 @@ public class GPodnetServiceTest extends AndroidTestCase {
         l.add("http://bitsundso.de/feed");
         l.add("http://gamesundso.de/feed");
         service.uploadSubscriptions(USER, "radio", l);
+    }
+
+    public void testUploadChanges() throws GpodnetServiceException {
+        authenticate();
+        String[] URLS = {"http://bitsundso.de/feed", "http://gamesundso.de/feed", "http://cre.fm/feed/mp3/", "http://freakshow.fm/feed/m4a/"};
+        List<String> subscriptions = Arrays.asList(URLS[0], URLS[1]);
+        List<String> removed = Arrays.asList(URLS[0]);
+        List<String> added = Arrays.asList(URLS[2], URLS[3]);
+        service.uploadSubscriptions(USER, "radio", subscriptions);
+        service.uploadChanges(USER, "radio", added, removed);
     }
 
     public void testGetSubscriptionChanges() throws GpodnetServiceException {

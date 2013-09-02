@@ -15,15 +15,15 @@ import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceAuthenticationException;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetSubscriptionChange;
+import de.danoeh.antennapod.gpoddernet.model.GpodnetUploadChangesResponse;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBTasks;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.storage.*;
 import de.danoeh.antennapod.util.NetworkUtils;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ExecutionException;
 
 /**
  * Synchronizes local subscriptions with gpodder.net service. The service should be started with an ACTION_UPLOAD_CHANGES,
@@ -71,8 +71,8 @@ public class GpodnetSyncService extends Service {
             new Thread() {
                 @Override
                 public void run() {
-                    uploadChanges();
                     downloadChanges();
+                    uploadChanges();
                 }
             }.start();
         }
@@ -135,14 +135,27 @@ public class GpodnetSyncService extends Service {
             try {
                 if (AppConfig.DEBUG) Log.d(TAG, "Uploading subscription list");
                 GpodnetService service = tryLogin();
-                List<String> subscriptions = DBReader.getFeedListDownloadUrls(GpodnetSyncService.this);
 
-                if (AppConfig.DEBUG) Log.d(TAG, "Uploading subscriptions: " + subscriptions.toString());
+                Set<String> added = GpodnetPreferences.getAddedFeedsCopy();
+                Set<String> removed = GpodnetPreferences.getRemovedFeedsCopy();
 
-                service.uploadSubscriptions(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), subscriptions);
+                if (AppConfig.DEBUG) Log.d(TAG, String.format("Uploading subscriptions, Added: %s\nRemoved: %s",
+                        added.toString(), removed.toString()));
+
+                GpodnetUploadChangesResponse response = service.uploadChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), added, removed);
+
+                if (AppConfig.DEBUG) Log.d(TAG, "Upload subscriptions response: " + response.toString());
+
+                GpodnetPreferences.removeAddedFeeds(added);
+                GpodnetPreferences.removeRemovedFeeds(removed);
+                DBWriter.updateFeedDownloadURLs(GpodnetSyncService.this, response.updatedUrls).get();
             } catch (GpodnetServiceException e) {
                 e.printStackTrace();
                 updateErrorNotification(e);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
             }
         }
         stopSelf();

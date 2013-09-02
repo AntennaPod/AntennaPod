@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity.gpoddernet;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -19,6 +20,7 @@ import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.GpodnetSyncService;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -31,6 +33,8 @@ import java.util.concurrent.atomic.AtomicReference;
  */
 public class GpodnetAuthenticationActivity extends ActionBarActivity {
     private static final String TAG = "GpodnetAuthenticationActivity";
+
+    private static final String CURRENT_STEP = "current_step";
 
     private ViewFlipper viewFlipper;
 
@@ -76,6 +80,10 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         if (service != null) {
             service.shutdown();
         }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
     }
 
     private void setupLoginView(View view) {
@@ -167,7 +175,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                 if (gpodnetDevices != null) {
                     List<String> deviceNames = new ArrayList<String>();
                     for (GpodnetDevice device : gpodnetDevices) {
-                        deviceNames.add(device.getId());
+                        deviceNames.add(device.getCaption());
                     }
                     spinnerDevices.setAdapter(new ArrayAdapter<String>(GpodnetAuthenticationActivity.this,
                             android.R.layout.simple_spinner_dropdown_item, deviceNames));
@@ -244,6 +252,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             }
         });
 
+        deviceID.setText(generateDeviceID());
         chooseDevice.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -252,6 +261,18 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                 advance();
             }
         });
+    }
+
+
+    private String generateDeviceID() {
+        final int DEVICE_ID_LENGTH = 10;
+        StringBuilder buffer = new StringBuilder(DEVICE_ID_LENGTH);
+        SecureRandom random = new SecureRandom();
+        for (int i = 0; i < DEVICE_ID_LENGTH; i++) {
+            buffer.append(random.nextInt(10));
+
+        }
+        return buffer.toString();
     }
 
     private boolean checkDeviceIDText(EditText deviceID, TextView txtvError, List<GpodnetDevice> devices) {
