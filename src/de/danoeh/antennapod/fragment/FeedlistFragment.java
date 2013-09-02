@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -29,9 +30,9 @@ import de.danoeh.antennapod.storage.FeedItemStatistics;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 
 public class FeedlistFragment extends Fragment implements
-		ActionMode.Callback, AdapterView.OnItemClickListener,
-		AdapterView.OnItemLongClickListener {
-	private static final String TAG = "FeedlistFragment";
+        ActionMode.Callback, AdapterView.OnItemClickListener,
+        AdapterView.OnItemLongClickListener {
+    private static final String TAG = "FeedlistFragment";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
@@ -94,10 +95,14 @@ public class FeedlistFragment extends Fragment implements
         AsyncTask<Void, Void, List[]> loadTask = new AsyncTask<Void, Void, List[]>() {
             @Override
             protected List[] doInBackground(Void... params) {
-                return new List[]{DBReader.getFeedList(getActivity()),
-                        DBReader.getFeedStatisticsList(getActivity())};
+                Context context = getActivity();
+                if (context != null) {
+                    return new List[]{DBReader.getFeedList(context),
+                            DBReader.getFeedStatisticsList(context)};
+                } else {
+                    return null;
+                }
             }
-
 
 
             @Override
@@ -160,9 +165,14 @@ public class FeedlistFragment extends Fragment implements
     }
 
     @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventDistributor.getInstance().unregister(contentUpdate);
+    }
+
+    @Override
     public void onPause() {
         super.onPause();
-        EventDistributor.getInstance().unregister(contentUpdate);
         if (mActionMode != null) {
             mActionMode.finish();
         }
@@ -255,9 +265,9 @@ public class FeedlistFragment extends Fragment implements
     public boolean onItemLongClick(AdapterView<?> parent, View view,
                                    int position, long id) {
         Feed selection = fla.getItem(position);
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Selected Feed with title " + selection.getTitle());
         if (selection != null) {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Selected Feed with title " + selection.getTitle());
             if (mActionMode != null) {
                 mActionMode.finish();
             }

@@ -229,9 +229,11 @@ public final class DBReader {
                                             title, item, link);
                                     break;
                             }
-                            chapter.setId(chapterCursor
-                                    .getLong(PodDBAdapter.KEY_ID_INDEX));
-                            item.getChapters().add(chapter);
+                            if (chapter != null) {
+                                chapter.setId(chapterCursor
+                                        .getLong(PodDBAdapter.KEY_ID_INDEX));
+                                item.getChapters().add(chapter);
+                            }
                         } while (chapterCursor.moveToNext());
                     }
                     chapterCursor.close();

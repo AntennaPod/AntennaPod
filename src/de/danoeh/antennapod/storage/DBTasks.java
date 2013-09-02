@@ -28,6 +28,7 @@ import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
 /**
@@ -406,12 +407,13 @@ public final class DBTasks {
 
     private static int performAutoCleanup(final Context context,
                                           final int episodeNumber) {
-        List<FeedItem> candidates = DBReader.getDownloadedItems(context);
-        List<FeedItem> queue = DBReader.getQueue(context);
+        List<FeedItem> candidates = new ArrayList<FeedItem>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(context);
+        QueueAccess queue = QueueAccess.IDListAccess(DBReader.getQueueIDList(context));
         List<FeedItem> delete;
-        for (FeedItem item : candidates) {
+        for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
-                    && !queue.contains(item) && item.isRead()) {
+                    && !queue.contains(item.getId()) && item.isRead()) {
                 candidates.add(item);
             }
 
@@ -440,7 +442,13 @@ public final class DBTasks {
         }
 
         for (FeedItem item : delete) {
-            DBWriter.deleteFeedMediaOfItem(context, item.getId());
+            try {
+                DBWriter.deleteFeedMediaOfItem(context, item.getId()).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
         }
 
         int counter = delete.size();
@@ -561,6 +569,7 @@ public final class DBTasks {
                 Log.d(TAG, "Feed with title " + newFeed.getTitle()
                         + " already exists. Syncing new with existing one.");
 
+            Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
             savedFeed.setItems(DBReader.getFeedItemList(context, savedFeed));
             if (savedFeed.compareWithOther(newFeed)) {
                 if (AppConfig.DEBUG)
@@ -578,7 +587,7 @@ public final class DBTasks {
                     final int i = idx;
                     item.setFeed(savedFeed);
                     savedFeed.getItems().add(i, item);
-                    DBWriter.markItemRead(context, item.getId(), false);
+                    item.setRead(false);
                 } else {
                     oldItem.updateFromOther(item);
                 }

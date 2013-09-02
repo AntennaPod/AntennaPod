@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
@@ -140,32 +141,34 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
             @Override
             public void run() {
                 Log.d(TAG, "Starting background work");
+                final Activity activity = SearchActivity.this;
                 final List<SearchResult> result = FeedSearcher
-                        .performSearch(SearchActivity.this, query, feedID);
-                if (SearchActivity.this != null) {
-                    SearchActivity.this.runOnUiThread(new Runnable() {
+                        .performSearch(activity, query, feedID);
+                activity.runOnUiThread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            if (AppConfig.DEBUG)
-                                Log.d(TAG, "Background work finished");
-                            if (AppConfig.DEBUG)
-                                Log.d(TAG, "Found " + result.size()
-                                        + " results");
+                    @Override
+                    public void run() {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Background work finished");
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Found " + result.size()
+                                    + " results");
 
-                            searchAdapter.clear();
-                            searchAdapter.addAll(result);
-                            searchAdapter.notifyDataSetChanged();
-                            txtvStatus
-                                    .setText(R.string.search_status_no_results);
-                            if (!searchAdapter.isEmpty()) {
-                                txtvStatus.setVisibility(View.GONE);
-                            } else {
-                                txtvStatus.setVisibility(View.VISIBLE);
-                            }
+                        searchAdapter.clear();
+                        for (SearchResult s : result) {
+                            searchAdapter.add(s);
                         }
-                    });
-                }
+                        searchAdapter.notifyDataSetChanged();
+                        txtvStatus
+                                .setText(R.string.search_status_no_results);
+                        if (!searchAdapter.isEmpty()) {
+                            txtvStatus.setVisibility(View.GONE);
+                        } else {
+                            txtvStatus.setVisibility(View.VISIBLE);
+                        }
+                    }
+                });
+
             }
         };
         thread.start();

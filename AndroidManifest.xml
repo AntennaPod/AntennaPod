@@ -61,6 +61,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:host="*"/>
 			    <data android:pathPattern=".*\\.xml"/>
 			    <data android:pathPattern=".*\\.rss"/>
@@ -71,6 +72,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:host="feeds.feedburner.com"/>
 			    <data android:host="feedproxy.google.com"/>
 			    <data android:host="feeds2.feedburner.com"/>
@@ -82,6 +84,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:mimeType="text/xml"/>
 			    <data android:mimeType="application/rss+xml"/>
 			    <data android:mimeType="application/atom+xml"/>

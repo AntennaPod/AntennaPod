@@ -10,7 +10,6 @@ import android.database.DatabaseUtils;
 import android.database.MergeCursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteStatement;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -235,7 +234,7 @@ public class PodDBAdapter {
     /**
      * Select id, description and content-encoded column from feeditems.
      */
-    public static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
+    private static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
             KEY_CONTENT_ENCODED, KEY_FEED};
 
     // column indices for SEL_FI_EXTRA
@@ -277,6 +276,13 @@ public class PodDBAdapter {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Closing DB");
         //db.close();
+    }
+
+    public static boolean deleteDatabase(Context context) {
+        Log.w(TAG, "Deleting database");
+        dbHelperSingleton.close();
+        dbHelperSingleton = null;
+        return context.deleteDatabase(DATABASE_NAME);
     }
 
     /**
@@ -361,6 +367,7 @@ public class PodDBAdapter {
         values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
         values.put(KEY_DOWNLOADED, media.isDownloaded());
         values.put(KEY_FILE_URL, media.getFile_url());
+
         if (media.getPlaybackCompletionDate() != null) {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media
                     .getPlaybackCompletionDate().getTime());
@@ -379,14 +386,26 @@ public class PodDBAdapter {
         return media.getId();
     }
 
-    public void setFeedMediaPosition(FeedMedia media) {
+    public void setFeedMediaPlaybackInformation(FeedMedia media) {
         if (media.getId() != 0) {
             ContentValues values = new ContentValues();
             values.put(KEY_POSITION, media.getPosition());
+            values.put(KEY_DURATION, media.getDuration());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
-            Log.e(TAG, "setFeedMediaPosition: ID of media was 0");
+            Log.e(TAG, "setFeedMediaPlaybackInformation: ID of media was 0");
+        }
+    }
+
+    public void setFeedMediaPlaybackCompletionDate(FeedMedia media) {
+        if (media.getId() != 0) {
+            ContentValues values = new ContentValues();
+            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
+            db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(media.getId())});
+        } else {
+            Log.e(TAG, "setFeedMediaPlaybackCompletionDate: ID of media was 0");
         }
     }
 
@@ -397,8 +416,10 @@ public class PodDBAdapter {
     public void setCompleteFeed(Feed feed) {
         db.beginTransaction();
         setFeed(feed);
-        for (FeedItem item : feed.getItemsArray()) {
-            setFeedItem(item);
+        if (feed.getItems() != null) {
+            for (FeedItem item : feed.getItems()) {
+                setFeedItem(item, false);
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -407,7 +428,7 @@ public class PodDBAdapter {
     public void setFeedItemlist(List<FeedItem> items) {
         db.beginTransaction();
         for (FeedItem item : items) {
-            setFeedItem(item);
+            setFeedItem(item, true);
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -415,7 +436,7 @@ public class PodDBAdapter {
 
     public long setSingleFeedItem(FeedItem item) {
         db.beginTransaction();
-        long result = setFeedItem(item);
+        long result = setFeedItem(item, true);
         db.setTransactionSuccessful();
         db.endTransaction();
         return result;
@@ -423,10 +444,12 @@ public class PodDBAdapter {
 
     /**
      * Inserts or updates a feeditem entry
-     *
+     * @param item The FeedItem
+     * @param saveFeed true if the Feed of the item should also be saved. This should be set to
+     *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
      */
-    private long setFeedItem(FeedItem item) {
+    private long setFeedItem(FeedItem item, boolean saveFeed) {
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, item.getTitle());
         values.put(KEY_LINK, item.getLink());
@@ -438,7 +461,7 @@ public class PodDBAdapter {
         }
         values.put(KEY_PUBDATE, item.getPubDate().getTime());
         values.put(KEY_PAYMENT_LINK, item.getPaymentLink());
-        if (item.getFeed() != null) {
+        if (saveFeed && item.getFeed() != null) {
             setFeed(item.getFeed());
         }
         values.put(KEY_FEED, item.getFeed().getId());
@@ -603,8 +626,10 @@ public class PodDBAdapter {
         if (feed.getImage() != null) {
             removeFeedImage(feed.getImage());
         }
-        for (FeedItem item : feed.getItemsArray()) {
-            removeFeedItem(item);
+        if (feed.getItems() != null) {
+            for (FeedItem item : feed.getItems()) {
+                removeFeedItem(item);
+            }
         }
         db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
                 new String[]{String.valueOf(feed.getId())});
@@ -756,7 +781,7 @@ public class PodDBAdapter {
         final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_ID + " WHERE "
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " WHERE "
                 + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
         Cursor c = db.rawQuery(query, null);
         return c;
@@ -985,7 +1010,7 @@ public class PodDBAdapter {
             " MAX(pubDate) AS latest_episode," +
             " COUNT(CASE WHEN position>0 THEN 1 END) AS in_progress," +
             " COUNT(CASE WHEN downloaded=1 THEN 1 END) AS episodes_downloaded " +
-            " FROM FeedItems INNER JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
+            " FROM FeedItems LEFT JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
             " INNER JOIN Feeds ON Feeds.id = feed ORDER BY Feeds.title;";
 
     public Cursor getFeedStatisticsCursor() {

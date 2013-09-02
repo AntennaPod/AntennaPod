@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.PixelFormat;
+import android.media.AudioManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -128,7 +129,16 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 			public void onPlaybackEnd() {
 				finish();
 			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				MediaplayerActivity.this.onPlaybackSpeedChange();
+			}
 		};
+
+	}
+
+	protected void onPlaybackSpeedChange() {
 
 	}
 
@@ -143,8 +153,9 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
 		StorageUtils.checkStorageAvailability(this);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-		orientation = getResources().getConfiguration().orientation;
+        orientation = getResources().getConfiguration().orientation;
 		getWindow().setFormat(PixelFormat.TRANSPARENT);
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 	}

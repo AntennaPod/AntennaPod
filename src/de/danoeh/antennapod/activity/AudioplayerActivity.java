@@ -12,7 +12,9 @@ import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
+import android.view.View.OnLongClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
@@ -22,11 +24,14 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
+import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
@@ -56,6 +61,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	private TextView txtvTitle;
 	private TextView txtvFeed;
+	private Button butPlaybackSpeed;
 	private ImageButton butNavLeft;
 	private ImageButton butNavRight;
 
@@ -218,7 +224,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		if (savedPosition != -1) {
 			switchToFragment(savedPosition);
 		}
-		
+
 	}
 
 	@Override
@@ -363,6 +369,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 		txtvFeed = (TextView) findViewById(R.id.txtvFeed);
 		butNavLeft = (ImageButton) findViewById(R.id.butNavLeft);
 		butNavRight = (ImageButton) findViewById(R.id.butNavRight);
+		butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
 
 		butNavLeft.setOnClickListener(new OnClickListener() {
 
@@ -390,6 +397,65 @@ public class AudioplayerActivity extends MediaplayerActivity {
 				}
 			}
 		});
+
+		butPlaybackSpeed.setOnClickListener(new OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (controller != null && controller.canSetPlaybackSpeed()) {
+					String[] availableSpeeds = UserPreferences
+							.getPlaybackSpeedArray();
+					String currentSpeed = UserPreferences.getPlaybackSpeed();
+
+					// Provide initial value in case the speed list has changed
+					// out from under us
+					// and our current speed isn't in the new list
+					String newSpeed;
+					if (availableSpeeds.length > 0) {
+						newSpeed = availableSpeeds[0];
+                    } else {
+						newSpeed = "1.0";
+                    }
+
+					for (int i = 0; i < availableSpeeds.length; i++) {
+						if (availableSpeeds[i].equals(currentSpeed)) {
+							if (i == availableSpeeds.length - 1) {
+								newSpeed = availableSpeeds[0];
+							} else {
+								newSpeed = availableSpeeds[i + 1];
+							}
+							break;
+						}
+					}
+					UserPreferences.setPlaybackSpeed(newSpeed);
+					controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
+                }
+            }
+        });
+
+		butPlaybackSpeed.setOnLongClickListener(new OnLongClickListener() {
+            @Override
+            public boolean onLongClick(View v) {
+                VariableSpeedDialog.showDialog(AudioplayerActivity.this);
+                return true;
+            }
+        });
+	}
+
+	@Override
+	protected void onPlaybackSpeedChange() {
+		super.onPlaybackSpeedChange();
+		updateButPlaybackSpeed();
+	}
+
+	private void updateButPlaybackSpeed() {
+		if (controller == null
+				|| (controller.getCurrentPlaybackSpeedMultiplier() == -1)) {
+			butPlaybackSpeed.setVisibility(View.GONE);
+		} else {
+			butPlaybackSpeed.setVisibility(View.VISIBLE);
+			butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
+		}
 	}
 
 	@Override
@@ -421,7 +487,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 			((AudioplayerContentFragment) currentlyShownFragment)
 					.onDataSetChanged(media);
 		}
-
+		updateButPlaybackSpeed();
 	}
 
 	public void notifyMediaPositionChanged() {

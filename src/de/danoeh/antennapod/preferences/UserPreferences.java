@@ -2,9 +2,13 @@ package de.danoeh.antennapod.preferences;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
@@ -41,12 +45,14 @@ public class UserPreferences implements
 	public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
 	private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
+	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
+	private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
 	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
 
 	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
 
 	private static UserPreferences instance;
-	private Context context;
+	private final Context context;
 
 	// Preferences
 	private boolean pauseOnHeadsetDisconnect;
@@ -61,6 +67,8 @@ public class UserPreferences implements
 	private boolean enableAutodownloadWifiFilter;
 	private String[] autodownloadSelectedNetworks;
 	private int episodeCacheSize;
+	private String playbackSpeed;
+	private String[] playbackSpeedArray;
 	private boolean pauseForFocusLoss;
 
 	private UserPreferences(Context context) {
@@ -85,6 +93,7 @@ public class UserPreferences implements
 		createNoMediaFile();
 		PreferenceManager.getDefaultSharedPreferences(context)
 				.registerOnSharedPreferenceChangeListener(instance);
+
 	}
 
 	private void loadPreferences() {
@@ -110,6 +119,9 @@ public class UserPreferences implements
 		episodeCacheSize = readEpisodeCacheSize(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
+		playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
+				PREF_PLAYBACK_SPEED_ARRAY, null));
 		pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 	}
 
@@ -136,6 +148,36 @@ public class UserPreferences implements
 		} else {
 			return Integer.valueOf(valueFromPrefs);
 		}
+	}
+
+	private String[] readPlaybackSpeedArray(String valueFromPrefs) {
+		String[] selectedSpeeds = null;
+		// If this preference hasn't been set yet, return the default options
+		if (valueFromPrefs == null) {
+			String[] allSpeeds = context.getResources().getStringArray(
+					R.array.playback_speed_values);
+			List<String> speedList = new LinkedList<String>();
+			for (String speedStr : allSpeeds) {
+				float speed = Float.parseFloat(speedStr);
+				if (speed < 2.0001 && speed * 10 % 1 == 0) {
+					speedList.add(speedStr);
+				}
+			}
+			selectedSpeeds = speedList.toArray(new String[speedList.size()]);
+		} else {
+			try {
+				JSONArray jsonArray = new JSONArray(valueFromPrefs);
+				selectedSpeeds = new String[jsonArray.length()];
+				for (int i = 0; i < jsonArray.length(); i++) {
+					selectedSpeeds[i] = jsonArray.getString(i);
+				}
+			} catch (JSONException e) {
+				Log.e(TAG,
+						"Got JSON error when trying to get speeds from JSONArray");
+				e.printStackTrace();
+			}
+		}
+		return selectedSpeeds;
 	}
 
 	private static void instanceAvailable() {
@@ -172,7 +214,8 @@ public class UserPreferences implements
 
 	public static boolean isDisplayOnlyEpisodes() {
 		instanceAvailable();
-		return instance.displayOnlyEpisodes;
+		//return instance.displayOnlyEpisodes;
+        return false;
 	}
 
 	public static boolean isAutoDelete() {
@@ -197,6 +240,16 @@ public class UserPreferences implements
 
 	public static int getEpisodeCacheSizeUnlimited() {
 		return EPISODE_CACHE_SIZE_UNLIMITED;
+	}
+
+	public static String getPlaybackSpeed() {
+		instanceAvailable();
+		return instance.playbackSpeed;
+	}
+
+	public static String[] getPlaybackSpeedArray() {
+		instanceAvailable();
+		return instance.playbackSpeedArray;
 	}
 
 	/**
@@ -258,9 +311,29 @@ public class UserPreferences implements
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+		} else if (key.equals(PREF_PLAYBACK_SPEED)) {
+			playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
+		} else if (key.equals(PREF_PLAYBACK_SPEED_ARRAY)) {
+			playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
+					PREF_PLAYBACK_SPEED_ARRAY, null));
 		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
 			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 		}
+	}
+
+	public static void setPlaybackSpeed(String speed) {
+		PreferenceManager.getDefaultSharedPreferences(instance.context).edit()
+				.putString(PREF_PLAYBACK_SPEED, speed).apply();
+	}
+
+	public static void setPlaybackSpeedArray(String[] speeds) {
+		JSONArray jsonArray = new JSONArray();
+		for (String speed : speeds) {
+			jsonArray.put(speed);
+		}
+		PreferenceManager.getDefaultSharedPreferences(instance.context).edit()
+				.putString(PREF_PLAYBACK_SPEED_ARRAY, jsonArray.toString())
+				.apply();
 	}
 
 	public static void setAutodownloadSelectedNetworks(Context context,

@@ -53,7 +53,8 @@ public class FeedMedia extends FeedFile implements Playable {
         this.position = position;
         this.size = size;
         this.mime_type = mime_type;
-        this.playbackCompletionDate = playbackCompletionDate;
+        this.playbackCompletionDate = playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();
     }
 
     public FeedMedia(long id, FeedItem item) {
@@ -164,16 +165,25 @@ public class FeedMedia extends FeedFile implements Playable {
         return item;
     }
 
+    /**
+     * Sets the item object of this FeedMedia. If the given
+     * FeedItem object is not null, it's 'media'-attribute value
+     * will also be set to this media object.
+     * */
     public void setItem(FeedItem item) {
         this.item = item;
+        if (item != null && item.getMedia() != this) {
+            item.setMedia(this);
+        }
     }
 
     public Date getPlaybackCompletionDate() {
-        return playbackCompletionDate;
-    }
+        return playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();    }
 
     public void setPlaybackCompletionDate(Date playbackCompletionDate) {
-        this.playbackCompletionDate = playbackCompletionDate;
+        this.playbackCompletionDate = playbackCompletionDate == null
+                ? null : (Date) playbackCompletionDate.clone();
     }
 
     public boolean isInProgress() {
@@ -304,7 +314,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
         position = newPosition;
-        DBWriter.setFeedMediaPosition(PodcastApp.getInstance(), this);
+        DBWriter.setFeedMediaPlaybackInformation(PodcastApp.getInstance(), this);
     }
 
     @Override

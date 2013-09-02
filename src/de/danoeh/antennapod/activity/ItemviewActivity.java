@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -45,6 +46,7 @@ public class ItemviewActivity extends ActionBarActivity {
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		getSupportActionBar().setDisplayShowTitleEnabled(false);
         EventDistributor.getInstance().register(contentUpdate);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         long itemId = getIntent().getLongExtra(
                 ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);

@@ -52,7 +52,7 @@ public class DownloadStatus {
 		this.feedfileId = feedfileId;
 		this.reason = reason;
 		this.successful = successful;
-		this.completionDate = completionDate;
+		this.completionDate = (Date) completionDate.clone();
 		this.reasonDetailed = reasonDetailed;
 		this.feedfileType = feedfileType;
 	}
@@ -133,7 +133,7 @@ public class DownloadStatus {
     }
 
     public Date getCompletionDate() {
-        return completionDate;
+        return (Date) completionDate.clone();
     }
 
     public long getFeedfileId() {
@@ -162,6 +162,7 @@ public class DownloadStatus {
         this.successful = false;
         this.reason = reason;
         this.reasonDetailed = reasonDetailed;
+        this.done = true;
     }
 
     public void setCancelled() {
@@ -172,7 +173,7 @@ public class DownloadStatus {
     }
 
     public void setCompletionDate(Date completionDate) {
-        this.completionDate = completionDate;
+        this.completionDate = (Date) completionDate.clone();
     }
 
     public void setId(long id) {

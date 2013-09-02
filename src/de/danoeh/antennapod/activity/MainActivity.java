@@ -6,6 +6,7 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -55,8 +56,9 @@ public class MainActivity extends ActionBarActivity {
 		StorageUtils.checkStorageAvailability(this);
 		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
 		setContentView(R.layout.main);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-		getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 
 		viewpager = (ViewPager) findViewById(R.id.viewpager);
 		pagerAdapter = new TabsAdapter(this, viewpager);
@@ -181,7 +183,12 @@ public class MainActivity extends ActionBarActivity {
 
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (searchView == null) {
+            MenuItemCompat.setActionView(searchItem, new SearchView(this));
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        }
         searchView.setIconifiedByDefault(true);
 
         SearchableInfo info = searchManager.getSearchableInfo(getComponentName());

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.5.5'
+        classpath 'com.android.tools.build:gradle:0.5.6'
     }
 }
 apply plugin: 'android'
@@ -12,6 +12,17 @@ repositories {
     mavenCentral()
 }
 dependencies {
+    def libsdir = new File('libs');
+    if (!libsdir.exists()) {
+        println "Creating libs directory"
+        libsdir.mkdir()
+    }
+    def prestoLib = new File('libs/presto_client-0.8.5.jar')
+    if (!prestoLib.exists()) {
+        println "Downloading presto library into libs folder"
+        new URL('http://www.aocate.com/presto/client/presto_client-0.8.5.jar').withInputStream{ i -> prestoLib.withOutputStream{ it << i }}
+    }
+
     compile 'com.android.support:appcompat-v7:18.0.+'
     compile 'org.apache.commons:commons-lang3:3.1'
     compile ('org.shredzone.flattr4j:flattr4j-core:2.4') {
@@ -22,6 +33,7 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':submodules:dslv:library')
+    compile files('libs/presto_client-0.8.5.jar')
 }
 
 android {
@@ -33,6 +45,31 @@ android {
         targetSdkVersion 18
         testPackageName "de.test.antennapod"
         testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
+    }
+
+    signingConfigs {
+        releaseConfig {
+            if (project.hasProperty('releaseStoreFile')) {
+                storeFile file(releaseStoreFile)
+            } else {
+                storeFile file('keystore')
+            }
+            if (project.hasProperty('releaseStorePassword')) {
+                storePassword releaseStorePassword
+            } else {
+                storePassword "password"
+            }
+            if (project.hasProperty('releaseKeyAlias')) {
+                keyAlias releaseKeyAlias
+            } else {
+                keyAlias "alias"
+            }
+            if (project.hasProperty('releaseKeyPassword')) {
+                keyPassword releaseKeyPassword
+            } else {
+                keyPassword "password"
+            }
+        }
     }
 
     sourceSets {
@@ -50,6 +87,11 @@ android {
     buildTypes {
         debug {
             packageNameSuffix ".debug"
+        }
+        release {
+            runProguard true
+            proguardFile 'proguard.cfg'
+            signingConfig signingConfigs.releaseConfig
         }
     }
 }

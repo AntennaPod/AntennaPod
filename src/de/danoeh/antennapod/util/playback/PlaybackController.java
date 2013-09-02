@@ -342,6 +342,9 @@ public abstract class PlaybackController {
                         case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_END:
                             onPlaybackEnd();
                             break;
+                        case PlaybackService.NOTIFICATION_TYPE_PLAYBACK_SPEED_CHANGE:
+                            onPlaybackSpeedChange();
+                            break;
                     }
 
                 } else {
@@ -368,6 +371,8 @@ public abstract class PlaybackController {
             }
         }
     };
+
+    public abstract void onPlaybackSpeedChange();
 
     public abstract void onShutdownNotification();
 
@@ -663,12 +668,31 @@ public abstract class PlaybackController {
         return status;
     }
 
+    public boolean canSetPlaybackSpeed() {
+        return playbackService != null && playbackService.canSetSpeed();
+    }
+
+	public void setPlaybackSpeed(float speed) {
+		if (playbackService != null) {
+			playbackService.setSpeed(speed);
+		}
+	}
+    
+	public float getCurrentPlaybackSpeedMultiplier() {
+		if (canSetPlaybackSpeed()) {
+			return playbackService.getCurrentPlaybackSpeed();
+		} else {
+			return -1;
+		}
+	}
+
     public boolean isPlayingVideo() {
         if (playbackService != null) {
             return PlaybackService.isPlayingVideo();
         }
         return false;
     }
+
 
     /**
      * Returns true if PlaybackController can communicate with the playback

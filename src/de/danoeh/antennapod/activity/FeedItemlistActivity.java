@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
+import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
@@ -57,6 +58,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.feeditemlist_activity);
+        setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
         long feedId = getIntent().getLongExtra(
                 FeedlistFragment.EXTRA_SELECTED_FEED, -1);
@@ -122,6 +124,8 @@ public class FeedItemlistActivity extends ActionBarActivity {
             SearchManager searchManager =
                     (SearchManager) getSystemService(Context.SEARCH_SERVICE);
             SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+
+
             searchView.setIconifiedByDefault(true);
 
             searchView.setSearchableInfo(

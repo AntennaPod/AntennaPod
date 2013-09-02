@@ -121,7 +121,7 @@ public class DownloadActivity extends ActionBarActivity implements
             contentRefresher.cancel(true);
         }
         contentRefresher = new AsyncTask<Void, Void, Void>() {
-            private final int WAITING_INTERVALL = 1000;
+            private static final int WAITING_INTERVAL = 1000;
 
             @Override
             protected void onProgressUpdate(Void... values) {
@@ -137,7 +137,7 @@ public class DownloadActivity extends ActionBarActivity implements
             protected Void doInBackground(Void... params) {
                 while (!isCancelled()) {
                     try {
-                        Thread.sleep(WAITING_INTERVALL);
+                        Thread.sleep(WAITING_INTERVAL);
                         publishProgress();
                     } catch (InterruptedException e) {
                         return null;

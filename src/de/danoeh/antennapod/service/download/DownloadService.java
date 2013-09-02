@@ -184,7 +184,7 @@ public class DownloadService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         if (intent.getParcelableExtra(EXTRA_REQUEST) != null) {
             onDownloadQueued(intent);
-        } else if (numberOfDownloads.equals(0)) {
+        } else if (numberOfDownloads.get() == 0) {
             stopSelf();
         }
         return Service.START_NOT_STICKY;
@@ -421,52 +421,24 @@ public class DownloadService extends Service {
         return null;
     }
 
-    @SuppressLint("NewApi")
-    public void onDownloadCompleted(final Downloader downloader) {
-        final AsyncTask<Void, Void, Void> handlerTask = new AsyncTask<Void, Void, Void>() {
-            boolean successful;
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
-                if (!successful) {
-                    queryDownloads();
-                }
-            }
-
-            @Override
-            protected void onPreExecute() {
-                super.onPreExecute();
-                removeDownload(downloader);
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-
-
-                return null;
-            }
-        };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            handlerTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            handlerTask.execute();
-        }
-    }
-
     /**
      * Remove download from the DownloadRequester list and from the
      * DownloadService list.
      */
     private void removeDownload(final Downloader d) {
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Removing downloader: "
-                    + d.getDownloadRequest().getSource());
-        boolean rc = downloads.remove(d);
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Result of downloads.remove: " + rc);
-        DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
-        sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Removing downloader: "
+                            + d.getDownloadRequest().getSource());
+                boolean rc = downloads.remove(d);
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Result of downloads.remove: " + rc);
+                DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
+                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
+            }
+        });
     }
 
     /**
@@ -561,7 +533,7 @@ public class DownloadService extends Service {
             Log.d(TAG, numberOfDownloads.get() + " downloads left");
         }
 
-        if (numberOfDownloads.get() <= 0) {
+        if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
@@ -647,28 +619,21 @@ public class DownloadService extends Service {
                         Log.d(TAG, "Feed has image; Downloading....");
                     savedFeed.getImage().setFeed(savedFeed);
                     final Feed savedFeedRef = savedFeed;
-                    handler.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            try {
-                                requester.downloadImage(DownloadService.this,
-                                        savedFeedRef.getImage());
-                            } catch (DownloadRequestException e) {
-                                e.printStackTrace();
-                                DBWriter.addDownloadStatus(
-                                        DownloadService.this,
-                                        new DownloadStatus(
-                                                savedFeedRef.getImage(),
-                                                savedFeedRef
-                                                        .getImage()
-                                                        .getHumanReadableIdentifier(),
-                                                DownloadError.ERROR_REQUEST_ERROR,
-                                                false, e.getMessage()));
-                            }
-                        }
-                    });
-
+                    try {
+                        requester.downloadImage(DownloadService.this,
+                                savedFeedRef.getImage());
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                        DBWriter.addDownloadStatus(
+                                DownloadService.this,
+                                new DownloadStatus(
+                                        savedFeedRef.getImage(),
+                                        savedFeedRef
+                                                .getImage()
+                                                .getHumanReadableIdentifier(),
+                                        DownloadError.ERROR_REQUEST_ERROR,
+                                        false, e.getMessage()));
+                    }
                 }
 
             } catch (SAXException e) {
@@ -730,7 +695,7 @@ public class DownloadService extends Service {
         }
 
         private boolean hasValidFeedItems(Feed feed) {
-            for (FeedItem item : feed.getItemsArray()) {
+            for (FeedItem item : feed.getItems()) {
                 if (item.getTitle() == null) {
                     Log.e(TAG, "Item has no title");
                     return false;
@@ -835,8 +800,9 @@ public class DownloadService extends Service {
             media.setFile_url(request.getDestination());
 
             // Get duration
-            MediaPlayer mediaplayer = new MediaPlayer();
+            MediaPlayer mediaplayer = null;
             try {
+                mediaplayer = new MediaPlayer();
                 mediaplayer.setDataSource(media.getFile_url());
                 mediaplayer.prepare();
                 media.setDuration(mediaplayer.getDuration());
@@ -845,8 +811,13 @@ public class DownloadService extends Service {
                 mediaplayer.reset();
             } catch (IOException e) {
                 e.printStackTrace();
+            } catch (RuntimeException e) {
+                // Thrown by MediaPlayer initialization on some devices
+                e.printStackTrace();
             } finally {
-                mediaplayer.release();
+                if (mediaplayer != null) {
+                    mediaplayer.release();
+                }
             }
 
             if (media.getItem().getChapters() == null) {
