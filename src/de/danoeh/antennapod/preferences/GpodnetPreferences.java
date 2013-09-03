@@ -2,6 +2,8 @@ package de.danoeh.antennapod.preferences;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.service.GpodnetSyncService;
 
@@ -127,7 +129,7 @@ public class GpodnetPreferences {
             writePreference(PREF_SYNC_REMOVED, removedFeeds);
         }
         feedListLock.unlock();
-        GpodnetSyncService.sendActionUploadIntent(PodcastApp.getInstance());
+        GpodnetSyncService.sendSyncIntent(PodcastApp.getInstance());
     }
 
     public static void addRemovedFeed(String feed) {
@@ -140,7 +142,7 @@ public class GpodnetPreferences {
             writePreference(PREF_SYNC_ADDED, addedFeeds);
         }
         feedListLock.unlock();
-        GpodnetSyncService.sendActionUploadIntent(PodcastApp.getInstance());
+        GpodnetSyncService.sendSyncIntent(PodcastApp.getInstance());
     }
 
     public static Set<String> getAddedFeedsCopy() {
@@ -152,7 +154,7 @@ public class GpodnetPreferences {
         return copy;
     }
 
-    public static void removeAddedFeeds(Set<String> removed) {
+    public static void removeAddedFeeds(Collection<String> removed) {
         ensurePreferencesLoaded();
         feedListLock.lock();
         addedFeeds.removeAll(removed);
@@ -169,7 +171,7 @@ public class GpodnetPreferences {
         return copy;
     }
 
-    public static void removeRemovedFeeds(Set<String> removed) {
+    public static void removeRemovedFeeds(Collection<String> removed) {
         ensurePreferencesLoaded();
         removedFeeds.removeAll(removed);
         writePreference(PREF_SYNC_REMOVED, removedFeeds);
@@ -184,10 +186,15 @@ public class GpodnetPreferences {
         return deviceID != null && username != null && password != null;
     }
 
-    public static void logout() {
+    public static synchronized void logout() {
+        if (AppConfig.DEBUG) Log.d(TAG, "Logout: Clearing preferences");
         setUsername(null);
         setPassword(null);
         setDeviceID(null);
+        addedFeeds.clear();
+        writePreference(PREF_SYNC_ADDED, addedFeeds);
+        removedFeeds.clear();
+        writePreference(PREF_SYNC_REMOVED, removedFeeds);
         setLastSyncTimestamp(0);
     }
 
