@@ -101,6 +101,8 @@ public class DBWriter {
                     }
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Deleting File. Result: " + result);
+                    EventDistributor.getInstance().sendQueueUpdateBroadcast();
+                    EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
                 }
             }
         });

@@ -132,7 +132,7 @@ public class FeedItemMenuHandler {
 					false);
 			break;
 		case R.id.remove_item:
-			DBWriter.deleteFeedMediaOfItem(context, selectedItem.getId());
+			DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
 			break;
 		case R.id.cancel_download_item:
 			requester.cancelDownload(context, selectedItem.getMedia());
