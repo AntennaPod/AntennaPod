@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.7.5
+---------------
+* Reduced application startup time
+* Reduced memory usage
+* Added option to change the playback speed
+* Added Swedish translation
+* Several bugfixes and improvements
+
 Version 0.9.7.4
 ---------------
 * Episode cache size can now be set to unlimited

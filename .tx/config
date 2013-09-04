@@ -21,6 +21,7 @@ trans.ru-RU = res/values-ru/strings.xml
 trans.ru_RU = res/values-ru/strings.xml
 trans.uk_UA = res/values-uk-rUA/strings.xml
 trans.zh_CN = res/values-zh-rCN/strings.xml
+trans.sv_SE = res/values-sv-rSE/strings.xml
 
 [antennapod.description]
 file_filter = description/<lang>.txt
