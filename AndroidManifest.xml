@@ -343,6 +343,10 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.AddFeedActivity" />
+
         </activity>
         <activity
             android:name=".activity.gpoddernet.GpodnetTagActivity"
@@ -353,6 +357,9 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
         </activity>
 
         <activity
@@ -366,6 +373,9 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
         </activity>
 
         <activity
@@ -381,6 +391,9 @@
                 <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
                 <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
         </activity>
 
 

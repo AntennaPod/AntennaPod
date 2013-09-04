@@ -3,6 +3,8 @@ package de.danoeh.antennapod.activity.gpoddernet;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.gpodnet.PodcastListFragment;
 import de.danoeh.antennapod.fragment.gpodnet.SearchListFragment;
@@ -26,6 +28,7 @@ public class GpodnetTagActivity extends GpodnetActivity{
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.gpodnet_tag_activity);
 
         if (!getIntent().hasExtra(ARG_TAGNAME)) {
@@ -47,5 +50,15 @@ public class GpodnetTagActivity extends GpodnetActivity{
         protected List<GpodnetPodcast> loadPodcastData(GpodnetService service) throws GpodnetServiceException {
             return service.getPodcastsForTag(tag, PODCAST_COUNT);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

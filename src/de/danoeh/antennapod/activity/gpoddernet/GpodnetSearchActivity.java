@@ -4,6 +4,8 @@ import android.app.SearchManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
+import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.gpodnet.SearchListFragment;
 import org.apache.commons.lang3.StringUtils;
@@ -18,6 +20,7 @@ public class GpodnetSearchActivity extends GpodnetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.gpodnet_search);
     }
 
@@ -46,5 +49,15 @@ public class GpodnetSearchActivity extends GpodnetActivity {
         } else {
             searchFragment.changeQuery(query);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -4,7 +4,9 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.ViewPager;
+import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.gpodnet.PodcastTopListFragment;
 import de.danoeh.antennapod.fragment.gpodnet.SuggestionListFragment;
@@ -24,10 +26,20 @@ public class GpodnetMainActivity extends GpodnetActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.gpodnet_main);
         ViewPager viewpager = (ViewPager) findViewById(R.id.viewpager);
         viewpager.setAdapter(new PagerAdapter(getSupportFragmentManager()));
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                NavUtils.navigateUpFromSameTask(this);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
     private class PagerAdapter extends FragmentStatePagerAdapter {
