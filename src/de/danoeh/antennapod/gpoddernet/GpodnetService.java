@@ -616,7 +616,7 @@ public class GpodnetService {
         int responseCode = response.getStatusLine().getStatusCode();
         if (responseCode != HttpStatus.SC_OK) {
             if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
-                throw new GpodnetServiceAuthenticationException();
+                throw new GpodnetServiceAuthenticationException("Wrong username or password");
             } else {
                 throw new GpodnetServiceBadStatusCodeException(
                         "Bad response code: " + responseCode, responseCode);

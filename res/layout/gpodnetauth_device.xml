@@ -66,11 +66,9 @@
         android:id="@+id/progbarCreateDevice"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/etxtCaption"
-        android:layout_alignBottom="@id/butCreateNewDevice"
+        android:layout_alignTop="@id/butCreateNewDevice"
+        android:layout_toLeftOf="@id/butCreateNewDevice"
         android:textColor="@color/download_failed_red"
-        android:layout_margin="16dp"
         android:textSize="@dimen/text_size_medium"
         android:visibility="gone"
         />
@@ -87,12 +85,12 @@
 
     <Button
         android:id="@+id/butChooseExistingDevice"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
         android:text="@string/gpodnetauth_device_butChoose"
-        android:layout_alignTop="@+id/spinnerChooseDevice"
-        android:layout_alignRight="@+id/txtvChooseExistingDevice"/>
+        android:layout_below="@+id/spinnerChooseDevice"
+        android:layout_alignLeft="@+id/butCreateNewDevice"
+        android:layout_alignRight="@+id/butCreateNewDevice"/>
 
     <Spinner
         android:id="@+id/spinnerChooseDevice"
@@ -100,8 +98,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/txtvChooseExistingDevice"
         android:layout_alignParentLeft="true"
-        android:layout_toLeftOf="@id/butChooseExistingDevice"
-
-        android:layout_margin="16dp"/>
+        android:layout_margin="8dp"
+        android:layout_alignParentRight="true"/>
 
 </RelativeLayout>

@@ -187,7 +187,6 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                 return true;
             }
         });
-        updateGpodnetPreferenceScreen();
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
@@ -244,6 +243,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         checkItemVisibility();
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        updateGpodnetPreferenceScreen();
     }
 
     @SuppressWarnings("deprecation")
