@@ -23,6 +23,7 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
@@ -38,6 +39,39 @@ public final class DBTasks {
     private static final String TAG = "DBTasks";
 
     private DBTasks() {
+    }
+
+    /**
+     * Removes the feed with the given download url. This method should NOT be executed on the GUI thread.
+     * @param context Used for accessing the db
+     * @param downloadUrl URL of the feed.
+     * */
+    public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getFeedCursorDownloadUrls();
+        long feedID = 0;
+        if (cursor.moveToFirst()) {
+            do {
+                if (cursor.getString(1).equals(downloadUrl)) {
+                    feedID = cursor.getLong(0);
+                }
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        adapter.close();
+
+        if (feedID != 0) {
+            try {
+                DBWriter.deleteFeed(context, feedID).get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        } else {
+            Log.w(TAG, "removeFeedWithDownloadUrl: Could not find feed with url: " + downloadUrl);
+        }
     }
 
     /**
@@ -111,6 +145,8 @@ public final class DBTasks {
                         refreshFeeds(context, DBReader.getFeedList(context));
                     }
                     isRefreshing.set(false);
+
+                    GpodnetSyncService.sendSyncIntent(context);
                 }
             }.start();
         } else {

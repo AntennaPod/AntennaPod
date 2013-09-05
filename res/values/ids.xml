@@ -15,5 +15,9 @@
     <item name="organize_queue_item" type="id"/>
     <item name="drag_handle" type="id"/>
     <item name="skip_episode_item" type="id"/>
+    <item name="image_disk_cache_key" type="id"/>
+    <item name="imageloader_key" type="id"/>
+    <item name="notification_gpodnet_sync_error" type="id"/>
+    <item name="notification_gpodnet_sync_autherror" type="id"/>
 
 </resources>
