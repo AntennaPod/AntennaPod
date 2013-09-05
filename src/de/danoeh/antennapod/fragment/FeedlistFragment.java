@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -244,10 +245,11 @@ public class FeedlistFragment extends Fragment implements
     }
 
     private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
+    private boolean skipWorkAround = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
 
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        if (actionModeDestroyWorkaround) {
+        if (skipWorkAround || actionModeDestroyWorkaround) {
             mActionMode = null;
             selectedFeed = null;
             fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
