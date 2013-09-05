@@ -10,6 +10,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.HttpDownloader;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -189,6 +190,7 @@ public class ImageDiskCache {
      */
     public void loadThumbnailBitmap(final String url, final ImageView target, final int length) {
         final ImageLoader il = ImageLoader.getInstance();
+        target.setTag(R.id.image_disk_cache_key, url);
         if (diskCache != null) {
             DiskCacheObject dco = getFromCacheIfAvailable(url);
             if (dco != null) {
@@ -196,12 +198,12 @@ public class ImageDiskCache {
                 return;
             }
         }
-        target.setTag(R.id.image_disk_cache_key, url);
         target.setImageResource(android.R.color.transparent);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(R.id.image_disk_cache_key).equals(url)) {
+                final Object tag = target.getTag(R.id.image_disk_cache_key);
+                if (tag != null || StringUtils.equals((String) tag, url)) {
                     il.loadThumbnailBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
@@ -216,6 +218,7 @@ public class ImageDiskCache {
      */
     public void loadCoverBitmap(final String url, final ImageView target, final int length) {
         final ImageLoader il = ImageLoader.getInstance();
+        target.setTag(R.id.image_disk_cache_key, url);
         if (diskCache != null) {
             DiskCacheObject dco = getFromCacheIfAvailable(url);
             if (dco != null) {
@@ -223,12 +226,12 @@ public class ImageDiskCache {
                 return;
             }
         }
-        target.setTag(R.id.image_disk_cache_key, url);
         target.setImageResource(android.R.color.transparent);
         executor.submit(new ImageDownloader(url) {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
-                if (target.getTag(R.id.image_disk_cache_key).equals(url)) {
+                final Object tag = target.getTag(R.id.image_disk_cache_key);
+                if (tag != null || StringUtils.equals((String) tag, url)) {
                     il.loadCoverBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
