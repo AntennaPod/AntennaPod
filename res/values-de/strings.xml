@@ -29,7 +29,7 @@
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
   <string name="refresh_label">Aktualisieren</string>
-  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die App funktioniert.</string>
+  <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die Anwendung funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="shownotes_label">Notizen</string>
   <string name="most_recent_prefix">Letzte Episode:\u0020</string>
@@ -38,8 +38,9 @@
   <string name="length_prefix">Länge:\u0020</string>
   <string name="size_prefix">Größe:\u0020</string>
   <string name="processing_label">Verarbeite</string>
-  <string name="loading_label">Lade...</string>
+  <string name="loading_label">Lade ...</string>
   <string name="image_of_prefix">Bild von:\u0020</string>
+  <string name="close_label">Schließen</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Gib die URL des Feeds hier ein:</string>
@@ -67,7 +68,7 @@
   <string name="skip_episode_label">Episode überspringen</string>
   <!--Download messages and labels-->
   <string name="download_successful">Download erfolgreich</string>
-  <string name="download_failed">Download fehlgeschlagen</string>
+  <string name="download_failed">Herunterladen fehlgeschlagen</string>
   <string name="download_pending">Download anstehend</string>
   <string name="download_running">Download läuft</string>
   <string name="download_error_device_not_found">Speichermedium nicht gefunden</string>
@@ -119,16 +120,21 @@
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
   <string name="authenticate_label">Authentifizieren</string>
   <string name="return_home_label">Zur Hauptseite zurückkehren</string>
-  <string name="flattr_auth_success">Die Authentifizierung war erfolgreich! Du kannst nun in der App Flattr verwenden.</string>
+  <string name="flattr_auth_success">Die Authentifizierung war erfolgreich! Du kannst nun in der Anwendung Flattr verwenden.</string>
   <string name="no_flattr_token_title">Kein Flattr Token gefunden</string>
-  <string name="no_flattr_token_msg">Dein Flattr Account scheint nicht mit AntennaPod verbunden zu sein. Du kannst entweder deinen Account mit AntennaPod verbinden, um direkt in der App Flattr zu verwenden, oder du kannst die Flattr-Seite der Sache im Web besuchen.</string>
+  <string name="no_flattr_token_msg">Dein Flattr Account scheint nicht mit AntennaPod verbunden zu sein. Du kannst entweder deinen Account mit AntennaPod verbinden, um direkt in der Anwendung Flattr zu verwenden, oder du kannst die Flattr-Seite der Sache im Netz besuchen.</string>
   <string name="authenticate_now_label">Authentifizieren</string>
   <string name="action_forbidden_title">Aktion verboten</string>
   <string name="action_forbidden_msg">AntennaPod besitzt keine Erlaubnis für diese Aktion. Der Grund dafür könnte sein, dass AntennaPods Zugangstoken aufgehoben worden ist. Du kannst dich entweder erneut authentifizieren oder die Flattr-Seite der Sache im Web besuchen.</string>
   <string name="access_revoked_title">Zugriff widerrufen</string>
-  <string name="access_revoked_info">Du hast AntennaPod das Zugangstoken zu deinem Account entzogen. Um diesen Prozess abzuschließen, musst du diese App aus der Liste der zugelassenen Anwendungen in deinen Account Einstellungen auf der Flattr Webseite entfernen.</string>
+  <string name="access_revoked_info">Du hast AntennaPod das Zugangstoken zu deinem Account entzogen. Um diesen Prozess abzuschließen, musst du diese Anwendung aus der Liste der zugelassenen Anwendungen in deinen Account Einstellungen auf der Flattr Webseite entfernen.</string>
   <string name="flattr_click_success">Du hast erfolgreich diese Sache mit Flattr unterstützt!</string>
   <string name="flattring_label">Flattre diese Sache</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Plugin herunterladen</string>
+  <string name="no_playback_plugin_title">Plugin nicht installiert</string>
+  <string name="no_playback_plugin_msg">Um die Wiedergabegeschwindigkeit zu verändern, muss eine Drittanbieter-Bibliothek heruntegeladen werden.\n\nDrücke auf \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren.\n\nProbleme, die bei der Benutzung des Plugins auftreten, sollten dem Entwickler des Plugins gemeldet werden.</string>
+  <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
   <!--Empty list labels-->
   <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
   <string name="no_feeds_label">Du hast noch keine Feeds abonniert.</string>
@@ -146,16 +152,16 @@
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer-Trennung</string>
-  <string name="pref_mobileUpdate_title">Mobile Updates</string>
-  <string name="pref_mobileUpdate_sum">Erlaube Updates über die mobile Datenverbindung</string>
+  <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
+  <string name="pref_mobileUpdate_sum">Erlaube Aktualisierungen über die mobile Datenverbindung</string>
   <string name="refreshing_label">Aktualisiere</string>
   <string name="flattr_settings_label">Flattr Einstellungen</string>
   <string name="pref_flattr_auth_title">Flattr Anmeldung</string>
-  <string name="pref_flattr_auth_sum">Melde dich mit deinem Flattr Account an, um direkt in der App zu flattrn.</string>
-  <string name="pref_flattr_this_app_title">Flattr diese App</string>
+  <string name="pref_flattr_auth_sum">Melde dich mit deinem Flattr Account an, um direkt in der Anwendung zu flattrn.</string>
+  <string name="pref_flattr_this_app_title">Flattr diese Anwendung</string>
   <string name="pref_flattr_this_app_sum">Unterstütze die Entwicklung von AntennaPod mit Flattr. Danke!</string>
   <string name="pref_revokeAccess_title">Zugriff entziehen</string>
-  <string name="pref_revokeAccess_sum">Entziehe dieser App die Zugriffserlaubnis für deinen Flattr account</string>
+  <string name="pref_revokeAccess_sum">Entziehe dieser Anwendung die Zugriffserlaubnis für deinen Flattr Account.</string>
   <string name="pref_display_only_episodes_title">Nur Episoden anzeigen</string>
   <string name="pref_display_only_episodes_sum">Zeige nur Feed-Einträge mit Episoden an.</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
   <string name="pref_update_interval_hours_manual">Manuell</string>
+  <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
+  <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>
@@ -200,10 +208,10 @@
   <string name="opml_export_success_title">OPML Export erfolgreich</string>
   <string name="opml_export_success_sum">Die .opml Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Sleep timer setzen</string>
-  <string name="disable_sleeptimer_label">Sleep Timer deaktivieren</string>
+  <string name="set_sleeptimer_label">Schlummerfunktion</string>
+  <string name="disable_sleeptimer_label">Schlummerfunktion deaktivieren</string>
   <string name="enter_time_here_label">Zeit eingeben</string>
-  <string name="sleep_timer_label">Sleep timer</string>
+  <string name="sleep_timer_label">Schlummerfunktion</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
   <!--Miro Guide-->

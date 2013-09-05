@@ -1,0 +1,239 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<resources>
+  <!--Activitiy titles-->
+  <string name="app_name">AntennaPod</string>
+  <string name="feeds_label">Flöden</string>
+  <string name="podcasts_label">PODCASTS</string>
+  <string name="episodes_label">AVSNITT</string>
+  <string name="new_label">Ny</string>
+  <string name="waiting_list_label">Väntelista</string>
+  <string name="settings_label">Inställningar</string>
+  <string name="add_new_feed_label">Lägg till nytt flöde</string>
+  <string name="downloads_label">Nedladdningar</string>
+  <string name="cancel_download_label">Avbryt  nedladdnin</string>
+  <string name="download_log_label">Nedladdningslogg</string>
+  <string name="playback_history_label">Uppspelningshistorik</string>
+  <!--Webview actions-->
+  <string name="open_in_browser_label">Öppna i webbläsare</string>
+  <string name="copy_url_label">Kopiera URL</string>
+  <string name="share_url_label">Dela URL</string>
+  <string name="copied_url_msg">Kopierade URL till clipboard.</string>
+  <!--Playback history-->
+  <string name="clear_history_label">Rensa historik</string>
+  <!--Other-->
+  <string name="confirm_label">Bekräfta</string>
+  <string name="cancel_label">Avbryt</string>
+  <string name="author_label">Skapare</string>
+  <string name="language_label">Språk</string>
+  <string name="cover_label">Omslag</string>
+  <string name="error_label">Fel</string>
+  <string name="error_msg_prefix">Ett fel inträffade:</string>
+  <string name="refresh_label">Uppdatera</string>
+  <string name="external_storage_error_msg">Ingen extern lagring är tillgänglig. Se till att montera en extern lagringsenhet så att appen kan fungera korrekt.</string>
+  <string name="chapters_label">Kapitel</string>
+  <string name="shownotes_label">Shownotes</string>
+  <string name="most_recent_prefix">Senaste avsnittet:\u0020</string>
+  <string name="episodes_suffix">\u0020episoder</string>
+  <string name="published_prefix">Publicerad:\u0020</string>
+  <string name="length_prefix">Längd:\u0020</string>
+  <string name="size_prefix">Storlek:\u0020</string>
+  <string name="processing_label">Bearbetar</string>
+  <string name="loading_label">Laddar...</string>
+  <string name="image_of_prefix">Bild av:\u0020</string>
+  <string name="close_label">Stäng</string>
+  <!--'Add Feed' Activity labels-->
+  <string name="feedurl_label">Flöde URL</string>
+  <string name="txtvfeedurl_label">Skriv in webbadressen till flödet här:</string>
+  <!--Actions on feeds-->
+  <string name="mark_all_read_label">Markera alla som lästa</string>
+  <string name="show_info_label">Visa information</string>
+  <string name="remove_feed_label">Ta bort flöde</string>
+  <string name="share_link_label">Dela hemsidans länk</string>
+  <string name="share_source_label">Dela flödeslänk</string>
+  <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort denna feed och ALLA avsnitt av denna feed som du har hämtat.</string>
+  <!--actions on feeditems-->
+  <string name="download_label">Ladda ned</string>
+  <string name="play_label">Spela</string>
+  <string name="pause_label">Pausa</string>
+  <string name="stream_label">Stream</string>
+  <string name="remove_label">Ta bort</string>
+  <string name="mark_read_label">Markera som läst</string>
+  <string name="mark_unread_label">Markera som oläst</string>
+  <string name="add_to_queue_label">Lägg till i kön</string>
+  <string name="remove_from_queue_label">Ta bort från Kön</string>
+  <string name="visit_website_label">Besök websidan</string>
+  <string name="support_label">Flattr det här</string>
+  <string name="enqueue_all_new">Ställ alla i kö</string>
+  <string name="download_all">Ladda ner alla</string>
+  <string name="skip_episode_label">Hoppa över avsnitt</string>
+  <!--Download messages and labels-->
+  <string name="download_successful">Nedladdning framgångsrik</string>
+  <string name="download_failed">Nedladdning misslyckades</string>
+  <string name="download_pending">Avvaktar nerladdning</string>
+  <string name="download_running">Nerladdning pågår</string>
+  <string name="download_error_device_not_found">Lagringsenhet hittades inte</string>
+  <string name="download_error_insufficient_space">Otillräckligt utrymme</string>
+  <string name="download_error_file_error">Filfel</string>
+  <string name="download_error_http_data_error">HTTP data fel</string>
+  <string name="download_error_error_unknown">Okänt fel</string>
+  <string name="download_error_parser_exception">Parserfel</string>
+  <string name="download_error_unsupported_type">Flödestyp utan stöd</string>
+  <string name="download_error_connection_error">Anslutningsfel</string>
+  <string name="download_error_unknown_host">Okänd värd</string>
+  <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
+  <string name="download_cancelled_msg">Nerladdning avbruten</string>
+  <string name="download_report_title">Nerladdningar färdiga</string>
+  <string name="download_error_malformed_url">Felaktig webbadress</string>
+  <string name="download_error_io_error">IO fel</string>
+  <string name="download_error_request_error">Request fel</string>
+  <string name="downloads_left">\u0020Nedladdningar kvar</string>
+  <string name="download_notification_title">Laddar ner podcastdata</string>
+  <string name="download_report_content">%1$d nedladdningar lyckades, %2$d misslyckades</string>
+  <string name="download_log_title_unknown">Okänd titel</string>
+  <string name="download_type_feed">Flöde</string>
+  <string name="download_type_media">Mediafil</string>
+  <string name="download_type_image">Bild</string>
+  <string name="download_request_error_dialog_message_prefix">Ett fel uppstod vid försöket att ladda ner filen:\u0020</string>
+  <!--Mediaplayer messages-->
+  <string name="player_error_msg">Fel! </string>
+  <string name="player_stopped_msg">Inget media spelar</string>
+  <string name="player_preparing_msg">Förbereder</string>
+  <string name="player_ready_msg">Beredd</string>
+  <string name="player_seeking_msg">Söker</string>
+  <string name="playback_error_server_died">Servern dog</string>
+  <string name="playback_error_unknown">Okänt fel</string>
+  <string name="no_media_playing_label">Inget media spelar</string>
+  <string name="position_default_label">00:00:00</string>
+  <string name="player_buffering_msg">Buffrar</string>
+  <string name="playbackservice_notification_title">Spelar podcast</string>
+  <string name="playbackservice_notification_content">Tryck här för mer information</string>
+  <!--Navigation-->
+  <string name="show_download_log">Visa log</string>
+  <string name="show_player_label">Visa spelare</string>
+  <!--Queue operations-->
+  <string name="clear_queue_label">Rensa kön</string>
+  <string name="organize_queue_label">Organisera kö</string>
+  <string name="undo">Ångra</string>
+  <string name="removed_from_queue">Föremålet avlägsnades</string>
+  <!--Flattr-->
+  <string name="flattr_auth_label">Flattr inloggning</string>
+  <string name="flattr_auth_explanation">Tryck på knappen nedan för att starta autentiseringen. Du kommer att vidarebefordras till Flattrs inloggningsskärm i din webbläsare och uppmanas att ge AntennaPod tillstånd att Flattra saker. Efter att du har gett tillstånd, kommer du automatiskt tillbaka till den här skärmen.</string>
+  <string name="authenticate_label">Autentisera</string>
+  <string name="return_home_label">Återgå till Startsidan</string>
+  <string name="flattr_auth_success">Autentiseringen lyckades! Du kan nu Flattra saker i appen.</string>
+  <string name="no_flattr_token_title">Ingen Flattr token hittades</string>
+  <string name="no_flattr_token_msg">Ditt Flattr konto verkar inte vara ansluten till AntennaPod. Du kan antingen ansluta ditt konto till AntennaPod att Flattr saker i app eller så kan du besöka webbplatsen för att Flattr det där.</string>
+  <string name="authenticate_now_label">Autentisera</string>
+  <string name="action_forbidden_title">Åtgärd förbjuden</string>
+  <string name="action_forbidden_msg">AntennaPod saknar behörighet för den här åtgärden. Anledningen till detta kan vara att AntennaPods tillgång till ditt konto har återkallats. Du kan antingen åter autentisera AntennaPod eller besöka hemsidan istället.</string>
+  <string name="access_revoked_title">Tillgång återkallad</string>
+  <string name="access_revoked_info">Du har nu återkallat AntennaPods tillgång till ditt konto. För att slutföra processen, måste du ta bort den här appen från listan godkända appar i dina kontoinställningar på Flattrs hemsida.</string>
+  <string name="flattr_click_success">Framgångsrikt flattrat denna sak!</string>
+  <string name="flattring_label">Flattrar</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Ladda ner tillägg</string>
+  <string name="no_playback_plugin_title">Tillägg ej installerat</string>
+  <string name="no_playback_plugin_msg">För att variabel uppspelningshastighet skall fungera måste ett tredjepartstillägg installeras.\n\nTryck på \'Ladda ner tillägg\' för att ladda ner ett gratis tilläg från Play store.\n\nAntennaPod ansvarar inte för problem med detta tillägg och de bör rapporteras till tilläggets skapare.\n</string>
+  <string name="set_playback_speed_label">Uppspelningshastigheter</string>
+  <!--Empty list labels-->
+  <string name="no_items_label">Det finns inget i denna lista.</string>
+  <string name="no_feeds_label">Du har inte prenumererat på något flöde ännu.</string>
+  <!--Preferences-->
+  <string name="other_pref">Annat</string>
+  <string name="about_pref">Om</string>
+  <string name="queue_label">Kö</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa uppspelningen när hörlurarna bortkopplas</string>
+  <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
+  <string name="playback_pref">Uppspelning</string>
+  <string name="network_pref">Nätverk </string>
+  <string name="pref_autoUpdateIntervall_title">Uppdateringsintervall</string>
+  <string name="pref_autoUpdateIntervall_sum">Ange ett intervall för att automatiskt uppdatera flödet eller avaktivera det</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Hämta mediefiler endast över WiFi</string>
+  <string name="pref_followQueue_title">Kontinuerlig uppspelning</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">WiFi nedladdning</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar bortkopplade</string>
+  <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
+  <string name="pref_mobileUpdate_sum">Tillåt uppdateringar via mobil dataanslutning</string>
+  <string name="refreshing_label">Uppdatera</string>
+  <string name="flattr_settings_label">Flattr inställningar</string>
+  <string name="pref_flattr_auth_title">Flattr inloggning</string>
+  <string name="pref_flattr_auth_sum">För att Flattra saker direkt från appen, logga in på ditt Flattr-konto.</string>
+  <string name="pref_flattr_this_app_title">Flattra den här appen</string>
+  <string name="pref_flattr_this_app_sum">Stöd utvecklingen av AntennaPod genom att flattra den. Tack!</string>
+  <string name="pref_revokeAccess_title">Återkalla åtkomst</string>
+  <string name="pref_revokeAccess_sum">Återkalla behörigheten till ditt Flattr-konto för denna app.</string>
+  <string name="pref_display_only_episodes_title">Visa endast episoder</string>
+  <string name="pref_display_only_episodes_sum">Visa endast objekt som har minst ett avsnitt.</string>
+  <string name="user_interface_label">Användargränssnitt</string>
+  <string name="pref_set_theme_title">Välj tema</string>
+  <string name="pref_set_theme_sum">Ändra utseendet på AntennaPod.</string>
+  <string name="pref_automatic_download_title">Automatisk nedladdning</string>
+  <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av episoder.</string>
+  <string name="pref_autodl_wifi_filter_title">Aktivera WiFi filtrering</string>
+  <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
+  <string name="pref_episode_cache_title">Avsnittscache</string>
+  <string name="pref_theme_title_light">Ljust</string>
+  <string name="pref_theme_title_dark">Mörkt</string>
+  <string name="pref_episode_cache_unlimited">Obegränsat</string>
+  <string name="pref_update_interval_hours_plural">timmar</string>
+  <string name="pref_update_interval_hours_singular">timme</string>
+  <string name="pref_update_interval_hours_manual">Manuell</string>
+  <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
+  <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
+  <!--Search-->
+  <string name="search_hint">Sök efter flöden eller avsnitt</string>
+  <string name="found_in_shownotes_label">Hittad i shownotes</string>
+  <string name="found_in_chapters_label">Hittad i kapitel</string>
+  <string name="search_status_searching">Söker... </string>
+  <string name="search_status_no_results">Inga resultat hittades</string>
+  <string name="search_results_label">Sökresultat</string>
+  <string name="search_term_label">du sökte:\u0020</string>
+  <string name="search_label">Sök</string>
+  <string name="found_in_title_label">Hittad i titeln</string>
+  <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Du kan också importera en OPML-fil. Med OPML-filer kan du flytta dina podcasts från en podcatcher till en annan:</string>
+  <string name="opml_import_explanation">Om du vill importera en OPML-fil, måste du placera den i följande katalog och tryck på knappen nedan för att starta importen.</string>
+  <string name="start_import_label">Börja import</string>
+  <string name="opml_import_label">OPML import</string>
+  <string name="opml_directory_error">FEL! </string>
+  <string name="reading_opml_label">Läser OPML fil</string>
+  <string name="opml_reader_error">Ett fel har skett vid iläsning av opml dokumentet:</string>
+  <string name="opml_import_error_dir_empty">Katalogen är tom.</string>
+  <string name="select_all_label">Välj alla</string>
+  <string name="deselect_all_label">Avmarkera alla</string>
+  <string name="choose_file_to_import_label">Välj fil att importera</string>
+  <string name="opml_export_label">OPML export</string>
+  <string name="exporting_label">Exporterar...</string>
+  <string name="export_error_label">Exporteringsfel</string>
+  <string name="opml_export_success_title">OPML export lyckades</string>
+  <string name="opml_export_success_sum">.opml filen skrevs till:\u0020</string>
+  <!--Sleep timer-->
+  <string name="set_sleeptimer_label">Ställ in sömntimer</string>
+  <string name="disable_sleeptimer_label">Stäng av sömntimer</string>
+  <string name="enter_time_here_label">Ange tid</string>
+  <string name="sleep_timer_label">Sömntimer</string>
+  <string name="time_left_label">Återstående tid:\u0020</string>
+  <string name="time_dialog_invalid_input">Ogiltigt tal, tiden måste vara ett heltal</string>
+  <!--Miro Guide-->
+  <string name="loading_categories_label">Laddar kategorier...</string>
+  <string name="browse_miroguide_label">Bläddra i Miro Guide</string>
+  <string name="txtv_browse_miroguide_label">Eller bläddra i Miro Guide:</string>
+  <string name="miro_guide_label">Miro Guide</string>
+  <string name="miro_search_hint">Leta i Miro Guide</string>
+  <string name="popular_label">Populärt</string>
+  <string name="best_rating_label">Bästa betyg</string>
+  <string name="add_feed_label">Lägg till flöde</string>
+  <string name="miro_feed_added">Flödet läggs till</string>
+  <!--Directory chooser-->
+  <string name="selected_folder_label">Vald mapp:</string>
+  <string name="create_folder_label">Skapa mapp</string>
+  <string name="choose_data_directory">Välj mapp</string>
+  <string name="create_folder_msg">Skapa ny mapp med namnet \"%1$s\"?</string>
+  <string name="create_folder_success">Skapade ny mapp</string>
+  <string name="create_folder_error_no_write_access">Kan inte skriva till den här mappen</string>
+  <string name="create_folder_error_already_exists">Mappen finns redan</string>
+  <string name="create_folder_error">Kunde inte skapa mapp</string>
+  <string name="folder_not_empty_dialog_title">Mappen är inte tom</string>
+  <string name="folder_not_empty_dialog_msg">Den mapp du har valt är inte tom. Filer kommer att placeras direkt i denna mapp. Fortsätt ändå?</string>
+  <string name="set_to_default_folder">Välj standardmapp</string>
+</resources>

@@ -40,6 +40,7 @@
   <string name="processing_label">A processar...</string>
   <string name="loading_label">A carregar...</string>
   <string name="image_of_prefix">Imagem de:\u0020</string>
+  <string name="close_label">Fechar</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
   <string name="txtvfeedurl_label">Introduza o URL da fonte:</string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod à sua conta. Para concluir o processo, tem que remover esta aplicação da lista de aplicações presentes nas definições de conta no sítio web do flattr.</string>
   <string name="flattr_click_success">Flattered com sucesso!</string>
   <string name="flattring_label">Flattring</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Transferir extra</string>
+  <string name="no_playback_plugin_title">Extra não instalado</string>
+  <string name="no_playback_plugin_msg">Para melhorar a reprodução, deve transferir  e instalar um biblioteca de terceiros.\nClique Transferir extra para transferir o extra através da loja Google..\n\nSe encontrar problemas ao utilizar esta biblioteca, os programadores do AntennaPod não podem ser responsabilizados e deve contactar o programador do extra.</string>
+  <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens na lista.</string>
   <string name="no_feeds_label">Ainda não possui quaisquer fontes.</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_playback_speed_title">Velocidades de reprodução</string>
+  <string name="pref_playback_speed_sum">Personalize as velocidades de reprodução disponíveis.</string>
   <!--Search-->
   <string name="search_hint">Procurar fontes ou episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
