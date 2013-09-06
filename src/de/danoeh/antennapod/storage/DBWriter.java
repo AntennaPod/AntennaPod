@@ -464,42 +464,54 @@ public class DBWriter {
      * Moves the specified item to the top of the queue.
      *
      * @param context         A context that is used for opening a database connection.
-     * @param selectedItem    The item to move to the top of the queue
+     * @param itemId          The item to move to the top of the queue
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      */
     public static Future<?> moveQueueItemToTop(final Context context, final long itemId, final boolean broadcastUpdate) {
-        List<Long> queueIdList = DBReader.getQueueIDList(context);
-        int currentLocation = 0;
-        for (long id : queueIdList) {
-            if (id == itemId) {
-                return moveQueueItem(context, currentLocation, 0, true);
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                List<Long> queueIdList = DBReader.getQueueIDList(context);
+                int currentLocation = 0;
+                for (long id : queueIdList) {
+                    if (id == itemId) {
+                        moveQueueItemHelper(context, currentLocation, 0, broadcastUpdate);
+                        return;
+                    }
+                    currentLocation++;
+                }
+                Log.e(TAG, "moveQueueItemToTop: item not found");
             }
-            currentLocation++;
-        }
-        Log.e(TAG, "moveQueueItemToTop: item not found");
-        return null;
+        });
     }
     
     /**
      * Moves the specified item to the bottom of the queue.
      *
      * @param context         A context that is used for opening a database connection.
-     * @param selectedItem    The item to move to the bottom of the queue
+     * @param itemId          The item to move to the bottom of the queue
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      */
-    public static Future<?> moveQueueItemToBottom(final Context context, final long itemId, final boolean broadcastUpdate) {
-        List<Long> queueIdList = DBReader.getQueueIDList(context);
-        int currentLocation = 0;
-        for (long id : queueIdList) {
-            if (id == itemId) {
-                return moveQueueItem(context, currentLocation, queueIdList.size() - 1, true);
+    public static Future<?> moveQueueItemToBottom(final Context context, final long itemId,
+                                                  final boolean broadcastUpdate) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                List<Long> queueIdList = DBReader.getQueueIDList(context);
+                int currentLocation = 0;
+                for (long id : queueIdList) {
+                    if (id == itemId) {
+                        moveQueueItemHelper(context, currentLocation, queueIdList.size() - 1,
+                                            broadcastUpdate);
+                        return;
+                    }
+                    currentLocation++;
+                }
+                Log.e(TAG, "moveQueueItemToBottom: item not found");
             }
-            currentLocation++;
-        }
-        Log.e(TAG, "moveQueueItemToBottom: item not found");
-        return null;
+        });
     }
     
     /**
@@ -518,31 +530,48 @@ public class DBWriter {
 
             @Override
             public void run() {
-                final PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
-
-                if (queue != null) {
-                    if (from >= 0 && from < queue.size() && to >= 0
-                            && to < queue.size()) {
-
-                        final FeedItem item = queue.remove(from);
-                        queue.add(to, item);
-
-                        adapter.setQueue(queue);
-                        if (broadcastUpdate) {
-                            EventDistributor.getInstance()
-                                    .sendQueueUpdateBroadcast();
-                        }
-
-                    }
-                } else {
-                    Log.e(TAG, "moveQueueItem: Could not load queue");
-                }
-                adapter.close();
+                moveQueueItem(context, from, to, broadcastUpdate);
             }
         });
+    }
+
+    /**
+     * Changes the position of a FeedItem in the queue.
+     *
+     * This function must be run using the ExecutorService (dbExec).
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param from            Source index. Must be in range 0..queue.size()-1.
+     * @param to              Destination index. Must be in range 0..queue.size()-1.
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
+     */
+    private static void moveQueueItemHelper(final Context context, final int from,
+                                       final int to, final boolean broadcastUpdate) {
+        final PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        final List<FeedItem> queue = DBReader
+                .getQueue(context, adapter);
+
+        if (queue != null) {
+            if (from >= 0 && from < queue.size() && to >= 0
+                    && to < queue.size()) {
+
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventDistributor.getInstance()
+                            .sendQueueUpdateBroadcast();
+                }
+
+            }
+        } else {
+            Log.e(TAG, "moveQueueItemHelper: Could not load queue");
+        }
+        adapter.close();
     }
 
     /**
