@@ -1460,8 +1460,7 @@ public class PlaybackService extends Service {
 					Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
 				if (media != null) {
 					setStatus(PlayerStatus.STOPPED);
-					player.reset();
-					endPlayback(false);
+					endPlayback(true);
 				}
 			}
 		}
