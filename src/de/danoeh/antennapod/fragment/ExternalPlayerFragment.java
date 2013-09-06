@@ -138,7 +138,10 @@ public class ExternalPlayerFragment extends Fragment {
 
 			@Override
 			public void loadMediaInfo() {
-				ExternalPlayerFragment.this.loadMediaInfo();
+                ExternalPlayerFragment fragment = ExternalPlayerFragment.this;
+                if (fragment != null) {
+				    fragment.loadMediaInfo();
+                }
 			}
 
 			@Override
