@@ -81,7 +81,7 @@
         <item>3.90</item>
         <item>4.00</item>
     </string-array>
-    
+
     <string-array name="autodl_select_networks_default_entries">
         <item>N/A</item>
     </string-array>
@@ -96,6 +96,4 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-    
-
 </resources>

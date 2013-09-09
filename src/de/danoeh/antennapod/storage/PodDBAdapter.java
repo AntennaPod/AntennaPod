@@ -425,6 +425,15 @@ public class PodDBAdapter {
         db.endTransaction();
     }
 
+    /**
+     * Updates the download URL of a Feed.
+     */
+    public void setFeedDownloadUrl(String original, String updated) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_DOWNLOAD_URL, updated);
+        db.update(TABLE_NAME_FEEDS, values, KEY_DOWNLOAD_URL + "=?", new String[]{original});
+    }
+
     public void setFeedItemlist(List<FeedItem> items) {
         db.beginTransaction();
         for (FeedItem item : items) {
@@ -657,6 +666,10 @@ public class PodDBAdapter {
         Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null,
                 KEY_TITLE + " ASC");
         return c;
+    }
+
+    public final Cursor getFeedCursorDownloadUrls() {
+        return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
     }
 
     public final Cursor getExpiredFeedsCursor(long expirationTime) {
