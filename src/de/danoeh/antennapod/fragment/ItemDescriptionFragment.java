@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.*;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -9,10 +10,6 @@ import org.apache.commons.lang3.StringEscapeUtils;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.ClipData;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -117,7 +114,12 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                startActivity(intent);
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                    return false;
+                }
                 return true;
             }
 
@@ -138,6 +140,7 @@ public class ItemDescriptionFragment extends Fragment {
             }
 
         });
+
         registerForContextMenu(webvDescription);
         return webvDescription;
     }
@@ -371,11 +374,10 @@ public class ItemDescriptionFragment extends Fragment {
                     Callable<String> shownotesLoadTask = shownotesProvider.loadShownotes();
                     final String shownotes = shownotesLoadTask.call();
 
-                    data = "";
                     data = StringEscapeUtils.unescapeHtml4(shownotes);
                     Activity activity = getActivity();
                     if (activity != null) {
-                        TypedArray res = getActivity()
+                        TypedArray res = activity
                                 .getTheme()
                                 .obtainStyledAttributes(
                                         new int[]{android.R.attr.textColorPrimary});

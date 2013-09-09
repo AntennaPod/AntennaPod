@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_finish_title"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/text_size_large"
+        android:layout_margin="16dp"
+        android:textColor="@color/bright_blue"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/txtvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_finish_descr"
+        android:layout_below="@id/txtvTitle"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/butSyncNow"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvDescription"
+        android:layout_margin="16dp"
+        android:text="@string/gpodnetauth_finish_butsyncnow"/>
+
+    <Button
+        android:id="@+id/butGoMainscreen"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/butSyncNow"
+        android:layout_margin="16dp"
+        android:text="@string/gpodnetauth_finish_butgomainscreen"/>
+
+</RelativeLayout>

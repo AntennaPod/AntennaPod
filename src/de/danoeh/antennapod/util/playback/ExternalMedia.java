@@ -25,7 +25,6 @@ public class ExternalMedia implements Playable {
 
 	private String episodeTitle;
 	private String feedTitle;
-	private String shownotes;
 	private MediaType mediaType = MediaType.AUDIO;
 	private List<Chapter> chapters;
 	private int duration;
@@ -80,8 +79,13 @@ public class ExternalMedia implements Playable {
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
 		feedTitle = mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-		duration = Integer.parseInt(mmr
+        try {
+		    duration = Integer.parseInt(mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new PlayableException("NumberFormatException when reading duration of media file");
+        }
 		ChapterUtils.loadChaptersFromFileUrl(this);
 	}
 

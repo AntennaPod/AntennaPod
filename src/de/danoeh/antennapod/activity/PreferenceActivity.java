@@ -1,10 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
@@ -18,15 +13,23 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The main preference activity
@@ -41,6 +44,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
+    private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
+
+    private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
+    private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
+    private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
 
     private CheckBoxPreference[] selectedNetworks;
 
@@ -54,9 +62,9 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
             getActionBar().setDisplayHomeAsUpEnabled(true);
         }
 
-		addPreferencesFromResource(R.xml.preferences);
-		findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
-				new OnPreferenceClickListener() {
+        addPreferencesFromResource(R.xml.preferences);
+        findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
+                new OnPreferenceClickListener() {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
@@ -156,11 +164,53 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 return true;
                             }
                         });
+        findPreference(PREF_PLAYBACK_SPEED_LAUNCHER)
+                .setOnPreferenceClickListener(new OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        VariableSpeedDialog.showDialog(PreferenceActivity.this);
+                        return true;
+                    }
+                });
+        findPreference(PREF_GPODNET_SETLOGIN_INFORMATION).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AuthenticationDialog dialog = new AuthenticationDialog(PreferenceActivity.this,
+                        R.string.pref_gpodnet_setlogin_information_title, false, false, GpodnetPreferences.getUsername(),
+                        null) {
+
+                    @Override
+                    protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                        GpodnetPreferences.setPassword(password);
+                    }
+                };
+                dialog.show();
+                return true;
+            }
+        });
+        findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                GpodnetPreferences.logout();
+                Toast toast = Toast.makeText(PreferenceActivity.this, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
+                toast.show();
+                updateGpodnetPreferenceScreen();
+                return true;
+            }
+        });
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
 
+
+    }
+
+    private void updateGpodnetPreferenceScreen() {
+        final boolean loggedIn = GpodnetPreferences.loggedIn();
+        findPreference(PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
+        findPreference(PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
+        findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
     }
 
     private void buildUpdateIntervalPreference() {
@@ -204,6 +254,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         checkItemVisibility();
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        updateGpodnetPreferenceScreen();
     }
 
     @SuppressWarnings("deprecation")

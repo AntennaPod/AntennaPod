@@ -1,9 +1,252 @@
 package instrumentationTest.de.test.antennapod.storage;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.test.InstrumentationTestCase;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.PodDBAdapter;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Test class for DBTasks
  */
 public class DBTasksTest extends InstrumentationTestCase {
+    private static final String TEST_FOLDER = "testDBTasks";
+    private static final int EPISODE_CACHE_SIZE = 5;
+
+    private File destFolder;
+
+    @Override
+    protected void tearDown() throws Exception {
+        super.tearDown();
+        final Context context = getInstrumentation().getTargetContext();
+        assertTrue(PodDBAdapter.deleteDatabase(context));
+
+        for (File f : destFolder.listFiles()) {
+            assertTrue(f.delete());
+        }
+        assertTrue(destFolder.delete());
+
+    }
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        assertNotNull(destFolder);
+        assertTrue(destFolder.exists());
+        assertTrue(destFolder.canWrite());
+
+        final Context context = getInstrumentation().getTargetContext();
+        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
+        // make sure database is created
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.close();
+
+        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext().getApplicationContext()).edit();
+        prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
+        prefEdit.commit();
+    }
+
+    public void testPerformAutoCleanupShouldDelete() throws IOException {
+        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        List<FeedItem> items = new ArrayList<FeedItem>();
+        feed.setItems(items);
+        List<File> files = new ArrayList<File>();
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+
+            File f = new File(destFolder, "file " + i);
+            assertTrue(f.createNewFile());
+            files.add(f);
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            items.add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : items) {
+            assertTrue(item.getId() != 0);
+            assertTrue(item.getMedia().getId() != 0);
+        }
+        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        for (int i = 0; i < files.size(); i++) {
+            if (i < EPISODE_CACHE_SIZE) {
+                assertTrue(files.get(i).exists());
+            } else {
+                assertFalse(files.get(i).exists());
+            }
+        }
+    }
+
+    public void testPerformAutoCleanupShouldNotDeleteBecauseUnread() throws IOException {
+        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        List<FeedItem> items = new ArrayList<FeedItem>();
+        feed.setItems(items);
+        List<File> files = new ArrayList<File>();
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), false, feed);
+
+            File f = new File(destFolder, "file " + i);
+            assertTrue(f.createNewFile());
+            assertTrue(f.exists());
+            files.add(f);
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            items.add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : items) {
+            assertTrue(item.getId() != 0);
+            assertTrue(item.getMedia().getId() != 0);
+        }
+        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        for (File file : files) {
+            assertTrue(file.exists());
+        }
+    }
+
+    public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue() throws IOException {
+        final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        List<FeedItem> items = new ArrayList<FeedItem>();
+        feed.setItems(items);
+        List<File> files = new ArrayList<File>();
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+
+            File f = new File(destFolder, "file " + i);
+            assertTrue(f.createNewFile());
+            assertTrue(f.exists());
+            files.add(f);
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            items.add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.setQueue(items);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : items) {
+            assertTrue(item.getId() != 0);
+            assertTrue(item.getMedia().getId() != 0);
+        }
+        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        for (File file : files) {
+            assertTrue(file.exists());
+        }
+    }
+
+    public void testUpdateFeedNewFeed() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), false, feed));
+        }
+        Feed newFeed = DBTasks.updateFeed(context, feed);
+
+        assertTrue(newFeed == feed);
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : feed.getItems()) {
+            assertFalse(item.isRead());
+            assertTrue(item.getId() != 0);
+        }
+    }
+
+    public void testUpdateFeedUpdatedFeed() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS_OLD = 10;
+        final int NUM_ITEMS_NEW = 10;
+
+        final Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+        }
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // ensure that objects have been saved in db, then reset
+        assertTrue(feed.getId() != 0);
+        final long feedID = feed.getId();
+        feed.setId(0);
+        List<Long> itemIDs = new ArrayList<Long>();
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+            itemIDs.add(item.getId());
+            item.setId(0);
+        }
+
+        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
+            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+        }
+
+        final Feed newFeed = DBTasks.updateFeed(context, feed);
+        assertTrue(feed != newFeed);
+
+        updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+
+        final Feed feedFromDB = DBReader.getFeed(context, newFeed.getId());
+        assertNotNull(feedFromDB);
+        assertTrue(feedFromDB.getId() == newFeed.getId());
+        updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+    }
+
+    private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
+        assertTrue(newFeed.getId() == feedID);
+        assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
+        Collections.reverse(newFeed.getItems());
+        Date lastDate = new Date(0);
+        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
+            FeedItem item = newFeed.getItems().get(i);
+            assertTrue(item.getFeed() == newFeed);
+            assertTrue(item.getId() == itemIDs.get(i));
+            assertTrue(item.isRead());
+            assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
+            lastDate = item.getPubDate();
+        }
+        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
+            FeedItem item = newFeed.getItems().get(i);
+            assertTrue(item.getFeed() == newFeed);
+            assertTrue(item.getId() != 0);
+            assertFalse(item.isRead());
+            assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
+            lastDate = item.getPubDate();
+        }
+    }
 }

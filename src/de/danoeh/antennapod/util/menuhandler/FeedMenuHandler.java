@@ -30,6 +30,10 @@ public class FeedMenuHandler {
 	}
 
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
+        if (selectedFeed == null) {
+            return false;
+        }
+
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(

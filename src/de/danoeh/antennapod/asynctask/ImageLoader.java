@@ -66,7 +66,7 @@ public class ImageLoader {
 
 	private ExecutorService createExecutor() {
 		return Executors.newFixedThreadPool(Runtime.getRuntime()
-				.availableProcessors() + 1, new ThreadFactory() {
+				.availableProcessors(), new ThreadFactory() {
 
 			@Override
 			public Thread newThread(Runnable r) {
@@ -77,7 +77,7 @@ public class ImageLoader {
 		});
 	}
 
-	public static ImageLoader getInstance() {
+	public static synchronized ImageLoader getInstance() {
 		if (singleton == null) {
 			singleton = new ImageLoader();
 		}
@@ -106,7 +106,8 @@ public class ImageLoader {
 				.getContext());
 
 		if (source != null && source.getImageLoaderCacheKey() != null) {
-			CachedBitmap cBitmap = getBitmapFromCoverCache(source.getImageLoaderCacheKey());
+            target.setTag(R.id.imageloader_key, source.getImageLoaderCacheKey());
+            CachedBitmap cBitmap = getBitmapFromCoverCache(source.getImageLoaderCacheKey());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
@@ -143,7 +144,8 @@ public class ImageLoader {
 				.getContext());
 
 		if (source != null && source.getImageLoaderCacheKey() != null) {
-			CachedBitmap cBitmap = getBitmapFromThumbnailCache(source.getImageLoaderCacheKey());
+            target.setTag(R.id.imageloader_key, source.getImageLoaderCacheKey());
+            CachedBitmap cBitmap = getBitmapFromThumbnailCache(source.getImageLoaderCacheKey());
 			if (cBitmap != null && cBitmap.getLength() >= length) {
 				target.setImageBitmap(cBitmap.getBitmap());
 			} else {
@@ -195,11 +197,7 @@ public class ImageLoader {
 	}
 
 	private int getDefaultCoverResource(Context context) {
-		TypedArray res = context
-				.obtainStyledAttributes(new int[] { R.attr.default_cover });
-		final int defaultCoverResource = res.getResourceId(0, 0);
-		res.recycle();
-		return defaultCoverResource;
+		return android.R.color.transparent;
 	}
 
 	/**

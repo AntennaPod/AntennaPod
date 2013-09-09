@@ -12,7 +12,7 @@ public class MiroGuideItem {
 		super();
 		this.name = name;
 		this.description = description;
-		this.date = date;
+		this.date = (Date) date.clone();
 		this.url = url;
 	}
 
@@ -30,7 +30,7 @@ public class MiroGuideItem {
 	}
 
 	public Date getDate() {
-		return date;
+		return (Date) date.clone();
 	}
 
 	public String getUrl() {

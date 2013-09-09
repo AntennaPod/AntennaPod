@@ -5,7 +5,7 @@
     <groupId>de.danoeh</groupId>
     <artifactId>antennapod</artifactId>
     <packaging>apk</packaging>
-    <version>0.9.7.4</version>
+    <version>0.9.7.5</version>
     <name>AntennaPod</name>
 
 
@@ -83,6 +83,14 @@
             <groupId>com.nineoldandroids</groupId>
             <artifactId>library</artifactId>
             <version>2.4.0</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aocate</groupId>
+            <artifactId>presto_client</artifactId>
+            <version>0.8.5</version>
+            <type>jar</type>
+            <scope>system</scope>
+            <systemPath>${project.basedir}/libs/presto_client-0.8.5.jar</systemPath>
         </dependency>
     </dependencies>
 
@@ -212,7 +220,7 @@
                             </manifest>
                             <proguard>
                                 <skip>false</skip>
-                                <config>proguard.cfg</config>
+                                <config>proguard-mvn.cfg</config>
                             </proguard>
                         </configuration>
                         <executions>

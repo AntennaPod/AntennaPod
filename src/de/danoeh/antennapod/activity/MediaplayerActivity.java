@@ -129,7 +129,16 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 			public void onPlaybackEnd() {
 				finish();
 			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				MediaplayerActivity.this.onPlaybackSpeedChange();
+			}
 		};
+
+	}
+
+	protected void onPlaybackSpeedChange() {
 
 	}
 

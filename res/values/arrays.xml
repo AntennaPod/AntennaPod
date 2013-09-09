@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="update_intervall_options">
+        <item>Manual</item>
+        <item>1 hour</item>
+        <item>2 hours</item>
+        <item>4 hours</item>
+        <item>8 hours</item>
+        <item>12 hours</item>
+        <item>24 hours</item>
+    </string-array>
+
     <string-array name="update_intervall_values">
         <item>0</item>
         <item>1</item>
@@ -28,6 +38,50 @@
         <item>80</item>
         <item>100</item>
     </string-array>
+    <string-array name="playback_speed_values">
+        <item>1.0</item>
+        <item>1.05</item>
+        <item>1.10</item>
+        <item>1.15</item>
+        <item>1.20</item>
+        <item>1.25</item>
+        <item>1.30</item>
+        <item>1.35</item>
+        <item>1.40</item>
+        <item>1.45</item>
+        <item>1.50</item>
+        <item>1.55</item>
+        <item>1.60</item>
+        <item>1.65</item>
+        <item>1.70</item>
+        <item>1.75</item>
+        <item>1.80</item>
+        <item>1.85</item>
+        <item>1.90</item>
+        <item>1.95</item>
+        <item>2.00</item>
+        <item>2.10</item>
+        <item>2.20</item>
+        <item>2.30</item>
+        <item>2.40</item>
+        <item>2.50</item>
+        <item>2.60</item>
+        <item>2.70</item>
+        <item>2.80</item>
+        <item>2.90</item>
+        <item>3.00</item>
+        <item>3.10</item>
+        <item>3.20</item>
+        <item>3.30</item>
+        <item>3.40</item>
+        <item>3.50</item>
+        <item>3.60</item>
+        <item>3.70</item>
+        <item>3.80</item>
+        <item>3.90</item>
+        <item>4.00</item>
+    </string-array>
+
     <string-array name="autodl_select_networks_default_entries">
         <item>N/A</item>
     </string-array>
@@ -42,5 +96,4 @@
         <item>0</item>
         <item>1</item>
     </string-array>
-
 </resources>

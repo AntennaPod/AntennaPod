@@ -60,4 +60,10 @@ public class NetworkUtils {
 			Log.d(TAG, "Network for auto-dl is not available");
 		return false;
 	}
+
+    public static boolean networkAvailable(Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo info = cm.getActiveNetworkInfo();
+        return info != null && info.isConnected();
+    }
 }

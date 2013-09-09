@@ -50,7 +50,6 @@ public class ItemlistFragment extends ListFragment {
 	public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
 	public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 	protected InternalFeedItemlistAdapter fila;
-	protected DownloadRequester requester = DownloadRequester.getInstance();
 
 	private Feed feed;
     protected List<Long> queue;
@@ -60,6 +59,8 @@ public class ItemlistFragment extends ListFragment {
 
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
+
+    private AsyncTask<Long, Void, Feed> currentLoadTask;
 
 	public ItemlistFragment(boolean showFeedtitle) {
 		super();
@@ -116,11 +117,21 @@ public class ItemlistFragment extends ListFragment {
 		return inflater.inflate(R.layout.feeditemlist, container, false);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		loadData();
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        loadData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventDistributor.getInstance().unregister(contentUpdate);
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
+    }
 
     protected void loadData() {
         final long feedId;
@@ -156,8 +167,6 @@ public class ItemlistFragment extends ListFragment {
                     } else {
                         Log.e(TAG, "Could not load queue");
                     }
-                    if (result.getItems().isEmpty()) {
-                    }
                     setEmptyViewIfListIsEmpty();
                     if (fila != null) {
                         fila.notifyDataSetChanged();
@@ -171,6 +180,7 @@ public class ItemlistFragment extends ListFragment {
                 }
             }
         };
+        currentLoadTask = loadTask;
         loadTask.execute(feedId);
     }
 
@@ -188,17 +198,6 @@ public class ItemlistFragment extends ListFragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		EventDistributor.getInstance().unregister(contentUpdate);
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		getActivity().runOnUiThread(new Runnable() {
@@ -209,7 +208,6 @@ public class ItemlistFragment extends ListFragment {
 			}
 		});
 		updateProgressBarVisibility();
-		EventDistributor.getInstance().register(contentUpdate);
 	}
 
 	@Override

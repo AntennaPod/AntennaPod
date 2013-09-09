@@ -183,7 +183,12 @@ public class MainActivity extends ActionBarActivity {
 
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(menu.findItem(R.id.search_item));
+        MenuItem searchItem = menu.findItem(R.id.search_item);
+        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        if (searchView == null) {
+            MenuItemCompat.setActionView(searchItem, new SearchView(this));
+            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        }
         searchView.setIconifiedByDefault(true);
 
         SearchableInfo info = searchManager.getSearchableInfo(getComponentName());

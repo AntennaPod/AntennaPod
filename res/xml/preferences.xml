@@ -1,69 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android" >
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/user_interface_label">
-        <CheckBoxPreference android:title="@string/pref_display_only_episodes_title" android:summary="@string/pref_display_only_episodes_sum" android:key="prefDisplayOnlyEpisodes"/>
-        <ListPreference android:entryValues="@array/theme_values" android:entries="@array/theme_options" android:title="@string/pref_set_theme_title" android:key="prefTheme" android:summary="@string/pref_set_theme_sum" android:defaultValue="0"/>
-    </PreferenceCategory><PreferenceCategory android:title="@string/playback_pref" >
+        <CheckBoxPreference
+            android:title="@string/pref_display_only_episodes_title"
+            android:summary="@string/pref_display_only_episodes_sum"
+            android:key="prefDisplayOnlyEpisodes"/>
+        <ListPreference
+            android:entryValues="@array/theme_values"
+            android:entries="@array/theme_options"
+            android:title="@string/pref_set_theme_title"
+            android:key="prefTheme"
+            android:summary="@string/pref_set_theme_sum"
+            android:defaultValue="0"/>
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/playback_pref">
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
             android:key="prefPauseOnHeadsetDisconnect"
             android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
-            android:title="@string/pref_pauseOnHeadsetDisconnect_title" />
+            android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
-            android:title="@string/pref_followQueue_title" />
-        
+            android:title="@string/pref_followQueue_title"/>
+        <Preference
+            android:key="prefPlaybackSpeedLauncher"
+            android:summary="@string/pref_playback_speed_sum"
+            android:title="@string/pref_playback_speed_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/network_pref" >
+    <PreferenceCategory android:title="@string/network_pref">
         <ListPreference
             android:defaultValue="0"
             android:entries="@array/update_intervall_values"
             android:entryValues="@array/update_intervall_values"
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervall_sum"
-            android:title="@string/pref_autoUpdateIntervall_title" />
+            android:title="@string/pref_autoUpdateIntervall_title"/>
 
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
-            android:title="@string/pref_mobileUpdate_title" />
-        <ListPreference android:defaultValue="20" android:entries="@array/episode_cache_size_entries" android:key="prefEpisodeCacheSize" android:title="@string/pref_episode_cache_title" android:entryValues="@array/episode_cache_size_values"/><PreferenceScreen android:summary="@string/pref_automatic_download_sum" android:key="prefAutoDownloadSettings" android:title="@string/pref_automatic_download_title">
-            <CheckBoxPreference android:key="prefEnableAutoDl" android:title="@string/pref_automatic_download_title" android:defaultValue="false"/><CheckBoxPreference android:key="prefEnableAutoDownloadWifiFilter" android:title="@string/pref_autodl_wifi_filter_title" android:summary="@string/pref_autodl_wifi_filter_sum"/>
-            
-        </PreferenceScreen>
-        
-    </PreferenceCategory>
-    <PreferenceCategory android:title="@string/flattr_settings_label" >
+            android:title="@string/pref_mobileUpdate_title"/>
+        <ListPreference
+            android:defaultValue="20"
+            android:entries="@array/episode_cache_size_entries"
+            android:key="prefEpisodeCacheSize"
+            android:title="@string/pref_episode_cache_title"
+            android:entryValues="@array/episode_cache_size_values"/>
         <PreferenceScreen
-            android:key="pref_flattr_authenticate"
-            android:summary="@string/pref_flattr_auth_sum"
-            android:title="@string/pref_flattr_auth_title" >
-            <intent android:action=".activities.FlattrAuthActivity" />
+            android:summary="@string/pref_automatic_download_sum"
+            android:key="prefAutoDownloadSettings"
+            android:title="@string/pref_automatic_download_title">
+            <CheckBoxPreference
+                android:key="prefEnableAutoDl"
+                android:title="@string/pref_automatic_download_title"
+                android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="prefEnableAutoDownloadWifiFilter"
+                android:title="@string/pref_autodl_wifi_filter_title"
+                android:summary="@string/pref_autodl_wifi_filter_sum"/>
+
         </PreferenceScreen>
 
-        <Preference
-            android:key="prefRevokeAccess"
-            android:summary="@string/pref_revokeAccess_sum"
-            android:title="@string/pref_revokeAccess_title" />
     </PreferenceCategory>
-    <PreferenceCategory android:title="@string/other_pref" >
-        <Preference android:title="@string/choose_data_directory" android:key="prefChooseDataDir"/><Preference
+    <PreferenceCategory android:title="@string/services_label">
+        <PreferenceScreen
+            android:key="prefFlattrSettings"
+            android:title="@string/flattr_label">
+            <PreferenceScreen
+                android:key="pref_flattr_authenticate"
+                android:summary="@string/pref_flattr_auth_sum"
+                android:title="@string/pref_flattr_auth_title">
+                <intent android:action=".activities.FlattrAuthActivity"/>
+            </PreferenceScreen>
+
+            <Preference
+                android:key="prefRevokeAccess"
+                android:summary="@string/pref_revokeAccess_sum"
+                android:title="@string/pref_revokeAccess_title"/>
+        </PreferenceScreen>
+        <PreferenceScreen
+            android:key="prefFlattrSettings"
+            android:title="@string/gpodnet_main_label">
+
+            <PreferenceScreen
+                android:key="pref_gpodnet_authenticate"
+                android:title="@string/pref_gpodnet_authenticate_title"
+                android:summary="@string/pref_gpodnet_authenticate_sum">
+                <intent android:action=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
+            </PreferenceScreen>
+            <Preference
+                android:key="pref_gpodnet_setlogin_information"
+                android:title="@string/pref_gpodnet_setlogin_information_title"
+                android:summary="@string/pref_gpodnet_setlogin_information_sum"/>
+            <Preference
+                android:key="pref_gpodnet_logout"
+                android:title="@string/pref_gpodnet_logout_title"/>
+        </PreferenceScreen>
+
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/other_pref">
+        <Preference
+            android:title="@string/choose_data_directory"
+            android:key="prefChooseDataDir"/>
+        <Preference
             android:key="prefFlattrThisApp"
             android:summary="@string/pref_flattr_this_app_sum"
-            android:title="@string/pref_flattr_this_app_title" >
+            android:title="@string/pref_flattr_this_app_title">
         </Preference>
-        <Preference android:key="prefOpmlExport" android:title="@string/opml_export_label"/><Preference
+        <Preference
+            android:key="prefOpmlExport"
+            android:title="@string/opml_export_label"/>
+        <Preference
             android:key="prefAbout"
-            android:title="@string/about_pref" />
-        
-        
+            android:title="@string/about_pref"/>
+
+
     </PreferenceCategory>
 
 </PreferenceScreen>

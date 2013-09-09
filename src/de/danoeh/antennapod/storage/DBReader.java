@@ -76,6 +76,27 @@ public final class DBReader {
     }
 
     /**
+     * Returns a list with the download URLs of all feeds.
+     * @param context A context that is used for opening the database connection.
+     * @return A list of Strings with the download URLs of all feeds.
+     * */
+    public static List<String> getFeedListDownloadUrls(final Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        List<String> result = new ArrayList<String>();
+        adapter.open();
+        Cursor feeds = adapter.getFeedCursorDownloadUrls();
+        if (feeds.moveToFirst()) {
+            do {
+                result.add(feeds.getString(1));
+            } while (feeds.moveToNext());
+        }
+        feeds.close();
+        adapter.close();
+
+        return result;
+    }
+
+    /**
      * Returns a list of 'expired Feeds', i.e. Feeds that have not been updated for a certain amount of time.
      *
      * @param context        A context that is used for opening a database connection.
@@ -229,9 +250,11 @@ public final class DBReader {
                                             title, item, link);
                                     break;
                             }
-                            chapter.setId(chapterCursor
-                                    .getLong(PodDBAdapter.KEY_ID_INDEX));
-                            item.getChapters().add(chapter);
+                            if (chapter != null) {
+                                chapter.setId(chapterCursor
+                                        .getLong(PodDBAdapter.KEY_ID_INDEX));
+                                item.getChapters().add(chapter);
+                            }
                         } while (chapterCursor.moveToNext());
                     }
                     chapterCursor.close();

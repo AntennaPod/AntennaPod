@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_device_title"
+        android:layout_alignParentTop="true"
+        android:textSize="@dimen/text_size_large"
+        android:layout_margin="16dp"
+        android:textColor="@color/bright_blue"
+        android:textStyle="italic"/>
+
+    <TextView
+        android:id="@+id/txtvDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_device_descr"
+        android:layout_below="@id/txtvTitle"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_margin="16dp"/>
+
+    <EditText
+        android:id="@+id/etxtCaption"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/gpodnetauth_device_caption"
+        android:layout_below="@id/txtvDescription"
+        android:layout_margin="8dp"/>
+
+    <EditText
+        android:id="@+id/etxtDeviceID"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/gpodnetauth_device_deviceID"
+        android:layout_below="@id/etxtCaption"
+        android:layout_margin="8dp"/>
+
+    <Button
+        android:id="@+id/butCreateNewDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/etxtDeviceID"
+        android:text="@string/gpodnetauth_device_butCreateNewDevice"/>
+
+    <TextView
+        android:id="@+id/txtvError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:layout_below="@id/etxtCaption"
+        android:layout_alignBottom="@id/butCreateNewDevice"
+        android:textColor="@color/download_failed_red"
+        android:layout_margin="16dp"
+        android:textSize="@dimen/text_size_medium"
+        />
+
+    <ProgressBar
+        android:id="@+id/progbarCreateDevice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/butCreateNewDevice"
+        android:layout_toLeftOf="@id/butCreateNewDevice"
+        android:textColor="@color/download_failed_red"
+        android:textSize="@dimen/text_size_medium"
+        android:visibility="gone"
+        />
+
+    <TextView
+        android:id="@+id/txtvChooseExistingDevice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_device_chooseExistingDevice"
+        android:layout_below="@id/butCreateNewDevice"
+        android:textSize="@dimen/text_size_medium"
+        android:textColor="?android:attr/textColorSecondary"
+        android:layout_margin="16dp"/>
+
+    <Button
+        android:id="@+id/butChooseExistingDevice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/gpodnetauth_device_butChoose"
+        android:layout_below="@+id/spinnerChooseDevice"
+        android:layout_alignLeft="@+id/butCreateNewDevice"
+        android:layout_alignRight="@+id/butCreateNewDevice"/>
+
+    <Spinner
+        android:id="@+id/spinnerChooseDevice"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvChooseExistingDevice"
+        android:layout_alignParentLeft="true"
+        android:layout_margin="8dp"
+        android:layout_alignParentRight="true"/>
+
+</RelativeLayout>
