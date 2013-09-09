@@ -825,14 +825,14 @@ public class PlaybackService extends Service {
 			if (AppConfig.DEBUG)
 				Log.d(TAG, "Pausing playback.");
 			player.pause();
+			cancelPositionSaver();
+			saveCurrentPosition();
+			setStatus(PlayerStatus.PAUSED);
 			if (abandonFocus) {
 				audioManager.abandonAudioFocus(audioFocusChangeListener);
 				pausedBecauseOfTransientAudiofocusLoss = false;
 				disableSleepTimer();
 			}
-			cancelPositionSaver();
-			saveCurrentPosition();
-			setStatus(PlayerStatus.PAUSED);
 			stopWidgetUpdater();
 			stopForeground(true);
 			if (shouldStream && reinit) {
