@@ -153,12 +153,6 @@ public class FeedItemMenuHandler {
 			DBTasks.playMedia(context, selectedItem.getMedia(), true, true,
 					true);
 			break;
-		case R.id.move_to_top_item:
-			DBWriter.moveQueueItemToTop(context, selectedItem.getId(), true);
-			break;
-		case R.id.move_to_bottom_item:
-			DBWriter.moveQueueItemToBottom(context, selectedItem.getId(), true);
-			break;
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedItem.getLink());
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
