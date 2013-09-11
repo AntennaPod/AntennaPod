@@ -194,10 +194,47 @@ public class PodDBAdapter {
     private PodDBHelper helper;
 
     /**
+     * Select all columns from the feed-table except feed preferences.
+     * */
+    private static final String[] FEED_SEL_STD = {
+        TABLE_NAME_FEEDS + "." + KEY_ID,
+            TABLE_NAME_FEEDS + "." + KEY_TITLE,
+            TABLE_NAME_FEEDS + "." + KEY_FILE_URL,
+            TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL,
+            TABLE_NAME_FEEDS + "." + KEY_DOWNLOADED,
+            TABLE_NAME_FEEDS + "." + KEY_LINK,
+            TABLE_NAME_FEEDS + "." + KEY_DESCRIPTION,
+            TABLE_NAME_FEEDS + "." + KEY_PAYMENT_LINK,
+            TABLE_NAME_FEEDS + "." + KEY_LASTUPDATE,
+            TABLE_NAME_FEEDS + "." + KEY_LANGUAGE,
+            TABLE_NAME_FEEDS + "." + KEY_AUTHOR,
+            TABLE_NAME_FEEDS + "." + KEY_IMAGE,
+            TABLE_NAME_FEEDS + "." + KEY_TYPE,
+            TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER
+    };
+
+    // column indices for FEED_SEL_STD
+    public static final int IDX_FEED_SEL_STD_ID = 0;
+    public static final int IDX_FEED_SEL_STD_TITLE = 1;
+    public static final int IDX_FEED_SEL_STD_FILE_URL = 2;
+    public static final int IDX_FEED_SEL_STD_DOWNLOAD_URL = 3;
+    public static final int IDX_FEED_SEL_STD_DOWNLOADED = 4;
+    public static final int IDX_FEED_SEL_STD_LINK = 5;
+    public static final int IDX_FEED_SEL_STD_DESCRIPTION = 6;
+    public static final int IDX_FEED_SEL_STD_PAYMENT_LINK = 7;
+    public static final int IDX_FEED_SEL_STD_LASTUPDATE = 8;
+    public static final int IDX_FEED_SEL_STD_LANGUAGE = 9;
+    public static final int IDX_FEED_SEL_STD_AUTHOR = 10;
+    public static final int IDX_FEED_SEL_STD_IMAGE = 11;
+    public static final int IDX_FEED_SEL_STD_TYPE = 12;
+    public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
+
+
+    /**
      * Select all columns from the feeditems-table except description and
      * content-encoded.
      */
-    private static final String[] SEL_FI_SMALL = {
+    private static final String[] FEEDITEM_SEL_FI_SMALL = {
             TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
             TABLE_NAME_FEED_ITEMS + "." + KEY_TITLE,
             TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE,
@@ -209,16 +246,16 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER};
 
     /**
-     * Contains SEL_FI_SMALL as comma-separated list. Useful for raw queries.
+     * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
      */
     private static final String SEL_FI_SMALL_STR;
 
     static {
-        String selFiSmall = Arrays.toString(SEL_FI_SMALL);
+        String selFiSmall = Arrays.toString(FEEDITEM_SEL_FI_SMALL);
         SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
     }
 
-    // column indices for SEL_FI_SMALL
+    // column indices for FEEDITEM_SEL_FI_SMALL
 
     public static final int IDX_FI_SMALL_ID = 0;
     public static final int IDX_FI_SMALL_TITLE = 1;
@@ -663,7 +700,7 @@ public class PodDBAdapter {
      * @return The cursor of the query
      */
     public final Cursor getAllFeedsCursor() {
-        Cursor c = db.query(TABLE_NAME_FEEDS, null, null, null, null, null,
+        Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, null, null, null, null,
                 KEY_TITLE + " ASC");
         return c;
     }
@@ -673,14 +710,14 @@ public class PodDBAdapter {
     }
 
     public final Cursor getExpiredFeedsCursor(long expirationTime) {
-        Cursor c = db.query(TABLE_NAME_FEEDS, null, "?<?", new String[]{
+        Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, "?<?", new String[]{
                 KEY_LASTUPDATE, String.valueOf(System.currentTimeMillis() - expirationTime)}, null, null,
                 null);
         return c;
     }
 
     /**
-     * Returns a cursor with all FeedItems of a Feed. Uses SEL_FI_SMALL
+     * Returns a cursor with all FeedItems of a Feed. Uses FEEDITEM_SEL_FI_SMALL
      *
      * @param feed The feed you want to get the FeedItems from.
      * @return The cursor of the query
@@ -690,7 +727,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getAllItemsOfFeedCursor(final long feedId) {
-        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
                 + "=?", new String[]{String.valueOf(feedId)}, null, null,
                 null);
         return c;
@@ -747,7 +784,7 @@ public class PodDBAdapter {
 
     /**
      * Returns a cursor which contains all feed items in the queue. The returned
-     * cursor uses the SEL_FI_SMALL selection.
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
         Object[] args = (Object[]) new String[]{
@@ -760,7 +797,7 @@ public class PodDBAdapter {
                 "SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
         Cursor c = db.rawQuery(query, null);
         /*
-		 * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+		 * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
 		 * "INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
 		 * TABLE_NAME_FEED_ITEMS + "." + KEY_ID, TABLE_NAME_QUEUE + "." +
 		 * KEY_FEEDITEM }, null, null, TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
@@ -775,10 +812,10 @@ public class PodDBAdapter {
 
     /**
      * Returns a cursor which contains all feed items in the unread items list.
-     * The returned cursor uses the SEL_FI_SMALL selection.
+     * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getUnreadItemsCursor() {
-        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_READ
+        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_READ
                 + "=0", null, null, null, KEY_PUBDATE + " DESC");
         return c;
     }
@@ -873,7 +910,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedCursor(final long id) {
-        Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_ID + "=" + id, null,
+        Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_ID + "=" + id, null,
                 null, null, null);
         return c;
     }
@@ -885,7 +922,7 @@ public class PodDBAdapter {
                             + IN_OPERATOR_MAXIMUM);
         }
 
-        return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_ID + " IN "
+        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_ID + " IN "
                 + buildInOperator(ids.length), ids, null, null, null);
 
     }
@@ -936,14 +973,14 @@ public class PodDBAdapter {
     public Cursor searchItemDescriptions(long feedID, String query) {
         if (feedID != 0) {
             // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
                     + "=? AND " + KEY_DESCRIPTION + " LIKE '%"
                     + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
                     null);
         } else {
             // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_DESCRIPTION + " LIKE '%" + prepareSearchQuery(query)
                             + "%'", null, null, null, null);
         }
@@ -958,14 +995,14 @@ public class PodDBAdapter {
     public Cursor searchItemContentEncoded(long feedID, String query) {
         if (feedID != 0) {
             // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
                     + "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
                     + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
                     null);
         } else {
             // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_CONTENT_ENCODED + " LIKE '%"
                             + prepareSearchQuery(query) + "%'", null, null,
                     null, null);
@@ -975,14 +1012,14 @@ public class PodDBAdapter {
     public Cursor searchItemTitles(long feedID, String query) {
         if (feedID != 0) {
             // search items in specific feed
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL, KEY_FEED
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
                     + "=? AND " + KEY_TITLE + " LIKE '%"
                     + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
                     null);
         } else {
             // search through all items
-            return db.query(TABLE_NAME_FEED_ITEMS, SEL_FI_SMALL,
+            return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_TITLE + " LIKE '%"
                             + prepareSearchQuery(query) + "%'", null, null,
                     null, null);

@@ -313,29 +313,29 @@ public final class DBReader {
     private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,
                                                  Cursor cursor) {
         Date lastUpdate = new Date(
-                cursor.getLong(PodDBAdapter.KEY_LAST_UPDATE_INDEX));
+                cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_LASTUPDATE));
 
         final FeedImage image;
-        long imageIndex = cursor.getLong(PodDBAdapter.KEY_IMAGE_INDEX);
+        long imageIndex = cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_IMAGE);
         if (imageIndex != 0) {
             image = getFeedImage(adapter, imageIndex);
         } else {
             image = null;
         }
-        Feed feed = new Feed(cursor.getLong(PodDBAdapter.KEY_ID_INDEX),
+        Feed feed = new Feed(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
                 lastUpdate,
-                cursor.getString(PodDBAdapter.KEY_TITLE_INDEX),
-                cursor.getString(PodDBAdapter.KEY_LINK_INDEX),
-                cursor.getString(PodDBAdapter.KEY_DESCRIPTION_INDEX),
-                cursor.getString(PodDBAdapter.KEY_PAYMENT_LINK_INDEX),
-                cursor.getString(PodDBAdapter.KEY_AUTHOR_INDEX),
-                cursor.getString(PodDBAdapter.KEY_LANGUAGE_INDEX),
-                cursor.getString(PodDBAdapter.KEY_TYPE_INDEX),
-                cursor.getString(PodDBAdapter.KEY_FEED_IDENTIFIER_INDEX),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_TITLE),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_LINK),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_DESCRIPTION),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_PAYMENT_LINK),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_AUTHOR),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_LANGUAGE),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_TYPE),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_FEED_IDENTIFIER),
                 image,
-                cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
-                cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
-                cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0);
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_FILE_URL),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOAD_URL),
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0);
 
         if (image  != null) {
             image.setFeed(feed);
