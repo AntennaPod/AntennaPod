@@ -32,7 +32,7 @@
   <string name="external_storage_error_msg">Aucun stockage externe n\'est disponible. Merci de connecter un  volume de stockage externe pour que l\'application puisse fonctionner correctement.</string>
   <string name="chapters_label">Chapitres</string>
   <string name="shownotes_label">Notes d\'épisode</string>
-  <string name="most_recent_prefix">Episode le plus récent :\u0020</string>
+  <string name="most_recent_prefix">Épisode le plus récent :\u0020</string>
   <string name="episodes_suffix">\u0020épisodes</string>
   <string name="published_prefix">Publié :\u0020</string>
   <string name="length_prefix">Durée :\u0020</string>
@@ -40,6 +40,7 @@
   <string name="processing_label">Traitement en cours</string>
   <string name="loading_label">En chargement...</string>
   <string name="image_of_prefix">Image :\u0020</string>
+  <string name="close_label">Fermer</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL du flux</string>
   <string name="txtvfeedurl_label">Entrez l\'URL du flux ici :</string>
@@ -117,7 +118,7 @@
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
   <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
-  <string name="authenticate_label">Authentifier</string>
+  <string name="authenticate_label">S\'authentifier</string>
   <string name="return_home_label">Revenir au départ</string>
   <string name="flattr_auth_success">L\'authentification a réussi. Vous pouvez maintenant flattr depuis cette application.</string>
   <string name="no_flattr_token_title">Aucun jeton Flattr trouvé.</string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">Vous avez révoqué le jeton d\'accès d\'AntennaPod à votre compte. Pour terminer cette opération, vous devez retirer AntennaPod de la liste des applications autorisées sur le site web de Flattr.</string>
   <string name="flattr_click_success">Flattr réussi !</string>
   <string name="flattring_label">Flattr en cours</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Télécharger une extension</string>
+  <string name="no_playback_plugin_title">Extension non installée</string>
+  <string name="no_playback_plugin_msg">Pour pouvoir changer la vitesse de lecture il est nécessaire d\'installer une librairie tierce.\n\nSélectionnez \"Télécharger une extension\" pour télécharger une extension gratuite depuis le Play Store\n\nLes problèmes concernant les extensions sont de la responsabilité de leur créateur et non d\'AntennaPod. Veillez à notifier le créateur de l\'extension de tout problème.</string>
+  <string name="set_playback_speed_label">Vitesses de lecture</string>
   <!--Empty list labels-->
   <string name="no_items_label">Cette liste est vide.</string>
   <string name="no_feeds_label">Vous n\'êtes encore abonné à aucun flux.</string>
@@ -136,18 +142,18 @@
   <string name="other_pref">Autres</string>
   <string name="about_pref">À propos</string>
   <string name="queue_label">Liste</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché.</string>
-  <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant.</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché</string>
+  <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervall_title">Intervalle de mise à jour</string>
   <string name="pref_autoUpdateIntervall_sum">Indiquer un intervalle de mise à jour automatique des flux, ou le désactiver</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Ne télécharger les épisodes que par WiFi</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Ne télécharger les épisodes que par Wi-Fi</string>
   <string name="pref_followQueue_title">Lecture continue</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en WiFi</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
   <string name="pref_mobileUpdate_title">Mise à jour mobile</string>
-  <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile.</string>
+  <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
   <string name="flattr_settings_label">Paramètres Flattr</string>
   <string name="pref_flattr_auth_title">Connexion à Flattr</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">heures</string>
   <string name="pref_update_interval_hours_singular">heure</string>
   <string name="pref_update_interval_hours_manual">Manuel</string>
+  <string name="pref_playback_speed_title">Vitesses de lecture</string>
+  <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
   <!--Search-->
   <string name="search_hint">Chercher des flux ou épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes</string>
@@ -184,13 +192,13 @@
   <string name="found_in_title_label">Trouvé dans le titre</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Vous pouvez aussi importer un fichier OPML. Ces fichiers permettent de transférer les flux d\'un podcatcher à un autre :</string>
-  <string name="opml_import_explanation">Pour importer un fichier OPML, copiez-le dans le répertoire suivant, et appuyez sur le bouton ci-dessous pour l\'importer. </string>
+  <string name="opml_import_explanation">Pour importer un fichier OPML, copiez-le dans le répertoire suivant, et appuyez sur le bouton ci-dessous pour l\'importer.</string>
   <string name="start_import_label">Démarrer l\'importation</string>
   <string name="opml_import_label">Importation OPML</string>
   <string name="opml_directory_error">ERREUR !</string>
-  <string name="reading_opml_label">Lecture du fichier OPML</string>
+  <string name="reading_opml_label">Lecture du fichier OPML en cours</string>
   <string name="opml_reader_error">Une erreur s\'est produite à la lecture du document OPML :</string>
-  <string name="opml_import_error_dir_empty">Le répertoire d\'import est vide.</string>
+  <string name="opml_import_error_dir_empty">Le répertoire d\'importation est vide.</string>
   <string name="select_all_label">Tout choisir</string>
   <string name="deselect_all_label">Ne rien choisir</string>
   <string name="choose_file_to_import_label">Choisir le fichier à importer</string>
@@ -201,7 +209,7 @@
   <string name="opml_export_success_sum">Le fichier .opml a été écrit ici :\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Définir le minuteur d\'arrêt automatique</string>
-  <string name="disable_sleeptimer_label">Désactiver l\'arrêt automatique</string>
+  <string name="disable_sleeptimer_label">Désactiver le minuteur d\'arrêt automatique</string>
   <string name="enter_time_here_label">Entrer l\'heure</string>
   <string name="sleep_timer_label">Arrêt automatique</string>
   <string name="time_left_label">Durée restante :\u0020</string>
@@ -220,8 +228,8 @@
   <string name="selected_folder_label">Répertoire choisi :</string>
   <string name="create_folder_label">Créer répertoire</string>
   <string name="choose_data_directory">Choisir le répertoire</string>
-  <string name="create_folder_msg">Créer un répertoire nommé \"%1$s\"?</string>
-  <string name="create_folder_success">Répertoire créé avec succès</string>
+  <string name="create_folder_msg">Créer un répertoire nommé \"%1$s\" ?</string>
+  <string name="create_folder_success">Répertoire créé</string>
   <string name="create_folder_error_no_write_access">Impossible d\'écrire dans ce répertoire</string>
   <string name="create_folder_error_already_exists">Le répertoire existe déjà</string>
   <string name="create_folder_error">Impossible de créer le répertoire</string>

@@ -12,14 +12,14 @@
   <string name="downloads_label">Descargas</string>
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="download_log_label">Registro de descargas</string>
-  <string name="playback_history_label">Historial de reproducción</string>
+  <string name="playback_history_label">Histórico de reproducción</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartir URL</string>
   <string name="copied_url_msg">URL copiada al portapapeles.</string>
   <!--Playback history-->
-  <string name="clear_history_label">Limpiar el historial</string>
+  <string name="clear_history_label">Vaciar el histórico</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
@@ -40,6 +40,7 @@
   <string name="processing_label">Procesando</string>
   <string name="loading_label">Cargando...</string>
   <string name="image_of_prefix">Imagen de:\u0020</string>
+  <string name="close_label">Cerrar</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <string name="txtvfeedurl_label">Escriba aquí la URL del canal:</string>
@@ -64,7 +65,7 @@
   <string name="support_label">Añadir a Flattr</string>
   <string name="enqueue_all_new">Ponerlos todos en cola</string>
   <string name="download_all">Descargarlos todos</string>
-  <string name="skip_episode_label">Saltar episodio</string>
+  <string name="skip_episode_label">Omitir episodio</string>
   <!--Download messages and labels-->
   <string name="download_successful">Descarga exitosa</string>
   <string name="download_failed">Descarga errónea</string>
@@ -82,9 +83,9 @@
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
   <string name="download_cancelled_msg">Descarga cancelada</string>
   <string name="download_report_title">Descargas completadas</string>
-  <string name="download_error_malformed_url">URL malformada</string>
+  <string name="download_error_malformed_url">URL con formato incorrecto</string>
   <string name="download_error_io_error">Error de E/S</string>
-  <string name="download_error_request_error">Error de petición</string>
+  <string name="download_error_request_error">Error de solicitud</string>
   <string name="downloads_left">\u0020descargas restantes</string>
   <string name="download_notification_title">Descargando datos del podcast</string>
   <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
@@ -110,7 +111,7 @@
   <string name="show_download_log">Mostrar el registro</string>
   <string name="show_player_label">Mostrar el reproductor</string>
   <!--Queue operations-->
-  <string name="clear_queue_label">Limpiar la cola</string>
+  <string name="clear_queue_label">Vaciar la cola</string>
   <string name="organize_queue_label">Organizar cola</string>
   <string name="undo">Deshacer</string>
   <string name="removed_from_queue">Artículo eliminado</string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">Ha revocado el token de acceso de AntennaPod a su cuenta. Para completar el proceso debe eliminar esta aplicación de la lista de aplicaciones aprobadas, en los ajustes de Flattr.</string>
   <string name="flattr_click_success">Ha valorado esto en Flattr.</string>
   <string name="flattring_label">Valoración en Flattr</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Descargar complemento</string>
+  <string name="no_playback_plugin_title">Complemento no instalado</string>
+  <string name="no_playback_plugin_msg">Para que la reproducción a velocidad variable funcione, es necesario instalar un complemento adicional.\n\nPulse «Descargar complemento» para descargar un complemento gratuito de la Play Store.\n\nSi aparece cualquier problema durante la utilización del complemento, informe de él al propietario, pues éste no es responsabilidad de AntennaPod.</string>
+  <string name="set_playback_speed_label">Velocidades de reproducción</string>
   <!--Empty list labels-->
   <string name="no_items_label">Esta lista no tiene elementos.</string>
   <string name="no_feeds_label">No se ha suscrito a ningún canal.</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_playback_speed_title">Velocidades de reproducción</string>
+  <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
@@ -190,7 +198,7 @@
   <string name="opml_directory_error">¡ERROR!</string>
   <string name="reading_opml_label">Leyendo el archivo OPML</string>
   <string name="opml_reader_error">Ha ocurrido un error al leer el archivo OPML</string>
-  <string name="opml_import_error_dir_empty">El directorio de importación está vacío</string>
+  <string name="opml_import_error_dir_empty">El directorio de importación está vacío.</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
   <string name="choose_file_to_import_label">Elegir qué archivo importar</string>

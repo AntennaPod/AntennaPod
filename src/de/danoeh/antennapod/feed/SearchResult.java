@@ -7,10 +7,11 @@ public class SearchResult {
 	/** Higher value means more importance */
 	private int value;
 
-	public SearchResult(FeedComponent component, int value) {
+	public SearchResult(FeedComponent component, int value, String subtitle) {
 		super();
 		this.component = component;
 		this.value = value;
+        this.subtitle = subtitle;
 	}
 
 	public FeedComponent getComponent() {

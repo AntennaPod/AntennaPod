@@ -126,6 +126,7 @@
   <string name="access_revoked_info">Ha revocado el token de acceso de AntennaPod a su cuenta. Para completar el proceso debe eliminar esta aplicación de la lista de aplicaciones aprobadas, en los ajustes de Flattr.</string>
   <string name="flattr_click_success">Ha valorado esto en Flattr.</string>
   <string name="flattring_label">Valoración en Flattr</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Esta lista no tiene elementos.</string>
   <string name="no_feeds_label">No se ha suscrito a ningún canal.</string>

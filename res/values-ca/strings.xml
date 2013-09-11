@@ -40,6 +40,7 @@
   <string name="processing_label">S\'està processant</string>
   <string name="loading_label">S\'està carregant...</string>
   <string name="image_of_prefix">Imatge de:\u0020</string>
+  <string name="close_label">Tanca</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Enllaç del canal</string>
   <string name="txtvfeedurl_label">Escriviu l\'enllaç del canal aquí:</string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">El testimoni d\'accés a Flattr de l\'AntennaPod s\'ha revocat correctament. Per completar el procés, heu de suprimir aquesta aplicació de la llista d\'aplicacions aprovades que trobareu a l\'apartat de configuració del compte de la plana web de Flattr.</string>
   <string name="flattr_click_success">S\'ha compartit el contingut a través de Flattr</string>
   <string name="flattring_label">S\'està compartint amb Flattr</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Baixa el connector</string>
+  <string name="no_playback_plugin_title">Connector no instal·lat</string>
+  <string name="no_playback_plugin_msg">Per a què funcioni la velocitat de reproducció variable, cal instal·lar una biblioteca addicional.\n\nFeu un toc a «Baixa el connector» per baixar-vos el connector gratuït des de la Play Store.\n\nQualsevol problema que sorgeixi en utilitzar aquest connector no és culpa de l\'AntennaPod. Cal informar-ne, doncs, al propietari del connector.</string>
+  <string name="set_playback_speed_label">Velocitats de reproducció</string>
   <!--Empty list labels-->
   <string name="no_items_label">No hi ha elements a la llista.</string>
   <string name="no_feeds_label">No us heu subscrit a cap canal.</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">hores</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_playback_speed_title">Velocitats de reproducció</string>
+  <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
   <!--Search-->
   <string name="search_hint">Cerca canals o episodis</string>
   <string name="found_in_shownotes_label">Trobat a notes del programa</string>

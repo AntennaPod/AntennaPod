@@ -7,7 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.FeedManager;
+import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.NetworkUtils;
 
@@ -27,7 +27,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 				new Thread() {
 					@Override
 					public void run() {
-						FeedManager.getInstance()
+						DBTasks
 								.autodownloadUndownloadedItems(context);
 					}
 				}.start();

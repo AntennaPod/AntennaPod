@@ -129,6 +129,7 @@
   <string name="access_revoked_info">Hai revocato l\'accesso di AntennaPod al tuo account. Al fine di completare il processo devi rimuovere l\'app dalla lista delle applicazioni autorizzare nelle impostazioni del tuo account sul sito di flattr.</string>
   <string name="flattr_click_success">Flattr eseguito con successo!</string>
   <string name="flattring_label">Flattr in corso</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Non ci sono oggetti in questa lista.</string>
   <string name="no_feeds_label">Non sei ancora abbonato a nessun feed.</string>

@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.activity;
 
 
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import android.content.Intent;
@@ -12,10 +15,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -23,7 +22,7 @@ import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 /** Guides the user through the authentication process */
 
-public class FlattrAuthActivity extends SherlockActivity {
+public class FlattrAuthActivity extends ActionBarActivity {
 	private static final String TAG = "FlattrAuthActivity";
 
 	private TextView txtvExplanation;

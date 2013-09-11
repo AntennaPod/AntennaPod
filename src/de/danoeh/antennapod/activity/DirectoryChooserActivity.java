@@ -12,7 +12,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -24,11 +28,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -37,7 +36,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
  * Let's the user choose a directory on the storage device. The selected folder
  * will be sent back to the starting activity as an activity result.
  */
-public class DirectoryChooserActivity extends SherlockActivity {
+public class DirectoryChooserActivity extends ActionBarActivity {
 	private static final String TAG = "DirectoryChooserActivity";
 
 	private static final String CREATE_DIRECTORY_NAME = "AntennaPod";
@@ -348,7 +347,9 @@ public class DirectoryChooserActivity extends SherlockActivity {
 	 * CREATE_DIRECTORY_NAME.
 	 */
 	private int createFolder() {
-		if (selectedDir != null && selectedDir.canWrite()) {
+		if (selectedDir == null) {
+			return R.string.create_folder_error;
+		} else if (selectedDir.canWrite()) {
 			File newDir = new File(selectedDir, CREATE_DIRECTORY_NAME);
 			if (!newDir.exists()) {
 				boolean result = newDir.mkdir();
@@ -360,10 +361,8 @@ public class DirectoryChooserActivity extends SherlockActivity {
 			} else {
 				return R.string.create_folder_error_already_exists;
 			}
-		} else if (selectedDir.canWrite() == false) {
-			return R.string.create_folder_error_no_write_access;
 		} else {
-			return R.string.create_folder_error;
+			return R.string.create_folder_error_no_write_access;
 		}
 	}
 

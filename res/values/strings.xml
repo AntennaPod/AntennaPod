@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingTranslation"
+    >
 
     <!-- Activitiy titles -->
     <string name="app_name">AntennaPod</string>
@@ -44,6 +47,8 @@
     <string name="processing_label">Processing</string>
     <string name="loading_label">Loading...</string>
     <string name="image_of_prefix">Image of:\u0020</string>
+    <string name="close_label">Close</string>
+    
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
@@ -140,6 +145,12 @@
     <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
     <string name="flattr_click_success">Successfully flattred this thing!</string>
     <string name="flattring_label">Flattring</string>
+    
+    <!--  Variable Speed -->
+    <string name="download_plugin_label">Download Plugin</string>
+    <string name="no_playback_plugin_title">Plugin Not Installed</string>
+    <string name="no_playback_plugin_msg">For variable speed playback to work, a third party library must be installed.\n\nTap \'Download Plugin\' to download a free plugin from the Play Store\n\nAny problems found using this plugin are not the responsibility of AntennaPod and should be reported to the plugin owner.</string>
+    <string name="set_playback_speed_label">Playback Speeds</string>
 
     <!-- Empty list labels -->
     <string name="no_items_label">There are no items in this list.</string>
@@ -182,9 +193,11 @@
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
-	<string name="pref_update_interval_hours_plural">hours</string>
-	<string name="pref_update_interval_hours_singular">hour</string>
-	<string name="pref_update_interval_hours_manual">Manual</string>
+    <string name="pref_update_interval_hours_plural">hours</string>
+    <string name="pref_update_interval_hours_singular">hour</string>
+    <string name="pref_update_interval_hours_manual">Manual</string>
+    <string name="pref_playback_speed_title">Playback Speeds</string>
+    <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
    
 
     <!-- Search -->

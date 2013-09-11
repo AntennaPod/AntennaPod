@@ -1,26 +1,28 @@
 package de.danoeh.antennapod.activity;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
+import java.io.InputStreamReader;
+import java.io.IOException;
 import java.io.Reader;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.StorageUtils;
 
 /**
@@ -126,8 +128,10 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     }
 
     private void startImport(File file) {
+        Reader mReader = null;
         try {
-            Reader mReader = new FileReader(file);
+            mReader = new InputStreamReader(new FileInputStream(file),
+                LangUtils.UTF_8);
             if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
             startImport(mReader);
         } catch (FileNotFoundException e) {

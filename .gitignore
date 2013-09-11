@@ -12,9 +12,12 @@
 bin/
 gen/
 target/
+build/
 
 # Local configuration file (sdk path, etc)
 local.properties
+gradle.properties
+.gradle
 build.xml
 
 # Backup files
@@ -27,6 +30,7 @@ build.xml
 .idea
 *.iml
 gen-external-apklibs
+out
 #transifex downloads
 changelog
 description
@@ -37,3 +41,4 @@ proguard
 libs
 *.DS_Store
 src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
+gradle.properties

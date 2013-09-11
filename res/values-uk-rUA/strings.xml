@@ -40,6 +40,7 @@
   <string name="processing_label">Обробка</string>
   <string name="loading_label">Завантаження категорій ...</string>
   <string name="image_of_prefix">Зображення:\u0020</string>
+  <string name="close_label">Закрити</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
   <string name="txtvfeedurl_label">Введіть адресу URL каналу тут:</string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
   <string name="flattr_click_success">Успішно flattr це</string>
   <string name="flattring_label">Йде flattr</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">Завантажити Plugin</string>
+  <string name="no_playback_plugin_title">Plugin не встановлено</string>
+  <string name="no_playback_plugin_msg">Для керування швидкістю програвання потрібно встановити plugin\nНатисніть \"Завантажити Plugin\" для завантаження безкоштовного plugin з Play Store\nЯкщо при використанні plugin будуть які небудь проблеми це відповідальність автору plugin, а не автору AntennaPod</string>
+  <string name="set_playback_speed_label">Швидкість програвання</string>
   <!--Empty list labels-->
   <string name="no_items_label">Нічного в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">годин</string>
   <string name="pref_update_interval_hours_singular">година</string>
   <string name="pref_update_interval_hours_manual">Інструкція</string>
+  <string name="pref_playback_speed_title">Швидкість програвання</string>
+  <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
   <!--Search-->
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>

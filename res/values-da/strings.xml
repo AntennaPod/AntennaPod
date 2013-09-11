@@ -129,6 +129,7 @@
   <string name="access_revoked_info">Du har succesfuldt tilbagekaldt AntennaPods adgangs polet til din konto. For at fuldføre processen skal du fjerne denne app fra listen af godkendte applikationer i din kontos indstillinger på flattr\'s hjemmeside.</string>
   <string name="flattr_click_success">Det er lykkedes at flattr dette emne!</string>
   <string name="flattring_label">Flattere</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen emner i denne liste.</string>
   <string name="no_feeds_label">Du har endnu ikke abonneret til nogle feeds.</string>

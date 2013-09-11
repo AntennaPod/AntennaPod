@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -24,7 +23,7 @@ import de.danoeh.antennapod.util.playback.PlaybackController;
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity
  * if the PlaybackService is running
  */
-public class ExternalPlayerFragment extends SherlockFragment {
+public class ExternalPlayerFragment extends Fragment {
 	private static final String TAG = "ExternalPlayerFragment";
 
 	private ViewGroup fragmentLayout;
@@ -139,7 +138,10 @@ public class ExternalPlayerFragment extends SherlockFragment {
 
 			@Override
 			public void loadMediaInfo() {
-				ExternalPlayerFragment.this.loadMediaInfo();
+                ExternalPlayerFragment fragment = ExternalPlayerFragment.this;
+                if (fragment != null) {
+				    fragment.loadMediaInfo();
+                }
 			}
 
 			@Override
@@ -173,6 +175,12 @@ public class ExternalPlayerFragment extends SherlockFragment {
 					butPlay.setOnClickListener(controller
 							.newOnPlayButtonClickListener());
 				}
+			}
+
+			@Override
+			public void onPlaybackSpeedChange() {
+				// TODO Auto-generated method stub
+
 			}
 		};
 	}

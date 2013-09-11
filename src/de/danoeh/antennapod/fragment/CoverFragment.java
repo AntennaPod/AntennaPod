@@ -1,13 +1,12 @@
 package de.danoeh.antennapod.fragment;
 
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import com.actionbarsherlock.app.SherlockFragment;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
@@ -16,7 +15,7 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.util.playback.Playable;
 
 /** Displays the cover and the title of a FeedItem. */
-public class CoverFragment extends SherlockFragment implements
+public class CoverFragment extends Fragment implements
 		AudioplayerContentFragment {
 	private static final String TAG = "CoverFragment";
 	private static final String ARG_PLAYABLE = "arg.playable";

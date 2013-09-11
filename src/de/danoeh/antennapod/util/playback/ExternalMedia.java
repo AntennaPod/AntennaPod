@@ -2,6 +2,7 @@ package de.danoeh.antennapod.util.playback;
 
 import java.io.InputStream;
 import java.util.List;
+import java.util.concurrent.Callable;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
@@ -24,7 +25,6 @@ public class ExternalMedia implements Playable {
 
 	private String episodeTitle;
 	private String feedTitle;
-	private String shownotes;
 	private MediaType mediaType = MediaType.AUDIO;
 	private List<Chapter> chapters;
 	private int duration;
@@ -79,8 +79,13 @@ public class ExternalMedia implements Playable {
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_TITLE);
 		feedTitle = mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_ALBUM);
-		duration = Integer.parseInt(mmr
+        try {
+		    duration = Integer.parseInt(mmr
 				.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION));
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            throw new PlayableException("NumberFormatException when reading duration of media file");
+        }
 		ChapterUtils.loadChaptersFromFileUrl(this);
 	}
 
@@ -95,8 +100,13 @@ public class ExternalMedia implements Playable {
 	}
 
 	@Override
-	public void loadShownotes(ShownoteLoaderCallback callback) {
-		callback.onShownotesLoaded(null);
+	public Callable<String> loadShownotes() {
+		return new Callable<String>() {
+            @Override
+            public String call() throws Exception {
+                return "";
+            }
+        };
 	}
 
 	@Override

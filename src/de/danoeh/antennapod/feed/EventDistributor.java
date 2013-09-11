@@ -39,7 +39,7 @@ public class EventDistributor extends Observable {
 		events = new ConcurrentLinkedQueue<Integer>();
 	}
 
-	public static EventDistributor getInstance() {
+	public static synchronized EventDistributor getInstance() {
 		if (instance == null) {
 			instance = new EventDistributor();
 		}
@@ -92,7 +92,7 @@ public class EventDistributor extends Observable {
 		super.addObserver(observer);
 		if (!(observer instanceof EventListener)) {
 			throw new IllegalArgumentException(
-					"Observer must be instance of FeedManager.EventListener");
+					"Observer must be instance of EventListener");
 		}
 	}
 

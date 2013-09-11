@@ -11,23 +11,31 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.storage.FeedItemStatistics;
 import de.danoeh.antennapod.util.ThemeUtils;
 
 public class FeedlistAdapter extends BaseAdapter {
 	private static final String TAG = "FeedlistAdapter";
 
 	private Context context;
-	private FeedManager manager = FeedManager.getInstance();
+	protected ItemAccess itemAccess;
 
 	private int selectedItemIndex;
 	private ImageLoader imageLoader;
 	public static final int SELECTION_NONE = -1;
 
-	public FeedlistAdapter(Context context) {
+	public FeedlistAdapter(Context context, ItemAccess itemAccess) {
 		super();
+		if (context == null) {
+			throw new IllegalArgumentException("context must not be null");
+		}
+		if (itemAccess == null) {
+			throw new IllegalArgumentException("itemAccess must not be null");
+		}
+
 		this.context = context;
+		this.itemAccess = itemAccess;
 		selectedItemIndex = SELECTION_NONE;
 		imageLoader = ImageLoader.getInstance();
 	}
@@ -36,6 +44,7 @@ public class FeedlistAdapter extends BaseAdapter {
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final Holder holder;
 		final Feed feed = getItem(position);
+        final FeedItemStatistics feedItemStatistics = itemAccess.getFeedItemStatistics(position);
 
 		// Inflate Layout
 		if (convertView == null) {
@@ -75,42 +84,40 @@ public class FeedlistAdapter extends BaseAdapter {
 		}
 
 		holder.title.setText(feed.getTitle());
-		int numOfItems = feed.getNumOfItems(true);
-		if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
-			holder.lastUpdate.setText(R.string.refreshing_label);
-		} else {
-			if (numOfItems > 0) {
-				holder.lastUpdate.setText(convertView.getResources().getString(
-						R.string.most_recent_prefix)
-						+ DateUtils.getRelativeTimeSpanString(
-								feed.getItemAtIndex(true, 0).getPubDate().getTime(),
-								System.currentTimeMillis(), 0, 0));
-			} else {
-				holder.lastUpdate.setText("");
-			}
-		}
-		holder.numberOfEpisodes.setText(numOfItems
-				+ convertView.getResources()
-						.getString(R.string.episodes_suffix));
 
-		int newItems = feed.getNumOfNewItems();
-		int inProgressItems = feed.getNumOfStartedItems();
+        if (feedItemStatistics != null) {
+            if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
+                holder.lastUpdate.setText(R.string.refreshing_label);
+            } else {
+                if (feedItemStatistics.getNumberOfItems() > 0) {
+                    holder.lastUpdate.setText(convertView.getResources().getString(
+                            R.string.most_recent_prefix)
+                            + DateUtils.getRelativeTimeSpanString(
+                            feedItemStatistics.getLastUpdate().getTime(),
+                            System.currentTimeMillis(), 0, 0));
+                } else {
+                    holder.lastUpdate.setText("");
+                }
+            }
+            holder.numberOfEpisodes.setText(feedItemStatistics.getNumberOfItems()
+                    + convertView.getResources()
+                    .getString(R.string.episodes_suffix));
 
-		if (newItems > 0) {
-			holder.newEpisodes.setText(Integer.toString(newItems));
-			holder.newEpisodesLabel.setVisibility(View.VISIBLE);
-		} else {
-			holder.newEpisodesLabel.setVisibility(View.INVISIBLE);
-		}
+            if (feedItemStatistics.getNumberOfNewItems() > 0) {
+                holder.newEpisodes.setText(Integer.toString(feedItemStatistics.getNumberOfNewItems()));
+                holder.newEpisodesLabel.setVisibility(View.VISIBLE);
+            } else {
+                holder.newEpisodesLabel.setVisibility(View.INVISIBLE);
+            }
 
-		if (inProgressItems > 0) {
-			holder.inProgressEpisodes
-					.setText(Integer.toString(inProgressItems));
-			holder.inProgressEpisodesLabel.setVisibility(View.VISIBLE);
-		} else {
-			holder.inProgressEpisodesLabel.setVisibility(View.INVISIBLE);
-		}
-
+            if (feedItemStatistics.getNumberOfInProgressItems() > 0) {
+                holder.inProgressEpisodes
+                        .setText(Integer.toString(feedItemStatistics.getNumberOfInProgressItems()));
+                holder.inProgressEpisodesLabel.setVisibility(View.VISIBLE);
+            } else {
+                holder.inProgressEpisodesLabel.setVisibility(View.INVISIBLE);
+            }
+        }
 		final String imageUrl = (feed.getImage() != null) ? feed.getImage()
 				.getFile_url() : null;
 		holder.image.setTag(imageUrl);
@@ -145,12 +152,12 @@ public class FeedlistAdapter extends BaseAdapter {
 
 	@Override
 	public int getCount() {
-		return manager.getFeedsSize();
+		return itemAccess.getCount();
 	}
 
 	@Override
 	public Feed getItem(int position) {
-		return manager.getFeedAtIndex(position);
+		return itemAccess.getItem(position);
 	}
 
 	@Override
@@ -158,4 +165,11 @@ public class FeedlistAdapter extends BaseAdapter {
 		return position;
 	}
 
+    public interface ItemAccess {
+        int getCount();
+
+        Feed getItem(int position);
+
+        FeedItemStatistics getFeedItemStatistics(int position);
+    }
 }

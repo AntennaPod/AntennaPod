@@ -19,13 +19,12 @@ public final class URLChecker {
      * */
     public static String prepareURL(String url) {
         StringBuilder builder = new StringBuilder();
-        url = url.trim();
-        if (!url.startsWith("http")) {
+        if (url.startsWith("feed://")) {
+            if (AppConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
+            url = url.replace("feed://", "http://");
+        } else if (!(url.startsWith("http://") || url.startsWith("https://"))) {
+            if (AppConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
             builder.append("http://");
-            if (AppConfig.DEBUG) Log.d(TAG, "Missing http; appending");
-        } else if (url.startsWith("https")) {
-        	if (AppConfig.DEBUG) Log.d(TAG, "Replacing https with http");
-        	url = url.replaceFirst("https", "http");
         }
         builder.append(url);
 

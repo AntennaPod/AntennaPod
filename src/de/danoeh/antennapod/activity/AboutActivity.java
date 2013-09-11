@@ -1,15 +1,15 @@
 package de.danoeh.antennapod.activity;
 
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
-import com.actionbarsherlock.app.SherlockActivity;
 
 import de.danoeh.antennapod.R;
 
 /** Displays the 'about' screen */
-public class AboutActivity extends SherlockActivity {
+public class AboutActivity extends ActionBarActivity {
 
 	private WebView webview;
 

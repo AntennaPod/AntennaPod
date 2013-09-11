@@ -2,6 +2,9 @@ package de.danoeh.antennapod.activity;
 
 import java.util.Date;
 
+import android.support.v7.app.ActionBarActivity;
+import android.view.Menu;
+import android.view.MenuItem;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
@@ -15,10 +18,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.actionbarsherlock.app.SherlockActivity;
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuItem;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
@@ -31,7 +30,7 @@ import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.URLChecker;
 
 /** Activity for adding a Feed */
-public class AddFeedActivity extends SherlockActivity {
+public class AddFeedActivity extends ActionBarActivity {
 	private static final String TAG = "AddFeedActivity";
 
 	private DownloadRequester requester;
@@ -161,7 +160,7 @@ public class AddFeedActivity extends SherlockActivity {
 						}
 
 						@Override
-						public void onConnectionFailure(int reason) {
+						public void onConnectionFailure(DownloadError reason) {
 							handleDownloadError(reason);
 						}
 					});
@@ -177,11 +176,11 @@ public class AddFeedActivity extends SherlockActivity {
 		progDialog.setMessage(getString(R.string.loading_label));
 	}
 
-	private void handleDownloadError(int reason) {
+	private void handleDownloadError(DownloadError reason) {
 		final AlertDialog errorDialog = new AlertDialog.Builder(this).create();
 		errorDialog.setTitle(R.string.error_label);
 		errorDialog.setMessage(getString(R.string.error_msg_prefix) + " "
-				+ DownloadError.getErrorString(this, reason));
+				+ reason.getErrorString(this));
 		errorDialog.setButton(getString(android.R.string.ok),
 				new DialogInterface.OnClickListener() {
 					@Override
@@ -199,6 +198,8 @@ public class AddFeedActivity extends SherlockActivity {
 	public boolean onCreateOptionsMenu(Menu menu) {
 		return true;
 	}
+
+
 
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {

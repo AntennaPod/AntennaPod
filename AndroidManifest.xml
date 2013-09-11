@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="31"
-    android:versionName="0.9.7.4" >
+    android:versionCode="32"
+    android:versionName="0.9.7.5" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="17" />
+        android:targetSdkVersion="18" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -40,15 +40,16 @@
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/app_name" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activity.SearchActivity" />
+                android:value="de.danoeh.antennapod.activity.SearchActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
@@ -60,6 +61,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:host="*"/>
 			    <data android:pathPattern=".*\\.xml"/>
 			    <data android:pathPattern=".*\\.rss"/>
@@ -70,6 +72,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:host="feeds.feedburner.com"/>
 			    <data android:host="feedproxy.google.com"/>
 			    <data android:host="feeds2.feedburner.com"/>
@@ -81,6 +84,7 @@
 			    <category android:name="android.intent.category.DEFAULT"/>
 			    <category android:name="android.intent.category.BROWSABLE"/>
 			    <data android:scheme="http"/>
+			    <data android:scheme="https"/>
 			    <data android:mimeType="text/xml"/>
 			    <data android:mimeType="application/rss+xml"/>
 			    <data android:mimeType="application/atom+xml"/>
@@ -99,7 +103,10 @@
             android:configChanges="orientation|screenSize" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activity.SearchActivity" />
+                android:value="de.danoeh.antennapod.activity.SearchActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/searchable" />
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.ItemviewActivity"
@@ -256,16 +263,16 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/searchable" />
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".activity.SearchActivity" />
         </activity>
         <activity
             android:name=".activity.MiroGuideMainActivity"
             android:label="@string/miro_guide_label" >
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value=".activity.MiroGuideSearchActivity" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideSearchActivity" />
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/miroguide_searchable" />
         </activity>
         <activity
             android:name=".activity.MiroGuideSearchActivity"
@@ -278,9 +285,6 @@
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/miroguide_searchable" />
-            <meta-data
-                android:name="android.app.default_searchable"
-                android:value=".activity.MiroGuideSearchActivity" />
         </activity>
         <activity
             android:name=".activity.MiroGuideCategoryActivity"

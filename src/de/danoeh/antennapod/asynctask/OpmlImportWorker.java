@@ -64,6 +64,13 @@ public class OpmlImportWorker extends
 
 	@Override
 	protected void onPostExecute(ArrayList<OpmlElement> result) {
+        if (mReader != null) {
+            try {
+                mReader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 		progDialog.dismiss();
 		if (exception != null) {
 			if (AppConfig.DEBUG)

@@ -5,17 +5,17 @@ import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
 
-import com.actionbarsherlock.view.Menu;
-import com.actionbarsherlock.view.MenuInflater;
-import com.actionbarsherlock.view.MenuItem;
-
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
@@ -30,6 +30,10 @@ public class FeedMenuHandler {
 	}
 
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
+        if (selectedFeed == null) {
+            return false;
+        }
+
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(
@@ -56,7 +60,6 @@ public class FeedMenuHandler {
 	 */
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,
 			Feed selectedFeed) throws DownloadRequestException {
-		FeedManager manager = FeedManager.getInstance();
 		switch (item.getItemId()) {
 		case R.id.show_info_item:
 			Intent startIntent = new Intent(context, FeedInfoActivity.class);
@@ -65,10 +68,10 @@ public class FeedMenuHandler {
 			context.startActivity(startIntent);
 			break;
 		case R.id.refresh_item:
-			manager.refreshFeed(context, selectedFeed);
+			DBTasks.refreshFeed(context, selectedFeed);
 			break;
 		case R.id.mark_all_read_item:
-			manager.markFeedRead(context, selectedFeed);
+			DBWriter.markFeedRead(context, selectedFeed.getId());
 			break;
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedFeed.getLink());

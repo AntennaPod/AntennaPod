@@ -14,7 +14,6 @@ import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedManager;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
@@ -30,17 +29,18 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	public static final int GROUP_POS_UNREAD = 1;
 
 	private Context context;
-	private FeedManager manager = FeedManager.getInstance();
+    private ItemAccess itemAccess;
 
 	private ActionButtonCallback feedItemActionCallback;
 	private OnGroupActionClicked groupActionCallback;
 
 	public ExternalEpisodesListAdapter(Context context,
 			ActionButtonCallback callback,
-			OnGroupActionClicked groupActionCallback) {
+			OnGroupActionClicked groupActionCallback,
+            ItemAccess itemAccess) {
 		super();
 		this.context = context;
-
+        this.itemAccess = itemAccess;
 		this.feedItemActionCallback = callback;
 		this.groupActionCallback = groupActionCallback;
 	}
@@ -53,10 +53,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public FeedItem getChild(int groupPosition, int childPosition) {
 		if (groupPosition == GROUP_POS_QUEUE) {
-			return manager.getQueueItemAtIndex(childPosition, true);
+			return itemAccess.getQueueItemAt(childPosition);
 		} else if (groupPosition == GROUP_POS_UNREAD) {
-			return manager.getUnreadItemAtIndex(childPosition, true);
-		}
+            return itemAccess.getUnreadItemAt(childPosition);
+   		}
 		return null;
 	}
 
@@ -200,9 +200,9 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getChildrenCount(int groupPosition) {
 		if (groupPosition == GROUP_POS_QUEUE) {
-			return manager.getQueueSize(true);
+			return itemAccess.getQueueSize();
 		} else if (groupPosition == GROUP_POS_UNREAD) {
-			return manager.getUnreadItemsSize(true);
+			return itemAccess.getUnreadItemsSize();
 		}
 		return 0;
 	}
@@ -210,7 +210,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	@Override
 	public int getGroupCount() {
 		// Hide 'unread items' group if empty
-		if (manager.getUnreadItemsSize(true) > 0) {
+		if (itemAccess.getUnreadItemsSize() > 0) {
 			return 2;
 		} else {
 			return 1;
@@ -264,8 +264,8 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 	@Override
 	public boolean isEmpty() {
-		return manager.getUnreadItemsSize(true) == 0
-				&& manager.getQueueSize(true) == 0;
+		return itemAccess.getUnreadItemsSize() == 0
+				&& itemAccess.getQueueSize() == 0;
 	}
 
 	@Override
@@ -286,5 +286,12 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 	public interface OnGroupActionClicked {
 		public void onClick(long groupId);
 	}
+
+    public static interface ItemAccess {
+        public int getQueueSize();
+        public int getUnreadItemsSize();
+        public FeedItem getQueueItemAt(int position);
+        public FeedItem getUnreadItemAt(int position);
+    }
 
 }

@@ -129,6 +129,7 @@
   <string name="access_revoked_info">AntennaPod\'un keçid tokeni uğurlu ləğv olundu.</string>
   <string name="flattr_click_success">Flattrma uğurludur</string>
   <string name="flattring_label">Flattrləmə</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Siyahıda heç nə yoxdur</string>
   <string name="no_feeds_label">Hələ heç bir kanala yazilmadınız</string>
@@ -140,7 +141,7 @@
   <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
   <string name="playback_pref">Oynatma</string>
   <string name="network_pref">Şəbəkə</string>
-  <string name="pref_autoUpdateIntervall_title">Təzələmə intervali</string>
+  <string name="pref_autoUpdateIntervall_title">Təzələmə intervalı</string>
   <string name="pref_autoUpdateIntervall_sum">Kanalın avtomatik təzələməsinin intervalını seç ya da keçir onu</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Təkçə Wi-Fi vasitəsiilə yüklə</string>
   <string name="pref_followQueue_title">Fasiləsiz oynatma</string>
@@ -214,7 +215,7 @@
   <string name="miro_search_hint">MiroGuide\'da axtar</string>
   <string name="popular_label">Populyar</string>
   <string name="best_rating_label">Ən reytinqli</string>
-  <string name="add_feed_label">Kanalı əlavə et</string>
+  <string name="add_feed_label">Kanal əlavə et</string>
   <string name="miro_feed_added">Kanal əlavə olundu</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Seçilən qovluq:</string>

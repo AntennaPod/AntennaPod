@@ -1,8 +1,11 @@
 package de.danoeh.antennapod.util;
 
+import java.nio.charset.Charset;
 import java.util.HashMap;
 
 public class LangUtils {
+	public static final Charset UTF_8 = Charset.forName("UTF-8");
+
 	private static HashMap<String, String> languages;
 	static {
 		languages = new HashMap<String, String>();

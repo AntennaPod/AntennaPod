@@ -40,6 +40,7 @@
   <string name="processing_label">处理中</string>
   <string name="loading_label">加载中...</string>
   <string name="image_of_prefix">图片:\u0020</string>
+  <string name="close_label">关闭</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
   <string name="txtvfeedurl_label">输入订阅 URL: </string>
@@ -129,6 +130,11 @@
   <string name="access_revoked_info">您已经成功撤销 AntennaPod 对账户令牌的访问. 为了完成这个过程, 您必须到 Flattr 网站 \"账户设置-&gt;已批准应用\" 列表内删除本应用.</string>
   <string name="flattr_click_success">Flattr 成功!</string>
   <string name="flattring_label">Flattring</string>
+  <!--Variable Speed-->
+  <string name="download_plugin_label">插件下载</string>
+  <string name="no_playback_plugin_title">插件没有安装</string>
+  <string name="no_playback_plugin_msg">安装第三方库后播放速度设置起作用.\n点击 \'插件下载\' 从 \'Pay 商店\' 下载免费插件.\n使用这些插件中碰到的任何问题请报告给插件作者, 跟 AntennaPod 无关.</string>
+  <string name="set_playback_speed_label">播放速度</string>
   <!--Empty list labels-->
   <string name="no_items_label">列表为空.</string>
   <string name="no_feeds_label">还没有任何订阅.</string>
@@ -172,6 +178,8 @@
   <string name="pref_update_interval_hours_plural">小时</string>
   <string name="pref_update_interval_hours_singular">时</string>
   <string name="pref_update_interval_hours_manual">手动</string>
+  <string name="pref_playback_speed_title">播放速度</string>
+  <string name="pref_playback_speed_sum">自定义音频播放速度</string>
   <!--Search-->
   <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>

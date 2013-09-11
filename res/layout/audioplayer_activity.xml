@@ -79,8 +79,6 @@
             android:layout_width="80dp"
             android:layout_height="match_parent"
             android:layout_centerHorizontal="true"
-            android:layout_marginLeft="12dp"
-            android:layout_marginRight="12dp"
             android:background="?attr/borderless_button"
             android:src="?attr/av_pause" />
 
@@ -99,6 +97,17 @@
             android:layout_toRightOf="@id/butPlay"
             android:background="?attr/borderless_button"
             android:src="?attr/av_fast_forward" />
+
+        <Button
+            android:id="@+id/butPlaybackSpeed"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:layout_toRightOf="@id/butFF"
+            android:background="?attr/borderless_button"
+            android:src="?attr/av_fast_forward"
+            android:textColor="@color/gray"
+            android:textSize="@dimen/text_size_medium"
+            android:visibility="gone" />
     </RelativeLayout>
 
     <RelativeLayout
