@@ -129,6 +129,7 @@
   <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
   <string name="flattr_click_success">Úspěšně flattrováno!</string>
   <string name="flattring_label">Flattruji</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Žádné položky v seznamu.</string>
   <string name="no_feeds_label">Zatím nebyly přidány žádné zdroje.</string>

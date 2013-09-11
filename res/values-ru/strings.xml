@@ -29,7 +29,7 @@
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="refresh_label">Обновить</string>
-  <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель смонтирован, иначе приложение не сможет нормально работать.</string>
+  <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Описание</string>
   <string name="most_recent_prefix">Следующий эпизод:\u0020</string>
@@ -49,7 +49,7 @@
   <string name="remove_feed_label">Удалить канал</string>
   <string name="share_link_label">Поделиться ссылкой на сайт</string>
   <string name="share_source_label">Поделиться ссылкой на канал</string>
-  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ закачанных выпусков этого канала.</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <string name="play_label">Воспроизвести</string>
@@ -71,7 +71,7 @@
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
-  <string name="download_error_insufficient_space">Недостаточно свободного места</string>
+  <string name="download_error_insufficient_space">Недостаточно памяти</string>
   <string name="download_error_file_error">Ошибка файла</string>
   <string name="download_error_http_data_error">Ошибка протокола HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
@@ -116,19 +116,20 @@
   <string name="removed_from_queue">Удален</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Авторизоваться в Flattr</string>
-  <string name="flattr_auth_explanation">Нажмите кнопку чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr где вам нужно будет подключить AntennaPod к вашему аккаунту. После этого вы автоматически будете перенаправлены обратно.</string>
+  <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где вам нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
   <string name="authenticate_label">Авторизовать</string>
   <string name="return_home_label">Вернуться к началу</string>
   <string name="flattr_auth_success">Успешная авторизация! Теперь вы можете использовать Flattr прямо из приложения.</string>
   <string name="no_flattr_token_title">Токен Flattr не найден</string>
-  <string name="no_flattr_token_msg">Похоже что ваш аккаунт Flattr не подключен к AntennaPod. Можно подключить аккаунт к AntennaPod или посетить сайт канала чтобы использовать Flattr прямо на сайте.</string>
+  <string name="no_flattr_token_msg">Кажется, ваш аккаунт Flattr не подключен к AntennaPod. Вы можете подключить аккаунт к AntennaPod или посетить сайт канала, чтобы пожертвовать через Flattr прямо на сайте.</string>
   <string name="authenticate_now_label">Авторизоваться</string>
   <string name="action_forbidden_title">Действие запрещено</string>
-  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно потому что доступ к вашему аккаунту был отозван. Вы можете авторизоваться заново или попробовать посетить сайт.</string>
+  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно, доступ к вашему аккаунту был отозван. Вы можете авторизоваться заново или посетить сайт, которому вы пожертвовали через Flattr.</string>
   <string name="access_revoked_title">Доступ отозван</string>
   <string name="access_revoked_info">Вы успешно отключили AntennaPod от вашего аккаунта в Flattr. Чтобы завершить этот процесс вам нужно удалить AntennaPod из списка приложений подключенных к вашему аккаунту на сайте Flattr.</string>
   <string name="flattr_click_success">Поддержка через Flattr прошла успешно!</string>
   <string name="flattring_label">Отправляется запрос на Flattr</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>
   <string name="no_feeds_label">Вы еще не подписаны ни на один канал</string>
@@ -142,7 +143,7 @@
   <string name="network_pref">Сеть</string>
   <string name="pref_autoUpdateIntervall_title">Интервал обновлений</string>
   <string name="pref_autoUpdateIntervall_sum">Укажите интервал через который каналы обновляются автоматически, или отключите его</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Загружать файлы только по Wi-Fi</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Загружать файлы только через Wi-Fi</string>
   <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
@@ -153,14 +154,14 @@
   <string name="pref_flattr_auth_title">Авторизация Flattr</string>
   <string name="pref_flattr_auth_sum">Авторизуйтесь в Flattr чтобы поддерживать каналы прямо из приложения</string>
   <string name="pref_flattr_this_app_title">Поддержать это приложение в Flattr</string>
-  <string name="pref_flattr_this_app_sum">Поддержать разработку AntennaPod через Flattr. Спасибо!</string>
+  <string name="pref_flattr_this_app_sum">Поддержите разработку AntennaPod через Flattr. Спасибо!</string>
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
   <string name="pref_display_only_episodes_title">Показывать только выпуски</string>
   <string name="pref_display_only_episodes_sum">Показывать только те элементы списка, которые содержат выпуски</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
-  <string name="pref_set_theme_sum">Изменить тему оформление AntennaPod</string>
+  <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматическая загрузка</string>
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>

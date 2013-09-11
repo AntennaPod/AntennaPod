@@ -29,9 +29,10 @@
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Um erro ocorreu:</string>
   <string name="refresh_label">Atualizar</string>
-  <string name="external_storage_error_msg">Não há dispositivos de armazenamento disponíveis. Por favor, certifique-se de que um dispositivo de armazenamento externo está montado para que o aplicativo possa funcionar adequadamente.</string>
+  <string name="external_storage_error_msg">Não há dispositivos de armazenamento externo disponíveis. Por favor, certifique-se de que um dispositivo de armazenamento externo está montado para que o aplicativo possa funcionar adequadamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas do podcast</string>
+  <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
   <string name="episodes_suffix">\u0020episódios</string>
   <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duração:\u0020</string>
@@ -66,7 +67,7 @@
   <string name="skip_episode_label">Pular episódio</string>
   <!--Download messages and labels-->
   <string name="download_successful">Download com sucesso</string>
-  <string name="download_failed">Download falhou</string>
+  <string name="download_failed">Falha no download</string>
   <string name="download_pending">Download pendente</string>
   <string name="download_running">Download em execução</string>
   <string name="download_error_device_not_found">Dispositivo de armazenamento não encontrado</string>
@@ -111,6 +112,8 @@
   <!--Queue operations-->
   <string name="clear_queue_label">Limpar fila</string>
   <string name="organize_queue_label">Organizar fila</string>
+  <string name="undo">Desfazer</string>
+  <string name="removed_from_queue">Item removido</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Logar no Flattr</string>
   <string name="flattr_auth_explanation">Pressione o botão abaixo para iniciar o processo de autenticação. Você será direcionado para a tela de login do Flattr, que pedirá autorização para que o AntennaPod utilize o Flattr. Após conceder a permissão, você retornará a esta tela automaticamente.</string>
@@ -126,22 +129,23 @@
   <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod com sucesso. Para finalizar o processo, você deve remover esta app da lista de aplicativos aprovados nas configurações de sua conta no website do Flattr.</string>
   <string name="flattr_click_success">Registrado no Flattr com sucesso!</string>
   <string name="flattring_label">Registrando no Flattr</string>
+  <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista.</string>
   <string name="no_feeds_label">Você ainda não assinou nenhum feed.</string>
   <!--Preferences-->
-  <string name="other_pref">Outro</string>
+  <string name="other_pref">Outros</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Interromper a reprodução quando o fone de ouvido for desconectado</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
-  <string name="playback_pref">Playback</string>
+  <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo de atualização</string>
   <string name="pref_autoUpdateIntervall_sum">Especifica o intervalo em que os feeds serão atualizados automaticamente ou desabilita esta funcionalidade</string>
-  <string name="pref_downloadMediaOnWifiOnly_sum">Baixar arquivo apenas com WiFi</string>
+  <string name="pref_downloadMediaOnWifiOnly_sum">Fazer download dos arquivos apenas via rede WiFi</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
-  <string name="pref_downloadMediaOnWifiOnly_title">Baixar mídia via WiFi</string>
+  <string name="pref_downloadMediaOnWifiOnly_title">Download de mídia via WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Fones de ouvido desconectados</string>
   <string name="pref_mobileUpdate_title">Atualizações via Rede de Dados Celular</string>
   <string name="pref_mobileUpdate_sum">Permite atualizações quando conectado na rede de dados celular</string>
@@ -163,6 +167,12 @@
   <string name="pref_autodl_wifi_filter_title">Habilitar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir download automático somente pelas redes Wi-Fi selecionadas.</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
+  <string name="pref_theme_title_light">Claro</string>
+  <string name="pref_theme_title_dark">Escuro</string>
+  <string name="pref_episode_cache_unlimited">Ilimitado</string>
+  <string name="pref_update_interval_hours_plural">horas</string>
+  <string name="pref_update_interval_hours_singular">hora</string>
+  <string name="pref_update_interval_hours_manual">Manual</string>
   <!--Search-->
   <string name="search_hint">Procurar por Feeds ou Episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas do podcast</string>
