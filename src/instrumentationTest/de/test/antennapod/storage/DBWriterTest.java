@@ -681,4 +681,58 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
     }
 
+    public void testMarkFeedRead() throws InterruptedException, ExecutionException, TimeoutException {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), false, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+
+        DBWriter.markFeedRead(context, feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        List<FeedItem> loadedItems = DBReader.getFeedItemList(context, feed);
+        for (FeedItem item : loadedItems) {
+            assertTrue(item.isRead());
+        }
+    }
+
+    public void testMarkAllItemsReadSameFeed() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            FeedItem item = new FeedItem(0, "title " + i, "id " + i, "link " + i, new Date(), false, feed);
+            feed.getItems().add(item);
+        }
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+        }
+
+        DBWriter.markAllItemsRead(context);
+        List<FeedItem> loadedItems = DBReader.getFeedItemList(context, feed);
+        for (FeedItem item : loadedItems) {
+            assertTrue(item.isRead());
+        }
+    }
+
 }

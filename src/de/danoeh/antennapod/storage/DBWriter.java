@@ -567,6 +567,7 @@ public class DBWriter {
                 itemCursor.moveToFirst();
                 for (int i = 0; i < itemIds.length; i++) {
                     itemIds[i] = itemCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                    itemCursor.moveToNext();
                 }
                 itemCursor.close();
                 adapter.setFeedItemRead(true, itemIds);
@@ -595,6 +596,7 @@ public class DBWriter {
                 itemCursor.moveToFirst();
                 for (int i = 0; i < itemIds.length; i++) {
                     itemIds[i] = itemCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                    itemCursor.moveToNext();
                 }
                 itemCursor.close();
                 adapter.setFeedItemRead(true, itemIds);
