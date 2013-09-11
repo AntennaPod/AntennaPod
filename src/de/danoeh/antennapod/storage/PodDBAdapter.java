@@ -14,11 +14,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 
 // TODO Remove media column from feeditem table
@@ -195,9 +191,9 @@ public class PodDBAdapter {
 
     /**
      * Select all columns from the feed-table except feed preferences.
-     * */
+     */
     private static final String[] FEED_SEL_STD = {
-        TABLE_NAME_FEEDS + "." + KEY_ID,
+            TABLE_NAME_FEEDS + "." + KEY_ID,
             TABLE_NAME_FEEDS + "." + KEY_TITLE,
             TABLE_NAME_FEEDS + "." + KEY_FILE_URL,
             TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL,
@@ -229,6 +225,16 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_TYPE = 12;
     public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
 
+    /**
+     * Select all preference-columns from the feed table
+     */
+    private static final String[] FEED_SEL_PREFERENCES = {
+            TABLE_NAME_FEEDS + "." + KEY_ID,
+            // enter preferences here
+    };
+
+    // column indices for FEED_SEL_PREFERENCES
+    public static final int IDX_FEED_SEL_PREFERENCES_ID = 0;
 
     /**
      * Select all columns from the feeditems-table except description and
@@ -362,6 +368,14 @@ public class PodDBAdapter {
         return feed.getId();
     }
 
+    public void setFeedPreferences(FeedPreferences prefs) {
+        if (prefs.getFeedID() == 0) {
+            throw new IllegalArgumentException("Feed ID of preference must not be null");
+        }
+        ContentValues values = new ContentValues();
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
+    }
+
     /**
      * Inserts or updates an image entry
      *
@@ -490,7 +504,8 @@ public class PodDBAdapter {
 
     /**
      * Inserts or updates a feeditem entry
-     * @param item The FeedItem
+     *
+     * @param item     The FeedItem
      * @param saveFeed true if the Feed of the item should also be saved. This should be set to
      *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
@@ -521,7 +536,7 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(item.getId())});
         }
         if (item.getMedia() != null) {
-                setMedia(item.getMedia());
+            setMedia(item.getMedia());
         }
         if (item.getChapters() != null) {
             setChapters(item);
@@ -797,7 +812,7 @@ public class PodDBAdapter {
                 "SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
         Cursor c = db.rawQuery(query, null);
         /*
-		 * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
+         * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
 		 * "INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
 		 * TABLE_NAME_FEED_ITEMS + "." + KEY_ID, TABLE_NAME_QUEUE + "." +
 		 * KEY_FEEDITEM }, null, null, TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
@@ -913,6 +928,10 @@ public class PodDBAdapter {
         Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_ID + "=" + id, null,
                 null, null, null);
         return c;
+    }
+
+    public final Cursor getFeedPreferenceCursor(final long feedID) {
+        return db.query(TABLE_NAME_FEEDS, FEED_SEL_PREFERENCES, KEY_ID + "=" + feedID, null, null, null, null);
     }
 
     public final Cursor getFeedItemCursor(final String... ids) {

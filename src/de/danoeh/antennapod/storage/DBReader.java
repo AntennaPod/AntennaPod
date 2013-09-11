@@ -10,14 +10,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.ID3Chapter;
-import de.danoeh.antennapod.feed.SimpleChapter;
-import de.danoeh.antennapod.feed.VorbisCommentChapter;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.download.*;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
@@ -28,7 +21,6 @@ import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
  * In general, all database calls in DBReader-methods are executed on the caller's thread.
  * This means that the caller should make sure that DBReader-methods are not executed on the GUI-thread.
  * This class will use the {@link de.danoeh.antennapod.feed.EventDistributor} to notify listeners about changes in the database.
-
  */
 public final class DBReader {
     private static final String TAG = "DBReader";
@@ -77,9 +69,10 @@ public final class DBReader {
 
     /**
      * Returns a list with the download URLs of all feeds.
+     *
      * @param context A context that is used for opening the database connection.
      * @return A list of Strings with the download URLs of all feeds.
-     * */
+     */
     public static List<String> getFeedListDownloadUrls(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         List<String> result = new ArrayList<String>();
@@ -337,7 +330,7 @@ public final class DBReader {
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOAD_URL),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0);
 
-        if (image  != null) {
+        if (image != null) {
             image.setFeed(feed);
         }
         return feed;
@@ -774,5 +767,30 @@ public final class DBReader {
         adapter.close();
 
         return media;
+    }
+
+    private static FeedPreferences extractFeedPreferencesFromCursorRow(final Cursor cursor) {
+        return new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_ID));
+    }
+
+    /**
+     * Loads the FeedPreferences-object of a specific Feed from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedID  ID of the Feed.
+     * @return The FeedPreferences of the Feed with the given ID or null if the no Feed could be found.
+     */
+    public static FeedPreferences getFeedPreferencesOfFeed(final Context context, final long feedID) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+
+        Cursor prefCursor = adapter.getFeedPreferenceCursor(feedID);
+        if (prefCursor.moveToFirst()) {
+            FeedPreferences result = extractFeedPreferencesFromCursorRow(prefCursor);
+            prefCursor.close();
+            return result;
+        } else {
+            return null;
+        }
     }
 }
