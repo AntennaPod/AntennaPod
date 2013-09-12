@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <item android:id="@id/skip_episode_item" android:title="@string/skip_episode_label" android:showAsAction="collapseActionView"></item><item
+    <item
         android:id="@+id/download_item"
         android:icon="?attr/av_download"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/download_label">
     </item>
     <item
         android:id="@+id/stream_item"
         android:icon="?attr/action_stream"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/stream_label">
     </item>
     <item
         android:id="@+id/play_item"
         android:icon="?attr/av_play"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/play_label">
     </item>
     <item
@@ -26,9 +26,14 @@
         android:title="@string/remove_label">
     </item>
     <item
+        android:id="@id/skip_episode_item"
+        android:title="@string/skip_episode_label"
+        android:showAsAction="collapseActionView">
+    </item>
+    <item
         android:id="@+id/cancel_download_item"
         android:icon="?attr/navigation_cancel"
-        android:showAsAction="ifRoom"
+        android:showAsAction="ifRoom|collapseActionView"
         android:title="@string/cancel_download_label">
     </item>
     <item

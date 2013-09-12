@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -30,21 +31,23 @@ import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 import java.text.DateFormat;
 
-/** Displays a single FeedItem and provides various actions */
+/**
+ * Displays a single FeedItem and provides various actions
+ */
 public class ItemviewActivity extends ActionBarActivity {
-	private static final String TAG = "ItemviewActivity";
+    private static final String TAG = "ItemviewActivity";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED;
 
-	private FeedItem item;
+    private FeedItem item;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);
-		StorageUtils.checkStorageAvailability(this);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
+        super.onCreate(savedInstanceState);
+        StorageUtils.checkStorageAvailability(this);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         EventDistributor.getInstance().register(contentUpdate);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -55,22 +58,22 @@ public class ItemviewActivity extends ActionBarActivity {
         } else {
             loadData(itemId);
         }
-	}
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		StorageUtils.checkStorageAvailability(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StorageUtils.checkStorageAvailability(this);
 
-	}
+    }
 
-	@Override
-	public void onStop() {
-		super.onStop();
+    @Override
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Stopping Activity");
-	}
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Stopping Activity");
+    }
 
     private void loadData(long itemId) {
         AsyncTask<Long, Void, FeedItem> loadTask = new AsyncTask<Long, Void, FeedItem>() {
@@ -99,61 +102,66 @@ public class ItemviewActivity extends ActionBarActivity {
         loadTask.execute(itemId);
     }
 
-	private void populateUI() {
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.feeditemview);
-		TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
-		TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
-		setTitle(item.getFeed().getTitle());
+    private void populateUI() {
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        setContentView(R.layout.feeditemview);
+        TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
+        TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
+        setTitle(item.getFeed().getTitle());
 
-		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
-				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
-				DateFormat.SHORT));
-		txtvTitle.setText(item.getTitle());
+        txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
+                .getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
+                DateFormat.SHORT));
+        txtvTitle.setText(item.getTitle());
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		ItemDescriptionFragment fragment = ItemDescriptionFragment
-				.newInstance(item, false);
-		fragmentTransaction.replace(R.id.description_fragment, fragment);
-		fragmentTransaction.commit();
-	}
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager
+                .beginTransaction();
+        ItemDescriptionFragment fragment = ItemDescriptionFragment
+                .newInstance(item, false);
+        fragmentTransaction.replace(R.id.description_fragment, fragment);
+        fragmentTransaction.commit();
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         if (item != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feeditem, menu);
+            // MenuItem visibility has to be set programmatically here; TODO remove this workaround
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.download_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.stream_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.play_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
+            MenuItemCompat.setShowAsAction(menu.findItem(R.id.cancel_download_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
             return true;
         } else {
             return false;
         }
-	}
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		try {
-			if (!FeedItemMenuHandler.onMenuItemClicked(this,
-					menuItem.getItemId(), item)) {
-				switch (menuItem.getItemId()) {
-				case android.R.id.home:
-					finish();
-					break;
-				}
-			}
-		} catch (DownloadRequestException e) {
-			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
-					e.getMessage());
-		}
-		supportInvalidateOptionsMenu();
-		return true;
-	}
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        try {
+            if (!FeedItemMenuHandler.onMenuItemClicked(this,
+                    menuItem.getItemId(), item)) {
+                switch (menuItem.getItemId()) {
+                    case android.R.id.home:
+                        finish();
+                        break;
+                }
+            }
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+                    e.getMessage());
+        }
+        supportInvalidateOptionsMenu();
+        return true;
+    }
 
-	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		return FeedItemMenuHandler.onPrepareMenu(
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        return FeedItemMenuHandler.onPrepareMenu(
                 new FeedItemMenuHandler.MenuInterface() {
 
                     @Override
@@ -161,7 +169,7 @@ public class ItemviewActivity extends ActionBarActivity {
                         menu.findItem(id).setVisible(visible);
                     }
                 }, item, true, QueueAccess.NotInQueueAccess());
-	}
+    }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
