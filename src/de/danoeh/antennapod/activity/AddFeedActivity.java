@@ -5,6 +5,7 @@ import java.util.Date;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
@@ -37,6 +38,7 @@ public class AddFeedActivity extends ActionBarActivity {
 
 	private EditText etxtFeedurl;
 	private Button butBrowseMiroGuide;
+    private Button butBrowserGpoddernet;
 	private Button butOpmlImport;
 	private Button butConfirm;
 	private Button butCancel;
@@ -63,6 +65,7 @@ public class AddFeedActivity extends ActionBarActivity {
 		}
 
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
+        butBrowserGpoddernet = (Button) findViewById(R.id.butBrowseGpoddernet);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
@@ -75,6 +78,13 @@ public class AddFeedActivity extends ActionBarActivity {
 						MiroGuideMainActivity.class));
 			}
 		});
+        butBrowserGpoddernet.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddFeedActivity.this,
+                        GpodnetMainActivity.class));
+            }
+        });
 
 		butOpmlImport.setOnClickListener(new OnClickListener() {
 

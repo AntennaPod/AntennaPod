@@ -132,7 +132,7 @@ public class FeedItemMenuHandler {
 					false);
 			break;
 		case R.id.remove_item:
-			DBWriter.deleteFeedMediaOfItem(context, selectedItem.getId());
+			DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
 			break;
 		case R.id.cancel_download_item:
 			requester.cancelDownload(context, selectedItem.getMedia());
@@ -152,12 +152,6 @@ public class FeedItemMenuHandler {
 		case R.id.stream_item:
 			DBTasks.playMedia(context, selectedItem.getMedia(), true, true,
 					true);
-			break;
-		case R.id.move_to_top_item:
-			DBWriter.moveQueueItemToTop(context, selectedItem.getId(), true);
-			break;
-		case R.id.move_to_bottom_item:
-			DBWriter.moveQueueItemToBottom(context, selectedItem.getId(), true);
 			break;
 		case R.id.visit_website_item:
 			Uri uri = Uri.parse(selectedItem.getLink());

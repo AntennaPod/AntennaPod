@@ -222,6 +222,12 @@ public class EpisodesFragment extends Fragment {
                         }
                     }, selectedItem, false, QueueAccess.ItemListAccess(queue));
 
+			// check to see if the item is in the queue, if so add queue menu items
+			int itemIndex = queue.indexOf(selectedItem);
+			if (itemIndex != -1) {
+				addQueueOnlyMenus(menu, itemIndex);
+			}
+
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
 			menu.add(Menu.NONE, R.id.organize_queue_item, Menu.NONE,
 					R.string.organize_queue_label);
@@ -237,6 +243,24 @@ public class EpisodesFragment extends Fragment {
 		}
 	}
 
+	/**
+	 * Adds submenus to the ContextMenu if the item selected is in the queue.
+	 * @param menu the ContextMenu to add the submenus to
+	 * @param itemIndex the index of the selected item within the queue.
+	 */
+	private void addQueueOnlyMenus(ContextMenu menu, int itemIndex) {
+		if (itemIndex != 0) {
+			// don't add move to top if this item is already on the top
+			menu.add(Menu.NONE, R.id.move_to_top_item, Menu.NONE, getActivity()
+					.getString(R.string.move_to_top_label));
+		}
+		if (itemIndex != queue.size() - 1) {
+			// don't add move to bottom if this item is already on the bottom
+			menu.add(Menu.NONE, R.id.move_to_bottom_item, Menu.NONE, getActivity()
+					.getString(R.string.move_to_bottom_label));
+		}
+	}
+
 	@Override
 	public boolean onContextItemSelected(android.view.MenuItem item) {
 		boolean handled = false;
@@ -249,7 +273,19 @@ public class EpisodesFragment extends Fragment {
 				DownloadRequestErrorDialogCreator.newRequestErrorDialog(
 						getActivity(), e.getMessage());
 			}
-
+			if (!handled) {
+				// if it wasn't handled by the FeedItemMenuHandler it might be one of ours
+				switch (item.getItemId()) {
+				case R.id.move_to_top_item:
+					DBWriter.moveQueueItemToTop(getActivity(), selectedItem.getId(), true);
+					handled = true;
+					break;
+				case R.id.move_to_bottom_item:
+					DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
+					handled = true;
+					break;
+				}
+			}
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
 			handled = true;
 			switch (item.getItemId()) {

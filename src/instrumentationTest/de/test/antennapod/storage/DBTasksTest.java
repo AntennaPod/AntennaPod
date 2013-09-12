@@ -8,12 +8,14 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -162,6 +164,89 @@ public class DBTasksTest extends InstrumentationTestCase {
         DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
         for (File file : files) {
             assertTrue(file.exists());
+        }
+    }
+
+    public void testUpdateFeedNewFeed() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS = 10;
+
+        Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), false, feed));
+        }
+        Feed newFeed = DBTasks.updateFeed(context, feed);
+
+        assertTrue(newFeed == feed);
+        assertTrue(feed.getId() != 0);
+        for (FeedItem item : feed.getItems()) {
+            assertFalse(item.isRead());
+            assertTrue(item.getId() != 0);
+        }
+    }
+
+    public void testUpdateFeedUpdatedFeed() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_ITEMS_OLD = 10;
+        final int NUM_ITEMS_NEW = 10;
+
+        final Feed feed = new Feed("url", new Date(), "title");
+        feed.setItems(new ArrayList<FeedItem>());
+        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+        }
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        // ensure that objects have been saved in db, then reset
+        assertTrue(feed.getId() != 0);
+        final long feedID = feed.getId();
+        feed.setId(0);
+        List<Long> itemIDs = new ArrayList<Long>();
+        for (FeedItem item : feed.getItems()) {
+            assertTrue(item.getId() != 0);
+            itemIDs.add(item.getId());
+            item.setId(0);
+        }
+
+        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
+            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+        }
+
+        final Feed newFeed = DBTasks.updateFeed(context, feed);
+        assertTrue(feed != newFeed);
+
+        updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+
+        final Feed feedFromDB = DBReader.getFeed(context, newFeed.getId());
+        assertNotNull(feedFromDB);
+        assertTrue(feedFromDB.getId() == newFeed.getId());
+        updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
+    }
+
+    private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
+        assertTrue(newFeed.getId() == feedID);
+        assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
+        Collections.reverse(newFeed.getItems());
+        Date lastDate = new Date(0);
+        for (int i = 0; i < NUM_ITEMS_OLD; i++) {
+            FeedItem item = newFeed.getItems().get(i);
+            assertTrue(item.getFeed() == newFeed);
+            assertTrue(item.getId() == itemIDs.get(i));
+            assertTrue(item.isRead());
+            assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
+            lastDate = item.getPubDate();
+        }
+        for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
+            FeedItem item = newFeed.getItems().get(i);
+            assertTrue(item.getFeed() == newFeed);
+            assertTrue(item.getId() != 0);
+            assertFalse(item.isRead());
+            assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
+            lastDate = item.getPubDate();
         }
     }
 }

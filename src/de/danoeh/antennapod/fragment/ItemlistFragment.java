@@ -60,6 +60,8 @@ public class ItemlistFragment extends ListFragment {
 	/** Argument for FeeditemlistAdapter */
 	protected boolean showFeedtitle;
 
+    private AsyncTask<Long, Void, Feed> currentLoadTask;
+
 	public ItemlistFragment(boolean showFeedtitle) {
 		super();
 		this.showFeedtitle = showFeedtitle;
@@ -115,11 +117,21 @@ public class ItemlistFragment extends ListFragment {
 		return inflater.inflate(R.layout.feeditemlist, container, false);
 	}
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
-		loadData();
-	}
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        loadData();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        EventDistributor.getInstance().unregister(contentUpdate);
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
+    }
 
     protected void loadData() {
         final long feedId;
@@ -168,6 +180,7 @@ public class ItemlistFragment extends ListFragment {
                 }
             }
         };
+        currentLoadTask = loadTask;
         loadTask.execute(feedId);
     }
 
@@ -185,17 +198,6 @@ public class ItemlistFragment extends ListFragment {
 	}
 
 	@Override
-	public void onPause() {
-		super.onPause();
-	}
-
-	@Override
-	public void onDestroy() {
-		super.onDestroy();
-		EventDistributor.getInstance().unregister(contentUpdate);
-	}
-
-	@Override
 	public void onResume() {
 		super.onResume();
 		getActivity().runOnUiThread(new Runnable() {
@@ -206,7 +208,6 @@ public class ItemlistFragment extends ListFragment {
 			}
 		});
 		updateProgressBarVisibility();
-		EventDistributor.getInstance().register(contentUpdate);
 	}
 
 	@Override

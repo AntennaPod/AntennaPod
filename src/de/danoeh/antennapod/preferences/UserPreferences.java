@@ -211,7 +211,8 @@ public class UserPreferences implements
 
 	public static boolean isDisplayOnlyEpisodes() {
 		instanceAvailable();
-		return instance.displayOnlyEpisodes;
+		//return instance.displayOnlyEpisodes;
+        return false;
 	}
 
 	public static boolean isAutoDelete() {

@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -14,7 +12,6 @@ import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedItemlistActivity;
@@ -28,6 +25,8 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.FeedItemStatistics;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
+
+import java.util.List;
 
 public class FeedlistFragment extends Fragment implements
         ActionMode.Callback, AdapterView.OnItemClickListener,
@@ -244,11 +243,18 @@ public class FeedlistFragment extends Fragment implements
         return true;
     }
 
+    private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
+
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        mActionMode = null;
-        selectedFeed = null;
-        fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
+        if (actionModeDestroyWorkaround) {
+            mActionMode = null;
+            selectedFeed = null;
+            fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
+            actionModeDestroyWorkaround = false;
+        } else {
+            actionModeDestroyWorkaround = true;
+        }
     }
 
     @Override
