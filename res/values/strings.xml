@@ -133,6 +133,8 @@
     <string name="organize_queue_label">Organize queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
+    <string name="move_to_top_label">Move to top</string>
+    <string name="move_to_bottom_label">Move to bottom</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>

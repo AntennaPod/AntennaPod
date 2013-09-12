@@ -67,6 +67,5 @@
         android:showAsAction="collapseActionView"
         android:title="@string/support_label">
     </item>
-    
 
 </menu>
