@@ -537,7 +537,7 @@ public class DBWriter {
 
             @Override
             public void run() {
-                moveQueueItem(context, from, to, broadcastUpdate);
+                moveQueueItemHelper(context, from, to, broadcastUpdate);
             }
         });
     }
