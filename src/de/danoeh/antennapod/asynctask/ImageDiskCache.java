@@ -203,7 +203,7 @@ public class ImageDiskCache {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
                 final Object tag = target.getTag(R.id.image_disk_cache_key);
-                if (tag != null || StringUtils.equals((String) tag, url)) {
+                if (tag != null && StringUtils.equals((String) tag, url)) {
                     il.loadThumbnailBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }
@@ -231,7 +231,7 @@ public class ImageDiskCache {
             @Override
             protected void onImageLoaded(DiskCacheObject diskCacheObject) {
                 final Object tag = target.getTag(R.id.image_disk_cache_key);
-                if (tag != null || StringUtils.equals((String) tag, url)) {
+                if (tag != null && StringUtils.equals((String) tag, url)) {
                     il.loadCoverBitmap(diskCacheObject.loadImage(), target, length);
                 }
             }

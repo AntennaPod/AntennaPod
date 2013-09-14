@@ -167,7 +167,6 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			holder.lenSize.setVisibility(View.INVISIBLE);
 		}
 
-		holder.feedImage.setTag(item.getImageLoaderCacheKey());
 		ImageLoader.getInstance().loadThumbnailBitmap(
 				item,
 				holder.feedImage,

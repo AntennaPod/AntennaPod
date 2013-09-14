@@ -120,7 +120,6 @@ public class FeedlistAdapter extends BaseAdapter {
         }
 		final String imageUrl = (feed.getImage() != null) ? feed.getImage()
 				.getFile_url() : null;
-		holder.image.setTag(imageUrl);
 		imageLoader.loadThumbnailBitmap(
 				feed.getImage(),
 				holder.image,
