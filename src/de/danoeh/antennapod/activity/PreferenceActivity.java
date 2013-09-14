@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
@@ -52,6 +54,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
     private CheckBoxPreference[] selectedNetworks;
 
+    @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -59,7 +62,10 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            ActionBar ab = getActionBar();
+            if (ab != null) {
+                ab.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
         addPreferencesFromResource(R.xml.preferences);
