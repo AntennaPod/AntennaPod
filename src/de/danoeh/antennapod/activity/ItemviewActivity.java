@@ -128,11 +128,6 @@ public class ItemviewActivity extends ActionBarActivity {
         if (item != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feeditem, menu);
-            // MenuItem visibility has to be set programmatically here; TODO remove this workaround
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.download_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.stream_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.play_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
-            MenuItemCompat.setShowAsAction(menu.findItem(R.id.cancel_download_item), MenuItemCompat.SHOW_AS_ACTION_IF_ROOM | MenuItemCompat.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
             return true;
         } else {
             return false;

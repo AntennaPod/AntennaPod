@@ -287,7 +287,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = new MenuInflater(this);
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.directory_chooser, menu);
 		return true;
 	}

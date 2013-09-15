@@ -131,7 +131,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
             return FeedMenuHandler
-                    .onCreateOptionsMenu(new MenuInflater(this), menu);
+                    .onCreateOptionsMenu(getMenuInflater(), menu);
         } else {
             return false;
         }

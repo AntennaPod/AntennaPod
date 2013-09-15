@@ -96,7 +96,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (feed != null) {
-            MenuInflater inflater = new MenuInflater(this);
+            MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feedinfo, menu);
             return true;
         } else {
