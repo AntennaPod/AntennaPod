@@ -52,14 +52,14 @@
 
     <TextView
         android:id="@+id/txtvError"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
-        android:layout_below="@id/etxtCaption"
-        android:layout_alignBottom="@id/butCreateNewDevice"
+        android:layout_below="@id/etxtDeviceID"
+        android:layout_toLeftOf="@id/butCreateNewDevice"
         android:textColor="@color/download_failed_red"
         android:layout_margin="16dp"
-        android:textSize="@dimen/text_size_medium"
+        android:textSize="@dimen/text_size_small"
         />
 
     <ProgressBar
