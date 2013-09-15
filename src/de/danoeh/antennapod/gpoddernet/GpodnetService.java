@@ -16,6 +16,8 @@ import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
 import org.apache.http.params.CoreProtocolPNames;
+import org.apache.http.params.HttpConnectionParams;
+import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -39,11 +41,16 @@ public class GpodnetService {
     private static final String BASE_SCHEME = "https";
     private static final String BASE_HOST = "gpodder.net";
 
-    private GpodnetClient httpClient;
+    private static final int TIMEOUT_MILLIS = 20000;
+
+    private final GpodnetClient httpClient;
 
     public GpodnetService() {
         httpClient = new GpodnetClient();
-        httpClient.getParams().setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);
+        final HttpParams params = httpClient.getParams();
+        params.setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);
+        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MILLIS);
+        HttpConnectionParams.setSoTimeout(params, TIMEOUT_MILLIS);
     }
 
     /**
