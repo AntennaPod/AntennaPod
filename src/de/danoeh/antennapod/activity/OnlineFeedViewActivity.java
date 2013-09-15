@@ -256,6 +256,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                 finish();
             }
         });
+        builder.show();
     }
 
 }

@@ -9,10 +9,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.GridView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
@@ -33,6 +30,7 @@ public abstract class PodcastListFragment extends Fragment {
     private GridView gridView;
     private ProgressBar progressBar;
     private TextView txtvError;
+    private Button butRetry;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -42,11 +40,18 @@ public abstract class PodcastListFragment extends Fragment {
         gridView = (GridView) root.findViewById(R.id.gridView);
         progressBar = (ProgressBar) root.findViewById(R.id.progressBar);
         txtvError = (TextView) root.findViewById(R.id.txtvError);
+        butRetry = (Button) root.findViewById(R.id.butRetry);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 onPodcastSelected((GpodnetPodcast) gridView.getAdapter().getItem(position));
+            }
+        });
+        butRetry.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                loadData();
             }
         });
 
@@ -96,10 +101,15 @@ public abstract class PodcastListFragment extends Fragment {
 
                     progressBar.setVisibility(View.GONE);
                     gridView.setVisibility(View.VISIBLE);
+                    txtvError.setVisibility(View.GONE);
+                    butRetry.setVisibility(View.GONE);
                 } else if (context != null) {
                     gridView.setVisibility(View.GONE);
                     progressBar.setVisibility(View.GONE);
                     txtvError.setText(getString(R.string.error_msg_prefix) + exception.getMessage());
+                    txtvError.setVisibility(View.VISIBLE);
+                    butRetry.setVisibility(View.VISIBLE);
+
                 }
             }
 
@@ -108,6 +118,8 @@ public abstract class PodcastListFragment extends Fragment {
                 super.onPreExecute();
                 gridView.setVisibility(View.GONE);
                 progressBar.setVisibility(View.VISIBLE);
+                txtvError.setVisibility(View.GONE);
+                butRetry.setVisibility(View.GONE);
             }
         };
 

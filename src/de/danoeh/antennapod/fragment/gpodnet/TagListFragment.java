@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
-import android.R;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -74,15 +73,14 @@ public class TagListFragment extends ListFragment {
                         for (GpodnetTag tag : gpodnetTags) {
                             tagNames.add(tag.getName());
                         }
-                        setListAdapter(new ArrayAdapter<String>(context, R.layout.simple_list_item_1, tagNames));
-                        setListShown(true);
+                        setListAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, tagNames));
                     } else if (exception != null) {
                         TextView txtvError = new TextView(getActivity());
                         txtvError.setText(exception.getMessage());
                         getListView().setEmptyView(txtvError);
-                    } else {
-                        setListShown(true);
                     }
+                    setListShown(true);
+
                 }
             }
         };
