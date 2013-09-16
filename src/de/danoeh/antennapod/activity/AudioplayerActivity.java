@@ -155,6 +155,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
 	@Override
 	protected void onPause() {
+        // return to calling activity (i.e. a calling file manager will not directly jump to this activity again when it is opened the next time)
+        finish();
+
 		savePreferences();
 		resetFragmentView();
 		super.onPause();
