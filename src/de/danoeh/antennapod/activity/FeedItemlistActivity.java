@@ -114,6 +114,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         if (feed != null) {
             TypedArray drawables = obtainStyledAttributes(new int[]{R.attr.action_search});
             MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
@@ -139,6 +140,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         return FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
     }
 

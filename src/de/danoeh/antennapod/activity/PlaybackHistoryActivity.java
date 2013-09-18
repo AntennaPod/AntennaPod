@@ -20,6 +20,7 @@ public class PlaybackHistoryActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.clear_history_item, Menu.NONE,
                 R.string.clear_history_label),
 				MenuItem.SHOW_AS_ACTION_IF_ROOM);

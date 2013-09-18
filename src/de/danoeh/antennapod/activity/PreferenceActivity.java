@@ -300,6 +300,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 

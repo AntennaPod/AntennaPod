@@ -95,6 +95,7 @@ public class FeedInfoActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         if (feed != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feedinfo, menu);
@@ -106,6 +107,7 @@ public class FeedInfoActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         if (feed != null) {
         menu.findItem(R.id.support_item).setVisible(
                 feed.getPaymentLink() != null);

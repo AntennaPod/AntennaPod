@@ -183,6 +183,7 @@ public class DownloadActivity extends ActionBarActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, MENU_SHOW_LOG, Menu.NONE,
                 R.string.show_download_log),
                 MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);

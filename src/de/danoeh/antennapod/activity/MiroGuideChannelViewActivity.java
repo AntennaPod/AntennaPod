@@ -132,6 +132,7 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.channelview, menu);
         return true;
@@ -139,6 +140,7 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         boolean channelLoaded = channel != null;
         boolean beingDownloaded = channelLoaded
                 && DownloadRequester.getInstance().isDownloadingFile(

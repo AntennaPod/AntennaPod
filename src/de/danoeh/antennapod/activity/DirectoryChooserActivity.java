@@ -280,6 +280,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 		menu.findItem(R.id.new_folder_item)
 				.setVisible(isValidFile(selectedDir));
 		return true;
@@ -287,6 +288,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.directory_chooser, menu);
 		return true;

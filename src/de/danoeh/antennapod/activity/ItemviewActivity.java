@@ -125,6 +125,7 @@ public class ItemviewActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         if (item != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feeditem, menu);
@@ -156,6 +157,7 @@ public class ItemviewActivity extends ActionBarActivity {
 
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         return FeedItemMenuHandler.onPrepareMenu(
                 new FeedItemMenuHandler.MenuInterface() {
 

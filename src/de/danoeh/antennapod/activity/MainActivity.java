@@ -166,6 +166,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 		MenuItem refreshAll = menu.findItem(R.id.all_feed_refresh);
 		if (DownloadService.isRunning
 				&& DownloadRequester.getInstance().isDownloadingFeeds()) {
@@ -178,6 +179,7 @@ public class MainActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.main, menu);
 
