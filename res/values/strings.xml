@@ -276,10 +276,10 @@
     <string name="password_label">Password</string>
     <string name="gpodnetauth_device_title">Device Selection</string>
     <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
-    <string name="gpodnetauth_device_deviceID">Device ID</string>
+    <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
     <string name="gpodnetauth_device_caption">Caption</string>
     <string name="gpodnetauth_device_butCreateNewDevice">Create new device</string>
-    <string name="gpodnetauth_device_chooseExistingDevice">Choose existring device:</string>
+    <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
     <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
     <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
 
