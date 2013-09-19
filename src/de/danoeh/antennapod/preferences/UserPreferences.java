@@ -6,6 +6,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -473,5 +474,4 @@ public class UserPreferences implements
 				Log.d(TAG, "Automatic update was deactivated");
 		}
 	}
-
 }

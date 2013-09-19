@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.net.wifi.WifiConfiguration;
@@ -23,6 +24,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -51,6 +53,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
     private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
     private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
+    private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
 
     private CheckBoxPreference[] selectedNetworks;
 
@@ -204,6 +207,18 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                 return true;
             }
         });
+        findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                GpodnetSetHostnameDialog.createDialog(PreferenceActivity.this).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        updateGpodnetPreferenceScreen();
+                    }
+                });
+                return true;
+            }
+        });
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
@@ -217,6 +232,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         findPreference(PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
         findPreference(PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
         findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
+        findPreference(PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }
 
     private void buildUpdateIntervalPreference() {

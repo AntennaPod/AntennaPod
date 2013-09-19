@@ -2,6 +2,8 @@ package de.danoeh.antennapod.gpoddernet;
 
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.gpoddernet.model.*;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -39,7 +41,9 @@ import java.util.List;
 public class GpodnetService {
 
     private static final String BASE_SCHEME = "https";
-    private static final String BASE_HOST = "gpodder.net";
+
+    public static final String DEFAULT_BASE_HOST = "gpodder.net";
+    private final String BASE_HOST;
 
     private static final int TIMEOUT_MILLIS = 20000;
 
@@ -51,6 +55,7 @@ public class GpodnetService {
         params.setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);
         HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MILLIS);
         HttpConnectionParams.setSoTimeout(params, TIMEOUT_MILLIS);
+        BASE_HOST = GpodnetPreferences.getHostname();
     }
 
     /**

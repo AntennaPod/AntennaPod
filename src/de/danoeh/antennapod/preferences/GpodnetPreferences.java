@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.service.GpodnetSyncService;
 
 import java.util.Collection;
@@ -23,6 +24,8 @@ public class GpodnetPreferences {
     public static final String PREF_GPODNET_USERNAME = "de.danoeh.antennapod.preferences.gpoddernet.username";
     public static final String PREF_GPODNET_PASSWORD = "de.danoeh.antennapod.preferences.gpoddernet.password";
     public static final String PREF_GPODNET_DEVICEID = "de.danoeh.antennapod.preferences.gpoddernet.deviceID";
+    public static final String PREF_GPODNET_HOSTNAME = "prefGpodnetHostname";
+
 
     public static final String PREF_LAST_SYNC_TIMESTAMP = "de.danoeh.antennapod.preferences.gpoddernet.last_sync_timestamp";
     public static final String PREF_SYNC_ADDED = "de.danoeh.antennapod.preferences.gpoddernet.sync_added";
@@ -31,6 +34,7 @@ public class GpodnetPreferences {
     private static String username;
     private static String password;
     private static String deviceID;
+    private static String hostname;
 
     private static ReentrantLock feedListLock = new ReentrantLock();
     private static Set<String> addedFeeds;
@@ -56,6 +60,7 @@ public class GpodnetPreferences {
             lastSyncTimestamp = prefs.getLong(PREF_LAST_SYNC_TIMESTAMP, 0);
             addedFeeds = readListFromString(prefs.getString(PREF_SYNC_ADDED, ""));
             removedFeeds = readListFromString(prefs.getString(PREF_SYNC_REMOVED, ""));
+            hostname = checkGpodnetHostname(prefs.getString(PREF_GPODNET_HOSTNAME, GpodnetService.DEFAULT_BASE_HOST));
 
             preferencesLoaded = true;
         }
@@ -117,6 +122,20 @@ public class GpodnetPreferences {
     public static void setLastSyncTimestamp(long lastSyncTimestamp) {
         GpodnetPreferences.lastSyncTimestamp = lastSyncTimestamp;
         writePreference(PREF_LAST_SYNC_TIMESTAMP, lastSyncTimestamp);
+    }
+
+    public static String getHostname() {
+        ensurePreferencesLoaded();
+        return hostname;
+    }
+
+    public static void setHostname(String value) {
+        value = checkGpodnetHostname(value);
+        if (!value.equals(hostname)) {
+            logout();
+            writePreference(PREF_GPODNET_HOSTNAME, value);
+            hostname = value;
+        }
     }
 
     public static void addAddedFeed(String feed) {
@@ -213,5 +232,15 @@ public class GpodnetPreferences {
             result.append(" ");
         }
         return result.toString().trim();
+    }
+
+    private static String checkGpodnetHostname(String value) {
+        int startIndex = 0;
+        if (value.startsWith("http://")) {
+            startIndex = "http://".length();
+        } else if (value.startsWith("https://")) {
+            startIndex = "https://".length();
+        }
+        return value.substring(startIndex);
     }
 }

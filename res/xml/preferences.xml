@@ -102,6 +102,9 @@
             <Preference
                 android:key="pref_gpodnet_logout"
                 android:title="@string/pref_gpodnet_logout_title"/>
+            <Preference
+                android:key="pref_gpodnet_hostname"
+                android:title="@string/pref_gpodnet_sethostname_title"/>
         </PreferenceScreen>
 
     </PreferenceCategory>
