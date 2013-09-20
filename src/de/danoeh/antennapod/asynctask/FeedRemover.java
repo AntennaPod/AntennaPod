@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.AsyncTask;
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.storage.DBWriter;
 
@@ -48,7 +49,7 @@ public class FeedRemover extends AsyncTask<Void, Void, Void> {
 	@Override
 	protected void onPreExecute() {
 		dialog = new ProgressDialog(context);
-		dialog.setMessage("Removing Feed");
+		dialog.setMessage(context.getString(R.string.feed_remover_msg));
 		dialog.setOnCancelListener(new OnCancelListener() {
 
 			@Override
