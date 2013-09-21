@@ -49,6 +49,8 @@ public class FeedItemlistActivity extends ActionBarActivity {
     private ItemlistFragment filf;
     private ExternalPlayerFragment externalPlayerFragment;
 
+    private AsyncTask<?, ?, ?> currentLoadTask;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -70,7 +72,10 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
     }
 
-    private void loadData(long id) {
+    private synchronized void loadData(long id) {
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
             @Override
@@ -78,6 +83,12 @@ public class FeedItemlistActivity extends ActionBarActivity {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Loading feed data in background");
                 return DBReader.getFeed(FeedItemlistActivity.this, longs[0]);
+            }
+
+            @Override
+            protected void onCancelled(Feed feed) {
+                super.onCancelled(feed);
+                if (AppConfig.DEBUG) Log.d(TAG, "load task was cancelled");
             }
 
             @Override
@@ -103,6 +114,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
                 }
             }
         };
+        currentLoadTask = loadTask;
         loadTask.execute(id);
     }
 
@@ -110,6 +122,14 @@ public class FeedItemlistActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
     }
 
     @Override

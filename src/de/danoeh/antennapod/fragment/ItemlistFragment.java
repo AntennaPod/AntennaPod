@@ -125,20 +125,23 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         if (currentLoadTask != null) {
             currentLoadTask.cancel(true);
         }
     }
 
-    protected void loadData() {
+    protected synchronized void loadData() {
         final long feedId;
         if (feed == null) {
             feedId = getArguments().getLong(ARGUMENT_FEED_ID);
         } else {
             feedId = feed.getId();
+        }
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
         }
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>(){
             private volatile List<Long> queueRef;
