@@ -40,6 +40,7 @@ public class ItemviewActivity extends ActionBarActivity {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED;
 
     private FeedItem item;
+    private AsyncTask<?, ?, ?> currentLoadTask;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -64,23 +65,34 @@ public class ItemviewActivity extends ActionBarActivity {
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
         if (AppConfig.DEBUG)
             Log.d(TAG, "Stopping Activity");
     }
 
-    private void loadData(long itemId) {
+    private synchronized void loadData(long itemId) {
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
         AsyncTask<Long, Void, FeedItem> loadTask = new AsyncTask<Long, Void, FeedItem>() {
 
             @Override
             protected FeedItem doInBackground(Long... longs) {
                 return DBReader.getFeedItem(ItemviewActivity.this, longs[0]);
+            }
+
+            @Override
+            protected void onCancelled(FeedItem feedItem) {
+                super.onCancelled(feedItem);
+                if (AppConfig.DEBUG) Log.d(TAG, "loadTask was cancelled");
             }
 
             @Override
@@ -100,6 +112,7 @@ public class ItemviewActivity extends ActionBarActivity {
             }
         };
         loadTask.execute(itemId);
+        currentLoadTask = loadTask;
     }
 
     private void populateUI() {
