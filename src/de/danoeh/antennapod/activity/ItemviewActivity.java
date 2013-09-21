@@ -5,7 +5,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.text.format.DateUtils;
 import android.util.Log;
@@ -14,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -40,6 +38,7 @@ public class ItemviewActivity extends ActionBarActivity {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED;
 
     private FeedItem item;
+    private boolean guiInitialized;
     private AsyncTask<?, ?, ?> currentLoadTask;
 
     @Override
@@ -51,6 +50,8 @@ public class ItemviewActivity extends ActionBarActivity {
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         EventDistributor.getInstance().register(contentUpdate);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        guiInitialized = false;
 
         long itemId = getIntent().getLongExtra(
                 ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
@@ -115,9 +116,18 @@ public class ItemviewActivity extends ActionBarActivity {
         currentLoadTask = loadTask;
     }
 
-    private void populateUI() {
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setContentView(R.layout.feeditemview);
+    private synchronized void populateUI() {
+        if (!guiInitialized) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setContentView(R.layout.feeditemview);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            ItemDescriptionFragment fragment = ItemDescriptionFragment
+                    .newInstance(item, false);
+            fragmentTransaction.replace(R.id.description_fragment, fragment);
+            fragmentTransaction.commit();
+        }
         TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
         TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
         setTitle(item.getFeed().getTitle());
@@ -127,13 +137,7 @@ public class ItemviewActivity extends ActionBarActivity {
                 DateFormat.SHORT));
         txtvTitle.setText(item.getTitle());
 
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager
-                .beginTransaction();
-        ItemDescriptionFragment fragment = ItemDescriptionFragment
-                .newInstance(item, false);
-        fragmentTransaction.replace(R.id.description_fragment, fragment);
-        fragmentTransaction.commit();
+        guiInitialized = true;
     }
 
     @Override
