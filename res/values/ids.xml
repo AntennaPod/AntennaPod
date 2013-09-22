@@ -13,6 +13,8 @@
     <item name="copy_url_item" type="id"/>
     <item name="share_url_item" type="id"/>
     <item name="organize_queue_item" type="id"/>
+    <item name="organize_queue_audio_to_top" type="id"/>
+    <item name="organize_queue_video_to_top" type="id"/>
     <item name="drag_handle" type="id"/>
     <item name="skip_episode_item" type="id"/>
     <item name="move_to_top_item" type="id"/>

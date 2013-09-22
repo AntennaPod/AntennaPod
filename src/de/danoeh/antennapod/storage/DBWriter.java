@@ -561,6 +561,35 @@ public class DBWriter {
         adapter.close();
     }
 
+    /** Moves given media type to the top of the queue. */
+    public static void sortQueueByType(final Context context, final MediaType eMediaType) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Sorting queue items: " + eMediaType + " to top");
+        /** Iterate through all elements starting from end of the list to
+         * the beginning moving each encountered item of selected MediaType
+         * to the top.
+         * This sorting method is stable (preserves order within MediaType class items).
+         * This algorithm is unfortunately O(N^2): for each item there come
+         * multiple index reference on queue structure.
+         */
+
+        final PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<FeedItem> queue = DBReader.getQueue(context, adapter);
+        final int QueueSize = queue.size();
+        int       LastPos   = QueueSize-1;
+        for(int i=0; i<QueueSize; i++)
+            if (eMediaType == queue.get(LastPos).getMedia().getMediaType()) {
+                final FeedItem item = queue.remove(LastPos);
+                queue.add(0, item);
+                moveQueueItem(context, LastPos, 0, true); // move to top
+            }
+            else
+                LastPos--; // do not touch this one, test next item
+        adapter.close();
+        //EventDistributor.getInstance().sendQueueUpdateBroadcast();
+    }
+
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
      *
