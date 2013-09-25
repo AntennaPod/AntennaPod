@@ -77,7 +77,7 @@ public class UserPreferences implements
 
 	/**
 	 * Sets up the UserPreferences class.
-	 * 
+	 *
 	 * @throws IllegalArgumentException
 	 *             if context is null
 	 * */
@@ -115,7 +115,7 @@ public class UserPreferences implements
 				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
 		autodownloadSelectedNetworks = StringUtils.split(
 				sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
-		episodeCacheSize = readEpisodeCacheSize(sp.getString(
+		episodeCacheSize = readEpisodeCacheSizeInternal(sp.getString(
 				PREF_EPISODE_CACHE_SIZE, "20"));
 		enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
 		playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
@@ -139,7 +139,7 @@ public class UserPreferences implements
 		return TimeUnit.HOURS.toMillis(hours);
 	}
 
-	private int readEpisodeCacheSize(String valueFromPrefs) {
+	private int readEpisodeCacheSizeInternal(String valueFromPrefs) {
 		if (valueFromPrefs.equals(context
 				.getString(R.string.pref_episode_cache_unlimited))) {
 			return EPISODE_CACHE_SIZE_UNLIMITED;
@@ -300,7 +300,7 @@ public class UserPreferences implements
 			autodownloadSelectedNetworks = StringUtils.split(
 					sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
 		} else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
-			episodeCacheSize = readEpisodeCacheSize(sp.getString(
+			episodeCacheSize = readEpisodeCacheSizeInternal(sp.getString(
 					PREF_EPISODE_CACHE_SIZE, "20"));
 		} else if (key.equals(PREF_ENABLE_AUTODL)) {
 			enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
@@ -340,7 +340,7 @@ public class UserPreferences implements
 	/**
 	 * Return the folder where the app stores all of its data. This method will
 	 * return the standard data folder if none has been set by the user.
-	 * 
+	 *
 	 * @param type
 	 *            The name of the folder inside the data folder. May be null
 	 *            when accessing the root of the data folder.
@@ -449,7 +449,7 @@ public class UserPreferences implements
 
 	/**
 	 * Updates alarm registered with the AlarmManager service or deactivates it.
-	 * 
+	 *
 	 * @param millis
 	 *            new value to register with AlarmManager. If millis is 0, the
 	 *            alarm is deactivated.
@@ -474,4 +474,12 @@ public class UserPreferences implements
 				Log.d(TAG, "Automatic update was deactivated");
 		}
 	}
+
+    /**
+     * Reads episode cache size as it is saved in the episode_cache_size_values array.
+     * */
+    public static int readEpisodeCacheSize(String valueFromPrefs) {
+        instanceAvailable();
+        return instance.readEpisodeCacheSizeInternal(valueFromPrefs);
+    }
 }

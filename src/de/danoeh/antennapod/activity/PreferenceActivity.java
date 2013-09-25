@@ -15,7 +15,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -148,6 +147,17 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 return true;
                             }
                         });
+        findPreference(UserPreferences.PREF_ENABLE_AUTODL)
+                .setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof Boolean) {
+                    findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
+                    setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
+                }
+                return true;
+            }
+        });
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
@@ -166,11 +176,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
-
-
                             @Override
                             public boolean onPreferenceChange(Preference preference, Object o) {
-                                checkItemVisibility();
+                                if (o instanceof String) {
+                                    setEpisodeCacheSizeText(UserPreferences.readEpisodeCacheSize((String) o));
+                                }
                                 return true;
                             }
                         });
