@@ -32,7 +32,7 @@ public class PlaybackHistoryActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-            NavUtils.navigateUpFromSameTask(this);
+            finish();
 			return true;
 		case R.id.clear_history_item:
 			DBWriter.clearPlaybackHistory(this);

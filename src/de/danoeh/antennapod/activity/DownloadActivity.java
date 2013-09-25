@@ -198,7 +198,7 @@ public class DownloadActivity extends ActionBarActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 break;
             case MENU_SHOW_LOG:
                 startActivity(new Intent(this, DownloadLogActivity.class));

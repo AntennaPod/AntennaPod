@@ -325,7 +325,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
+                finish();
                 break;
             default:
                 return false;

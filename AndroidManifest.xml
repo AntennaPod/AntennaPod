@@ -134,6 +134,9 @@
         <activity
             android:name=".activity.AudioplayerActivity"
             android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -336,6 +339,9 @@
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
             android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
