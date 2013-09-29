@@ -575,19 +575,26 @@ public class DBWriter {
 
         final PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        List<FeedItem> queue = DBReader.getQueue(context, adapter);
-        final int QueueSize = queue.size();
-        int       LastPos   = QueueSize-1;
-        for(int i=0; i<QueueSize; i++)
-            if (eMediaType == queue.get(LastPos).getMedia().getMediaType()) {
-                final FeedItem item = queue.remove(LastPos);
-                queue.add(0, item);
-                moveQueueItem(context, LastPos, 0, true); // move to top
-            }
+        /* Get the queue size to initialise upper limit of the queue */
+        int iQueueSize = DBReader.getQueue(context, adapter).size();
+        /* Initialise the index of last position of the queue */
+        int iLastPos = iQueueSize-1;
+        for(int i=0; i<iQueueSize && iLastPos > 0; i++)
+        {
+            /* get the current 'version' of the queue */
+            List<FeedItem> queue = DBReader.getQueue(context, adapter);
+            /* update queue size in case something is messing the queue in parallel
+             -> @todo how to lock the queue for exclusive access?  */
+            iQueueSize = queue.size();
+            if (iLastPos>iQueueSize-1)
+                iLastPos = iQueueSize-1;  /* somebody messed the queue in the background! */
+            /* Do the work: */
+            if (eMediaType == queue.get(iLastPos).getMedia().getMediaType())
+                moveQueueItemHelper(context, iLastPos, 0, true); // move to top
             else
-                LastPos--; // do not touch this one, test next item
+                iLastPos--; // do not touch this one, test next item
+        }
         adapter.close();
-        //EventDistributor.getInstance().sendQueueUpdateBroadcast();
     }
 
     /**
