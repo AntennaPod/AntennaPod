@@ -7,13 +7,15 @@ import java.util.List;
 
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.EpisodeFilter;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Data Object for a whole feed
  *
  * @author daniel
  */
-public class Feed extends FeedFile {
+public class Feed extends FeedFile implements FlattrThing {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_RSS091 = "rss";
@@ -40,6 +42,7 @@ public class Feed extends FeedFile {
      * Date of last refresh.
      */
     private Date lastUpdate;
+    private FlattrStatus flattrStatus;
     private String paymentLink;
     /**
      * Feed type, for example RSS 2 or Atom
@@ -51,7 +54,7 @@ public class Feed extends FeedFile {
      */
     public Feed(long id, Date lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
-                String downloadUrl, boolean downloaded) {
+                String downloadUrl, boolean downloaded, FlattrStatus status) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.title = title;
@@ -68,6 +71,7 @@ public class Feed extends FeedFile {
         this.type = type;
         this.feedIdentifier = feedIdentifier;
         this.image = image;
+        this.flattrStatus = status;
 
         items = new ArrayList<FeedItem>();
     }
@@ -79,6 +83,7 @@ public class Feed extends FeedFile {
         super();
         items = new ArrayList<FeedItem>();
         lastUpdate = new Date();
+        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -88,6 +93,7 @@ public class Feed extends FeedFile {
     public Feed(String url, Date lastUpdate) {
         super(null, url, false);
         this.lastUpdate = (lastUpdate != null) ? (Date) lastUpdate.clone() : null;
+        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -97,6 +103,7 @@ public class Feed extends FeedFile {
     public Feed(String url, Date lastUpdate, String title) {
         this(url, lastUpdate);
         this.title = title;
+        this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -333,6 +340,14 @@ public class Feed extends FeedFile {
     public void setFeedIdentifier(String feedIdentifier) {
         this.feedIdentifier = feedIdentifier;
     }
+
+	public void setFlattrStatus(FlattrStatus status) {
+		this.flattrStatus = status;
+	}
+
+	public FlattrStatus getFlattrStatus() {
+		return flattrStatus;
+	}
 
     public String getPaymentLink() {
         return paymentLink;

@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.storage;
 
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 import android.content.ContentValues;
@@ -20,6 +21,7 @@ import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 // TODO Remove media column from feeditem table
 
@@ -28,7 +30,7 @@ import de.danoeh.antennapod.service.download.DownloadStatus;
  */
 public class PodDBAdapter {
     private static final String TAG = "PodDBAdapter";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
@@ -58,6 +60,7 @@ public class PodDBAdapter {
     public static final int KEY_IMAGE_INDEX = 11;
     public static final int KEY_TYPE_INDEX = 12;
     public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
+    public static final int KEY_FEED_FLATTR_STATUS_INDEX = 14;
     // ----------- FeedItem indices
     public static final int KEY_CONTENT_ENCODED_INDEX = 2;
     public static final int KEY_PUBDATE_INDEX = 3;
@@ -66,6 +69,7 @@ public class PodDBAdapter {
     public static final int KEY_FEED_INDEX = 9;
     public static final int KEY_HAS_SIMPLECHAPTERS_INDEX = 10;
     public static final int KEY_ITEM_IDENTIFIER_INDEX = 11;
+    public static final int KEY_ITEM_FLATTR_STATUS_INDEX = 12;
     // ---------- FeedMedia indices
     public static final int KEY_DURATION_INDEX = 1;
     public static final int KEY_POSITION_INDEX = 5;
@@ -73,6 +77,7 @@ public class PodDBAdapter {
     public static final int KEY_MIME_TYPE_INDEX = 7;
     public static final int KEY_PLAYBACK_COMPLETION_DATE_INDEX = 8;
     public static final int KEY_MEDIA_FEEDITEM_INDEX = 9;
+    public static final int KEY_PLAYED_DURATION_INDEX = 10;
     // --------- Download log indices
     public static final int KEY_FEEDFILE_INDEX = 1;
     public static final int KEY_FEEDFILETYPE_INDEX = 2;
@@ -123,11 +128,13 @@ public class PodDBAdapter {
     public static final String KEY_HAS_CHAPTERS = "has_simple_chapters";
     public static final String KEY_TYPE = "type";
     public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
+	public static final String KEY_FLATTR_STATUS = "flattr_status";
     public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
     public static final String KEY_REASON_DETAILED = "reason_detailed";
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
     public static final String KEY_CHAPTER_TYPE = "type";
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
+    public static final String KEY_PLAYED_DURATION = "played_duration";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -149,8 +156,8 @@ public class PodDBAdapter {
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
             + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
-            + KEY_FEED_IDENTIFIER + " TEXT)";
-    ;
+			+ KEY_FEED_IDENTIFIER + " TEXT,"
+			+ KEY_FLATTR_STATUS + " LONG)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -158,7 +165,8 @@ public class PodDBAdapter {
             + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
-            + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT)";
+			+ KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
+			+ KEY_FLATTR_STATUS + " LONG)";
 
     private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -171,7 +179,8 @@ public class PodDBAdapter {
             + " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
             + " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
             + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
-            + KEY_FEEDITEM + " INTEGER)";
+            + KEY_FEEDITEM + " INTEGER,"
+            + KEY_PLAYED_DURATION + " INTEGER)";
 
     private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -206,7 +215,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_PAYMENT_LINK, KEY_MEDIA,
             TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER};
+            TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS};
 
     /**
      * Contains SEL_FI_SMALL as comma-separated list. Useful for raw queries.
@@ -230,6 +240,7 @@ public class PodDBAdapter {
     public static final int IDX_FI_SMALL_FEED = 7;
     public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
     public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
+    public static final int IDX_FI_SMALL_FLATTR_STATUS = 10;
 
     /**
      * Select id, description and content-encoded column from feeditems.
@@ -311,6 +322,7 @@ public class PodDBAdapter {
         values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
+		values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         if (feed.getId() == 0) {
             // Create new entry
             if (AppConfig.DEBUG)
@@ -391,6 +403,7 @@ public class PodDBAdapter {
             ContentValues values = new ContentValues();
             values.put(KEY_POSITION, media.getPosition());
             values.put(KEY_DURATION, media.getDuration());
+            values.put(KEY_PLAYED_DURATION, media.getPlayedDuration());
             db.update(TABLE_NAME_FEED_MEDIA, values, KEY_ID + "=?",
                     new String[]{String.valueOf(media.getId())});
         } else {
@@ -477,6 +490,7 @@ public class PodDBAdapter {
         values.put(KEY_READ, item.isRead());
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
+		values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
         } else {
@@ -1117,6 +1131,19 @@ public class PodDBAdapter {
                     db.endTransaction();
                 }
                 feeditemCursor.close();
+            }
+            if (oldVersion <= 9) {
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + KEY_FLATTR_STATUS
+                    + " LONG");
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + KEY_FLATTR_STATUS
+                    + " LONG");
+            }
+            if (oldVersion <= 10) {
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
+                        + " ADD COLUMN " + KEY_PLAYED_DURATION
+                        + " INTEGER");
             }
         }
     }

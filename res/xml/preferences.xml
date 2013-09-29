@@ -80,6 +80,12 @@
                 <intent android:action=".activities.FlattrAuthActivity"/>
             </PreferenceScreen>
 
+            <CheckBoxPreference
+                android:defaultValue="false"
+                android:enabled="false"
+                android:key="pref_auto_flattr"
+                android:summary="@string/pref_auto_flattr_sum"
+                android:title="@string/pref_auto_flattr_title" />
             <Preference
                 android:key="prefRevokeAccess"
                 android:summary="@string/pref_revokeAccess_sum"
@@ -106,7 +112,6 @@
                 android:key="pref_gpodnet_hostname"
                 android:title="@string/pref_gpodnet_sethostname_title"/>
         </PreferenceScreen>
-
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/other_pref">
         <Preference

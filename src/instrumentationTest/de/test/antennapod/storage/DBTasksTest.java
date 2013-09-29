@@ -74,7 +74,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i), 0));
             items.add(item);
         }
 
@@ -112,7 +112,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(f.createNewFile());
             assertTrue(f.exists());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i), 0));
             items.add(item);
         }
 
@@ -146,7 +146,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(f.createNewFile());
             assertTrue(f.exists());
             files.add(f);
-            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i)));
+            item.setMedia(new FeedMedia(0, item, 1, 0, 1L, "m", f.getAbsolutePath(), "url", true, new Date(NUM_ITEMS - i), 0));
             items.add(item);
         }
 
