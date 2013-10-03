@@ -11,8 +11,8 @@
         android:id="@+id/gridView"
         android:stretchMode="columnWidth"
         android:numColumns="auto_fit"
-        android:verticalSpacing="4dp"
-        android:horizontalSpacing="4dp"
+        android:verticalSpacing="8dp"
+        android:horizontalSpacing="8dp"
         android:gravity="center"
         android:columnWidth="200dp"
         tools:listitem="@layout/gpodnet_podcast_listitem"/>
