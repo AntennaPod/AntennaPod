@@ -48,6 +48,7 @@ public class UserPreferences implements
 	public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
 	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
 	private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
+	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
 
 	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
 
@@ -69,6 +70,7 @@ public class UserPreferences implements
 	private int episodeCacheSize;
 	private String playbackSpeed;
 	private String[] playbackSpeedArray;
+	private boolean pauseForFocusLoss;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -121,6 +123,7 @@ public class UserPreferences implements
 		playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
 		playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
 				PREF_PLAYBACK_SPEED_ARRAY, null));
+		pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -264,6 +267,11 @@ public class UserPreferences implements
 		instanceAvailable();
 		return instance.enableAutodownload;
 	}
+	
+	public static boolean shouldPauseForFocusLoss() {
+		instanceAvailable();
+		return instance.pauseForFocusLoss;
+	}
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
@@ -309,6 +317,8 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_PLAYBACK_SPEED_ARRAY)) {
 			playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
 					PREF_PLAYBACK_SPEED_ARRAY, null));
+		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
+			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 		}
 	}
 

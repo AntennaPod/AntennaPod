@@ -381,11 +381,18 @@ public class PlaybackService extends Service {
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     if (status == PlayerStatus.PLAYING) {
-                        if (AppConfig.DEBUG)
-                            Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                        audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                AudioManager.ADJUST_LOWER, 0);
-                        pausedBecauseOfTransientAudiofocusLoss = true;
+                        if (!UserPreferences.shouldPauseForFocusLoss()) {
+                            if (AppConfig.DEBUG)
+                                Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                    AudioManager.ADJUST_LOWER, 0);
+                            pausedBecauseOfTransientAudiofocusLoss = true;
+                        } else {
+                            if (AppConfig.DEBUG)
+                                Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
+                            pause(false, false);
+                            pausedBecauseOfTransientAudiofocusLoss = true;
+                        }
                     }
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:

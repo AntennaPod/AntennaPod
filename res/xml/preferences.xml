@@ -31,6 +31,13 @@
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
+        
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefPauseForFocusLoss"
+            android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
+            android:title="@string/pref_pausePlaybackForFocusLoss_title" />
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
         <ListPreference
