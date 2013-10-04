@@ -558,23 +558,25 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_DOWNLOAD_LOG, values, KEY_ID + "=?",
                     new String[]{String.valueOf(status.getId())});
         }
-
         return status.getId();
     }
 
     public long getDownloadLogSize() {
-        Cursor result = db.rawQuery("SELECT COUNT(?) AS ? FROM ?",
-                new String[]{KEY_ID, KEY_ID, TABLE_NAME_DOWNLOAD_LOG});
-        long count = result.getLong(KEY_ID_INDEX);
+        final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_DOWNLOAD_LOG);
+        Cursor result = db.rawQuery(query, null);
+        long count = 0;
+        if (result.moveToFirst()) {
+            count = result.getLong(0);
+        }
         result.close();
         return count;
     }
 
     public void removeDownloadLogItems(long count) {
         if (count > 0) {
-            db.rawQuery("DELETE FROM ? ORDER BY ? ASC LIMIT ?",
-                    new String[]{TABLE_NAME_DOWNLOAD_LOG,
-                            KEY_COMPLETION_DATE, String.valueOf(count)});
+            final String sql = String.format("DELETE FROM %s WHERE %s in (SELECT %s from %s ORDER BY %s ASC LIMIT %d)",
+                    TABLE_NAME_DOWNLOAD_LOG, KEY_ID, KEY_ID, TABLE_NAME_DOWNLOAD_LOG, KEY_COMPLETION_DATE, count);
+            db.execSQL(sql, null);
         }
     }
 

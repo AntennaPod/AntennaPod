@@ -104,6 +104,7 @@
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request error</string>
+    <string name="download_error_db_access">Database access error</string>
     <string name="downloads_left">\u0020Downloads left</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_report_content">%1$d downloads succeeded, %2$d failed</string>

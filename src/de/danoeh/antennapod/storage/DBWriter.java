@@ -254,9 +254,7 @@ public class DBWriter {
 
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-
                 adapter.setDownloadStatus(status);
-                cleanupDownloadLog(adapter);
                 adapter.close();
                 EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
             }

@@ -827,23 +827,24 @@ public class DownloadService extends Service {
                 }
             }
 
-            saveDownloadStatus(status);
-            sendDownloadHandledIntent();
-
             try {
                 if (chaptersRead) {
                     DBWriter.setFeedItem(DownloadService.this, media.getItem()).get();
                 }
                 DBWriter.setFeedMedia(DownloadService.this, media).get();
+                if (!DBTasks.isInQueue(DownloadService.this, media.getItem().getId())) {
+                    DBWriter.addQueueItem(DownloadService.this, media.getItem().getId()).get();
+                }
             } catch (ExecutionException e) {
                 e.printStackTrace();
+                status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
             } catch (InterruptedException e) {
                 e.printStackTrace();
+                status = new DownloadStatus(media, media.getEpisodeTitle(), DownloadError.ERROR_DB_ACCESS_ERROR, false, e.getMessage());
             }
 
-            if (!DBTasks.isInQueue(DownloadService.this, media.getItem().getId())) {
-                DBWriter.addQueueItem(DownloadService.this, media.getItem().getId());
-            }
+            saveDownloadStatus(status);
+            sendDownloadHandledIntent();
 
             numberOfDownloads.decrementAndGet();
             queryDownloadsAsync();
