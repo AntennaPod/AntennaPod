@@ -1,27 +1,11 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
@@ -31,6 +15,12 @@ import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
+
+import java.util.*;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.
@@ -43,9 +33,10 @@ public final class DBTasks {
 
     /**
      * Removes the feed with the given download url. This method should NOT be executed on the GUI thread.
-     * @param context Used for accessing the db
+     *
+     * @param context     Used for accessing the db
      * @param downloadUrl URL of the feed.
-     * */
+     */
     public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -157,6 +148,30 @@ public final class DBTasks {
     }
 
     /**
+     * Used by refreshExpiredFeeds to determine which feeds should be refreshed.
+     * This method will use the value specified in the UserPreferences as the
+     * expiration time.
+     * @param context Used for DB access.
+     * @return A list of expired feeds. An empty list will be returned if there
+     *         are no expired feeds.
+     */
+    public static List<Feed> getExpiredFeeds(final Context context) {
+        long millis = UserPreferences.getUpdateInterval();
+
+        if (millis > 0) {
+
+            List<Feed> feedList = DBReader.getExpiredFeedsList(context,
+                    millis);
+            if (feedList.size() > 0) {
+                refreshFeeds(context, feedList);
+            }
+            return feedList;
+        } else {
+            return new ArrayList<Feed>();
+        }
+    }
+
+    /**
      * Refreshes expired Feeds in the list returned by the getExpiredFeedsList(Context, long) method in DBReader.
      * The expiration date parameter is determined by the update interval specified in {@link UserPreferences}.
      *
@@ -168,19 +183,7 @@ public final class DBTasks {
 
         new Thread() {
             public void run() {
-                long millis = UserPreferences.getUpdateInterval();
-
-                if (millis > 0) {
-                    long now = Calendar.getInstance().getTime().getTime();
-
-                    // Allow a 10 minute window
-                    millis -= 10 * 60 * 1000;
-                    List<Feed> feedList = DBReader.getExpiredFeedsList(context,
-                            now - millis);
-                    if (feedList.size() > 0) {
-                        refreshFeeds(context, feedList);
-                    }
-                }
+                refreshFeeds(context, getExpiredFeeds(context));
             }
         }.start();
     }

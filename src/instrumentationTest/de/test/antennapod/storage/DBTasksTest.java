@@ -249,4 +249,36 @@ public class DBTasksTest extends InstrumentationTestCase {
             lastDate = item.getPubDate();
         }
     }
+
+    private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
+        final Context context = getInstrumentation().getTargetContext();
+        UserPreferences.setUpdateInterval(context, expirationTime);
+        Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
+                null, null, null, "feed", null, null, "url", false);
+        feed.setItems(new ArrayList<FeedItem>());
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        List<Feed> expiredFeeds = DBTasks.getExpiredFeeds(context);
+        assertNotNull(expiredFeeds);
+        if (shouldReturn) {
+            assertTrue(expiredFeeds.size() == 1);
+            assertTrue(expiredFeeds.get(0).getId() == feed.getId());
+        } else {
+            assertTrue(expiredFeeds.isEmpty());
+        }
+    }
+
+    public void testGetExpiredFeedsTestShouldReturn() {
+        final long expirationTime = 1000 * 60 * 60;
+        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime - 1, expirationTime, true);
+    }
+
+    public void testGetExpiredFeedsTestShouldNotReturn() {
+        final long expirationTime = 1000 * 60 * 60;
+        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime / 2, expirationTime, false);
+    }
 }

@@ -106,7 +106,7 @@ public final class DBReader {
      * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
      * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)}.
      */
-    static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
+    public static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
         if (AppConfig.DEBUG)
             Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
 

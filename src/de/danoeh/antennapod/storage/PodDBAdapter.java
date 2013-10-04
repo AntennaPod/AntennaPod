@@ -675,8 +675,8 @@ public class PodDBAdapter {
     }
 
     public final Cursor getExpiredFeedsCursor(long expirationTime) {
-        Cursor c = db.query(TABLE_NAME_FEEDS, null, "?<?", new String[]{
-                KEY_LASTUPDATE, String.valueOf(System.currentTimeMillis() - expirationTime)}, null, null,
+        Cursor c = db.query(TABLE_NAME_FEEDS, null, KEY_LASTUPDATE + " < " + String.valueOf(System.currentTimeMillis() - expirationTime),
+                null, null, null,
                 null);
         return c;
     }

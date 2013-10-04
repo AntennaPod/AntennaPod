@@ -347,6 +347,20 @@ public class UserPreferences implements
 		editor.commit();
 	}
 
+    /**
+     *  Sets the update interval value. Should only be used for testing purposes!
+     * */
+    public static void setUpdateInterval(Context context, long newValue) {
+        instanceAvailable();
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(context.getApplicationContext())
+                .edit();
+        editor.putString(PREF_UPDATE_INTERVAL,
+                String.valueOf(newValue));
+        editor.commit();
+        instance.updateInterval = newValue;
+    }
+
 	/**
 	 * Return the folder where the app stores all of its data. This method will
 	 * return the standard data folder if none has been set by the user.
