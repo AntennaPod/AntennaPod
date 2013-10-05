@@ -9,6 +9,7 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.support.v4.app.NavUtils;
@@ -239,11 +240,19 @@ public class DownloadActivity extends ActionBarActivity implements
         return handled;
     }
 
+    private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
+    private boolean skipWorkAround = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        mActionMode = null;
-        selectedDownload = null;
-        dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
+        if (skipWorkAround || actionModeDestroyWorkaround) {
+            mActionMode = null;
+            selectedDownload = null;
+            dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
+            actionModeDestroyWorkaround = false;
+        } else {
+            actionModeDestroyWorkaround = true;
+        }
     }
 
     private BroadcastReceiver contentChanged = new BroadcastReceiver() {
