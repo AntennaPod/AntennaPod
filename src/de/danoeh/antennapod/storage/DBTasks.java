@@ -17,9 +17,7 @@ import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
 
 import java.util.*;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.FutureTask;
+import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -27,6 +25,22 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public final class DBTasks {
     private static final String TAG = "DBTasks";
+
+    /**
+     * Executor service used by the autodownloadUndownloadedEpisodes method.
+     */
+    private static ExecutorService autodownloadExec;
+
+    static {
+        autodownloadExec = Executors.newSingleThreadExecutor(new ThreadFactory() {
+            @Override
+            public Thread newThread(Runnable r) {
+                Thread t = new Thread(r);
+                t.setPriority(Thread.MIN_PRIORITY);
+                return t;
+            }
+        });
+    }
 
     private DBTasks() {
     }
@@ -138,6 +152,7 @@ public final class DBTasks {
                     isRefreshing.set(false);
 
                     GpodnetSyncService.sendSyncIntent(context);
+                    autodownloadUndownloadedItems(context);
                 }
             }.start();
         } else {
@@ -151,9 +166,10 @@ public final class DBTasks {
      * Used by refreshExpiredFeeds to determine which feeds should be refreshed.
      * This method will use the value specified in the UserPreferences as the
      * expiration time.
+     *
      * @param context Used for DB access.
      * @return A list of expired feeds. An empty list will be returned if there
-     *         are no expired feeds.
+     * are no expired feeds.
      */
     public static List<Feed> getExpiredFeeds(final Context context) {
         long millis = UserPreferences.getUpdateInterval();
@@ -343,76 +359,83 @@ public final class DBTasks {
      * Looks for undownloaded episodes in the queue or list of unread items and request a download if
      * 1. Network is available
      * 2. There is free space in the episode cache
-     * This method should NOT be executed on the GUI thread.
+     * This method is executed on an internal single thread executor.
      *
      * @param context Used for accessing the DB.
+     * @return A Future that can be used for waiting for the methods completion.
      */
-    public static void autodownloadUndownloadedItems(final Context context) {
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Performing auto-dl of undownloaded episodes");
-        if (NetworkUtils.autodownloadNetworkAvailable(context)
-                && UserPreferences.isEnableAutodownload()) {
-            final List<FeedItem> queue = DBReader.getQueue(context);
-            final List<FeedItem> unreadItems = DBReader
-                    .getUnreadItemsList(context);
+    public static Future<?> autodownloadUndownloadedItems(final Context context) {
+        return autodownloadExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Performing auto-dl of undownloaded episodes");
+                if (NetworkUtils.autodownloadNetworkAvailable(context)
+                        && UserPreferences.isEnableAutodownload()) {
+                    final List<FeedItem> queue = DBReader.getQueue(context);
+                    final List<FeedItem> unreadItems = DBReader
+                            .getUnreadItemsList(context);
 
-            int undownloadedEpisodes = getNumberOfUndownloadedEpisodes(queue,
-                    unreadItems);
-            int downloadedEpisodes = DBReader
-                    .getNumberOfDownloadedEpisodes(context);
-            int deletedEpisodes = performAutoCleanup(context,
-                    getPerformAutoCleanupArgs(context, undownloadedEpisodes));
-            int episodeSpaceLeft = undownloadedEpisodes;
-            boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
-                    .getEpisodeCacheSizeUnlimited();
+                    int undownloadedEpisodes = getNumberOfUndownloadedEpisodes(queue,
+                            unreadItems);
+                    int downloadedEpisodes = DBReader
+                            .getNumberOfDownloadedEpisodes(context);
+                    int deletedEpisodes = performAutoCleanup(context,
+                            getPerformAutoCleanupArgs(context, undownloadedEpisodes));
+                    int episodeSpaceLeft = undownloadedEpisodes;
+                    boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
+                            .getEpisodeCacheSizeUnlimited();
 
-            if (!cacheIsUnlimited
-                    && UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
-                    + undownloadedEpisodes) {
-                episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
-                        - (downloadedEpisodes - deletedEpisodes);
-            }
+                    if (!cacheIsUnlimited
+                            && UserPreferences.getEpisodeCacheSize() < downloadedEpisodes
+                            + undownloadedEpisodes) {
+                        episodeSpaceLeft = UserPreferences.getEpisodeCacheSize()
+                                - (downloadedEpisodes - deletedEpisodes);
+                    }
 
-            List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
-            if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-                for (int i = 0; i < queue.size(); i++) { // ignore playing item
-                    FeedItem item = queue.get(i);
-                    if (item.hasMedia() && !item.getMedia().isDownloaded()
-                            && !item.getMedia().isPlaying()) {
-                        itemsToDownload.add(item);
-                        episodeSpaceLeft--;
-                        undownloadedEpisodes--;
-                        if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
-                            break;
+                    List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
+                    if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+                        for (int i = 0; i < queue.size(); i++) { // ignore playing item
+                            FeedItem item = queue.get(i);
+                            if (item.hasMedia() && !item.getMedia().isDownloaded()
+                                    && !item.getMedia().isPlaying()) {
+                                itemsToDownload.add(item);
+                                episodeSpaceLeft--;
+                                undownloadedEpisodes--;
+                                if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+                                    break;
+                                }
+                            }
                         }
                     }
-                }
-            }
-            if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
-                for (FeedItem item : unreadItems) {
-                    if (item.hasMedia() && !item.getMedia().isDownloaded()) {
-                        itemsToDownload.add(item);
-                        episodeSpaceLeft--;
-                        undownloadedEpisodes--;
-                        if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
-                            break;
+                    if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
+                        for (FeedItem item : unreadItems) {
+                            if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+                                itemsToDownload.add(item);
+                                episodeSpaceLeft--;
+                                undownloadedEpisodes--;
+                                if (episodeSpaceLeft == 0 || undownloadedEpisodes == 0) {
+                                    break;
+                                }
+                            }
                         }
                     }
+                    if (AppConfig.DEBUG)
+                        Log.d(TAG, "Enqueueing " + itemsToDownload.size()
+                                + " items for download");
+
+                    try {
+                        downloadFeedItems(false, context,
+                                itemsToDownload.toArray(new FeedItem[itemsToDownload
+                                        .size()]));
+                    } catch (DownloadRequestException e) {
+                        e.printStackTrace();
+                    }
+
                 }
             }
-            if (AppConfig.DEBUG)
-                Log.d(TAG, "Enqueueing " + itemsToDownload.size()
-                        + " items for download");
+        });
 
-            try {
-                downloadFeedItems(false, context,
-                        itemsToDownload.toArray(new FeedItem[itemsToDownload
-                                .size()]));
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-            }
-
-        }
     }
 
     private static int getPerformAutoCleanupArgs(Context context,
@@ -641,12 +664,6 @@ public final class DBTasks {
             } catch (ExecutionException e) {
                 e.printStackTrace();
             }
-            new Thread() {
-                @Override
-                public void run() {
-                    autodownloadUndownloadedItems(context);
-                }
-            }.start();
             return savedFeed;
         }
     }

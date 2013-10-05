@@ -24,13 +24,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 				if (AppConfig.DEBUG)
 					Log.d(TAG,
 							"auto-dl network available, starting auto-download");
-				new Thread() {
-					@Override
-					public void run() {
-						DBTasks
-								.autodownloadUndownloadedItems(context);
-					}
-				}.start();
+					DBTasks.autodownloadUndownloadedItems(context);
 			} else { // if new network is Wi-Fi, finish ongoing downloads,
 						// otherwise cancel all downloads
 				ConnectivityManager cm = (ConnectivityManager) context

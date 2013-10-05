@@ -67,6 +67,8 @@ public class DBWriter {
 
                 final FeedMedia media = DBReader.getFeedMedia(context, mediaId);
                 if (media != null) {
+                    Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
+                            media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
                     boolean result = false;
                     if (media.isDownloaded()) {
                         // delete downloaded media file
@@ -312,14 +314,7 @@ public class DBWriter {
                 }
                 adapter.close();
                 if (performAutoDownload) {
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
 
             }
@@ -378,13 +373,7 @@ public class DBWriter {
                         }
                     }
                     adapter.close();
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
             }
         });
@@ -451,14 +440,7 @@ public class DBWriter {
                 }
                 adapter.close();
                 if (performAutoDownload) {
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
             }
         });
