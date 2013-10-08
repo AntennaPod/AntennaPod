@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
 
     <RelativeLayout
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical" >
+        android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/imgvCover"
@@ -16,7 +16,7 @@
             android:layout_height="70dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="4dp" />
+            android:layout_margin="4dp"/>
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -26,37 +26,38 @@
             android:layout_margin="4dp"
             android:layout_toRightOf="@id/imgvCover"
             android:textSize="@dimen/text_size_large"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <View
             android:id="@+id/divider"
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/imgvCover"
-            android:background="@color/bright_blue" />
+            android:background="@color/bright_blue"/>
     </RelativeLayout>
 
     <ScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" >
+        android:layout_weight="1">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical" >
+            android:orientation="vertical">
 
             <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="16dp" >
+                android:layout_marginBottom="16dp">
 
                 <View
                     android:id="@+id/center_divider"
                     android:layout_width="0dp"
                     android:layout_height="0dp"
-                    android:layout_centerHorizontal="true" />
+                    android:layout_centerHorizontal="true"/>
 
                 <TextView
                     android:id="@+id/lblAuthor"
@@ -65,7 +66,7 @@
                     android:layout_alignParentLeft="true"
                     android:layout_margin="8dp"
                     android:text="@string/author_label"
-                    android:textStyle="bold" />
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <TextView
                     android:id="@+id/txtvAuthor"
@@ -73,7 +74,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentRight="true"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@id/center_divider" />
+                    android:layout_toRightOf="@id/center_divider"/>
 
                 <TextView
                     android:id="@+id/lblLanguage"
@@ -83,7 +84,7 @@
                     android:layout_below="@id/txtvAuthor"
                     android:layout_margin="8dp"
                     android:text="@string/language_label"
-                    android:textStyle="bold" />
+                    android:textColor="?android:attr/textColorPrimary"/>
 
                 <TextView
                     android:id="@+id/txtvLanguage"
@@ -92,14 +93,45 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@id/txtvAuthor"
                     android:layout_margin="8dp"
-                    android:layout_toRightOf="@id/center_divider" />
+                    android:layout_toRightOf="@id/center_divider"/>
             </RelativeLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="24dp"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@string/description_label"/>
 
             <TextView
                 android:id="@+id/txtvDescription"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp" />
+                android:layout_margin="8dp"/>
+
+            <TextView
+                android:id="@+id/txtvSettings"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/podcast_settings_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="24dp"/>
+
+            <CheckBox
+                android:id="@+id/cbxAutoDownload"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/auto_download_label"
+                android:enabled="false"
+                android:textColor="?android:attr/textColorPrimary"/>
         </LinearLayout>
     </ScrollView>
 

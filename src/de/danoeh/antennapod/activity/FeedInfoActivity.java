@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.AppConfig;
@@ -35,6 +37,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private TextView txtvDescription;
     private TextView txtvLanguage;
     private TextView txtvAuthor;
+    private CheckBox cbxAutoDownload;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +46,13 @@ public class FeedInfoActivity extends ActionBarActivity {
         setContentView(R.layout.feedinfo);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         long feedId = getIntent().getLongExtra(EXTRA_FEED_ID, -1);
+
+        imgvCover = (ImageView) findViewById(R.id.imgvCover);
+        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
+        txtvDescription = (TextView) findViewById(R.id.txtvDescription);
+        txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
+        txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+        cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
 
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
@@ -53,18 +63,12 @@ public class FeedInfoActivity extends ActionBarActivity {
 
             @Override
             protected void onPostExecute(Feed result) {
-                super.onPostExecute(result);
                 if (result != null) {
                     feed = result;
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Language is " + feed.getLanguage());
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Author is " + feed.getAuthor());
-                    imgvCover = (ImageView) findViewById(R.id.imgvCover);
-                    txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-                    txtvDescription = (TextView) findViewById(R.id.txtvDescription);
-                    txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
-                    txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
                     imgvCover.post(new Runnable() {
 
                         @Override
@@ -83,6 +87,17 @@ public class FeedInfoActivity extends ActionBarActivity {
                         txtvLanguage.setText(LangUtils
                                 .getLanguageString(feed.getLanguage()));
                     }
+
+                    cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
+                    cbxAutoDownload.setChecked(feed.getPreferences().getAutoDownload());
+                    cbxAutoDownload.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                        @Override
+                        public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
+                            feed.getPreferences().setAutoDownload(checked);
+                            feed.savePreferences(FeedInfoActivity.this);
+                        }
+                    });
+
                     supportInvalidateOptionsMenu();
 
                 } else {

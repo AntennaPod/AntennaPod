@@ -780,7 +780,7 @@ public class DBWriter {
     /**
      * Updates download URLs of feeds from a given Map. The key of the Map is the original URL of the feed
      * and the value is the updated URL
-     * */
+     */
     public static Future<?> updateFeedDownloadURLs(final Context context, final Map<String, String> urls) {
         return dbExec.submit(new Runnable() {
             @Override
@@ -792,6 +792,24 @@ public class DBWriter {
 
                     adapter.setFeedDownloadUrl(key, urls.get(key));
                 }
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Saves a FeedPreferences object in the database. The Feed ID of the FeedPreferences-object MUST NOT be 0.
+     *
+     * @param context     Used for opening a database connection.
+     * @param preferences The FeedPreferences object.
+     */
+    public static Future<?> setFeedPreferences(final Context context, final FeedPreferences preferences) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedPreferences(preferences);
                 adapter.close();
             }
         });

@@ -1,11 +1,14 @@
 package de.danoeh.antennapod.feed;
 
+import android.content.Context;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.EpisodeFilter;
 
 /**
@@ -45,6 +48,11 @@ public class Feed extends FeedFile {
      * Feed type, for example RSS 2 or Atom
      */
     private String type;
+
+    /**
+     * Feed preferences
+     */
+    private FeedPreferences preferences;
 
     /**
      * This constructor is used for restoring a feed from the database.
@@ -366,4 +374,15 @@ public class Feed extends FeedFile {
         this.type = type;
     }
 
+    public void setPreferences(FeedPreferences preferences) {
+        this.preferences = preferences;
+    }
+
+    public FeedPreferences getPreferences() {
+        return preferences;
+    }
+
+    public void savePreferences(Context context) {
+        DBWriter.setFeedPreferences(context, preferences);
+    }
 }
