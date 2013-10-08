@@ -24,7 +24,7 @@ import de.danoeh.antennapod.service.download.DownloadStatus;
  */
 public class PodDBAdapter {
     private static final String TAG = "PodDBAdapter";
-    private static final int DATABASE_VERSION = 9;
+    private static final int DATABASE_VERSION = 10;
     public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
@@ -124,6 +124,7 @@ public class PodDBAdapter {
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
     public static final String KEY_CHAPTER_TYPE = "type";
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
+    public static final String KEY_AUTO_DOWNLOAD = "auto_download";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -145,8 +146,7 @@ public class PodDBAdapter {
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
             + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
-            + KEY_FEED_IDENTIFIER + " TEXT)";
-    ;
+            + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -206,7 +206,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_AUTHOR,
             TABLE_NAME_FEEDS + "." + KEY_IMAGE,
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
-            TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER
+            TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
+            TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
     };
 
     // column indices for FEED_SEL_STD
@@ -224,17 +225,8 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_IMAGE = 11;
     public static final int IDX_FEED_SEL_STD_TYPE = 12;
     public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
+    public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD = 14;
 
-    /**
-     * Select all preference-columns from the feed table
-     */
-    private static final String[] FEED_SEL_PREFERENCES = {
-            TABLE_NAME_FEEDS + "." + KEY_ID,
-            // enter preferences here
-    };
-
-    // column indices for FEED_SEL_PREFERENCES
-    public static final int IDX_FEED_SEL_PREFERENCES_ID = 0;
 
     /**
      * Select all columns from the feeditems-table except description and
@@ -373,6 +365,7 @@ public class PodDBAdapter {
             throw new IllegalArgumentException("Feed ID of preference must not be null");
         }
         ContentValues values = new ContentValues();
+        values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -930,10 +923,6 @@ public class PodDBAdapter {
         return c;
     }
 
-    public final Cursor getFeedPreferenceCursor(final long feedID) {
-        return db.query(TABLE_NAME_FEEDS, FEED_SEL_PREFERENCES, KEY_ID + "=" + feedID, null, null, null, null);
-    }
-
     public final Cursor getFeedItemCursor(final String... ids) {
         if (ids.length > IN_OPERATOR_MAXIMUM) {
             throw new IllegalArgumentException(
@@ -1172,6 +1161,11 @@ public class PodDBAdapter {
                     db.endTransaction();
                 }
                 feeditemCursor.close();
+            }
+            if (oldVersion <= 9) {
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + KEY_AUTO_DOWNLOAD
+                        + " INTEGER DEFAULT 1");
             }
         }
     }

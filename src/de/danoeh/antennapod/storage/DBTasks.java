@@ -324,12 +324,14 @@ public final class DBTasks {
         int counter = 0;
         for (FeedItem item : queue) {
             if (item.hasMedia() && !item.getMedia().isDownloaded()
-                    && !item.getMedia().isPlaying()) {
+                    && !item.getMedia().isPlaying()
+                    && item.getFeed().getPreferences().getAutoDownload()) {
                 counter++;
             }
         }
         for (FeedItem item : unreadItems) {
-            if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+            if (item.hasMedia() && !item.getMedia().isDownloaded()
+                    && item.getFeed().getPreferences().getAutoDownload()) {
                 counter++;
             }
         }
@@ -375,7 +377,8 @@ public final class DBTasks {
                 for (int i = 0; i < queue.size(); i++) { // ignore playing item
                     FeedItem item = queue.get(i);
                     if (item.hasMedia() && !item.getMedia().isDownloaded()
-                            && !item.getMedia().isPlaying()) {
+                            && !item.getMedia().isPlaying()
+                            && item.getFeed().getPreferences().getAutoDownload()) {
                         itemsToDownload.add(item);
                         episodeSpaceLeft--;
                         undownloadedEpisodes--;
@@ -387,7 +390,8 @@ public final class DBTasks {
             }
             if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
                 for (FeedItem item : unreadItems) {
-                    if (item.hasMedia() && !item.getMedia().isDownloaded()) {
+                    if (item.hasMedia() && !item.getMedia().isDownloaded()
+                            && item.getFeed().getPreferences().getAutoDownload()) {
                         itemsToDownload.add(item);
                         episodeSpaceLeft--;
                         undownloadedEpisodes--;

@@ -93,6 +93,18 @@
                     android:layout_below="@id/txtvAuthor"
                     android:layout_margin="8dp"
                     android:layout_toRightOf="@id/center_divider" />
+
+                <CheckBox
+                    android:id="@+id/cbxAutoDownload"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@id/txtvLanguage"
+                    android:layout_margin="8dp"
+                    android:text="@string/auto_download_label"
+                    android:enabled="false"
+                    android:textStyle="bold" />
+
             </RelativeLayout>
 
             <TextView
