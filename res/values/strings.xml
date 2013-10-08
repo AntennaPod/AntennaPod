@@ -51,6 +51,7 @@
     <string name="image_of_prefix">Image of:\u0020</string>
     <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
+    <string name="auto_download_label">Include in auto downloads</string>
     
 
     <!-- 'Add Feed' Activity labels -->

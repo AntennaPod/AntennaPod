@@ -333,6 +333,11 @@ public final class DBReader {
         if (image != null) {
             image.setFeed(feed);
         }
+
+        FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0);
+
+        feed.setPreferences(preferences);
         return feed;
     }
 
@@ -767,30 +772,5 @@ public final class DBReader {
         adapter.close();
 
         return media;
-    }
-
-    private static FeedPreferences extractFeedPreferencesFromCursorRow(final Cursor cursor) {
-        return new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_ID));
-    }
-
-    /**
-     * Loads the FeedPreferences-object of a specific Feed from the database.
-     *
-     * @param context A context that is used for opening a database connection.
-     * @param feedID  ID of the Feed.
-     * @return The FeedPreferences of the Feed with the given ID or null if the no Feed could be found.
-     */
-    public static FeedPreferences getFeedPreferencesOfFeed(final Context context, final long feedID) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-
-        Cursor prefCursor = adapter.getFeedPreferenceCursor(feedID);
-        if (prefCursor.moveToFirst()) {
-            FeedPreferences result = extractFeedPreferencesFromCursorRow(prefCursor);
-            prefCursor.close();
-            return result;
-        } else {
-            return null;
-        }
     }
 }
