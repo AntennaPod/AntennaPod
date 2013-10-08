@@ -128,7 +128,8 @@ public final class DBReader {
 
     /**
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
-     *
+     * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
+     * not find the correct feed of an item.
      * @param context A context that is used for opening a database connection.
      * @param items   The FeedItems whose Feed-objects should be loaded.
      */
