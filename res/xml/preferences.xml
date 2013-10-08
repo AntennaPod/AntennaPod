@@ -2,10 +2,6 @@
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
     <PreferenceCategory android:title="@string/user_interface_label">
-        <CheckBoxPreference
-            android:title="@string/pref_display_only_episodes_title"
-            android:summary="@string/pref_display_only_episodes_sum"
-            android:key="prefDisplayOnlyEpisodes"/>
         <ListPreference
             android:entryValues="@array/theme_values"
             android:entries="@array/theme_options"
