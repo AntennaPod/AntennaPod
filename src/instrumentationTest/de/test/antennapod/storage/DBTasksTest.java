@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
+
 /**
  * Test class for DBTasks
  */
@@ -165,6 +167,29 @@ public class DBTasksTest extends InstrumentationTestCase {
         for (File file : files) {
             assertTrue(file.exists());
         }
+    }
+
+    /**
+     * Reproduces a bug where DBTasks.performAutoCleanup(android.content.Context) would use the ID of the FeedItem in the
+     * call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia. This would cause the wrong item to be deleted.
+     * @throws IOException
+     */
+    public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
+        final Context context = getInstrumentation().getTargetContext();
+        // add feed with no enclosures so that item ID != media ID
+        saveFeedlist(context, 1, 10, false);
+
+        // add candidate for performAutoCleanup
+        List<Feed> feeds = saveFeedlist(getInstrumentation().getTargetContext(), 1, 1, true);
+        FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
+        m.setDownloaded(true);
+        m.setFile_url("file");
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setMedia(m);
+        adapter.close();
+
+        testPerformAutoCleanupShouldNotDeleteBecauseInQueue();
     }
 
     public void testUpdateFeedNewFeed() {

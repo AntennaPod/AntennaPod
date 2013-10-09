@@ -509,7 +509,7 @@ public final class DBTasks {
 
         for (FeedItem item : delete) {
             try {
-                DBWriter.deleteFeedMediaOfItem(context, item.getId()).get();
+                DBWriter.deleteFeedMediaOfItem(context, item.getMedia().getId()).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
