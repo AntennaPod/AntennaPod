@@ -12,7 +12,7 @@
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting list</string>
     <string name="settings_label">Settings</string>
-    <string name="add_new_feed_label">Add a new Feed</string>
+    <string name="add_new_feed_label">Add podcast</string>
     <string name="downloads_label">Downloads</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="download_log_label">Download log</string>
@@ -233,7 +233,7 @@
     <string name="found_in_title_label">Found in title</string>
 
     <!-- OPML import and export -->
-    <string name="opml_import_txtv_button_lable">You can also import an OPML file. OPML files allow you to move your podcasts from one podcatcher to another:</string>
+    <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
     <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>
@@ -266,7 +266,7 @@
     <string name="miro_search_hint">Search Miro Guide</string>
     <string name="popular_label">Popular</string>
     <string name="best_rating_label">Best rating</string>
-    <string name="add_feed_label">Add feed</string>
+    <string name="add_feed_label">Add podcast</string>
     <string name="miro_feed_added">Feed is being added</string>
 
     <!-- gpodder.net -->
@@ -291,7 +291,7 @@
 
     <string name="gpodnetauth_device_butChoose">Choose</string>
     <string name="gpodnetauth_finish_title">Login successful!</string>
-    <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automagically sync subscriptions on your device with your gpodder.net account.</string>
+    <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
     <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
     <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
 
