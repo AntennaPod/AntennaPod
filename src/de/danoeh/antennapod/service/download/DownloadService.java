@@ -412,7 +412,8 @@ public class DownloadService extends Service {
     }
 
     private Downloader getDownloader(DownloadRequest request) {
-        if (URLUtil.isHttpUrl(request.getSource())) {
+        if (URLUtil.isHttpUrl(request.getSource())
+            || URLUtil.isHttpsUrl(request.getSource())) {
             return new HttpDownloader(request);
         }
         Log.e(TAG,
