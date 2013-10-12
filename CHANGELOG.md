@@ -1,6 +1,18 @@
 Change Log
 ==========
 
+Version 0.9.8.0
+---------------
+* Added access to the gpodder.net directory
+* Added ability to sync podcast subscriptions with the gpodder.net service
+* Automatic download can now be turned on or off for specific podcasts
+* Added option to pause playback when another app is playing sounds
+* Added Dutch and Hindi translation
+* Resolved a problem with automatic podcast updates
+* Resolved a problem with the buttons' visibility in the episode screen
+* Resolved a problem where episodes would be re-downloaded unnecessarily
+* Several other bugfixes and usability improvements
+
 Version 0.9.7.5
 ---------------
 * Reduced application startup time
