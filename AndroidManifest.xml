@@ -154,7 +154,8 @@
             android:enabled="true"/>
         <service
             android:name="de.danoeh.antennapod.service.PlaybackService"
-            android:enabled="true">
+            android:enabled="true"
+            android:exported="true">
         </service>
 
         <service
