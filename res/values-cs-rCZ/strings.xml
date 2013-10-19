@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Zdroje</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Nový</string>
   <string name="waiting_list_label">Seznam nepřečtených</string>
   <string name="settings_label">Nastavení</string>
-  <string name="add_new_feed_label">Přidat nový zdroj</string>
+  <string name="add_new_feed_label">Přidat podcast</string>
   <string name="downloads_label">Stahování</string>
   <string name="cancel_download_label">Zrušit stahování</string>
   <string name="download_log_label">Historie stáhnování</string>
   <string name="playback_history_label">Historie přehrávání</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net uživatel</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Otevřít v prohlížeči</string>
   <string name="copy_url_label">Kopírovat URL</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Zrušit</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Jazyk</string>
+  <string name="podcast_settings_label">Nastavení</string>
   <string name="cover_label">Obal</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Nastala chyba:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Není dostupné žádné externí uložiště. Pro správnou funkci aplikace se prosím ujistěte, že je připojeno externí úložiště.</string>
   <string name="chapters_label">Kapitoly</string>
   <string name="shownotes_label">Poznámky</string>
+  <string name="description_label">Popis</string>
   <string name="most_recent_prefix">Poslední epizoda:\u0020</string>
   <string name="episodes_suffix">\u0020epizod</string>
   <string name="published_prefix">Publikováno:\u0020</string>
@@ -40,9 +44,14 @@
   <string name="processing_label">Zpracovávám</string>
   <string name="loading_label">Načítám...</string>
   <string name="image_of_prefix">Obrázek:\u0020</string>
+  <string name="save_username_password_label">Uložit uživatelské jméno a heslo</string>
+  <string name="close_label">Zavřít</string>
+  <string name="retry_label">Zkusit znovu</string>
+  <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL zdroje</string>
-  <string name="txtvfeedurl_label">Zadejte URL zdroje:</string>
+  <string name="txtvfeedurl_label">Přidat podcast pomocí URL</string>
+  <string name="podcastdirectories_label">Podcast adresáře</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Označit vše jako přečtené</string>
   <string name="show_info_label">Informace o zdroji</string>
@@ -50,6 +59,7 @@
   <string name="share_link_label">Sdílet odkaz</string>
   <string name="share_source_label">Sdílet adresu zdroje</string>
   <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento zdroj včetně všech stažených epizod.</string>
+  <string name="feed_remover_msg">Odstranit feed</string>
   <!--actions on feeditems-->
   <string name="download_label">Stáhnout</string>
   <string name="play_label">Přehrát</string>
@@ -85,6 +95,7 @@
   <string name="download_error_malformed_url">Chybné URL</string>
   <string name="download_error_io_error">IO chyba</string>
   <string name="download_error_request_error">Chyba požadavku</string>
+  <string name="download_error_db_access">Chyba přístupu do databáze</string>
   <string name="downloads_left">\u0020Stahování zbývá</string>
   <string name="download_notification_title">Stahuji podcast data</string>
   <string name="download_report_content">%1$d úspěšných stahování, %2$d selhalo</string>
@@ -114,6 +125,8 @@
   <string name="organize_queue_label">Přeuspořádat frontu</string>
   <string name="undo">Zpět</string>
   <string name="removed_from_queue">Položka odebrána</string>
+  <string name="move_to_top_label">Přejít na začátek</string>
+  <string name="move_to_bottom_label">Přejít na konec</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr přihlášení</string>
   <string name="flattr_auth_explanation">Stiskněte následující tlačítko pro spuštění autentizačního procesu. Budete přesměrováni na přihlašovací obrazovku flattru a vyzváni k potvrzení udělení práv pro použití flattru aplikací AntennaPod. Po udělení práv se automaticky vrátíte na tuto obrazovku.</string>
@@ -130,6 +143,10 @@
   <string name="flattr_click_success">Úspěšně flattrováno!</string>
   <string name="flattring_label">Flattruji</string>
   <!--Variable Speed-->
+  <string name="download_plugin_label">Stáhnout Plugin</string>
+  <string name="no_playback_plugin_title">Plugin není nainstalován</string>
+  <string name="no_playback_plugin_msg">Pro nastavení rychlosti přehrávání musí být nainstalovaná knihovna třetí strany.\n\nKlikněte na \"Stáhnout Plugin\" ke stažení pluginu z Play Store.\n\nAntennaPod nenese žádnou odpovědnost, za jakékoliv problémy, způsobené tímto pluginem.</string>
+  <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <!--Empty list labels-->
   <string name="no_items_label">Žádné položky v seznamu.</string>
   <string name="no_feeds_label">Zatím nebyly přidány žádné zdroje.</string>
@@ -137,6 +154,8 @@
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
   <string name="queue_label">Fronta</string>
+  <string name="services_label">Služby</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek automaticky pozastavit přehrávání.</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další.</string>
   <string name="playback_pref">Přehrávání</string>
@@ -173,6 +192,16 @@
   <string name="pref_update_interval_hours_plural">hodin</string>
   <string name="pref_update_interval_hours_singular">hodina</string>
   <string name="pref_update_interval_hours_manual">Ručně</string>
+  <string name="pref_gpodnet_authenticate_title">Přihlásit</string>
+  <string name="pref_gpodnet_authenticate_sum">Přihlašte se pomocí vašeho gpodder.net účtu pro synchronizaci odebíraných podcastů. </string>
+  <string name="pref_gpodnet_logout_title">Odhlásit</string>
+  <string name="pref_gpodnet_logout_toast">Úspěšně odhlášeno</string>
+  <string name="pref_gpodnet_setlogin_information_title">Změna přihlašovacích údajů</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
+  <string name="pref_playback_speed_title">Rychlosti přehrávání</string>
+  <string name="pref_playback_speed_sum">Přizpůsobení rychlosti je dostupné pro přehrávání zvuku různými rychlostmi</string>
+  <string name="pref_gpodnet_sethostname_title">Nastavit hostname</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Použít přednastaveného hosta</string>
   <!--Search-->
   <string name="search_hint">Hledat zdroje a epizody</string>
   <string name="found_in_shownotes_label">Nalezeno v poznámkách k show</string>
@@ -184,7 +213,7 @@
   <string name="search_label">Vyhledat</string>
   <string name="found_in_title_label">Nalezeno v názvu</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Můžete také importovat OPML soubor. OPML soubory umožňují přenést vaše podcasty z jednoho podcast manažera do jiného:</string>
+  <string name="opml_import_txtv_button_lable">OPML soubory umožňují přenést vaše podcasty z jednoho podcast manažera do jiného.</string>
   <string name="opml_import_explanation">Pro import OPML souboru je třeba ho nejdříve umístit do následujícího adresáře a poté pro zahájení procesu importu stisknout tlačítko. </string>
   <string name="start_import_label">Importovat</string>
   <string name="opml_import_label">OPML import</string>
@@ -215,8 +244,36 @@
   <string name="miro_search_hint">Vyhledávat v Miro Guide</string>
   <string name="popular_label">Populární</string>
   <string name="best_rating_label">Nejlépe hodnocené</string>
-  <string name="add_feed_label">Přidat zdroj</string>
+  <string name="add_feed_label">Přidat podcast</string>
   <string name="miro_feed_added">Přidávám zdroj</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">KATEGORIE</string>
+  <string name="gpodnet_toplist_header">TOP PODCASTY</string>
+  <string name="gpodnet_suggestions_header">DOPOTUČENÉ</string>
+  <string name="gpodnet_search_hint">Vyhledat na gpodder.net</string>
+  <string name="gpodnetauth_login_title">Přihlásit</string>
+  <string name="gpodnetauth_login_descr">Vítejte do průvodce přihlášením ke gpodder.net účtu. Zadejte vaše přihlašovací údaje:</string>
+  <string name="gpodnetauth_login_butLabel">Přihlásit</string>
+  <string name="gpodnetauth_login_register">Jestliže nemáte účet, můžete si ho vytvořit zde:\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Uživatleské jméno</string>
+  <string name="password_label">Heslo</string>
+  <string name="gpodnetauth_device_title">Výběr zařízení</string>
+  <string name="gpodnetauth_device_descr">Vytvořte nové nebo vyberte již existující zařízení pro použití s vašim gpodder.net účtem.</string>
+  <string name="gpodnetauth_device_deviceID">ID zařízení:\u0020</string>
+  <string name="gpodnetauth_device_caption">Nadpis</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Vytvořit nové zařízení</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Vybrat existující zařízení:</string>
+  <string name="gpodnetauth_device_errorEmpty">ID zařízení nesmí být prázdné</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">ID zařízení je již obsazeno</string>
+  <string name="gpodnetauth_device_butChoose">Vybrat</string>
+  <string name="gpodnetauth_finish_title">Úspěšně přihlášeno!</string>
+  <string name="gpodnetauth_finish_descr">Gratulujeme! Váš gpodder.net účet je nyná úspěšně propojen s vašim zařízením. AntennaPod bude automaticky synchronizovat odebírané podcasty s vaším gpodder.net účtem.  </string>
+  <string name="gpodnetauth_finish_butsyncnow">Synchronizovat nyní</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Přejít na hlavní obrazovku</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net autentizace selhala</string>
+  <string name="gpodnetsync_auth_error_descr">Špatné přihlašovací jméno nebo heslo</string>
+  <string name="gpodnetsync_error_title">gpodder.net synchronizace selhala</string>
+  <string name="gpodnetsync_error_descr">V průběhu synchronizace nastala chyba:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Vybraný adresář:</string>
   <string name="create_folder_label">Vytvořit adresář</string>
@@ -229,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">Adresář není prázdný</string>
   <string name="folder_not_empty_dialog_msg">Vybraný adresář není prázdný. Stažená media a ostatní soubory budou umístěny přímo do tohoto adresáře. Přesto pokračovat?</string>
   <string name="set_to_default_folder">Vybrat hlavní adresář</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Místo snížení hlasitosti pozastavit přehrávání v případě, že jiná aplikace přehrává zvuk.</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Odebírat</string>
+  <string name="subscribed_label">Odebíráno</string>
+  <string name="downloading_label">Stahuji...</string>
 </resources>

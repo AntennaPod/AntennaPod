@@ -1,38 +1,39 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/disable_sleeptimer_item"
         android:icon="?attr/device_access_time"
-        android:showAsAction="always"
+        custom:showAsAction="always"
         android:title="@string/sleep_timer_label">
     </item>
     <item
         android:id="@+id/set_sleeptimer_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/set_sleeptimer_label">
     </item>
     <item
         android:id="@+id/share_link_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/share_link_label">
     </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        android:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/support_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>
     <item
         android:id="@id/skip_episode_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/skip_episode_label"
         android:visible="true"/>
 

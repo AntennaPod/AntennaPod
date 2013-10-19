@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Канали</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Нові</string>
   <string name="waiting_list_label">Черга</string>
   <string name="settings_label">Налаштування</string>
-  <string name="add_new_feed_label">Додати канал</string>
+  <string name="add_new_feed_label">Додати подкаст</string>
   <string name="downloads_label">Завантаження</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
   <string name="download_log_label">Історія завантажень</string>
   <string name="playback_history_label">Що грало</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net логін</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копія URL</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Скасувати</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Мова</string>
+  <string name="podcast_settings_label">Налаштування</string>
   <string name="cover_label">Обкладинка</string>
   <string name="error_label">Помилка</string>
   <string name="error_msg_prefix">Трапилась помілка:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Немає доступної флешки. Зовнішній носій потрібен для коректної роботи додатку</string>
   <string name="chapters_label">Глави</string>
   <string name="shownotes_label">Нотатки до епізода</string>
+  <string name="description_label">Опис</string>
   <string name="most_recent_prefix">Найновіший епізод:\u0020</string>
   <string name="episodes_suffix">\u0020епізодів</string>
   <string name="published_prefix">Опубліковано:\u0020</string>
@@ -40,10 +44,14 @@
   <string name="processing_label">Обробка</string>
   <string name="loading_label">Завантаження категорій ...</string>
   <string name="image_of_prefix">Зображення:\u0020</string>
+  <string name="save_username_password_label">Зберегти ім\'я користувача та пароль</string>
   <string name="close_label">Закрити</string>
+  <string name="retry_label">Повторити знову</string>
+  <string name="auto_download_label">Включити до автозавантаження</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
-  <string name="txtvfeedurl_label">Введіть адресу URL каналу тут:</string>
+  <string name="txtvfeedurl_label">Додати подкаст за URL</string>
+  <string name="podcastdirectories_label">Каталоги подкастів</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Все прочитано</string>
   <string name="show_info_label">Інформація</string>
@@ -51,6 +59,7 @@
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_source_label">Поділитися URL каналу</string>
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
+  <string name="feed_remover_msg">Удаляю канал</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
@@ -86,6 +95,7 @@
   <string name="download_error_malformed_url">Невірний URL</string>
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
+  <string name="download_error_db_access">Помилка бази даних</string>
   <string name="downloads_left">\0020 залишилось завантажити</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
@@ -115,6 +125,8 @@
   <string name="organize_queue_label">Впорядкувати чергу</string>
   <string name="undo">Скасувати</string>
   <string name="removed_from_queue">Видалено</string>
+  <string name="move_to_top_label">Догори</string>
+  <string name="move_to_bottom_label">Донизу</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Увійти до Flattr</string>
   <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
@@ -142,6 +154,8 @@
   <string name="other_pref">Інше</string>
   <string name="about_pref">О</string>
   <string name="queue_label">Черга</string>
+  <string name="services_label">Сервіси</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Зупинятись коли навушники витягнуті</string>
   <string name="pref_followQueue_sum">До наступної черги коли дограє до кінця</string>
   <string name="playback_pref">Грає</string>
@@ -178,8 +192,16 @@
   <string name="pref_update_interval_hours_plural">годин</string>
   <string name="pref_update_interval_hours_singular">година</string>
   <string name="pref_update_interval_hours_manual">Інструкція</string>
+  <string name="pref_gpodnet_authenticate_title">Логін</string>
+  <string name="pref_gpodnet_authenticate_sum">Увійти до свого облікового запису gpodder.net для сінхронізації ваших каналів</string>
+  <string name="pref_gpodnet_logout_title">Виход</string>
+  <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
+  <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Змінити вашу інформацію для вашего gpodder.net облікового запису</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
+  <string name="pref_gpodnet_sethostname_title">Встановити ім\'я хоста</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Використати хост по замовчанню</string>
   <!--Search-->
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>
@@ -191,7 +213,7 @@
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Ви можете імпортувати OPML файл. Такі файли дозволяют переходити з однієї програми для подкастів до іншої:</string>
+  <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подскати з однієї программи до іншої</string>
   <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
   <string name="start_import_label">Почати імпорт</string>
   <string name="opml_import_label">OPML імпорт</string>
@@ -222,8 +244,36 @@
   <string name="miro_search_hint">Пошук в Mirog Guide</string>
   <string name="popular_label">Популярні</string>
   <string name="best_rating_label">Кращі</string>
-  <string name="add_feed_label">Додати канал</string>
+  <string name="add_feed_label">Додати подкаст</string>
   <string name="miro_feed_added">Канал додано</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
+  <string name="gpodnet_toplist_header">ТОП ПОКАДСТІВ</string>
+  <string name="gpodnet_suggestions_header">РЕКОМЕНДАЦІЇ</string>
+  <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
+  <string name="gpodnetauth_login_title">Логін</string>
+  <string name="gpodnetauth_login_descr">Ласкаво просимо до gpodder.net. Зпочатку заповнить вашу інформацію для входу</string>
+  <string name="gpodnetauth_login_butLabel">Логін</string>
+  <string name="gpodnetauth_login_register">Якщо ви щє не маєте логіну, ви можете отримати тут:\nhttps://gpodder.net/register</string>
+  <string name="username_label">Ім\'я користувача</string>
+  <string name="password_label">Пароль</string>
+  <string name="gpodnetauth_device_title">Обрати пристрій</string>
+  <string name="gpodnetauth_device_descr">Під\'єднати новий пристрій к gpodder.net обліковому запису о обрати інсуючий</string>
+  <string name="gpodnetauth_device_deviceID">ID Пристрою:\u0020</string>
+  <string name="gpodnetauth_device_caption">Заголовок</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Створити новий пристрій</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Вибрати існуючий пристрій</string>
+  <string name="gpodnetauth_device_errorEmpty">ID пристрою не можете бути пустим</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">Таке ID пристрою вже є</string>
+  <string name="gpodnetauth_device_butChoose">Обрати</string>
+  <string name="gpodnetauth_finish_title">Успішно зайшли</string>
+  <string name="gpodnetauth_finish_descr">Поздоровляємо! Ваш обліковий запис на gpodder.net зараз пов\'язаний за вашим пристроєм</string>
+  <string name="gpodnetauth_finish_butsyncnow">Почати синхронізацію</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Перейти до основного екрана</string>
+  <string name="gpodnetsync_auth_error_title">Помилка авторізації на gpodder.net</string>
+  <string name="gpodnetsync_auth_error_descr">Помилка в імені користувача або паролі</string>
+  <string name="gpodnetsync_error_title">gpodder.net помилка синхронізації</string>
+  <string name="gpodnetsync_error_descr">Трапилась помилка при сінхронизації:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Обрати папку:</string>
   <string name="create_folder_label">Нова папка</string>
@@ -236,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">В папці щось є</string>
   <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
   <string name="set_to_default_folder">Обрати папку по замовчанню</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Пауза для перевивання</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Підписатися</string>
+  <string name="subscribed_label">Підписано</string>
+  <string name="downloading_label">Завантаження...</string>
 </resources>

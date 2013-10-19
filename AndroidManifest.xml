@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="32"
-    android:versionName="0.9.7.5" >
+    android:versionCode="33"
+    android:versionName="0.9.8.0" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -39,303 +39,429 @@
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/app_name" >
+            android:label="@string/app_name">
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value="de.danoeh.antennapod.activity.SearchActivity" />
+                android:value="de.danoeh.antennapod.activity.SearchActivity"/>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"/>
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.AddFeedActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/add_new_feed_label"
-            android:windowSoftInputMode="adjustResize" >
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <intent-filter>
-			    <action android:name="android.intent.action.VIEW"/>
-			    <category android:name="android.intent.category.DEFAULT"/>
-			    <category android:name="android.intent.category.BROWSABLE"/>
-			    <data android:scheme="http"/>
-			    <data android:scheme="https"/>
-			    <data android:host="*"/>
-			    <data android:pathPattern=".*\\.xml"/>
-			    <data android:pathPattern=".*\\.rss"/>
-			</intent-filter>
-			
-			<intent-filter>
-			    <action android:name="android.intent.action.VIEW"/>
-			    <category android:name="android.intent.category.DEFAULT"/>
-			    <category android:name="android.intent.category.BROWSABLE"/>
-			    <data android:scheme="http"/>
-			    <data android:scheme="https"/>
-			    <data android:host="feeds.feedburner.com"/>
-			    <data android:host="feedproxy.google.com"/>
-			    <data android:host="feeds2.feedburner.com"/>
-			    <data android:host="feedsproxy.google.com"/>
-			</intent-filter>
-			
-			<intent-filter>
-			    <action android:name="android.intent.action.VIEW"/>
-			    <category android:name="android.intent.category.DEFAULT"/>
-			    <category android:name="android.intent.category.BROWSABLE"/>
-			    <data android:scheme="http"/>
-			    <data android:scheme="https"/>
-			    <data android:mimeType="text/xml"/>
-			    <data android:mimeType="application/rss+xml"/>
-			    <data android:mimeType="application/atom+xml"/>
-			    <data android:mimeType="application/xml"/>
-			</intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="*"/>
+                <data android:pathPattern=".*\\.xml"/>
+                <data android:pathPattern=".*\\.rss"/>
+            </intent-filter>
+
             <intent-filter>
-                <action android:name="android.intent.action.SEND" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:mimeType="text/plain" />
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:host="feeds.feedburner.com"/>
+                <data android:host="feedproxy.google.com"/>
+                <data android:host="feeds2.feedburner.com"/>
+                <data android:host="feedsproxy.google.com"/>
+            </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <data android:scheme="http"/>
+                <data android:scheme="https"/>
+                <data android:mimeType="text/xml"/>
+                <data android:mimeType="application/rss+xml"/>
+                <data android:mimeType="application/atom+xml"/>
+                <data android:mimeType="application/xml"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.SEND"/>
+
+                <category android:name="android.intent.category.DEFAULT"/>
+
+                <data android:mimeType="text/plain"/>
             </intent-filter>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.FeedItemlistActivity"
-            android:configChanges="orientation|screenSize" >
+            android:configChanges="orientation|screenSize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value="de.danoeh.antennapod.activity.SearchActivity" />
+                android:value="de.danoeh.antennapod.activity.SearchActivity"/>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.ItemviewActivity"
-            android:configChanges="keyboard|orientation" />
+            android:configChanges="keyboard|orientation"/>
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
-            android:label="@string/downloads_label" />
+            android:label="@string/downloads_label"
+            android:exported="true">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
+            </activity>
         <activity
             android:name=".activity.AudioplayerActivity"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="file" />
-                <data android:mimeType="audio/*" />
+                <data android:scheme="file"/>
+                <data android:mimeType="audio/*"/>
             </intent-filter>
         </activity>
 
         <service
             android:name=".service.download.DownloadService"
-            android:enabled="true" />
+            android:enabled="true"/>
         <service
             android:name="de.danoeh.antennapod.service.PlaybackService"
-            android:enabled="true" >
+            android:enabled="true"
+            android:exported="true">
+        </service>
+
+        <service
+            android:name=".service.GpodnetSyncService"
+            android:enabled="true">
         </service>
 
         <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/settings_label" >
+            android:label="@string/settings_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
         </activity>
         <activity
             android:name=".activity.DownloadLogActivity"
-            android:label="@string/download_log_label" >
+            android:label="@string/download_log_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.DownloadActivity" />
         </activity>
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"
-            android:exported="true" >
+            android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON" />
+                <action android:name="android.intent.action.MEDIA_BUTTON"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER" />
+                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.FeedInfoActivity" >
+        <activity android:name=".activity.FeedInfoActivity">
         </activity>
 
         <service
             android:name=".service.PlayerWidgetService"
             android:enabled="true"
-            android:exported="false" >
+            android:exported="false">
         </service>
 
-        <receiver android:name=".receiver.PlayerWidget" >
+        <receiver android:name=".receiver.PlayerWidget">
             <intent-filter>
-                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE" />
+                <action android:name="de.danoeh.antennapod.FORCE_WIDGET_UPDATE"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.appwidget.provider"
-                android:resource="@xml/player_widget_info" />
+                android:resource="@xml/player_widget_info"/>
 
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE" />
+                <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.FeedUpdateReceiver" >
+        <receiver android:name=".receiver.FeedUpdateReceiver">
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds" />
+                <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds"/>
             </intent-filter>
         </receiver>
 
-        <activity android:name=".activity.StorageErrorActivity" >
+        <activity android:name=".activity.StorageErrorActivity">
         </activity>
         <activity
             android:name=".activity.FlattrAuthActivity"
-            android:label="@string/flattr_auth_label" >
+            android:label="@string/flattr_auth_label">
             <intent-filter>
-                <action android:name=".activities.FlattrAuthActivity" />
+                <action android:name=".activities.FlattrAuthActivity"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.DEFAULT"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
                     android:host="de.danoeh.antennapod"
-                    android:scheme="flattr4j" />
+                    android:scheme="flattr4j"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.AboutActivity"
-            android:label="@string/about_pref" >
+            android:label="@string/about_pref">
         </activity>
         <activity
             android:name=".activity.OpmlImportFromPathActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/opml_import_label" >
+            android:label="@string/opml_import_label">
         </activity>
         <activity
             android:name=".activity.OpmlImportFromIntentActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:label="@string/opml_import_label" >
+            android:label="@string/opml_import_label">
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
                     android:host="*"
                     android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
-                    android:scheme="file" />
+                    android:scheme="file"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
                 <data
                     android:host="*"
                     android:pathPattern=".*\\.opml"
                     android:scheme="file"
-                    android:mimeType="text/x-opml" />
+                    android:mimeType="text/x-opml"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.OpmlFeedChooserActivity"
-            android:label="@string/opml_import_label" >
+            android:label="@string/opml_import_label">
         </activity>
         <activity
             android:name=".activity.SearchActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/search_results_label"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/searchable" />
+                android:resource="@xml/searchable"/>
         </activity>
         <activity
             android:name=".activity.MiroGuideMainActivity"
-            android:label="@string/miro_guide_label" >
+            android:label="@string/miro_guide_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.AddFeedActivity" />
             <meta-data
                 android:name="android.app.default_searchable"
-                android:value="de.danoeh.antennapod.activity.MiroGuideSearchActivity" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideSearchActivity"/>
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/miroguide_searchable" />
+                android:resource="@xml/miroguide_searchable"/>
         </activity>
         <activity
             android:name=".activity.MiroGuideSearchActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:launchMode="singleTop" >
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.intent.action.SEARCH" />
+                <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"
-                android:resource="@xml/miroguide_searchable" />
+                android:resource="@xml/miroguide_searchable"/>
         </activity>
         <activity
             android:name=".activity.MiroGuideCategoryActivity"
-            android:configChanges="keyboardHidden|orientation" >
+            android:configChanges="keyboardHidden|orientation">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MiroGuideMainActiviy" />
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"
             android:configChanges="keyboard|orientation"
-            android:label="@string/miro_guide_label" >
+            android:label="@string/miro_guide_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MiroGuideCategoryActivity" />
         </activity>
         <activity
             android:name=".activity.VideoplayerActivity"
             android:configChanges="keyboardHidden|orientation"
-            android:screenOrientation="landscape" >
+            android:screenOrientation="landscape">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
             <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
+                <action android:name="android.intent.action.VIEW"/>
 
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
 
-                <data android:scheme="file" />
-                <data android:mimeType="video/*" />
+                <data android:scheme="file"/>
+                <data android:mimeType="video/*"/>
             </intent-filter>
         </activity>
         <activity
             android:name=".activity.PlaybackHistoryActivity"
-            android:label="@string/playback_history_label" />
+            android:label="@string/playback_history_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
+            </activity>
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="de.danoeh.antennapod.activity.MainActiviy" />
         <activity
             android:name=".activity.DirectoryChooserActivity"
-            android:label="@string/choose_data_directory" />
+            android:label="@string/choose_data_directory">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
+            </activity>
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
         <activity
             android:name=".activity.OrganizeQueueActivity"
             android:configChanges="orientation"
-            android:label="@string/organize_queue_label" >
+            android:label="@string/organize_queue_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity" />
+        </activity>
+        <activity
+            android:name=".activity.gpoddernet.GpodnetMainActivity"
+            android:configChanges="orientation"
+            android:label="@string/gpodnet_main_label">
+
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetSearchActivity"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.AddFeedActivity" />
+
+        </activity>
+        <activity
+            android:name=".activity.gpoddernet.GpodnetTagActivity"
+            android:configChanges="orientation">
+            <meta-data
+                android:name="android.app.default_searchable"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetSearchActivity"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
         </activity>
 
-        <receiver android:name=".receiver.ConnectivityActionReceiver" >
+        <activity
+            android:name=".activity.gpoddernet.GpodnetSearchActivity"
+            android:configChanges="orientation"
+            android:label="@string/search_label"
+            android:launchMode="singleTop">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
+                <action android:name="android.intent.action.SEARCH"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/gpodnet_searchable"/>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
+        </activity>
+
+        <activity
+            android:name=".activity.DefaultOnlineFeedViewActivity"
+            android:configChanges="orientation"/>
+
+        <activity
+            android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"
+            android:configChanges="orientation"
+            android:label="@string/gpodnet_auth_label"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name=".activity.gpoddernet.GpodnetAuthenticationActivity"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
+        </activity>
+
+
+        <receiver android:name=".receiver.ConnectivityActionReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.AlarmUpdateReceiver" >
+        <receiver android:name=".receiver.AlarmUpdateReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
 
                 <data
                     android:path="de.danoeh.antennapod"
-                    android:scheme="package" />
+                    android:scheme="package"/>
             </intent-filter>
         </receiver>
     </application>

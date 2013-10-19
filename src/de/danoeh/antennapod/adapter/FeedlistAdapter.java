@@ -89,7 +89,7 @@ public class FeedlistAdapter extends BaseAdapter {
             if (DownloadRequester.getInstance().isDownloadingFile(feed)) {
                 holder.lastUpdate.setText(R.string.refreshing_label);
             } else {
-                if (feedItemStatistics.getNumberOfItems() > 0) {
+                if (feedItemStatistics.lastUpdateKnown()) {
                     holder.lastUpdate.setText(convertView.getResources().getString(
                             R.string.most_recent_prefix)
                             + DateUtils.getRelativeTimeSpanString(
@@ -120,7 +120,6 @@ public class FeedlistAdapter extends BaseAdapter {
         }
 		final String imageUrl = (feed.getImage() != null) ? feed.getImage()
 				.getFile_url() : null;
-		holder.image.setTag(imageUrl);
 		imageLoader.loadThumbnailBitmap(
 				feed.getImage(),
 				holder.image,

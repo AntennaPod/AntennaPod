@@ -1,11 +1,9 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
+import android.annotation.SuppressLint;
+import android.app.ActionBar;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.Resources.Theme;
 import android.net.wifi.WifiConfiguration;
@@ -18,16 +16,24 @@ import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 /**
  * The main preference activity
@@ -43,9 +49,15 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
     private static final String AUTO_DL_PREF_SCREEN = "prefAutoDownloadSettings";
     private static final String PREF_PLAYBACK_SPEED_LAUNCHER = "prefPlaybackSpeedLauncher";
-    
+
+    private static final String PREF_GPODNET_LOGIN = "pref_gpodnet_authenticate";
+    private static final String PREF_GPODNET_SETLOGIN_INFORMATION = "pref_gpodnet_setlogin_information";
+    private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
+    private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
+
     private CheckBoxPreference[] selectedNetworks;
 
+    @SuppressLint("NewApi")
     @SuppressWarnings("deprecation")
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -53,12 +65,15 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-            getActionBar().setDisplayHomeAsUpEnabled(true);
+            ActionBar ab = getActionBar();
+            if (ab != null) {
+                ab.setDisplayHomeAsUpEnabled(true);
+            }
         }
 
-		addPreferencesFromResource(R.xml.preferences);
-		findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
-				new OnPreferenceClickListener() {
+        addPreferencesFromResource(R.xml.preferences);
+        findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
+                new OnPreferenceClickListener() {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
@@ -132,6 +147,17 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 return true;
                             }
                         });
+        findPreference(UserPreferences.PREF_ENABLE_AUTODL)
+                .setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof Boolean) {
+                    findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
+                    setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
+                }
+                return true;
+            }
+        });
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
@@ -150,11 +176,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
-
-
                             @Override
                             public boolean onPreferenceChange(Preference preference, Object o) {
-                                checkItemVisibility();
+                                if (o instanceof String) {
+                                    setEpisodeCacheSizeText(UserPreferences.readEpisodeCacheSize((String) o));
+                                }
                                 return true;
                             }
                         });
@@ -166,11 +192,58 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                         return true;
                     }
                 });
+        findPreference(PREF_GPODNET_SETLOGIN_INFORMATION).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AuthenticationDialog dialog = new AuthenticationDialog(PreferenceActivity.this,
+                        R.string.pref_gpodnet_setlogin_information_title, false, false, GpodnetPreferences.getUsername(),
+                        null) {
+
+                    @Override
+                    protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+                        GpodnetPreferences.setPassword(password);
+                    }
+                };
+                dialog.show();
+                return true;
+            }
+        });
+        findPreference(PREF_GPODNET_LOGOUT).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                GpodnetPreferences.logout();
+                Toast toast = Toast.makeText(PreferenceActivity.this, R.string.pref_gpodnet_logout_toast, Toast.LENGTH_SHORT);
+                toast.show();
+                updateGpodnetPreferenceScreen();
+                return true;
+            }
+        });
+        findPreference(PREF_GPODNET_HOSTNAME).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                GpodnetSetHostnameDialog.createDialog(PreferenceActivity.this).setOnDismissListener(new DialogInterface.OnDismissListener() {
+                    @Override
+                    public void onDismiss(DialogInterface dialog) {
+                        updateGpodnetPreferenceScreen();
+                    }
+                });
+                return true;
+            }
+        });
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
 
+
+    }
+
+    private void updateGpodnetPreferenceScreen() {
+        final boolean loggedIn = GpodnetPreferences.loggedIn();
+        findPreference(PREF_GPODNET_LOGIN).setEnabled(!loggedIn);
+        findPreference(PREF_GPODNET_SETLOGIN_INFORMATION).setEnabled(loggedIn);
+        findPreference(PREF_GPODNET_LOGOUT).setEnabled(loggedIn);
+        findPreference(PREF_GPODNET_HOSTNAME).setSummary(GpodnetPreferences.getHostname());
     }
 
     private void buildUpdateIntervalPreference() {
@@ -214,6 +287,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         checkItemVisibility();
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        updateGpodnetPreferenceScreen();
     }
 
     @SuppressWarnings("deprecation")
@@ -253,6 +327,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         return true;
     }
 
@@ -260,9 +335,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                startActivity(intent);
+                finish();
                 break;
             default:
                 return false;

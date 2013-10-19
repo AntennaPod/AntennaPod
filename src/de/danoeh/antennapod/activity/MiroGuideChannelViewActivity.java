@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -132,13 +133,15 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = new MenuInflater(this);
+        super.onCreateOptionsMenu(menu);
+        MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.channelview, menu);
         return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         boolean channelLoaded = channel != null;
         boolean beingDownloaded = channelLoaded
                 && DownloadRequester.getInstance().isDownloadingFile(
@@ -157,7 +160,7 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(channel.getWebsiteUrl());

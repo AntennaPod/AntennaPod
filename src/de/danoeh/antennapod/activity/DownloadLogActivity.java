@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 
 import android.util.Log;
@@ -59,6 +60,7 @@ public class DownloadLogActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		return true;
 	}
 
@@ -66,7 +68,7 @@ public class DownloadLogActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+            NavUtils.navigateUpFromSameTask(this);
 			break;
 		default:
 			return false;

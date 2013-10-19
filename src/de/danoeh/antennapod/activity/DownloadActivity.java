@@ -9,8 +9,10 @@ import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.IBinder;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
@@ -183,6 +185,7 @@ public class DownloadActivity extends ActionBarActivity implements
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, MENU_SHOW_LOG, Menu.NONE,
                 R.string.show_download_log),
                 MenuItem.SHOW_AS_ACTION_COLLAPSE_ACTION_VIEW);
@@ -196,10 +199,7 @@ public class DownloadActivity extends ActionBarActivity implements
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        | Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(intent);
+                finish();
                 break;
             case MENU_SHOW_LOG:
                 startActivity(new Intent(this, DownloadLogActivity.class));
@@ -240,11 +240,19 @@ public class DownloadActivity extends ActionBarActivity implements
         return handled;
     }
 
+    private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
+    private boolean skipWorkAround = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        mActionMode = null;
-        selectedDownload = null;
-        dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
+        if (skipWorkAround || actionModeDestroyWorkaround) {
+            mActionMode = null;
+            selectedDownload = null;
+            dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
+            actionModeDestroyWorkaround = false;
+        } else {
+            actionModeDestroyWorkaround = true;
+        }
     }
 
     private BroadcastReceiver contentChanged = new BroadcastReceiver() {

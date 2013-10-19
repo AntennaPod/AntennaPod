@@ -1,40 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
         android:id="@+id/refresh_item"
         android:icon="?attr/navigation_refresh"
-        android:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/refresh_label">
     </item>
     <item
         android:id="@+id/mark_all_read_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/mark_all_read_label">
     </item>
     <item
         android:id="@+id/show_info_item"
         android:icon="?attr/action_about"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/show_info_label">
     </item>
     <item
         android:id="@+id/remove_item"
         android:icon="?attr/content_discard"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/remove_feed_label"
         android:visible="true">
     </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="true">
     </item>
     <item
         android:id="@+id/support_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>

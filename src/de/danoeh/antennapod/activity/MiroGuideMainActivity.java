@@ -7,6 +7,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -128,6 +129,7 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
                 .setIcon(
                         obtainStyledAttributes(
@@ -150,7 +152,7 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                NavUtils.navigateUpFromSameTask(this);
                 return true;
             default:
                 return false;

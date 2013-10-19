@@ -1,72 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
 
-    <item android:id="@id/skip_episode_item" android:title="@string/skip_episode_label" android:showAsAction="collapseActionView"></item><item
+    <item
         android:id="@+id/download_item"
         android:icon="?attr/av_download"
-        android:showAsAction="ifRoom"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/download_label">
     </item>
     <item
         android:id="@+id/stream_item"
         android:icon="?attr/action_stream"
-        android:showAsAction="ifRoom"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/stream_label">
     </item>
     <item
         android:id="@+id/play_item"
         android:icon="?attr/av_play"
-        android:showAsAction="ifRoom"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/play_label">
     </item>
     <item
         android:id="@+id/remove_item"
         android:icon="?attr/content_discard"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/remove_label">
+    </item>
+    <item
+        android:id="@id/skip_episode_item"
+        android:title="@string/skip_episode_label"
+        custom:showAsAction="collapseActionView">
     </item>
     <item
         android:id="@+id/cancel_download_item"
         android:icon="?attr/navigation_cancel"
-        android:showAsAction="ifRoom"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/cancel_download_label">
     </item>
     <item
         android:id="@+id/mark_read_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/mark_read_label">
     </item>
     <item
         android:id="@+id/mark_unread_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/mark_unread_label">
     </item>
     <item
         android:id="@+id/add_to_queue_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/add_to_queue_label">
     </item>
     <item
         android:id="@+id/remove_from_queue_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/remove_from_queue_label">
     </item>
     <item
         android:id="@+id/share_link_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/share_link_label">
     </item>
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        android:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label">
     </item>
     <item
         android:id="@+id/support_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/support_label">
     </item>
-    
 
 </menu>

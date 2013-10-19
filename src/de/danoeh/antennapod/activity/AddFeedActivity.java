@@ -2,9 +2,11 @@ package de.danoeh.antennapod.activity;
 
 import java.util.Date;
 
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity;
 import org.apache.commons.lang3.StringUtils;
 
 import android.app.AlertDialog;
@@ -37,6 +39,7 @@ public class AddFeedActivity extends ActionBarActivity {
 
 	private EditText etxtFeedurl;
 	private Button butBrowseMiroGuide;
+    private Button butBrowserGpoddernet;
 	private Button butOpmlImport;
 	private Button butConfirm;
 	private Button butCancel;
@@ -63,6 +66,7 @@ public class AddFeedActivity extends ActionBarActivity {
 		}
 
 		butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
+        butBrowserGpoddernet = (Button) findViewById(R.id.butBrowseGpoddernet);
 		butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
 		butConfirm = (Button) findViewById(R.id.butConfirm);
 		butCancel = (Button) findViewById(R.id.butCancel);
@@ -75,6 +79,13 @@ public class AddFeedActivity extends ActionBarActivity {
 						MiroGuideMainActivity.class));
 			}
 		});
+        butBrowserGpoddernet.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(AddFeedActivity.this,
+                        GpodnetMainActivity.class));
+            }
+        });
 
 		butOpmlImport.setOnClickListener(new OnClickListener() {
 
@@ -196,6 +207,7 @@ public class AddFeedActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		return true;
 	}
 
@@ -205,10 +217,7 @@ public class AddFeedActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+            finish();
 			return true;
 		default:
 			return false;

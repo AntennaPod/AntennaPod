@@ -12,11 +12,13 @@
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting list</string>
     <string name="settings_label">Settings</string>
-    <string name="add_new_feed_label">Add a new Feed</string>
+    <string name="add_new_feed_label">Add podcast</string>
     <string name="downloads_label">Downloads</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
+    <string name="gpodnet_main_label">gpodder.net</string>
+    <string name="gpodnet_auth_label">gpodder.net login</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -32,6 +34,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
+    <string name="podcast_settings_label">Settings</string>
     <string name="cover_label">Cover</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
@@ -39,6 +42,7 @@
     <string name="external_storage_error_msg">No external storage is available. Please make sure that external storage is mounted so that the app can work properly.</string>
     <string name="chapters_label">Chapters</string>
     <string name="shownotes_label">Shownotes</string>
+    <string name="description_label">Description</string>
     <string name="most_recent_prefix">Most Recent Episode:\u0020</string>
     <string name="episodes_suffix">\u0020episodes</string>
     <string name="published_prefix">Published:\u0020</string>
@@ -47,12 +51,15 @@
     <string name="processing_label">Processing</string>
     <string name="loading_label">Loading...</string>
     <string name="image_of_prefix">Image of:\u0020</string>
+    <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
-    
+    <string name="retry_label">Retry</string>
+    <string name="auto_download_label">Include in auto downloads</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
-    <string name="txtvfeedurl_label">Type in the URL of the Feed here:</string>
+    <string name="txtvfeedurl_label">Add Podcast by URL</string>
+    <string name="podcastdirectories_label">Podcast directories</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as read</string>
@@ -61,6 +68,7 @@
     <string name="share_link_label">Share website link</string>
     <string name="share_source_label">Share feed link</string>
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
+    <string name="feed_remover_msg">Removing feed</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -98,6 +106,7 @@
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request error</string>
+    <string name="download_error_db_access">Database access error</string>
     <string name="downloads_left">\u0020Downloads left</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_report_content">%1$d downloads succeeded, %2$d failed</string>
@@ -129,6 +138,8 @@
     <string name="organize_queue_label">Organize queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
+    <string name="move_to_top_label">Move to top</string>
+    <string name="move_to_bottom_label">Move to bottom</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
@@ -160,6 +171,8 @@
     <string name="other_pref">Other</string>
     <string name="about_pref">About</string>
     <string name="queue_label">Queue</string>
+    <string name="services_label">Services</string>
+    <string name="flattr_label">Flattr</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="playback_pref">Playback</string>
@@ -193,11 +206,19 @@
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
     <string name="pref_episode_cache_unlimited">Unlimited</string>
-    <string name="pref_update_interval_hours_plural">hours</string>
-    <string name="pref_update_interval_hours_singular">hour</string>
-    <string name="pref_update_interval_hours_manual">Manual</string>
+	<string name="pref_update_interval_hours_plural">hours</string>
+	<string name="pref_update_interval_hours_singular">hour</string>
+	<string name="pref_update_interval_hours_manual">Manual</string>
+    <string name="pref_gpodnet_authenticate_title">Login</string>
+    <string name="pref_gpodnet_authenticate_sum">Login with your gpodder.net account in order to sync your subscriptions.</string>
+    <string name="pref_gpodnet_logout_title">Logout</string>
+    <string name="pref_gpodnet_logout_toast">Logout was successful</string>
+    <string name="pref_gpodnet_setlogin_information_title">Change login information</string>
+    <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
+    <string name="pref_gpodnet_sethostname_title">Set hostname</string>
+    <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
    
 
     <!-- Search -->
@@ -212,7 +233,7 @@
     <string name="found_in_title_label">Found in title</string>
 
     <!-- OPML import and export -->
-    <string name="opml_import_txtv_button_lable">You can also import an OPML file. OPML files allow you to move your podcasts from one podcatcher to another:</string>
+    <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
     <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>
@@ -245,8 +266,39 @@
     <string name="miro_search_hint">Search Miro Guide</string>
     <string name="popular_label">Popular</string>
     <string name="best_rating_label">Best rating</string>
-    <string name="add_feed_label">Add feed</string>
+    <string name="add_feed_label">Add podcast</string>
     <string name="miro_feed_added">Feed is being added</string>
+
+    <!-- gpodder.net -->
+    <string name="gpodnet_taglist_header">CATEGORIES</string>
+    <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+    <string name="gpodnet_suggestions_header">SUGGESTIONS</string>
+    <string name="gpodnet_search_hint">Search gpodder.net</string>
+    <string name="gpodnetauth_login_title">Login</string>
+    <string name="gpodnetauth_login_descr">Welcome to the gpodder.net login process. First, type in your login information:</string>
+    <string name="gpodnetauth_login_butLabel">Login</string>
+    <string name="gpodnetauth_login_register">If you do not have an account yet, you can create one here:\nhttps://gpodder.net/register/</string>
+    <string name="username_label">Username</string>
+    <string name="password_label">Password</string>
+    <string name="gpodnetauth_device_title">Device Selection</string>
+    <string name="gpodnetauth_device_descr">Create a new device to use for your gpodder.net account or choose an existing one:</string>
+    <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
+    <string name="gpodnetauth_device_caption">Caption</string>
+    <string name="gpodnetauth_device_butCreateNewDevice">Create new device</string>
+    <string name="gpodnetauth_device_chooseExistingDevice">Choose existing device:</string>
+    <string name="gpodnetauth_device_errorEmpty">Device ID must not be empty</string>
+    <string name="gpodnetauth_device_errorAlreadyUsed">Device ID already in use</string>
+
+    <string name="gpodnetauth_device_butChoose">Choose</string>
+    <string name="gpodnetauth_finish_title">Login successful!</string>
+    <string name="gpodnetauth_finish_descr">Congratulations! Your gpodder.net account is now linked with your device. AntennaPod will from now on automatically sync subscriptions on your device with your gpodder.net account.</string>
+    <string name="gpodnetauth_finish_butsyncnow">Start sync now</string>
+    <string name="gpodnetauth_finish_butgomainscreen">Go to main screen</string>
+
+    <string name="gpodnetsync_auth_error_title">gpodder.net authentication error</string>
+    <string name="gpodnetsync_auth_error_descr">Wrong username or password</string>
+    <string name="gpodnetsync_error_title">gpodder.net sync error</string>
+    <string name="gpodnetsync_error_descr">An error occurred during syncing:\u0020</string>
 
     <!-- Directory chooser -->
     <string name="selected_folder_label">Selected folder:</string>
@@ -260,5 +312,11 @@
     <string name="folder_not_empty_dialog_title">Folder is not empty</string>
     <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other files will be placed directly in this folder. Continue anyway?</string>
     <string name="set_to_default_folder">Choose default folder</string>
+    <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
+    <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
 
+    <!-- Online feed view -->
+    <string name="subscribe_label">Subscribe</string>
+    <string name="subscribed_label">Subscribed</string>
+    <string name="downloading_label">Downloading...</string>
 </resources>

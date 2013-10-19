@@ -5,6 +5,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.view.*;
 import android.util.Log;
@@ -13,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
@@ -40,6 +42,8 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 	private UndoBarController undoBarController;
 
     private DragSortListView listView;
+    private TextView emptyView;
+    private ProgressBar progLoading;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +53,9 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
 		listView = (DragSortListView) findViewById(android.R.id.list);
+        emptyView = (TextView) findViewById(android.R.id.empty);
+        progLoading = (ProgressBar) findViewById(R.id.progLoading);
+
 		listView.setDropListener(dropListener);
 		listView.setRemoveListener(removeListener);
         listView.setEmptyView(findViewById(android.R.id.empty));
@@ -67,6 +74,17 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
             }
 
             @Override
+            protected void onPreExecute() {
+                super.onPreExecute();
+                // do not show loading animation if queue is already loaded
+                if (queue == null) {
+                    progLoading.setVisibility(View.VISIBLE);
+                    listView.setVisibility(View.GONE);
+                    emptyView.setVisibility(View.GONE);
+                }
+            }
+
+            @Override
             protected void onPostExecute(List<FeedItem> feedItems) {
                 super.onPostExecute(feedItems);
                 if (feedItems != null) {
@@ -79,9 +97,15 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
                 } else {
                     Log.e(TAG, "Queue was null");
                 }
+                progLoading.setVisibility(View.GONE);
+                listView.setVisibility(View.VISIBLE);
             }
         };
-        loadTask.execute();
+        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
+            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+        } else {
+            loadTask.execute();
+        }
     }
 
 	@Override
@@ -145,7 +169,7 @@ public class OrganizeQueueActivity extends ActionBarActivity implements
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+            finish();
 			return true;
 		default:
 			return false;

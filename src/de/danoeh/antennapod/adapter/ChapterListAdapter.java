@@ -128,8 +128,11 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 			if (current == sc) {
 				holder.title.setTextColor(convertView.getResources().getColor(
 						R.color.bright_blue));
+                holder.start.setTextColor(convertView.getResources().getColor(
+                        R.color.bright_blue));
 			} else {
 				holder.title.setTextColor(defaultTextColor);
+                holder.start.setTextColor(defaultTextColor);
 			}
 		} else {
 			Log.w(TAG, "Could not find out what the current chapter is.");

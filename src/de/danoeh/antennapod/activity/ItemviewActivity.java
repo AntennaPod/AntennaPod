@@ -13,7 +13,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -30,23 +29,29 @@ import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
 import java.text.DateFormat;
 
-/** Displays a single FeedItem and provides various actions */
+/**
+ * Displays a single FeedItem and provides various actions
+ */
 public class ItemviewActivity extends ActionBarActivity {
-	private static final String TAG = "ItemviewActivity";
+    private static final String TAG = "ItemviewActivity";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED;
 
-	private FeedItem item;
+    private FeedItem item;
+    private boolean guiInitialized;
+    private AsyncTask<?, ?, ?> currentLoadTask;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);
-		StorageUtils.checkStorageAvailability(this);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		getSupportActionBar().setDisplayShowTitleEnabled(false);
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
+        super.onCreate(savedInstanceState);
+        StorageUtils.checkStorageAvailability(this);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        getSupportActionBar().setDisplayShowTitleEnabled(false);
         EventDistributor.getInstance().register(contentUpdate);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
+
+        guiInitialized = false;
 
         long itemId = getIntent().getLongExtra(
                 ItemlistFragment.EXTRA_SELECTED_FEEDITEM, -1);
@@ -55,29 +60,40 @@ public class ItemviewActivity extends ActionBarActivity {
         } else {
             loadData(itemId);
         }
-	}
+    }
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		StorageUtils.checkStorageAvailability(this);
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StorageUtils.checkStorageAvailability(this);
+    }
 
-	}
-
-	@Override
-	public void onStop() {
-		super.onStop();
+    @Override
+    public void onStop() {
+        super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Stopping Activity");
-	}
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Stopping Activity");
+    }
 
-    private void loadData(long itemId) {
+    private synchronized void loadData(long itemId) {
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
         AsyncTask<Long, Void, FeedItem> loadTask = new AsyncTask<Long, Void, FeedItem>() {
 
             @Override
             protected FeedItem doInBackground(Long... longs) {
                 return DBReader.getFeedItem(ItemviewActivity.this, longs[0]);
+            }
+
+            @Override
+            protected void onCancelled(FeedItem feedItem) {
+                super.onCancelled(feedItem);
+                if (AppConfig.DEBUG) Log.d(TAG, "loadTask was cancelled");
             }
 
             @Override
@@ -97,63 +113,70 @@ public class ItemviewActivity extends ActionBarActivity {
             }
         };
         loadTask.execute(itemId);
+        currentLoadTask = loadTask;
     }
 
-	private void populateUI() {
-		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-		setContentView(R.layout.feeditemview);
-		TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
-		TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
-		setTitle(item.getFeed().getTitle());
+    private synchronized void populateUI() {
+        if (!guiInitialized) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            setContentView(R.layout.feeditemview);
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager
+                    .beginTransaction();
+            ItemDescriptionFragment fragment = ItemDescriptionFragment
+                    .newInstance(item, false);
+            fragmentTransaction.replace(R.id.description_fragment, fragment);
+            fragmentTransaction.commit();
+        }
+        TextView txtvTitle = (TextView) findViewById(R.id.txtvItemname);
+        TextView txtvPublished = (TextView) findViewById(R.id.txtvPublished);
+        setTitle(item.getFeed().getTitle());
 
-		txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
-				.getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
-				DateFormat.SHORT));
-		txtvTitle.setText(item.getTitle());
+        txtvPublished.setText(DateUtils.formatSameDayTime(item.getPubDate()
+                .getTime(), System.currentTimeMillis(), DateFormat.MEDIUM,
+                DateFormat.SHORT));
+        txtvTitle.setText(item.getTitle());
 
-		FragmentManager fragmentManager = getSupportFragmentManager();
-		FragmentTransaction fragmentTransaction = fragmentManager
-				.beginTransaction();
-		ItemDescriptionFragment fragment = ItemDescriptionFragment
-				.newInstance(item, false);
-		fragmentTransaction.replace(R.id.description_fragment, fragment);
-		fragmentTransaction.commit();
-	}
+        guiInitialized = true;
+    }
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         if (item != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feeditem, menu);
-            return true;
-        } else {
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (item == null) {
             return false;
         }
-	}
+        try {
+            if (!FeedItemMenuHandler.onMenuItemClicked(this,
+                    menuItem.getItemId(), item)) {
+                switch (menuItem.getItemId()) {
+                    case android.R.id.home:
+                        finish();
+                        break;
+                }
+            }
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
+                    e.getMessage());
+        }
+        supportInvalidateOptionsMenu();
+        return true;
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem menuItem) {
-		try {
-			if (!FeedItemMenuHandler.onMenuItemClicked(this,
-					menuItem.getItemId(), item)) {
-				switch (menuItem.getItemId()) {
-				case android.R.id.home:
-					finish();
-					break;
-				}
-			}
-		} catch (DownloadRequestException e) {
-			e.printStackTrace();
-			DownloadRequestErrorDialogCreator.newRequestErrorDialog(this,
-					e.getMessage());
-		}
-		supportInvalidateOptionsMenu();
-		return true;
-	}
-
-	@Override
-	public boolean onPrepareOptionsMenu(final Menu menu) {
-		return FeedItemMenuHandler.onPrepareMenu(
+    @Override
+    public boolean onPrepareOptionsMenu(final Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        FeedItemMenuHandler.onPrepareMenu(
                 new FeedItemMenuHandler.MenuInterface() {
 
                     @Override
@@ -161,7 +184,8 @@ public class ItemviewActivity extends ActionBarActivity {
                         menu.findItem(id).setVisible(visible);
                     }
                 }, item, true, QueueAccess.NotInQueueAccess());
-	}
+        return true;
+    }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 

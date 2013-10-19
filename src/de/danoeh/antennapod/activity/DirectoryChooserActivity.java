@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.FileObserver;
+import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.Menu;
@@ -280,6 +281,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 		menu.findItem(R.id.new_folder_item)
 				.setVisible(isValidFile(selectedDir));
 		return true;
@@ -287,7 +289,8 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = new MenuInflater(this);
+        super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.directory_chooser, menu);
 		return true;
 	}
@@ -296,7 +299,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			finish();
+			NavUtils.navigateUpFromSameTask(this);
 			return true;
 		case R.id.new_folder_item:
 			openNewFolderDialog();

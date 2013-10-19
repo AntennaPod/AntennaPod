@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Каналы</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Новые</string>
   <string name="waiting_list_label">В ожидании</string>
   <string name="settings_label">Настройки</string>
-  <string name="add_new_feed_label">Добавить канал</string>
+  <string name="add_new_feed_label">Добавить подкаст</string>
   <string name="downloads_label">Загрузки</string>
   <string name="cancel_download_label">Отменить загрузку</string>
   <string name="download_log_label">Журнал загрузок</string>
   <string name="playback_history_label">История воспроизведения</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">Войти на gpodder.net</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Открыть в браузере</string>
   <string name="copy_url_label">Скопировать ссылку</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Отмена</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Язык</string>
+  <string name="podcast_settings_label">Настройки</string>
   <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Описание</string>
+  <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Следующий эпизод:\u0020</string>
   <string name="episodes_suffix">\u0020 выпуск(ов)</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
@@ -40,9 +44,14 @@
   <string name="processing_label">Обработка</string>
   <string name="loading_label">Загрузка...</string>
   <string name="image_of_prefix">Изображение:\u0020</string>
+  <string name="save_username_password_label">Сохранить имя пользователя и пароль</string>
+  <string name="close_label">Закрыть</string>
+  <string name="retry_label">Повторить</string>
+  <string name="auto_download_label">Добавиить в автозагрузки</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
-  <string name="txtvfeedurl_label">Введите URL канала:</string>
+  <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
+  <string name="podcastdirectories_label">Катологи подкастов</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить все как прочитанное</string>
   <string name="show_info_label">Показать информацию</string>
@@ -50,6 +59,7 @@
   <string name="share_link_label">Поделиться ссылкой на сайт</string>
   <string name="share_source_label">Поделиться ссылкой на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
+  <string name="feed_remover_msg">Удаление канала</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <string name="play_label">Воспроизвести</string>
@@ -85,6 +95,7 @@
   <string name="download_error_malformed_url">Некорректная ссылка</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
   <string name="download_error_request_error">Ошибка запроса</string>
+  <string name="download_error_db_access">Ошибка доступа к базе данных</string>
   <string name="downloads_left">Осталось\u0020загрузок</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_report_content">%1$d загрузок завершено, %2$d не удалось</string>
@@ -114,6 +125,8 @@
   <string name="organize_queue_label">Упорядочить очередь</string>
   <string name="undo">Отмена</string>
   <string name="removed_from_queue">Удален</string>
+  <string name="move_to_top_label">Переместить вверх</string>
+  <string name="move_to_bottom_label">Переместить вниз</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Авторизоваться в Flattr</string>
   <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где вам нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
@@ -130,6 +143,10 @@
   <string name="flattr_click_success">Поддержка через Flattr прошла успешно!</string>
   <string name="flattring_label">Отправляется запрос на Flattr</string>
   <!--Variable Speed-->
+  <string name="download_plugin_label">Загрузить плагин</string>
+  <string name="no_playback_plugin_title">Плагин не установлен</string>
+  <string name="no_playback_plugin_msg">Для изменения скорости воспроизведения должна быть установлена сторонняя библиотека.⏎\n⏎\nНажмите «Загрузить плагин», чтобы загрузить беспалтный плагин из Play Store⏎\n⏎\nЛюбые проблемы при использовании плагина не являются ответственностью AntennaPod и о них следует сообщать владельцу плагину.</string>
+  <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>
   <string name="no_feeds_label">Вы еще не подписаны ни на один канал</string>
@@ -137,6 +154,8 @@
   <string name="other_pref">Прочее</string>
   <string name="about_pref">О программе</string>
   <string name="queue_label">Очередь</string>
+  <string name="services_label">Сервисы</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Остановить воспроизведение, когда наушники отсоединены</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
   <string name="playback_pref">Воспроизведение</string>
@@ -173,6 +192,16 @@
   <string name="pref_update_interval_hours_plural">Часы</string>
   <string name="pref_update_interval_hours_singular">Час</string>
   <string name="pref_update_interval_hours_manual">Вручную</string>
+  <string name="pref_gpodnet_authenticate_title">Вход в gpodder.net</string>
+  <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации ваших подписок.</string>
+  <string name="pref_gpodnet_logout_title">Выход из gpodder.net</string>
+  <string name="pref_gpodnet_logout_toast">Выход произведен успешно</string>
+  <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
+  <string name="pref_playback_speed_title">Скорость воспроизведения</string>
+  <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
+  <string name="pref_gpodnet_sethostname_title">Задать имя хоста</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Использовать хост по умолчанию</string>
   <!--Search-->
   <string name="search_hint">Поиск каналов или выпусков</string>
   <string name="found_in_shownotes_label">Найдено в описании выпуска</string>
@@ -184,7 +213,7 @@
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Также возможен импорт файла OPML. OPML файлы позволяют переносить ваши подписки из одного приложения в другое:</string>
+  <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
   <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить каталог указанный ниже и нажать кнопку чтобы начать процесс импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
@@ -215,8 +244,36 @@
   <string name="miro_search_hint">Поиск в Miro</string>
   <string name="popular_label">Популярные</string>
   <string name="best_rating_label">С высоким рейтингом</string>
-  <string name="add_feed_label">Добавить канал</string>
+  <string name="add_feed_label">Добавить подкаст</string>
   <string name="miro_feed_added">Канал добавляется</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">КАТЕГОРИИ</string>
+  <string name="gpodnet_toplist_header">ТОП ПОДКАСТОВ</string>
+  <string name="gpodnet_suggestions_header">ПРЕДПОЛОЖЕНИЯ</string>
+  <string name="gpodnet_search_hint">Искать на gpodder.net</string>
+  <string name="gpodnetauth_login_title">Войти</string>
+  <string name="gpodnetauth_login_descr">Добро пожаловать на процесс авторизации на gpodder.net. Сначала введите вашу информацию для авторизации:</string>
+  <string name="gpodnetauth_login_butLabel">Войти</string>
+  <string name="gpodnetauth_login_register">Если у вас ещё нет аккаунта, то вы можете создать его здесь:⏎\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Имя пользователя</string>
+  <string name="password_label">Пароль</string>
+  <string name="gpodnetauth_device_title">Выбор устройства</string>
+  <string name="gpodnetauth_device_descr">Создайте новое устройство, чтобы использовать ваш аккаунта на gpodder.net или выберите существующее:</string>
+  <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
+  <string name="gpodnetauth_device_caption">Название устройства</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Создайте новое устройство</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Выберите существующее устройство:</string>
+  <string name="gpodnetauth_device_errorEmpty">Поле с Device ID не должно быть пустым</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">Device ID уже используется</string>
+  <string name="gpodnetauth_device_butChoose">Выберите</string>
+  <string name="gpodnetauth_finish_title">Авторизация успешна!</string>
+  <string name="gpodnetauth_finish_descr">Поздравляем! Ваш аккаунт на gpodder.net теперь связан с вашим устройством. AntennaPod теперь сможет автоматически синхронизировать ваши подписки с аккаунтом gpodder.net</string>
+  <string name="gpodnetauth_finish_butsyncnow">Начать синхронизацию сейчас</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Перейти на главный экран</string>
+  <string name="gpodnetsync_auth_error_title">Ошибка авторизации на gpodder.net</string>
+  <string name="gpodnetsync_auth_error_descr">Неправильное имя пользователя или пароль</string>
+  <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
+  <string name="gpodnetsync_error_descr">Произошла ошибка во время синзронизации:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Выбранная папка:</string>
   <string name="create_folder_label">Создать папку</string>
@@ -229,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">Папка не пуста</string>
   <string name="folder_not_empty_dialog_msg">Выбранная папка не пуста. Загрузки и прочие файлы будут сохранены в эту папку. Продолжить?</string>
   <string name="set_to_default_folder">Выберите папку по умолчанию</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Пауза вместо уменьшения громкости, когда другое приложение проигрывает звуки</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Пауза при смене аудиофокуса</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Подписаться</string>
+  <string name="subscribed_label">Подписка оформлена</string>
+  <string name="downloading_label">Загрузка...</string>
 </resources>

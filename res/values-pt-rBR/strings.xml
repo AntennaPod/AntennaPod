@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Novo</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Configurações</string>
-  <string name="add_new_feed_label">Adicionar um novo Feed</string>
+  <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Cancelar Download</string>
   <string name="download_log_label">Log de Downloads</string>
   <string name="playback_history_label">Histórico de reprodução</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
   <string name="copy_url_label">Copiar URL</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Cancelar</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
+  <string name="podcast_settings_label">Configurações</string>
   <string name="cover_label">Capa</string>
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Um erro ocorreu:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Não há dispositivos de armazenamento externo disponíveis. Por favor, certifique-se de que um dispositivo de armazenamento externo está montado para que o aplicativo possa funcionar adequadamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas do podcast</string>
+  <string name="description_label">Descrição</string>
   <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
   <string name="episodes_suffix">\u0020episódios</string>
   <string name="published_prefix">Publicado:\u0020</string>
@@ -40,9 +44,14 @@
   <string name="processing_label">Processando</string>
   <string name="loading_label">Carregando...</string>
   <string name="image_of_prefix">Imagem de:\u0020</string>
+  <string name="save_username_password_label">Salvar nome do usuário e senha</string>
+  <string name="close_label">Fechar</string>
+  <string name="retry_label">Tentar novamente</string>
+  <string name="auto_download_label">Incluir em downloads automáticos</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL do Feed</string>
-  <string name="txtvfeedurl_label">Informe a URL do Feed aqui:</string>
+  <string name="txtvfeedurl_label">Adicionar podcast por URL</string>
+  <string name="podcastdirectories_label">Diretórios de Podcast</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
@@ -50,6 +59,7 @@
   <string name="share_link_label">Compartilhar link do site</string>
   <string name="share_source_label">Compartilhar link do feed</string>
   <string name="feed_delete_confirmation_msg">Por favor confirme que você deseja apagar este feed e TODOS os episódios que você fez download deste feed.</string>
+  <string name="feed_remover_msg">Removendo feed</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Reproduzir</string>
@@ -85,6 +95,7 @@
   <string name="download_error_malformed_url">URL inválida</string>
   <string name="download_error_io_error">Erro de IO</string>
   <string name="download_error_request_error">Erro de requisição</string>
+  <string name="download_error_db_access">Erro no acesso ao Banco de dados</string>
   <string name="downloads_left">\u0020Downloads faltando</string>
   <string name="download_notification_title">Baixando dados do podcast</string>
   <string name="download_report_content">%1$d downloads com sucesso, %2$d falharam</string>
@@ -114,6 +125,8 @@
   <string name="organize_queue_label">Organizar fila</string>
   <string name="undo">Desfazer</string>
   <string name="removed_from_queue">Item removido</string>
+  <string name="move_to_top_label">Mover para o topo</string>
+  <string name="move_to_bottom_label">Mover para o fim</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Logar no Flattr</string>
   <string name="flattr_auth_explanation">Pressione o botão abaixo para iniciar o processo de autenticação. Você será direcionado para a tela de login do Flattr, que pedirá autorização para que o AntennaPod utilize o Flattr. Após conceder a permissão, você retornará a esta tela automaticamente.</string>
@@ -130,6 +143,10 @@
   <string name="flattr_click_success">Registrado no Flattr com sucesso!</string>
   <string name="flattring_label">Registrando no Flattr</string>
   <!--Variable Speed-->
+  <string name="download_plugin_label">Download Plugin</string>
+  <string name="no_playback_plugin_title">Plugin Não Instalado</string>
+  <string name="no_playback_plugin_msg">Para ajustar a velocidade de reprodução, uma biblioteca de terceiros deve ser instalada.\n\nToque em \'Download Plugin\' para baixar um plugin grátis na Play Store.\n\nQuaisquer problemas encontrados usando esse plugin não é responsabilidade do AntennaPod e deve ser reportado ao proprietário do plugin.</string>
+  <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista.</string>
   <string name="no_feeds_label">Você ainda não assinou nenhum feed.</string>
@@ -137,6 +154,8 @@
   <string name="other_pref">Outros</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
+  <string name="services_label">Serviços</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Interromper a reprodução quando o fone de ouvido for desconectado</string>
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
   <string name="playback_pref">Reprodução</string>
@@ -173,6 +192,16 @@
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_gpodnet_authenticate_title">Login</string>
+  <string name="pref_gpodnet_authenticate_sum">Faça o login na sua conta gpodder.net para sincronizar suas subscrições.</string>
+  <string name="pref_gpodnet_logout_title">Sair</string>
+  <string name="pref_gpodnet_logout_toast">Saiu com sucesso</string>
+  <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
+  <string name="pref_playback_speed_title">Velocidades de Reprodução</string>
+  <string name="pref_playback_speed_sum">Personalize as velocidades disponíveis para reprodução de áudio.</string>
+  <string name="pref_gpodnet_sethostname_title">Configurar hostname</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Usar host padrão</string>
   <!--Search-->
   <string name="search_hint">Procurar por Feeds ou Episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas do podcast</string>
@@ -184,7 +213,7 @@
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Você também pode importar um arquivo OPML. Arquivos OPML permitem que você mova seus podcasts de um aplicativo para outro.</string>
+  <string name="opml_import_txtv_button_lable">Arquivos OPML permitem que você mova seus podcasts de um gestor de podcasts para outro.</string>
   <string name="opml_import_explanation">Para importar um arquivo OPML, você precisa armazená-lo neste diretório e pressionar o botão abaixo para iniciar o processo de importação.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação de OPML</string>
@@ -201,7 +230,7 @@
   <string name="opml_export_success_title">OMPL exportado com sucesso</string>
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
-  <string name="set_sleeptimer_label">Configura Temporizador</string>
+  <string name="set_sleeptimer_label">Configura desligamento automático</string>
   <string name="disable_sleeptimer_label">Desabilita temporizador</string>
   <string name="enter_time_here_label">Informe a duração</string>
   <string name="sleep_timer_label">Temporizador</string>
@@ -215,8 +244,35 @@
   <string name="miro_search_hint">Busca no Guia Miro</string>
   <string name="popular_label">Popular</string>
   <string name="best_rating_label">Melhor avaliação</string>
-  <string name="add_feed_label">Adicionar feed</string>
+  <string name="add_feed_label">Adicionar podcast</string>
   <string name="miro_feed_added">Feed sendo adicionado</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">CATEGORIAS</string>
+  <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+  <string name="gpodnet_suggestions_header">SUGESTÕES</string>
+  <string name="gpodnetauth_login_title">Login</string>
+  <string name="gpodnetauth_login_descr">Bem-vindo ao processo de login gpodder.net. Primeiramente, digite suas informações:</string>
+  <string name="gpodnetauth_login_butLabel">Login</string>
+  <string name="gpodnetauth_login_register">Se ainda não possui uma conta, você pode criar uma aqui:\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Nome do usuário</string>
+  <string name="password_label">Senha</string>
+  <string name="gpodnetauth_device_title">Seleção de dispositivo</string>
+  <string name="gpodnetauth_device_descr">Crie um novo dispositivo para usar em sua conta gpodder.net ou escolha um já existente:</string>
+  <string name="gpodnetauth_device_deviceID">ID do dispositivo:\u0020</string>
+  <string name="gpodnetauth_device_caption">Descrição do dispositivo</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Criar novo dispositivo</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Escolher dispositivo existente:</string>
+  <string name="gpodnetauth_device_errorEmpty">ID do dispostivo não pode estar em branco</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">ID do dispositivo já está em uso</string>
+  <string name="gpodnetauth_device_butChoose">Escolher</string>
+  <string name="gpodnetauth_finish_title">Login realizado com sucesso!</string>
+  <string name="gpodnetauth_finish_descr">Parabéns! Sua conta gpodder.net agora está ligada ao seu dispositivo. AntennaPod irá, daqui em diante, sincronizar automaticamente subscrições do seu dispositivo com sua conta gpodder.net.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Iniciar sincronização agora</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Ir para tela principal</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net: Erro de autenticação</string>
+  <string name="gpodnetsync_auth_error_descr">Nome do usuário ou senha incorreta</string>
+  <string name="gpodnetsync_error_title">gpodder.net: Erro de sincronização</string>
+  <string name="gpodnetsync_error_descr">Ocorreu um erro durante a sincronização:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Selecionar pasta:</string>
   <string name="create_folder_label">Criar pasta</string>
@@ -229,4 +285,10 @@
   <string name="folder_not_empty_dialog_title">A pasta não está vazia</string>
   <string name="folder_not_empty_dialog_msg">A pasta que você selecionou não está vazia. Os downloads de mídia e outros arquivos serão colocados diretamente nesta pasta. Deseja mesmo continuar?</string>
   <string name="set_to_default_folder">Escolher pasta padrão</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de baixar o volume quando outro aplicativo reproduzir sons</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Pausar em interrupções</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Subscrever</string>
+  <string name="subscribed_label">Subscrito</string>
+  <string name="downloading_label">Baixando...</string>
 </resources>

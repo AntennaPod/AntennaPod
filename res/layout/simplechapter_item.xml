@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingBottom="8dp" >
+    android:paddingBottom="12dp"
+    android:paddingTop="12dp">
 
     <TextView
         android:id="@+id/txtvStart"
@@ -11,7 +12,8 @@
         android:layout_alignParentRight="true"
         android:layout_centerVertical="true"
         android:layout_margin="8dp"
-        android:textColor="?android:attr/textColorSecondary" />
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"/>
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -19,9 +21,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
         android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
+        android:padding="8dp"
         android:layout_toLeftOf="@id/txtvStart"
-        android:textStyle="bold" />
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_small"/>
 
     <TextView
         android:id="@+id/txtvLink"
@@ -34,6 +37,7 @@
         android:layout_toLeftOf="@id/txtvStart"
         android:focusable="false"
         android:focusableInTouchMode="false"
+        android:visibility="gone"
         android:maxLines="2" />
 
 </RelativeLayout>

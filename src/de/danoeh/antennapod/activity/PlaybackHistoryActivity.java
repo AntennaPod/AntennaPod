@@ -3,6 +3,7 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -20,6 +21,7 @@ public class PlaybackHistoryActivity extends ActionBarActivity {
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
 		MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.clear_history_item, Menu.NONE,
                 R.string.clear_history_label),
 				MenuItem.SHOW_AS_ACTION_IF_ROOM);
@@ -30,10 +32,7 @@ public class PlaybackHistoryActivity extends ActionBarActivity {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		switch (item.getItemId()) {
 		case android.R.id.home:
-			Intent intent = new Intent(this, MainActivity.class);
-			intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-					| Intent.FLAG_ACTIVITY_NEW_TASK);
-			startActivity(intent);
+            finish();
 			return true;
 		case R.id.clear_history_item:
 			DBWriter.clearPlaybackHistory(this);

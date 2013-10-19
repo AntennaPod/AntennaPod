@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        android:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label"
         android:visible="true">
     </item>
     <item
         android:id="@+id/support_item"
-        android:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>
     <item
         android:id="@+id/share_link_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/share_link_label">
     </item>
     <item
         android:id="@+id/share_source_item"
-        android:showAsAction="collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/share_source_label">
     </item>
 

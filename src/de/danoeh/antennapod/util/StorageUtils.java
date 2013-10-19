@@ -5,6 +5,7 @@ import java.io.File;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.StatFs;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
@@ -51,8 +52,15 @@ public class StorageUtils {
 	public static long getFreeSpaceAvailable() {
 		StatFs stat = new StatFs(UserPreferences.getDataFolder(
 				PodcastApp.getInstance(), null).getAbsolutePath());
-		long availableBlocks = stat.getAvailableBlocks();
-		long blockSize = stat.getBlockSize();
+        long availableBlocks;
+        long blockSize;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR2) {
+		    availableBlocks = stat.getAvailableBlocksLong();
+            blockSize = stat.getBlockSizeLong();
+        } else {
+            availableBlocks = stat.getAvailableBlocks();
+            blockSize = stat.getBlockSize();
+        }
 		return availableBlocks * blockSize;
 	}
 }

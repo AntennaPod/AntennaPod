@@ -222,13 +222,15 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
-		MenuInflater inflater = new MenuInflater(this);
+        super.onCreateOptionsMenu(menu);
+		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.mediaplayer, menu);
 		return true;
 	}
 
 	@Override
 	public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
 		Playable media = controller.getMedia();
 
 		menu.findItem(R.id.support_item).setVisible(

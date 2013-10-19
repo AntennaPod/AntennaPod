@@ -12,6 +12,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -49,6 +50,8 @@ public class FeedItemlistActivity extends ActionBarActivity {
     private ItemlistFragment filf;
     private ExternalPlayerFragment externalPlayerFragment;
 
+    private AsyncTask<?, ?, ?> currentLoadTask;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -70,7 +73,10 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
     }
 
-    private void loadData(long id) {
+    private synchronized void loadData(long id) {
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
             @Override
@@ -78,6 +84,12 @@ public class FeedItemlistActivity extends ActionBarActivity {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Loading feed data in background");
                 return DBReader.getFeed(FeedItemlistActivity.this, longs[0]);
+            }
+
+            @Override
+            protected void onCancelled(Feed feed) {
+                super.onCancelled(feed);
+                if (AppConfig.DEBUG) Log.d(TAG, "load task was cancelled");
             }
 
             @Override
@@ -103,6 +115,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
                 }
             }
         };
+        currentLoadTask = loadTask;
         loadTask.execute(id);
     }
 
@@ -113,7 +126,16 @@ public class FeedItemlistActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onStop() {
+        super.onStop();
+        if (currentLoadTask != null) {
+            currentLoadTask.cancel(true);
+        }
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
+        super.onCreateOptionsMenu(menu);
         if (feed != null) {
             TypedArray drawables = obtainStyledAttributes(new int[]{R.attr.action_search});
             MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label)
@@ -130,15 +152,15 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
             searchView.setSearchableInfo(
                     searchManager.getSearchableInfo(getComponentName()));
-            return FeedMenuHandler
-                    .onCreateOptionsMenu(new MenuInflater(this), menu);
-        } else {
-            return false;
+            FeedMenuHandler
+                    .onCreateOptionsMenu(getMenuInflater(), menu);
         }
+        return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
         return FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
     }
 
@@ -173,9 +195,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
                         conDialog.createNewDialog().show();
                         break;
                     case android.R.id.home:
-                        Intent intent = new Intent(this, MainActivity.class);
-                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                        startActivity(intent);
+                        NavUtils.navigateUpFromSameTask(this);
                         break;
                 }
             }

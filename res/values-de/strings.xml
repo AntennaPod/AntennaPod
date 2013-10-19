@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Neu</string>
   <string name="waiting_list_label">Warteliste</string>
   <string name="settings_label">Einstellungen</string>
-  <string name="add_new_feed_label">Feed hinzufügen</string>
+  <string name="add_new_feed_label">Podcast hinzufügen</string>
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Download abbrechen</string>
   <string name="download_log_label">Download Log</string>
   <string name="playback_history_label">Zuletzt gespielt</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net Anmeldung</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Im Browser öffnen</string>
   <string name="copy_url_label">URL kopieren</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Abbrechen</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Sprache</string>
+  <string name="podcast_settings_label">Einstellungen</string>
   <string name="cover_label">Cover</string>
   <string name="error_label">Fehler</string>
   <string name="error_msg_prefix">Ein Fehler ist aufgetreten:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Der externe Speicher ist nicht verfügbar. Bitte stelle sicher, dass das externe Speichermedium eingelegt ist, damit die Anwendung funktioniert.</string>
   <string name="chapters_label">Kapitel</string>
   <string name="shownotes_label">Notizen</string>
+  <string name="description_label">Beschreibung</string>
   <string name="most_recent_prefix">Letzte Episode:\u0020</string>
   <string name="episodes_suffix">\u0020Episoden</string>
   <string name="published_prefix">Veröffentlicht:\u0020</string>
@@ -40,10 +44,14 @@
   <string name="processing_label">Verarbeite</string>
   <string name="loading_label">Lade ...</string>
   <string name="image_of_prefix">Bild von:\u0020</string>
+  <string name="save_username_password_label">Benutzername und Password merken</string>
   <string name="close_label">Schließen</string>
+  <string name="retry_label">Erneut versuchen</string>
+  <string name="auto_download_label">Automatisch herunterladen</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
-  <string name="txtvfeedurl_label">Gib die URL des Feeds hier ein:</string>
+  <string name="txtvfeedurl_label">Podcast per URL hinzufügen</string>
+  <string name="podcastdirectories_label">Podcast-Verzeichnisse</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markiere alle als gelesen</string>
   <string name="show_info_label">Informationen anzeigen</string>
@@ -51,6 +59,7 @@
   <string name="share_link_label">Webseiten-Link teilen</string>
   <string name="share_source_label">Feed-Link teilen</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
+  <string name="feed_remover_msg">Entferne Feed</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
@@ -86,6 +95,7 @@
   <string name="download_error_malformed_url">Fehler in URL</string>
   <string name="download_error_io_error">IO Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
+  <string name="download_error_db_access">Datenbankzugriffsfehler</string>
   <string name="downloads_left">\u0020Downloads übrig</string>
   <string name="download_notification_title">Lade Podcast-Daten</string>
   <string name="download_report_content">%1$d Downloads erfolgreich, %2$d fehlgeschlagen</string>
@@ -115,6 +125,8 @@
   <string name="organize_queue_label">Abspielliste organisieren</string>
   <string name="undo">Rückgängig</string>
   <string name="removed_from_queue">Element entfernt</string>
+  <string name="move_to_top_label">Zum Anfang verschieben</string>
+  <string name="move_to_bottom_label">Zum Ende verschieben</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
@@ -142,6 +154,8 @@
   <string name="other_pref">Anderes</string>
   <string name="about_pref">Über</string>
   <string name="queue_label">Abspielliste</string>
+  <string name="services_label">Dienste</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe wenn der Kopfhörer entfernt worden ist.</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode  wenn die vorherige Episode endet</string>
   <string name="playback_pref">Wiedergabe</string>
@@ -178,8 +192,16 @@
   <string name="pref_update_interval_hours_plural">Stunden</string>
   <string name="pref_update_interval_hours_singular">Stunde</string>
   <string name="pref_update_interval_hours_manual">Manuell</string>
+  <string name="pref_gpodnet_authenticate_title">Anmelden</string>
+  <string name="pref_gpodnet_authenticate_sum">Melde dich mit deinem gpodder.net profil an um deine Abonnements zu synchronisieren</string>
+  <string name="pref_gpodnet_logout_title">Abmelden</string>
+  <string name="pref_gpodnet_logout_toast">Abmeldung war erfolgreich</string>
+  <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net profils</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
+  <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>
@@ -191,7 +213,7 @@
   <string name="search_label">Suche</string>
   <string name="found_in_title_label">In Titel gefunden</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Du kannst auch eine OPML Datei importieren. Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen.</string>
+  <string name="opml_import_txtv_button_lable">Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen</string>
   <string name="opml_import_explanation">Um eine OPML Datei zu importieren, musst du diese im folgenden Ordner platzieren und den unteren Button antippen, um den Import Prozess zu starten.</string>
   <string name="start_import_label">Import starten</string>
   <string name="opml_import_label">OPML Import</string>
@@ -222,8 +244,36 @@
   <string name="miro_search_hint">Suche im Miro Guide</string>
   <string name="popular_label">Beliebt</string>
   <string name="best_rating_label">Beste Bewertung</string>
-  <string name="add_feed_label">Feed hinzufügen</string>
+  <string name="add_feed_label">Podcast hinzufügen</string>
   <string name="miro_feed_added">Feed wird hinzugefügt</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">KATEGORIEN</string>
+  <string name="gpodnet_toplist_header">BESTE PODCASTS</string>
+  <string name="gpodnet_suggestions_header">VORSCHLÄGE</string>
+  <string name="gpodnet_search_hint">gpodder.net durchsuchen</string>
+  <string name="gpodnetauth_login_title">Anmeldung</string>
+  <string name="gpodnetauth_login_descr">Willkommen beim gpodder.net Anmeldeprozess. Gib zuerst deine Anmeldeinformationen ein:</string>
+  <string name="gpodnetauth_login_butLabel">Anmelden</string>
+  <string name="gpodnetauth_login_register">Falls du noch kein gpodder.net profil hast, kannst du hier eines erstellen:\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Benutzername</string>
+  <string name="password_label">Passwort</string>
+  <string name="gpodnetauth_device_title">Geräte-Auswahl</string>
+  <string name="gpodnetauth_device_descr">Erstelle ein neues Gerät für dein gpodder.net profil oder wähle ein bereits vorhandenes:</string>
+  <string name="gpodnetauth_device_deviceID">Geräte-ID:\u0020</string>
+  <string name="gpodnetauth_device_caption">Beschreibung</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Neues Gerät erstellen</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Vorhandenes Gerät auswählen</string>
+  <string name="gpodnetauth_device_errorEmpty">Geräte-ID darf nicht leer sein</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">Geräte-ID wird bereits verwendet</string>
+  <string name="gpodnetauth_device_butChoose">Auswählen</string>
+  <string name="gpodnetauth_finish_title">Anmeldung erfolgreich!</string>
+  <string name="gpodnetauth_finish_descr">Glückwunsch! Dein gpodder.net profil ist jetzt mit deinem Gerät verbunden. Von nun an wird AntennaPod automatisch deine Abonnements mit deinem gpodder.net profil synchronisieren.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Jetzt synchronisieren</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Zum Hauptbildschirm zurückkehren</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net Anmeldefehler</string>
+  <string name="gpodnetsync_auth_error_descr">Falscher Benutzername oder falsches Passwort</string>
+  <string name="gpodnetsync_error_title">gpodder.net Synchronisierungsfehler</string>
+  <string name="gpodnetsync_error_descr">Ein Fehler ist beim Synchronisieren aufgetreten:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Ausgewählter Ordner</string>
   <string name="create_folder_label">Neuer Ordner</string>
@@ -236,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pausiere die Wiedergabe anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Abonnieren</string>
+  <string name="subscribed_label">Abonniert</string>
+  <string name="downloading_label">Lade herunter...</string>
 </resources>

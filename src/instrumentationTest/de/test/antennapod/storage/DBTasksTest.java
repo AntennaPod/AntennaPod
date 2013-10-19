@@ -19,6 +19,8 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
+
 /**
  * Test class for DBTasks
  */
@@ -167,6 +169,29 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
+    /**
+     * Reproduces a bug where DBTasks.performAutoCleanup(android.content.Context) would use the ID of the FeedItem in the
+     * call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia. This would cause the wrong item to be deleted.
+     * @throws IOException
+     */
+    public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
+        final Context context = getInstrumentation().getTargetContext();
+        // add feed with no enclosures so that item ID != media ID
+        saveFeedlist(context, 1, 10, false);
+
+        // add candidate for performAutoCleanup
+        List<Feed> feeds = saveFeedlist(getInstrumentation().getTargetContext(), 1, 1, true);
+        FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
+        m.setDownloaded(true);
+        m.setFile_url("file");
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setMedia(m);
+        adapter.close();
+
+        testPerformAutoCleanupShouldNotDeleteBecauseInQueue();
+    }
+
     public void testUpdateFeedNewFeed() {
         final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
@@ -248,5 +273,37 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
+    }
+
+    private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
+        final Context context = getInstrumentation().getTargetContext();
+        UserPreferences.setUpdateInterval(context, expirationTime);
+        Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
+                null, null, null, "feed", null, null, "url", false);
+        feed.setItems(new ArrayList<FeedItem>());
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        adapter.setCompleteFeed(feed);
+        adapter.close();
+
+        assertTrue(feed.getId() != 0);
+        List<Feed> expiredFeeds = DBTasks.getExpiredFeeds(context);
+        assertNotNull(expiredFeeds);
+        if (shouldReturn) {
+            assertTrue(expiredFeeds.size() == 1);
+            assertTrue(expiredFeeds.get(0).getId() == feed.getId());
+        } else {
+            assertTrue(expiredFeeds.isEmpty());
+        }
+    }
+
+    public void testGetExpiredFeedsTestShouldReturn() {
+        final long expirationTime = 1000 * 60 * 60;
+        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime - 1, expirationTime, true);
+    }
+
+    public void testGetExpiredFeedsTestShouldNotReturn() {
+        final long expirationTime = 1000 * 60 * 60;
+        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime / 2, expirationTime, false);
     }
 }

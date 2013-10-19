@@ -4,6 +4,7 @@ import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -17,7 +18,9 @@ import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.QueueAccess;
@@ -64,6 +67,8 @@ public class DBWriter {
 
                 final FeedMedia media = DBReader.getFeedMedia(context, mediaId);
                 if (media != null) {
+                    Log.i(TAG, String.format("Requested to delete FeedMedia [id=%d, title=%s, downloaded=%s",
+                            media.getId(), media.getEpisodeTitle(), String.valueOf(media.isDownloaded())));
                     boolean result = false;
                     if (media.isDownloaded()) {
                         // delete downloaded media file
@@ -173,6 +178,8 @@ public class DBWriter {
                     }
                     adapter.removeFeed(feed);
                     adapter.close();
+
+                    GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                     EventDistributor.getInstance().sendFeedUpdateBroadcast();
                 }
             }
@@ -249,9 +256,7 @@ public class DBWriter {
 
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-
                 adapter.setDownloadStatus(status);
-                cleanupDownloadLog(adapter);
                 adapter.close();
                 EventDistributor.getInstance().sendDownloadLogUpdateBroadcast();
             }
@@ -309,14 +314,7 @@ public class DBWriter {
                 }
                 adapter.close();
                 if (performAutoDownload) {
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
 
             }
@@ -375,13 +373,7 @@ public class DBWriter {
                         }
                     }
                     adapter.close();
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
             }
         });
@@ -448,20 +440,67 @@ public class DBWriter {
                 }
                 adapter.close();
                 if (performAutoDownload) {
-
-                    new Thread() {
-                        @Override
-                        public void run() {
-                            DBTasks.autodownloadUndownloadedItems(context);
-
-                        }
-                    }.start();
+                    DBTasks.autodownloadUndownloadedItems(context);
                 }
             }
         });
 
     }
-
+    
+    /**
+     * Moves the specified item to the top of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param itemId          The item to move to the top of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> moveQueueItemToTop(final Context context, final long itemId, final boolean broadcastUpdate) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                List<Long> queueIdList = DBReader.getQueueIDList(context);
+                int currentLocation = 0;
+                for (long id : queueIdList) {
+                    if (id == itemId) {
+                        moveQueueItemHelper(context, currentLocation, 0, broadcastUpdate);
+                        return;
+                    }
+                    currentLocation++;
+                }
+                Log.e(TAG, "moveQueueItemToTop: item not found");
+            }
+        });
+    }
+    
+    /**
+     * Moves the specified item to the bottom of the queue.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param itemId          The item to move to the bottom of the queue
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> moveQueueItemToBottom(final Context context, final long itemId,
+                                                  final boolean broadcastUpdate) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                List<Long> queueIdList = DBReader.getQueueIDList(context);
+                int currentLocation = 0;
+                for (long id : queueIdList) {
+                    if (id == itemId) {
+                        moveQueueItemHelper(context, currentLocation, queueIdList.size() - 1,
+                                            broadcastUpdate);
+                        return;
+                    }
+                    currentLocation++;
+                }
+                Log.e(TAG, "moveQueueItemToBottom: item not found");
+            }
+        });
+    }
+    
     /**
      * Changes the position of a FeedItem in the queue.
      *
@@ -478,31 +517,48 @@ public class DBWriter {
 
             @Override
             public void run() {
-                final PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
-
-                if (queue != null) {
-                    if (from >= 0 && from < queue.size() && to >= 0
-                            && to < queue.size()) {
-
-                        final FeedItem item = queue.remove(from);
-                        queue.add(to, item);
-
-                        adapter.setQueue(queue);
-                        if (broadcastUpdate) {
-                            EventDistributor.getInstance()
-                                    .sendQueueUpdateBroadcast();
-                        }
-
-                    }
-                } else {
-                    Log.e(TAG, "moveQueueItem: Could not load queue");
-                }
-                adapter.close();
+                moveQueueItemHelper(context, from, to, broadcastUpdate);
             }
         });
+    }
+
+    /**
+     * Changes the position of a FeedItem in the queue.
+     *
+     * This function must be run using the ExecutorService (dbExec).
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param from            Source index. Must be in range 0..queue.size()-1.
+     * @param to              Destination index. Must be in range 0..queue.size()-1.
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
+     */
+    private static void moveQueueItemHelper(final Context context, final int from,
+                                       final int to, final boolean broadcastUpdate) {
+        final PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        final List<FeedItem> queue = DBReader
+                .getQueue(context, adapter);
+
+        if (queue != null) {
+            if (from >= 0 && from < queue.size() && to >= 0
+                    && to < queue.size()) {
+
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+
+                adapter.setQueue(queue);
+                if (broadcastUpdate) {
+                    EventDistributor.getInstance()
+                            .sendQueueUpdateBroadcast();
+                }
+
+            }
+        } else {
+            Log.e(TAG, "moveQueueItemHelper: Could not load queue");
+        }
+        adapter.close();
     }
 
     /**
@@ -618,6 +674,7 @@ public class DBWriter {
                 adapter.setCompleteFeed(feed);
                 adapter.close();
 
+                GpodnetPreferences.addAddedFeed(feed.getDownload_url());
                 EventDistributor.getInstance().sendFeedUpdateBroadcast();
             }
         });
@@ -715,6 +772,44 @@ public class DBWriter {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 adapter.setImage(image);
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Updates download URLs of feeds from a given Map. The key of the Map is the original URL of the feed
+     * and the value is the updated URL
+     */
+    public static Future<?> updateFeedDownloadURLs(final Context context, final Map<String, String> urls) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                for (String key : urls.keySet()) {
+                    if (AppConfig.DEBUG) Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
+
+                    adapter.setFeedDownloadUrl(key, urls.get(key));
+                }
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Saves a FeedPreferences object in the database. The Feed ID of the FeedPreferences-object MUST NOT be 0.
+     *
+     * @param context     Used for opening a database connection.
+     * @param preferences The FeedPreferences object.
+     */
+    public static Future<?> setFeedPreferences(final Context context, final FeedPreferences preferences) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedPreferences(preferences);
                 adapter.close();
             }
         });
