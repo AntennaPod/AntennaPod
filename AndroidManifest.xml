@@ -126,7 +126,8 @@
             android:configChanges="keyboard|orientation"/>
         <activity
             android:name="de.danoeh.antennapod.activity.DownloadActivity"
-            android:label="@string/downloads_label">
+            android:label="@string/downloads_label"
+            android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity" />
