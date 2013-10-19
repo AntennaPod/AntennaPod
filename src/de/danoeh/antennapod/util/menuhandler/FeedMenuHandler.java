@@ -31,7 +31,7 @@ public class FeedMenuHandler {
 
 	public static boolean onPrepareOptionsMenu(Menu menu, Feed selectedFeed) {
         if (selectedFeed == null) {
-            return false;
+            return true;
         }
 
 		if (AppConfig.DEBUG)

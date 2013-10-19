@@ -146,14 +146,15 @@ public class ItemviewActivity extends ActionBarActivity {
         if (item != null) {
             MenuInflater inflater = getMenuInflater();
             inflater.inflate(R.menu.feeditem, menu);
-            return true;
-        } else {
-            return false;
         }
+        return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem menuItem) {
+        if (item == null) {
+            return false;
+        }
         try {
             if (!FeedItemMenuHandler.onMenuItemClicked(this,
                     menuItem.getItemId(), item)) {
@@ -175,7 +176,7 @@ public class ItemviewActivity extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(final Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        return FeedItemMenuHandler.onPrepareMenu(
+        FeedItemMenuHandler.onPrepareMenu(
                 new FeedItemMenuHandler.MenuInterface() {
 
                     @Override
@@ -183,6 +184,7 @@ public class ItemviewActivity extends ActionBarActivity {
                         menu.findItem(id).setVisible(visible);
                     }
                 }, item, true, QueueAccess.NotInQueueAccess());
+        return true;
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

@@ -111,26 +111,18 @@ public class FeedInfoActivity extends ActionBarActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-        if (feed != null) {
-            MenuInflater inflater = getMenuInflater();
-            inflater.inflate(R.menu.feedinfo, menu);
-            return true;
-        } else {
-            return false;
-        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.feedinfo, menu);
+        return true;
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (feed != null) {
         menu.findItem(R.id.support_item).setVisible(
-                feed.getPaymentLink() != null);
-        menu.findItem(R.id.share_link_item).setVisible(feed.getLink() != null);
-            return true;
-        } else {
-            return false;
-        }
+                feed != null && feed.getPaymentLink() != null);
+        menu.findItem(R.id.share_link_item).setVisible(feed != null &&feed.getLink() != null);
+        return true;
     }
 
     @Override
