@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanallar</string>
@@ -8,11 +8,11 @@
   <string name="new_label">Yeni</string>
   <string name="waiting_list_label">Gözləmədə</string>
   <string name="settings_label">Parametrlər</string>
-  <string name="add_new_feed_label">Yeni kanal əlavə et</string>
   <string name="downloads_label">Yükləmələr</string>
   <string name="cancel_download_label">Yükləməyi ləğv et</string>
   <string name="download_log_label">Yükləmə jurnalı</string>
   <string name="playback_history_label">Oynatma tarixiçəsi</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Brauzerdə aç</string>
   <string name="copy_url_label">URLı kopiyala</string>
@@ -25,6 +25,7 @@
   <string name="cancel_label">Ləğv et</string>
   <string name="author_label">Müəlif</string>
   <string name="language_label">Dil</string>
+  <string name="podcast_settings_label">Parametrlər</string>
   <string name="cover_label">Üz:</string>
   <string name="error_label">Xəta</string>
   <string name="error_msg_prefix">Xəta baş verdi:</string>
@@ -40,9 +41,9 @@
   <string name="processing_label">Hazırlaşma</string>
   <string name="loading_label">Yükləmə...</string>
   <string name="image_of_prefix">Şəkil:\u0020</string>
+  <string name="close_label">Bağla</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Kanalın URLı</string>
-  <string name="txtvfeedurl_label">Kanalın URLını yaz:</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
@@ -130,6 +131,8 @@
   <string name="flattr_click_success">Flattrma uğurludur</string>
   <string name="flattring_label">Flattrləmə</string>
   <!--Variable Speed-->
+  <string name="download_plugin_label">Plagin yüklə</string>
+  <string name="no_playback_plugin_title">Plagin yüklü deyil</string>
   <!--Empty list labels-->
   <string name="no_items_label">Siyahıda heç nə yoxdur</string>
   <string name="no_feeds_label">Hələ heç bir kanala yazilmadınız</string>
@@ -137,6 +140,7 @@
   <string name="other_pref">Başqa</string>
   <string name="about_pref">Proqram haqqinda</string>
   <string name="queue_label">Növbə</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Qulaqliqı ayiranda oynatma dayanacağ</string>
   <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
   <string name="playback_pref">Oynatma</string>
@@ -184,7 +188,6 @@
   <string name="search_label">Axtar</string>
   <string name="found_in_title_label">Başlığda tapıldı</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Ya da OPML faylı idxal edə bilərsiniz. OPML fayl vasitəsiilə siz öz podkastlarınızı başqa podcast menecerə köcürə bilərsiniz:</string>
   <string name="opml_import_explanation">OPML faylın idxalı üçün onu aşağıdakı qovluqa yerləşdirin və idxal prosesini başlamaq üçün düyməyi basın.</string>
   <string name="start_import_label">İdxalı başla</string>
   <string name="opml_import_label">OPML idxalı</string>
@@ -215,8 +218,9 @@
   <string name="miro_search_hint">MiroGuide\'da axtar</string>
   <string name="popular_label">Populyar</string>
   <string name="best_rating_label">Ən reytinqli</string>
-  <string name="add_feed_label">Kanal əlavə et</string>
   <string name="miro_feed_added">Kanal əlavə olundu</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_toplist_header">TOP PODKASTLAR</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Seçilən qovluq:</string>
   <string name="create_folder_label">Qovluqu yarat</string>
@@ -229,4 +233,6 @@
   <string name="folder_not_empty_dialog_title">Qovluq boş deyil</string>
   <string name="folder_not_empty_dialog_msg">Seçilən qovluq boş deyil. Mediya yükləmələr və başka fayllar bu qovluqa yazılacaqlar. Necə olsa davam olsunmu?</string>
   <string name="set_to_default_folder">Başlanğıc qovluqu seç</string>
+  <!--Online feed view-->
+  <string name="downloading_label">Yükləmə...</string>
 </resources>

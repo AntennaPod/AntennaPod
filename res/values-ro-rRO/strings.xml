@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeduri</string>
@@ -8,11 +8,12 @@
   <string name="new_label">Nou</string>
   <string name="waiting_list_label">Listă de așteptare</string>
   <string name="settings_label">Setări</string>
-  <string name="add_new_feed_label">Adaugă feed</string>
   <string name="downloads_label">Descărcări</string>
   <string name="cancel_download_label">Anulează descărcare</string>
   <string name="download_log_label">Istoric descărcări</string>
   <string name="playback_history_label">Istorie ascultare</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">autentificare gpodder.net</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Deschide în browser</string>
   <string name="copy_url_label">Copiază URL</string>
@@ -25,6 +26,7 @@
   <string name="cancel_label">Anulează</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Limbă</string>
+  <string name="podcast_settings_label">Setări</string>
   <string name="cover_label">Copertă</string>
   <string name="error_label">Eroare</string>
   <string name="error_msg_prefix">A avut loc o eroare:</string>
@@ -32,6 +34,7 @@
   <string name="external_storage_error_msg">Nu exista stocare externă. Asigurați-vă că stocarea externă este conectată pentru ca aplicația să funcționeze corespunzător.</string>
   <string name="chapters_label">Capitole</string>
   <string name="shownotes_label">Notițe</string>
+  <string name="description_label">Descriere</string>
   <string name="most_recent_prefix">Cel mai recent episod:\u0020</string>
   <string name="episodes_suffix">\u0020episoade</string>
   <string name="published_prefix">Publicat:\u0020</string>
@@ -40,10 +43,11 @@
   <string name="processing_label">Procesează</string>
   <string name="loading_label">Încărcare...</string>
   <string name="image_of_prefix">Imagine a:\u0020</string>
+  <string name="save_username_password_label">Salvează numele de utilizator și parola</string>
   <string name="close_label">închide</string>
+  <string name="retry_label">Reîncearcă</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Adresă feed</string>
-  <string name="txtvfeedurl_label">Scrieți adresa feedului aici:</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
@@ -142,6 +146,8 @@
   <string name="other_pref">Altele</string>
   <string name="about_pref">Despre</string>
   <string name="queue_label">Coadă</string>
+  <string name="services_label">Servicii</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pune pauză când căștile sunt deconectate</string>
   <string name="pref_followQueue_sum">Sari la următorul element din coadă cand se termină ascultarea</string>
   <string name="playback_pref">Ascultare</string>
@@ -178,6 +184,7 @@
   <string name="pref_update_interval_hours_plural">ore</string>
   <string name="pref_update_interval_hours_singular">oră</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_gpodnet_authenticate_title">Autentificare</string>
   <string name="pref_playback_speed_title">Viteze de ascutare</string>
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
   <!--Search-->
@@ -191,7 +198,6 @@
   <string name="search_label">Caută</string>
   <string name="found_in_title_label">Găsit în titlu</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Puteți importa un fișier OPML. Fișierele OPML vă permit să mutați podcasturi de la un porcatcher la altul:</string>
   <string name="opml_import_explanation">Pentru a importa un fișier OPML trebuie să-l salvați în următorul director și apăsați butonul de mai jos pentru a începe procesul.</string>
   <string name="start_import_label">Începe importarea</string>
   <string name="opml_import_label">OPML import</string>
@@ -222,8 +228,25 @@
   <string name="miro_search_hint">Caută în Ghid Miro</string>
   <string name="popular_label">Popular</string>
   <string name="best_rating_label">Cel mai bun rating</string>
-  <string name="add_feed_label">Adaugă feed</string>
   <string name="miro_feed_added">Feedul este în curs de adăugare</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">CATEGORII</string>
+  <string name="gpodnet_suggestions_header">SUGESTII</string>
+  <string name="gpodnetauth_login_title">Autentificare</string>
+  <string name="gpodnetauth_login_butLabel">Conectare</string>
+  <string name="username_label">Utilizator</string>
+  <string name="password_label">Parolă</string>
+  <string name="gpodnetauth_device_title">Alegere Dispozitiv</string>
+  <string name="gpodnetauth_device_deviceID">ID dispozitiv:\u0020</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Creează dispozitiv nou</string>
+  <string name="gpodnetauth_device_errorEmpty">ID-ul dispozitivului nu trebuie să fie gol</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">ID-ul de dispozitiv este deja în uz</string>
+  <string name="gpodnetauth_device_butChoose">Alege</string>
+  <string name="gpodnetauth_finish_butsyncnow">Începe sincronizarea acum</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Mergi la ecranul principal</string>
+  <string name="gpodnetsync_auth_error_title">eroare de autentificare la gpodder.net</string>
+  <string name="gpodnetsync_auth_error_descr">Nume utilizator sau parolă greșite</string>
+  <string name="gpodnetsync_error_title">eroare de sincronizare gpodder.net</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Fișier selectat:</string>
   <string name="create_folder_label">Crează fișier</string>
@@ -236,4 +259,8 @@
   <string name="folder_not_empty_dialog_title">Fișierul nu este gol</string>
   <string name="folder_not_empty_dialog_msg">Fișierul selectat nu este gol. Descărcările media și alte fișiere vor fi plasate direct în acest director. Continuați oricum?</string>
   <string name="set_to_default_folder">Alege fișier implicit</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Abonează-te</string>
+  <string name="subscribed_label">Abonat</string>
+  <string name="downloading_label">Se descarcă...</string>
 </resources>

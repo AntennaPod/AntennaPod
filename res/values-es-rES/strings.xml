@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
@@ -8,7 +8,6 @@
   <string name="new_label">Nuevos</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Ajustes</string>
-  <string name="add_new_feed_label">Añadir un canal</string>
   <string name="downloads_label">Descargas</string>
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="download_log_label">Registro de descargas</string>
@@ -41,7 +40,6 @@
   <string name="image_of_prefix">Imagen de:\u0020</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
-  <string name="txtvfeedurl_label">Escriba aquí la URL del canal</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="show_info_label">Información del programa</string>
@@ -175,7 +173,6 @@
   <string name="search_label">Buscar</string>
   <string name="found_in_title_label">Encontrado en el título</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">También puede importar un archivo OPML. Los archivos OPML le permiten migrar sus podcasts de una aplicación a otra.</string>
   <string name="opml_import_explanation">Para importar un archivo OPML, debe copiarlo al siguiente directorio y pulsar el botón que se muestra abajo.</string>
   <string name="start_import_label">Comenzar la importación</string>
   <string name="opml_import_label">Importación de OPML</string>
@@ -206,8 +203,8 @@
   <string name="miro_search_hint">Buscar en la guía de Miro</string>
   <string name="popular_label">Popular</string>
   <string name="best_rating_label">Mejor valoración</string>
-  <string name="add_feed_label">Añadir canal</string>
   <string name="miro_feed_added">Se está añadiendo el canal</string>
+  <!--gpodder.net-->
   <!--Directory chooser-->
   <string name="selected_folder_label">Carpeta seleccionada</string>
   <string name="create_folder_label">Crear carpeta</string>
@@ -220,4 +217,5 @@
   <string name="folder_not_empty_dialog_title">La carpeta no está vacía</string>
   <string name="folder_not_empty_dialog_msg">La carpeta elegida no está vacía. Las descargas y otros archivos se copiarán directamente en esta carpeta. ¿Continuar igualmente?</string>
   <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
+  <!--Online feed view-->
 </resources>

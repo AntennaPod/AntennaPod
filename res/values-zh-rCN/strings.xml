@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">订阅</string>
@@ -8,11 +8,13 @@
   <string name="new_label">最新</string>
   <string name="waiting_list_label">等待列表</string>
   <string name="settings_label">设置</string>
-  <string name="add_new_feed_label">添加新订阅</string>
+  <string name="add_new_feed_label">添加播客</string>
   <string name="downloads_label">下载</string>
   <string name="cancel_download_label">取消下载</string>
   <string name="download_log_label">下载日志</string>
   <string name="playback_history_label">播放历史</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net 登录</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">在浏览器打开</string>
   <string name="copy_url_label">复制 URL</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">取消</string>
   <string name="author_label">作者</string>
   <string name="language_label">语言</string>
+  <string name="podcast_settings_label">设置</string>
   <string name="cover_label">封面</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">没有可用的外部存储. 请确保安装外部存储器, 这样本应用才可以正常工作.</string>
   <string name="chapters_label">章节</string>
   <string name="shownotes_label">笔记</string>
+  <string name="description_label">描述</string>
   <string name="most_recent_prefix">最近曲目:\u0020</string>
   <string name="episodes_suffix">\u0020 曲</string>
   <string name="published_prefix">发表:\u0020</string>
@@ -40,10 +44,14 @@
   <string name="processing_label">处理中</string>
   <string name="loading_label">加载中...</string>
   <string name="image_of_prefix">图片:\u0020</string>
+  <string name="save_username_password_label">保存用户名密码</string>
   <string name="close_label">关闭</string>
+  <string name="retry_label">重试</string>
+  <string name="auto_download_label">包含到自动下载</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
-  <string name="txtvfeedurl_label">输入订阅 URL: </string>
+  <string name="txtvfeedurl_label">添加播客 URL</string>
+  <string name="podcastdirectories_label">播客目录</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="show_info_label">查看信息</string>
@@ -51,6 +59,7 @@
   <string name="share_link_label">分享网站链接</string>
   <string name="share_source_label">分享订阅链接</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
+  <string name="feed_remover_msg">删除订阅</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
@@ -86,6 +95,7 @@
   <string name="download_error_malformed_url">畸形 URL</string>
   <string name="download_error_io_error">IO 错误</string>
   <string name="download_error_request_error">请求出错</string>
+  <string name="download_error_db_access">数据库访问错误</string>
   <string name="downloads_left">\u0020 下载剩余</string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_report_content">%1$d 下载成功, %2$d 失败</string>
@@ -115,6 +125,8 @@
   <string name="organize_queue_label">组织播放列表</string>
   <string name="undo">撤消</string>
   <string name="removed_from_queue">已删除项</string>
+  <string name="move_to_top_label">移到顶端</string>
+  <string name="move_to_bottom_label">移到下部</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 登录</string>
   <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
@@ -142,7 +154,9 @@
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
   <string name="queue_label">清空播放</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">当耳机是断开时暂停播放 </string>
+  <string name="services_label">服务</string>
+  <string name="flattr_label">Flattr</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">耳机断开时暂停播放 </string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
@@ -178,8 +192,16 @@
   <string name="pref_update_interval_hours_plural">小时</string>
   <string name="pref_update_interval_hours_singular">时</string>
   <string name="pref_update_interval_hours_manual">手动</string>
+  <string name="pref_gpodnet_authenticate_title">登录</string>
+  <string name="pref_gpodnet_authenticate_sum">登录 gpodder.net 账户同步订阅</string>
+  <string name="pref_gpodnet_logout_title">注销</string>
+  <string name="pref_gpodnet_logout_toast">注销成功</string>
+  <string name="pref_gpodnet_setlogin_information_title">改变登录信息</string>
+  <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
+  <string name="pref_gpodnet_sethostname_title">设置主机名</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <!--Search-->
   <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>
@@ -191,7 +213,7 @@
   <string name="search_label">搜索</string>
   <string name="found_in_title_label">标题中查找</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">你可以导入 OPML 文件. OPML 文件可以方便的从别的播客转移数据过来:</string>
+  <string name="opml_import_txtv_button_lable">OPML 文件可以方便的从别的播客转移数据过来。</string>
   <string name="opml_import_explanation">导入 OPML 文件, 您必须将它放在以下目录, 之后按下面的按钮开始导入处理. </string>
   <string name="start_import_label">开始导入</string>
   <string name="opml_import_label">OPML 导入</string>
@@ -222,8 +244,36 @@
   <string name="miro_search_hint">搜索 Miro 频道</string>
   <string name="popular_label">流行</string>
   <string name="best_rating_label">评分最高</string>
-  <string name="add_feed_label">添加订阅</string>
+  <string name="add_feed_label">添加播客</string>
   <string name="miro_feed_added">订阅已被添加</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">目录</string>
+  <string name="gpodnet_toplist_header">头条播客</string>
+  <string name="gpodnet_suggestions_header">建议</string>
+  <string name="gpodnet_search_hint">搜索 gpodder.net</string>
+  <string name="gpodnetauth_login_title">登录</string>
+  <string name="gpodnetauth_login_descr">欢迎进入 gpodder.net 登录流程. 首先, 输入请你的登录信息:</string>
+  <string name="gpodnetauth_login_butLabel">登录</string>
+  <string name="gpodnetauth_login_register">如果还没有账户, 从这里创建:⏎\nhttps://gpodder.net/register/</string>
+  <string name="username_label">用户名</string>
+  <string name="password_label">密码</string>
+  <string name="gpodnetauth_device_title">设备选择</string>
+  <string name="gpodnetauth_device_descr">为你的 gpodder.net 账户创建一个新设备或者选择一个已存在的:</string>
+  <string name="gpodnetauth_device_deviceID">设备编号: \u0020</string>
+  <string name="gpodnetauth_device_caption">标题</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">创建新设备</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">选择已存在设备</string>
+  <string name="gpodnetauth_device_errorEmpty">设备编号必须填写</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">设备编号已被使用</string>
+  <string name="gpodnetauth_device_butChoose">选择</string>
+  <string name="gpodnetauth_finish_title">登录成功!</string>
+  <string name="gpodnetauth_finish_descr">恭喜! 你的 gpodder.net 帐户与设备已连结完成.  现在开始 AntennaPod 将自动同步你 gpodder.net 帐户内的订阅信息到设备上.</string>
+  <string name="gpodnetauth_finish_butsyncnow">开始同步</string>
+  <string name="gpodnetauth_finish_butgomainscreen">返回主屏</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net 验证错误</string>
+  <string name="gpodnetsync_auth_error_descr">错误的用户名或者密码</string>
+  <string name="gpodnetsync_error_title">gpodder.net 同步错误</string>
+  <string name="gpodnetsync_error_descr">同步过程中发生错误: \u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">已选文件夹:</string>
   <string name="create_folder_label">穿件文件夹</string>
@@ -236,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">文件夹不能为空</string>
   <string name="folder_not_empty_dialog_msg">您所选择的文件夹不能为空. 媒体下载和其他文件将被直接放在本文件夹. 确认继续吗?</string>
   <string name="set_to_default_folder">选择默认文件夹</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">当另一个应用程序要播放声音时暂停播放, 而不是降低音量</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">中断暂停</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">订阅</string>
+  <string name="subscribed_label">已订阅</string>
+  <string name="downloading_label">下载中...</string>
 </resources>

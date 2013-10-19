@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='UTF-8'?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Fontes</string>
@@ -8,11 +8,13 @@
   <string name="new_label">Novo</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Definições</string>
-  <string name="add_new_feed_label">Adicionar fonte</string>
+  <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Transferências</string>
   <string name="cancel_download_label">Cancelar transferência</string>
   <string name="download_log_label">Registo de transferências</string>
   <string name="playback_history_label">Histórico de reprodução</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">Acesso gpodder.net</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
   <string name="copy_url_label">Copiar URL</string>
@@ -25,6 +27,7 @@
   <string name="cancel_label">Cancelar</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
+  <string name="podcast_settings_label">Definições</string>
   <string name="cover_label">Imagem</string>
   <string name="error_label">Erro</string>
   <string name="error_msg_prefix">Ocorreu um erro:</string>
@@ -32,6 +35,7 @@
   <string name="external_storage_error_msg">Não existe um cartão SD. Certifique-se que inseriu o cartão corretamente.</string>
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas</string>
+  <string name="description_label">Descrição</string>
   <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
   <string name="episodes_suffix">\u0020episódios</string>
   <string name="published_prefix">Publicado:\u0020</string>
@@ -40,10 +44,14 @@
   <string name="processing_label">A processar...</string>
   <string name="loading_label">A carregar...</string>
   <string name="image_of_prefix">Imagem de:\u0020</string>
+  <string name="save_username_password_label">Gravar utilizador e senha</string>
   <string name="close_label">Fechar</string>
+  <string name="retry_label">Tentar novamente</string>
+  <string name="auto_download_label">Incluir nas transferências automáticas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
-  <string name="txtvfeedurl_label">Introduza o URL da fonte:</string>
+  <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
+  <string name="podcastdirectories_label">Diretórios de podcasts</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como lido</string>
   <string name="show_info_label">Mostrar informações</string>
@@ -51,6 +59,7 @@
   <string name="share_link_label">Partilhar ligação do sítio web</string>
   <string name="share_source_label">Partilhar ligação da fonte</string>
   <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela petencentes.</string>
+  <string name="feed_remover_msg">Remover fonte</string>
   <!--actions on feeditems-->
   <string name="download_label">Transferir</string>
   <string name="play_label">Reproduzir</string>
@@ -86,6 +95,7 @@
   <string name="download_error_malformed_url">URL inválido</string>
   <string name="download_error_io_error">Erro I/O</string>
   <string name="download_error_request_error">Erro de pedido</string>
+  <string name="download_error_db_access">Erro de acesso à base de dados</string>
   <string name="downloads_left">\u0020Transferências em falta</string>
   <string name="download_notification_title">A transferir dados...</string>
   <string name="download_report_content">%1$d transferências efetuadas, %2$d falhadas</string>
@@ -115,6 +125,8 @@
   <string name="organize_queue_label">Organizar fila</string>
   <string name="undo">Anular</string>
   <string name="removed_from_queue">Item removido</string>
+  <string name="move_to_top_label">Mover para cima</string>
+  <string name="move_to_bottom_label">Mover para baixo</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -142,6 +154,8 @@
   <string name="other_pref">Outras</string>
   <string name="about_pref">Sobre</string>
   <string name="queue_label">Fila</string>
+  <string name="services_label">Serviços</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Parar reprodução ao remover os auscultadores</string>
   <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
   <string name="playback_pref">Reprodução</string>
@@ -157,7 +171,7 @@
   <string name="refreshing_label">A atualizar</string>
   <string name="flattr_settings_label">Definições flattr</string>
   <string name="pref_flattr_auth_title">Sessão flattr</string>
-  <string name="pref_flattr_auth_sum">Inicie sessão na sua conta flattr para fazer o flattr através do AntennaPod.</string>
+  <string name="pref_flattr_auth_sum">Inicie sessão na sua conta flattr para fazer o flattr no AntennaPod.</string>
   <string name="pref_flattr_this_app_title">Flattr desta aplicação</string>
   <string name="pref_flattr_this_app_sum">Ajude no desenvolvimento do AntennaPod através do Flattr. Obrigado!</string>
   <string name="pref_revokeAccess_title">Revogar acesso</string>
@@ -178,32 +192,40 @@
   <string name="pref_update_interval_hours_plural">horas</string>
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
+  <string name="pref_gpodnet_authenticate_title">Acesso</string>
+  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições.</string>
+  <string name="pref_gpodnet_logout_title">Sair</string>
+  <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
+  <string name="pref_gpodnet_setlogin_information_title">Mudar informação de acesso</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Mudar informação de acesso à sua conta gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades de reprodução disponíveis.</string>
+  <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Utilizar pré-definição</string>
   <!--Search-->
   <string name="search_hint">Procurar fontes ou episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
-  <string name="search_status_searching">A procurar...</string>
+  <string name="search_status_searching">Procura...</string>
   <string name="search_status_no_results">Nenhum resultado</string>
   <string name="search_results_label">Resultados da procura</string>
   <string name="search_term_label">Você procurou:\u0020</string>
   <string name="search_label">Procura</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Também pode importar ficheiros OPML. Estes ficheiros permitem-lhe mover os seus podcasts entre aplicações.</string>
+  <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações.</string>
   <string name="opml_import_explanation">Para importar um ficheiro OPML, tem que o colocar neste diretório e premir o botão abaixo para iniciar o processo.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação OPML</string>
   <string name="opml_directory_error">Erro!</string>
-  <string name="reading_opml_label">A ler OPML</string>
+  <string name="reading_opml_label">A ler ficheiro OPML</string>
   <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro OPML:</string>
   <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
   <string name="select_all_label">Marcar tudo</string>
   <string name="deselect_all_label">Desmarcar tudo</string>
   <string name="choose_file_to_import_label">Escolha o ficheiro a importar</string>
   <string name="opml_export_label">Exportação OPML</string>
-  <string name="exporting_label">A exportar...</string>
+  <string name="exporting_label">Exportação...</string>
   <string name="export_error_label">Erro de exportação</string>
   <string name="opml_export_success_title">Exportação efetuada.</string>
   <string name="opml_export_success_sum">O ficheiro .opml foi gravado em:\u0020</string>
@@ -221,9 +243,37 @@
   <string name="miro_guide_label">Guia Miro</string>
   <string name="miro_search_hint">Procurar no guia Miro</string>
   <string name="popular_label">Popular</string>
-  <string name="best_rating_label">Melhor avaliados</string>
-  <string name="add_feed_label">Adicionar fonte</string>
+  <string name="best_rating_label">Melhor avaliação</string>
+  <string name="add_feed_label">Adicionar podcast</string>
   <string name="miro_feed_added">A fonte está a ser adicionada</string>
+  <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">Categorias</string>
+  <string name="gpodnet_toplist_header">Melhores</string>
+  <string name="gpodnet_suggestions_header">Sugestões</string>
+  <string name="gpodnet_search_hint">Procurar no gpodder.net</string>
+  <string name="gpodnetauth_login_title">Acesso</string>
+  <string name="gpodnetauth_login_descr">Bem-vindo ao processo de acesso ao gpodder.net. Introduza os dados de acesso:</string>
+  <string name="gpodnetauth_login_butLabel">Acesso</string>
+  <string name="gpodnetauth_login_register">Se ainda não possui uma conta, pode criar uma em:\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Utilizador</string>
+  <string name="password_label">Senha</string>
+  <string name="gpodnetauth_device_title">Seleção de dispositivo</string>
+  <string name="gpodnetauth_device_descr">Criar um novo dispositivo ou escolher um existente para aceder à sua conta gpodder.net</string>
+  <string name="gpodnetauth_device_deviceID">ID do dispositivo:\u0020</string>
+  <string name="gpodnetauth_device_caption">Legenda</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Criar novo dispositivo</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Escolher dispositivo:</string>
+  <string name="gpodnetauth_device_errorEmpty">ID do dispositivo não pode estar vazia</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">ID de dispositivo já utilizada</string>
+  <string name="gpodnetauth_device_butChoose">Escolher</string>
+  <string name="gpodnetauth_finish_title">Sessão iniciada!</string>
+  <string name="gpodnetauth_finish_descr">Parabéns! A sua conta gpodder.net está vinculada ao seu dispositivo. Agora, já pode sincronizar as subscrições no dispositivo com a sua conta gpodder.net.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Sincronizar agora</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Ir para o ecrã principal</string>
+  <string name="gpodnetsync_auth_error_title">Erro de autenticação gpodder.net</string>
+  <string name="gpodnetsync_auth_error_descr">Utilizador ou senha inválido</string>
+  <string name="gpodnetsync_error_title">Erro de sincronização gpodder.net</string>
+  <string name="gpodnetsync_error_descr">Ocorreu um erro ao sincronizar:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Diretório escolhido:</string>
   <string name="create_folder_label">Criar diretório</string>
@@ -236,4 +286,10 @@
   <string name="folder_not_empty_dialog_title">Diretório não vazio</string>
   <string name="folder_not_empty_dialog_msg">O diretório escolhido não está vazio. As transferências serão colocadas neste diretório. Continuar?</string>
   <string name="set_to_default_folder">Escolha a pasta pré-definida</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pausa na reprodução em vez de baixar o volume se outra aplicação quiser reproduzir sons</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
+  <!--Online feed view-->
+  <string name="subscribe_label">Subscrever</string>
+  <string name="subscribed_label">Subscrito</string>
+  <string name="downloading_label">Transferência...</string>
 </resources>
