@@ -589,7 +589,9 @@ public class DBWriter {
             if (iLastPos>iQueueSize-1)
                 iLastPos = iQueueSize-1;  /* somebody messed the queue in the background! */
             /* Do the work: */
-            if (eMediaType == queue.get(iLastPos).getMedia().getMediaType())
+            /* some entries have no media, test fo this too */
+            final FeedMedia oItemMedia = queue.get(iLastPos).getMedia();
+            if (null != oItemMedia && eMediaType == oItemMedia.getMediaType())
                 moveQueueItemHelper(context, iLastPos, 0, true); // move to top
             else
                 iLastPos--; // do not touch this one, test next item
