@@ -561,6 +561,44 @@ public class DBWriter {
         adapter.close();
     }
 
+    /** Moves given media type to the top of the queue. */
+    public static void sortQueueByType(final Context context, final MediaType eMediaType) {
+        if (AppConfig.DEBUG)
+            Log.d(TAG, "Sorting queue items: " + eMediaType + " to top");
+        /** Iterate through all elements starting from end of the list to
+         * the beginning moving each encountered item of selected MediaType
+         * to the top.
+         * This sorting method is stable (preserves order within MediaType class items).
+         * This algorithm is unfortunately O(N^2): for each item there come
+         * multiple index reference on queue structure.
+         */
+
+        final PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        /* Get the queue size to initialise upper limit of the queue */
+        int iQueueSize = DBReader.getQueue(context, adapter).size();
+        /* Initialise the index of last position of the queue */
+        int iLastPos = iQueueSize-1;
+        for(int i=0; i<iQueueSize && iLastPos > 0; i++)
+        {
+            /* get the current 'version' of the queue */
+            List<FeedItem> queue = DBReader.getQueue(context, adapter);
+            /* update queue size in case something is messing the queue in parallel
+             -> @todo how to lock the queue for exclusive access?  */
+            iQueueSize = queue.size();
+            if (iLastPos>iQueueSize-1)
+                iLastPos = iQueueSize-1;  /* somebody messed the queue in the background! */
+            /* Do the work: */
+            /* some entries have no media, test fo this too */
+            final FeedMedia oItemMedia = queue.get(iLastPos).getMedia();
+            if (null != oItemMedia && eMediaType == oItemMedia.getMediaType())
+                moveQueueItemHelper(context, iLastPos, 0, true); // move to top
+            else
+                iLastPos--; // do not touch this one, test next item
+        }
+        adapter.close();
+    }
+
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
      *

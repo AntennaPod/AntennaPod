@@ -136,6 +136,8 @@
     <!-- Queue operations -->
     <string name="clear_queue_label">Clear queue</string>
     <string name="organize_queue_label">Organize queue</string>
+    <string name="organize_queue_audio_to_top_label">Move Audio to Top</string>
+    <string name="organize_queue_video_to_top_label">Move Video to Top</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>

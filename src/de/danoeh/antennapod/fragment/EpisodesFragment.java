@@ -20,6 +20,7 @@ import de.danoeh.antennapod.adapter.ExternalEpisodesListAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
@@ -231,7 +232,9 @@ public class EpisodesFragment extends Fragment {
 		} else if (selectedGroupId == ExternalEpisodesListAdapter.GROUP_POS_QUEUE) {
 			menu.add(Menu.NONE, R.id.organize_queue_item, Menu.NONE,
 					R.string.organize_queue_label);
-			menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
+            menu.add(Menu.NONE, R.id.organize_queue_audio_to_top, Menu.NONE, R.string.organize_queue_audio_to_top_label);
+            menu.add(Menu.NONE, R.id.organize_queue_video_to_top, Menu.NONE, R.string.organize_queue_video_to_top_label);
+            menu.add(Menu.NONE, R.id.clear_queue_item, Menu.NONE, getActivity()
 					.getString(R.string.clear_queue_label));
 			menu.add(Menu.NONE, R.id.download_all_item, Menu.NONE,
 					getActivity().getString(R.string.download_all));
@@ -293,7 +296,13 @@ public class EpisodesFragment extends Fragment {
 				startActivity(new Intent(getActivity(),
 						OrganizeQueueActivity.class));
 				break;
-			case R.id.clear_queue_item:
+            case R.id.organize_queue_audio_to_top:
+                DBWriter.sortQueueByType(this.getActivity(), MediaType.AUDIO);
+                break;
+            case R.id.organize_queue_video_to_top:
+                DBWriter.sortQueueByType(this.getActivity(), MediaType.VIDEO);
+                break;
+            case R.id.clear_queue_item:
 				DBWriter.clearQueue(getActivity());
 				break;
 			case R.id.download_all_item:
