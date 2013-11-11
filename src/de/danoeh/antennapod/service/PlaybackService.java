@@ -373,11 +373,13 @@ public class PlaybackService extends Service {
                 case AudioManager.AUDIOFOCUS_GAIN:
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Gained audio focus");
-                    if (pausedBecauseOfTransientAudiofocusLoss) {
+
+                    if (pausedBecauseOfTransientAudiofocusLoss) // we paused => play now
+                        play();
+                    else                          // we ducked => raise audio level back
                         audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                                 AudioManager.ADJUST_RAISE, 0);
-                        play();
-                    }
+
                     break;
                 case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                     if (status == PlayerStatus.PLAYING) {
@@ -386,7 +388,7 @@ public class PlaybackService extends Service {
                                 Log.d(TAG, "Lost audio focus temporarily. Ducking...");
                             audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                                     AudioManager.ADJUST_LOWER, 0);
-                            pausedBecauseOfTransientAudiofocusLoss = true;
+                            pausedBecauseOfTransientAudiofocusLoss = false;
                         } else {
                             if (AppConfig.DEBUG)
                                 Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
