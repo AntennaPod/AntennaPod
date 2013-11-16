@@ -281,6 +281,9 @@ public class PlaybackService extends Service {
     }
 
     private IPlayer createMediaPlayer() {
+        if (player != null) {
+            player.release();
+        }
         IPlayer player;
         if (media == null || media.getMediaType() == MediaType.VIDEO) {
             player = new VideoPlayer();
@@ -581,7 +584,6 @@ public class PlaybackService extends Service {
         cancelPositionSaver();
         player.setDisplay(null);
         player.reset();
-        player.release();
         player = createMediaPlayer();
         status = PlayerStatus.STOPPED;
     }
