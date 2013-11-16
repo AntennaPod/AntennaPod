@@ -13,18 +13,18 @@
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v4</artifactId>
-            <version>18</version>
+            <version>19</version>
         </dependency>
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v7-appcompat</artifactId>
-            <version>18</version>
+            <version>19</version>
             <type>apklib</type>
         </dependency>
         <dependency>
             <groupId>android.support</groupId>
             <artifactId>compatibility-v7-appcompat</artifactId>
-            <version>18</version>
+            <version>19</version>
             <type>jar</type>
         </dependency>
         <dependency>
@@ -58,15 +58,16 @@
             </exclusions>
         </dependency>
         <dependency>
-            <groupId>com.google.android</groupId>
+            <groupId>android</groupId>
             <artifactId>android</artifactId>
             <scope>provided</scope>
-            <version>4.1.1.4</version>
+            <version>4.4_r1</version>
         </dependency>
         <dependency>
-            <groupId>com.google.android</groupId>
+            <groupId>com.google.android.annotations</groupId>
             <artifactId>annotations</artifactId>
-            <version>4.1.1.4</version>
+            <version>22.3</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>commons-io</groupId>
@@ -109,11 +110,11 @@
             <plugin>
                 <groupId>com.jayway.maven.plugins.android.generation2</groupId>
                 <artifactId>android-maven-plugin</artifactId>
-                <version>3.6.1</version>
+                <version>3.8.0</version>
                 <configuration>
                     <sdk>
                         <path>${env.ANDROID_HOME}</path>
-                        <platform>18</platform>
+                        <platform>19</platform>
                     </sdk>
                     <manifest>
                         <debuggable>true</debuggable>
