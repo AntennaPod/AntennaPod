@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class FileNameGenerator {
 	
 	private static final char[] ILLEGAL_CHARACTERS = { '/', '\\', '?', '%',
-			'*', ':', '|', '"', '<', '>' };
+			'*', ':', '|', '"', '<', '>', '\n' };
 	static {
 		Arrays.sort(ILLEGAL_CHARACTERS);
 	}
