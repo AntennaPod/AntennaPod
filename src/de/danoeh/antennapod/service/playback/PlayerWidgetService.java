@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.service.playback;
 
 import android.app.PendingIntent;
 import android.app.Service;

@@ -1,7 +1,6 @@
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.service.playback;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.List;
 import java.util.concurrent.*;
 

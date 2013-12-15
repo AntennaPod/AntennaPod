@@ -22,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;

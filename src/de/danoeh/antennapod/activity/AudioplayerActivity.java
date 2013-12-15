@@ -31,8 +31,7 @@ import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
 

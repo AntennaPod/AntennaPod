@@ -14,7 +14,7 @@ import android.widget.TextView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
-import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;

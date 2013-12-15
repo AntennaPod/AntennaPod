@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 
 /** Receives media button events. */
 public class MediaButtonReceiver extends BroadcastReceiver {

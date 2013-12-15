@@ -6,7 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.service.PlayerWidgetService;
+import de.danoeh.antennapod.service.playback.PlayerWidgetService;
 
 public class PlayerWidget extends AppWidgetProvider {
 	private static final String TAG = "PlayerWidget";
