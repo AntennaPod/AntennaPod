@@ -36,7 +36,7 @@ public class PlaybackServiceTaskManager {
 
     private ScheduledFuture positionSaverFuture;
     private ScheduledFuture widgetUpdaterFuture;
-    private Future sleepTimerFuture;
+    private ScheduledFuture sleepTimerFuture;
     private volatile Future<List<FeedItem>> queueFuture;
     private volatile Future chapterLoaderFuture;
 
@@ -75,6 +75,7 @@ public class PlaybackServiceTaskManager {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EventDistributor.QUEUE_UPDATE & arg) != 0) {
+                cancelQueueLoader();
                 loadQueue();
             }
         }
@@ -102,7 +103,7 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
-     * Returns the queue or waits until the PSTM hasloaded the queue from the database.
+     * Returns the queue or waits until the PSTM has loaded the queue from the database.
      */
     public synchronized List<FeedItem> getQueue() throws InterruptedException {
         try {
@@ -187,14 +188,14 @@ public class PlaybackServiceTaskManager {
             sleepTimerFuture.cancel(true);
         }
         sleepTimer = new SleepTimer(waitingTime);
-        sleepTimerFuture = schedExecutor.submit(sleepTimer);
+        sleepTimerFuture = schedExecutor.schedule(sleepTimer, 0, TimeUnit.MILLISECONDS);
     }
 
     /**
      * Returns true if the sleep timer is currently active.
      */
     public synchronized boolean isSleepTimerActive() {
-        return sleepTimer != null && sleepTimer.isWaiting() && sleepTimerFuture != null;
+        return sleepTimer != null && sleepTimerFuture != null && !sleepTimerFuture.isCancelled() && !sleepTimerFuture.isDone();
     }
 
     /**
@@ -307,16 +308,16 @@ public class PlaybackServiceTaskManager {
         private static final String TAG = "SleepTimer";
         private static final long UPDATE_INTERVALL = 1000L;
         private volatile long waitingTime;
-        private boolean isWaiting;
+        private volatile boolean isWaiting;
 
         public SleepTimer(long waitingTime) {
             super();
             this.waitingTime = waitingTime;
+            isWaiting = true;
         }
 
         @Override
         public void run() {
-            isWaiting = true;
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Starting");
             while (waitingTime > 0) {
@@ -327,7 +328,9 @@ public class PlaybackServiceTaskManager {
                     if (waitingTime <= 0) {
                         if (AppConfig.DEBUG)
                             Log.d(TAG, "Waiting completed");
-                        callback.onSleepTimerExpired();
+                        if (!Thread.currentThread().isInterrupted()) {
+                            callback.onSleepTimerExpired();
+                        }
                         postExecute();
                     }
                 } catch (InterruptedException e) {
