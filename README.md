@@ -8,6 +8,11 @@ This is the official repository of AntennaPod, a podcast manager for Android.
 </a>
 [AntennaPod on fdroid.org](http://f-droid.org/repository/browse/?fdcategory=Multimedia&fdid=de.danoeh.antennapod&fdpage=1)
 
+## Feedback
+You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!forum/antennapod) for discussions about the app.
+
+Bug reports and feature requests can be submitted [here](https://github.com/danieloeh/AntennaPod/issues/new) (please read the [instructions](https://github.com/danieloeh/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
+
 ## License
 
 AntennaPod is licensed under the MIT License. You can find the license text in the LICENSE file.
