@@ -129,7 +129,7 @@ public class PlaybackServiceMediaPlayer {
      *
      * @see #playMediaObject(de.danoeh.antennapod.util.playback.Playable, boolean, boolean, boolean)
      */
-    public void playMediaObject(final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
+    private void playMediaObject(final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (playable == null)
             throw new IllegalArgumentException("playable = null");
         if (!playerLock.isHeldByCurrentThread())
@@ -149,22 +149,22 @@ public class PlaybackServiceMediaPlayer {
             }
         }
         createMediaPlayer();
-        media = playable;
+        this.media = playable;
+        this.stream = stream;
         PlaybackServiceMediaPlayer.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
             if (stream) {
-                mediaPlayer.setDataSource(playable.getStreamUrl());
+                mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
-                mediaPlayer.setDataSource(playable.getLocalMediaUrl());
+                mediaPlayer.setDataSource(media.getLocalMediaUrl());
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);
                 mediaPlayer.prepare();
-                setPlayerStatus(PlayerStatus.PREPARED, media);
                 onPrepared(startWhenPrepared);
             }
 
@@ -192,42 +192,45 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-                if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
-                    int focusGained = audioManager.requestAudioFocus(
-                            audioFocusChangeListener, AudioManager.STREAM_MUSIC,
-                            AudioManager.AUDIOFOCUS_GAIN);
-                    if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-
-                        setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
-                        mediaPlayer.start();
-                        if (playerStatus == PlayerStatus.PREPARED) {
-                            mediaPlayer.seekTo(media.getPosition());
-                        }
-                        setPlayerStatus(PlayerStatus.PLAYING, media);
-                        pausedBecauseOfTransientAudiofocusLoss = false;
-                        if (android.os.Build.VERSION.SDK_INT >= 14) {
-                            RemoteControlClient remoteControlClient = callback.getRemoteControlClient();
-                            if (remoteControlClient != null) {
-                                audioManager
-                                        .registerRemoteControlClient(remoteControlClient);
-                            }
-                        }
-                        audioManager
-                                .registerMediaButtonEventReceiver(new ComponentName(context.getPackageName(),
-                                        MediaButtonReceiver.class.getName()));
-                        media.onPlaybackStart();
-
-                    } else {
-                        if (AppConfig.DEBUG) Log.e(TAG, "Failed to request audio focus");
-                    }
-                } else {
-                    if (AppConfig.DEBUG)
-                        Log.d(TAG, "Call to resume() was ignored because current state of PSMP object is " + playerStatus);
-                }
-
+                resumeSync();
                 playerLock.unlock();
             }
         });
+    }
+
+    private void resumeSync() {
+        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+            int focusGained = audioManager.requestAudioFocus(
+                    audioFocusChangeListener, AudioManager.STREAM_MUSIC,
+                    AudioManager.AUDIOFOCUS_GAIN);
+            if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
+
+                setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
+                mediaPlayer.start();
+                if (playerStatus == PlayerStatus.PREPARED) {
+                    mediaPlayer.seekTo(media.getPosition());
+                }
+                setPlayerStatus(PlayerStatus.PLAYING, media);
+                pausedBecauseOfTransientAudiofocusLoss = false;
+                if (android.os.Build.VERSION.SDK_INT >= 14) {
+                    RemoteControlClient remoteControlClient = callback.getRemoteControlClient();
+                    if (remoteControlClient != null) {
+                        audioManager
+                                .registerRemoteControlClient(remoteControlClient);
+                    }
+                }
+                audioManager
+                        .registerMediaButtonEventReceiver(new ComponentName(context.getPackageName(),
+                                MediaButtonReceiver.class.getName()));
+                media.onPlaybackStart();
+
+            } else {
+                if (AppConfig.DEBUG) Log.e(TAG, "Failed to request audio focus");
+            }
+        } else {
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "Call to resume() was ignored because current state of PSMP object is " + playerStatus);
+        }
     }
 
 
@@ -260,6 +263,8 @@ public class PlaybackServiceMediaPlayer {
                     if (stream && reinit) {
                         reinit();
                     }
+                } else {
+                    if (AppConfig.DEBUG) Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
                 }
 
                 playerLock.unlock();
@@ -318,7 +323,7 @@ public class PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.PREPARED, media);
 
         if (startWhenPrepared) {
-            resume();
+            resumeSync();
         }
 
         playerLock.unlock();
@@ -466,6 +471,10 @@ public class PlaybackServiceMediaPlayer {
         return retVal;
     }
 
+    public boolean isStartWhenPrepared() {
+        return startWhenPrepared.get();
+    }
+
     /**
      * Returns true if the playback speed can be adjusted. This method can also return false if the PSMP object's
      * internal MediaPlayer cannot be accessed at the moment.
@@ -550,6 +559,8 @@ public class PlaybackServiceMediaPlayer {
     private synchronized void setPlayerStatus(PlayerStatus newStatus, Playable newMedia) {
         if (newStatus == null)
             throw new IllegalArgumentException("newStatus = null");
+        if (AppConfig.DEBUG) Log.d(TAG, "Setting player status to " + newStatus);
+
         this.playerStatus = newStatus;
         this.media = newMedia;
         callback.statusChanged(new PSMPInfo(playerStatus, media));
@@ -564,6 +575,7 @@ public class PlaybackServiceMediaPlayer {
         } else {
             mediaPlayer = new AudioPlayer(context);
         }
+        mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
         return setMediaPlayerListeners(mediaPlayer);
     }
 
