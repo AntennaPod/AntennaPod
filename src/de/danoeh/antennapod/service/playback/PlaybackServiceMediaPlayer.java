@@ -7,6 +7,7 @@ import android.media.RemoteControlClient;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.view.SurfaceHolder;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
@@ -73,6 +74,7 @@ public class PlaybackServiceMediaPlayer {
         statusBeforeSeeking = null;
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
+        playerStatus = PlayerStatus.STOPPED;
     }
 
     private Handler.Callback handlerCallback = new Handler.Callback() {
@@ -475,6 +477,10 @@ public class PlaybackServiceMediaPlayer {
         return startWhenPrepared.get();
     }
 
+    public void setStartWhenPrepared(boolean startWhenPrepared) {
+        this.startWhenPrepared.set(startWhenPrepared);
+    }
+
     /**
      * Returns true if the playback speed can be adjusted. This method can also return false if the PSMP object's
      * internal MediaPlayer cannot be accessed at the moment.
@@ -523,9 +529,35 @@ public class PlaybackServiceMediaPlayer {
         });
     }
 
+    /**
+     * Returns the current playback speed. If the playback speed could not be retrieved, 1 is returned.
+     */
+    public float getPlaybackSpeed() {
+        if (!playerLock.tryLock()) {
+            return 1;
+        }
+
+        int retVal = 1;
+        if (playerStatus == PlayerStatus.PLAYING
+                || playerStatus == PlayerStatus.PAUSED
+                || playerStatus == PlayerStatus.PREPARED) {
+            retVal = mediaPlayer.getCurrentPosition();
+        } else if (media != null && media.getPosition() > 0) {
+            retVal = media.getPosition();
+        }
+
+        playerLock.unlock();
+        return retVal;
+    }
+
     public MediaType getCurrentMediaType() {
         return mediaType;
     }
+
+    public boolean isStreaming() {
+        return stream;
+    }
+
 
     /**
      * Releases internally used resources. This method should only be called when the object is not used anymore.
@@ -535,6 +567,33 @@ public class PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+    }
+
+    public void setVideoSurface(final SurfaceHolder surface) {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                playerLock.lock();
+                if (mediaPlayer != null) {
+                    mediaPlayer.setDisplay(surface);
+                }
+                playerLock.unlock();
+            }
+        });
+    }
+
+    public void resetVideoSurface() {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                playerLock.lock();
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Resetting video surface");
+                mediaPlayer.setDisplay(null);
+                reinit();
+                playerLock.unlock();
+            }
+        });
     }
 
     /**

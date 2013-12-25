@@ -83,8 +83,8 @@ public class PlayerWidgetService extends Service {
 				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
-		if (playbackService != null && playbackService.getMedia() != null) {
-			Playable media = playbackService.getMedia();
+        final Playable media = playbackService.getPlayable();
+        if (playbackService != null && media != null) {
 			PlayerStatus status = playbackService.getStatus();
 
 			views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
@@ -126,8 +126,8 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private String getProgressString(PlaybackService ps) {
-		int position = ps.getCurrentPositionSafe();
-		int duration = ps.getDurationSafe();
+		int position = ps.getCurrentPosition();
+		int duration = ps.getDuration();
 		if (position != PlaybackService.INVALID_TIME
 				&& duration != PlaybackService.INVALID_TIME) {
 			return Converter.getDurationStringLong(position) + " / "

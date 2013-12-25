@@ -30,6 +30,7 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
@@ -157,7 +158,7 @@ public abstract class PlaybackController {
      */
     public void pause() {
         mediaInfoLoaded = false;
-        if (playbackService != null && playbackService.isPlayingVideo()) {
+        if (playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
             playbackService.pause(true, true);
         }
     }
@@ -488,7 +489,7 @@ public abstract class PlaybackController {
             Log.d(TAG, "Querying service info");
         if (playbackService != null) {
             status = playbackService.getStatus();
-            media = playbackService.getMedia();
+            media = playbackService.getPlayable();
             if (media == null) {
                 Log.w(TAG,
                         "PlaybackService has no media object. Trying to restore last played media.");
@@ -541,7 +542,7 @@ public abstract class PlaybackController {
      */
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
         if (playbackService != null) {
-            playbackService.seek((int) (prog * media.getDuration()));
+            playbackService.seekTo((int) (prog * media.getDuration()));
             setupPositionObserver();
         }
     }
@@ -557,7 +558,7 @@ public abstract class PlaybackController {
                             break;
                         case PAUSED:
                         case PREPARED:
-                            playbackService.play();
+                            playbackService.resume();
                             break;
                         case PREPARING:
                             playbackService.setStartWhenPrepared(!playbackService
@@ -569,7 +570,7 @@ public abstract class PlaybackController {
                             break;
                         case INITIALIZED:
                             playbackService.setStartWhenPrepared(true);
-                            playbackService.prepare();
+                            playbackService.resume();
                             break;
                     }
                 } else {
@@ -609,7 +610,7 @@ public abstract class PlaybackController {
 
     public int getPosition() {
         if (playbackService != null) {
-            return playbackService.getCurrentPositionSafe();
+            return playbackService.getCurrentPosition();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -617,7 +618,7 @@ public abstract class PlaybackController {
 
     public int getDuration() {
         if (playbackService != null) {
-            return playbackService.getDurationSafe();
+            return playbackService.getDuration();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -691,7 +692,7 @@ public abstract class PlaybackController {
 
     public boolean isPlayingVideo() {
         if (playbackService != null) {
-            return PlaybackService.isPlayingVideo();
+            return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
         }
         return false;
     }
@@ -716,7 +717,7 @@ public abstract class PlaybackController {
      */
     public void reinitServiceIfPaused() {
         if (playbackService != null
-                && playbackService.isShouldStream()
+                && playbackService.isStreaming()
                 && (playbackService.getStatus() == PlayerStatus.PAUSED || (playbackService
                 .getStatus() == PlayerStatus.PREPARING && playbackService
                 .isStartWhenPrepared() == false))) {
@@ -733,8 +734,7 @@ public abstract class PlaybackController {
 
         @Override
         public void run() {
-            if (playbackService != null && playbackService.getPlayer() != null
-                    && playbackService.getPlayer().isPlaying()) {
+            if (playbackService != null && playbackService.getStatus() == PlayerStatus.PLAYING) {
                 activity.runOnUiThread(new Runnable() {
 
                     @Override
