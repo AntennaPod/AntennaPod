@@ -21,14 +21,18 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;
+import de.danoeh.antennapod.storage.DBWriter;
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -309,8 +313,16 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 				startActivity(new Intent(Intent.ACTION_VIEW, uri));
 				break;
 			case R.id.support_item:
-				new FlattrClickWorker(this, media.getPaymentLink())
-						.executeAsync();
+				try {
+					FeedItem feedItem = ((FeedMedia) media).getItem();
+					feedItem.getFlattrStatus().setFlattrQueue();
+
+                    DBWriter.setFeedItem(this, feedItem);
+					new FlattrClickWorker(this).executeAsync();
+				} 
+				catch (ClassCastException e) {
+					Log.d(TAG, "Could not flattr item - most likely external media: " + e.toString());
+				}
 				break;
 			case R.id.share_link_item:
 				ShareUtils.shareLink(this, media.getWebsiteLink());

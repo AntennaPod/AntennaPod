@@ -14,6 +14,7 @@ import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 import java.util.List;
 
@@ -110,7 +111,7 @@ public class FeedItemMenuHandler {
 			mi.setItemVisibility(R.id.visit_website_item, false);
 		}
 
-		if (selectedItem.getPaymentLink() == null) {
+		if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
 			mi.setItemVisibility(R.id.support_item, false);
 		}
 		return true;
@@ -158,8 +159,9 @@ public class FeedItemMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedItem.getPaymentLink())
-					.executeAsync();
+			selectedItem.getFlattrStatus().setFlattrQueue();
+            DBWriter.setFlattredStatus(context, selectedItem);
+			new FlattrClickWorker(context).executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);
