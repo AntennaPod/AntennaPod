@@ -72,9 +72,11 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private void updateViews() {
+        if (playbackService == null) {
+            return;
+        }
 		isUpdating = true;
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Updating widget views");
+
 		ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		RemoteViews views = new RemoteViews(getPackageName(),
@@ -101,8 +103,6 @@ public class PlayerWidgetService extends Service {
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());
 		} else {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "No media playing. Displaying defaultt views");
 			views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
 			views.setTextViewText(R.id.txtvTitle,
 					this.getString(R.string.no_media_playing_label));

@@ -106,8 +106,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 			}
 
 			@Override
-			public void loadMediaInfo() {
-				MediaplayerActivity.this.loadMediaInfo();
+			public boolean loadMediaInfo() {
+				return MediaplayerActivity.this.loadMediaInfo();
 			}
 
 			@Override
@@ -339,8 +339,9 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 	}
 
 	/**
-	 * Called by 'handleStatus()' when the PlaybackService is in the
-	 * AWAITING_VIDEO_SURFACE state.
+	 * Called by 'handleStatus()' when the PlaybackService is waiting for
+     * a video surface.
+	 *
 	 */
 	protected abstract void onAwaitingVideoSurface();
 
@@ -380,7 +381,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 	 * to the PlaybackService to ensure that the activity has the right
 	 * FeedMedia object.
 	 */
-	protected void loadMediaInfo() {
+	protected boolean loadMediaInfo() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
 		Playable media = controller.getMedia();
@@ -395,7 +396,10 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 						/ media.getDuration();
 				sbPosition.setProgress((int) (progress * sbPosition.getMax()));
 			}
-		}
+            return true;
+		} else {
+            return false;
+        }
 	}
 
 	protected void setupGUI() {

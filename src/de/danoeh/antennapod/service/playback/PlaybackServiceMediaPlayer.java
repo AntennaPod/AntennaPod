@@ -144,15 +144,16 @@ public class PlaybackServiceMediaPlayer {
                 return;
             } else {
                 // stop playback of this episode
-                setPlayerStatus(PlayerStatus.STOPPED, null);
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PLAYING || playerStatus == PlayerStatus.PREPARED) {
                     mediaPlayer.stop();
                 }
+                setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
         }
         createMediaPlayer();
         this.media = playable;
         this.stream = stream;
+        this.mediaType = media.getMediaType();
         PlaybackServiceMediaPlayer.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
@@ -372,8 +373,8 @@ public class PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
             if (stream) {
-                statusBeforeSeeking = playerStatus;
-                setPlayerStatus(PlayerStatus.SEEKING, media);
+            //    statusBeforeSeeking = playerStatus;
+            //    setPlayerStatus(PlayerStatus.SEEKING, media);
             }
             mediaPlayer.seekTo(t);
 
@@ -505,9 +506,8 @@ public class PlaybackServiceMediaPlayer {
     private void setSpeedSync(float speed) {
         playerLock.lock();
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
-            AudioPlayer audioPlayer = (AudioPlayer) mediaPlayer;
-            if (audioPlayer.canSetSpeed()) {
-                audioPlayer.setPlaybackSpeed((float) speed);
+            if (mediaPlayer.canSetSpeed()) {
+                mediaPlayer.setPlaybackSpeed((float) speed);
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);

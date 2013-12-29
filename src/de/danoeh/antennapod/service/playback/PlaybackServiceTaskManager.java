@@ -103,6 +103,23 @@ public class PlaybackServiceTaskManager {
     }
 
     /**
+     * Returns the queue if it is already loaded or null if it hasn't been loaded yet.
+     * In order to wait until the queue has been loaded, use getQueue()
+     */
+    public synchronized List<FeedItem> getQueueIfLoaded() {
+        if (queueFuture.isDone()) {
+            try {
+                return queueFuture.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
+
+    /**
      * Returns the queue or waits until the PSTM has loaded the queue from the database.
      */
     public synchronized List<FeedItem> getQueue() throws InterruptedException {

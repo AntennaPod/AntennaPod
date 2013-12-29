@@ -82,7 +82,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 case INITIALIZED:
                 case INITIALIZING:
                 case SEEKING:
-                case AWAITING_VIDEO_SURFACE:
                     assertNotNull(info.playable);
                     break;
                 case STOPPED:

@@ -137,10 +137,12 @@ public class ExternalPlayerFragment extends Fragment {
 			}
 
 			@Override
-			public void loadMediaInfo() {
+			public boolean loadMediaInfo() {
                 ExternalPlayerFragment fragment = ExternalPlayerFragment.this;
                 if (fragment != null) {
-				    fragment.loadMediaInfo();
+				    return fragment.loadMediaInfo();
+                } else {
+                    return false;
                 }
 			}
 
@@ -209,7 +211,7 @@ public class ExternalPlayerFragment extends Fragment {
 		}
 	}
 
-	private void loadMediaInfo() {
+	private boolean loadMediaInfo() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
 		if (controller.serviceAvailable()) {
@@ -230,13 +232,16 @@ public class ExternalPlayerFragment extends Fragment {
 				} else {
 					butPlay.setVisibility(View.VISIBLE);
 				}
+                return true;
 			} else {
 				Log.w(TAG,
 						"loadMediaInfo was called while the media object of playbackService was null!");
+                return false;
 			}
 		} else {
 			Log.w(TAG,
 					"loadMediaInfo was called while playbackService was null!");
+            return false;
 		}
 	}
 

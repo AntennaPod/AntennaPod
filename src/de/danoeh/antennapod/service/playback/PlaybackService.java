@@ -14,6 +14,7 @@ import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
 import android.os.AsyncTask;
 import android.os.Binder;
+import android.os.Build;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
@@ -132,8 +133,6 @@ public class PlaybackService extends Service {
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
 
     private final IBinder mBinder = new LocalBinder();
-
-    private volatile List<FeedItem> queue;
 
     public class LocalBinder extends Binder {
         public PlaybackService getService() {
@@ -322,6 +321,7 @@ public class PlaybackService extends Service {
     }
 
     public void notifyVideoSurfaceAbandoned() {
+        stopForeground(true);
         mediaPlayer.resetVideoSurface();
     }
 
@@ -352,6 +352,7 @@ public class PlaybackService extends Service {
     private final PlaybackServiceMediaPlayer.PSMPCallback mediaPlayerCallback = new PlaybackServiceMediaPlayer.PSMPCallback() {
         @Override
         public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
+            currentMediaType = mediaPlayer.getCurrentMediaType();
             switch (newInfo.playerStatus) {
                 case PREPARED:
                     taskManager.startChapterLoader(newInfo.playable);
@@ -365,8 +366,8 @@ public class PlaybackService extends Service {
                     break;
 
                 case STOPPED:
-                    setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
-                    stopSelf();
+                    //setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
+                    //stopSelf();
                     break;
 
                 case PLAYING:
@@ -375,7 +376,6 @@ public class PlaybackService extends Service {
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Resuming/Starting playback");
 
-                    currentMediaType = mediaPlayer.getCurrentMediaType();
                     writePlaybackPreferences();
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
@@ -463,16 +463,19 @@ public class PlaybackService extends Service {
         if (media instanceof FeedMedia) {
             FeedItem item = ((FeedMedia) media).getItem();
             DBWriter.markItemRead(PlaybackService.this, item, true, true);
-            nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
-            isInQueue = QueueAccess.ItemListAccess(queue).contains(((FeedMedia) media).getItem().getId());
+
+            try {
+                final List<FeedItem> queue = taskManager.getQueue();
+                isInQueue = QueueAccess.ItemListAccess(queue).contains(((FeedMedia) media).getItem().getId());
+                nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+                // isInQueue remains false
+            }
             if (isInQueue) {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
             DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
-            long autoDeleteMediaId = ((FeedComponent) media).getId();
-            if (mediaPlayer.isStreaming()) {
-                autoDeleteMediaId = -1;
-            }
         }
 
         // Load next episode if previous episode was in the queue and if there
@@ -514,7 +517,7 @@ public class PlaybackService extends Service {
                     notificationCode);
         } else {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
-            stopSelf();
+            //stopSelf();
         }
     }
 
@@ -713,8 +716,6 @@ public class PlaybackService extends Service {
     }
 
     private void updateWidget() {
-        if (AppConfig.DEBUG)
-            Log.d(TAG, "Sending widget update request");
         PlaybackService.this.sendBroadcast(new Intent(
                 PlayerWidget.FORCE_WIDGET_UPDATE));
     }
@@ -729,6 +730,10 @@ public class PlaybackService extends Service {
 
     @SuppressLint("NewApi")
     private RemoteControlClient setupRemoteControlClient() {
+        if (Build.VERSION.SDK_INT < 14) {
+            return null;
+        }
+
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(new ComponentName(getPackageName(),
                 MediaButtonReceiver.class.getName()));
@@ -806,6 +811,7 @@ public class PlaybackService extends Service {
             i.putExtra("album", info.playable.getFeedTitle());
             i.putExtra("track", info.playable.getEpisodeTitle());
             i.putExtra("playing", isPlaying);
+            final List<FeedItem> queue = taskManager.getQueueIfLoaded();
             if (queue != null) {
                 i.putExtra("ListSize", queue.size());
             }
@@ -896,12 +902,20 @@ public class PlaybackService extends Service {
         mediaPlayer.resume();
     }
 
+    public void prepare() {
+        mediaPlayer.prepare();
+    }
+
     public void pause(boolean abandonAudioFocus, boolean reinit) {
         mediaPlayer.pause(abandonAudioFocus, reinit);
     }
 
     public void reinit() {
         mediaPlayer.reinit();
+    }
+
+    public PlaybackServiceMediaPlayer.PSMPInfo getPSMPInfo() {
+        return mediaPlayer.getPSMPInfo();
     }
 
     public PlayerStatus getStatus() {

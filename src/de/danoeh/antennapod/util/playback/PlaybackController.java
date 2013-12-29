@@ -33,6 +33,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.util.Converter;
@@ -48,7 +49,7 @@ public abstract class PlaybackController {
 	public static final int DEFAULT_SEEK_DELTA = 30000;
 	public static final int INVALID_TIME = -1;
 
-    private Activity activity;
+    private final Activity activity;
 
     private PlaybackService playbackService;
     private Playable media;
@@ -70,6 +71,8 @@ public abstract class PlaybackController {
     private boolean reinitOnPause;
 
     public PlaybackController(Activity activity, boolean reinitOnPause) {
+        if (activity == null)
+            throw new IllegalArgumentException("activity = null");
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
@@ -298,7 +301,9 @@ public abstract class PlaybackController {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Received statusUpdate Intent.");
             if (isConnectedToPlaybackService()) {
-                status = playbackService.getStatus();
+                PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
+                status = info.playerStatus;
+                media = info.playable;
                 handleStatus();
             } else {
                 Log.w(TAG,
@@ -422,6 +427,9 @@ public abstract class PlaybackController {
             case PLAYING:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
+                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                    onAwaitingVideoSurface();
+                }
                 setupPositionObserver();
                 updatePlayButtonAppearance(pauseResource);
                 break;
@@ -447,9 +455,6 @@ public abstract class PlaybackController {
             case SEEKING:
                 postStatusMsg(R.string.player_seeking_msg);
                 break;
-            case AWAITING_VIDEO_SURFACE:
-                onAwaitingVideoSurface();
-                break;
             case INITIALIZED:
                 checkMediaInfoLoaded();
                 clearStatusMsg();
@@ -459,10 +464,7 @@ public abstract class PlaybackController {
     }
 
     private void checkMediaInfoLoaded() {
-        if (!mediaInfoLoaded) {
-            loadMediaInfo();
-        }
-        mediaInfoLoaded = true;
+        mediaInfoLoaded = (mediaInfoLoaded || loadMediaInfo());
     }
 
     private void updatePlayButtonAppearance(int resource) {
@@ -476,7 +478,7 @@ public abstract class PlaybackController {
 
     public abstract void clearStatusMsg();
 
-    public abstract void loadMediaInfo();
+    public abstract boolean loadMediaInfo();
 
     public abstract void onAwaitingVideoSurface();
 
@@ -490,6 +492,7 @@ public abstract class PlaybackController {
         if (playbackService != null) {
             status = playbackService.getStatus();
             media = playbackService.getPlayable();
+            /*
             if (media == null) {
                 Log.w(TAG,
                         "PlaybackService has no media object. Trying to restore last played media.");
@@ -498,6 +501,7 @@ public abstract class PlaybackController {
                     activity.startService(serviceIntent);
                 }
             }
+            */
             onServiceQueried();
 
             setupGUI();
@@ -570,7 +574,7 @@ public abstract class PlaybackController {
                             break;
                         case INITIALIZED:
                             playbackService.setStartWhenPrepared(true);
-                            playbackService.resume();
+                            playbackService.prepare();
                             break;
                     }
                 } else {
