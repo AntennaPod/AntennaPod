@@ -61,4 +61,6 @@ public interface IPlayer {
 	void start();
 
 	void stop();
+
+    public void setVideoScalingMode(int mode);
 }

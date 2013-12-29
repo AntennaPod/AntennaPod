@@ -146,9 +146,13 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 		supportInvalidateOptionsMenu();
 	}
 
+    protected void chooseTheme() {
+        setTheme(UserPreferences.getTheme());
+    }
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
+        chooseTheme();
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
@@ -419,9 +423,12 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
 		butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
 
-		butFF.setOnClickListener(controller.newOnFFButtonClickListener());
-
-		butRev.setOnClickListener(controller.newOnRevButtonClickListener());
+        if (butFF != null) {
+		    butFF.setOnClickListener(controller.newOnFFButtonClickListener());
+        }
+        if (butRev != null) {
+		    butRev.setOnClickListener(controller.newOnRevButtonClickListener());
+        }
 
 	}
 

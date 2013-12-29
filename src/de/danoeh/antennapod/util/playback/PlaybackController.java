@@ -1,20 +1,7 @@
 package de.danoeh.antennapod.util.playback;
 
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.IBinder;
@@ -39,6 +26,8 @@ import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
 
+import java.util.concurrent.*;
+
 /**
  * Communicates with the playback service. GUI classes should use this class to
  * control playback instead of communicating with the PlaybackService directly.
@@ -46,8 +35,8 @@ import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
 public abstract class PlaybackController {
     private static final String TAG = "PlaybackController";
 
-	public static final int DEFAULT_SEEK_DELTA = 30000;
-	public static final int INVALID_TIME = -1;
+    public static final int DEFAULT_SEEK_DELTA = 30000;
+    public static final int INVALID_TIME = -1;
 
     private final Activity activity;
 
@@ -185,6 +174,7 @@ public abstract class PlaybackController {
                 boolean bound = false;
                 if (!PlaybackService.isRunning) {
                     if (serviceIntent != null) {
+                        if (AppConfig.DEBUG) Log.d(TAG, "Calling start service");
                         activity.startService(serviceIntent);
                         bound = activity.bindService(serviceIntent, mConnection, 0);
                     } else {
@@ -407,11 +397,18 @@ public abstract class PlaybackController {
      * should be used to update the GUI or start/cancel background threads.
      */
     private void handleStatus() {
-        TypedArray res = activity.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.av_pause});
-        final int playResource = res.getResourceId(0, R.drawable.av_play);
-        final int pauseResource = res.getResourceId(1, R.drawable.av_pause);
-        res.recycle();
+        final int playResource;
+        final int pauseResource;
+        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
+            TypedArray res = activity.obtainStyledAttributes(new int[]{
+                    R.attr.av_play, R.attr.av_pause});
+            playResource = res.getResourceId(0, R.drawable.av_play);
+            pauseResource = res.getResourceId(1, R.drawable.av_pause);
+            res.recycle();
+        } else {
+            playResource = R.drawable.ic_action_play_over_video;
+            pauseResource = R.drawable.ic_action_pause_over_video;
+        }
 
         switch (status) {
 
@@ -680,19 +677,19 @@ public abstract class PlaybackController {
         return playbackService != null && playbackService.canSetSpeed();
     }
 
-	public void setPlaybackSpeed(float speed) {
-		if (playbackService != null) {
-			playbackService.setSpeed(speed);
-		}
-	}
-    
-	public float getCurrentPlaybackSpeedMultiplier() {
-		if (canSetPlaybackSpeed()) {
-			return playbackService.getCurrentPlaybackSpeed();
-		} else {
-			return -1;
-		}
-	}
+    public void setPlaybackSpeed(float speed) {
+        if (playbackService != null) {
+            playbackService.setSpeed(speed);
+        }
+    }
+
+    public float getCurrentPlaybackSpeedMultiplier() {
+        if (canSetPlaybackSpeed()) {
+            return playbackService.getCurrentPlaybackSpeed();
+        } else {
+            return -1;
+        }
+    }
 
     public boolean isPlayingVideo() {
         if (playbackService != null) {

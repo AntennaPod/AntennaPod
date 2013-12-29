@@ -25,7 +25,10 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
-import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
@@ -240,6 +243,11 @@ public class PlaybackService extends Service {
             stopSelf();
         }
 
+        if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
+            if (AppConfig.DEBUG) Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
+            stopForeground(true);
+        }
+
         if (keycode != -1) {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Received media button event");
@@ -253,7 +261,7 @@ public class PlaybackService extends Service {
             mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
         }
 
-        return Service.START_NOT_STICKY;
+        return Service.START_REDELIVER_INTENT;
     }
 
     /**

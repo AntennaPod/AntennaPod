@@ -3,6 +3,7 @@ package de.danoeh.antennapod.service.playback;
 import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.os.Handler;
 import android.os.Message;
@@ -113,6 +114,7 @@ public class PlaybackServiceMediaPlayer {
     public void playMediaObject(final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (playable == null)
             throw new IllegalArgumentException("playable = null");
+        if (AppConfig.DEBUG) Log.d(TAG, "Play media object.");
         executor.submit(new Runnable() {
             @Override
             public void run() {
@@ -164,6 +166,11 @@ public class PlaybackServiceMediaPlayer {
                 mediaPlayer.setDataSource(media.getLocalMediaUrl());
             }
             setPlayerStatus(PlayerStatus.INITIALIZED, media);
+
+            if (mediaType == MediaType.VIDEO) {
+                VideoPlayer vp = (VideoPlayer) mediaPlayer;
+              //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+            }
 
             if (prepareImmediately) {
                 setPlayerStatus(PlayerStatus.PREPARING, media);

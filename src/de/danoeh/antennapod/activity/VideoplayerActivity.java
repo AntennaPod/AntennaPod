@@ -2,10 +2,13 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.*;
+import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
@@ -21,7 +24,7 @@ import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
 
 /**
- * Activity for playing audio files.
+ * Activity for playing video files.
  */
 public class VideoplayerActivity extends MediaplayerActivity {
     private static final String TAG = "VideoplayerActivity";
@@ -38,11 +41,17 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private ProgressBar progressIndicator;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        setTheme(UserPreferences.getTheme());
+    protected void chooseTheme() {
+        setTheme(R.style.Theme_AntennaPod_Dark);
+    }
 
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        if (Build.VERSION.SDK_INT >= 11) {
+            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+        }
         super.onCreate(savedInstanceState);
+        getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
     }
 
     @Override
@@ -284,14 +293,30 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     private void showVideoControls() {
         videoOverlay.setVisibility(View.VISIBLE);
-        videoOverlay.startAnimation(AnimationUtils.loadAnimation(this,
-                R.anim.fade_in));
+        butPlay.setVisibility(View.VISIBLE);
+        final Animation animation = AnimationUtils.loadAnimation(this,
+                R.anim.fade_in);
+        if (animation != null) {
+            videoOverlay.startAnimation(animation);
+            butPlay.startAnimation(animation);
+        }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_VISIBLE);
+        }
     }
 
     private void hideVideoControls() {
-        videoOverlay.startAnimation(AnimationUtils.loadAnimation(this,
-                R.anim.fade_out));
+        final Animation animation = AnimationUtils.loadAnimation(this,
+                R.anim.fade_out);
+        if (animation != null) {
+            videoOverlay.startAnimation(animation);
+            butPlay.startAnimation(animation);
+        }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+        }
         videoOverlay.setVisibility(View.GONE);
+        butPlay.setVisibility(View.GONE);
     }
 
     @Override
