@@ -7,21 +7,21 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.*;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-import android.widget.VideoView;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 /**
  * Activity for playing video files.
@@ -37,7 +37,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     private VideoControlsHider videoControlsToggler;
 
     private LinearLayout videoOverlay;
-    private VideoView videoview;
+    private AspectRatioVideoView videoview;
     private ProgressBar progressIndicator;
 
     @Override
@@ -103,7 +103,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     protected void setupGUI() {
         super.setupGUI();
         videoOverlay = (LinearLayout) findViewById(R.id.overlay);
-        videoview = (VideoView) findViewById(R.id.videoview);
+        videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoview.setOnTouchListener(onVideoviewTouched);
@@ -119,6 +119,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
             if (AppConfig.DEBUG)
                 Log.d(TAG,
                         "Videosurface already created, setting videosurface now");
+
+            Pair<Integer, Integer> videoSize = controller.getVideoSize();
+            if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
+                if (AppConfig.DEBUG) Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
+                videoview.setVideoSize(videoSize.first, videoSize.second);
+            } else {
+                Log.e(TAG, "Could not determine video size");
+            }
             controller.setVideoSurface(videoview.getHolder());
         }
     }

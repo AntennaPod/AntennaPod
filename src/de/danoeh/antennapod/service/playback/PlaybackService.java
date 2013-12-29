@@ -19,6 +19,7 @@ import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import de.danoeh.antennapod.AppConfig;
@@ -989,6 +990,10 @@ public class PlaybackService extends Service {
 
     public boolean isStreaming() {
         return mediaPlayer.isStreaming();
+    }
+
+    public Pair<Integer, Integer> getVideoSize() {
+        return mediaPlayer.getVideoSize();
     }
 
     private void setCurrentlyPlayingMedia(long id) {

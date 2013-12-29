@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -696,6 +697,14 @@ public abstract class PlaybackController {
             return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
         }
         return false;
+    }
+
+    public Pair<Integer, Integer> getVideoSize() {
+        if (playbackService != null) {
+            return playbackService.getVideoSize();
+        } else {
+            return null;
+        }
     }
 
 

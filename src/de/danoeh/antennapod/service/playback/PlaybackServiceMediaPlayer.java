@@ -3,11 +3,11 @@ package de.danoeh.antennapod.service.playback;
 import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.Chapter;
@@ -47,6 +47,7 @@ public class PlaybackServiceMediaPlayer {
     private volatile MediaType mediaType;
     private volatile AtomicBoolean startWhenPrepared;
     private volatile boolean pausedBecauseOfTransientAudiofocusLoss;
+    private volatile Pair<Integer, Integer> videoSize;
 
     /**
      * Some asynchronous calls might change the state of the MediaPlayer object. Therefore calls in other threads
@@ -76,14 +77,8 @@ public class PlaybackServiceMediaPlayer {
         pausedBecauseOfTransientAudiofocusLoss = false;
         mediaType = MediaType.UNKNOWN;
         playerStatus = PlayerStatus.STOPPED;
+        videoSize = null;
     }
-
-    private Handler.Callback handlerCallback = new Handler.Callback() {
-        @Override
-        public boolean handleMessage(Message msg) {
-            return false;
-        }
-    };
 
     /**
      * Starts or prepares playback of the specified Playable object. If another Playable object is already being played, the currently playing
@@ -156,6 +151,7 @@ public class PlaybackServiceMediaPlayer {
         this.media = playable;
         this.stream = stream;
         this.mediaType = media.getMediaType();
+        this.videoSize = null;
         PlaybackServiceMediaPlayer.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
@@ -169,7 +165,7 @@ public class PlaybackServiceMediaPlayer {
 
             if (mediaType == MediaType.VIDEO) {
                 VideoPlayer vp = (VideoPlayer) mediaPlayer;
-              //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
+                //  vp.setVideoScalingMode(MediaPlayer.VIDEO_SCALING_MODE_SCALE_TO_FIT);
             }
 
             if (prepareImmediately) {
@@ -324,6 +320,11 @@ public class PlaybackServiceMediaPlayer {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Resource prepared");
 
+        if (mediaType == MediaType.VIDEO) {
+            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+        }
+
         mediaPlayer.seekTo(media.getPosition());
         if (media.getDuration() == 0) {
             if (AppConfig.DEBUG)
@@ -380,8 +381,8 @@ public class PlaybackServiceMediaPlayer {
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
             if (stream) {
-            //    statusBeforeSeeking = playerStatus;
-            //    setPlayerStatus(PlayerStatus.SEEKING, media);
+                //    statusBeforeSeeking = playerStatus;
+                //    setPlayerStatus(PlayerStatus.SEEKING, media);
             }
             mediaPlayer.seekTo(t);
 
@@ -601,6 +602,30 @@ public class PlaybackServiceMediaPlayer {
                 playerLock.unlock();
             }
         });
+    }
+
+    /**
+     * Return width and height of the currently playing video as a pair.
+     *
+     * @return Width and height as a Pair or null if the video size could not be determined. The method might still
+     * return an invalid non-null value if the getVideoWidth() and getVideoHeight() methods of the media player return
+     * invalid values.
+     */
+    public Pair<Integer, Integer> getVideoSize() {
+        if (!playerLock.tryLock()) {
+            // use cached value if lock can't be aquired
+            return videoSize;
+        }
+        Pair<Integer, Integer> res;
+        if (mediaPlayer == null || playerStatus == PlayerStatus.ERROR || mediaType != MediaType.VIDEO) {
+            res = null;
+        } else {
+            VideoPlayer vp = (VideoPlayer) mediaPlayer;
+            videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
+            res = videoSize;
+        }
+        playerLock.unlock();
+        return res;
     }
 
     /**
