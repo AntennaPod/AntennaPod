@@ -4,8 +4,6 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RemoteControlClient;
-import android.os.Handler;
-import android.os.Message;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -689,11 +687,11 @@ public class PlaybackServiceMediaPlayer {
                         case AudioManager.AUDIOFOCUS_GAIN:
                             if (AppConfig.DEBUG)
                                 Log.d(TAG, "Gained audio focus");
-                            if (pausedBecauseOfTransientAudiofocusLoss) {
+                            if (pausedBecauseOfTransientAudiofocusLoss) // we paused => play now
+                                resume();
+                            else // we ducked => raise audio level back
                                 audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                                         AudioManager.ADJUST_RAISE, 0);
-                                resume();
-                            }
                             break;
                         case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                             if (playerStatus == PlayerStatus.PLAYING) {
@@ -702,7 +700,7 @@ public class PlaybackServiceMediaPlayer {
                                         Log.d(TAG, "Lost audio focus temporarily. Ducking...");
                                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                                             AudioManager.ADJUST_LOWER, 0);
-                                    pausedBecauseOfTransientAudiofocusLoss = true;
+                                    pausedBecauseOfTransientAudiofocusLoss = false;
                                 } else {
                                     if (AppConfig.DEBUG)
                                         Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
