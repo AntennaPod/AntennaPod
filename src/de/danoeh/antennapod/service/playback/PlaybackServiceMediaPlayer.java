@@ -211,9 +211,10 @@ public class PlaybackServiceMediaPlayer {
 
                 setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
                 mediaPlayer.start();
-                if (playerStatus == PlayerStatus.PREPARED) {
+                if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
                     mediaPlayer.seekTo(media.getPosition());
                 }
+
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;
                 if (android.os.Build.VERSION.SDK_INT >= 14) {
@@ -323,7 +324,10 @@ public class PlaybackServiceMediaPlayer {
             videoSize = new Pair<Integer, Integer>(vp.getVideoWidth(), vp.getVideoHeight());
         }
 
-        mediaPlayer.seekTo(media.getPosition());
+        if (media.getPosition() > 0) {
+            mediaPlayer.seekTo(media.getPosition());
+        }
+
         if (media.getDuration() == 0) {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Setting duration of media");
