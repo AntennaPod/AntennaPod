@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -155,6 +157,12 @@ public final class DBTasks {
                     autodownloadUndownloadedItems(context);
                 }
             }.start();
+
+            if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+            new FlattrClickWorker(context).executeAsync(); // flattr pending things
+
+            if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+            new FlattrStatusFetcher(context).executeAsync();
         } else {
             if (AppConfig.DEBUG)
                 Log.d(TAG,

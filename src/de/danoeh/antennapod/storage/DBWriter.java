@@ -2,13 +2,18 @@ package de.danoeh.antennapod.storage;
 
 import java.io.File;
 import java.util.Date;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+
+import org.shredzone.flattr4j.model.Flattr;
 
 import android.content.Context;
 import android.content.Intent;
@@ -16,6 +21,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.net.Uri;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
@@ -24,6 +30,7 @@ import de.danoeh.antennapod.service.GpodnetSyncService;
 import de.danoeh.antennapod.service.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.flattr.*;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -823,4 +830,99 @@ public class DBWriter {
         }
         return false;
     }
+
+    private static String normalizeURI(String uri) {
+        String normalizedURI = null;
+        if (uri != null) {
+            try {
+                normalizedURI = (new URI(uri)).normalize().toString();
+                if (! normalizedURI.endsWith("/"))
+                    normalizedURI = normalizedURI + "/";
+            }
+            catch (URISyntaxException e) {
+            }
+        }
+        return normalizedURI;
+    }
+
+
+    // Set flattr status of the passed thing (either a FeedItem or a Feed)
+    public static void setFlattredStatus(Context context, FlattrThing thing) {
+        // must propagate this to back db
+        if (thing instanceof FeedItem)
+                DBWriter.setFeedItem(context, (FeedItem) thing);
+        else if (thing instanceof Feed)
+                DBWriter.setCompleteFeed(context, (Feed) thing);
+        else
+                Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
+    }
+
+    /*
+     * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
+     * where the information has been retrieved from the flattr API
+     */
+    public static void setFlattredStatus(Context context, List<Flattr> flattrList) {
+        class FlattrLinkTime {
+            public String paymentLink;
+            public long time;
+
+            FlattrLinkTime(String paymentLink, long time) {
+                this.paymentLink = paymentLink;
+                this.time = time;
+            }
+        }
+
+        // build list with flattred things having normalized URLs
+        ArrayList<FlattrLinkTime> flattrLinkTime = new ArrayList<FlattrLinkTime>(flattrList.size());
+        for (Flattr flattr: flattrList) {
+            flattrLinkTime.add(new FlattrLinkTime(normalizeURI(flattr.getThing().getUrl()), flattr.getCreated().getTime()));
+            if (AppConfig.DEBUG)
+                Log.d(TAG, "FlattredUrl: " + flattr.getThing().getUrl());
+        }
+
+
+        String paymentLink;
+        List<Feed> feeds = DBReader.getFeedList(context);
+        for (Feed feed: feeds) {
+            // check if the feed has been flattred
+            paymentLink = feed.getPaymentLink();
+            if (paymentLink != null) {
+                String feedThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+                feed.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Feed: Trying to match " + feedThingUrl);
+                for (FlattrLinkTime flattr: flattrLinkTime) {
+                    if (flattr.paymentLink.equals(feedThingUrl)) {
+                        feed.setFlattrStatus(new FlattrStatus(flattr.time));
+                        setCompleteFeed(context, feed);
+                        break;
+                    }
+                }
+            }
+
+            // check if any of the feeditems have been flattred
+            for (FeedItem item: DBReader.getFeedItemList(context, feed)) {
+                paymentLink = item.getPaymentLink();
+
+                if (paymentLink != null) {
+                    String feedItemThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
+
+                    item.getFlattrStatus().setUnflattred(); // reset our offline status tracking
+
+                    if (AppConfig.DEBUG)
+                        Log.d(TAG, "FeedItem: Trying to match " + feedItemThingUrl);
+                    for (FlattrLinkTime flattr: flattrLinkTime) {
+                        if (flattr.paymentLink.equals(feedItemThingUrl)) {
+                            item.setFlattrStatus(new FlattrStatus(flattr.time));
+                            setFeedItem(context, item);
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 }
