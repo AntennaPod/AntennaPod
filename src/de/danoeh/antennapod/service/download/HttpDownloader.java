@@ -6,9 +6,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.SocketTimeoutException;
-import java.net.UnknownHostException;
+import java.net.*;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
@@ -58,13 +56,24 @@ public class HttpDownloader extends Downloader {
         return httpClient;
     }
 
+    private URI getURIFromRequestUrl(String source) {
+        try {
+            URL url = new URL(source);
+            return new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
+        } catch (MalformedURLException e) {
+            throw new IllegalArgumentException(e);
+        } catch (URISyntaxException e) {
+            throw new IllegalArgumentException(e);
+        }
+    }
+
     @Override
     protected void download() {
         DefaultHttpClient httpClient = null;
         BufferedOutputStream out = null;
         InputStream connection = null;
         try {
-            HttpGet httpGet = new HttpGet(request.getSource());
+            HttpGet httpGet = new HttpGet(getURIFromRequestUrl(request.getSource()));
             httpClient = createHttpClient();
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
