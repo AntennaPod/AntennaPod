@@ -853,8 +853,10 @@ public class DBWriter {
                 DBWriter.setFeedItem(context, (FeedItem) thing);
         else if (thing instanceof Feed)
                 DBWriter.setCompleteFeed(context, (Feed) thing);
+        else if (thing instanceof SimpleFlattrThing)
+        {} // SimpleFlattrThings are generated on the fly and do not have DB backing
         else
-                Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed");
+                Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed nor SimpleFlattrThing");
     }
 
     /*

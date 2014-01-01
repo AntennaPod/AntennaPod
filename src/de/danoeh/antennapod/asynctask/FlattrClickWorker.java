@@ -57,6 +57,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected final static int NO_THINGS = 3;
 	
 	private boolean enqueue_only = false;
+    private FlattrThing extra_flattr_thing; // additional urls to flattr that do *not* originate from the queue
 
 	public FlattrClickWorker(Context context, boolean enqueue_only) {
 		this(context);
@@ -77,11 +78,13 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
     /* only used in PreferencesActivity for flattring antennapod itself,
     * can't really enqueue this thing
     */
-    public FlattrClickWorker(Context context, String url) {
-        Log.e(TAG, "Not implemented yet");
+    public FlattrClickWorker(Context context, FlattrThing thing) {
+        this(context);
+        extra_flattr_thing = thing;
+        Log.d(TAG, "Going to flattr special thing that is not in the queue: " + thing.getTitle());
     }
 
-	protected void onNoAccessToken() {
+    protected void onNoAccessToken() {
 		Log.w(TAG, "No access token was available");
 		FlattrUtils.showNoTokenDialog(context, "");
 	}
@@ -196,7 +199,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		if (!FlattrUtils.hasToken()) {
 			exitCode = NO_TOKEN;
 		}
-		else if (DBReader.getFlattrQueueEmpty(context)) {
+		else if (DBReader.getFlattrQueueEmpty(context) && extra_flattr_thing == null) {
 			exitCode = NO_THINGS;
 		}
 		else if (!haveInternetAccess(context) || enqueue_only) {
@@ -205,6 +208,9 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		else {
 			List<FlattrThing> flattrList = DBReader.getFlattrQueue(context);
 			Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
+
+            if (extra_flattr_thing != null)
+                flattrList.add(extra_flattr_thing);
 
 			flattrd.ensureCapacity(flattrList.size());
 			

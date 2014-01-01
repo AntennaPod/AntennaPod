@@ -30,6 +30,7 @@ import de.danoeh.antennapod.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.util.flattr.SimpleFlattrThing;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -80,7 +81,11 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         new FlattrClickWorker(PreferenceActivity.this,
-                                FlattrUtils.APP_URL).executeAsync();
+                                new SimpleFlattrThing(PreferenceActivity.this.getString(R.string.app_name),
+                                        FlattrUtils.APP_URL,
+                                        new FlattrStatus(FlattrStatus.STATUS_QUEUE)
+                                )
+                        ).executeAsync();
 
                         return true;
                     }
