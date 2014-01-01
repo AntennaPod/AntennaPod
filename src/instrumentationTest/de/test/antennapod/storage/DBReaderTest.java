@@ -6,6 +6,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
 
 import java.util.*;
@@ -36,7 +37,7 @@ public class DBReaderTest extends InstrumentationTestCase {
     private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus());
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();

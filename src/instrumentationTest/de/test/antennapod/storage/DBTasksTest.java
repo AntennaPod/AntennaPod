@@ -11,6 +11,7 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 import java.io.File;
 import java.io.IOException;
@@ -279,7 +280,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final Context context = getInstrumentation().getTargetContext();
         UserPreferences.setUpdateInterval(context, expirationTime);
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus());
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
