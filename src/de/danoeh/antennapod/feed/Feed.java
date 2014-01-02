@@ -245,6 +245,9 @@ public class Feed extends FeedFile implements FlattrThing {
         if (other.paymentLink != null) {
             paymentLink = other.paymentLink;
         }
+        if (other.flattrStatus != null) {
+            flattrStatus = other.flattrStatus;
+        }
     }
 
     public boolean compareWithOther(Feed other) {

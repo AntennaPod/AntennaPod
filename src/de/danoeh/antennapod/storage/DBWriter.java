@@ -214,6 +214,24 @@ public class DBWriter {
     }
 
     /**
+     * Saves the FlattrStatus of a Feed object in the database.
+     */
+    public static Future<?> setFeedFlattrStatus(final Context context,
+                                                final Feed feed) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedFlattrStatus(feed);
+                adapter.close();
+            }
+        });
+    }
+
+
+    /**
      * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
      * its playback completion date is set to a non-null value. This method will set the playback completion date to the
      * current date regardless of the current value.
@@ -764,6 +782,23 @@ public class DBWriter {
     }
 
     /**
+     * Saves the FlattrStatus of a FeedItem object in the database.
+     */
+    public static Future<?> setFeedItemFlattrStatus(final Context context,
+                                                    final FeedItem item) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemFlattrStatus(item);
+                adapter.close();
+            }
+        });
+    }
+
+    /**
      * Saves a FeedImage object in the database. This method will save all attributes of the FeedImage object. The
      * contents of FeedComponent-attributes (e.g. the FeedImages's 'feed'-attribute) will not be saved.
      *
@@ -847,23 +882,25 @@ public class DBWriter {
 
 
     // Set flattr status of the passed thing (either a FeedItem or a Feed)
-    public static void setFlattredStatus(Context context, FlattrThing thing) {
+    public static Future<?> setFlattredStatus(Context context, FlattrThing thing) {
         // must propagate this to back db
         if (thing instanceof FeedItem)
-                DBWriter.setFeedItem(context, (FeedItem) thing);
+            return setFeedItemFlattrStatus(context, (FeedItem)thing);
         else if (thing instanceof Feed)
-                DBWriter.setCompleteFeed(context, (Feed) thing);
+            return setFeedFlattrStatus(context, (Feed)thing);
         else if (thing instanceof SimpleFlattrThing)
         {} // SimpleFlattrThings are generated on the fly and do not have DB backing
         else
                 Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed nor SimpleFlattrThing");
+
+        return null;
     }
 
     /*
      * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
      * where the information has been retrieved from the flattr API
      */
-    public static void setFlattredStatus(Context context, List<Flattr> flattrList) {
+    public static void setFlattredStatus(final Context context, List<Flattr> flattrList) {
         class FlattrLinkTime {
             public String paymentLink;
             public long time;
@@ -885,7 +922,7 @@ public class DBWriter {
 
         String paymentLink;
         List<Feed> feeds = DBReader.getFeedList(context);
-        for (Feed feed: feeds) {
+        for (final Feed feed: feeds) {
             // check if the feed has been flattred
             paymentLink = feed.getPaymentLink();
             if (paymentLink != null) {
@@ -895,17 +932,17 @@ public class DBWriter {
 
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Feed: Trying to match " + feedThingUrl);
-                for (FlattrLinkTime flattr: flattrLinkTime) {
+                for (final FlattrLinkTime flattr: flattrLinkTime) {
                     if (flattr.paymentLink.equals(feedThingUrl)) {
                         feed.setFlattrStatus(new FlattrStatus(flattr.time));
-                        setCompleteFeed(context, feed);
+                        setFeedFlattrStatus(context, feed);
                         break;
                     }
                 }
             }
 
             // check if any of the feeditems have been flattred
-            for (FeedItem item: DBReader.getFeedItemList(context, feed)) {
+            for (final FeedItem item: DBReader.getFeedItemList(context, feed)) {
                 paymentLink = item.getPaymentLink();
 
                 if (paymentLink != null) {
@@ -915,10 +952,10 @@ public class DBWriter {
 
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "FeedItem: Trying to match " + feedItemThingUrl);
-                    for (FlattrLinkTime flattr: flattrLinkTime) {
+                    for (final FlattrLinkTime flattr: flattrLinkTime) {
                         if (flattr.paymentLink.equals(feedItemThingUrl)) {
                             item.setFlattrStatus(new FlattrStatus(flattr.time));
-                            setFeedItem(context, item);
+                            setFeedItemFlattrStatus(context, item);
                             break;
                         }
                     }

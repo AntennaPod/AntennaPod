@@ -336,7 +336,7 @@ public final class DBReader {
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_FILE_URL),
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOAD_URL),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0,
-                new FlattrStatus(cursor.getLong(PodDBAdapter.KEY_FEED_FLATTR_STATUS_INDEX)));
+                new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)));
 
         if (image != null) {
             image.setFeed(feed);

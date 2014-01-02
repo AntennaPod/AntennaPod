@@ -11,6 +11,7 @@ public class FlattrStatus {
 	private Calendar lastFlattred;
 	
 	public FlattrStatus() {
+        status = STATUS_UNFLATTERED;
 		lastFlattred = Calendar.getInstance();
 	}
 

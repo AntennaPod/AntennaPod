@@ -153,16 +153,16 @@ public final class DBTasks {
                     }
                     isRefreshing.set(false);
 
+                    if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+                    new FlattrClickWorker(context).executeSync(); // flattr pending things
+
+                    if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+                    new FlattrStatusFetcher(context).executeAsync();
+
                     GpodnetSyncService.sendSyncIntent(context);
                     autodownloadUndownloadedItems(context);
                 }
             }.start();
-
-            if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
-            new FlattrClickWorker(context).executeAsync(); // flattr pending things
-
-            if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
-            new FlattrStatusFetcher(context).executeAsync();
         } else {
             if (AppConfig.DEBUG)
                 Log.d(TAG,

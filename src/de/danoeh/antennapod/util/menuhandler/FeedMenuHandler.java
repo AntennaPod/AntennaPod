@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
@@ -81,8 +85,15 @@ public class FeedMenuHandler {
 			break;
 		case R.id.support_item:
 			selectedFeed.getFlattrStatus().setFlattrQueue();
-			DBWriter.setFlattredStatus(context, selectedFeed);
-			new FlattrClickWorker(context).executeAsync();
+            Future<?> future = DBWriter.setFlattredStatus(context, selectedFeed);
+            try {
+                synchronized (future) {
+                    future.wait(10);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            new FlattrClickWorker(context).executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);

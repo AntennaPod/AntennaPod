@@ -3,6 +3,8 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.util.Log;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
@@ -17,9 +19,13 @@ import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedItemMenuHandler {
+    private static final String TAG = "FeedItemMenuHandler";
+
 	private FeedItemMenuHandler() {
 
 	}
@@ -160,8 +166,15 @@ public class FeedItemMenuHandler {
 			break;
 		case R.id.support_item:
 			selectedItem.getFlattrStatus().setFlattrQueue();
-            DBWriter.setFlattredStatus(context, selectedItem);
-			new FlattrClickWorker(context).executeAsync();
+            Future<?> future = DBWriter.setFlattredStatus(context, selectedItem);
+            try {
+                synchronized (future) {
+                    future.wait(10);
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            new FlattrClickWorker(context).executeAsync();
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedItemLink(context, selectedItem);

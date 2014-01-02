@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.Executor;
 
 import org.shredzone.flattr4j.exception.FlattrException;
 import org.shredzone.flattr4j.model.Flattr;
@@ -223,10 +224,10 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
 					FlattrUtils.clickUrl(context, thing.getPaymentLink());
 					flattrd.add(thing.getTitle());
-					
+
 					thing.getFlattrStatus().setFlattred();
 				}
-				catch (FlattrException e) {
+				catch (Exception e) {
 					Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
 					flattr_failed.ensureCapacity(flattrList.size());
 					flattr_failed.add(thing.getTitle());
@@ -255,5 +256,17 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 			execute();
 		}
 	}
+
+    public void executeSync() {
+        class DirectExecutor implements Executor {
+            public void execute(Runnable r) {
+                 r.run();
+            }
+        }
+        FlattrUtils.hasToken();
+        executeOnExecutor(new DirectExecutor());
+
+    }
+
 
 }

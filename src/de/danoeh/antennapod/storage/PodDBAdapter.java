@@ -218,6 +218,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
+            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS
     };
 
     // column indices for FEED_SEL_STD
@@ -236,6 +237,7 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_TYPE = 12;
     public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
     public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD = 14;
+    public static final int IDX_FEED_SEL_STD_FLATTR_STATUS = 15;
 
 
     /**
@@ -358,6 +360,9 @@ public class PodDBAdapter {
         values.put(KEY_LASTUPDATE, feed.getLastUpdate().getTime());
         values.put(KEY_TYPE, feed.getType());
         values.put(KEY_FEED_IDENTIFIER, feed.getFeedIdentifier());
+
+        Log.d(TAG, "Setting feed with flattr status " + feed.getTitle() + ": " + feed.getFlattrStatus().toLong());
+
 		values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         if (feed.getId() == 0) {
             // Create new entry
@@ -484,6 +489,16 @@ public class PodDBAdapter {
     }
 
     /**
+     * Update the flattr status of a feed
+     */
+    public void setFeedFlattrStatus(Feed feed)
+    {
+        ContentValues values = new ContentValues();
+        values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feed.getId())});
+    }
+
+    /**
      * Updates the download URL of a Feed.
      */
     public void setFeedDownloadUrl(String original, String updated) {
@@ -508,6 +523,17 @@ public class PodDBAdapter {
         db.endTransaction();
         return result;
     }
+
+    /**
+     * Update the flattr status of a FeedItem
+     */
+    public void setFeedItemFlattrStatus(FeedItem feedItem)
+    {
+        ContentValues values = new ContentValues();
+        values.put(KEY_FLATTR_STATUS, feedItem.getFlattrStatus().toLong());
+        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[] { String.valueOf(feedItem.getId()) } );
+    }
+
 
     /**
      * Inserts or updates a feeditem entry
