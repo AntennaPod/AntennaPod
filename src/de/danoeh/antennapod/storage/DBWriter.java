@@ -896,7 +896,7 @@ public class DBWriter {
         return null;
     }
 
-    /*
+    /**
      * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
      * where the information has been retrieved from the flattr API
      */

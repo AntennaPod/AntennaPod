@@ -1,9 +1,5 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.List;
-
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -18,6 +14,9 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
+
+import java.util.Arrays;
+import java.util.List;
 
 // TODO Remove media column from feeditem table
 
@@ -124,7 +123,7 @@ public class PodDBAdapter {
     public static final String KEY_HAS_CHAPTERS = "has_simple_chapters";
     public static final String KEY_TYPE = "type";
     public static final String KEY_ITEM_IDENTIFIER = "item_identifier";
-	public static final String KEY_FLATTR_STATUS = "flattr_status";
+    public static final String KEY_FLATTR_STATUS = "flattr_status";
     public static final String KEY_FEED_IDENTIFIER = "feed_identifier";
     public static final String KEY_REASON_DETAILED = "reason_detailed";
     public static final String KEY_DOWNLOADSTATUS_TITLE = "title";
@@ -363,7 +362,7 @@ public class PodDBAdapter {
 
         Log.d(TAG, "Setting feed with flattr status " + feed.getTitle() + ": " + feed.getFlattrStatus().toLong());
 
-		values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
+        values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         if (feed.getId() == 0) {
             // Create new entry
             if (AppConfig.DEBUG)
@@ -491,11 +490,51 @@ public class PodDBAdapter {
     /**
      * Update the flattr status of a feed
      */
-    public void setFeedFlattrStatus(Feed feed)
-    {
+    public void setFeedFlattrStatus(Feed feed) {
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feed.getId())});
+    }
+
+    /**
+     * Get all feeds in the flattr queue.
+     */
+    public Cursor getFeedsInFlattrQueueCursor() {
+        return db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_FLATTR_STATUS + "=?",
+                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)},null, null, null);
+    }
+
+    /**
+     * Get all feed items in the flattr queue.
+     */
+    public Cursor getFeedItemsInFlattrQueueCursor() {
+        return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FLATTR_STATUS + "=?",
+                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)},null, null, null);
+    }
+
+    /**
+     * Counts feeds and feed items in the flattr queue
+     */
+    public int getFlattrQueueSize() {
+        int res = 0;
+        Cursor c = db.rawQuery(String.format("SELECT count(*) FROM %s WHERE %s=%s",
+                TABLE_NAME_FEEDS, KEY_FLATTR_STATUS, String.valueOf(FlattrStatus.STATUS_QUEUE)), null);
+        if (c.moveToFirst()) {
+            res = c.getInt(0);
+            c.close();
+        } else {
+            Log.e(TAG, "Unable to determine size of flattr queue: Could not count number of feeds");
+        }
+        c = db.rawQuery(String.format("SELECT count(*) FROM %s WHERE %s=%s",
+                TABLE_NAME_FEED_ITEMS, KEY_FLATTR_STATUS, String.valueOf(FlattrStatus.STATUS_QUEUE)), null);
+        if (c.moveToFirst()) {
+            res += c.getInt(0);
+            c.close();
+        } else {
+            Log.e(TAG, "Unable to determine size of flattr queue: Could not count number of feed items");
+        }
+
+        return res;
     }
 
     /**
@@ -527,17 +566,17 @@ public class PodDBAdapter {
     /**
      * Update the flattr status of a FeedItem
      */
-    public void setFeedItemFlattrStatus(FeedItem feedItem)
-    {
+    public void setFeedItemFlattrStatus(FeedItem feedItem) {
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, feedItem.getFlattrStatus().toLong());
-        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[] { String.valueOf(feedItem.getId()) } );
+        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItem.getId())});
     }
 
 
     /**
      * Inserts or updates a feeditem entry
-     * @param item The FeedItem
+     *
+     * @param item     The FeedItem
      * @param saveFeed true if the Feed of the item should also be saved. This should be set to
      *                 false if the method is executed on a list of FeedItems of the same Feed.
      * @return the id of the entry
@@ -561,7 +600,7 @@ public class PodDBAdapter {
         values.put(KEY_READ, item.isRead());
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
-		values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
+        values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
         } else {

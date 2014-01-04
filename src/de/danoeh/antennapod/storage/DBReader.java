@@ -1,23 +1,22 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.LinkedList;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.download.*;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -126,6 +125,7 @@ public final class DBReader {
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
      * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
      * not find the correct feed of an item.
+     *
      * @param context A context that is used for opening a database connection.
      * @param items   The FeedItems whose Feed-objects should be loaded.
      */
@@ -783,40 +783,47 @@ public final class DBReader {
     }
 
 
+    /**
+     * Returns the flattr queue as a List of FlattrThings. The list consists of Feeds and FeedItems.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The flattr queue as a List.
+     */
     public static List<FlattrThing> getFlattrQueue(Context context) {
-        List<Feed> feeds = getFeedList(context);
-        List<FlattrThing> l = new LinkedList<FlattrThing>();
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<FlattrThing> result = new ArrayList<FlattrThing>();
 
-        for (Feed feed : feeds) {
-            if (feed.getFlattrStatus().getFlattrQueue())
-                l.add(feed);
-
-            for (FeedItem item : getFeedItemList(context, feed))
-                if (item.getFlattrStatus().getFlattrQueue())
-                    l.add(item);
+        // load feeds
+        Cursor feedCursor = adapter.getFeedsInFlattrQueueCursor();
+        if (feedCursor.moveToFirst()) {
+            do {
+                result.add(extractFeedFromCursorRow(adapter, feedCursor));
+            } while (feedCursor.moveToNext());
         }
+        feedCursor.close();
 
-        Log.d(TAG, "Returning flattrQueueIterator for queue with " + l.size() + " items.");
-        return l;
+        //load feed items
+        Cursor feedItemCursor = adapter.getFeedItemsInFlattrQueueCursor();
+        result.addAll(extractItemlistFromCursor(adapter, feedItemCursor));
+        feedItemCursor.close();
+
+        adapter.close();
+        Log.d(TAG, "Returning flattrQueueIterator for queue with " + result.size() + " items.");
+        return result;
     }
 
 
+    /**
+     * Returns true if the flattr queue is empty.
+     *
+     * @param context A context that is used for opening a database connection.
+     */
     public static boolean getFlattrQueueEmpty(Context context) {
-        List<Feed> feeds = getFeedList(context);
-
-        for (Feed feed : feeds) {
-            if (feed.getFlattrStatus().getFlattrQueue())
-                return false;
-        }
-
-        for (Feed feed : feeds) {
-            for (FeedItem item : getFeedItemList(context, feed))
-                if (item.getFlattrStatus().getFlattrQueue())
-                    return false;
-        }
-
-        Log.d(TAG, "getFlattrQueueEmpty() = true");
-
-        return true;
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        boolean empty = adapter.getFlattrQueueSize() == 0;
+        adapter.close();
+        return empty;
     }
 }
