@@ -233,7 +233,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 					flattr_failed.add(thing.getTitle());
 				}
                 Log.d(TAG, "flattrQueue processing - going to write thing back to db with flattr_status " + Long.toString(thing.getFlattrStatus().toLong()));
-                DBWriter.setFlattredStatus(context, thing);
+                DBWriter.setFlattredStatus(context, thing, false);
 			}
 			
 		}

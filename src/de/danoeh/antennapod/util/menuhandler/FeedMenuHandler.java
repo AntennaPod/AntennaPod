@@ -85,15 +85,7 @@ public class FeedMenuHandler {
 			break;
 		case R.id.support_item:
 			selectedFeed.getFlattrStatus().setFlattrQueue();
-            Future<?> future = DBWriter.setFlattredStatus(context, selectedFeed);
-            try {
-                synchronized (future) {
-                    future.wait(10);
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            new FlattrClickWorker(context).executeAsync();
+            DBWriter.setFlattredStatus(context, selectedFeed, true);
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);
