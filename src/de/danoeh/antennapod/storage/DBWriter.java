@@ -21,8 +21,10 @@ import de.danoeh.antennapod.util.flattr.SimpleFlattrThing;
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URLEncoder;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -875,17 +877,20 @@ public class DBWriter {
         return false;
     }
 
-    private static String normalizeURI(String uri) {
-        String normalizedURI = null;
-        if (uri != null) {
-            try {
-                normalizedURI = (new URI(uri)).normalize().toString();
-                if (!normalizedURI.endsWith("/"))
-                    normalizedURI = normalizedURI + "/";
-            } catch (URISyntaxException e) {
-            }
+    /**
+     * format an url for querying the database
+     * (postfix a / and apply percent-encoding)
+     */
+    private static String formatURIForQuery(String uri) {
+        try
+        {
+            return URLEncoder.encode(uri.endsWith("/") ? uri.substring(0, uri.length()-1) : uri, "UTF-8");
         }
-        return normalizedURI;
+        catch (UnsupportedEncodingException e)
+        {
+            Log.e(TAG, e.getMessage());
+            return "";
+        }
     }
 
 
@@ -912,71 +917,43 @@ public class DBWriter {
     }
 
     /**
+     * Reset flattr status to unflattrd for all items
+     */
+    public static Future<?> clearAllFlattrStatus(final Context context)
+    {
+        Log.d(TAG, "clearAllFlattrStatus()");
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.clearAllFlattrStatus();
+                adapter.close();
+            }
+        });
+    }
+
+    /**
      * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
      * where the information has been retrieved from the flattr API
      */
-    public static void setFlattredStatus(final Context context, List<Flattr> flattrList) {
-        class FlattrLinkTime {
-            public String paymentLink;
-            public long time;
+    public static Future<?> setFlattredStatus(final Context context, final List<Flattr> flattrList) {
+        Log.d(TAG, "setFlattredStatus to status retrieved from flattr api running with " + flattrList.size() + " items");
+        // clear flattr status in db
+        clearAllFlattrStatus(context);
 
-            FlattrLinkTime(String paymentLink, long time) {
-                this.paymentLink = paymentLink;
-                this.time = time;
+        // submit list with flattred things having normalized URLs to db
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+            PodDBAdapter adapter = new PodDBAdapter(context);
+            adapter.open();
+            for (Flattr flattr : flattrList) {
+                adapter.setItemFlattrStatus(formatURIForQuery(flattr.getThing().getUrl()), new FlattrStatus(flattr.getCreated().getTime()));
             }
+            adapter.close();
         }
-
-        // build list with flattred things having normalized URLs
-        ArrayList<FlattrLinkTime> flattrLinkTime = new ArrayList<FlattrLinkTime>(flattrList.size());
-        for (Flattr flattr : flattrList) {
-            flattrLinkTime.add(new FlattrLinkTime(normalizeURI(flattr.getThing().getUrl()), flattr.getCreated().getTime()));
-            if (AppConfig.DEBUG)
-                Log.d(TAG, "FlattredUrl: " + flattr.getThing().getUrl());
-        }
-
-
-        String paymentLink;
-        List<Feed> feeds = DBReader.getFeedList(context);
-        for (final Feed feed : feeds) {
-            // check if the feed has been flattred
-            paymentLink = feed.getPaymentLink();
-            if (paymentLink != null) {
-                String feedThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
-
-                feed.getFlattrStatus().setUnflattred(); // reset our offline status tracking
-
-                if (AppConfig.DEBUG)
-                    Log.d(TAG, "Feed: Trying to match " + feedThingUrl);
-                for (final FlattrLinkTime flattr : flattrLinkTime) {
-                    if (flattr.paymentLink.equals(feedThingUrl)) {
-                        feed.setFlattrStatus(new FlattrStatus(flattr.time));
-                        setFeedFlattrStatus(context, feed, false);
-                        break;
-                    }
-                }
-            }
-
-            // check if any of the feeditems have been flattred
-            for (final FeedItem item : DBReader.getFeedItemList(context, feed)) {
-                paymentLink = item.getPaymentLink();
-
-                if (paymentLink != null) {
-                    String feedItemThingUrl = normalizeURI(Uri.parse(paymentLink).getQueryParameter("url"));
-
-                    item.getFlattrStatus().setUnflattred(); // reset our offline status tracking
-
-                    if (AppConfig.DEBUG)
-                        Log.d(TAG, "FeedItem: Trying to match " + feedItemThingUrl);
-                    for (final FlattrLinkTime flattr : flattrLinkTime) {
-                        if (flattr.paymentLink.equals(feedItemThingUrl)) {
-                            item.setFlattrStatus(new FlattrStatus(flattr.time));
-                            setFeedItemFlattrStatus(context, item, false);
-                            break;
-                        }
-                    }
-                }
-            }
-        }
+            });
     }
 
 }

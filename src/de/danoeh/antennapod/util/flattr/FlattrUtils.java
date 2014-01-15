@@ -30,6 +30,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
+import de.danoeh.antennapod.storage.DBWriter;
 
 /** Utility methods for doing something with flattr. */
 
@@ -190,7 +191,8 @@ public class FlattrUtils {
 		deleteToken();
 		FlattrServiceCreator.deleteFlattrService();
 		showRevokeDialog(context);
-	}
+        DBWriter.clearAllFlattrStatus(context);
+    }
 
 	// ------------------------------------------------ DIALOGS
 

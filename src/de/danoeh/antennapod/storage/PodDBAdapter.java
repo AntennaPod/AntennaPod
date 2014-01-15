@@ -572,6 +572,53 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(feedItem.getId())});
     }
 
+    /**
+     * Update the flattr status of a feed or feed item specified by its payment link
+     * and the new flattr status to use
+     */
+    public void setItemFlattrStatus(String url, FlattrStatus status)
+    {
+        //Log.d(TAG, "setItemFlattrStatus(" + url + ") = " + status.toString());
+        ContentValues values = new ContentValues();
+        values.put(KEY_FLATTR_STATUS, status.toLong());
+
+        // regexps in sqlite would be neat!
+        String[] query_urls = new String[]{
+                "*" + url + "&*",
+                "*" + url + "%2F&*",
+                "*" + url + "",
+                "*" + url + "%2F"
+        };
+
+        if (db.update(TABLE_NAME_FEEDS, values,
+                KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls) > 0)
+        {
+            Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in Feeds table");
+            return;
+        }
+        if (db.update(TABLE_NAME_FEED_ITEMS, values,
+                KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls) > 0)
+        {
+            Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in FeedsItems table");
+        }
+    }
+
+    /**
+     * Reset flattr status to unflattrd for all items
+     */
+    public void clearAllFlattrStatus()
+    {
+        ContentValues values = new ContentValues();
+        values.put(KEY_FLATTR_STATUS, 0);
+        db.update(TABLE_NAME_FEEDS, values, null, null);
+        db.update(TABLE_NAME_FEED_ITEMS, values, null, null);
+    }
 
     /**
      * Inserts or updates a feeditem entry
