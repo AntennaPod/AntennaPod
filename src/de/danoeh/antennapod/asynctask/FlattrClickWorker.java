@@ -46,9 +46,11 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected int exitCode;
 	protected ArrayList<String> flattrd;
 	protected ArrayList<String> flattr_failed;
-	
-	protected NotificationCompat.Builder notificationBuilder;
-	protected NotificationManager notificationManager;
+
+
+	protected NotificationCompat.Builder notificationCompatBuilder;
+    private Notification.BigTextStyle notificationBuilder;
+    protected NotificationManager notificationManager;
 	
 	protected ProgressDialog progDialog;
 
@@ -96,7 +98,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	
 	protected void onFlattred() {
 		String notificationTitle = context.getString(R.string.flattrd_label);
-		String notificationText = "", notificationSubText = "";
+		String notificationText = "", notificationSubText = "", notificationBigText = "";
 		
 		// text for successfully flattred items
 		if (flattrd.size() == 1)
@@ -107,10 +109,10 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		if (flattrd.size() > 0) {
 			String acc = "";
 			for (String s: flattrd)
-				acc += s + ", ";
+				acc += s + '\n';
 			acc = acc.substring(0, acc.length()-2);
 			
-			notificationSubText = String.format(context.getString(R.string.flattr_click_success_queue), acc);
+			notificationBigText = String.format(context.getString(R.string.flattr_click_success_queue), acc);
 		}
 		
 		// add text for failures
@@ -118,25 +120,44 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 			notificationTitle = context.getString(R.string.flattrd_failed_label);
 			notificationText = String.format(context.getString(R.string.flattr_click_failure_count), flattr_failed.size()) 
 					+ " " + notificationText;
-			
+
+            notificationSubText = flattr_failed.get(0);
+
 			String acc = "";
 			for (String s: flattr_failed)
-				acc += s + ", ";
+				acc += s + '\n';
 			acc = acc.substring(0, acc.length()-2);
 			
-			notificationSubText = String.format(context.getString(R.string.flattr_click_failure), acc)
-					+ " " + notificationSubText;
+			notificationBigText = String.format(context.getString(R.string.flattr_click_failure), acc)
+					+ "\n" + notificationBigText;
 		}
-		
-		notificationBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
-							.setContentTitle(notificationTitle)
-							.setContentText(notificationText)
-							.setSubText(notificationSubText)
-							.setTicker(notificationTitle)
-							.setSmallIcon(R.drawable.stat_notify_sync)
-							.setOngoing(false);
-		notificationManager.cancel(NOTIFICATION_ID);
-		notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+
+        Log.d(TAG, "Going to post notification: " + notificationBigText);
+
+        if (android.os.Build.VERSION.SDK_INT >= 16) {
+            notificationBuilder = new Notification.BigTextStyle(
+                    new Notification.Builder(context)
+                            .setOngoing(false)
+                            .setContentTitle(notificationTitle)
+                            .setContentText(notificationText)
+                            .setSubText(notificationSubText)
+                            .setSmallIcon(R.drawable.stat_notify_sync))
+                    .bigText(notificationText + "\n" + notificationBigText);
+            notificationManager.cancel(NOTIFICATION_ID);
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
+        else
+        {
+            notificationCompatBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
+                    .setContentTitle(notificationTitle)
+                    .setContentText(notificationText)
+                    .setSubText(notificationBigText)
+                    .setTicker(notificationTitle)
+                    .setSmallIcon(R.drawable.stat_notify_sync)
+                    .setOngoing(false);
+            notificationManager.cancel(NOTIFICATION_ID);
+            notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
+        }
 	}
 	
 	protected void onEnqueue() {
@@ -147,13 +168,24 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	}
 
 	protected void onSetupNotification() {
-		notificationBuilder = new NotificationCompat.Builder(context)
+        if (android.os.Build.VERSION.SDK_INT >= 16) {
+            notificationBuilder = new Notification.BigTextStyle(
+                    new Notification.Builder(context)
+                    .setContentTitle(context.getString(R.string.flattring_label))
+                    .setAutoCancel(true)
+                    .setSmallIcon(R.drawable.stat_notify_sync)
+                    .setProgress(0, 0, true)
+                    .setOngoing(true));
+        }
+        else {
+            notificationCompatBuilder = new NotificationCompat.Builder(context)
 							.setContentTitle(context.getString(R.string.flattring_label))
                             .setAutoCancel(true)
 							.setSmallIcon(R.drawable.stat_notify_sync)
 							.setProgress(0,  0, true)
                             .setOngoing(true);
-		
+        }
+
 		notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 	}
 
@@ -230,7 +262,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 				catch (Exception e) {
 					Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " "  + e.getMessage());
 					flattr_failed.ensureCapacity(flattrList.size());
-					flattr_failed.add(thing.getTitle());
+					flattr_failed.add(thing.getTitle() + ": " + e.getMessage());
 				}
                 Log.d(TAG, "flattrQueue processing - going to write thing back to db with flattr_status " + Long.toString(thing.getFlattrStatus().toLong()));
                 DBWriter.setFlattredStatus(context, thing, false);
@@ -243,8 +275,14 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	
 	@Override
 	protected void onProgressUpdate(String... names) {
-		notificationBuilder.setContentText(names[0]);
-		notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        if (android.os.Build.VERSION.SDK_INT >= 16) {
+            notificationBuilder.setBigContentTitle(names[0]);
+            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+        }
+        else {
+            notificationCompatBuilder.setContentText(names[0]);
+            notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
+        }
 	}
 	
 	@SuppressLint("NewApi")
