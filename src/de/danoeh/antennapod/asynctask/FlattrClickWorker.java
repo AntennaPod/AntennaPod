@@ -58,13 +58,22 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 	protected final static int NO_TOKEN = 1;
 	protected final static int ENQUEUED = 2;
 	protected final static int NO_THINGS = 3;
-	
-	private boolean enqueue_only = false;
+
+    public final static int ENQUEUE_ONLY = 1;
+    public final static int FLATTR_TOAST = 2;
+    public static final int FLATTR_NOTIFICATION = 3;
+
+	private int run_mode = FLATTR_NOTIFICATION;
+
     private FlattrThing extra_flattr_thing; // additional urls to flattr that do *not* originate from the queue
 
-	public FlattrClickWorker(Context context, boolean enqueue_only) {
+    /**
+     * @param context
+     * @param run_mode can be one of ENQUEUE_ONLY, FLATTR_TOAST and FLATTR_NOTIFICATION
+     */
+	public FlattrClickWorker(Context context, int run_mode) {
 		this(context);
-		this.enqueue_only = enqueue_only;
+		this.run_mode = run_mode;
 	}
 	
 	public FlattrClickWorker(Context context) {
@@ -84,6 +93,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
     public FlattrClickWorker(Context context, FlattrThing thing) {
         this(context);
         extra_flattr_thing = thing;
+        run_mode = FLATTR_TOAST;
         Log.d(TAG, "Going to flattr special thing that is not in the queue: " + thing.getTitle());
     }
 
@@ -134,29 +144,39 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
         Log.d(TAG, "Going to post notification: " + notificationBigText);
 
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
-            notificationBuilder = new Notification.BigTextStyle(
-                    new Notification.Builder(context)
-                            .setOngoing(false)
-                            .setContentTitle(notificationTitle)
-                            .setContentText(notificationText)
-                            .setSubText(notificationSubText)
-                            .setSmallIcon(R.drawable.stat_notify_sync))
-                    .bigText(notificationText + "\n" + notificationBigText);
-            notificationManager.cancel(NOTIFICATION_ID);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-        }
-        else
+        notificationManager.cancel(NOTIFICATION_ID);
+
+        if (run_mode == FLATTR_NOTIFICATION || flattr_failed.size() > 0)
         {
-            notificationCompatBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
-                    .setContentTitle(notificationTitle)
-                    .setContentText(notificationText)
-                    .setSubText(notificationBigText)
-                    .setTicker(notificationTitle)
-                    .setSmallIcon(R.drawable.stat_notify_sync)
-                    .setOngoing(false);
-            notificationManager.cancel(NOTIFICATION_ID);
-            notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
+            if (android.os.Build.VERSION.SDK_INT >= 16) {
+                notificationBuilder = new Notification.BigTextStyle(
+                        new Notification.Builder(context)
+                                .setOngoing(false)
+                                .setContentTitle(notificationTitle)
+                                .setContentText(notificationText)
+                                .setSubText(notificationSubText)
+                                .setSmallIcon(R.drawable.stat_notify_sync))
+                        .bigText(notificationText + "\n" + notificationBigText);
+                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
+            }
+            else
+            {
+                notificationCompatBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
+                        .setContentTitle(notificationTitle)
+                        .setContentText(notificationText)
+                        .setSubText(notificationBigText)
+                        .setTicker(notificationTitle)
+                        .setSmallIcon(R.drawable.stat_notify_sync)
+                        .setOngoing(false);
+                notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
+            }
+        }
+        else if (run_mode == FLATTR_TOAST)
+        {
+            Toast.makeText(context.getApplicationContext(),
+                    notificationTitle + " " + notificationText,
+                    Toast.LENGTH_LONG)
+                    .show();
         }
 	}
 	
@@ -235,7 +255,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 		else if (DBReader.getFlattrQueueEmpty(context) && extra_flattr_thing == null) {
 			exitCode = NO_THINGS;
 		}
-		else if (!haveInternetAccess(context) || enqueue_only) {
+		else if (!haveInternetAccess(context) || run_mode == ENQUEUE_ONLY) {
 			exitCode = ENQUEUED;
 		}
 		else {

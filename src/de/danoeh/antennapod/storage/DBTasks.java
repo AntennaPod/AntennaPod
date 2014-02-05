@@ -154,7 +154,7 @@ public final class DBTasks {
                     isRefreshing.set(false);
 
                     if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
-                    new FlattrClickWorker(context).executeSync(); // flattr pending things
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeSync(); // flattr pending things
 
                     if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
                     new FlattrStatusFetcher(context).executeAsync();

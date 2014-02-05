@@ -229,7 +229,7 @@ public class DBWriter {
                 adapter.setFeedFlattrStatus(feed);
                 adapter.close();
                 if (startFlattrClickWorker) {
-                    new FlattrClickWorker(context).executeAsync();
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_TOAST).executeAsync();
                 }
             }
         });
@@ -803,7 +803,7 @@ public class DBWriter {
                 adapter.setFeedItemFlattrStatus(item);
                 adapter.close();
                 if (startFlattrClickWorker) {
-                    new FlattrClickWorker(context).executeAsync();
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_TOAST).executeAsync();
                 }
             }
         });
