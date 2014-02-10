@@ -3,6 +3,7 @@ package de.danoeh.antennapod.util.playback;
 import android.app.Activity;
 import android.content.*;
 import android.content.res.TypedArray;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
@@ -415,6 +416,7 @@ public abstract class PlaybackController {
 
             case ERROR:
                 postStatusMsg(R.string.player_error_msg);
+                handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
                 clearStatusMsg();
@@ -520,7 +522,7 @@ public abstract class PlaybackController {
      */
     public float onSeekBarProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser, TextView txtvPosition) {
-        if (fromUser && playbackService != null) {
+        if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
             txtvPosition.setText(Converter
