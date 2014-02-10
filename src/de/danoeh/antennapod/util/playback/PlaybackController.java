@@ -323,10 +323,9 @@ public abstract class PlaybackController {
                         case PlaybackService.NOTIFICATION_TYPE_RELOAD:
                             cancelPositionObserver();
                             mediaInfoLoaded = false;
+                            queryService();
                             onReloadNotification(intent.getIntExtra(
                                     PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
-                            queryService();
-
                             break;
                         case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
                             onSleepTimerUpdate();

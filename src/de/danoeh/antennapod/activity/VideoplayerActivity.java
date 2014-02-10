@@ -274,6 +274,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             if (AppConfig.DEBUG)
                 Log.d(TAG,
                         "ReloadNotification received, switching to Audioplayer now");
+            finish();
             startActivity(new Intent(this, AudioplayerActivity.class));
         }
     }

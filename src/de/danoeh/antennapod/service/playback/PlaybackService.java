@@ -519,14 +519,12 @@ public class PlaybackService extends Service {
             stopWidgetUpdater();
         }
 
-        int notificationCode = 0;
         writePlaybackPreferences();
         if (nextMedia != null) {
             stream = !media.localFileAvailable();
-
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
-                    notificationCode);
+                    (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
         } else {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
             //stopSelf();
