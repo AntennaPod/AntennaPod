@@ -112,8 +112,13 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-                playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
-                playerLock.unlock();
+                try {
+                    playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
+                } catch (RuntimeException e) {
+                    throw e;
+                } finally {
+                    playerLock.unlock();
+                }
             }
         });
     }
@@ -145,11 +150,12 @@ public class PlaybackServiceMediaPlayer {
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
         }
-        createMediaPlayer();
+
         this.media = playable;
         this.stream = stream;
         this.mediaType = media.getMediaType();
         this.videoSize = null;
+        createMediaPlayer();
         PlaybackServiceMediaPlayer.this.startWhenPrepared.set(startWhenPrepared);
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
@@ -313,8 +319,10 @@ public class PlaybackServiceMediaPlayer {
     void onPrepared(final boolean startWhenPrepared) {
         playerLock.lock();
 
-        if (playerStatus != PlayerStatus.PREPARING)
+        if (playerStatus != PlayerStatus.PREPARING) {
+            playerLock.unlock();
             throw new IllegalStateException("Player is not in PREPARING state");
+        }
 
         if (AppConfig.DEBUG)
             Log.d(TAG, "Resource prepared");
@@ -760,34 +768,9 @@ public class PlaybackServiceMediaPlayer {
         public RemoteControlClient getRemoteControlClient();
     }
 
-    private final com.aocate.media.MediaPlayer.OnPreparedListener audioPreparedListener = new com.aocate.media.MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(final com.aocate.media.MediaPlayer mp) {
-            executor.submit(new Runnable() {
-                @Override
-                public void run() {
-                    PlaybackServiceMediaPlayer.this.onPrepared(startWhenPrepared.get());
-                }
-            });
-        }
-    };
-
-    private final android.media.MediaPlayer.OnPreparedListener videoPreparedListener = new android.media.MediaPlayer.OnPreparedListener() {
-        @Override
-        public void onPrepared(android.media.MediaPlayer mp) {
-            executor.submit(new Runnable() {
-                @Override
-                public void run() {
-                    PlaybackServiceMediaPlayer.this.onPrepared(startWhenPrepared.get());
-                }
-            });
-        }
-    };
-
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
         if (mp != null && media != null) {
             if (media.getMediaType() == MediaType.AUDIO) {
-                ((AudioPlayer) mp).setOnPreparedListener(audioPreparedListener);
                 ((AudioPlayer) mp)
                         .setOnCompletionListener(audioCompletionListener);
                 ((AudioPlayer) mp)
@@ -797,7 +780,6 @@ public class PlaybackServiceMediaPlayer {
                         .setOnBufferingUpdateListener(audioBufferingUpdateListener);
                 ((AudioPlayer) mp).setOnInfoListener(audioInfoListener);
             } else {
-                ((VideoPlayer) mp).setOnPreparedListener(videoPreparedListener);
                 ((VideoPlayer) mp)
                         .setOnCompletionListener(videoCompletionListener);
                 ((VideoPlayer) mp)

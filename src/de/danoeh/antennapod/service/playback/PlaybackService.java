@@ -363,6 +363,10 @@ public class PlaybackService extends Service {
         public void statusChanged(PlaybackServiceMediaPlayer.PSMPInfo newInfo) {
             currentMediaType = mediaPlayer.getCurrentMediaType();
             switch (newInfo.playerStatus) {
+                case INITIALIZED:
+                    writePlaybackPreferences();
+                    break;
+
                 case PREPARED:
                     taskManager.startChapterLoader(newInfo.playable);
                     break;
@@ -385,7 +389,6 @@ public class PlaybackService extends Service {
                     if (AppConfig.DEBUG)
                         Log.d(TAG, "Resuming/Starting playback");
 
-                    writePlaybackPreferences();
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
                     setupNotification(newInfo);
@@ -444,7 +447,7 @@ public class PlaybackService extends Service {
 
         @Override
         public boolean endPlayback(boolean playNextEpisode) {
-            endPlayback(true);
+            PlaybackService.this.endPlayback(true);
             return true;
         }
 
