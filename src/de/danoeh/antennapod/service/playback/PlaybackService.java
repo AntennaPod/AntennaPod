@@ -278,7 +278,7 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
-                } else if (status == PlayerStatus.PAUSED) {
+                } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
                     mediaPlayer.setStartWhenPrepared(!mediaPlayer.isStartWhenPrepared());
@@ -288,7 +288,7 @@ public class PlaybackService extends Service {
                 }
                 break;
             case KeyEvent.KEYCODE_MEDIA_PLAY:
-                if (status == PlayerStatus.PAUSED) {
+                if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.INITIALIZED) {
                     mediaPlayer.setStartWhenPrepared(true);
