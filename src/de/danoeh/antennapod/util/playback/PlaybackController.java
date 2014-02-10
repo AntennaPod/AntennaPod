@@ -152,9 +152,6 @@ public abstract class PlaybackController {
      */
     public void pause() {
         mediaInfoLoaded = false;
-        if (playbackService != null && PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
-            playbackService.pause(true, true);
-        }
     }
 
     /**

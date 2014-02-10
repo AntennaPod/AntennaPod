@@ -60,6 +60,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (videoControlsToggler != null) {
             videoControlsToggler.cancel(true);
         }
+        if (controller != null && controller.getStatus() == PlayerStatus.PLAYING) {
+            controller.pause();
+        }
     }
 
     @Override
