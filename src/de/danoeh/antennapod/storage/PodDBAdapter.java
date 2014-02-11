@@ -711,7 +711,7 @@ public class PodDBAdapter {
      */
     public final Cursor getAllFeedsCursor() {
         Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, null, null, null, null,
-                KEY_TITLE + " ASC");
+                KEY_TITLE + " COLLATE NOCASE ASC");
         return c;
     }
 
