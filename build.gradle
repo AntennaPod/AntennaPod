@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.7.+'
+        classpath 'com.android.tools.build:gradle:0.8.+'
     }
 }
 apply plugin: 'android'
@@ -24,8 +24,8 @@ dependencies {
     }
 
     compile 'com.android.support:appcompat-v7:19.0.+'
-    compile 'org.apache.commons:commons-lang3:3.1'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.7') {
+    compile 'org.apache.commons:commons-lang3:3.2.1'
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.8') {
         exclude group: 'org.apache.httpcomponents', module: 'httpcore'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
         exclude group: 'org.json', module: 'json'
