@@ -737,6 +737,26 @@ public class PlaybackServiceMediaPlayer {
         }
     };
 
+    public void endPlayback() {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                playerLock.lock();
+
+                if (playerStatus != PlayerStatus.INDETERMINATE) {
+                    setPlayerStatus(PlayerStatus.INDETERMINATE, media);
+                }
+                if (mediaPlayer != null) {
+                    mediaPlayer.reset();
+
+                }
+                callback.endPlayback(true);
+
+                playerLock.unlock();
+            }
+        });
+    }
+
     /**
      * Holds information about a PSMP object.
      */
@@ -808,14 +828,7 @@ public class PlaybackServiceMediaPlayer {
     };
 
     private void genericOnCompletion() {
-        executor.submit(new Runnable() {
-            @Override
-            public void run() {
-                audioManager.abandonAudioFocus(audioFocusChangeListener);
-                callback.endPlayback(true);
-            }
-        });
-
+        endPlayback();
     }
 
     private final com.aocate.media.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new com.aocate.media.MediaPlayer.OnBufferingUpdateListener() {

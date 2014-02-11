@@ -899,7 +899,7 @@ public class PlaybackService extends Service {
                     intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
-                endPlayback(true);
+                mediaPlayer.endPlayback();
             }
         }
     };
