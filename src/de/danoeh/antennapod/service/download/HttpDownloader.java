@@ -1,24 +1,5 @@
 package de.danoeh.antennapod.service.download;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.*;
-
-import org.apache.commons.io.IOUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
-
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
@@ -26,34 +7,23 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.Header;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpGet;
+
+import java.io.*;
+import java.net.*;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
 
-    private static final int MAX_REDIRECTS = 5;
-
     private static final int BUFFER_SIZE = 8 * 1024;
-    private static final int CONNECTION_TIMEOUT = 30000;
-    private static final int SOCKET_TIMEOUT = 30000;
 
     public HttpDownloader(DownloadRequest request) {
         super(request);
-    }
-
-    private DefaultHttpClient createHttpClient() {
-        DefaultHttpClient httpClient = new DefaultHttpClient();
-        HttpParams params = httpClient.getParams();
-        params.setIntParameter("http.protocol.max-redirects", MAX_REDIRECTS);
-        params.setBooleanParameter("http.protocol.reject-relative-redirect",
-                false);
-        HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
-        HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-        HttpClientParams.setRedirecting(params, true);
-
-        // Workaround for broken URLs in redirection
-        ((AbstractHttpClient) httpClient)
-                .setRedirectHandler(new APRedirectHandler());
-        return httpClient;
     }
 
     private URI getURIFromRequestUrl(String source) {
@@ -69,12 +39,11 @@ public class HttpDownloader extends Downloader {
 
     @Override
     protected void download() {
-        DefaultHttpClient httpClient = null;
+        HttpClient httpClient = AntennapodHttpClient.getHttpClient();
         BufferedOutputStream out = null;
         InputStream connection = null;
         try {
             HttpGet httpGet = new HttpGet(getURIFromRequestUrl(request.getSource()));
-            httpClient = createHttpClient();
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
@@ -176,9 +145,7 @@ public class HttpDownloader extends Downloader {
             onFail(DownloadError.ERROR_CONNECTION_ERROR, request.getSource());
         } finally {
             IOUtils.closeQuietly(out);
-            if (httpClient != null) {
-                httpClient.getConnectionManager().shutdown();
-            }
+            AntennapodHttpClient.cleanup();
         }
     }
 

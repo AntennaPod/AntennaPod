@@ -1,9 +1,8 @@
 package de.danoeh.antennapod.gpoddernet;
 
-import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.gpoddernet.model.*;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.service.download.AntennapodHttpClient;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -11,15 +10,13 @@ import org.apache.http.HttpStatus;
 import org.apache.http.auth.AuthenticationException;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpPut;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -45,16 +42,10 @@ public class GpodnetService {
     public static final String DEFAULT_BASE_HOST = "gpodder.net";
     private final String BASE_HOST;
 
-    private static final int TIMEOUT_MILLIS = 20000;
-
-    private final GpodnetClient httpClient;
+    private final HttpClient httpClient;
 
     public GpodnetService() {
-        httpClient = new GpodnetClient();
-        final HttpParams params = httpClient.getParams();
-        params.setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);
-        HttpConnectionParams.setConnectionTimeout(params, TIMEOUT_MILLIS);
-        HttpConnectionParams.setSoTimeout(params, TIMEOUT_MILLIS);
+        httpClient = AntennapodHttpClient.getHttpClient();
         BASE_HOST = GpodnetPreferences.getHostname();
     }
 
@@ -519,7 +510,7 @@ public class GpodnetService {
         new Thread() {
             @Override
             public void run() {
-                httpClient.getConnectionManager().shutdown();
+                AntennapodHttpClient.cleanup();
             }
         }.start();
     }
