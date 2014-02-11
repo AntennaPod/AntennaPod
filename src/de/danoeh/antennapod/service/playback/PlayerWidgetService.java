@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.service.playback;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -72,9 +72,11 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private void updateViews() {
+        if (playbackService == null) {
+            return;
+        }
 		isUpdating = true;
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Updating widget views");
+
 		ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		RemoteViews views = new RemoteViews(getPackageName(),
@@ -83,8 +85,8 @@ public class PlayerWidgetService extends Service {
 				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
-		if (playbackService != null && playbackService.getMedia() != null) {
-			Playable media = playbackService.getMedia();
+        final Playable media = playbackService.getPlayable();
+        if (playbackService != null && media != null) {
 			PlayerStatus status = playbackService.getStatus();
 
 			views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
@@ -101,8 +103,6 @@ public class PlayerWidgetService extends Service {
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());
 		} else {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "No media playing. Displaying defaultt views");
 			views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
 			views.setTextViewText(R.id.txtvTitle,
 					this.getString(R.string.no_media_playing_label));
@@ -126,8 +126,8 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private String getProgressString(PlaybackService ps) {
-		int position = ps.getCurrentPositionSafe();
-		int duration = ps.getDurationSafe();
+		int position = ps.getCurrentPosition();
+		int duration = ps.getDuration();
 		if (position != PlaybackService.INVALID_TIME
 				&& duration != PlaybackService.INVALID_TIME) {
 			return Converter.getDurationStringLong(position) + " / "

@@ -1,25 +1,14 @@
 package de.danoeh.antennapod.util.playback;
 
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ScheduledFuture;
-import java.util.concurrent.ScheduledThreadPoolExecutor;
-import java.util.concurrent.ThreadFactory;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-
 import android.app.Activity;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.content.res.TypedArray;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.util.Pair;
 import android.view.SurfaceHolder;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -30,12 +19,16 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.service.PlayerStatus;
+import de.danoeh.antennapod.service.playback.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.service.playback.PlayerStatus;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
+
+import java.util.concurrent.*;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -44,10 +37,10 @@ import de.danoeh.antennapod.util.playback.Playable.PlayableUtils;
 public abstract class PlaybackController {
     private static final String TAG = "PlaybackController";
 
-	public static final int DEFAULT_SEEK_DELTA = 30000;
-	public static final int INVALID_TIME = -1;
+    public static final int DEFAULT_SEEK_DELTA = 30000;
+    public static final int INVALID_TIME = -1;
 
-    private Activity activity;
+    private final Activity activity;
 
     private PlaybackService playbackService;
     private Playable media;
@@ -69,6 +62,8 @@ public abstract class PlaybackController {
     private boolean reinitOnPause;
 
     public PlaybackController(Activity activity, boolean reinitOnPause) {
+        if (activity == null)
+            throw new IllegalArgumentException("activity = null");
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
@@ -157,9 +152,6 @@ public abstract class PlaybackController {
      */
     public void pause() {
         mediaInfoLoaded = false;
-        if (playbackService != null && playbackService.isPlayingVideo()) {
-            playbackService.pause(true, true);
-        }
     }
 
     /**
@@ -181,6 +173,7 @@ public abstract class PlaybackController {
                 boolean bound = false;
                 if (!PlaybackService.isRunning) {
                     if (serviceIntent != null) {
+                        if (AppConfig.DEBUG) Log.d(TAG, "Calling start service");
                         activity.startService(serviceIntent);
                         bound = activity.bindService(serviceIntent, mConnection, 0);
                     } else {
@@ -297,7 +290,9 @@ public abstract class PlaybackController {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Received statusUpdate Intent.");
             if (isConnectedToPlaybackService()) {
-                status = playbackService.getStatus();
+                PlaybackServiceMediaPlayer.PSMPInfo info = playbackService.getPSMPInfo();
+                status = info.playerStatus;
+                media = info.playable;
                 handleStatus();
             } else {
                 Log.w(TAG,
@@ -328,10 +323,9 @@ public abstract class PlaybackController {
                         case PlaybackService.NOTIFICATION_TYPE_RELOAD:
                             cancelPositionObserver();
                             mediaInfoLoaded = false;
+                            queryService();
                             onReloadNotification(intent.getIntExtra(
                                     PlaybackService.EXTRA_NOTIFICATION_CODE, -1));
-                            queryService();
-
                             break;
                         case PlaybackService.NOTIFICATION_TYPE_SLEEPTIMER_UPDATE:
                             onSleepTimerUpdate();
@@ -401,16 +395,24 @@ public abstract class PlaybackController {
      * should be used to update the GUI or start/cancel background threads.
      */
     private void handleStatus() {
-        TypedArray res = activity.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.av_pause});
-        final int playResource = res.getResourceId(0, R.drawable.av_play);
-        final int pauseResource = res.getResourceId(1, R.drawable.av_pause);
-        res.recycle();
+        final int playResource;
+        final int pauseResource;
+        if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
+            TypedArray res = activity.obtainStyledAttributes(new int[]{
+                    R.attr.av_play, R.attr.av_pause});
+            playResource = res.getResourceId(0, R.drawable.av_play);
+            pauseResource = res.getResourceId(1, R.drawable.av_pause);
+            res.recycle();
+        } else {
+            playResource = R.drawable.ic_action_play_over_video;
+            pauseResource = R.drawable.ic_action_pause_over_video;
+        }
 
         switch (status) {
 
             case ERROR:
                 postStatusMsg(R.string.player_error_msg);
+                handleError(MediaPlayer.MEDIA_ERROR_UNKNOWN);
                 break;
             case PAUSED:
                 clearStatusMsg();
@@ -421,6 +423,9 @@ public abstract class PlaybackController {
             case PLAYING:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
+                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                    onAwaitingVideoSurface();
+                }
                 setupPositionObserver();
                 updatePlayButtonAppearance(pauseResource);
                 break;
@@ -446,9 +451,6 @@ public abstract class PlaybackController {
             case SEEKING:
                 postStatusMsg(R.string.player_seeking_msg);
                 break;
-            case AWAITING_VIDEO_SURFACE:
-                onAwaitingVideoSurface();
-                break;
             case INITIALIZED:
                 checkMediaInfoLoaded();
                 clearStatusMsg();
@@ -458,10 +460,7 @@ public abstract class PlaybackController {
     }
 
     private void checkMediaInfoLoaded() {
-        if (!mediaInfoLoaded) {
-            loadMediaInfo();
-        }
-        mediaInfoLoaded = true;
+        mediaInfoLoaded = (mediaInfoLoaded || loadMediaInfo());
     }
 
     private void updatePlayButtonAppearance(int resource) {
@@ -475,7 +474,7 @@ public abstract class PlaybackController {
 
     public abstract void clearStatusMsg();
 
-    public abstract void loadMediaInfo();
+    public abstract boolean loadMediaInfo();
 
     public abstract void onAwaitingVideoSurface();
 
@@ -488,7 +487,8 @@ public abstract class PlaybackController {
             Log.d(TAG, "Querying service info");
         if (playbackService != null) {
             status = playbackService.getStatus();
-            media = playbackService.getMedia();
+            media = playbackService.getPlayable();
+            /*
             if (media == null) {
                 Log.w(TAG,
                         "PlaybackService has no media object. Trying to restore last played media.");
@@ -497,6 +497,7 @@ public abstract class PlaybackController {
                     activity.startService(serviceIntent);
                 }
             }
+            */
             onServiceQueried();
 
             setupGUI();
@@ -517,7 +518,7 @@ public abstract class PlaybackController {
      */
     public float onSeekBarProgressChanged(SeekBar seekBar, int progress,
                                           boolean fromUser, TextView txtvPosition) {
-        if (fromUser && playbackService != null) {
+        if (fromUser && playbackService != null && media != null) {
             float prog = progress / ((float) seekBar.getMax());
             int duration = media.getDuration();
             txtvPosition.setText(Converter
@@ -541,7 +542,7 @@ public abstract class PlaybackController {
      */
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
         if (playbackService != null) {
-            playbackService.seek((int) (prog * media.getDuration()));
+            playbackService.seekTo((int) (prog * media.getDuration()));
             setupPositionObserver();
         }
     }
@@ -557,7 +558,7 @@ public abstract class PlaybackController {
                             break;
                         case PAUSED:
                         case PREPARED:
-                            playbackService.play();
+                            playbackService.resume();
                             break;
                         case PREPARING:
                             playbackService.setStartWhenPrepared(!playbackService
@@ -609,7 +610,7 @@ public abstract class PlaybackController {
 
     public int getPosition() {
         if (playbackService != null) {
-            return playbackService.getCurrentPositionSafe();
+            return playbackService.getCurrentPosition();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -617,7 +618,7 @@ public abstract class PlaybackController {
 
     public int getDuration() {
         if (playbackService != null) {
-            return playbackService.getDurationSafe();
+            return playbackService.getDuration();
         } else {
             return PlaybackService.INVALID_TIME;
         }
@@ -675,25 +676,33 @@ public abstract class PlaybackController {
         return playbackService != null && playbackService.canSetSpeed();
     }
 
-	public void setPlaybackSpeed(float speed) {
-		if (playbackService != null) {
-			playbackService.setSpeed(speed);
-		}
-	}
-    
-	public float getCurrentPlaybackSpeedMultiplier() {
-		if (canSetPlaybackSpeed()) {
-			return playbackService.getCurrentPlaybackSpeed();
-		} else {
-			return -1;
-		}
-	}
+    public void setPlaybackSpeed(float speed) {
+        if (playbackService != null) {
+            playbackService.setSpeed(speed);
+        }
+    }
+
+    public float getCurrentPlaybackSpeedMultiplier() {
+        if (canSetPlaybackSpeed()) {
+            return playbackService.getCurrentPlaybackSpeed();
+        } else {
+            return -1;
+        }
+    }
 
     public boolean isPlayingVideo() {
         if (playbackService != null) {
-            return PlaybackService.isPlayingVideo();
+            return PlaybackService.getCurrentMediaType() == MediaType.VIDEO;
         }
         return false;
+    }
+
+    public Pair<Integer, Integer> getVideoSize() {
+        if (playbackService != null) {
+            return playbackService.getVideoSize();
+        } else {
+            return null;
+        }
     }
 
 
@@ -716,7 +725,7 @@ public abstract class PlaybackController {
      */
     public void reinitServiceIfPaused() {
         if (playbackService != null
-                && playbackService.isShouldStream()
+                && playbackService.isStreaming()
                 && (playbackService.getStatus() == PlayerStatus.PAUSED || (playbackService
                 .getStatus() == PlayerStatus.PREPARING && playbackService
                 .isStartWhenPrepared() == false))) {
@@ -733,8 +742,7 @@ public abstract class PlaybackController {
 
         @Override
         public void run() {
-            if (playbackService != null && playbackService.getPlayer() != null
-                    && playbackService.getPlayer().isPlaying()) {
+            if (playbackService != null && playbackService.getStatus() == PlayerStatus.PLAYING) {
                 activity.runOnUiThread(new Runnable() {
 
                     @Override

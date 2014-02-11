@@ -153,7 +153,7 @@
             android:name=".service.download.DownloadService"
             android:enabled="true"/>
         <service
-            android:name="de.danoeh.antennapod.service.PlaybackService"
+            android:name=".service.playback.PlaybackService"
             android:enabled="true"
             android:exported="true">
         </service>
@@ -194,7 +194,7 @@
         </activity>
 
         <service
-            android:name=".service.PlayerWidgetService"
+            android:name=".service.playback.PlayerWidgetService"
             android:enabled="true"
             android:exported="false">
         </service>

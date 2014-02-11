@@ -27,4 +27,9 @@ public class AudioPlayer extends MediaPlayer implements IPlayer {
 			throw new UnsupportedOperationException("Setting display not supported in Audio Player");
 		}
 	}
+
+    @Override
+    public void setVideoScalingMode(int mode) {
+        throw new UnsupportedOperationException("Setting scaling mode is not supported in Audio Player");
+    }
 }
