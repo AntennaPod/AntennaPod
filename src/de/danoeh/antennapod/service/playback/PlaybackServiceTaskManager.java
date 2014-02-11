@@ -212,7 +212,7 @@ public class PlaybackServiceTaskManager {
      * Returns true if the sleep timer is currently active.
      */
     public synchronized boolean isSleepTimerActive() {
-        return sleepTimer != null && sleepTimerFuture != null && !sleepTimerFuture.isCancelled() && !sleepTimerFuture.isDone();
+        return sleepTimer != null && sleepTimerFuture != null && !sleepTimerFuture.isCancelled() && !sleepTimerFuture.isDone() && sleepTimer.isWaiting;
     }
 
     /**
@@ -345,10 +345,11 @@ public class PlaybackServiceTaskManager {
                     if (waitingTime <= 0) {
                         if (AppConfig.DEBUG)
                             Log.d(TAG, "Waiting completed");
+                        postExecute();
                         if (!Thread.currentThread().isInterrupted()) {
                             callback.onSleepTimerExpired();
                         }
-                        postExecute();
+
                     }
                 } catch (InterruptedException e) {
                     Log.d(TAG, "Thread was interrupted while waiting");
