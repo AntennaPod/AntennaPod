@@ -15,6 +15,7 @@ import de.danoeh.antennapod.service.download.*;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -515,8 +516,9 @@ public final class DBReader {
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemCursor);
         loadFeedDataOfFeedItemlist(context, items);
         itemCursor.close();
-
         adapter.close();
+
+        Collections.sort(items, new PlaybackCompletionDateComparator());
         return items;
     }
 

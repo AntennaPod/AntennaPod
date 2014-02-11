@@ -4,6 +4,7 @@ import android.content.Context;
 import android.test.InstrumentationTestCase;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
@@ -284,6 +285,35 @@ public class DBReaderTest extends InstrumentationTestCase {
                 }
             }
             assertTrue(found);
+        }
+    }
+
+    public void testGetPlaybackHistory() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int numItems = 10;
+        final int playedItems = 5;
+        final int numFeeds = 1;
+
+        Feed feed = DBTestUtils.saveFeedlist(context, numFeeds, numItems, true).get(0);
+        long[] ids = new long[playedItems];
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        for (int i = 0; i < playedItems; i++) {
+            FeedMedia m = feed.getItems().get(i).getMedia();
+            m.setPlaybackCompletionDate(new Date(i+1));
+            adapter.setFeedMediaPlaybackCompletionDate(m);
+            ids[ids.length - 1 - i] = m.getItem().getId();
+        }
+        adapter.close();
+
+        List<FeedItem> saved = DBReader.getPlaybackHistory(context);
+        assertNotNull(saved);
+        assertEquals("Wrong size: ", playedItems, saved.size());
+        for (int i = 0; i < playedItems; i++) {
+            FeedItem item = saved.get(i);
+            assertNotNull(item.getMedia().getPlaybackCompletionDate());
+            assertEquals("Wrong sort order: ", item.getId(), ids[i]);
         }
     }
 }
