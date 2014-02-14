@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.service.download;
 
+import android.content.Context;
+import android.net.wifi.WifiManager;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 
 import java.util.concurrent.Callable;
@@ -26,7 +29,19 @@ public abstract class Downloader implements Callable<Downloader> {
 	protected abstract void download();
 
 	public final Downloader call() {
+        WifiManager wifiManager = (WifiManager) PodcastApp.getInstance().getSystemService(Context.WIFI_SERVICE);
+        WifiManager.WifiLock wifiLock = null;
+        if (wifiManager != null) {
+            wifiLock = wifiManager.createWifiLock(TAG);
+            wifiLock.acquire();
+        }
+
 		download();
+
+        if (wifiLock != null) {
+            wifiLock.release();
+        }
+
 		if (result == null) {
 			throw new IllegalStateException(
 					"Downloader hasn't created DownloadStatus object");

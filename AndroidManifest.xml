@@ -6,10 +6,11 @@
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -153,7 +154,7 @@
             android:name=".service.download.DownloadService"
             android:enabled="true"/>
         <service
-            android:name="de.danoeh.antennapod.service.PlaybackService"
+            android:name=".service.playback.PlaybackService"
             android:enabled="true"
             android:exported="true">
         </service>
@@ -194,7 +195,7 @@
         </activity>
 
         <service
-            android:name=".service.PlayerWidgetService"
+            android:name=".service.playback.PlayerWidgetService"
             android:enabled="true"
             android:exported="false">
         </service>

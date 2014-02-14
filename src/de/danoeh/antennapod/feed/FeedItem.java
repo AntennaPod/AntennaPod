@@ -80,7 +80,7 @@ public class FeedItem extends FeedComponent implements
         }
         if (other.media != null) {
             if (media == null) {
-                media = other.media;
+                setMedia(other.media);
             } else if (media.compareWithOther(other)) {
                 media.updateFromOther(other);
             }

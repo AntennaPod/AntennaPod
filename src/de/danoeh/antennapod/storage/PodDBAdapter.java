@@ -711,7 +711,7 @@ public class PodDBAdapter {
      */
     public final Cursor getAllFeedsCursor() {
         Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, null, null, null, null,
-                KEY_TITLE + " ASC");
+                KEY_TITLE + " COLLATE NOCASE ASC");
         return c;
     }
 
@@ -849,7 +849,7 @@ public class PodDBAdapter {
 
     /**
      * Returns a cursor which contains feed media objects with a playback
-     * completion date in descending order.
+     * completion date in ascending order.
      *
      * @param limit The maximum row count of the returned cursor. Must be an
      *              integer >= 0.
@@ -860,8 +860,8 @@ public class PodDBAdapter {
             throw new IllegalArgumentException("Limit must be >= 0");
         }
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
-                KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
-                null, KEY_PLAYBACK_COMPLETION_DATE + " DESC LIMIT " + limit);
+                KEY_PLAYBACK_COMPLETION_DATE + " > 0 LIMIT " + limit, null, null,
+                null, null);
         return c;
     }
 

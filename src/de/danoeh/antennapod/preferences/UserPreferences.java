@@ -319,7 +319,9 @@ public class UserPreferences implements
 					PREF_PLAYBACK_SPEED_ARRAY, null));
 		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
 			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
-		}
+		} else if (key.equals(PREF_PAUSE_ON_HEADSET_DISCONNECT)) {
+            pauseOnHeadsetDisconnect = sp.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
+        }
 	}
 
 	public static void setPlaybackSpeed(String speed) {

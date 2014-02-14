@@ -240,19 +240,11 @@ public class DownloadActivity extends ActionBarActivity implements
         return handled;
     }
 
-    private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
-    private boolean skipWorkAround = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
-
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        if (skipWorkAround || actionModeDestroyWorkaround) {
-            mActionMode = null;
-            selectedDownload = null;
-            dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
-            actionModeDestroyWorkaround = false;
-        } else {
-            actionModeDestroyWorkaround = true;
-        }
+        mActionMode = null;
+        selectedDownload = null;
+        dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
     }
 
     private BroadcastReceiver contentChanged = new BroadcastReceiver() {

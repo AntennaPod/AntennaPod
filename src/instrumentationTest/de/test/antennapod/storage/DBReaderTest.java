@@ -4,11 +4,16 @@ import android.content.Context;
 import android.test.InstrumentationTestCase;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.PodDBAdapter;
-import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
+import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
 /**
  * Test class for DBReader
@@ -65,7 +70,6 @@ public class DBReaderTest extends InstrumentationTestCase {
     }
 
 
-
     public void testGetFeedList() {
         final Context context = getInstrumentation().getTargetContext();
         List<Feed> feeds = saveFeedlist(context, 10, 0, false);
@@ -75,6 +79,36 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < feeds.size(); i++) {
             assertTrue(savedFeeds.get(i).getId() == feeds.get(i).getId());
         }
+    }
+
+    public void testGetFeedListSortOrder() {
+        final Context context = getInstrumentation().getTargetContext();
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+
+        Feed feed1 = new Feed(0, new Date(), "A", "link", "d", null, null, null, "rss", "A", null, "", "", true);
+        Feed feed2 = new Feed(0, new Date(), "b", "link", "d", null, null, null, "rss", "b", null, "", "", true);
+        Feed feed3 = new Feed(0, new Date(), "C", "link", "d", null, null, null, "rss", "C", null, "", "", true);
+        Feed feed4 = new Feed(0, new Date(), "d", "link", "d", null, null, null, "rss", "d", null, "", "", true);
+        adapter.setCompleteFeed(feed1);
+        adapter.setCompleteFeed(feed2);
+        adapter.setCompleteFeed(feed3);
+        adapter.setCompleteFeed(feed4);
+        assertTrue(feed1.getId() != 0);
+        assertTrue(feed2.getId() != 0);
+        assertTrue(feed3.getId() != 0);
+        assertTrue(feed4.getId() != 0);
+
+        adapter.close();
+
+        List<Feed> saved = DBReader.getFeedList(context);
+        assertNotNull(saved);
+        assertEquals("Wrong size: ", 4, saved.size());
+
+        assertEquals("Wrong id of feed 1: ", feed1.getId(), saved.get(0).getId());
+        assertEquals("Wrong id of feed 2: ", feed2.getId(), saved.get(1).getId());
+        assertEquals("Wrong id of feed 3: ", feed3.getId(), saved.get(2).getId());
+        assertEquals("Wrong id of feed 4: ", feed4.getId(), saved.get(3).getId());
     }
 
     public void testFeedListDownloadUrls() {
@@ -284,6 +318,35 @@ public class DBReaderTest extends InstrumentationTestCase {
                 }
             }
             assertTrue(found);
+        }
+    }
+
+    public void testGetPlaybackHistory() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int numItems = 10;
+        final int playedItems = 5;
+        final int numFeeds = 1;
+
+        Feed feed = DBTestUtils.saveFeedlist(context, numFeeds, numItems, true).get(0);
+        long[] ids = new long[playedItems];
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        for (int i = 0; i < playedItems; i++) {
+            FeedMedia m = feed.getItems().get(i).getMedia();
+            m.setPlaybackCompletionDate(new Date(i + 1));
+            adapter.setFeedMediaPlaybackCompletionDate(m);
+            ids[ids.length - 1 - i] = m.getItem().getId();
+        }
+        adapter.close();
+
+        List<FeedItem> saved = DBReader.getPlaybackHistory(context);
+        assertNotNull(saved);
+        assertEquals("Wrong size: ", playedItems, saved.size());
+        for (int i = 0; i < playedItems; i++) {
+            FeedItem item = saved.get(i);
+            assertNotNull(item.getMedia().getPlaybackCompletionDate());
+            assertEquals("Wrong sort order: ", item.getId(), ids[i]);
         }
     }
 }

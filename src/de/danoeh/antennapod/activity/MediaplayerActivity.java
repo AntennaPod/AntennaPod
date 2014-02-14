@@ -22,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.PlaybackService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
@@ -106,8 +106,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 			}
 
 			@Override
-			public void loadMediaInfo() {
-				MediaplayerActivity.this.loadMediaInfo();
+			public boolean loadMediaInfo() {
+				return MediaplayerActivity.this.loadMediaInfo();
 			}
 
 			@Override
@@ -146,9 +146,13 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 		supportInvalidateOptionsMenu();
 	}
 
+    protected void chooseTheme() {
+        setTheme(UserPreferences.getTheme());
+    }
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
+        chooseTheme();
 		super.onCreate(savedInstanceState);
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Creating Activity");
@@ -339,8 +343,9 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 	}
 
 	/**
-	 * Called by 'handleStatus()' when the PlaybackService is in the
-	 * AWAITING_VIDEO_SURFACE state.
+	 * Called by 'handleStatus()' when the PlaybackService is waiting for
+     * a video surface.
+	 *
 	 */
 	protected abstract void onAwaitingVideoSurface();
 
@@ -380,7 +385,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 	 * to the PlaybackService to ensure that the activity has the right
 	 * FeedMedia object.
 	 */
-	protected void loadMediaInfo() {
+	protected boolean loadMediaInfo() {
 		if (AppConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
 		Playable media = controller.getMedia();
@@ -395,7 +400,10 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 						/ media.getDuration();
 				sbPosition.setProgress((int) (progress * sbPosition.getMax()));
 			}
-		}
+            return true;
+		} else {
+            return false;
+        }
 	}
 
 	protected void setupGUI() {
@@ -415,9 +423,12 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
 		butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
 
-		butFF.setOnClickListener(controller.newOnFFButtonClickListener());
-
-		butRev.setOnClickListener(controller.newOnRevButtonClickListener());
+        if (butFF != null) {
+		    butFF.setOnClickListener(controller.newOnFFButtonClickListener());
+        }
+        if (butRev != null) {
+		    butRev.setOnClickListener(controller.newOnRevButtonClickListener());
+        }
 
 	}
 

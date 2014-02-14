@@ -97,22 +97,6 @@
             </RelativeLayout>
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="24dp"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="?android:attr/textColorPrimary"
-                android:text="@string/description_label"/>
-
-            <TextView
-                android:id="@+id/txtvDescription"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="8dp"/>
-
-            <TextView
                 android:id="@+id/txtvSettings"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,6 +116,23 @@
                 android:text="@string/auto_download_label"
                 android:enabled="false"
                 android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="24dp"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"
+                android:text="@string/description_label"/>
+
+            <TextView
+                android:id="@+id/txtvDescription"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
         </LinearLayout>
     </ScrollView>
 
