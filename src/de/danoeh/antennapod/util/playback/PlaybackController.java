@@ -171,7 +171,7 @@ public abstract class PlaybackController {
             @Override
             protected void onPostExecute(Intent serviceIntent) {
                 boolean bound = false;
-                if (!PlaybackService.isRunning) {
+                if (!PlaybackService.started) {
                     if (serviceIntent != null) {
                         if (AppConfig.DEBUG) Log.d(TAG, "Calling start service");
                         activity.startService(serviceIntent);

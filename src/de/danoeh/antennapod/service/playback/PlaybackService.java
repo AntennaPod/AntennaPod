@@ -127,6 +127,10 @@ public class PlaybackService extends Service {
      * Is true if service is running.
      */
     public static boolean isRunning = false;
+    /**
+     * Is true if service has received a valid start command.
+     */
+    public static boolean started = false;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -214,6 +218,7 @@ public class PlaybackService extends Service {
         if (AppConfig.DEBUG)
             Log.d(TAG, "Service is about to be destroyed");
         isRunning = false;
+        started = false;
         currentMediaType = MediaType.UNKNOWN;
 
         unregisterReceiver(headsetDisconnected);
@@ -247,19 +252,21 @@ public class PlaybackService extends Service {
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
             if (AppConfig.DEBUG) Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
             stopForeground(true);
-        }
-
-        if (keycode != -1) {
-            if (AppConfig.DEBUG)
-                Log.d(TAG, "Received media button event");
-            handleKeycode(keycode);
         } else {
-            boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
-                    true);
-            boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
-            boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
-            sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
-            mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+
+            if (keycode != -1) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Received media button event");
+                handleKeycode(keycode);
+            } else {
+                started = true;
+                boolean stream = intent.getBooleanExtra(EXTRA_SHOULD_STREAM,
+                        true);
+                boolean startWhenPrepared = intent.getBooleanExtra(EXTRA_START_WHEN_PREPARED, false);
+                boolean prepareImmediately = intent.getBooleanExtra(EXTRA_PREPARE_IMMEDIATELY, false);
+                sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD, 0);
+                mediaPlayer.playMediaObject(playable, stream, startWhenPrepared, prepareImmediately);
+            }
         }
 
         return Service.START_REDELIVER_INTENT;
