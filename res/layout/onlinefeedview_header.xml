@@ -6,6 +6,7 @@
 
     <ImageView
         android:id="@+id/imgvCover"
+        android:contentDescription="@string/cover_label"
         android:layout_width="@dimen/thumbnail_length_onlinefeedview"
         android:layout_height="@dimen/thumbnail_length_onlinefeedview"
         android:layout_alignParentLeft="true"

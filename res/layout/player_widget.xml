@@ -11,6 +11,7 @@
 
         <ImageButton
             android:id="@+id/butPlay"
+            android:contentDescription="@string/play_label"
             android:layout_width="56dp"
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"

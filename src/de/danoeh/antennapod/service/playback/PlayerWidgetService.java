@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -97,8 +98,14 @@ public class PlayerWidgetService extends Service {
 					views.setTextViewText(R.id.txtvProgress, progressString);
 				}
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause_dark);
+                if (Build.VERSION.SDK_INT >= 15) {
+                    views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                }
 			} else {
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_play_dark);
+                if (Build.VERSION.SDK_INT >= 15) {
+                    views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                }
 			}
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());

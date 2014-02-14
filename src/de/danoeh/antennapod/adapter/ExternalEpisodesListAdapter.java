@@ -148,12 +148,14 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
 			TypedArray drawables = context.obtainStyledAttributes(new int[] {
 					R.attr.av_download, R.attr.navigation_refresh });
+            final int[] labels = new int[] {R.string.status_downloaded_label, R.string.downloading_label};
 			holder.lenSize.setVisibility(View.VISIBLE);
 			if (!media.isDownloaded()) {
 				if (DownloadRequester.getInstance().isDownloadingFile(media)) {
 					holder.downloadStatus.setVisibility(View.VISIBLE);
 					holder.downloadStatus.setImageDrawable(drawables
 							.getDrawable(1));
+                    holder.downloadStatus.setContentDescription(context.getString(labels[1]));
 				} else {
 					holder.downloadStatus.setVisibility(View.INVISIBLE);
 				}
@@ -161,6 +163,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 				holder.downloadStatus.setVisibility(View.VISIBLE);
 				holder.downloadStatus
 						.setImageDrawable(drawables.getDrawable(0));
+                holder.downloadStatus.setContentDescription(context.getString(labels[0]));
 			}
 		} else {
 			holder.downloadStatus.setVisibility(View.INVISIBLE);

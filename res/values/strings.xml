@@ -319,4 +319,22 @@
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribed_label">Subscribed</string>
     <string name="downloading_label">Downloading...</string>
+
+    <!-- Content descriptions for image buttons -->
+    <string name="show_chapters_label">Show chapters</string>
+    <string name="show_shownotes_label">Show shownotes</string>
+    <string name="show_cover_label">Show cover</string>
+    <string name="rewind_label">Rewind</string>
+    <string name="fast_forward_label">Fast forward</string>
+    <string name="media_type_audio_label">Audio</string>
+    <string name="media_type_video_label">Video</string>
+    <string name="navigate_upwards_label">Navigate upwards</string>
+    <string name="butAction_label">More actions</string>
+    <string name="status_playing_label">Episode is being played</string>
+    <string name="status_downloading_label">Episode is being downloaded</string>
+    <string name="status_downloaded_label">Episode is downloaded</string>
+    <string name="status_unread_label">Item is new</string>
+    <string name="in_queue_label">Episode is in the queue</string>
+    <string name="new_episodes_count_label">Number of new episodes</string>
+    <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
 </resources>

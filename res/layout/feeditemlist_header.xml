@@ -27,6 +27,7 @@
 
         <ImageButton
             android:id="@+id/butAction"
+            android:contentDescription="@string/butAction_label"
             android:layout_width="48dp"
             android:layout_height="match_parent"
             android:layout_alignParentBottom="true"

@@ -26,6 +26,7 @@
 
             <ImageButton
                 android:id="@+id/butNavLeft"
+                android:contentDescription="@string/show_shownotes_label"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentLeft="true"
@@ -34,6 +35,7 @@
 
             <ImageButton
                 android:id="@+id/butNavRight"
+                android:contentDescription="@string/show_chapters_label"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentRight="true"
@@ -89,6 +91,7 @@
 
             <ImageButton
                 android:id="@+id/butPlay"
+                android:contentDescription="@string/pause_label"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
                 android:layout_centerHorizontal="true"
@@ -97,6 +100,7 @@
 
             <ImageButton
                 android:id="@+id/butRev"
+                android:contentDescription="@string/rewind_label"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_toLeftOf="@id/butPlay"
@@ -105,6 +109,7 @@
 
             <ImageButton
                 android:id="@+id/butFF"
+                android:contentDescription="@string/fast_forward_label"
                 android:layout_width="60dp"
                 android:layout_height="match_parent"
                 android:layout_toRightOf="@id/butPlay"

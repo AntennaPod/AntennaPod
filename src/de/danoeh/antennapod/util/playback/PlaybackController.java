@@ -397,6 +397,9 @@ public abstract class PlaybackController {
     private void handleStatus() {
         final int playResource;
         final int pauseResource;
+        final CharSequence playText = activity.getString(R.string.play_label);
+        final CharSequence pauseText = activity.getString(R.string.pause_label);
+
         if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{
                     R.attr.av_play, R.attr.av_pause});
@@ -418,7 +421,7 @@ public abstract class PlaybackController {
                 clearStatusMsg();
                 checkMediaInfoLoaded();
                 cancelPositionObserver();
-                updatePlayButtonAppearance(playResource);
+                updatePlayButtonAppearance(playResource, playText);
                 break;
             case PLAYING:
                 clearStatusMsg();
@@ -427,16 +430,16 @@ public abstract class PlaybackController {
                     onAwaitingVideoSurface();
                 }
                 setupPositionObserver();
-                updatePlayButtonAppearance(pauseResource);
+                updatePlayButtonAppearance(pauseResource, pauseText);
                 break;
             case PREPARING:
                 postStatusMsg(R.string.player_preparing_msg);
                 checkMediaInfoLoaded();
                 if (playbackService != null) {
                     if (playbackService.isStartWhenPrepared()) {
-                        updatePlayButtonAppearance(pauseResource);
+                        updatePlayButtonAppearance(pauseResource, pauseText);
                     } else {
-                        updatePlayButtonAppearance(playResource);
+                        updatePlayButtonAppearance(playResource, playText);
                     }
                 }
                 break;
@@ -446,7 +449,7 @@ public abstract class PlaybackController {
             case PREPARED:
                 checkMediaInfoLoaded();
                 postStatusMsg(R.string.player_ready_msg);
-                updatePlayButtonAppearance(playResource);
+                updatePlayButtonAppearance(playResource, playText);
                 break;
             case SEEKING:
                 postStatusMsg(R.string.player_seeking_msg);
@@ -454,7 +457,7 @@ public abstract class PlaybackController {
             case INITIALIZED:
                 checkMediaInfoLoaded();
                 clearStatusMsg();
-                updatePlayButtonAppearance(playResource);
+                updatePlayButtonAppearance(playResource, playText);
                 break;
         }
     }
@@ -463,9 +466,10 @@ public abstract class PlaybackController {
         mediaInfoLoaded = (mediaInfoLoaded || loadMediaInfo());
     }
 
-    private void updatePlayButtonAppearance(int resource) {
+    private void updatePlayButtonAppearance(int resource, CharSequence contentDescription) {
         ImageButton butPlay = getPlayButton();
         butPlay.setImageResource(resource);
+        butPlay.setContentDescription(contentDescription);
     }
 
     public abstract ImageButton getPlayButton();

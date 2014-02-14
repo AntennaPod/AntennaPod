@@ -322,7 +322,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
     }
 
     private void updateNavButtonDrawable() {
-        TypedArray drawables = obtainStyledAttributes(new int[]{
+
+        final int[] buttonTexts = new int[] {R.string.show_shownotes_label,
+        R.string.show_chapters_label, R.string.show_cover_label};
+
+        final TypedArray drawables = obtainStyledAttributes(new int[]{
                 R.attr.navigation_shownotes, R.attr.navigation_chapters});
         final Playable media = controller.getMedia();
         if (butNavLeft != null && butNavRight != null && media != null) {
@@ -330,7 +334,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
                 case POS_COVER:
                     butNavLeft.setScaleType(ScaleType.CENTER);
                     butNavLeft.setImageDrawable(drawables.getDrawable(0));
+                    butNavLeft.setContentDescription(getString(buttonTexts[0]));
+
                     butNavRight.setImageDrawable(drawables.getDrawable(1));
+                    butNavRight.setContentDescription(getString(buttonTexts[1]));
+
                     break;
                 case POS_DESCR:
                     butNavLeft.setScaleType(ScaleType.CENTER_CROP);
@@ -342,7 +350,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
                                     butNavLeft);
                         }
                     });
+                    butNavLeft.setContentDescription(getString(buttonTexts[2]));
+
                     butNavRight.setImageDrawable(drawables.getDrawable(1));
+                    butNavRight.setContentDescription(getString(buttonTexts[1]));
                     break;
                 case POS_CHAPTERS:
                     butNavLeft.setScaleType(ScaleType.CENTER_CROP);
@@ -354,7 +365,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
                                     butNavLeft);
                         }
                     });
+                    butNavLeft.setContentDescription(getString(buttonTexts[2]));
+
                     butNavRight.setImageDrawable(drawables.getDrawable(0));
+                    butNavRight.setContentDescription(getString(buttonTexts[0]));
                     break;
             }
         }

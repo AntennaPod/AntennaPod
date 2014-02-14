@@ -176,12 +176,16 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 				TypedArray typeDrawables = getContext().obtainStyledAttributes(
 						new int[] { R.attr.type_audio, R.attr.type_video });
+                final int[] labels = new int[] {R.string.media_type_audio_label, R.string.media_type_video_label};
+
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {
 					holder.type.setImageDrawable(typeDrawables.getDrawable(0));
+                    holder.type.setContentDescription(getContext().getString(labels[0]));
 					holder.type.setVisibility(View.VISIBLE);
 				} else if (mediaType == MediaType.VIDEO) {
 					holder.type.setImageDrawable(typeDrawables.getDrawable(1));
+                    holder.type.setContentDescription(getContext().getString(labels[1]));
 					holder.type.setVisibility(View.VISIBLE);
 				} else {
 					holder.type.setImageBitmap(null);

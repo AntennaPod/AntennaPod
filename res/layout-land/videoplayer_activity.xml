@@ -20,6 +20,7 @@
 
     <ImageButton
         android:id="@+id/butPlay"
+        android:contentDescription="@string/pause_label"
         android:layout_width="80dp"
         android:layout_height="80dp"
         android:layout_gravity="center"
