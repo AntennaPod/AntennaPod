@@ -35,7 +35,7 @@
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
     <string name="podcast_settings_label">Settings</string>
-    <string name="cover_label">Cover</string>
+    <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
@@ -323,7 +323,7 @@
     <!-- Content descriptions for image buttons -->
     <string name="show_chapters_label">Show chapters</string>
     <string name="show_shownotes_label">Show shownotes</string>
-    <string name="show_cover_label">Show cover</string>
+    <string name="show_cover_label">Show picture</string>
     <string name="rewind_label">Rewind</string>
     <string name="fast_forward_label">Fast forward</string>
     <string name="media_type_audio_label">Audio</string>
