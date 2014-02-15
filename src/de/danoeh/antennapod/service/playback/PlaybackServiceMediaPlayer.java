@@ -18,8 +18,10 @@ import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.VideoPlayer;
 
 import java.io.IOException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -56,7 +58,7 @@ public class PlaybackServiceMediaPlayer {
     private final PSMPCallback callback;
     private final Context context;
 
-    private final ExecutorService executor;
+    private final ThreadPoolExecutor executor;
 
     public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
         if (context == null)
@@ -69,7 +71,14 @@ public class PlaybackServiceMediaPlayer {
         this.audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
         this.playerLock = new ReentrantLock();
         this.startWhenPrepared = new AtomicBoolean(false);
-        executor = Executors.newSingleThreadExecutor();
+        executor = new ThreadPoolExecutor(1, 1, 5, TimeUnit.MINUTES, new LinkedBlockingDeque<Runnable>(),
+                new RejectedExecutionHandler() {
+                    @Override
+                    public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
+                        if (AppConfig.DEBUG) Log.d(TAG, "Rejected execution of runnable");
+                    }
+                });
+
         mediaPlayer = null;
         statusBeforeSeeking = null;
         pausedBecauseOfTransientAudiofocusLoss = false;
