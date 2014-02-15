@@ -1,18 +1,9 @@
 package de.danoeh.antennapod.activity;
 
-import android.annotation.SuppressLint;
-import android.content.BroadcastReceiver;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.ServiceConnection;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
-import android.os.IBinder;
-import android.support.v4.app.NavUtils;
+import android.os.Handler;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.view.ActionMode;
@@ -22,16 +13,17 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
-
 import android.widget.ListView;
-
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
+import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadRequest;
-import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DownloadRequester;
+
+import java.util.List;
 
 /**
  * Shows all running downloads in a list. The list objects are DownloadStatus
@@ -49,12 +41,9 @@ public class DownloadActivity extends ActionBarActivity implements
     private ActionMode mActionMode;
     private DownloadRequest selectedDownload;
 
-    private DownloadService downloadService = null;
-    boolean mIsBound;
-
-    private AsyncTask<Void, Void, Void> contentRefresher;
-
     private ListView listview;
+
+    private DownloadObserver downloadObserver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,22 +57,19 @@ public class DownloadActivity extends ActionBarActivity implements
             Log.d(TAG, "Creating Activity");
         requester = DownloadRequester.getInstance();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        downloadObserver = new DownloadObserver(this, new Handler(), observerCallback);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        unbindService(mConnection);
-        unregisterReceiver(contentChanged);
+        downloadObserver.onPause();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(contentChanged, new IntentFilter(
-                DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
-        bindService(new Intent(this, DownloadService.class), mConnection, 0);
-        startContentRefresher();
+        downloadObserver.onResume();
         if (dla != null) {
             dla.notifyDataSetChanged();
         }
@@ -94,72 +80,8 @@ public class DownloadActivity extends ActionBarActivity implements
         super.onStop();
         if (AppConfig.DEBUG)
             Log.d(TAG, "Stopping Activity");
-        stopContentRefresher();
     }
 
-    private ServiceConnection mConnection = new ServiceConnection() {
-        public void onServiceDisconnected(ComponentName className) {
-            downloadService = null;
-            mIsBound = false;
-            Log.i(TAG, "Closed connection with DownloadService.");
-        }
-
-        public void onServiceConnected(ComponentName name, IBinder service) {
-            downloadService = ((DownloadService.LocalBinder) service)
-                    .getService();
-            mIsBound = true;
-            if (AppConfig.DEBUG)
-                Log.d(TAG, "Connection to service established");
-            dla = new DownloadlistAdapter(DownloadActivity.this, 0,
-                    downloadService.getDownloads());
-            listview.setAdapter(dla);
-            dla.notifyDataSetChanged();
-        }
-    };
-
-    @SuppressLint("NewApi")
-    private void startContentRefresher() {
-        if (contentRefresher != null) {
-            contentRefresher.cancel(true);
-        }
-        contentRefresher = new AsyncTask<Void, Void, Void>() {
-            private static final int WAITING_INTERVAL = 1000;
-
-            @Override
-            protected void onProgressUpdate(Void... values) {
-                super.onProgressUpdate(values);
-                if (dla != null) {
-                    if (AppConfig.DEBUG)
-                        Log.d(TAG, "Refreshing content automatically");
-                    dla.notifyDataSetChanged();
-                }
-            }
-
-            @Override
-            protected Void doInBackground(Void... params) {
-                while (!isCancelled()) {
-                    try {
-                        Thread.sleep(WAITING_INTERVAL);
-                        publishProgress();
-                    } catch (InterruptedException e) {
-                        return null;
-                    }
-                }
-                return null;
-            }
-        };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            contentRefresher.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            contentRefresher.execute();
-        }
-    }
-
-    private void stopContentRefresher() {
-        if (contentRefresher != null) {
-            contentRefresher.cancel(true);
-        }
-    }
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
@@ -247,15 +169,21 @@ public class DownloadActivity extends ActionBarActivity implements
         dla.setSelectedItemIndex(DownloadlistAdapter.SELECTION_NONE);
     }
 
-    private BroadcastReceiver contentChanged = new BroadcastReceiver() {
 
+    private DownloadObserver.Callback observerCallback = new DownloadObserver.Callback() {
         @Override
-        public void onReceive(Context context, Intent intent) {
+        public void onContentChanged() {
             if (dla != null) {
-                if (AppConfig.DEBUG)
-                    Log.d(TAG, "Refreshing content");
                 dla.notifyDataSetChanged();
             }
+        }
+
+        @Override
+        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+            dla = new DownloadlistAdapter(DownloadActivity.this, 0,
+                    downloaderList);
+            listview.setAdapter(dla);
+            dla.notifyDataSetChanged();
         }
     };
 
