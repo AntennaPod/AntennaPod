@@ -1199,7 +1199,7 @@ public class PodDBAdapter {
             " COUNT(CASE WHEN position>0 THEN 1 END) AS in_progress," +
             " COUNT(CASE WHEN downloaded=1 THEN 1 END) AS episodes_downloaded " +
             " FROM FeedItems LEFT JOIN FeedMedia ON FeedItems.id=FeedMedia.feeditem GROUP BY FeedItems.feed)" +
-            " ON Feeds.id = feed ORDER BY Feeds.title;";
+            " ON Feeds.id = feed ORDER BY Feeds.title COLLATE NOCASE ASC;";
 
     public Cursor getFeedStatisticsCursor() {
         return db.rawQuery(FEED_STATISTICS_QUERY, null);

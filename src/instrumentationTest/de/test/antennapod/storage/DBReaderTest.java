@@ -6,6 +6,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.FeedItemStatistics;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import static instrumentationTest.de.test.antennapod.storage.DBTestUtils.*;
@@ -349,6 +350,19 @@ public class DBReaderTest extends InstrumentationTestCase {
             FeedItem item = saved.get(i);
             assertNotNull(item.getMedia().getPlaybackCompletionDate());
             assertEquals("Wrong sort order: ", item.getId(), ids[i]);
+        }
+    }
+
+    public void testGetFeedStatisticsCheckOrder() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_FEEDS = 10;
+        final int NUM_ITEMS = 10;
+        List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, false);
+        List<FeedItemStatistics> statistics = DBReader.getFeedStatisticsList(context);
+        assertNotNull(statistics);
+        assertEquals(feeds.size(), statistics.size());
+        for (int i = 0; i < NUM_FEEDS; i++) {
+            assertEquals("Wrong entry at index " + i, feeds.get(i).getId(), statistics.get(i).getFeedID());
         }
     }
 }
