@@ -72,6 +72,7 @@ public class PlaybackService extends Service {
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.service.playerStatusChanged";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
+    private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
     public static final String ACTION_PLAYER_NOTIFICATION = "action.de.danoeh.antennapod.service.playerNotification";
     public static final String EXTRA_NOTIFICATION_CODE = "extra.de.danoeh.antennapod.service.notificationCode";
@@ -408,7 +409,8 @@ public class PlaybackService extends Service {
             sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
             updateWidget();
             refreshRemoteControlClientState(newInfo);
-            bluetoothNotifyChange(newInfo);
+            bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
+            bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
         }
 
         @Override
@@ -835,7 +837,7 @@ public class PlaybackService extends Service {
         }
     }
 
-    private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info) {
+    private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
         boolean isPlaying = false;
 
         if (info.playerStatus == PlayerStatus.PLAYING) {
@@ -843,7 +845,7 @@ public class PlaybackService extends Service {
         }
 
         if (info.playable != null) {
-            Intent i = new Intent(AVRCP_ACTION_PLAYER_STATUS_CHANGED);
+            Intent i = new Intent(whatChanged);
             i.putExtra("id", 1);
             i.putExtra("artist", "");
             i.putExtra("album", info.playable.getFeedTitle());
