@@ -107,9 +107,9 @@ public class FeedItem extends FeedComponent implements
      * of the entry.
      */
     public String getIdentifyingValue() {
-        if (itemIdentifier != null) {
+        if (itemIdentifier != null && !itemIdentifier.isEmpty()) {
             return itemIdentifier;
-        } else if (title != null) {
+        } else if (title != null && !title.isEmpty()) {
             return title;
         } else {
             return link;
