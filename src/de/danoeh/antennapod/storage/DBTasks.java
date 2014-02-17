@@ -4,6 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -150,6 +152,12 @@ public final class DBTasks {
                         refreshFeeds(context, DBReader.getFeedList(context));
                     }
                     isRefreshing.set(false);
+
+                    if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeSync(); // flattr pending things
+
+                    if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+                    new FlattrStatusFetcher(context).start();
 
                     GpodnetSyncService.sendSyncIntent(context);
                     autodownloadUndownloadedItems(context);

@@ -1,9 +1,16 @@
 package de.danoeh.antennapod.util.flattr;
 
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.EnumSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.TimeZone;
 
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Flattr;
 import org.shredzone.flattr4j.model.Thing;
 import org.shredzone.flattr4j.oauth.AccessToken;
 import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
@@ -23,6 +30,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
+import de.danoeh.antennapod.storage.DBWriter;
 
 /** Utility methods for doing something with flattr. */
 
@@ -119,6 +127,58 @@ public class FlattrUtils {
 			Log.e(TAG, "clickUrl was called with null access token");
 		}
 	}
+	
+	public static List<Flattr> retrieveFlattredThings() 
+		throws FlattrException {
+		ArrayList<Flattr> myFlattrs = new ArrayList<Flattr>();
+
+		if (hasToken()) {
+			FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
+
+			Calendar firstOfMonth = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+			firstOfMonth.set(Calendar.MILLISECOND, 0);
+			firstOfMonth.set(Calendar.SECOND, 0);
+			firstOfMonth.set(Calendar.MINUTE, 0);
+			firstOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+			firstOfMonth.set(Calendar.DAY_OF_MONTH, Calendar.getInstance().getActualMinimum(Calendar.DAY_OF_MONTH));
+			
+			Date firstOfMonthDate = firstOfMonth.getTime();
+
+			// subscriptions some times get flattrd slightly before midnight - give it an hour leeway
+			firstOfMonthDate = new Date(firstOfMonthDate.getTime() - 60*60*1000);
+			
+			final int FLATTR_COUNT = 30;
+			final int FLATTR_MAXPAGE = 5;
+			
+			int page = 0;
+			do {
+				myFlattrs.ensureCapacity(FLATTR_COUNT*(page+1));
+				
+				for (Flattr fl: fs.getMyFlattrs(FLATTR_COUNT, page)) {
+					if (fl.getCreated().after(firstOfMonthDate))
+						myFlattrs.add(fl);
+					else
+						break;
+				}
+				page++;
+			}
+			while (myFlattrs.get(myFlattrs.size()-1).getCreated().after( firstOfMonthDate ) && page < FLATTR_MAXPAGE);
+			
+			if (AppConfig.DEBUG) {
+				Log.d(TAG, "Got my flattrs list of length " + Integer.toString(myFlattrs.size()) + " comparison date" + firstOfMonthDate);
+
+				for (Flattr fl: myFlattrs) {
+					Thing thing = fl.getThing();
+					Log.d(TAG, "Flattr thing: " + fl.getThingId() + " name: " + thing.getTitle() +  " url: " + thing.getUrl() + " on: " + fl.getCreated());
+				}
+			}
+			
+		} else {
+			Log.e(TAG, "retrieveFlattrdThings was called with null access token");
+		}
+		
+		return myFlattrs;
+	}
 
 	public static void handleCallback(Context context, Uri uri) {
 		AndroidAuthenticator auth = createAuthenticator();
@@ -131,7 +191,8 @@ public class FlattrUtils {
 		deleteToken();
 		FlattrServiceCreator.deleteFlattrService();
 		showRevokeDialog(context);
-	}
+        DBWriter.clearAllFlattrStatus(context);
+    }
 
 	// ------------------------------------------------ DIALOGS
 

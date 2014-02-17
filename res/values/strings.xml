@@ -154,9 +154,20 @@
     <string name="action_forbidden_msg">AntennaPod has no permission for this action. The reason for this could be that the access token of AntennaPod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
     <string name="access_revoked_title">Access revoked</string>
     <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
-    <string name="flattr_click_success">Successfully flattred this thing!</string>
-    <string name="flattring_label">Flattring</string>
     
+    <!-- Flattr -->
+    <string name="flattr_click_success">Flattr\'ed one thing!</string>
+    <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
+    <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
+    <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
+    <string name="flattr_click_failure">Not flattr\'ed: %s.</string>
+    <string name="flattr_click_enqueued">Thing will be flattr\'ed later</string>
+    <string name="flattring_thing">Flattring %s</string>
+    <string name="flattring_label">AntennaPod is flattring</string>
+    <string name="flattrd_label">AntennaPod has flattr\'ed</string>
+    <string name="flattrd_failed_label">AntennaPod flattr failed</string>
+    <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
+
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
@@ -193,6 +204,8 @@
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
+	<string name="pref_auto_flattr_title">Automatic Flattr</string>
+    <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
     <string name="pref_display_only_episodes_title">Display only episodes</string>
     <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>

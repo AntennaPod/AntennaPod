@@ -1,21 +1,23 @@
 package de.danoeh.antennapod.storage;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.download.*;
+import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -124,6 +126,7 @@ public final class DBReader {
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
      * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
      * not find the correct feed of an item.
+     *
      * @param context A context that is used for opening a database connection.
      * @param items   The FeedItems whose Feed-objects should be loaded.
      */
@@ -211,7 +214,9 @@ public final class DBReader {
                         .getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0));
                 item.setItemIdentifier(itemlistCursor
                         .getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
-
+                item.setFlattrStatus(new FlattrStatus(itemlistCursor
+                        .getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)));
+                
                 // extract chapters
                 boolean hasSimpleChapters = itemlistCursor
                         .getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0;
@@ -302,7 +307,8 @@ public final class DBReader {
                 cursor.getString(PodDBAdapter.KEY_FILE_URL_INDEX),
                 cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
                 cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
-                playbackCompletionDate);
+                playbackCompletionDate,
+                cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX));
     }
 
     private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,
@@ -330,7 +336,8 @@ public final class DBReader {
                 image,
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_FILE_URL),
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOAD_URL),
-                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0);
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0,
+                new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)));
 
         if (image != null) {
             image.setFeed(feed);
@@ -775,5 +782,49 @@ public final class DBReader {
         adapter.close();
 
         return media;
+    }
+
+    /**
+     * Returns the flattr queue as a List of FlattrThings. The list consists of Feeds and FeedItems.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The flattr queue as a List.
+     */
+    public static List<FlattrThing> getFlattrQueue(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<FlattrThing> result = new ArrayList<FlattrThing>();
+
+        // load feeds
+        Cursor feedCursor = adapter.getFeedsInFlattrQueueCursor();
+        if (feedCursor.moveToFirst()) {
+            do {
+                result.add(extractFeedFromCursorRow(adapter, feedCursor));
+            } while (feedCursor.moveToNext());
+        }
+        feedCursor.close();
+
+        //load feed items
+        Cursor feedItemCursor = adapter.getFeedItemsInFlattrQueueCursor();
+        result.addAll(extractItemlistFromCursor(adapter, feedItemCursor));
+        feedItemCursor.close();
+
+        adapter.close();
+        Log.d(TAG, "Returning flattrQueueIterator for queue with " + result.size() + " items.");
+        return result;
+    }
+
+
+    /**
+     * Returns true if the flattr queue is empty.
+     *
+     * @param context A context that is used for opening a database connection.
+     */
+    public static boolean getFlattrQueueEmpty(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        boolean empty = adapter.getFlattrQueueSize() == 0;
+        adapter.close();
+        return empty;
     }
 }

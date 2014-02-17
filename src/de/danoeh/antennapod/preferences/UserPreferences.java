@@ -40,6 +40,7 @@ public class UserPreferences implements
 	public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
 	public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
 	public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+	public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
 	public static final String PREF_THEME = "prefTheme";
 	public static final String PREF_DATA_FOLDER = "prefDataFolder";
 	public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
@@ -49,6 +50,9 @@ public class UserPreferences implements
 	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
 	private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
 	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
+
+    // TODO: Make this value configurable
+    private static final double PLAYED_DURATION_AUTOFLATTR_THRESHOLD = 0.8;
 
 	private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
 
@@ -63,6 +67,7 @@ public class UserPreferences implements
 	private boolean allowMobileUpdate;
 	private boolean displayOnlyEpisodes;
 	private boolean autoDelete;
+	private boolean autoFlattr;
 	private int theme;
 	private boolean enableAutodownload;
 	private boolean enableAutodownloadWifiFilter;
@@ -112,6 +117,7 @@ public class UserPreferences implements
 		allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
 		displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
 		autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
+		autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
 		theme = readThemeValue(sp.getString(PREF_THEME, "0"));
 		enableAutodownloadWifiFilter = sp.getBoolean(
 				PREF_ENABLE_AUTODL_WIFI_FILTER, false);
@@ -223,6 +229,11 @@ public class UserPreferences implements
 		instanceAvailable();
 		return instance.autoDelete;
 	}
+	
+	public static boolean isAutoFlattr() {
+		instanceAvailable();
+		return instance.autoFlattr;
+	}
 
 	public static int getTheme() {
 		instanceAvailable();
@@ -296,6 +307,8 @@ public class UserPreferences implements
 		} else if (key.equals(PREF_AUTO_DELETE)) {
 			autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
 
+		} else if (key.equals(PREF_AUTO_FLATTR)) {
+			autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
 		} else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
 			displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES,
 					false);
@@ -507,5 +520,10 @@ public class UserPreferences implements
     public static int readEpisodeCacheSize(String valueFromPrefs) {
         instanceAvailable();
         return instance.readEpisodeCacheSizeInternal(valueFromPrefs);
+    }
+
+    public static double getPlayedDurationAutoflattrThreshold() {
+        instanceAvailable();
+        return PLAYED_DURATION_AUTOFLATTR_THRESHOLD;
     }
 }

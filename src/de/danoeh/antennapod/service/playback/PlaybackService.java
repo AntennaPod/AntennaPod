@@ -23,6 +23,7 @@ import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
@@ -38,6 +39,7 @@ import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;
 
@@ -344,7 +346,7 @@ public class PlaybackService extends Service {
     private final PlaybackServiceTaskManager.PSTMCallback taskManagerCallback = new PlaybackServiceTaskManager.PSTMCallback() {
         @Override
         public void positionSaverTick() {
-            saveCurrentPosition();
+            saveCurrentPosition(true, PlaybackServiceTaskManager.POSITION_SAVER_WAITING_INTERVAL);
         }
 
         @Override
@@ -380,7 +382,7 @@ public class PlaybackService extends Service {
 
                 case PAUSED:
                     taskManager.cancelPositionSaver();
-                    saveCurrentPosition();
+                    saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
                     stopForeground(true);
                     break;
@@ -714,13 +716,32 @@ public class PlaybackService extends Service {
 
     /**
      * Saves the current position of the media file to the DB
+     *
+     * @param updatePlayedDuration true if played_duration should be updated. This applies only to FeedMedia objects
+     * @param deltaPlayedDuration  value by which played_duration should be increased.
      */
-    private synchronized void saveCurrentPosition() {
+    private synchronized void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration) {
         int position = getCurrentPosition();
+        int duration = getDuration();
         final Playable playable = mediaPlayer.getPSMPInfo().playable;
-        if (position != INVALID_TIME && playable != null) {
+        if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             if (AppConfig.DEBUG)
                 Log.d(TAG, "Saving current position to " + position);
+            if (updatePlayedDuration && playable instanceof FeedMedia) {
+                FeedMedia m = (FeedMedia) playable;
+                FeedItem item = m.getItem();
+                m.setPlayedDuration(m.getPlayedDuration() + deltaPlayedDuration);
+                // Auto flattr
+                if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
+                        (m.getPlayedDuration() > UserPreferences.getPlayedDurationAutoflattrThreshold() * duration)) {
+
+                    if (AppConfig.DEBUG)
+                        Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(m.getPlayedDuration())
+                                + " is " + UserPreferences.getPlayedDurationAutoflattrThreshold() * 100 + "% of file duration " + Integer.toString(duration));
+                    item.getFlattrStatus().setFlattrQueue();
+                    DBWriter.setFeedItemFlattrStatus(PodcastApp.getInstance(), item, false);
+                }
+            }
             playable.saveCurrentPosition(PreferenceManager
                     .getDefaultSharedPreferences(getApplicationContext()),
                     position);
