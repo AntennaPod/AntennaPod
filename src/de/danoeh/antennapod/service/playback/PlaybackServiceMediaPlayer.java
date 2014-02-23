@@ -564,15 +564,12 @@ public class PlaybackServiceMediaPlayer {
             return 1;
         }
 
-        int retVal = 1;
-        if (playerStatus == PlayerStatus.PLAYING
+        float retVal = 1;
+        if ((playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
-                || playerStatus == PlayerStatus.PREPARED) {
-            retVal = mediaPlayer.getCurrentPosition();
-        } else if (media != null && media.getPosition() > 0) {
-            retVal = media.getPosition();
+                || playerStatus == PlayerStatus.PREPARED) && mediaPlayer.canSetSpeed()) {
+            retVal = mediaPlayer.getCurrentSpeedMultiplier();
         }
-
         playerLock.unlock();
         return retVal;
     }

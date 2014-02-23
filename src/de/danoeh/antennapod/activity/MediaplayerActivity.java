@@ -372,7 +372,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 			if (currentPosition != PlaybackService.INVALID_TIME
 					&& duration != PlaybackService.INVALID_TIME
 					&& controller.getMedia() != null) {
-				controller.getMedia().setPosition(currentPosition);
 				txtvPosition.setText(Converter
 						.getDurationStringLong(currentPosition));
 				txtvLength.setText(Converter.getDurationStringLong(duration));

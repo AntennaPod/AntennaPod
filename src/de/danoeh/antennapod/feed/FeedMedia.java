@@ -1,26 +1,26 @@
 package de.danoeh.antennapod.feed;
 
+import android.content.SharedPreferences;
+import android.content.SharedPreferences.Editor;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.util.ChapterUtils;
+import de.danoeh.antennapod.util.playback.Playable;
+
 import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
-import android.os.Parcel;
-import android.os.Parcelable;
-import android.util.Log;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.ChapterUtils;
-import de.danoeh.antennapod.util.playback.Playable;
-
 public class FeedMedia extends FeedFile implements Playable {
-	private static final String TAG = "FeedMedia";
+    private static final String TAG = "FeedMedia";
 
     public static final int FEEDFILETYPE_FEEDMEDIA = 2;
     public static final int PLAYABLE_TYPE_FEEDMEDIA = 1;
@@ -30,7 +30,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     private int duration;
     private int position; // Current position in file
-	private int played_duration; // How many ms of this file have been played (for autoflattring)
+    private int played_duration; // How many ms of this file have been played (for autoflattring)
     private long size; // File size in Byte
     private String mime_type;
     private volatile FeedItem item;
@@ -142,24 +142,20 @@ public class FeedMedia extends FeedFile implements Playable {
         this.duration = duration;
     }
 
-	public int getPlayedDuration() {
-		return played_duration;
-	}
+    public int getPlayedDuration() {
+        return played_duration;
+    }
 
     public void setPlayedDuration(int played_duration) {
         this.played_duration = played_duration;
     }
 
-	public int getPosition() {
+    public int getPosition() {
         return position;
     }
 
     public void setPosition(int position) {
-        final int WAITING_INTERVAL = 5000;
-        if (position > this.position)
-            played_duration += Math.min(position - this.position, 1.1*WAITING_INTERVAL);
-
-		this.position = position;
+        this.position = position;
     }
 
     public long getSize() {
@@ -186,7 +182,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * Sets the item object of this FeedMedia. If the given
      * FeedItem object is not null, it's 'media'-attribute value
      * will also be set to this media object.
-     * */
+     */
     public void setItem(FeedItem item) {
         this.item = item;
         if (item != null && item.getMedia() != this) {
@@ -196,7 +192,8 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public Date getPlaybackCompletionDate() {
         return playbackCompletionDate == null
-                ? null : (Date) playbackCompletionDate.clone();    }
+                ? null : (Date) playbackCompletionDate.clone();
+    }
 
     public void setPlaybackCompletionDate(Date playbackCompletionDate) {
         this.playbackCompletionDate = playbackCompletionDate == null
@@ -332,7 +329,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
         setPosition(newPosition);
-		DBWriter.setFeedMediaPlaybackInformation(PodcastApp.getInstance(), this);
+        DBWriter.setFeedMediaPlaybackInformation(PodcastApp.getInstance(), this);
     }
 
     @Override

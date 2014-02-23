@@ -725,6 +725,7 @@ public class PlaybackService extends Service {
     private synchronized void saveCurrentPosition(boolean updatePlayedDuration, int deltaPlayedDuration) {
         int position = getCurrentPosition();
         int duration = getDuration();
+        float playbackSpeed = getCurrentPlaybackSpeed();
         final Playable playable = mediaPlayer.getPSMPInfo().playable;
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             if (AppConfig.DEBUG)
@@ -732,7 +733,7 @@ public class PlaybackService extends Service {
             if (updatePlayedDuration && playable instanceof FeedMedia) {
                 FeedMedia m = (FeedMedia) playable;
                 FeedItem item = m.getItem();
-                m.setPlayedDuration(m.getPlayedDuration() + deltaPlayedDuration);
+                m.setPlayedDuration(m.getPlayedDuration() + ((int)(deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
                 if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
                         (m.getPlayedDuration() > UserPreferences.getPlayedDurationAutoflattrThreshold() * duration)) {
