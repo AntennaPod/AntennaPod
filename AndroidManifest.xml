@@ -328,7 +328,7 @@
             android:configChanges="keyboardHidden|orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MiroGuideMainActiviy" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideMainActivity" />
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"
