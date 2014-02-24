@@ -4,6 +4,7 @@ Change Log
 Version 0.9.8.1
 ---------------
 * Added option to flattr an episode automatically after 80 percent of the episode have been played
+* Added Polish translation
 * Several bugfixes and improvements
 
 Version 0.9.8.0

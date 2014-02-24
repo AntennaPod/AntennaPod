@@ -8,10 +8,13 @@
   <string name="new_label">Nieuw</string>
   <string name="waiting_list_label">Wachtlijst</string>
   <string name="settings_label">Instellingen</string>
+  <string name="add_new_feed_label">Podcast toevoegen</string>
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Annuleer download</string>
   <string name="download_log_label">Download log</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">In de browser openen</string>
   <string name="copy_url_label">URL kopieren</string>
@@ -24,13 +27,15 @@
   <string name="cancel_label">Annuleer</string>
   <string name="author_label">Auteur</string>
   <string name="language_label">Taal</string>
-  <string name="cover_label">Cover</string>
+  <string name="podcast_settings_label">Instellingen</string>
+  <string name="cover_label">Beeld</string>
   <string name="error_label">Fout</string>
   <string name="error_msg_prefix">Er is een fout opgetreden:</string>
   <string name="refresh_label">Verversen</string>
   <string name="external_storage_error_msg">Geen externe opslag beschikbaar. Zorg ervoor dat de externe opslag gemonteerd is, zodat de app goed kan werken.</string>
   <string name="chapters_label">Hoofdstukken</string>
   <string name="shownotes_label">Shownotes</string>
+  <string name="description_label">Beschrijving</string>
   <string name="most_recent_prefix">Meest recent episode:\u0020</string>
   <string name="episodes_suffix">\u0020episodes</string>
   <string name="published_prefix">Gepubliceerd:\u0020</string>
@@ -39,9 +44,14 @@
   <string name="processing_label">Aan het verwerken</string>
   <string name="loading_label">Laden...</string>
   <string name="image_of_prefix">Beeld van:\u0020</string>
+  <string name="save_username_password_label">Gebruikersnaam en wachtwoord opslaan</string>
   <string name="close_label">Sluiten</string>
+  <string name="retry_label">Opnieuw proberen</string>
+  <string name="auto_download_label">Voor het automatisch downloaden beschouwen</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
+  <string name="txtvfeedurl_label">Podcast toevoegen bij URL</string>
+  <string name="podcastdirectories_label">Podcast lijsten</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alles als gelezen markeren</string>
   <string name="show_info_label">Toon informatie</string>
@@ -49,6 +59,7 @@
   <string name="share_link_label">Website link delen</string>
   <string name="share_source_label">Feed link delen</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE episodes van deze feed die u hebt gedownload wilt verwijderen.</string>
+  <string name="feed_remover_msg">Feed verwijderen</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Spelen</string>
@@ -84,6 +95,7 @@
   <string name="download_error_malformed_url">Misvormde URL</string>
   <string name="download_error_io_error">IO fout</string>
   <string name="download_error_request_error">Fout in de aanvraag</string>
+  <string name="download_error_db_access">Databasetoegangsfout</string>
   <string name="downloads_left">Nog \u0020 downloads</string>
   <string name="download_notification_title">Podcast gegevens aan het downloaden</string>
   <string name="download_report_content">%1$d downloads geslaagd, %2$d mislukt</string>
@@ -113,6 +125,8 @@
   <string name="organize_queue_label">Wachtrij organiseren</string>
   <string name="undo">Ongedaan maken</string>
   <string name="removed_from_queue">Item verwijderd</string>
+  <string name="move_to_top_label">Naar boven verplaatsen</string>
+  <string name="move_to_bottom_label">Naar beneden verplaatsen</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr inloggen</string>
   <string name="flattr_auth_explanation">Druk op onderstaande knop om het verificatieproces te starten. U wordt doorgestuurd naar de Flattr inlogscherm in uw browser en wordt gevraagd om toestemming aan AntennaPod te geven om dingen te Flattr\'en. Nadat u toestemming hebt gegeven, keert u automatisch terug naar dit scherm.</string>
@@ -126,8 +140,7 @@
   <string name="action_forbidden_msg">AntennaPod heeft geen toestemming voor deze actie. De reden hiervoor zou kunnen zijn dat de toegang token van AntennaPod voor uw account ingetrokken is. U kunt opnieuw authenticeren, of de website van het ding bezoeken.</string>
   <string name="access_revoked_title">Toegang ingetrokken</string>
   <string name="access_revoked_info">U heeft met succes het toegangstoken van AntennaPod tot uw account ingetrokken. Om het proces te voltooien, moet u deze app uit de lijst van goedgekeurde applicaties in uw accountinstellingen op de Flattr website verwijderen.</string>
-  <string name="flattr_click_success">Dit ding met succes geflattr\'d!</string>
-  <string name="flattring_label">Aan het flattr\'en</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin downloaden</string>
   <string name="no_playback_plugin_title">Plugin niet geinstalleerd</string>
@@ -140,6 +153,8 @@
   <string name="other_pref">Overig</string>
   <string name="about_pref">Over AntennaPod</string>
   <string name="queue_label">Wachtrij</string>
+  <string name="services_label">Services</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Afspelen pauzeren wanneer de hoofdtelefoon wordt losgekoppeld</string>
   <string name="pref_followQueue_sum">Volgende wachtrij item afspelen als de episode voltooid is</string>
   <string name="playback_pref">Afspelen</string>
@@ -168,7 +183,7 @@
   <string name="pref_automatic_download_title">Automatisch downloaden</string>
   <string name="pref_automatic_download_sum">Configureer het automatisch downloaden van episoden.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filter inschakelen</string>
-  <string name="pref_autodl_wifi_filter_sum">Automatisch download alleen voor geselecteerde Wi-Fi-netwerken toestaan.</string>
+  <string name="pref_autodl_wifi_filter_sum">Automatisch downloaden alleen toestaan voor geselecteerde Wi-Fi-netwerken.</string>
   <string name="pref_episode_cache_title">Episode cache</string>
   <string name="pref_theme_title_light">Licht</string>
   <string name="pref_theme_title_dark">Donker</string>
@@ -176,8 +191,16 @@
   <string name="pref_update_interval_hours_plural">uren</string>
   <string name="pref_update_interval_hours_singular">uur</string>
   <string name="pref_update_interval_hours_manual">Handmatig</string>
+  <string name="pref_gpodnet_authenticate_title">Log in</string>
+  <string name="pref_gpodnet_authenticate_sum">Log met je gpodder.net account in om je abonnementen te synchroniseren.</string>
+  <string name="pref_gpodnet_logout_title">Log uit</string>
+  <string name="pref_gpodnet_logout_toast">Uitlog was succesvol</string>
+  <string name="pref_gpodnet_setlogin_information_title">Aanmeldingsgegevens wijzigen</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Wijzig de aanmeldingsgegevens van je gpodder.net account.</string>
   <string name="pref_playback_speed_title">Afspeelsnelheden</string>
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
+  <string name="pref_gpodnet_sethostname_title">Definieer hostname</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Gebruik standaard host</string>
   <!--Search-->
   <string name="search_hint">Feeds of episodes zoeken</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>
@@ -189,6 +212,7 @@
   <string name="search_label">Zoeken</string>
   <string name="found_in_title_label">Gevonden in de titel</string>
   <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">Met OPML-bestanden kan je podcasts van de ene naar de andere podcatcher verplaatsen.</string>
   <string name="opml_import_explanation">Om een OPML-bestand te importeren moet je het in de volgende map zetten en op onderstaande knop drukken.</string>
   <string name="start_import_label">Start importeren</string>
   <string name="opml_import_label">OPML import</string>
@@ -219,8 +243,36 @@
   <string name="miro_search_hint">Zoek Miro gids</string>
   <string name="popular_label">Populair</string>
   <string name="best_rating_label">Beste beoordeling</string>
+  <string name="add_feed_label">Podcast toevoegen</string>
   <string name="miro_feed_added">Feed wordt toegevoegd</string>
   <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">CATEGORIEËN</string>
+  <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+  <string name="gpodnet_suggestions_header">SUGGESTIES</string>
+  <string name="gpodnet_search_hint">Zoek gpodder.net</string>
+  <string name="gpodnetauth_login_title">Log in</string>
+  <string name="gpodnetauth_login_descr">Welkom op de gpodder.net login proces. Eerst, typ je login gegevens:</string>
+  <string name="gpodnetauth_login_butLabel">Log in</string>
+  <string name="gpodnetauth_login_register">Als je nog geen account hebt, kun je er hier een aanmaken:\n https://gpodder.net/register/</string>
+  <string name="username_label">Gebruikersnaam</string>
+  <string name="password_label">Wachtwoord</string>
+  <string name="gpodnetauth_device_title">Apparaatselectie</string>
+  <string name="gpodnetauth_device_descr">Maak een nieuw apparaat aan om voor je gpodder.net account te gebruiken of kies een bestaande:</string>
+  <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
+  <string name="gpodnetauth_device_caption">Titel</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Maak een nieuw apparaat aan</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Kies een bestaand apparaat:</string>
+  <string name="gpodnetauth_device_errorEmpty">Apparaat ID mag niet leeg zijn</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">Apparaat ID al in gebruik</string>
+  <string name="gpodnetauth_device_butChoose">Kies</string>
+  <string name="gpodnetauth_finish_title">Login succesvol</string>
+  <string name="gpodnetauth_finish_descr">Gefeliciteerd! Jou gpodder.net account is nu verbonden met je apparaat. AntennaPod zal voortaan abonnementen op je apparaat automatisch met je gpodder.net account synchroniseren.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Synchronisatie nu starten</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Terug naar hoofdscherm</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net authenticatie fout</string>
+  <string name="gpodnetsync_auth_error_descr">Ongeldig gebruikersnaam of wachtwoord</string>
+  <string name="gpodnetsync_error_title">gpodder.net synchronisatie fout</string>
+  <string name="gpodnetsync_error_descr">Er is een fout opgetreden tijdens het synchroniseren:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Geselecteerde map:</string>
   <string name="create_folder_label">Map aanmaken</string>
@@ -233,5 +285,14 @@
   <string name="folder_not_empty_dialog_title">Map is niet leeg</string>
   <string name="folder_not_empty_dialog_msg">De map die je hebt gekozen is niet leeg. Media downloads en andere bestanden zullen rechtstreeks in deze map geplaatst worden. Toch doorgaan?</string>
   <string name="set_to_default_folder">Kies default map</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Het afspelen onderbreken in plaats van het volume te verlagen wanneer er een andere app geluiden af wilt spelen</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Pauze voor onderbrekingen</string>
   <!--Online feed view-->
+  <string name="subscribe_label">Abonneren</string>
+  <string name="subscribed_label">Geabonneerd</string>
+  <string name="downloading_label">Aan het downloaden</string>
+  <!--Content descriptions for image buttons-->
+  <string name="media_type_audio_label">Audio</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="butAction_label">Meer acties</string>
 </resources>

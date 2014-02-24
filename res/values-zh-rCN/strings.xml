@@ -28,7 +28,6 @@
   <string name="author_label">作者</string>
   <string name="language_label">语言</string>
   <string name="podcast_settings_label">设置</string>
-  <string name="cover_label">封面</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="refresh_label">刷新</string>
@@ -140,8 +139,7 @@
   <string name="action_forbidden_msg">AntennaPod 没有权限执行本动作. 原因可能是: AntennaPod 对您账户的访问令牌被撤销. 你可以重新\"验证\"或访问该网站来授权.</string>
   <string name="access_revoked_title">撤销访问</string>
   <string name="access_revoked_info">您已经成功撤销 AntennaPod 对账户令牌的访问. 为了完成这个过程, 您必须到 Flattr 网站 \"账户设置-&gt;已批准应用\" 列表内删除本应用.</string>
-  <string name="flattr_click_success">Flattr 成功!</string>
-  <string name="flattring_label">Flattring</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
@@ -292,4 +290,5 @@
   <string name="subscribe_label">订阅</string>
   <string name="subscribed_label">已订阅</string>
   <string name="downloading_label">下载中...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

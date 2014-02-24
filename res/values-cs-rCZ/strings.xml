@@ -28,7 +28,6 @@
   <string name="author_label">Autor</string>
   <string name="language_label">Jazyk</string>
   <string name="podcast_settings_label">Nastavení</string>
-  <string name="cover_label">Obal</string>
   <string name="error_label">Chyba</string>
   <string name="error_msg_prefix">Nastala chyba:</string>
   <string name="refresh_label">Obnovit</string>
@@ -140,8 +139,7 @@
   <string name="action_forbidden_msg">AntennaPod nemá oprávnění pro tuto akci. Důvodem může být revokování přístupového tokenu AntennaPodu k vašemu účtu. Přístup můžete obnovit nebo využít prohlížeče k návštěvě stránky zdroje.</string>
   <string name="access_revoked_title">Přístup revokován</string>
   <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
-  <string name="flattr_click_success">Úspěšně flattrováno!</string>
-  <string name="flattring_label">Flattruji</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout Plugin</string>
   <string name="no_playback_plugin_title">Plugin není nainstalován</string>
@@ -292,4 +290,5 @@
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribed_label">Odebíráno</string>
   <string name="downloading_label">Stahuji...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

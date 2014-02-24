@@ -96,14 +96,14 @@
   <string name="download_error_io_error">Erro de IO</string>
   <string name="download_error_request_error">Erro de requisição</string>
   <string name="download_error_db_access">Erro no acesso ao Banco de dados</string>
-  <string name="downloads_left">\u0020Downloads faltando</string>
+  <string name="downloads_left">\u0020Downloads restantes</string>
   <string name="download_notification_title">Baixando dados do podcast</string>
   <string name="download_report_content">%1$d downloads com sucesso, %2$d falharam</string>
   <string name="download_log_title_unknown">Título desconhecido</string>
   <string name="download_type_feed">Feed</string>
   <string name="download_type_media">Arquivo de mídia</string>
   <string name="download_type_image">Imagem</string>
-  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro na tentativa de baixar o arquivo:\u0020</string>
+  <string name="download_request_error_dialog_message_prefix">Ocorreu um erro durante download do arquivo:\u0020</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erro!</string>
   <string name="player_stopped_msg">Nenhuma mídia tocando</string>
@@ -140,12 +140,11 @@
   <string name="action_forbidden_msg">AntennaPod não tem permissão para esta ação. A permissão de acesso do AntennaPod pode ter sido revogada. Você pode re-autenticar ou visitar o website do feed.</string>
   <string name="access_revoked_title">Acesso revogado</string>
   <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod com sucesso. Para finalizar o processo, você deve remover esta app da lista de aplicativos aprovados nas configurações de sua conta no website do Flattr.</string>
-  <string name="flattr_click_success">Registrado no Flattr com sucesso!</string>
-  <string name="flattring_label">Registrando no Flattr</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Download Plugin</string>
   <string name="no_playback_plugin_title">Plugin Não Instalado</string>
-  <string name="no_playback_plugin_msg">Para ajustar a velocidade de reprodução, uma biblioteca de terceiros deve ser instalada.\n\nToque em \'Download Plugin\' para baixar um plugin grátis na Play Store.\n\nQuaisquer problemas encontrados usando esse plugin não é responsabilidade do AntennaPod e deve ser reportado ao proprietário do plugin.</string>
+  <string name="no_playback_plugin_msg">Para velocidade variável de reprodução funcionar uma biblioteca de terceiros deve ser instalada.\n\nToque em \'Download Plugin\' para baixar um plugin grátis na Play Store.\n\nQuaisquer problemas encontrados usando esse plugin não é responsabilidade do AntennaPod e deve ser reportado ao proprietário do plugin.</string>
   <string name="set_playback_speed_label">Velocidades de Reprodução</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens nesta lista.</string>
@@ -161,7 +160,7 @@
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo de atualização</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifica o intervalo em que os feeds serão atualizados automaticamente ou desabilita esta funcionalidade</string>
+  <string name="pref_autoUpdateIntervall_sum">Especifica o intervalo com que os feeds serão atualizados automaticamente ou desabilita esta funcionalidade</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Fazer download dos arquivos apenas via rede WiFi</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download de mídia via WiFi</string>
@@ -193,13 +192,13 @@
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
   <string name="pref_gpodnet_authenticate_title">Login</string>
-  <string name="pref_gpodnet_authenticate_sum">Faça o login na sua conta gpodder.net para sincronizar suas subscrições.</string>
+  <string name="pref_gpodnet_authenticate_sum">Faça o login na sua conta gpodder.net para sincronizar suas assinaturas.</string>
   <string name="pref_gpodnet_logout_title">Sair</string>
   <string name="pref_gpodnet_logout_toast">Saiu com sucesso</string>
   <string name="pref_gpodnet_setlogin_information_title">Alterar informações de login</string>
   <string name="pref_gpodnet_setlogin_information_sum">Alterar informações de login da sua conta gpodder.net</string>
   <string name="pref_playback_speed_title">Velocidades de Reprodução</string>
-  <string name="pref_playback_speed_sum">Personalize as velocidades disponíveis para reprodução de áudio.</string>
+  <string name="pref_playback_speed_sum">Personalize as velocidades variáveis de reprodução de áudio.</string>
   <string name="pref_gpodnet_sethostname_title">Configurar hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar host padrão</string>
   <!--Search-->
@@ -213,7 +212,7 @@
   <string name="search_label">Pesquisar</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Arquivos OPML permitem que você mova seus podcasts de um gestor de podcasts para outro.</string>
+  <string name="opml_import_txtv_button_lable">Arquivos OPML permitem que você mova seus podcasts de um programa de podcasts para outro.</string>
   <string name="opml_import_explanation">Para importar um arquivo OPML, você precisa armazená-lo neste diretório e pressionar o botão abaixo para iniciar o processo de importação.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação de OPML</string>
@@ -231,9 +230,9 @@
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Configura desligamento automático</string>
-  <string name="disable_sleeptimer_label">Desabilita temporizador</string>
+  <string name="disable_sleeptimer_label">Desabilita desligamento automático</string>
   <string name="enter_time_here_label">Informe a duração</string>
-  <string name="sleep_timer_label">Temporizador</string>
+  <string name="sleep_timer_label">Desligamento automático</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada inválida, a duração precisa ser um número inteiro</string>
   <!--Miro Guide-->
@@ -250,6 +249,7 @@
   <string name="gpodnet_taglist_header">CATEGORIAS</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
   <string name="gpodnet_suggestions_header">SUGESTÕES</string>
+  <string name="gpodnet_search_hint">Buscar no gpodder.net</string>
   <string name="gpodnetauth_login_title">Login</string>
   <string name="gpodnetauth_login_descr">Bem-vindo ao processo de login gpodder.net. Primeiramente, digite suas informações:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
@@ -266,12 +266,12 @@
   <string name="gpodnetauth_device_errorAlreadyUsed">ID do dispositivo já está em uso</string>
   <string name="gpodnetauth_device_butChoose">Escolher</string>
   <string name="gpodnetauth_finish_title">Login realizado com sucesso!</string>
-  <string name="gpodnetauth_finish_descr">Parabéns! Sua conta gpodder.net agora está ligada ao seu dispositivo. AntennaPod irá, daqui em diante, sincronizar automaticamente subscrições do seu dispositivo com sua conta gpodder.net.</string>
+  <string name="gpodnetauth_finish_descr">Parabéns! Sua conta gpodder.net agora está conectada ao seu dispositivo. O AntennaPod irá, daqui em diante, sincronizar automaticamente assinaturas do seu dispositivo com sua conta gpodder.net.</string>
   <string name="gpodnetauth_finish_butsyncnow">Iniciar sincronização agora</string>
   <string name="gpodnetauth_finish_butgomainscreen">Ir para tela principal</string>
-  <string name="gpodnetsync_auth_error_title">gpodder.net: Erro de autenticação</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net: erro de autenticação</string>
   <string name="gpodnetsync_auth_error_descr">Nome do usuário ou senha incorreta</string>
-  <string name="gpodnetsync_error_title">gpodder.net: Erro de sincronização</string>
+  <string name="gpodnetsync_error_title">gpodder.net: erro de sincronização</string>
   <string name="gpodnetsync_error_descr">Ocorreu um erro durante a sincronização:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Selecionar pasta:</string>
@@ -285,10 +285,18 @@
   <string name="folder_not_empty_dialog_title">A pasta não está vazia</string>
   <string name="folder_not_empty_dialog_msg">A pasta que você selecionou não está vazia. Os downloads de mídia e outros arquivos serão colocados diretamente nesta pasta. Deseja mesmo continuar?</string>
   <string name="set_to_default_folder">Escolher pasta padrão</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de baixar o volume quando outro aplicativo reproduzir sons</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pause a reprodução em vez de abaixar o volume quando outro aplicativo reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausar em interrupções</string>
   <!--Online feed view-->
-  <string name="subscribe_label">Subscrever</string>
-  <string name="subscribed_label">Subscrito</string>
+  <string name="subscribe_label">Assinar</string>
+  <string name="subscribed_label">Assinado</string>
   <string name="downloading_label">Baixando...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_cover_label">Mostrar imagem</string>
+  <string name="butAction_label">Mais ações</string>
+  <string name="status_playing_label">Episódio está sendo reproduzido</string>
+  <string name="status_downloaded_label">Episódio foi baixado</string>
+  <string name="status_unread_label">Item é novo</string>
+  <string name="in_queue_label">Episódio está na fila</string>
+  <string name="new_episodes_count_label">Numero de novos episódios</string>
 </resources>

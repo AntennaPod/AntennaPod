@@ -15,6 +15,7 @@ trans.fr = res/values-fr/strings.xml
 trans.hi_IN = res/values-hi-rIN/strings.xml
 trans.it_IT = res/values-it-rIT/strings.xml
 trans.nl = res/values-nl/strings.xml
+trans.pl_PL = res/values-pl-rPL/strings.xml
 trans.pt = res/values-pt/strings.xml
 trans.pt_BR = res/values-pt-rBR/strings.xml
 trans.ro_RO = res/values-ro-rRO/strings.xml

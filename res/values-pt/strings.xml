@@ -140,12 +140,22 @@
   <string name="action_forbidden_msg">O AntennaPod não possui as permissões para esta ação. É possível que o token de acesso ao flattr via AntennaPod tenha sido revogado. Pode efetuar nova autenticação ou aceder ao sítio web do item.</string>
   <string name="access_revoked_title">Acesso revogado</string>
   <string name="access_revoked_info">Você revogou o token de acesso do AntennaPod à sua conta. Para concluir o processo, tem que remover esta aplicação da lista de aplicações presentes nas definições de conta no sítio web do flattr.</string>
-  <string name="flattr_click_success">Flattered com sucesso!</string>
-  <string name="flattring_label">Flattring</string>
+  <!--Flattr-->
+  <string name="flattr_click_success">Flattr de um item!</string>
+  <string name="flattr_click_success_count">Flattr de %d itens!</string>
+  <string name="flattr_click_success_queue">Flattr: %s</string>
+  <string name="flattr_click_failure_count">Falha ao efetuar flattr de %d itens!</string>
+  <string name="flattr_click_failure">Não flattr: %s.</string>
+  <string name="flattr_click_enqueued">O flattr deste item será feito mais tarde</string>
+  <string name="flattring_thing">Flattring %s</string>
+  <string name="flattring_label">O AntennaPod está a flattring</string>
+  <string name="flattrd_label">O AntennaPod fez o flattr</string>
+  <string name="flattrd_failed_label">O AntennaPod não fez o flattr</string>
+  <string name="flattr_retrieving_status">A obter itens com flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Transferir extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_msg">Para melhorar a reprodução, deve transferir  e instalar um biblioteca de terceiros.\nClique Transferir extra para transferir o extra através da loja Google..\n\nSe encontrar problemas ao utilizar esta biblioteca, os programadores do AntennaPod não podem ser responsabilizados e deve contactar o programador do extra.</string>
+  <string name="no_playback_plugin_msg">Para melhorar a reprodução, deve transferir  e instalar um biblioteca de terceiros.\nClique Transferir extra para transferir o extra através da loja Google.\n\nSe encontrar problemas ao utilizar esta biblioteca, os programadores do AntennaPod não podem ser responsabilizados e deve contactar o programador do extra.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens na lista.</string>
@@ -176,10 +186,12 @@
   <string name="pref_flattr_this_app_sum">Ajude no desenvolvimento do AntennaPod através do Flattr. Obrigado!</string>
   <string name="pref_revokeAccess_title">Revogar acesso</string>
   <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr.</string>
+  <string name="pref_auto_flattr_title">Flattr automático</string>
+  <string name="pref_auto_flattr_sum">Flattr de episódios com 80 porcento de reprodução.</string>
   <string name="pref_display_only_episodes_title">Mostrar apenas episódios</string>
   <string name="pref_display_only_episodes_sum">Apenas mostrar itens que possuam episódios.</string>
   <string name="user_interface_label">Interface</string>
-  <string name="pref_set_theme_title">Escolha o tema</string>
+  <string name="pref_set_theme_title">Tema</string>
   <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod.</string>
   <string name="pref_automatic_download_title">Transferência automática</string>
   <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios.</string>
@@ -292,4 +304,21 @@
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribed_label">Subscrito</string>
   <string name="downloading_label">Transferência...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Mostrar capítulos</string>
+  <string name="show_shownotes_label">Mostrar notas</string>
+  <string name="show_cover_label">Mostrar imagem</string>
+  <string name="rewind_label">Recuar</string>
+  <string name="fast_forward_label">Avanço rápido</string>
+  <string name="media_type_audio_label">Áudio</string>
+  <string name="media_type_video_label">Vídeo</string>
+  <string name="navigate_upwards_label">Navegar para cima</string>
+  <string name="butAction_label">Mais ações</string>
+  <string name="status_playing_label">Episódio em reprodução</string>
+  <string name="status_downloading_label">Episódio a ser transferido</string>
+  <string name="status_downloaded_label">Episódio transferido</string>
+  <string name="status_unread_label">Novo item</string>
+  <string name="in_queue_label">Episódio está na fila</string>
+  <string name="new_episodes_count_label">Número de novos episódios</string>
+  <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
 </resources>

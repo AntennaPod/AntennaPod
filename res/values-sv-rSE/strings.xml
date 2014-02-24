@@ -28,7 +28,7 @@
   <string name="author_label">Skapare</string>
   <string name="language_label">Språk</string>
   <string name="podcast_settings_label">Inställningar</string>
-  <string name="cover_label">Omslag</string>
+  <string name="cover_label">Bild</string>
   <string name="error_label">Fel</string>
   <string name="error_msg_prefix">Ett fel inträffade:</string>
   <string name="refresh_label">Uppdatera</string>
@@ -118,7 +118,7 @@
   <string name="playbackservice_notification_title">Spelar podcast</string>
   <string name="playbackservice_notification_content">Tryck här för mer information</string>
   <!--Navigation-->
-  <string name="show_download_log">Visa log</string>
+  <string name="show_download_log">Visa logg</string>
   <string name="show_player_label">Visa spelare</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Rensa kön</string>
@@ -140,8 +140,18 @@
   <string name="action_forbidden_msg">AntennaPod saknar behörighet för den här åtgärden. Anledningen till detta kan vara att AntennaPods tillgång till ditt konto har återkallats. Du kan antingen åter autentisera AntennaPod eller besöka hemsidan istället.</string>
   <string name="access_revoked_title">Tillgång återkallad</string>
   <string name="access_revoked_info">Du har nu återkallat AntennaPods tillgång till ditt konto. För att slutföra processen, måste du ta bort den här appen från listan godkända appar i dina kontoinställningar på Flattrs hemsida.</string>
-  <string name="flattr_click_success">Framgångsrikt flattrat denna sak!</string>
-  <string name="flattring_label">Flattrar</string>
+  <!--Flattr-->
+  <string name="flattr_click_success">Flattrade en sak!</string>
+  <string name="flattr_click_success_count">Flattrade %d saker!</string>
+  <string name="flattr_click_success_queue">Flattrade: %s.</string>
+  <string name="flattr_click_failure_count">Misslyckades att flattra %d saker!</string>
+  <string name="flattr_click_failure">Ej flattrade: %s.</string>
+  <string name="flattr_click_enqueued">Saker som kommer att flattras senare</string>
+  <string name="flattring_thing">Flattrar %s</string>
+  <string name="flattring_label">AnntennaPod flattrar</string>
+  <string name="flattrd_label">AntennaPod har flattrat</string>
+  <string name="flattrd_failed_label">AntennaPod misslyckades att flattra</string>
+  <string name="flattr_retrieving_status">Hämtar flattrade saker</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
@@ -176,6 +186,8 @@
   <string name="pref_flattr_this_app_sum">Stöd utvecklingen av AntennaPod genom att flattra den. Tack!</string>
   <string name="pref_revokeAccess_title">Återkalla åtkomst</string>
   <string name="pref_revokeAccess_sum">Återkalla behörigheten till ditt Flattr-konto för denna app.</string>
+  <string name="pref_auto_flattr_title">Automatisk Flattring</string>
+  <string name="pref_auto_flattr_sum">Flattra episoder som har spelats minst 80%.</string>
   <string name="pref_display_only_episodes_title">Visa endast episoder</string>
   <string name="pref_display_only_episodes_sum">Visa endast objekt som har minst ett avsnitt.</string>
   <string name="user_interface_label">Användargränssnitt</string>
@@ -292,4 +304,21 @@
   <string name="subscribe_label">Prenumerera</string>
   <string name="subscribed_label">Prenumererar</string>
   <string name="downloading_label">Laddar ner...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Visa kapitel</string>
+  <string name="show_shownotes_label">Visa shownotes</string>
+  <string name="show_cover_label">Visa bild</string>
+  <string name="rewind_label">Backa</string>
+  <string name="fast_forward_label">Snabbspola</string>
+  <string name="media_type_audio_label">Ljud</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="navigate_upwards_label">Navigera upp</string>
+  <string name="butAction_label">Fler åtgärder</string>
+  <string name="status_playing_label">Episoden spelas</string>
+  <string name="status_downloading_label">Episoden laddas ner</string>
+  <string name="status_downloaded_label">Episoden är nedladdad</string>
+  <string name="status_unread_label">Föremålet är nytt</string>
+  <string name="in_queue_label">Episoden är i kön</string>
+  <string name="new_episodes_count_label">Antal nya episoder</string>
+  <string name="in_progress_episodes_count_label">Antal episoder du har börjat lyssna på</string>
 </resources>

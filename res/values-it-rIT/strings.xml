@@ -28,7 +28,7 @@
   <string name="author_label">Autore</string>
   <string name="language_label">Lingua</string>
   <string name="podcast_settings_label">Impostazioni</string>
-  <string name="cover_label">Copertina</string>
+  <string name="cover_label">Immagine</string>
   <string name="error_label">Errore</string>
   <string name="error_msg_prefix">Un errore è stato rilevato:</string>
   <string name="refresh_label">Aggiorna</string>
@@ -140,8 +140,8 @@
   <string name="action_forbidden_msg">AntennaPod non ha il permesso di effettuare questa azione. La ragione potrebbe essere che il token di accesso di AntennaPod al tuo account è stato revocato. Puoi eseguire la re-autenticazione o altrimenti visitare il sito web.</string>
   <string name="access_revoked_title">Accesso revocato</string>
   <string name="access_revoked_info">Hai revocato l\'accesso di AntennaPod al tuo account. Al fine di completare il processo devi rimuovere l\'app dalla lista delle applicazioni autorizzare nelle impostazioni del tuo account sul sito di flattr.</string>
-  <string name="flattr_click_success">Flattr eseguito con successo!</string>
-  <string name="flattring_label">Flattr in corso</string>
+  <!--Flattr-->
+  <string name="flattring_label">AntennaPod sta eseguendo Flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Scarica Plugin</string>
   <string name="no_playback_plugin_title">Plugin non installato</string>
@@ -292,4 +292,20 @@
   <string name="subscribe_label">Abbonati</string>
   <string name="subscribed_label">Abbonato</string>
   <string name="downloading_label">Download in corso...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Mostra i capitoli</string>
+  <string name="show_shownotes_label">Mostra le note dell\'episodio</string>
+  <string name="show_cover_label">Mosta l\'immagine</string>
+  <string name="rewind_label">Riavvolgi</string>
+  <string name="fast_forward_label">Avanti veloce</string>
+  <string name="media_type_audio_label">Audio</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="navigate_upwards_label">Naviga su</string>
+  <string name="butAction_label">Più azioni</string>
+  <string name="status_playing_label">L\'episodio è in corso di ripoduzione</string>
+  <string name="status_downloading_label">L\'episodio sta per essere scaricato</string>
+  <string name="status_downloaded_label">L\'episodio è stato scaricato</string>
+  <string name="status_unread_label">L\'oggetto è nuovo</string>
+  <string name="in_queue_label">L\'episodio è in coda</string>
+  <string name="new_episodes_count_label">Numero dei nuovi episodi</string>
 </resources>

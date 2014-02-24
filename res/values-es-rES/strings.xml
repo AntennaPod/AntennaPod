@@ -24,7 +24,6 @@
   <string name="cancel_label">Cancelar</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
-  <string name="cover_label">Carátula</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">Ha ocurrido un error:</string>
   <string name="refresh_label">Actualizar</string>
@@ -122,8 +121,7 @@
   <string name="action_forbidden_msg">AntennaPod no tiene permiso para realizar esta acción. La razón puede ser que se haya revocado el token de acceso de AntennaPod para su cuenta. Puede re-autenticarse o visitar la página web de la cosa.</string>
   <string name="access_revoked_title">Acceso revocado</string>
   <string name="access_revoked_info">Ha revocado el token de acceso de AntennaPod a su cuenta. Para completar el proceso debe eliminar esta aplicación de la lista de aplicaciones aprobadas, en los ajustes de Flattr.</string>
-  <string name="flattr_click_success">Ha valorado esto en Flattr.</string>
-  <string name="flattring_label">Valoración en Flattr</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <!--Empty list labels-->
   <string name="no_items_label">Esta lista no tiene elementos.</string>
@@ -218,4 +216,5 @@
   <string name="folder_not_empty_dialog_msg">La carpeta elegida no está vacía. Las descargas y otros archivos se copiarán directamente en esta carpeta. ¿Continuar igualmente?</string>
   <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
   <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
 </resources>
