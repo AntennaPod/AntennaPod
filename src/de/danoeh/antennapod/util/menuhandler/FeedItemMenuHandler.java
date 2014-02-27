@@ -155,8 +155,7 @@ public class FeedItemMenuHandler {
                 context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
                 break;
             case R.id.support_item:
-                selectedItem.getFlattrStatus().setFlattrQueue();
-                DBWriter.setFlattredStatus(context, selectedItem, true);
+                DBTasks.flattrItemIfLoggedIn(context, selectedItem);
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedItemLink(context, selectedItem);

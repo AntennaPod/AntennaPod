@@ -17,6 +17,7 @@ import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.util.exception.MediaFileNotFoundException;
+import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 import java.util.*;
 import java.util.concurrent.*;
@@ -802,6 +803,36 @@ public final class DBTasks {
 
         protected void setResult(T result) {
             this.result = result;
+        }
+    }
+
+    /**
+     * Adds the given FeedItem to the flattr queue if the user is logged in. Otherwise, a dialog
+     * will be opened that lets the user go either to the login screen or the website of the flattr thing.
+     * @param context
+     * @param item
+     */
+    public static void flattrItemIfLoggedIn(Context context, FeedItem item) {
+        if (FlattrUtils.hasToken()) {
+            item.getFlattrStatus().setFlattrQueue();
+            DBWriter.setFlattredStatus(context, item, true);
+        } else {
+            FlattrUtils.showNoTokenDialog(context, item.getPaymentLink());
+        }
+    }
+
+    /**
+     * Adds the given Feed to the flattr queue if the user is logged in. Otherwise, a dialog
+     * will be opened that lets the user go either to the login screen or the website of the flattr thing.
+     * @param context
+     * @param feed
+     */
+    public static void flattrFeedIfLoggedIn(Context context, Feed feed) {
+        if (FlattrUtils.hasToken()) {
+            feed.getFlattrStatus().setFlattrQueue();
+            DBWriter.setFlattredStatus(context, feed, true);
+        } else {
+            FlattrUtils.showNoTokenDialog(context, feed.getPaymentLink());
         }
     }
 

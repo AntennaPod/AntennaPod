@@ -89,7 +89,6 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
     protected void onNoAccessToken() {
         Log.w(TAG, "No access token was available");
-        FlattrUtils.showNoTokenDialog(context, "");
     }
 
     protected void onFlattrError() {

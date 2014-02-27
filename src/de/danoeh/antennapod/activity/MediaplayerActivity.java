@@ -23,7 +23,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
-import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.StorageUtils;
@@ -320,8 +320,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                 case R.id.support_item:
                     if (media instanceof FeedMedia) {
                         FeedItem feedItem = ((FeedMedia) media).getItem();
-                        feedItem.getFlattrStatus().setFlattrQueue();
-                        DBWriter.setFlattredStatus(this, feedItem, true);
+                        DBTasks.flattrItemIfLoggedIn(this, feedItem);
                     }
                     break;
                 case R.id.share_link_item:
