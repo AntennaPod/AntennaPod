@@ -28,6 +28,7 @@
   <string name="author_label">作者</string>
   <string name="language_label">语言</string>
   <string name="podcast_settings_label">设置</string>
+  <string name="cover_label">图片</string>
   <string name="error_label">错误</string>
   <string name="error_msg_prefix">出错:</string>
   <string name="refresh_label">刷新</string>
@@ -151,7 +152,7 @@
   <!--Preferences-->
   <string name="other_pref">其他</string>
   <string name="about_pref">关于</string>
-  <string name="queue_label">清空播放</string>
+  <string name="queue_label">播放列表</string>
   <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">耳机断开时暂停播放 </string>
@@ -291,4 +292,20 @@
   <string name="subscribed_label">已订阅</string>
   <string name="downloading_label">下载中...</string>
   <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">显示章节</string>
+  <string name="show_shownotes_label">显示笔记</string>
+  <string name="show_cover_label">显示图片</string>
+  <string name="rewind_label">回放</string>
+  <string name="fast_forward_label">快进</string>
+  <string name="media_type_audio_label">音频</string>
+  <string name="media_type_video_label">视频</string>
+  <string name="navigate_upwards_label">向上导航</string>
+  <string name="butAction_label">更多动作</string>
+  <string name="status_playing_label">曲目正在播放</string>
+  <string name="status_downloading_label">曲目正在下载</string>
+  <string name="status_downloaded_label">曲目已下载</string>
+  <string name="status_unread_label">新项目</string>
+  <string name="in_queue_label">曲目已经在播放列表中</string>
+  <string name="new_episodes_count_label">新曲目数</string>
+  <string name="in_progress_episodes_count_label">已收听曲目数</string>
 </resources>

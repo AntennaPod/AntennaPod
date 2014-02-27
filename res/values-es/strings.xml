@@ -141,6 +141,17 @@
   <string name="access_revoked_title">Acceso revocado</string>
   <string name="access_revoked_info">Ha revocado el token de acceso de AntennaPod a su cuenta. Para completar el proceso debe eliminar esta aplicación de la lista de aplicaciones aprobadas, en los ajustes de Flattr.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">¡Flattr una cosa!</string>
+  <string name="flattr_click_success_count">¡Flattr %d cosas!</string>
+  <string name="flattr_click_success_queue">Flattr: %s.</string>
+  <string name="flattr_click_failure_count">¡Falló Flattr de %d cosas!</string>
+  <string name="flattr_click_failure">No se hizo Flattr: %s.</string>
+  <string name="flattr_click_enqueued">Se hará Flattr de esta cosa más tarde</string>
+  <string name="flattring_thing">Haciendo Flattr de %s</string>
+  <string name="flattring_label">AntennaPod haciendo Flattr</string>
+  <string name="flattrd_label">AntennaPod hizo Flattr</string>
+  <string name="flattrd_failed_label">AntennaPod Flattr falló</string>
+  <string name="flattr_retrieving_status">Obteniendo lista de Flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar complemento</string>
   <string name="no_playback_plugin_title">Complemento no instalado</string>
@@ -176,6 +187,7 @@
   <string name="pref_revokeAccess_title">Revocar el acceso</string>
   <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
   <string name="pref_auto_flattr_title">Uso de Flattr automático</string>
+  <string name="pref_auto_flattr_sum">Hacer Flattr al reproducir el 80 por ciento de cada episodio</string>
   <string name="pref_display_only_episodes_title">Mostrar solo episodios</string>
   <string name="pref_display_only_episodes_sum">Mostrar solo elementos que contengan un episodio.</string>
   <string name="user_interface_label">Interfaz de usuario</string>
