@@ -1,15 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod"
-    android:versionCode="33"
-    android:versionName="0.9.8.0" >
+    android:versionCode="34"
+    android:versionName="0.9.8.1" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
@@ -153,7 +154,7 @@
             android:name=".service.download.DownloadService"
             android:enabled="true"/>
         <service
-            android:name="de.danoeh.antennapod.service.PlaybackService"
+            android:name=".service.playback.PlaybackService"
             android:enabled="true"
             android:exported="true">
         </service>
@@ -194,7 +195,7 @@
         </activity>
 
         <service
-            android:name=".service.PlayerWidgetService"
+            android:name=".service.playback.PlayerWidgetService"
             android:enabled="true"
             android:exported="false">
         </service>
@@ -327,7 +328,7 @@
             android:configChanges="keyboardHidden|orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MiroGuideMainActiviy" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideMainActivity" />
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"

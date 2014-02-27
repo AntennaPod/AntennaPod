@@ -108,6 +108,12 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         assertFalse(new File(feedFile.getFile_url()).exists());
     }
 
+    /* TODO: replace with smaller test file
+    public void testUrlWithSpaces() {
+        download("http://acedl.noxsolutions.com/ace/Don't Call Salman Rushdie Sneezy in Finland.mp3", "testUrlWithSpaces", true);
+    }
+    */
+
     private static class FeedFileImpl extends FeedFile {
         public FeedFileImpl(String download_url) {
             super(null, download_url, false);

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="0dip"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="0dip"
     android:layout_height="match_parent"
     android:layout_weight="1"
     android:paddingLeft="4dp" >
@@ -45,10 +46,12 @@
         android:layout_height="@dimen/enc_icons_size"
         android:layout_below="@id/txtvPublished"
         android:layout_toLeftOf="@+id/imgvInPlaylist"
-        android:padding="2dp" />
+        android:padding="2dp"
+        tools:ignore="ContentDescription"/>
 
     <ImageView
         android:id="@id/imgvInPlaylist"
+        android:contentDescription="@string/in_queue_label"
         android:layout_width="@dimen/enc_icons_size"
         android:layout_height="@dimen/enc_icons_size"
         android:layout_below="@id/txtvPublished"
@@ -59,6 +62,7 @@
 
     <ImageView
         android:id="@id/imgvDownloaded"
+        android:contentDescription="@string/status_downloaded_label"
         android:layout_width="@dimen/enc_icons_size"
         android:layout_height="@dimen/enc_icons_size"
         android:layout_below="@id/txtvPublished"
@@ -69,6 +73,7 @@
 
     <ImageView
         android:id="@id/imgvDownloading"
+        android:contentDescription="@string/downloading_label"
         android:layout_width="@dimen/enc_icons_size"
         android:layout_height="@dimen/enc_icons_size"
         android:layout_below="@id/txtvPublished"
@@ -102,6 +107,7 @@
 
     <ImageButton
         android:id="@id/butAction"
+        android:contentDescription="@string/butAction_label"
         android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_alignParentBottom="true"
@@ -118,6 +124,7 @@
 
     <TextView
         android:id="@+id/statusUnread"
+        android:contentDescription="@string/status_unread_label"
         android:layout_width="wrap_content"
         android:layout_height="18dp"
         android:layout_alignParentRight="true"
@@ -134,6 +141,7 @@
 
     <ImageView
         android:id="@+id/statusPlaying"
+        android:contentDescription="@string/status_playing_label"
         android:layout_width="@dimen/status_indicator_width"
         android:layout_height="18dp"
         android:layout_alignParentRight="true"

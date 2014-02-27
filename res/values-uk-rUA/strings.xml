@@ -28,7 +28,7 @@
   <string name="author_label">Автор</string>
   <string name="language_label">Мова</string>
   <string name="podcast_settings_label">Налаштування</string>
-  <string name="cover_label">Обкладинка</string>
+  <string name="cover_label">Зображення</string>
   <string name="error_label">Помилка</string>
   <string name="error_msg_prefix">Трапилась помілка:</string>
   <string name="refresh_label">Оновити</string>
@@ -140,8 +140,18 @@
   <string name="action_forbidden_msg">AntennaPod не маэ дозвілу це зробити. Можливо відкликаний доступ до AntennaPod. Або ввідіть логін пароль в налаштуваннях або зробить це на сайті</string>
   <string name="access_revoked_title">Доступ відкликано</string>
   <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
-  <string name="flattr_click_success">Успішно flattr це</string>
-  <string name="flattring_label">Йде flattr</string>
+  <!--Flattr-->
+  <string name="flattr_click_success">Flattr\'ed one thing!</string>
+  <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
+  <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
+  <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
+  <string name="flattr_click_failure">Not flattr\'ed: %s.</string>
+  <string name="flattr_click_enqueued">Thing will be flattr\'ed later</string>
+  <string name="flattring_thing">Flattring %s</string>
+  <string name="flattring_label">AntennaPod is flattring</string>
+  <string name="flattrd_label">AntennaPod has flattr\'ed</string>
+  <string name="flattrd_failed_label">AntennaPod flattr failed</string>
+  <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити Plugin</string>
   <string name="no_playback_plugin_title">Plugin не встановлено</string>
@@ -176,6 +186,8 @@
   <string name="pref_flattr_this_app_sum">Підтримайте розробку AntennaPod за допомогою flattr. Дякую!</string>
   <string name="pref_revokeAccess_title">Відкликати доступ</string>
   <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
+  <string name="pref_auto_flattr_title">Automatic Flattr</string>
+  <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
   <string name="pref_display_only_episodes_title">Показувати тільки епізоди</string>
   <string name="pref_display_only_episodes_sum">Відображати тільки канали з наявними епізодами</string>
   <string name="user_interface_label">Зовнішній вид</string>
@@ -248,7 +260,7 @@
   <string name="miro_feed_added">Канал додано</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
-  <string name="gpodnet_toplist_header">ТОП ПОКАДСТІВ</string>
+  <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
   <string name="gpodnet_suggestions_header">РЕКОМЕНДАЦІЇ</string>
   <string name="gpodnet_search_hint">Пошук на gpodder.net</string>
   <string name="gpodnetauth_login_title">Логін</string>
@@ -292,4 +304,21 @@
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
   <string name="downloading_label">Завантаження...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Показати глави</string>
+  <string name="show_shownotes_label">Показати нотатки</string>
+  <string name="show_cover_label">Показати зображення</string>
+  <string name="rewind_label">Перемотка назад</string>
+  <string name="fast_forward_label">Перемотка вперед</string>
+  <string name="media_type_audio_label">Звук</string>
+  <string name="media_type_video_label">Відео</string>
+  <string name="navigate_upwards_label">Догори</string>
+  <string name="butAction_label">Додаткові дії</string>
+  <string name="status_playing_label">Епізод програється</string>
+  <string name="status_downloading_label">Епізод завантажується</string>
+  <string name="status_downloaded_label">Епізод завантажено</string>
+  <string name="status_unread_label">Нове</string>
+  <string name="in_queue_label">Епізод чекає в черзі</string>
+  <string name="new_episodes_count_label">Кількість нових епізодів</string>
+  <string name="in_progress_episodes_count_label">Кількість епізодів що ви почали слухати</string>
 </resources>

@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.service;
+package de.danoeh.antennapod.service.playback;
 
 import android.app.PendingIntent;
 import android.app.Service;
@@ -6,6 +6,7 @@ import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.ServiceConnection;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -72,9 +73,11 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private void updateViews() {
+        if (playbackService == null) {
+            return;
+        }
 		isUpdating = true;
-		if (AppConfig.DEBUG)
-			Log.d(TAG, "Updating widget views");
+
 		ComponentName playerWidget = new ComponentName(this, PlayerWidget.class);
 		AppWidgetManager manager = AppWidgetManager.getInstance(this);
 		RemoteViews views = new RemoteViews(getPackageName(),
@@ -83,8 +86,8 @@ public class PlayerWidgetService extends Service {
 				PlaybackService.getPlayerActivityIntent(this), 0);
 
 		views.setOnClickPendingIntent(R.id.layout_left, startMediaplayer);
-		if (playbackService != null && playbackService.getMedia() != null) {
-			Playable media = playbackService.getMedia();
+        final Playable media = playbackService.getPlayable();
+        if (playbackService != null && media != null) {
 			PlayerStatus status = playbackService.getStatus();
 
 			views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
@@ -95,14 +98,18 @@ public class PlayerWidgetService extends Service {
 					views.setTextViewText(R.id.txtvProgress, progressString);
 				}
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause_dark);
+                if (Build.VERSION.SDK_INT >= 15) {
+                    views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
+                }
 			} else {
 				views.setImageViewResource(R.id.butPlay, R.drawable.av_play_dark);
+                if (Build.VERSION.SDK_INT >= 15) {
+                    views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
+                }
 			}
 			views.setOnClickPendingIntent(R.id.butPlay,
 					createMediaButtonIntent());
 		} else {
-			if (AppConfig.DEBUG)
-				Log.d(TAG, "No media playing. Displaying defaultt views");
 			views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
 			views.setTextViewText(R.id.txtvTitle,
 					this.getString(R.string.no_media_playing_label));
@@ -126,8 +133,8 @@ public class PlayerWidgetService extends Service {
 	}
 
 	private String getProgressString(PlaybackService ps) {
-		int position = ps.getCurrentPositionSafe();
-		int duration = ps.getDurationSafe();
+		int position = ps.getCurrentPosition();
+		int duration = ps.getDuration();
 		if (position != PlaybackService.INVALID_TIME
 				&& duration != PlaybackService.INVALID_TIME) {
 			return Converter.getDurationStringLong(position) + " / "

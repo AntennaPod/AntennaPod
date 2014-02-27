@@ -27,7 +27,6 @@
   <string name="author_label">Autor</string>
   <string name="language_label">Limbă</string>
   <string name="podcast_settings_label">Setări</string>
-  <string name="cover_label">Copertă</string>
   <string name="error_label">Eroare</string>
   <string name="error_msg_prefix">A avut loc o eroare:</string>
   <string name="refresh_label">Reîncarcă</string>
@@ -132,8 +131,7 @@
   <string name="action_forbidden_msg">AntennaPod nu are permisiuni pentru această acțiune. Motivul poate fi că tokenul de acces al AntennaPod pentru contul vostru a fost revocat. Vă puteți fie re-autentifica fie vizita direct site-ul.</string>
   <string name="access_revoked_title">Acces revocat</string>
   <string name="access_revoked_info">Ați revocat cu succes accesul AntennaPod la contul vostru. Pentru a completa acest proces trebuie să ștergeți aplicația din lista de aplicații aprobate din setările contului de pe site-ul flattr.</string>
-  <string name="flattr_click_success">Ați flattr cu succes!</string>
-  <string name="flattring_label">Flattring</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarcă plugin</string>
   <string name="no_playback_plugin_title">Plugin neinstalat</string>
@@ -263,4 +261,5 @@
   <string name="subscribe_label">Abonează-te</string>
   <string name="subscribed_label">Abonat</string>
   <string name="downloading_label">Se descarcă...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

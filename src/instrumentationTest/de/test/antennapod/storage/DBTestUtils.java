@@ -6,6 +6,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import junit.framework.Assert;
 
 import java.util.ArrayList;
@@ -31,7 +32,7 @@ public class DBTestUtils {
         adapter.open();
         for (int i = 0; i < numFeeds; i++) {
             Feed f = new Feed(0, new Date(), "feed " + i, "link" + i, "descr", null, null,
-                    null, null, "id" + i, null, null, "url" + i, false);
+                    null, null, "id" + i, null, null, "url" + i, false, new FlattrStatus());
             f.setItems(new ArrayList<FeedItem>());
             for (int j = 0; j < numItems; j++) {
                 FeedItem item = new FeedItem(0, "item " + j, "id" + j, "link" + j, new Date(),

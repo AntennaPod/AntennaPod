@@ -59,4 +59,9 @@ public class VideoPlayer extends MediaPlayer implements IPlayer {
 		Log.e(TAG, "Setting playback speed unsupported in video player");
 		throw new UnsupportedOperationException("Setting playback speed unsupported in video player");
 	}
+
+    @Override
+    public void setVideoScalingMode(int mode) {
+        super.setVideoScalingMode(mode);
+    }
 }

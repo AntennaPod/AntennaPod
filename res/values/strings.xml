@@ -35,7 +35,7 @@
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
     <string name="podcast_settings_label">Settings</string>
-    <string name="cover_label">Cover</string>
+    <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
     <string name="error_msg_prefix">An error occurred:</string>
     <string name="refresh_label">Refresh</string>
@@ -154,9 +154,20 @@
     <string name="action_forbidden_msg">AntennaPod has no permission for this action. The reason for this could be that the access token of AntennaPod to your account has been revoked. You can either re-reauthenticate or visit the website of the thing instead.</string>
     <string name="access_revoked_title">Access revoked</string>
     <string name="access_revoked_info">You have successfully revoked AntennaPod\'s access token to your account. In order to complete the process, you have to remove this app from the list of approved applications in your account settings on the flattr website.</string>
-    <string name="flattr_click_success">Successfully flattred this thing!</string>
-    <string name="flattring_label">Flattring</string>
     
+    <!-- Flattr -->
+    <string name="flattr_click_success">Flattr\'ed one thing!</string>
+    <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
+    <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
+    <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
+    <string name="flattr_click_failure">Not flattr\'ed: %s.</string>
+    <string name="flattr_click_enqueued">Thing will be flattr\'ed later</string>
+    <string name="flattring_thing">Flattring %s</string>
+    <string name="flattring_label">AntennaPod is flattring</string>
+    <string name="flattrd_label">AntennaPod has flattr\'ed</string>
+    <string name="flattrd_failed_label">AntennaPod flattr failed</string>
+    <string name="flattr_retrieving_status">Retrieving flattr\'ed things</string>
+
     <!--  Variable Speed -->
     <string name="download_plugin_label">Download Plugin</string>
     <string name="no_playback_plugin_title">Plugin Not Installed</string>
@@ -193,6 +204,8 @@
     <string name="pref_flattr_this_app_sum">Support the development of AntennaPod by flattring it. Thanks!</string>
     <string name="pref_revokeAccess_title">Revoke access</string>
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
+	<string name="pref_auto_flattr_title">Automatic Flattr</string>
+    <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
     <string name="pref_display_only_episodes_title">Display only episodes</string>
     <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>
@@ -319,4 +332,22 @@
     <string name="subscribe_label">Subscribe</string>
     <string name="subscribed_label">Subscribed</string>
     <string name="downloading_label">Downloading...</string>
+
+    <!-- Content descriptions for image buttons -->
+    <string name="show_chapters_label">Show chapters</string>
+    <string name="show_shownotes_label">Show shownotes</string>
+    <string name="show_cover_label">Show picture</string>
+    <string name="rewind_label">Rewind</string>
+    <string name="fast_forward_label">Fast forward</string>
+    <string name="media_type_audio_label">Audio</string>
+    <string name="media_type_video_label">Video</string>
+    <string name="navigate_upwards_label">Navigate upwards</string>
+    <string name="butAction_label">More actions</string>
+    <string name="status_playing_label">Episode is being played</string>
+    <string name="status_downloading_label">Episode is being downloaded</string>
+    <string name="status_downloaded_label">Episode is downloaded</string>
+    <string name="status_unread_label">Item is new</string>
+    <string name="in_queue_label">Episode is in the queue</string>
+    <string name="new_episodes_count_label">Number of new episodes</string>
+    <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
 </resources>

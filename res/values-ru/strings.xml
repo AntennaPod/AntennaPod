@@ -28,16 +28,16 @@
   <string name="author_label">Автор</string>
   <string name="language_label">Язык</string>
   <string name="podcast_settings_label">Настройки</string>
-  <string name="cover_label">Обложка</string>
+  <string name="cover_label">Изображение</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="refresh_label">Обновить</string>
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
   <string name="chapters_label">Разделы</string>
-  <string name="shownotes_label">Описание</string>
+  <string name="shownotes_label">Заметки к эпизоду</string>
   <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Следующий эпизод:\u0020</string>
-  <string name="episodes_suffix">\u0020 выпуск(ов)</string>
+  <string name="episodes_suffix">\u0020выпуск(ов)</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
@@ -56,8 +56,8 @@
   <string name="mark_all_read_label">Отметить все как прочитанное</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить канал</string>
-  <string name="share_link_label">Поделиться ссылкой на сайт</string>
-  <string name="share_source_label">Поделиться ссылкой на канал</string>
+  <string name="share_link_label">Ссылка на сайт</string>
+  <string name="share_source_label">Ссылка на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
   <string name="feed_remover_msg">Удаление канала</string>
   <!--actions on feeditems-->
@@ -81,7 +81,7 @@
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
-  <string name="download_error_insufficient_space">Недостаточно памяти</string>
+  <string name="download_error_insufficient_space">Недостаточно места</string>
   <string name="download_error_file_error">Ошибка файла</string>
   <string name="download_error_http_data_error">Ошибка протокола HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
@@ -140,8 +140,8 @@
   <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно, доступ к вашему аккаунту был отозван. Вы можете авторизоваться заново или посетить сайт, которому вы пожертвовали через Flattr.</string>
   <string name="access_revoked_title">Доступ отозван</string>
   <string name="access_revoked_info">Вы успешно отключили AntennaPod от вашего аккаунта в Flattr. Чтобы завершить этот процесс вам нужно удалить AntennaPod из списка приложений подключенных к вашему аккаунту на сайте Flattr.</string>
-  <string name="flattr_click_success">Поддержка через Flattr прошла успешно!</string>
-  <string name="flattring_label">Отправляется запрос на Flattr</string>
+  <!--Flattr-->
+  <string name="flattr_click_success_queue">Поддержано через Flattr:  %s.</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
@@ -176,6 +176,8 @@
   <string name="pref_flattr_this_app_sum">Поддержите разработку AntennaPod через Flattr. Спасибо!</string>
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
+  <string name="pref_auto_flattr_title">Автоматически поддерживать через Flattr</string>
+  <string name="pref_auto_flattr_sum">Поддерживать через Flattr эпизоды, прослушанные на 80%</string>
   <string name="pref_display_only_episodes_title">Показывать только выпуски</string>
   <string name="pref_display_only_episodes_sum">Показывать только те элементы списка, которые содержат выпуски</string>
   <string name="user_interface_label">Интерфейс</string>
@@ -189,8 +191,8 @@
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
-  <string name="pref_update_interval_hours_plural">Часы</string>
-  <string name="pref_update_interval_hours_singular">Час</string>
+  <string name="pref_update_interval_hours_plural">ч.</string>
+  <string name="pref_update_interval_hours_singular">час</string>
   <string name="pref_update_interval_hours_manual">Вручную</string>
   <string name="pref_gpodnet_authenticate_title">Вход в gpodder.net</string>
   <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации ваших подписок.</string>
@@ -258,7 +260,7 @@
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
   <string name="gpodnetauth_device_title">Выбор устройства</string>
-  <string name="gpodnetauth_device_descr">Создайте новое устройство, чтобы использовать ваш аккаунта на gpodder.net или выберите существующее:</string>
+  <string name="gpodnetauth_device_descr">Создайте новое устройство, чтобы использовать ваш аккаунт на gpodder.net или выберите существующее:</string>
   <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
   <string name="gpodnetauth_device_caption">Название устройства</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Создайте новое устройство</string>
@@ -268,12 +270,12 @@
   <string name="gpodnetauth_device_butChoose">Выберите</string>
   <string name="gpodnetauth_finish_title">Авторизация успешна!</string>
   <string name="gpodnetauth_finish_descr">Поздравляем! Ваш аккаунт на gpodder.net теперь связан с вашим устройством. AntennaPod теперь сможет автоматически синхронизировать ваши подписки с аккаунтом gpodder.net</string>
-  <string name="gpodnetauth_finish_butsyncnow">Начать синхронизацию сейчас</string>
+  <string name="gpodnetauth_finish_butsyncnow">Начать синхронизацию</string>
   <string name="gpodnetauth_finish_butgomainscreen">Перейти на главный экран</string>
   <string name="gpodnetsync_auth_error_title">Ошибка авторизации на gpodder.net</string>
   <string name="gpodnetsync_auth_error_descr">Неправильное имя пользователя или пароль</string>
   <string name="gpodnetsync_error_title">Ошибка синхронизации с gpodder.net</string>
-  <string name="gpodnetsync_error_descr">Произошла ошибка во время синзронизации:\u0020</string>
+  <string name="gpodnetsync_error_descr">Произошла ошибка во время синхронизации:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Выбранная папка:</string>
   <string name="create_folder_label">Создать папку</string>
@@ -292,4 +294,21 @@
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribed_label">Подписка оформлена</string>
   <string name="downloading_label">Загрузка...</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Показать разделы</string>
+  <string name="show_shownotes_label">Показать заметки к эпизодам</string>
+  <string name="show_cover_label">Показать изображение</string>
+  <string name="rewind_label">Назад</string>
+  <string name="fast_forward_label">Вперед</string>
+  <string name="media_type_audio_label">Аудио</string>
+  <string name="media_type_video_label">Видео</string>
+  <string name="navigate_upwards_label">Перейти выше</string>
+  <string name="butAction_label">Другие действия</string>
+  <string name="status_playing_label">Эпизод воспроизводится</string>
+  <string name="status_downloading_label">Эпизод загружается</string>
+  <string name="status_downloaded_label">Эпизод загружен</string>
+  <string name="status_unread_label">Новый</string>
+  <string name="in_queue_label">Эпизод в очереди</string>
+  <string name="new_episodes_count_label">Количество новых эпизодов</string>
+  <string name="in_progress_episodes_count_label">Количество начатых эпизодов</string>
 </resources>

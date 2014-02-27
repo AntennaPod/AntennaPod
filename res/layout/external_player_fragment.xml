@@ -24,6 +24,7 @@
 
             <ImageView
                 android:id="@+id/imgvCover"
+                android:contentDescription="@string/cover_label"
                 android:layout_width="@dimen/external_player_height"
                 android:layout_height="@dimen/external_player_height"
                 android:layout_alignParentLeft="true"
@@ -76,6 +77,7 @@
 
         <ImageButton
             android:id="@+id/butPlay"
+            android:contentDescription="@string/pause_label"
             android:layout_width="@dimen/external_player_height"
             android:layout_height="@dimen/external_player_height"
             android:background="?attr/borderless_button" />

@@ -28,7 +28,7 @@
   <string name="author_label">Auteur</string>
   <string name="language_label">Langue</string>
   <string name="podcast_settings_label">Préférences</string>
-  <string name="cover_label">Couverture</string>
+  <string name="cover_label">Image</string>
   <string name="error_label">Erreur</string>
   <string name="error_msg_prefix">Une erreur a eu lieu :</string>
   <string name="refresh_label">Rafraîchir</string>
@@ -140,8 +140,18 @@
   <string name="action_forbidden_msg">AntennaPod n\'a pas la permission pour cette action. Il est possible que l\'accès à votre compte depuis AntennaPod ait été révoqué. Vous pouvez vous authentifier à nouveau, ou bien visiter le site à flattr directement.</string>
   <string name="access_revoked_title">Accès révoqué</string>
   <string name="access_revoked_info">Vous avez révoqué le jeton d\'accès d\'AntennaPod à votre compte. Pour terminer cette opération, vous devez retirer AntennaPod de la liste des applications autorisées sur le site web de Flattr.</string>
-  <string name="flattr_click_success">Flattr réussi !</string>
-  <string name="flattring_label">Flattr en cours</string>
+  <!--Flattr-->
+  <string name="flattr_click_success">Une chose de Flattré !</string>
+  <string name="flattr_click_success_count">%d choses de Flattré !</string>
+  <string name="flattr_click_success_queue">Flattré : %s.</string>
+  <string name="flattr_click_failure_count">Impossible de Flattrer %d choses !</string>
+  <string name="flattr_click_failure">Non Flattré : %s.</string>
+  <string name="flattr_click_enqueued">Cette chose sera Flattré plus tard</string>
+  <string name="flattring_thing">En train de Flattrer %s</string>
+  <string name="flattring_label">AntennaPod est en train de Flattrer</string>
+  <string name="flattrd_label">AntennaPod a Flattré</string>
+  <string name="flattrd_failed_label">Flattr d\'AntennaPod a échoué</string>
+  <string name="flattr_retrieving_status">Obtention de la liste des choses Flattrées</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Télécharger une extension</string>
   <string name="no_playback_plugin_title">Extension non installée</string>
@@ -176,6 +186,8 @@
   <string name="pref_flattr_this_app_sum">Encouragez le développement d\'AntennaPod grâce à Flattr. Merci !</string>
   <string name="pref_revokeAccess_title">Révoquer l\'accès</string>
   <string name="pref_revokeAccess_sum">Révoquer la permission d\'accès à votre compte Flattr depuis cette application.</string>
+  <string name="pref_auto_flattr_title">Flattr automatique</string>
+  <string name="pref_auto_flattr_sum">Flattrer les épisodes dont 80 pour-cents ont été joués.</string>
   <string name="pref_display_only_episodes_title">N\'afficher que les épisodes</string>
   <string name="pref_display_only_episodes_sum">N\'afficher que les flux qui ont au moins un épisode.</string>
   <string name="user_interface_label">Interface utilisateur</string>
@@ -292,4 +304,21 @@
   <string name="subscribe_label">S\'abonner</string>
   <string name="subscribed_label">Abonné</string>
   <string name="downloading_label">Téléchargement en cours</string>
+  <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Afficher chapitres</string>
+  <string name="show_shownotes_label">Afficher notes d\'épisode</string>
+  <string name="show_cover_label">Afficher image</string>
+  <string name="rewind_label">Retour en arrière</string>
+  <string name="fast_forward_label">Avance rapide</string>
+  <string name="media_type_audio_label">Audio</string>
+  <string name="media_type_video_label">Vidéo</string>
+  <string name="navigate_upwards_label">Naviguer vers le haut</string>
+  <string name="butAction_label">Plus d\'actions</string>
+  <string name="status_playing_label">L\'épisode est en train d\'être joué</string>
+  <string name="status_downloading_label">L\'épisode est en train d\'être téléchargé</string>
+  <string name="status_downloaded_label">L\'épisode a été téléchargé</string>
+  <string name="status_unread_label">L\'élément est nouveau</string>
+  <string name="in_queue_label">L\'épisode est dans la liste</string>
+  <string name="new_episodes_count_label">Nombre de nouveaux épisodes</string>
+  <string name="in_progress_episodes_count_label">Nombre d\'épisodes que vous avez commencé à écouter</string>
 </resources>

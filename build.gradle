@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.6.+'
+        classpath 'com.android.tools.build:gradle:0.8.+'
     }
 }
 apply plugin: 'android'
@@ -23,9 +23,9 @@ dependencies {
         new URL('http://www.aocate.com/presto/client/presto_client-0.8.5.jar').withInputStream{ i -> prestoLib.withOutputStream{ it << i }}
     }
 
-    compile 'com.android.support:appcompat-v7:18.0.+'
-    compile 'org.apache.commons:commons-lang3:3.1'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.7') {
+    compile 'com.android.support:appcompat-v7:19.0.+'
+    compile 'org.apache.commons:commons-lang3:3.2.1'
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.8') {
         exclude group: 'org.apache.httpcomponents', module: 'httpcore'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
         exclude group: 'org.json', module: 'json'
@@ -37,12 +37,12 @@ dependencies {
 }
 
 android {
-    compileSdkVersion 18
-    buildToolsVersion "18.1.0"
+    compileSdkVersion 19
+    buildToolsVersion "19.0.1"
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 18
+        targetSdkVersion 19
         testPackageName "de.test.antennapod"
         testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
     }
@@ -93,5 +93,10 @@ android {
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.releaseConfig
         }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
     }
 }

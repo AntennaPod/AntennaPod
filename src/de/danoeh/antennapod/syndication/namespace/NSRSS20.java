@@ -101,7 +101,10 @@ public class NSRSS20 extends Namespace {
 			}
 
 			if (top.equals(GUID) && second.equals(ITEM)) {
-				state.getCurrentItem().setItemIdentifier(content);
+                // some feed creators include an empty or non-standard guid-element in their feed, which should be ignored
+                if (!content.isEmpty()) {
+				    state.getCurrentItem().setItemIdentifier(content);
+                }
 			} else if (top.equals(TITLE)) {
 				if (second.equals(ITEM)) {
 					state.getCurrentItem().setTitle(content);

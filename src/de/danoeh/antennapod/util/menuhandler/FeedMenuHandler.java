@@ -8,6 +8,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
@@ -19,6 +23,7 @@ import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedMenuHandler {
@@ -38,9 +43,10 @@ public class FeedMenuHandler {
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(
 				selectedFeed.hasNewItems(true));
-		if (selectedFeed.getPaymentLink() != null) {
+		if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) 
 			menu.findItem(R.id.support_item).setVisible(true);
-		}
+		else
+			menu.findItem(R.id.support_item).setVisible(false);	
 		MenuItem refresh = menu.findItem(R.id.refresh_item);
 		if (DownloadService.isRunning
 				&& DownloadRequester.getInstance().isDownloadingFile(
@@ -78,8 +84,7 @@ public class FeedMenuHandler {
 			context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
 			break;
 		case R.id.support_item:
-			new FlattrClickWorker(context, selectedFeed.getPaymentLink())
-					.executeAsync();
+			DBTasks.flattrFeedIfLoggedIn(context, selectedFeed);
 			break;
 		case R.id.share_link_item:
 			ShareUtils.shareFeedlink(context, selectedFeed);

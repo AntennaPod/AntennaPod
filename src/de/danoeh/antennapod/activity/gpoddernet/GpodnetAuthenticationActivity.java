@@ -56,9 +56,9 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        setTheme(UserPreferences.getTheme());
 
         setContentView(R.layout.gpodnetauth_activity);
         service = new GpodnetService();

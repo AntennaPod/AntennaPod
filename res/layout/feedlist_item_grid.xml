@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content">
 
     <ImageView
         android:id="@+id/imgvFeedimage"
+        android:contentDescription="@string/cover_label"
         android:layout_width="@dimen/thumbnail_length"
         android:layout_height="@dimen/thumbnail_length"
         android:layout_alignParentTop="true"
@@ -25,6 +27,7 @@
 
         <RelativeLayout
             android:id="@+id/lNewStatusLabel"
+            android:contentDescription="@string/new_episodes_count_label"
             android:layout_width="@dimen/status_indicator_width"
             android:layout_height="0dip"
             android:layout_marginBottom="8dp"
@@ -38,7 +41,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_centerVertical="true"
                 android:layout_marginRight="4dp"
-                android:src="@drawable/white_circle"/>
+                android:src="@drawable/white_circle"
+                tools:ignore="ContentDescription"/>
 
             <TextView
                 android:id="@+id/txtvNewEps"
@@ -57,6 +61,7 @@
 
         <RelativeLayout
             android:id="@+id/lProgressStatusLabel"
+            android:contentDescription="@string/in_progress_episodes_count_label"
             android:layout_width="@dimen/status_indicator_width"
             android:layout_height="0dip"
             android:layout_marginBottom="8dp"
@@ -84,7 +89,8 @@
                 android:layout_centerVertical="true"
                 android:layout_marginLeft="2dp"
                 android:layout_marginRight="2dp"
-                android:src="@drawable/av_play_dark"/>
+                android:src="@drawable/av_play_dark"
+                tools:ignore="ContentDescription"/>
         </RelativeLayout>
     </LinearLayout>
 

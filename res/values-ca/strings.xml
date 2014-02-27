@@ -28,7 +28,7 @@
   <string name="author_label">Autor</string>
   <string name="language_label">Llengua</string>
   <string name="podcast_settings_label">Configuració</string>
-  <string name="cover_label">Caràtula</string>
+  <string name="cover_label">Imatge</string>
   <string name="error_label">Error</string>
   <string name="error_msg_prefix">S\'ha produït un error:</string>
   <string name="refresh_label">Actualitza</string>
@@ -140,8 +140,7 @@
   <string name="action_forbidden_msg">AntennaPod no té permisos per executar aquesta acció. És possible que el testimoni d\'accés de Flattr per a AntennaPod hagi estat revocat. Podeu tornar-vos a autenticar amb el servei de Flattr, o podeu visitar el web del contingut directament.</string>
   <string name="access_revoked_title">L\'accés ha estat revocat</string>
   <string name="access_revoked_info">El testimoni d\'accés a Flattr de l\'AntennaPod s\'ha revocat correctament. Per completar el procés, heu de suprimir aquesta aplicació de la llista d\'aplicacions aprovades que trobareu a l\'apartat de configuració del compte de la plana web de Flattr.</string>
-  <string name="flattr_click_success">S\'ha compartit el contingut a través de Flattr</string>
-  <string name="flattring_label">S\'està compartint amb Flattr</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
@@ -292,4 +291,5 @@
   <string name="subscribe_label">Subscriu</string>
   <string name="subscribed_label">Subscrit</string>
   <string name="downloading_label">S\'està baixant...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

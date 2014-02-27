@@ -244,19 +244,11 @@ public class FeedlistFragment extends Fragment implements
         return true;
     }
 
-    private boolean actionModeDestroyWorkaround = false; // TODO remove this workaround
-    private boolean skipWorkAround = Build.VERSION.SDK_INT < Build.VERSION_CODES.ICE_CREAM_SANDWICH;
-
     @Override
     public void onDestroyActionMode(ActionMode mode) {
-        if (skipWorkAround || actionModeDestroyWorkaround) {
-            mActionMode = null;
-            selectedFeed = null;
-            fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
-            actionModeDestroyWorkaround = false;
-        } else {
-            actionModeDestroyWorkaround = true;
-        }
+        mActionMode = null;
+        selectedFeed = null;
+        fla.setSelectedItemIndex(FeedlistAdapter.SELECTION_NONE);
     }
 
     @Override

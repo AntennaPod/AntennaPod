@@ -26,7 +26,6 @@
   <string name="author_label">Müəlif</string>
   <string name="language_label">Dil</string>
   <string name="podcast_settings_label">Parametrlər</string>
-  <string name="cover_label">Üz:</string>
   <string name="error_label">Xəta</string>
   <string name="error_msg_prefix">Xəta baş verdi:</string>
   <string name="refresh_label">Təzələ</string>
@@ -128,8 +127,7 @@
   <string name="action_forbidden_msg">Bu əməliyyat üçün AntennaPod\'un icazəsi yoxdur. AntennaPod\'un keçid tokenin ləğv olunması bunun səbəbi ola bilər. Yenə Flattra girin ya da podkastın səhifəsinə keçin.</string>
   <string name="access_revoked_title">Keçid ləğv olundu</string>
   <string name="access_revoked_info">AntennaPod\'un keçid tokeni uğurlu ləğv olundu.</string>
-  <string name="flattr_click_success">Flattrma uğurludur</string>
-  <string name="flattring_label">Flattrləmə</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Plagin yüklə</string>
   <string name="no_playback_plugin_title">Plagin yüklü deyil</string>
@@ -235,4 +233,5 @@
   <string name="set_to_default_folder">Başlanğıc qovluqu seç</string>
   <!--Online feed view-->
   <string name="downloading_label">Yükləmə...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

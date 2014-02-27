@@ -24,7 +24,6 @@
   <string name="cancel_label">Annuller</string>
   <string name="author_label">Forfatter</string>
   <string name="language_label">Sprog</string>
-  <string name="cover_label">Cover</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
   <string name="refresh_label">Opdater</string>
@@ -126,8 +125,7 @@
   <string name="action_forbidden_msg">AntennaPod har ikke tilladelse til denne handling. Årsagen kunne være at adgangspoletten for AntennaPod til din konto er blevet tilbagekaldt. Du kan enten godkende den igen eller besøge websiden for mediet istedet.</string>
   <string name="access_revoked_title">Adgang tilbagekaldt</string>
   <string name="access_revoked_info">Du har succesfuldt tilbagekaldt AntennaPods adgangs polet til din konto. For at fuldføre processen skal du fjerne denne app fra listen af godkendte applikationer i din kontos indstillinger på flattr\'s hjemmeside.</string>
-  <string name="flattr_click_success">Det er lykkedes at flattr dette emne!</string>
-  <string name="flattring_label">Flattere</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent Plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
@@ -230,4 +228,5 @@
   <string name="folder_not_empty_dialog_msg">Mappen du har valgt er ikke tom. Medie downloads og andre filer vil blive placeret i denne mappe. Forsæt alligevel?</string>
   <string name="set_to_default_folder">Vælg standard mappe</string>
   <!--Online feed view-->
+  <!--Content descriptions for image buttons-->
 </resources>

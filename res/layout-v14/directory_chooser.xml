@@ -56,6 +56,7 @@
 
         <ImageButton
             android:id="@+id/butNavUp"
+            android:contentDescription="@string/navigate_upwards_label"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"

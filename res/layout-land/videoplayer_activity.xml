@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical" >
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             android:orientation="vertical">
 
-    <VideoView
+    <de.danoeh.antennapod.view.AspectRatioVideoView
         android:id="@+id/videoview"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"/>
 
     <ProgressBar
         android:id="@+id/progressIndicator"
@@ -15,58 +16,32 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:visibility="invisible"
-        android:indeterminateOnly="true" />
-    <!-- Mediaplayer controls -->
+        android:indeterminateOnly="true"/>
+
+    <ImageButton
+        android:id="@+id/butPlay"
+        android:contentDescription="@string/pause_label"
+        android:layout_width="80dp"
+        android:layout_height="80dp"
+        android:layout_gravity="center"
+        android:scaleType="fitXY"
+        android:background="@drawable/overlay_button_circle_background"
+        android:src="@drawable/ic_action_pause_over_video"/>
 
     <LinearLayout
         android:id="@+id/overlay"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom|center"
-        android:background="?attr/overlay_background"
-        android:orientation="vertical" >
-
-        <RelativeLayout
-            android:id="@+id/playercontrol"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="clip_horizontal"
-            android:layout_margin="4dp" >
-
-            <ImageButton
-                android:id="@+id/butPlay"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="?attr/borderless_button"
-                android:src="?attr/av_pause" />
-
-            <ImageButton
-                android:id="@+id/butFF"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@+id/butPlay"
-                android:background="?attr/borderless_button"
-                android:src="?attr/av_fast_forward" />
-
-            <ImageButton
-                android:id="@+id/butRev"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@+id/butPlay"
-                android:background="?attr/borderless_button"
-                android:src="?attr/av_rewind" />
-        </RelativeLayout>
+        android:background="#80000000"
+        android:orientation="vertical">
 
         <RelativeLayout
             android:id="@+id/timecontrol"
             android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:layout_marginBottom="4dp" >
+            android:layout_height="50dp"
+            android:paddingTop="8dp"
+            android:layout_marginBottom="4dp">
 
             <TextView
                 android:id="@+id/txtvPosition"
@@ -77,7 +52,10 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="@string/position_default_label" />
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="@string/position_default_label"/>
 
             <TextView
                 android:id="@+id/txtvLength"
@@ -88,7 +66,10 @@
                 android:layout_marginBottom="8dp"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:text="@string/position_default_label" />
+                android:layout_marginTop="4dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:text="@string/position_default_label"/>
 
             <SeekBar
                 android:id="@+id/sbPosition"
@@ -96,7 +77,7 @@
                 android:layout_height="wrap_content"
                 android:layout_toLeftOf="@+id/txtvLength"
                 android:layout_toRightOf="@+id/txtvPosition"
-                android:max="500" />
+                android:max="500"/>
         </RelativeLayout>
     </LinearLayout>
 

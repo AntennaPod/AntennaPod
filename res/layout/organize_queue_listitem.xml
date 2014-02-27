@@ -5,6 +5,7 @@
 
     <ImageView
         android:id="@+id/imgvFeedimage"
+        android:contentDescription="@string/cover_label"
         android:layout_width="@dimen/thumbnail_length_itemlist"
         android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"

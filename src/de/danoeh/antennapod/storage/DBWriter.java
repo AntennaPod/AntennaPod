@@ -1,6 +1,27 @@
 package de.danoeh.antennapod.storage;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
+import android.database.Cursor;
+import android.preference.PreferenceManager;
+import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.service.playback.PlaybackService;
+import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
+import de.danoeh.antennapod.util.flattr.SimpleFlattrThing;
+import org.shredzone.flattr4j.model.Flattr;
+
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,21 +30,6 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
-import android.database.Cursor;
-import android.preference.PreferenceManager;
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.service.GpodnetSyncService;
-import de.danoeh.antennapod.service.PlaybackService;
-import de.danoeh.antennapod.service.download.DownloadStatus;
-import de.danoeh.antennapod.util.QueueAccess;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -222,6 +228,9 @@ public class DBWriter {
                 if (AppConfig.DEBUG)
                     Log.d(TAG, "Adding new item to playback history");
                 media.setPlaybackCompletionDate(new Date());
+                // reset played_duration to 0 so that it behaves correctly when the episode is played again
+                media.setPlayedDuration(0);
+
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 adapter.setFeedMediaPlaybackCompletionDate(media);
@@ -446,7 +455,7 @@ public class DBWriter {
         });
 
     }
-    
+
     /**
      * Moves the specified item to the top of the queue.
      *
@@ -472,7 +481,7 @@ public class DBWriter {
             }
         });
     }
-    
+
     /**
      * Moves the specified item to the bottom of the queue.
      *
@@ -491,7 +500,7 @@ public class DBWriter {
                 for (long id : queueIdList) {
                     if (id == itemId) {
                         moveQueueItemHelper(context, currentLocation, queueIdList.size() - 1,
-                                            broadcastUpdate);
+                                broadcastUpdate);
                         return;
                     }
                     currentLocation++;
@@ -500,7 +509,7 @@ public class DBWriter {
             }
         });
     }
-    
+
     /**
      * Changes the position of a FeedItem in the queue.
      *
@@ -524,7 +533,7 @@ public class DBWriter {
 
     /**
      * Changes the position of a FeedItem in the queue.
-     *
+     * <p/>
      * This function must be run using the ExecutorService (dbExec).
      *
      * @param context         A context that is used for opening a database connection.
@@ -535,7 +544,7 @@ public class DBWriter {
      * @throws IndexOutOfBoundsException if (to < 0 || to >= queue.size()) || (from < 0 || from >= queue.size())
      */
     private static void moveQueueItemHelper(final Context context, final int from,
-                                       final int to, final boolean broadcastUpdate) {
+                                            final int to, final boolean broadcastUpdate) {
         final PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         final List<FeedItem> queue = DBReader
@@ -822,5 +831,126 @@ public class DBWriter {
             }
         }
         return false;
+    }
+
+    /**
+     * Saves the FlattrStatus of a FeedItem object in the database.
+     *
+     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
+     */
+    public static Future<?> setFeedItemFlattrStatus(final Context context,
+                                                    final FeedItem item,
+                                                    final boolean startFlattrClickWorker) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemFlattrStatus(item);
+                adapter.close();
+                if (startFlattrClickWorker) {
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_TOAST).executeAsync();
+                }
+            }
+        });
+    }
+
+    /**
+     * Saves the FlattrStatus of a Feed object in the database.
+     *
+     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
+     */
+    private static Future<?> setFeedFlattrStatus(final Context context,
+                                                 final Feed feed,
+                                                 final boolean startFlattrClickWorker) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedFlattrStatus(feed);
+                adapter.close();
+                if (startFlattrClickWorker) {
+                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_TOAST).executeAsync();
+                }
+            }
+        });
+    }
+
+    /**
+     * format an url for querying the database
+     * (postfix a / and apply percent-encoding)
+     */
+    private static String formatURIForQuery(String uri) {
+        try {
+            return URLEncoder.encode(uri.endsWith("/") ? uri.substring(0, uri.length() - 1) : uri, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            Log.e(TAG, e.getMessage());
+            return "";
+        }
+    }
+
+
+    /**
+     * Set flattr status of the passed thing (either a FeedItem or a Feed)
+     *
+     * @param context
+     * @param thing
+     * @param startFlattrClickWorker true if FlattrClickWorker should be started after the FlattrStatus has been saved
+     * @return
+     */
+    public static Future<?> setFlattredStatus(Context context, FlattrThing thing, boolean startFlattrClickWorker) {
+        // must propagate this to back db
+        if (thing instanceof FeedItem)
+            return setFeedItemFlattrStatus(context, (FeedItem) thing, startFlattrClickWorker);
+        else if (thing instanceof Feed)
+            return setFeedFlattrStatus(context, (Feed) thing, startFlattrClickWorker);
+        else if (thing instanceof SimpleFlattrThing) {
+        } // SimpleFlattrThings are generated on the fly and do not have DB backing
+        else
+            Log.e(TAG, "flattrQueue processing - thing is neither FeedItem nor Feed nor SimpleFlattrThing");
+
+        return null;
+    }
+
+    /**
+     * Reset flattr status to unflattrd for all items
+     */
+    public static Future<?> clearAllFlattrStatus(final Context context) {
+        Log.d(TAG, "clearAllFlattrStatus()");
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.clearAllFlattrStatus();
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Set flattr status of the feeds/feeditems in flattrList to flattred at the given timestamp,
+     * where the information has been retrieved from the flattr API
+     */
+    public static Future<?> setFlattredStatus(final Context context, final List<Flattr> flattrList) {
+        Log.d(TAG, "setFlattredStatus to status retrieved from flattr api running with " + flattrList.size() + " items");
+        // clear flattr status in db
+        clearAllFlattrStatus(context);
+
+        // submit list with flattred things having normalized URLs to db
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                for (Flattr flattr : flattrList) {
+                    adapter.setItemFlattrStatus(formatURIForQuery(flattr.getThing().getUrl()), new FlattrStatus(flattr.getCreated().getTime()));
+                }
+                adapter.close();
+            }
+        });
     }
 }

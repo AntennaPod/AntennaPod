@@ -28,7 +28,6 @@
   <string name="author_label">\tनिर्माता</string>
   <string name="language_label">भाषा</string>
   <string name="podcast_settings_label">सेटिंग्स</string>
-  <string name="cover_label">आवरण</string>
   <string name="error_label">त्रुटि</string>
   <string name="error_msg_prefix">एक त्रुटि हो गई:</string>
   <string name="refresh_label">ताज़ा करें</string>
@@ -140,8 +139,7 @@
   <string name="action_forbidden_msg">AntennaPod को इस कार्रवाई के लिए अनुमति नहीं है.इस के लिए कारण हो सकता है की आपके खाते में AntennaPod की पहुँच टोकन को निरस्त किया गया है.आप या तो फिर से प्रमाणित कर सकते हैं या बजाय किसी बात के वेबसाइट पर जा सकते हैं.</string>
   <string name="access_revoked_title">प्रवेश निरस्त किया</string>
   <string name="access_revoked_info">आपने सफलतापूर्वक अपने खाते में AntennaPod पहुँच टोकन निरस्त कर दिया है. इस प्रक्रिया को पूरा करने के लिए, आपको flattr वेबसाइट पर अपने खाते की सेटिंग्स में अनुमोदित आवेदनों की सूची से इस एप्लिकेशन को हटाना होगा.</string>
-  <string name="flattr_click_success">सफलतापूर्वक इस बात flattred कर दिया गया है!</string>
-  <string name="flattring_label">Flattr करें</string>
+  <!--Flattr-->
   <!--Variable Speed-->
   <string name="download_plugin_label">प्लगइन डाउनलोड करें</string>
   <string name="no_playback_plugin_title">प्लगइन स्थापित नहीं हुआ</string>
@@ -292,4 +290,5 @@
   <string name="subscribe_label">सदस्यता लें</string>
   <string name="subscribed_label">सदस्यता ली गई</string>
   <string name="downloading_label">डाउनलोड कर रहा है ...</string>
+  <!--Content descriptions for image buttons-->
 </resources>

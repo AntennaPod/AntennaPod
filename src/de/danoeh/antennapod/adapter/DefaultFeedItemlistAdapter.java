@@ -91,10 +91,12 @@ public class DefaultFeedItemlistAdapter extends BaseAdapter {
 				MediaType mediaType = item.getMedia().getMediaType();
 				if (mediaType == MediaType.AUDIO) {
 					holder.type.setImageDrawable(typeDrawables.getDrawable(0));
+                    holder.type.setContentDescription(context.getString(R.string.media_type_audio_label));
 					holder.type.setVisibility(View.VISIBLE);
 				} else if (mediaType == MediaType.VIDEO) {
 					holder.type.setImageDrawable(typeDrawables.getDrawable(1));
-					holder.type.setVisibility(View.VISIBLE);
+                    holder.type.setContentDescription(context.getString(R.string.media_type_video_label));
+                    holder.type.setVisibility(View.VISIBLE);
 				} else {
 					holder.type.setImageBitmap(null);
 					holder.type.setVisibility(View.GONE);

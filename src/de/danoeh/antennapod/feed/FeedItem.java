@@ -10,6 +10,8 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 
 /**
  * Data Object for a XML message
@@ -17,7 +19,7 @@ import de.danoeh.antennapod.util.ShownotesProvider;
  * @author daniel
  */
 public class FeedItem extends FeedComponent implements
-        ImageLoader.ImageWorkerTaskResource, ShownotesProvider {
+        ImageLoader.ImageWorkerTaskResource, ShownotesProvider, FlattrThing {
 
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
@@ -42,10 +44,12 @@ public class FeedItem extends FeedComponent implements
 
     private boolean read;
     private String paymentLink;
+	private FlattrStatus flattrStatus;
     private List<Chapter> chapters;
 
     public FeedItem() {
         this.read = true;
+		this.flattrStatus = new FlattrStatus();
     }
 
     /**
@@ -59,6 +63,7 @@ public class FeedItem extends FeedComponent implements
         this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
         this.read = read;
         this.feed = feed;
+		this.flattrStatus = new FlattrStatus();
     }
 
     public void updateFromOther(FeedItem other) {
@@ -80,7 +85,7 @@ public class FeedItem extends FeedComponent implements
         }
         if (other.media != null) {
             if (media == null) {
-                media = other.media;
+                setMedia(other.media);
             } else if (media.compareWithOther(other)) {
                 media.updateFromOther(other);
             }
@@ -102,9 +107,9 @@ public class FeedItem extends FeedComponent implements
      * of the entry.
      */
     public String getIdentifyingValue() {
-        if (itemIdentifier != null) {
+        if (itemIdentifier != null && !itemIdentifier.isEmpty()) {
             return itemIdentifier;
-        } else if (title != null) {
+        } else if (title != null && !title.isEmpty()) {
             return title;
         } else {
             return link;
@@ -195,7 +200,15 @@ public class FeedItem extends FeedComponent implements
         this.contentEncoded = contentEncoded;
     }
 
-    public String getPaymentLink() {
+	public void setFlattrStatus(FlattrStatus status) {
+		this.flattrStatus = status;
+	}
+
+	public FlattrStatus getFlattrStatus() {
+		return flattrStatus;
+	}
+
+	public String getPaymentLink() {
         return paymentLink;
     }
 
