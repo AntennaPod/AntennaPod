@@ -150,19 +150,14 @@ public class FlattrUtils {
 			final int FLATTR_COUNT = 30;
 			final int FLATTR_MAXPAGE = 5;
 			
-			int page = 0;
-			do {
-				myFlattrs.ensureCapacity(FLATTR_COUNT*(page+1));
-				
+			for (int page = 0; page < FLATTR_MAXPAGE; page++) {
 				for (Flattr fl: fs.getMyFlattrs(FLATTR_COUNT, page)) {
 					if (fl.getCreated().after(firstOfMonthDate))
 						myFlattrs.add(fl);
 					else
 						break;
 				}
-				page++;
 			}
-			while (myFlattrs.get(myFlattrs.size()-1).getCreated().after( firstOfMonthDate ) && page < FLATTR_MAXPAGE);
 			
 			if (AppConfig.DEBUG) {
 				Log.d(TAG, "Got my flattrs list of length " + Integer.toString(myFlattrs.size()) + " comparison date" + firstOfMonthDate);
