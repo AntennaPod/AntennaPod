@@ -4,14 +4,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
-import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.GpodnetSyncService;
-import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.QueueAccess;
@@ -154,12 +154,14 @@ public final class DBTasks {
                     }
                     isRefreshing.set(false);
 
-                    if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
-                    new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeSync(); // flattr pending things
+                    if (FlattrUtils.hasToken()) {
+                        if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+                        new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeAsync(); // flattr pending things
 
-                    if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
-                    new FlattrStatusFetcher(context).start();
+                        if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+                        new FlattrStatusFetcher(context).start();
 
+                    }
                     GpodnetSyncService.sendSyncIntent(context);
                     autodownloadUndownloadedItems(context);
                 }
@@ -448,7 +450,7 @@ public final class DBTasks {
                 }
             }
         });
-        
+
     }
 
     private static int getPerformAutoCleanupArgs(Context context,
@@ -809,6 +811,7 @@ public final class DBTasks {
     /**
      * Adds the given FeedItem to the flattr queue if the user is logged in. Otherwise, a dialog
      * will be opened that lets the user go either to the login screen or the website of the flattr thing.
+     *
      * @param context
      * @param item
      */
@@ -824,6 +827,7 @@ public final class DBTasks {
     /**
      * Adds the given Feed to the flattr queue if the user is logged in. Otherwise, a dialog
      * will be opened that lets the user go either to the login screen or the website of the flattr thing.
+     *
      * @param context
      * @param feed
      */

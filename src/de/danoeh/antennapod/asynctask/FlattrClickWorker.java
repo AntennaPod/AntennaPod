@@ -292,17 +292,4 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
             execute();
         }
     }
-
-    public void executeSync() {
-        class DirectExecutor implements Executor {
-            public void execute(Runnable r) {
-                r.run();
-            }
-        }
-        FlattrUtils.hasToken();
-        executeOnExecutor(new DirectExecutor());
-
-    }
-
-
 }
