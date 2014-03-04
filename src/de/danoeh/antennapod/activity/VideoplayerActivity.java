@@ -50,6 +50,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (Build.VERSION.SDK_INT >= 11) {
             requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         }
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
     }
