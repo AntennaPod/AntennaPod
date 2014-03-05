@@ -3,8 +3,10 @@ package de.danoeh.antennapod.asynctask;
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
@@ -13,6 +15,7 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
@@ -136,12 +139,14 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
         notificationManager.cancel(NOTIFICATION_ID);
 
         if (run_mode == FLATTR_NOTIFICATION || flattr_failed.size() > 0) {
+            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
             if (android.os.Build.VERSION.SDK_INT >= 16) {
                 notificationBuilder = new Notification.BigTextStyle(
                         new Notification.Builder(context)
                                 .setOngoing(false)
                                 .setContentTitle(notificationTitle)
                                 .setContentText(notificationText)
+                                .setContentIntent(contentIntent)
                                 .setSubText(notificationSubText)
                                 .setSmallIcon(R.drawable.stat_notify_sync))
                         .bigText(notificationText + "\n" + notificationBigText);
@@ -150,6 +155,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
                 notificationCompatBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
                         .setContentTitle(notificationTitle)
                         .setContentText(notificationText)
+                        .setContentIntent(contentIntent)
                         .setSubText(notificationBigText)
                         .setTicker(notificationTitle)
                         .setSmallIcon(R.drawable.stat_notify_sync)
@@ -274,11 +280,13 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
     @Override
     protected void onProgressUpdate(String... names) {
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
         if (android.os.Build.VERSION.SDK_INT >= 16) {
             notificationBuilder.setBigContentTitle(names[0]);
             notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
         } else {
             notificationCompatBuilder.setContentText(names[0]);
+            notificationCompatBuilder.setContentIntent(contentIntent);
             notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
         }
     }
