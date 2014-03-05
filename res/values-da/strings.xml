@@ -8,10 +8,13 @@
   <string name="new_label">Nye</string>
   <string name="waiting_list_label">Venteliste</string>
   <string name="settings_label">Indstillinger</string>
+  <string name="add_new_feed_label">Tilføj podcast</string>
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Annuller Download</string>
   <string name="download_log_label">Download log</string>
   <string name="playback_history_label">Afspilnings historik</string>
+  <string name="gpodnet_main_label">gpodder.net</string>
+  <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Åben i browser</string>
   <string name="copy_url_label">Kopier URL</string>
@@ -24,12 +27,15 @@
   <string name="cancel_label">Annuller</string>
   <string name="author_label">Forfatter</string>
   <string name="language_label">Sprog</string>
+  <string name="podcast_settings_label">Indstillinger </string>
+  <string name="cover_label">Billed</string>
   <string name="error_label">Fejl</string>
   <string name="error_msg_prefix">En fejl er opstået:</string>
   <string name="refresh_label">Opdater</string>
   <string name="external_storage_error_msg">Ingen ekstern harddisk er tilgængelig. Vær venlig at sørge for at den eksterne hukommelse er monteret så app\'en kan fungere korrekt.</string>
   <string name="chapters_label">Kapitler</string>
   <string name="shownotes_label">Afsnitsnoter</string>
+  <string name="description_label">Beskrivelse</string>
   <string name="most_recent_prefix">Seneste episoder:\u0020</string>
   <string name="episodes_suffix">\u0020episoder</string>
   <string name="published_prefix">Offentliggjort:\u0020</string>
@@ -38,9 +44,14 @@
   <string name="processing_label">Behandler</string>
   <string name="loading_label">Indlæser...</string>
   <string name="image_of_prefix">Billede af:\u0020</string>
+  <string name="save_username_password_label">Gem brugernavn og kodeord</string>
   <string name="close_label">Luk</string>
+  <string name="retry_label">Prøv igen</string>
+  <string name="auto_download_label">Inkluder i automatiske downloads</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
+  <string name="txtvfeedurl_label">Tilføj Podcast med URL</string>
+  <string name="podcastdirectories_label">Podcast mapper</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som læst</string>
   <string name="show_info_label">Vis information</string>
@@ -48,6 +59,7 @@
   <string name="share_link_label">Del webside link</string>
   <string name="share_source_label">Del feed link</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du vil fjerne dette feed og ALLE episoder du har downloadet fra dette feed.</string>
+  <string name="feed_remover_msg">Fjerner feed</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <string name="play_label">Afspil</string>
@@ -83,6 +95,7 @@
   <string name="download_error_malformed_url">Misdannet URL</string>
   <string name="download_error_io_error">IO fejl</string>
   <string name="download_error_request_error">Anmode fejl</string>
+  <string name="download_error_db_access">Adgangsfejl i database</string>
   <string name="downloads_left">\u0020Downloads tilbage</string>
   <string name="download_notification_title">Downloader podcast data</string>
   <string name="download_report_content">%1$d downloads lykkedes, %2$d fejlet</string>
@@ -112,6 +125,8 @@
   <string name="organize_queue_label">Arranger kø</string>
   <string name="undo">Fortryd</string>
   <string name="removed_from_queue">Emne slettet</string>
+  <string name="move_to_top_label">Flyt til toppen</string>
+  <string name="move_to_bottom_label">Flyt til bunden</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr log ind</string>
   <string name="flattr_auth_explanation">Tryk på knappen nedenfor for at starte godkendelsesprocessen. Du vil blive ført til flattr log ind siden i din browser og bedt om at give AntennaPod tilladelse til at flattr emner. Efter at du har givet tilladelsen vil du automatisk vende tilbage til denne side.</string>
@@ -126,9 +141,22 @@
   <string name="access_revoked_title">Adgang tilbagekaldt</string>
   <string name="access_revoked_info">Du har succesfuldt tilbagekaldt AntennaPods adgangs polet til din konto. For at fuldføre processen skal du fjerne denne app fra listen af godkendte applikationer i din kontos indstillinger på flattr\'s hjemmeside.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">Flattr\'et en ting!</string>
+  <string name="flattr_click_success_count">Flattr\'et %d ting!</string>
+  <string name="flattr_click_success_queue">Flattr\'et: %s.</string>
+  <string name="flattr_click_failure_count">Det mislykkedes at flattr %d ting!</string>
+  <string name="flattr_click_failure">Ikke flattr\'et: %s.</string>
+  <string name="flattr_click_enqueued">Ting vil blive flattr\'et senere</string>
+  <string name="flattring_thing">Flattr\'er %s</string>
+  <string name="flattring_label">AntennaPod flatttr\'er</string>
+  <string name="flattrd_label">AntennaPod har flattr\'et</string>
+  <string name="flattrd_failed_label">AntennaPod flattr mislykkedes</string>
+  <string name="flattr_retrieving_status">Hent flatt\'rede ting</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent Plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
+  <string name="no_playback_plugin_msg">For at få variabel afspilningshastighed til at virke skal der installeres et tredjepartsprogram.\n\nTryk \'Download Plugin\' for at downloade et gratis plugin fra Play Store\n\nAlle problemer forårsaget ved at bruge dette plugin er ikke AntennaPods ansvar og bør meldes til ejeren af plugin\'et.</string>
+  <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen emner i denne liste.</string>
   <string name="no_feeds_label">Du har endnu ikke abonneret til nogle feeds.</string>
@@ -136,6 +164,8 @@
   <string name="other_pref">Andre</string>
   <string name="about_pref">Om</string>
   <string name="queue_label">Kø</string>
+  <string name="services_label">Tjenester</string>
+  <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Sæt afspilning på pause når hovedtelefoner afbrydes</string>
   <string name="pref_followQueue_sum">Hop til næste medie i køen når afspilning er færdig</string>
   <string name="playback_pref">Afspilning</string>
@@ -156,6 +186,8 @@
   <string name="pref_flattr_this_app_sum">Støt udviklingen af AntennaPod ved at flattr den. Tak!</string>
   <string name="pref_revokeAccess_title">Tilbagekald adgang</string>
   <string name="pref_revokeAccess_sum">Tilbagekald adgangen til din flattr konto fra denne app.</string>
+  <string name="pref_auto_flattr_title">Flattr\'er automatisk</string>
+  <string name="pref_auto_flattr_sum">Flattr episoder der er 80 procent afspillet. </string>
   <string name="pref_display_only_episodes_title">Vis kun episoder</string>
   <string name="pref_display_only_episodes_sum">Vis kun emner der også har en episode.</string>
   <string name="user_interface_label">Brugerflade</string>
@@ -172,6 +204,16 @@
   <string name="pref_update_interval_hours_plural">timer</string>
   <string name="pref_update_interval_hours_singular">time</string>
   <string name="pref_update_interval_hours_manual">Manuelt</string>
+  <string name="pref_gpodnet_authenticate_title">Log ind</string>
+  <string name="pref_gpodnet_authenticate_sum">Log ind med din gpodder.net konto for at synkronisere dine abonnementer.</string>
+  <string name="pref_gpodnet_logout_title">Log ud</string>
+  <string name="pref_gpodnet_logout_toast">Logget ud</string>
+  <string name="pref_gpodnet_setlogin_information_title">Skift login information</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Skift din gpodder.net kontos login information.</string>
+  <string name="pref_playback_speed_title">Afspilningshastigheder</string>
+  <string name="pref_playback_speed_sum">Tilpas tilgængelige hastigheder for variabelt afspilningshastigheds plugin</string>
+  <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
   <!--Search-->
   <string name="search_hint">Søg efter feeds eller episoder</string>
   <string name="found_in_shownotes_label">Funder i showets noter</string>
@@ -183,6 +225,7 @@
   <string name="search_label">Søg</string>
   <string name="found_in_title_label">Fundet i titel</string>
   <!--OPML import and export-->
+  <string name="opml_import_txtv_button_lable">OPML filer lader dig flytte dine podcasts fra en podcastafspiller til en anden.</string>
   <string name="opml_import_explanation">For at importere en OPML fil, skal du først placere den i følgende mappe og tryk på knappen nedenfor for at starte import-processen.</string>
   <string name="start_import_label">Start import</string>
   <string name="opml_import_label">OPML import</string>
@@ -213,8 +256,36 @@
   <string name="miro_search_hint">Søg i Miro Guiden</string>
   <string name="popular_label">Populær</string>
   <string name="best_rating_label">Bedste bedømmelse</string>
+  <string name="add_feed_label">Tilføj podcast</string>
   <string name="miro_feed_added">Feedet bliver tilføjet</string>
   <!--gpodder.net-->
+  <string name="gpodnet_taglist_header">KATEGORIER </string>
+  <string name="gpodnet_toplist_header">TOP PODCASTS</string>
+  <string name="gpodnet_suggestions_header">FORSLAG</string>
+  <string name="gpodnet_search_hint">Søg på gpodder.net</string>
+  <string name="gpodnetauth_login_title">Log ind</string>
+  <string name="gpodnetauth_login_descr">Velkommen til gpodder.nets login proces. Indsæt dine login informationer:</string>
+  <string name="gpodnetauth_login_butLabel">Log ind</string>
+  <string name="gpodnetauth_login_register">Hvis du ikke har en konto endnu, så kan du oprette en her:\nhttps://gpodder.net/register/</string>
+  <string name="username_label">Brugernavn</string>
+  <string name="password_label">Kodeord</string>
+  <string name="gpodnetauth_device_title">Enheds valg</string>
+  <string name="gpodnetauth_device_descr">Tilføj en ny enhed for at bruge din gpodder.net konto eller vælg en eksisterende:</string>
+  <string name="gpodnetauth_device_deviceID">Enhed ID:\u0020</string>
+  <string name="gpodnetauth_device_caption">Billedtekst</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Opret en ny enhed</string>
+  <string name="gpodnetauth_device_chooseExistingDevice">Vælg en eksisterende enhed:</string>
+  <string name="gpodnetauth_device_errorEmpty">Enheds ID må ikke være tomt</string>
+  <string name="gpodnetauth_device_errorAlreadyUsed">Enheds ID er allerede i brug</string>
+  <string name="gpodnetauth_device_butChoose">Vælg</string>
+  <string name="gpodnetauth_finish_title">Login lykkedes!</string>
+  <string name="gpodnetauth_finish_descr">Tillykke! Din gpodder.net konto er nu forbundet med din enhed. AntennaPod vil fra nu af automatisk synkronisere dine abonnementer på din enhed med din gpodder.net konto.</string>
+  <string name="gpodnetauth_finish_butsyncnow">Start synkronisering nu</string>
+  <string name="gpodnetauth_finish_butgomainscreen">Gå til hovedskærmen</string>
+  <string name="gpodnetsync_auth_error_title">gpodder.net autentificeringfejl</string>
+  <string name="gpodnetsync_auth_error_descr">Forkert brugernavn eller kodeord</string>
+  <string name="gpodnetsync_error_title">gpodder.net synkroniseringsfejl</string>
+  <string name="gpodnetsync_error_descr">En fejl opstod under synkronisering:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Valgte mappe:</string>
   <string name="create_folder_label">Opret mappe</string>
@@ -227,6 +298,27 @@
   <string name="folder_not_empty_dialog_title">Mappen er ikke tom</string>
   <string name="folder_not_empty_dialog_msg">Mappen du har valgt er ikke tom. Medie downloads og andre filer vil blive placeret i denne mappe. Forsæt alligevel?</string>
   <string name="set_to_default_folder">Vælg standard mappe</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Sæt afspilning på pause i stedet for at sænke lydniveauet når en anden app vil afspille lyde</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Pause for afbrydelser</string>
   <!--Online feed view-->
+  <string name="subscribe_label">Abonner</string>
+  <string name="subscribed_label">Abonneret</string>
+  <string name="downloading_label">Downloader...</string>
   <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Vis kapitler</string>
+  <string name="show_shownotes_label">Vis shownoter</string>
+  <string name="show_cover_label">Vis billede</string>
+  <string name="rewind_label">Spol tilbage</string>
+  <string name="fast_forward_label">Hurtigt fremad</string>
+  <string name="media_type_audio_label">Lyd</string>
+  <string name="media_type_video_label">Video</string>
+  <string name="navigate_upwards_label">Naviger opad</string>
+  <string name="butAction_label">Flere handlinger</string>
+  <string name="status_playing_label">Episode afspilles</string>
+  <string name="status_downloading_label">Episode downloades</string>
+  <string name="status_downloaded_label">Episode er downloadet</string>
+  <string name="status_unread_label">Nyt emne</string>
+  <string name="in_queue_label">Episode er i køen</string>
+  <string name="new_episodes_count_label">Antal nye episoder</string>
+  <string name="in_progress_episodes_count_label">Antallet af episoder du er begyndt at lytte til</string>
 </resources>

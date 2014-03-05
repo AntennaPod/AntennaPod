@@ -4,6 +4,7 @@ Change Log
 Version 0.9.8.2
 ---------------
 * Several bugfixes and improvements
+* Added Korean translation
 
 Version 0.9.8.1
 ---------------

@@ -141,6 +141,17 @@
   <string name="access_revoked_title">L\'accés ha estat revocat</string>
   <string name="access_revoked_info">El testimoni d\'accés a Flattr de l\'AntennaPod s\'ha revocat correctament. Per completar el procés, heu de suprimir aquesta aplicació de la llista d\'aplicacions aprovades que trobareu a l\'apartat de configuració del compte de la plana web de Flattr.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">S\'ha compartit una cosa per Flattr!</string>
+  <string name="flattr_click_success_count">S\'han compartit %d coses per Flattr!</string>
+  <string name="flattr_click_success_queue">Compartit per Flattr: %s.</string>
+  <string name="flattr_click_failure_count">No s\'han pogut compartir %d coses per Flattr!</string>
+  <string name="flattr_click_failure">No s\'ha compartit per Flattr: %s.</string>
+  <string name="flattr_click_enqueued">Es compartirà per Flattr després</string>
+  <string name="flattring_thing">%s s\'està compartint per Flattr</string>
+  <string name="flattring_label">AntennaPod està compartint per Flattr</string>
+  <string name="flattrd_label">AntennaPod ha compartit per Flattr</string>
+  <string name="flattrd_failed_label">AntennaPod no ha pogut compartir per Flattr</string>
+  <string name="flattr_retrieving_status">S\'estan recuperant les coses compartides per Flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
@@ -175,6 +186,8 @@
   <string name="pref_flattr_this_app_sum">Doneu suport al desenvolupament d\'AntennaPod compartint l\'aplicació a través de Flattr. Gràcies!</string>
   <string name="pref_revokeAccess_title">Revoca l\'accés</string>
   <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
+  <string name="pref_auto_flattr_title">Flattr automàtic</string>
+  <string name="pref_auto_flattr_sum">Comparteix per Flattr els episodis la reproducció dels quals hagi arribat al 80%.</string>
   <string name="pref_display_only_episodes_title">Mostra només episodis</string>
   <string name="pref_display_only_episodes_sum">Mostra només els elements que tenen algun episodi.</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
@@ -292,4 +305,20 @@
   <string name="subscribed_label">Subscrit</string>
   <string name="downloading_label">S\'està baixant...</string>
   <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Mostra els capítols</string>
+  <string name="show_shownotes_label">Mostra les notes del programa</string>
+  <string name="show_cover_label">Mosta la imatge</string>
+  <string name="rewind_label">Rebobina</string>
+  <string name="fast_forward_label">Avança ràpidament</string>
+  <string name="media_type_audio_label">Àudio</string>
+  <string name="media_type_video_label">Vídeo</string>
+  <string name="navigate_upwards_label">Navega cap amunt</string>
+  <string name="butAction_label">Més accions</string>
+  <string name="status_playing_label">S\'està reproduïnt l\'episodi</string>
+  <string name="status_downloading_label">S\'està baixant l\'episodi</string>
+  <string name="status_downloaded_label">S\'ha baixat l\'episodi</string>
+  <string name="status_unread_label">L\'element és nou</string>
+  <string name="in_queue_label">S\'ha afegit l\'episodi a la cua</string>
+  <string name="new_episodes_count_label">Nombre d\'episodis nous</string>
+  <string name="in_progress_episodes_count_label">Nombre d\'episodis que heu començat a escoltar</string>
 </resources>
