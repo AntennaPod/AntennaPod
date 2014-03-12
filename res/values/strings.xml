@@ -350,4 +350,8 @@
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="new_episodes_count_label">Number of new episodes</string>
     <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
+
+    <!-- AntennaPodSP -->
+
+    <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
 </resources>
