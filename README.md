@@ -13,6 +13,13 @@ You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!foru
 
 Bug reports and feature requests can be submitted [here](https://github.com/danieloeh/AntennaPod/issues/new) (please read the [instructions](https://github.com/danieloeh/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
 
+
+## Nightly Builds
+
+There are APKs available for every branch that is actively worked on. Please note that these might be very unstable versions of the app, which can break your current installation. Install them at your own risk!
+
+Click [here](https://www.dropbox.com/sh/45vgg13bmh8jmhp/uZ_3KJIi5K) to get to the nightly builds folder.
+    
 ## License
 
 AntennaPod is licensed under the MIT License. You can find the license text in the LICENSE file.
