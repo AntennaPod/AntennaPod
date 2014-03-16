@@ -11,8 +11,10 @@ import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.auth.BasicScheme;
 
 import java.io.*;
 import java.net.*;
@@ -44,6 +46,15 @@ public class HttpDownloader extends Downloader {
         InputStream connection = null;
         try {
             HttpGet httpGet = new HttpGet(getURIFromRequestUrl(request.getSource()));
+            String userInfo = httpGet.getURI().getUserInfo();
+            if (userInfo != null) {
+                String[] parts = userInfo.split(":");
+                if (parts.length == 2) {
+                    httpGet.addHeader(BasicScheme.authenticate(
+                            new UsernamePasswordCredentials(parts[0], parts[1]),
+                            "UTF-8", false));
+                }
+            }
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
