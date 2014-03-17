@@ -55,7 +55,7 @@ public class HttpDownloader extends Downloader {
                             new UsernamePasswordCredentials(parts[0], parts[1]),
                             "UTF-8", false));
                 }
-            } else if (StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+            } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
                 httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(request.getUsername(),
                         request.getPassword()), "UTF-8", false));
             }

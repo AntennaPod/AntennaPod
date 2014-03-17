@@ -242,8 +242,15 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
-        DownloadRequester.getInstance().downloadFeed(context,
-                new Feed(feed.getDownload_url(), new Date(), feed.getTitle()));
+        Feed f;
+        if (feed.getPreferences() == null) {
+            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
+        } else {
+            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle(),
+                    feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
+        }
+
+        DownloadRequester.getInstance().downloadFeed(context, f);
     }
 
     /**
@@ -653,6 +660,11 @@ public final class DBTasks {
                     Log.d(TAG,
                             "Feed has updated attribute values. Updating old feed's attributes");
                 savedFeed.updateFromOther(newFeed);
+            }
+            if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
+                if (AppConfig.DEBUG)
+                    Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
+                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
             }
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {

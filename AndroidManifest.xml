@@ -1,42 +1,42 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="de.danoeh.antennapod"
-    android:versionCode="35"
-    android:versionName="0.9.8.2" >
+          package="de.danoeh.antennapod"
+          android:versionCode="35"
+          android:versionName="0.9.8.2">
 
-    <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WAKE_LOCK"/>
 
     <uses-sdk
         android:minSdkVersion="10"
-        android:targetSdkVersion="19" />
+        android:targetSdkVersion="19"/>
 
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <supports-screens
         android:anyDensity="true"
         android:largeScreens="true"
         android:normalScreens="true"
         android:smallScreens="true"
-        android:xlargeScreens="true" />
+        android:xlargeScreens="true"/>
 
     <uses-feature
         android:name="android.hardware.screen.portrait"
-        android:required="false" />
+        android:required="false"/>
     <uses-feature
         android:name="android.hardware.touchscreen"
-        android:required="false" />
+        android:required="false"/>
 
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
     <application
         android:name="de.danoeh.antennapod.PodcastApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:logo="@drawable/ic_launcher"
-        android:theme="@style/Theme.AntennaPod.Light" >
+        android:theme="@style/Theme.AntennaPod.Light">
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -60,7 +60,8 @@
             android:windowSoftInputMode="adjustResize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
+
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -114,7 +115,7 @@
             android:configChanges="orientation|screenSize">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="de.danoeh.antennapod.activity.SearchActivity"/>
@@ -131,14 +132,14 @@
             android:exported="true">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
-            </activity>
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
+        </activity>
         <activity
             android:name=".activity.AudioplayerActivity"
             android:launchMode="singleTop">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -149,6 +150,10 @@
                 <data android:mimeType="audio/*"/>
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".activity.DownloadAuthenticationActivity"
+            android:launchMode="singleInstance"/>
 
         <service
             android:name=".service.download.DownloadService"
@@ -170,14 +175,14 @@
             android:label="@string/settings_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".activity.DownloadLogActivity"
             android:label="@string/download_log_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.DownloadActivity" />
+                android:value="de.danoeh.antennapod.activity.DownloadActivity"/>
         </activity>
 
         <receiver
@@ -303,7 +308,7 @@
             android:label="@string/miro_guide_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.AddFeedActivity" />
+                android:value="de.danoeh.antennapod.activity.AddFeedActivity"/>
             <meta-data
                 android:name="android.app.default_searchable"
                 android:value="de.danoeh.antennapod.activity.MiroGuideSearchActivity"/>
@@ -328,7 +333,7 @@
             android:configChanges="keyboardHidden|orientation">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MiroGuideMainActivity" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideMainActivity"/>
         </activity>
         <activity
             android:name=".activity.MiroGuideChannelViewActivity"
@@ -336,7 +341,7 @@
             android:label="@string/miro_guide_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MiroGuideCategoryActivity" />
+                android:value="de.danoeh.antennapod.activity.MiroGuideCategoryActivity"/>
         </activity>
         <activity
             android:name=".activity.VideoplayerActivity"
@@ -344,7 +349,7 @@
             android:screenOrientation="landscape">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -360,28 +365,30 @@
             android:label="@string/playback_history_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
-            </activity>
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
+        </activity>
+
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="de.danoeh.antennapod.activity.MainActiviy" />
+            android:value="de.danoeh.antennapod.activity.MainActiviy"/>
         <activity
             android:name=".activity.DirectoryChooserActivity"
             android:label="@string/choose_data_directory">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
-            </activity>
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
+        </activity>
         <meta-data
             android:name="android.support.PARENT_ACTIVITY"
-            android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
+            android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
+
         <activity
             android:name=".activity.OrganizeQueueActivity"
             android:configChanges="orientation"
             android:label="@string/organize_queue_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity" />
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
         <activity
             android:name=".activity.gpoddernet.GpodnetMainActivity"
@@ -396,7 +403,7 @@
                 android:resource="@xml/gpodnet_searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.AddFeedActivity" />
+                android:value="de.danoeh.antennapod.activity.AddFeedActivity"/>
 
         </activity>
         <activity
@@ -410,7 +417,7 @@
                 android:resource="@xml/gpodnet_searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity"/>
         </activity>
 
         <activity
@@ -421,12 +428,13 @@
             <intent-filter>
                 <action android:name="android.intent.action.SEARCH"/>
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/gpodnet_searchable"/>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity" />
+                android:value="de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity"/>
         </activity>
 
         <activity
@@ -444,7 +452,7 @@
             </intent-filter>
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.PreferenceActivity" />
+                android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
 

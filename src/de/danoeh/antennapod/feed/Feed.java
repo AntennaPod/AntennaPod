@@ -125,6 +125,15 @@ public class Feed extends FeedFile implements FlattrThing {
     }
 
     /**
+     * This constructor is used for requesting a feed download (it must not be used for anything else!). It should be
+     * used if the title of the feed is already known.
+     */
+    public Feed(String url, Date lastUpdate, String title, String username, String password) {
+        this(url, lastUpdate, title);
+        preferences = new FeedPreferences(0, true, username, password);
+    }
+
+    /**
      * Returns the number of FeedItems where 'read' is false. If the 'display
      * only episodes' - preference is set to true, this method will only count
      * items with episodes.
@@ -412,5 +421,13 @@ public class Feed extends FeedFile implements FlattrThing {
 
     public void savePreferences(Context context) {
         DBWriter.setFeedPreferences(context, preferences);
+    }
+
+    @Override
+    public void setId(long id) {
+        super.setId(id);
+        if (preferences != null) {
+            preferences.setFeedID(id);
+        }
     }
 }

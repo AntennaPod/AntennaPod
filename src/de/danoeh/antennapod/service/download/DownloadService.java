@@ -21,6 +21,7 @@ import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
+import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.DownloadLogActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.feed.*;
@@ -557,6 +558,11 @@ public class DownloadService extends Service {
                 final String resourceTitle = (downloadRequest.getTitle() != null)
                         ? downloadRequest.getTitle() : downloadRequest.getSource();
 
+                final Intent activityIntent = new Intent(getApplicationContext(), DownloadAuthenticationActivity.class);
+                activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, downloadRequest);
+                activityIntent.putExtra(DownloadAuthenticationActivity.ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, true);
+                final PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, activityIntent, PendingIntent.FLAG_ONE_SHOT);
+
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this);
                 builder.setTicker(getText(R.string.authentication_notification_title))
                         .setContentTitle(getText(R.string.authentication_notification_title))
@@ -566,7 +572,7 @@ public class DownloadService extends Service {
                         .setSmallIcon(R.drawable.ic_stat_authentication)
                         .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_authentication))
                         .setAutoCancel(true)
-                        .setContentIntent(PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), MainActivity.class), 0));
+                        .setContentIntent(contentIntent);
                 Notification n = builder.build();
                 NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
                 nm.notify(downloadRequest.getSource().hashCode(), n);
@@ -628,6 +634,7 @@ public class DownloadService extends Service {
             Feed feed = new Feed(request.getSource(), new Date());
             feed.setFile_url(request.getDestination());
             feed.setDownloaded(true);
+            feed.setPreferences(new FeedPreferences(0, true, request.getUsername(), request.getPassword()));
 
             reason = null;
             String reasonDetailed = null;
