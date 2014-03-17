@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class PodDBAdapter {
     private static final String TAG = "PodDBAdapter";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
@@ -56,6 +56,8 @@ public class PodDBAdapter {
     public static final int KEY_TYPE_INDEX = 12;
     public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
     public static final int KEY_FEED_FLATTR_STATUS_INDEX = 14;
+    public static final int KEY_FEED_USERNAME_INDEX = 15;
+    public static final int KEY_FEED_PASSWORD_INDEX = 16;
     // ----------- FeedItem indices
     public static final int KEY_CONTENT_ENCODED_INDEX = 2;
     public static final int KEY_PUBDATE_INDEX = 3;
@@ -131,6 +133,8 @@ public class PodDBAdapter {
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_PLAYED_DURATION = "played_duration";
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_PASSWORD = "password";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -153,7 +157,9 @@ public class PodDBAdapter {
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
             + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
-            + KEY_FLATTR_STATUS + " INTEGER)";
+            + KEY_FLATTR_STATUS + " INTEGER,"
+            + KEY_USERNAME + " TEXT,"
+            + KEY_PASSWORD + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -217,7 +223,9 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
-            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS
+            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS,
+            TABLE_NAME_FEEDS + "." + KEY_USERNAME,
+            TABLE_NAME_FEEDS + "." + KEY_PASSWORD
     };
 
     // column indices for FEED_SEL_STD
@@ -237,6 +245,9 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
     public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD = 14;
     public static final int IDX_FEED_SEL_STD_FLATTR_STATUS = 15;
+    public static final int IDX_FEED_SEL_PREFERENCES_USERNAME = 16;
+    public static final int IDX_FEED_SEL_PREFERENCES_PASSWORD = 17;
+
 
 
     /**
@@ -383,6 +394,8 @@ public class PodDBAdapter {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
+        values.put(KEY_USERNAME, prefs.getUsername());
+        values.put(KEY_PASSWORD, prefs.getPassword());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -1307,6 +1320,14 @@ public class PodDBAdapter {
                 db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
                         + " ADD COLUMN " + KEY_PLAYED_DURATION
                         + " INTEGER");
+            }
+            if (oldVersion <= 11) {
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + KEY_USERNAME
+                        + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + KEY_PASSWORD
+                        + " TEXT");
             }
         }
     }

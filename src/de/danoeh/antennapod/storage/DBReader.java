@@ -344,7 +344,9 @@ public final class DBReader {
         }
 
         FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
-                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0);
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0,
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_USERNAME),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_PASSWORD));
 
         feed.setPreferences(preferences);
         return feed;
