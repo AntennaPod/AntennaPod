@@ -1,20 +1,5 @@
 package de.danoeh.antennapod.service.download;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicInteger;
-
-import javax.xml.parsers.ParserConfigurationException;
-
-import android.media.MediaMetadataRetriever;
-import de.danoeh.antennapod.storage.*;
-import org.xml.sax.SAXException;
-
 import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -26,7 +11,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.media.MediaMetadataRetriever;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -37,16 +22,25 @@ import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.DownloadLogActivity;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.storage.*;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.InvalidFeedException;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued viathe startService intent.
@@ -162,9 +156,13 @@ public class DownloadService extends Service {
                         }
                     } else {
                         numberOfDownloads.decrementAndGet();
-                        if (!successful && !status.isCancelled()) {
-                            Log.e(TAG, "Download failed");
-                            saveDownloadStatus(status);
+                        if (!status.isCancelled()) {
+                            if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
+                                postAuthenticationNotification(downloader.getDownloadRequest());
+                            } else {
+                                Log.e(TAG, "Download failed");
+                                saveDownloadStatus(status);
+                            }
                         }
                         sendDownloadHandledIntent();
                         queryDownloadsAsync();
@@ -224,7 +222,9 @@ public class DownloadService extends Service {
                                 t.setPriority(Thread.MIN_PRIORITY);
                                 return t;
                             }
-                        }));
+                        }
+                )
+        );
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOL_SIZE,
                 new ThreadFactory() {
 
@@ -274,8 +274,9 @@ public class DownloadService extends Service {
     @SuppressLint("NewApi")
     private void setupNotificationBuilders() {
         PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
-                this, DownloadActivity.class),
-                PendingIntent.FLAG_UPDATE_CURRENT);
+                        this, DownloadActivity.class),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.stat_notify_sync);
@@ -284,7 +285,8 @@ public class DownloadService extends Service {
             notificationBuilder = new Notification.BigTextStyle(
                     new Notification.Builder(this).setOngoing(true)
                             .setContentIntent(pIntent).setLargeIcon(icon)
-                            .setSmallIcon(R.drawable.stat_notify_sync));
+                            .setSmallIcon(R.drawable.stat_notify_sync)
+            );
         } else {
             notificationCompatBuilder = new NotificationCompat.Builder(this)
                     .setOngoing(true).setContentIntent(pIntent)
@@ -413,12 +415,13 @@ public class DownloadService extends Service {
 
     private Downloader getDownloader(DownloadRequest request) {
         if (URLUtil.isHttpUrl(request.getSource())
-            || URLUtil.isHttpsUrl(request.getSource())) {
+                || URLUtil.isHttpsUrl(request.getSource())) {
             return new HttpDownloader(request);
         }
         Log.e(TAG,
                 "Could not find appropriate downloader for "
-                        + request.getSource());
+                        + request.getSource()
+        );
         return null;
     }
 
@@ -495,14 +498,17 @@ public class DownloadService extends Service {
                     .setContentText(
                             String.format(
                                     getString(R.string.download_report_content),
-                                    successfulDownloads, failedDownloads))
+                                    successfulDownloads, failedDownloads)
+                    )
                     .setSmallIcon(R.drawable.stat_notify_sync)
                     .setLargeIcon(
                             BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.stat_notify_sync))
+                                    R.drawable.stat_notify_sync)
+                    )
                     .setContentIntent(
                             PendingIntent.getActivity(this, 0, new Intent(this,
-                                    DownloadLogActivity.class), 0))
+                                    DownloadLogActivity.class), 0)
+                    )
                     .setAutoCancel(true).getNotification();
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(REPORT_ID, notification);
@@ -542,6 +548,30 @@ public class DownloadService extends Service {
             setupNotificationUpdater();
             startForeground(NOTIFICATION_ID, updateNotifications());
         }
+    }
+
+    private void postAuthenticationNotification(final DownloadRequest downloadRequest) {
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                final String resourceTitle = (downloadRequest.getTitle() != null)
+                        ? downloadRequest.getTitle() : downloadRequest.getSource();
+
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(DownloadService.this);
+                builder.setTicker(getText(R.string.authentication_notification_title))
+                        .setContentTitle(getText(R.string.authentication_notification_title))
+                        .setContentText(getText(R.string.authentication_notification_msg))
+                        .setStyle(new NotificationCompat.BigTextStyle().bigText(getText(R.string.authentication_notification_msg)
+                                                                                + ": " + resourceTitle))
+                        .setSmallIcon(R.drawable.ic_stat_authentication)
+                        .setLargeIcon(BitmapFactory.decodeResource(getResources(), R.drawable.ic_stat_authentication))
+                        .setAutoCancel(true)
+                        .setContentIntent(PendingIntent.getActivity(getApplicationContext(), 0, new Intent(getApplicationContext(), MainActivity.class), 0));
+                Notification n = builder.build();
+                NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                nm.notify(downloadRequest.getSource().hashCode(), n);
+            }
+        });
     }
 
     /**
@@ -633,7 +663,9 @@ public class DownloadService extends Service {
                                                 .getImage()
                                                 .getHumanReadableIdentifier(),
                                         DownloadError.ERROR_REQUEST_ERROR,
-                                        false, e.getMessage()));
+                                        false, e.getMessage()
+                                )
+                        );
                     }
                 }
 
