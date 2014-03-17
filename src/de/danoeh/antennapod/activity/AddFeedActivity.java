@@ -29,7 +29,6 @@ public class AddFeedActivity extends ActionBarActivity {
     private Button butBrowserGpoddernet;
     private Button butOpmlImport;
     private Button butConfirm;
-    private Button butCancel;
 
     private ProgressDialog progDialog;
 
@@ -55,7 +54,6 @@ public class AddFeedActivity extends ActionBarActivity {
         butBrowserGpoddernet = (Button) findViewById(R.id.butBrowseGpoddernet);
         butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
         butConfirm = (Button) findViewById(R.id.butConfirm);
-        butCancel = (Button) findViewById(R.id.butCancel);
 
         butBrowseMiroGuide.setOnClickListener(new OnClickListener() {
 
@@ -92,13 +90,6 @@ public class AddFeedActivity extends ActionBarActivity {
             }
         });
 
-        butCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setResult(RESULT_CANCELED);
-                finish();
-            }
-        });
     }
 
     @Override
