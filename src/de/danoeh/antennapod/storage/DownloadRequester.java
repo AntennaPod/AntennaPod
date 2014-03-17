@@ -1,28 +1,28 @@
 package de.danoeh.antennapod.storage;
 
-import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.URLUtil;
 import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+
+/**
+ * Sends download requests to the DownloadService. This class should always be used for starting downloads,
+ * otherwise they won't work correctly.
+ */
 public class DownloadRequester {
     private static final String TAG = "DownloadRequester";
 
@@ -45,8 +45,34 @@ public class DownloadRequester {
         return downloader;
     }
 
+    /**
+     * Starts a new download with the given DownloadRequest. This method should only
+     * be used from outside classes if the DownloadRequest was created by the DownloadService to
+     * ensure that the data is valid. Use downloadFeed(), downloadImage() or downloadMedia() instead.
+     *
+     * @param context Context object for starting the DownloadService
+     * @param request The DownloadRequest. If another DownloadRequest with the same source URL is already stored, this method
+     *                call will return false.
+     * @return True if the download request was accepted, false otherwise.
+     */
+    public boolean download(Context context, DownloadRequest request) {
+        if (context == null) throw new IllegalArgumentException("context = null");
+        if (request == null) throw new IllegalArgumentException("request = null");
+        if (downloads.containsKey(request.getSource())) {
+            if (AppConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
+            return false;
+        }
+        downloads.put(request.getSource(), request);
+
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+        context.startService(launchIntent);
+        EventDistributor.getInstance().sendDownloadQueuedBroadcast();
+        return true;
+    }
+
     private void download(Context context, FeedFile item, File dest,
-                          boolean overwriteIfExists) {
+                          boolean overwriteIfExists, String username, String password) {
         if (!isDownloadingFile(item)) {
             if (!isFilenameAvailable(dest.toString()) || dest.exists()) {
                 if (AppConfig.DEBUG)
@@ -88,14 +114,9 @@ public class DownloadRequester {
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
                     item.getDownload_url(), item.getHumanReadableIdentifier(),
-                    item.getId(), item.getTypeAsInt());
+                    item.getId(), item.getTypeAsInt(), username, password);
 
-            downloads.put(request.getSource(), request);
-
-            Intent launchIntent = new Intent(context, DownloadService.class);
-            launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-            context.startService(launchIntent);
-            EventDistributor.getInstance().sendDownloadQueuedBroadcast();
+            download(context, request);
         } else {
             Log.e(TAG, "URL " + item.getDownload_url()
                     + " is already being downloaded");
@@ -124,8 +145,11 @@ public class DownloadRequester {
     public void downloadFeed(Context context, Feed feed)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
+            String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
+            String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
+
             download(context, feed, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true);
+                    getFeedfileName(feed)), true, username, password);
         }
     }
 
@@ -133,7 +157,7 @@ public class DownloadRequester {
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
-                    getImagefileName(image)), true);
+                    getImagefileName(image)), true, null, null);
         }
     }
 
@@ -142,7 +166,8 @@ public class DownloadRequester {
         if (feedFileValid(feedmedia)) {
             download(context, feedmedia,
                     new File(getMediafilePath(context, feedmedia),
-                            getMediafilename(feedmedia)), false);
+                            getMediafilename(feedmedia)), false, null, null
+            );
         }
     }
 
@@ -278,7 +303,8 @@ public class DownloadRequester {
                 context,
                 MEDIA_DOWNLOADPATH
                         + FileNameGenerator.generateFileName(media.getItem()
-                        .getFeed().getTitle()) + "/");
+                        .getFeed().getTitle()) + "/"
+        );
         return externalStorage.toString();
     }
 
@@ -305,7 +331,8 @@ public class DownloadRequester {
         }
 
         String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),
-                null, media.getMime_type());;
+                null, media.getMime_type());
+        ;
 
         if (titleBaseFilename != "") {
             // Append extension

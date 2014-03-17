@@ -8,6 +8,8 @@ public class DownloadRequest implements Parcelable {
 	private final String destination;
 	private final String source;
 	private final String title;
+    private final String username;
+    private final String password;
 	private final long feedfileId;
 	private final int feedfileType;
 
@@ -17,7 +19,7 @@ public class DownloadRequest implements Parcelable {
 	protected int statusMsg;
 
 	public DownloadRequest(String destination, String source, String title,
-			long feedfileId, int feedfileType) {
+			long feedfileId, int feedfileType, String username, String password) {
 		if (destination == null) {
 			throw new IllegalArgumentException("Destination must not be null");
 		}
@@ -33,7 +35,14 @@ public class DownloadRequest implements Parcelable {
 		this.title = title;
 		this.feedfileId = feedfileId;
 		this.feedfileType = feedfileType;
+        this.username = username;
+        this.password = password;
 	}
+
+    public DownloadRequest(String destination, String source, String title,
+                           long feedfileId, int feedfileType) {
+        this(destination, source, title, feedfileId, feedfileType, null, null);
+    }
 
 	private DownloadRequest(Parcel in) {
 		destination = in.readString();
@@ -41,6 +50,13 @@ public class DownloadRequest implements Parcelable {
 		title = in.readString();
 		feedfileId = in.readLong();
 		feedfileType = in.readInt();
+        if (in.dataAvail() > 0) {
+            username = in.readString();
+            password = in.readString();
+        } else {
+            username = null;
+            password = null;
+        }
 	}
 
 	@Override
@@ -174,4 +190,12 @@ public class DownloadRequest implements Parcelable {
 	public void setStatusMsg(int statusMsg) {
 		this.statusMsg = statusMsg;
 	}
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
 }

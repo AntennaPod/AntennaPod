@@ -8,6 +8,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -54,6 +55,9 @@ public class HttpDownloader extends Downloader {
                             new UsernamePasswordCredentials(parts[0], parts[1]),
                             "UTF-8", false));
                 }
+            } else if (StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+                httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(request.getUsername(),
+                        request.getPassword()), "UTF-8", false));
             }
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
@@ -67,8 +71,16 @@ public class HttpDownloader extends Downloader {
                 Log.d(TAG, "Response code is " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK || httpEntity == null) {
-                onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
-                        String.valueOf(responseCode));
+                final DownloadError error;
+                final String details;
+                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    error = DownloadError.ERROR_UNAUTHORIZED;
+                    details = String.valueOf(responseCode);
+                } else {
+                    error = DownloadError.ERROR_HTTP_DATA_ERROR;
+                    details = String.valueOf(responseCode);
+                }
+                onFail(error, details);
                 return;
             }
 
@@ -132,7 +144,8 @@ public class HttpDownloader extends Downloader {
                             "Download completed but size: " +
                                     request.getSoFar() +
                                     " does not equal expected size " +
-                                    request.getSize());
+                                    request.getSize()
+                    );
                     return;
                 }
                 onSuccess();
