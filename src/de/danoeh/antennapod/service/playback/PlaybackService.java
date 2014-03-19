@@ -403,6 +403,9 @@ public class PlaybackService extends Service {
                     taskManager.startWidgetUpdater();
                     setupNotification(newInfo);
                     break;
+                case ERROR:
+                    writePlaybackPreferencesNoMediaPlaying();
+                    break;
 
             }
 
@@ -451,7 +454,7 @@ public class PlaybackService extends Service {
                 mediaPlayer.pause(true, false);
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
-            setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
+            writePlaybackPreferencesNoMediaPlaying();
             stopSelf();
             return true;
         }
@@ -1041,10 +1044,4 @@ public class PlaybackService extends Service {
         return mediaPlayer.getVideoSize();
     }
 
-    private void setCurrentlyPlayingMedia(long id) {
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).edit();
-        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA, id);
-        editor.commit();
-    }
 }
