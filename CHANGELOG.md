@@ -1,6 +1,13 @@
 Change Log
 ==========
 
+Version 0.9.8.3
+---------------
+* Added support for password-protected feeds and episodes
+* Added support for more types of episode images
+* Added Hebrew translation
+* Several bugfixes and improvements
+
 Version 0.9.8.2
 ---------------
 * Several bugfixes and improvements

@@ -12,6 +12,7 @@ trans.de = res/values-de/strings.xml
 trans.es = res/values-es/strings.xml
 trans.es_ES = res/values-es-rES/strings.xml
 trans.fr = res/values-fr/strings.xml
+trans.he_IL = res/values-he-rIL/strings.xml
 trans.hi_IN = res/values-hi-rIN/strings.xml
 trans.it_IT = res/values-it-rIT/strings.xml
 trans.ko = res/values-ko/strings.xml
