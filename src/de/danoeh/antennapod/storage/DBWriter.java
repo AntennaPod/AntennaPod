@@ -176,6 +176,16 @@ public class DBWriter {
                                 && requester.isDownloadingFile(item.getMedia())) {
                             requester.cancelDownload(context, item.getMedia());
                         }
+
+                        if (item.hasItemImage()) {
+                            FeedImage image = item.getImage();
+                            if (image.isDownloaded() && image.getFile_url() != null) {
+                                File imgFile = new File(image.getFile_url());
+                                imgFile.delete();
+                            } else if (requester.isDownloadingFile(image)) {
+                                requester.cancelDownload(context, item.getImage());
+                            }
+                        }
                     }
                     PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();

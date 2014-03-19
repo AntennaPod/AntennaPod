@@ -216,7 +216,12 @@ public final class DBReader {
                         .getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
                 item.setFlattrStatus(new FlattrStatus(itemlistCursor
                         .getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)));
-                
+
+                long imageIndex = itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_IMAGE);
+                if (imageIndex != 0) {
+                    item.setImage(getFeedImage(adapter, imageIndex));
+                }
+
                 // extract chapters
                 boolean hasSimpleChapters = itemlistCursor
                         .getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0;
@@ -340,7 +345,7 @@ public final class DBReader {
                 new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)));
 
         if (image != null) {
-            image.setFeed(feed);
+            image.setOwner(feed);
         }
 
         FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
@@ -740,7 +745,7 @@ public final class DBReader {
      * @return The found object
      */
     static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
-        Cursor cursor = adapter.getImageOfFeedCursor(id);
+        Cursor cursor = adapter.getImageCursor(id);
         if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
             throw new SQLException("No FeedImage found at index: " + id);
         }

@@ -1,17 +1,17 @@
 package de.danoeh.antennapod.feed;
 
-import java.io.InputStream;
-import java.lang.ref.SoftReference;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
-
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
+import org.apache.commons.lang3.StringUtils;
+
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /**
  * Data Object for a XML message
@@ -44,17 +44,18 @@ public class FeedItem extends FeedComponent implements
 
     private boolean read;
     private String paymentLink;
-	private FlattrStatus flattrStatus;
+    private FlattrStatus flattrStatus;
     private List<Chapter> chapters;
+    private FeedImage image;
 
     public FeedItem() {
         this.read = true;
-		this.flattrStatus = new FlattrStatus();
+        this.flattrStatus = new FlattrStatus();
     }
 
     /**
      * This constructor should be used for creating test objects.
-     * */
+     */
     public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, boolean read, Feed feed) {
         this.id = id;
         this.title = title;
@@ -63,7 +64,7 @@ public class FeedItem extends FeedComponent implements
         this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
         this.read = read;
         this.feed = feed;
-		this.flattrStatus = new FlattrStatus();
+        this.flattrStatus = new FlattrStatus();
     }
 
     public void updateFromOther(FeedItem other) {
@@ -97,6 +98,9 @@ public class FeedItem extends FeedComponent implements
             if (chapters == null) {
                 chapters = other.chapters;
             }
+        }
+        if (image == null) {
+            image = other.image;
         }
     }
 
@@ -164,7 +168,7 @@ public class FeedItem extends FeedComponent implements
      * Sets the media object of this FeedItem. If the given
      * FeedMedia object is not null, it's 'item'-attribute value
      * will also be set to this item.
-     * */
+     */
     public void setMedia(FeedMedia media) {
         this.media = media;
         if (media != null && media.getItem() != this) {
@@ -200,15 +204,15 @@ public class FeedItem extends FeedComponent implements
         this.contentEncoded = contentEncoded;
     }
 
-	public void setFlattrStatus(FlattrStatus status) {
-		this.flattrStatus = status;
-	}
+    public void setFlattrStatus(FlattrStatus status) {
+        this.flattrStatus = status;
+    }
 
-	public FlattrStatus getFlattrStatus() {
-		return flattrStatus;
-	}
+    public FlattrStatus getFlattrStatus() {
+        return flattrStatus;
+    }
 
-	public String getPaymentLink() {
+    public String getPaymentLink() {
         return paymentLink;
     }
 
@@ -277,10 +281,11 @@ public class FeedItem extends FeedComponent implements
     @Override
     public InputStream openImageInputStream() {
         InputStream out = null;
-        if (hasMedia()) {
+        if (hasItemImage()) {
+            out = image.openImageInputStream();
+        } else if (hasMedia()) {
             out = media.openImageInputStream();
-        }
-        if (out == null && feed.getImage() != null) {
+        } else if (feed.getImage() != null) {
             out = feed.getImage().openImageInputStream();
         }
         return out;
@@ -289,10 +294,11 @@ public class FeedItem extends FeedComponent implements
     @Override
     public InputStream reopenImageInputStream(InputStream input) {
         InputStream out = null;
-        if (hasMedia()) {
+        if (hasItemImage()) {
+            out = image.reopenImageInputStream(input);
+        } else if (hasMedia()) {
             out = media.reopenImageInputStream(input);
-        }
-        if (out == null && feed.getImage() != null) {
+        } else if (feed.getImage() != null) {
             out = feed.getImage().reopenImageInputStream(input);
         }
         return out;
@@ -301,10 +307,11 @@ public class FeedItem extends FeedComponent implements
     @Override
     public String getImageLoaderCacheKey() {
         String out = null;
-        if (hasMedia()) {
+        if (hasItemImage()) {
+            out = image.getImageLoaderCacheKey();
+        } else if (hasMedia()) {
             out = media.getImageLoaderCacheKey();
-        }
-        if (out == null && feed.getImage() != null) {
+        } else if (feed.getImage() != null) {
             out = feed.getImage().getImageLoaderCacheKey();
         }
         return out;
@@ -318,4 +325,28 @@ public class FeedItem extends FeedComponent implements
         this.feedId = feedId;
     }
 
+    /**
+     * Returns the image of this item or the image of the feed if this item does
+     * not have its own image.
+     */
+    public FeedImage getImage() {
+        return (hasItemImage()) ? image : feed.getImage();
+    }
+
+    public void setImage(FeedImage image) {
+        this.image = image;
+        image.setOwner(this);
+    }
+
+    /**
+     * Returns true if this FeedItem has its own image, false otherwise.
+     */
+    public boolean hasItemImage() {
+        return image != null;
+    }
+
+    @Override
+    public String getHumanReadableIdentifier() {
+        return title;
+    }
 }

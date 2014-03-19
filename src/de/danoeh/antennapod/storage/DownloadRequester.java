@@ -157,7 +157,7 @@ public class DownloadRequester {
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
-                    getImagefileName(image)), true, null, null);
+                    getImagefileName(image)), false, null, null);
         }
     }
 
@@ -291,8 +291,8 @@ public class DownloadRequester {
 
     public String getImagefileName(FeedImage image) {
         String filename = image.getDownload_url();
-        if (image.getFeed() != null && image.getFeed().getTitle() != null) {
-            filename = image.getFeed().getTitle();
+        if (image.getOwner() != null && image.getOwner().getHumanReadableIdentifier() != null) {
+            filename = image.getOwner().getHumanReadableIdentifier();
         }
         return "image-" + FileNameGenerator.generateFileName(filename);
     }

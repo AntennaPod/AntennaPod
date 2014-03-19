@@ -168,7 +168,8 @@ public class PodDBAdapter {
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
-            + KEY_FLATTR_STATUS + " INTEGER)";
+            + KEY_FLATTR_STATUS + " INTEGER,"
+            + KEY_IMAGE + " INTEGER)";
 
     private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -263,7 +264,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS};
+            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE};
 
     /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
@@ -288,6 +290,7 @@ public class PodDBAdapter {
     public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
     public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
     public static final int IDX_FI_SMALL_FLATTR_STATUS = 10;
+    public static final int IDX_FI_SMALL_IMAGE = 11;
 
     /**
      * Select id, description and content-encoded column from feeditems.
@@ -416,10 +419,14 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
                     new String[]{String.valueOf(image.getId())});
         }
-        if (image.getFeed() != null && image.getFeed().getId() != 0) {
+
+        final FeedComponent owner = image.getOwner();
+        if (owner != null && owner.getId() != 0) {
             values.clear();
             values.put(KEY_IMAGE, image.getId());
-            db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getFeed().getId())});
+            if (owner instanceof Feed) {
+                db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -662,6 +669,13 @@ public class PodDBAdapter {
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
+        if (item.hasItemImage()) {
+            if (item.getImage().getId() == 0) {
+                setImage(item.getImage());
+            }
+            values.put(KEY_IMAGE, item.getImage().getId());
+        }
+
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
         } else {
@@ -810,6 +824,9 @@ public class PodDBAdapter {
         if (item.getChapters() != null) {
             removeChaptersOfItem(item);
         }
+        if (item.hasItemImage()) {
+            removeFeedImage(item.getImage());
+        }
         db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getId())});
     }
@@ -914,7 +931,7 @@ public class PodDBAdapter {
      * @param id ID of the FeedImage
      * @return The cursor of the query
      */
-    public final Cursor getImageOfFeedCursor(final long id) {
+    public final Cursor getImageCursor(final long id) {
         Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
         return c;
@@ -1337,6 +1354,9 @@ public class PodDBAdapter {
                 db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
                         + " ADD COLUMN " + KEY_PASSWORD
                         + " TEXT");
+                db.execSQL("ALTER TABLE" + TABLE_NAME_FEED_ITEMS
+                        + " ADD COLUMN " + KEY_IMAGE
+                        + " INTEGER");
             }
         }
     }

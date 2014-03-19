@@ -12,7 +12,8 @@ public class AntennaPodTestRunner extends InstrumentationTestRunner {
 
     @Override
     public TestSuite getAllTests() {
-        return new TestSuiteBuilder(AntennaPodTestRunner.class).includeAllPackagesUnderHere()
+        return new TestSuiteBuilder(AntennaPodTestRunner.class).includePackages("instrumentationTest.de.test.antennapod.storage")
+                //.includeAllPackagesUnderHere()
         //        .excludePackages("instrumentationTest.de.test.antennapod.syndication.handler")
         //        .excludePackages("instrumentationTest.de.test.antennapod.gpodnet")
                 .build();

@@ -5,6 +5,7 @@ import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.URIUtil;
@@ -32,6 +33,18 @@ public class HttpDownloader extends Downloader {
 
     @Override
     protected void download() {
+        File destination = new File(request.getDestination());
+        if (destination.exists()) {
+            Log.w(TAG, "File already exists");
+            if (request.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
+                onFail(DownloadError.ERROR_FILE_EXISTS, null);
+                return;
+            } else {
+                onSuccess();
+                return;
+            }
+        }
+
         HttpClient httpClient = AntennapodHttpClient.getHttpClient();
         BufferedOutputStream out = null;
         InputStream connection = null;
@@ -76,13 +89,6 @@ public class HttpDownloader extends Downloader {
 
             if (!StorageUtils.storageAvailable(PodcastApp.getInstance())) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
-                return;
-            }
-
-            File destination = new File(request.getDestination());
-            if (destination.exists()) {
-                Log.w(TAG, "File already exists");
-                onFail(DownloadError.ERROR_FILE_EXISTS, null);
                 return;
             }
 
