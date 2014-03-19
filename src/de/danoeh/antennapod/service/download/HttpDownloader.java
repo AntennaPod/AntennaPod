@@ -2,21 +2,11 @@ package de.danoeh.antennapod.service.download;
 
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.SocketTimeoutException;
-import java.net.URI;
-import java.net.URISyntaxException;
-import java.net.URL;
-import java.net.UnknownHostException;
-
+import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.PodcastApp;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.util.StorageUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
@@ -24,11 +14,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.util.DownloadError;
-import de.danoeh.antennapod.util.StorageUtils;
+import java.io.*;
+import java.net.*;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
