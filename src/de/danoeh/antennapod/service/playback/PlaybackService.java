@@ -530,7 +530,7 @@ public class PlaybackService extends Service {
             stopWidgetUpdater();
         }
 
-        writePlaybackPreferences();
+        writePlaybackPreferencesNoMediaPlaying();
         if (nextMedia != null) {
             stream = !media.localFileAvailable();
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
@@ -553,6 +553,19 @@ public class PlaybackService extends Service {
     public void disableSleepTimer() {
         taskManager.disableSleepTimer();
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
+    }
+
+    private void writePlaybackPreferencesNoMediaPlaying() {
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext()).edit();
+        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.putLong(
+                PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.commit();
     }
 
 

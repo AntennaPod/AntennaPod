@@ -756,6 +756,7 @@ public class PlaybackServiceMediaPlayer {
                     mediaPlayer.reset();
 
                 }
+                audioManager.abandonAudioFocus(audioFocusChangeListener);
                 callback.endPlayback(true);
 
                 playerLock.unlock();
