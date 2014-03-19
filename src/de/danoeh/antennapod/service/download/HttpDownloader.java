@@ -7,6 +7,7 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.URIUtil;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
@@ -29,24 +30,13 @@ public class HttpDownloader extends Downloader {
         super(request);
     }
 
-    private URI getURIFromRequestUrl(String source) {
-        try {
-            URL url = new URL(source);
-            return new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     @Override
     protected void download() {
         HttpClient httpClient = AntennapodHttpClient.getHttpClient();
         BufferedOutputStream out = null;
         InputStream connection = null;
         try {
-            HttpGet httpGet = new HttpGet(getURIFromRequestUrl(request.getSource()));
+            HttpGet httpGet = new HttpGet(URIUtil.getURIFromRequestUrl(request.getSource()));
             String userInfo = httpGet.getURI().getUserInfo();
             if (userInfo != null) {
                 String[] parts = userInfo.split(":");
