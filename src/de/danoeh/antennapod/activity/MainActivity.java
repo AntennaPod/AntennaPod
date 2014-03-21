@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.app.backup.BackupManager;
+import android.app.backup.RestoreObserver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -22,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -114,6 +118,26 @@ public class MainActivity extends ActionBarActivity {
 		updateProgressBarVisibility();
 		EventDistributor.getInstance().register(contentUpdate);
 
+		// Possibly restore feed subscriptions from backup
+		if (UserPreferences.isFreshInstall()) {
+			new BackupManager(this).requestRestore(new BackupRestoreObserver(this));
+			UserPreferences.setIsFreshInstall(false);
+		}
+	}
+
+	private static class BackupRestoreObserver extends RestoreObserver {
+		private final Context mContext;
+
+		public BackupRestoreObserver(final Context context) {
+			mContext = context;
+		}
+
+		@Override
+		public void restoreFinished(int error) {
+			if (error == 0) {
+				Toast.makeText(mContext, R.string.backup_restored, Toast.LENGTH_SHORT).show();
+			}
+		}
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

@@ -354,6 +354,9 @@
     <string name="new_episodes_count_label">Number of new episodes</string>
     <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
 
+    <!-- OPML backup -->
+    <string name="backup_restored">"Restored feed subscriptions from backup"</string>
+
     <!-- AntennaPodSP -->
 
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
