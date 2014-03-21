@@ -35,8 +35,12 @@
         android:name="de.danoeh.antennapod.PodcastApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
+        android:backupAgent=".backup.OpmlBackupAgent"
         android:logo="@drawable/ic_launcher"
         android:theme="@style/Theme.AntennaPod.Light">
+        <meta-data
+            android:name="com.google.android.backup.api_key"
+            android:value="AEdPqrEAAAAIRUmY27PIgwf_FtdHiT1_QLRM-7VLPnnFQ2Y_zw" />
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
