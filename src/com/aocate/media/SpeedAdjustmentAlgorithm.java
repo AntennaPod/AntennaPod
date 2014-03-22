@@ -1,0 +1,31 @@
+// Copyright 2011, Aocate, Inc.
+//
+// Licensed under the Apache License, Version 2.0 (the "License");
+// you may not use this file except in compliance with the License.
+// You may obtain a copy of the License at
+//
+//     http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing, software
+// distributed under the License is distributed on an "AS IS" BASIS,
+// WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+// See the License for the specific language governing permissions and
+// limitations under the License.
+
+package com.aocate.media;
+
+public class SpeedAdjustmentAlgorithm {
+	/**
+	 * Use this to use the user-specified algorithm
+	 */
+	public static int DEFAULT = 0;
+	
+	/**
+	 * Better for voice audio
+	 */
+	public static int SONIC = 1;
+	/**
+	 * Better for music audio
+	 */
+	public static int WSOLA = 2;
+}
