@@ -36,6 +36,7 @@
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:backupAgent=".backup.OpmlBackupAgent"
+        android:restoreAnyVersion="true"
         android:logo="@drawable/ic_launcher"
         android:theme="@style/Theme.AntennaPod.Light">
         <meta-data
