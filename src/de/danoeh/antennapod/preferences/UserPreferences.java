@@ -76,6 +76,7 @@ public class UserPreferences implements
 	private String playbackSpeed;
 	private String[] playbackSpeedArray;
 	private boolean pauseForFocusLoss;
+	private boolean isFreshInstall;
 
 	private UserPreferences(Context context) {
 		this.context = context;
@@ -282,6 +283,11 @@ public class UserPreferences implements
 	public static boolean shouldPauseForFocusLoss() {
 		instanceAvailable();
 		return instance.pauseForFocusLoss;
+	}
+
+	public static boolean isFreshInstall() {
+		instanceAvailable();
+		return instance.isFreshInstall;
 	}
 
 	@Override

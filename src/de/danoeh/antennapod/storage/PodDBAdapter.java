@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.storage;
 
+import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -205,6 +206,8 @@ public class PodDBAdapter {
     private final Context context;
     private PodDBHelper helper;
 
+    private final BackupManager mBackupManager;
+
     /**
      * Select all columns from the feed-table
      */
@@ -317,6 +320,7 @@ public class PodDBAdapter {
     public PodDBAdapter(Context c) {
         this.context = c;
         helper = getDbHelperSingleton(c.getApplicationContext());
+        mBackupManager = new BackupManager(context);
     }
 
     public PodDBAdapter open() {
@@ -381,11 +385,14 @@ public class PodDBAdapter {
             if (AppConfig.DEBUG)
                 Log.d(this.toString(), "Inserting new Feed into db");
             feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
+            mBackupManager.dataChanged();
         } else {
             if (AppConfig.DEBUG)
                 Log.d(this.toString(), "Updating existing Feed in db");
-            db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
-                    new String[]{String.valueOf(feed.getId())});
+            if (db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
+                    new String[]{String.valueOf(feed.getId())}) > 0) {
+                mBackupManager.dataChanged();
+            }
         }
         return feed.getId();
     }
@@ -844,8 +851,10 @@ public class PodDBAdapter {
                 removeFeedItem(item);
             }
         }
-        db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
-                new String[]{String.valueOf(feed.getId())});
+        if (db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
+                new String[]{String.valueOf(feed.getId())}) > 0) {
+            mBackupManager.dataChanged();
+        }
         db.setTransactionSuccessful();
         db.endTransaction();
     }

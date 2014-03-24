@@ -4,6 +4,8 @@ import java.util.ArrayList;
 
 import android.app.SearchManager;
 import android.app.SearchableInfo;
+import android.app.backup.BackupManager;
+import android.app.backup.RestoreObserver;
 import android.content.Context;
 import android.content.Intent;
 import android.media.AudioManager;
@@ -22,6 +24,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Toast;
+
 import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -113,7 +117,6 @@ public class MainActivity extends ActionBarActivity {
 		StorageUtils.checkStorageAvailability(this);
 		updateProgressBarVisibility();
 		EventDistributor.getInstance().register(contentUpdate);
-
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
