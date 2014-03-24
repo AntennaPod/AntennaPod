@@ -50,7 +50,6 @@ public class UserPreferences implements
 	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
 	private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
 	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
-	private static final String PREF_IS_FRESH_INSTALL = "prefIsFreshInstall";
 
     // TODO: Make this value configurable
     private static final double PLAYED_DURATION_AUTOFLATTR_THRESHOLD = 0.8;
@@ -132,7 +131,6 @@ public class UserPreferences implements
 		playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
 				PREF_PLAYBACK_SPEED_ARRAY, null));
 		pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
-		isFreshInstall = sp.getBoolean(PREF_IS_FRESH_INSTALL, true);
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -342,8 +340,6 @@ public class UserPreferences implements
 			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
 		} else if (key.equals(PREF_PAUSE_ON_HEADSET_DISCONNECT)) {
             pauseOnHeadsetDisconnect = sp.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
-        } else if (key.equals(PREF_IS_FRESH_INSTALL)) {
-            isFreshInstall = sp.getBoolean(PREF_IS_FRESH_INSTALL, true);
         }
 	}
 
@@ -535,12 +531,5 @@ public class UserPreferences implements
     public static double getPlayedDurationAutoflattrThreshold() {
         instanceAvailable();
         return PLAYED_DURATION_AUTOFLATTR_THRESHOLD;
-    }
-
-    public static void setIsFreshInstall(boolean isFreshInstall) {
-        instanceAvailable();
-        PreferenceManager.getDefaultSharedPreferences(instance.context).edit()
-                .putBoolean(PREF_IS_FRESH_INSTALL, isFreshInstall)
-                .apply();
     }
 }

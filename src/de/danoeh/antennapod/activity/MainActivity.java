@@ -117,27 +117,6 @@ public class MainActivity extends ActionBarActivity {
 		StorageUtils.checkStorageAvailability(this);
 		updateProgressBarVisibility();
 		EventDistributor.getInstance().register(contentUpdate);
-
-		// Possibly restore feed subscriptions from backup
-		if (UserPreferences.isFreshInstall()) {
-			new BackupManager(this).requestRestore(new BackupRestoreObserver(this));
-			UserPreferences.setIsFreshInstall(false);
-		}
-	}
-
-	private static class BackupRestoreObserver extends RestoreObserver {
-		private final Context mContext;
-
-		public BackupRestoreObserver(final Context context) {
-			mContext = context;
-		}
-
-		@Override
-		public void restoreFinished(int error) {
-			if (error == 0) {
-				Toast.makeText(mContext, R.string.backup_restored, Toast.LENGTH_SHORT).show();
-			}
-		}
 	}
 
 	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
