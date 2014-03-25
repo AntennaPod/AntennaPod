@@ -1354,7 +1354,7 @@ public class PodDBAdapter {
                 db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
                         + " ADD COLUMN " + KEY_PASSWORD
                         + " TEXT");
-                db.execSQL("ALTER TABLE" + TABLE_NAME_FEED_ITEMS
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
                         + " ADD COLUMN " + KEY_IMAGE
                         + " INTEGER");
             }
