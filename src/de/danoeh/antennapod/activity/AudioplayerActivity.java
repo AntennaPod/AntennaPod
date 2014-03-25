@@ -330,6 +330,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
                 R.attr.navigation_shownotes, R.attr.navigation_chapters});
         final Playable media = controller.getMedia();
         if (butNavLeft != null && butNavRight != null && media != null) {
+
+            butNavRight.setTag(R.id.imageloader_key, null);
+            butNavLeft.setTag(R.id.imageloader_key, null);
+
             switch (currentlyShownPosition) {
                 case POS_COVER:
                     butNavLeft.setScaleType(ScaleType.CENTER);
