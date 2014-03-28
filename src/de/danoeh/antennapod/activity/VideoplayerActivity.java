@@ -337,4 +337,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
         return R.layout.videoplayer_activity;
     }
 
+
+    @Override
+    protected void setScreenOn(boolean enable) {
+        super.setScreenOn(enable);
+        if (enable) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
 }

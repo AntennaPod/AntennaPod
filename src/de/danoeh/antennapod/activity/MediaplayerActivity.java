@@ -135,6 +135,12 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             public void onPlaybackSpeedChange() {
                 MediaplayerActivity.this.onPlaybackSpeedChange();
             }
+
+            @Override
+            protected void setScreenOn(boolean enable) {
+                super.setScreenOn(enable);
+                MediaplayerActivity.this.setScreenOn(enable);
+            }
         };
 
     }
@@ -149,6 +155,9 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
     protected void chooseTheme() {
         setTheme(UserPreferences.getTheme());
+    }
+
+    protected void setScreenOn(boolean enable) {
     }
 
     @Override
@@ -243,7 +252,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         menu.findItem(R.id.support_item).setVisible(
                 media != null && media.getPaymentLink() != null &&
                         (media instanceof FeedMedia) &&
-                        ((FeedMedia) media).getItem().getFlattrStatus().flattrable());
+                        ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
+        );
         menu.findItem(R.id.share_link_item).setVisible(
                 media != null && media.getWebsiteLink() != null);
         menu.findItem(R.id.visit_website_item).setVisible(
@@ -285,7 +295,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                                         dialog.dismiss();
                                         controller.disableSleepTimer();
                                     }
-                                });
+                                }
+                        );
                         stDialog.setNegativeButton(R.string.cancel_label,
                                 new DialogInterface.OnClickListener() {
 
@@ -294,7 +305,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                                                         int which) {
                                         dialog.dismiss();
                                     }
-                                });
+                                }
+                        );
                         stDialog.create().show();
                     }
                     break;
@@ -451,7 +463,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                         dialog.dismiss();
                         finish();
                     }
-                });
+                }
+        );
         errorDialog.create().show();
     }
 

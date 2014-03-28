@@ -422,12 +422,16 @@ public abstract class PlaybackController {
                 checkMediaInfoLoaded();
                 cancelPositionObserver();
                 updatePlayButtonAppearance(playResource, playText);
+                if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
+                    setScreenOn(false);
+                }
                 break;
             case PLAYING:
                 clearStatusMsg();
                 checkMediaInfoLoaded();
                 if (PlaybackService.getCurrentMediaType() == MediaType.VIDEO) {
                     onAwaitingVideoSurface();
+                    setScreenOn(true);
                 }
                 setupPositionObserver();
                 updatePlayButtonAppearance(pauseResource, pauseText);
@@ -549,6 +553,16 @@ public abstract class PlaybackController {
             playbackService.seekTo((int) (prog * media.getDuration()));
             setupPositionObserver();
         }
+    }
+
+    /**
+     * Should be implemented by classes that show a video. The default implementation
+     * does nothing
+     *
+     * @param enable True if the screen should be kept on, false otherwise
+     */
+    protected void setScreenOn(boolean enable) {
+
     }
 
     public OnClickListener newOnPlayButtonClickListener() {
