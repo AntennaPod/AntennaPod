@@ -304,4 +304,5 @@
   <string name="in_queue_label">Odcinek jest w kolejce</string>
   <string name="new_episodes_count_label">Liczba nowych odcinków</string>
   <string name="in_progress_episodes_count_label">Liczba odcinków, których zacząłeś słuchać</string>
+  <!--AntennaPodSP-->
 </resources>

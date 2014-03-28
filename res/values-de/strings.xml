@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Nicht unterstützter Feed-Typ</string>
   <string name="download_error_connection_error">Verbindungsfehler</string>
   <string name="download_error_unknown_host">Unbekannter Host</string>
+  <string name="download_error_unauthorized">Authentifizierungsfehler</string>
   <string name="cancel_all_downloads_label">Alle Downloads abbrechen</string>
   <string name="download_cancelled_msg">Download abgebrochen</string>
   <string name="download_report_title">Download abgeschlossen</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Mediendatei</string>
   <string name="download_type_image">Bild</string>
   <string name="download_request_error_dialog_message_prefix">Beim Herunterladen der Datei ist ein Fehler aufgetreten:\u0020</string>
+  <string name="authentication_notification_title">Authentifizierung erforderlich</string>
+  <string name="authentication_notification_msg">Die angeforderte Quelle erfordert einen Benutzernamen und ein Passwort</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fehler!</string>
   <string name="player_stopped_msg">Keine Medienwiedergabe</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">Episode befindet sich inder Abspielliste</string>
   <string name="new_episodes_count_label">Anzahl neuer Episoden</string>
   <string name="in_progress_episodes_count_label">Anzahl der Episoden, die du angefangen hast zu hören</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
 </resources>

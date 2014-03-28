@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Feed type er ikke understøttet</string>
   <string name="download_error_connection_error">Forbindelsesfejl</string>
   <string name="download_error_unknown_host">Ukendt vært</string>
+  <string name="download_error_unauthorized">Godkendelses fejl</string>
   <string name="cancel_all_downloads_label">Annuller alle downloads</string>
   <string name="download_cancelled_msg">Download afbrudt</string>
   <string name="download_report_title">Downloads afsluttet</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Medie fil</string>
   <string name="download_type_image">Billede</string>
   <string name="download_request_error_dialog_message_prefix">En fejl opstod under download af filen:\u0020</string>
+  <string name="authentication_notification_title">Godkendelses krævet</string>
+  <string name="authentication_notification_msg">Den ressource du efterspurgte kræver et brugernavn og et password</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fejl!</string>
   <string name="player_stopped_msg">Ingen medier afspiller</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">Episode er i køen</string>
   <string name="new_episodes_count_label">Antal nye episoder</string>
   <string name="in_progress_episodes_count_label">Antallet af episoder du er begyndt at lytte til</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
 </resources>

@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Type de flux non géré</string>
   <string name="download_error_connection_error">Erreur de connexion</string>
   <string name="download_error_unknown_host">Hôte inconnu</string>
+  <string name="download_error_unauthorized">Erreur d\'authentification</string>
   <string name="cancel_all_downloads_label">Annuler tous les téléchargements</string>
   <string name="download_cancelled_msg">Téléchargement annulé</string>
   <string name="download_report_title">Téléchargements terminés</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Fichier média</string>
   <string name="download_type_image">Image</string>
   <string name="download_request_error_dialog_message_prefix">Une erreur s\'est produite durant le téléchargement du fichier :\u0020</string>
+  <string name="authentication_notification_title">Authentification requise</string>
+  <string name="authentication_notification_msg">La ressource que vous avez demandé nécessite un nom d\'utilisateur et un mot de passe</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erreur !</string>
   <string name="player_stopped_msg">Pas de lecture en cours</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">L\'épisode est dans la liste</string>
   <string name="new_episodes_count_label">Nombre de nouveaux épisodes</string>
   <string name="in_progress_episodes_count_label">Nombre d\'épisodes que vous avez commencé à écouter</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
 </resources>

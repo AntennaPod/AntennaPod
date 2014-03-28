@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Непідтримую такий канал</string>
   <string name="download_error_connection_error">Помилка з\'єднання</string>
   <string name="download_error_unknown_host">Невідомий host</string>
+  <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
   <string name="download_cancelled_msg">Відмінено завантаження</string>
   <string name="download_report_title">Завантажили</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Файл з медіа</string>
   <string name="download_type_image">Зображення</string>
   <string name="download_request_error_dialog_message_prefix">Помилка при завантажені файлу:\u0020</string>
+  <string name="authentication_notification_title">Потрібна автентифікація</string>
+  <string name="authentication_notification_msg">Для доступа до цього ресурса потрібні ім\'я та пароль </string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Помилка!</string>
   <string name="player_stopped_msg"> Нічого грати</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">Епізод чекає в черзі</string>
   <string name="new_episodes_count_label">Кількість нових епізодів</string>
   <string name="in_progress_episodes_count_label">Кількість епізодів що ви почали слухати</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
 </resources>

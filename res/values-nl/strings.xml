@@ -4,7 +4,7 @@
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="podcasts_label">PODCASTS</string>
-  <string name="episodes_label">EPISODES</string>
+  <string name="episodes_label">AFLEVERINGEN</string>
   <string name="new_label">Nieuw</string>
   <string name="waiting_list_label">Wachtlijst</string>
   <string name="settings_label">Instellingen</string>
@@ -36,8 +36,8 @@
   <string name="chapters_label">Hoofdstukken</string>
   <string name="shownotes_label">Shownotes</string>
   <string name="description_label">Beschrijving</string>
-  <string name="most_recent_prefix">Meest recent episode:\u0020</string>
-  <string name="episodes_suffix">\u0020episodes</string>
+  <string name="most_recent_prefix">Meest recente aflevering:\u0020</string>
+  <string name="episodes_suffix">\u0020afleveringen</string>
   <string name="published_prefix">Gepubliceerd:\u0020</string>
   <string name="length_prefix">Lengte:\u0020</string>
   <string name="size_prefix">Grootte:\u0020</string>
@@ -58,7 +58,7 @@
   <string name="remove_feed_label">Feed verwijderen</string>
   <string name="share_link_label">Website link delen</string>
   <string name="share_source_label">Feed link delen</string>
-  <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE episodes van deze feed die u hebt gedownload wilt verwijderen.</string>
+  <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE afleveringen van deze feed die u hebt gedownload wilt verwijderen.</string>
   <string name="feed_remover_msg">Feed verwijderen</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
@@ -74,7 +74,7 @@
   <string name="support_label">Flattr dit</string>
   <string name="enqueue_all_new">Alle in wachtrij plaatsen</string>
   <string name="download_all">Alles downloaden</string>
-  <string name="skip_episode_label">Episode overslaan</string>
+  <string name="skip_episode_label">Aflevering overslaan</string>
   <!--Download messages and labels-->
   <string name="download_successful">Download succesvol</string>
   <string name="download_failed">Downloaden mislukt</string>
@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Niet ondersteunde feed soort</string>
   <string name="download_error_connection_error">Verbindingsfout</string>
   <string name="download_error_unknown_host">Onbekende host</string>
+  <string name="download_error_unauthorized">Authenticatie fout</string>
   <string name="cancel_all_downloads_label">Alle downloads annuleren</string>
   <string name="download_cancelled_msg">Download geannuleerd</string>
   <string name="download_report_title">Downloads afgerond</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Mediabestand</string>
   <string name="download_type_image">Beeld</string>
   <string name="download_request_error_dialog_message_prefix">Er is een fout opgetreden bij het ​​downloaden van bestand:\u0020</string>
+  <string name="authentication_notification_title">Authenticatie vereist</string>
+  <string name="authentication_notification_msg">De opgevraagde bron vereist een gebruikersnaam en een wachtwoord</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fout!</string>
   <string name="player_stopped_msg">Geen media aan het afspelen</string>
@@ -141,6 +144,17 @@
   <string name="access_revoked_title">Toegang ingetrokken</string>
   <string name="access_revoked_info">U heeft met succes het toegangstoken van AntennaPod tot uw account ingetrokken. Om het proces te voltooien, moet u deze app uit de lijst van goedgekeurde applicaties in uw accountinstellingen op de Flattr website verwijderen.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">Een ding geflattr\'d</string>
+  <string name="flattr_click_success_count">%d dingen geflattr\'d!</string>
+  <string name="flattr_click_success_queue">Geflattr\'d: %s.</string>
+  <string name="flattr_click_failure_count">Kon %d dingen niet flattr\'n!</string>
+  <string name="flattr_click_failure">Niet geflattr\'d: %s.</string>
+  <string name="flattr_click_enqueued">Ding wordt later geflattr\'d</string>
+  <string name="flattring_thing">%s aan het flattren</string>
+  <string name="flattring_label">AntennaPod is aan het flattren</string>
+  <string name="flattrd_label">AntennaPod heeft geflattr\'d</string>
+  <string name="flattrd_failed_label">AntennaPod flattr niet gelukt</string>
+  <string name="flattr_retrieving_status">Geflattr\'de dingen aan het ontvangen</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin downloaden</string>
   <string name="no_playback_plugin_title">Plugin niet geinstalleerd</string>
@@ -175,16 +189,18 @@
   <string name="pref_flattr_this_app_sum">Ondersteun de ontwikkeling van AntennaPod door het te flattr\'en. Bedankt!</string>
   <string name="pref_revokeAccess_title">Toegang intrekken</string>
   <string name="pref_revokeAccess_sum">Trek de toegang van deze app in tot je Flattr account.</string>
-  <string name="pref_display_only_episodes_title">Alleen episodes weergeven</string>
-  <string name="pref_display_only_episodes_sum">Geef alleen items weer die ook een episode hebben.</string>
+  <string name="pref_auto_flattr_title">Automatische Flattr</string>
+  <string name="pref_auto_flattr_sum">Afleveringen automatisch Flattr nadat 80 procent van de episode gespeeld is</string>
+  <string name="pref_display_only_episodes_title">Alleen afleveringen weergeven</string>
+  <string name="pref_display_only_episodes_sum">Geef alleen items weer die ook een aflevering hebben.</string>
   <string name="user_interface_label">User Interface</string>
   <string name="pref_set_theme_title">Kies theme</string>
   <string name="pref_set_theme_sum">Verander het uiterlijk van AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisch downloaden</string>
-  <string name="pref_automatic_download_sum">Configureer het automatisch downloaden van episoden.</string>
+  <string name="pref_automatic_download_sum">Configureer het automatisch downloaden van afleveringen.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filter inschakelen</string>
   <string name="pref_autodl_wifi_filter_sum">Automatisch downloaden alleen toestaan voor geselecteerde Wi-Fi-netwerken.</string>
-  <string name="pref_episode_cache_title">Episode cache</string>
+  <string name="pref_episode_cache_title">Afleveringen cache</string>
   <string name="pref_theme_title_light">Licht</string>
   <string name="pref_theme_title_dark">Donker</string>
   <string name="pref_episode_cache_unlimited">Onbeperkt</string>
@@ -202,7 +218,7 @@
   <string name="pref_gpodnet_sethostname_title">Definieer hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Gebruik standaard host</string>
   <!--Search-->
-  <string name="search_hint">Feeds of episodes zoeken</string>
+  <string name="search_hint">Feeds of afleveringen zoeken</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>
   <string name="found_in_chapters_label">Gevonden in hoofdstukken</string>
   <string name="search_status_searching">Aan het zoeken...</string>
@@ -292,7 +308,22 @@
   <string name="subscribed_label">Geabonneerd</string>
   <string name="downloading_label">Aan het downloaden</string>
   <!--Content descriptions for image buttons-->
+  <string name="show_chapters_label">Hoofdstukken tonen</string>
+  <string name="show_shownotes_label">Shownotes tonen</string>
+  <string name="show_cover_label">Beeld tonen</string>
+  <string name="rewind_label">Terugspoelen</string>
+  <string name="fast_forward_label">Vooruitspoelen</string>
   <string name="media_type_audio_label">Audio</string>
   <string name="media_type_video_label">Video</string>
+  <string name="navigate_upwards_label">Navigeer naar boven</string>
   <string name="butAction_label">Meer acties</string>
+  <string name="status_playing_label">Aflevering wordt gespeeld</string>
+  <string name="status_downloading_label">Aflevering wordt gedownload</string>
+  <string name="status_downloaded_label">Aflevering is gedownload</string>
+  <string name="status_unread_label">Item is nieuw</string>
+  <string name="in_queue_label">Aflevering is in de queue</string>
+  <string name="new_episodes_count_label">Aantal nieuwe afleveringen</string>
+  <string name="in_progress_episodes_count_label">Aantal afleveringen dat begonnen te luisteren zijn</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
 </resources>

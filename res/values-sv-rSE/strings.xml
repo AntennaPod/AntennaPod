@@ -72,7 +72,7 @@
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <string name="visit_website_label">Besök websidan</string>
   <string name="support_label">Flattr det här</string>
-  <string name="enqueue_all_new">Ställ alla i kö</string>
+  <string name="enqueue_all_new">Lägg till alla i kön</string>
   <string name="download_all">Ladda ner alla</string>
   <string name="skip_episode_label">Hoppa över avsnitt</string>
   <!--Download messages and labels-->
@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Flödestyp utan stöd</string>
   <string name="download_error_connection_error">Anslutningsfel</string>
   <string name="download_error_unknown_host">Okänd värd</string>
+  <string name="download_error_unauthorized">Autentiseringsproblem</string>
   <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
   <string name="download_cancelled_msg">Nedladdning avbruten</string>
   <string name="download_report_title">Nedladdningar färdiga</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Mediafil</string>
   <string name="download_type_image">Bild</string>
   <string name="download_request_error_dialog_message_prefix">Ett fel uppstod vid försöket att ladda ner filen:\u0020</string>
+  <string name="authentication_notification_title">Autentisering krävs</string>
+  <string name="authentication_notification_msg">Resursen du begärde kräver ett användarnamn och ett lösenord</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fel! </string>
   <string name="player_stopped_msg">Inget media spelar</string>
@@ -122,7 +125,7 @@
   <string name="show_player_label">Visa spelare</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Rensa kön</string>
-  <string name="organize_queue_label">Organisera kö</string>
+  <string name="organize_queue_label">Organisera kön</string>
   <string name="undo">Ångra</string>
   <string name="removed_from_queue">Föremålet avlägsnades</string>
   <string name="move_to_top_label">Flytta längst upp</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">Episoden är i kön</string>
   <string name="new_episodes_count_label">Antal nya episoder</string>
   <string name="in_progress_episodes_count_label">Antal episoder du har börjat lyssna på</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte...</string>
 </resources>

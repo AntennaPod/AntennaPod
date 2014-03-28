@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Fonte não suportada</string>
   <string name="download_error_connection_error">Erro de ligação</string>
   <string name="download_error_unknown_host">Servidor desconhecido</string>
+  <string name="download_error_unauthorized">Erro de autenticação</string>
   <string name="cancel_all_downloads_label">Cancelar transferências</string>
   <string name="download_cancelled_msg">Transferência cancelada</string>
   <string name="download_report_title">Transferências terminadas</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Ficheiro multimédia</string>
   <string name="download_type_image">Imagem</string>
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao transferir o ficheiro:\u0020</string>
+  <string name="authentication_notification_title">Requer autenticação</string>
+  <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma senha</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erro!</string>
   <string name="player_stopped_msg">Nada em reprodução</string>
@@ -321,4 +324,5 @@
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Número de novos episódios</string>
   <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
+  <!--AntennaPodSP-->
 </resources>
