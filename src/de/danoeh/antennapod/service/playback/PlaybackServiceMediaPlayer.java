@@ -385,14 +385,13 @@ public class PlaybackServiceMediaPlayer {
 
     /**
      * Seeks to the specified position. If the PSMP object is in an invalid state, this method will do nothing.
-     * Invalid time values (< 0) will be ignored.
+     * @param t The position to seek to in milliseconds. t < 0 will be interpreted as t = 0
      * <p/>
      * This method is executed on the caller's thread.
      */
     private void seekToSync(int t) {
         if (t < 0) {
-            if (AppConfig.DEBUG) Log.d(TAG, "Received invalid value for t");
-            return;
+            t = 0;
         }
         playerLock.lock();
 
