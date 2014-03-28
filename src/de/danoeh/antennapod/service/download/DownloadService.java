@@ -648,6 +648,9 @@ public class DownloadService extends Service {
                 if (checkFeedData(feed) == false) {
                     throw new InvalidFeedException();
                 }
+
+                removeDuplicateImages(feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
+
                 // Save information of feed in DB
                 savedFeed = DBTasks.updateFeed(DownloadService.this, feed);
                 // Download Feed Image if provided and not downloaded
@@ -675,32 +678,31 @@ public class DownloadService extends Service {
                         );
                     }
                 }
-                if (!hasDuplicateImages(savedFeed)) {
-                    // download FeedItem images if provided and not downloaded
-                    for (FeedItem item : savedFeed.getItems()) {
-                        if (item.hasItemImage() && (!item.getImage().isDownloaded())) {
-                            if (AppConfig.DEBUG)
-                                Log.d(TAG, "Item has image; Downloading....");
-                            try {
-                                requester.downloadImage(DownloadService.this,
-                                        item.getImage());
-                            } catch (DownloadRequestException e) {
-                                e.printStackTrace();
-                                DBWriter.addDownloadStatus(
-                                        DownloadService.this,
-                                        new DownloadStatus(
-                                                item.getImage(),
-                                                item
-                                                        .getImage()
-                                                        .getHumanReadableIdentifier(),
-                                                DownloadError.ERROR_REQUEST_ERROR,
-                                                false, e.getMessage()
-                                        )
-                                );
-                            }
+                // download FeedItem images if provided and not downloaded
+                for (FeedItem item : savedFeed.getItems()) {
+                    if (item.hasItemImage() && (!item.getImage().isDownloaded())) {
+                        if (AppConfig.DEBUG)
+                            Log.d(TAG, "Item has image; Downloading....");
+                        try {
+                            requester.downloadImage(DownloadService.this,
+                                    item.getImage());
+                        } catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                            DBWriter.addDownloadStatus(
+                                    DownloadService.this,
+                                    new DownloadStatus(
+                                            item.getImage(),
+                                            item
+                                                    .getImage()
+                                                    .getHumanReadableIdentifier(),
+                                            DownloadError.ERROR_REQUEST_ERROR,
+                                            false, e.getMessage()
+                                    )
+                            );
                         }
                     }
                 }
+
 
             } catch (SAXException e) {
                 successful = false;
@@ -761,21 +763,22 @@ public class DownloadService extends Service {
 
         /**
          * Checks if the FeedItems of this feed have images that point
-         * to the same URL.
+         * to the same URL. If two FeedItems have an image that points to
+         * the same URL, the reference of the second item is removed, so that every image
+         * reference is unique.
          */
-        private boolean hasDuplicateImages(Feed feed) {
+        private void removeDuplicateImages(Feed feed) {
             for (int x = 0; x < feed.getItems().size(); x++) {
                 for (int y = x + 1; y < feed.getItems().size(); y++) {
                     FeedItem item1 = feed.getItems().get(x);
                     FeedItem item2 = feed.getItems().get(y);
                     if (item1.hasItemImage() && item2.hasItemImage()) {
                         if (StringUtils.equals(item1.getImage().getDownload_url(), item2.getImage().getDownload_url())) {
-                            return true;
+                            item2.setImage(null);
                         }
                     }
                 }
             }
-            return false;
         }
 
         private boolean hasValidFeedItems(Feed feed) {

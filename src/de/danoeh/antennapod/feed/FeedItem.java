@@ -335,7 +335,9 @@ public class FeedItem extends FeedComponent implements
 
     public void setImage(FeedImage image) {
         this.image = image;
-        image.setOwner(this);
+        if (image != null) {
+            image.setOwner(this);
+        }
     }
 
     /**

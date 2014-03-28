@@ -26,6 +26,12 @@ public class ImageLoader {
     public static final int IMAGE_TYPE_THUMBNAIL = 0;
     public static final int IMAGE_TYPE_COVER = 1;
 
+    /**
+     * Used by loadThumbnailBitmap and loadCoverBitmap to denote an ImageView that displays the default image resource.
+     * This is the case if the given source to load the image from was null or did not return any image data.
+     */
+    private static final Object DEFAULT_IMAGE_RESOURCE_TAG = new Object();
+
     private Handler handler;
     private ExecutorService executor;
 
@@ -122,6 +128,7 @@ public class ImageLoader {
             }
         } else {
             target.setImageResource(defaultCoverResource);
+            target.setTag(R.id.imageloader_key, DEFAULT_IMAGE_RESOURCE_TAG);
         }
     }
 
@@ -163,6 +170,7 @@ public class ImageLoader {
             }
         } else {
             target.setImageResource(defaultCoverResource);
+            target.setTag(R.id.imageloader_key, DEFAULT_IMAGE_RESOURCE_TAG);
         }
     }
 
