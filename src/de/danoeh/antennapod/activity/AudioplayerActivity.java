@@ -15,7 +15,7 @@ import android.view.View.OnLongClickListener;
 import android.view.Window;
 import android.widget.*;
 import android.widget.ImageView.ScaleType;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
@@ -67,29 +67,29 @@ public class AudioplayerActivity extends MediaplayerActivity {
         FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
 
         if (coverFragment != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Removing cover fragment");
             fT.remove(coverFragment);
         }
         if (descriptionFragment != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Removing description fragment");
             fT.remove(descriptionFragment);
         }
         if (chapterFragment != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Removing chapter fragment");
             fT.remove(chapterFragment);
         }
         if (currentlyShownFragment != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Removing currently shown fragment");
             fT.remove(currentlyShownFragment);
         }
         for (int i = 0; i < detachedFragments.length; i++) {
             Fragment f = detachedFragments[i];
             if (f != null) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Removing detached fragment");
                 fT.remove(f);
             }
@@ -106,7 +106,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "onStop");
 
     }
@@ -120,7 +120,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     }
 
     private void savePreferences() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
@@ -147,7 +147,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // super.onSaveInstanceState(outState); would cause crash
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "onSaveInstanceState");
     }
 
@@ -171,7 +171,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
      * @return true if restoreFromPrefernces changed the activity's state
      */
     private boolean restoreFromPreferences() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Restoring instance state");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int savedPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
@@ -186,11 +186,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
             switchToFragment(savedPosition);
             return true;
         } else if (controller == null || controller.getMedia() == null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Couldn't restore from preferences: controller or media was null");
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
                                 + savedPosition + ", id: " + playableId);
@@ -205,7 +205,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
         if (getIntent().getAction() != null
                 && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Received VIEW intent: "
                         + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
@@ -233,7 +233,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onAwaitingVideoSurface() {
-        if (AppConfig.DEBUG) Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
         startActivity(new Intent(this, VideoplayerActivity.class));
     }
 
@@ -255,7 +255,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
      * @param pos Must be POS_COVER, POS_DESCR, or POS_CHAPTERS
      */
     private void switchToFragment(int pos) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Switching contentView to position " + pos);
         if (currentlyShownPosition != pos && controller != null) {
             Playable media = controller.getMedia();
@@ -305,7 +305,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
                 if (currentlyShownFragment != null) {
                     currentlyShownPosition = pos;
                     if (detachedFragments[pos] != null) {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Reattaching fragment at position "
                                     + pos);
                         ft.attach(detachedFragments[pos]);
@@ -523,7 +523,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     protected void onReloadNotification(int notificationCode) {
         if (notificationCode == PlaybackService.EXTRA_CODE_VIDEO) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "ReloadNotification received, switching to Videoplayer now");
             finish();

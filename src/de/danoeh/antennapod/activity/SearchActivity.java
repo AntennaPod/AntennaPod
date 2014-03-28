@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.SearchManager;
@@ -17,17 +14,19 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.FeedSearcher;
 import de.danoeh.antennapod.feed.SearchResult;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.FeedSearcher;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays the results when the user searches for FeedItems or Feeds.
@@ -75,11 +74,11 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         Intent intent = getIntent();
         if (Intent.ACTION_SEARCH.equals(intent.getAction())) {
             if (intent.hasExtra(SearchActivity.EXTRA_FEED_ID)) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Found bundle extra");
                 feedID = intent.getLongExtra(SearchActivity.EXTRA_FEED_ID, 0);
             }
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting search");
             String query = intent.getStringExtra(SearchManager.QUERY);
             getSupportActionBar()
@@ -149,9 +148,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
 
                     @Override
                     public void run() {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Background work finished");
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Found " + result.size()
                                     + " results");
 

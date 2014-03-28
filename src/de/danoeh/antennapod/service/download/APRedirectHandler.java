@@ -1,14 +1,13 @@
 package de.danoeh.antennapod.service.download;
 
-import java.net.URI;
-
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
 import org.apache.http.Header;
 import org.apache.http.HttpResponse;
 import org.apache.http.impl.client.DefaultRedirectHandler;
 import org.apache.http.protocol.HttpContext;
 
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import java.net.URI;
 
 public class APRedirectHandler extends DefaultRedirectHandler {
 	// Identifier for logger
@@ -39,12 +38,12 @@ public class APRedirectHandler extends DefaultRedirectHandler {
 			// If anything had to be fixed, then replace the header
 			if (!s.equals(h[0].getValue()))
 			{
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Original URL: " + h[0].getValue());
 				
 				response.setHeader(LOC, s);
 
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Fixed URL:    " + s);
 			}
 		}

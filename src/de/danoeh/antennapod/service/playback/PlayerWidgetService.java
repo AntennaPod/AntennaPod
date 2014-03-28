@@ -12,7 +12,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
@@ -33,7 +33,7 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Service created");
 		isUpdating = false;
 	}
@@ -41,7 +41,7 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Service is about to be destroyed");
 		try {
 			unbindService(mConnection);
@@ -65,7 +65,7 @@ public class PlayerWidgetService extends Service {
 				startViewUpdaterIfNotRunning();
 			}
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG,
 						"Service was called while updating. Ignoring update request");
 		}
@@ -146,7 +146,7 @@ public class PlayerWidgetService extends Service {
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Connection to service established");
 			playbackService = ((PlaybackService.LocalBinder) service)
 					.getService();
@@ -156,7 +156,7 @@ public class PlayerWidgetService extends Service {
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
 			playbackService = null;
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Disconnected from service");
 		}
 

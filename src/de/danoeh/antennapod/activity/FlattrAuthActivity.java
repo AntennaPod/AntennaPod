@@ -1,24 +1,22 @@
 package de.danoeh.antennapod.activity;
 
 
-import android.support.v7.app.ActionBarActivity;
-import android.view.Menu;
-import android.view.MenuItem;
-import org.shredzone.flattr4j.exception.FlattrException;
-
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import org.shredzone.flattr4j.exception.FlattrException;
 
 /** Guides the user through the authentication process */
 
@@ -39,7 +37,7 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		singleton = this;
 		authSuccessful = false;
-		if (AppConfig.DEBUG) Log.d(TAG, "Activity created");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.flattr_auth);
 		txtvExplanation = (TextView) findViewById(R.id.txtvExplanation);
@@ -74,10 +72,10 @@ public class FlattrAuthActivity extends ActionBarActivity {
 	@Override
 	protected void onResume() {
 		super.onResume();
-		if (AppConfig.DEBUG) Log.d(TAG, "Activity resumed");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Activity resumed");
 		Uri uri = getIntent().getData();
 		if (uri != null) {
-			if (AppConfig.DEBUG) Log.d(TAG, "Received uri");
+			if (BuildConfig.DEBUG) Log.d(TAG, "Received uri");
 			FlattrUtils.handleCallback(this, uri);
 		}
 	}

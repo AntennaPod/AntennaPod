@@ -8,11 +8,10 @@ import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.feed.Feed;
@@ -70,7 +69,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
             throw new IllegalArgumentException(
                     "Activity must be started with feedurl argument!");
         }
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Activity was started with url " + feedUrl);
         setLoadingLayout();
         if (savedInstanceState == null) {
@@ -103,7 +102,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                if (AppConfig.DEBUG) Log.d(TAG, "Download was completed");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Download was completed");
                 DownloadStatus status = downloader.getResult();
                 if (status != null) {
                     if (!status.isCancelled()) {
@@ -135,7 +134,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     private void startFeedDownload(String url, String username, String password) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, new Date());
@@ -187,7 +186,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     "feed must be non-null and downloaded when parseFeed is called");
         }
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Parsing feed");
 
         Thread thread = new Thread() {
@@ -214,7 +213,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     reasonDetailed = e.getMessage();
                 } finally {
                     boolean rc = new File(feed.getFile_url()).delete();
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Deleted feed source file. Result: " + rc);
                 }
 

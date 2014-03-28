@@ -1,17 +1,15 @@
 package de.danoeh.antennapod.feed;
 
 import android.content.Context;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.EpisodeFilter;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 /**
  * Data Object for a whole feed

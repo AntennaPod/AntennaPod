@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.syndication.util;
 
-import org.apache.commons.io.FilenameUtils;
-
 import android.webkit.MimeTypeMap;
+import org.apache.commons.io.FilenameUtils;
 
 /** Utility class for handling MIME-Types of enclosures */
 public class SyndTypeUtils {

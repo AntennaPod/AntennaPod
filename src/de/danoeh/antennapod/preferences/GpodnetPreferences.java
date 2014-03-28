@@ -3,7 +3,7 @@ package de.danoeh.antennapod.preferences;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.service.GpodnetSyncService;
@@ -206,7 +206,7 @@ public class GpodnetPreferences {
     }
 
     public static synchronized void logout() {
-        if (AppConfig.DEBUG) Log.d(TAG, "Logout: Clearing preferences");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Logout: Clearing preferences");
         setUsername(null);
         setPassword(null);
         setDeviceID(null);

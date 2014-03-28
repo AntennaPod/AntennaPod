@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 
 /**
@@ -25,7 +25,7 @@ public abstract class ConfirmationDialog {
 	}
 
 	public void onCancelButtonPressed(DialogInterface dialog) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Dialog was cancelled");
 		dialog.dismiss();
 	}

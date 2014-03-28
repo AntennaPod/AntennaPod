@@ -1,39 +1,32 @@
 package de.danoeh.antennapod.fragment;
 
-import android.content.*;
-import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBarActivity;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.util.ShownotesProvider;
-import org.apache.commons.lang3.StringEscapeUtils;
-
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.*;
 import android.content.res.TypedArray;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShareUtils;
+import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.playback.Playable;
+import org.apache.commons.lang3.StringEscapeUtils;
 
 import java.util.concurrent.Callable;
 
@@ -93,7 +86,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity());
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
@@ -126,7 +119,7 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
                 view.postDelayed(new Runnable() {
@@ -153,14 +146,14 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Fragment attached");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Fragment detached");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
@@ -170,7 +163,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
@@ -181,7 +174,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating fragment");
         Bundle args = getArguments();
         saveState = args.getBoolean(ARG_SAVE_STATE, false);
@@ -258,7 +251,7 @@ public class ItemDescriptionFragment extends Fragment {
             WebView.HitTestResult r = webvDescription.getHitTestResult();
             if (r != null
                     && r.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "Link of webview was long-pressed. Extra: "
                                     + r.getExtra());
@@ -352,7 +345,7 @@ public class ItemDescriptionFragment extends Fragment {
                     ((ActionBarActivity) getActivity())
                             .setSupportProgressBarIndeterminateVisibility(false);
                 }
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Webview loaded");
                 webViewLoader = null;
             }
@@ -368,7 +361,7 @@ public class ItemDescriptionFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Loading Webview");
                 try {
                     Callable<String> shownotesLoadTask = shownotesProvider.loadShownotes();
@@ -407,13 +400,13 @@ public class ItemDescriptionFragment extends Fragment {
 
     private void savePreference() {
         if (saveState) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Saving preferences");
             SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
                     Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             if (media != null && webvDescription != null) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "Saving scroll position: "
                                     + webvDescription.getScrollY());
@@ -421,7 +414,7 @@ public class ItemDescriptionFragment extends Fragment {
                 editor.putString(PREF_PLAYABLE_ID, media.getIdentifier()
                         .toString());
             } else {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "savePreferences was called while media or webview was null");
                 editor.putInt(PREF_SCROLL_Y, -1);
@@ -433,7 +426,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     private boolean restoreFromPreference() {
         if (saveState) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Restoring from preferences");
             Activity activity = getActivity();
             if (activity != null) {
@@ -444,7 +437,7 @@ public class ItemDescriptionFragment extends Fragment {
                 if (scrollY != -1 && media != null
                         && id.equals(media.getIdentifier().toString())
                         && webvDescription != null) {
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Restored scroll Position: " + scrollY);
                     webvDescription.scrollTo(webvDescription.getScrollX(),
                             scrollY);

@@ -6,7 +6,6 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.InputStream;
 import java.util.Date;

@@ -11,7 +11,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.gpoddernet.GpodnetMainActivity;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -34,7 +34,7 @@ public class AddFeedActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Was started with Intent " + getIntent().getAction()
                     + " and Data " + getIntent().getDataString());
         setTheme(UserPreferences.getTheme());
@@ -99,13 +99,13 @@ public class AddFeedActivity extends ActionBarActivity {
         Intent intent = getIntent();
         if (intent.getAction() != null
                 && intent.getAction().equals(Intent.ACTION_SEND)) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Resuming with ACTION_SEND intent");
             String text = intent.getStringExtra(Intent.EXTRA_TEXT);
             if (text != null) {
                 etxtFeedurl.setText(text);
             } else {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "No text was sent");
             }
         }
@@ -115,7 +115,7 @@ public class AddFeedActivity extends ActionBarActivity {
     @Override
     protected void onStop() {
         super.onStop();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Stopping Activity");
     }
 

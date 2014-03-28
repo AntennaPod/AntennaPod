@@ -1,18 +1,17 @@
 package de.danoeh.antennapod.miroguide.conn;
 
+import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
-import de.danoeh.antennapod.miroguide.model.MiroGuideItem;
 
 
 /** Provides methods to communicate with the Miroguide API on an abstract level. */

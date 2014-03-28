@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
@@ -13,7 +12,7 @@ import android.support.v7.view.ActionMode;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedItemlistActivity;
 import de.danoeh.antennapod.adapter.FeedlistAdapter;
@@ -85,7 +84,7 @@ public class FeedlistFragment extends Fragment implements
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating");
         fla = new FeedlistAdapter(getActivity(), itemAccess);
         loadFeeds();
@@ -143,14 +142,14 @@ public class FeedlistFragment extends Fragment implements
             listView.setOnItemLongClickListener(this);
             listView.setAdapter(fla);
             listView.setEmptyView(emptyView);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Using ListView");
         } else {
             gridView.setOnItemClickListener(this);
             gridView.setOnItemLongClickListener(this);
             gridView.setAdapter(fla);
             gridView.setEmptyView(emptyView);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Using GridView");
         }
         setEmptyViewIfListIsEmpty();
@@ -159,7 +158,7 @@ public class FeedlistFragment extends Fragment implements
     @Override
     public void onResume() {
         super.onResume();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Resuming");
         EventDistributor.getInstance().register(contentUpdate);
     }
@@ -183,7 +182,7 @@ public class FeedlistFragment extends Fragment implements
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received contentUpdate Intent.");
                 loadFeeds();
             }
@@ -266,7 +265,7 @@ public class FeedlistFragment extends Fragment implements
                                    int position, long id) {
         Feed selection = fla.getItem(position);
         if (selection != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Selected Feed with title " + selection.getTitle());
             if (mActionMode != null) {
                 mActionMode.finish();

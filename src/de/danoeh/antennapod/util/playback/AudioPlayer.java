@@ -3,7 +3,6 @@ package de.danoeh.antennapod.util.playback;
 import android.content.Context;
 import android.util.Log;
 import android.view.SurfaceHolder;
-
 import com.aocate.media.MediaPlayer;
 
 public class AudioPlayer extends MediaPlayer implements IPlayer {

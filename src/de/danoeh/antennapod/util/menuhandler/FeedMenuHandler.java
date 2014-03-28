@@ -4,18 +4,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
-import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.storage.DBTasks;
@@ -23,7 +17,6 @@ import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.ShareUtils;
-import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 /** Handles interactions with the FeedItemMenu. */
 public class FeedMenuHandler {
@@ -39,7 +32,7 @@ public class FeedMenuHandler {
             return true;
         }
 
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Preparing options menu");
 		menu.findItem(R.id.mark_all_read_item).setVisible(
 				selectedFeed.hasNewItems(true));

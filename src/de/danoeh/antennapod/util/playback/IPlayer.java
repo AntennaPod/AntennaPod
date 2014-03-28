@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.util.playback;
 
-import java.io.IOException;
-
 import android.view.SurfaceHolder;
+
+import java.io.IOException;
 
 public interface IPlayer {
 	boolean canSetPitch();

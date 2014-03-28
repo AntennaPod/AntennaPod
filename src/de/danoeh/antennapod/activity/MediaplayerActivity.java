@@ -16,7 +16,7 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -164,7 +164,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         chooseTheme();
         super.onCreate(savedInstanceState);
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating Activity");
         StorageUtils.checkStorageAvailability(this);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -222,7 +222,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Activity stopped");
         if (controller != null) {
             controller.release();
@@ -232,7 +232,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Activity destroyed");
     }
 
@@ -355,7 +355,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Resuming Activity");
         StorageUtils.checkStorageAvailability(this);
         controller.init();
@@ -390,7 +390,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     }
 
     private void updateProgressbarPosition(int position, int duration) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Updating progressbar info");
         float progress = ((float) position) / duration;
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
@@ -403,7 +403,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
      * FeedMedia object.
      */
     protected boolean loadMediaInfo() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading media info");
         Playable media = controller.getMedia();
         if (media != null) {

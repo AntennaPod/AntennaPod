@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadRequest;
@@ -89,7 +89,7 @@ public class DownloadAuthenticationActivity extends ActionBarActivity {
                 setResult(Activity.RESULT_OK, result);
 
                 if (sendToDownloadRequester) {
-                   if (AppConfig.DEBUG) Log.d(TAG, "Sending request to DownloadRequester");
+                   if (BuildConfig.DEBUG) Log.d(TAG, "Sending request to DownloadRequester");
                     DownloadRequester.getInstance().download(DownloadAuthenticationActivity.this, request);
                 }
                 finish();

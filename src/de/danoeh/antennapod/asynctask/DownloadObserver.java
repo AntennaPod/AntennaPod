@@ -5,7 +5,7 @@ import android.content.*;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.service.download.Downloader;
 
@@ -55,13 +55,13 @@ public class DownloadObserver {
     }
 
     public void onResume() {
-        if (AppConfig.DEBUG) Log.d(TAG, "DownloadObserver resumed");
+        if (BuildConfig.DEBUG) Log.d(TAG, "DownloadObserver resumed");
         activity.registerReceiver(contentChangedReceiver, new IntentFilter(DownloadService.ACTION_DOWNLOADS_CONTENT_CHANGED));
         activity.bindService(new Intent(activity, DownloadService.class), mConnection, 0);
     }
 
     public void onPause() {
-        if (AppConfig.DEBUG) Log.d(TAG, "DownloadObserver paused");
+        if (BuildConfig.DEBUG) Log.d(TAG, "DownloadObserver paused");
         activity.unregisterReceiver(contentChangedReceiver);
         activity.unbindService(mConnection);
         stopRefresher();
@@ -93,7 +93,7 @@ public class DownloadObserver {
             downloadService = ((DownloadService.LocalBinder) service)
                     .getService();
             mIsBound.set(true);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Connection to service established");
             List<Downloader> downloaderList = downloadService.getDownloads();
             if (downloaderList != null && !downloaderList.isEmpty()) {

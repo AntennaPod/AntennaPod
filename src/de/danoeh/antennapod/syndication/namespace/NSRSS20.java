@@ -1,15 +1,14 @@
 package de.danoeh.antennapod.syndication.namespace;
 
-import org.xml.sax.Attributes;
-
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
 import de.danoeh.antennapod.syndication.util.SyndTypeUtils;
+import org.xml.sax.Attributes;
 
 /**
  * SAX-Parser for reading RSS-Feeds
@@ -57,7 +56,7 @@ public class NSRSS20 extends Namespace {
 				try {
 					size = Long.parseLong(attributes.getValue(ENC_LEN));
 				} catch (NumberFormatException e) {
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Length attribute could not be parsed.");
 				}
 				state.getCurrentItem().setMedia(

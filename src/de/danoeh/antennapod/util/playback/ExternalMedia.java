@@ -1,9 +1,5 @@
 package de.danoeh.antennapod.util.playback;
 
-import java.io.InputStream;
-import java.util.List;
-import java.util.concurrent.Callable;
-
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
@@ -12,6 +8,10 @@ import android.os.Parcelable;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.util.ChapterUtils;
+
+import java.io.InputStream;
+import java.util.List;
+import java.util.concurrent.Callable;
 
 /** Represents a media file that is stored on the local storage device. */
 public class ExternalMedia implements Playable {

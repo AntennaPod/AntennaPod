@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.Date;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
@@ -15,13 +12,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.ListView;
-import android.widget.ProgressBar;
-import android.widget.RelativeLayout;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import de.danoeh.antennapod.AppConfig;
+import android.widget.*;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.MiroGuideItemlistAdapter;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -33,6 +25,9 @@ import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Displays information about one channel and lets the user add this channel to
@@ -95,7 +90,7 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
 
         @Override
         protected Void doInBackground(Void... params) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting background task");
             feeds = DBReader.getFeedList(MiroGuideChannelViewActivity.this);
             MiroGuideService service = new MiroGuideService();
@@ -111,7 +106,7 @@ public class MiroGuideChannelViewActivity extends ActionBarActivity {
         @SuppressLint("NewApi")
         @Override
         protected void onPostExecute(Void result) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Loading finished");
             if (exception == null) {
                 txtvTitle.setText(channel.getName());

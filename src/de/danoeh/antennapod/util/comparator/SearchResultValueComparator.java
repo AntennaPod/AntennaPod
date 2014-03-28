@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.util.comparator;
 
-import java.util.Comparator;
-
 import de.danoeh.antennapod.feed.SearchResult;
+
+import java.util.Comparator;
 
 public class SearchResultValueComparator implements Comparator<SearchResult> {
 

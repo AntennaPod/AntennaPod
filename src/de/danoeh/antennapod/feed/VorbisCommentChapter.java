@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.feed;
 
-import java.util.concurrent.TimeUnit;
-
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentReaderException;
+
+import java.util.concurrent.TimeUnit;
 
 public class VorbisCommentChapter extends Chapter {
 	public static final int CHAPTERTYPE_VORBISCOMMENT_CHAPTER = 3;

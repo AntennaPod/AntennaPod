@@ -1,17 +1,17 @@
 package de.danoeh.antennapod.util;
 
-import java.io.File;
-
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.os.StatFs;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.activity.StorageErrorActivity;
 import de.danoeh.antennapod.preferences.UserPreferences;
+
+import java.io.File;
 
 /** Utility functions for handling storage errors */
 public class StorageUtils {
@@ -22,7 +22,7 @@ public class StorageUtils {
 		if (dir != null) {
 			return dir.exists() && dir.canRead() && dir.canWrite();
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Storage not available: data folder is null");
 			return false;
 		}

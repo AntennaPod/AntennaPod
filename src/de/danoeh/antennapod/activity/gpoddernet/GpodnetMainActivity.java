@@ -11,7 +11,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.gpodnet.PodcastTopListFragment;
 import de.danoeh.antennapod.fragment.gpodnet.SuggestionListFragment;
 import de.danoeh.antennapod.fragment.gpodnet.TagListFragment;
-import de.danoeh.antennapod.preferences.GpodnetPreferences;
 
 /**
  * Created by daniel on 22.08.13.

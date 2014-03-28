@@ -1,13 +1,12 @@
 package de.danoeh.antennapod.feed;
 
+import de.danoeh.antennapod.asynctask.ImageLoader;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
-
-import de.danoeh.antennapod.asynctask.ImageLoader;
 
 
 

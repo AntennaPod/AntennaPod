@@ -3,7 +3,7 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.service.playback.PlaybackService;
@@ -95,7 +95,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_link_item, false);
         }
 
-        if (!AppConfig.DEBUG
+        if (!BuildConfig.DEBUG
                 || !(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
             mi.setItemVisibility(R.id.mark_unread_item, false);
         }

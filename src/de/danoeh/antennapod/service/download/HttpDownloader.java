@@ -2,7 +2,7 @@ package de.danoeh.antennapod.service.download;
 
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedImage;
@@ -20,7 +20,9 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.auth.BasicScheme;
 
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
@@ -70,7 +72,7 @@ public class HttpDownloader extends Downloader {
             final boolean isGzip = contentEncodingHeader != null &&
                     contentEncodingHeader.getValue().equalsIgnoreCase("gzip");
 
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Response code is " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK || httpEntity == null) {
@@ -99,17 +101,17 @@ public class HttpDownloader extends Downloader {
             byte[] buffer = new byte[BUFFER_SIZE];
             int count = 0;
             request.setStatusMsg(R.string.download_running);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Getting size of download");
             request.setSize(httpEntity.getContentLength());
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
                 request.setSize(DownloadStatus.SIZE_UNKNOWN);
             }
 
             long freeSpace = StorageUtils.getFreeSpaceAvailable();
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Free space is " + freeSpace);
 
             if (request.getSize() != DownloadStatus.SIZE_UNKNOWN
@@ -118,7 +120,7 @@ public class HttpDownloader extends Downloader {
                 return;
             }
 
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting download");
             while (!cancelled
                     && (count = connection.read(buffer)) != -1) {
@@ -170,13 +172,13 @@ public class HttpDownloader extends Downloader {
     }
 
     private void onSuccess() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Download was successful");
         result.setSuccessful();
     }
 
     private void onFail(DownloadError reason, String reasonDetailed) {
-        if (AppConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Download failed");
         }
         result.setFailed(reason, reasonDetailed);
@@ -184,7 +186,7 @@ public class HttpDownloader extends Downloader {
     }
 
     private void onCancelled() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Download was cancelled");
         result.setCancelled();
         cleanup();
@@ -198,11 +200,11 @@ public class HttpDownloader extends Downloader {
             File dest = new File(request.getDestination());
             if (dest.exists()) {
                 boolean rc = dest.delete();
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
                             + rc);
             } else {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
         }

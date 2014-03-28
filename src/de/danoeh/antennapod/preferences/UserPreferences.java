@@ -1,16 +1,5 @@
 package de.danoeh.antennapod.preferences;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import de.danoeh.antennapod.gpoddernet.GpodnetService;
-import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONException;
-
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -18,10 +7,19 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
+import org.apache.commons.lang3.StringUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Provides access to preferences set by the user in the settings screen. A
@@ -89,7 +87,7 @@ public class UserPreferences implements
 	 *             if context is null
 	 * */
 	public static void createInstance(Context context) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Creating new instance of UserPreferences");
 		if (context == null)
 			throw new IllegalArgumentException("Context must not be null");
@@ -286,7 +284,7 @@ public class UserPreferences implements
 
 	@Override
 	public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Registered change of user preferences. Key: " + key);
 
 		if (key.equals(PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY)) {
@@ -392,7 +390,7 @@ public class UserPreferences implements
 				.getDefaultSharedPreferences(context.getApplicationContext());
 		String strDir = prefs.getString(PREF_DATA_FOLDER, null);
 		if (strDir == null) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Using default data folder");
 			return context.getExternalFilesDir(type);
 		} else {
@@ -437,7 +435,7 @@ public class UserPreferences implements
 	}
 
 	public static void setDataFolder(String dir) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Result from DirectoryChooser: " + dir);
 		instanceAvailable();
 		SharedPreferences prefs = PreferenceManager
@@ -459,7 +457,7 @@ public class UserPreferences implements
 				Log.e(TAG, "Could not create .nomedia file");
 				e.printStackTrace();
 			}
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, ".nomedia file created");
 		}
 	}
@@ -473,15 +471,15 @@ public class UserPreferences implements
 				OpmlImportFromPathActivity.IMPORT_DIR);
 		if (importDir != null) {
 			if (importDir.exists()) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Import directory already exists");
 			} else {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Creating import directory");
 				importDir.mkdir();
 			}
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Could not access external storage.");
 		}
 	}
@@ -495,7 +493,7 @@ public class UserPreferences implements
 	 * */
 	public static void restartUpdateAlarm(long millis) {
 		instanceAvailable();
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Restarting update alarm. New value: " + millis);
 		AlarmManager alarmManager = (AlarmManager) instance.context
 				.getSystemService(Context.ALARM_SERVICE);
@@ -506,10 +504,10 @@ public class UserPreferences implements
 		if (millis != 0) {
 			alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, millis, millis,
 					updateIntent);
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Changed alarm to new interval");
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Automatic update was deactivated");
 		}
 	}

@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.dialog;
 
-import java.util.concurrent.TimeUnit;
-
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
@@ -10,13 +8,11 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.Window;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Spinner;
-import android.widget.Toast;
-import de.danoeh.antennapod.AppConfig;
+import android.widget.*;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+
+import java.util.concurrent.TimeUnit;
 
 public abstract class TimeDialog extends Dialog {
 	private static final String TAG = "TimeDialog";
@@ -108,11 +104,11 @@ public abstract class TimeDialog extends Dialog {
 
 	private void checkInputLength(int length) {
 		if (length > 0) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Length is larger than 0, enabling confirm button");
 			butConfirm.setEnabled(true);
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Length is smaller than 0, disabling confirm button");
 			butConfirm.setEnabled(false);
 		}

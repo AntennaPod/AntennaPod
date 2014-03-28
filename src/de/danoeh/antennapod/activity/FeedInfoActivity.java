@@ -11,7 +11,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
@@ -65,9 +65,9 @@ public class FeedInfoActivity extends ActionBarActivity {
             protected void onPostExecute(Feed result) {
                 if (result != null) {
                     feed = result;
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Language is " + feed.getLanguage());
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Author is " + feed.getAuthor());
                     imgvCover.post(new Runnable() {
 

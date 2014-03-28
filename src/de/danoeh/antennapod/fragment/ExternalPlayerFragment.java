@@ -10,8 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.service.playback.PlaybackService;
@@ -57,7 +56,7 @@ public class ExternalPlayerFragment extends Fragment {
 
 			@Override
 			public void onClick(View v) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "layoutInfo was clicked");
 
 				if (controller.getMedia() != null) {
@@ -196,7 +195,7 @@ public class ExternalPlayerFragment extends Fragment {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Fragment is about to be destroyed");
 		if (controller != null) {
 			controller.release();
@@ -212,7 +211,7 @@ public class ExternalPlayerFragment extends Fragment {
 	}
 
 	private boolean loadMediaInfo() {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Loading media info");
 		if (controller.serviceAvailable()) {
 			Playable media = controller.getMedia();

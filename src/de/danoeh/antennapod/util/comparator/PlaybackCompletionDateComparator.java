@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.util.comparator;
 
-import java.util.Comparator;
-
 import de.danoeh.antennapod.feed.FeedItem;
+
+import java.util.Comparator;
 
 public class PlaybackCompletionDateComparator implements Comparator<FeedItem> {
 	

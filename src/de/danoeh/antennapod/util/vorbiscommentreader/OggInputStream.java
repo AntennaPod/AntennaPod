@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.util.vorbiscommentreader;
+
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-
-import org.apache.commons.io.IOUtils;
 
 public class OggInputStream extends InputStream {
 	private InputStream input;

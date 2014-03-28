@@ -1,11 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.util.Arrays;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -17,8 +11,13 @@ import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlWriter;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.util.LangUtils;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
 
 /** Writes an OPML file into the export directory in the background. */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {

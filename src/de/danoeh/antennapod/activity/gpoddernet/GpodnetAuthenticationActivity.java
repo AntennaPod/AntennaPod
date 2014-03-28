@@ -12,7 +12,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
@@ -113,7 +113,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
                 final String usernameStr = username.getText().toString();
                 final String passwordStr = password.getText().toString();
 
-                if (AppConfig.DEBUG) Log.d(TAG, "Checking login credentials");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Checking login credentials");
                 new AsyncTask<GpodnetService, Void, Void>() {
 
                     volatile Exception exception;
@@ -333,7 +333,7 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
     }
 
     private void writeLoginCredentials() {
-        if (AppConfig.DEBUG) Log.d(TAG, "Writing login credentials");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Writing login credentials");
         GpodnetPreferences.setUsername(username);
         GpodnetPreferences.setPassword(password);
         GpodnetPreferences.setDeviceID(selectedDevice.getId());

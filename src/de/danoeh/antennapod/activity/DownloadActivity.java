@@ -14,7 +14,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemLongClickListener;
 import android.widget.ListView;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
@@ -53,7 +53,7 @@ public class DownloadActivity extends ActionBarActivity implements
 
         listview = (ListView) findViewById(R.id.listview);
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating Activity");
         requester = DownloadRequester.getInstance();
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -78,7 +78,7 @@ public class DownloadActivity extends ActionBarActivity implements
     @Override
     protected void onStop() {
         super.onStop();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Stopping Activity");
     }
 

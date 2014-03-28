@@ -1,20 +1,7 @@
 package de.danoeh.antennapod.util;
 
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.Collections;
-import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.util.id3reader.ChapterReader;
@@ -22,6 +9,13 @@ import de.danoeh.antennapod.util.id3reader.ID3ReaderException;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentChapterReader;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentReaderException;
+import org.apache.commons.io.IOUtils;
+
+import java.io.*;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.Collections;
+import java.util.List;
 
 /** Utility class for getting chapter data from media files. */
 public class ChapterUtils {
@@ -36,7 +30,7 @@ public class ChapterUtils {
 	 */
 	public static void readID3ChaptersFromPlayableStreamUrl(Playable p) {
 		if (p != null && p.getStreamUrl() != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
 			InputStream in = null;
 			try {
@@ -87,7 +81,7 @@ public class ChapterUtils {
 	 */
 	public static void readID3ChaptersFromPlayableFileUrl(Playable p) {
 		if (p != null && p.localFileAvailable() && p.getLocalMediaUrl() != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Reading id3 chapters from item " + p.getEpisodeTitle());
 			File source = new File(p.getLocalMediaUrl());
 			if (source.exists()) {
@@ -170,7 +164,7 @@ public class ChapterUtils {
 
 	private static void readOggChaptersFromInputStream(Playable p,
 			InputStream input) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG,
 					"Trying to read chapters from item with title "
 							+ p.getEpisodeTitle());
@@ -243,14 +237,14 @@ public class ChapterUtils {
 	}
 
 	public static void loadChaptersFromStreamUrl(Playable media) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Starting chapterLoader thread");
 		ChapterUtils.readID3ChaptersFromPlayableStreamUrl(media);
 		if (media.getChapters() == null) {
 			ChapterUtils.readOggChaptersFromPlayableStreamUrl(media);
 		}
 
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "ChapterLoaderThread has finished");
 	}
 	

@@ -7,7 +7,7 @@ import android.media.RemoteControlClient;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -75,7 +75,7 @@ public class PlaybackServiceMediaPlayer {
                 new RejectedExecutionHandler() {
                     @Override
                     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
-                        if (AppConfig.DEBUG) Log.d(TAG, "Rejected execution of runnable");
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Rejected execution of runnable");
                     }
                 });
 
@@ -116,7 +116,7 @@ public class PlaybackServiceMediaPlayer {
     public void playMediaObject(final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
         if (playable == null)
             throw new IllegalArgumentException("playable = null");
-        if (AppConfig.DEBUG) Log.d(TAG, "Play media object.");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Play media object.");
         executor.submit(new Runnable() {
             @Override
             public void run() {
@@ -245,10 +245,10 @@ public class PlaybackServiceMediaPlayer {
                 media.onPlaybackStart();
 
             } else {
-                if (AppConfig.DEBUG) Log.e(TAG, "Failed to request audio focus");
+                if (BuildConfig.DEBUG) Log.e(TAG, "Failed to request audio focus");
             }
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Call to resume() was ignored because current state of PSMP object is " + playerStatus);
         }
     }
@@ -271,7 +271,7 @@ public class PlaybackServiceMediaPlayer {
                 playerLock.lock();
 
                 if (playerStatus == PlayerStatus.PLAYING) {
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Pausing playback.");
                     mediaPlayer.pause();
                     setPlayerStatus(PlayerStatus.PAUSED, media);
@@ -284,7 +284,7 @@ public class PlaybackServiceMediaPlayer {
                         reinit();
                     }
                 } else {
-                    if (AppConfig.DEBUG) Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
                 }
 
                 playerLock.unlock();
@@ -305,7 +305,7 @@ public class PlaybackServiceMediaPlayer {
                 playerLock.lock();
 
                 if (playerStatus == PlayerStatus.INITIALIZED) {
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Preparing media player");
                     setPlayerStatus(PlayerStatus.PREPARING, media);
                     try {
@@ -333,7 +333,7 @@ public class PlaybackServiceMediaPlayer {
             throw new IllegalStateException("Player is not in PREPARING state");
         }
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Resource prepared");
 
         if (mediaType == MediaType.VIDEO) {
@@ -346,7 +346,7 @@ public class PlaybackServiceMediaPlayer {
         }
 
         if (media.getDuration() == 0) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Setting duration of media");
             media.setDuration(mediaPlayer.getDuration());
         }
@@ -375,7 +375,7 @@ public class PlaybackServiceMediaPlayer {
                 } else if (mediaPlayer != null) {
                     mediaPlayer.reset();
                 } else {
-                    if (AppConfig.DEBUG) Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
                 }
                 playerLock.unlock();
             }
@@ -534,7 +534,7 @@ public class PlaybackServiceMediaPlayer {
         if (media != null && media.getMediaType() == MediaType.AUDIO) {
             if (mediaPlayer.canSetSpeed()) {
                 mediaPlayer.setPlaybackSpeed((float) speed);
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Playback speed was set to " + speed);
                 callback.playbackSpeedChanged(speed);
             }
@@ -610,7 +610,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Resetting video surface");
                 mediaPlayer.setDisplay(null);
                 reinit();
@@ -665,7 +665,7 @@ public class PlaybackServiceMediaPlayer {
     private synchronized void setPlayerStatus(PlayerStatus newStatus, Playable newMedia) {
         if (newStatus == null)
             throw new IllegalArgumentException("newStatus = null");
-        if (AppConfig.DEBUG) Log.d(TAG, "Setting player status to " + newStatus);
+        if (BuildConfig.DEBUG) Log.d(TAG, "Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;
         this.media = newMedia;
@@ -696,13 +696,13 @@ public class PlaybackServiceMediaPlayer {
 
                     switch (focusChange) {
                         case AudioManager.AUDIOFOCUS_LOSS:
-                            if (AppConfig.DEBUG)
+                            if (BuildConfig.DEBUG)
                                 Log.d(TAG, "Lost audio focus");
                             pause(true, false);
                             callback.shouldStop();
                             break;
                         case AudioManager.AUDIOFOCUS_GAIN:
-                            if (AppConfig.DEBUG)
+                            if (BuildConfig.DEBUG)
                                 Log.d(TAG, "Gained audio focus");
                             if (pausedBecauseOfTransientAudiofocusLoss) // we paused => play now
                                 resume();
@@ -713,13 +713,13 @@ public class PlaybackServiceMediaPlayer {
                         case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
                             if (playerStatus == PlayerStatus.PLAYING) {
                                 if (!UserPreferences.shouldPauseForFocusLoss()) {
-                                    if (AppConfig.DEBUG)
+                                    if (BuildConfig.DEBUG)
                                         Log.d(TAG, "Lost audio focus temporarily. Ducking...");
                                     audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
                                             AudioManager.ADJUST_LOWER, 0);
                                     pausedBecauseOfTransientAudiofocusLoss = false;
                                 } else {
-                                    if (AppConfig.DEBUG)
+                                    if (BuildConfig.DEBUG)
                                         Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
                                     pause(false, false);
                                     pausedBecauseOfTransientAudiofocusLoss = true;
@@ -728,7 +728,7 @@ public class PlaybackServiceMediaPlayer {
                             break;
                         case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
                             if (playerStatus == PlayerStatus.PLAYING) {
-                                if (AppConfig.DEBUG)
+                                if (BuildConfig.DEBUG)
                                     Log.d(TAG, "Lost audio focus temporarily. Pausing...");
                                 pause(false, false);
                                 pausedBecauseOfTransientAudiofocusLoss = true;

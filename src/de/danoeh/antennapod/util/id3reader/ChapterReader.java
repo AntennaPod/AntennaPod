@@ -1,18 +1,17 @@
 package de.danoeh.antennapod.util.id3reader;
 
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.ID3Chapter;
+import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.util.id3reader.model.TagHeader;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
-
-import android.util.Log;
-
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.ID3Chapter;
-import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.util.id3reader.model.TagHeader;
 
 public class ChapterReader extends ID3Reader {
     private static final String TAG = "ID3ChapterReader";
@@ -39,7 +38,7 @@ public class ChapterReader extends ID3Reader {
 			if (currentChapter != null) {
 				if (!hasId3Chapter(currentChapter)) {
 					chapters.add(currentChapter);
-                    if (AppConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Found chapter: " + currentChapter);
 					currentChapter = null;
 				}
 			}
@@ -58,7 +57,7 @@ public class ChapterReader extends ID3Reader {
                 readString(title, input, header.getSize());
 				currentChapter
 						.setTitle(title.toString());
-				if (AppConfig.DEBUG) Log.d(TAG, "Found title: " + currentChapter.getTitle());
+				if (BuildConfig.DEBUG) Log.d(TAG, "Found title: " + currentChapter.getTitle());
 
 				return ID3Reader.ACTION_DONT_SKIP;
 			}
@@ -72,7 +71,7 @@ public class ChapterReader extends ID3Reader {
 
                 currentChapter.setLink(decodedLink);
 
-                if (AppConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
+                if (BuildConfig.DEBUG) Log.d(TAG, "Found link: " + currentChapter.getLink());
                 return ID3Reader.ACTION_DONT_SKIP;
             }
         } else if (header.getId().equals("APIC")) {

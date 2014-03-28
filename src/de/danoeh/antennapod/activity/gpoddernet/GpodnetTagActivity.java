@@ -7,7 +7,6 @@ import android.support.v4.app.NavUtils;
 import android.view.MenuItem;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.gpodnet.PodcastListFragment;
-import de.danoeh.antennapod.fragment.gpodnet.SearchListFragment;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;

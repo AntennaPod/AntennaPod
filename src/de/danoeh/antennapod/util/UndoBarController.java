@@ -26,9 +26,9 @@ import com.nineoldandroids.animation.Animator;
 import com.nineoldandroids.animation.AnimatorListenerAdapter;
 import com.nineoldandroids.view.ViewHelper;
 import com.nineoldandroids.view.ViewPropertyAnimator;
-import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
-
 import de.danoeh.antennapod.R;
+
+import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
 public class UndoBarController {
     private View mBarView;

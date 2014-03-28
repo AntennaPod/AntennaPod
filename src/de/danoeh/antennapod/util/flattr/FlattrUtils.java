@@ -1,21 +1,5 @@
 package de.danoeh.antennapod.util.flattr;
 
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.EnumSet;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.TimeZone;
-
-import org.shredzone.flattr4j.FlattrService;
-import org.shredzone.flattr4j.exception.FlattrException;
-import org.shredzone.flattr4j.model.Flattr;
-import org.shredzone.flattr4j.model.Thing;
-import org.shredzone.flattr4j.oauth.AccessToken;
-import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
-import org.shredzone.flattr4j.oauth.Scope;
-
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -25,12 +9,21 @@ import android.content.SharedPreferences;
 import android.net.Uri;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.asynctask.FlattrTokenFetcher;
 import de.danoeh.antennapod.storage.DBWriter;
+import org.shredzone.flattr4j.FlattrService;
+import org.shredzone.flattr4j.exception.FlattrException;
+import org.shredzone.flattr4j.model.Flattr;
+import org.shredzone.flattr4j.model.Thing;
+import org.shredzone.flattr4j.oauth.AccessToken;
+import org.shredzone.flattr4j.oauth.AndroidAuthenticator;
+import org.shredzone.flattr4j.oauth.Scope;
+
+import java.util.*;
 
 /** Utility methods for doing something with flattr. */
 
@@ -63,17 +56,17 @@ public class FlattrUtils {
 
 	private static AccessToken retrieveToken() {
 		if (cachedToken == null) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Retrieving access token");
 			String token = PreferenceManager.getDefaultSharedPreferences(
 					PodcastApp.getInstance())
 					.getString(PREF_ACCESS_TOKEN, null);
 			if (token != null) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Found access token. Caching.");
 				cachedToken = new AccessToken(token);
 			} else {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "No access token found");
 				return null;
 			}
@@ -87,7 +80,7 @@ public class FlattrUtils {
 	}
 
 	public static void storeToken(AccessToken token) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Storing token");
 		SharedPreferences.Editor editor = PreferenceManager
 				.getDefaultSharedPreferences(PodcastApp.getInstance()).edit();
@@ -101,7 +94,7 @@ public class FlattrUtils {
 	}
 
 	public static void deleteToken() {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Deleting flattr token");
 		storeToken(null);
 	}
@@ -159,7 +152,7 @@ public class FlattrUtils {
 				}
 			}
 			
-			if (AppConfig.DEBUG) {
+			if (BuildConfig.DEBUG) {
 				Log.d(TAG, "Got my flattrs list of length " + Integer.toString(myFlattrs.size()) + " comparison date" + firstOfMonthDate);
 
 				for (Flattr fl: myFlattrs) {
@@ -181,7 +174,7 @@ public class FlattrUtils {
 	}
 
 	public static void revokeAccessToken(Context context) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Revoking access token");
 		deleteToken();
 		FlattrServiceCreator.deleteFlattrService();
@@ -206,7 +199,7 @@ public class FlattrUtils {
 	}
 
 	public static void showNoTokenDialog(final Context context, final String url) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Creating showNoTokenDialog");
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(R.string.no_flattr_token_title);

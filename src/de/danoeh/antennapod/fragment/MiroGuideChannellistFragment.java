@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.fragment;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
@@ -17,14 +14,16 @@ import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
 import android.widget.ListView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MiroGuideChannelViewActivity;
 import de.danoeh.antennapod.adapter.MiroGuideChannelListAdapter;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideException;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideService;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays a list of MiroGuideChannel objects that were results of a certain
@@ -139,7 +138,7 @@ public class MiroGuideChannellistFragment extends ListFragment {
 					int visibleItemCount, int totalItemCount) {
 				int lastVisibleItem = firstVisibleItem + visibleItemCount;
 				if (lastVisibleItem == totalItemCount) {
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						loadChannels();
 				}
 			}
@@ -177,13 +176,13 @@ public class MiroGuideChannellistFragment extends ListFragment {
 
 					@Override
 					protected void onCancelled() {
-						if (AppConfig.DEBUG)
+						if (BuildConfig.DEBUG)
 							Log.d(TAG, "Channel loader was cancelled");
 					}
 
 					@Override
 					protected void onPostExecute(List<MiroGuideChannel> result) {
-						if (AppConfig.DEBUG)
+						if (BuildConfig.DEBUG)
 							Log.d(TAG, "Channel loading finished");
 						if (exception == null) {
 							getListView().removeFooterView(footer);
@@ -195,13 +194,13 @@ public class MiroGuideChannellistFragment extends ListFragment {
 							// check if fragment should not send any more
 							// queries
 							if (result.size() < CHANNELS_PER_QUERY) {
-								if (AppConfig.DEBUG)
+								if (BuildConfig.DEBUG)
 									Log.d(TAG,
 											"Query result was less than requested number of channels. Stopping to send any more queries");
 								stopLoading = true;
 							}
 							if (offset >= MAX_CHANNELS) {
-								if (AppConfig.DEBUG)
+								if (BuildConfig.DEBUG)
 									Log.d(TAG,
 											"Maximum number of feeds has been reached. Stopping to send any more queries");
 								stopLoading = true;
@@ -236,7 +235,7 @@ public class MiroGuideChannellistFragment extends ListFragment {
 					@Override
 					protected List<MiroGuideChannel> doInBackground(
 							Void... params) {
-						if (AppConfig.DEBUG)
+						if (BuildConfig.DEBUG)
 							Log.d(TAG, "Background channel loader started");
 						MiroGuideService service = new MiroGuideService();
 						try {
@@ -260,7 +259,7 @@ public class MiroGuideChannellistFragment extends ListFragment {
 				}
 			}
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Channels are already being loaded");
 		}
 	}

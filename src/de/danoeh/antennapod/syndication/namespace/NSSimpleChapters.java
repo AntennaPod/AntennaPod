@@ -1,13 +1,12 @@
 package de.danoeh.antennapod.syndication.namespace;
 
-import java.util.ArrayList;
-
-import org.xml.sax.Attributes;
-
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
 import de.danoeh.antennapod.syndication.util.SyndDateUtils;
+import org.xml.sax.Attributes;
+
+import java.util.ArrayList;
 
 public class NSSimpleChapters extends Namespace {
 	public static final String NSTAG = "psc|sc";

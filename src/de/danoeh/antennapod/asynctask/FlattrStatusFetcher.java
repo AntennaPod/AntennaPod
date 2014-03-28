@@ -2,7 +2,7 @@ package de.danoeh.antennapod.asynctask;
 
 import android.content.Context;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
@@ -26,7 +26,7 @@ public class FlattrStatusFetcher extends Thread {
 
     @Override
     public void run() {
-        if (AppConfig.DEBUG) Log.d(TAG, "Starting background work: Retrieving Flattr status");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Starting background work: Retrieving Flattr status");
 
         Thread.currentThread().setPriority(Thread.MIN_PRIORITY);
 
@@ -42,6 +42,6 @@ public class FlattrStatusFetcher extends Thread {
             e.printStackTrace();
         }
 
-        if (AppConfig.DEBUG) Log.d(TAG, "Finished background work: Retrieved Flattr status");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Finished background work: Retrieved Flattr status");
     }
 }

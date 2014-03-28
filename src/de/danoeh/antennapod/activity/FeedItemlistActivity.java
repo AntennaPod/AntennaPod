@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,12 +16,10 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
@@ -81,7 +78,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
 
             @Override
             protected Feed doInBackground(Long... longs) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Loading feed data in background");
                 return DBReader.getFeed(FeedItemlistActivity.this, longs[0]);
             }
@@ -89,14 +86,14 @@ public class FeedItemlistActivity extends ActionBarActivity {
             @Override
             protected void onCancelled(Feed feed) {
                 super.onCancelled(feed);
-                if (AppConfig.DEBUG) Log.d(TAG, "load task was cancelled");
+                if (BuildConfig.DEBUG) Log.d(TAG, "load task was cancelled");
             }
 
             @Override
             protected void onPostExecute(Feed result) {
                 super.onPostExecute(result);
                 if (result != null) {
-                    if (AppConfig.DEBUG) Log.d(TAG, "Finished loading feed data");
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Finished loading feed data");
                     feed = result;
                     setTitle(feed.getTitle());
 

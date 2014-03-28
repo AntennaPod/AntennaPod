@@ -1,14 +1,13 @@
 package de.danoeh.antennapod.util.id3reader;
 
+import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
+import de.danoeh.antennapod.util.id3reader.model.TagHeader;
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
-
-import org.apache.commons.io.IOUtils;
-
-import de.danoeh.antennapod.util.id3reader.model.FrameHeader;
-import de.danoeh.antennapod.util.id3reader.model.TagHeader;
 
 /**
  * Reads the ID3 Tag of a given file. In order to use this class, you should

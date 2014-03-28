@@ -8,7 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
@@ -56,7 +56,7 @@ public class GpodnetSyncService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (AppConfig.DEBUG) Log.d(TAG, "onDestroy");
+        if (BuildConfig.DEBUG) Log.d(TAG, "onDestroy");
         syncWaiterThread.interrupt();
 
     }
@@ -85,14 +85,14 @@ public class GpodnetSyncService extends Service {
                     // first sync: download all subscriptions...
                     GpodnetSubscriptionChange changes =
                             service.getSubscriptionChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), 0);
-                    if (AppConfig.DEBUG) Log.d(TAG, "Downloaded subscription changes: " + changes);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Downloaded subscription changes: " + changes);
                     processSubscriptionChanges(localSubscriptions, changes);
 
                     // ... then upload all local subscriptions
-                    if (AppConfig.DEBUG) Log.d(TAG, "Uploading subscription list: " + localSubscriptions);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Uploading subscription list: " + localSubscriptions);
                     GpodnetUploadChangesResponse uploadChangesResponse =
                             service.uploadChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), localSubscriptions, new LinkedList<String>());
-                    if (AppConfig.DEBUG) Log.d(TAG, "Uploading changes response: " + uploadChangesResponse);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Uploading changes response: " + uploadChangesResponse);
                     DBWriter.updateFeedDownloadURLs(GpodnetSyncService.this, uploadChangesResponse.updatedUrls).get();
                     GpodnetPreferences.removeAddedFeeds(localSubscriptions);
                     GpodnetPreferences.removeRemovedFeeds(GpodnetPreferences.getRemovedFeedsCopy());
@@ -103,14 +103,14 @@ public class GpodnetSyncService extends Service {
 
                     // download remote changes first...
                     GpodnetSubscriptionChange subscriptionChanges = service.getSubscriptionChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), timestamp);
-                    if (AppConfig.DEBUG) Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
                     processSubscriptionChanges(localSubscriptions, subscriptionChanges);
 
                     // ... then upload changes local changes
-                    if (AppConfig.DEBUG) Log.d(TAG, String.format("Uploading subscriptions, Added: %s\nRemoved: %s",
+                    if (BuildConfig.DEBUG) Log.d(TAG, String.format("Uploading subscriptions, Added: %s\nRemoved: %s",
                             added.toString(), removed));
                     GpodnetUploadChangesResponse uploadChangesResponse = service.uploadChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), added, removed);
-                    if (AppConfig.DEBUG) Log.d(TAG, "Upload subscriptions response: " + uploadChangesResponse);
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Upload subscriptions response: " + uploadChangesResponse);
 
                     GpodnetPreferences.removeAddedFeeds(added);
                     GpodnetPreferences.removeRemovedFeeds(removed);
@@ -151,7 +151,7 @@ public class GpodnetSyncService extends Service {
     }
 
     private void updateErrorNotification(GpodnetServiceException exception) {
-        if (AppConfig.DEBUG) Log.d(TAG, "Posting error notification");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Posting error notification");
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this);
         final String title;

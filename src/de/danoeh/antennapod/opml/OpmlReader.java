@@ -1,15 +1,14 @@
 package de.danoeh.antennapod.opml;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
 
 /** Reads OPML documents. */
 public class OpmlReader {
@@ -38,16 +37,16 @@ public class OpmlReader {
 		while (eventType != XmlPullParser.END_DOCUMENT) {
 			switch (eventType) {
 			case XmlPullParser.START_DOCUMENT:
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Reached beginning of document");
 				break;
 			case XmlPullParser.START_TAG:
 				if (xpp.getName().equals(OpmlSymbols.OPML)) {
 					isInOpml = true;
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Reached beginning of OPML tree.");
 				} else if (isInOpml && xpp.getName().equals(OpmlSymbols.OUTLINE)) {
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Found new Opml element");
 					OpmlElement element = new OpmlElement();
 					
@@ -69,7 +68,7 @@ public class OpmlReader {
 						}
 						elementList.add(element);
 					} else {
-						if (AppConfig.DEBUG)
+						if (BuildConfig.DEBUG)
 							Log.d(TAG,
 									"Skipping element because of missing xml url");
 					}
@@ -79,7 +78,7 @@ public class OpmlReader {
 			eventType = xpp.next();
 		}
 
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Parsing finished.");
 
 		return elementList;
