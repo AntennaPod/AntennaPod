@@ -1,11 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.io.IOException;
-import java.io.Reader;
-import java.util.ArrayList;
-
-import org.xmlpull.v1.XmlPullParserException;
-
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
@@ -14,10 +8,15 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.os.AsyncTask;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.opml.OpmlReader;
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.IOException;
+import java.io.Reader;
+import java.util.ArrayList;
 
 public class OpmlImportWorker extends
 		AsyncTask<Void, Void, ArrayList<OpmlElement>> {
@@ -38,7 +37,7 @@ public class OpmlImportWorker extends
 
 	@Override
 	protected ArrayList<OpmlElement> doInBackground(Void... params) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Starting background work");
 
         if (mReader==null) {
@@ -73,7 +72,7 @@ public class OpmlImportWorker extends
         }
 		progDialog.dismiss();
 		if (exception != null) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG,
 						"An error occured while trying to parse the opml document");
 			AlertDialog.Builder alert = new AlertDialog.Builder(context);

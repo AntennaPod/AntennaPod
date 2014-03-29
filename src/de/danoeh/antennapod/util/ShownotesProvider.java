@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.util;
 
 import java.util.concurrent.Callable;
-import java.util.concurrent.FutureTask;
 
 /**
  * Created by daniel on 04.08.13.

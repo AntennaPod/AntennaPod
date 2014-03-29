@@ -1,15 +1,14 @@
 package de.danoeh.antennapod.util;
 
-import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Rect;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import org.apache.commons.io.IOUtils;
+
+import java.io.InputStream;
 
 public class BitmapDecoder {
 	private static final String TAG = "BitmapDecoder";
@@ -33,7 +32,7 @@ public class BitmapDecoder {
 			int srcHeight = options.outHeight;
 			int length = Math.max(srcWidth, srcHeight);
 			int sampleSize = calculateSampleSize(preferredLength, length);
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Using samplesize " + sampleSize);
 			options.inJustDecodeBounds = false;
 			options.inSampleSize = sampleSize;

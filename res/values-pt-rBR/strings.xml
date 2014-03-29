@@ -299,4 +299,5 @@
   <string name="status_unread_label">Item é novo</string>
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Numero de novos episódios</string>
+  <!--AntennaPodSP-->
 </resources>

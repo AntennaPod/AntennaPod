@@ -1,13 +1,12 @@
 package de.danoeh.antennapod.feed;
 
+import de.danoeh.antennapod.asynctask.ImageLoader;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
-
-import org.apache.commons.io.IOUtils;
-
-import de.danoeh.antennapod.asynctask.ImageLoader;
 
 
 
@@ -16,7 +15,7 @@ public class FeedImage extends FeedFile implements
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
 	protected String title;
-	protected Feed feed;
+	protected FeedComponent owner;
 
 	public FeedImage(String download_url, String title) {
 		super(null, download_url, false);
@@ -33,8 +32,8 @@ public class FeedImage extends FeedFile implements
 
 	@Override
 	public String getHumanReadableIdentifier() {
-		if (feed != null && feed.getTitle() != null) {
-			return feed.getTitle();
+		if (owner != null && owner.getHumanReadableIdentifier() != null) {
+			return owner.getHumanReadableIdentifier();
 		} else {
 			return download_url;
 		}
@@ -57,12 +56,12 @@ public class FeedImage extends FeedFile implements
 		this.title = title;
 	}
 
-	public Feed getFeed() {
-		return feed;
+	public FeedComponent getOwner() {
+		return owner;
 	}
 
-	public void setFeed(Feed feed) {
-		this.feed = feed;
+	public void setOwner(FeedComponent owner) {
+		this.owner = owner;
 	}
 
 	@Override

@@ -6,7 +6,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
@@ -110,7 +110,7 @@ public class DBWriter {
                             }
                         }
                     }
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Deleting File. Result: " + result);
                     EventDistributor.getInstance().sendQueueUpdateBroadcast();
                     EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
@@ -176,6 +176,16 @@ public class DBWriter {
                                 && requester.isDownloadingFile(item.getMedia())) {
                             requester.cancelDownload(context, item.getMedia());
                         }
+
+                        if (item.hasItemImage()) {
+                            FeedImage image = item.getImage();
+                            if (image.isDownloaded() && image.getFile_url() != null) {
+                                File imgFile = new File(image.getFile_url());
+                                imgFile.delete();
+                            } else if (requester.isDownloadingFile(image)) {
+                                requester.cancelDownload(context, item.getImage());
+                            }
+                        }
                     }
                     PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();
@@ -225,7 +235,7 @@ public class DBWriter {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Adding new item to playback history");
                 media.setPlaybackCompletionDate(new Date());
                 // reset played_duration to 0 so that it behaves correctly when the episode is played again
@@ -244,7 +254,7 @@ public class DBWriter {
     private static void cleanupDownloadLog(final PodDBAdapter adapter) {
         final long logSize = adapter.getDownloadLogSize();
         if (logSize > DBReader.DOWNLOAD_LOG_SIZE) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Cleaning up download log");
             adapter.removeDownloadLogItems(logSize - DBReader.DOWNLOAD_LOG_SIZE);
         }
@@ -797,7 +807,7 @@ public class DBWriter {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 for (String key : urls.keySet()) {
-                    if (AppConfig.DEBUG) Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
 
                     adapter.setFeedDownloadUrl(key, urls.get(key));
                 }

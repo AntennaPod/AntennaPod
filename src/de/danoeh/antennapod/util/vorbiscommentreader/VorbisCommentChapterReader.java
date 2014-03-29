@@ -1,12 +1,12 @@
 package de.danoeh.antennapod.util.vorbiscommentreader;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.VorbisCommentChapter;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class VorbisCommentChapterReader extends VorbisCommentReader {
 	private static final String TAG = "VorbisCommentChapterReader";
@@ -39,7 +39,7 @@ public class VorbisCommentChapterReader extends VorbisCommentReader {
 	@Override
 	public void onContentVectorValue(String key, String value)
 			throws VorbisCommentReaderException {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Key: " + key + ", value: " + value);
 		String attribute = VorbisCommentChapter.getAttributeTypeFromKey(key);
 		int id = VorbisCommentChapter.getIDFromKey(key);

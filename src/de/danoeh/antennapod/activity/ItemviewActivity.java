@@ -13,7 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
 import android.widget.TextView;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -75,7 +75,7 @@ public class ItemviewActivity extends ActionBarActivity {
         if (currentLoadTask != null) {
             currentLoadTask.cancel(true);
         }
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Stopping Activity");
     }
 
@@ -93,7 +93,7 @@ public class ItemviewActivity extends ActionBarActivity {
             @Override
             protected void onCancelled(FeedItem feedItem) {
                 super.onCancelled(feedItem);
-                if (AppConfig.DEBUG) Log.d(TAG, "loadTask was cancelled");
+                if (BuildConfig.DEBUG) Log.d(TAG, "loadTask was cancelled");
             }
 
             @Override
@@ -192,7 +192,7 @@ public class ItemviewActivity extends ActionBarActivity {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received contentUpdate Intent.");
                 if (item != null) {
                     loadData(item.getId());

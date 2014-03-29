@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.syndication.handler;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Stack;
-
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.syndication.namespace.Namespace;
 import de.danoeh.antennapod.syndication.namespace.SyndElement;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Stack;
 
 /**
  * Contains all relevant information to describe the current state of a

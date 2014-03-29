@@ -1,16 +1,15 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.Reader;
-import java.util.ArrayList;
-
 import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.opml.OpmlElement;
+
+import java.io.Reader;
+import java.util.ArrayList;
 
 /**
  * Base activity for Opml Import - e.g. with code what to do afterwards
@@ -26,10 +25,10 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
 	 */
 	@Override
 	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Received result");
 		if (resultCode == RESULT_CANCELED) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Activity was cancelled");
             if (finishWhenCanceled())
                 finish();
@@ -51,7 +50,7 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
 				};
 				queuer.executeAsync();
 			} else {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "No items were selected");
 			}
 		}
@@ -67,14 +66,14 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
                 protected void onPostExecute(ArrayList<OpmlElement> result) {
                     super.onPostExecute(result);
                     if (result != null) {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Parsing was successful");
                         OpmlImportHolder.setReadElements(result);
                         startActivityForResult(new Intent(
                                 OpmlImportBaseActivity.this,
                                 OpmlFeedChooserActivity.class), 0);
                     } else {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Parser error occurred");
                     }
                 }

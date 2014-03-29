@@ -5,7 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.view.KeyEvent;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 
 /** Receives media button events. */
@@ -17,7 +17,7 @@ public class MediaButtonReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (AppConfig.DEBUG) Log.d(TAG, "Received intent");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Received intent");
 		KeyEvent event = (KeyEvent) intent.getExtras().get(
 				Intent.EXTRA_KEY_EVENT);
 		if (event.getAction() == KeyEvent.ACTION_DOWN) {

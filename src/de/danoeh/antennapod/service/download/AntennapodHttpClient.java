@@ -2,6 +2,7 @@ package de.danoeh.antennapod.service.download;
 
 import android.util.Log;
 import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.params.HttpClientParams;
 import org.apache.http.conn.ClientConnectionManager;
@@ -42,7 +43,7 @@ public class AntennapodHttpClient {
      */
     public static synchronized HttpClient getHttpClient() {
         if (httpClient == null) {
-            if (AppConfig.DEBUG) Log.d(TAG, "Creating new instance of HTTP client");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Creating new instance of HTTP client");
 
             HttpParams params = new BasicHttpParams();
             params.setParameter(CoreProtocolPNames.USER_AGENT, AppConfig.USER_AGENT);

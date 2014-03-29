@@ -5,7 +5,7 @@ package de.danoeh.antennapod.feed;
  * @author daniel
  *
  */
-public class FeedComponent {
+public abstract class FeedComponent {
 
 	protected long id;
 
@@ -39,7 +39,12 @@ public class FeedComponent {
 	public boolean compareWithOther(FeedComponent other) {
 		return false;
 	}
-	
-	
+
+
+    /**
+     * Should return a non-null, human-readable String so that the item can be
+     * identified by the user. Can be title, download-url, etc.
+     */
+    public abstract String getHumanReadableIdentifier();
 
 }

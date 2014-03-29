@@ -1,15 +1,14 @@
 package de.danoeh.antennapod.opml;
 
+import android.util.Log;
+import android.util.Xml;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.feed.Feed;
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.List;
-
-import org.xmlpull.v1.XmlSerializer;
-
-import android.util.Log;
-import android.util.Xml;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Feed;
 
 /** Writes OPML documents. */
 public class OpmlWriter {
@@ -28,7 +27,7 @@ public class OpmlWriter {
 	 */
 	public void writeDocument(List<Feed> feeds, Writer writer)
 			throws IllegalArgumentException, IllegalStateException, IOException {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Starting to write document");
 		XmlSerializer xs = Xml.newSerializer();
 		xs.setOutput(writer);
@@ -60,7 +59,7 @@ public class OpmlWriter {
 		xs.endTag(null, OpmlSymbols.BODY);
 		xs.endTag(null, OpmlSymbols.OPML);
 		xs.endDocument();
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Finished writing document");
 	}
 }

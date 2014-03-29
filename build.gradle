@@ -17,11 +17,6 @@ dependencies {
         println "Creating libs directory"
         libsdir.mkdir()
     }
-    def prestoLib = new File('libs/presto_client-0.8.5.jar')
-    if (!prestoLib.exists()) {
-        println "Downloading presto library into libs folder"
-        new URL('http://www.aocate.com/presto/client/presto_client-0.8.5.jar').withInputStream{ i -> prestoLib.withOutputStream{ it << i }}
-    }
 
     compile 'com.android.support:appcompat-v7:19.0.+'
     compile 'org.apache.commons:commons-lang3:3.2.1'
@@ -33,7 +28,6 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':submodules:dslv:library')
-    compile files('libs/presto_client-0.8.5.jar')
 }
 
 android {

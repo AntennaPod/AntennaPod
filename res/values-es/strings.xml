@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Tipo de canal no admitido</string>
   <string name="download_error_connection_error">Error de conexión</string>
   <string name="download_error_unknown_host">Host desconocido</string>
+  <string name="download_error_unauthorized">Error de autenticación</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
   <string name="download_cancelled_msg">Descarga cancelada</string>
   <string name="download_report_title">Descargas completadas</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Archivo de medios</string>
   <string name="download_type_image">Imagen</string>
   <string name="download_request_error_dialog_message_prefix">Ha ocurrido un error al intentar descargar el archivo:\u0020</string>
+  <string name="authentication_notification_title">Autenticación requerida</string>
+  <string name="authentication_notification_msg">El recurso solicitado requiere usuario y contraseña</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">¡Error!</string>
   <string name="player_stopped_msg">No hay medios en reproducción</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">El episodio está en la cola</string>
   <string name="new_episodes_count_label">Cantidad de episodios nuevos</string>
   <string name="in_progress_episodes_count_label">Cantidad de episodios que ha comenzado a escuchar</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
 </resources>

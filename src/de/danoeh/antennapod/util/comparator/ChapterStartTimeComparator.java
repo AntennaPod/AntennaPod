@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.util.comparator;
 
-import java.util.Comparator;
-
 import de.danoeh.antennapod.feed.Chapter;
+
+import java.util.Comparator;
 
 public class ChapterStartTimeComparator implements Comparator<Chapter> {
 

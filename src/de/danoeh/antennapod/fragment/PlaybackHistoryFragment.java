@@ -4,13 +4,12 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.storage.DBReader;
 
-import java.util.Iterator;
 import java.util.List;
 
 public class PlaybackHistoryFragment extends ItemlistFragment {
@@ -64,7 +63,7 @@ public class PlaybackHistoryFragment extends ItemlistFragment {
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EventDistributor.PLAYBACK_HISTORY_UPDATE & arg) != 0) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Received content update");
 				loadData();
 			}

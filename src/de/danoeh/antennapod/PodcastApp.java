@@ -7,6 +7,7 @@ import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.spa.SPAUtil;
 
 /** Main application class. */
 public class PodcastApp extends Application {
@@ -31,6 +32,8 @@ public class PodcastApp extends Application {
 		UserPreferences.createInstance(this);
 		PlaybackPreferences.createInstance(this);
 		EventDistributor.getInstance();
+
+        SPAUtil.sendSPAppsQueryFeedsIntent(this);
 	}
 
 	@Override

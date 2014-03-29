@@ -1,20 +1,13 @@
 package de.danoeh.antennapod.syndication.handler;
 
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.syndication.namespace.*;
+import de.danoeh.antennapod.syndication.namespace.atom.NSAtom;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
-
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.syndication.namespace.NSContent;
-import de.danoeh.antennapod.syndication.namespace.NSITunes;
-import de.danoeh.antennapod.syndication.namespace.NSMedia;
-import de.danoeh.antennapod.syndication.namespace.NSRSS20;
-import de.danoeh.antennapod.syndication.namespace.NSSimpleChapters;
-import de.danoeh.antennapod.syndication.namespace.Namespace;
-import de.danoeh.antennapod.syndication.namespace.SyndElement;
-import de.danoeh.antennapod.syndication.namespace.atom.NSAtom;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
 public class SyndHandler extends DefaultHandler {
@@ -84,28 +77,28 @@ public class SyndHandler extends DefaultHandler {
 					state.defaultNamespaces.push(new NSAtom());
 				} else if (prefix.equals(NSAtom.NSTAG)) {
 					state.namespaces.put(uri, new NSAtom());
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Recognized Atom namespace");
 				}
 			} else if (uri.equals(NSContent.NSURI)
 					&& prefix.equals(NSContent.NSTAG)) {
 				state.namespaces.put(uri, new NSContent());
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Recognized Content namespace");
 			} else if (uri.equals(NSITunes.NSURI)
 					&& prefix.equals(NSITunes.NSTAG)) {
 				state.namespaces.put(uri, new NSITunes());
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Recognized ITunes namespace");
 			} else if (uri.equals(NSSimpleChapters.NSURI)
 					&& prefix.matches(NSSimpleChapters.NSTAG)) {
 				state.namespaces.put(uri, new NSSimpleChapters());
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Recognized SimpleChapters namespace");
 			} else if (uri.equals(NSMedia.NSURI)
 					&& prefix.equals(NSMedia.NSTAG)) {
 				state.namespaces.put(uri, new NSMedia());
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Recognized media namespace");
 			}
 		}

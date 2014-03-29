@@ -1,14 +1,14 @@
 package de.danoeh.antennapod.util.vorbiscommentreader;
 
+import org.apache.commons.io.EndianUtils;
+import org.apache.commons.io.IOUtils;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.Arrays;
-
-import org.apache.commons.io.EndianUtils;
-import org.apache.commons.io.IOUtils;
 
 
 public abstract class VorbisCommentReader {

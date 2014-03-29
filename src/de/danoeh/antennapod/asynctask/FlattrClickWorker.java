@@ -13,7 +13,7 @@ import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.DBReader;
@@ -23,7 +23,6 @@ import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.Executor;
 
 /**
  * Performs a click action in a background thread.
@@ -200,7 +199,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
     @Override
     protected void onPostExecute(Void result) {
-        if (AppConfig.DEBUG) Log.d(TAG, "Exit code was " + exitCode);
+        if (BuildConfig.DEBUG) Log.d(TAG, "Exit code was " + exitCode);
 
         switch (exitCode) {
             case NO_TOKEN:
@@ -234,7 +233,7 @@ public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
 
     @Override
     protected Void doInBackground(Void... params) {
-        if (AppConfig.DEBUG) Log.d(TAG, "Starting background work");
+        if (BuildConfig.DEBUG) Log.d(TAG, "Starting background work");
 
         exitCode = EXIT_DEFAULT;
 

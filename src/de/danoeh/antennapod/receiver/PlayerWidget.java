@@ -5,7 +5,7 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.service.playback.PlayerWidgetService;
 
 public class PlayerWidget extends AppWidgetProvider {
@@ -26,7 +26,7 @@ public class PlayerWidget extends AppWidgetProvider {
 	@Override
 	public void onEnabled(Context context) {
 		super.onEnabled(context);
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Widget enabled");
 	}
 

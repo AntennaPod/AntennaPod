@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;

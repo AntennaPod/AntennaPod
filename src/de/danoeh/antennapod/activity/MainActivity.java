@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.ArrayList;
-
 import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
@@ -17,24 +15,25 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.Window;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.FeedlistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.download.DownloadService;
+import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
+
+import java.util.ArrayList;
 
 /** The activity that is shown when the user launches the app. */
 public class MainActivity extends ActionBarActivity {
@@ -121,7 +120,7 @@ public class MainActivity extends ActionBarActivity {
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EVENTS & arg) != 0) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Received contentUpdate Intent.");
 				updateProgressBarVisibility();
 			}

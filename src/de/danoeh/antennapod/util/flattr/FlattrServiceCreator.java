@@ -1,11 +1,10 @@
 package de.danoeh.antennapod.util.flattr;
 
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
 import org.shredzone.flattr4j.FlattrFactory;
 import org.shredzone.flattr4j.FlattrService;
 import org.shredzone.flattr4j.oauth.AccessToken;
-
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
 
 /** Ensures that only one instance of the FlattrService class exists at a time */
 
@@ -19,7 +18,7 @@ public class FlattrServiceCreator {
 	}
 	
 	public static void deleteFlattrService() {
-		if (AppConfig.DEBUG) Log.d(TAG, "Deleting service instance");
+		if (BuildConfig.DEBUG) Log.d(TAG, "Deleting service instance");
 		flattrService = null;
 	}
 }

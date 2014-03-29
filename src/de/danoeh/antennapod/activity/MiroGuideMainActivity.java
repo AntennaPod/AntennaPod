@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.annotation.SuppressLint;
 import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -19,8 +18,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideException;
 import de.danoeh.antennapod.miroguide.conn.MiroGuideService;
@@ -89,7 +87,7 @@ public class MiroGuideMainActivity extends ActionBarActivity implements AdapterV
             @Override
             protected void onPostExecute(Void result) {
                 if (exception == null) {
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Successfully loaded categories");
                     categories = c;
                     createAdapter();

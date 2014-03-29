@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.util.comparator;
 
-import java.util.Comparator;
-
 import de.danoeh.antennapod.feed.FeedItem;
+
+import java.util.Comparator;
 
 /** Compares the pubDate of two FeedItems for sorting*/
 public class FeedItemPubdateComparator implements Comparator<FeedItem> {

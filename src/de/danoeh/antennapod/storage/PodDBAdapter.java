@@ -10,7 +10,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
@@ -25,7 +25,7 @@ import java.util.List;
  */
 public class PodDBAdapter {
     private static final String TAG = "PodDBAdapter";
-    private static final int DATABASE_VERSION = 11;
+    private static final int DATABASE_VERSION = 12;
     public static final String DATABASE_NAME = "Antennapod.db";
 
     /**
@@ -56,6 +56,8 @@ public class PodDBAdapter {
     public static final int KEY_TYPE_INDEX = 12;
     public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
     public static final int KEY_FEED_FLATTR_STATUS_INDEX = 14;
+    public static final int KEY_FEED_USERNAME_INDEX = 15;
+    public static final int KEY_FEED_PASSWORD_INDEX = 16;
     // ----------- FeedItem indices
     public static final int KEY_CONTENT_ENCODED_INDEX = 2;
     public static final int KEY_PUBDATE_INDEX = 3;
@@ -131,6 +133,8 @@ public class PodDBAdapter {
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_PLAYED_DURATION = "played_duration";
+    public static final String KEY_USERNAME = "username";
+    public static final String KEY_PASSWORD = "password";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -153,7 +157,9 @@ public class PodDBAdapter {
             + KEY_LASTUPDATE + " TEXT," + KEY_LANGUAGE + " TEXT," + KEY_AUTHOR
             + " TEXT," + KEY_IMAGE + " INTEGER," + KEY_TYPE + " TEXT,"
             + KEY_FEED_IDENTIFIER + " TEXT," + KEY_AUTO_DOWNLOAD + " INTEGER DEFAULT 1,"
-            + KEY_FLATTR_STATUS + " INTEGER)";
+            + KEY_FLATTR_STATUS + " INTEGER,"
+            + KEY_USERNAME + " TEXT,"
+            + KEY_PASSWORD + " TEXT)";
 
     private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -162,7 +168,8 @@ public class PodDBAdapter {
             + KEY_DESCRIPTION + " TEXT," + KEY_PAYMENT_LINK + " TEXT,"
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
-            + KEY_FLATTR_STATUS + " INTEGER)";
+            + KEY_FLATTR_STATUS + " INTEGER,"
+            + KEY_IMAGE + " INTEGER)";
 
     private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -217,7 +224,9 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_TYPE,
             TABLE_NAME_FEEDS + "." + KEY_FEED_IDENTIFIER,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DOWNLOAD,
-            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS
+            TABLE_NAME_FEEDS + "." + KEY_FLATTR_STATUS,
+            TABLE_NAME_FEEDS + "." + KEY_USERNAME,
+            TABLE_NAME_FEEDS + "." + KEY_PASSWORD
     };
 
     // column indices for FEED_SEL_STD
@@ -237,6 +246,8 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
     public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD = 14;
     public static final int IDX_FEED_SEL_STD_FLATTR_STATUS = 15;
+    public static final int IDX_FEED_SEL_PREFERENCES_USERNAME = 16;
+    public static final int IDX_FEED_SEL_PREFERENCES_PASSWORD = 17;
 
 
     /**
@@ -253,7 +264,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS};
+            TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE};
 
     /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
@@ -278,6 +290,7 @@ public class PodDBAdapter {
     public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
     public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
     public static final int IDX_FI_SMALL_FLATTR_STATUS = 10;
+    public static final int IDX_FI_SMALL_IMAGE = 11;
 
     /**
      * Select id, description and content-encoded column from feeditems.
@@ -308,7 +321,7 @@ public class PodDBAdapter {
 
     public PodDBAdapter open() {
         if (db == null || !db.isOpen() || db.isReadOnly()) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Opening DB");
             try {
                 db = helper.getWritableDatabase();
@@ -321,7 +334,7 @@ public class PodDBAdapter {
     }
 
     public void close() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Closing DB");
         //db.close();
     }
@@ -365,11 +378,11 @@ public class PodDBAdapter {
         values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         if (feed.getId() == 0) {
             // Create new entry
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(this.toString(), "Inserting new Feed into db");
             feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(this.toString(), "Updating existing Feed in db");
             db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
                     new String[]{String.valueOf(feed.getId())});
@@ -383,6 +396,8 @@ public class PodDBAdapter {
         }
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
+        values.put(KEY_USERNAME, prefs.getUsername());
+        values.put(KEY_PASSWORD, prefs.getPassword());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
     }
 
@@ -404,10 +419,14 @@ public class PodDBAdapter {
             db.update(TABLE_NAME_FEED_IMAGES, values, KEY_ID + "=?",
                     new String[]{String.valueOf(image.getId())});
         }
-        if (image.getFeed() != null && image.getFeed().getId() != 0) {
+
+        final FeedComponent owner = image.getOwner();
+        if (owner != null && owner.getId() != 0) {
             values.clear();
             values.put(KEY_IMAGE, image.getId());
-            db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getFeed().getId())});
+            if (owner instanceof Feed) {
+                db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();
@@ -484,6 +503,9 @@ public class PodDBAdapter {
                 setFeedItem(item, false);
             }
         }
+        if (feed.getPreferences() != null) {
+            setFeedPreferences(feed.getPreferences());
+        }
         db.setTransactionSuccessful();
         db.endTransaction();
     }
@@ -502,7 +524,7 @@ public class PodDBAdapter {
      */
     public Cursor getFeedsInFlattrQueueCursor() {
         return db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_FLATTR_STATUS + "=?",
-                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)},null, null, null);
+                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)}, null, null, null);
     }
 
     /**
@@ -510,7 +532,7 @@ public class PodDBAdapter {
      */
     public Cursor getFeedItemsInFlattrQueueCursor() {
         return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FLATTR_STATUS + "=?",
-                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)},null, null, null);
+                new String[]{String.valueOf(FlattrStatus.STATUS_QUEUE)}, null, null, null);
     }
 
     /**
@@ -577,8 +599,7 @@ public class PodDBAdapter {
      * Update the flattr status of a feed or feed item specified by its payment link
      * and the new flattr status to use
      */
-    public void setItemFlattrStatus(String url, FlattrStatus status)
-    {
+    public void setItemFlattrStatus(String url, FlattrStatus status) {
         //Log.d(TAG, "setItemFlattrStatus(" + url + ") = " + status.toString());
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, status.toLong());
@@ -593,19 +614,19 @@ public class PodDBAdapter {
 
         if (db.update(TABLE_NAME_FEEDS, values,
                 KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls) > 0)
-        {
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls
+        ) > 0) {
             Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in Feeds table");
             return;
         }
         if (db.update(TABLE_NAME_FEED_ITEMS, values,
                 KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
-                + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls) > 0)
-        {
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?"
+                        + " OR " + KEY_PAYMENT_LINK + " GLOB ?", query_urls
+        ) > 0) {
             Log.i(TAG, "setItemFlattrStatus found match for " + url + " = " + status.toLong() + " in FeedsItems table");
         }
     }
@@ -613,8 +634,7 @@ public class PodDBAdapter {
     /**
      * Reset flattr status to unflattrd for all items
      */
-    public void clearAllFlattrStatus()
-    {
+    public void clearAllFlattrStatus() {
         ContentValues values = new ContentValues();
         values.put(KEY_FLATTR_STATUS, 0);
         db.update(TABLE_NAME_FEEDS, values, null, null);
@@ -649,6 +669,13 @@ public class PodDBAdapter {
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
+        if (item.hasItemImage()) {
+            if (item.getImage().getId() == 0) {
+                setImage(item.getImage());
+            }
+            values.put(KEY_IMAGE, item.getImage().getId());
+        }
+
         if (item.getId() == 0) {
             item.setId(db.insert(TABLE_NAME_FEED_ITEMS, null, values));
         } else {
@@ -797,6 +824,9 @@ public class PodDBAdapter {
         if (item.getChapters() != null) {
             removeChaptersOfItem(item);
         }
+        if (item.hasItemImage()) {
+            removeFeedImage(item.getImage());
+        }
         db.delete(TABLE_NAME_FEED_ITEMS, KEY_ID + "=?",
                 new String[]{String.valueOf(item.getId())});
     }
@@ -865,8 +895,9 @@ public class PodDBAdapter {
 
     public final Cursor getAllItemsOfFeedCursor(final long feedId) {
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                + "=?", new String[]{String.valueOf(feedId)}, null, null,
-                null);
+                        + "=?", new String[]{String.valueOf(feedId)}, null, null,
+                null
+        );
         return c;
     }
 
@@ -900,7 +931,7 @@ public class PodDBAdapter {
      * @param id ID of the FeedImage
      * @return The cursor of the query
      */
-    public final Cursor getImageOfFeedCursor(final long id) {
+    public final Cursor getImageCursor(final long id) {
         Cursor c = db.query(TABLE_NAME_FEED_IMAGES, null, KEY_ID + "=?",
                 new String[]{String.valueOf(id)}, null, null, null);
         return c;
@@ -908,8 +939,9 @@ public class PodDBAdapter {
 
     public final Cursor getSimpleChaptersOfFeedItemCursor(final FeedItem item) {
         Cursor c = db.query(TABLE_NAME_SIMPLECHAPTERS, null, KEY_FEEDITEM
-                + "=?", new String[]{String.valueOf(item.getId())}, null,
-                null, null);
+                        + "=?", new String[]{String.valueOf(item.getId())}, null,
+                null, null
+        );
         return c;
     }
 
@@ -1056,7 +1088,8 @@ public class PodDBAdapter {
         if (ids.length > IN_OPERATOR_MAXIMUM) {
             throw new IllegalArgumentException(
                     "number of IDs must not be larger than "
-                            + IN_OPERATOR_MAXIMUM);
+                            + IN_OPERATOR_MAXIMUM
+            );
         }
 
         return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_ID + " IN "
@@ -1111,15 +1144,17 @@ public class PodDBAdapter {
         if (feedID != 0) {
             // search items in specific feed
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                    + "=? AND " + KEY_DESCRIPTION + " LIKE '%"
-                    + prepareSearchQuery(query) + "%'",
+                            + "=? AND " + KEY_DESCRIPTION + " LIKE '%"
+                            + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
-                    null);
+                    null
+            );
         } else {
             // search through all items
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_DESCRIPTION + " LIKE '%" + prepareSearchQuery(query)
-                            + "%'", null, null, null, null);
+                            + "%'", null, null, null, null
+            );
         }
     }
 
@@ -1133,16 +1168,18 @@ public class PodDBAdapter {
         if (feedID != 0) {
             // search items in specific feed
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                    + "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
-                    + prepareSearchQuery(query) + "%'",
+                            + "=? AND " + KEY_CONTENT_ENCODED + " LIKE '%"
+                            + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
-                    null);
+                    null
+            );
         } else {
             // search through all items
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_CONTENT_ENCODED + " LIKE '%"
                             + prepareSearchQuery(query) + "%'", null, null,
-                    null, null);
+                    null, null
+            );
         }
     }
 
@@ -1150,16 +1187,18 @@ public class PodDBAdapter {
         if (feedID != 0) {
             // search items in specific feed
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_FEED
-                    + "=? AND " + KEY_TITLE + " LIKE '%"
-                    + prepareSearchQuery(query) + "%'",
+                            + "=? AND " + KEY_TITLE + " LIKE '%"
+                            + prepareSearchQuery(query) + "%'",
                     new String[]{String.valueOf(feedID)}, null, null,
-                    null);
+                    null
+            );
         } else {
             // search through all items
             return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
                     KEY_TITLE + " LIKE '%"
                             + prepareSearchQuery(query) + "%'", null, null,
-                    null, null);
+                    null, null
+            );
         }
     }
 
@@ -1306,6 +1345,17 @@ public class PodDBAdapter {
                         + " INTEGER");
                 db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_MEDIA
                         + " ADD COLUMN " + KEY_PLAYED_DURATION
+                        + " INTEGER");
+            }
+            if (oldVersion <= 11) {
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + KEY_USERNAME
+                        + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + KEY_PASSWORD
+                        + " TEXT");
+                db.execSQL("ALTER TABLE " + TABLE_NAME_FEED_ITEMS
+                        + " ADD COLUMN " + KEY_IMAGE
                         + " INTEGER");
             }
         }

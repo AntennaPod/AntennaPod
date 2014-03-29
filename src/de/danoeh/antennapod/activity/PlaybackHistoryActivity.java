@@ -1,16 +1,13 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.app.NavUtils;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -46,7 +43,7 @@ public class PlaybackHistoryActivity extends ActionBarActivity {
 		setTheme(UserPreferences.getTheme());
 		super.onCreate(arg0);
 
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Activity created");
 		getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 		setContentView(R.layout.playbackhistory_activity);

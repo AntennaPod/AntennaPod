@@ -7,10 +7,9 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-
 import android.view.Menu;
 import android.view.MenuItem;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.fragment.MiroGuideChannellistFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -47,7 +46,7 @@ public class MiroGuideSearchActivity extends ActionBarActivity {
     }
 
     private void handleSearchRequest(String query) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Performing search");
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         listFragment = MiroGuideChannellistFragment.newInstance("name", query,

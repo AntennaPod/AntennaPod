@@ -1,10 +1,7 @@
 package de.danoeh.antennapod.miroguide.conn;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
+import android.net.Uri;
+import de.danoeh.antennapod.util.LangUtils;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,9 +11,9 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import android.net.Uri;
-
-import de.danoeh.antennapod.util.LangUtils;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 
 /** Executes HTTP requests and returns the results. */
 public class MiroGuideConnector {

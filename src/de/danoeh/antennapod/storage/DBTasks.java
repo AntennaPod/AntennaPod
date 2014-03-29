@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.feed.*;
@@ -155,10 +155,10 @@ public final class DBTasks {
                     isRefreshing.set(false);
 
                     if (FlattrUtils.hasToken()) {
-                        if (AppConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
                         new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeAsync(); // flattr pending things
 
-                        if (AppConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
                         new FlattrStatusFetcher(context).start();
 
                     }
@@ -167,7 +167,7 @@ public final class DBTasks {
                 }
             }.start();
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
@@ -205,7 +205,7 @@ public final class DBTasks {
      * @param context Used for DB access.
      */
     public static void refreshExpiredFeeds(final Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Refreshing expired feeds");
 
         new Thread() {
@@ -242,8 +242,15 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
-        DownloadRequester.getInstance().downloadFeed(context,
-                new Feed(feed.getDownload_url(), new Date(), feed.getTitle()));
+        Feed f;
+        if (feed.getPreferences() == null) {
+            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
+        } else {
+            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle(),
+                    feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
+        }
+
+        DownloadRequester.getInstance().downloadFeed(context, f);
     }
 
     /**
@@ -381,7 +388,7 @@ public final class DBTasks {
         return autodownloadExec.submit(new Runnable() {
             @Override
             public void run() {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
                 if (NetworkUtils.autodownloadNetworkAvailable(context)
                         && UserPreferences.isEnableAutodownload()) {
@@ -435,7 +442,7 @@ public final class DBTasks {
                             }
                         }
                     }
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Enqueueing " + itemsToDownload.size()
                                 + " items for download");
 
@@ -530,7 +537,7 @@ public final class DBTasks {
 
         int counter = delete.size();
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, String.format(
                     "Auto-delete deleted %d episodes (%d requested)", counter,
                     episodeNumber));
@@ -628,7 +635,7 @@ public final class DBTasks {
         final Feed savedFeed = searchFeedByIdentifyingValue(context,
                 newFeed.getIdentifyingValue());
         if (savedFeed == null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Found no existing Feed with title "
                                 + newFeed.getTitle() + ". Adding as new one.");
@@ -642,17 +649,22 @@ public final class DBTasks {
             }
             return newFeed;
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Feed with title " + newFeed.getTitle()
                         + " already exists. Syncing new with existing one.");
 
             Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
             savedFeed.setItems(DBReader.getFeedItemList(context, savedFeed));
             if (savedFeed.compareWithOther(newFeed)) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "Feed has updated attribute values. Updating old feed's attributes");
                 savedFeed.updateFromOther(newFeed);
+            }
+            if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
+                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
             }
             // Look for new or updated Items
             for (int idx = 0; idx < newFeed.getItems().size(); idx++) {

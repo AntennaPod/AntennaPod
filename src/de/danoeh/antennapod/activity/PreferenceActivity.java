@@ -19,7 +19,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
@@ -362,7 +362,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data
                     .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Setting data folder");
             UserPreferences.setDataFolder(dir);
         }
@@ -392,7 +392,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                         .getAutodownloadSelectedNetworks()));
                         boolean newValue = ((CheckBoxPreference) preference)
                                 .isChecked();
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Selected network " + key
                                     + ". New state: " + newValue);
 

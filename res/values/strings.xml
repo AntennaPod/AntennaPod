@@ -100,6 +100,7 @@
     <string name="download_error_unsupported_type">Unsupported Feed type</string>
     <string name="download_error_connection_error">Connection error</string>
     <string name="download_error_unknown_host">Unknown host</string>
+    <string name="download_error_unauthorized">Authentication error</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
     <string name="download_cancelled_msg">Download cancelled</string>
     <string name="download_report_title">Downloads completed</string>
@@ -115,6 +116,8 @@
     <string name="download_type_media">Media file</string>
     <string name="download_type_image">Image</string>
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
+    <string name="authentication_notification_title">Authentication required</string>
+    <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
@@ -350,4 +353,8 @@
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="new_episodes_count_label">Number of new episodes</string>
     <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
+
+    <!-- AntennaPodSP -->
+
+    <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
 </resources>

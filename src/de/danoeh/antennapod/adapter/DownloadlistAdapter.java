@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,15 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
+
+import java.util.List;
 
 public class DownloadlistAdapter extends ArrayAdapter<Downloader> {
 	private int selectedItemIndex;

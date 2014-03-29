@@ -7,8 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.asynctask.ImageLoader;
@@ -74,11 +73,11 @@ public class CoverFragment extends Fragment implements
 
 	@Override
 	public void onStart() {
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG, "On Start");
 		super.onStart();
 		if (media != null) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Loading media info");
 			loadMediaInfo();
 		} else {

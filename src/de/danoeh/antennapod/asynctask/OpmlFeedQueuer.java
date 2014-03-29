@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.asynctask;
 
-import java.util.Arrays;
-import java.util.Date;
-
 import android.annotation.SuppressLint;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -13,6 +10,9 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+
+import java.util.Arrays;
+import java.util.Date;
 
 /** Queues items for download in the background. */
 public class OpmlFeedQueuer extends AsyncTask<Void, Void, Void> {

@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.view.MenuItemCompat;
@@ -15,10 +12,12 @@ import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.opml.OpmlElement;
 import de.danoeh.antennapod.preferences.UserPreferences;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Displays the feeds that the OPML-Importer has read and lets the user choose

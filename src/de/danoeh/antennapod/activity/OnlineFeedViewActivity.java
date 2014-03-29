@@ -1,18 +1,21 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.Gravity;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadStatus;
@@ -52,9 +55,9 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     private Downloader downloader;
 
     @Override
-    protected void onCreate(Bundle arg0) {
+    protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
-        super.onCreate(arg0);
+        super.onCreate(savedInstanceState);
 
         if (getIntent() != null && getIntent().hasExtra(ARG_TITLE)) {
             getSupportActionBar().setTitle(getIntent().getStringExtra(ARG_TITLE));
@@ -66,10 +69,23 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
             throw new IllegalArgumentException(
                     "Activity must be started with feedurl argument!");
         }
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Activity was started with url " + feedUrl);
         setLoadingLayout();
-        startFeedDownload(feedUrl);
+        if (savedInstanceState == null) {
+            startFeedDownload(feedUrl, null, null);
+        } else {
+            startFeedDownload(feedUrl, savedInstanceState.getString("username"), savedInstanceState.getString("password"));
+        }
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        if (feed != null && feed.getPreferences() != null) {
+            outState.putString("username", feed.getPreferences().getUsername());
+            outState.putString("password", feed.getPreferences().getPassword());
+        }
     }
 
     @Override
@@ -86,12 +102,16 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                if (AppConfig.DEBUG) Log.d(TAG, "Download was completed");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Download was completed");
                 DownloadStatus status = downloader.getResult();
                 if (status != null) {
                     if (!status.isCancelled()) {
                         if (status.isSuccessful()) {
                             parseFeed();
+                        } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
+                            Dialog dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
+                                    R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
+                            dialog.show();
                         } else {
                             String errorMsg = status.getReason().getErrorString(
                                     OnlineFeedViewActivity.this);
@@ -113,17 +133,20 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
     }
 
-    private void startFeedDownload(String url) {
-        if (AppConfig.DEBUG)
+    private void startFeedDownload(String url, String username, String password) {
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, new Date());
+        if (username != null && password != null) {
+            feed.setPreferences(new FeedPreferences(0, true, username, password));
+        }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url()))
                 .toString();
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
-                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED);
+                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password);
         downloader = new HttpDownloader(
                 request);
         new Thread() {
@@ -163,7 +186,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     "feed must be non-null and downloaded when parseFeed is called");
         }
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Parsing feed");
 
         Thread thread = new Thread() {
@@ -190,7 +213,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     reasonDetailed = e.getMessage();
                 } finally {
                     boolean rc = new File(feed.getFile_url()).delete();
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Deleted feed source file. Result: " + rc);
                 }
 
@@ -257,6 +280,27 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
             }
         });
         builder.show();
+    }
+
+    private class FeedViewAuthenticationDialog extends AuthenticationDialog {
+
+        private String feedUrl;
+
+        public FeedViewAuthenticationDialog(Context context, int titleRes, String feedUrl) {
+            super(context, titleRes, true, false, null, null);
+            this.feedUrl = feedUrl;
+        }
+
+        @Override
+        protected void onCancelled() {
+            super.onCancelled();
+            finish();
+        }
+
+        @Override
+        protected void onConfirmed(String username, String password, boolean saveUsernamePassword) {
+            startFeedDownload(feedUrl, username, password);
+        }
     }
 
 }

@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +13,8 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedComponent;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.SearchResult;
+
+import java.util.List;
 
 /** List adapter for search activity. */
 public class SearchlistAdapter extends ArrayAdapter<SearchResult> {

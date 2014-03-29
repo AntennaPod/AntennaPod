@@ -2,7 +2,7 @@ package de.danoeh.antennapod.service.playback;
 
 import android.content.Context;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.storage.DBReader;
@@ -144,9 +144,9 @@ public class PlaybackServiceTaskManager {
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
-            if (AppConfig.DEBUG) Log.d(TAG, "Started PositionSaver");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Started PositionSaver");
         } else {
-            if (AppConfig.DEBUG) Log.d(TAG, "Call to startPositionSaver was ignored.");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Call to startPositionSaver was ignored.");
         }
     }
 
@@ -163,7 +163,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void cancelPositionSaver() {
         if (isPositionSaverActive()) {
             positionSaverFuture.cancel(false);
-            if (AppConfig.DEBUG) Log.d(TAG, "Cancelled PositionSaver");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Cancelled PositionSaver");
         }
     }
 
@@ -181,9 +181,9 @@ public class PlaybackServiceTaskManager {
             widgetUpdaterFuture = schedExecutor.scheduleWithFixedDelay(widgetUpdater, WIDGET_UPDATER_NOTIFICATION_INTERVAL,
                     WIDGET_UPDATER_NOTIFICATION_INTERVAL, TimeUnit.MILLISECONDS);
 
-            if (AppConfig.DEBUG) Log.d(TAG, "Started WidgetUpdater");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Started WidgetUpdater");
         } else {
-            if (AppConfig.DEBUG) Log.d(TAG, "Call to startWidgetUpdater was ignored.");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Call to startWidgetUpdater was ignored.");
         }
     }
 
@@ -198,7 +198,7 @@ public class PlaybackServiceTaskManager {
         if (waitingTime <= 0)
             throw new IllegalArgumentException("waitingTime <= 0");
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
                     + " milliseconds");
         if (isSleepTimerActive()) {
@@ -220,7 +220,7 @@ public class PlaybackServiceTaskManager {
      */
     public synchronized void disableSleepTimer() {
         if (isSleepTimerActive()) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Disabling sleep timer");
             sleepTimerFuture.cancel(true);
         }
@@ -251,7 +251,7 @@ public class PlaybackServiceTaskManager {
     public synchronized void cancelWidgetUpdater() {
         if (isWidgetUpdaterActive()) {
             widgetUpdaterFuture.cancel(false);
-            if (AppConfig.DEBUG) Log.d(TAG, "Cancelled WidgetUpdater");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Cancelled WidgetUpdater");
         }
     }
 
@@ -281,7 +281,7 @@ public class PlaybackServiceTaskManager {
         Runnable chapterLoader = new Runnable() {
             @Override
             public void run() {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Chapter loader started");
                 if (media.getChapters() == null) {
                     media.loadChapterMarks();
@@ -289,7 +289,7 @@ public class PlaybackServiceTaskManager {
                         callback.onChapterLoaded(media);
                     }
                 }
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Chapter loader stopped");
             }
         };
@@ -335,7 +335,7 @@ public class PlaybackServiceTaskManager {
 
         @Override
         public void run() {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting");
             while (waitingTime > 0) {
                 try {
@@ -343,7 +343,7 @@ public class PlaybackServiceTaskManager {
                     waitingTime -= UPDATE_INTERVALL;
 
                     if (waitingTime <= 0) {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Waiting completed");
                         postExecute();
                         if (!Thread.currentThread().isInterrupted()) {

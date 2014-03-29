@@ -1,28 +1,28 @@
 package de.danoeh.antennapod.storage;
 
-import java.io.File;
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
-import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.webkit.URLUtil;
-import de.danoeh.antennapod.AppConfig;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringUtils;
 
+import java.io.File;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
+
+
+/**
+ * Sends download requests to the DownloadService. This class should always be used for starting downloads,
+ * otherwise they won't work correctly.
+ */
 public class DownloadRequester {
     private static final String TAG = "DownloadRequester";
 
@@ -45,15 +45,41 @@ public class DownloadRequester {
         return downloader;
     }
 
+    /**
+     * Starts a new download with the given DownloadRequest. This method should only
+     * be used from outside classes if the DownloadRequest was created by the DownloadService to
+     * ensure that the data is valid. Use downloadFeed(), downloadImage() or downloadMedia() instead.
+     *
+     * @param context Context object for starting the DownloadService
+     * @param request The DownloadRequest. If another DownloadRequest with the same source URL is already stored, this method
+     *                call will return false.
+     * @return True if the download request was accepted, false otherwise.
+     */
+    public boolean download(Context context, DownloadRequest request) {
+        if (context == null) throw new IllegalArgumentException("context = null");
+        if (request == null) throw new IllegalArgumentException("request = null");
+        if (downloads.containsKey(request.getSource())) {
+            if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
+            return false;
+        }
+        downloads.put(request.getSource(), request);
+
+        Intent launchIntent = new Intent(context, DownloadService.class);
+        launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
+        context.startService(launchIntent);
+        EventDistributor.getInstance().sendDownloadQueuedBroadcast();
+        return true;
+    }
+
     private void download(Context context, FeedFile item, File dest,
-                          boolean overwriteIfExists) {
+                          boolean overwriteIfExists, String username, String password) {
         if (!isDownloadingFile(item)) {
             if (!isFilenameAvailable(dest.toString()) || dest.exists()) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Filename already used.");
                 if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
                     boolean result = dest.delete();
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Deleting file. Result: " + result);
                 } else {
                     // find different name
@@ -65,12 +91,12 @@ public class DownloadRequester {
                                 + i
                                 + FilenameUtils.EXTENSION_SEPARATOR
                                 + FilenameUtils.getExtension(dest.getName());
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Testing filename " + newName);
                         newDest = new File(dest.getParent(), newName);
                         if (!newDest.exists()
                                 && isFilenameAvailable(newDest.toString())) {
-                            if (AppConfig.DEBUG)
+                            if (BuildConfig.DEBUG)
                                 Log.d(TAG, "File doesn't exist yet. Using "
                                         + newName);
                             break;
@@ -81,21 +107,16 @@ public class DownloadRequester {
                     }
                 }
             }
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Requesting download of url " + item.getDownload_url());
             item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
                     item.getDownload_url(), item.getHumanReadableIdentifier(),
-                    item.getId(), item.getTypeAsInt());
+                    item.getId(), item.getTypeAsInt(), username, password);
 
-            downloads.put(request.getSource(), request);
-
-            Intent launchIntent = new Intent(context, DownloadService.class);
-            launchIntent.putExtra(DownloadService.EXTRA_REQUEST, request);
-            context.startService(launchIntent);
-            EventDistributor.getInstance().sendDownloadQueuedBroadcast();
+            download(context, request);
         } else {
             Log.e(TAG, "URL " + item.getDownload_url()
                     + " is already being downloaded");
@@ -110,13 +131,13 @@ public class DownloadRequester {
         for (String key : downloads.keySet()) {
             DownloadRequest r = downloads.get(key);
             if (StringUtils.equals(r.getDestination(), path)) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, path
                             + " is already used by another requested download");
                 return false;
             }
         }
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, path + " is available as a download destination");
         return true;
     }
@@ -124,8 +145,11 @@ public class DownloadRequester {
     public void downloadFeed(Context context, Feed feed)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
+            String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
+            String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
+
             download(context, feed, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true);
+                    getFeedfileName(feed)), true, username, password);
         }
     }
 
@@ -133,7 +157,7 @@ public class DownloadRequester {
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
-                    getImagefileName(image)), true);
+                    getImagefileName(image)), false, null, null);
         }
     }
 
@@ -142,7 +166,8 @@ public class DownloadRequester {
         if (feedFileValid(feedmedia)) {
             download(context, feedmedia,
                     new File(getMediafilePath(context, feedmedia),
-                            getMediafilename(feedmedia)), false);
+                            getMediafilename(feedmedia)), false, null, null
+            );
         }
     }
 
@@ -173,7 +198,7 @@ public class DownloadRequester {
      * Cancels a running download.
      */
     public void cancelDownload(final Context context, final String downloadUrl) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Cancelling download with url " + downloadUrl);
         Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
         cancelIntent.putExtra(DownloadService.EXTRA_DOWNLOAD_URL, downloadUrl);
@@ -184,7 +209,7 @@ public class DownloadRequester {
      * Cancels all running downloads
      */
     public void cancelAllDownloads(Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Cancelling all running downloads");
         context.sendBroadcast(new Intent(
                 DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
@@ -266,8 +291,8 @@ public class DownloadRequester {
 
     public String getImagefileName(FeedImage image) {
         String filename = image.getDownload_url();
-        if (image.getFeed() != null && image.getFeed().getTitle() != null) {
-            filename = image.getFeed().getTitle();
+        if (image.getOwner() != null && image.getOwner().getHumanReadableIdentifier() != null) {
+            filename = image.getOwner().getHumanReadableIdentifier();
         }
         return "image-" + FileNameGenerator.generateFileName(filename);
     }
@@ -278,7 +303,8 @@ public class DownloadRequester {
                 context,
                 MEDIA_DOWNLOADPATH
                         + FileNameGenerator.generateFileName(media.getItem()
-                        .getFeed().getTitle()) + "/");
+                        .getFeed().getTitle()) + "/"
+        );
         return externalStorage.toString();
     }
 
@@ -305,7 +331,8 @@ public class DownloadRequester {
         }
 
         String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),
-                null, media.getMime_type());;
+                null, media.getMime_type());
+        ;
 
         if (titleBaseFilename != "") {
             // Append extension

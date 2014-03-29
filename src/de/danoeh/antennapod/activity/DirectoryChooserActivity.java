@@ -1,10 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -20,18 +15,16 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AdapterView;
+import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.ImageButton;
-import android.widget.ListView;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 
 /**
  * Let's the user choose a directory on the storage device. The selected folder
@@ -127,7 +120,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
 					int position, long id) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Selected index: " + position);
 				if (filesInDir != null && position >= 0
 						&& position < filesInDir.length) {
@@ -160,7 +153,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 	 * selected folder can also be null.
 	 */
 	private void returnSelectedFolder() {
-		if (selectedDir != null && AppConfig.DEBUG)
+		if (selectedDir != null && BuildConfig.DEBUG)
 			Log.d(TAG, "Returning " + selectedDir.getAbsolutePath()
 					+ " as result");
 		Intent resultData = new Intent();
@@ -222,19 +215,19 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 				listDirectoriesAdapter.notifyDataSetChanged();
 				fileObserver = createFileObserver(dir.getAbsolutePath());
 				fileObserver.startWatching();
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Changed directory to " + dir.getAbsolutePath());
 			} else {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG,
 							"Could not change folder: contents of dir were null");
 			}
 		} else {
 			if (dir == null) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Could not change folder: dir was null");
 			} else {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Could not change folder: dir is no directory");
 			}
 		}
@@ -266,7 +259,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 			@Override
 			public void onEvent(int event, String path) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "FileObserver received event " + event);
 				runOnUiThread(new Runnable() {
 

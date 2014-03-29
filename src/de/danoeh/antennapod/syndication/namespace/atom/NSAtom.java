@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.syndication.namespace.atom;
 
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -84,7 +84,7 @@ public class NSAtom extends Namespace {
                             size = Long.parseLong(strSize);
                         }
                     } catch (NumberFormatException e) {
-                        if (AppConfig.DEBUG) Log.d(TAG, "Length attribute could not be parsed.");
+                        if (BuildConfig.DEBUG) Log.d(TAG, "Length attribute could not be parsed.");
                     }
                     String type = attributes.getValue(LINK_TYPE);
                     if (SyndTypeUtils.enclosureTypeValid(type)

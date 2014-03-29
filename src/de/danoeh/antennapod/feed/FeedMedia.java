@@ -4,8 +4,6 @@ import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.DBReader;
@@ -205,8 +203,8 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public FeedImage getImage() {
-        if (item != null && item.getFeed() != null) {
-            return item.getFeed().getImage();
+        if (item != null) {
+            return (item.hasItemImage()) ? item.getImage() : item.getFeed().getImage();
         }
         return null;
     }
@@ -385,8 +383,13 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public InputStream openImageInputStream() {
-        InputStream out = new Playable.DefaultPlayableImageLoader(this)
-                .openImageInputStream();
+        InputStream out;
+        if (item.hasItemImage()) {
+            out = item.openImageInputStream();
+        } else {
+            out = new Playable.DefaultPlayableImageLoader(this)
+                    .openImageInputStream();
+        }
         if (out == null) {
             if (item.getFeed().getImage() != null) {
                 return item.getFeed().getImage().openImageInputStream();
@@ -397,8 +400,13 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public String getImageLoaderCacheKey() {
-        String out = new Playable.DefaultPlayableImageLoader(this)
-                .getImageLoaderCacheKey();
+        String out;
+        if (item.hasItemImage()) {
+            out = item.getImageLoaderCacheKey();
+        } else {
+            out = new Playable.DefaultPlayableImageLoader(this)
+                    .getImageLoaderCacheKey();
+        }
         if (out == null) {
             if (item.getFeed().getImage() != null) {
                 return item.getFeed().getImage().getImageLoaderCacheKey();
@@ -410,7 +418,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public InputStream reopenImageInputStream(InputStream input) {
         if (input instanceof FileInputStream) {
-            return item.getFeed().getImage().reopenImageInputStream(input);
+            return item.getImage().reopenImageInputStream(input);
         } else {
             return new Playable.DefaultPlayableImageLoader(this)
                     .reopenImageInputStream(input);

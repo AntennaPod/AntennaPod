@@ -10,7 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
@@ -60,7 +60,7 @@ public abstract class PodcastListFragment extends Fragment {
     }
 
     protected void onPodcastSelected(GpodnetPodcast selection) {
-        if (AppConfig.DEBUG) Log.d(TAG, "Selected podcast: " + selection.toString());
+        if (BuildConfig.DEBUG) Log.d(TAG, "Selected podcast: " + selection.toString());
         Intent intent = new Intent(getActivity(), DefaultOnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
         intent.putExtra(DefaultOnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));

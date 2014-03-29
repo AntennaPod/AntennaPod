@@ -3,7 +3,6 @@ package de.danoeh.antennapod.activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -90,10 +89,11 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
             @Override
             public void onClick(View v) {
                 try {
+                    Feed f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
+                    f.setPreferences(feed.getPreferences());
                     DownloadRequester.getInstance().downloadFeed(
                             DefaultOnlineFeedViewActivity.this,
-                            new Feed(feed.getDownload_url(), new Date(), feed
-                                    .getTitle()));
+                            f);
                 } catch (DownloadRequestException e) {
                     e.printStackTrace();
                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(DefaultOnlineFeedViewActivity.this,

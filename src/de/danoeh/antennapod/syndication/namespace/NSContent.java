@@ -1,8 +1,7 @@
 package de.danoeh.antennapod.syndication.namespace;
 
-import org.xml.sax.Attributes;
-
 import de.danoeh.antennapod.syndication.handler.HandlerState;
+import org.xml.sax.Attributes;
 
 public class NSContent extends Namespace {
 	public static final String NSTAG = "content";

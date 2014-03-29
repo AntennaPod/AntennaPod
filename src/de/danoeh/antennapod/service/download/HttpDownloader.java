@@ -2,20 +2,27 @@ package de.danoeh.antennapod.service.download;
 
 import android.net.http.AndroidHttpClient;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.feed.FeedImage;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.URIUtil;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.auth.BasicScheme;
 
 import java.io.*;
-import java.net.*;
+import java.net.HttpURLConnection;
+import java.net.SocketTimeoutException;
+import java.net.UnknownHostException;
 
 public class HttpDownloader extends Downloader {
     private static final String TAG = "HttpDownloader";
@@ -26,24 +33,37 @@ public class HttpDownloader extends Downloader {
         super(request);
     }
 
-    private URI getURIFromRequestUrl(String source) {
-        try {
-            URL url = new URL(source);
-            return new URI(url.getProtocol(), url.getUserInfo(), url.getHost(), url.getPort(), url.getPath(), url.getQuery(), url.getRef());
-        } catch (MalformedURLException e) {
-            throw new IllegalArgumentException(e);
-        } catch (URISyntaxException e) {
-            throw new IllegalArgumentException(e);
-        }
-    }
-
     @Override
     protected void download() {
+        File destination = new File(request.getDestination());
+        if (destination.exists()) {
+            Log.w(TAG, "File already exists");
+            if (request.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
+                onFail(DownloadError.ERROR_FILE_EXISTS, null);
+                return;
+            } else {
+                onSuccess();
+                return;
+            }
+        }
+
         HttpClient httpClient = AntennapodHttpClient.getHttpClient();
         BufferedOutputStream out = null;
         InputStream connection = null;
         try {
-            HttpGet httpGet = new HttpGet(getURIFromRequestUrl(request.getSource()));
+            HttpGet httpGet = new HttpGet(URIUtil.getURIFromRequestUrl(request.getSource()));
+            String userInfo = httpGet.getURI().getUserInfo();
+            if (userInfo != null) {
+                String[] parts = userInfo.split(":");
+                if (parts.length == 2) {
+                    httpGet.addHeader(BasicScheme.authenticate(
+                            new UsernamePasswordCredentials(parts[0], parts[1]),
+                            "UTF-8", false));
+                }
+            } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+                httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(request.getUsername(),
+                        request.getPassword()), "UTF-8", false));
+            }
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
@@ -52,24 +72,25 @@ public class HttpDownloader extends Downloader {
             final boolean isGzip = contentEncodingHeader != null &&
                     contentEncodingHeader.getValue().equalsIgnoreCase("gzip");
 
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Response code is " + responseCode);
 
             if (responseCode != HttpURLConnection.HTTP_OK || httpEntity == null) {
-                onFail(DownloadError.ERROR_HTTP_DATA_ERROR,
-                        String.valueOf(responseCode));
+                final DownloadError error;
+                final String details;
+                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    error = DownloadError.ERROR_UNAUTHORIZED;
+                    details = String.valueOf(responseCode);
+                } else {
+                    error = DownloadError.ERROR_HTTP_DATA_ERROR;
+                    details = String.valueOf(responseCode);
+                }
+                onFail(error, details);
                 return;
             }
 
             if (!StorageUtils.storageAvailable(PodcastApp.getInstance())) {
                 onFail(DownloadError.ERROR_DEVICE_NOT_FOUND, null);
-                return;
-            }
-
-            File destination = new File(request.getDestination());
-            if (destination.exists()) {
-                Log.w(TAG, "File already exists");
-                onFail(DownloadError.ERROR_FILE_EXISTS, null);
                 return;
             }
 
@@ -80,17 +101,17 @@ public class HttpDownloader extends Downloader {
             byte[] buffer = new byte[BUFFER_SIZE];
             int count = 0;
             request.setStatusMsg(R.string.download_running);
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Getting size of download");
             request.setSize(httpEntity.getContentLength());
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
                 request.setSize(DownloadStatus.SIZE_UNKNOWN);
             }
 
             long freeSpace = StorageUtils.getFreeSpaceAvailable();
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Free space is " + freeSpace);
 
             if (request.getSize() != DownloadStatus.SIZE_UNKNOWN
@@ -99,7 +120,7 @@ public class HttpDownloader extends Downloader {
                 return;
             }
 
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting download");
             while (!cancelled
                     && (count = connection.read(buffer)) != -1) {
@@ -121,7 +142,8 @@ public class HttpDownloader extends Downloader {
                             "Download completed but size: " +
                                     request.getSoFar() +
                                     " does not equal expected size " +
-                                    request.getSize());
+                                    request.getSize()
+                    );
                     return;
                 }
                 onSuccess();
@@ -150,13 +172,13 @@ public class HttpDownloader extends Downloader {
     }
 
     private void onSuccess() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Download was successful");
         result.setSuccessful();
     }
 
     private void onFail(DownloadError reason, String reasonDetailed) {
-        if (AppConfig.DEBUG) {
+        if (BuildConfig.DEBUG) {
             Log.d(TAG, "Download failed");
         }
         result.setFailed(reason, reasonDetailed);
@@ -164,7 +186,7 @@ public class HttpDownloader extends Downloader {
     }
 
     private void onCancelled() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Download was cancelled");
         result.setCancelled();
         cleanup();
@@ -178,11 +200,11 @@ public class HttpDownloader extends Downloader {
             File dest = new File(request.getDestination());
             if (dest.exists()) {
                 boolean rc = dest.delete();
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Deleted file " + dest.getName() + "; Result: "
                             + rc);
             } else {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
         }

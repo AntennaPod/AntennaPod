@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.service.download;
 
-import java.util.Date;
-
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.util.DownloadError;
+
+import java.util.Date;
 
 /** Contains status attributes for one download */
 public class DownloadStatus {

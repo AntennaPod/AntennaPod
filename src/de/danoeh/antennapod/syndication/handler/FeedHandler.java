@@ -1,18 +1,16 @@
 package de.danoeh.antennapod.syndication.handler;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.Reader;
-
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
-
+import de.danoeh.antennapod.feed.Feed;
 import org.apache.commons.io.input.XmlStreamReader;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
-import de.danoeh.antennapod.feed.Feed;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.parsers.SAXParser;
+import javax.xml.parsers.SAXParserFactory;
+import java.io.File;
+import java.io.IOException;
+import java.io.Reader;
 
 public class FeedHandler {
 

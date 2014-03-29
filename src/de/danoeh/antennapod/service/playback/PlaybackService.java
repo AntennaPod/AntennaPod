@@ -22,7 +22,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
@@ -153,7 +153,7 @@ public class PlaybackService extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Received onUnbind event");
         return super.onUnbind(intent);
     }
@@ -196,7 +196,7 @@ public class PlaybackService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Service created.");
         isRunning = true;
 
@@ -218,7 +218,7 @@ public class PlaybackService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Service is about to be destroyed");
         isRunning = false;
         started = false;
@@ -234,7 +234,7 @@ public class PlaybackService extends Service {
 
     @Override
     public IBinder onBind(Intent intent) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Received onBind event");
         return mBinder;
     }
@@ -243,7 +243,7 @@ public class PlaybackService extends Service {
     public int onStartCommand(Intent intent, int flags, int startId) {
         super.onStartCommand(intent, flags, startId);
 
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "OnStartCommand called");
         final int keycode = intent.getIntExtra(MediaButtonReceiver.EXTRA_KEYCODE, -1);
         final Playable playable = intent.getParcelableExtra(EXTRA_PLAYABLE);
@@ -253,12 +253,12 @@ public class PlaybackService extends Service {
         }
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
-            if (AppConfig.DEBUG) Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
+            if (BuildConfig.DEBUG) Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
             stopForeground(true);
         } else {
 
             if (keycode != -1) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received media button event");
                 handleKeycode(keycode);
             } else {
@@ -279,7 +279,7 @@ public class PlaybackService extends Service {
      * Handles media button events
      */
     private void handleKeycode(int keycode) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Handling keycode: " + keycode);
 
         final PlayerStatus status = mediaPlayer.getPSMPInfo().playerStatus;
@@ -326,7 +326,7 @@ public class PlaybackService extends Service {
      * mediaplayer.
      */
     public void setVideoSurface(SurfaceHolder sh) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Setting display");
         mediaPlayer.setVideoSurface(sh);
     }
@@ -394,14 +394,17 @@ public class PlaybackService extends Service {
                     break;
 
                 case PLAYING:
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Audiofocus successfully requested");
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Resuming/Starting playback");
 
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
                     setupNotification(newInfo);
+                    break;
+                case ERROR:
+                    writePlaybackPreferencesNoMediaPlaying();
                     break;
 
             }
@@ -451,7 +454,7 @@ public class PlaybackService extends Service {
                 mediaPlayer.pause(true, false);
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
-            setCurrentlyPlayingMedia(PlaybackPreferences.NO_MEDIA_PLAYING);
+            writePlaybackPreferencesNoMediaPlaying();
             stopSelf();
             return true;
         }
@@ -469,7 +472,7 @@ public class PlaybackService extends Service {
     };
 
     private void endPlayback(boolean playNextEpisode) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Playback ended");
 
         final Playable media = mediaPlayer.getPSMPInfo().playable;
@@ -509,7 +512,7 @@ public class PlaybackService extends Service {
         playNextEpisode = playNextEpisode && loadNextItem
                 && UserPreferences.isFollowQueue();
         if (loadNextItem) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Loading next item in queue");
             nextMedia = nextItem.getMedia();
         }
@@ -518,11 +521,11 @@ public class PlaybackService extends Service {
         final boolean stream;
 
         if (playNextEpisode) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Playback of next episode will start immediately.");
             prepareImmediately = startWhenPrepared = true;
         } else {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "No more episodes available to play");
 
             prepareImmediately = startWhenPrepared = false;
@@ -530,7 +533,7 @@ public class PlaybackService extends Service {
             stopWidgetUpdater();
         }
 
-        writePlaybackPreferences();
+        writePlaybackPreferencesNoMediaPlaying();
         if (nextMedia != null) {
             stream = !media.localFileAvailable();
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
@@ -543,7 +546,7 @@ public class PlaybackService extends Service {
     }
 
     public void setSleepTimer(long waitingTime) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
                     + " milliseconds");
         taskManager.setSleepTimer(waitingTime);
@@ -555,9 +558,22 @@ public class PlaybackService extends Service {
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
+    private void writePlaybackPreferencesNoMediaPlaying() {
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext()).edit();
+        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEED_ID,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.putLong(
+                PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
+                PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.commit();
+    }
+
 
     private void writePlaybackPreferences() {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Writing playback preferences");
 
         SharedPreferences.Editor editor = PreferenceManager
@@ -641,7 +657,7 @@ public class PlaybackService extends Service {
 
             @Override
             protected Void doInBackground(Void... params) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Starting background work");
                 if (android.os.Build.VERSION.SDK_INT >= 11) {
                     if (info.playable != null) {
@@ -701,7 +717,7 @@ public class PlaybackService extends Service {
                         notification = notificationBuilder.getNotification();
                     }
                     startForeground(NOTIFICATION_ID, notification);
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Notification set up");
                 }
             }
@@ -728,7 +744,7 @@ public class PlaybackService extends Service {
         float playbackSpeed = getCurrentPlaybackSpeed();
         final Playable playable = mediaPlayer.getPSMPInfo().playable;
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Saving current position to " + position);
             if (updatePlayedDuration && playable instanceof FeedMedia) {
                 FeedMedia m = (FeedMedia) playable;
@@ -738,7 +754,7 @@ public class PlaybackService extends Service {
                 if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
                         (m.getPlayedDuration() > UserPreferences.getPlayedDurationAutoflattrThreshold() * duration)) {
 
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(m.getPlayedDuration())
                                 + " is " + UserPreferences.getPlayedDurationAutoflattrThreshold() * 100 + "% of file duration " + Integer.toString(duration));
                     item.getFlattrStatus().setFlattrQueue();
@@ -832,7 +848,7 @@ public class PlaybackService extends Service {
 
                     editor.apply();
                 }
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "RemoteControlClient state was refreshed");
             }
         }
@@ -876,10 +892,10 @@ public class PlaybackService extends Service {
                     intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
                 if (state != -1) {
-                    if (AppConfig.DEBUG)
+                    if (BuildConfig.DEBUG)
                         Log.d(TAG, "Headset plug event. State is " + state);
                     if (state == UNPLUGGED) {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Headset was unplugged during playback.");
                         pauseIfPauseOnDisconnect();
                     }
@@ -895,7 +911,7 @@ public class PlaybackService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             // sound is about to change, eg. bluetooth -> speaker
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Pausing playback because audio is becoming noisy");
             pauseIfPauseOnDisconnect();
         }
@@ -928,7 +944,7 @@ public class PlaybackService extends Service {
         public void onReceive(Context context, Intent intent) {
             if (intent.getAction() != null &&
                     intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback();
             }
@@ -1028,10 +1044,4 @@ public class PlaybackService extends Service {
         return mediaPlayer.getVideoSize();
     }
 
-    private void setCurrentlyPlayingMedia(long id) {
-        SharedPreferences.Editor editor = PreferenceManager
-                .getDefaultSharedPreferences(getApplicationContext()).edit();
-        editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA, id);
-        editor.commit();
-    }
 }

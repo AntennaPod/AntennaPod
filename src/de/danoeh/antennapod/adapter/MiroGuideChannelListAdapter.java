@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.adapter;
 
-import java.util.List;
-
 import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.miroguide.model.MiroGuideChannel;
+
+import java.util.List;
 
 public class MiroGuideChannelListAdapter extends ArrayAdapter<MiroGuideChannel> {
 

@@ -1,12 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.io.IOException;
-import java.io.Reader;
-
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
@@ -18,12 +11,13 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.StorageUtils;
+
+import java.io.*;
 
 /**
  * Lets the user start the OPML-import process from a path
@@ -70,7 +64,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         File importDir = UserPreferences.getDataFolder(this, IMPORT_DIR);
         boolean success = true;
         if (!importDir.exists()) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Import directory doesn't exist. Creating...");
             success = importDir.mkdir();
             if (!success) {
@@ -112,7 +106,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         if (dir.isDirectory()) {
             File[] fileList = dir.listFiles();
             if (fileList.length == 1) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Found one file, choosing that one.");
                 startImport(fileList[0]);
             } else if (fileList.length > 1) {
@@ -133,7 +127,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         try {
             mReader = new InputStreamReader(new FileInputStream(file),
                 LangUtils.UTF_8);
-            if (AppConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
+            if (BuildConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
             startImport(mReader);
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found which really should be there");
@@ -156,7 +150,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        if (AppConfig.DEBUG)
+                        if (BuildConfig.DEBUG)
                             Log.d(TAG, "Dialog was cancelled");
                         dialog.dismiss();
                     }
@@ -165,7 +159,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "File at index " + which + " was chosen");
                 dialog.dismiss();
                 startImport(fileList[which]);

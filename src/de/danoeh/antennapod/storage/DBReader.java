@@ -4,15 +4,15 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
-import de.danoeh.antennapod.util.comparator.PlaybackCompletionDateComparator;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -51,7 +51,7 @@ public final class DBReader {
      * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)}.
      */
     public static List<Feed> getFeedList(final Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting Feedlist");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -103,7 +103,7 @@ public final class DBReader {
      * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.feed.Feed)}.
      */
     public static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -157,7 +157,7 @@ public final class DBReader {
      */
     public static List<FeedItem> getFeedItemList(Context context,
                                                  final Feed feed) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -216,7 +216,12 @@ public final class DBReader {
                         .getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
                 item.setFlattrStatus(new FlattrStatus(itemlistCursor
                         .getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)));
-                
+
+                long imageIndex = itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_IMAGE);
+                if (imageIndex != 0) {
+                    item.setImage(getFeedImage(adapter, imageIndex));
+                }
+
                 // extract chapters
                 boolean hasSimpleChapters = itemlistCursor
                         .getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0;
@@ -340,11 +345,13 @@ public final class DBReader {
                 new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)));
 
         if (image != null) {
-            image.setFeed(feed);
+            image.setOwner(feed);
         }
 
         FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
-                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0);
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0,
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_USERNAME),
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_PASSWORD));
 
         feed.setPreferences(preferences);
         return feed;
@@ -361,7 +368,7 @@ public final class DBReader {
     }
 
     static List<FeedItem> getQueue(Context context, PodDBAdapter adapter) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting queue");
 
         Cursor itemlistCursor = adapter.getQueueCursor();
@@ -414,7 +421,7 @@ public final class DBReader {
      * list in a {@link de.danoeh.antennapod.util.QueueAccess} object for easier access to the queue's properties.
      */
     public static List<FeedItem> getQueue(Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting queue");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -431,7 +438,7 @@ public final class DBReader {
      * @return A list of FeedItems whose episdoe has been downloaded.
      */
     public static List<FeedItem> getDownloadedItems(Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting downloaded items");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -457,7 +464,7 @@ public final class DBReader {
      * consider using {@link #getUnreadItemIds(android.content.Context)} instead.
      */
     public static List<FeedItem> getUnreadItemsList(Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting unread items list");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -506,7 +513,7 @@ public final class DBReader {
      * The size of the returned list is limited by {@link #PLAYBACK_HISTORY_SIZE}.
      */
     public static List<FeedItem> getPlaybackHistory(final Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading playback history");
         final int PLAYBACK_HISTORY_SIZE = 50;
 
@@ -537,7 +544,7 @@ public final class DBReader {
      * The size of the returned list is limited by {@link #DOWNLOAD_LOG_SIZE}.
      */
     public static List<DownloadStatus> getDownloadLog(Context context) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting DownloadLog");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -612,7 +619,7 @@ public final class DBReader {
      * database and the items-attribute will be set correctly.
      */
     public static Feed getFeed(final Context context, final long feedId) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading feed with id " + feedId);
         Feed feed = null;
 
@@ -631,7 +638,7 @@ public final class DBReader {
     }
 
     static FeedItem getFeedItem(final Context context, final long itemId, PodDBAdapter adapter) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading feeditem with id " + itemId);
         FeedItem item = null;
 
@@ -656,7 +663,7 @@ public final class DBReader {
      * also be loaded from the database.
      */
     public static FeedItem getFeedItem(final Context context, final long itemId) {
-        if (AppConfig.DEBUG)
+        if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading feeditem with id " + itemId);
 
         PodDBAdapter adapter = new PodDBAdapter(context);
@@ -738,7 +745,7 @@ public final class DBReader {
      * @return The found object
      */
     static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
-        Cursor cursor = adapter.getImageOfFeedCursor(id);
+        Cursor cursor = adapter.getImageCursor(id);
         if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
             throw new SQLException("No FeedImage found at index: " + id);
         }

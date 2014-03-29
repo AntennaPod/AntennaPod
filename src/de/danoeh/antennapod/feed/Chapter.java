@@ -48,4 +48,8 @@ public abstract class Chapter extends FeedComponent {
 		this.link = link;
 	}
 
+    @Override
+    public String getHumanReadableIdentifier() {
+        return title;
+    }
 }

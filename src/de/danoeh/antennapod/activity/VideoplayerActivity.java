@@ -14,7 +14,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.SeekBar;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.service.playback.PlaybackService;
@@ -72,7 +72,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (getIntent().getAction() != null
                 && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Received VIEW intent: "
                         + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
@@ -120,13 +120,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onAwaitingVideoSurface() {
         if (videoSurfaceCreated) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Videosurface already created, setting videosurface now");
 
             Pair<Integer, Integer> videoSize = controller.getVideoSize();
             if (videoSize != null && videoSize.first > 0 && videoSize.second > 0) {
-                if (AppConfig.DEBUG) Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
+                if (BuildConfig.DEBUG) Log.d(TAG, "Width,height of video: " + videoSize.first + ", " + videoSize.second);
                 videoview.setVideoSize(videoSize.first, videoSize.second);
             } else {
                 Log.e(TAG, "Could not determine video size");
@@ -215,7 +215,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
         @Override
         protected void onProgressUpdate(Void... values) {
             if (videoControlsShowing) {
-                if (AppConfig.DEBUG)
+                if (BuildConfig.DEBUG)
                     Log.d(TAG, "Hiding video controls");
                 getSupportActionBar().hide();
                 hideVideoControls();
@@ -245,7 +245,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         @Override
         public void surfaceCreated(SurfaceHolder holder) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Videoview holder created");
             videoSurfaceCreated = true;
             if (controller.getStatus() == PlayerStatus.PLAYING) {
@@ -261,7 +261,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
         @Override
         public void surfaceDestroyed(SurfaceHolder holder) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG, "Videosurface was destroyed");
             videoSurfaceCreated = false;
             controller.notifyVideoSurfaceAbandoned();
@@ -272,7 +272,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onReloadNotification(int notificationCode) {
         if (notificationCode == PlaybackService.EXTRA_CODE_AUDIO) {
-            if (AppConfig.DEBUG)
+            if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "ReloadNotification received, switching to Audioplayer now");
             finish();
@@ -337,4 +337,14 @@ public class VideoplayerActivity extends MediaplayerActivity {
         return R.layout.videoplayer_activity;
     }
 
+
+    @Override
+    protected void setScreenOn(boolean enable) {
+        super.setScreenOn(enable);
+        if (enable) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        } else {
+            getWindow().clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        }
+    }
 }

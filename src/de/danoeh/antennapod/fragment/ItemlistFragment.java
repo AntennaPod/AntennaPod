@@ -8,17 +8,11 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.view.ContextMenu;
+import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
-import android.view.LayoutInflater;
-import android.view.MenuInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ListView;
-
 import android.widget.TextView;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
@@ -34,7 +28,6 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 
-import java.util.Iterator;
 import java.util.List;
 
 /** Displays a list of FeedItems. */
@@ -229,7 +222,7 @@ public class ItemlistFragment extends ListFragment {
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EVENTS & arg) != 0) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Received contentUpdate Intent.");
 				if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
 					updateProgressBarVisibility();

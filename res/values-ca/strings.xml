@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Tipus de canal no suportat</string>
   <string name="download_error_connection_error">Error de connexió</string>
   <string name="download_error_unknown_host">Amfitrió desconegut</string>
+  <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="cancel_all_downloads_label">Cancel·la totes les baixades</string>
   <string name="download_cancelled_msg">S\'ha cancel·lat la baixada</string>
   <string name="download_report_title">Baixades completades</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Fitxer</string>
   <string name="download_type_image">Imatge</string>
   <string name="download_request_error_dialog_message_prefix">S\'ha produït un error en intentar baixar el fitxer:\u0020</string>
+  <string name="authentication_notification_title">Cal autenticar-se</string>
+  <string name="authentication_notification_msg">Es necessita un usuari i una contrasenya per accedir al recurs</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Error</string>
   <string name="player_stopped_msg">No s\'està reproduint res</string>
@@ -321,4 +324,6 @@
   <string name="in_queue_label">S\'ha afegit l\'episodi a la cua</string>
   <string name="new_episodes_count_label">Nombre d\'episodis nous</string>
   <string name="in_progress_episodes_count_label">Nombre d\'episodis que heu començat a escoltar</string>
+  <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
 </resources>

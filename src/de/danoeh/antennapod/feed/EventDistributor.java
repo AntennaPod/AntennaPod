@@ -1,13 +1,13 @@
 package de.danoeh.antennapod.feed;
 
+import android.os.Handler;
+import android.util.Log;
+import de.danoeh.antennapod.BuildConfig;
+
 import java.util.AbstractQueue;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.concurrent.ConcurrentLinkedQueue;
-
-import android.os.Handler;
-import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
 
 /**
  * Notifies its observers about changes in the feed database. Observers can
@@ -67,7 +67,7 @@ public class EventDistributor extends Observable {
 
 	private void processEventQueue() {
 		Integer result = 0;
-		if (AppConfig.DEBUG)
+		if (BuildConfig.DEBUG)
 			Log.d(TAG,
 					"Processing event queue. Number of events: "
 							+ events.size());
@@ -76,12 +76,12 @@ public class EventDistributor extends Observable {
 			result |= current;
 		}
 		if (result != 0) {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Notifying observers. Data: " + result);
 			setChanged();
 			notifyObservers(result);
 		} else {
-			if (AppConfig.DEBUG)
+			if (BuildConfig.DEBUG)
 				Log.d(TAG,
 						"Event queue didn't contain any new events. Observers will not be notified.");
 		}

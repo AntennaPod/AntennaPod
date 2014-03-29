@@ -1,14 +1,13 @@
 package de.danoeh.antennapod.syndication.namespace;
 
-import java.util.concurrent.TimeUnit;
-
-import org.xml.sax.Attributes;
-
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
 import de.danoeh.antennapod.syndication.util.SyndTypeUtils;
+import org.xml.sax.Attributes;
+
+import java.util.concurrent.TimeUnit;
 
 /** Processes tags from the http://search.yahoo.com/mrss/ namespace. */
 public class NSMedia extends Namespace {
@@ -38,7 +37,7 @@ public class NSMedia extends Namespace {
 				try {
 					size = Long.parseLong(attributes.getValue(SIZE));
 				} catch (NumberFormatException e) {
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Length attribute could not be parsed.");
 				}
 				
@@ -50,7 +49,7 @@ public class NSMedia extends Namespace {
 								Long.parseLong(durationStr), TimeUnit.SECONDS);
 					}
 				} catch (NumberFormatException e) {
-					if (AppConfig.DEBUG)
+					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Duration attribute could not be parsed");
 				}
 				

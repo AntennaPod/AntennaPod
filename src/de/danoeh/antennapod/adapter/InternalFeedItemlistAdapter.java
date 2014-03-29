@@ -7,11 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Adapter;
-import android.widget.ImageButton;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -19,8 +15,6 @@ import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
-
-import java.util.Iterator;
 
 /** List adapter for items of feeds that the user has already subscribed to. */
 public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {

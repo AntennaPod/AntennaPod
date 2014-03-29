@@ -10,8 +10,7 @@ import android.view.*;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
-
-import de.danoeh.antennapod.AppConfig;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
 import de.danoeh.antennapod.activity.OrganizeQueueActivity;
@@ -156,7 +155,7 @@ public class EpisodesFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... voids) {
-                if (AppConfig.DEBUG) Log.d(TAG, "Starting to load list data");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Starting to load list data");
                 Context context = EpisodesFragment.this.getActivity();
                 if (context != null) {
                     queueRef = DBReader.getQueue(context);
@@ -169,7 +168,7 @@ public class EpisodesFragment extends Fragment {
             protected void onPostExecute(Void aVoid) {
                 super.onPostExecute(aVoid);
                 if (queueRef != null && unreadItemsRef != null) {
-                    if (AppConfig.DEBUG) Log.d(TAG, "Done loading list data");
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Done loading list data");
                     queue = queueRef;
                     unreadItems = unreadItemsRef;
                     if (adapter != null) {
@@ -193,7 +192,7 @@ public class EpisodesFragment extends Fragment {
 		@Override
 		public void update(EventDistributor eventDistributor, Integer arg) {
 			if ((EVENTS & arg) != 0) {
-				if (AppConfig.DEBUG)
+				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Received contentUpdate Intent.");
 				loadData();
 			}

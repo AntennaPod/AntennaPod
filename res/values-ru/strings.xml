@@ -311,4 +311,5 @@
   <string name="in_queue_label">Эпизод в очереди</string>
   <string name="new_episodes_count_label">Количество новых эпизодов</string>
   <string name="in_progress_episodes_count_label">Количество начатых эпизодов</string>
+  <!--AntennaPodSP-->
 </resources>
