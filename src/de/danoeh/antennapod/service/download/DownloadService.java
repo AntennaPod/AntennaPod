@@ -678,32 +678,6 @@ public class DownloadService extends Service {
                         );
                     }
                 }
-                // download FeedItem images if provided and not downloaded
-                for (FeedItem item : savedFeed.getItems()) {
-                    if (item.hasItemImage() && (!item.getImage().isDownloaded())) {
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "Item has image; Downloading....");
-                        try {
-                            requester.downloadImage(DownloadService.this,
-                                    item.getImage());
-                        } catch (DownloadRequestException e) {
-                            e.printStackTrace();
-                            DBWriter.addDownloadStatus(
-                                    DownloadService.this,
-                                    new DownloadStatus(
-                                            item.getImage(),
-                                            item
-                                                    .getImage()
-                                                    .getHumanReadableIdentifier(),
-                                            DownloadError.ERROR_REQUEST_ERROR,
-                                            false, e.getMessage()
-                                    )
-                            );
-                        }
-                    }
-                }
-
-
             } catch (SAXException e) {
                 successful = false;
                 e.printStackTrace();
