@@ -79,7 +79,7 @@ public class SyndDateUtils {
 					second = date.substring(date.indexOf("-"));
 				}
 			}
-			
+
 			date = first + second;
 		}
 		if (isLocal) {
@@ -131,4 +131,23 @@ public class SyndDateUtils {
 		result += (Float.valueOf(parts[idx])) * 1000L;
 		return result;
 	}
+
+    public static String formatRFC822Date(Date date) {
+        SimpleDateFormat format = RFC822Formatter.get();
+        return format.format(date);
+    }
+
+    public static String formatRFC3339Local(Date date) {
+        SimpleDateFormat format = RFC3339Formatter.get();
+        format.applyPattern(RFC3339LOCAL);
+        String result = format.format(date);
+        format.applyPattern(RFC3339UTC);
+        return result;
+    }
+
+    public static String formatRFC3339UTC(Date date) {
+        SimpleDateFormat format = RFC3339Formatter.get();
+        format.applyPattern(RFC3339UTC);
+        return format.format(date);
+    }
 }
