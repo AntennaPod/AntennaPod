@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgvImage"
+        android:contentDescription="@string/cover_label"
+        android:layout_width="@dimen/thumbnail_length_itemlist"
+        android:layout_height="@dimen/thumbnail_length_itemlist"
+        android:layout_alignParentLeft="true"
+        android:scaleType="centerCrop"/>
+
+    <ImageView
+        android:id="@+id/statusPlaying"
+        android:contentDescription="@string/status_playing_label"
+        android:layout_width="@dimen/status_indicator_width"
+        android:layout_height="18dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="8dp"
+        android:background="@color/status_playing"
+        android:gravity="center"
+        android:padding="2dp"
+        android:src="@drawable/av_play_dark"/>
+
+    <TextView
+        android:id="@+id/txtvPublished"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@id/imgvImage"
+        android:layout_toLeftOf="@id/statusPlaying"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_micro"/>
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvPublished"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="4dp"
+        android:layout_marginTop="2dp"
+        android:layout_toRightOf="@id/imgvImage"
+        android:layout_toLeftOf="@id/statusPlaying"
+        android:ellipsize="end"
+        android:lines="2"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_small"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_toRightOf="@id/imgvImage"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:id="@+id/bottom_bar"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/imgvDownloadStatus"
+                android:layout_width="@dimen/enc_icons_size"
+                android:layout_height="@dimen/enc_icons_size"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_marginBottom="8dp"
+                tools:ignore="ContentDescription"/>
+
+            <ImageView
+                android:id="@id/imgvInPlaylist"
+                android:contentDescription="@string/in_queue_label"
+                android:layout_width="@dimen/enc_icons_size"
+                android:layout_height="@dimen/enc_icons_size"
+                android:layout_toLeftOf="@+id/imgvDownloadStatus"
+                android:src="?attr/stat_playlist"/>
+
+            <ProgressBar
+                android:id="@+id/pbar_download_progress"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:max="100"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/imgvInPlaylist"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentLeft="true"/>
+
+            <TextView
+                android:id="@+id/txtvDuration"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_toLeftOf="@id/imgvDownloadStatus"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp"
+                android:layout_alignParentLeft="true"
+                android:textColor="?android:attr/textColorTertiary"
+                android:textSize="@dimen/text_size_micro"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+
+</RelativeLayout>

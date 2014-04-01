@@ -2,38 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
       xmlns:custom="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/all_feed_refresh"
-        android:title="@string/refresh_label"
-        android:icon="?attr/navigation_refresh"
-        custom:showAsAction="ifRoom|collapseActionView">
-    </item>
-    <item
-        android:id="@+id/add_feed"
-        android:title="@string/add_feed_label"
-        android:icon="?attr/content_new"
-        custom:showAsAction="ifRoom|collapseActionView">
-    </item>
-    <item
         android:id="@id/search_item"
         android:icon="?attr/action_search"
         android:title="@string/search_label"
         custom:showAsAction="ifRoom|collapseActionView"
         android:actionViewClass="android.support.v7.widget.SearchView"/>
-    <item
-        android:id="@+id/show_player"
-        android:title="@string/show_player_label"
-        android:icon="@drawable/av_play"
-        custom:showAsAction="collapseActionView"/>
-    <item
-        android:id="@+id/show_playback_history"
-        android:title="@string/playback_history_label"
-        custom:showAsAction="collapseActionView"/>
-    <item
-        android:id="@+id/show_downloads"
-        android:title="@string/downloads_label"
-        android:icon="@drawable/av_download"
-        custom:showAsAction="collapseActionView">
-    </item>
     <item
         android:id="@+id/show_preferences"
         android:title="@string/settings_label"

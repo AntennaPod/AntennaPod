@@ -4,183 +4,229 @@ import android.app.SearchManager;
 import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
+import android.graphics.Typeface;
 import android.media.AudioManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.ActionBar;
+import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
-import android.view.Window;
+import android.view.*;
+import android.widget.*;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.danoeh.antennapod.fragment.FeedlistFragment;
+import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.download.DownloadService;
-import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBTasks;
-import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.ThemeUtils;
 
-import java.util.ArrayList;
+import java.util.List;
 
-/** The activity that is shown when the user launches the app. */
+/**
+ * The activity that is shown when the user launches the app.
+ */
 public class MainActivity extends ActionBarActivity {
-	private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
+    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
+            | EventDistributor.DOWNLOAD_QUEUED
+            | EventDistributor.FEED_LIST_UPDATE
+            | EventDistributor.UNREAD_ITEMS_UPDATE;
 
-	private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
-			| EventDistributor.DOWNLOAD_QUEUED;
+    private ExternalPlayerFragment externalPlayerFragment;
+    private DrawerLayout drawerLayout;
 
-	private ViewPager viewpager;
-	private TabsAdapter pagerAdapter;
-	private ExternalPlayerFragment externalPlayerFragment;
+    private ListView navList;
+    private NavListAdapter navAdapter;
 
-	private static boolean appLaunched = false;
+    private ActionBarDrawerToggle drawerToogle;
 
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		setTheme(UserPreferences.getTheme());
-		super.onCreate(savedInstanceState);
-		StorageUtils.checkStorageAvailability(this);
-		requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-		setContentView(R.layout.main);
+    private CharSequence drawerTitle;
+    private CharSequence currentTitle;
+
+
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
+        super.onCreate(savedInstanceState);
+        StorageUtils.checkStorageAvailability(this);
+        setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        getSupportActionBar().setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
+        drawerTitle = currentTitle = getTitle();
 
-		viewpager = (ViewPager) findViewById(R.id.viewpager);
-		pagerAdapter = new TabsAdapter(this, viewpager);
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navList = (ListView) findViewById(R.id.nav_list);
 
-		viewpager.setAdapter(pagerAdapter);
+        TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
+        drawerToogle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                getSupportActionBar().setTitle(drawerTitle);
+                supportInvalidateOptionsMenu();
+            }
 
-		ActionBar.Tab feedsTab = getSupportActionBar().newTab();
-		feedsTab.setText(R.string.podcasts_label);
-		ActionBar.Tab episodesTab = getSupportActionBar().newTab();
-		episodesTab.setText(R.string.episodes_label);
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle(currentTitle);
+                supportInvalidateOptionsMenu();
 
-		pagerAdapter.addTab(feedsTab, FeedlistFragment.class, null);
-		pagerAdapter.addTab(episodesTab, EpisodesFragment.class, null);
+            }
+        };
+        typedArray.recycle();
 
-		FragmentTransaction transaction = getSupportFragmentManager()
-				.beginTransaction();
-		externalPlayerFragment = new ExternalPlayerFragment();
-		transaction.replace(R.id.playerFragment, externalPlayerFragment);
-		transaction.commit();
+        drawerLayout.setDrawerListener(drawerToogle);
+        FragmentManager fm = getSupportFragmentManager();
+        FragmentTransaction transaction = fm.beginTransaction();
+        externalPlayerFragment = new ExternalPlayerFragment();
+        transaction.replace(R.id.playerFragment, externalPlayerFragment);
 
-		// executed on application start
-		if (!appLaunched && getIntent().getAction() != null
-				&& getIntent().getAction().equals(Intent.ACTION_MAIN)) {
-			appLaunched = true;
-			if (DBReader.getNumberOfUnreadItems(this) > 0) {
-				// select 'episodes' tab
-				getSupportActionBar().setSelectedNavigationItem(1);
-			}
-		}
-		if (savedInstanceState != null) {
-			getSupportActionBar().setSelectedNavigationItem(
-					savedInstanceState.getInt("tab", 0));
-		}
-	}
 
-	@Override
-	protected void onSaveInstanceState(Bundle outState) {
-		super.onSaveInstanceState(outState);
-		outState.putInt("tab", getSupportActionBar()
-				.getSelectedNavigationIndex());
-	}
 
-	@Override
-	protected void onPause() {
-		super.onPause();
-		EventDistributor.getInstance().unregister(contentUpdate);
-	}
+        transaction.commit();
 
-	@Override
-	protected void onResume() {
-		super.onResume();
-		StorageUtils.checkStorageAvailability(this);
-		updateProgressBarVisibility();
-		EventDistributor.getInstance().register(contentUpdate);
+        Fragment mainFragment = fm.findFragmentByTag("main");
+        if (mainFragment != null) {
+            transaction = fm.beginTransaction();
+            transaction.replace(R.id.main_view, mainFragment);
+            transaction.commit();
+        } else {
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, 0);
+        }
 
-	}
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeButtonEnabled(true);
 
-	private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+        navAdapter = new NavListAdapter(itemAccess, this);
+        navList.setAdapter(navAdapter);
+        navList.setOnItemClickListener(navListClickListener);
 
-		@Override
-		public void update(EventDistributor eventDistributor, Integer arg) {
-			if ((EVENTS & arg) != 0) {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Received contentUpdate Intent.");
-				updateProgressBarVisibility();
-			}
-		}
-	};
+        loadData();
 
-	private void updateProgressBarVisibility() {
-		if (DownloadService.isRunning
-				&& DownloadRequester.getInstance().isDownloadingFeeds()) {
-			setSupportProgressBarIndeterminateVisibility(true);
-		} else {
-			setSupportProgressBarIndeterminateVisibility(false);
-		}
-		supportInvalidateOptionsMenu();
-	}
+    }
 
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		switch (item.getItemId()) {
-		case R.id.add_feed:
-			startActivity(new Intent(this, AddFeedActivity.class));
-			return true;
-		case R.id.all_feed_refresh:
-			DBTasks.refreshAllFeeds(this, null);
-			return true;
-		case R.id.show_downloads:
-			startActivity(new Intent(this, DownloadActivity.class));
-			return true;
-		case R.id.show_preferences:
-			startActivity(new Intent(this, PreferenceActivity.class));
-			return true;
-		case R.id.show_player:
-			startActivity(PlaybackService.getPlayerActivityIntent(this));
-			return true;
-		case R.id.show_playback_history:
-			startActivity(new Intent(this, PlaybackHistoryActivity.class));
-			return true;
-		default:
-			return super.onOptionsItemSelected(item);
-		}
-	}
+    private void loadFragment(int viewType, int relPos) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fT = fragmentManager.beginTransaction();
+        Fragment fragment = null;
+        if (viewType == NavListAdapter.VIEW_TYPE_NAV) {
+            currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
+            fragment = new NewEpisodesFragment();
 
-	@Override
-	public boolean onPrepareOptionsMenu(Menu menu) {
+        } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
+            Feed feed = itemAccess.getItem(relPos);
+            currentTitle = feed.getTitle();
+            fragment = ItemlistFragment.newInstance(feed.getId());
+
+        }
+        if (fragment != null) {
+            fT.replace(R.id.main_view, fragment, "main");
+        }
+        fT.commit();
+    }
+
+    private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            int viewType = parent.getAdapter().getItemViewType(position);
+            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
+                int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
+                loadFragment(viewType, relPos);
+                drawerLayout.closeDrawer(navList);
+                selectedNavListIndex = position;
+                navAdapter.notifyDataSetChanged();
+            }
+        }
+    };
+
+    @Override
+    protected void onPostCreate(Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        drawerToogle.syncState();
+        if (savedInstanceState != null) {
+            currentTitle = savedInstanceState.getString("title");
+            if (!drawerLayout.isDrawerOpen(navList)) {
+                getSupportActionBar().setTitle(currentTitle);
+            }
+        }
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        drawerToogle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putString("title", currentTitle.toString());
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        StorageUtils.checkStorageAvailability(this);
+        EventDistributor.getInstance().register(contentUpdate);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        cancelLoadTask();
+        EventDistributor.getInstance().unregister(contentUpdate);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToogle.onOptionsItemSelected(item)) {
+            return true;
+        }
+        switch (item.getItemId()) {
+            case R.id.show_preferences:
+                startActivity(new Intent(this, PreferenceActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-		MenuItem refreshAll = menu.findItem(R.id.all_feed_refresh);
-		if (DownloadService.isRunning
-				&& DownloadRequester.getInstance().isDownloadingFeeds()) {
-			refreshAll.setVisible(false);
-		} else {
-			refreshAll.setVisible(true);
-		}
-		return true;
-	}
+        boolean drawerOpen = drawerLayout.isDrawerOpen(navList);
+        menu.findItem(R.id.search_item).setVisible(!drawerOpen);
 
-	@Override
-	public boolean onCreateOptionsMenu(Menu menu) {
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
-		MenuInflater inflater = getMenuInflater();
-		inflater.inflate(R.menu.main, menu);
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.main, menu);
 
         SearchManager searchManager =
                 (SearchManager) getSystemService(Context.SEARCH_SERVICE);
@@ -196,89 +242,242 @@ public class MainActivity extends ActionBarActivity {
         searchView.setSearchableInfo(
                 searchManager.getSearchableInfo(getComponentName()));
 
-
         return true;
-	}
+    }
 
-	public static class TabsAdapter extends FragmentPagerAdapter implements
-			ActionBar.TabListener, ViewPager.OnPageChangeListener {
-		private final Context mContext;
-		private final ActionBar mActionBar;
-		private final ViewPager mViewPager;
-		private final ArrayList<TabInfo> mTabs = new ArrayList<TabInfo>();
+    private List<Feed> feeds;
+    private AsyncTask<Void, Void, List<Feed>> loadTask;
+    private int selectedNavListIndex = 0;
 
-		static final class TabInfo {
-			private final Class<?> clss;
-			private final Bundle args;
+    private ItemAccess itemAccess = new ItemAccess() {
+        @Override
+        public int getCount() {
+            if (feeds != null) {
+                return feeds.size();
+            } else {
+                return 0;
+            }
+        }
 
-			TabInfo(Class<?> _class, Bundle _args) {
-				clss = _class;
-				args = _args;
-			}
-		}
+        @Override
+        public Feed getItem(int position) {
+            if (feeds != null && position < feeds.size()) {
+                return feeds.get(position);
+            } else {
+                return null;
+            }
+        }
 
-		public TabsAdapter(MainActivity activity, ViewPager pager) {
-			super(activity.getSupportFragmentManager());
-			mContext = activity;
-			mActionBar = activity.getSupportActionBar();
-			mViewPager = pager;
-			mViewPager.setAdapter(this);
-			mViewPager.setOnPageChangeListener(this);
-		}
+        @Override
+        public int getSelectedItemIndex() {
+            return selectedNavListIndex;
+        }
 
-		public void addTab(ActionBar.Tab tab, Class<?> clss, Bundle args) {
-			TabInfo info = new TabInfo(clss, args);
-			tab.setTag(info);
-			tab.setTabListener(this);
-			mTabs.add(info);
-			mActionBar.addTab(tab);
-			notifyDataSetChanged();
-		}
 
-		@Override
-		public int getCount() {
-			return mTabs.size();
-		}
+    };
 
-		@Override
-		public Fragment getItem(int position) {
-			TabInfo info = mTabs.get(position);
-			return Fragment.instantiate(mContext, info.clss.getName(),
-					info.args);
-		}
+    private void loadData() {
+        loadTask = new AsyncTask<Void, Void, List<Feed>>() {
+            @Override
+            protected List<Feed> doInBackground(Void... params) {
+                return DBReader.getFeedList(MainActivity.this);
+            }
 
-		@Override
-		public void onPageScrolled(int position, float positionOffset,
-				int positionOffsetPixels) {
-		}
+            @Override
+            protected void onPostExecute(List<Feed> result) {
+                super.onPostExecute(result);
+                feeds = result;
+                navAdapter.notifyDataSetChanged();
+            }
+        };
+        loadTask.execute();
+    }
 
-		@Override
-		public void onPageSelected(int position) {
-			mActionBar.setSelectedNavigationItem(position);
-		}
+    private void cancelLoadTask() {
+        if (loadTask != null) {
+            loadTask.cancel(true);
+        }
+    }
 
-		@Override
-		public void onPageScrollStateChanged(int state) {
-		}
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
-		@Override
-		public void onTabSelected(ActionBar.Tab tab, FragmentTransaction ft) {
-			Object tag = tab.getTag();
-			for (int i = 0; i < mTabs.size(); i++) {
-				if (mTabs.get(i) == tag) {
-					mViewPager.setCurrentItem(i);
-				}
-			}
-		}
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EVENTS & arg) != 0) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Received contentUpdate Intent.");
+                loadData();
+            }
+        }
+    };
 
-		@Override
-		public void onTabUnselected(ActionBar.Tab tab, FragmentTransaction ft) {
+    private static class NavListAdapter extends BaseAdapter {
 
-		}
+        static final int VIEW_TYPE_COUNT = 3;
+        static final int VIEW_TYPE_NAV = 0;
+        static final int VIEW_TYPE_SECTION_DIVIDER = 1;
+        static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
-		@Override
-		public void onTabReselected(ActionBar.Tab tab, FragmentTransaction ft) {
-		}
-	}
+        static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
 
+
+        static final int SUBSCRIPTION_OFFSET = 1 + NAV_TITLES.length;
+
+        private ItemAccess itemAccess;
+        private Context context;
+
+        private NavListAdapter(ItemAccess itemAccess, Context context) {
+            this.itemAccess = itemAccess;
+            this.context = context;
+        }
+
+        @Override
+        public int getCount() {
+            return NAV_TITLES.length + 1 + itemAccess.getCount();
+        }
+
+        @Override
+        public Object getItem(int position) {
+            int viewType = getItemViewType(position);
+            if (viewType == VIEW_TYPE_NAV) {
+                return context.getString(NAV_TITLES[position]);
+            } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
+                return context.getString(R.string.podcasts_label);
+            } else {
+                return itemAccess.getItem(position);
+            }
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return position;
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            if (0 <= position && position < NAV_TITLES.length) {
+                return VIEW_TYPE_NAV;
+            } else if (position < NAV_TITLES.length + 1) {
+                return VIEW_TYPE_SECTION_DIVIDER;
+            } else {
+                return VIEW_TYPE_SUBSCRIPTION;
+            }
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return VIEW_TYPE_COUNT;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            int viewType = getItemViewType(position);
+            View v = null;
+            if (viewType == VIEW_TYPE_NAV) {
+                v = getNavView((String) getItem(position), position, convertView, parent);
+            } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
+                v =  getSectionDividerView((String) getItem(position), position, convertView, parent);
+            } else {
+                v =  getFeedView(position - SUBSCRIPTION_OFFSET, convertView, parent);
+            }
+            if (v != null) {
+                TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
+                if (position == itemAccess.getSelectedItemIndex()) {
+                    txtvTitle.setTypeface(null, Typeface.BOLD);
+                } else {
+                    txtvTitle.setTypeface(null, Typeface.NORMAL);
+                }
+            }
+            return v;
+        }
+
+        private View getNavView(String title, int position, View convertView, ViewGroup parent) {
+            NavHolder holder;
+            if (convertView == null) {
+                holder = new NavHolder();
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                convertView = inflater.inflate(R.layout.nav_listitem, null);
+
+                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+                convertView.setTag(holder);
+            } else {
+                holder = (NavHolder) convertView.getTag();
+            }
+
+            holder.title.setText(title);
+
+            return convertView;
+        }
+
+        private View getSectionDividerView(String title, int position, View convertView, ViewGroup parent) {
+            SectionHolder holder;
+            if (convertView == null) {
+                holder = new SectionHolder();
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                convertView = inflater.inflate(R.layout.nav_section_item, null);
+
+                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+                convertView.setTag(holder);
+            } else {
+                holder = (SectionHolder) convertView.getTag();
+            }
+
+            holder.title.setText(title);
+
+            convertView.setEnabled(false);
+            convertView.setOnClickListener(null);
+
+            return convertView;
+        }
+
+        private View getFeedView(int feedPos, View convertView, ViewGroup parent) {
+            FeedHolder holder;
+            Feed feed = itemAccess.getItem(feedPos);
+
+            if (convertView == null) {
+                holder = new FeedHolder();
+                LayoutInflater inflater = (LayoutInflater) context
+                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+
+                convertView = inflater.inflate(R.layout.nav_feedlistitem, null);
+
+                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+                holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
+                convertView.setTag(holder);
+            } else {
+                holder = (FeedHolder) convertView.getTag();
+            }
+
+            holder.title.setText(feed.getTitle());
+            ImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(), holder.image, (int) context.getResources().getDimension(R.dimen.thumbnail_length_navlist));
+
+            return convertView;
+        }
+
+        static class NavHolder {
+            TextView title;
+        }
+
+        static class SectionHolder {
+            TextView title;
+        }
+
+        static class FeedHolder {
+            TextView title;
+            ImageView image;
+        }
+    }
+
+    public interface ItemAccess {
+        int getCount();
+
+        Feed getItem(int position);
+
+        int getSelectedItemIndex();
+
+    }
 }

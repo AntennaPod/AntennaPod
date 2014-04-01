@@ -36,4 +36,6 @@
     <attr name="non_transparent_background" format="reference" />
     <attr name="overlay_background" format="color" />
 
+    <attr name="nav_drawer_background" format="color"/>
+    <attr name="nav_drawer_toggle" format="reference"/>
 </resources>

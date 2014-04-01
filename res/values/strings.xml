@@ -9,6 +9,7 @@
     <string name="feeds_label">Feeds</string>
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">EPISODES</string>
+    <string name="new_episodes_label">New episodes</string>
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting list</string>
     <string name="settings_label">Settings</string>
@@ -19,6 +20,13 @@
     <string name="playback_history_label">Playback history</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net login</string>
+
+    <!-- New episodes fragment -->
+    <string name="recently_published_episodes_label">Recently published</string>
+
+    <!-- Main activity -->
+    <string name="drawer_open">Open menu</string>
+    <string name="drawer_close">Close menu</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -349,6 +357,7 @@
     <string name="status_playing_label">Episode is being played</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
     <string name="status_downloaded_label">Episode is downloaded</string>
+    <string name="status_not_downloaded_label">Episode has not been downloaded yet</string>
     <string name="status_unread_label">Item is new</string>
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="new_episodes_count_label">Number of new episodes</string>
