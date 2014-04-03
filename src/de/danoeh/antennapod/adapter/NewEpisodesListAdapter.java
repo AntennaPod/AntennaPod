@@ -6,10 +6,7 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
-import android.widget.ImageView;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.widget.*;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -35,8 +32,8 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         this.context = context;
         this.itemAccess = itemAccess;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.navigation_accept, R.attr.navigation_refresh, R.attr.av_download});
-        labels = new int[]{R.string.status_downloaded_label, R.string.status_downloading_label, R.string.status_not_downloaded_label};
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download});
+        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label};
     }
 
     @Override
@@ -113,8 +110,8 @@ public class NewEpisodesListAdapter extends BaseAdapter {
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView
                     .findViewById(R.id.txtvPublished);
-            holder.downloadStatus = (ImageView) convertView
-                    .findViewById(R.id.imgvDownloadStatus);
+            holder.butSecondary = (ImageButton) convertView
+                    .findViewById(R.id.butSecondaryAction);
             holder.queueStatus = (ImageView) convertView
                     .findViewById(R.id.imgvInPlaylist);
             holder.statusPlaying = (ImageView) convertView
@@ -159,27 +156,27 @@ public class NewEpisodesListAdapter extends BaseAdapter {
             if (!media.isDownloaded()) {
                 if (isDownloadingMedia) {
                     // item is being downloaded
-                    holder.downloadStatus.setVisibility(View.VISIBLE);
-                    holder.downloadStatus.setImageDrawable(drawables
+                    holder.butSecondary.setVisibility(View.VISIBLE);
+                    holder.butSecondary.setImageDrawable(drawables
                             .getDrawable(1));
-                    holder.downloadStatus.setContentDescription(context.getString(labels[1]));
+                    holder.butSecondary.setContentDescription(context.getString(labels[1]));
 
                     holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 } else {
                     // item is not downloaded and not being downloaded
-                    holder.downloadStatus.setVisibility(View.VISIBLE);
-                    holder.downloadStatus.setImageDrawable(drawables.getDrawable(2));
-                    holder.downloadStatus.setContentDescription(context.getString(labels[2]));
+                    holder.butSecondary.setVisibility(View.VISIBLE);
+                    holder.butSecondary.setImageDrawable(drawables.getDrawable(2));
+                    holder.butSecondary.setContentDescription(context.getString(labels[2]));
                 }
             } else {
                 // item is not being downloaded
-                holder.downloadStatus.setVisibility(View.VISIBLE);
-                holder.downloadStatus
+                holder.butSecondary.setVisibility(View.VISIBLE);
+                holder.butSecondary
                         .setImageDrawable(drawables.getDrawable(0));
-                holder.downloadStatus.setContentDescription(context.getString(labels[0]));
+                holder.butSecondary.setContentDescription(context.getString(labels[0]));
             }
         } else {
-            holder.downloadStatus.setVisibility(View.INVISIBLE);
+            holder.butSecondary.setVisibility(View.INVISIBLE);
         }
 
         if (itemAccess.isInQueue(item)) {
@@ -187,6 +184,12 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         } else {
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
+
+        holder.butSecondary.setFocusable(false);
+        holder.butSecondary.setTag(item);
+        holder.butSecondary.setOnClickListener(secondaryActionListener);
+
+
 
         ImageLoader.getInstance().loadThumbnailBitmap(
                 item,
@@ -197,16 +200,24 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         return convertView;
     }
 
+    private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            FeedItem item = (FeedItem) v.getTag();
+            itemAccess.onFeedItemSecondaryAction(item);
+        }
+    };
+
 
     static class Holder {
         TextView title;
         TextView pubDate;
-        ImageView downloadStatus;
         ImageView queueStatus;
         ImageView imageView;
         ImageView statusPlaying;
         ProgressBar downloadProgress;
         TextView txtvDuration;
+        ImageButton butSecondary;
     }
 
     public interface ItemAccess {
@@ -221,5 +232,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
+
+        void onFeedItemSecondaryAction(FeedItem item);
     }
 }
