@@ -5,8 +5,8 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,46 +15,45 @@ import android.widget.TextView;
 import com.mobeta.android.dslv.DragSortListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.util.UndoBarController;
+import de.danoeh.antennapod.util.gui.FeedItemUndoToken;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * Shows unread or recently published episodes
+ * Shows all items in the queue
  */
-public class NewEpisodesFragment extends Fragment {
-    private static final String TAG = "NewEpisodesFragment";
+public class QueueFragment extends Fragment {
+    private static final String TAG = "QueueFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
-
-    private static final int RECENT_EPISODES_LIMIT = 150;
+            EventDistributor.QUEUE_UPDATE;
 
     private DragSortListView listView;
-    private NewEpisodesListAdapter listAdapter;
+    private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+    private UndoBarController undoBarController;
 
-    private List<FeedItem> unreadItems;
-    private List<FeedItem> recentItems;
-    private QueueAccess queueAccess;
+    private List<FeedItem> queue;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
+    private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
     private DownloadObserver downloadObserver = null;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -96,6 +95,7 @@ public class NewEpisodesFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         listAdapter = null;
+        undoBarController = null;
         activity.set(null);
         viewsCreated = false;
         if (downloadObserver != null) {
@@ -106,10 +106,47 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
+        View root = inflater.inflate(R.layout.queue_fragment, container, false);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+        listView.setEmptyView(txtvEmpty);
+
+        listView.setDropListener(new DragSortListView.DropListener() {
+            @Override
+            public void drop(int from, int to) {
+                stopItemLoader();
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+                listAdapter.notifyDataSetChanged();
+                DBWriter.moveQueueItem(getActivity(), from, to, true);
+            }
+        });
+
+        listView.setRemoveListener(new DragSortListView.RemoveListener() {
+            @Override
+            public void remove(int which) {
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
+                undoBarController.showUndoBar(false,
+                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
+                                which));
+            }
+        });
+
+        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+            @Override
+            public void onUndo(Parcelable token) {
+                // Perform the undo
+                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+                if (token != null) {
+                    long itemId = undoToken.getFeedItemId();
+                    int position = undoToken.getPosition();
+                    DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
+                }
+            }
+        });
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
@@ -127,9 +164,8 @@ public class NewEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new NewEpisodesListAdapter(activity.get(), itemAccess);
+            listAdapter = new QueueListAdapter(activity.get(), itemAccess);
             listView.setAdapter(listAdapter);
-            listView.setEmptyView(txtvEmpty);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
@@ -146,34 +182,22 @@ public class NewEpisodesFragment extends Fragment {
 
         @Override
         public void onDownloadDataAvailable(List<Downloader> downloaderList) {
-            NewEpisodesFragment.this.downloaderList = downloaderList;
+            QueueFragment.this.downloaderList = downloaderList;
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();
             }
         }
     };
 
-    private NewEpisodesListAdapter.ItemAccess itemAccess = new NewEpisodesListAdapter.ItemAccess() {
-
-
+    private QueueListAdapter.ItemAccess itemAccess = new QueueListAdapter.ItemAccess() {
         @Override
-        public int getUnreadItemsCount() {
-            return (itemsLoaded) ? unreadItems.size() : 0;
+        public int getCount() {
+            return (itemsLoaded) ? queue.size() : 0;
         }
 
         @Override
-        public int getRecentItemsCount() {
-            return (itemsLoaded) ? recentItems.size() : 0;
-        }
-
-        @Override
-        public FeedItem getUnreadItem(int position) {
-            return (itemsLoaded) ? unreadItems.get(position) : null;
-        }
-
-        @Override
-        public FeedItem getRecentItem(int position) {
-            return (itemsLoaded) ? recentItems.get(position) : null;
+        public FeedItem getItem(int position) {
+            return (itemsLoaded) ? queue.get(position) : null;
         }
 
         @Override
@@ -190,20 +214,9 @@ public class NewEpisodesFragment extends Fragment {
         }
 
         @Override
-        public boolean isInQueue(FeedItem item) {
-            if (itemsLoaded) {
-                return queueAccess.contains(item.getId());
-            } else {
-                return false;
-            }
-        }
-
-        @Override
         public void onFeedItemSecondaryAction(FeedItem item) {
-            Log.i(TAG, item.getTitle());
+
         }
-
-
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -231,8 +244,7 @@ public class NewEpisodesFragment extends Fragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, Object[]> {
-
+    private class ItemLoader extends AsyncTask<Void, Void, List<FeedItem>> {
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
@@ -244,32 +256,27 @@ public class NewEpisodesFragment extends Fragment {
         }
 
         @Override
-        protected Object[] doInBackground(Void... params) {
-            Context context = activity.get();
-            if (context != null) {
-                return new Object[]{DBReader.getUnreadItemsList(context),
-                        DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Object[] lists) {
-            super.onPostExecute(lists);
+        protected void onPostExecute(List<FeedItem> feedItems) {
+            super.onPostExecute(feedItems);
             listView.setVisibility(View.VISIBLE);
             progLoading.setVisibility(View.GONE);
 
-            if (lists != null) {
-                unreadItems = (List<FeedItem>) lists[0];
-                recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (QueueAccess) lists[2];
+            if (feedItems != null) {
+                queue = feedItems;
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();
                 }
             }
+        }
+
+        @Override
+        protected List<FeedItem> doInBackground(Void... params) {
+            Context context = activity.get();
+            if (context != null) {
+                return DBReader.getQueue(context);
+            }
+            return null;
         }
     }
 }

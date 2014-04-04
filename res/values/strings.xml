@@ -362,6 +362,7 @@
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="new_episodes_count_label">Number of new episodes</string>
     <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
+    <string name="drag_handle_content_description">Drag to change the position of this item</string>
 
     <!-- AntennaPodSP -->
 

@@ -26,10 +26,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.fragment.EpisodesFragment;
-import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
-import de.danoeh.antennapod.fragment.ItemlistFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
+import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.StorageUtils;
@@ -126,8 +123,15 @@ public class MainActivity extends ActionBarActivity {
         FragmentTransaction fT = fragmentManager.beginTransaction();
         Fragment fragment = null;
         if (viewType == NavListAdapter.VIEW_TYPE_NAV) {
+            switch (relPos) {
+                case 0:
+                    fragment = new NewEpisodesFragment();
+                    break;
+                case 1:
+                    fragment = new QueueFragment();
+                    break;
+            }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
-            fragment = new NewEpisodesFragment();
 
         } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
             Feed feed = itemAccess.getItem(relPos);
@@ -145,13 +149,13 @@ public class MainActivity extends ActionBarActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
-            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
+            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER && position != selectedNavListIndex) {
                 int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
                 loadFragment(viewType, relPos);
-                drawerLayout.closeDrawer(navList);
                 selectedNavListIndex = position;
                 navAdapter.notifyDataSetChanged();
             }
+            drawerLayout.closeDrawer(navList);
         }
     };
 
@@ -164,6 +168,7 @@ public class MainActivity extends ActionBarActivity {
             if (!drawerLayout.isDrawerOpen(navList)) {
                 getSupportActionBar().setTitle(currentTitle);
             }
+            selectedNavListIndex = savedInstanceState.getInt("selectedNavIndex");
         }
     }
 
@@ -177,6 +182,7 @@ public class MainActivity extends ActionBarActivity {
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString("title", currentTitle.toString());
+        outState.putInt("selectedNavIndex", selectedNavListIndex);
 
     }
 
