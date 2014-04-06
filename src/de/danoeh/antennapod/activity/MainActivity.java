@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -118,6 +119,10 @@ public class MainActivity extends ActionBarActivity {
 
     }
 
+    public ActionBar getMainActivtyActionBar() {
+        return getSupportActionBar();
+    }
+
     private void loadFragment(int viewType, int relPos) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fT = fragmentManager.beginTransaction();
@@ -129,6 +134,9 @@ public class MainActivity extends ActionBarActivity {
                     break;
                 case 1:
                     fragment = new QueueFragment();
+                    break;
+                case 2:
+                    fragment = new DownloadsFragment();
                     break;
             }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);

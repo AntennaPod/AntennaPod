@@ -4,7 +4,7 @@
     tools:ignore="MissingTranslation"
     >
 
-    <!-- Activitiy titles -->
+    <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
     <string name="podcasts_label">PODCASTS</string>
@@ -15,6 +15,9 @@
     <string name="settings_label">Settings</string>
     <string name="add_new_feed_label">Add podcast</string>
     <string name="downloads_label">Downloads</string>
+    <string name="downloads_running_label">Running</string>
+    <string name="downloads_completed_label">Completed</string>
+    <string name="downloads_log_label">Log</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
@@ -84,6 +87,7 @@
     <string name="pause_label">Pause</string>
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
+    <string name="remove_episode_lable">Remove episode</string>
     <string name="mark_read_label">Mark as read</string>
     <string name="mark_unread_label">Mark as unread</string>
     <string name="add_to_queue_label">Add to Queue</string>
