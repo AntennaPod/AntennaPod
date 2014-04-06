@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.storage;
 
+import android.app.backup.BackupManager;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -386,6 +387,7 @@ public class PodDBAdapter {
                 Log.d(this.toString(), "Updating existing Feed in db");
             db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
                     new String[]{String.valueOf(feed.getId())});
+
         }
         return feed.getId();
     }
@@ -844,6 +846,7 @@ public class PodDBAdapter {
                 removeFeedItem(item);
             }
         }
+
         db.delete(TABLE_NAME_FEEDS, KEY_ID + "=?",
                 new String[]{String.valueOf(feed.getId())});
         db.setTransactionSuccessful();
