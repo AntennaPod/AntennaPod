@@ -41,7 +41,7 @@
         android:theme="@style/Theme.AntennaPod.Light">
         <meta-data
             android:name="com.google.android.backup.api_key"
-            android:value="AEdPqrEAAAAIRUmY27PIgwf_FtdHiT1_QLRM-7VLPnnFQ2Y_zw" />
+            android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA" />
         <activity
             android:name=".activity.MainActivity"
             android:configChanges="keyboardHidden|orientation"
