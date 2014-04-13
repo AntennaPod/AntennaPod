@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -54,12 +55,16 @@ public class QueueFragment extends Fragment {
 
     private DownloadObserver downloadObserver = null;
 
+    /**
+     * Download observer updates won't result in an upate of the list adapter if this is true.
+     */
+    private boolean blockDownloadObserverUpdate = false;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
-
         startItemLoader();
     }
 
@@ -98,6 +103,7 @@ public class QueueFragment extends Fragment {
         undoBarController = null;
         activity.set(null);
         viewsCreated = false;
+        blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
@@ -112,16 +118,6 @@ public class QueueFragment extends Fragment {
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
         listView.setEmptyView(txtvEmpty);
 
-        listView.setDropListener(new DragSortListView.DropListener() {
-            @Override
-            public void drop(int from, int to) {
-                stopItemLoader();
-                final FeedItem item = queue.remove(from);
-                queue.add(to, item);
-                listAdapter.notifyDataSetChanged();
-                DBWriter.moveQueueItem(getActivity(), from, to, true);
-            }
-        });
 
         listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
@@ -131,7 +127,8 @@ public class QueueFragment extends Fragment {
                 DBWriter.removeQueueItem(getActivity(), item.getId(), true);
                 undoBarController.showUndoBar(false,
                         getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
-                                which));
+                                which)
+                );
             }
         });
 
@@ -145,6 +142,30 @@ public class QueueFragment extends Fragment {
                     int position = undoToken.getPosition();
                     DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
                 }
+            }
+        });
+
+        listView.setDragSortListener(new DragSortListView.DragSortListener() {
+            @Override
+            public void drag(int from, int to) {
+                Log.d(TAG, "drag");
+                blockDownloadObserverUpdate = true;
+            }
+
+            @Override
+            public void drop(int from, int to) {
+                Log.d(TAG, "drop");
+                blockDownloadObserverUpdate = false;
+                stopItemLoader();
+                final FeedItem item = queue.remove(from);
+                queue.add(to, item);
+                listAdapter.notifyDataSetChanged();
+                DBWriter.moveQueueItem(getActivity(), from, to, true);
+            }
+
+            @Override
+            public void remove(int which) {
+
             }
         });
 
@@ -175,7 +196,7 @@ public class QueueFragment extends Fragment {
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
         public void onContentChanged() {
-            if (listAdapter != null) {
+            if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();
             }
         }
@@ -183,7 +204,7 @@ public class QueueFragment extends Fragment {
         @Override
         public void onDownloadDataAvailable(List<Downloader> downloaderList) {
             QueueFragment.this.downloaderList = downloaderList;
-            if (listAdapter != null) {
+            if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();
             }
         }

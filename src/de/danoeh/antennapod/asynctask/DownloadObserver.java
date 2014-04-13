@@ -23,7 +23,7 @@ public class DownloadObserver {
     /**
      * Time period between update notifications.
      */
-    public static final int WAITING_INTERVAL_MS = 1000;
+    public static final int WAITING_INTERVAL_MS = 3000;
 
     private volatile Activity activity;
     private final Handler handler;
