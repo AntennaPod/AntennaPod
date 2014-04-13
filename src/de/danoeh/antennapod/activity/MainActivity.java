@@ -138,6 +138,9 @@ public class MainActivity extends ActionBarActivity {
                 case 2:
                     fragment = new DownloadsFragment();
                     break;
+                case 3:
+                    fragment = new PlaybackHistoryFragment();
+                    break;
             }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
 
