@@ -34,7 +34,6 @@ public abstract class PodcastListFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        setRetainInstance(true);
         View root = inflater.inflate(R.layout.gpodnet_podcast_list, container, false);
 
         gridView = (GridView) root.findViewById(R.id.gridView);

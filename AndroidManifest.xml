@@ -52,16 +52,6 @@
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-        </activity>
-        <activity
-            android:name="de.danoeh.antennapod.activity.AddFeedActivity"
-            android:configChanges="keyboardHidden|orientation"
-            android:label="@string/add_new_feed_label"
-            android:windowSoftInputMode="adjustResize">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="de.danoeh.antennapod.activity.MainActivity"/>
-
             <intent-filter>
                 <action android:name="android.intent.action.VIEW"/>
 
@@ -109,6 +99,18 @@
 
                 <data android:mimeType="text/plain"/>
             </intent-filter>
+
+        </activity>
+        <activity
+            android:name="de.danoeh.antennapod.activity.AddFeedActivity"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/add_new_feed_label"
+            android:windowSoftInputMode="adjustResize">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
+
+
         </activity>
         <activity
             android:name="de.danoeh.antennapod.activity.FeedItemlistActivity"

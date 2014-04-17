@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.gpoddernet.GpodnetTagActivity;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
@@ -24,15 +25,13 @@ public class TagListFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        setRetainInstance(true);
 
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 String selectedTag = (String) getListAdapter().getItem(position);
-                Intent intent = new Intent(getActivity(), GpodnetTagActivity.class);
-                intent.putExtra(GpodnetTagActivity.ARG_TAGNAME, selectedTag);
-                startActivity(intent);
+                MainActivity activity = (MainActivity) getActivity();
+                activity.loadChildFragment(TagFragment.newInstance(selectedTag));
             }
         });
 

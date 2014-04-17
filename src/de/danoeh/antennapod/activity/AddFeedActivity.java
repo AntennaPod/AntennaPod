@@ -50,7 +50,6 @@ public class AddFeedActivity extends ActionBarActivity {
             etxtFeedurl.setText(getIntent().getDataString());
         }
 
-        butBrowseMiroGuide = (Button) findViewById(R.id.butBrowseMiroguide);
         butBrowserGpoddernet = (Button) findViewById(R.id.butBrowseGpoddernet);
         butOpmlImport = (Button) findViewById(R.id.butOpmlImport);
         butConfirm = (Button) findViewById(R.id.butConfirm);

@@ -31,7 +31,7 @@ import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.util.ThemeUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -96,7 +96,6 @@ public class MainActivity extends ActionBarActivity {
         transaction.replace(R.id.playerFragment, externalPlayerFragment);
 
 
-
         transaction.commit();
 
         Fragment mainFragment = fm.findFragmentByTag("main");
@@ -105,7 +104,7 @@ public class MainActivity extends ActionBarActivity {
             transaction.replace(R.id.main_view, mainFragment);
             transaction.commit();
         } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, 0);
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, NavListAdapter.POS_NEW, null);
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -123,24 +122,33 @@ public class MainActivity extends ActionBarActivity {
         return getSupportActionBar();
     }
 
-    private void loadFragment(int viewType, int relPos) {
+    private void loadFragment(int viewType, int relPos, Bundle args) {
         FragmentManager fragmentManager = getSupportFragmentManager();
+        // clear back stack
+        for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
+            fragmentManager.popBackStack();
+        }
+
         FragmentTransaction fT = fragmentManager.beginTransaction();
         Fragment fragment = null;
         if (viewType == NavListAdapter.VIEW_TYPE_NAV) {
             switch (relPos) {
-                case 0:
+                case NavListAdapter.POS_NEW:
                     fragment = new NewEpisodesFragment();
                     break;
-                case 1:
+                case NavListAdapter.POS_QUEUE:
                     fragment = new QueueFragment();
                     break;
-                case 2:
+                case NavListAdapter.POS_DOWNLOADS:
                     fragment = new DownloadsFragment();
                     break;
-                case 3:
+                case NavListAdapter.POS_HISTORY:
                     fragment = new PlaybackHistoryFragment();
                     break;
+                case NavListAdapter.POS_ADD:
+                    fragment = new AddFeedFragment();
+                    break;
+
             }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
 
@@ -151,9 +159,21 @@ public class MainActivity extends ActionBarActivity {
 
         }
         if (fragment != null) {
-            fT.replace(R.id.main_view, fragment, "main");
+            if (args != null) {
+                fragment.setArguments(args);
+            }
+            fT.replace(R.id.main_view, fragment, "main");fragmentManager.popBackStack();
         }
         fT.commit();
+    }
+
+    public void loadChildFragment(Fragment fragment) {
+        if (fragment == null) throw new IllegalArgumentException("fragment = null");
+        FragmentManager fm = getSupportFragmentManager();
+        fm.beginTransaction()
+                .replace(R.id.main_view, fragment, "main")
+                .addToBackStack(null)
+                .commit();
     }
 
     private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
@@ -162,7 +182,7 @@ public class MainActivity extends ActionBarActivity {
             int viewType = parent.getAdapter().getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER && position != selectedNavListIndex) {
                 int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
-                loadFragment(viewType, relPos);
+                loadFragment(viewType, relPos, null);
                 selectedNavListIndex = position;
                 navAdapter.notifyDataSetChanged();
             }
@@ -207,6 +227,18 @@ public class MainActivity extends ActionBarActivity {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
         EventDistributor.getInstance().register(contentUpdate);
+
+        Intent intent = getIntent();
+        if (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND)) {
+            String extra = intent.getStringExtra(Intent.EXTRA_TEXT);
+            if (extra != null) {
+                Bundle args = new Bundle();
+                args.putString(AddFeedFragment.ARG_FEED_URL, extra);
+                loadFragment(NavListAdapter.VIEW_TYPE_NAV, NavListAdapter.POS_ADD, args);
+                selectedNavListIndex = NavListAdapter.POS_ADD;
+                navAdapter.notifyDataSetChanged();
+            }
+        }
     }
 
     @Override
@@ -335,6 +367,12 @@ public class MainActivity extends ActionBarActivity {
         static final int VIEW_TYPE_SECTION_DIVIDER = 1;
         static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
+        static final int POS_NEW = 0,
+                POS_QUEUE = 1,
+                POS_DOWNLOADS = 2,
+                POS_HISTORY = 3,
+                POS_ADD = 4;
+
         static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
 
 
@@ -393,9 +431,9 @@ public class MainActivity extends ActionBarActivity {
             if (viewType == VIEW_TYPE_NAV) {
                 v = getNavView((String) getItem(position), position, convertView, parent);
             } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-                v =  getSectionDividerView((String) getItem(position), position, convertView, parent);
+                v = getSectionDividerView((String) getItem(position), position, convertView, parent);
             } else {
-                v =  getFeedView(position - SUBSCRIPTION_OFFSET, convertView, parent);
+                v = getFeedView(position - SUBSCRIPTION_OFFSET, convertView, parent);
             }
             if (v != null) {
                 TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
