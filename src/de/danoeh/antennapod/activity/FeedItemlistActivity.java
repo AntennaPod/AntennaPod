@@ -166,7 +166,7 @@ public class FeedItemlistActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         try {
             if (FeedMenuHandler.onOptionsItemClicked(this, item, feed)) {
-                filf.getListAdapter().notifyDataSetChanged();
+             //   filf.getListAdapter().notifyDataSetChanged();
             } else {
                 switch (item.getItemId()) {
                     case R.id.remove_item:

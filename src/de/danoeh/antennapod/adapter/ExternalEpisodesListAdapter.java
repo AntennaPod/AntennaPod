@@ -227,10 +227,10 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		convertView = inflater.inflate(R.layout.feeditemlist_header, null);
 		TextView headerTitle = (TextView) convertView
-				.findViewById(R.id.txtvHeaderTitle);
+				.findViewById(0);
 		ImageButton actionButton = (ImageButton) convertView
 				.findViewById(R.id.butAction);	
-		TextView numItems = (TextView) convertView.findViewById(R.id.txtvNumItems);
+		TextView numItems = (TextView) convertView.findViewById(0);
 		
 		String headerString = null;
 		int childrenCount = 0;

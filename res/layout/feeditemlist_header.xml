@@ -1,56 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="?attr/borderless_button"
-    android:orientation="vertical" >
 
-    <RelativeLayout
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:context="de.danoeh.antennapod.activity.MainActivity">
+
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:contentDescription="@string/cover_label"
+        android:layout_width="@dimen/thumbnail_length_onlinefeedview"
+        android:layout_height="@dimen/thumbnail_length_onlinefeedview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_margin="4dp"/>
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:layout_alignTop="@id/imgvCover"
+        android:layout_toRightOf="@id/imgvCover"
+        android:layout_alignParentRight="true"
+        android:lines="1"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_medium"
+        android:layout_margin="4dp"/>
+
+    <TextView
+        android:id="@+id/txtvAuthor"
         android:layout_width="wrap_content"
-        android:layout_height="match_parent" >
+        android:layout_height="wrap_content"
+        android:layout_margin="4dp"
+        android:layout_below="@id/txtvTitle"
+        android:layout_toRightOf="@id/imgvCover"
+        android:lines="1"
+        android:ellipsize="end"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small"/>
 
-        <TextView
-            android:id="@+id/txtvHeaderTitle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_centerVertical="true"
-            android:layout_marginBottom="32dp"
-            android:layout_marginLeft="28dp"
-            android:layout_marginRight="16dp"
-            android:layout_marginTop="32dp"
-            android:paddingLeft="8dp"
-            android:textAllCaps="true"
-            android:textColor="@color/dark_blue"
-            android:textSize="@dimen/text_size_large"
-            android:typeface="sans" />
+    <TextView
+        android:id="@+id/txtvLink"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:ellipsize="end"
+        android:layout_below="@id/txtvAuthor"
+        android:layout_toRightOf="@id/imgvCover"
+        android:textSize="@dimen/text_size_small"/>
 
-        <ImageButton
-            android:id="@+id/butAction"
-            android:contentDescription="@string/butAction_label"
-            android:layout_width="48dp"
-            android:layout_height="match_parent"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentRight="true"
-            android:background="?attr/borderless_button"
-            android:clickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:paddingLeft="24dp"
-            android:paddingRight="8dp"
-            android:paddingTop="16dp"
-            android:scaleType="fitEnd"
-            android:src="?attr/spinner_button" />
-
-        <TextView
-            android:id="@+id/txtvNumItems"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_toLeftOf="@id/butAction"
-            android:textColor="@color/dark_blue"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="normal" />
-    </RelativeLayout>
-
-</LinearLayout>
+</RelativeLayout>
