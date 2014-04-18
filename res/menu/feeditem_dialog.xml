@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@id/skip_episode_item"
+        android:title="@string/skip_episode_label"
+        custom:showAsAction="collapseActionView">
+    </item>
+
+    <item
+        android:id="@+id/mark_read_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/mark_read_label">
+    </item>
+    <item
+        android:id="@+id/mark_unread_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/mark_unread_label">
+    </item>
+    <item
+        android:id="@+id/add_to_queue_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/add_to_queue_label">
+    </item>
+    <item
+        android:id="@+id/remove_from_queue_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/remove_from_queue_label">
+    </item>
+    <item
+        android:id="@+id/share_link_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/share_link_label">
+    </item>
+    <item
+        android:id="@+id/visit_website_item"
+        android:icon="?attr/location_web_site"
+        custom:showAsAction="ifRoom|collapseActionView"
+        android:title="@string/visit_website_label">
+    </item>
+    <item
+        android:id="@+id/support_item"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/support_label">
+    </item>
+
+</menu>

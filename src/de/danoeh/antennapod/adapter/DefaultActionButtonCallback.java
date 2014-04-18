@@ -26,6 +26,10 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
     @Override
     public void onActionButtonPressed(final FeedItem item) {
         final FeedMedia media = item.getMedia();
+        if (media == null) {
+            return;
+        }
+
         boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
         if (!isDownloading && !media.isDownloaded()) {
             try {

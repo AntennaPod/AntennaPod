@@ -23,6 +23,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -64,6 +65,8 @@ public class ItemlistFragment extends ListFragment {
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
+
+    private FeedItemDialog feedItemDialog;
 
 
     /**
@@ -122,6 +125,7 @@ public class ItemlistFragment extends ListFragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        feedItemDialog = null;
     }
 
     @Override
@@ -149,12 +153,16 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
+        /*
         Intent showItem = new Intent(getActivity(), ItemviewActivity.class);
         showItem.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, selection
                 .getFeed().getId());
         showItem.putExtra(EXTRA_SELECTED_FEEDITEM, selection.getId());
 
         startActivity(showItem);
+        */
+        feedItemDialog = new FeedItemDialog(activity.get(), selection, queue);
+        feedItemDialog.show();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -200,6 +208,13 @@ public class ItemlistFragment extends ListFragment {
         setListShown(true);
         adapter.notifyDataSetChanged();
 
+        if (feedItemDialog != null && feedItemDialog.isShowing()) {
+            feedItemDialog.setItemFromCollection(feed.getItems());
+            feedItemDialog.setQueue(queue);
+            feedItemDialog.updateMenuAppearance();
+        }
+
+
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -207,6 +222,9 @@ public class ItemlistFragment extends ListFragment {
         public void onContentChanged() {
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
+            }
+            if (feedItemDialog != null && feedItemDialog.isShowing()) {
+                feedItemDialog.updateMenuAppearance();
             }
         }
 

@@ -9,6 +9,7 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.mobeta.android.dslv.DragSortListView;
@@ -17,6 +18,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -55,6 +57,8 @@ public class NewEpisodesFragment extends Fragment {
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
     private DownloadObserver downloadObserver = null;
+
+    private FeedItemDialog feedItemDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +105,7 @@ public class NewEpisodesFragment extends Fragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        feedItemDialog = null;
     }
 
     @Override
@@ -110,6 +115,18 @@ public class NewEpisodesFragment extends Fragment {
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
+                if (item != null) {
+                    feedItemDialog = new FeedItemDialog(activity.get(), item, queueAccess);
+                    feedItemDialog.show();
+                }
+
+            }
+        });
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
@@ -133,6 +150,12 @@ public class NewEpisodesFragment extends Fragment {
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
+        if (feedItemDialog != null && feedItemDialog.isShowing()) {
+            feedItemDialog.setQueue(queueAccess);
+            feedItemDialog.setItemFromCollection(unreadItems);
+            feedItemDialog.setItemFromCollection(recentItems);
+            feedItemDialog.updateMenuAppearance();
+        }
         listAdapter.notifyDataSetChanged();
     }
 
@@ -141,6 +164,9 @@ public class NewEpisodesFragment extends Fragment {
         public void onContentChanged() {
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();
+            }
+            if (feedItemDialog != null && feedItemDialog.isShowing()) {
+                feedItemDialog.updateMenuAppearance();
             }
         }
 

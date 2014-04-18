@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import com.mobeta.android.dslv.DragSortListView;
@@ -19,12 +20,14 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.UndoBarController;
 import de.danoeh.antennapod.util.gui.FeedItemUndoToken;
 
@@ -55,6 +58,8 @@ public class QueueFragment extends Fragment {
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
     private DownloadObserver downloadObserver = null;
+
+    private FeedItemDialog feedItemDialog;
 
     /**
      * Download observer updates won't result in an upate of the list adapter if this is true.
@@ -108,6 +113,7 @@ public class QueueFragment extends Fragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        feedItemDialog = null;
     }
 
     @Override
@@ -119,6 +125,16 @@ public class QueueFragment extends Fragment {
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
         listView.setEmptyView(txtvEmpty);
 
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
+                if (item != null) {
+                    feedItemDialog = new FeedItemDialog(activity.get(), item, QueueAccess.ItemListAccess(queue));
+                    feedItemDialog.show();
+                }
+            }
+        });
 
         listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
@@ -192,6 +208,11 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
+        if (feedItemDialog != null && feedItemDialog.isShowing()) {
+            feedItemDialog.setQueue(QueueAccess.ItemListAccess(queue));
+            feedItemDialog.setItemFromCollection(queue);
+            feedItemDialog.updateMenuAppearance();
+        }
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -199,6 +220,9 @@ public class QueueFragment extends Fragment {
         public void onContentChanged() {
             if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();
+            }
+            if (feedItemDialog != null && feedItemDialog.isShowing()) {
+                feedItemDialog.updateMenuAppearance();
             }
         }
 

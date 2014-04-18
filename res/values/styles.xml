@@ -37,6 +37,7 @@
         <item name="attr/dragview_float_background">@color/white</item>
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/nav_drawer_toggle">@drawable/ic_drawer</item>
+        <item name="attr/ic_action_overflow">@drawable/ic_action_overflow</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
@@ -75,41 +76,45 @@
         <item name="attr/dragview_float_background">@color/black</item>
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/nav_drawer_toggle">@drawable/ic_drawer_dark</item>
+        <item name="attr/ic_action_overflow">@drawable/ic_action_overflow_dark</item>
+
     </style>
 
     <style name="UndoBar">
-      <item name="android:layout_width">match_parent</item>
-      <item name="android:layout_height">48dp</item>
-      <item name="android:layout_gravity">bottom</item>
-      <item name="android:layout_marginLeft">8dp</item>
-      <item name="android:layout_marginRight">8dp</item>
-      <item name="android:layout_marginBottom">16dp</item>
-      <item name="android:orientation">horizontal</item>
-      <item name="android:background">@drawable/undobar</item>
-      <item name="android:clickable">true</item>
-      <item name="android:divider">@drawable/undobar_divider</item>
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="android:layout_gravity">bottom</item>
+        <item name="android:layout_marginLeft">8dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:background">@drawable/undobar</item>
+        <item name="android:clickable">true</item>
+        <item name="android:divider">@drawable/undobar_divider</item>
     </style>
+
     <style name="UndoBarMessage">
-      <item name="android:layout_width">0dp</item>
-      <item name="android:layout_weight">1</item>
-      <item name="android:layout_height">wrap_content</item>
-      <item name="android:layout_marginLeft">16dp</item>
-      <item name="android:layout_gravity">center_vertical</item>
-      <item name="android:layout_marginRight">16dp</item>
-      <item name="android:textAppearance">?android:textAppearanceMedium</item>
-      <item name="android:textColor">#fff</item>
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">16dp</item>
+        <item name="android:layout_gravity">center_vertical</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:textAppearance">?android:textAppearanceMedium</item>
+        <item name="android:textColor">#fff</item>
     </style>
+
     <style name="UndoBarButton">
-      <item name="android:layout_width">wrap_content</item>
-      <item name="android:layout_height">match_parent</item>
-      <item name="android:paddingLeft">16dp</item>
-      <item name="android:paddingRight">16dp</item>
-      <item name="android:background">@drawable/undobar_button</item>
-      <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
-      <item name="android:drawablePadding">12dp</item>
-      <item name="android:textAppearance">?android:textAppearanceSmall</item>
-      <item name="android:textStyle">bold</item>
-      <item name="android:textColor">#fff</item>
-      <item name="android:text">@string/undo</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:paddingLeft">16dp</item>
+        <item name="android:paddingRight">16dp</item>
+        <item name="android:background">@drawable/undobar_button</item>
+        <item name="android:drawableLeft">@drawable/ic_undobar_undo</item>
+        <item name="android:drawablePadding">12dp</item>
+        <item name="android:textAppearance">?android:textAppearanceSmall</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:textColor">#fff</item>
+        <item name="android:text">@string/undo</item>
     </style>
 </resources>

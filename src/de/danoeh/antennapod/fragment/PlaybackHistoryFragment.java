@@ -7,10 +7,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.ListView;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -35,6 +37,8 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
+
+    private FeedItemDialog feedItemDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -67,6 +71,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        feedItemDialog = null;
     }
 
     @Override
@@ -91,6 +96,16 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        FeedItem item = adapter.getItem(position - l.getHeaderViewsCount());
+        if (item != null) {
+            feedItemDialog = new FeedItemDialog(activity.get(), item, queue);
+            feedItemDialog.show();
+        }
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
@@ -110,6 +125,11 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
+        if (feedItemDialog != null && feedItemDialog.isShowing()) {
+            feedItemDialog.setItemFromCollection(playbackHistory);
+            feedItemDialog.setQueue(queue);
+            feedItemDialog.updateMenuAppearance();
+        }
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -117,6 +137,9 @@ public class PlaybackHistoryFragment extends ListFragment {
         public void onContentChanged() {
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
+            }
+            if (feedItemDialog != null && feedItemDialog.isShowing()) {
+                feedItemDialog.updateMenuAppearance();
             }
         }
 
