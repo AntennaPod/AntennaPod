@@ -12,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.service.playback.PlayerStatus;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ThemeUtils;
@@ -22,6 +23,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 	private ActionButtonCallback callback;
 	private boolean showFeedtitle;
 	private int selectedItemIndex;
+    private final ActionButtonUtils actionButtonUtils;
 
 	public static final int SELECTION_NONE = -1;
 
@@ -32,6 +34,7 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 		this.callback = callback;
 		this.showFeedtitle = showFeedtitle;
 		this.selectedItemIndex = SELECTION_NONE;
+        this.actionButtonUtils = new ActionButtonUtils(context);
 	}
 
 	@Override
@@ -49,20 +52,12 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 			holder.lenSize = (TextView) convertView
 					.findViewById(R.id.txtvLenSize);
 			holder.butAction = (ImageButton) convertView
-					.findViewById(R.id.butAction);
+					.findViewById(R.id.butSecondaryAction);
 			holder.published = (TextView) convertView
 					.findViewById(R.id.txtvPublished);
 			holder.inPlaylist = (ImageView) convertView
 					.findViewById(R.id.imgvInPlaylist);
-			holder.downloaded = (ImageView) convertView
-					.findViewById(R.id.imgvDownloaded);
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
-			holder.downloading = (ImageView) convertView
-					.findViewById(R.id.imgvDownloading);
-			if (showFeedtitle) {
-				holder.feedtitle = (TextView) convertView
-						.findViewById(R.id.txtvFeedname);
-			}
 			holder.statusPlaying = (View) convertView
 					.findViewById(R.id.statusPlaying);
 			holder.statusUnread = (View) convertView
@@ -83,11 +78,13 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 				convertView.setBackgroundResource(0);
 			}
 
-			holder.title.setText(item.getTitle());
-			if (showFeedtitle) {
-				holder.feedtitle.setVisibility(View.VISIBLE);
-				holder.feedtitle.setText(item.getFeed().getTitle());
-			}
+            StringBuilder buffer = new StringBuilder(item.getTitle());
+            if (showFeedtitle) {
+                buffer.append("(");
+                buffer.append(item.getFeed().getTitle());
+                buffer.append(")");
+            }
+			holder.title.setText(buffer.toString());
 
 			FeedItem.State state = item.getState();
 			switch (state) {
@@ -104,12 +101,10 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 			case NEW:
 				holder.statusPlaying.setVisibility(View.GONE);
 				holder.statusUnread.setVisibility(View.VISIBLE);
-				holder.episodeProgress.setVisibility(View.GONE);
 				break;
 			default:
 				holder.statusPlaying.setVisibility(View.GONE);
 				holder.statusUnread.setVisibility(View.GONE);
-				holder.episodeProgress.setVisibility(View.GONE);
 				break;
 			}
 
@@ -121,11 +116,10 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 			FeedMedia media = item.getMedia();
 			if (media == null) {
-				holder.downloaded.setVisibility(View.GONE);
-				holder.downloading.setVisibility(View.GONE);
-				holder.inPlaylist.setVisibility(View.GONE);
-				holder.type.setVisibility(View.GONE);
-				holder.lenSize.setVisibility(View.GONE);
+                holder.episodeProgress.setVisibility(View.GONE);
+				holder.inPlaylist.setVisibility(View.INVISIBLE);
+				holder.type.setVisibility(View.INVISIBLE);
+				holder.lenSize.setVisibility(View.INVISIBLE);
 			} else {
 
 				if (state == FeedItem.State.PLAYING
@@ -153,19 +147,16 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 				if (((ItemAccess) itemAccess).isInQueue(item)) {
 					holder.inPlaylist.setVisibility(View.VISIBLE);
 				} else {
-					holder.inPlaylist.setVisibility(View.GONE);
-				}
-				if (item.getMedia().isDownloaded()) {
-					holder.downloaded.setVisibility(View.VISIBLE);
-				} else {
-					holder.downloaded.setVisibility(View.GONE);
+					holder.inPlaylist.setVisibility(View.INVISIBLE);
 				}
 
 				if (DownloadRequester.getInstance().isDownloadingFile(
 						item.getMedia())) {
-					holder.downloading.setVisibility(View.VISIBLE);
-				} else {
-					holder.downloading.setVisibility(View.GONE);
+					holder.episodeProgress.setVisibility(View.VISIBLE);
+                    holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
+				} else if (!(state == FeedItem.State.IN_PROGRESS
+                            || state == FeedItem.State.PLAYING)) {
+					holder.episodeProgress.setVisibility(View.GONE);
 				}
 
 				TypedArray typeDrawables = getContext().obtainStyledAttributes(
@@ -187,14 +178,10 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 				}
 			}
 
+            actionButtonUtils.configureActionButton(holder.butAction, item);
 			holder.butAction.setFocusable(false);
-			holder.butAction.setOnClickListener(new OnClickListener() {
-
-				@Override
-				public void onClick(View v) {
-					callback.onActionButtonPressed(item);
-				}
-			});
+			holder.butAction.setTag(item);
+            holder.butAction.setOnClickListener(butActionListener);
 
 		} else {
 			convertView.setVisibility(View.GONE);
@@ -203,11 +190,16 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
 	}
 
+    private final OnClickListener butActionListener = new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            FeedItem item = (FeedItem) v.getTag();
+            callback.onActionButtonPressed(item);
+        }
+    };
+
 	static class Holder extends DefaultFeedItemlistAdapter.Holder {
-		TextView feedtitle;
 		ImageView inPlaylist;
-		ImageView downloaded;
-		ImageView downloading;
 		ImageButton butAction;
 		View statusUnread;
 		View statusPlaying;
@@ -225,6 +217,8 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 
     public static interface ItemAccess extends DefaultFeedItemlistAdapter.ItemAccess {
         public boolean isInQueue(FeedItem item);
+
+        int getItemDownloadProgressPercent(FeedItem item);
     }
 
 }

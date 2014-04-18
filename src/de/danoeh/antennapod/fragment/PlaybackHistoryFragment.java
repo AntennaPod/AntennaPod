@@ -4,12 +4,17 @@ import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import de.danoeh.antennapod.adapter.ActionButtonCallback;
+import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
+import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.QueueAccess;
 
@@ -27,6 +32,9 @@ public class PlaybackHistoryFragment extends ListFragment {
     private boolean viewsCreated = false;
 
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
+
+    private DownloadObserver downloadObserver;
+    private List<Downloader> downloaderList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +64,19 @@ public class PlaybackHistoryFragment extends ListFragment {
         adapter = null;
         viewsCreated = false;
         activity.set(null);
+        if (downloadObserver != null) {
+            downloadObserver.onPause();
+        }
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set(activity);
+        if (downloadObserver != null) {
+            downloadObserver.setActivity(activity);
+            downloadObserver.onResume();
+        }
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
@@ -88,18 +103,49 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private void onFragmentLoaded() {
         if (adapter == null) {
-            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, actionButtonCallback, true);
+            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
             setListAdapter(adapter);
+            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
+            downloadObserver.onResume();
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
-
     }
+
+    private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
+        @Override
+        public void onContentChanged() {
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        }
+
+        @Override
+        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+            PlaybackHistoryFragment.this.downloaderList = downloaderList;
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
+        }
+    };
 
     private InternalFeedItemlistAdapter.ItemAccess itemAccess = new InternalFeedItemlistAdapter.ItemAccess() {
         @Override
         public boolean isInQueue(FeedItem item) {
             return (queue != null) ? queue.contains(item.getId()) : false;
+        }
+
+        @Override
+        public int getItemDownloadProgressPercent(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        return downloader.getDownloadRequest().getProgressPercent();
+                    }
+                }
+            }
+            return 0;
         }
 
         @Override
@@ -110,13 +156,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         @Override
         public FeedItem getItem(int position) {
             return (playbackHistory != null) ? playbackHistory.get(position) : null;
-        }
-    };
-
-    private ActionButtonCallback actionButtonCallback = new ActionButtonCallback() {
-        @Override
-        public void onActionButtonPressed(FeedItem item) {
-
         }
     };
 

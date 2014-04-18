@@ -6,7 +6,6 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +14,7 @@ import android.widget.TextView;
 import com.mobeta.android.dslv.DragSortListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -127,7 +127,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new NewEpisodesListAdapter(activity.get(), itemAccess);
+            listAdapter = new NewEpisodesListAdapter(activity.get(), itemAccess, new DefaultActionButtonCallback(activity.get()));
             listView.setAdapter(listAdapter);
             listView.setEmptyView(txtvEmpty);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
@@ -196,11 +196,6 @@ public class NewEpisodesFragment extends Fragment {
             } else {
                 return false;
             }
-        }
-
-        @Override
-        public void onFeedItemSecondaryAction(FeedItem item) {
-            Log.i(TAG, item.getTitle());
         }
 
 

@@ -1,155 +1,133 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="0dip"
-    android:layout_height="match_parent"
-    android:layout_weight="1"
-    android:paddingLeft="4dp" >
 
-    <TextView
-        android:id="@+id/txtvItemname"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="4dp"
-        android:layout_toLeftOf="@+id/butAction"
-        android:ellipsize="end"
-        android:lines="2"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_medium" />
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="match_parent"
+              android:orientation="horizontal"
+              android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/txtvFeedname"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvItemname"
-        android:layout_marginBottom="4dp"
-        android:layout_toLeftOf="@id/butAction"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_micro"
-        android:visibility="gone" />
-
-    <TextView
-        android:id="@+id/txtvPublished"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvFeedname"
-        android:layout_marginBottom="4dp"
-        android:layout_toLeftOf="@id/butAction"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro" />
-
-    <ImageView
-        android:id="@+id/imgvType"
-        android:layout_width="@dimen/enc_icons_size"
-        android:layout_height="@dimen/enc_icons_size"
-        android:layout_below="@id/txtvPublished"
-        android:layout_toLeftOf="@+id/imgvInPlaylist"
-        android:padding="2dp"
-        tools:ignore="ContentDescription"/>
-
-    <ImageView
-        android:id="@id/imgvInPlaylist"
-        android:contentDescription="@string/in_queue_label"
-        android:layout_width="@dimen/enc_icons_size"
-        android:layout_height="@dimen/enc_icons_size"
-        android:layout_below="@id/txtvPublished"
-        android:layout_toLeftOf="@+id/imgvDownloaded"
-        android:padding="2dp"
-        android:src="?attr/stat_playlist"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@id/imgvDownloaded"
-        android:contentDescription="@string/status_downloaded_label"
-        android:layout_width="@dimen/enc_icons_size"
-        android:layout_height="@dimen/enc_icons_size"
-        android:layout_below="@id/txtvPublished"
-        android:layout_toLeftOf="@+id/imgvDownloading"
-        android:padding="2dp"
-        android:src="?attr/av_download"
-        android:visibility="visible" />
-
-    <ImageView
-        android:id="@id/imgvDownloading"
-        android:contentDescription="@string/downloading_label"
-        android:layout_width="@dimen/enc_icons_size"
-        android:layout_height="@dimen/enc_icons_size"
-        android:layout_below="@id/txtvPublished"
-        android:layout_toLeftOf="@id/butAction"
-        android:padding="2dp"
-        android:src="?attr/navigation_refresh"
-        android:visibility="visible" />
-
-    <TextView
-        android:id="@+id/txtvLenSize"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtvPublished"
-        android:maxLines="2"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro" />
-
-    <ProgressBar
-        android:id="@+id/pbar_episode_progress"
-        style="?android:attr/progressBarStyleHorizontal"
+    <RelativeLayout
+        android:layout_margin="8dp"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/txtvPublished"
-        android:layout_marginBottom="4dp"
-        android:layout_marginLeft="4dp"
-        android:layout_marginRight="4dp"
-        android:layout_marginTop="2dp"
-        android:layout_toLeftOf="@id/imgvType"
-        android:layout_toRightOf="@id/txtvLenSize" />
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:paddingLeft="4dp">
+
+        <TextView
+            android:id="@+id/txtvPublished"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="4dp"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro"/>
+
+        <TextView
+            android:id="@+id/txtvItemname"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvPublished"
+            android:layout_marginBottom="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="4dp"
+            android:ellipsize="end"
+            android:lines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_medium"/>
+
+
+        <ImageView
+            android:id="@+id/imgvInPlaylist"
+            android:contentDescription="@string/in_queue_label"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:padding="2dp"
+            android:src="?attr/stat_playlist"
+            android:visibility="visible"/>
+
+        <ImageView
+            android:id="@+id/imgvType"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_alignParentBottom="true"
+            android:layout_toLeftOf="@+id/imgvInPlaylist"
+            android:padding="2dp"
+            tools:ignore="ContentDescription"/>
+
+        <TextView
+            android:id="@+id/txtvLenSize"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtvItemname"
+            android:maxLines="2"
+            android:layout_marginBottom="2dp"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro"/>
+
+        <ProgressBar
+            android:id="@+id/pbar_episode_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_marginTop="2dp"
+            android:layout_toLeftOf="@id/imgvType"
+            android:layout_toRightOf="@id/txtvLenSize"/>
+
+        <TextView
+            android:id="@+id/statusUnread"
+            android:contentDescription="@string/status_unread_label"
+            android:layout_width="wrap_content"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/status_unread"
+            android:gravity="center"
+            android:minWidth="@dimen/status_indicator_width"
+            android:text="@string/new_label"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_micro"
+            android:textStyle="bold"/>
+
+        <ImageView
+            android:id="@+id/statusPlaying"
+            android:contentDescription="@string/status_playing_label"
+            android:layout_width="@dimen/status_indicator_width"
+            android:layout_height="18dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@color/status_playing"
+            android:gravity="center"
+            android:padding="2dp"
+            android:src="@drawable/av_play_dark"/>
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="match_parent"
+        android:background="@drawable/vertical_divider"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"/>
 
     <ImageButton
-        android:id="@id/butAction"
-        android:contentDescription="@string/butAction_label"
-        android:layout_width="48dp"
-        android:layout_height="match_parent"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:background="?attr/borderless_button"
-        android:clickable="false"
+        android:id="@+id/butSecondaryAction"
         android:focusable="false"
+        android:clickable="false"
         android:focusableInTouchMode="false"
-        android:paddingLeft="24dp"
-        android:paddingRight="8dp"
-        android:paddingTop="16dp"
-        android:scaleType="fitEnd"
-        android:src="?attr/spinner_button" />
+        android:layout_width="@dimen/listview_secondary_button_width"
+        android:layout_height="match_parent"
+        android:background="?attr/borderless_button"
+        tools:ignore="ContentDescription"/>
 
-    <TextView
-        android:id="@+id/statusUnread"
-        android:contentDescription="@string/status_unread_label"
-        android:layout_width="wrap_content"
-        android:layout_height="18dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:background="@color/status_unread"
-        android:gravity="center"
-        android:minWidth="@dimen/status_indicator_width"
-        android:text="@string/new_label"
-        android:textAlignment="center"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_micro"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/statusPlaying"
-        android:contentDescription="@string/status_playing_label"
-        android:layout_width="@dimen/status_indicator_width"
-        android:layout_height="18dp"
-        android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:layout_margin="8dp"
-        android:background="@color/status_playing"
-        android:gravity="center"
-        android:padding="2dp"
-        android:src="@drawable/av_play_dark" />
-
-</RelativeLayout>
+</LinearLayout>

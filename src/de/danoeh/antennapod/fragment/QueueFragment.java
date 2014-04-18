@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.mobeta.android.dslv.DragSortListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -185,7 +186,7 @@ public class QueueFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new QueueListAdapter(activity.get(), itemAccess);
+            listAdapter = new QueueListAdapter(activity.get(), itemAccess, new DefaultActionButtonCallback(activity.get()));
             listView.setAdapter(listAdapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
@@ -232,11 +233,6 @@ public class QueueFragment extends Fragment {
                 }
             }
             return 0;
-        }
-
-        @Override
-        public void onFeedItemSecondaryAction(FeedItem item) {
-
         }
     };
 

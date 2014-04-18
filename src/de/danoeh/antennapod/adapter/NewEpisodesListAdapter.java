@@ -24,16 +24,15 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
     private final Context context;
     private final ItemAccess itemAccess;
-    private final TypedArray drawables;
-    private final int[] labels;
+    private final ActionButtonCallback actionButtonCallback;
+    private final ActionButtonUtils actionButtonUtils;
 
-    public NewEpisodesListAdapter(Context context, ItemAccess itemAccess) {
+    public NewEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
         this.context = context;
         this.itemAccess = itemAccess;
-        drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download});
-        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label};
+        this.actionButtonUtils = new ActionButtonUtils(context);
+        this.actionButtonCallback = actionButtonCallback;
     }
 
     @Override
@@ -156,35 +155,17 @@ public class NewEpisodesListAdapter extends BaseAdapter {
             if (!media.isDownloaded()) {
                 if (isDownloadingMedia) {
                     // item is being downloaded
-                    holder.butSecondary.setVisibility(View.VISIBLE);
-                    holder.butSecondary.setImageDrawable(drawables
-                            .getDrawable(1));
-                    holder.butSecondary.setContentDescription(context.getString(labels[1]));
-
                     holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
-                } else {
-                    // item is not downloaded and not being downloaded
-                    holder.butSecondary.setVisibility(View.VISIBLE);
-                    holder.butSecondary.setImageDrawable(drawables.getDrawable(2));
-                    holder.butSecondary.setContentDescription(context.getString(labels[2]));
                 }
-            } else {
-                // item is not being downloaded
-                holder.butSecondary.setVisibility(View.VISIBLE);
-                holder.butSecondary
-                        .setImageDrawable(drawables.getDrawable(0));
-                holder.butSecondary.setContentDescription(context.getString(labels[0]));
             }
-        } else {
-            holder.butSecondary.setVisibility(View.INVISIBLE);
         }
-
         if (itemAccess.isInQueue(item)) {
             holder.queueStatus.setVisibility(View.VISIBLE);
         } else {
             holder.queueStatus.setVisibility(View.INVISIBLE);
         }
 
+        actionButtonUtils.configureActionButton(holder.butSecondary, item);
         holder.butSecondary.setFocusable(false);
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
@@ -204,7 +185,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         @Override
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
-            itemAccess.onFeedItemSecondaryAction(item);
+            actionButtonCallback.onActionButtonPressed(item);
         }
     };
 
@@ -232,7 +213,5 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
-
-        void onFeedItemSecondaryAction(FeedItem item);
     }
 }
