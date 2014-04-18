@@ -91,21 +91,19 @@ public class MainActivity extends ActionBarActivity {
 
         drawerLayout.setDrawerListener(drawerToogle);
         FragmentManager fm = getSupportFragmentManager();
+
         FragmentTransaction transaction = fm.beginTransaction();
-        externalPlayerFragment = new ExternalPlayerFragment();
-        transaction.replace(R.id.playerFragment, externalPlayerFragment);
-
-
-        transaction.commit();
 
         Fragment mainFragment = fm.findFragmentByTag("main");
         if (mainFragment != null) {
-            transaction = fm.beginTransaction();
             transaction.replace(R.id.main_view, mainFragment);
-            transaction.commit();
         } else {
             loadFragment(NavListAdapter.VIEW_TYPE_NAV, NavListAdapter.POS_NEW, null);
         }
+
+        externalPlayerFragment = new ExternalPlayerFragment();
+        transaction.replace(R.id.playerFragment, externalPlayerFragment);
+        transaction.commit();
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
