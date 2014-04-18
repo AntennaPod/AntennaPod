@@ -136,19 +136,6 @@ public class QueueFragment extends Fragment {
             }
         });
 
-        listView.setRemoveListener(new DragSortListView.RemoveListener() {
-            @Override
-            public void remove(int which) {
-                stopItemLoader();
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
-                undoBarController.showUndoBar(false,
-                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
-                                which)
-                );
-            }
-        });
-
         undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
             @Override
             public void onUndo(Parcelable token) {
@@ -182,7 +169,13 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
-
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
+                undoBarController.showUndoBar(false,
+                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
+                                which)
+                );
             }
         });
 
