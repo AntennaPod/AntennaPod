@@ -5,39 +5,37 @@
     <item
         android:id="@+id/refresh_item"
         android:icon="?attr/navigation_refresh"
+        android:menuCategory="container"
         custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/refresh_label">
     </item>
     <item
         android:id="@+id/mark_all_read_item"
+        android:menuCategory="container"
         custom:showAsAction="collapseActionView"
         android:title="@string/mark_all_read_label">
     </item>
     <item
         android:id="@+id/show_info_item"
+        android:menuCategory="container"
         android:icon="?attr/action_about"
         custom:showAsAction="collapseActionView"
         android:title="@string/show_info_label">
     </item>
     <item
+        android:id="@+id/support_item"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/support_label"
+        android:visible="false">
+    </item>
+    <item
         android:id="@+id/remove_item"
+        android:menuCategory="container"
         android:icon="?attr/content_discard"
         custom:showAsAction="collapseActionView"
         android:title="@string/remove_feed_label"
         android:visible="true">
-    </item>
-    <item
-        android:id="@+id/visit_website_item"
-        android:icon="?attr/location_web_site"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/visit_website_label"
-        android:visible="true">
-    </item>
-    <item
-        android:id="@+id/support_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/support_label"
-        android:visible="false">
     </item>
 
 </menu>

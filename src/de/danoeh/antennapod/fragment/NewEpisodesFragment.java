@@ -6,11 +6,13 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 import com.mobeta.android.dslv.DragSortListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -19,10 +21,15 @@ import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
@@ -121,6 +128,8 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        inflater.inflate(R.menu.new_episodes, menu);
+
         final SearchView sv = new SearchView(getActivity());
         MenuItemUtils.addSearchItem(menu, sv);
         sv.setQueryHint(getString(R.string.search_hint));
@@ -137,6 +146,35 @@ public class NewEpisodesFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        super.onPrepareOptionsMenu(menu);
+        menu.findItem(R.id.mark_all_read_item).setVisible(unreadItems != null && !unreadItems.isEmpty());
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (!super.onOptionsItemSelected(item)) {
+            switch (item.getItemId()) {
+                case R.id.refresh_item:
+                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
+                    if (feeds != null) {
+                        DBTasks.refreshAllFeeds(getActivity(), feeds);
+                    }
+                    return true;
+                case R.id.mark_all_read_item:
+                    DBWriter.markAllItemsRead(getActivity());
+                    Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            return true;
+        }
+
     }
 
     @Override
@@ -190,6 +228,8 @@ public class NewEpisodesFragment extends Fragment {
             feedItemDialog.updateMenuAppearance();
         }
         listAdapter.notifyDataSetChanged();
+        getActivity().supportInvalidateOptionsMenu();
+        updateProgressBarVisibility();
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -260,11 +300,25 @@ public class NewEpisodesFragment extends Fragment {
 
     };
 
+    private void updateProgressBarVisibility() {
+        if (DownloadService.isRunning
+                && DownloadRequester.getInstance().isDownloadingFeeds()) {
+            ((ActionBarActivity) getActivity())
+                    .setSupportProgressBarIndeterminateVisibility(true);
+        } else {
+            ((ActionBarActivity) getActivity())
+                    .setSupportProgressBarIndeterminateVisibility(false);
+        }
+        getActivity().supportInvalidateOptionsMenu();
+
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
                 startItemLoader();
+                updateProgressBarVisibility();
             }
         }
     };

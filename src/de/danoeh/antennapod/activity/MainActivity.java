@@ -1,7 +1,5 @@
 package de.danoeh.antennapod.activity;
 
-import android.app.SearchManager;
-import android.app.SearchableInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -14,11 +12,9 @@ import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
@@ -45,6 +41,12 @@ public class MainActivity extends ActionBarActivity {
             | EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
 
+    public static final int POS_NEW = 0,
+            POS_QUEUE = 1,
+            POS_DOWNLOADS = 2,
+            POS_HISTORY = 3,
+            POS_ADD = 4;
+
     private ExternalPlayerFragment externalPlayerFragment;
     private DrawerLayout drawerLayout;
 
@@ -61,6 +63,7 @@ public class MainActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -99,7 +102,7 @@ public class MainActivity extends ActionBarActivity {
         if (mainFragment != null) {
             transaction.replace(R.id.main_view, mainFragment);
         } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, NavListAdapter.POS_NEW, null);
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_NEW, null);
         }
 
         externalPlayerFragment = new ExternalPlayerFragment();
@@ -121,6 +124,10 @@ public class MainActivity extends ActionBarActivity {
         return getSupportActionBar();
     }
 
+    public List<Feed> getFeeds() {
+        return feeds;
+    }
+
     private void loadFragment(int viewType, int relPos, Bundle args) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // clear back stack
@@ -132,19 +139,19 @@ public class MainActivity extends ActionBarActivity {
         Fragment fragment = null;
         if (viewType == NavListAdapter.VIEW_TYPE_NAV) {
             switch (relPos) {
-                case NavListAdapter.POS_NEW:
+                case POS_NEW:
                     fragment = new NewEpisodesFragment();
                     break;
-                case NavListAdapter.POS_QUEUE:
+                case POS_QUEUE:
                     fragment = new QueueFragment();
                     break;
-                case NavListAdapter.POS_DOWNLOADS:
+                case POS_DOWNLOADS:
                     fragment = new DownloadsFragment();
                     break;
-                case NavListAdapter.POS_HISTORY:
+                case POS_HISTORY:
                     fragment = new PlaybackHistoryFragment();
                     break;
-                case NavListAdapter.POS_ADD:
+                case POS_ADD:
                     fragment = new AddFeedFragment();
                     break;
 
@@ -161,9 +168,14 @@ public class MainActivity extends ActionBarActivity {
             if (args != null) {
                 fragment.setArguments(args);
             }
-            fT.replace(R.id.main_view, fragment, "main");fragmentManager.popBackStack();
+            fT.replace(R.id.main_view, fragment, "main");
+            fragmentManager.popBackStack();
         }
         fT.commit();
+    }
+
+    public void loadNavFragment(int position, Bundle args) {
+        loadFragment(NavListAdapter.VIEW_TYPE_NAV, position, args);
     }
 
     public void loadFeedFragment(long feedID) {
@@ -244,8 +256,8 @@ public class MainActivity extends ActionBarActivity {
             if (extra != null) {
                 Bundle args = new Bundle();
                 args.putString(AddFeedFragment.ARG_FEED_URL, extra);
-                loadFragment(NavListAdapter.VIEW_TYPE_NAV, NavListAdapter.POS_ADD, args);
-                selectedNavListIndex = NavListAdapter.POS_ADD;
+                loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_ADD, args);
+                selectedNavListIndex = POS_ADD;
                 navAdapter.notifyDataSetChanged();
             }
         }
@@ -359,12 +371,6 @@ public class MainActivity extends ActionBarActivity {
         static final int VIEW_TYPE_NAV = 0;
         static final int VIEW_TYPE_SECTION_DIVIDER = 1;
         static final int VIEW_TYPE_SUBSCRIPTION = 2;
-
-        static final int POS_NEW = 0,
-                POS_QUEUE = 1,
-                POS_DOWNLOADS = 2,
-                POS_HISTORY = 3,
-                POS_ADD = 4;
 
         static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
 

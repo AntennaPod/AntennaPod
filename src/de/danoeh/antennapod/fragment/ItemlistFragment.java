@@ -1,9 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,21 +11,20 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.text.util.Linkify;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.View;
+import android.view.*;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.ItemviewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
@@ -35,12 +33,14 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Displays a list of FeedItems.
@@ -146,6 +146,8 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
+        FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
+
         final SearchView sv = new SearchView(getActivity());
         MenuItemUtils.addSearchItem(menu, sv);
         sv.setQueryHint(getString(R.string.search_hint));
@@ -167,9 +169,60 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
+    public void onPrepareOptionsMenu(Menu menu) {
+        FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (!super.onOptionsItemSelected(item)) {
+            try {
+                if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
+                    switch (item.getItemId()) {
+                        case R.id.remove_item:
+                            final FeedRemover remover = new FeedRemover(
+                                    getActivity(), feed) {
+                                @Override
+                                protected void onPostExecute(Void result) {
+                                    super.onPostExecute(result);
+                                    ((MainActivity)getActivity()).loadNavFragment(MainActivity.POS_NEW, null);
+                                }
+                            };
+                            ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                                    R.string.remove_feed_label,
+                                    R.string.feed_delete_confirmation_msg) {
+
+                                @Override
+                                public void onConfirmButtonPressed(
+                                        DialogInterface dialog) {
+                                    dialog.dismiss();
+                                    remover.executeAsync();
+                                }
+                            };
+                            conDialog.createNewDialog().show();
+                            return true;
+                        default:
+                            return false;
+
+                    }
+                } else {
+                    return true;
+                }
+            } catch (DownloadRequestException e) {
+                e.printStackTrace();
+                DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
+                return true;
+            }
+        } else {
+            return true;
+        }
+
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("");
+        ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
 
         viewsCreated = true;
         if (itemsLoaded) {
@@ -232,8 +285,7 @@ public class ItemlistFragment extends ListFragment {
             feedItemDialog.setQueue(queue);
             feedItemDialog.updateMenuAppearance();
         }
-
-
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
