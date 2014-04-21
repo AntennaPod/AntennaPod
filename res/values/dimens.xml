@@ -16,4 +16,5 @@
     <dimen name="thumbnail_length_onlinefeedview">110dp</dimen>
     <dimen name="thumbnail_length_navlist">42dp</dimen>
     <dimen name="listview_secondary_button_width">48dp</dimen>
+    <dimen name="drawer_width">280dp</dimen>
 </resources>

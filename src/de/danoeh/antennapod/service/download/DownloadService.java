@@ -13,6 +13,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.os.Binder;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
@@ -23,7 +24,10 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DownloadActivity;
 import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
 import de.danoeh.antennapod.activity.DownloadLogActivity;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.storage.*;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
@@ -274,10 +278,17 @@ public class DownloadService extends Service {
 
     @SuppressLint("NewApi")
     private void setupNotificationBuilders() {
-        PendingIntent pIntent = PendingIntent.getActivity(this, 0, new Intent(
-                        this, DownloadActivity.class),
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.putExtra(MainActivity.EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
+        intent.putExtra(MainActivity.EXTRA_NAV_INDEX, MainActivity.POS_DOWNLOADS);
+        Bundle args = new Bundle();
+        args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_RUNNING);
+        intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+
+        PendingIntent pIntent = PendingIntent.getActivity(this, 0, intent,
                 PendingIntent.FLAG_UPDATE_CURRENT
         );
+
 
         Bitmap icon = BitmapFactory.decodeResource(getResources(),
                 R.drawable.stat_notify_sync);
@@ -490,6 +501,13 @@ public class DownloadService extends Service {
         if (createReport) {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Creating report");
+            Intent intent = new Intent(this, MainActivity.class);
+            intent.putExtra(MainActivity.EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
+            intent.putExtra(MainActivity.EXTRA_NAV_INDEX, MainActivity.POS_DOWNLOADS);
+            Bundle args = new Bundle();
+            args.putInt(DownloadsFragment.ARG_SELECTED_TAB, DownloadsFragment.POS_LOG);
+            intent.putExtra(MainActivity.EXTRA_FRAGMENT_ARGS, args);
+
             // create notification object
             Notification notification = new NotificationCompat.Builder(this)
                     .setTicker(
@@ -507,8 +525,7 @@ public class DownloadService extends Service {
                                     R.drawable.stat_notify_sync)
                     )
                     .setContentIntent(
-                            PendingIntent.getActivity(this, 0, new Intent(this,
-                                    DownloadLogActivity.class), 0)
+                            PendingIntent.getActivity(this, 0, intent, 0)
                     )
                     .setAutoCancel(true).getNotification();
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);

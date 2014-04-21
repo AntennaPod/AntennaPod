@@ -20,6 +20,11 @@ import de.danoeh.antennapod.activity.MainActivity;
  */
 public class DownloadsFragment extends Fragment {
 
+    public static final String ARG_SELECTED_TAB = "selected_tab";
+
+    public static final int POS_RUNNING = 0;
+    public static final int POS_COMPLETED = 1;
+    public static final int POS_LOG = 2;
 
     private ViewPager pager;
     private MainActivity activity;
@@ -71,6 +76,15 @@ public class DownloadsFragment extends Fragment {
     }
 
     @Override
+    public void onViewCreated(View view, Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        if (getArguments() != null) {
+            int tab = getArguments().getInt(ARG_SELECTED_TAB);
+            pager.setCurrentItem(tab, false);
+        }
+    }
+
+    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity = (MainActivity) activity;
@@ -85,9 +99,7 @@ public class DownloadsFragment extends Fragment {
 
     public class DownloadsPagerAdapter extends FragmentPagerAdapter {
 
-        private final int POS_RUNNING = 0;
-        private final int POS_COMPLETED = 1;
-        private final int POS_LOG = 2;
+
 
 
         Resources resources;

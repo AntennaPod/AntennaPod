@@ -28,7 +28,7 @@
 
     <ListView
         android:id="@+id/nav_list"
-        android:layout_width="280dp"
+        android:layout_width="@dimen/drawer_width"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:choiceMode="singleChoice"

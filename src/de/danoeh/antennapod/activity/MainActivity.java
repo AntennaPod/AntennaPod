@@ -1,10 +1,8 @@
 package de.danoeh.antennapod.activity;
 
-import android.content.Context;
 import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
-import android.graphics.Typeface;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -17,10 +15,11 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.view.*;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ListView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.fragment.*;
@@ -40,6 +39,10 @@ public class MainActivity extends ActionBarActivity {
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
+
+    public static final String EXTRA_NAV_INDEX = "nav_index";
+    public static final String EXTRA_NAV_TYPE = "nav_type";
+    public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
     public static final int POS_NEW = 0,
             POS_QUEUE = 1,
@@ -157,11 +160,13 @@ public class MainActivity extends ActionBarActivity {
 
             }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
+            selectedNavListIndex = relPos;
 
         } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
             Feed feed = itemAccess.getItem(relPos);
             currentTitle = "";
             fragment = ItemlistFragment.newInstance(feed.getId());
+            selectedNavListIndex = NavListAdapter.SUBSCRIPTION_OFFSET + relPos;
 
         }
         if (fragment != null) {
@@ -172,6 +177,10 @@ public class MainActivity extends ActionBarActivity {
             fragmentManager.popBackStack();
         }
         fT.commit();
+        getSupportActionBar().setTitle(currentTitle);
+        if (navAdapter != null) {
+            navAdapter.notifyDataSetChanged();
+        }
     }
 
     public void loadNavFragment(int position, Bundle args) {
@@ -260,6 +269,8 @@ public class MainActivity extends ActionBarActivity {
                 selectedNavListIndex = POS_ADD;
                 navAdapter.notifyDataSetChanged();
             }
+        } else if (feeds != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+            handleNavIntent();
         }
     }
 
@@ -303,7 +314,7 @@ public class MainActivity extends ActionBarActivity {
     private AsyncTask<Void, Void, List<Feed>> loadTask;
     private int selectedNavListIndex = 0;
 
-    private ItemAccess itemAccess = new ItemAccess() {
+    private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
             if (feeds != null) {
@@ -340,8 +351,14 @@ public class MainActivity extends ActionBarActivity {
             @Override
             protected void onPostExecute(List<Feed> result) {
                 super.onPostExecute(result);
+                boolean handleIntent = (feeds == null);
+
                 feeds = result;
                 navAdapter.notifyDataSetChanged();
+
+                if (handleIntent) {
+                    handleNavIntent();
+                }
             }
         };
         loadTask.execute();
@@ -365,173 +382,20 @@ public class MainActivity extends ActionBarActivity {
         }
     };
 
-    private static class NavListAdapter extends BaseAdapter {
-
-        static final int VIEW_TYPE_COUNT = 3;
-        static final int VIEW_TYPE_NAV = 0;
-        static final int VIEW_TYPE_SECTION_DIVIDER = 1;
-        static final int VIEW_TYPE_SUBSCRIPTION = 2;
-
-        static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
-
-
-        static final int SUBSCRIPTION_OFFSET = 1 + NAV_TITLES.length;
-
-        private ItemAccess itemAccess;
-        private Context context;
-
-        private NavListAdapter(ItemAccess itemAccess, Context context) {
-            this.itemAccess = itemAccess;
-            this.context = context;
+    private void handleNavIntent() {
+        Intent intent = getIntent();
+        if (intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+            int index = intent.getIntExtra(EXTRA_NAV_INDEX, 0);
+            int type = intent.getIntExtra(EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
+            Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
+            loadFragment(type, index, args);
         }
-
-        @Override
-        public int getCount() {
-            return NAV_TITLES.length + 1 + itemAccess.getCount();
-        }
-
-        @Override
-        public Object getItem(int position) {
-            int viewType = getItemViewType(position);
-            if (viewType == VIEW_TYPE_NAV) {
-                return context.getString(NAV_TITLES[position]);
-            } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-                return context.getString(R.string.podcasts_label);
-            } else {
-                return itemAccess.getItem(position);
-            }
-        }
-
-        @Override
-        public long getItemId(int position) {
-            return position;
-        }
-
-        @Override
-        public int getItemViewType(int position) {
-            if (0 <= position && position < NAV_TITLES.length) {
-                return VIEW_TYPE_NAV;
-            } else if (position < NAV_TITLES.length + 1) {
-                return VIEW_TYPE_SECTION_DIVIDER;
-            } else {
-                return VIEW_TYPE_SUBSCRIPTION;
-            }
-        }
-
-        @Override
-        public int getViewTypeCount() {
-            return VIEW_TYPE_COUNT;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            int viewType = getItemViewType(position);
-            View v = null;
-            if (viewType == VIEW_TYPE_NAV) {
-                v = getNavView((String) getItem(position), position, convertView, parent);
-            } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-                v = getSectionDividerView((String) getItem(position), position, convertView, parent);
-            } else {
-                v = getFeedView(position - SUBSCRIPTION_OFFSET, convertView, parent);
-            }
-            if (v != null) {
-                TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
-                if (position == itemAccess.getSelectedItemIndex()) {
-                    txtvTitle.setTypeface(null, Typeface.BOLD);
-                } else {
-                    txtvTitle.setTypeface(null, Typeface.NORMAL);
-                }
-            }
-            return v;
-        }
-
-        private View getNavView(String title, int position, View convertView, ViewGroup parent) {
-            NavHolder holder;
-            if (convertView == null) {
-                holder = new NavHolder();
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                convertView = inflater.inflate(R.layout.nav_listitem, null);
-
-                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-                convertView.setTag(holder);
-            } else {
-                holder = (NavHolder) convertView.getTag();
-            }
-
-            holder.title.setText(title);
-
-            return convertView;
-        }
-
-        private View getSectionDividerView(String title, int position, View convertView, ViewGroup parent) {
-            SectionHolder holder;
-            if (convertView == null) {
-                holder = new SectionHolder();
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                convertView = inflater.inflate(R.layout.nav_section_item, null);
-
-                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-                convertView.setTag(holder);
-            } else {
-                holder = (SectionHolder) convertView.getTag();
-            }
-
-            holder.title.setText(title);
-
-            convertView.setEnabled(false);
-            convertView.setOnClickListener(null);
-
-            return convertView;
-        }
-
-        private View getFeedView(int feedPos, View convertView, ViewGroup parent) {
-            FeedHolder holder;
-            Feed feed = itemAccess.getItem(feedPos);
-
-            if (convertView == null) {
-                holder = new FeedHolder();
-                LayoutInflater inflater = (LayoutInflater) context
-                        .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-
-                convertView = inflater.inflate(R.layout.nav_feedlistitem, null);
-
-                holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-                holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
-                convertView.setTag(holder);
-            } else {
-                holder = (FeedHolder) convertView.getTag();
-            }
-
-            holder.title.setText(feed.getTitle());
-            ImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(), holder.image, (int) context.getResources().getDimension(R.dimen.thumbnail_length_navlist));
-
-            return convertView;
-        }
-
-        static class NavHolder {
-            TextView title;
-        }
-
-        static class SectionHolder {
-            TextView title;
-        }
-
-        static class FeedHolder {
-            TextView title;
-            ImageView image;
-        }
+        setIntent(new Intent(MainActivity.this, MainActivity.class)); // to avoid handling the intent twice when the configuration changes
     }
 
-    public interface ItemAccess {
-        int getCount();
-
-        Feed getItem(int position);
-
-        int getSelectedItemIndex();
-
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        setIntent(intent);
     }
 }
