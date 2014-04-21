@@ -9,9 +9,12 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.widget.SearchView;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -19,6 +22,7 @@ import android.widget.TextView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.ItemviewActivity;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
@@ -33,6 +37,7 @@ import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -61,8 +66,6 @@ public class ItemlistFragment extends ListFragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
 
-    private AtomicReference<Activity> activity = new AtomicReference<Activity>();
-
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
@@ -88,6 +91,7 @@ public class ItemlistFragment extends ListFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
 
         Bundle args = getArguments();
         if (args == null) throw new IllegalArgumentException("args invalid");
@@ -100,6 +104,13 @@ public class ItemlistFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        if (downloadObserver != null) {
+            downloadObserver.setActivity(getActivity());
+            downloadObserver.onResume();
+        }
+        if (viewsCreated && itemsLoaded) {
+            onFragmentLoaded();
+        }
     }
 
     @Override
@@ -107,6 +118,7 @@ public class ItemlistFragment extends ListFragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
+        resetViewState();
     }
 
     @Override
@@ -119,9 +131,12 @@ public class ItemlistFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         stopItemLoader();
+        resetViewState();
+    }
+
+    private void resetViewState() {
         adapter = null;
         viewsCreated = false;
-        activity.set(null);
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
@@ -129,21 +144,33 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
-        this.activity.set(activity);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(activity);
-            downloadObserver.onResume();
-        }
-        if (viewsCreated && itemsLoaded) {
-            onFragmentLoaded();
-        }
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        final SearchView sv = new SearchView(getActivity());
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                if (itemsLoaded) {
+                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        ((ActionBarActivity)getActivity()).getSupportActionBar().setTitle("");
+
         viewsCreated = true;
         if (itemsLoaded) {
             onFragmentLoaded();
@@ -153,15 +180,7 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        /*
-        Intent showItem = new Intent(getActivity(), ItemviewActivity.class);
-        showItem.putExtra(FeedlistFragment.EXTRA_SELECTED_FEED, selection
-                .getFeed().getId());
-        showItem.putExtra(EXTRA_SELECTED_FEEDITEM, selection.getId());
-
-        startActivity(showItem);
-        */
-        feedItemDialog = new FeedItemDialog(activity.get(), selection, queue);
+        feedItemDialog = new FeedItemDialog(getActivity(), selection, queue);
         feedItemDialog.show();
     }
 
@@ -200,9 +219,9 @@ public class ItemlistFragment extends ListFragment {
         if (adapter == null) {
             getListView().setAdapter(null);
             setupHeaderView();
-            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), false);
+            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
             setListAdapter(adapter);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
+            downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
         setListShown(true);
@@ -243,7 +262,7 @@ public class ItemlistFragment extends ListFragment {
             return;
         }
         LayoutInflater inflater = (LayoutInflater)
-                activity.get().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View header = inflater.inflate(R.layout.feeditemlist_header, null);
         getListView().addHeaderView(header);
 
@@ -311,7 +330,7 @@ public class ItemlistFragment extends ListFragment {
         @Override
         protected Object[] doInBackground(Long... params) {
             long feedID = params[0];
-            Context context = activity.get();
+            Context context = getActivity();
             if (context != null) {
                 return new Object[]{DBReader.getFeed(context, feedID),
                         QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};

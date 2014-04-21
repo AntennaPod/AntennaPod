@@ -1,19 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="8dp" >
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imgvFeedimage"
         android:contentDescription="@string/cover_label"
-        android:layout_width="55dip"
-        android:layout_height="55dip"
+        android:layout_width="@dimen/thumbnail_length_itemlist"
+        android:layout_height="@dimen/thumbnail_length_itemlist"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:layout_marginLeft="1dip"
-        android:layout_marginRight="4dip"
-        android:cropToPadding="true" />
+        android:scaleType="centerCrop"/>
 
     <LinearLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
@@ -21,20 +18,27 @@
         android:layout_height="match_parent"
         android:layout_centerVertical="true"
         android:layout_toRightOf="@id/imgvFeedimage"
-        android:orientation="vertical" >
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/txtvTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:maxLines="2"
-            android:textStyle="bold" />
+            android:layout_margin="4dp"
+            android:lines="2"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_small"/>
 
         <TextView
             android:id="@+id/txtvSubtitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:layout_margin="4dp"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_small"/>
     </LinearLayout>
 
 </RelativeLayout>

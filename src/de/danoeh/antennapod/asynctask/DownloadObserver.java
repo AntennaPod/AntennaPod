@@ -67,7 +67,11 @@ public class DownloadObserver {
         } catch (IllegalArgumentException e) {
             e.printStackTrace();
         }
-        activity.unbindService(mConnection);
+        try {
+            activity.unbindService(mConnection);
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
         stopRefresher();
     }
 

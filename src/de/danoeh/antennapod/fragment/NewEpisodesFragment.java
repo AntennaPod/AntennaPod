@@ -6,9 +6,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.support.v7.widget.SearchView;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -25,6 +24,7 @@ import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -64,14 +64,28 @@ public class NewEpisodesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
 
         startItemLoader();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
     }
 
     @Override
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        this.activity.set((MainActivity) getActivity());
+        if (downloadObserver != null) {
+            downloadObserver.setActivity(getActivity());
+            downloadObserver.onResume();
+        }
+        if (viewsCreated && itemsLoaded) {
+            onFragmentLoaded();
+        }
     }
 
     @Override
@@ -79,26 +93,22 @@ public class NewEpisodesFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
+        resetViewState();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity.set((MainActivity) activity);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(activity);
-            downloadObserver.onResume();
-        }
-        if (viewsCreated && itemsLoaded) {
-            onFragmentLoaded();
-        }
-
-
+        this.activity.set((MainActivity) getActivity());
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        resetViewState();
+    }
+
+    private void resetViewState() {
         listAdapter = null;
         activity.set(null);
         viewsCreated = false;
@@ -109,8 +119,31 @@ public class NewEpisodesFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        final SearchView sv = new SearchView(getActivity());
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
+
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);

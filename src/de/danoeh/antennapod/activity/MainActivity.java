@@ -75,6 +75,7 @@ public class MainActivity extends ActionBarActivity {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
+                currentTitle = getSupportActionBar().getTitle();
                 getSupportActionBar().setTitle(drawerTitle);
                 supportInvalidateOptionsMenu();
             }
@@ -152,7 +153,7 @@ public class MainActivity extends ActionBarActivity {
 
         } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
             Feed feed = itemAccess.getItem(relPos);
-            currentTitle = feed.getTitle();
+            currentTitle = "";
             fragment = ItemlistFragment.newInstance(feed.getId());
 
         }
@@ -163,6 +164,17 @@ public class MainActivity extends ActionBarActivity {
             fT.replace(R.id.main_view, fragment, "main");fragmentManager.popBackStack();
         }
         fT.commit();
+    }
+
+    public void loadFeedFragment(long feedID) {
+        if (feeds != null) {
+            for (int i = 0; i < feeds.size(); i++) {
+                if (feeds.get(i).getId() == feedID) {
+                    loadFragment(NavListAdapter.VIEW_TYPE_SUBSCRIPTION, i, null);
+                    break;
+                }
+            }
+        }
     }
 
     public void loadChildFragment(Fragment fragment) {
@@ -210,7 +222,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title", currentTitle.toString());
+        outState.putString("title", getSupportActionBar().getTitle().toString());
         outState.putInt("selectedNavIndex", selectedNavListIndex);
 
     }
@@ -263,8 +275,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        boolean drawerOpen = drawerLayout.isDrawerOpen(navList);
-        menu.findItem(R.id.search_item).setVisible(!drawerOpen);
 
         return true;
     }
@@ -274,21 +284,6 @@ public class MainActivity extends ActionBarActivity {
         super.onCreateOptionsMenu(menu);
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.main, menu);
-
-        SearchManager searchManager =
-                (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-        MenuItem searchItem = menu.findItem(R.id.search_item);
-        SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        if (searchView == null) {
-            MenuItemCompat.setActionView(searchItem, new SearchView(this));
-            searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
-        }
-        searchView.setIconifiedByDefault(true);
-
-        SearchableInfo info = searchManager.getSearchableInfo(getComponentName());
-        searchView.setSearchableInfo(
-                searchManager.getSearchableInfo(getComponentName()));
-
         return true;
     }
 

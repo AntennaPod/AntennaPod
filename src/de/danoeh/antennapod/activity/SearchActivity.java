@@ -58,7 +58,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
         txtvStatus = (TextView) findViewById(android.R.id.empty);
 
         listView.setOnItemClickListener(this);
-        searchAdapter = new SearchlistAdapter(this, 0, new ArrayList<SearchResult>());
+        //searchAdapter = new SearchlistAdapter(this, 0, new ArrayList<SearchResult>());
         listView.setAdapter(searchAdapter);
         listView.setEmptyView(txtvStatus);
     }
@@ -131,7 +131,7 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
     @SuppressLint({"NewApi", "NewApi"})
     private void handleSearchRequest(final String query) {
         if (searchAdapter != null) {
-            searchAdapter.clear();
+          //  searchAdapter.clear();
             searchAdapter.notifyDataSetChanged();
         }
         txtvStatus.setText(R.string.search_status_searching);
@@ -154,9 +154,9 @@ public class SearchActivity extends ActionBarActivity implements AdapterView.OnI
                             Log.d(TAG, "Found " + result.size()
                                     + " results");
 
-                        searchAdapter.clear();
+                   //     searchAdapter.clear();
                         for (SearchResult s : result) {
-                            searchAdapter.add(s);
+                   //         searchAdapter.add(s);
                         }
                         searchAdapter.notifyDataSetChanged();
                         txtvStatus

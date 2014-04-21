@@ -7,10 +7,10 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -30,6 +30,7 @@ import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.UndoBarController;
 import de.danoeh.antennapod.util.gui.FeedItemUndoToken;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -71,6 +72,8 @@ public class QueueFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
+        setHasOptionsMenu(true);
+
         startItemLoader();
     }
 
@@ -78,6 +81,14 @@ public class QueueFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        this.activity.set((MainActivity) getActivity());
+        if (downloadObserver != null) {
+            downloadObserver.setActivity(getActivity());
+            downloadObserver.onResume();
+        }
+        if (viewsCreated && itemsLoaded) {
+            onFragmentLoaded();
+        }
     }
 
     @Override
@@ -85,26 +96,22 @@ public class QueueFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
+        resetViewState();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set((MainActivity) activity);
-        if (downloadObserver != null) {
-            downloadObserver.setActivity(activity);
-            downloadObserver.onResume();
-        }
-        if (viewsCreated && itemsLoaded) {
-            onFragmentLoaded();
-        }
-
-
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
+        resetViewState();
+    }
+
+    private void resetViewState() {
         listAdapter = null;
         undoBarController = null;
         activity.set(null);
@@ -117,8 +124,31 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        super.onCreateOptionsMenu(menu, inflater);
+        final SearchView sv = new SearchView(getActivity());
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+    }
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
+
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
