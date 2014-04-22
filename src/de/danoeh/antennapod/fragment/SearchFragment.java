@@ -89,6 +89,11 @@ public class SearchFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         stopSearchTask();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         searchAdapter = null;
         viewCreated = false;
     }
@@ -112,7 +117,7 @@ public class SearchFragment extends ListFragment {
             ((MainActivity)getActivity()).loadFeedFragment(comp.getId());
         } else {
             if (comp.getClass() == FeedItem.class) {
-                feedItemDialog = new FeedItemDialog(getActivity(), (FeedItem) comp, queue);
+                feedItemDialog = FeedItemDialog.newInstace(getActivity(), (FeedItem) comp, queue);
                 feedItemDialog.show();
             }
         }

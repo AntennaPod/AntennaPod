@@ -73,13 +73,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         stopItemLoader();
-        adapter = null;
-        viewsCreated = false;
         activity.set(null);
-        if (downloadObserver != null) {
-            downloadObserver.onPause();
-        }
-        feedItemDialog = null;
     }
 
     @Override
@@ -96,6 +90,17 @@ public class PlaybackHistoryFragment extends ListFragment {
     }
 
     @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        adapter = null;
+        viewsCreated = false;
+        if (downloadObserver != null) {
+            downloadObserver.onPause();
+        }
+        feedItemDialog = null;
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         viewsCreated = true;
@@ -109,7 +114,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         FeedItem item = adapter.getItem(position - l.getHeaderViewsCount());
         if (item != null) {
-            feedItemDialog = new FeedItemDialog(activity.get(), item, queue);
+            feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, queue);
             feedItemDialog.show();
         }
     }

@@ -33,6 +33,7 @@ import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.shredzone.flattr4j.model.User;
 
 import java.util.Collection;
 import java.util.concurrent.Callable;
@@ -53,12 +54,33 @@ public class FeedItemDialog extends Dialog {
     private ImageButton butMore;
     private PopupMenu popupMenu;
 
-    public FeedItemDialog(Context context, FeedItem item, QueueAccess queue) {
-        super(context);
+    public static FeedItemDialog newInstace(Context context, FeedItem item, QueueAccess queue) {
+        if (useDarkThemeWorkAround()) {
+            return new FeedItemDialog(context, R.style.Theme_AntennaPod_Dark, item, queue);
+        } else {
+            return new FeedItemDialog(context, item, queue);
+        }
+    }
+
+    public FeedItemDialog(Context context, int theme, FeedItem item, QueueAccess queue) {
+        super(context, theme);
         if (item == null) throw new IllegalArgumentException("item = null");
         if (queue == null) throw new IllegalArgumentException("queue = null");
         this.item = item;
         this.queue = queue;
+    }
+
+    private FeedItemDialog(Context context, FeedItem item, QueueAccess queue) {
+        this(context, 0, item, queue);
+    }
+
+    /**
+     * Returns true if the dialog should use a dark theme. This has to be done on Gingerbread devices
+     * because dialogs are only available in a dark theme.
+     */
+    private static boolean useDarkThemeWorkAround() {
+        return Build.VERSION.SDK_INT <= Build.VERSION_CODES.GINGERBREAD_MR1
+                && UserPreferences.getTheme() != R.style.Theme_AntennaPod_Dark;
     }
 
     @Override
@@ -170,6 +192,8 @@ public class FeedItemDialog extends Dialog {
         updateMenuAppearance();
     }
 
+
+
     private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override
         public void setItemVisibility(int id, boolean visible) {
@@ -260,7 +284,12 @@ public class FeedItemDialog extends Dialog {
                             .getTheme()
                             .obtainStyledAttributes(
                                     new int[]{android.R.attr.textColorPrimary});
-                    int colorResource = res.getColor(0, 0);
+                    int colorResource;
+                    if (useDarkThemeWorkAround()) {
+                        colorResource = getContext().getResources().getColor(R.color.black);
+                    } else {
+                        colorResource = res.getColor(0, 0);
+                    }
                     String colorString = String.format("#%06X",
                             0xFFFFFF & colorResource);
                     Log.i(TAG, "text color: " + colorString);

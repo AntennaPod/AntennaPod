@@ -100,7 +100,6 @@ public class NewEpisodesFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
-        resetViewState();
     }
 
     @Override
@@ -110,8 +109,8 @@ public class NewEpisodesFragment extends Fragment {
     }
 
     @Override
-    public void onDetach() {
-        super.onDetach();
+    public void onDestroyView() {
+        super.onDestroyView();
         resetViewState();
     }
 
@@ -192,7 +191,7 @@ public class NewEpisodesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = new FeedItemDialog(activity.get(), item, queueAccess);
+                    feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, queueAccess);
                     feedItemDialog.show();
                 }
 

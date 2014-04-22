@@ -53,6 +53,11 @@ public class CompletedDownloadsFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         stopItemLoader();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         listAdapter = null;
         viewCreated = false;
     }

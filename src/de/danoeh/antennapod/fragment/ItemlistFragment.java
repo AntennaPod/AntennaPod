@@ -118,7 +118,6 @@ public class ItemlistFragment extends ListFragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
-        resetViewState();
     }
 
     @Override
@@ -131,6 +130,11 @@ public class ItemlistFragment extends ListFragment {
     public void onDetach() {
         super.onDetach();
         stopItemLoader();
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
         resetViewState();
     }
 
@@ -233,7 +237,7 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        feedItemDialog = new FeedItemDialog(getActivity(), selection, queue);
+        feedItemDialog = FeedItemDialog.newInstace(getActivity(), selection, queue);
         feedItemDialog.show();
     }
 

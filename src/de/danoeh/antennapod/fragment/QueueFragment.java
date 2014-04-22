@@ -96,19 +96,12 @@ public class QueueFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
-        resetViewState();
     }
 
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set((MainActivity) activity);
-    }
-
-    @Override
-    public void onDetach() {
-        super.onDetach();
-        resetViewState();
     }
 
     private void resetViewState() {
@@ -121,6 +114,12 @@ public class QueueFragment extends Fragment {
             downloadObserver.onPause();
         }
         feedItemDialog = null;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        resetViewState();
     }
 
     @Override
@@ -160,7 +159,7 @@ public class QueueFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = new FeedItemDialog(activity.get(), item, QueueAccess.ItemListAccess(queue));
+                    feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, QueueAccess.ItemListAccess(queue));
                     feedItemDialog.show();
                 }
             }
