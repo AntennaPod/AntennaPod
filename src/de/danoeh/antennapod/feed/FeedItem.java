@@ -280,7 +280,7 @@ public class FeedItem extends FeedComponent implements
     @Override
     public InputStream openImageInputStream() {
         InputStream out = null;
-        if (hasItemImage()) {
+        if (hasItemImageDownloaded()) {
             out = image.openImageInputStream();
         } else if (hasMedia()) {
             out = media.openImageInputStream();
@@ -293,7 +293,7 @@ public class FeedItem extends FeedComponent implements
     @Override
     public InputStream reopenImageInputStream(InputStream input) {
         InputStream out = null;
-        if (hasItemImage()) {
+        if (hasItemImageDownloaded()) {
             out = image.reopenImageInputStream(input);
         } else if (hasMedia()) {
             out = media.reopenImageInputStream(input);
@@ -306,7 +306,7 @@ public class FeedItem extends FeedComponent implements
     @Override
     public String getImageLoaderCacheKey() {
         String out = null;
-        if (hasItemImage()) {
+        if (hasItemImageDownloaded()) {
             out = image.getImageLoaderCacheKey();
         } else if (hasMedia()) {
             out = media.getImageLoaderCacheKey();
@@ -344,6 +344,13 @@ public class FeedItem extends FeedComponent implements
      */
     public boolean hasItemImage() {
         return image != null;
+    }
+
+    /**
+     * Returns true if this FeedItem has its own image and the image has been downloaded.
+     */
+    public boolean hasItemImageDownloaded() {
+        return image != null && image.isDownloaded();
     }
 
     @Override

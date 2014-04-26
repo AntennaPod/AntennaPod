@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.storage;
 
+import android.app.backup.BackupManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -197,6 +198,9 @@ public class DBWriter {
 
                     GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
                     EventDistributor.getInstance().sendFeedUpdateBroadcast();
+
+                    BackupManager backupManager = new BackupManager(context);
+                    backupManager.dataChanged();
                 }
             }
         });
@@ -695,6 +699,9 @@ public class DBWriter {
 
                 GpodnetPreferences.addAddedFeed(feed.getDownload_url());
                 EventDistributor.getInstance().sendFeedUpdateBroadcast();
+
+                BackupManager backupManager = new BackupManager(context);
+                backupManager.dataChanged();
             }
         });
     }

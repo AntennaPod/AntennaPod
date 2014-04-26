@@ -204,7 +204,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public FeedImage getImage() {
         if (item != null) {
-            return (item.hasItemImage()) ? item.getImage() : item.getFeed().getImage();
+            return (item.hasItemImageDownloaded()) ? item.getImage() : item.getFeed().getImage();
         }
         return null;
     }
@@ -384,7 +384,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public InputStream openImageInputStream() {
         InputStream out;
-        if (item.hasItemImage()) {
+        if (item.hasItemImageDownloaded()) {
             out = item.openImageInputStream();
         } else {
             out = new Playable.DefaultPlayableImageLoader(this)
@@ -401,7 +401,7 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public String getImageLoaderCacheKey() {
         String out;
-        if (item.hasItemImage()) {
+        if (item.hasItemImageDownloaded()) {
             out = item.getImageLoaderCacheKey();
         } else {
             out = new Playable.DefaultPlayableImageLoader(this)
@@ -418,7 +418,11 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public InputStream reopenImageInputStream(InputStream input) {
         if (input instanceof FileInputStream) {
-            return item.getImage().reopenImageInputStream(input);
+            if (item.hasItemImageDownloaded()) {
+                return item.getImage().reopenImageInputStream(input);
+            } else {
+                return item.getFeed().getImage().reopenImageInputStream(input);
+            }
         } else {
             return new Playable.DefaultPlayableImageLoader(this)
                     .reopenImageInputStream(input);
