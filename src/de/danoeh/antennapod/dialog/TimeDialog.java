@@ -26,7 +26,6 @@ public abstract class TimeDialog extends Dialog {
 	private Button butConfirm;
 	private Button butCancel;
 
-	private String[] spinnerContent = { "s", "min", "h" };
 	private TimeUnit[] units = { TimeUnit.SECONDS, TimeUnit.MINUTES,
 			TimeUnit.HOURS };
 
@@ -39,6 +38,10 @@ public abstract class TimeDialog extends Dialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
+        String[] spinnerContent = new String[]{context.getString(R.string.time_unit_seconds),
+                                      context.getString(R.string.time_unit_minutes),
+                                      context.getString(R.string.time_unit_hours)};
+
 		setContentView(R.layout.time_dialog);
 		etxtTime = (EditText) findViewById(R.id.etxtTime);
 		spTimeUnit = (Spinner) findViewById(R.id.spTimeUnit);
