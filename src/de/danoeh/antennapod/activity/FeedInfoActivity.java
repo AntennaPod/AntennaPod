@@ -3,21 +3,22 @@ package de.danoeh.antennapod.activity;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.CheckBox;
-import android.widget.CompoundButton;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.util.LangUtils;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
@@ -37,6 +38,8 @@ public class FeedInfoActivity extends ActionBarActivity {
     private TextView txtvDescription;
     private TextView txtvLanguage;
     private TextView txtvAuthor;
+    private EditText etxtUsername;
+    private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
 
     @Override
@@ -53,6 +56,8 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
+        etxtUsername = (EditText) findViewById(R.id.etxtUsername);
+        etxtPassword = (EditText) findViewById(R.id.etxtPassword);
 
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
@@ -98,6 +103,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                         }
                     });
 
+                    etxtUsername.setText(feed.getPreferences().getUsername());
+                    etxtPassword.setText(feed.getPreferences().getPassword());
+
+                    etxtUsername.addTextChangedListener(authTextWatcher);
+                    etxtPassword.addTextChangedListener(authTextWatcher);
+
                     supportInvalidateOptionsMenu();
 
                 } else {
@@ -106,6 +117,39 @@ public class FeedInfoActivity extends ActionBarActivity {
             }
         };
         loadTask.execute(feedId);
+    }
+
+
+    private boolean authInfoChanged = false;
+
+    private TextWatcher authTextWatcher = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            authInfoChanged = true;
+        }
+    };
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        if (feed != null && authInfoChanged) {
+            Log.d(TAG, "Auth info changed, saving credentials");
+            FeedPreferences prefs = feed.getPreferences();
+            prefs.setUsername(etxtUsername.getText().toString());
+            prefs.setPassword(etxtPassword.getText().toString());
+            DBWriter.setFeedPreferences(this, prefs);
+            authInfoChanged = false;
+        }
     }
 
     @Override

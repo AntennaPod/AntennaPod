@@ -164,9 +164,19 @@ public class DownloadRequester {
     public void downloadMedia(Context context, FeedMedia feedmedia)
             throws DownloadRequestException {
         if (feedFileValid(feedmedia)) {
+            Feed feed = feedmedia.getItem().getFeed();
+            String username;
+            String password;
+            if (feed != null && feed.getPreferences() != null) {
+                username = feed.getPreferences().getUsername();
+                password = feed.getPreferences().getPassword();
+            } else {
+                username = null;
+                password = null;
+            }
             download(context, feedmedia,
                     new File(getMediafilePath(context, feedmedia),
-                            getMediafilename(feedmedia)), false, null, null
+                            getMediafilename(feedmedia)), false, username, password
             );
         }
     }

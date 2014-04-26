@@ -6,6 +6,8 @@
 
     <RelativeLayout
         android:id="@+id/header"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical">
@@ -117,6 +119,72 @@
                 android:text="@string/auto_download_label"
                 android:enabled="false"
                 android:textColor="?android:attr/textColorPrimary"/>
+
+            <TextView
+                android:id="@+id/txtvAuthentication"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"
+                android:text="@string/authentication_label"
+                android:textSize="@dimen/text_size_medium"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_marginLeft="8dp"
+                android:layout_marginBottom="8dp"
+                android:layout_marginTop="24dp"/>
+
+            <TextView
+                android:id="@+id/txtvAuthenticationDescr"
+                android:text="@string/authentication_descr"
+                android:textSize="@dimen/text_size_small"
+                android:textColor="?android:attr/textColorPrimary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/txtvUsername"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/username_label"
+                    android:textColor="?android:attr/textColorPrimary"/>
+
+                <EditText
+                    android:id="@+id/etxtUsername"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/username_label"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="8dp">
+
+                <TextView
+                    android:id="@+id/txtvPassword"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="8dp"
+                    android:text="@string/password_label"
+                    android:textColor="?android:attr/textColorPrimary"/>
+
+                <EditText
+                    android:id="@+id/etxtPassword"
+                    android:layout_width="0dp"
+                    android:layout_weight="2"
+                    android:layout_height="wrap_content"
+                    android:hint="@string/password_label"
+                    android:inputType="textPassword"/>
+            </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"

@@ -357,6 +357,10 @@
     <string name="new_episodes_count_label">Number of new episodes</string>
     <string name="in_progress_episodes_count_label">Number of episodes you have started listening to</string>
 
+    <!-- Feed information screen -->
+    <string name="authentication_label">Authentication</string>
+    <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
+
     <!-- OPML backup -->
     <string name="backup_restored">"Restored feed subscriptions from backup"</string>
 

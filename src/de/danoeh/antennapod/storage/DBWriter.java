@@ -837,6 +837,7 @@ public class DBWriter {
                 adapter.open();
                 adapter.setFeedPreferences(preferences);
                 adapter.close();
+                EventDistributor.getInstance().sendFeedUpdateBroadcast();
             }
         });
     }
