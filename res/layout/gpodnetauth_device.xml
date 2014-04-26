@@ -10,10 +10,8 @@
         android:layout_height="wrap_content"
         android:text="@string/gpodnetauth_device_title"
         android:layout_alignParentTop="true"
-        android:textSize="@dimen/text_size_large"
         android:layout_margin="16dp"
-        android:textColor="@color/bright_blue"
-        android:textStyle="italic"/>
+        style="@style/AntennaPod.TextView.Heading"/>
 
     <TextView
         android:id="@+id/txtvDescription"

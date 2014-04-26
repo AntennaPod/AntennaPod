@@ -25,8 +25,7 @@
         android:layout_toRightOf="@id/imgvCover"
         android:layout_alignParentRight="true"
         android:lines="1"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_medium"
+        style="@style/AntennaPod.TextView.Heading"
         android:layout_margin="4dp"/>
 
     <TextView

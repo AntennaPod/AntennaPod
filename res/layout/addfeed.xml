@@ -20,9 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_margin="16dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/txtvfeedurl_label"/>
 
             <EditText
@@ -48,9 +46,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/butConfirm"
                 android:layout_margin="8dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/podcastdirectories_label"/>
 
             <TextView
@@ -77,9 +73,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/butBrowseGpoddernet"
                 android:layout_margin="8dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/opml_import_label"/>
 
             <TextView

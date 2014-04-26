@@ -45,7 +45,7 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textSize="18sp"
-                android:fontFamily="sans-serif-condensed"/>
+                android:fontFamily="sans-serif-light"/>
         </RelativeLayout>
 
         <ImageButton

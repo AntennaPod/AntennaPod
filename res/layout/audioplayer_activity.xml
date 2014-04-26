@@ -38,8 +38,9 @@
 
             <TextView
                 android:id="@+id/txtvTitle"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
                 android:layout_alignParentTop="true"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
@@ -48,25 +49,11 @@
                 android:layout_toRightOf="@id/butNavLeft"
                 android:ellipsize="marquee"
                 android:marqueeRepeatLimit="marquee_forever"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="?android:attr/textColorPrimary"
-                android:textSize="@dimen/text_size_small"
-                android:textStyle="bold"/>
-
-            <TextView
-                android:id="@+id/txtvFeed"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtvTitle"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/butNavRight"
-                android:layout_toRightOf="@id/butNavLeft"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:maxLines="1"
-                android:textColor="?android:attr/textColorSecondary"
-                android:textSize="@dimen/text_size_small"/>
+                android:textSize="16sp"
+                android:fontFamily="sans-serif-light"
+                />
         </RelativeLayout>
 
         <View
@@ -141,6 +128,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/position_default_label"
                 android:textColor="?android:attr/textColorSecondary"
+                android:fontFamily="sans-serif-light"
                 android:textSize="@dimen/text_size_micro"/>
 
             <TextView
@@ -154,6 +142,7 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/position_default_label"
                 android:textColor="?android:attr/textColorSecondary"
+                android:fontFamily="sans-serif-light"
                 android:textSize="@dimen/text_size_micro"/>
 
             <SeekBar

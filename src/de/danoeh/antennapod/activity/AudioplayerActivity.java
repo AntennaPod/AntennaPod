@@ -70,7 +70,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
     private int savedPosition = -1;
 
     private TextView txtvTitle;
-    private TextView txtvFeed;
     private Button butPlaybackSpeed;
     private ImageButton butNavLeft;
     private ImageButton butNavRight;
@@ -403,7 +402,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        txtvFeed = (TextView) findViewById(R.id.txtvFeed);
         butNavLeft = (ImageButton) findViewById(R.id.butNavLeft);
         butNavRight = (ImageButton) findViewById(R.id.butNavRight);
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
@@ -550,7 +548,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
             return false;
         }
         txtvTitle.setText(media.getEpisodeTitle());
-        txtvFeed.setText(media.getFeedTitle());
         if (media.getChapters() != null) {
             butNavRight.setVisibility(View.VISIBLE);
         } else {
