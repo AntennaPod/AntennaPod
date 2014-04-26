@@ -418,7 +418,11 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public InputStream reopenImageInputStream(InputStream input) {
         if (input instanceof FileInputStream) {
-            return item.getImage().reopenImageInputStream(input);
+            if (item.hasItemImageDownloaded()) {
+                return item.getImage().reopenImageInputStream(input);
+            } else {
+                return item.getFeed().getImage().reopenImageInputStream(input);
+            }
         } else {
             return new Playable.DefaultPlayableImageLoader(this)
                     .reopenImageInputStream(input);
