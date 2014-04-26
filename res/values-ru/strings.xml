@@ -28,7 +28,7 @@
   <string name="author_label">Автор</string>
   <string name="language_label">Язык</string>
   <string name="podcast_settings_label">Настройки</string>
-  <string name="cover_label">Изображение</string>
+  <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="refresh_label">Обновить</string>
@@ -36,7 +36,7 @@
   <string name="chapters_label">Разделы</string>
   <string name="shownotes_label">Заметки к эпизоду</string>
   <string name="description_label">Описание</string>
-  <string name="most_recent_prefix">Следующий эпизод:\u0020</string>
+  <string name="most_recent_prefix">Последний выпуск:\u0020</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
   <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>
@@ -71,7 +71,7 @@
   <string name="add_to_queue_label">Добавить в очередь</string>
   <string name="remove_from_queue_label">Удалить из очереди</string>
   <string name="visit_website_label">Посетить сайт</string>
-  <string name="support_label">Поддержать посредством Flattr</string>
+  <string name="support_label">Поддержать через Flattr</string>
   <string name="enqueue_all_new">Добавить все в очередь</string>
   <string name="download_all">Загрузить все</string>
   <string name="skip_episode_label">Пропустить выпуск</string>
@@ -89,6 +89,7 @@
   <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
   <string name="download_error_connection_error">Ошибка соединения</string>
   <string name="download_error_unknown_host">Неизвестный хост</string>
+  <string name="download_error_unauthorized">Ошибка авторизации</string>
   <string name="cancel_all_downloads_label">Отменить все загрузки</string>
   <string name="download_cancelled_msg">Загрузка отменена</string>
   <string name="download_report_title">Загрузки завершены</string>
@@ -104,6 +105,8 @@
   <string name="download_type_media">Медиа файл</string>
   <string name="download_type_image">Изображение</string>
   <string name="download_request_error_dialog_message_prefix">Ошибка при загрузки файла:\u0020</string>
+  <string name="authentication_notification_title">Необходима авторизация</string>
+  <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Ошибка!</string>
   <string name="player_stopped_msg">Ничего не воспроизводится</string>
@@ -141,7 +144,17 @@
   <string name="access_revoked_title">Доступ отозван</string>
   <string name="access_revoked_info">Вы успешно отключили AntennaPod от вашего аккаунта в Flattr. Чтобы завершить этот процесс вам нужно удалить AntennaPod из списка приложений подключенных к вашему аккаунту на сайте Flattr.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">Один поддержан через Flattr!</string>
+  <string name="flattr_click_success_count">Поддержано через Flattr:  %d.</string>
   <string name="flattr_click_success_queue">Поддержано через Flattr:  %s.</string>
+  <string name="flattr_click_failure_count">Не удалось поддержать через Flattr: %d!</string>
+  <string name="flattr_click_failure">Не поддержано через Flattr:  %s.</string>
+  <string name="flattr_click_enqueued">Будет поддержано через Flattr потом</string>
+  <string name="flattring_thing">%s поддерживается через Flattr</string>
+  <string name="flattring_label">AntennaPod поддерживает через Flattr</string>
+  <string name="flattrd_label">Вы поддержали AntennaPod через Flattr</string>
+  <string name="flattrd_failed_label">Ошибка</string>
+  <string name="flattr_retrieving_status">Получение списка поддержаного через Flattr</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
@@ -216,7 +229,7 @@
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
-  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить каталог указанный ниже и нажать кнопку чтобы начать процесс импорта.</string>
+  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить в указанный каталог и нажать кнопку внизу для запуска импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
   <string name="opml_directory_error">ОШИБКА!</string>
@@ -312,4 +325,5 @@
   <string name="new_episodes_count_label">Количество новых эпизодов</string>
   <string name="in_progress_episodes_count_label">Количество начатых эпизодов</string>
   <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
 </resources>
