@@ -96,8 +96,6 @@ public class ItemlistFragment extends ListFragment {
         Bundle args = getArguments();
         if (args == null) throw new IllegalArgumentException("args invalid");
         feedID = args.getLong(ARGUMENT_FEED_ID);
-
-        startItemLoader();
     }
 
     @Override
@@ -124,6 +122,7 @@ public class ItemlistFragment extends ListFragment {
     public void onResume() {
         super.onResume();
         updateProgressBarVisibility();
+        startItemLoader();
     }
 
     @Override

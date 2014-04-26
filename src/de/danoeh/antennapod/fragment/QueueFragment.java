@@ -73,7 +73,11 @@ public class QueueFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+    }
 
+    @Override
+    public void onResume() {
+        super.onResume();
         startItemLoader();
     }
 

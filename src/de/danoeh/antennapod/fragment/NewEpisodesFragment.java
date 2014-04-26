@@ -72,13 +72,12 @@ public class NewEpisodesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
-
-        startItemLoader();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        startItemLoader();
     }
 
     @Override

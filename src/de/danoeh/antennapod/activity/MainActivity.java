@@ -119,8 +119,6 @@ public class MainActivity extends ActionBarActivity {
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
 
-        loadData();
-
     }
 
     public ActionBar getMainActivtyActionBar() {
@@ -272,6 +270,8 @@ public class MainActivity extends ActionBarActivity {
         } else if (feeds != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
             handleNavIntent();
         }
+
+        loadData();
     }
 
     @Override
@@ -342,6 +342,7 @@ public class MainActivity extends ActionBarActivity {
     };
 
     private void loadData() {
+        cancelLoadTask();
         loadTask = new AsyncTask<Void, Void, List<Feed>>() {
             @Override
             protected List<Feed> doInBackground(Void... params) {
