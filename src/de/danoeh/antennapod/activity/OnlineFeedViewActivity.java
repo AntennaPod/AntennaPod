@@ -181,7 +181,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     private void parseFeed() {
-        if (feed == null || feed.getFile_url() == null) {
+        if (feed == null || feed.getFile_url() == null && feed.isDownloaded()) {
             throw new IllegalStateException(
                     "feed must be non-null and downloaded when parseFeed is called");
         }
