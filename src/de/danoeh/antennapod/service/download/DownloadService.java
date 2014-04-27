@@ -30,7 +30,9 @@ import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.InvalidFeedException;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpStatus;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -160,7 +162,14 @@ public class DownloadService extends Service {
                         if (!status.isCancelled()) {
                             if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
                                 postAuthenticationNotification(downloader.getDownloadRequest());
-                            } else {
+                            } else if (status.getReason() == DownloadError.ERROR_HTTP_DATA_ERROR
+                                    && Integer.valueOf(status.getReasonDetailed()) == HttpStatus.SC_REQUESTED_RANGE_NOT_SATISFIABLE) {
+
+                                Log.d(TAG, "Requested invalid range, restarting download from the beginning");
+                                FileUtils.deleteQuietly(new File(downloader.getDownloadRequest().getDestination()));
+                                DownloadRequester.getInstance().download(DownloadService.this, downloader.getDownloadRequest());
+                            }
+                            else {
                                 Log.e(TAG, "Download failed");
                                 saveDownloadStatus(status);
                                 handleFailedDownload(status, downloader.getDownloadRequest());

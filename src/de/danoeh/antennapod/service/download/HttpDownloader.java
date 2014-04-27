@@ -14,10 +14,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.http.Header;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
 import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.auth.BasicScheme;
+import org.apache.http.message.BasicHeader;
 
 import java.io.*;
 import java.net.HttpURLConnection;
@@ -36,7 +38,9 @@ public class HttpDownloader extends Downloader {
     @Override
     protected void download() {
         File destination = new File(request.getDestination());
-        if (destination.exists()) {
+        final boolean fileExists = destination.exists();
+
+        if (request.isDeleteOnFailure() && fileExists) {
             Log.w(TAG, "File already exists");
             if (request.getFeedfileType() != FeedImage.FEEDFILETYPE_FEEDIMAGE) {
                 onFail(DownloadError.ERROR_FILE_EXISTS, null);
@@ -48,10 +52,12 @@ public class HttpDownloader extends Downloader {
         }
 
         HttpClient httpClient = AntennapodHttpClient.getHttpClient();
-        BufferedOutputStream out = null;
+        RandomAccessFile out = null;
         InputStream connection = null;
         try {
             HttpGet httpGet = new HttpGet(URIUtil.getURIFromRequestUrl(request.getSource()));
+
+            // add authentication information
             String userInfo = httpGet.getURI().getUserInfo();
             if (userInfo != null) {
                 String[] parts = userInfo.split(":");
@@ -64,6 +70,15 @@ public class HttpDownloader extends Downloader {
                 httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(request.getUsername(),
                         request.getPassword()), "UTF-8", false));
             }
+
+            // add range header if necessary
+            if (fileExists) {
+                request.setSoFar(destination.length());
+                httpGet.addHeader(new BasicHeader("Range",
+                        "bytes=" + request.getSoFar() + "-"));
+                if (BuildConfig.DEBUG) Log.d(TAG, "Adding range header: " + request.getSoFar());
+            }
+
             HttpResponse response = httpClient.execute(httpGet);
             HttpEntity httpEntity = response.getEntity();
             int responseCode = response.getStatusLine().getStatusCode();
@@ -75,7 +90,7 @@ public class HttpDownloader extends Downloader {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Response code is " + responseCode);
 
-            if (responseCode != HttpURLConnection.HTTP_OK || httpEntity == null) {
+            if (responseCode / 100 != 2 || httpEntity == null) {
                 final DownloadError error;
                 final String details;
                 if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -96,14 +111,31 @@ public class HttpDownloader extends Downloader {
 
             connection = new BufferedInputStream(AndroidHttpClient
                     .getUngzippedContent(httpEntity));
-            out = new BufferedOutputStream(new FileOutputStream(
-                    destination));
+
+            Header[] contentRangeHeaders = (fileExists) ? response.getHeaders("Content-Range") : null;
+
+            if (fileExists && responseCode == HttpStatus.SC_PARTIAL_CONTENT
+                    && contentRangeHeaders != null && contentRangeHeaders.length > 0) {
+                String start = contentRangeHeaders[0].getValue().substring("bytes ".length(),
+                        contentRangeHeaders[0].getValue().indexOf("-"));
+                request.setSoFar(Long.valueOf(start));
+                Log.d(TAG, "Starting download at position " + request.getSoFar());
+
+                out = new RandomAccessFile(destination, "rw");
+                out.seek(request.getSoFar());
+            } else {
+                destination.delete();
+                destination.createNewFile();
+                out = new RandomAccessFile(destination, "rw");
+            }
+
+
             byte[] buffer = new byte[BUFFER_SIZE];
             int count = 0;
             request.setStatusMsg(R.string.download_running);
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Getting size of download");
-            request.setSize(httpEntity.getContentLength());
+            request.setSize(httpEntity.getContentLength() + request.getSoFar());
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
@@ -133,7 +165,6 @@ public class HttpDownloader extends Downloader {
             if (cancelled) {
                 onCancelled();
             } else {
-                out.flush();
                 // check if size specified in the response header is the same as the size of the
                 // written file. This check cannot be made if compression was used
                 if (!isGzip && request.getSize() != DownloadStatus.SIZE_UNKNOWN &&
