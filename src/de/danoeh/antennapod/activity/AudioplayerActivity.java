@@ -12,7 +12,6 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -208,7 +207,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
             if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
-                                + savedPosition + ", id: " + playableId);
+                                + savedPosition + ", id: " + playableId
+                );
 
         }
         return false;
@@ -250,7 +250,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onAwaitingVideoSurface() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
         startActivity(new Intent(this, VideoplayerActivity.class));
     }
 
@@ -314,7 +315,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
                             };
                             chapterFragment.setListAdapter(new ChapterListAdapter(
                                     AudioplayerActivity.this, 0, media
-                                    .getChapters(), media));
+                                    .getChapters(), media
+                            ));
                         }
                         currentlyShownFragment = chapterFragment;
                         break;
@@ -340,8 +342,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     private void updateNavButtonDrawable() {
 
-        final int[] buttonTexts = new int[] {R.string.show_shownotes_label,
-        R.string.show_chapters_label, R.string.show_cover_label};
+        final int[] buttonTexts = new int[]{R.string.show_shownotes_label,
+                R.string.show_chapters_label, R.string.show_cover_label};
 
         final TypedArray drawables = obtainStyledAttributes(new int[]{
                 R.attr.navigation_shownotes, R.attr.navigation_chapters});
@@ -407,8 +409,9 @@ public class AudioplayerActivity extends MediaplayerActivity {
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
 
         TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0,0), R.string.drawer_open, R.string.drawer_close) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
             String currentTitle = getSupportActionBar().getTitle().toString();
+
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -523,11 +526,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     }
 
     private void updateButPlaybackSpeed() {
-        if (controller == null
-                || (controller.getCurrentPlaybackSpeedMultiplier() == -1)) {
-            butPlaybackSpeed.setVisibility(View.GONE);
-        } else {
-            butPlaybackSpeed.setVisibility(View.VISIBLE);
+        if (controller != null && controller.canSetPlaybackSpeed()) {
             butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
         }
     }
@@ -564,6 +563,14 @@ public class AudioplayerActivity extends MediaplayerActivity {
             ((AudioplayerContentFragment) currentlyShownFragment)
                     .onDataSetChanged(media);
         }
+
+        if (controller == null
+                || !controller.canSetPlaybackSpeed()) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+        } else {
+            butPlaybackSpeed.setVisibility(View.VISIBLE);
+        }
+
         updateButPlaybackSpeed();
         return true;
     }

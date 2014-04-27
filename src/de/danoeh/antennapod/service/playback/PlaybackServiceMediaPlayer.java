@@ -509,19 +509,13 @@ public class PlaybackServiceMediaPlayer {
     }
 
     /**
-     * Returns true if the playback speed can be adjusted. This method can also return false if the PSMP object's
-     * internal MediaPlayer cannot be accessed at the moment.
+     * Returns true if the playback speed can be adjusted.
      */
     public boolean canSetSpeed() {
-        if (!playerLock.tryLock()) {
-            return false;
-        }
         boolean retVal = false;
         if (mediaPlayer != null && media != null && media.getMediaType() == MediaType.AUDIO) {
             retVal = (mediaPlayer).canSetSpeed();
         }
-
-        playerLock.unlock();
         return retVal;
     }
 
