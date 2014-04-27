@@ -23,7 +23,7 @@ public class ActionButtonUtils {
         if (context == null) throw new IllegalArgumentException("context = null");
         this.context = context;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download});
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.navigation_chapters});
         labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label};
     }
 
@@ -52,8 +52,12 @@ public class ActionButtonUtils {
             } else {
                 // item is not being downloaded
                 butSecondary.setVisibility(View.VISIBLE);
-                butSecondary
-                        .setImageDrawable(drawables.getDrawable(0));
+                if (media.isPlaying()) {
+                    butSecondary.setImageDrawable(drawables.getDrawable(3));
+                } else {
+                    butSecondary
+                            .setImageDrawable(drawables.getDrawable(0));
+                }
                 butSecondary.setContentDescription(context.getString(labels[0]));
             }
         } else {

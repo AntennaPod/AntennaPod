@@ -11,10 +11,14 @@
     <dimen name="text_size_navdrawer">16sp</dimen>
     <dimen name="text_size_medium">18sp</dimen>
     <dimen name="text_size_large">22sp</dimen>
-    <dimen name="status_indicator_width">36dp</dimen>
+    <dimen name="status_indicator_width">32dp</dimen>
 	<dimen name="thumbnail_length_itemlist">80dp</dimen>
+    <dimen name="thumbnail_length_queue_item">70dp</dimen>
+    <dimen name="thumbnail_length_downloaded_item">70dp</dimen>
     <dimen name="thumbnail_length_onlinefeedview">110dp</dimen>
     <dimen name="thumbnail_length_navlist">42dp</dimen>
     <dimen name="listview_secondary_button_width">48dp</dimen>
     <dimen name="drawer_width">280dp</dimen>
+    <dimen name="queue_title_text_size">@dimen/text_size_small</dimen>
+
 </resources>

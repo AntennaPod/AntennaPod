@@ -58,8 +58,6 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 			holder.inPlaylist = (ImageView) convertView
 					.findViewById(R.id.imgvInPlaylist);
 			holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
-			holder.statusPlaying = (View) convertView
-					.findViewById(R.id.statusPlaying);
 			holder.statusUnread = (View) convertView
 					.findViewById(R.id.statusUnread);
 			holder.episodeProgress = (ProgressBar) convertView
@@ -89,21 +87,17 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 			FeedItem.State state = item.getState();
 			switch (state) {
 			case PLAYING:
-				holder.statusPlaying.setVisibility(View.VISIBLE);
 				holder.statusUnread.setVisibility(View.GONE);
 				holder.episodeProgress.setVisibility(View.VISIBLE);
 				break;
 			case IN_PROGRESS:
-				holder.statusPlaying.setVisibility(View.GONE);
 				holder.statusUnread.setVisibility(View.GONE);
 				holder.episodeProgress.setVisibility(View.VISIBLE);
 				break;
 			case NEW:
-				holder.statusPlaying.setVisibility(View.GONE);
 				holder.statusUnread.setVisibility(View.VISIBLE);
 				break;
 			default:
-				holder.statusPlaying.setVisibility(View.GONE);
 				holder.statusUnread.setVisibility(View.GONE);
 				break;
 			}
@@ -202,7 +196,6 @@ public class InternalFeedItemlistAdapter extends DefaultFeedItemlistAdapter {
 		ImageView inPlaylist;
 		ImageButton butAction;
 		View statusUnread;
-		View statusPlaying;
 		ProgressBar episodeProgress;
 	}
 

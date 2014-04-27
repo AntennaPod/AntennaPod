@@ -102,8 +102,8 @@
     <string name="skip_episode_label">Skip episode</string>
 
     <!-- Download messages and labels -->
-    <string name="download_successful">Download successful</string>
-    <string name="download_failed">Download failed</string>
+    <string name="download_successful">successful</string>
+    <string name="download_failed">failed</string>
     <string name="download_pending">Download pending</string>
     <string name="download_running">Download running</string>
     <string name="download_error_device_not_found">Storage device not found</string>

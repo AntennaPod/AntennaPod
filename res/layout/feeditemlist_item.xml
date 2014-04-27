@@ -97,20 +97,6 @@
             android:textSize="@dimen/text_size_micro"
             android:textStyle="bold"/>
 
-        <ImageView
-            android:id="@+id/statusPlaying"
-            android:contentDescription="@string/status_playing_label"
-            android:layout_width="@dimen/status_indicator_width"
-            android:layout_height="18dp"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/status_playing"
-            android:gravity="center"
-            android:padding="2dp"
-            android:src="@drawable/av_play_dark"/>
-
     </RelativeLayout>
 
     <View

@@ -60,8 +60,6 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                     .findViewById(R.id.txtvPublished);
             holder.butSecondary = (ImageButton) convertView
                     .findViewById(R.id.butSecondaryAction);
-            holder.statusPlaying = (ImageView) convertView
-                    .findViewById(R.id.statusPlaying);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.txtvSize = (TextView) convertView.findViewById(R.id.txtvSize);
             convertView.setTag(holder);
@@ -75,11 +73,9 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         FeedItem.State state = item.getState();
 
         if (state == FeedItem.State.PLAYING) {
-            holder.statusPlaying.setVisibility(View.VISIBLE);
             holder.butSecondary.setEnabled(false);
         } else {
             holder.butSecondary.setEnabled(true);
-            holder.statusPlaying.setVisibility(View.INVISIBLE);
         }
 
         holder.butSecondary.setFocusable(false);
@@ -109,7 +105,6 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         TextView title;
         TextView pubDate;
         ImageView imageView;
-        ImageView statusPlaying;
         TextView txtvSize;
         ImageButton butSecondary;
     }
