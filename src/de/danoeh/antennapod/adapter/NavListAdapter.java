@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,6 +25,7 @@ public class NavListAdapter extends BaseAdapter {
 
     public static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
 
+    private final Drawable[] drawables;
 
     public static final int SUBSCRIPTION_OFFSET = 1 + NAV_TITLES.length;
 
@@ -32,6 +35,12 @@ public class NavListAdapter extends BaseAdapter {
     public NavListAdapter(ItemAccess itemAccess, Context context) {
         this.itemAccess = itemAccess;
         this.context = context;
+
+        TypedArray ta = context.obtainStyledAttributes(new int[] {R.attr.ic_new, R.attr.stat_playlist,
+                R.attr.av_download, R.attr.device_access_time, R.attr.content_new});
+        drawables = new Drawable[] {ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
+                ta.getDrawable(3), ta.getDrawable(4)};
+        ta.recycle();
     }
 
     @Override
@@ -104,12 +113,14 @@ public class NavListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.nav_listitem, null);
 
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
             convertView.setTag(holder);
         } else {
             holder = (NavHolder) convertView.getTag();
         }
 
         holder.title.setText(title);
+        holder.image.setImageDrawable(drawables[position]);
 
         return convertView;
     }
@@ -163,6 +174,7 @@ public class NavListAdapter extends BaseAdapter {
 
     static class NavHolder {
         TextView title;
+        ImageView image;
     }
 
     static class SectionHolder {

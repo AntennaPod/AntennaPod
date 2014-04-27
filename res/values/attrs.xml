@@ -33,6 +33,7 @@
     <attr name="dragview_background" format="reference"/>
     <attr name="dragview_float_background" format="reference"/>
     <attr name="ic_action_overflow" format="reference"/>
+    <attr name="ic_new" format="reference"/>
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>
     <attr name="overlay_background" format="color"/>

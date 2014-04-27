@@ -38,6 +38,7 @@
         <item name="attr/nav_drawer_background">@color/white</item>
         <item name="attr/nav_drawer_toggle">@drawable/ic_drawer</item>
         <item name="attr/ic_action_overflow">@drawable/ic_action_overflow</item>
+        <item name="attr/ic_new">@drawable/ic_new</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
@@ -77,6 +78,7 @@
         <item name="attr/nav_drawer_background">#3B3B3B</item>
         <item name="attr/nav_drawer_toggle">@drawable/ic_drawer_dark</item>
         <item name="attr/ic_action_overflow">@drawable/ic_action_overflow_dark</item>
+        <item name="attr/ic_new">@drawable/ic_new_dark</item>
 
     </style>
 
