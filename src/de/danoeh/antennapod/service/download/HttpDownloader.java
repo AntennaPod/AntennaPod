@@ -182,7 +182,9 @@ public class HttpDownloader extends Downloader {
             Log.d(TAG, "Download failed");
         }
         result.setFailed(reason, reasonDetailed);
-        cleanup();
+        if (request.isDeleteOnFailure()) {
+            cleanup();
+        }
     }
 
     private void onCancelled() {

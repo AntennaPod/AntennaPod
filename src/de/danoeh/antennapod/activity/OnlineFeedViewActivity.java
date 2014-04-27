@@ -146,7 +146,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                 .toString();
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
-                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password);
+                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password, true);
         downloader = new HttpDownloader(
                 request);
         new Thread() {

@@ -163,6 +163,7 @@ public class DownloadService extends Service {
                             } else {
                                 Log.e(TAG, "Download failed");
                                 saveDownloadStatus(status);
+                                handleFailedDownload(status, downloader.getDownloadRequest());
                             }
                         }
                         sendDownloadHandledIntent();
@@ -608,6 +609,11 @@ public class DownloadService extends Service {
         syncExecutor.execute(new MediaHandlerThread(status, request));
     }
 
+    private void handleFailedDownload(DownloadStatus status, DownloadRequest request) {
+        if (BuildConfig.DEBUG) Log.d(TAG, "Handling failed download");
+        syncExecutor.execute(new FailedDownloadHandler(status, request));
+    }
+
     /**
      * Takes a single Feed, parses the corresponding file and refreshes
      * information in the manager
@@ -789,6 +795,46 @@ public class DownloadService extends Service {
             }
         }
 
+    }
+
+    /**
+     * Handles failed downloads.
+     * <p/>
+     * If the file has been partially downloaded, this handler will set the file_url of the FeedFile to the location
+     * of the downloaded file.
+     * <p/>
+     * Currently, this handler only handles FeedMedia objects, because Feeds and FeedImages are deleted if the download fails.
+     */
+    class FailedDownloadHandler implements Runnable {
+
+        private DownloadRequest request;
+        private DownloadStatus status;
+
+        FailedDownloadHandler(DownloadStatus status, DownloadRequest request) {
+            this.request = request;
+            this.status = status;
+        }
+
+        @Override
+        public void run() {
+            if (request.isDeleteOnFailure()) {
+                if (BuildConfig.DEBUG) Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
+            } else {
+                File dest = new File(request.getDestination());
+                if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
+                    Log.d(TAG, "File has been partially downloaded. Writing file url");
+                    FeedMedia media = DBReader.getFeedMedia(DownloadService.this, request.getFeedfileId());
+                    media.setFile_url(request.getDestination());
+                    try {
+                        DBWriter.setFeedMedia(DownloadService.this, media).get();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (ExecutionException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
     }
 
     /**

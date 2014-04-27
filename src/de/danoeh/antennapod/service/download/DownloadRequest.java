@@ -10,6 +10,7 @@ public class DownloadRequest implements Parcelable {
     private final String title;
     private String username;
     private String password;
+    private boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
 
@@ -19,7 +20,7 @@ public class DownloadRequest implements Parcelable {
     protected int statusMsg;
 
     public DownloadRequest(String destination, String source, String title,
-                           long feedfileId, int feedfileType, String username, String password) {
+                           long feedfileId, int feedfileType, String username, String password, boolean deleteOnFailure) {
         if (destination == null) {
             throw new IllegalArgumentException("Destination must not be null");
         }
@@ -37,11 +38,12 @@ public class DownloadRequest implements Parcelable {
         this.feedfileType = feedfileType;
         this.username = username;
         this.password = password;
+        this.deleteOnFailure = deleteOnFailure;
     }
 
     public DownloadRequest(String destination, String source, String title,
                            long feedfileId, int feedfileType) {
-        this(destination, source, title, feedfileId, feedfileType, null, null);
+        this(destination, source, title, feedfileId, feedfileType, null, null, true);
     }
 
     private DownloadRequest(Parcel in) {
@@ -50,6 +52,7 @@ public class DownloadRequest implements Parcelable {
         title = in.readString();
         feedfileId = in.readLong();
         feedfileType = in.readInt();
+        deleteOnFailure = (in.readByte() > 0);
         if (in.dataAvail() > 0) {
             username = in.readString();
         } else {
@@ -74,6 +77,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(title);
         dest.writeLong(feedfileId);
         dest.writeInt(feedfileType);
+        dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
         if (username != null) {
             dest.writeString(username);
         }
@@ -93,59 +97,43 @@ public class DownloadRequest implements Parcelable {
     };
 
     @Override
-    public int hashCode() {
-        final int prime = 31;
-        int result = 1;
-        result = prime * result
-                + ((destination == null) ? 0 : destination.hashCode());
-        result = prime * result + (int) (feedfileId ^ (feedfileId >>> 32));
-        result = prime * result + feedfileType;
-        result = prime * result + progressPercent;
-        result = prime * result + (int) (size ^ (size >>> 32));
-        result = prime * result + (int) (soFar ^ (soFar >>> 32));
-        result = prime * result + ((source == null) ? 0 : source.hashCode());
-        result = prime * result + statusMsg;
-        result = prime * result + ((title == null) ? 0 : title.hashCode());
-        return result;
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        DownloadRequest that = (DownloadRequest) o;
+
+        if (deleteOnFailure != that.deleteOnFailure) return false;
+        if (feedfileId != that.feedfileId) return false;
+        if (feedfileType != that.feedfileType) return false;
+        if (progressPercent != that.progressPercent) return false;
+        if (size != that.size) return false;
+        if (soFar != that.soFar) return false;
+        if (statusMsg != that.statusMsg) return false;
+        if (destination != null ? !destination.equals(that.destination) : that.destination != null) return false;
+        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (source != null ? !source.equals(that.source) : that.source != null) return false;
+        if (title != null ? !title.equals(that.title) : that.title != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null) return false;
+
+        return true;
     }
 
     @Override
-    public boolean equals(Object obj) {
-        if (this == obj)
-            return true;
-        if (obj == null)
-            return false;
-        if (getClass() != obj.getClass())
-            return false;
-        DownloadRequest other = (DownloadRequest) obj;
-        if (destination == null) {
-            if (other.destination != null)
-                return false;
-        } else if (!destination.equals(other.destination))
-            return false;
-        if (feedfileId != other.feedfileId)
-            return false;
-        if (feedfileType != other.feedfileType)
-            return false;
-        if (progressPercent != other.progressPercent)
-            return false;
-        if (size != other.size)
-            return false;
-        if (soFar != other.soFar)
-            return false;
-        if (source == null) {
-            if (other.source != null)
-                return false;
-        } else if (!source.equals(other.source))
-            return false;
-        if (statusMsg != other.statusMsg)
-            return false;
-        if (title == null) {
-            if (other.title != null)
-                return false;
-        } else if (!title.equals(other.title))
-            return false;
-        return true;
+    public int hashCode() {
+        int result = destination != null ? destination.hashCode() : 0;
+        result = 31 * result + (source != null ? source.hashCode() : 0);
+        result = 31 * result + (title != null ? title.hashCode() : 0);
+        result = 31 * result + (username != null ? username.hashCode() : 0);
+        result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (deleteOnFailure ? 1 : 0);
+        result = 31 * result + (int) (feedfileId ^ (feedfileId >>> 32));
+        result = 31 * result + feedfileType;
+        result = 31 * result + progressPercent;
+        result = 31 * result + (int) (soFar ^ (soFar >>> 32));
+        result = 31 * result + (int) (size ^ (size >>> 32));
+        result = 31 * result + statusMsg;
+        return result;
     }
 
     public String getDestination() {
@@ -214,5 +202,9 @@ public class DownloadRequest implements Parcelable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public boolean isDeleteOnFailure() {
+        return deleteOnFailure;
     }
 }

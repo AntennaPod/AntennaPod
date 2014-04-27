@@ -12,6 +12,7 @@ import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.URLChecker;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
@@ -72,9 +73,9 @@ public class DownloadRequester {
     }
 
     private void download(Context context, FeedFile item, File dest,
-                          boolean overwriteIfExists, String username, String password) {
+                          boolean overwriteIfExists, String username, String password, boolean deleteOnFailure) {
         if (!isDownloadingFile(item)) {
-            if (!isFilenameAvailable(dest.toString()) || dest.exists()) {
+            if (!isFilenameAvailable(dest.toString()) || (deleteOnFailure && dest.exists())) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Filename already used.");
                 if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
@@ -114,7 +115,7 @@ public class DownloadRequester {
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
                     item.getDownload_url(), item.getHumanReadableIdentifier(),
-                    item.getId(), item.getTypeAsInt(), username, password);
+                    item.getId(), item.getTypeAsInt(), username, password, deleteOnFailure);
 
             download(context, request);
         } else {
@@ -149,7 +150,7 @@ public class DownloadRequester {
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
 
             download(context, feed, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true, username, password);
+                    getFeedfileName(feed)), true, username, password, true);
         }
     }
 
@@ -157,7 +158,7 @@ public class DownloadRequester {
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
-                    getImagefileName(image)), false, null, null);
+                    getImagefileName(image)), false, null, null, false);
         }
     }
 
@@ -174,9 +175,16 @@ public class DownloadRequester {
                 username = null;
                 password = null;
             }
+
+            File dest;
+            if (feedmedia.getFile_url() != null) {
+                dest = new File(feedmedia.getFile_url());
+            } else {
+                dest = new File(getMediafilePath(context, feedmedia),
+                        getMediafilename(feedmedia));
+            }
             download(context, feedmedia,
-                    new File(getMediafilePath(context, feedmedia),
-                            getMediafilename(feedmedia)), false, username, password
+                    dest, false, username, password, false
             );
         }
     }
