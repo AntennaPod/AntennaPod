@@ -550,7 +550,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
         if (media.getChapters() != null) {
             butNavRight.setVisibility(View.VISIBLE);
         } else {
-            butNavRight.setVisibility(View.GONE);
+            butNavRight.setVisibility(View.INVISIBLE);
         }
 
 
