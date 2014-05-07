@@ -21,7 +21,7 @@ public final class Converter {
     /** Indicates that the value is in the Gigabyte range.*/
     private static final int GB_RANGE = 3;
     /** Determines the length of the number for best readability.*/
-    private static final int NUM_LENGTH = 1000;
+    private static final int NUM_LENGTH = 1024;
     
     
     private static final int HOURS_MIL = 3600000;
