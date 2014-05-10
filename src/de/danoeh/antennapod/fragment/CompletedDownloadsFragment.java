@@ -6,11 +6,14 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.ListView;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.util.QueueAccess;
 
 import java.util.List;
 
@@ -18,16 +21,20 @@ import java.util.List;
  * Displays all running downloads and provides a button to delete them
  */
 public class CompletedDownloadsFragment extends ListFragment {
-    private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
+    private static final int EVENTS =
+            EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOADLOG_UPDATE |
             EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items;
+    private QueueAccess queue;
     private DownloadedEpisodesListAdapter listAdapter;
 
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
+
+    private FeedItemDialog feedItemDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -60,6 +67,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onDestroyView();
         listAdapter = null;
         viewCreated = false;
+        feedItemDialog = null;
     }
 
     @Override
@@ -79,12 +87,29 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
+    @Override
+    public void onListItemClick(ListView l, View v, int position, long id) {
+        super.onListItemClick(l, v, position, id);
+        FeedItem item = listAdapter.getItem(position - l.getHeaderViewsCount());
+        if (item != null) {
+            feedItemDialog = FeedItemDialog.newInstace(getActivity(), item, queue);
+            feedItemDialog.show();
+        }
+
+    }
+
     private void onFragmentLoaded() {
         if (listAdapter == null) {
             listAdapter = new DownloadedEpisodesListAdapter(getActivity(), itemAccess);
             setListAdapter(listAdapter);
         }
         listAdapter.notifyDataSetChanged();
+        if (feedItemDialog != null) {
+            boolean res = feedItemDialog.updateContent(queue, items);
+            if (!res && feedItemDialog.isShowing()) {
+                feedItemDialog.dismiss();
+            }
+        }
     }
 
     private DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
@@ -107,7 +132,11 @@ public class CompletedDownloadsFragment extends ListFragment {
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EVENTS) != 0) {
+            if ((arg & EventDistributor.DOWNLOAD_QUEUED) != 0) {
+                if (feedItemDialog != null && feedItemDialog.isShowing()) {
+                    feedItemDialog.updateMenuAppearance();
+                }
+            } else if ((arg & EVENTS) != 0) {
                 startItemLoader();
             }
         }
@@ -129,7 +158,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, List<FeedItem>> {
+    private class ItemLoader extends AsyncTask<Void, Void, Object[]> {
 
         @Override
         protected void onPreExecute() {
@@ -140,11 +169,12 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(List<FeedItem> feedItems) {
-            super.onPostExecute(feedItems);
+        protected void onPostExecute(Object[] results) {
+            super.onPostExecute(results);
             setListShown(true);
-            if (feedItems != null) {
-                items = feedItems;
+            if (results != null) {
+                items = (List<FeedItem>) results[0];
+                queue = (QueueAccess) results[1];
                 itemsLoaded = true;
                 if (viewCreated && getActivity() != null) {
                     onFragmentLoaded();
@@ -153,10 +183,11 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
 
         @Override
-        protected List<FeedItem> doInBackground(Void... params) {
+        protected Object[] doInBackground(Void... params) {
             Context context = getActivity();
             if (context != null) {
-                return DBReader.getDownloadedItems(context);
+                return new Object[] {DBReader.getDownloadedItems(context),
+                                    QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
             }
             return null;
         }

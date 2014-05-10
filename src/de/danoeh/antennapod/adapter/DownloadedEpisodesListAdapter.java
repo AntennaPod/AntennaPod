@@ -34,7 +34,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
     }
 
     @Override
-    public Object getItem(int position) {
+    public FeedItem getItem(int position) {
         return itemAccess.getItem(position);
     }
 

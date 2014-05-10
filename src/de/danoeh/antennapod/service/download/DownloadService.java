@@ -357,7 +357,7 @@ public class DownloadService extends Service {
             if (notificationCompatBuilder != null) {
                 notificationCompatBuilder.setContentTitle(contentTitle);
                 notificationCompatBuilder.setContentText(downloadsLeft);
-                return notificationCompatBuilder.getNotification();
+                return notificationCompatBuilder.build();
             }
         }
         return null;
@@ -525,9 +525,9 @@ public class DownloadService extends Service {
                                     R.drawable.stat_notify_sync)
                     )
                     .setContentIntent(
-                            PendingIntent.getActivity(this, 0, intent, 0)
+                            PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
                     )
-                    .setAutoCancel(true).getNotification();
+                    .setAutoCancel(true).build();
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(REPORT_ID, notification);
         } else {

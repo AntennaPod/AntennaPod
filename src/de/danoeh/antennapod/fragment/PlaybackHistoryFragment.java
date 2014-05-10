@@ -175,9 +175,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         setListShown(true);
         adapter.notifyDataSetChanged();
         if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.setItemFromCollection(playbackHistory);
-            feedItemDialog.setQueue(queue);
-            feedItemDialog.updateMenuAppearance();
+            feedItemDialog.updateContent(queue, playbackHistory);
         }
         getActivity().supportInvalidateOptionsMenu();
     }

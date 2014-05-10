@@ -219,11 +219,8 @@ public class NewEpisodesFragment extends Fragment {
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
-        if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.setQueue(queueAccess);
-            feedItemDialog.setItemFromCollection(unreadItems);
-            feedItemDialog.setItemFromCollection(recentItems);
-            feedItemDialog.updateMenuAppearance();
+        if (feedItemDialog != null) {
+            feedItemDialog.updateContent(queueAccess, unreadItems, recentItems);
         }
         listAdapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();

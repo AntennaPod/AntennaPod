@@ -283,10 +283,8 @@ public class ItemlistFragment extends ListFragment {
         setListShown(true);
         adapter.notifyDataSetChanged();
 
-        if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.setItemFromCollection(feed.getItems());
-            feedItemDialog.setQueue(queue);
-            feedItemDialog.updateMenuAppearance();
+        if (feedItemDialog != null) {
+            feedItemDialog.updateContent(queue, feed.getItems());
         }
         getActivity().supportInvalidateOptionsMenu();
     }

@@ -234,10 +234,8 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
-        if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.setQueue(QueueAccess.ItemListAccess(queue));
-            feedItemDialog.setItemFromCollection(queue);
-            feedItemDialog.updateMenuAppearance();
+        if (feedItemDialog != null) {
+            feedItemDialog.updateContent(QueueAccess.ItemListAccess(queue), queue);
         }
     }
 

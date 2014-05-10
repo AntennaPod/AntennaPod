@@ -15,7 +15,7 @@
             android:id="@+id/imgvImage"
             android:contentDescription="@string/cover_label"
             android:layout_width="@dimen/thumbnail_length_downloaded_item"
-            android:layout_height="@dimen/thumbnail_length_itemlist"
+            android:layout_height="@dimen/thumbnail_length_downloaded_item"
             android:layout_alignParentLeft="true"
             android:scaleType="centerCrop"/>
 

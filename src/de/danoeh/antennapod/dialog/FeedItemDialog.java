@@ -33,9 +33,9 @@ import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import org.apache.commons.lang3.StringEscapeUtils;
-import org.shredzone.flattr4j.model.User;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.concurrent.Callable;
 
 /**
@@ -193,7 +193,6 @@ public class FeedItemDialog extends Dialog {
     }
 
 
-
     private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override
         public void setItemVisibility(int id, boolean visible) {
@@ -306,18 +305,49 @@ public class FeedItemDialog extends Dialog {
         loadTask.execute();
     }
 
+    /**
+     * Convenience method that calls setQueue() and setItemFromCollection() with
+     * the given arguments.
+     *
+     * @return true if one of the calls to setItemFromCollection returned true,
+     * false otherwise.
+     */
+    public boolean updateContent(QueueAccess queue, List<FeedItem>... collections) {
+        setQueue(queue);
+
+        boolean setItemFromCollectionResult = false;
+        if (collections != null) {
+            for (List<FeedItem> list : collections) {
+                setItemFromCollectionResult |= setItemFromCollection(list);
+            }
+        }
+        if (isShowing()) {
+            updateMenuAppearance();
+        }
+
+        return setItemFromCollectionResult;
+    }
+
+
     public void setItem(FeedItem item) {
         if (item == null) throw new IllegalArgumentException("item = null");
         this.item = item;
     }
 
-    public void setItemFromCollection(Collection<FeedItem> items) {
+    /**
+     * Finds the FeedItem of this dialog in a collection and updates its state from that
+     * collection.
+     *
+     * @return true if the FeedItem was found, false otherwise.
+     */
+    public boolean setItemFromCollection(Collection<FeedItem> items) {
         for (FeedItem item : items) {
             if (item.getId() == this.item.getId()) {
                 setItem(item);
-                break;
+                return true;
             }
         }
+        return false;
     }
 
     public void setQueue(QueueAccess queue) {
