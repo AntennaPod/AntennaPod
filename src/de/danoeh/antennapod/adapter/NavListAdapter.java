@@ -23,7 +23,7 @@ public class NavListAdapter extends BaseAdapter {
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     public static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
-    public static final int[] NAV_TITLES = {R.string.new_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
+    public static final int[] NAV_TITLES = {R.string.all_episodes_label, R.string.queue_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
 
     private final Drawable[] drawables;
 

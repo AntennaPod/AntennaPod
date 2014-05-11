@@ -2,9 +2,11 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -47,6 +49,9 @@ public class NewEpisodesFragment extends Fragment {
             EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
+    private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private static final String PREF_EPISODE_FILTER_BOOL = "newEpisodeFilterEnabled";
+
 
     private DragSortListView listView;
     private NewEpisodesListAdapter listAdapter;
@@ -60,6 +65,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
+    private boolean showOnlyNewEpisodes = false;
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
@@ -72,6 +78,8 @@ public class NewEpisodesFragment extends Fragment {
         super.onCreate(savedInstanceState);
         setRetainInstance(true);
         setHasOptionsMenu(true);
+
+        updateShowOnlyEpisodes();
     }
 
     @Override
@@ -150,6 +158,7 @@ public class NewEpisodesFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.mark_all_read_item).setVisible(unreadItems != null && !unreadItems.isEmpty());
+        menu.findItem(R.id.episode_filter_item).setChecked(showOnlyNewEpisodes);
     }
 
     @Override
@@ -166,6 +175,11 @@ public class NewEpisodesFragment extends Fragment {
                     DBWriter.markAllItemsRead(getActivity());
                     Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
                     return true;
+                case R.id.episode_filter_item:
+                    boolean newVal = !item.isChecked();
+                    setShowOnlyNewEpisodes(newVal);
+                    item.setChecked(newVal);
+                    return true;
                 default:
                     return false;
             }
@@ -178,7 +192,7 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.all_episodes_label);
 
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
@@ -249,25 +263,20 @@ public class NewEpisodesFragment extends Fragment {
 
     private NewEpisodesListAdapter.ItemAccess itemAccess = new NewEpisodesListAdapter.ItemAccess() {
 
-
         @Override
-        public int getUnreadItemsCount() {
-            return (itemsLoaded) ? unreadItems.size() : 0;
+        public int getCount() {
+            if (itemsLoaded) {
+                return (showOnlyNewEpisodes) ? unreadItems.size() : recentItems.size();
+            }
+            return 0;
         }
 
         @Override
-        public int getRecentItemsCount() {
-            return (itemsLoaded) ? recentItems.size() : 0;
-        }
-
-        @Override
-        public FeedItem getUnreadItem(int position) {
-            return (itemsLoaded) ? unreadItems.get(position) : null;
-        }
-
-        @Override
-        public FeedItem getRecentItem(int position) {
-            return (itemsLoaded) ? recentItems.get(position) : null;
+        public FeedItem getItem(int position) {
+            if (itemsLoaded) {
+                return (showOnlyNewEpisodes) ? unreadItems.get(position) : recentItems.get(position);
+            }
+            return null;
         }
 
         @Override
@@ -317,6 +326,23 @@ public class NewEpisodesFragment extends Fragment {
             }
         }
     };
+
+    private void updateShowOnlyEpisodes() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, false);
+    }
+
+    private void setShowOnlyNewEpisodes(boolean newVal) {
+        showOnlyNewEpisodes = newVal;
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(PREF_EPISODE_FILTER_BOOL, showOnlyNewEpisodes);
+        editor.commit();
+        if (itemsLoaded && viewsCreated) {
+            listAdapter.notifyDataSetChanged();
+            activity.get().supportInvalidateOptionsMenu();
+        }
+    }
 
     private ItemLoader itemLoader;
 

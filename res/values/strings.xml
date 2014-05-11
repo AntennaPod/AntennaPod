@@ -10,6 +10,7 @@
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">EPISODES</string>
     <string name="new_episodes_label">New episodes</string>
+    <string name="all_episodes_label">All episodes</string>
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting list</string>
     <string name="settings_label">Settings</string>
@@ -26,6 +27,7 @@
 
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
+    <string name="episode_filter_label">Show only new episodes</string>
 
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>

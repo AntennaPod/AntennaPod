@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,9 +18,6 @@ import de.danoeh.antennapod.util.Converter;
  */
 public class NewEpisodesListAdapter extends BaseAdapter {
 
-    private static final int VIEW_TYPE_FEEDITEM = 0;
-    private static final int VIEW_TYPE_DIVIDER = 1;
-
     private final Context context;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
@@ -37,22 +33,12 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        int unreadItems = itemAccess.getUnreadItemsCount();
-        int recentItems = itemAccess.getRecentItemsCount();
-        return unreadItems + recentItems + 1;
+        return itemAccess.getCount();
     }
 
     @Override
     public Object getItem(int position) {
-        int unreadItems = itemAccess.getUnreadItemsCount();
-
-        if (position == unreadItems) {
-            return null;
-        }
-        if (position < unreadItems && unreadItems > 0) {
-            return itemAccess.getUnreadItem(position);
-        }
-        return itemAccess.getRecentItem(position - unreadItems - 1);
+        return itemAccess.getItem(position);
     }
 
     @Override
@@ -61,41 +47,12 @@ public class NewEpisodesListAdapter extends BaseAdapter {
     }
 
     @Override
-    public int getItemViewType(int position) {
-        int unreadItems = itemAccess.getUnreadItemsCount();
-        if (position == unreadItems) {
-            return VIEW_TYPE_DIVIDER;
-        } else {
-            return VIEW_TYPE_FEEDITEM;
-        }
-    }
-
-    @Override
     public int getViewTypeCount() {
-        return 2;
+        return 1;
     }
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        int viewType = getItemViewType(position);
-        if (viewType == VIEW_TYPE_FEEDITEM) {
-            return getFeedItemView(position, convertView, parent);
-        } else {
-            return getDividerView(position, convertView, parent);
-        }
-    }
-
-    public View getDividerView(int position, View convertView, ViewGroup parent) {
-        LayoutInflater inflater = (LayoutInflater) context
-                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        convertView = inflater.inflate(R.layout.new_episodes_listdivider,
-                null);
-        convertView.setOnClickListener(null);
-        convertView.setEnabled(false);
-        return convertView;
-    }
-
-    public View getFeedItemView(int position, View convertView, ViewGroup parent) {
         Holder holder;
         final FeedItem item = (FeedItem) getItem(position);
         if (item == null) return null;
@@ -162,7 +119,6 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
 
-
         ImageLoader.getInstance().loadThumbnailBitmap(
                 item,
                 holder.imageView,
@@ -192,13 +148,10 @@ public class NewEpisodesListAdapter extends BaseAdapter {
     }
 
     public interface ItemAccess {
-        int getUnreadItemsCount();
 
-        int getRecentItemsCount();
+        int getCount();
 
-        FeedItem getUnreadItem(int position);
-
-        FeedItem getRecentItem(int position);
+        FeedItem getItem(int position);
 
         int getItemDownloadProgressPercent(FeedItem item);
 
