@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/move_to_top_item"
+        android:menuCategory="container"
+        android:title="@string/move_to_top_label"/>
+
+    <item
+        android:id="@+id/move_to_bottom_item"
+        android:menuCategory="container"
+        android:title="@string/move_to_bottom_label"/>
+
+</menu>
