@@ -3,6 +3,8 @@ package de.danoeh.antennapod.fragment;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -12,11 +14,13 @@ import android.support.v7.widget.SearchView;
 import android.text.util.Linkify;
 import android.util.Log;
 import android.view.*;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
@@ -191,7 +195,7 @@ public class ItemlistFragment extends ListFragment {
                                 @Override
                                 protected void onPostExecute(Void result) {
                                     super.onPostExecute(result);
-                                    ((MainActivity)getActivity()).loadNavFragment(MainActivity.POS_NEW, null);
+                                    ((MainActivity) getActivity()).loadNavFragment(MainActivity.POS_NEW, null);
                                 }
                             };
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
@@ -326,15 +330,37 @@ public class ItemlistFragment extends ListFragment {
 
         TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
-        TextView txtvLink = (TextView) header.findViewById(R.id.txtvLink);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
+        ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
+        ImageButton butVisitWebsite = (ImageButton) header.findViewById(R.id.butVisitWebsite);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
-        txtvLink.setText(feed.getLink());
-        Linkify.addLinks(txtvLink, Linkify.WEB_URLS);
         ImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(), imgvCover,
                 (int) getResources().getDimension(R.dimen.thumbnail_length_onlinefeedview));
+        if (feed.getLink() == null) {
+            butVisitWebsite.setVisibility(View.INVISIBLE);
+        } else {
+            butVisitWebsite.setVisibility(View.VISIBLE);
+            butVisitWebsite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Uri uri = Uri.parse(feed.getLink());
+                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                }
+            });
+        }
+        butShowInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (viewsCreated && itemsLoaded) {
+                    Intent startIntent = new Intent(getActivity(), FeedInfoActivity.class);
+                    startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
+                            feed.getId());
+                    startActivity(startIntent);
+                }
+            }
+        });
     }
 
     private InternalFeedItemlistAdapter.ItemAccess itemAccess = new InternalFeedItemlistAdapter.ItemAccess() {

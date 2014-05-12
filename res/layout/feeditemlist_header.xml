@@ -15,6 +15,27 @@
         android:layout_alignParentTop="true"
         android:layout_margin="4dp"/>
 
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:id="@+id/butShowInfo"
+        android:contentDescription="@string/show_info_label"
+        android:src="?attr/action_about"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/borderless_button"/>
+
+    <ImageButton
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:layout_marginRight="8dp"
+        android:id="@+id/butVisitWebsite"
+        android:contentDescription="@string/visit_website_label"
+        android:src="?attr/location_web_site"
+        android:layout_toLeftOf="@id/butShowInfo"
+        android:layout_alignParentBottom="true"
+        android:background="?attr/borderless_button"/>
+
     <TextView
         android:id="@+id/txtvTitle"
         android:layout_width="0dp"
@@ -30,24 +51,15 @@
 
     <TextView
         android:id="@+id/txtvAuthor"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:layout_below="@id/txtvTitle"
         android:layout_toRightOf="@id/imgvCover"
+        android:layout_toLeftOf="@id/butShowInfo"
         android:lines="1"
         android:ellipsize="end"
         android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small"/>
-
-    <TextView
-        android:id="@+id/txtvLink"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:lines="1"
-        android:ellipsize="end"
-        android:layout_below="@id/txtvAuthor"
-        android:layout_toRightOf="@id/imgvCover"
         android:textSize="@dimen/text_size_small"/>
 
 </RelativeLayout>

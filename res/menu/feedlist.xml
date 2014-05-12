@@ -16,13 +16,6 @@
         android:title="@string/mark_all_read_label">
     </item>
     <item
-        android:id="@+id/show_info_item"
-        android:menuCategory="container"
-        android:icon="?attr/action_about"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/show_info_label">
-    </item>
-    <item
         android:id="@+id/support_item"
         android:menuCategory="container"
         custom:showAsAction="collapseActionView"

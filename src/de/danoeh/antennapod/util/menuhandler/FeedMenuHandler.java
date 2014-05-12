@@ -60,12 +60,6 @@ public class FeedMenuHandler {
 	public static boolean onOptionsItemClicked(Context context, MenuItem item,
 			Feed selectedFeed) throws DownloadRequestException {
 		switch (item.getItemId()) {
-		case R.id.show_info_item:
-			Intent startIntent = new Intent(context, FeedInfoActivity.class);
-			startIntent.putExtra(FeedInfoActivity.EXTRA_FEED_ID,
-					selectedFeed.getId());
-			context.startActivity(startIntent);
-			break;
 		case R.id.refresh_item:
 			DBTasks.refreshFeed(context, selectedFeed);
 			break;
