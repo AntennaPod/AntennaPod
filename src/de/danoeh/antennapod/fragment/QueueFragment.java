@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Parcelable;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.*;
@@ -109,6 +108,7 @@ public class QueueFragment extends Fragment {
     }
 
     private void resetViewState() {
+        unregisterForContextMenu(listView);
         listAdapter = null;
         undoBarController = null;
         activity.set(null);
@@ -145,6 +145,45 @@ public class QueueFragment extends Fragment {
                 return false;
             }
         });
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        FeedItem item = itemAccess.getItem(adapterInfo.position);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.queue_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        menu.findItem(R.id.move_to_top_item).setEnabled(!queue.isEmpty() && queue.get(0) != item);
+        menu.findItem(R.id.move_to_bottom_item).setEnabled(!queue.isEmpty() && queue.get(queue.size() - 1) != item);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        switch (item.getItemId()) {
+            case R.id.move_to_top_item:
+                DBWriter.moveQueueItemToTop(getActivity(), selectedItem.getId(), true);
+                return true;
+            case R.id.move_to_bottom_item:
+                DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
     }
 
     @Override
@@ -211,6 +250,8 @@ public class QueueFragment extends Fragment {
                 );
             }
         });
+
+        registerForContextMenu(listView);
 
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
