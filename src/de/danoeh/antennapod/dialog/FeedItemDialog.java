@@ -54,7 +54,16 @@ public class FeedItemDialog extends Dialog {
     private ImageButton butMore;
     private PopupMenu popupMenu;
 
-    public static FeedItemDialog newInstace(Context context, FeedItem item, QueueAccess queue) {
+    public static FeedItemDialog newInstance(Context context, FeedItemDialogSavedInstance savedInstance) {
+        if (savedInstance == null) throw new IllegalArgumentException("savedInstance = null");
+        FeedItemDialog dialog = newInstance(context, savedInstance.item, savedInstance.queueAccess);
+        if (savedInstance.isShowing) {
+            dialog.show();
+        }
+        return dialog;
+    }
+
+    public static FeedItemDialog newInstance(Context context, FeedItem item, QueueAccess queue) {
         if (useDarkThemeWorkAround()) {
             return new FeedItemDialog(context, R.style.Theme_AntennaPod_Dark, item, queue);
         } else {
@@ -361,5 +370,24 @@ public class FeedItemDialog extends Dialog {
 
     public QueueAccess getQueue() {
         return queue;
+    }
+
+    public FeedItemDialogSavedInstance save() {
+        return new FeedItemDialogSavedInstance(item, queue, isShowing());
+    }
+
+    /**
+     * Used to save the FeedItemDialog's state across configuration changes
+     * */
+    public static class FeedItemDialogSavedInstance {
+        final FeedItem item;
+        final QueueAccess queueAccess;
+        final boolean isShowing;
+
+        private FeedItemDialogSavedInstance(FeedItem item, QueueAccess queueAccess, boolean isShowing) {
+            this.item = item;
+            this.queueAccess = queueAccess;
+            this.isShowing = isShowing;
+        }
     }
 }

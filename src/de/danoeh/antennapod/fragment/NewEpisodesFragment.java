@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -72,6 +71,7 @@ public class NewEpisodesFragment extends Fragment {
     private DownloadObserver downloadObserver = null;
 
     private FeedItemDialog feedItemDialog;
+    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -127,6 +127,9 @@ public class NewEpisodesFragment extends Fragment {
         viewsCreated = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
+        }
+        if (feedItemDialog != null) {
+            feedItemDialogSavedInstance = feedItemDialog.save();
         }
         feedItemDialog = null;
     }
@@ -204,7 +207,7 @@ public class NewEpisodesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, queueAccess);
+                    feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, queueAccess);
                     feedItemDialog.show();
                 }
 
@@ -235,6 +238,8 @@ public class NewEpisodesFragment extends Fragment {
         }
         if (feedItemDialog != null) {
             feedItemDialog.updateContent(queueAccess, unreadItems, recentItems);
+        } else if (feedItemDialogSavedInstance != null) {
+            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
         }
         listAdapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();

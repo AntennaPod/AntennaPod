@@ -36,7 +36,6 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
@@ -70,6 +69,7 @@ public class ItemlistFragment extends ListFragment {
     private List<Downloader> downloaderList;
 
     private FeedItemDialog feedItemDialog;
+    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
 
     /**
@@ -142,6 +142,9 @@ public class ItemlistFragment extends ListFragment {
         viewsCreated = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
+        }
+        if (feedItemDialog != null) {
+            feedItemDialogSavedInstance = feedItemDialog.save();
         }
         feedItemDialog = null;
     }
@@ -236,7 +239,7 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        feedItemDialog = FeedItemDialog.newInstace(getActivity(), selection, queue);
+        feedItemDialog = FeedItemDialog.newInstance(getActivity(), selection, queue);
         feedItemDialog.show();
     }
 
@@ -285,6 +288,8 @@ public class ItemlistFragment extends ListFragment {
 
         if (feedItemDialog != null) {
             feedItemDialog.updateContent(queue, feed.getItems());
+        } else if (feedItemDialogSavedInstance != null) {
+            feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
         }
         getActivity().supportInvalidateOptionsMenu();
     }

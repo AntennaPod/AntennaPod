@@ -23,9 +23,9 @@ import java.util.List;
 public class CompletedDownloadsFragment extends ListFragment {
     private static final int EVENTS =
             EventDistributor.DOWNLOAD_HANDLED |
-            EventDistributor.DOWNLOADLOG_UPDATE |
-            EventDistributor.QUEUE_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
+                    EventDistributor.DOWNLOADLOG_UPDATE |
+                    EventDistributor.QUEUE_UPDATE |
+                    EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items;
     private QueueAccess queue;
@@ -92,7 +92,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         FeedItem item = listAdapter.getItem(position - l.getHeaderViewsCount());
         if (item != null) {
-            feedItemDialog = FeedItemDialog.newInstace(getActivity(), item, queue);
+            feedItemDialog = FeedItemDialog.newInstance(getActivity(), item, queue);
             feedItemDialog.show();
         }
 
@@ -186,8 +186,8 @@ public class CompletedDownloadsFragment extends ListFragment {
         protected Object[] doInBackground(Void... params) {
             Context context = getActivity();
             if (context != null) {
-                return new Object[] {DBReader.getDownloadedItems(context),
-                                    QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                return new Object[]{DBReader.getDownloadedItems(context),
+                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
             }
             return null;
         }

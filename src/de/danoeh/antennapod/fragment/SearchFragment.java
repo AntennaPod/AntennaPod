@@ -41,6 +41,7 @@ public class SearchFragment extends ListFragment {
     private QueueAccess queue;
 
     private FeedItemDialog feedItemDialog;
+    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -96,6 +97,10 @@ public class SearchFragment extends ListFragment {
         super.onDestroyView();
         searchAdapter = null;
         viewCreated = false;
+        if (feedItemDialog != null) {
+            feedItemDialogSavedInstance = feedItemDialog.save();
+        }
+        feedItemDialog = null;
     }
 
     @Override
@@ -117,7 +122,7 @@ public class SearchFragment extends ListFragment {
             ((MainActivity)getActivity()).loadFeedFragment(comp.getId());
         } else {
             if (comp.getClass() == FeedItem.class) {
-                feedItemDialog = FeedItemDialog.newInstace(getActivity(), (FeedItem) comp, queue);
+                feedItemDialog = FeedItemDialog.newInstance(getActivity(), (FeedItem) comp, queue);
                 feedItemDialog.show();
             }
         }
@@ -178,6 +183,8 @@ public class SearchFragment extends ListFragment {
                 }
             }
             feedItemDialog.updateMenuAppearance();
+        } else if (feedItemDialogSavedInstance != null) {
+            feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
         }
     }
 

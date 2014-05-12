@@ -14,7 +14,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.ActionButtonCallback;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
@@ -46,6 +45,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     private List<Downloader> downloaderList;
 
     private FeedItemDialog feedItemDialog;
+    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -101,6 +101,9 @@ public class PlaybackHistoryFragment extends ListFragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
+        if (feedItemDialog != null) {
+            feedItemDialogSavedInstance = feedItemDialog.save();
+        }
         feedItemDialog = null;
     }
 
@@ -118,7 +121,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         FeedItem item = adapter.getItem(position - l.getHeaderViewsCount());
         if (item != null) {
-            feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, queue);
+            feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, queue);
             feedItemDialog.show();
         }
     }
@@ -176,6 +179,8 @@ public class PlaybackHistoryFragment extends ListFragment {
         adapter.notifyDataSetChanged();
         if (feedItemDialog != null && feedItemDialog.isShowing()) {
             feedItemDialog.updateContent(queue, playbackHistory);
+        } else if (feedItemDialogSavedInstance != null) {
+            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
         }
         getActivity().supportInvalidateOptionsMenu();
     }

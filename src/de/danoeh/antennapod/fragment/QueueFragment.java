@@ -60,6 +60,7 @@ public class QueueFragment extends Fragment {
     private DownloadObserver downloadObserver = null;
 
     private FeedItemDialog feedItemDialog;
+    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     /**
      * Download observer updates won't result in an upate of the list adapter if this is true.
@@ -116,6 +117,9 @@ public class QueueFragment extends Fragment {
         blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
+        }
+        if (feedItemDialog != null) {
+            feedItemDialogSavedInstance = feedItemDialog.save();
         }
         feedItemDialog = null;
     }
@@ -202,7 +206,7 @@ public class QueueFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = FeedItemDialog.newInstace(activity.get(), item, QueueAccess.ItemListAccess(queue));
+                    feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, QueueAccess.ItemListAccess(queue));
                     feedItemDialog.show();
                 }
             }
@@ -277,6 +281,8 @@ public class QueueFragment extends Fragment {
         listAdapter.notifyDataSetChanged();
         if (feedItemDialog != null) {
             feedItemDialog.updateContent(QueueAccess.ItemListAccess(queue), queue);
+        } else if (feedItemDialogSavedInstance != null) {
+            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
         }
     }
 
