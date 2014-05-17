@@ -14,10 +14,12 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -48,6 +50,7 @@ public class FeedItemDialog extends Dialog {
     private QueueAccess queue;
 
     private View header;
+    private TextView txtvTitle;
     private WebView webvDescription;
     private ImageButton butAction1;
     private ImageButton butAction2;
@@ -95,8 +98,10 @@ public class FeedItemDialog extends Dialog {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.feeditem_dialog);
 
+        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         header = findViewById(R.id.header);
         webvDescription = (WebView) findViewById(R.id.webview);
         butAction1 = (ImageButton) findViewById(R.id.butAction1);
@@ -105,7 +110,7 @@ public class FeedItemDialog extends Dialog {
         popupMenu = new PopupMenu(getContext(), butMore);
 
         webvDescription.setWebViewClient(new WebViewClient());
-        setTitle(item.getTitle());
+        txtvTitle.setText(item.getTitle());
 
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT >= 11

@@ -5,10 +5,25 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:id="@+id/txtvTitle"
+        android:layout_alignParentTop="true"
+        style="@style/AntennaPod.Dialog.Title"/>
+
+    <View
+        android:id="@+id/title_divider"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:layout_below="@id/txtvTitle"
+        android:background="@color/bright_blue"/>
+
     <LinearLayout
         android:id="@+id/header"
         android:orientation="horizontal"
-        android:layout_alignParentTop="true"
+        android:layout_below="@id/title_divider"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -41,7 +56,7 @@
     <View
         android:id="@+id/divider"
         android:layout_width="match_parent"
-        android:layout_height="3dp"
+        android:layout_height="2dp"
         android:layout_below="@id/header"
         android:background="@color/bright_blue"/>
 
