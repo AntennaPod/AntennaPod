@@ -223,6 +223,8 @@ public class Feed extends FeedFile implements FlattrThing {
     public String getIdentifyingValue() {
         if (feedIdentifier != null && !feedIdentifier.isEmpty()) {
             return feedIdentifier;
+        } else if (download_url != null && !download_url.isEmpty()) {
+            return download_url;
         } else if (title != null && !title.isEmpty()) {
             return title;
         } else {

@@ -78,7 +78,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         List<Feed> feeds = saveFeedlist(context, 10, 0, false);
         List<Feed> savedFeeds = DBReader.getFeedList(context);
         assertNotNull(savedFeeds);
-        assertTrue(savedFeeds.size() == feeds.size());
+        assertEquals(feeds.size(), savedFeeds.size());
         for (int i = 0; i < feeds.size(); i++) {
             assertTrue(savedFeeds.get(i).getId() == feeds.get(i).getId());
         }

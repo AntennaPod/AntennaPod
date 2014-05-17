@@ -595,12 +595,16 @@ public final class DBTasks {
         return QueueAccess.IDListAccess(queue).contains(feedItemId);
     }
 
-    private static Feed searchFeedByIdentifyingValue(Context context,
-                                                     String identifier) {
-        List<Feed> feeds = DBReader.getFeedList(context);
-        for (Feed feed : feeds) {
-            if (feed.getIdentifyingValue().equals(identifier)) {
-                return feed;
+    private static Feed searchFeedByIdentifyingValueOrID(Context context,
+                                                     Feed feed) {
+        if (feed.getId() != 0) {
+            return DBReader.getFeed(context, feed.getId());
+        } else {
+            List<Feed> feeds = DBReader.getFeedList(context);
+            for (Feed f : feeds) {
+                if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
+                    return f;
+                }
             }
         }
         return null;
@@ -632,8 +636,8 @@ public final class DBTasks {
     public static synchronized Feed updateFeed(final Context context,
                                                final Feed newFeed) {
         // Look up feed in the feedslist
-        final Feed savedFeed = searchFeedByIdentifyingValue(context,
-                newFeed.getIdentifyingValue());
+        final Feed savedFeed = searchFeedByIdentifyingValueOrID(context,
+                newFeed);
         if (savedFeed == null) {
             if (BuildConfig.DEBUG)
                 Log.d(TAG,

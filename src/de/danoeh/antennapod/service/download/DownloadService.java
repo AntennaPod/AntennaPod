@@ -648,6 +648,7 @@ public class DownloadService extends Service {
 
             Feed feed = new Feed(request.getSource(), new Date());
             feed.setFile_url(request.getDestination());
+            feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);
             feed.setPreferences(new FeedPreferences(0, true, request.getUsername(), request.getPassword()));
 

@@ -212,6 +212,22 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
+    /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
+    public void testUpdateFeedSameTitle() {
+        final Context context = getInstrumentation().getTargetContext();
+
+        Feed feed1 = new Feed("url1", new Date(), "title");
+        Feed feed2 = new Feed("url2", new Date(), "title");
+
+        feed1.setItems(new ArrayList<FeedItem>());
+        feed2.setItems(new ArrayList<FeedItem>());
+
+        Feed savedFeed1 = DBTasks.updateFeed(context, feed1);
+        Feed savedFeed2 = DBTasks.updateFeed(context, feed2);
+
+        assertTrue(savedFeed1.getId() != savedFeed2.getId());
+    }
+
     public void testUpdateFeedUpdatedFeed() {
         final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS_OLD = 10;

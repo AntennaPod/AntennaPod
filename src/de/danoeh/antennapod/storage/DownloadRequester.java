@@ -114,7 +114,7 @@ public class DownloadRequester {
             item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
-                    item.getDownload_url(), item.getHumanReadableIdentifier(),
+                    URLChecker.prepareURL(item.getDownload_url()), item.getHumanReadableIdentifier(),
                     item.getId(), item.getTypeAsInt(), username, password, deleteOnFailure);
 
             download(context, request);
