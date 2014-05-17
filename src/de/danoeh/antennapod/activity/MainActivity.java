@@ -1,11 +1,13 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -39,6 +41,9 @@ public class MainActivity extends ActionBarActivity {
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
+
+    private static final String PREF_NAME = "MainActivityPrefs";
+    private static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_NAV_TYPE = "nav_type";
@@ -119,6 +124,23 @@ public class MainActivity extends ActionBarActivity {
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
 
+        checkFirstLaunch();
+    }
+
+    private void checkFirstLaunch() {
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        if (prefs.getBoolean(PREF_IS_FIRST_LAUNCH, true)) {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    drawerLayout.openDrawer(navList);
+                }
+            }, 1500);
+
+            SharedPreferences.Editor edit = prefs.edit();
+            edit.putBoolean(PREF_IS_FIRST_LAUNCH, false);
+            edit.commit();
+        }
     }
 
     public ActionBar getMainActivtyActionBar() {
