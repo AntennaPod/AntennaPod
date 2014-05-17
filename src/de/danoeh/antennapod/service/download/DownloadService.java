@@ -282,6 +282,8 @@ public class DownloadService extends Service {
         feedSyncThread.shutdown();
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
+
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
     @SuppressLint("NewApi")
