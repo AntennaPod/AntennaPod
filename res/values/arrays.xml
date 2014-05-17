@@ -39,6 +39,11 @@
         <item>100</item>
     </string-array>
     <string-array name="playback_speed_values">
+        <item>0.5</item>
+        <item>0.6</item>
+        <item>0.7</item>
+        <item>0.8</item>
+        <item>0.9</item>
         <item>1.0</item>
         <item>1.05</item>
         <item>1.10</item>
