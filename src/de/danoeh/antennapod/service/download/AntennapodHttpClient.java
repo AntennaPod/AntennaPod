@@ -33,7 +33,7 @@ public class AntennapodHttpClient {
     public static final int CONNECTION_TIMEOUT = 30000;
     public static final int SOCKET_TIMEOUT = 30000;
 
-    public static final int MAX_CONNECTIONS = 6;
+    public static final int MAX_CONNECTIONS = 8;
 
 
     private static volatile HttpClient httpClient = null;

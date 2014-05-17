@@ -619,12 +619,18 @@ public final class DBReader {
      * database and the items-attribute will be set correctly.
      */
     public static Feed getFeed(final Context context, final long feedId) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Feed result = getFeed(context, feedId, adapter);
+        adapter.close();
+        return result;
+    }
+
+    static Feed getFeed(final Context context, final long feedId, PodDBAdapter adapter) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading feed with id " + feedId);
         Feed feed = null;
 
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
         Cursor feedCursor = adapter.getFeedCursor(feedId);
         if (feedCursor.moveToFirst()) {
             feed = extractFeedFromCursorRow(adapter, feedCursor);
@@ -633,7 +639,6 @@ public final class DBReader {
             Log.e(TAG, "getFeed could not find feed with id " + feedId);
         }
         feedCursor.close();
-        adapter.close();
         return feed;
     }
 

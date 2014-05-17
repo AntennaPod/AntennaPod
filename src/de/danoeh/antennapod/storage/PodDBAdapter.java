@@ -497,16 +497,18 @@ public class PodDBAdapter {
      * Insert all FeedItems of a feed and the feed object itself in a single
      * transaction
      */
-    public void setCompleteFeed(Feed feed) {
+    public void setCompleteFeed(Feed... feeds) {
         db.beginTransaction();
-        setFeed(feed);
-        if (feed.getItems() != null) {
-            for (FeedItem item : feed.getItems()) {
-                setFeedItem(item, false);
+        for (Feed feed : feeds) {
+            setFeed(feed);
+            if (feed.getItems() != null) {
+                for (FeedItem item : feed.getItems()) {
+                    setFeedItem(item, false);
+                }
             }
-        }
-        if (feed.getPreferences() != null) {
-            setFeedPreferences(feed.getPreferences());
+            if (feed.getPreferences() != null) {
+                setFeedPreferences(feed.getPreferences());
+            }
         }
         db.setTransactionSuccessful();
         db.endTransaction();

@@ -109,6 +109,7 @@
     <string name="download_error_request_error">Request error</string>
     <string name="download_error_db_access">Database access error</string>
     <string name="downloads_left">\u0020Downloads left</string>
+    <string name="downloads_processing">Processing downloads</string>
     <string name="download_notification_title">Downloading podcast data</string>
     <string name="download_report_content">%1$d downloads succeeded, %2$d failed</string>
     <string name="download_log_title_unknown">Unknown title</string>

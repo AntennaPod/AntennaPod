@@ -228,7 +228,9 @@ public final class DBTasks {
                         new DownloadStatus(feed, feed
                                 .getHumanReadableIdentifier(),
                                 DownloadError.ERROR_REQUEST_ERROR, false, e
-                                .getMessage()));
+                                .getMessage()
+                        )
+                );
             }
         }
 
@@ -249,7 +251,7 @@ public final class DBTasks {
             f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle(),
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
-
+        f.setId(feed.getId());
         DownloadRequester.getInstance().downloadFeed(context, f);
     }
 
@@ -347,7 +349,9 @@ public final class DBTasks {
                                         .getMedia()
                                         .getHumanReadableIdentifier(),
                                         DownloadError.ERROR_REQUEST_ERROR,
-                                        false, e.getMessage()));
+                                        false, e.getMessage()
+                                )
+                        );
                     }
                 } else {
                     requester.downloadMedia(context, item.getMedia());
@@ -449,7 +453,8 @@ public final class DBTasks {
                     try {
                         downloadFeedItems(false, context,
                                 itemsToDownload.toArray(new FeedItem[itemsToDownload
-                                        .size()]));
+                                        .size()])
+                        );
                     } catch (DownloadRequestException e) {
                         e.printStackTrace();
                     }
@@ -595,14 +600,15 @@ public final class DBTasks {
         return QueueAccess.IDListAccess(queue).contains(feedItemId);
     }
 
-    private static Feed searchFeedByIdentifyingValueOrID(Context context,
-                                                     Feed feed) {
+    private static Feed searchFeedByIdentifyingValueOrID(Context context, PodDBAdapter adapter,
+                                                         Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(context, feed.getId());
+            return DBReader.getFeed(context, feed.getId(), adapter);
         } else {
             List<Feed> feeds = DBReader.getFeedList(context);
             for (Feed f : feeds) {
                 if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
+                    f.setItems(DBReader.getFeedItemList(context, f));
                     return f;
                 }
             }
@@ -624,79 +630,95 @@ public final class DBTasks {
     }
 
     /**
-     * Adds a new Feed to the database or updates the old version if it already exists. If another Feed with the same
+     * Adds new Feeds to the database or updates the old versions if they already exists. If another Feed with the same
      * identifying value already exists, this method will add new FeedItems from the new Feed to the existing Feed.
      * These FeedItems will be marked as unread.
+     * <p/>
+     * This method can update multiple feeds at once. Submitting a feed twice in the same method call can result in undefined behavior.
+     * <p/>
      * This method should NOT be executed on the GUI thread.
      *
-     * @param context Used for accessing the DB.
-     * @param newFeed The new Feed object.
-     * @return The updated Feed from the database if it already existed, or the new Feed from the parameters otherwise.
+     * @param context  Used for accessing the DB.
+     * @param newFeeds The new Feed objects.
+     * @return The updated Feeds from the database if it already existed, or the new Feed from the parameters otherwise.
      */
-    public static synchronized Feed updateFeed(final Context context,
-                                               final Feed newFeed) {
-        // Look up feed in the feedslist
-        final Feed savedFeed = searchFeedByIdentifyingValueOrID(context,
-                newFeed);
-        if (savedFeed == null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG,
-                        "Found no existing Feed with title "
-                                + newFeed.getTitle() + ". Adding as new one.");
-            // Add a new Feed
-            try {
-                DBWriter.addNewFeed(context, newFeed).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            return newFeed;
-        } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Feed with title " + newFeed.getTitle()
-                        + " already exists. Syncing new with existing one.");
+    public static synchronized Feed[] updateFeed(final Context context,
+                                                 final Feed... newFeeds) {
+        List<Feed> newFeedsList = new ArrayList<Feed>();
+        List<Feed> updatedFeedsList = new ArrayList<Feed>();
+        Feed[] resultFeeds = new Feed[newFeeds.length];
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
 
-            Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
-            savedFeed.setItems(DBReader.getFeedItemList(context, savedFeed));
-            if (savedFeed.compareWithOther(newFeed)) {
+        for (int feedIdx = 0; feedIdx < newFeeds.length; feedIdx++) {
+
+            final Feed newFeed = newFeeds[feedIdx];
+
+            // Look up feed in the feedslist
+            final Feed savedFeed = searchFeedByIdentifyingValueOrID(context, adapter,
+                    newFeed);
+            if (savedFeed == null) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG,
-                            "Feed has updated attribute values. Updating old feed's attributes");
-                savedFeed.updateFromOther(newFeed);
-            }
-            if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
+                            "Found no existing Feed with title "
+                                    + newFeed.getTitle() + ". Adding as new one."
+                    );
+                // Add a new Feed
+                newFeedsList.add(newFeed);
+                resultFeeds[feedIdx] = newFeed;
+            } else {
                 if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
-                savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
-            }
-            // Look for new or updated Items
-            for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
-                final FeedItem item = newFeed.getItems().get(idx);
-                FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
-                        item.getIdentifyingValue());
-                if (oldItem == null) {
-                    // item is new
-                    final int i = idx;
-                    item.setFeed(savedFeed);
-                    savedFeed.getItems().add(i, item);
-                    item.setRead(false);
-                } else {
-                    oldItem.updateFromOther(item);
+                    Log.d(TAG, "Feed with title " + newFeed.getTitle()
+                            + " already exists. Syncing new with existing one.");
+
+                Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
+                if (savedFeed.compareWithOther(newFeed)) {
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG,
+                                "Feed has updated attribute values. Updating old feed's attributes");
+                    savedFeed.updateFromOther(newFeed);
                 }
+                if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
+                    savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
+                }
+                // Look for new or updated Items
+                for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
+                    final FeedItem item = newFeed.getItems().get(idx);
+                    FeedItem oldItem = searchFeedItemByIdentifyingValue(savedFeed,
+                            item.getIdentifyingValue());
+                    if (oldItem == null) {
+                        // item is new
+                        final int i = idx;
+                        item.setFeed(savedFeed);
+                        savedFeed.getItems().add(i, item);
+                        item.setRead(false);
+                    } else {
+                        oldItem.updateFromOther(item);
+                    }
+                }
+                // update attributes
+                savedFeed.setLastUpdate(newFeed.getLastUpdate());
+                savedFeed.setType(newFeed.getType());
+
+                updatedFeedsList.add(savedFeed);
+                resultFeeds[feedIdx] = savedFeed;
             }
-            // update attributes
-            savedFeed.setLastUpdate(newFeed.getLastUpdate());
-            savedFeed.setType(newFeed.getType());
-            try {
-                DBWriter.setCompleteFeed(context, savedFeed).get();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-            return savedFeed;
         }
+
+        adapter.close();
+
+        try {
+            DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
+            DBWriter.setCompleteFeed(context, updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        }
+
+        return resultFeeds;
     }
 
     /**

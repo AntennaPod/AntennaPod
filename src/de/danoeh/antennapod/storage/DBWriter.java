@@ -687,18 +687,19 @@ public class DBWriter {
 
     }
 
-    static Future<?> addNewFeed(final Context context, final Feed feed) {
+    static Future<?> addNewFeed(final Context context, final Feed... feeds) {
         return dbExec.submit(new Runnable() {
 
             @Override
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                adapter.setCompleteFeed(feed);
+                adapter.setCompleteFeed(feeds);
                 adapter.close();
 
-                GpodnetPreferences.addAddedFeed(feed.getDownload_url());
-                EventDistributor.getInstance().sendFeedUpdateBroadcast();
+                for (Feed feed : feeds) {
+                    GpodnetPreferences.addAddedFeed(feed.getDownload_url());
+                }
 
                 BackupManager backupManager = new BackupManager(context);
                 backupManager.dataChanged();
@@ -706,17 +707,16 @@ public class DBWriter {
         });
     }
 
-    static Future<?> setCompleteFeed(final Context context, final Feed feed) {
+    static Future<?> setCompleteFeed(final Context context, final Feed... feeds) {
         return dbExec.submit(new Runnable() {
 
             @Override
             public void run() {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                adapter.setCompleteFeed(feed);
+                adapter.setCompleteFeed(feeds);
                 adapter.close();
 
-                EventDistributor.getInstance().sendFeedUpdateBroadcast();
             }
         });
 

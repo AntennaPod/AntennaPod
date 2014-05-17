@@ -202,7 +202,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         for (int i = 0; i < NUM_ITEMS; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), false, feed));
         }
-        Feed newFeed = DBTasks.updateFeed(context, feed);
+        Feed newFeed = DBTasks.updateFeed(context, feed)[0];
 
         assertTrue(newFeed == feed);
         assertTrue(feed.getId() != 0);
@@ -222,8 +222,8 @@ public class DBTasksTest extends InstrumentationTestCase {
         feed1.setItems(new ArrayList<FeedItem>());
         feed2.setItems(new ArrayList<FeedItem>());
 
-        Feed savedFeed1 = DBTasks.updateFeed(context, feed1);
-        Feed savedFeed2 = DBTasks.updateFeed(context, feed2);
+        Feed savedFeed1 = DBTasks.updateFeed(context, feed1)[0];
+        Feed savedFeed2 = DBTasks.updateFeed(context, feed2)[0];
 
         assertTrue(savedFeed1.getId() != savedFeed2.getId());
     }
@@ -258,7 +258,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
         }
 
-        final Feed newFeed = DBTasks.updateFeed(context, feed);
+        final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
         assertTrue(feed != newFeed);
 
         updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
