@@ -718,6 +718,8 @@ public final class DBTasks {
             e.printStackTrace();
         }
 
+        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+
         return resultFeeds;
     }
 
