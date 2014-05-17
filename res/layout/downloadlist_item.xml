@@ -16,20 +16,28 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
             android:layout_marginTop="8dp"
-            android:textStyle="bold"/>
+            android:textSize="@dimen/text_size_small"
+            android:lines="1"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorPrimary"/>
 
         <TextView
             android:id="@+id/txtvMessage"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="8dp"/>
+            android:layout_margin="8dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_micro"
+            android:lines="1"
+            android:ellipsize="end"/>
 
         <ProgressBar
             android:id="@+id/progProgress"
             style="?android:attr/progressBarStyleHorizontal"
             android:layout_width="match_parent"
             android:layout_height="16dp"
-            android:layout_margin="8dp"/>
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"/>
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -40,12 +48,20 @@
                 android:id="@+id/txtvDownloaded"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_alignParentLeft="true"/>
 
             <TextView
                 android:id="@+id/txtvPercent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:textSize="@dimen/text_size_small"
+                android:lines="1"
+                android:ellipsize="end"
+                android:textColor="?android:attr/textColorPrimary"
                 android:layout_alignParentRight="true"/>
         </RelativeLayout>
 

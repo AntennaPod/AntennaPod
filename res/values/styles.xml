@@ -125,4 +125,11 @@
         <item name="android:textStyle">italic</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
+
+    <style name="AntennaPod.TextView.ListItemPrimaryTitle" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">15sp</item>
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
+        <item name="android:lines">2</item>
+        <item name="android:ellipsize">end</item>
+    </style>
 </resources>

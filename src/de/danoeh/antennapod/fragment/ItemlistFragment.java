@@ -11,7 +11,6 @@ import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.text.util.Linkify;
 import android.util.Log;
 import android.view.*;
 import android.widget.ImageButton;
@@ -23,7 +22,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.FeedRemover;
 import de.danoeh.antennapod.asynctask.ImageLoader;
@@ -60,7 +59,7 @@ public class ItemlistFragment extends ListFragment {
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
-    protected InternalFeedItemlistAdapter adapter;
+    protected FeedItemlistAdapter adapter;
 
     private long feedID;
     private Feed feed;
@@ -282,7 +281,7 @@ public class ItemlistFragment extends ListFragment {
         if (adapter == null) {
             getListView().setAdapter(null);
             setupHeaderView();
-            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
@@ -363,7 +362,7 @@ public class ItemlistFragment extends ListFragment {
         });
     }
 
-    private InternalFeedItemlistAdapter.ItemAccess itemAccess = new InternalFeedItemlistAdapter.ItemAccess() {
+    private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
 
         @Override
         public FeedItem getItem(int position) {

@@ -15,7 +15,7 @@ import android.view.View;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.adapter.InternalFeedItemlistAdapter;
+import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -34,7 +34,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private List<FeedItem> playbackHistory;
     private QueueAccess queue;
-    private InternalFeedItemlistAdapter adapter;
+    private FeedItemlistAdapter adapter;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -170,7 +170,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private void onFragmentLoaded() {
         if (adapter == null) {
-            adapter = new InternalFeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
@@ -205,7 +205,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     };
 
-    private InternalFeedItemlistAdapter.ItemAccess itemAccess = new InternalFeedItemlistAdapter.ItemAccess() {
+    private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {
         @Override
         public boolean isInQueue(FeedItem item) {
             return (queue != null) ? queue.contains(item.getId()) : false;
