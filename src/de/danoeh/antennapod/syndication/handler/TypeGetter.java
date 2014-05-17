@@ -17,7 +17,7 @@ import java.io.Reader;
 public class TypeGetter {
 	private static final String TAG = "TypeGetter";
 
-	enum Type {
+	public enum Type {
 		RSS20, RSS091, ATOM, INVALID
 	}
 
