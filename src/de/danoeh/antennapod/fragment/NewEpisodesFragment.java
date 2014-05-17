@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.*;
@@ -25,6 +26,7 @@ import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
@@ -53,6 +55,7 @@ public class NewEpisodesFragment extends Fragment {
 
 
     private DragSortListView listView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private NewEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
@@ -198,6 +201,8 @@ public class NewEpisodesFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.all_episodes_label);
 
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
+
+        swipeRefreshLayout = (SwipeRefreshLayout) root.findViewById(R.id.swipeRefreshLayout);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
@@ -211,6 +216,18 @@ public class NewEpisodesFragment extends Fragment {
                     feedItemDialog.show();
                 }
 
+            }
+        });
+
+        final int secondColor = (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) ? R.color.swipe_refresh_secondary_color_dark : R.color.swipe_refresh_secondary_color_light;
+        swipeRefreshLayout.setColorScheme(R.color.bright_blue, secondColor, R.color.bright_blue, secondColor);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
+                if (feeds != null) {
+                    DBTasks.refreshAllFeeds(getActivity(), feeds);
+                }
             }
         });
 
@@ -310,16 +327,21 @@ public class NewEpisodesFragment extends Fragment {
     };
 
     private void updateProgressBarVisibility() {
+        if (!viewsCreated) {
+            return;
+        }
+
         if (DownloadService.isRunning
                 && DownloadRequester.getInstance().isDownloadingFeeds()) {
-            ((ActionBarActivity) getActivity())
-                    .setSupportProgressBarIndeterminateVisibility(true);
+            swipeRefreshLayout.setRefreshing(true);
+
         } else {
+            swipeRefreshLayout.setRefreshing(false);
+
+            // if case other fragments have set this to true, this fragment should remove the progress indicator
             ((ActionBarActivity) getActivity())
                     .setSupportProgressBarIndeterminateVisibility(false);
         }
-        getActivity().supportInvalidateOptionsMenu();
-
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

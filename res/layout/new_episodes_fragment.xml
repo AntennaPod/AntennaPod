@@ -6,23 +6,30 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <com.mobeta.android.dslv.DragSortListView
-        android:id="@android:id/list"
-        android:scrollbarStyle="outsideOverlay"
+    <android.support.v4.widget.SwipeRefreshLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        dslv:collapsed_height="2dp"
-        dslv:drag_enabled="false"
-        dslv:drag_scroll_start="0.33"
-        dslv:float_alpha="0.6"
-        dslv:max_drag_scroll_speed="0.5"
-        dslv:remove_enabled="true"
-        dslv:remove_mode="flingRemove"
-        dslv:slide_shuffle_speed="0.3"
-        dslv:sort_enabled="false"
-        dslv:track_drag_sort="false"
-        dslv:float_background_color="?attr/dragview_float_background"
-        dslv:use_default_controller="true"/>
+        android:id="@+id/swipeRefreshLayout">
+
+        <com.mobeta.android.dslv.DragSortListView
+            android:id="@android:id/list"
+            android:scrollbarStyle="outsideOverlay"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            dslv:collapsed_height="2dp"
+            dslv:drag_enabled="false"
+            dslv:drag_scroll_start="0.33"
+            dslv:float_alpha="0.6"
+            dslv:max_drag_scroll_speed="0.5"
+            dslv:remove_enabled="true"
+            dslv:remove_mode="flingRemove"
+            dslv:slide_shuffle_speed="0.3"
+            dslv:sort_enabled="false"
+            dslv:track_drag_sort="false"
+            dslv:float_background_color="?attr/dragview_float_background"
+            dslv:use_default_controller="true"/>
+
+    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@id/android:empty"

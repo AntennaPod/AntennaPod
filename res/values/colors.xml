@@ -28,6 +28,9 @@
     <color name="status_playing">#E0EE5F52</color>
     <color name="overlay_dark">#262C31</color>
     <color name="overlay_light">#DDDDDD</color>
+    <color name="swipe_refresh_secondary_color_light">#EDEDED</color>
+    <color name="swipe_refresh_secondary_color_dark">#060708</color>
+
 
     <!-- Use Gingerbread-orange -->
     <color name="selection_background_color_dark">#FEBB20</color>
