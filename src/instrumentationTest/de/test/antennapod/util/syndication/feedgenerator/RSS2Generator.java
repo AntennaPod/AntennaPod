@@ -54,7 +54,7 @@ public class RSS2Generator implements FeedGenerator{
         }
 
         if (feed.getPaymentLink() != null) {
-            GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink());
+            GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(), true);
         }
 
         // Write FeedItem data
@@ -95,7 +95,7 @@ public class RSS2Generator implements FeedGenerator{
                     xml.endTag(null, "enclosure");
                 }
                 if (item.getPaymentLink() != null) {
-                    GeneratorUtil.addPaymentLink(xml, item.getPaymentLink());
+                    GeneratorUtil.addPaymentLink(xml, item.getPaymentLink(), true);
                 }
 
                 xml.endTag(null, "item");

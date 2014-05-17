@@ -5,6 +5,7 @@ import android.test.InstrumentationTestCase;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
+import instrumentationTest.de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
 import instrumentationTest.de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import instrumentationTest.de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import org.xml.sax.SAXException;
@@ -67,11 +68,12 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         assertEquals(feed.getTitle(), parsedFeed.getTitle());
         if (feedType.equals(Feed.TYPE_ATOM1)) {
             assertEquals(feed.getFeedIdentifier(), parsedFeed.getFeedIdentifier());
-            assertEquals(feed.getAuthor(), parsedFeed.getAuthor());
+        } else {
+            assertEquals(feed.getLanguage(), parsedFeed.getLanguage());
         }
+
         assertEquals(feed.getLink(), parsedFeed.getLink());
         assertEquals(feed.getDescription(), parsedFeed.getDescription());
-        assertEquals(feed.getLanguage(), parsedFeed.getLanguage());
         assertEquals(feed.getPaymentLink(), parsedFeed.getPaymentLink());
 
         if (feed.getImage() != null) {
@@ -142,6 +144,12 @@ public class FeedHandlerTest extends InstrumentationTestCase {
         feedValid(f1, f2, Feed.TYPE_RSS2);
     }
 
+    public void testAtomBasic() throws IOException, UnsupportedFeedtypeException, SAXException, ParserConfigurationException {
+        Feed f1 = createTestFeed(10, false, true, true);
+        Feed f2 = runFeedTest(f1, new AtomGenerator(), "UTF-8", 0);
+        feedValid(f1, f2, Feed.TYPE_ATOM1);
+    }
+
     private Feed createTestFeed(int numItems, boolean withImage, boolean withFeedMedia, boolean withChapters) {
         FeedImage image = null;
         if (withImage) {
@@ -154,7 +162,7 @@ public class FeedHandlerTest extends InstrumentationTestCase {
 
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "item-" + i, "http://example.com/item-" + i,
-                    "http://example.com/items/" + i, new Date(i), false, feed);
+                    "http://example.com/items/" + i, new Date(i*60000), false, feed);
             feed.getItems().add(item);
             if (withFeedMedia) {
                 item.setMedia(new FeedMedia(0, item, 4711, 0, 100, "audio/mp3", null, "http://example.com/media-" + i,

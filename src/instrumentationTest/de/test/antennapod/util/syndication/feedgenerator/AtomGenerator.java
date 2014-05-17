@@ -55,9 +55,14 @@ public class AtomGenerator implements FeedGenerator{
             xml.endTag(null, "subtitle");
         }
 
+        if (feed.getPaymentLink() != null) {
+            GeneratorUtil.addPaymentLink(xml, feed.getPaymentLink(), false);
+        }
+
         // Write FeedItem data
         if (feed.getItems() != null) {
             for (FeedItem item : feed.getItems()) {
+                xml.startTag(null, "entry");
 
                 if (item.getIdentifyingValue() != null) {
                     xml.startTag(null, "id");
@@ -82,6 +87,7 @@ public class AtomGenerator implements FeedGenerator{
                     } else {
                         xml.text(SyndDateUtils.formatRFC3339UTC(item.getPubDate()));
                     }
+                    xml.endTag(null, "published");
                 }
                 if (item.getDescription() != null) {
                     xml.startTag(null, "content");
@@ -97,6 +103,12 @@ public class AtomGenerator implements FeedGenerator{
                     xml.attribute(null, "length", String.valueOf(media.getSize()));
                     xml.endTag(null, "link");
                 }
+
+                if (item.getPaymentLink() != null) {
+                    GeneratorUtil.addPaymentLink(xml, item.getPaymentLink(), false);
+                }
+
+                xml.endTag(null, "entry");
             }
         }
 
