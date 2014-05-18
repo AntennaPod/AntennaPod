@@ -10,6 +10,7 @@ before_install:
   - cp src/de/danoeh/antennapod/util/flattr/FlattrConfig.java.example src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
 
 before_script:
+    - chmod -R 777 ./ci/wait_for_emulator.sh
     - ./ci/wait_for_emulator.sh
 
 script:
