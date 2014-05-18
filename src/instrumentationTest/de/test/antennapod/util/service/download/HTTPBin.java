@@ -3,11 +3,12 @@ package instrumentationTest.de.test.antennapod.util.service.download;
 import android.util.Base64;
 import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
+import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.Map;
-import java.util.Random;
+import java.net.URLConnection;
+import java.util.*;
 import java.util.zip.GZIPOutputStream;
 
 /**
@@ -29,12 +30,52 @@ public class HTTPBin extends NanoHTTPD {
     private static final String MIME_HTML = "text/html";
     private static final String MIME_PLAIN = "text/plain";
 
-    public HTTPBin(int port) {
-        super(port);
-    }
+    private List<File> servedFiles;
 
     public HTTPBin() {
         super(PORT);
+        this.servedFiles = new ArrayList<File>();
+    }
+
+    /**
+     * Adds the given file to the server.
+     *
+     * @return The ID of the file or -1 if the file could not be added to the server.
+     */
+    public synchronized int serveFile(File file) {
+        if (file == null) throw new IllegalArgumentException("file = null");
+        if (!file.exists()) {
+            return -1;
+        }
+        for (int i = 0; i < servedFiles.size(); i++) {
+            if (servedFiles.get(i).getAbsolutePath().equals(file.getAbsolutePath())) {
+                return i;
+            }
+        }
+        servedFiles.add(file);
+        return servedFiles.size() - 1;
+    }
+
+    /**
+     * Removes the file with the given ID from the server.
+     *
+     * @return True if a file was removed, false otherwise
+     */
+    public synchronized boolean removeFile(int id) {
+        if (id < 0) throw new IllegalArgumentException("ID < 0");
+        if (id >= servedFiles.size()) {
+            return false;
+        } else {
+            return servedFiles.remove(id) != null;
+        }
+    }
+
+    private synchronized File accessFile(int id) {
+        if (id < 0 || id >= servedFiles.size()) {
+            return null;
+        } else {
+            return servedFiles.get(id);
+        }
     }
 
     @Override
@@ -131,9 +172,92 @@ public class HTTPBin extends NanoHTTPD {
                 e.printStackTrace();
                 return getInternalError();
             }
+        } else if (func.equalsIgnoreCase("files")) {
+            try {
+                int id = Integer.parseInt(param);
+                if (id < 0) {
+                    Log.w(TAG, "Invalid ID: " + id);
+                    throw new NumberFormatException();
+                }
+                return getFileAccessResponse(id, headers);
+
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                return getInternalError();
+            }
         }
 
         return get404Error();
+    }
+
+    private synchronized Response getFileAccessResponse(int id, Map<String, String> header) {
+        File file = accessFile(id);
+        if (file == null || !file.exists()) {
+            Log.w(TAG, "File not found: " + id);
+            return get404Error();
+        }
+        InputStream inputStream = null;
+        String contentRange = null;
+        Response.Status status;
+        boolean successful = false;
+        try {
+            inputStream = new FileInputStream(file);
+            if (header.containsKey("range")) {
+                // read range header field
+                final String value = header.get("range");
+                final String[] segments = value.split("=");
+                if (segments.length != 2) {
+                    Log.w(TAG, "Invalid segment length: " + Arrays.toString(segments));
+                    return getInternalError();
+                }
+                final String type = StringUtils.substringBefore(value, "=");
+                if (!type.equalsIgnoreCase("bytes")) {
+                    Log.w(TAG, "Range is not specified in bytes: " + value);
+                    return getInternalError();
+                }
+                try {
+                    long start = Long.parseLong(StringUtils.substringBefore(segments[1], "-"));
+                    if (start >= file.length()) {
+                        return getRangeNotSatisfiable();
+                    }
+
+                    // skip 'start' bytes
+                    IOUtils.skipFully(inputStream, start);
+                    contentRange = "bytes " + start + (file.length() - 1) + "/" + file.length();
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    return getInternalError();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    return getInternalError();
+                }
+
+                status = Response.Status.PARTIAL_CONTENT;
+
+            } else {
+                // request did not contain range header field
+                status = Response.Status.OK;
+            }
+            successful = true;
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+
+            return getInternalError();
+        } finally {
+            if (!successful && inputStream != null) {
+                IOUtils.closeQuietly(inputStream);
+            }
+        }
+
+        Response response = new Response(status, URLConnection.guessContentTypeFromName(file.getAbsolutePath()), inputStream);
+
+        response.addHeader("Accept-Ranges", "bytes");
+        if (contentRange != null) {
+            response.addHeader("Content-Range", contentRange);
+        }
+        response.addHeader("Content-Length", String.valueOf(file.length()));
+        return response;
     }
 
     private Response getGzippedResponse(int size) throws IOException {
@@ -208,7 +332,10 @@ public class HTTPBin extends NanoHTTPD {
 
     private Response getInternalError() {
         return new Response(Response.Status.INTERNAL_ERROR, MIME_HTML, "The server encountered an internal error");
+    }
 
+    private Response getRangeNotSatisfiable() {
+        return new Response(Response.Status.RANGE_NOT_SATISFIABLE, MIME_PLAIN, "");
     }
 
     private Response get404Error() {

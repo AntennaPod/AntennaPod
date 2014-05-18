@@ -10,6 +10,7 @@ import de.danoeh.antennapod.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import de.danoeh.antennapod.util.playback.Playable;
+import instrumentationTest.de.test.antennapod.util.service.download.HTTPBin;
 import junit.framework.AssertionFailedError;
 import org.apache.commons.io.IOUtils;
 
@@ -17,7 +18,6 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
@@ -29,10 +29,12 @@ import java.util.concurrent.TimeUnit;
 public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private static final String TAG = "PlaybackServiceMediaPlayerTest";
 
-    private static final String PLAYABLE_FILE_URL = "http://hpr.dogphilosophy.net/test/mp3.mp3";
-    private static final String PLAYABLE_DEST_URL = "psmptestfile.wav";
+    private static final String PLAYABLE_FILE_URL = "http://127.0.0.1:" + HTTPBin.PORT + "/files/0";
+    private static final String PLAYABLE_DEST_URL = "psmptestfile.mp3";
     private String PLAYABLE_LOCAL_URL = null;
     private static final int LATCH_TIMEOUT_SECONDS = 10;
+
+    private HTTPBin httpServer;
 
     private volatile AssertionFailedError assertionError;
 
@@ -40,6 +42,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     protected void tearDown() throws Exception {
         super.tearDown();
         PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+        httpServer.stop();
     }
 
     @Override
@@ -53,6 +56,10 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.close();
+
+        httpServer = new HTTPBin();
+        httpServer.start();
+
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
             cacheDir = context.getExternalFilesDir("testFiles");
@@ -62,7 +69,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         assertTrue(cacheDir.canWrite());
         assertTrue(cacheDir.canRead());
         if (!dest.exists()) {
-            InputStream i = new URL(PLAYABLE_FILE_URL).openStream();
+            InputStream i = getInstrumentation().getTargetContext().getAssets().open("testfile.mp3");
             OutputStream o = new FileOutputStream(new File(cacheDir, PLAYABLE_DEST_URL));
             IOUtils.copy(i, o);
             o.flush();
@@ -70,6 +77,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             i.close();
         }
         PLAYABLE_LOCAL_URL = "file://" + dest.getAbsolutePath();
+        assertEquals(0, httpServer.serveFile(dest));
     }
 
     private void checkPSMPInfo(PlaybackServiceMediaPlayer.PSMPInfo info) {

@@ -45,7 +45,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());
-        httpServer = new HTTPBin(HTTPBin.PORT);
+        httpServer = new HTTPBin();
         httpServer.start();
     }
 
