@@ -18,7 +18,8 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_marginRight="8dp"
-            android:textColor="?android:attr/textColorSecondary" />
+            android:textSize="@dimen/text_size_small"
+            android:textColor="?android:attr/textColorTertiary" />
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -27,26 +28,43 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_toLeftOf="@id/txtvType"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_medium"
             android:ellipsize="end"
             android:maxLines="2" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        >
     <TextView
         android:id="@+id/txtvDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginRight="8dp"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_small"
+        android:layout_alignParentLeft="true"/>
 
     <TextView
         android:id="@+id/txtvStatus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:lines="1"
+        android:textSize="@dimen/text_size_small"
+        android:layout_alignParentRight="true"/>
+
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/txtvReason"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_micro"
         android:layout_marginBottom="4dp"
         android:layout_marginLeft="8dp" />
 

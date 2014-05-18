@@ -29,8 +29,6 @@ public class ExternalPlayerFragment extends Fragment {
 	private ImageView imgvCover;
 	private ViewGroup layoutInfo;
 	private TextView txtvTitle;
-	private TextView txtvPosition;
-	private TextView txtvStatus;
 	private ImageButton butPlay;
 
 	private PlaybackController controller;
@@ -48,9 +46,7 @@ public class ExternalPlayerFragment extends Fragment {
 		imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
 		layoutInfo = (ViewGroup) root.findViewById(R.id.layoutInfo);
 		txtvTitle = (TextView) root.findViewById(R.id.txtvTitle);
-		txtvPosition = (TextView) root.findViewById(R.id.txtvPosition);
 		butPlay = (ImageButton) root.findViewById(R.id.butPlay);
-		txtvStatus = (TextView) root.findViewById(R.id.txtvStatus);
 
 		layoutInfo.setOnClickListener(new OnClickListener() {
 
@@ -84,12 +80,6 @@ public class ExternalPlayerFragment extends Fragment {
 
 			@Override
 			public void onPositionObserverUpdate() {
-				int duration = controller.getDuration();
-				int position = controller.getPosition();
-				if (duration != PlaybackController.INVALID_TIME
-						&& position != PlaybackController.INVALID_TIME) {
-					txtvPosition.setText(getPositionString(position, duration));
-				}
 			}
 
 			@Override
@@ -127,12 +117,10 @@ public class ExternalPlayerFragment extends Fragment {
 
 			@Override
 			public void postStatusMsg(int msg) {
-				txtvStatus.setText(msg);
 			}
 
 			@Override
 			public void clearStatusMsg() {
-				txtvStatus.setText("");
 			}
 
 			@Override
@@ -223,8 +211,6 @@ public class ExternalPlayerFragment extends Fragment {
 						(int) getActivity().getResources().getDimension(
 								R.dimen.external_player_height));
 
-				txtvPosition.setText(getPositionString(media.getPosition(),
-						media.getDuration()));
 				fragmentLayout.setVisibility(View.VISIBLE);
 				if (controller.isPlayingVideo()) {
 					butPlay.setVisibility(View.GONE);

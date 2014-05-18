@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
@@ -17,14 +18,32 @@ import de.danoeh.antennapod.feed.SearchResult;
 import java.util.List;
 
 /** List adapter for search activity. */
-public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
+public class SearchlistAdapter extends BaseAdapter {
 
-	public SearchlistAdapter(Context context, int textViewResourceId,
-			List<SearchResult> objects) {
-		super(context, textViewResourceId, objects);
-	}
+	private final Context context;
+    private final ItemAccess itemAccess;
 
-	@Override
+    public SearchlistAdapter(Context context, ItemAccess itemAccess) {
+        this.context = context;
+        this.itemAccess = itemAccess;
+    }
+
+    @Override
+    public int getCount() {
+        return itemAccess.getCount();
+    }
+
+    @Override
+    public SearchResult getItem(int position) {
+        return itemAccess.getItem(position);
+    }
+
+    @Override
+    public long getItemId(int position) {
+        return 0;
+    }
+
+    @Override
 	public View getView(int position, View convertView, ViewGroup parent) {
 		final Holder holder;
 		SearchResult result = getItem(position);
@@ -33,7 +52,7 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 		// Inflate Layout
 		if (convertView == null) {
 			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) getContext()
+			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
 			convertView = inflater.inflate(R.layout.searchlist_item, null);
@@ -77,5 +96,10 @@ public class SearchlistAdapter extends ArrayAdapter<SearchResult> {
 		TextView title;
 		TextView subtitle;
 	}
+
+    public static interface ItemAccess {
+        int getCount();
+        SearchResult getItem(int position);
+    }
 
 }

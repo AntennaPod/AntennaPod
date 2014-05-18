@@ -1001,6 +1001,11 @@ public class PodDBAdapter {
 
     }
 
+    public final Cursor getRecentlyPublishedItemsCursor(int limit) {
+        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, null, null, null, null, KEY_PUBDATE + " DESC LIMIT " + limit);
+        return c;
+    }
+
     public Cursor getDownloadedItemsCursor() {
         final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "

@@ -28,9 +28,7 @@
             android:layout_centerVertical="true"
             android:layout_margin="4dp"
             android:layout_toRightOf="@id/imgvCover"
-            android:textSize="@dimen/text_size_large"
-            android:textStyle="bold"
-            android:textColor="?android:attr/textColorPrimary"/>
+            style="@style/AntennaPod.TextView.Heading"/>
 
         <View
             android:id="@+id/divider"
@@ -101,12 +99,11 @@
 
             <TextView
                 android:id="@+id/txtvSettings"
+                style="@style/AntennaPod.TextView.Heading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
                 android:text="@string/podcast_settings_label"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="?android:attr/textColorPrimary"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="24dp"/>
@@ -187,13 +184,12 @@
             </LinearLayout>
 
             <TextView
+                style="@style/AntennaPod.TextView.Heading"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginBottom="8dp"
                 android:layout_marginTop="24dp"
-                android:textSize="@dimen/text_size_medium"
-                android:textColor="?android:attr/textColorPrimary"
                 android:text="@string/description_label"/>
 
             <TextView

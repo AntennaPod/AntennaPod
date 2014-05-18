@@ -4,11 +4,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
+import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
@@ -18,17 +22,19 @@ import android.widget.ImageView.ScaleType;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
+import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.feed.SimpleChapter;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
+import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
+
+import java.util.List;
 
 /**
  * Activity for playing audio files.
@@ -44,6 +50,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
     private static final String PREF_KEY_SELECTED_FRAGMENT_POSITION = "selectedFragmentPosition";
     private static final String PREF_PLAYABLE_ID = "playableId";
 
+    private DrawerLayout drawerLayout;
+    private NavListAdapter navAdapter;
+    private ListView navList;
+    private ActionBarDrawerToggle drawerToggle;
+
     private Fragment[] detachedFragments;
 
     private CoverFragment coverFragment;
@@ -58,7 +69,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
     private int savedPosition = -1;
 
     private TextView txtvTitle;
-    private TextView txtvFeed;
     private Button butPlaybackSpeed;
     private ImageButton butNavLeft;
     private ImageButton butNavRight;
@@ -108,6 +118,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
         super.onStop();
         if (BuildConfig.DEBUG)
             Log.d(TAG, "onStop");
+        cancelLoadTask();
+        EventDistributor.getInstance().unregister(contentUpdate);
 
     }
 
@@ -142,6 +154,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -149,6 +162,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
         // super.onSaveInstanceState(outState); would cause crash
         if (BuildConfig.DEBUG)
             Log.d(TAG, "onSaveInstanceState");
+
     }
 
     @Override
@@ -193,7 +207,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
             if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
-                                + savedPosition + ", id: " + playableId);
+                                + savedPosition + ", id: " + playableId
+                );
 
         }
         return false;
@@ -223,6 +238,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
             switchToFragment(savedPosition);
         }
 
+        EventDistributor.getInstance().register(contentUpdate);
+        loadData();
     }
 
     @Override
@@ -233,7 +250,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onAwaitingVideoSurface() {
-        if (BuildConfig.DEBUG) Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
         startActivity(new Intent(this, VideoplayerActivity.class));
     }
 
@@ -297,7 +315,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
                             };
                             chapterFragment.setListAdapter(new ChapterListAdapter(
                                     AudioplayerActivity.this, 0, media
-                                    .getChapters(), media));
+                                    .getChapters(), media
+                            ));
                         }
                         currentlyShownFragment = chapterFragment;
                         break;
@@ -323,8 +342,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     private void updateNavButtonDrawable() {
 
-        final int[] buttonTexts = new int[] {R.string.show_shownotes_label,
-        R.string.show_chapters_label, R.string.show_cover_label};
+        final int[] buttonTexts = new int[]{R.string.show_shownotes_label,
+                R.string.show_chapters_label, R.string.show_cover_label};
 
         final TypedArray drawables = obtainStyledAttributes(new int[]{
                 R.attr.navigation_shownotes, R.attr.navigation_chapters});
@@ -382,11 +401,52 @@ public class AudioplayerActivity extends MediaplayerActivity {
     protected void setupGUI() {
         super.setupGUI();
         resetFragmentView();
+        drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        navList = (ListView) findViewById(R.id.nav_list);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        txtvFeed = (TextView) findViewById(R.id.txtvFeed);
         butNavLeft = (ImageButton) findViewById(R.id.butNavLeft);
         butNavRight = (ImageButton) findViewById(R.id.butNavRight);
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
+
+        TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
+            String currentTitle = getSupportActionBar().getTitle().toString();
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                super.onDrawerOpened(drawerView);
+                currentTitle = getSupportActionBar().getTitle().toString();
+                getSupportActionBar().setTitle(R.string.app_name);
+                supportInvalidateOptionsMenu();
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+                getSupportActionBar().setTitle(currentTitle);
+                supportInvalidateOptionsMenu();
+            }
+        };
+        typedArray.recycle();
+        drawerToggle.setDrawerIndicatorEnabled(false);
+
+        navAdapter = new NavListAdapter(itemAccess, this);
+        navList.setAdapter(navAdapter);
+        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                int viewType = parent.getAdapter().getItemViewType(position);
+                if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
+                    int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
+                    Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
+                    intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
+                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
+                    startActivity(intent);
+                }
+                drawerLayout.closeDrawer(navList);
+            }
+        });
+        drawerToggle.syncState();
 
         butNavLeft.setOnClickListener(new OnClickListener() {
 
@@ -466,11 +526,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     }
 
     private void updateButPlaybackSpeed() {
-        if (controller == null
-                || (controller.getCurrentPlaybackSpeedMultiplier() == -1)) {
-            butPlaybackSpeed.setVisibility(View.GONE);
-        } else {
-            butPlaybackSpeed.setVisibility(View.VISIBLE);
+        if (controller != null && controller.canSetPlaybackSpeed()) {
             butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
         }
     }
@@ -491,11 +547,10 @@ public class AudioplayerActivity extends MediaplayerActivity {
             return false;
         }
         txtvTitle.setText(media.getEpisodeTitle());
-        txtvFeed.setText(media.getFeedTitle());
         if (media.getChapters() != null) {
             butNavRight.setVisibility(View.VISIBLE);
         } else {
-            butNavRight.setVisibility(View.GONE);
+            butNavRight.setVisibility(View.INVISIBLE);
         }
 
 
@@ -508,6 +563,14 @@ public class AudioplayerActivity extends MediaplayerActivity {
             ((AudioplayerContentFragment) currentlyShownFragment)
                     .onDataSetChanged(media);
         }
+
+        if (controller == null
+                || !controller.canSetPlaybackSpeed()) {
+            butPlaybackSpeed.setVisibility(View.GONE);
+        } else {
+            butPlaybackSpeed.setVisibility(View.VISIBLE);
+        }
+
         updateButPlaybackSpeed();
         return true;
     }
@@ -551,4 +614,78 @@ public class AudioplayerActivity extends MediaplayerActivity {
         return R.layout.audioplayer_activity;
     }
 
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private List<Feed> feeds;
+    private AsyncTask<Void, Void, List<Feed>> loadTask;
+
+    private void loadData() {
+        loadTask = new AsyncTask<Void, Void, List<Feed>>() {
+            @Override
+            protected List<Feed> doInBackground(Void... params) {
+                return DBReader.getFeedList(AudioplayerActivity.this);
+            }
+
+            @Override
+            protected void onPostExecute(List<Feed> result) {
+                super.onPostExecute(result);
+                feeds = result;
+                if (navAdapter != null) {
+                    navAdapter.notifyDataSetChanged();
+                }
+            }
+        };
+        loadTask.execute();
+    }
+
+    private void cancelLoadTask() {
+        if (loadTask != null) {
+            loadTask.cancel(true);
+        }
+    }
+
+    private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
+
+        @Override
+        public void update(EventDistributor eventDistributor, Integer arg) {
+            if ((EventDistributor.FEED_LIST_UPDATE & arg) != 0) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Received contentUpdate Intent.");
+                loadData();
+            }
+        }
+    };
+
+    private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
+        @Override
+        public int getCount() {
+            if (feeds != null) {
+                return feeds.size();
+            } else {
+                return 0;
+            }
+        }
+
+        @Override
+        public Feed getItem(int position) {
+            if (feeds != null && position < feeds.size()) {
+                return feeds.get(position);
+            } else {
+                return null;
+            }
+        }
+
+        @Override
+        public int getSelectedItemIndex() {
+            return -1;
+        }
+    };
 }

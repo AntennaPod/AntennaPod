@@ -180,8 +180,8 @@ public class DownloadActivity extends ActionBarActivity implements
 
         @Override
         public void onDownloadDataAvailable(List<Downloader> downloaderList) {
-            dla = new DownloadlistAdapter(DownloadActivity.this, 0,
-                    downloaderList);
+            //dla = new DownloadlistAdapter(DownloadActivity.this, 0,
+             //       downloaderList);
             listview.setAdapter(dla);
             dla.notifyDataSetChanged();
         }

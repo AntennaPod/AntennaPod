@@ -504,6 +504,32 @@ public final class DBReader {
         return itemIds;
     }
 
+
+    /**
+     * Loads a list of FeedItems sorted by pubDate in descending order.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param limit The maximum number of episodes that should be loaded.
+     * */
+    public static List<FeedItem> getRecentlyPublishedEpisodes(Context context, int limit) {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Extracting recently published items list");
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+
+        Cursor itemlistCursor = adapter.getRecentlyPublishedItemsCursor(limit);
+        List<FeedItem> items = extractItemlistFromCursor(adapter,
+                itemlistCursor);
+        itemlistCursor.close();
+
+        loadFeedDataOfFeedItemlist(context, items);
+
+        adapter.close();
+
+        return items;
+    }
+
     /**
      * Loads the playback history from the database. A FeedItem is in the playback history if playback of the correpsonding episode
      * has been completed at least once.

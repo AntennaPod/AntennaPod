@@ -1,14 +1,21 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
 
 import java.util.List;
 
 /**
- * Created by daniel on 23.08.13.
+ * Performs a search on the gpodder.net directory and displays the results.
  */
 public class SearchListFragment extends PodcastListFragment {
     private static final String ARG_QUERY = "query";
@@ -26,11 +33,33 @@ public class SearchListFragment extends PodcastListFragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         if (getArguments() != null && getArguments().containsKey(ARG_QUERY)) {
             this.query = getArguments().getString(ARG_QUERY);
         } else {
             this.query = "";
         }
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        final SearchView sv = new SearchView(getActivity());
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setQuery(query, false);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                changeQuery(s);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

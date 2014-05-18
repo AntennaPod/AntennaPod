@@ -20,9 +20,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_margin="16dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/txtvfeedurl_label"/>
 
             <EditText
@@ -48,37 +46,34 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/butConfirm"
                 android:layout_margin="8dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/podcastdirectories_label"/>
+
+            <TextView
+                android:id="@+id/txtvPodcastDirectoriesDescr"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/podcastdirectories_descr"
+                android:textSize="@dimen/text_size_medium"
+                android:layout_below="@id/txtvPodcastDirectories"
+                android:layout_margin="8dp"/>
 
             <Button
                 android:id="@+id/butBrowseGpoddernet"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/txtvPodcastDirectories"
+                android:layout_below="@id/txtvPodcastDirectoriesDescr"
                 android:layout_margin="8dp"
-                android:text="@string/gpodnet_main_label"/>
-
-            <Button
-                android:id="@+id/butBrowseMiroguide"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/butBrowseGpoddernet"
-                android:layout_margin="8dp"
-                android:text="@string/miro_guide_label"/>
+                android:text="@string/browse_gpoddernet_label"/>
 
 
             <TextView
                 android:id="@+id/txtvOpmlImport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/butBrowseMiroguide"
+                android:layout_below="@id/butBrowseGpoddernet"
                 android:layout_margin="8dp"
-                android:textSize="@dimen/text_size_large"
-                android:textColor="@color/bright_blue"
-                android:textStyle="italic"
+                style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/opml_import_label"/>
 
             <TextView
@@ -87,6 +82,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtvOpmlImport"
                 android:layout_margin="8dp"
+                android:textSize="@dimen/text_size_medium"
                 android:text="@string/opml_import_txtv_button_lable"/>
 
             <Button
