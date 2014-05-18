@@ -154,6 +154,10 @@
                 <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER"/>
             </intent-filter>
         </receiver>
+
+        <activity android:name=".activity.FeedInfoActivity">
+        </activity>
+
         <service
             android:name=".service.playback.PlayerWidgetService"
             android:enabled="true"

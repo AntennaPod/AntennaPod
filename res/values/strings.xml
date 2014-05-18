@@ -20,7 +20,6 @@
     <string name="downloads_completed_label">Completed</string>
     <string name="downloads_log_label">Log</string>
     <string name="cancel_download_label">Cancel Download</string>
-    <string name="download_log_label">Download log</string>
     <string name="playback_history_label">Playback history</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net login</string>
@@ -58,12 +57,10 @@
     <string name="description_label">Description</string>
     <string name="most_recent_prefix">Most Recent Episode:\u0020</string>
     <string name="episodes_suffix">\u0020episodes</string>
-    <string name="published_prefix">Published:\u0020</string>
     <string name="length_prefix">Length:\u0020</string>
     <string name="size_prefix">Size:\u0020</string>
     <string name="processing_label">Processing</string>
     <string name="loading_label">Loading...</string>
-    <string name="image_of_prefix">Image of:\u0020</string>
     <string name="save_username_password_label">Save username and password</string>
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
@@ -149,14 +146,9 @@
     <string name="position_default_label">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
-    <string name="playbackservice_notification_content">Tap here for more info</string>
-    <!-- Navigation -->
-    <string name="show_download_log">Show Log</string>
-    <string name="show_player_label">Show player</string>
 
     <!-- Queue operations -->
     <string name="clear_queue_label">Clear queue</string>
-    <string name="organize_queue_label">Organize queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>
@@ -227,8 +219,6 @@
     <string name="pref_revokeAccess_sum">Revoke the access permission to your flattr account for this app.</string>
 	<string name="pref_auto_flattr_title">Automatic Flattr</string>
     <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
-    <string name="pref_display_only_episodes_title">Display only episodes</string>
-    <string name="pref_display_only_episodes_sum">Display only items which also have an episode.</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select theme</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
@@ -259,10 +249,7 @@
     <string name="search_hint">Search for Feeds or Episodes</string>
     <string name="found_in_shownotes_label">Found in shownotes</string>
     <string name="found_in_chapters_label">Found in chapters</string>
-    <string name="search_status_searching">Searching...</string>
     <string name="search_status_no_results">No results were found</string>
-    <string name="search_results_label">Search results</string>
-    <string name="search_term_label">You searched:\u0020</string>
     <string name="search_label">Search</string>
     <string name="found_in_title_label">Found in title</string>
 
@@ -294,17 +281,6 @@
     <string name="time_unit_seconds">seconds</string>
     <string name="time_unit_minutes">minutes</string>
     <string name="time_unit_hours">hours</string>
-
-    <!-- Miro Guide -->
-    <string name="loading_categories_label">Loading categories...</string>
-    <string name="browse_miroguide_label">Browse Miro Guide</string>
-    <string name="txtv_browse_miroguide_label">Or browse the Miro Guide:</string>
-    <string name="miro_guide_label">Miro Guide</string>
-    <string name="miro_search_hint">Search Miro Guide</string>
-    <string name="popular_label">Popular</string>
-    <string name="best_rating_label">Best rating</string>
-    <string name="add_feed_label">Add podcast</string>
-    <string name="miro_feed_added">Feed is being added</string>
 
     <!-- gpodder.net -->
     <string name="gpodnet_taglist_header">CATEGORIES</string>
@@ -370,7 +346,6 @@
     <string name="status_playing_label">Episode is being played</string>
     <string name="status_downloading_label">Episode is being downloaded</string>
     <string name="status_downloaded_label">Episode is downloaded</string>
-    <string name="status_not_downloaded_label">Episode has not been downloaded yet</string>
     <string name="status_unread_label">Item is new</string>
     <string name="in_queue_label">Episode is in the queue</string>
     <string name="new_episodes_count_label">Number of new episodes</string>
@@ -380,9 +355,6 @@
     <!-- Feed information screen -->
     <string name="authentication_label">Authentication</string>
     <string name="authentication_descr">Change your username and password for this podcast and its episodes.</string>
-
-    <!-- OPML backup -->
-    <string name="backup_restored">"Restored feed subscriptions from backup"</string>
 
     <!-- AntennaPodSP -->
 
