@@ -1,16 +1,17 @@
 package instrumentationTest.de.test.antennapod.service.download;
 
+import android.test.InstrumentationTestCase;
+import android.util.Log;
+import de.danoeh.antennapod.feed.FeedFile;
+import de.danoeh.antennapod.service.download.DownloadRequest;
+import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.service.download.Downloader;
+import de.danoeh.antennapod.service.download.HttpDownloader;
+import de.danoeh.antennapod.util.DownloadError;
+import instrumentationTest.de.test.antennapod.util.service.download.HTTPBin;
+
 import java.io.File;
 import java.io.IOException;
-
-import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.service.download.*;
-
-import android.test.AndroidTestCase;
-import android.util.Log;
-import de.danoeh.antennapod.util.DownloadError;
-import org.apache.commons.io.FileUtils;
 
 public class HttpDownloaderTest extends InstrumentationTestCase {
     private static final String TAG = "HttpDownloaderTest";
@@ -20,6 +21,8 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
 
     private File destDir;
 
+    private HTTPBin httpServer;
+    private static final String BASE_URL = "http://127.0.0.1:" + HTTPBin.PORT;
 
     public HttpDownloaderTest() {
         super();
@@ -32,6 +35,8 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         for (File f : contents) {
             assertTrue(f.delete());
         }
+
+        httpServer.stop();
     }
 
     @Override
@@ -40,6 +45,8 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());
+        httpServer = new HTTPBin(HTTPBin.PORT);
+        httpServer.start();
     }
 
     private FeedFileImpl setupFeedFile(String downloadUrl, String title, boolean deleteExisting) {
@@ -72,23 +79,15 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     }
 
 
-    private static final String URL_404 = "http://httpbin.org/status/404";
-    private static final String URL_AUTH = "http://httpbin.org/basic-auth/user/passwd";
+    private static final String URL_404 = BASE_URL + "/status/404";
+    private static final String URL_AUTH = BASE_URL + "/basic-auth/user/passwd";
 
     public void testPassingHttp() {
-        download("http://httpbin.org/status/200", "test200", true);
-    }
-
-    public void testPassingHttps() {
-        download("https://httpbin.org/status/200", "test200", true);
+        download(BASE_URL + "/status/200", "test200", true);
     }
 
     public void testRedirect() {
-        download("http://httpbin.org/redirect/4", "testRedirect", true);
-    }
-
-    public void testRelativeRedirect() {
-        download("http://httpbin.org/relative-redirect/4", "testRelativeRedirect", true);
+        download(BASE_URL + "/redirect/4", "testRedirect", true);
     }
 
     public void testGzip() {
@@ -100,7 +99,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     }
 
     public void testCancel() {
-        final String url = "http://httpbin.org/delay/3";
+        final String url = BASE_URL + "/delay/3";
         FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
         final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt()));
         Thread t = new Thread() {
@@ -137,7 +136,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
         assertTrue(new File(downloader.getDownloadRequest().getDestination()).exists());
     }
 
-    public void testAuthenticationShouldSucceed() {
+    public void testAuthenticationShouldSucceed() throws InterruptedException {
         download(URL_AUTH, "testAuthSuccess", true, true, "user", "passwd", true);
     }
 
