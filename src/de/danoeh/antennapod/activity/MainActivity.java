@@ -280,8 +280,10 @@ public class MainActivity extends ActionBarActivity {
         EventDistributor.getInstance().register(contentUpdate);
 
         Intent intent = getIntent();
-        if (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND)) {
-            String extra = intent.getStringExtra(Intent.EXTRA_TEXT);
+        if (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND)
+                || StringUtils.equals(intent.getAction(), Intent.ACTION_VIEW)) {
+            String extra = (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND))
+                    ? intent.getStringExtra(Intent.EXTRA_TEXT) : intent.getDataString();
             if (extra != null) {
                 Bundle args = new Bundle();
                 args.putString(AddFeedFragment.ARG_FEED_URL, extra);
