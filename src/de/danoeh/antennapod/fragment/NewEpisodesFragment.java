@@ -261,6 +261,7 @@ public class NewEpisodesFragment extends Fragment {
         listAdapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
         updateProgressBarVisibility();
+        updateShowOnlyEpisodesListViewState();
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -368,6 +369,16 @@ public class NewEpisodesFragment extends Fragment {
         if (itemsLoaded && viewsCreated) {
             listAdapter.notifyDataSetChanged();
             activity.get().supportInvalidateOptionsMenu();
+            updateShowOnlyEpisodesListViewState();
+        }
+    }
+
+    private void updateShowOnlyEpisodesListViewState() {
+        if (showOnlyNewEpisodes) {
+            listView.setEmptyView(null);
+            txtvEmpty.setVisibility(View.GONE);
+        } else {
+            listView.setEmptyView(txtvEmpty);
         }
     }
 
