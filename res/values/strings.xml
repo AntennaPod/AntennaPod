@@ -7,6 +7,7 @@
     <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
     <string name="feeds_label">Feeds</string>
+    <string name="add_feed_label">Add podcast</string>
     <string name="podcasts_label">PODCASTS</string>
     <string name="episodes_label">EPISODES</string>
     <string name="new_episodes_label">New episodes</string>
