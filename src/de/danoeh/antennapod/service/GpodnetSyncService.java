@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
+import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Feed;
@@ -93,7 +94,6 @@ public class GpodnetSyncService extends Service {
                     GpodnetUploadChangesResponse uploadChangesResponse =
                             service.uploadChanges(GpodnetPreferences.getUsername(), GpodnetPreferences.getDeviceID(), localSubscriptions, new LinkedList<String>());
                     if (BuildConfig.DEBUG) Log.d(TAG, "Uploading changes response: " + uploadChangesResponse);
-                    DBWriter.updateFeedDownloadURLs(GpodnetSyncService.this, uploadChangesResponse.updatedUrls).get();
                     GpodnetPreferences.removeAddedFeeds(localSubscriptions);
                     GpodnetPreferences.removeRemovedFeeds(GpodnetPreferences.getRemovedFeedsCopy());
                     GpodnetPreferences.setLastSyncTimestamp(uploadChangesResponse.timestamp);
@@ -114,7 +114,6 @@ public class GpodnetSyncService extends Service {
 
                     GpodnetPreferences.removeAddedFeeds(added);
                     GpodnetPreferences.removeRemovedFeeds(removed);
-                    DBWriter.updateFeedDownloadURLs(GpodnetSyncService.this, uploadChangesResponse.updatedUrls).get();
                     GpodnetPreferences.setLastSyncTimestamp(uploadChangesResponse.timestamp);
                 }
                 clearErrorNotifications();
@@ -122,10 +121,6 @@ public class GpodnetSyncService extends Service {
                 e.printStackTrace();
                 updateErrorNotification(e);
             } catch (DownloadRequestException e) {
-                e.printStackTrace();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
                 e.printStackTrace();
             }
         }
