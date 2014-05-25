@@ -847,7 +847,7 @@ public class DownloadService extends Service {
             FeedHandler feedHandler = new FeedHandler();
 
             try {
-                feed = feedHandler.parseFeed(feed);
+                feed = feedHandler.parseFeed(feed).feed;
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, feed.getTitle() + " parsed");
                 if (checkFeedData(feed) == false) {

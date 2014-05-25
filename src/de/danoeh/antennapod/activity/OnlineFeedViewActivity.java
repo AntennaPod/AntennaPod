@@ -23,6 +23,7 @@ import de.danoeh.antennapod.service.download.DownloadStatus;
 import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.service.download.HttpDownloader;
 import de.danoeh.antennapod.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.FileNameGenerator;
@@ -35,6 +36,7 @@ import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
@@ -56,6 +58,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     public static final int RESULT_ERROR = 2;
 
     private Feed feed;
+    private Map<String, String> alternateFeedUrls;
     private Downloader downloader;
 
     @Override
@@ -211,7 +214,9 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                 boolean successful = false;
                 FeedHandler handler = new FeedHandler();
                 try {
-                    handler.parseFeed(feed);
+                    FeedHandlerResult result = handler.parseFeed(feed);
+                    feed = result.feed;
+                    alternateFeedUrls = result.alternateFeedUrls;
                     successful = true;
                 } catch (SAXException e) {
                     e.printStackTrace();
@@ -235,7 +240,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showFeedInformation(feed);
+                            showFeedInformation(feed, alternateFeedUrls);
                         }
                     });
                 } else {
@@ -266,7 +271,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     /**
      * Called when feed parsed successfully
      */
-    protected void showFeedInformation(Feed feed) {
+    protected void showFeedInformation(Feed feed, Map<String, String> alternateFeedUrls) {
 
     }
 

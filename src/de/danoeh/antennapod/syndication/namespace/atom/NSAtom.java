@@ -92,7 +92,8 @@ public class NSAtom extends Namespace {
                             .getValidMimeTypeFromUrl(href)) != null) {
                         state.getCurrentItem().setMedia(
                                 new FeedMedia(state.getCurrentItem(), href,
-                                        size, type));
+                                        size, type)
+                        );
                     }
                 } else if (rel.equals(LINK_REL_PAYMENT)) {
                     state.getCurrentItem().setPaymentLink(href);
@@ -101,13 +102,20 @@ public class NSAtom extends Namespace {
                 if (rel == null || rel.equals(LINK_REL_ALTERNATE)) {
                     String type = attributes.getValue(LINK_TYPE);
                     /*
-					 * Use as link if a) no type-attribute is given and
+                     * Use as link if a) no type-attribute is given and
 					 * feed-object has no link yet b) type of link is
 					 * LINK_TYPE_HTML or LINK_TYPE_XHTML
 					 */
                     if ((type == null && state.getFeed().getLink() == null)
                             || (type != null && (type.equals(LINK_TYPE_HTML) || type.equals(LINK_TYPE_XHTML)))) {
                         state.getFeed().setLink(href);
+                    } else if (type != null && (type.equals(LINK_TYPE_ATOM) || type.equals(LINK_TYPE_RSS))) {
+                        // treat as podlove alternate feed
+                        String title = attributes.getValue(LINK_TITLE);
+                        if (title == null) {
+                            title = href;
+                        }
+                        state.addAlternateFeedUrl(title, href);
                     }
                 } else if (rel.equals(LINK_REL_PAYMENT)) {
                     state.getFeed().setPaymentLink(href);

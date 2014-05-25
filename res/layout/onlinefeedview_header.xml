@@ -49,19 +49,35 @@
         android:focusable="false"
         />
 
-
-    <TextView
-        android:id="@+id/txtvDescription"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/butSubscribe"
-        android:maxLines="3"
-        android:ellipsize="end"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro"
-        android:paddingTop="16dp"
-        android:paddingBottom="16dp"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"
-        android:layout_margin="4dp"/>
+        android:orientation="vertical">
+
+
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/spinnerAlternateUrls"
+            android:layout_margin="4dp"
+            android:textSize="@dimen/text_size_micro"
+            android:textColor="?android:attr/textColorPrimary"/>
+
+
+        <TextView
+            android:id="@+id/txtvDescription"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:maxLines="3"
+            android:ellipsize="end"
+            android:textColor="?android:attr/textColorTertiary"
+            android:textSize="@dimen/text_size_micro"
+            android:paddingTop="16dp"
+            android:paddingBottom="16dp"
+            android:paddingLeft="8dp"
+            android:paddingRight="8dp"
+            android:layout_margin="4dp"/>
+
+    </LinearLayout>
 </RelativeLayout>

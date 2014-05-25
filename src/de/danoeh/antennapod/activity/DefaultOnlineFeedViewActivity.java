@@ -8,10 +8,7 @@ import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.ListView;
-import android.widget.TextView;
+import android.widget.*;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.asynctask.ImageDiskCache;
@@ -22,8 +19,10 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by daniel on 24.08.13.
@@ -33,6 +32,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED | EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
     private Feed feed;
+    private String selectedDownloadUrl;
 
     private Button subscribeButton;
 
@@ -64,11 +64,12 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     }
 
     @Override
-    protected void showFeedInformation(final Feed feed) {
-        super.showFeedInformation(feed);
+    protected void showFeedInformation(final Feed feed, final Map<String, String> alternateFeedUrls) {
+        super.showFeedInformation(feed, alternateFeedUrls);
         setContentView(R.layout.listview_activity);
 
         this.feed = feed;
+        this.selectedDownloadUrl = feed.getDownload_url();
         EventDistributor.getInstance().register(listener);
         ListView listView = (ListView) findViewById(R.id.listview);
         LayoutInflater inflater = (LayoutInflater)
@@ -82,6 +83,8 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         TextView title = (TextView) header.findViewById(R.id.txtvTitle);
         TextView author = (TextView) header.findViewById(R.id.txtvAuthor);
         TextView description = (TextView) header.findViewById(R.id.txtvDescription);
+        Spinner spAlternateUrls = (Spinner) header.findViewById(R.id.spinnerAlternateUrls);
+
         subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
 
         if (feed.getImage() != null) {
@@ -96,8 +99,10 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Feed f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
+                    Feed f = new Feed(selectedDownloadUrl, new Date(), feed.getTitle());
                     f.setPreferences(feed.getPreferences());
+                    DefaultOnlineFeedViewActivity.this.feed = f;
+
                     DownloadRequester.getInstance().downloadFeed(
                             DefaultOnlineFeedViewActivity.this,
                             f);
@@ -109,6 +114,40 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
                 setSubscribeButtonState(feed);
             }
         });
+
+        if (alternateFeedUrls.isEmpty()) {
+            spAlternateUrls.setVisibility(View.GONE);
+        } else {
+            spAlternateUrls.setVisibility(View.VISIBLE);
+
+            final List<String> alternateUrlsList = new ArrayList<String>();
+            final List<String> alternateUrlsTitleList = new ArrayList<String>();
+
+            alternateUrlsList.add(feed.getDownload_url());
+            alternateUrlsTitleList.add(feed.getTitle());
+
+
+            alternateUrlsList.addAll(alternateFeedUrls.keySet());
+            for (String url : alternateFeedUrls.keySet()) {
+                alternateUrlsTitleList.add(alternateFeedUrls.get(url));
+            }
+            ArrayAdapter<String> adapter  = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
+            adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            spAlternateUrls.setAdapter(adapter);
+            spAlternateUrls.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedDownloadUrl = alternateUrlsList.get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) {
+
+                }
+            });
+
+
+        }
         setSubscribeButtonState(feed);
 
     }

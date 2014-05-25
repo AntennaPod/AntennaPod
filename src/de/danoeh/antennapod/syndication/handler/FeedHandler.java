@@ -14,7 +14,7 @@ import java.io.Reader;
 
 public class FeedHandler {
 
-	public Feed parseFeed(Feed feed) throws SAXException, IOException,
+	public FeedHandlerResult parseFeed(Feed feed) throws SAXException, IOException,
 			ParserConfigurationException, UnsupportedFeedtypeException {
 		TypeGetter tg = new TypeGetter();
 		TypeGetter.Type type = tg.getType(feed);
@@ -29,6 +29,6 @@ public class FeedHandler {
 
 		saxParser.parse(inputSource, handler);
 		inputStreamReader.close();
-		return handler.state.feed;
+		return new FeedHandlerResult(handler.state.feed, handler.state.alternateUrls);
 	}
 }
