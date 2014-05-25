@@ -28,7 +28,6 @@ import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.StorageUtils;
-import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
@@ -280,18 +279,7 @@ public class MainActivity extends ActionBarActivity {
         EventDistributor.getInstance().register(contentUpdate);
 
         Intent intent = getIntent();
-        if (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND)
-                || StringUtils.equals(intent.getAction(), Intent.ACTION_VIEW)) {
-            String extra = (StringUtils.equals(intent.getAction(), Intent.ACTION_SEND))
-                    ? intent.getStringExtra(Intent.EXTRA_TEXT) : intent.getDataString();
-            if (extra != null) {
-                Bundle args = new Bundle();
-                args.putString(AddFeedFragment.ARG_FEED_URL, extra);
-                loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_ADD, args);
-                selectedNavListIndex = POS_ADD;
-                navAdapter.notifyDataSetChanged();
-            }
-        } else if (feeds != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+        if (feeds != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
             handleNavIntent();
         }
 

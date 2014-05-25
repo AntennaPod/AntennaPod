@@ -1,8 +1,10 @@
 package de.danoeh.antennapod.activity;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.app.NavUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,7 +46,12 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                finish();
+                Intent destIntent = new Intent(this, MainActivity.class);
+                if (NavUtils.shouldUpRecreateTask(this, destIntent)) {
+                    startActivity(destIntent);
+                } else {
+                    NavUtils.navigateUpFromSameTask(this);
+                }
                 return true;
         }
         return super.onOptionsItemSelected(item);

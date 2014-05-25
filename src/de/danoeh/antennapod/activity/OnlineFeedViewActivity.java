@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -27,6 +28,7 @@ import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.FileNameGenerator;
 import de.danoeh.antennapod.util.StorageUtils;
 import de.danoeh.antennapod.util.URLChecker;
+import org.apache.commons.lang3.StringUtils;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -46,7 +48,9 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     private static final String TAG = "OnlineFeedViewActivity";
     public static final String ARG_FEEDURL = "arg.feedurl";
 
-    /** Optional argument: specify a title for the actionbar. */
+    /**
+     * Optional argument: specify a title for the actionbar.
+     */
     public static final String ARG_TITLE = "title";
 
     public static final int RESULT_ERROR = 2;
@@ -64,11 +68,21 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
         }
 
         StorageUtils.checkStorageAvailability(this);
-        final String feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
-        if (feedUrl == null) {
+
+        final String feedUrl;
+        if (getIntent().hasExtra(ARG_FEEDURL)) {
+            feedUrl = getIntent().getStringExtra(ARG_FEEDURL);
+        } else if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND)
+                || StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
+            feedUrl = (StringUtils.equals(getIntent().getAction(), Intent.ACTION_SEND))
+                    ? getIntent().getStringExtra(Intent.EXTRA_TEXT) : getIntent().getDataString();
+
+            getSupportActionBar().setTitle(R.string.add_new_feed_label);
+        } else {
             throw new IllegalArgumentException(
                     "Activity must be started with feedurl argument!");
         }
+
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Activity was started with url " + feedUrl);
         setLoadingLayout();
@@ -244,7 +258,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
     /**
      * Can be used to load data asynchronously.
-     * */
+     */
     protected void loadData() {
 
     }
@@ -271,7 +285,8 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.cancel();
                     }
-                });
+                }
+        );
         builder.setOnCancelListener(new OnCancelListener() {
             @Override
             public void onCancel(DialogInterface dialog) {
