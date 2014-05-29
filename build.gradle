@@ -20,7 +20,7 @@ dependencies {
     compile 'com.android.support:support-v4:19.1.+'
     compile 'com.android.support:appcompat-v7:19.1.+'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.8') {
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.10') {
         exclude group: 'org.apache.httpcomponents', module: 'httpcore'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
         exclude group: 'org.json', module: 'json'
