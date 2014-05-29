@@ -1,6 +1,15 @@
 Change Log
 ==========
 
+Version 0.9.9.0
+---------------
+* New user interface
+* Failed downloads are now resumed when restarted
+* Added support for Podlove Alternate Feeds
+* Added support for "pcast"-protocol
+* Added backup & restore functionality. This feature has to be enabled in the Android settings in order to work
+* Several bugfixes and improvements
+
 Version 0.9.8.3
 ---------------
 * Added support for password-protected feeds and episodes
