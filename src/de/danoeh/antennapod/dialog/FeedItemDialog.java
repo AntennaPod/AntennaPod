@@ -152,6 +152,10 @@ public class FeedItemDialog extends Dialog {
                                                   return;
                                               }
                                               actionButtonCallback.onActionButtonPressed(item);
+                                              if (media.isDownloaded()) {
+                                                  // playback was started, dialog should close itself
+                                                  dismiss();
+                                              }
 
                                           }
                                       }
