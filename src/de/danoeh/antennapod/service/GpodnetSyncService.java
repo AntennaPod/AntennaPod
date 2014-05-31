@@ -2,15 +2,16 @@ package de.danoeh.antennapod.service;
 
 import android.app.Notification;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
-import de.danoeh.antennapod.AppConfig;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceAuthenticationException;
@@ -18,14 +19,16 @@ import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetSubscriptionChange;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetUploadChangesResponse;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.storage.*;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DownloadRequestException;
+import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.NetworkUtils;
 
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.ExecutionException;
 
 /**
  * Synchronizes local subscriptions with gpodder.net service. The service should be started with ACTION_SYNC as an action argument.
@@ -161,8 +164,12 @@ public class GpodnetSyncService extends Service {
             description = getString(R.string.gpodnetsync_error_descr) + exception.getMessage();
             id = R.id.notification_gpodnet_sync_error;
         }
+
+        PendingIntent activityIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
+
         Notification notification = builder.setContentTitle(title)
                 .setContentText(description)
+                .setContentIntent(activityIntent)
                 .setSmallIcon(R.drawable.stat_notify_sync_error)
                 .setAutoCancel(true)
                 .build();
