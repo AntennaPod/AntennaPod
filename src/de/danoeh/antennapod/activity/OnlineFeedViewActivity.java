@@ -299,7 +299,10 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                 finish();
             }
         });
-        builder.show();
+
+        if (!isFinishing()) {
+            builder.show();
+        }
     }
 
     private class FeedViewAuthenticationDialog extends AuthenticationDialog {
