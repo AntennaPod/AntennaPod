@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanallar</string>
   <string name="podcasts_label">PODKASTLAR</string>
@@ -10,9 +10,10 @@
   <string name="settings_label">Parametrlər</string>
   <string name="downloads_label">Yükləmələr</string>
   <string name="cancel_download_label">Yükləməyi ləğv et</string>
-  <string name="download_log_label">Yükləmə jurnalı</string>
   <string name="playback_history_label">Oynatma tarixiçəsi</string>
   <string name="gpodnet_main_label">gpodder.net</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Brauzerdə aç</string>
   <string name="copy_url_label">URLı kopiyala</string>
@@ -34,19 +35,16 @@
   <string name="shownotes_label">Təsvir</string>
   <string name="most_recent_prefix">Ən yeni epizod:\u0020</string>
   <string name="episodes_suffix">\u0020epizod</string>
-  <string name="published_prefix">Nəşr edən:\u0020</string>
   <string name="length_prefix">Müddət:\u0020</string>
   <string name="size_prefix">Ölçü:\u0020</string>
   <string name="processing_label">Hazırlaşma</string>
   <string name="loading_label">Yükləmə...</string>
-  <string name="image_of_prefix">Şəkil:\u0020</string>
   <string name="close_label">Bağla</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Kanalın URLı</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
-  <string name="remove_feed_label">Kanlı sil</string>
   <string name="share_link_label">Web-səhifəyi paylaş</string>
   <string name="share_source_label">Kanalı paylaş</string>
   <string name="feed_delete_confirmation_msg">Bütün kanallar və epizodlar silinəçək.</string>
@@ -66,8 +64,6 @@
   <string name="download_all">Hamısını yüklə</string>
   <string name="skip_episode_label">Epizodu burax</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Yükləmə uğurlu keçdi</string>
-  <string name="download_failed">Yükləmə uğursuzdur</string>
   <string name="download_pending">Yükləmə gözlənir</string>
   <string name="download_running">Yükləmə gedir</string>
   <string name="download_error_device_not_found">Yaddaş cihazı tapılmadı</string>
@@ -105,13 +101,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buferləşmə</string>
   <string name="playbackservice_notification_title">Podkast oynadılır</string>
-  <string name="playbackservice_notification_content">Daha çox info üçün bura bas</string>
-  <!--Navigation-->
-  <string name="show_download_log">Jurnalı göstər</string>
-  <string name="show_player_label">Pleyeri göstər</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Növbəyi sil</string>
-  <string name="organize_queue_label">Növbələ düzənlə</string>
   <string name="undo">Qaytar</string>
   <string name="removed_from_queue">Element silindi</string>
   <!--Flattr-->
@@ -159,8 +150,6 @@
   <string name="pref_flattr_this_app_sum">Flattr vasitəsiilə AntennaPodun inkişafını dəstək edin. Sağolun!</string>
   <string name="pref_revokeAccess_title">Keçidi ləğv ət</string>
   <string name="pref_revokeAccess_sum">Flattr hesabına keçidi ləğv et</string>
-  <string name="pref_display_only_episodes_title">Təkçə epizodları göstər</string>
-  <string name="pref_display_only_episodes_sum">Təkçə daxilində epizod olan elementləri göstər</string>
   <string name="user_interface_label">İnterfeys</string>
   <string name="pref_set_theme_title">Görüşü seç</string>
   <string name="pref_set_theme_sum">AntennaPod\'un görüşünü dəyişdir</string>
@@ -179,10 +168,7 @@
   <string name="search_hint">Kanalları və ya epizodları axtar</string>
   <string name="found_in_shownotes_label">Təsvirlərdə tapıldı</string>
   <string name="found_in_chapters_label">Fəsillərdə tapıldı</string>
-  <string name="search_status_searching">Axtarış...</string>
   <string name="search_status_no_results">Heç nə tapılmadı</string>
-  <string name="search_results_label">Axtarışın nəticələri</string>
-  <string name="search_term_label">Axtarılan:\u0020</string>
   <string name="search_label">Axtar</string>
   <string name="found_in_title_label">Başlığda tapıldı</string>
   <!--OPML import and export-->
@@ -208,15 +194,6 @@
   <string name="sleep_timer_label">Yuxu taymeri</string>
   <string name="time_left_label">Vaxt galdı:\u0020</string>
   <string name="time_dialog_invalid_input">Yanlış yazi. Vaxt təkçə rəqmlərlə yazılır</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Kategoriya yüklənişi...</string>
-  <string name="browse_miroguide_label">MiroGuide\'da bax</string>
-  <string name="txtv_browse_miroguide_label">Ya da MiroGuide\'da bax:</string>
-  <string name="miro_guide_label">MiroGuide</string>
-  <string name="miro_search_hint">MiroGuide\'da axtar</string>
-  <string name="popular_label">Populyar</string>
-  <string name="best_rating_label">Ən reytinqli</string>
-  <string name="miro_feed_added">Kanal əlavə olundu</string>
   <!--gpodder.net-->
   <string name="gpodnet_toplist_header">TOP PODKASTLAR</string>
   <!--Directory chooser-->
@@ -234,5 +211,6 @@
   <!--Online feed view-->
   <string name="downloading_label">Yükləmə...</string>
   <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

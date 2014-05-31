@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">订阅</string>
   <string name="podcasts_label">播客</string>
@@ -10,11 +10,15 @@
   <string name="settings_label">设置</string>
   <string name="add_new_feed_label">添加播客</string>
   <string name="downloads_label">下载</string>
+  <string name="downloads_log_label">日志</string>
   <string name="cancel_download_label">取消下载</string>
-  <string name="download_log_label">下载日志</string>
   <string name="playback_history_label">播放历史</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 登录</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
+  <string name="drawer_open">打开菜单</string>
+  <string name="drawer_close">关闭菜单</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">在浏览器打开</string>
   <string name="copy_url_label">复制 URL</string>
@@ -38,12 +42,10 @@
   <string name="description_label">描述</string>
   <string name="most_recent_prefix">最近曲目:\u0020</string>
   <string name="episodes_suffix">\u0020 曲</string>
-  <string name="published_prefix">发表:\u0020</string>
   <string name="length_prefix">长度:\u0020</string>
   <string name="size_prefix">大小:\u0020</string>
   <string name="processing_label">处理中</string>
   <string name="loading_label">加载中...</string>
-  <string name="image_of_prefix">图片:\u0020</string>
   <string name="save_username_password_label">保存用户名密码</string>
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
@@ -51,11 +53,11 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
   <string name="txtvfeedurl_label">添加播客 URL</string>
-  <string name="podcastdirectories_label">播客目录</string>
+  <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
   <string name="show_info_label">查看信息</string>
-  <string name="remove_feed_label">删除订阅</string>
+  <string name="remove_feed_label">删除播客</string>
   <string name="share_link_label">分享网站链接</string>
   <string name="share_source_label">分享订阅链接</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
@@ -76,8 +78,8 @@
   <string name="download_all">全部下载</string>
   <string name="skip_episode_label">跳过曲目</string>
   <!--Download messages and labels-->
-  <string name="download_successful">下载成功</string>
-  <string name="download_failed">下载失败</string>
+  <string name="download_successful">成功</string>
+  <string name="download_failed">失败</string>
   <string name="download_pending">下载等待</string>
   <string name="download_running">下载中</string>
   <string name="download_error_device_not_found">没有找到存储设备</string>
@@ -116,13 +118,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">缓冲中</string>
   <string name="playbackservice_notification_title">播客播放中</string>
-  <string name="playbackservice_notification_content">长按查看更多</string>
-  <!--Navigation-->
-  <string name="show_download_log">下载日志</string>
-  <string name="show_player_label">播放器</string>
   <!--Queue operations-->
   <string name="clear_queue_label">清空播放列表</string>
-  <string name="organize_queue_label">组织播放列表</string>
   <string name="undo">撤消</string>
   <string name="removed_from_queue">已删除项</string>
   <string name="move_to_top_label">移到顶端</string>
@@ -175,8 +172,6 @@
   <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!\n</string>
   <string name="pref_revokeAccess_title">撤销访问</string>
   <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
-  <string name="pref_display_only_episodes_title">只显示有曲目的</string>
-  <string name="pref_display_only_episodes_sum">只显示有曲目的项.</string>
   <string name="user_interface_label">界面</string>
   <string name="pref_set_theme_title">主题选择</string>
   <string name="pref_set_theme_sum">改变 AntennaPod 外观</string>
@@ -205,10 +200,7 @@
   <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>
   <string name="found_in_chapters_label">章节中查找</string>
-  <string name="search_status_searching">搜索中...</string>
   <string name="search_status_no_results">没有找到任何结果</string>
-  <string name="search_results_label">搜索结果</string>
-  <string name="search_term_label">搜索:\u0020</string>
   <string name="search_label">搜索</string>
   <string name="found_in_title_label">标题中查找</string>
   <!--OPML import and export-->
@@ -235,16 +227,9 @@
   <string name="sleep_timer_label">休眠计时器</string>
   <string name="time_left_label">计时剩余:\u0020</string>
   <string name="time_dialog_invalid_input">无效的输入, 时间是一个整数</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">加载目录中...</string>
-  <string name="browse_miroguide_label">浏览 Miro 频道</string>
-  <string name="txtv_browse_miroguide_label">或者浏览 Miro 频道</string>
-  <string name="miro_guide_label">Miro 频道</string>
-  <string name="miro_search_hint">搜索 Miro 频道</string>
-  <string name="popular_label">流行</string>
-  <string name="best_rating_label">评分最高</string>
-  <string name="add_feed_label">添加播客</string>
-  <string name="miro_feed_added">订阅已被添加</string>
+  <string name="time_unit_seconds">秒</string>
+  <string name="time_unit_minutes">分钟</string>
+  <string name="time_unit_hours">小时</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">目录</string>
   <string name="gpodnet_toplist_header">头条播客</string>
@@ -308,5 +293,7 @@
   <string name="in_queue_label">曲目已经在播放列表中</string>
   <string name="new_episodes_count_label">新曲目数</string>
   <string name="in_progress_episodes_count_label">已收听曲目数</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">验证</string>
   <!--AntennaPodSP-->
 </resources>

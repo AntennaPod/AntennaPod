@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Kanały</string>
   <string name="podcasts_label">PODCASTY</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">Dodaj podcast</string>
   <string name="downloads_label">Pobrane</string>
   <string name="cancel_download_label">Anuluj pobieranie</string>
-  <string name="download_log_label">Dziennik pobierania</string>
   <string name="playback_history_label">Historia odtwarzania</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Otwórz w przeglądarce</string>
   <string name="copy_url_label">Kopiuj adres</string>
@@ -37,12 +38,10 @@
   <string name="description_label">Opis</string>
   <string name="most_recent_prefix">Najnowszy odcinek:\u0020</string>
   <string name="episodes_suffix">:\u0020odcinków</string>
-  <string name="published_prefix">Opublikowane:\u0020</string>
   <string name="length_prefix">Długość:\u0020</string>
   <string name="size_prefix">Rozmiar:\u0020</string>
   <string name="processing_label">Przetwarzanie</string>
   <string name="loading_label">Ładowanie...</string>
-  <string name="image_of_prefix">Obraz z:\u0020</string>
   <string name="save_username_password_label">Zapisz nazwę użytkownika i hasło</string>
   <string name="close_label">Zamknij</string>
   <string name="retry_label">Spróbuj ponownie</string>
@@ -50,11 +49,9 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Adres kanału</string>
   <string name="txtvfeedurl_label">Dodaj podcast przez adres</string>
-  <string name="podcastdirectories_label">Katalogi podcastów</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Oznacz wszystkie jako przeczytane</string>
   <string name="show_info_label">Pokaż informacje</string>
-  <string name="remove_feed_label">Usuń kanał</string>
   <string name="share_link_label">Udostępnij stronę</string>
   <string name="share_source_label">Udostępnij kanał</string>
   <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia tego kanału wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
@@ -75,8 +72,6 @@
   <string name="download_all">Pobierz wszystkie</string>
   <string name="skip_episode_label">Pomiń odcinek</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Pobieranie ukończone</string>
-  <string name="download_failed">Pobieranie nieudane</string>
   <string name="download_pending">Pobieranie w toku</string>
   <string name="download_running">Pobieram</string>
   <string name="download_error_device_not_found">Nie znaleziono urządzenia docelowego</string>
@@ -115,13 +110,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buferowanie</string>
   <string name="playbackservice_notification_title">Odtwarzenie podcastu </string>
-  <string name="playbackservice_notification_content">Więcej informacji</string>
-  <!--Navigation-->
-  <string name="show_download_log">Pokaż log</string>
-  <string name="show_player_label">Pokaż odtwarzacz</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Wyczyść kolejkę</string>
-  <string name="organize_queue_label">Organizuj kolejkę</string>
   <string name="undo">Cofnij</string>
   <string name="removed_from_queue">Element usunięty</string>
   <string name="move_to_top_label">Przesuń na górę</string>
@@ -175,8 +165,6 @@
   <string name="pref_revokeAccess_title">Anuluj dostęp</string>
   <string name="pref_revokeAccess_sum">Anuluj dostęp tej aplikacji do konta Flattr </string>
   <string name="pref_auto_flattr_title">Automatyczne wsparcie na Flattr</string>
-  <string name="pref_display_only_episodes_title">Wyświetlaj tylko odcinki</string>
-  <string name="pref_display_only_episodes_sum">Wyświetlaj tylko pozycje, które mają również odcinki.</string>
   <string name="user_interface_label">Interfejs użytkownika</string>
   <string name="pref_set_theme_title">Wybierz motyw</string>
   <string name="pref_set_theme_sum">Zmień wygląd AntennaPod.</string>
@@ -205,10 +193,7 @@
   <string name="search_hint">Szukaj kanałów lub odcinków</string>
   <string name="found_in_shownotes_label">Znaleziono w notatkach</string>
   <string name="found_in_chapters_label">Znaleziono w rozdziałach</string>
-  <string name="search_status_searching">Wyszukiwanie...</string>
   <string name="search_status_no_results">Brak wyników</string>
-  <string name="search_results_label">Wyniki wyszukiwania</string>
-  <string name="search_term_label">Szukałeś:\u0020</string>
   <string name="search_label">Szukaj</string>
   <string name="found_in_title_label">Znaleziono w tytułach</string>
   <!--OPML import and export-->
@@ -235,16 +220,6 @@
   <string name="sleep_timer_label">Wyłącznik czasowy</string>
   <string name="time_left_label">Pozostały czas:\u0020</string>
   <string name="time_dialog_invalid_input">Błąd wpisu, czas musi być liczbą całkowitą</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Ładuję kategorie...</string>
-  <string name="browse_miroguide_label">Przeglądaj Miro Guide</string>
-  <string name="txtv_browse_miroguide_label">Lub przeglądaj Miro Guide:</string>
-  <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Szukaj w Miro Guide</string>
-  <string name="popular_label">Popularne</string>
-  <string name="best_rating_label">Najwyższe oceny</string>
-  <string name="add_feed_label">Dodaj podcast</string>
-  <string name="miro_feed_added">Kanał jest dodawany</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -304,5 +279,6 @@
   <string name="in_queue_label">Odcinek jest w kolejce</string>
   <string name="new_episodes_count_label">Liczba nowych odcinków</string>
   <string name="in_progress_episodes_count_label">Liczba odcinków, których zacząłeś słuchać</string>
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

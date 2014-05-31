@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">\tऐन्टेनापॉड</string>
   <string name="feeds_label">फिड्स</string>
   <string name="podcasts_label">पॉडकास्ट</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">पॉडकास्ट जोड़ें</string>
   <string name="downloads_label">डाउनलोड</string>
   <string name="cancel_download_label">डाउनलोड रद्द करें</string>
-  <string name="download_log_label">डाउनलोड लॉग</string>
   <string name="playback_history_label">प्लेबैक इतिहास</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">ब्राउज़र में खोलें</string>
   <string name="copy_url_label">कॉपी यूआरएल</string>
@@ -28,6 +29,7 @@
   <string name="author_label">\tनिर्माता</string>
   <string name="language_label">भाषा</string>
   <string name="podcast_settings_label">सेटिंग्स</string>
+  <string name="cover_label">तस्वीर</string>
   <string name="error_label">त्रुटि</string>
   <string name="error_msg_prefix">एक त्रुटि हो गई:</string>
   <string name="refresh_label">ताज़ा करें</string>
@@ -37,12 +39,10 @@
   <string name="description_label">विवरण</string>
   <string name="most_recent_prefix">सबसे हाल का प्रकरण:\u0020</string>
   <string name="episodes_suffix">\u0020एपिसोड</string>
-  <string name="published_prefix">प्रकाशित:\u0020</string>
   <string name="length_prefix">लंबाई:\u0020</string>
   <string name="size_prefix">साइज:\u0020</string>
   <string name="processing_label">प्रसंस्करण</string>
   <string name="loading_label">लोड हो रहा है ...</string>
-  <string name="image_of_prefix">की छवि:\u0020</string>
   <string name="save_username_password_label">यूज़रनेम और पासवर्ड सहेजें</string>
   <string name="close_label">बंद करें</string>
   <string name="retry_label">पुन: प्रयास</string>
@@ -54,7 +54,7 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">पढ़ने के रूप में सभी को चिह्नित करें</string>
   <string name="show_info_label">जानकारी दिखाएँ</string>
-  <string name="remove_feed_label">फ़ीड हटाएँ</string>
+  <string name="remove_feed_label">पॉडकास्ट हटाएँ\n</string>
   <string name="share_link_label">शेयर वेबसाइट लिंक</string>
   <string name="share_source_label">शेयर फ़ीड लिंक</string>
   <string name="feed_delete_confirmation_msg">इसकी पुष्टि करें कि आप इस फ़ीड और इस फ़ीड के सभी प्रकरणों को हटाना चाहते हैं जिन्हें आपने डाउनलोड किया है.</string>
@@ -75,7 +75,7 @@
   <string name="download_all">सभी डाउनलोड</string>
   <string name="skip_episode_label">एपिसोड छोङें</string>
   <!--Download messages and labels-->
-  <string name="download_successful">सफल डाउनलोड</string>
+  <string name="download_successful">सफल\n</string>
   <string name="download_failed">डाउनलोड विफल</string>
   <string name="download_pending">लंबित डाउनलोड</string>
   <string name="download_running">डाउनलोड चल रहा है</string>
@@ -115,13 +115,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">बफरिंग</string>
   <string name="playbackservice_notification_title">प्लेईंग पॉडकास्ट</string>
-  <string name="playbackservice_notification_content">अधिक जानकारी के लिए यहाँ ठोकें</string>
-  <!--Navigation-->
-  <string name="show_download_log">प्रवेश दिखाएँ</string>
-  <string name="show_player_label">प्लेयर दिखाएँ</string>
   <!--Queue operations-->
   <string name="clear_queue_label">कतार साफ</string>
-  <string name="organize_queue_label">कतार को व्यवस्थित करें</string>
   <string name="undo">पूर्ववत् करें</string>
   <string name="removed_from_queue">आइटम हटाया</string>
   <string name="move_to_top_label">शीर्ष पर ले जाएं</string>
@@ -140,6 +135,10 @@
   <string name="access_revoked_title">प्रवेश निरस्त किया</string>
   <string name="access_revoked_info">आपने सफलतापूर्वक अपने खाते में AntennaPod पहुँच टोकन निरस्त कर दिया है. इस प्रक्रिया को पूरा करने के लिए, आपको flattr वेबसाइट पर अपने खाते की सेटिंग्स में अनुमोदित आवेदनों की सूची से इस एप्लिकेशन को हटाना होगा.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">सफलतापूर्वक यह बात Flattr किया</string>
+  <string name="flattr_click_success_count">सफलतापूर्वक %d बातोंको Flattr किया</string>
+  <string name="flattr_click_success_queue">Flattr गिनती: %s</string>
+  <string name="flattring_label">ऐन्टेनापॉड Flattr </string>
   <!--Variable Speed-->
   <string name="download_plugin_label">प्लगइन डाउनलोड करें</string>
   <string name="no_playback_plugin_title">प्लगइन स्थापित नहीं हुआ</string>
@@ -174,8 +173,6 @@
   <string name="pref_flattr_this_app_sum">यह flattring द्वारा AntennaPod के विकास का समर्थन करें. धन्यवाद!</string>
   <string name="pref_revokeAccess_title">उपयोग रद्द</string>
   <string name="pref_revokeAccess_sum">इस अनुप्रयोग के लिए अपने flattr खाते के लिए उपयोग की अनुमति रद्द करें.</string>
-  <string name="pref_display_only_episodes_title">केवल एपिसोड प्रदर्शित करें</string>
-  <string name="pref_display_only_episodes_sum">केवल वही आइटम प्रदर्शित करें जिसमें एपिसोड हैं.</string>
   <string name="user_interface_label">यूजर इंटरफेस</string>
   <string name="pref_set_theme_title">थीम का चयन करें</string>
   <string name="pref_set_theme_sum">AntennaPod का प्रकटन बदलें.</string>
@@ -204,10 +201,7 @@
   <string name="search_hint">फ़ीड या एपिसोड के लिए खोज</string>
   <string name="found_in_shownotes_label">Shownotes में मिला</string>
   <string name="found_in_chapters_label">अध्यायों में मिला</string>
-  <string name="search_status_searching">खोज रहा है ...</string>
   <string name="search_status_no_results">कोई परिणाम नहीं मिले</string>
-  <string name="search_results_label">खोज परिणाम</string>
-  <string name="search_term_label">आपने खोजा:\u0020</string>
   <string name="search_label">खोज</string>
   <string name="found_in_title_label">शीर्षक में मिला</string>
   <!--OPML import and export-->
@@ -234,16 +228,6 @@
   <string name="sleep_timer_label">स्लीप टाइमर</string>
   <string name="time_left_label">समय बचा है:\u0020</string>
   <string name="time_dialog_invalid_input">अवैध इनपुट, समय को पूर्णांक में डालें</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">श्रेणियाँ लोड हो रहीं है...</string>
-  <string name="browse_miroguide_label">Miro गाइड ब्राउज़</string>
-  <string name="txtv_browse_miroguide_label">या Miro गाइड ब्राउज़ करें:</string>
-  <string name="miro_guide_label">Miro गाइड</string>
-  <string name="miro_search_hint">Miro गाइड में खोजें</string>
-  <string name="popular_label">प्रसिद्ध</string>
-  <string name="best_rating_label">सर्वश्रेष्ठ रेटिंग</string>
-  <string name="add_feed_label">पॉडकास्ट जोड़ें</string>
-  <string name="miro_feed_added">फ़ीड जोड़ा जा रहा है</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">श्रेणियाँ</string>
   <string name="gpodnet_toplist_header">शीर्ष पॉडकास्ट</string>
@@ -291,5 +275,6 @@
   <string name="subscribed_label">सदस्यता ली गई</string>
   <string name="downloading_label">डाउनलोड कर रहा है ...</string>
   <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

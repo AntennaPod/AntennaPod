@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeduri</string>
   <string name="podcasts_label">PODCASTURI</string>
@@ -10,10 +10,11 @@
   <string name="settings_label">Setări</string>
   <string name="downloads_label">Descărcări</string>
   <string name="cancel_download_label">Anulează descărcare</string>
-  <string name="download_log_label">Istoric descărcări</string>
   <string name="playback_history_label">Istorie ascultare</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">autentificare gpodder.net</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Deschide în browser</string>
   <string name="copy_url_label">Copiază URL</string>
@@ -36,12 +37,10 @@
   <string name="description_label">Descriere</string>
   <string name="most_recent_prefix">Cel mai recent episod:\u0020</string>
   <string name="episodes_suffix">\u0020episoade</string>
-  <string name="published_prefix">Publicat:\u0020</string>
   <string name="length_prefix">Durată:\u0020</string>
   <string name="size_prefix">Dimensiune:\u0020</string>
   <string name="processing_label">Procesează</string>
   <string name="loading_label">Încărcare...</string>
-  <string name="image_of_prefix">Imagine a:\u0020</string>
   <string name="save_username_password_label">Salvează numele de utilizator și parola</string>
   <string name="close_label">închide</string>
   <string name="retry_label">Reîncearcă</string>
@@ -50,7 +49,6 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
-  <string name="remove_feed_label">Șterge feed</string>
   <string name="share_link_label">Împarte adresă website</string>
   <string name="share_source_label">Împarte adresă feed</string>
   <string name="feed_delete_confirmation_msg">Confirmați ștergerea feedului și a TUTUROR episoadelor pe care le-ați descărcat.</string>
@@ -70,8 +68,6 @@
   <string name="download_all">Descarcă toate</string>
   <string name="skip_episode_label">Sari peste episod</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Descărcare cu succes</string>
-  <string name="download_failed">Descărcare eșuată</string>
   <string name="download_pending">Descărcare în așteptare</string>
   <string name="download_running">Se descarcă</string>
   <string name="download_error_device_not_found">Mediu de stocare lipsă</string>
@@ -109,13 +105,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Cântă podcast</string>
-  <string name="playbackservice_notification_content">Apasă aici pentru mai multe informații</string>
-  <!--Navigation-->
-  <string name="show_download_log">Arată istoric</string>
-  <string name="show_player_label">Arată player</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Golește coada</string>
-  <string name="organize_queue_label">Organizează coada</string>
   <string name="undo">Refă</string>
   <string name="removed_from_queue">Element înlăturat</string>
   <!--Flattr-->
@@ -166,8 +157,6 @@
   <string name="pref_flattr_this_app_sum">Ajutați dezvoltarea AntennaPod prin flattr. Mulțumesc!</string>
   <string name="pref_revokeAccess_title">Revocare acces</string>
   <string name="pref_revokeAccess_sum">Revocă accesul permisiunilor pentru contul de flattr.</string>
-  <string name="pref_display_only_episodes_title">Afișează doar episoade</string>
-  <string name="pref_display_only_episodes_sum">Afișează doar elemente ce au un episod.</string>
   <string name="user_interface_label">Interfața grafică</string>
   <string name="pref_set_theme_title">Alege temă</string>
   <string name="pref_set_theme_sum">Schimbă aspectul AntennaPod.</string>
@@ -189,10 +178,7 @@
   <string name="search_hint">Caută feeduri sau episoade</string>
   <string name="found_in_shownotes_label">Găsit în notițe</string>
   <string name="found_in_chapters_label">Găsit în capitole</string>
-  <string name="search_status_searching">Caută...</string>
   <string name="search_status_no_results">Nu s-a găsit nici un rezultat</string>
-  <string name="search_results_label">Rezultate căutare</string>
-  <string name="search_term_label">Ai căutat:\u0020</string>
   <string name="search_label">Caută</string>
   <string name="found_in_title_label">Găsit în titlu</string>
   <!--OPML import and export-->
@@ -218,15 +204,6 @@
   <string name="sleep_timer_label">Cronometru somn</string>
   <string name="time_left_label">Timp rămas:\u0020</string>
   <string name="time_dialog_invalid_input">Input invalid, timpul trebuie să fie un întreg</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Încărcare categorii...</string>
-  <string name="browse_miroguide_label">Vizualizează Ghid Miro</string>
-  <string name="txtv_browse_miroguide_label">Sau caută in Ghid Miro:</string>
-  <string name="miro_guide_label">Ghid Miro</string>
-  <string name="miro_search_hint">Caută în Ghid Miro</string>
-  <string name="popular_label">Popular</string>
-  <string name="best_rating_label">Cel mai bun rating</string>
-  <string name="miro_feed_added">Feedul este în curs de adăugare</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORII</string>
   <string name="gpodnet_suggestions_header">SUGESTII</string>
@@ -262,5 +239,6 @@
   <string name="subscribed_label">Abonat</string>
   <string name="downloading_label">Se descarcă...</string>
   <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

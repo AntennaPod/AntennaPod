@@ -1,20 +1,31 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Fontes</string>
+  <string name="add_feed_label">Adicionar podcast</string>
   <string name="podcasts_label">Podcasts</string>
   <string name="episodes_label">Episódios</string>
+  <string name="new_episodes_label">Novos episódios</string>
+  <string name="all_episodes_label">Todos os episódios</string>
   <string name="new_label">Novo</string>
   <string name="waiting_list_label">Lista de espera</string>
   <string name="settings_label">Definições</string>
   <string name="add_new_feed_label">Adicionar podcast</string>
   <string name="downloads_label">Transferências</string>
+  <string name="downloads_running_label">Em curso</string>
+  <string name="downloads_completed_label">Terminadas</string>
+  <string name="downloads_log_label">Registo</string>
   <string name="cancel_download_label">Cancelar transferência</string>
-  <string name="download_log_label">Registo de transferências</string>
   <string name="playback_history_label">Histórico de reprodução</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Acesso gpodder.net</string>
+  <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Publicados recentemente</string>
+  <string name="episode_filter_label">Mostrar apenas novos episódios</string>
+  <!--Main activity-->
+  <string name="drawer_open">Abrir menu</string>
+  <string name="drawer_close">Fechar menu</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
   <string name="copy_url_label">Copiar URL</string>
@@ -38,12 +49,10 @@
   <string name="description_label">Descrição</string>
   <string name="most_recent_prefix">Episódio mais recente:\u0020</string>
   <string name="episodes_suffix">\u0020episódios</string>
-  <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duração:\u0020</string>
   <string name="size_prefix">Tamanho:\u0020</string>
   <string name="processing_label">A processar...</string>
   <string name="loading_label">A carregar...</string>
-  <string name="image_of_prefix">Imagem de:\u0020</string>
   <string name="save_username_password_label">Gravar utilizador e senha</string>
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
@@ -51,11 +60,14 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
-  <string name="podcastdirectories_label">Diretórios de podcasts</string>
+  <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
+  <string name="podcastdirectories_descr">Pode procurar os novos podcasts no gPodder.net por nome, categoria ou popularidade.</string>
+  <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como lido</string>
+  <string name="mark_all_read_msg">Marcar todos os episódios como lidos</string>
   <string name="show_info_label">Mostrar informações</string>
-  <string name="remove_feed_label">Remover fonte</string>
+  <string name="remove_feed_label">Remover podcast</string>
   <string name="share_link_label">Partilhar ligação do sítio web</string>
   <string name="share_source_label">Partilhar ligação da fonte</string>
   <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela petencentes.</string>
@@ -66,6 +78,7 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Emitir</string>
   <string name="remove_label">Remover</string>
+  <string name="remove_episode_lable">Remover episódio</string>
   <string name="mark_read_label">Marcar como lido</string>
   <string name="mark_unread_label">Marcar como novo</string>
   <string name="add_to_queue_label">Adicionar à fila</string>
@@ -76,8 +89,8 @@
   <string name="download_all">Transferir tudo</string>
   <string name="skip_episode_label">Ignorar episódio</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Transferência terminada</string>
-  <string name="download_failed">Erro ao transferir</string>
+  <string name="download_successful">sucesso</string>
+  <string name="download_failed">falha</string>
   <string name="download_pending">Transferência pendente</string>
   <string name="download_running">Transferência atual</string>
   <string name="download_error_device_not_found">Cartão SD não encontrado</string>
@@ -98,6 +111,7 @@
   <string name="download_error_request_error">Erro de pedido</string>
   <string name="download_error_db_access">Erro de acesso à base de dados</string>
   <string name="downloads_left">\u0020Transferências em falta</string>
+  <string name="downloads_processing">Processamento de transferências</string>
   <string name="download_notification_title">A transferir dados...</string>
   <string name="download_report_content">%1$d transferências efetuadas, %2$d falhadas</string>
   <string name="download_log_title_unknown">Título desconhecido</string>
@@ -119,17 +133,12 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">A processar...</string>
   <string name="playbackservice_notification_title">Reproduzir podcast</string>
-  <string name="playbackservice_notification_content">Clique para mais informações</string>
-  <!--Navigation-->
-  <string name="show_download_log">Mostrar registo</string>
-  <string name="show_player_label">Mostrar reprodutor</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Limpar fila</string>
-  <string name="organize_queue_label">Organizar fila</string>
   <string name="undo">Anular</string>
   <string name="removed_from_queue">Item removido</string>
-  <string name="move_to_top_label">Mover para cima</string>
-  <string name="move_to_bottom_label">Mover para baixo</string>
+  <string name="move_to_top_label">Mover para o topo</string>
+  <string name="move_to_bottom_label">Mover para o fundo</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -191,8 +200,6 @@
   <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr.</string>
   <string name="pref_auto_flattr_title">Flattr automático</string>
   <string name="pref_auto_flattr_sum">Flattr de episódios com 80 porcento de reprodução.</string>
-  <string name="pref_display_only_episodes_title">Mostrar apenas episódios</string>
-  <string name="pref_display_only_episodes_sum">Apenas mostrar itens que possuam episódios.</string>
   <string name="user_interface_label">Interface</string>
   <string name="pref_set_theme_title">Tema</string>
   <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod.</string>
@@ -221,10 +228,7 @@
   <string name="search_hint">Procurar fontes ou episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
   <string name="found_in_chapters_label">Encontrado nos capítulos</string>
-  <string name="search_status_searching">Procura...</string>
   <string name="search_status_no_results">Nenhum resultado</string>
-  <string name="search_results_label">Resultados da procura</string>
-  <string name="search_term_label">Você procurou:\u0020</string>
   <string name="search_label">Procura</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
@@ -251,16 +255,9 @@
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Valor inválido. Tem que ser um inteiro.</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">A carregar categorias...</string>
-  <string name="browse_miroguide_label">Explorar o guia Miro</string>
-  <string name="txtv_browse_miroguide_label">Ou explore o guia Miro:</string>
-  <string name="miro_guide_label">Guia Miro</string>
-  <string name="miro_search_hint">Procurar no guia Miro</string>
-  <string name="popular_label">Popular</string>
-  <string name="best_rating_label">Melhor avaliação</string>
-  <string name="add_feed_label">Adicionar podcast</string>
-  <string name="miro_feed_added">A fonte está a ser adicionada</string>
+  <string name="time_unit_seconds">segundos</string>
+  <string name="time_unit_minutes">minutos</string>
+  <string name="time_unit_hours">horas</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Categorias</string>
   <string name="gpodnet_toplist_header">Melhores</string>
@@ -324,5 +321,9 @@
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Número de novos episódios</string>
   <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
+  <string name="drag_handle_content_description">Arraste para mudar a posição deste item</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">Autenticação</string>
+  <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios.</string>
   <!--AntennaPodSP-->
 </resources>

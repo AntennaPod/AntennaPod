@@ -1,20 +1,30 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Канали</string>
   <string name="podcasts_label">Подкасти</string>
   <string name="episodes_label">Епізоди</string>
+  <string name="new_episodes_label">Нові епізоди</string>
+  <string name="all_episodes_label">Всі епізоди</string>
   <string name="new_label">Нові</string>
   <string name="waiting_list_label">Черга</string>
   <string name="settings_label">Налаштування</string>
   <string name="add_new_feed_label">Додати подкаст</string>
   <string name="downloads_label">Завантаження</string>
+  <string name="downloads_running_label">В процесі</string>
+  <string name="downloads_completed_label">Завершено</string>
+  <string name="downloads_log_label">Журнал</string>
   <string name="cancel_download_label">Скасувати завантаження</string>
-  <string name="download_log_label">Історія завантажень</string>
   <string name="playback_history_label">Що грало</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net логін</string>
+  <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Щойно опубліковано</string>
+  <string name="episode_filter_label">Показати тількі нові епізоди</string>
+  <!--Main activity-->
+  <string name="drawer_open">Показати меню</string>
+  <string name="drawer_close">Сховати меню</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копія URL</string>
@@ -38,12 +48,10 @@
   <string name="description_label">Опис</string>
   <string name="most_recent_prefix">Найновіший епізод:\u0020</string>
   <string name="episodes_suffix">\u0020епізодів</string>
-  <string name="published_prefix">Опубліковано:\u0020</string>
   <string name="length_prefix">Довжина:\u0020</string>
   <string name="size_prefix">Розмір:\u0020</string>
   <string name="processing_label">Обробка</string>
   <string name="loading_label">Завантаження категорій ...</string>
-  <string name="image_of_prefix">Зображення:\u0020</string>
   <string name="save_username_password_label">Зберегти ім\'я користувача та пароль</string>
   <string name="close_label">Закрити</string>
   <string name="retry_label">Повторити знову</string>
@@ -51,11 +59,14 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
   <string name="txtvfeedurl_label">Додати подкаст за URL</string>
-  <string name="podcastdirectories_label">Каталоги подкастів</string>
+  <string name="podcastdirectories_label">Знайти подкаст в каталозі</string>
+  <string name="podcastdirectories_descr">В каталозі gpodder.net можливий пошук за назвою, категорією або популярністю.</string>
+  <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Все прочитано</string>
+  <string name="mark_all_read_msg">Позначити всі епізоди як переглянуті</string>
   <string name="show_info_label">Інформація</string>
-  <string name="remove_feed_label">Видалити канал</string>
+  <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_link_label">Поділитися URL сайту</string>
   <string name="share_source_label">Поділитися URL каналу</string>
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
@@ -66,6 +77,7 @@
   <string name="pause_label">Пауза</string>
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
+  <string name="remove_episode_lable">Видалити епізод</string>
   <string name="mark_read_label">Прочитано</string>
   <string name="mark_unread_label">Непрочитано</string>
   <string name="add_to_queue_label">Додати до черги</string>
@@ -76,8 +88,8 @@
   <string name="download_all">Завантажити все</string>
   <string name="skip_episode_label">Пропустити епізод</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Успішне завантаження</string>
-  <string name="download_failed">Помилка завантаження</string>
+  <string name="download_successful">успішно</string>
+  <string name="download_failed">з помилками</string>
   <string name="download_pending">Потрібно завантажити</string>
   <string name="download_running">Завантаження</string>
   <string name="download_error_device_not_found">Немає куди зберігати</string>
@@ -98,6 +110,7 @@
   <string name="download_error_request_error">Помилка запиту</string>
   <string name="download_error_db_access">Помилка бази даних</string>
   <string name="downloads_left">\0020 залишилось завантажити</string>
+  <string name="downloads_processing">Обробка завантаженого</string>
   <string name="download_notification_title">Завантаження даних подкасту</string>
   <string name="download_report_content">Завантажилось %1$d успішно, %2$d з помилками</string>
   <string name="download_log_title_unknown">Невідома назва</string>
@@ -119,13 +132,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферізую</string>
   <string name="playbackservice_notification_title">Грає подкаст</string>
-  <string name="playbackservice_notification_content">Додаткова інформація</string>
-  <!--Navigation-->
-  <string name="show_download_log">Що було</string>
-  <string name="show_player_label">До керування</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Очистити чергу</string>
-  <string name="organize_queue_label">Впорядкувати чергу</string>
   <string name="undo">Скасувати</string>
   <string name="removed_from_queue">Видалено</string>
   <string name="move_to_top_label">Догори</string>
@@ -191,8 +199,6 @@
   <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
   <string name="pref_auto_flattr_title">Automatic Flattr</string>
   <string name="pref_auto_flattr_sum">Flattr episodes of which 80% have been played.</string>
-  <string name="pref_display_only_episodes_title">Показувати тільки епізоди</string>
-  <string name="pref_display_only_episodes_sum">Відображати тільки канали з наявними епізодами</string>
   <string name="user_interface_label">Зовнішній вид</string>
   <string name="pref_set_theme_title">Обрати тему</string>
   <string name="pref_set_theme_sum">Змінити появу AntennaPod</string>
@@ -221,10 +227,7 @@
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>
   <string name="found_in_chapters_label">Знайдено в главах</string>
-  <string name="search_status_searching">Пошук ...</string>
   <string name="search_status_no_results">Жодних результатів немає</string>
-  <string name="search_results_label">Результати пошуку</string>
-  <string name="search_term_label">Ви шукали:\u0020</string>
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
@@ -251,16 +254,9 @@
   <string name="sleep_timer_label">Таймер сну</string>
   <string name="time_left_label">Залишилось:\u0020</string>
   <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Завантаження категорій ...</string>
-  <string name="browse_miroguide_label">Перегляд Miro Guide</string>
-  <string name="txtv_browse_miroguide_label">Або проглянути Miro Guide</string>
-  <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Пошук в Mirog Guide</string>
-  <string name="popular_label">Популярні</string>
-  <string name="best_rating_label">Кращі</string>
-  <string name="add_feed_label">Додати подкаст</string>
-  <string name="miro_feed_added">Канал додано</string>
+  <string name="time_unit_seconds">секунд</string>
+  <string name="time_unit_minutes">хвилин</string>
+  <string name="time_unit_hours">годин</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
@@ -324,6 +320,10 @@
   <string name="in_queue_label">Епізод чекає в черзі</string>
   <string name="new_episodes_count_label">Кількість нових епізодів</string>
   <string name="in_progress_episodes_count_label">Кількість епізодів що ви почали слухати</string>
+  <string name="drag_handle_content_description">Перетягніть щоб змінити позицію</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">Автентикація</string>
+  <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
 </resources>

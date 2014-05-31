@@ -1,20 +1,23 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Каналы</string>
-  <string name="podcasts_label">ПОДКАСТЫ</string>
-  <string name="episodes_label">ВЫПУСКИ</string>
+  <string name="podcasts_label">Подкасты</string>
+  <string name="episodes_label">Выпуски</string>
+  <string name="new_episodes_label">Новые выпуски</string>
+  <string name="all_episodes_label">Все выпуски</string>
   <string name="new_label">Новые</string>
   <string name="waiting_list_label">В ожидании</string>
   <string name="settings_label">Настройки</string>
   <string name="add_new_feed_label">Добавить подкаст</string>
   <string name="downloads_label">Загрузки</string>
   <string name="cancel_download_label">Отменить загрузку</string>
-  <string name="download_log_label">Журнал загрузок</string>
   <string name="playback_history_label">История воспроизведения</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Открыть в браузере</string>
   <string name="copy_url_label">Скопировать ссылку</string>
@@ -33,29 +36,27 @@
   <string name="error_msg_prefix">Произошла ошибка:</string>
   <string name="refresh_label">Обновить</string>
   <string name="external_storage_error_msg">Внешний носитель недоступен. Убедитесь что внешний носитель установлен, иначе приложение не сможет нормально работать.</string>
-  <string name="chapters_label">Разделы</string>
-  <string name="shownotes_label">Заметки к эпизоду</string>
+  <string name="chapters_label">Главы</string>
+  <string name="shownotes_label">Примечания к выпуску</string>
   <string name="description_label">Описание</string>
   <string name="most_recent_prefix">Последний выпуск:\u0020</string>
   <string name="episodes_suffix">\u0020выпуск(ов)</string>
-  <string name="published_prefix">Опубликовано:\u0020</string>
   <string name="length_prefix">Продолжительность:\u0020</string>
   <string name="size_prefix">Размер:\u0020</string>
   <string name="processing_label">Обработка</string>
   <string name="loading_label">Загрузка...</string>
-  <string name="image_of_prefix">Изображение:\u0020</string>
   <string name="save_username_password_label">Сохранить имя пользователя и пароль</string>
   <string name="close_label">Закрыть</string>
   <string name="retry_label">Повторить</string>
-  <string name="auto_download_label">Добавиить в автозагрузки</string>
+  <string name="auto_download_label">Добавить в автозагрузки</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
   <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
-  <string name="podcastdirectories_label">Катологи подкастов</string>
+  <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить все как прочитанное</string>
   <string name="show_info_label">Показать информацию</string>
-  <string name="remove_feed_label">Удалить канал</string>
+  <string name="remove_feed_label">Удалить подкаст</string>
   <string name="share_link_label">Ссылка на сайт</string>
   <string name="share_source_label">Ссылка на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
@@ -72,12 +73,12 @@
   <string name="remove_from_queue_label">Удалить из очереди</string>
   <string name="visit_website_label">Посетить сайт</string>
   <string name="support_label">Поддержать через Flattr</string>
-  <string name="enqueue_all_new">Добавить все в очередь</string>
-  <string name="download_all">Загрузить все</string>
+  <string name="enqueue_all_new">Добавить всё в очередь</string>
+  <string name="download_all">Загрузить всё</string>
   <string name="skip_episode_label">Пропустить выпуск</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Загрузка завершена</string>
-  <string name="download_failed">Загрузка прервана</string>
+  <string name="download_successful">успешно</string>
+  <string name="download_failed">не удалось</string>
   <string name="download_pending">Загрузка в ожидании</string>
   <string name="download_running">Загрузка в процессе</string>
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
@@ -85,15 +86,15 @@
   <string name="download_error_file_error">Ошибка файла</string>
   <string name="download_error_http_data_error">Ошибка протокола HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
-  <string name="download_error_parser_exception">Ошибка парсера</string>
+  <string name="download_error_parser_exception">Ошибка обработки</string>
   <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
   <string name="download_error_connection_error">Ошибка соединения</string>
-  <string name="download_error_unknown_host">Неизвестный хост</string>
+  <string name="download_error_unknown_host">Неизвестный узел</string>
   <string name="download_error_unauthorized">Ошибка авторизации</string>
   <string name="cancel_all_downloads_label">Отменить все загрузки</string>
   <string name="download_cancelled_msg">Загрузка отменена</string>
   <string name="download_report_title">Загрузки завершены</string>
-  <string name="download_error_malformed_url">Некорректная ссылка</string>
+  <string name="download_error_malformed_url">Неправильный адрес</string>
   <string name="download_error_io_error">Ошибка ввода-вывода</string>
   <string name="download_error_request_error">Ошибка запроса</string>
   <string name="download_error_db_access">Ошибка доступа к базе данных</string>
@@ -102,47 +103,42 @@
   <string name="download_report_content">%1$d загрузок завершено, %2$d не удалось</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
   <string name="download_type_feed">Канал</string>
-  <string name="download_type_media">Медиа файл</string>
+  <string name="download_type_media">Медиафайл</string>
   <string name="download_type_image">Изображение</string>
   <string name="download_request_error_dialog_message_prefix">Ошибка при загрузки файла:\u0020</string>
   <string name="authentication_notification_title">Необходима авторизация</string>
   <string name="authentication_notification_msg">Для доступа к ресурсу необходимо ввести имя пользователя и пароль</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">Ошибка!</string>
+  <string name="player_error_msg">Ошибка</string>
   <string name="player_stopped_msg">Ничего не воспроизводится</string>
   <string name="player_preparing_msg">Подготовка</string>
   <string name="player_ready_msg">Готово</string>
   <string name="player_seeking_msg">Перемотка</string>
-  <string name="playback_error_server_died">Сервер отключен</string>
+  <string name="playback_error_server_died">Сервер недоступен</string>
   <string name="playback_error_unknown">Неизвестная ошибка</string>
   <string name="no_media_playing_label">Ничего не воспроизводится</string>
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферизация</string>
   <string name="playbackservice_notification_title">Воспроизведение подкаста</string>
-  <string name="playbackservice_notification_content">Нажмите для получения дополнительной информации</string>
-  <!--Navigation-->
-  <string name="show_download_log">Показать журнал</string>
-  <string name="show_player_label">Показать проигрыватель</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Очистить очередь</string>
-  <string name="organize_queue_label">Упорядочить очередь</string>
   <string name="undo">Отмена</string>
-  <string name="removed_from_queue">Удален</string>
+  <string name="removed_from_queue">Удалено</string>
   <string name="move_to_top_label">Переместить вверх</string>
   <string name="move_to_bottom_label">Переместить вниз</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Авторизоваться в Flattr</string>
-  <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где вам нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
+  <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
   <string name="authenticate_label">Авторизовать</string>
   <string name="return_home_label">Вернуться к началу</string>
-  <string name="flattr_auth_success">Успешная авторизация! Теперь вы можете использовать Flattr прямо из приложения.</string>
+  <string name="flattr_auth_success">Успешная авторизация. Теперь можно использовать Flattr прямо из приложения.</string>
   <string name="no_flattr_token_title">Токен Flattr не найден</string>
-  <string name="no_flattr_token_msg">Кажется, ваш аккаунт Flattr не подключен к AntennaPod. Вы можете подключить аккаунт к AntennaPod или посетить сайт канала, чтобы пожертвовать через Flattr прямо на сайте.</string>
+  <string name="no_flattr_token_msg">Кажется, ваш аккаунт Flattr не подключен к AntennaPod. Можно подключить аккаунт к AntennaPod или посетить сайт канала, чтобы пожертвовать через Flattr прямо на сайте.</string>
   <string name="authenticate_now_label">Авторизоваться</string>
   <string name="action_forbidden_title">Действие запрещено</string>
-  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно, доступ к вашему аккаунту был отозван. Вы можете авторизоваться заново или посетить сайт, которому вы пожертвовали через Flattr.</string>
+  <string name="action_forbidden_msg">AntennaPod не имеет прав для выполнения этого действия. Возможно, доступ к вашему аккаунту был отозван. Можно авторизоваться заново или посетить сайт, которому вы пожертвовали через Flattr.</string>
   <string name="access_revoked_title">Доступ отозван</string>
-  <string name="access_revoked_info">Вы успешно отключили AntennaPod от вашего аккаунта в Flattr. Чтобы завершить этот процесс вам нужно удалить AntennaPod из списка приложений подключенных к вашему аккаунту на сайте Flattr.</string>
+  <string name="access_revoked_info">Вы успешно отключили AntennaPod от аккаунта в Flattr. Чтобы завершить этот процесс  нужно удалить AntennaPod из списка приложений подключенных к аккаунту на сайте Flattr.</string>
   <!--Flattr-->
   <string name="flattr_click_success">Один поддержан через Flattr!</string>
   <string name="flattr_click_success_count">Поддержано через Flattr:  %d.</string>
@@ -169,7 +165,7 @@
   <string name="queue_label">Очередь</string>
   <string name="services_label">Сервисы</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Остановить воспроизведение, когда наушники отсоединены</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Приостановить воспроизведение, когда наушники отсоединены</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
   <string name="playback_pref">Воспроизведение</string>
   <string name="network_pref">Сеть</string>
@@ -180,51 +176,46 @@
   <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
-  <string name="pref_mobileUpdate_sum">Обновлять каналы через мобильное интернет-подключение</string>
+  <string name="pref_mobileUpdate_sum">Позволить обновления через мобильное интернет-подключение</string>
   <string name="refreshing_label">Обновление</string>
   <string name="flattr_settings_label">Настройки Flattr</string>
   <string name="pref_flattr_auth_title">Авторизация Flattr</string>
-  <string name="pref_flattr_auth_sum">Авторизуйтесь в Flattr чтобы поддерживать каналы прямо из приложения</string>
+  <string name="pref_flattr_auth_sum">Авторизуйтесь во Flattr чтобы поддерживать каналы прямо из приложения</string>
   <string name="pref_flattr_this_app_title">Поддержать это приложение в Flattr</string>
   <string name="pref_flattr_this_app_sum">Поддержите разработку AntennaPod через Flattr. Спасибо!</string>
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
   <string name="pref_auto_flattr_title">Автоматически поддерживать через Flattr</string>
   <string name="pref_auto_flattr_sum">Поддерживать через Flattr эпизоды, прослушанные на 80%</string>
-  <string name="pref_display_only_episodes_title">Показывать только выпуски</string>
-  <string name="pref_display_only_episodes_sum">Показывать только те элементы списка, которые содержат выпуски</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
   <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматическая загрузка</string>
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных Wi-Fi сетей.</string>
+  <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
   <string name="pref_episode_cache_title">Кэш выпусков</string>
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
   <string name="pref_episode_cache_unlimited">Неограничен</string>
   <string name="pref_update_interval_hours_plural">ч.</string>
-  <string name="pref_update_interval_hours_singular">час</string>
+  <string name="pref_update_interval_hours_singular">ч.</string>
   <string name="pref_update_interval_hours_manual">Вручную</string>
-  <string name="pref_gpodnet_authenticate_title">Вход в gpodder.net</string>
+  <string name="pref_gpodnet_authenticate_title">Войти</string>
   <string name="pref_gpodnet_authenticate_sum">Вход в ваш аккаунт gpodder.net для синхронизации ваших подписок.</string>
   <string name="pref_gpodnet_logout_title">Выход из gpodder.net</string>
-  <string name="pref_gpodnet_logout_toast">Выход произведен успешно</string>
+  <string name="pref_gpodnet_logout_toast">Выход произведён успешно</string>
   <string name="pref_gpodnet_setlogin_information_title">Изменить информацию авторизации</string>
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
-  <string name="pref_gpodnet_sethostname_title">Задать имя хоста</string>
-  <string name="pref_gpodnet_sethostname_use_default_host">Использовать хост по умолчанию</string>
+  <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
+  <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
   <!--Search-->
   <string name="search_hint">Поиск каналов или выпусков</string>
   <string name="found_in_shownotes_label">Найдено в описании выпуска</string>
-  <string name="found_in_chapters_label">Найдено в разделах</string>
-  <string name="search_status_searching">Поиск...</string>
+  <string name="found_in_chapters_label">Найдено в главах</string>
   <string name="search_status_no_results">Ничего не найдено</string>
-  <string name="search_results_label">Результаты поиска</string>
-  <string name="search_term_label">Вы искали:\u0020</string>
   <string name="search_label">Поиск</string>
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
@@ -232,49 +223,39 @@
   <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить в указанный каталог и нажать кнопку внизу для запуска импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
-  <string name="opml_directory_error">ОШИБКА!</string>
+  <string name="opml_directory_error">Ошибка</string>
   <string name="reading_opml_label">Чтение файла OPML</string>
   <string name="opml_reader_error">Ошибка чтения файла OPML</string>
-  <string name="opml_import_error_dir_empty">Каталог импорта пуст.</string>
+  <string name="opml_import_error_dir_empty">Каталог для импорта пуст.</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
   <string name="choose_file_to_import_label">Выбрать файл для импорта</string>
   <string name="opml_export_label">Экспорт в OPML</string>
   <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
-  <string name="opml_export_success_title">Экспорт OPML завершен</string>
-  <string name="opml_export_success_sum">OPML файл был записан в:\u0020</string>
+  <string name="opml_export_success_title">Экспорт OPML завершён.</string>
+  <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Установить таймер сна</string>
   <string name="disable_sleeptimer_label">Отключить таймер сна</string>
   <string name="enter_time_here_label">Введите время</string>
   <string name="sleep_timer_label">Таймер сна</string>
-  <string name="time_left_label">Времени осталось:\u0020</string>
+  <string name="time_left_label">Осталось времени:\u0020</string>
   <string name="time_dialog_invalid_input">Неправильный ввод, время должно быть в виде числа</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Загрузка категорий...</string>
-  <string name="browse_miroguide_label">Посмотреть в каталоге Miro</string>
-  <string name="txtv_browse_miroguide_label">Или посмотреть в каталоге Miro</string>
-  <string name="miro_guide_label">Miro</string>
-  <string name="miro_search_hint">Поиск в Miro</string>
-  <string name="popular_label">Популярные</string>
-  <string name="best_rating_label">С высоким рейтингом</string>
-  <string name="add_feed_label">Добавить подкаст</string>
-  <string name="miro_feed_added">Канал добавляется</string>
   <!--gpodder.net-->
-  <string name="gpodnet_taglist_header">КАТЕГОРИИ</string>
-  <string name="gpodnet_toplist_header">ТОП ПОДКАСТОВ</string>
-  <string name="gpodnet_suggestions_header">ПРЕДПОЛОЖЕНИЯ</string>
+  <string name="gpodnet_taglist_header">Категории</string>
+  <string name="gpodnet_toplist_header">Лучшее</string>
+  <string name="gpodnet_suggestions_header">Рекомендации</string>
   <string name="gpodnet_search_hint">Искать на gpodder.net</string>
   <string name="gpodnetauth_login_title">Войти</string>
-  <string name="gpodnetauth_login_descr">Добро пожаловать на процесс авторизации на gpodder.net. Сначала введите вашу информацию для авторизации:</string>
+  <string name="gpodnetauth_login_descr">Добро пожаловать в процесс авторизации на gpodder.net. Сначала введите вашу информацию для авторизации:</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
   <string name="gpodnetauth_login_register">Если у вас ещё нет аккаунта, то вы можете создать его здесь:⏎\nhttps://gpodder.net/register/</string>
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
   <string name="gpodnetauth_device_title">Выбор устройства</string>
   <string name="gpodnetauth_device_descr">Создайте новое устройство, чтобы использовать ваш аккаунт на gpodder.net или выберите существующее:</string>
-  <string name="gpodnetauth_device_deviceID">Device ID:\u0020</string>
+  <string name="gpodnetauth_device_deviceID">Идентификатор устройства:\u0020</string>
   <string name="gpodnetauth_device_caption">Название устройства</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Создайте новое устройство</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Выберите существующее устройство:</string>
@@ -324,6 +305,7 @@
   <string name="in_queue_label">Эпизод в очереди</string>
   <string name="new_episodes_count_label">Количество новых эпизодов</string>
   <string name="in_progress_episodes_count_label">Количество начатых эпизодов</string>
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">안테나팟</string>
   <string name="feeds_label">피드</string>
   <string name="podcasts_label">팟캐스트</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">팟캐스트 추가</string>
   <string name="downloads_label">다운로드</string>
   <string name="cancel_download_label">다운로드 취소</string>
-  <string name="download_log_label">다운로드 기록</string>
   <string name="playback_history_label">재생 기록</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 로그인</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">브라우저에서 열기</string>
   <string name="copy_url_label">URL 복사</string>
@@ -38,12 +39,10 @@
   <string name="description_label">설명</string>
   <string name="most_recent_prefix">가장 최근 에피소드:\u0020</string>
   <string name="episodes_suffix">\u0020에피소드</string>
-  <string name="published_prefix">발표 시각:\u0020</string>
   <string name="length_prefix">길이:\u0020</string>
   <string name="size_prefix">크기:\u0020</string>
   <string name="processing_label">처리 중</string>
   <string name="loading_label">읽어들이는 중...</string>
-  <string name="image_of_prefix">다음의 그림:\u0020</string>
   <string name="save_username_password_label">사용자 이름 및 암호 저장</string>
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
@@ -51,11 +50,9 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">피드 URL</string>
   <string name="txtvfeedurl_label">URL로 팟캐스트를 추가</string>
-  <string name="podcastdirectories_label">팟캐스트 디렉터리 서비스</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">모두 읽은 것으로 표시</string>
   <string name="show_info_label">정보 표시</string>
-  <string name="remove_feed_label">피드 제거</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
   <string name="share_source_label">피드 링크 공유</string>
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
@@ -76,8 +73,6 @@
   <string name="download_all">모두 다운로드</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
   <!--Download messages and labels-->
-  <string name="download_successful">다운로드 성공</string>
-  <string name="download_failed">다운로드 실패</string>
   <string name="download_pending">다운로드 지연 중</string>
   <string name="download_running">다운로드 실행 중</string>
   <string name="download_error_device_not_found">저장 장치가 없습니다</string>
@@ -119,13 +114,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">버퍼링 중</string>
   <string name="playbackservice_notification_title">팟캐스트 재생 중</string>
-  <string name="playbackservice_notification_content">자세히 보려면 여기를 누르십시오</string>
-  <!--Navigation-->
-  <string name="show_download_log">기록 보기</string>
-  <string name="show_player_label">재생 화면 보기</string>
   <!--Queue operations-->
   <string name="clear_queue_label">대기열 지우기</string>
-  <string name="organize_queue_label">대기열 정리</string>
   <string name="undo">실행 취소</string>
   <string name="removed_from_queue">항목을 제거했습니다</string>
   <string name="move_to_top_label">맨 위로 이동</string>
@@ -191,8 +181,6 @@
   <string name="pref_revokeAccess_sum">이 앱이 Flattr 계정에 접근할 권한을 철회합니다.</string>
   <string name="pref_auto_flattr_title">자동 Flattr</string>
   <string name="pref_auto_flattr_sum">80% 재생한 에피소드 Flattr하기.</string>
-  <string name="pref_display_only_episodes_title">에피소드만 표시</string>
-  <string name="pref_display_only_episodes_sum">에피소드가 하나라도 있는 항목만 표시합니다.</string>
   <string name="user_interface_label">사용자 인터페이스</string>
   <string name="pref_set_theme_title">테마 선택</string>
   <string name="pref_set_theme_sum">안테나팟의 겉모양을 바꿉니다.</string>
@@ -221,10 +209,7 @@
   <string name="search_hint">피드나 에피소드 검색</string>
   <string name="found_in_shownotes_label">프로그램 메모에서 발견</string>
   <string name="found_in_chapters_label">챕터에서 발견</string>
-  <string name="search_status_searching">검색하는 중...</string>
   <string name="search_status_no_results">검색 결과가 없습니다</string>
-  <string name="search_results_label">검색 결과</string>
-  <string name="search_term_label">다음을 검색함:\u0020</string>
   <string name="search_label">검색</string>
   <string name="found_in_title_label">제목에서 발견</string>
   <!--OPML import and export-->
@@ -251,16 +236,6 @@
   <string name="sleep_timer_label">취침 타이머</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간으로 숫자를 입력해야 합니다.</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">분류를 읽어들이는 중...</string>
-  <string name="browse_miroguide_label">미로 가이드 찾아보기</string>
-  <string name="txtv_browse_miroguide_label">또는 미로 가이드 찾아보기:</string>
-  <string name="miro_guide_label">미로 가이드</string>
-  <string name="miro_search_hint">미로 가이드 검색</string>
-  <string name="popular_label">인기</string>
-  <string name="best_rating_label">높은 평점</string>
-  <string name="add_feed_label">팟캐스트 추가</string>
-  <string name="miro_feed_added">피드를 추가하는 중입니다</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">분류</string>
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
@@ -324,6 +299,7 @@
   <string name="in_queue_label">에피소드가 대기열에 들어 있습니다</string>
   <string name="new_episodes_count_label">새 에피소드 개수</string>
   <string name="in_progress_episodes_count_label">듣기를 시작한 에피소드 개수</string>
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
 </resources>

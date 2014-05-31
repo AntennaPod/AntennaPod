@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="podcasts_label">PODCASTS</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">Podcast toevoegen</string>
   <string name="downloads_label">Downloads</string>
   <string name="cancel_download_label">Annuleer download</string>
-  <string name="download_log_label">Download log</string>
   <string name="playback_history_label">Afspeelgeschiedenis</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">In de browser openen</string>
   <string name="copy_url_label">URL kopieren</string>
@@ -38,12 +39,10 @@
   <string name="description_label">Beschrijving</string>
   <string name="most_recent_prefix">Meest recente aflevering:\u0020</string>
   <string name="episodes_suffix">\u0020afleveringen</string>
-  <string name="published_prefix">Gepubliceerd:\u0020</string>
   <string name="length_prefix">Lengte:\u0020</string>
   <string name="size_prefix">Grootte:\u0020</string>
   <string name="processing_label">Aan het verwerken</string>
   <string name="loading_label">Laden...</string>
-  <string name="image_of_prefix">Beeld van:\u0020</string>
   <string name="save_username_password_label">Gebruikersnaam en wachtwoord opslaan</string>
   <string name="close_label">Sluiten</string>
   <string name="retry_label">Opnieuw proberen</string>
@@ -51,11 +50,9 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Podcast toevoegen bij URL</string>
-  <string name="podcastdirectories_label">Podcast lijsten</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alles als gelezen markeren</string>
   <string name="show_info_label">Toon informatie</string>
-  <string name="remove_feed_label">Feed verwijderen</string>
   <string name="share_link_label">Website link delen</string>
   <string name="share_source_label">Feed link delen</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE afleveringen van deze feed die u hebt gedownload wilt verwijderen.</string>
@@ -76,8 +73,6 @@
   <string name="download_all">Alles downloaden</string>
   <string name="skip_episode_label">Aflevering overslaan</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Download succesvol</string>
-  <string name="download_failed">Downloaden mislukt</string>
   <string name="download_pending">Download in afwachting</string>
   <string name="download_running">Aan het downloaden</string>
   <string name="download_error_device_not_found">Opslagmedium niet gevonden</string>
@@ -119,13 +114,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Podcast aan het afspelen</string>
-  <string name="playbackservice_notification_content">Tik hier voor meer info</string>
-  <!--Navigation-->
-  <string name="show_download_log">Log tonen</string>
-  <string name="show_player_label">Player tonen</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Wachtrij leeg maken</string>
-  <string name="organize_queue_label">Wachtrij organiseren</string>
   <string name="undo">Ongedaan maken</string>
   <string name="removed_from_queue">Item verwijderd</string>
   <string name="move_to_top_label">Naar boven verplaatsen</string>
@@ -191,8 +181,6 @@
   <string name="pref_revokeAccess_sum">Trek de toegang van deze app in tot je Flattr account.</string>
   <string name="pref_auto_flattr_title">Automatische Flattr</string>
   <string name="pref_auto_flattr_sum">Afleveringen automatisch Flattr nadat 80 procent van de episode gespeeld is</string>
-  <string name="pref_display_only_episodes_title">Alleen afleveringen weergeven</string>
-  <string name="pref_display_only_episodes_sum">Geef alleen items weer die ook een aflevering hebben.</string>
   <string name="user_interface_label">User Interface</string>
   <string name="pref_set_theme_title">Kies theme</string>
   <string name="pref_set_theme_sum">Verander het uiterlijk van AntennaPod.</string>
@@ -221,10 +209,7 @@
   <string name="search_hint">Feeds of afleveringen zoeken</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>
   <string name="found_in_chapters_label">Gevonden in hoofdstukken</string>
-  <string name="search_status_searching">Aan het zoeken...</string>
   <string name="search_status_no_results">Er zijn geen resultaten gevonden</string>
-  <string name="search_results_label">Zoekresultaten</string>
-  <string name="search_term_label">Je zocht:\u0020</string>
   <string name="search_label">Zoeken</string>
   <string name="found_in_title_label">Gevonden in de titel</string>
   <!--OPML import and export-->
@@ -251,16 +236,6 @@
   <string name="sleep_timer_label">Slaap timer</string>
   <string name="time_left_label">Resterende tijd:\u0020</string>
   <string name="time_dialog_invalid_input">Ongeldige invoer, de tijd moet een geheel getal zijn</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Categorieën aan het laden...</string>
-  <string name="browse_miroguide_label">Miro gids bladeren</string>
-  <string name="txtv_browse_miroguide_label">Of blader de Miro gids:</string>
-  <string name="miro_guide_label">Miro gids</string>
-  <string name="miro_search_hint">Zoek Miro gids</string>
-  <string name="popular_label">Populair</string>
-  <string name="best_rating_label">Beste beoordeling</string>
-  <string name="add_feed_label">Podcast toevoegen</string>
-  <string name="miro_feed_added">Feed wordt toegevoegd</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIEËN</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -324,6 +299,7 @@
   <string name="in_queue_label">Aflevering is in de queue</string>
   <string name="new_episodes_count_label">Aantal nieuwe afleveringen</string>
   <string name="in_progress_episodes_count_label">Aantal afleveringen dat begonnen te luisteren zijn</string>
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
   <string name="podcasts_label">PODCASTS</string>
@@ -10,8 +10,9 @@
   <string name="settings_label">Ajustes</string>
   <string name="downloads_label">Descargas</string>
   <string name="cancel_download_label">Cancelar descarga</string>
-  <string name="download_log_label">Registro de descargas</string>
   <string name="playback_history_label">Historial de reproducción</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
@@ -31,18 +32,15 @@
   <string name="chapters_label">Capítulos</string>
   <string name="shownotes_label">Notas del programa</string>
   <string name="episodes_suffix">\u0020episodios</string>
-  <string name="published_prefix">Publicado:\u0020</string>
   <string name="length_prefix">Duración:\u0020</string>
   <string name="size_prefix">Tamaño:\u0020</string>
   <string name="processing_label">Procesando</string>
   <string name="loading_label">Cargando...</string>
-  <string name="image_of_prefix">Imagen de:\u0020</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="show_info_label">Información del programa</string>
-  <string name="remove_feed_label">Eliminar canal</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_source_label">Compartir el enlace del canal</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
@@ -62,8 +60,6 @@
   <string name="download_all">Descargarlos todos</string>
   <string name="skip_episode_label">Saltar episodio</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Descarga exitosa</string>
-  <string name="download_failed">Descarga errónea</string>
   <string name="download_pending">Descarga pendiente</string>
   <string name="download_running">Descarga en curso</string>
   <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
@@ -101,13 +97,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Almacenando</string>
   <string name="playbackservice_notification_title">Reproduciendo el podcast</string>
-  <string name="playbackservice_notification_content">Pulse para obtener más información</string>
-  <!--Navigation-->
-  <string name="show_download_log">Mostrar el registro</string>
-  <string name="show_player_label">Mostrar el reproductor</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Limpiar la cola</string>
-  <string name="organize_queue_label">Organizar cola</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Identificarse en Flattr</string>
   <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
@@ -150,8 +141,6 @@
   <string name="pref_flattr_this_app_sum">Apoye el desarrollo de AntennaPod valorándola en Flattr. ¡Gracias!</string>
   <string name="pref_revokeAccess_title">Revocar el acceso</string>
   <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
-  <string name="pref_display_only_episodes_title">Mostrar solo episodios</string>
-  <string name="pref_display_only_episodes_sum">Mostrar solo elementos que contengan un episodio.</string>
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
   <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
@@ -164,10 +153,7 @@
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
   <string name="found_in_chapters_label">Encontrado en los capítulos</string>
-  <string name="search_status_searching">Buscando...</string>
   <string name="search_status_no_results">No se han encontrado resultados</string>
-  <string name="search_results_label">Resultados de la búsqueda</string>
-  <string name="search_term_label">Ha buscado:\u0020</string>
   <string name="search_label">Buscar</string>
   <string name="found_in_title_label">Encontrado en el título</string>
   <!--OPML import and export-->
@@ -193,15 +179,6 @@
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tiempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada no válida, el tiempo debe ser un entero</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Cargando categorías...</string>
-  <string name="browse_miroguide_label">Examinar la guía de Miro</string>
-  <string name="txtv_browse_miroguide_label">O examine la guía de Miro:</string>
-  <string name="miro_guide_label">Guía de Miro</string>
-  <string name="miro_search_hint">Buscar en la guía de Miro</string>
-  <string name="popular_label">Popular</string>
-  <string name="best_rating_label">Mejor valoración</string>
-  <string name="miro_feed_added">Se está añadiendo el canal</string>
   <!--gpodder.net-->
   <!--Directory chooser-->
   <string name="selected_folder_label">Carpeta seleccionada</string>
@@ -217,5 +194,6 @@
   <string name="set_to_default_folder">Elegir carpeta predeterminada</string>
   <!--Online feed view-->
   <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

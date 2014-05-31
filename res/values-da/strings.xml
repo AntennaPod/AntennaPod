@@ -1,20 +1,30 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODER</string>
+  <string name="new_episodes_label">Nye episoder</string>
+  <string name="all_episodes_label">Alle episoder</string>
   <string name="new_label">Nye</string>
   <string name="waiting_list_label">Venteliste</string>
   <string name="settings_label">Indstillinger</string>
   <string name="add_new_feed_label">Tilføj podcast</string>
   <string name="downloads_label">Downloads</string>
+  <string name="downloads_running_label">Kører</string>
+  <string name="downloads_completed_label">Fuldført</string>
+  <string name="downloads_log_label">Log</string>
   <string name="cancel_download_label">Annuller Download</string>
-  <string name="download_log_label">Download log</string>
   <string name="playback_history_label">Afspilnings historik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Nyligt udgivet</string>
+  <string name="episode_filter_label">Hvis kun nye episoder</string>
+  <!--Main activity-->
+  <string name="drawer_open">Åben menu</string>
+  <string name="drawer_close">Luk menu</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Åben i browser</string>
   <string name="copy_url_label">Kopier URL</string>
@@ -38,12 +48,10 @@
   <string name="description_label">Beskrivelse</string>
   <string name="most_recent_prefix">Seneste episoder:\u0020</string>
   <string name="episodes_suffix">\u0020episoder</string>
-  <string name="published_prefix">Offentliggjort:\u0020</string>
   <string name="length_prefix">Længde:\u0020</string>
   <string name="size_prefix">Størrelse:\u0020</string>
   <string name="processing_label">Behandler</string>
   <string name="loading_label">Indlæser...</string>
-  <string name="image_of_prefix">Billede af:\u0020</string>
   <string name="save_username_password_label">Gem brugernavn og kodeord</string>
   <string name="close_label">Luk</string>
   <string name="retry_label">Prøv igen</string>
@@ -51,11 +59,14 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Tilføj Podcast med URL</string>
-  <string name="podcastdirectories_label">Podcast mapper</string>
+  <string name="podcastdirectories_label">Find podcast i mappen</string>
+  <string name="podcastdirectories_descr">Du kan søge efter nye podcasts efter navn, kategori eller popularitet i gpodder.net biblioteket</string>
+  <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marker alle som læst</string>
+  <string name="mark_all_read_msg">Marker alle episoder som læst</string>
   <string name="show_info_label">Vis information</string>
-  <string name="remove_feed_label">Fjern feed</string>
+  <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_link_label">Del webside link</string>
   <string name="share_source_label">Del feed link</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du vil fjerne dette feed og ALLE episoder du har downloadet fra dette feed.</string>
@@ -66,6 +77,7 @@
   <string name="pause_label">Pause</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Fjern</string>
+  <string name="remove_episode_lable">Fjern episode</string>
   <string name="mark_read_label">Marker som læst</string>
   <string name="mark_unread_label">Marker som ulæst</string>
   <string name="add_to_queue_label">Tilføj til kø</string>
@@ -76,8 +88,8 @@
   <string name="download_all">Download alle</string>
   <string name="skip_episode_label">Spring episode over</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Download lykkedes</string>
-  <string name="download_failed">Download fejlet</string>
+  <string name="download_successful">succesfuld</string>
+  <string name="download_failed">fejlet</string>
   <string name="download_pending">Download afventer</string>
   <string name="download_running">Download kører</string>
   <string name="download_error_device_not_found">Kan ikke finde lager-enhed</string>
@@ -98,6 +110,7 @@
   <string name="download_error_request_error">Anmode fejl</string>
   <string name="download_error_db_access">Adgangsfejl i database</string>
   <string name="downloads_left">\u0020Downloads tilbage</string>
+  <string name="downloads_processing">Bearbejder downloads</string>
   <string name="download_notification_title">Downloader podcast data</string>
   <string name="download_report_content">%1$d downloads lykkedes, %2$d fejlet</string>
   <string name="download_log_title_unknown">Ukendt titel</string>
@@ -119,13 +132,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Afspiller podcast</string>
-  <string name="playbackservice_notification_content">Tryk her for mere information</string>
-  <!--Navigation-->
-  <string name="show_download_log">Vis log</string>
-  <string name="show_player_label">Vis afspiller</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Fjern kø</string>
-  <string name="organize_queue_label">Arranger kø</string>
   <string name="undo">Fortryd</string>
   <string name="removed_from_queue">Emne slettet</string>
   <string name="move_to_top_label">Flyt til toppen</string>
@@ -191,8 +199,6 @@
   <string name="pref_revokeAccess_sum">Tilbagekald adgangen til din flattr konto fra denne app.</string>
   <string name="pref_auto_flattr_title">Flattr\'er automatisk</string>
   <string name="pref_auto_flattr_sum">Flattr episoder der er 80 procent afspillet. </string>
-  <string name="pref_display_only_episodes_title">Vis kun episoder</string>
-  <string name="pref_display_only_episodes_sum">Vis kun emner der også har en episode.</string>
   <string name="user_interface_label">Brugerflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_set_theme_sum">Skift AntennaPods udseende.</string>
@@ -221,10 +227,7 @@
   <string name="search_hint">Søg efter feeds eller episoder</string>
   <string name="found_in_shownotes_label">Funder i showets noter</string>
   <string name="found_in_chapters_label">Fundet i kapitler</string>
-  <string name="search_status_searching">Søger...</string>
   <string name="search_status_no_results">Fandt ingen resultater</string>
-  <string name="search_results_label">Søgeresultater</string>
-  <string name="search_term_label">Du søgte:\u0020</string>
   <string name="search_label">Søg</string>
   <string name="found_in_title_label">Fundet i titel</string>
   <!--OPML import and export-->
@@ -251,16 +254,9 @@
   <string name="sleep_timer_label">Søvn timer</string>
   <string name="time_left_label">Tid tilbage:\u0020</string>
   <string name="time_dialog_invalid_input">Ugyldig indtastning, tid skal være et heltal</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Indlæser katagorier...</string>
-  <string name="browse_miroguide_label">Søg i Miro Guiden</string>
-  <string name="txtv_browse_miroguide_label">Eller søg i Miro Guiden:</string>
-  <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Søg i Miro Guiden</string>
-  <string name="popular_label">Populær</string>
-  <string name="best_rating_label">Bedste bedømmelse</string>
-  <string name="add_feed_label">Tilføj podcast</string>
-  <string name="miro_feed_added">Feedet bliver tilføjet</string>
+  <string name="time_unit_seconds">sekunder</string>
+  <string name="time_unit_minutes">minutter</string>
+  <string name="time_unit_hours">timer</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIER </string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -324,6 +320,10 @@
   <string name="in_queue_label">Episode er i køen</string>
   <string name="new_episodes_count_label">Antal nye episoder</string>
   <string name="in_progress_episodes_count_label">Antallet af episoder du er begyndt at lytte til</string>
+  <string name="drag_handle_content_description">Træk for at skifte denne tings position</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">Godkendelse</string>
+  <string name="authentication_descr">Skift dit brugernavn og kodeord for denne podcast og dets episoder.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerer abonnementer fra single-purpose apps…</string>
 </resources>

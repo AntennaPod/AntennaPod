@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Zdroje</string>
   <string name="podcasts_label">PODCASTY</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">Přidat podcast</string>
   <string name="downloads_label">Stahování</string>
   <string name="cancel_download_label">Zrušit stahování</string>
-  <string name="download_log_label">Historie stáhnování</string>
   <string name="playback_history_label">Historie přehrávání</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net uživatel</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Otevřít v prohlížeči</string>
   <string name="copy_url_label">Kopírovat URL</string>
@@ -37,12 +38,10 @@
   <string name="description_label">Popis</string>
   <string name="most_recent_prefix">Poslední epizoda:\u0020</string>
   <string name="episodes_suffix">\u0020epizod</string>
-  <string name="published_prefix">Publikováno:\u0020</string>
   <string name="length_prefix">Délka:\u0020</string>
   <string name="size_prefix">Velikost:\u0020</string>
   <string name="processing_label">Zpracovávám</string>
   <string name="loading_label">Načítám...</string>
-  <string name="image_of_prefix">Obrázek:\u0020</string>
   <string name="save_username_password_label">Uložit uživatelské jméno a heslo</string>
   <string name="close_label">Zavřít</string>
   <string name="retry_label">Zkusit znovu</string>
@@ -50,11 +49,9 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL zdroje</string>
   <string name="txtvfeedurl_label">Přidat podcast pomocí URL</string>
-  <string name="podcastdirectories_label">Podcast adresáře</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Označit vše jako přečtené</string>
   <string name="show_info_label">Informace o zdroji</string>
-  <string name="remove_feed_label">Odstranit zdroj</string>
   <string name="share_link_label">Sdílet odkaz</string>
   <string name="share_source_label">Sdílet adresu zdroje</string>
   <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento zdroj včetně všech stažených epizod.</string>
@@ -75,8 +72,6 @@
   <string name="download_all">Stáhnout vše</string>
   <string name="skip_episode_label">Přeskočit epizodu</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Stahování dokončeno</string>
-  <string name="download_failed">Stahování selhalo</string>
   <string name="download_pending">Čekající na stažení</string>
   <string name="download_running">Probíhající stahování</string>
   <string name="download_error_device_not_found">Úložné zařízení nenalezeno</string>
@@ -115,13 +110,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Načítání</string>
   <string name="playbackservice_notification_title">Přehrávaný podcast</string>
-  <string name="playbackservice_notification_content">Stiskni zde pro více informací</string>
-  <!--Navigation-->
-  <string name="show_download_log">Historie stahování</string>
-  <string name="show_player_label">Přehrávač</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Vyprázdnit frontu</string>
-  <string name="organize_queue_label">Přeuspořádat frontu</string>
   <string name="undo">Zpět</string>
   <string name="removed_from_queue">Položka odebrána</string>
   <string name="move_to_top_label">Přejít na začátek</string>
@@ -174,8 +164,6 @@
   <string name="pref_flattr_this_app_sum">Podpořit vývoj AntennaPodu na flatteru. Děkujeme!</string>
   <string name="pref_revokeAccess_title">Odebrat přístup</string>
   <string name="pref_revokeAccess_sum">Odebere aplikaci přístupová práva k vašemu flattr účtu.</string>
-  <string name="pref_display_only_episodes_title">Zobrazit pouze epizody</string>
-  <string name="pref_display_only_episodes_sum">Zobrazit pouze položky obsahující epizody.</string>
   <string name="user_interface_label">Uživatelské rozhraní</string>
   <string name="pref_set_theme_title">Vybrat motiv</string>
   <string name="pref_set_theme_sum">Změnit vzhled AntennaPod.</string>
@@ -204,10 +192,7 @@
   <string name="search_hint">Hledat zdroje a epizody</string>
   <string name="found_in_shownotes_label">Nalezeno v poznámkách k show</string>
   <string name="found_in_chapters_label">Nalezeno v kapitolách</string>
-  <string name="search_status_searching">Vyhledávám...</string>
   <string name="search_status_no_results">Žádné výsledky</string>
-  <string name="search_results_label">Výsledky vyhledávání</string>
-  <string name="search_term_label">Vyhledáváno:\u0020</string>
   <string name="search_label">Vyhledat</string>
   <string name="found_in_title_label">Nalezeno v názvu</string>
   <!--OPML import and export-->
@@ -234,16 +219,6 @@
   <string name="sleep_timer_label">Časovač vypnutí</string>
   <string name="time_left_label">Zbývá času:\u0020</string>
   <string name="time_dialog_invalid_input">Neplatný vstup, musí být zadáno celé číslo</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Načítám kategorie...</string>
-  <string name="browse_miroguide_label">Procházet Miro Guide</string>
-  <string name="txtv_browse_miroguide_label">Nebo procházet Miro Guide:</string>
-  <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Vyhledávat v Miro Guide</string>
-  <string name="popular_label">Populární</string>
-  <string name="best_rating_label">Nejlépe hodnocené</string>
-  <string name="add_feed_label">Přidat podcast</string>
-  <string name="miro_feed_added">Přidávám zdroj</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -291,5 +266,6 @@
   <string name="subscribed_label">Odebíráno</string>
   <string name="downloading_label">Stahuji...</string>
   <!--Content descriptions for image buttons-->
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>

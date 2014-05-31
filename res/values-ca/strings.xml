@@ -1,20 +1,31 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canals</string>
+  <string name="add_feed_label">Afegeix podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODIS</string>
+  <string name="new_episodes_label">Episodis nous</string>
+  <string name="all_episodes_label">Tots els episodis</string>
   <string name="new_label">Nous</string>
   <string name="waiting_list_label">Llista d\'espera</string>
   <string name="settings_label">Configuració</string>
   <string name="add_new_feed_label">Afegeix podcast</string>
   <string name="downloads_label">Baixades</string>
+  <string name="downloads_running_label">En execució</string>
+  <string name="downloads_completed_label">Completat</string>
+  <string name="downloads_log_label">Registre</string>
   <string name="cancel_download_label">Cancel·la la baixada</string>
-  <string name="download_log_label">Registre de baixades</string>
   <string name="playback_history_label">Historial de reproducció</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Inici de sessió a gpodder.net</string>
+  <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Publicats recentment</string>
+  <string name="episode_filter_label">Mostra només els episodis nous</string>
+  <!--Main activity-->
+  <string name="drawer_open">Obre menú</string>
+  <string name="drawer_close">Tanca menú</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Obre en un navegador</string>
   <string name="copy_url_label">Copia l\'enllaç</string>
@@ -38,12 +49,10 @@
   <string name="description_label">Descripció</string>
   <string name="most_recent_prefix">Episodi més recent: \u0020</string>
   <string name="episodes_suffix">\u0020episodis</string>
-  <string name="published_prefix">Publicat:\u0020</string>
   <string name="length_prefix">Durada:\u0020</string>
   <string name="size_prefix">Mida:\u0020</string>
   <string name="processing_label">S\'està processant</string>
   <string name="loading_label">S\'està carregant...</string>
-  <string name="image_of_prefix">Imatge de:\u0020</string>
   <string name="save_username_password_label">Desa nom d\'usuari i contrasenya</string>
   <string name="close_label">Tanca</string>
   <string name="retry_label">Reintenta</string>
@@ -51,11 +60,14 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Enllaç del canal</string>
   <string name="txtvfeedurl_label">Afegeix podcast amb l\'URL</string>
-  <string name="podcastdirectories_label">Directoris de podcast</string>
+  <string name="podcastdirectories_label">Cerca podcast al directori</string>
+  <string name="podcastdirectories_descr">Podeu cercar nous podcasts al directori de gpodder.net mitjançant el seu nom, categoria o popularitat.</string>
+  <string name="browse_gpoddernet_label">Navega gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
+  <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
   <string name="show_info_label">Mostra informació</string>
-  <string name="remove_feed_label">Suprimeix el canal</string>
+  <string name="remove_feed_label">Esborra podcast</string>
   <string name="share_link_label">Comparteix l\'enllaç de la plana</string>
   <string name="share_source_label">Comparteix l\'enllaç del canal</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
@@ -66,6 +78,7 @@
   <string name="pause_label">Pausa</string>
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
+  <string name="remove_episode_lable">Esborra episodi</string>
   <string name="mark_read_label">Marca com a llegit</string>
   <string name="mark_unread_label">Marca com a pendent</string>
   <string name="add_to_queue_label">Afegeix a la cua</string>
@@ -76,8 +89,8 @@
   <string name="download_all">Baixa-ho tot</string>
   <string name="skip_episode_label">Omet l\'episodi</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Baixada finalitzada</string>
-  <string name="download_failed">Baixada fallida</string>
+  <string name="download_successful">ha funcionat</string>
+  <string name="download_failed">ha fallat</string>
   <string name="download_pending">Baixada pendent</string>
   <string name="download_running">Baixada en procés</string>
   <string name="download_error_device_not_found">No s\'ha trobat cap dispositiu d\'emmagatzemament</string>
@@ -98,6 +111,7 @@
   <string name="download_error_request_error">Error de petició</string>
   <string name="download_error_db_access">Error d\'accés a la base de dades</string>
   <string name="downloads_left">\u0020Baixades pendents</string>
+  <string name="downloads_processing">S\'estan processant les baixades</string>
   <string name="download_notification_title">S\'estan baixant les dades del podcast</string>
   <string name="download_report_content">%1$d baixades finalitzades, %2$d fallides</string>
   <string name="download_log_title_unknown">Títol desconegut</string>
@@ -119,13 +133,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">S\'està carregant</string>
   <string name="playbackservice_notification_title">Podcast en reproducció</string>
-  <string name="playbackservice_notification_content">Toqueu aquí per a més informació</string>
-  <!--Navigation-->
-  <string name="show_download_log">Mostra el registre</string>
-  <string name="show_player_label">Mostra el reproductor</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Buida la cua</string>
-  <string name="organize_queue_label">Ordena la cua</string>
   <string name="undo">Desfés</string>
   <string name="removed_from_queue">Ítem esborrat</string>
   <string name="move_to_top_label">Mou al principi</string>
@@ -191,8 +200,6 @@
   <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
   <string name="pref_auto_flattr_title">Flattr automàtic</string>
   <string name="pref_auto_flattr_sum">Comparteix per Flattr els episodis la reproducció dels quals hagi arribat al 80%.</string>
-  <string name="pref_display_only_episodes_title">Mostra només episodis</string>
-  <string name="pref_display_only_episodes_sum">Mostra només els elements que tenen algun episodi.</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="pref_set_theme_title">Selecció de tema</string>
   <string name="pref_set_theme_sum">Canvieu l\'aparença d\'AntennaPod.</string>
@@ -221,10 +228,7 @@
   <string name="search_hint">Cerca canals o episodis</string>
   <string name="found_in_shownotes_label">Trobat a notes del programa</string>
   <string name="found_in_chapters_label">Trobat als capítols</string>
-  <string name="search_status_searching">S\'està cercant...</string>
   <string name="search_status_no_results">No s\'ha trobat cap resultat</string>
-  <string name="search_results_label">Resultats de la cerca</string>
-  <string name="search_term_label">Heu cercat:\u0020</string>
   <string name="search_label">Cerca</string>
   <string name="found_in_title_label">Trobat al títol</string>
   <!--OPML import and export-->
@@ -251,16 +255,9 @@
   <string name="sleep_timer_label">Temporitzador</string>
   <string name="time_left_label">Temps restant:\u0020</string>
   <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">S\'estan carregant les categories...</string>
-  <string name="browse_miroguide_label">Explora la Guia Miro</string>
-  <string name="txtv_browse_miroguide_label">O exploreu la Guia Miro:</string>
-  <string name="miro_guide_label">Guia Miro</string>
-  <string name="miro_search_hint">Cerca a la Guia Miro</string>
-  <string name="popular_label">Popular</string>
-  <string name="best_rating_label">Millors puntuacions</string>
-  <string name="add_feed_label">Afegeix podcast</string>
-  <string name="miro_feed_added">S\'està afegint el canal</string>
+  <string name="time_unit_seconds">segons</string>
+  <string name="time_unit_minutes">minuts</string>
+  <string name="time_unit_hours">hores</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -324,6 +321,10 @@
   <string name="in_queue_label">S\'ha afegit l\'episodi a la cua</string>
   <string name="new_episodes_count_label">Nombre d\'episodis nous</string>
   <string name="in_progress_episodes_count_label">Nombre d\'episodis que heu començat a escoltar</string>
+  <string name="drag_handle_content_description">Arrossegueu l\'element per canviar-ne la posició</string>
+  <!--Feed information screen-->
+  <string name="authentication_label">Autenticació</string>
+  <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
 </resources>

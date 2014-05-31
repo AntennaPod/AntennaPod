@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <!--Activitiy titles-->
+  <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feed</string>
   <string name="podcasts_label">PODCAST</string>
@@ -11,10 +11,11 @@
   <string name="add_new_feed_label">Aggiungi podcast</string>
   <string name="downloads_label">Download</string>
   <string name="cancel_download_label">Annulla download</string>
-  <string name="download_log_label">Log dei download</string>
   <string name="playback_history_label">Storico delle riproduzioni</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
+  <!--New episodes fragment-->
+  <!--Main activity-->
   <!--Webview actions-->
   <string name="open_in_browser_label">Apri nel browser</string>
   <string name="copy_url_label">Copia URL</string>
@@ -38,12 +39,10 @@
   <string name="description_label">Descrizione</string>
   <string name="most_recent_prefix">Episodi Recenti:\u0020</string>
   <string name="episodes_suffix">\u0020episodi</string>
-  <string name="published_prefix">Pubblicato:\u0020</string>
   <string name="length_prefix">Durata:\u0020</string>
   <string name="size_prefix">Dimensione:\u0020</string>
   <string name="processing_label">Elaborazione in corso</string>
   <string name="loading_label">Caricamento...</string>
-  <string name="image_of_prefix">Immagine di:\u0020</string>
   <string name="save_username_password_label">Salva nome utente e password</string>
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
@@ -51,11 +50,9 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
   <string name="txtvfeedurl_label">Aggiungi un Podcast tramite URL</string>
-  <string name="podcastdirectories_label">Directory dei Podcast</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Segna tutti come letti</string>
   <string name="show_info_label">Informazioni</string>
-  <string name="remove_feed_label">Rimuovi il feed</string>
   <string name="share_link_label">Condividi il link al sito</string>
   <string name="share_source_label">Condividi il link al feed</string>
   <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
@@ -76,8 +73,6 @@
   <string name="download_all">Scarica tutti</string>
   <string name="skip_episode_label">Salta episodio</string>
   <!--Download messages and labels-->
-  <string name="download_successful">Download riuscito</string>
-  <string name="download_failed">Download fallito</string>
   <string name="download_pending">Download in attesa</string>
   <string name="download_running">Download in corso</string>
   <string name="download_error_device_not_found">Spazio di archiviazione non trovato</string>
@@ -116,13 +111,8 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Riproduzione podcast in corso</string>
-  <string name="playbackservice_notification_content">Tocca qui per avere più informazioni</string>
-  <!--Navigation-->
-  <string name="show_download_log">Mostra il log</string>
-  <string name="show_player_label">Mostra il player</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Svuota la coda</string>
-  <string name="organize_queue_label">Riordina la coda</string>
   <string name="undo">Undo</string>
   <string name="removed_from_queue">Oggetto rimosso</string>
   <string name="move_to_top_label">Sposta all\'inizio</string>
@@ -176,8 +166,6 @@
   <string name="pref_flattr_this_app_sum">Supporta lo sviluppo di AntennaPod tramite flattr. Grazie!</string>
   <string name="pref_revokeAccess_title">Revoca l\'accesso</string>
   <string name="pref_revokeAccess_sum">Revoca il permesso, a questa applicazione, di accedere al tuo account flattr.</string>
-  <string name="pref_display_only_episodes_title">Mostra solo gli episodi</string>
-  <string name="pref_display_only_episodes_sum">Mostra solo oggetti che hanno un episodio</string>
   <string name="user_interface_label">Interfaccia utente</string>
   <string name="pref_set_theme_title">Seleziona il tema</string>
   <string name="pref_set_theme_sum">Cambia l\'aspetto di AntennaPod</string>
@@ -206,10 +194,7 @@
   <string name="search_hint">Ricerca per Feed o Episodi</string>
   <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>
   <string name="found_in_chapters_label">Trovato nei capitoli</string>
-  <string name="search_status_searching">Ricerca in corso...</string>
   <string name="search_status_no_results">Nessun risultato trovato</string>
-  <string name="search_results_label">Risultati ricerca</string>
-  <string name="search_term_label">Hai ricercato:\u0020</string>
   <string name="search_label">Ricerca</string>
   <string name="found_in_title_label">Trovato nel titolo</string>
   <!--OPML import and export-->
@@ -236,16 +221,6 @@
   <string name="sleep_timer_label">Timer di spegnimento</string>
   <string name="time_left_label">Tempo residuo:\u0020</string>
   <string name="time_dialog_invalid_input">Input non valido, il campo deve essere un numero intero.</string>
-  <!--Miro Guide-->
-  <string name="loading_categories_label">Caricamento categorie...</string>
-  <string name="browse_miroguide_label">Sfoglia \"Miro Guide\"</string>
-  <string name="txtv_browse_miroguide_label">Oppure sfoglia la \"Miro Guide\":</string>
-  <string name="miro_guide_label">Miro Guide</string>
-  <string name="miro_search_hint">Ricerca su \"Miro Guide\"</string>
-  <string name="popular_label">Popolari</string>
-  <string name="best_rating_label">Con punteggi migliori</string>
-  <string name="add_feed_label">Aggiungi podcast</string>
-  <string name="miro_feed_added">Il feed è stato aggiunto</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCAST</string>
@@ -308,5 +283,6 @@
   <string name="status_unread_label">L\'oggetto è nuovo</string>
   <string name="in_queue_label">L\'episodio è in coda</string>
   <string name="new_episodes_count_label">Numero dei nuovi episodi</string>
+  <!--Feed information screen-->
   <!--AntennaPodSP-->
 </resources>
