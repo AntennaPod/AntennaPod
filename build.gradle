@@ -29,7 +29,7 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':submodules:dslv:library')
 
-    compile 'com.jayway.android.robotium:robotium-solo:5.0.1'
+    compile 'com.jayway.android.robotium:robotium-solo:5.1'
 }
 
 android {
