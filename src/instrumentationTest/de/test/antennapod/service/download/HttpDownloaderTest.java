@@ -22,7 +22,6 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     private File destDir;
 
     private HTTPBin httpServer;
-    private static final String BASE_URL = "http://127.0.0.1:" + HTTPBin.PORT;
 
     public HttpDownloaderTest() {
         super();
@@ -79,15 +78,15 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     }
 
 
-    private static final String URL_404 = BASE_URL + "/status/404";
-    private static final String URL_AUTH = BASE_URL + "/basic-auth/user/passwd";
+    private static final String URL_404 = HTTPBin.BASE_URL + "/status/404";
+    private static final String URL_AUTH = HTTPBin.BASE_URL + "/basic-auth/user/passwd";
 
     public void testPassingHttp() {
-        download(BASE_URL + "/status/200", "test200", true);
+        download(HTTPBin.BASE_URL + "/status/200", "test200", true);
     }
 
     public void testRedirect() {
-        download(BASE_URL + "/redirect/4", "testRedirect", true);
+        download(HTTPBin.BASE_URL + "/redirect/4", "testRedirect", true);
     }
 
     public void testGzip() {
@@ -99,7 +98,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     }
 
     public void testCancel() {
-        final String url = BASE_URL + "/delay/3";
+        final String url = HTTPBin.BASE_URL + "/delay/3";
         FeedFileImpl feedFile = setupFeedFile(url, "delay", true);
         final Downloader downloader = new HttpDownloader(new DownloadRequest(feedFile.getFile_url(), url, "delay", 0, feedFile.getTypeAsInt()));
         Thread t = new Thread() {

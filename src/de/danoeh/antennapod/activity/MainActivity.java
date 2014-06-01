@@ -41,8 +41,8 @@ public class MainActivity extends ActionBarActivity {
             | EventDistributor.FEED_LIST_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE;
 
-    private static final String PREF_NAME = "MainActivityPrefs";
-    private static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
+    public static final String PREF_NAME = "MainActivityPrefs";
+    public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
 
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_NAV_TYPE = "nav_type";
