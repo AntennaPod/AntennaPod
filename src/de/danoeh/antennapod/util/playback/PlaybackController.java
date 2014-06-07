@@ -21,6 +21,7 @@ import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
@@ -37,7 +38,6 @@ import java.util.concurrent.*;
 public abstract class PlaybackController {
     private static final String TAG = "PlaybackController";
 
-    public static final int DEFAULT_SEEK_DELTA = 30000;
     public static final int INVALID_TIME = -1;
 
     private final Activity activity;
@@ -605,7 +605,7 @@ public abstract class PlaybackController {
             @Override
             public void onClick(View v) {
                 if (status == PlayerStatus.PLAYING) {
-                    playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+                    playbackService.seekDelta(-UserPreferences.getSeekDeltaMs());
                 }
             }
         };
@@ -616,7 +616,7 @@ public abstract class PlaybackController {
             @Override
             public void onClick(View v) {
                 if (status == PlayerStatus.PLAYING) {
-                    playbackService.seekDelta(DEFAULT_SEEK_DELTA);
+                    playbackService.seekDelta(UserPreferences.getSeekDeltaMs());
                 }
             }
         };

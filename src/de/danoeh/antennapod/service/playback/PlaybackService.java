@@ -42,7 +42,6 @@ import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
 
 import java.util.List;
 
@@ -313,11 +312,11 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                mediaPlayer.seekDelta(PlaybackController.DEFAULT_SEEK_DELTA);
+                mediaPlayer.seekDelta(UserPreferences.getSeekDeltaMs());
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
             case KeyEvent.KEYCODE_MEDIA_REWIND:
-                mediaPlayer.seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
+                mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
             default:
                 String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
