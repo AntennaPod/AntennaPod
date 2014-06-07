@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="AntennaPod.TextView.UnreadIndicator" parent="@android:style/TextAppearance.Small">
+        <item name="android:textSize">@dimen/text_size_micro</item>
+        <item name="android:textColor">@color/new_indicator_green</item>
+        <item name="android:text">@string/new_label</item>
+        <item name="android:textAllCaps">true</item>
+    </style>
+</resources>

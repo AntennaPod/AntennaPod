@@ -9,14 +9,13 @@
     <color name="actionbar_gray">#DDDDDD</color>
     <color name="download_success_green">#669900</color>
     <color name="download_failed_red">#CC0000</color>
-    <color name="status_unread">#E099CC00</color>
     <color name="status_progress">#E033B5E5</color>
     <color name="status_playing">#E0EE5F52</color>
     <color name="overlay_dark">#262C31</color>
     <color name="overlay_light">#DDDDDD</color>
     <color name="swipe_refresh_secondary_color_light">#EDEDED</color>
     <color name="swipe_refresh_secondary_color_dark">#060708</color>
-
+    <color name="new_indicator_green">#669900</color>
 
     <!-- Use Gingerbread-orange -->
     <color name="selection_background_color_dark">#FEBB20</color>
