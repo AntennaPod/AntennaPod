@@ -2,10 +2,7 @@ package instrumentationTest.de.test.antennapod.ui;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.PodDBAdapter;
 import instrumentationTest.de.test.antennapod.util.service.download.HTTPBin;
@@ -13,6 +10,7 @@ import instrumentationTest.de.test.antennapod.util.syndication.feedgenerator.RSS
 import junit.framework.Assert;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -177,7 +175,8 @@ public class UITestUtils {
                 for (FeedItem item : feed.getItems()) {
                     if (item.hasMedia()) {
                         FeedMedia media = item.getMedia();
-                        media.setFile_url(media.getDownload_url());
+                        int fileId = Integer.parseInt(StringUtils.substringAfter(media.getDownload_url(), "files/"));
+                        media.setFile_url(server.accessFile(fileId).getAbsolutePath());
                         media.setDownloaded(true);
                     }
                 }
@@ -189,5 +188,7 @@ public class UITestUtils {
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
+        EventDistributor.getInstance().sendFeedUpdateBroadcast();
+        EventDistributor.getInstance().sendQueueUpdateBroadcast();
     }
 }

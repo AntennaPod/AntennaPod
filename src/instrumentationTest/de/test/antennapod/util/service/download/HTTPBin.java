@@ -72,7 +72,7 @@ public class HTTPBin extends NanoHTTPD {
         }
     }
 
-    private synchronized File accessFile(int id) {
+    public synchronized File accessFile(int id) {
         if (id < 0 || id >= servedFiles.size()) {
             return null;
         } else {

@@ -5,6 +5,7 @@ import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedItem;
 import org.apache.http.HttpStatus;
 
+import java.io.File;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
@@ -75,6 +76,8 @@ public class UITestUtilsTest extends InstrumentationTestCase {
                     if (downloadEpisodes) {
                         assertTrue(item.getMedia().isDownloaded());
                         assertNotNull(item.getMedia().getFile_url());
+                        File file = new File(item.getMedia().getFile_url());
+                        assertTrue(file.exists());
                     }
                 }
             }
