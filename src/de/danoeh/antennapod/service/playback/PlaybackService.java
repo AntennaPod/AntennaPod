@@ -310,9 +310,11 @@ public class PlaybackService extends Service {
                     mediaPlayer.pause(true, true);
                 }
                 break;
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(PlaybackController.DEFAULT_SEEK_DELTA);
                 break;
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
                 break;
