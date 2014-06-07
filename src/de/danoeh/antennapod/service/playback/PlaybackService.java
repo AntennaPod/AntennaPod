@@ -541,6 +541,7 @@ public class PlaybackService extends Service {
                     (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
         } else {
             sendNotificationBroadcast(NOTIFICATION_TYPE_PLAYBACK_END, 0);
+            mediaPlayer.stop();
             //stopSelf();
         }
     }
