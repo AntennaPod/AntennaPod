@@ -134,28 +134,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.lenSize.setVisibility(View.INVISIBLE);
             } else {
 
-                if (state == FeedItem.State.PLAYING
-                        || state == FeedItem.State.IN_PROGRESS) {
-                    if (media.getDuration() > 0) {
-                        holder.episodeProgress
-                                .setProgress((int) (((double) media
-                                        .getPosition()) / media.getDuration() * 100));
-                        holder.lenSize.setText(Converter
-                                .getDurationStringLong(media.getDuration()
-                                        - media.getPosition()));
-                    }
-                } else if (!media.isDownloaded()) {
-                    holder.lenSize.setText(context.getString(
-                            R.string.size_prefix)
-                            + Converter.byteToString(media.getSize()));
-                } else {
-                    holder.lenSize.setText(context.getString(
-                            R.string.length_prefix)
-                            + Converter.getDurationStringLong(media
-                            .getDuration()));
-                }
+                AdapterUtils.updateEpisodePlaybackProgress(item, context.getResources(), holder.lenSize, holder.episodeProgress);
 
-                holder.lenSize.setVisibility(View.VISIBLE);
                 if (((ItemAccess) itemAccess).isInQueue(item)) {
                     holder.inPlaylist.setVisibility(View.VISIBLE);
                 } else {
@@ -166,9 +146,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
                         item.getMedia())) {
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
-                } else if (!(state == FeedItem.State.IN_PROGRESS
-                        || state == FeedItem.State.PLAYING)) {
-                    holder.episodeProgress.setVisibility(View.GONE);
                 }
 
                 TypedArray typeDrawables = context.obtainStyledAttributes(
