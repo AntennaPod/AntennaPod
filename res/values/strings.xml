@@ -147,6 +147,7 @@
     <string name="position_default_label">00:00:00</string>
     <string name="player_buffering_msg">Buffering</string>
     <string name="playbackservice_notification_title">Playing podcast</string>
+    <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
     <!-- Queue operations -->
     <string name="clear_queue_label">Clear queue</string>

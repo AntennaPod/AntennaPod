@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -317,6 +318,10 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
+                break;
+            default:
+                String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
                 break;
         }
     }
