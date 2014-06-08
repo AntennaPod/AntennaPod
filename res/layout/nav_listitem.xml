@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -35,4 +35,18 @@
         android:layout_marginRight="48dp"
         android:layout_toRightOf="@id/imgvCover"
         />
+
+    <TextView
+        android:id="@+id/txtvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_marginLeft="12dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginRight="16dp"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"/>
 </RelativeLayout>

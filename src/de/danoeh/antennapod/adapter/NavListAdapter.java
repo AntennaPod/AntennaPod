@@ -113,6 +113,7 @@ public class NavListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.nav_listitem, null);
 
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
             holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
             convertView.setTag(holder);
         } else {
@@ -120,6 +121,17 @@ public class NavListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(title);
+
+        if (NAV_TITLES[position] == R.string.queue_label) {
+            holder.count.setVisibility(View.VISIBLE);
+            holder.count.setText(String.valueOf(itemAccess.getQueueSize()));
+        } else if (NAV_TITLES[position] == R.string.all_episodes_label) {
+            holder.count.setVisibility(View.VISIBLE);
+            holder.count.setText(String.valueOf(itemAccess.getNumberOfUnreadItems()));
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
+
         holder.image.setImageDrawable(drawables[position]);
 
         return convertView;
@@ -174,6 +186,7 @@ public class NavListAdapter extends BaseAdapter {
 
     static class NavHolder {
         TextView title;
+        TextView count;
         ImageView image;
     }
 
@@ -193,6 +206,10 @@ public class NavListAdapter extends BaseAdapter {
         public Feed getItem(int position);
 
         public int getSelectedItemIndex();
+
+        public int getQueueSize();
+
+        public int getNumberOfUnreadItems();
     }
 
 }

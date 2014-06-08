@@ -39,7 +39,8 @@ public class MainActivity extends ActionBarActivity {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
+            | EventDistributor.UNREAD_ITEMS_UPDATE
+            | EventDistributor.QUEUE_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
@@ -147,7 +148,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public List<Feed> getFeeds() {
-        return feeds;
+        return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
     private void loadFragment(int viewType, int relPos, Bundle args) {
@@ -207,9 +208,9 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void loadFeedFragment(long feedID) {
-        if (feeds != null) {
-            for (int i = 0; i < feeds.size(); i++) {
-                if (feeds.get(i).getId() == feedID) {
+        if (navDrawerData != null) {
+            for (int i = 0; i < navDrawerData.feeds.size(); i++) {
+                if (navDrawerData.feeds.get(i).getId() == feedID) {
                     loadFragment(NavListAdapter.VIEW_TYPE_SUBSCRIPTION, i, null);
                     break;
                 }
@@ -279,7 +280,7 @@ public class MainActivity extends ActionBarActivity {
         EventDistributor.getInstance().register(contentUpdate);
 
         Intent intent = getIntent();
-        if (feeds != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+        if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
             handleNavIntent();
         }
 
@@ -322,15 +323,15 @@ public class MainActivity extends ActionBarActivity {
         return true;
     }
 
-    private List<Feed> feeds;
-    private AsyncTask<Void, Void, List<Feed>> loadTask;
+    private DBReader.NavDrawerData navDrawerData;
+    private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
     private int selectedNavListIndex = 0;
 
     private NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            if (feeds != null) {
-                return feeds.size();
+            if (navDrawerData != null) {
+                return navDrawerData.feeds.size();
             } else {
                 return 0;
             }
@@ -338,8 +339,8 @@ public class MainActivity extends ActionBarActivity {
 
         @Override
         public Feed getItem(int position) {
-            if (feeds != null && position < feeds.size()) {
-                return feeds.get(position);
+            if (navDrawerData != null && position < navDrawerData.feeds.size()) {
+                return navDrawerData.feeds.get(position);
             } else {
                 return null;
             }
@@ -350,23 +351,33 @@ public class MainActivity extends ActionBarActivity {
             return selectedNavListIndex;
         }
 
+        @Override
+        public int getQueueSize() {
+            return (navDrawerData != null) ? navDrawerData.queueSize : 0;
+        }
+
+        @Override
+        public int getNumberOfUnreadItems() {
+            return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
+        }
+
 
     };
 
     private void loadData() {
         cancelLoadTask();
-        loadTask = new AsyncTask<Void, Void, List<Feed>>() {
+        loadTask = new AsyncTask<Void, Void, DBReader.NavDrawerData>() {
             @Override
-            protected List<Feed> doInBackground(Void... params) {
-                return DBReader.getFeedList(MainActivity.this);
+            protected DBReader.NavDrawerData doInBackground(Void... params) {
+                return DBReader.getNavDrawerData(MainActivity.this);
             }
 
             @Override
-            protected void onPostExecute(List<Feed> result) {
-                super.onPostExecute(result);
-                boolean handleIntent = (feeds == null);
+            protected void onPostExecute(DBReader.NavDrawerData result) {
+                super.onPostExecute(navDrawerData);
+                boolean handleIntent = (navDrawerData == null);
 
-                feeds = result;
+                navDrawerData = result;
                 navAdapter.notifyDataSetChanged();
 
                 if (handleIntent) {

@@ -34,8 +34,6 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
 
-import java.util.List;
-
 /**
  * Activity for playing audio files.
  */
@@ -624,20 +622,20 @@ public class AudioplayerActivity extends MediaplayerActivity {
         }
     }
 
-    private List<Feed> feeds;
-    private AsyncTask<Void, Void, List<Feed>> loadTask;
+    private DBReader.NavDrawerData navDrawerData;
+    private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
 
     private void loadData() {
-        loadTask = new AsyncTask<Void, Void, List<Feed>>() {
+        loadTask = new AsyncTask<Void, Void, DBReader.NavDrawerData>() {
             @Override
-            protected List<Feed> doInBackground(Void... params) {
-                return DBReader.getFeedList(AudioplayerActivity.this);
+            protected DBReader.NavDrawerData doInBackground(Void... params) {
+                return DBReader.getNavDrawerData(AudioplayerActivity.this);
             }
 
             @Override
-            protected void onPostExecute(List<Feed> result) {
+            protected void onPostExecute(DBReader.NavDrawerData result) {
                 super.onPostExecute(result);
-                feeds = result;
+                navDrawerData = result;
                 if (navAdapter != null) {
                     navAdapter.notifyDataSetChanged();
                 }
@@ -667,8 +665,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
     private final NavListAdapter.ItemAccess itemAccess = new NavListAdapter.ItemAccess() {
         @Override
         public int getCount() {
-            if (feeds != null) {
-                return feeds.size();
+            if (navDrawerData != null) {
+                return navDrawerData.feeds.size();
             } else {
                 return 0;
             }
@@ -676,8 +674,8 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
         @Override
         public Feed getItem(int position) {
-            if (feeds != null && position < feeds.size()) {
-                return feeds.get(position);
+            if (navDrawerData != null && position < navDrawerData.feeds.size()) {
+                return navDrawerData.feeds.get(position);
             } else {
                 return null;
             }
@@ -686,6 +684,16 @@ public class AudioplayerActivity extends MediaplayerActivity {
         @Override
         public int getSelectedItemIndex() {
             return -1;
+        }
+
+        @Override
+        public int getQueueSize() {
+            return (navDrawerData != null) ? navDrawerData.queueSize : 0;
+        }
+
+        @Override
+        public int getNumberOfUnreadItems() {
+            return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
         }
     };
 }

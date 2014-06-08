@@ -56,6 +56,14 @@ public final class DBReader {
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
+        List<Feed> result = getFeedList(adapter);
+        adapter.close();
+        return result;
+    }
+
+    private static List<Feed> getFeedList(PodDBAdapter adapter) {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Extracting Feedlist");
 
         Cursor feedlistCursor = adapter.getAllFeedsCursor();
         List<Feed> feeds = new ArrayList<Feed>(feedlistCursor.getCount());
@@ -509,8 +517,8 @@ public final class DBReader {
      * Loads a list of FeedItems sorted by pubDate in descending order.
      *
      * @param context A context that is used for opening a database connection.
-     * @param limit The maximum number of episodes that should be loaded.
-     * */
+     * @param limit   The maximum number of episodes that should be loaded.
+     */
     public static List<FeedItem> getRecentlyPublishedEpisodes(Context context, int limit) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Extracting recently published items list");
@@ -596,7 +604,8 @@ public final class DBReader {
                         .getString(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE_INDEX);
                 Date completionDate = new Date(
                         logCursor
-                                .getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
+                                .getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX)
+                );
                 downloadLog.add(new DownloadStatus(id, title, feedfileId,
                         feedfileType, successful, DownloadError.fromCode(reason), completionDate,
                         reasonDetailed));
@@ -787,7 +796,8 @@ public final class DBReader {
                 cursor.getString(cursor
                         .getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL)),
                 cursor.getInt(cursor
-                        .getColumnIndex(PodDBAdapter.KEY_DOWNLOADED)) > 0);
+                        .getColumnIndex(PodDBAdapter.KEY_DOWNLOADED)) > 0
+        );
         cursor.close();
         return image;
     }
@@ -864,5 +874,35 @@ public final class DBReader {
         boolean empty = adapter.getFlattrQueueSize() == 0;
         adapter.close();
         return empty;
+    }
+
+    /**
+     * Returns data necessary for displaying the navigation drawer. This includes
+     * the list of subscriptions, the number of items in the queue and the number of unread
+     * items.
+     *
+     * @param context A context that is used for opening a database connection.
+     */
+    public static NavDrawerData getNavDrawerData(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<Feed> feeds = getFeedList(adapter);
+        int queueSize = adapter.getQueueSize();
+        int numUnreadItems = adapter.getNumberOfUnreadItems();
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numUnreadItems);
+        adapter.close();
+        return result;
+    }
+
+    public static class NavDrawerData {
+        public List<Feed> feeds;
+        public int queueSize;
+        public int numUnreadItems;
+
+        public NavDrawerData(List<Feed> feeds, int queueSize, int numUnreadItems) {
+            this.feeds = feeds;
+            this.queueSize = queueSize;
+            this.numUnreadItems = numUnreadItems;
+        }
     }
 }
