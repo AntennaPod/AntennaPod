@@ -39,7 +39,7 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 19
-        testPackageName "de.test.antennapod"
+        testApplicationId "de.test.antennapod"
         testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
     }
 
@@ -82,7 +82,7 @@ android {
 
     buildTypes {
         debug {
-            packageNameSuffix ".debug"
+            applicationIdSuffix ".debug"
         }
         release {
             runProguard true
