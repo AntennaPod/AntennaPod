@@ -1,6 +1,10 @@
 Change Log
 ==========
 
+Version 0.9.9.1
+---------------
+* Several bugfixes and improvements
+
 Version 0.9.9.0
 ---------------
 * New user interface
