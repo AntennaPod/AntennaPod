@@ -61,6 +61,8 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     private Map<String, String> alternateFeedUrls;
     private Downloader downloader;
 
+    private boolean isPaused;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -97,6 +99,18 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        isPaused = false;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        isPaused = true;
+    }
+
+    @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         if (feed != null && feed.getPreferences() != null) {
@@ -126,9 +140,11 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                         if (status.isSuccessful()) {
                             parseFeed();
                         } else if (status.getReason() == DownloadError.ERROR_UNAUTHORIZED) {
-                            Dialog dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
-                                    R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
-                            dialog.show();
+                            if (!isFinishing() && !isPaused) {
+                                Dialog dialog = new FeedViewAuthenticationDialog(OnlineFeedViewActivity.this,
+                                        R.string.authentication_notification_title, downloader.getDownloadRequest().getSource());
+                                dialog.show();
+                            }
                         } else {
                             String errorMsg = status.getReason().getErrorString(
                                     OnlineFeedViewActivity.this);
@@ -276,32 +292,30 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     private void showErrorDialog(String errorMsg) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle(R.string.error_label);
-        if (errorMsg != null) {
-            builder.setMessage(getString(R.string.error_msg_prefix) + errorMsg);
-        } else {
-            builder.setMessage(R.string.error_msg_prefix);
-        }
-        builder.setNeutralButton(android.R.string.ok,
-                new DialogInterface.OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        dialog.cancel();
-                    }
-                }
-        );
-        builder.setOnCancelListener(new OnCancelListener() {
-            @Override
-            public void onCancel(DialogInterface dialog) {
-                setResult(RESULT_ERROR);
-                finish();
+        if (!isFinishing() && !isPaused) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setTitle(R.string.error_label);
+            if (errorMsg != null) {
+                builder.setMessage(getString(R.string.error_msg_prefix) + errorMsg);
+            } else {
+                builder.setMessage(R.string.error_msg_prefix);
             }
-        });
+            builder.setNeutralButton(android.R.string.ok,
+                    new DialogInterface.OnClickListener() {
 
-        if (!isFinishing()) {
-            builder.show();
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            dialog.cancel();
+                        }
+                    }
+            );
+            builder.setOnCancelListener(new OnCancelListener() {
+                @Override
+                public void onCancel(DialogInterface dialog) {
+                    setResult(RESULT_ERROR);
+                    finish();
+                }
+            });
         }
     }
 
