@@ -189,6 +189,10 @@ public class ImageDiskCache {
      * The image will be stored in the thumbnail cache.
      */
     public void loadThumbnailBitmap(final String url, final ImageView target, final int length) {
+        if (url == null) {
+            Log.w(TAG, "loadThumbnailBitmap: Call was ignored because url = null");
+            return;
+        }
         final ImageLoader il = ImageLoader.getInstance();
         target.setTag(R.id.image_disk_cache_key, url);
         if (diskCache != null) {
@@ -217,6 +221,10 @@ public class ImageDiskCache {
      * The image will be stored in the cover cache.
      */
     public void loadCoverBitmap(final String url, final ImageView target, final int length) {
+        if (url == null) {
+            Log.w(TAG, "loadCoverBitmap: Call was ignored because url = null");
+            return;
+        }
         final ImageLoader il = ImageLoader.getInstance();
         target.setTag(R.id.image_disk_cache_key, url);
         if (diskCache != null) {
