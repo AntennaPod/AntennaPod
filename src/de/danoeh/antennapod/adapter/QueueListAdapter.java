@@ -61,7 +61,8 @@ public class QueueListAdapter extends BaseAdapter {
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.butSecondary = (ImageButton) convertView
                     .findViewById(R.id.butSecondaryAction);
-            holder.downloadProgress = (ProgressBar) convertView
+            holder.position = (TextView) convertView.findViewById(R.id.txtvPosition);
+            holder.progress = (ProgressBar) convertView
                     .findViewById(R.id.pbar_download_progress);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             convertView.setTag(holder);
@@ -71,20 +72,17 @@ public class QueueListAdapter extends BaseAdapter {
 
         holder.title.setText(item.getTitle());
 
+        AdapterUtils.updateEpisodePlaybackProgress(item, context.getResources(), holder.position, holder.progress);
+
         FeedMedia media = item.getMedia();
         if (media != null) {
             final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
 
-
-            if (isDownloadingMedia) {
-                holder.downloadProgress.setVisibility(View.VISIBLE);
-            } else {
-                holder.downloadProgress.setVisibility(View.GONE);
-            }
             if (!media.isDownloaded()) {
                 if (isDownloadingMedia) {
                     // item is being downloaded
-                    holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
+                    holder.progress.setVisibility(View.VISIBLE);
+                    holder.progress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 }
             }
         }
@@ -116,7 +114,8 @@ public class QueueListAdapter extends BaseAdapter {
     static class Holder {
         TextView title;
         ImageView imageView;
-        ProgressBar downloadProgress;
+        TextView position;
+        ProgressBar progress;
         ImageButton butSecondary;
     }
 

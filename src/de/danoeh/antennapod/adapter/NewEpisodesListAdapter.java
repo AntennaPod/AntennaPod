@@ -66,6 +66,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView
                     .findViewById(R.id.txtvPublished);
+            holder.statusUnread = convertView.findViewById(R.id.statusUnread);
             holder.butSecondary = (ImageButton) convertView
                     .findViewById(R.id.butSecondaryAction);
             holder.queueStatus = (ImageView) convertView
@@ -81,6 +82,11 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
         holder.title.setText(item.getTitle());
         holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        if (item.isRead()) {
+            holder.statusUnread.setVisibility(View.GONE);
+        } else {
+            holder.statusUnread.setVisibility(View.VISIBLE);
+        }
 
         FeedMedia media = item.getMedia();
         if (media != null) {
@@ -140,6 +146,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
     static class Holder {
         TextView title;
         TextView pubDate;
+        View statusUnread;
         ImageView queueStatus;
         ImageView imageView;
         ProgressBar downloadProgress;

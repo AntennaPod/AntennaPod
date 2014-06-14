@@ -77,7 +77,8 @@ public class PlaybackServiceMediaPlayer {
                     public void rejectedExecution(Runnable r, ThreadPoolExecutor executor) {
                         if (BuildConfig.DEBUG) Log.d(TAG, "Rejected execution of runnable");
                     }
-                });
+                }
+        );
 
         mediaPlayer = null;
         statusBeforeSeeking = null;
@@ -150,6 +151,8 @@ public class PlaybackServiceMediaPlayer {
         if (media != null) {
             if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())) {
                 // episode is already playing -> ignore method call
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Method call to playMediaObject was ignored: media file already playing.");
                 return;
             } else {
                 // stop playback of this episode
@@ -284,7 +287,8 @@ public class PlaybackServiceMediaPlayer {
                         reinit();
                     }
                 } else {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Ignoring call to pause: Player is in " + playerStatus + " state");
                 }
 
                 playerLock.unlock();
@@ -385,9 +389,10 @@ public class PlaybackServiceMediaPlayer {
 
     /**
      * Seeks to the specified position. If the PSMP object is in an invalid state, this method will do nothing.
+     *
      * @param t The position to seek to in milliseconds. t < 0 will be interpreted as t = 0
-     * <p/>
-     * This method is executed on the caller's thread.
+     *          <p/>
+     *          This method is executed on the caller's thread.
      */
     private void seekToSync(int t) {
         if (t < 0) {
@@ -753,6 +758,29 @@ public class PlaybackServiceMediaPlayer {
                 callback.endPlayback(true);
 
                 playerLock.unlock();
+            }
+        });
+    }
+
+    /**
+     * Moves the PlaybackServiceMediaPlayer into STOPPED state. This call is only valid if the player is currently in
+     * INDETERMINATE state, for example after a call to endPlayback.
+     * This method will only take care of changing the PlayerStatus of this object! Other tasks like
+     * abandoning audio focus have to be done with other methods.
+     */
+    public void stop() {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                playerLock.lock();
+
+                if (playerStatus == PlayerStatus.INDETERMINATE) {
+                    setPlayerStatus(PlayerStatus.STOPPED, null);
+                } else {
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
+                }
+                playerLock.unlock();
+
             }
         });
     }

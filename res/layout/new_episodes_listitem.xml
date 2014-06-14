@@ -6,29 +6,25 @@
               android:orientation="horizontal"
               android:layout_height="match_parent">
 
+    <ImageView
+        android:id="@+id/imgvImage"
+        android:contentDescription="@string/cover_label"
+        android:layout_width="@dimen/thumbnail_length_itemlist"
+        android:layout_height="@dimen/thumbnail_length_itemlist"
+        android:scaleType="centerCrop"/>
+
     <RelativeLayout
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:layout_marginRight="8dp">
-
-        <ImageView
-            android:id="@+id/imgvImage"
-            android:contentDescription="@string/cover_label"
-            android:layout_width="@dimen/thumbnail_length_itemlist"
-            android:layout_height="@dimen/thumbnail_length_itemlist"
-            android:layout_alignParentLeft="true"
-            android:scaleType="centerCrop"/>
+        android:layout_margin="4dp">
 
         <TextView
             android:id="@+id/txtvPublished"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="4dp"
             android:layout_alignParentTop="true"
-            android:layout_toRightOf="@id/imgvImage"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             android:ellipsize="end"
             android:maxLines="1"
@@ -40,18 +36,24 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtvPublished"
-            android:layout_marginLeft="8dp"
-            android:layout_marginTop="2dp"
-            android:layout_toRightOf="@id/imgvImage"
+            android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"/>
+
+        <TextView
+            android:id="@+id/statusUnread"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            style="@style/AntennaPod.TextView.UnreadIndicator"/>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_alignParentRight="true"
-            android:layout_toRightOf="@id/imgvImage"
+            android:layout_alignParentLeft="true"
             android:orientation="vertical">
 
             <RelativeLayout
@@ -74,7 +76,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/imgvInPlaylist"
-                    android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_alignParentLeft="true"/>
 
@@ -83,8 +84,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_toLeftOf="@id/imgvInPlaylist"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_alignParentLeft="true"
                     android:textColor="?android:attr/textColorTertiary"
                     android:textSize="@dimen/text_size_micro"/>

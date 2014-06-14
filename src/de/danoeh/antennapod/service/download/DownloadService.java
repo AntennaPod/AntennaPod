@@ -890,6 +890,7 @@ public class DownloadService extends Service {
             if (successful) {
                 return savedFeed;
             } else {
+                numberOfDownloads.decrementAndGet();
                 saveDownloadStatus(new DownloadStatus(savedFeed,
                         savedFeed.getHumanReadableIdentifier(), reason, successful,
                         reasonDetailed));

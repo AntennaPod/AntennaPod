@@ -24,6 +24,7 @@
         android:id="@+id/txtvTitle"
         android:lines="1"
         android:ellipsize="end"
+        android:singleLine="true"
         android:layout_centerVertical="true"
         android:textColor="?android:attr/textColorPrimary"
         android:textSize="@dimen/text_size_navdrawer"

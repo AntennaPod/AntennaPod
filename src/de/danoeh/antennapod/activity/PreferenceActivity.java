@@ -15,6 +15,7 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
+import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,7 +47,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
-	private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
+    private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
@@ -89,7 +90,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
                         return true;
                     }
-                });
+                }
+        );
 
         findPreference(PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
@@ -101,7 +103,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                         return true;
                     }
 
-                });
+                }
+        );
 
         findPreference(PREF_ABOUT).setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
@@ -113,7 +116,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                         return true;
                     }
 
-                });
+                }
+        );
 
         findPreference(PREF_OPML_EXPORT).setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
@@ -125,7 +129,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
                         return true;
                     }
-                });
+                }
+        );
 
         findPreference(PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
@@ -135,10 +140,12 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                         startActivityForResult(
                                 new Intent(PreferenceActivity.this,
                                         DirectoryChooserActivity.class),
-                                DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
+                                DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
+                        );
                         return true;
                     }
-                });
+                }
+        );
         findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
@@ -153,18 +160,19 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 startActivity(i);
                                 return true;
                             }
-                        });
+                        }
+                );
         findPreference(UserPreferences.PREF_ENABLE_AUTODL)
                 .setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof Boolean) {
-                    findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
-                    setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
-                }
-                return true;
-            }
-        });
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        if (newValue instanceof Boolean) {
+                            findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
+                            setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
+                        }
+                        return true;
+                    }
+                });
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
@@ -179,7 +187,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                     return false;
                                 }
                             }
-                        });
+                        }
+                );
         findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
                 .setOnPreferenceChangeListener(
                         new OnPreferenceChangeListener() {
@@ -190,7 +199,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                                 }
                                 return true;
                             }
-                        });
+                        }
+                );
         findPreference(PREF_PLAYBACK_SPEED_LAUNCHER)
                 .setOnPreferenceClickListener(new OnPreferenceClickListener() {
                     @Override
@@ -343,12 +353,14 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
+                Intent destIntent = new Intent(this, MainActivity.class);
+                destIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(destIntent);
                 finish();
-                break;
+                return true;
             default:
                 return false;
         }
-        return true;
     }
 
     @Override
@@ -389,7 +401,8 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                         String key = preference.getKey();
                         ArrayList<String> prefValuesList = new ArrayList<String>(
                                 Arrays.asList(UserPreferences
-                                        .getAutodownloadSelectedNetworks()));
+                                        .getAutodownloadSelectedNetworks())
+                        );
                         boolean newValue = ((CheckBoxPreference) preference)
                                 .isChecked();
                         if (BuildConfig.DEBUG)
@@ -406,8 +419,9 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
                         UserPreferences.setAutodownloadSelectedNetworks(
                                 PreferenceActivity.this, prefValuesList
-                                .toArray(new String[prefValuesList
-                                        .size()]));
+                                        .toArray(new String[prefValuesList
+                                                .size()])
+                        );
                         return true;
                     } else {
                         return false;
@@ -461,7 +475,17 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                             .setBackgroundDrawable(
                                     this.getWindow().getDecorView()
                                             .getBackground().getConstantState()
-                                            .newDrawable());
+                                            .newDrawable()
+                            );
         return false;
+    }
+
+    @Override
+    public void onBackPressed() {
+        // The default back button behavior has to be overwritten because changing the theme clears the back stack
+        Intent destIntent = new Intent(this, MainActivity.class);
+        destIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(destIntent);
+        finish();
     }
 }

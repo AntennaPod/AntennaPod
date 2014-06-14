@@ -18,7 +18,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
-            android:layout_marginBottom="4dp"
             android:textColor="?android:attr/textColorTertiary"
             android:textSize="@dimen/text_size_micro"/>
 
@@ -28,7 +27,6 @@
             android:layout_height="wrap_content"
             android:layout_below="@id/txtvPublished"
             android:layout_marginBottom="8dp"
-            android:layout_marginRight="4dp"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"/>
 
 
@@ -59,7 +57,6 @@
             android:layout_alignParentLeft="true"
             android:layout_below="@id/txtvItemname"
             android:maxLines="2"
-            android:layout_marginBottom="2dp"
             android:textColor="?android:attr/textColorTertiary"
             android:textSize="@dimen/text_size_micro"/>
 
@@ -77,22 +74,11 @@
 
         <TextView
             android:id="@+id/statusUnread"
-            android:contentDescription="@string/status_unread_label"
             android:layout_width="wrap_content"
-            android:layout_height="18dp"
+            android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.UnreadIndicator"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginBottom="8dp"
-            android:background="@color/status_unread"
-            android:gravity="center"
-            android:minWidth="@dimen/status_indicator_width"
-            android:text="@string/new_label"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="@dimen/text_size_micro"
-            android:textStyle="bold"/>
-
+            android:layout_alignParentTop="true"/>
     </RelativeLayout>
 
     <View

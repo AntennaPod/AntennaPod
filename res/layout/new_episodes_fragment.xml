@@ -6,11 +6,6 @@
              android:layout_width="match_parent"
              android:layout_height="match_parent">
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/swipeRefreshLayout">
-
         <com.mobeta.android.dslv.DragSortListView
             android:id="@android:id/list"
             android:scrollbarStyle="outsideOverlay"
@@ -28,8 +23,6 @@
             dslv:track_drag_sort="false"
             dslv:float_background_color="?attr/dragview_float_background"
             dslv:use_default_controller="true"/>
-
-    </android.support.v4.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@id/android:empty"

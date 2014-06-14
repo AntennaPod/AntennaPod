@@ -365,4 +365,44 @@ public class DBReaderTest extends InstrumentationTestCase {
             assertEquals("Wrong entry at index " + i, feeds.get(i).getId(), statistics.get(i).getFeedID());
         }
     }
+
+    public void testGetNavDrawerDataQueueEmptyNoUnreadItems() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_FEEDS = 10;
+        final int NUM_ITEMS = 10;
+        List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
+        DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
+        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
+        assertEquals(0, navDrawerData.numUnreadItems);
+        assertEquals(0, navDrawerData.queueSize);
+    }
+
+    public void testGetNavDrawerDataQueueNotEmptyWithUnreadItems() {
+        final Context context = getInstrumentation().getTargetContext();
+        final int NUM_FEEDS = 10;
+        final int NUM_ITEMS = 10;
+        final int NUM_QUEUE = 1;
+        final int NUM_UNREAD = 2;
+        List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        for (int i = 0; i < NUM_UNREAD; i++) {
+            FeedItem item = feeds.get(0).getItems().get(i);
+            item.setRead(false);
+            adapter.setSingleFeedItem(item);
+        }
+        List<FeedItem> queue = new ArrayList<FeedItem>();
+        for (int i = 0; i < NUM_QUEUE; i++) {
+            FeedItem item = feeds.get(1).getItems().get(i);
+            queue.add(item);
+        }
+        adapter.setQueue(queue);
+
+        adapter.close();
+
+        DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
+        assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
+        assertEquals(NUM_UNREAD, navDrawerData.numUnreadItems);
+        assertEquals(NUM_QUEUE, navDrawerData.queueSize);
+    }
 }

@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.10.+'
+        classpath 'com.android.tools.build:gradle:0.11.+'
     }
 }
 apply plugin: 'android'
@@ -28,16 +28,18 @@ dependencies {
     compile 'commons-io:commons-io:2.4'
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':submodules:dslv:library')
+
+    compile 'com.jayway.android.robotium:robotium-solo:5.1'
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.0.3"
+    buildToolsVersion "19.1.0"
 
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 19
-        testPackageName "de.test.antennapod"
+        testApplicationId "de.test.antennapod"
         testInstrumentationRunner "instrumentationTest.de.test.antennapod.AntennaPodTestRunner"
     }
 
@@ -80,7 +82,7 @@ android {
 
     buildTypes {
         debug {
-            packageNameSuffix ".debug"
+            applicationIdSuffix ".debug"
         }
         release {
             runProguard true
