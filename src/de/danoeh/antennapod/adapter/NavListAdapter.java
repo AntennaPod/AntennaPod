@@ -36,9 +36,9 @@ public class NavListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.context = context;
 
-        TypedArray ta = context.obtainStyledAttributes(new int[] {R.attr.ic_new, R.attr.stat_playlist,
+        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.ic_new, R.attr.stat_playlist,
                 R.attr.av_download, R.attr.device_access_time, R.attr.content_new});
-        drawables = new Drawable[] {ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
+        drawables = new Drawable[]{ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
                 ta.getDrawable(3), ta.getDrawable(4)};
         ta.recycle();
     }
@@ -123,11 +123,21 @@ public class NavListAdapter extends BaseAdapter {
         holder.title.setText(title);
 
         if (NAV_TITLES[position] == R.string.queue_label) {
-            holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(itemAccess.getQueueSize()));
+            int queueSize = itemAccess.getQueueSize();
+            if (queueSize > 0) {
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setText(String.valueOf(queueSize));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
         } else if (NAV_TITLES[position] == R.string.all_episodes_label) {
-            holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(itemAccess.getNumberOfUnreadItems()));
+            int unreadItems = itemAccess.getNumberOfUnreadItems();
+            if (unreadItems > 0) {
+                holder.count.setVisibility(View.VISIBLE);
+                holder.count.setText(String.valueOf(unreadItems));
+            } else {
+                holder.count.setVisibility(View.GONE);
+            }
         } else {
             holder.count.setVisibility(View.GONE);
         }
