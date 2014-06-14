@@ -3,19 +3,26 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">订阅</string>
+  <string name="add_feed_label">添加博客</string>
   <string name="podcasts_label">播客</string>
   <string name="episodes_label">曲目</string>
+  <string name="new_episodes_label">新曲目</string>
+  <string name="all_episodes_label">所有曲目</string>
   <string name="new_label">最新</string>
   <string name="waiting_list_label">等待列表</string>
   <string name="settings_label">设置</string>
   <string name="add_new_feed_label">添加播客</string>
   <string name="downloads_label">下载</string>
+  <string name="downloads_running_label">正在运行</string>
+  <string name="downloads_completed_label">已完成</string>
   <string name="downloads_log_label">日志</string>
   <string name="cancel_download_label">取消下载</string>
   <string name="playback_history_label">播放历史</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net 登录</string>
   <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">最近发布</string>
+  <string name="episode_filter_label">仅显示新曲目</string>
   <!--Main activity-->
   <string name="drawer_open">打开菜单</string>
   <string name="drawer_close">关闭菜单</string>
@@ -53,9 +60,11 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
   <string name="txtvfeedurl_label">添加播客 URL</string>
+  <string name="podcastdirectories_descr">您可以在 gpodder.net 通过名称、类别或热门来搜索新播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">全部标识已读</string>
+  <string name="mark_all_read_msg">将所有曲目标记为已读</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除播客</string>
   <string name="share_link_label">分享网站链接</string>
@@ -68,6 +77,7 @@
   <string name="pause_label">暂停</string>
   <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
+  <string name="remove_episode_lable">移除曲目</string>
   <string name="mark_read_label">标记已读</string>
   <string name="mark_unread_label">标记未读</string>
   <string name="add_to_queue_label">添加到播放列表</string>
@@ -91,6 +101,7 @@
   <string name="download_error_unsupported_type">未提供的订阅类型</string>
   <string name="download_error_connection_error">链接错误</string>
   <string name="download_error_unknown_host">未知主机</string>
+  <string name="download_error_unauthorized">认证错误</string>
   <string name="cancel_all_downloads_label">取消所有下载</string>
   <string name="download_cancelled_msg">已取消下载</string>
   <string name="download_report_title">下载完成</string>
@@ -99,6 +110,7 @@
   <string name="download_error_request_error">请求出错</string>
   <string name="download_error_db_access">数据库访问错误</string>
   <string name="downloads_left">\u0020 下载剩余</string>
+  <string name="downloads_processing">正在处理下载</string>
   <string name="download_notification_title">下载播客数据</string>
   <string name="download_report_content">%1$d 下载成功, %2$d 失败</string>
   <string name="download_log_title_unknown">未知标题</string>
@@ -106,6 +118,8 @@
   <string name="download_type_media">媒体文件</string>
   <string name="download_type_image">图片</string>
   <string name="download_request_error_dialog_message_prefix">尝试下载文件:\u0020 时出错</string>
+  <string name="authentication_notification_title">需要认证</string>
+  <string name="authentication_notification_msg">您所请求的资源需要用户名和密码</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">错误!</string>
   <string name="player_stopped_msg">没有可播放媒体</string>
@@ -293,7 +307,10 @@
   <string name="in_queue_label">曲目已经在播放列表中</string>
   <string name="new_episodes_count_label">新曲目数</string>
   <string name="in_progress_episodes_count_label">已收听曲目数</string>
+  <string name="drag_handle_content_description">拖动以变更本项目的位置</string>
   <!--Feed information screen-->
   <string name="authentication_label">验证</string>
+  <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
   <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
 </resources>
