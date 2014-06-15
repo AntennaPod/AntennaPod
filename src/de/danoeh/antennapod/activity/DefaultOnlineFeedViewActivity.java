@@ -82,8 +82,10 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         if (feed.getItems() != null) {
             HtmlToPlainText formatter = new HtmlToPlainText();
             for (FeedItem item : feed.getItems()) {
-                Document description = Jsoup.parse(item.getDescription());
-                item.setDescription(StringUtils.trim(formatter.getPlainText(description)));
+                if (item.getDescription() != null) {
+                    Document description = Jsoup.parse(item.getDescription());
+                    item.setDescription(StringUtils.trim(formatter.getPlainText(description)));
+                }
             }
         }
     }
