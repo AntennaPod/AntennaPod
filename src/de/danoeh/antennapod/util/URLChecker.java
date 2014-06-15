@@ -33,6 +33,9 @@ public final class URLChecker {
         } else if (url.startsWith("pcast://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing pcast:// with http://");
             url = url.replaceFirst("pcast://", "http://");
+        } else if (url.startsWith("itpc")) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
+            url = url.replaceFirst("itpc://", "http://");
         } else if (!(url.startsWith("http://") || url.startsWith("https://"))) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
             builder.append("http://");

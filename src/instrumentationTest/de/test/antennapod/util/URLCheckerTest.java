@@ -37,4 +37,10 @@ public class URLCheckerTest extends AndroidTestCase {
         final String out = URLChecker.prepareURL(in);
         assertEquals("http://example.com", out);
     }
+
+    public void testItcpProtocol() {
+        final String in = "itpc://example.com";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("http://example.com", out);
+    }
 }
