@@ -48,6 +48,7 @@ public class UserPreferences implements
 	private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
 	private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
 	public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
+	private static final String PREF_SEEK_DELTA_SECS = "prefSeekDeltaSecs";
 
     // TODO: Make this value configurable
     private static final double PLAYED_DURATION_AUTOFLATTR_THRESHOLD = 0.8;
@@ -74,6 +75,7 @@ public class UserPreferences implements
 	private String playbackSpeed;
 	private String[] playbackSpeedArray;
 	private boolean pauseForFocusLoss;
+	private int seekDeltaSecs;
 	private boolean isFreshInstall;
 
 	private UserPreferences(Context context) {
@@ -129,6 +131,7 @@ public class UserPreferences implements
 		playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
 				PREF_PLAYBACK_SPEED_ARRAY, null));
 		pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
+		seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
 	}
 
 	private int readThemeValue(String valueFromPrefs) {
@@ -263,6 +266,11 @@ public class UserPreferences implements
 		return instance.playbackSpeedArray;
 	}
 
+	public static int getSeekDeltaMs() {
+		instanceAvailable();
+		return 1000 * instance.seekDeltaSecs;
+	}
+
 	/**
 	 * Returns the capacity of the episode cache. This method will return the
 	 * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
@@ -336,6 +344,8 @@ public class UserPreferences implements
 					PREF_PLAYBACK_SPEED_ARRAY, null));
 		} else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
 			pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
+		} else if (key.equals(PREF_SEEK_DELTA_SECS)) {
+			seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
 		} else if (key.equals(PREF_PAUSE_ON_HEADSET_DISCONNECT)) {
             pauseOnHeadsetDisconnect = sp.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
         }

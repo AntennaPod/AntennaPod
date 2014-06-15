@@ -22,6 +22,7 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -41,7 +42,6 @@ import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
 
 import java.util.List;
 
@@ -310,14 +310,18 @@ public class PlaybackService extends Service {
                     mediaPlayer.pause(true, true);
                 }
                 break;
-            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                mediaPlayer.seekDelta(PlaybackController.DEFAULT_SEEK_DELTA);
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                mediaPlayer.seekDelta(UserPreferences.getSeekDeltaMs());
                 break;
-            }
-            case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                mediaPlayer.seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
-            }
+            default:
+                String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
+                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                break;
         }
     }
 
