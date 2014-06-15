@@ -282,7 +282,8 @@ public class PlaybackService extends Service {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Handling keycode: " + keycode);
 
-        final PlayerStatus status = mediaPlayer.getPSMPInfo().playerStatus;
+        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final PlayerStatus status = info.playerStatus;
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
@@ -319,8 +320,10 @@ public class PlaybackService extends Service {
                 mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
             default:
-                String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
-                Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
+                    String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                }
                 break;
         }
     }
