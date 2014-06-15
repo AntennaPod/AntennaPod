@@ -33,6 +33,7 @@ dependencies {
     compile ("com.doomonafireball.betterpickers:library:1.5.2") {
         exclude group: 'com.android.support', module: 'support-v4'
     }
+    compile 'org.jsoup:jsoup:1.7.3'
 }
 
 android {

@@ -253,6 +253,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                 }
 
                 if (successful) {
+                    beforeShowFeedInformation(feed, alternateFeedUrls);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -285,7 +286,16 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     /**
-     * Called when feed parsed successfully
+     * Called after the feed has been downloaded and parsed and before showFeedInformation is called.
+     * This method is executed on a background thread
+     */
+    protected void beforeShowFeedInformation(Feed feed, Map<String, String> alternateFeedUrls) {
+
+    }
+
+    /**
+     * Called when feed parsed successfully.
+     * This method is executed on the GUI thread.
      */
     protected void showFeedInformation(Feed feed, Map<String, String> alternateFeedUrls) {
 
