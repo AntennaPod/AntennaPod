@@ -29,7 +29,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/txtvFeedurl"
                 android:layout_margin="8dp"
-                android:hint="@string/feedurl_label"
+                android:hint="@string/etxtFeedurlHint"
                 android:inputType="textUri"/>
 
             <Button
