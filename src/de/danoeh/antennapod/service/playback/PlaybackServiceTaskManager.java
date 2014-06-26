@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.service.playback;
 
 import android.content.Context;
+import android.os.Vibrator;
 import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -326,21 +327,44 @@ public class PlaybackServiceTaskManager {
         private static final long UPDATE_INTERVALL = 1000L;
         private volatile long waitingTime;
         private volatile boolean isWaiting;
+        private  ShakeListener mShaker;
+        private boolean soonexpire; // true when there is 10s left on the sleep timer
 
         public SleepTimer(long waitingTime) {
             super();
             this.waitingTime = waitingTime;
             isWaiting = true;
+            soonexpire = false;
+
+            // adding the shake listener
+            mShaker = new ShakeListener(context);
+            mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
+                public void onShake() {
+                    if (soonexpire) {
+                        Log.d(TAG, "Shake shake shake !!!!!!!!");
+                        callback.onSleepTimerReset();
+                        soonexpire = false;
+                    }
+                }
+            });
         }
 
         @Override
         public void run() {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Starting");
+            soonexpire = false;
             while (waitingTime > 0) {
                 try {
                     Thread.sleep(UPDATE_INTERVALL);
                     waitingTime -= UPDATE_INTERVALL;
+
+                    if ((waitingTime < 10000)&&(!soonexpire)) { // when we have 10 sec left
+                        Log.d(TAG, "You got 10");
+                        Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
+                        v.vibrate(1000); // vibrate 1s to warn the user
+                        soonexpire = true;
+                    }
 
                     if (waitingTime <= 0) {
                         if (BuildConfig.DEBUG)
@@ -377,6 +401,8 @@ public class PlaybackServiceTaskManager {
         void positionSaverTick();
 
         void onSleepTimerExpired();
+
+        void onSleepTimerReset();
 
         void onWidgetUpdaterTick();
 
