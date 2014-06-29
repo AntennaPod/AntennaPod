@@ -38,6 +38,7 @@
     <string name="copy_url_label">Copy URL</string>
     <string name="share_url_label">Share URL</string>
     <string name="copied_url_msg">Copied URL to clipboard.</string>
+    <string name="go_to_position_label">Go to this position</string>
 
     <!-- Playback history -->
     <string name="clear_history_label">Clear history</string>

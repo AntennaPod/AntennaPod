@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
@@ -32,6 +31,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.util.Converter;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.playback.Playable;
@@ -126,13 +126,7 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 if (Timeline.isTimecodeLink(url)) {
-                    int time = Timeline.getTimecodeLinkTime(url);
-                    if (getActivity() != null && getActivity() instanceof ItemDescriptionFragmentCallback) {
-                        PlaybackController pc = ((ItemDescriptionFragmentCallback) getActivity()).getPlaybackController();
-                        if (pc != null) {
-                            pc.seekTo(time);
-                        }
-                    }
+                    onTimecodeLinkSelected(url);
                 } else {
                     Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
                     try {
@@ -272,10 +266,8 @@ public class ItemDescriptionFragment extends Fragment {
                                     + r.getExtra()
                     );
                 selectedURL = r.getExtra();
-                if (!Timeline.isTimecodeLink(selectedURL)) {
-                    webvDescription.showContextMenu();
-                    return true;
-                }
+                webvDescription.showContextMenu();
+                return true;
             }
             selectedURL = null;
             return false;
@@ -313,6 +305,13 @@ public class ItemDescriptionFragment extends Fragment {
                             R.string.copied_url_msg, Toast.LENGTH_SHORT);
                     t.show();
                     break;
+                case R.id.go_to_position_item:
+                    if (Timeline.isTimecodeLink(selectedURL)) {
+                        onTimecodeLinkSelected(selectedURL);
+                    } else {
+                        Log.e(TAG, "Selected go_to_position_item, but URL was no timecode link: " + selectedURL);
+                    }
+                    break;
                 default:
                     handled = false;
                     break;
@@ -329,13 +328,19 @@ public class ItemDescriptionFragment extends Fragment {
                                     ContextMenuInfo menuInfo) {
         if (selectedURL != null) {
             super.onCreateContextMenu(menu, v, menuInfo);
-            menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
-                    R.string.open_in_browser_label);
-            menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
-                    R.string.copy_url_label);
-            menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
-                    R.string.share_url_label);
-            menu.setHeaderTitle(selectedURL);
+            if (Timeline.isTimecodeLink(selectedURL)) {
+                menu.add(Menu.NONE, R.id.go_to_position_item, Menu.NONE,
+                        R.string.go_to_position_label);
+                menu.setHeaderTitle(Converter.getDurationStringLong(Timeline.getTimecodeLinkTime(selectedURL)));
+            } else {
+                menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
+                        R.string.open_in_browser_label);
+                menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
+                        R.string.copy_url_label);
+                menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
+                        R.string.share_url_label);
+                menu.setHeaderTitle(selectedURL);
+            }
         }
     }
 
@@ -453,6 +458,16 @@ public class ItemDescriptionFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    private void onTimecodeLinkSelected(String link) {
+        int time = Timeline.getTimecodeLinkTime(link);
+        if (getActivity() != null && getActivity() instanceof ItemDescriptionFragmentCallback) {
+            PlaybackController pc = ((ItemDescriptionFragmentCallback) getActivity()).getPlaybackController();
+            if (pc != null) {
+                pc.seekTo(time);
+            }
+        }
     }
 
     public interface ItemDescriptionFragmentCallback {
