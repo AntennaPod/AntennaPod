@@ -60,6 +60,36 @@ public class TimelineTest extends InstrumentationTestCase {
         checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
     }
 
+    public void testProcessShownotesAddTimecodeParentheses() throws Exception {
+        final String timeStr = "10:11";
+        final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode (" + timeStr + ") here.</p>");
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeBrackets() throws Exception {
+        final String timeStr = "10:11";
+        final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode [" + timeStr + "] here.</p>");
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
+    public void testProcessShownotesAddTimecodeAngleBrackets() throws Exception {
+        final String timeStr = "10:11";
+        final long time = 3600 * 1000 * 10 + 60 * 1000 * 11;
+
+        Playable p = newTestPlayable(null, "<p> Some test text with a timecode <" + timeStr + "> here.</p>");
+        Timeline t = new Timeline(context, p);
+        String res = t.processShownotes(true);
+        checkLinkCorrect(res, new long[]{time}, new String[]{timeStr});
+    }
+
     private void checkLinkCorrect(String res, long[] timecodes, String[] timecodeStr) {
         assertNotNull(res);
         Document d = Jsoup.parse(res);

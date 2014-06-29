@@ -115,6 +115,7 @@ public class Timeline {
                     }
                     matcherLong.appendReplacement(buffer, rep);
                 }
+                matcherLong.appendTail(buffer);
 
                 element.html(buffer.toString());
             }
