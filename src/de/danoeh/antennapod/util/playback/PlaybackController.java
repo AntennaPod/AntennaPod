@@ -680,6 +680,12 @@ public abstract class PlaybackController {
         }
     }
 
+    public void seekTo(int time) {
+        if (playbackService != null) {
+            playbackService.seekTo(time);
+        }
+    }
+
     public void setVideoSurface(SurfaceHolder holder) {
         if (playbackService != null) {
             playbackService.setVideoSurface(holder);

@@ -80,24 +80,24 @@ public final class Converter {
     }
 
     /** Converts long duration string (HH:MM:SS) to milliseconds. */
-    public static long durationStringLongToMs(String input) {
+    public static int durationStringLongToMs(String input) {
         String[] parts = input.split(":");
         if (parts.length != 3) {
             return 0;
         }
-        return Long.valueOf(parts[0]) * 3600 * 1000 +
-                Long.valueOf(parts[1]) * 60 * 1000 +
-                Long.valueOf(parts[2]) * 1000;
+        return Integer.valueOf(parts[0]) * 3600 * 1000 +
+                Integer.valueOf(parts[1]) * 60 * 1000 +
+                Integer.valueOf(parts[2]) * 1000;
     }
 
     /** Converts short duration string (HH:MM) to milliseconds. */
-    public static long durationStringShortToMs(String input) {
+    public static int durationStringShortToMs(String input) {
         String[] parts = input.split(":");
         if (parts.length != 2) {
             return 0;
         }
-        return Long.valueOf(parts[0]) * 3600 * 1000 +
-                Long.valueOf(parts[1]) * 1000 * 60;
+        return Integer.valueOf(parts[0]) * 3600 * 1000 +
+                Integer.valueOf(parts[1]) * 1000 * 60;
     }
     
 }

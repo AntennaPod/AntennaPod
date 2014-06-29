@@ -27,7 +27,7 @@ import de.danoeh.antennapod.util.ShownotesProvider;
 public class Timeline {
     private static final String TAG = "Timeline";
 
-    private static final String WEBVIEW_STYLE = "<style type=\"text/css\"> @font-face { font-family: 'Roboto-Light'; src: url('file:///android_asset/Roboto-Light.ttf'); } * { color: %s; font-family: roboto-Light; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }";
+    private static final String WEBVIEW_STYLE = "<style type=\"text/css\"> @font-face { font-family: 'Roboto-Light'; src: url('file:///android_asset/Roboto-Light.ttf'); } * { color: %s; font-family: roboto-Light; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } a.timecode { color: #669900; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }";
 
 
     private ShownotesProvider shownotesProvider;
@@ -56,7 +56,7 @@ public class Timeline {
     }
 
     private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
-    private static final String TIMECODE_LINK = "<a href=\"antennapod://timecode/%d\">%s</a>";
+    private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b(?:(?:(([0-9][0-9])):))?(([0-9][0-9])):(([0-9][0-9]))\\b");
 
     /**
@@ -69,6 +69,7 @@ public class Timeline {
      * @return The processed HTML string.
      */
     public String processShownotes(final boolean addTimecodes) {
+        final Playable playable = (shownotesProvider instanceof Playable) ? (Playable) shownotesProvider : null;
 
         // load shownotes
 
@@ -103,9 +104,15 @@ public class Timeline {
                 while (matcherLong.find()) {
                     String h = matcherLong.group(1);
                     String group = matcherLong.group(0);
-                    long time = (h != null) ? Converter.durationStringLongToMs(group) :
+                    int time = (h != null) ? Converter.durationStringLongToMs(group) :
                             Converter.durationStringShortToMs(group);
-                    String rep = String.format(TIMECODE_LINK, time, group);
+
+                    String rep;
+                    if (playable == null || playable.getDuration() > time) {
+                        rep = String.format(TIMECODE_LINK, time, group);
+                    } else {
+                        rep = group;
+                    }
                     matcherLong.appendReplacement(buffer, rep);
                 }
 
@@ -129,13 +136,13 @@ public class Timeline {
      * Returns the time in milliseconds that is attached to this link or -1
      * if the link is no valid timecode link.
      */
-    public static long getTimecodeLinkTime(String link) {
+    public static int getTimecodeLinkTime(String link) {
         if (isTimecodeLink(link)) {
             Matcher m = TIMECODE_LINK_REGEX.matcher(link);
 
             try {
                 if (m.find()) {
-                    return Long.valueOf(m.group(1));
+                    return Integer.valueOf(m.group(1));
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();

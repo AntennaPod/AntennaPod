@@ -35,6 +35,7 @@ public class TimelineTest extends InstrumentationTestCase {
         item.setChapters(chapters);
         item.setContentEncoded(shownotes);
         FeedMedia media = new FeedMedia(item, "http://example.com/episode", 100, "audio/mp3");
+        media.setDuration(Integer.MAX_VALUE);
         item.setMedia(media);
         return media;
     }

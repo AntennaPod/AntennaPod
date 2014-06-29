@@ -33,11 +33,12 @@ import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
  * Activity for playing audio files.
  */
-public class AudioplayerActivity extends MediaplayerActivity {
+public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback {
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
@@ -293,7 +294,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
                     case POS_DESCR:
                         if (descriptionFragment == null) {
                             descriptionFragment = ItemDescriptionFragment
-                                    .newInstance(media, true);
+                                    .newInstance(media, true, true);
                         }
                         currentlyShownFragment = descriptionFragment;
                         break;
@@ -601,6 +602,11 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     protected void onBufferEnd() {
         clearStatusMsg();
+    }
+
+    @Override
+    public PlaybackController getPlaybackController() {
+        return controller;
     }
 
     public interface AudioplayerContentFragment {

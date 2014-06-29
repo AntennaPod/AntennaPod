@@ -2,8 +2,11 @@ package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.*;
-import android.content.res.TypedArray;
+import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -12,12 +15,18 @@ import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import android.util.TypedValue;
-import android.view.*;
+import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebSettings.LayoutAlgorithm;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -26,11 +35,12 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShareUtils;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.playback.Playable;
-import org.apache.commons.lang3.StringEscapeUtils;
+import de.danoeh.antennapod.util.playback.PlaybackController;
+import de.danoeh.antennapod.util.playback.Timeline;
 
-import java.util.concurrent.Callable;
-
-/** Displays the description of a Playable object in a Webview. */
+/**
+ * Displays the description of a Playable object in a Webview.
+ */
 public class ItemDescriptionFragment extends Fragment {
 
     private static final String TAG = "ItemDescriptionFragment";
@@ -43,6 +53,7 @@ public class ItemDescriptionFragment extends Fragment {
     private static final String ARG_FEEDITEM_ID = "arg.feeditem";
 
     private static final String ARG_SAVE_STATE = "arg.saveState";
+    private static final String ARG_HIGHLIGHT_TIMECODES = "arg.highlightTimecodes";
 
     private WebView webvDescription;
 
@@ -63,21 +74,29 @@ public class ItemDescriptionFragment extends Fragment {
      */
     private boolean saveState;
 
+    /**
+     * True if Fragment should highlight timecodes (e.g. time codes in the HH:MM:SS format).
+     */
+    private boolean highlightTimecodes;
+
     public static ItemDescriptionFragment newInstance(Playable media,
-                                                      boolean saveState) {
+                                                      boolean saveState,
+                                                      boolean highlightTimecodes) {
         ItemDescriptionFragment f = new ItemDescriptionFragment();
         Bundle args = new Bundle();
         args.putParcelable(ARG_PLAYABLE, media);
         args.putBoolean(ARG_SAVE_STATE, saveState);
+        args.putBoolean(ARG_HIGHLIGHT_TIMECODES, highlightTimecodes);
         f.setArguments(args);
         return f;
     }
 
-    public static ItemDescriptionFragment newInstance(FeedItem item, boolean saveState) {
+    public static ItemDescriptionFragment newInstance(FeedItem item, boolean saveState, boolean highlightTimecodes) {
         ItemDescriptionFragment f = new ItemDescriptionFragment();
         Bundle args = new Bundle();
         args.putLong(ARG_FEEDITEM_ID, item.getId());
         args.putBoolean(ARG_SAVE_STATE, saveState);
+        args.putBoolean(ARG_HIGHLIGHT_TIMECODES, highlightTimecodes);
         f.setArguments(args);
         return f;
     }
@@ -106,12 +125,22 @@ public class ItemDescriptionFragment extends Fragment {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                try {
-                    startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
-                    return false;
+                if (Timeline.isTimecodeLink(url)) {
+                    int time = Timeline.getTimecodeLinkTime(url);
+                    if (getActivity() != null && getActivity() instanceof ItemDescriptionFragmentCallback) {
+                        PlaybackController pc = ((ItemDescriptionFragmentCallback) getActivity()).getPlaybackController();
+                        if (pc != null) {
+                            pc.seekTo(time);
+                        }
+                    }
+                } else {
+                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                    try {
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                        return true;
+                    }
                 }
                 return true;
             }
@@ -178,6 +207,7 @@ public class ItemDescriptionFragment extends Fragment {
             Log.d(TAG, "Creating fragment");
         Bundle args = getArguments();
         saveState = args.getBoolean(ARG_SAVE_STATE, false);
+        highlightTimecodes = args.getBoolean(ARG_HIGHLIGHT_TIMECODES, false);
 
     }
 
@@ -229,21 +259,6 @@ public class ItemDescriptionFragment extends Fragment {
         }
     }
 
-    /**
-     * Return the CSS style of the Webview.
-     *
-     * @param textColor the default color to use for the text in the webview. This
-     *                  value is inserted directly into the CSS String.
-     */
-    private String applyWebviewStyle(String textColor, String data) {
-        final String WEBVIEW_STYLE = "<html><head><style type=\"text/css\"> @font-face { font-family: 'Roboto-Light'; src: url('file:///android_asset/Roboto-Light.ttf'); } * { color: %s; font-family: roboto-Light; font-size: 11pt; } a { font-style: normal; text-decoration: none; font-weight: normal; color: #00A8DF; } img { display: block; margin: 10 auto; max-width: %s; height: auto; } body { margin: %dpx %dpx %dpx %dpx; }</style></head><body>%s</body></html>";
-        final int pageMargin = (int) TypedValue.applyDimension(
-                TypedValue.COMPLEX_UNIT_DIP, 8, getResources()
-                .getDisplayMetrics());
-        return String.format(WEBVIEW_STYLE, textColor, "100%", pageMargin,
-                pageMargin, pageMargin, pageMargin, data);
-    }
-
     private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
 
         @Override
@@ -254,10 +269,13 @@ public class ItemDescriptionFragment extends Fragment {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "Link of webview was long-pressed. Extra: "
-                                    + r.getExtra());
+                                    + r.getExtra()
+                    );
                 selectedURL = r.getExtra();
-                webvDescription.showContextMenu();
-                return true;
+                if (!Timeline.isTimecodeLink(selectedURL)) {
+                    webvDescription.showContextMenu();
+                    return true;
+                }
             }
             selectedURL = null;
             return false;
@@ -364,22 +382,10 @@ public class ItemDescriptionFragment extends Fragment {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Loading Webview");
                 try {
-                    Callable<String> shownotesLoadTask = shownotesProvider.loadShownotes();
-                    final String shownotes = shownotesLoadTask.call();
-
-                    data = StringEscapeUtils.unescapeHtml4(shownotes);
                     Activity activity = getActivity();
                     if (activity != null) {
-                        TypedArray res = activity
-                                .getTheme()
-                                .obtainStyledAttributes(
-                                        new int[]{android.R.attr.textColorPrimary});
-                        int colorResource = res.getColor(0, 0);
-                        String colorString = String.format("#%06X",
-                                0xFFFFFF & colorResource);
-                        Log.i(TAG, "text color: " + colorString);
-                        res.recycle();
-                        data = applyWebviewStyle(colorString, data);
+                        Timeline timeline = new Timeline(activity, shownotesProvider);
+                        data = timeline.processShownotes(highlightTimecodes);
                     } else {
                         cancel(true);
                     }
@@ -409,7 +415,8 @@ public class ItemDescriptionFragment extends Fragment {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG,
                             "Saving scroll position: "
-                                    + webvDescription.getScrollY());
+                                    + webvDescription.getScrollY()
+                    );
                 editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
                 editor.putString(PREF_PLAYABLE_ID, media.getIdentifier()
                         .toString());
@@ -446,5 +453,9 @@ public class ItemDescriptionFragment extends Fragment {
             }
         }
         return false;
+    }
+
+    public interface ItemDescriptionFragmentCallback {
+        public PlaybackController getPlaybackController();
     }
 }
