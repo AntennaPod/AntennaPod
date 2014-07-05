@@ -101,7 +101,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         ListView listView = (ListView) findViewById(R.id.listview);
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View header = inflater.inflate(R.layout.onlinefeedview_header, null);
+        View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
 
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));

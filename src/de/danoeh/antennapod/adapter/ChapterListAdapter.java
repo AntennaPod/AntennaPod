@@ -51,7 +51,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 			LayoutInflater inflater = (LayoutInflater) getContext()
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView = inflater.inflate(R.layout.simplechapter_item, null);
+			convertView = inflater.inflate(R.layout.simplechapter_item, parent, false);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			defaultTextColor = holder.title.getTextColors().getDefaultColor();
 			holder.start = (TextView) convertView.findViewById(R.id.txtvStart);

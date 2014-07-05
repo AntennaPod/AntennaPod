@@ -110,7 +110,7 @@ public class NavListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.nav_listitem, null);
+            convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
 
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
@@ -154,7 +154,7 @@ public class NavListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.nav_section_item, null);
+            convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
 
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             convertView.setTag(holder);
@@ -179,7 +179,7 @@ public class NavListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.nav_feedlistitem, null);
+            convertView = inflater.inflate(R.layout.nav_feedlistitem, parent, false);
 
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);

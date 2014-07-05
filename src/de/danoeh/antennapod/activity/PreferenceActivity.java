@@ -69,7 +69,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-            ActionBar ab = getActionBar();
+            @SuppressLint("AppCompatMethod") ActionBar ab = getActionBar();
             if (ab != null) {
                 ab.setDisplayHomeAsUpEnabled(true);
             }

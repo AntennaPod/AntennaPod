@@ -12,7 +12,7 @@ import de.danoeh.antennapod.feed.FeedItem;
 import java.util.List;
 
 /**
- * Created by daniel on 24.08.13.
+ * List adapter for showing a list of FeedItems with their title and description.
  */
 public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
 
@@ -31,7 +31,7 @@ public class FeedItemlistDescriptionAdapter extends ArrayAdapter<FeedItem> {
             holder = new Holder();
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.itemdescription_listitem, null);
+            convertView = inflater.inflate(R.layout.itemdescription_listitem, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.description = (TextView) convertView.findViewById(R.id.txtvDescription);
 

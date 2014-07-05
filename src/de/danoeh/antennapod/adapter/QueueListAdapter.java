@@ -57,7 +57,7 @@ public class QueueListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.queue_listitem,
-                    null);
+                    parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.butSecondary = (ImageButton) convertView
                     .findViewById(R.id.butSecondaryAction);

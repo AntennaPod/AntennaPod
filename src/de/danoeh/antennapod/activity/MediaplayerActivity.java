@@ -15,6 +15,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -170,6 +171,10 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected void onCreate(Bundle savedInstanceState) {
         chooseTheme();
         super.onCreate(savedInstanceState);
+
+        // subclasses might use this feature
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating Activity");
         StorageUtils.checkStorageAvailability(this);

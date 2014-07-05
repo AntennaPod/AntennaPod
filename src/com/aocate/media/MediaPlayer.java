@@ -32,6 +32,8 @@ import android.os.Message;
 import android.os.Handler.Callback;
 import android.util.Log;
 
+import de.danoeh.antennapod.BuildConfig;
+
 public class MediaPlayer {
 	public interface OnBufferingUpdateListener {
 		public abstract void onBufferingUpdate(MediaPlayer arg0, int percent);
@@ -309,7 +311,7 @@ public class MediaPlayer {
 			Log.d(MP_TAG, "this.mpi is not a ServiceBackedMediaPlayer, but we couldn't use it anyway 321");
 			return false;
 		} else {
-			assert (this.mpi instanceof ServiceBackedMediaPlayer);
+			if (BuildConfig.DEBUG && !(this.mpi instanceof ServiceBackedMediaPlayer)) throw new AssertionError();
 			if (this.useService && isPrestoLibraryInstalled()) {
 				// We should be using the service, and we are. Great!
 				Log.d(MP_TAG, "We could be using a ServiceBackedMediaPlayer and we are 327");

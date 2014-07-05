@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.dialog;
 
+import android.annotation.TargetApi;
 import android.app.Dialog;
 import android.content.ActivityNotFoundException;
 import android.content.Context;
@@ -95,6 +96,7 @@ public class FeedItemDialog extends Dialog {
                 && UserPreferences.getTheme() != R.style.Theme_AntennaPod_Dark;
     }
 
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

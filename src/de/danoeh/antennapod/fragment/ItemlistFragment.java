@@ -322,10 +322,11 @@ public class ItemlistFragment extends ListFragment {
             Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
             return;
         }
+        ListView lv = getListView();
         LayoutInflater inflater = (LayoutInflater)
                 getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View header = inflater.inflate(R.layout.feeditemlist_header, null);
-        getListView().addHeaderView(header);
+        View header = inflater.inflate(R.layout.feeditemlist_header, lv, false);
+        lv.addHeaderView(header);
 
         TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);

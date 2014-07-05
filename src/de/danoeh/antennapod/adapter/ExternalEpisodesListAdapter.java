@@ -72,7 +72,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 			convertView = inflater.inflate(R.layout.external_itemlist_item,
-					null);
+					parent, false);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			holder.feedTitle = (TextView) convertView
 					.findViewById(R.id.txtvFeedname);
@@ -225,7 +225,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 			View convertView, ViewGroup parent) {
 		LayoutInflater inflater = (LayoutInflater) context
 				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView = inflater.inflate(R.layout.feeditemlist_header, null);
+		convertView = inflater.inflate(R.layout.feeditemlist_header, parent, false);
 		TextView headerTitle = (TextView) convertView
 				.findViewById(0);
 		ImageButton actionButton = (ImageButton) convertView

@@ -124,7 +124,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];

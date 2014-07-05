@@ -56,7 +56,7 @@ public class DownloadlistAdapter extends BaseAdapter {
             holder = new Holder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.downloadlist_item, null);
+            convertView = inflater.inflate(R.layout.downloadlist_item, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.message = (TextView) convertView
                     .findViewById(R.id.txtvMessage);
