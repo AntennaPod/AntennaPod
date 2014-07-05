@@ -1,300 +1,235 @@
 package de.danoeh.antennapod.asynctask;
 
-import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.AsyncTask;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.shredzone.flattr4j.exception.FlattrException;
+
+import java.util.LinkedList;
+import java.util.List;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.FlattrAuthActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.util.NetworkUtils;
 import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * Performs a click action in a background thread.
+ * <p/>
+ * When started, the flattr click worker will try to flattr every item that is in the flattr queue. If no network
+ * connection is available it will shut down immediately. The FlattrClickWorker can also be given one additional
+ * FlattrThing which will be flattrd immediately.
+ * <p/>
+ * The FlattrClickWorker will display a toast notification for every item that has been flattrd. If the FlattrClickWorker failed
+ * to flattr something, a notification will be displayed.
  */
-
-public class FlattrClickWorker extends AsyncTask<Void, String, Void> {
+public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorker.ExitCode> {
     protected static final String TAG = "FlattrClickWorker";
-    protected Context context;
 
-    private final int NOTIFICATION_ID = 4;
+    private static final int NOTIFICATION_ID = 4;
 
-    protected String errorMsg;
-    protected int exitCode;
-    protected ArrayList<String> flattrd;
-    protected ArrayList<String> flattr_failed;
+    private final Context context;
 
+    public static enum ExitCode {EXIT_NORMAL, NO_TOKEN, NO_NETWORK, NO_THINGS}
 
-    protected NotificationCompat.Builder notificationCompatBuilder;
-    private Notification.BigTextStyle notificationBuilder;
-    protected NotificationManager notificationManager;
+    private volatile int countFailed = 0;
+    private volatile int countSuccess = 0;
 
-    protected ProgressDialog progDialog;
-
-    protected final static int EXIT_DEFAULT = 0;
-    protected final static int NO_TOKEN = 1;
-    protected final static int ENQUEUED = 2;
-    protected final static int NO_THINGS = 3;
-
-    public final static int ENQUEUE_ONLY = 1;
-    public final static int FLATTR_TOAST = 2;
-    public static final int FLATTR_NOTIFICATION = 3;
-
-    private int run_mode = FLATTR_NOTIFICATION;
-
-    private FlattrThing extra_flattr_thing; // additional urls to flattr that do *not* originate from the queue
+    private volatile FlattrThing extraFlattrThing;
 
     /**
-     * @param context
-     * @param run_mode can be one of ENQUEUE_ONLY, FLATTR_TOAST and FLATTR_NOTIFICATION
+     * Only relevant if just one thing is flattrd
      */
-    public FlattrClickWorker(Context context, int run_mode) {
-        this(context);
-        this.run_mode = run_mode;
-    }
+    private volatile FlattrException exception;
 
+    /**
+     * Creates a new FlattrClickWorker which will only flattr all things in the queue.
+     * <p/>
+     * The FlattrClickWorker has to be started by calling executeAsync().
+     *
+     * @param context A context for accessing the database and posting notifications. Must not be null.
+     */
     public FlattrClickWorker(Context context) {
-        super();
-        this.context = context;
-        exitCode = EXIT_DEFAULT;
-
-        flattrd = new ArrayList<String>();
-        flattr_failed = new ArrayList<String>();
-
-        errorMsg = "";
+        if (context == null) throw new IllegalArgumentException("context = null");
+        this.context = context.getApplicationContext();
     }
 
-    /* only used in PreferencesActivity for flattring antennapod itself,
-    * can't really enqueue this thing
-    */
-    public FlattrClickWorker(Context context, FlattrThing thing) {
+    /**
+     * Creates a new FlattrClickWorker which will flattr all things in the queue and one additional
+     * FlattrThing.
+     * <p/>
+     * The FlattrClickWorker has to be started by calling executeAsync().
+     *
+     * @param context          A context for accessing the database and posting notifications. Must not be null.
+     * @param extraFlattrThing The additional thing to flattr
+     */
+    public FlattrClickWorker(Context context, FlattrThing extraFlattrThing) {
         this(context);
-        extra_flattr_thing = thing;
-        run_mode = FLATTR_TOAST;
-        Log.d(TAG, "Going to flattr special thing that is not in the queue: " + thing.getTitle());
+        this.extraFlattrThing = extraFlattrThing;
     }
 
-    protected void onNoAccessToken() {
-        Log.w(TAG, "No access token was available");
-    }
-
-    protected void onFlattrError() {
-        FlattrUtils.showErrorDialog(context, errorMsg);
-    }
-
-    protected void onFlattred() {
-        String notificationTitle = context.getString(R.string.flattrd_label);
-        String notificationText = "", notificationSubText = "", notificationBigText = "";
-
-        // text for successfully flattred items
-        if (flattrd.size() == 1)
-            notificationText = String.format(context.getString(R.string.flattr_click_success));
-        else if (flattrd.size() > 1) // flattred pending items from queue
-            notificationText = String.format(context.getString(R.string.flattr_click_success_count, flattrd.size()));
-
-        if (flattrd.size() > 0) {
-            String acc = "";
-            for (String s : flattrd)
-                acc += s + '\n';
-            acc = acc.substring(0, acc.length() - 2);
-
-            notificationBigText = String.format(context.getString(R.string.flattr_click_success_queue), acc);
-        }
-
-        // add text for failures
-        if (flattr_failed.size() > 0) {
-            notificationTitle = context.getString(R.string.flattrd_failed_label);
-            notificationText = String.format(context.getString(R.string.flattr_click_failure_count), flattr_failed.size())
-                    + " " + notificationText;
-
-            notificationSubText = flattr_failed.get(0);
-
-            String acc = "";
-            for (String s : flattr_failed)
-                acc += s + '\n';
-            acc = acc.substring(0, acc.length() - 2);
-
-            notificationBigText = String.format(context.getString(R.string.flattr_click_failure), acc)
-                    + "\n" + notificationBigText;
-        }
-
-        Log.d(TAG, "Going to post notification: " + notificationBigText);
-
-        notificationManager.cancel(NOTIFICATION_ID);
-
-        if (run_mode == FLATTR_NOTIFICATION || flattr_failed.size() > 0) {
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
-            if (android.os.Build.VERSION.SDK_INT >= 16) {
-                notificationBuilder = new Notification.BigTextStyle(
-                        new Notification.Builder(context)
-                                .setOngoing(false)
-                                .setContentTitle(notificationTitle)
-                                .setContentText(notificationText)
-                                .setContentIntent(contentIntent)
-                                .setSubText(notificationSubText)
-                                .setSmallIcon(R.drawable.stat_notify_sync))
-                        .bigText(notificationText + "\n" + notificationBigText);
-                notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-            } else {
-                notificationCompatBuilder = new NotificationCompat.Builder(context) // need new notificationBuilder and cancel/renotify to get rid of progress bar
-                        .setContentTitle(notificationTitle)
-                        .setContentText(notificationText)
-                        .setContentIntent(contentIntent)
-                        .setSubText(notificationBigText)
-                        .setTicker(notificationTitle)
-                        .setSmallIcon(R.drawable.stat_notify_sync)
-                        .setOngoing(false);
-                notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
-            }
-        } else if (run_mode == FLATTR_TOAST) {
-            Toast.makeText(context.getApplicationContext(),
-                    notificationText,
-                    Toast.LENGTH_LONG)
-                    .show();
-        }
-    }
-
-    protected void onEnqueue() {
-        Toast.makeText(context.getApplicationContext(),
-                R.string.flattr_click_enqueued,
-                Toast.LENGTH_LONG)
-                .show();
-    }
-
-    protected void onSetupNotification() {
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
-            notificationBuilder = new Notification.BigTextStyle(
-                    new Notification.Builder(context)
-                            .setContentTitle(context.getString(R.string.flattring_label))
-                            .setAutoCancel(true)
-                            .setSmallIcon(R.drawable.stat_notify_sync)
-                            .setProgress(0, 0, true)
-                            .setOngoing(true));
-        } else {
-            notificationCompatBuilder = new NotificationCompat.Builder(context)
-                    .setContentTitle(context.getString(R.string.flattring_label))
-                    .setAutoCancel(true)
-                    .setSmallIcon(R.drawable.stat_notify_sync)
-                    .setProgress(0, 0, true)
-                    .setOngoing(true);
-        }
-
-        notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-    }
 
     @Override
-    protected void onPostExecute(Void result) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "Exit code was " + exitCode);
-
-        switch (exitCode) {
-            case NO_TOKEN:
-                notificationManager.cancel(NOTIFICATION_ID);
-                onNoAccessToken();
-                break;
-            case ENQUEUED:
-                onEnqueue();
-                break;
-            case EXIT_DEFAULT:
-                onFlattred();
-                break;
-            case NO_THINGS: // FlattrClickWorker called automatically somewhere to empty flattr queue
-                notificationManager.cancel(NOTIFICATION_ID);
-                break;
-        }
-    }
-
-    @Override
-    protected void onPreExecute() {
-        onSetupNotification();
-    }
-
-    private static boolean haveInternetAccess(Context context) {
-        ConnectivityManager cm =
-                (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
-
-        NetworkInfo networkInfo = cm.getActiveNetworkInfo();
-        return (networkInfo != null && networkInfo.isConnectedOrConnecting());
-    }
-
-    @Override
-    protected Void doInBackground(Void... params) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "Starting background work");
-
-        exitCode = EXIT_DEFAULT;
+    protected ExitCode doInBackground(Void... params) {
 
         if (!FlattrUtils.hasToken()) {
-            exitCode = NO_TOKEN;
-        } else if (DBReader.getFlattrQueueEmpty(context) && extra_flattr_thing == null) {
-            exitCode = NO_THINGS;
-        } else if (!haveInternetAccess(context) || run_mode == ENQUEUE_ONLY) {
-            exitCode = ENQUEUED;
-        } else {
-            List<FlattrThing> flattrList = DBReader.getFlattrQueue(context);
-            Log.d(TAG, "flattrQueue processing list with " + flattrList.size() + " items.");
-
-            if (extra_flattr_thing != null)
-                flattrList.add(extra_flattr_thing);
-
-            flattrd.ensureCapacity(flattrList.size());
-
-            for (FlattrThing thing : flattrList) {
-                try {
-                    Log.d(TAG, "flattrQueue processing " + thing.getTitle() + " " + thing.getPaymentLink());
-                    publishProgress(String.format(context.getString(R.string.flattring_thing), thing.getTitle()));
-
-                    thing.getFlattrStatus().setUnflattred();  // pop from queue to prevent unflattrable things from getting stuck in flattr queue infinitely
-
-                    FlattrUtils.clickUrl(context, thing.getPaymentLink());
-                    flattrd.add(thing.getTitle());
-
-                    thing.getFlattrStatus().setFlattred();
-                } catch (Exception e) {
-                    Log.d(TAG, "flattrQueue processing exception at item " + thing.getTitle() + " " + e.getMessage());
-                    flattr_failed.ensureCapacity(flattrList.size());
-                    flattr_failed.add(thing.getTitle() + ": " + e.getMessage());
-                }
-                Log.d(TAG, "flattrQueue processing - going to write thing back to db with flattr_status " + Long.toString(thing.getFlattrStatus().toLong()));
-                DBWriter.setFlattredStatus(context, thing, false);
-            }
-
+            return ExitCode.NO_TOKEN;
         }
 
-        return null;
+        if (!NetworkUtils.networkAvailable(context)) {
+            return ExitCode.NO_NETWORK;
+        }
+
+        final List<FlattrThing> flattrQueue = DBReader.getFlattrQueue(context);
+        if (extraFlattrThing != null) {
+            flattrQueue.add(extraFlattrThing);
+        } else if (flattrQueue.size() == 1) {
+            // if only one item is flattrd, the report can specifically mentioned that this item has failed
+            extraFlattrThing = flattrQueue.get(0);
+        }
+
+        if (flattrQueue.isEmpty()) {
+            return ExitCode.NO_THINGS;
+        }
+
+        List<Future> dbFutures = new LinkedList<Future>();
+        for (FlattrThing thing : flattrQueue) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Processing " + thing.getTitle());
+
+            try {
+                thing.getFlattrStatus().setUnflattred();  // pop from queue to prevent unflattrable things from getting stuck in flattr queue infinitely
+                FlattrUtils.clickUrl(context, thing.getPaymentLink());
+                thing.getFlattrStatus().setFlattred();
+                publishProgress(R.string.flattr_click_success);
+                countSuccess++;
+
+            } catch (FlattrException e) {
+                e.printStackTrace();
+                countFailed++;
+                if (countFailed == 1) {
+                    exception = e;
+                }
+            }
+
+            Future<?> f = DBWriter.setFlattredStatus(context, thing, false);
+            if (f != null) {
+                dbFutures.add(f);
+            }
+        }
+
+        for (Future f : dbFutures) {
+            try {
+                f.get();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return ExitCode.EXIT_NORMAL;
     }
 
     @Override
-    protected void onProgressUpdate(String... names) {
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
-        if (android.os.Build.VERSION.SDK_INT >= 16) {
-            notificationBuilder.setBigContentTitle(names[0]);
-            notificationManager.notify(NOTIFICATION_ID, notificationBuilder.build());
-        } else {
-            notificationCompatBuilder.setContentText(names[0]);
-            notificationCompatBuilder.setContentIntent(contentIntent);
-            notificationManager.notify(NOTIFICATION_ID, notificationCompatBuilder.build());
+    protected void onPostExecute(ExitCode exitCode) {
+        super.onPostExecute(exitCode);
+        switch (exitCode) {
+            case EXIT_NORMAL:
+                if (countFailed > 0) {
+                    postFlattrFailedNotification();
+                }
+                break;
+            case NO_NETWORK:
+                postToastNotification(R.string.flattr_click_enqueued);
+                break;
+            case NO_TOKEN:
+                postNoTokenNotification();
+                break;
+            case NO_THINGS: // nothing to notify here
+                break;
         }
     }
 
-    @SuppressLint("NewApi")
+    @Override
+    protected void onProgressUpdate(Integer... values) {
+        super.onProgressUpdate(values);
+        postToastNotification(values[0]);
+    }
+
+    private void postToastNotification(int msg) {
+        Toast.makeText(context, context.getString(msg), Toast.LENGTH_LONG).show();
+    }
+
+    private void postNoTokenNotification() {
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, FlattrAuthActivity.class), 0);
+
+        Notification notification = new NotificationCompat.Builder(context)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(context.getString(R.string.no_flattr_token_notification_msg)))
+                .setContentIntent(contentIntent)
+                .setContentTitle(context.getString(R.string.no_flattr_token_title))
+                .setTicker(context.getString(R.string.no_flattr_token_title))
+                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setOngoing(false)
+                .setAutoCancel(true)
+                .build();
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification);
+    }
+
+    private void postFlattrFailedNotification() {
+        if (countFailed == 0) {
+            return;
+        }
+
+        PendingIntent contentIntent = PendingIntent.getActivity(context, 0, new Intent(context, MainActivity.class), 0);
+        String title;
+        String subtext;
+
+        if (countFailed == 1) {
+            title = context.getString(R.string.flattrd_failed_label);
+            String exceptionMsg = (exception.getMessage() != null) ? exception.getMessage() : "";
+            subtext = context.getString(R.string.flattr_click_failure, extraFlattrThing.getTitle())
+                    + "\n" + exceptionMsg;
+        } else {
+            title = context.getString(R.string.flattrd_label);
+            subtext = context.getString(R.string.flattr_click_success_count, countSuccess) + "\n"
+                    + context.getString(R.string.flattr_click_failure_count, countFailed);
+        }
+
+        Notification notification = new NotificationCompat.Builder(context)
+                .setStyle(new NotificationCompat.BigTextStyle().bigText(subtext))
+                .setContentIntent(contentIntent)
+                .setContentTitle(title)
+                .setTicker(title)
+                .setSmallIcon(R.drawable.stat_notify_sync_error)
+                .setOngoing(false)
+                .setAutoCancel(true)
+                .build();
+        ((NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE)).notify(NOTIFICATION_ID, notification);
+    }
+
+
+    /**
+     * Starts the FlattrClickWorker as an AsyncTask.
+     */
+    @TargetApi(11)
     public void executeAsync() {
-        FlattrUtils.hasToken();
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            executeOnExecutor(THREAD_POOL_EXECUTOR);
+            executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
             execute();
         }

@@ -156,7 +156,7 @@ public final class DBTasks {
 
                     if (FlattrUtils.hasToken()) {
                         if (BuildConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
-                        new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeAsync(); // flattr pending things
+                        new FlattrClickWorker(context).executeAsync(); // flattr pending things
 
                         if (BuildConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
                         new FlattrStatusFetcher(context).start();

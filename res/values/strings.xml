@@ -165,6 +165,7 @@
     <string name="return_home_label">Return to home</string>
     <string name="flattr_auth_success">Authentication was successful! You can now flattr things within the app.</string>
     <string name="no_flattr_token_title">No Flattr token found</string>
+    <string name="no_flattr_token_notification_msg">Your flattr account does not seem to be connected to AntennaPod. Tap here to authenticate.</string>
     <string name="no_flattr_token_msg">Your flattr account does not seem to be connected to AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
     <string name="authenticate_now_label">Authenticate</string>
     <string name="action_forbidden_title">Action forbidden</string>
