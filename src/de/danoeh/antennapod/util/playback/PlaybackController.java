@@ -15,6 +15,10 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
@@ -62,8 +66,8 @@ public abstract class PlaybackController {
     private boolean reinitOnPause;
 
     public PlaybackController(Activity activity, boolean reinitOnPause) {
-        if (activity == null)
-            throw new IllegalArgumentException("activity = null");
+        Validate.notNull(activity);
+
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
@@ -360,7 +364,7 @@ public abstract class PlaybackController {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isConnectedToPlaybackService()) {
-                if (intent.getAction().equals(
+                if (StringUtils.equals(intent.getAction(),
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                     release();
                     onShutdownNotification();

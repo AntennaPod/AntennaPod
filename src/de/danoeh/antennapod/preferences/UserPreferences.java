@@ -12,6 +12,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.json.JSONArray;
 import org.json.JSONException;
 
@@ -92,8 +93,8 @@ public class UserPreferences implements
 	public static void createInstance(Context context) {
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Creating new instance of UserPreferences");
-		if (context == null)
-			throw new IllegalArgumentException("Context must not be null");
+		Validate.notNull(context);
+
 		instance = new UserPreferences(context);
 
 		createImportDirectory();

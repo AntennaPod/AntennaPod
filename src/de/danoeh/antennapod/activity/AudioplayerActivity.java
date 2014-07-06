@@ -16,16 +16,27 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.Window;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -215,8 +226,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getAction() != null
-                && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+        if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Received VIEW intent: "

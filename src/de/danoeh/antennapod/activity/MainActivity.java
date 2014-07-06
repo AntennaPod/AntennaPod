@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -219,7 +222,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void loadChildFragment(Fragment fragment) {
-        if (fragment == null) throw new IllegalArgumentException("fragment = null");
+        Validate.notNull(fragment);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.main_view, fragment, "main")

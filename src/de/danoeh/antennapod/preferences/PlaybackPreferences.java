@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 
 /**
@@ -66,8 +69,8 @@ public class PlaybackPreferences implements
 	public static void createInstance(Context context) {
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Creating new instance of UserPreferences");
-		if (context == null)
-			throw new IllegalArgumentException("Context must not be null");
+		Validate.notNull(context);
+
 		instance = new PlaybackPreferences(context);
 
 		PreferenceManager.getDefaultSharedPreferences(context)

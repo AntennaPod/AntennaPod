@@ -2,6 +2,9 @@ package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -19,7 +22,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
     private final Context context;
 
     public DefaultActionButtonCallback(Context context) {
-        if (context == null) throw new IllegalArgumentException("context = null");
+        Validate.notNull(context);
         this.context = context;
     }
 

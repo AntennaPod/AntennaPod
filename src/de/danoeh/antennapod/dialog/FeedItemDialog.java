@@ -36,6 +36,7 @@ import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
 import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.util.Collection;
 import java.util.List;
@@ -59,7 +60,7 @@ public class FeedItemDialog extends Dialog {
     private PopupMenu popupMenu;
 
     public static FeedItemDialog newInstance(Context context, FeedItemDialogSavedInstance savedInstance) {
-        if (savedInstance == null) throw new IllegalArgumentException("savedInstance = null");
+        Validate.notNull(savedInstance);
         FeedItemDialog dialog = newInstance(context, savedInstance.item, savedInstance.queueAccess);
         if (savedInstance.isShowing) {
             dialog.show();
@@ -77,8 +78,8 @@ public class FeedItemDialog extends Dialog {
 
     public FeedItemDialog(Context context, int theme, FeedItem item, QueueAccess queue) {
         super(context, theme);
-        if (item == null) throw new IllegalArgumentException("item = null");
-        if (queue == null) throw new IllegalArgumentException("queue = null");
+        Validate.notNull(item);
+        Validate.notNull(queue);
         this.item = item;
         this.queue = queue;
     }
@@ -350,7 +351,7 @@ public class FeedItemDialog extends Dialog {
 
 
     public void setItem(FeedItem item) {
-        if (item == null) throw new IllegalArgumentException("item = null");
+        Validate.notNull(item);
         this.item = item;
     }
 
@@ -371,7 +372,7 @@ public class FeedItemDialog extends Dialog {
     }
 
     public void setQueue(QueueAccess queue) {
-        if (queue == null) throw new IllegalArgumentException("queue = null");
+        Validate.notNull(queue);
         this.queue = queue;
     }
 

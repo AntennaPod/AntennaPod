@@ -11,6 +11,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.widget.Toast;
 
+import org.apache.commons.lang3.Validate;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 import java.util.LinkedList;
@@ -65,7 +66,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
      * @param context A context for accessing the database and posting notifications. Must not be null.
      */
     public FlattrClickWorker(Context context) {
-        if (context == null) throw new IllegalArgumentException("context = null");
+        Validate.notNull(context);
         this.context = context.getApplicationContext();
     }
 

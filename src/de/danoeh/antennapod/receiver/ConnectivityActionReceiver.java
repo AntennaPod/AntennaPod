@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -16,7 +19,7 @@ public class ConnectivityActionReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {
-		if (intent.getAction().equals(ConnectivityManager.CONNECTIVITY_ACTION)) {
+		if (StringUtils.equals(intent.getAction(), ConnectivityManager.CONNECTIVITY_ACTION)) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Received intent");
 

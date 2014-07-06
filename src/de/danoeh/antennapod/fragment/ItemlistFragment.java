@@ -17,6 +17,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
@@ -97,7 +100,7 @@ public class ItemlistFragment extends ListFragment {
         setHasOptionsMenu(true);
 
         Bundle args = getArguments();
-        if (args == null) throw new IllegalArgumentException("args invalid");
+        Validate.notNull(args);
         feedID = args.getLong(ARGUMENT_FEED_ID);
     }
 

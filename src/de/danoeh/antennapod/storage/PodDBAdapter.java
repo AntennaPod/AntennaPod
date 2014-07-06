@@ -10,13 +10,22 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.service.download.DownloadStatus;
-import de.danoeh.antennapod.util.flattr.FlattrStatus;
+
+import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
 import java.util.List;
+
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedComponent;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.FeedPreferences;
+import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.util.flattr.FlattrStatus;
 
 // TODO Remove media column from feeditem table
 
@@ -1024,9 +1033,8 @@ public class PodDBAdapter {
      * @throws IllegalArgumentException if limit < 0
      */
     public final Cursor getCompletedMediaCursor(int limit) {
-        if (limit < 0) {
-            throw new IllegalArgumentException("Limit must be >= 0");
-        }
+        Validate.isTrue(limit >= 0, "Limit must be >= 0");
+
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
                 KEY_PLAYBACK_COMPLETION_DATE + " > 0 LIMIT " + limit, null, null,
                 null, null);

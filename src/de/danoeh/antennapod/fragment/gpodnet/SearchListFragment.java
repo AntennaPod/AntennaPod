@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.fragment.SearchFragment;
@@ -68,9 +71,8 @@ public class SearchListFragment extends PodcastListFragment {
     }
 
     public void changeQuery(String query) {
-        if (query == null) {
-            throw new NullPointerException();
-        }
+        Validate.notNull(query);
+
         this.query = query;
         loadData();
     }

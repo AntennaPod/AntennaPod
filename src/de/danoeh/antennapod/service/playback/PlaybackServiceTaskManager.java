@@ -2,6 +2,9 @@ package de.danoeh.antennapod.service.playback;
 
 import android.content.Context;
 import android.util.Log;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -52,10 +55,8 @@ public class PlaybackServiceTaskManager {
      * @param callback A PSTMCallback object for notifying the user about updates. Must not be null.
      */
     public PlaybackServiceTaskManager(Context context, PSTMCallback callback) {
-        if (context == null)
-            throw new IllegalArgumentException("context must not be null");
-        if (callback == null)
-            throw new IllegalArgumentException("callback must not be null");
+        Validate.notNull(context);
+        Validate.notNull(callback);
 
         this.context = context;
         this.callback = callback;
@@ -195,8 +196,7 @@ public class PlaybackServiceTaskManager {
      * @throws java.lang.IllegalArgumentException if waitingTime <= 0
      */
     public synchronized void setSleepTimer(long waitingTime) {
-        if (waitingTime <= 0)
-            throw new IllegalArgumentException("waitingTime <= 0");
+        Validate.isTrue(waitingTime > 0, "Waiting time <= 0");
 
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
@@ -271,8 +271,7 @@ public class PlaybackServiceTaskManager {
      * On completion, the callback's onChapterLoaded method will be called.
      */
     public synchronized void startChapterLoader(final Playable media) {
-        if (media == null)
-            throw new IllegalArgumentException("media = null");
+        Validate.notNull(media);
 
         if (isChapterLoaderActive()) {
             cancelChapterLoader();

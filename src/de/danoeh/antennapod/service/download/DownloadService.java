@@ -34,6 +34,7 @@ import de.danoeh.antennapod.util.DownloadError;
 import de.danoeh.antennapod.util.InvalidFeedException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpStatus;
 import org.xml.sax.SAXException;
 
@@ -394,12 +395,10 @@ public class DownloadService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction().equals(ACTION_CANCEL_DOWNLOAD)) {
+            if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_DOWNLOAD)) {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
-                if (url == null) {
-                    throw new IllegalArgumentException(
-                            "ACTION_CANCEL_DOWNLOAD intent needs download url extra");
-                }
+                Validate.notNull(url, "ACTION_CANCEL_DOWNLOAD intent needs download url extra");
+
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Cancelling download with url " + url);
                 Downloader d = getDownloader(url);
@@ -409,7 +408,7 @@ public class DownloadService extends Service {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
 
-            } else if (intent.getAction().equals(ACTION_CANCEL_ALL_DOWNLOADS)) {
+            } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
                     d.cancel();
                     if (BuildConfig.DEBUG)
@@ -1033,12 +1032,9 @@ public class DownloadService extends Service {
         private DownloadStatus status;
 
         public ImageHandlerThread(DownloadStatus status, DownloadRequest request) {
-            if (status == null) {
-                throw new IllegalArgumentException("Status must not be null");
-            }
-            if (request == null) {
-                throw new IllegalArgumentException("Request must not be null");
-            }
+            Validate.notNull(status);
+            Validate.notNull(request);
+
             this.status = status;
             this.request = request;
         }
@@ -1070,12 +1066,8 @@ public class DownloadService extends Service {
         private DownloadStatus status;
 
         public MediaHandlerThread(DownloadStatus status, DownloadRequest request) {
-            if (status == null) {
-                throw new IllegalArgumentException("Status must not be null");
-            }
-            if (request == null) {
-                throw new IllegalArgumentException("Request must not be null");
-            }
+            Validate.notNull(status);
+            Validate.notNull(request);
 
             this.status = status;
             this.request = request;

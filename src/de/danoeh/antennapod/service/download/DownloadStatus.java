@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.service.download;
 
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.feed.FeedFile;
 import de.danoeh.antennapod.util.DownloadError;
 
@@ -59,9 +61,8 @@ public class DownloadStatus {
 
 	public DownloadStatus(DownloadRequest request, DownloadError reason,
 			boolean successful, boolean cancelled, String reasonDetailed) {
-		if (request == null) {
-			throw new IllegalArgumentException("request must not be null");
-		}
+        Validate.notNull(request);
+
 		this.title = request.getTitle();
 		this.feedfileId = request.getFeedfileId();
 		this.feedfileType = request.getFeedfileType();
@@ -75,9 +76,7 @@ public class DownloadStatus {
 	/** Constructor for creating new completed downloads. */
 	public DownloadStatus(FeedFile feedfile, String title, DownloadError reason,
 			boolean successful, String reasonDetailed) {
-		if (feedfile == null) {
-			throw new IllegalArgumentException("feedfile must not be null");
-		}
+		Validate.notNull(feedfile);
 
 		this.title = title;
 		this.done = true;

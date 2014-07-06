@@ -5,6 +5,7 @@ import android.content.res.TypedArray;
 import android.util.Log;
 import android.util.TypedValue;
 
+import org.apache.commons.lang3.Validate;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -154,7 +155,7 @@ public class Timeline {
 
 
     public void setShownotesProvider(ShownotesProvider shownotesProvider) {
-        if (shownotesProvider == null) throw new IllegalArgumentException("shownotesProvider = null");
+        Validate.notNull(shownotesProvider);
         this.shownotesProvider = shownotesProvider;
     }
 }

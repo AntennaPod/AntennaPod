@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.gpoddernet.model;
 
+import org.apache.commons.lang3.Validate;
+
 public class GpodnetDevice {
 
     private String id;
@@ -9,9 +11,7 @@ public class GpodnetDevice {
 
     public GpodnetDevice(String id, String caption, String type,
                          int subscriptions) {
-        if (id == null) {
-            throw new IllegalArgumentException("ID must not be null");
-        }
+        Validate.notNull(id);
 
         this.id = id;
         this.caption = caption;

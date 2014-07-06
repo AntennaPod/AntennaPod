@@ -4,6 +4,9 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.preferences.UserPreferences;
 
@@ -15,10 +18,10 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 	public void onReceive(Context context, Intent intent) {
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Received intent");
-		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
+		if (StringUtils.equals(intent.getAction(), Intent.ACTION_BOOT_COMPLETED)) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Resetting update alarm after reboot");
-		} else if (intent.getAction().equals(Intent.ACTION_PACKAGE_REPLACED)) {
+		} else if (StringUtils.equals(intent.getAction(), Intent.ACTION_PACKAGE_REPLACED)) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Resetting update alarm after app upgrade");
 		}

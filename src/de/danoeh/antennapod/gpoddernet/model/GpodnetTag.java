@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.gpoddernet.model;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.Comparator;
 
 public class GpodnetTag {
@@ -8,9 +10,7 @@ public class GpodnetTag {
     private int usage;
 
     public GpodnetTag(String name, int usage) {
-        if (name == null) {
-            throw new IllegalArgumentException("Name must not be null");
-        }
+        Validate.notNull(name);
 
         this.name = name;
         this.usage = usage;

@@ -23,6 +23,9 @@ import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -896,8 +899,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+            if (StringUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
                 if (state != -1) {
                     if (BuildConfig.DEBUG)
@@ -939,8 +941,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+            if (StringUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                 stopSelf();
             }
         }
@@ -950,8 +951,7 @@ public class PlaybackService extends Service {
     private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
+            if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback();

@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.receiver.SPAReceiver;
 
@@ -56,7 +59,7 @@ public class SPAUtil {
      */
     public static void resetSPAPreferences(Context c) {
         if (BuildConfig.DEBUG) {
-            if (c == null) throw new IllegalArgumentException("c = null");
+            Validate.notNull(c);
             SharedPreferences.Editor editor = PreferenceManager
                     .getDefaultSharedPreferences(c.getApplicationContext()).edit();
             editor.putBoolean(PREF_HAS_QUERIED_SP_APPS, false);
