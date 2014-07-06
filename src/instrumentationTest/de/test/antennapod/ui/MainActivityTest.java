@@ -66,7 +66,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
-        final View home = solo.getView(R.id.home);
+        final View home = solo.getView(UITestUtils.HOME_VIEW);
 
         // all episodes
         solo.waitForView(android.R.id.list);

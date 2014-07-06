@@ -78,7 +78,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     private void startLocalPlaybackFromQueue() {
         assertTrue(solo.waitForActivity(MainActivity.class));
-        solo.clickOnView(solo.getView(R.id.home));
+        solo.clickOnView(solo.getView(UITestUtils.HOME_VIEW));
         solo.clickOnText(solo.getString(R.string.queue_label));
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
         solo.clickOnImageButton(0);
