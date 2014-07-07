@@ -43,4 +43,16 @@ public class URLCheckerTest extends AndroidTestCase {
         final String out = URLChecker.prepareURL(in);
         assertEquals("http://example.com", out);
     }
+
+    public void testWhiteSpaceUrlShouldNotAppend() {
+        final String in = "\n http://example.com \t";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("http://example.com", out);
+    }
+
+    public void testWhiteSpaceShouldAppend() {
+        final String in = "\n example.com \t";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("http://example.com", out);
+    }
 }

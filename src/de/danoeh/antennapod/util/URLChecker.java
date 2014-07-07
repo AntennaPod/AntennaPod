@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.util;
 
 import android.util.Log;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 
 /**
@@ -27,6 +30,7 @@ public final class URLChecker {
      */
     public static String prepareURL(String url) {
         StringBuilder builder = new StringBuilder();
+        url = StringUtils.trim(url);
         if (url.startsWith("feed://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
             url = url.replaceFirst("feed://", "http://");
