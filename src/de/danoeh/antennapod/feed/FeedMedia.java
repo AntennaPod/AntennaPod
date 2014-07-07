@@ -401,7 +401,9 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public String getImageLoaderCacheKey() {
         String out;
-        if (item.hasItemImageDownloaded()) {
+        if (item == null) {
+            return null;
+        } else if (item.hasItemImageDownloaded()) {
             out = item.getImageLoaderCacheKey();
         } else {
             out = new Playable.DefaultPlayableImageLoader(this)

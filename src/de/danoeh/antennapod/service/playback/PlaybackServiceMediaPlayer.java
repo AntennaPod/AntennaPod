@@ -126,6 +126,7 @@ public class PlaybackServiceMediaPlayer {
                 try {
                     playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
                 } catch (RuntimeException e) {
+                    e.printStackTrace();
                     throw e;
                 } finally {
                     playerLock.unlock();
