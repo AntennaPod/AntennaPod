@@ -22,6 +22,14 @@ import android.webkit.WebViewClient;
 import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.Validate;
+
+import java.util.Collection;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
@@ -35,12 +43,6 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
-import org.apache.commons.lang3.StringEscapeUtils;
-import org.apache.commons.lang3.Validate;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 /**
  * Shows information about a specific FeedItem and provides actions like playing, downloading, etc.
@@ -150,12 +152,9 @@ public class FeedItemDialog extends Dialog {
                                           @Override
 
                                           public void onClick(View v) {
-                                              FeedMedia media = item.getMedia();
-                                              if (media == null) {
-                                                  return;
-                                              }
                                               actionButtonCallback.onActionButtonPressed(item);
-                                              if (media.isDownloaded()) {
+                                              FeedMedia media = item.getMedia();
+                                              if (media != null && media.isDownloaded()) {
                                                   // playback was started, dialog should close itself
                                                   dismiss();
                                               }
@@ -169,16 +168,17 @@ public class FeedItemDialog extends Dialog {
                                       {
                                           @Override
                                           public void onClick(View v) {
-                                              FeedMedia media = item.getMedia();
-                                              if (media == null) {
-                                                  return;
-                                              }
-
-                                              if (!media.isDownloaded()) {
-                                                  DBTasks.playMedia(getContext(), media, true, true, true);
-                                                  dismiss();
-                                              } else {
-                                                  DBWriter.deleteFeedMediaOfItem(getContext(), media.getId());
+                                              if (item.hasMedia()) {
+                                                  FeedMedia media = item.getMedia();
+                                                  if (!media.isDownloaded()) {
+                                                      DBTasks.playMedia(getContext(), media, true, true, true);
+                                                      dismiss();
+                                                  } else {
+                                                      DBWriter.deleteFeedMediaOfItem(getContext(), media.getId());
+                                                  }
+                                              } else if (item.getLink() != null) {
+                                                  Uri uri = Uri.parse(item.getLink());
+                                                  getContext().startActivity(new Intent(Intent.ACTION_VIEW, uri));
                                               }
                                           }
                                       }
@@ -189,7 +189,13 @@ public class FeedItemDialog extends Dialog {
                                        public void onClick(View v) {
                                            popupMenu.getMenu().clear();
                                            popupMenu.inflate(R.menu.feeditem_dialog);
-                                           FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue);
+                                           if (item.hasMedia()) {
+                                               FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue);
+                                           } else {
+                                               // these are already available via button1 and button2
+                                               FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue,
+                                                       R.id.mark_read_item, R.id.visit_website_item);
+                                           }
                                            popupMenu.show();
                                        }
                                    }
@@ -231,9 +237,26 @@ public class FeedItemDialog extends Dialog {
         }
         FeedMedia media = item.getMedia();
         if (media == null) {
-            header.setVisibility(View.GONE);
+            TypedArray drawables = getContext().obtainStyledAttributes(new int[]{R.attr.navigation_accept,
+                    R.attr.location_web_site});
+
+            if (!item.isRead()) {
+                butAction1.setImageDrawable(drawables.getDrawable(0));
+                butAction1.setContentDescription(getContext().getString(R.string.mark_read_label));
+                butAction1.setVisibility(View.VISIBLE);
+            } else {
+                butAction1.setVisibility(View.INVISIBLE);
+            }
+
+            if (item.getLink() != null) {
+                butAction2.setImageDrawable(drawables.getDrawable(1));
+                butAction2.setContentDescription(getContext().getString(R.string.visit_website_label));
+            } else {
+                butAction2.setEnabled(false);
+            }
+
+            drawables.recycle();
         } else {
-            header.setVisibility(View.VISIBLE);
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             TypedArray drawables = getContext().obtainStyledAttributes(new int[]{R.attr.av_play,
                     R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel});
@@ -390,7 +413,7 @@ public class FeedItemDialog extends Dialog {
 
     /**
      * Used to save the FeedItemDialog's state across configuration changes
-     * */
+     */
     public static class FeedItemDialogSavedInstance {
         final FeedItem item;
         final QueueAccess queueAccess;

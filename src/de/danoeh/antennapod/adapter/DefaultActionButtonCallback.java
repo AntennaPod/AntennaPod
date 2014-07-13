@@ -10,6 +10,7 @@ import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
 
@@ -28,25 +29,29 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
 
     @Override
     public void onActionButtonPressed(final FeedItem item) {
-        final FeedMedia media = item.getMedia();
-        if (media == null) {
-            return;
-        }
 
-        boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
-        if (!isDownloading && !media.isDownloaded()) {
-            try {
-                DBTasks.downloadFeedItems(context, item);
-                Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
-            } catch (DownloadRequestException e) {
-                e.printStackTrace();
-                DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+
+        if (item.hasMedia()) {
+            final FeedMedia media = item.getMedia();
+            boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
+            if (!isDownloading && !media.isDownloaded()) {
+                try {
+                    DBTasks.downloadFeedItems(context, item);
+                    Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
+                } catch (DownloadRequestException e) {
+                    e.printStackTrace();
+                    DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+                }
+            } else if (isDownloading) {
+                DownloadRequester.getInstance().cancelDownload(context, media);
+                Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
+            } else { // media is downloaded
+                DBTasks.playMedia(context, media, true, true, false);
             }
-        } else if (isDownloading) {
-            DownloadRequester.getInstance().cancelDownload(context, media);
-            Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
-        } else { // media is downloaded
-            DBTasks.playMedia(context, media, true, true, false);
+        } else {
+            if (!item.isRead()) {
+                DBWriter.markItemRead(context, item, true, true);
+            }
         }
     }
 }

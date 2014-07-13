@@ -27,8 +27,8 @@ public class ActionButtonUtils {
 
         this.context = context;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.navigation_chapters});
-        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label};
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.navigation_chapters, R.attr.navigation_accept});
+        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label, R.string.mark_read_label};
     }
 
     /**
@@ -66,7 +66,13 @@ public class ActionButtonUtils {
                 butSecondary.setContentDescription(context.getString(labels[0]));
             }
         } else {
-            butSecondary.setVisibility(View.INVISIBLE);
+            if (item.isRead()) {
+                butSecondary.setVisibility(View.INVISIBLE);
+            } else {
+                butSecondary.setVisibility(View.VISIBLE);
+                butSecondary.setImageDrawable(drawables.getDrawable(4));
+                butSecondary.setContentDescription(context.getString(labels[3]));
+            }
         }
     }
 }

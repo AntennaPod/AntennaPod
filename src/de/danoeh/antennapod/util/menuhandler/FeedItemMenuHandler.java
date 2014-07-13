@@ -3,6 +3,7 @@ package de.danoeh.antennapod.util.menuhandler;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
@@ -111,6 +112,25 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.support_item, false);
         }
         return true;
+    }
+
+    /**
+     * The same method as onPrepareMenu(MenuInterface, FeedItem, boolean, QueueAccess), but lets the
+     * caller also specify a list of menu items that should not be shown.
+     *
+     * @param excludeIds Menu item that should be excluded
+     * @return true if selectedItem is not null.
+     */
+    public static boolean onPrepareMenu(MenuInterface mi,
+                                        FeedItem selectedItem, boolean showExtendedMenu, QueueAccess queueAccess, int... excludeIds) {
+        boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess);
+        if (rc && excludeIds != null) {
+            for (int id : excludeIds) {
+                mi.setItemVisibility(id, false);
+            }
+        }
+
+        return rc;
     }
 
     public static boolean onMenuItemClicked(Context context, int menuItemId,
