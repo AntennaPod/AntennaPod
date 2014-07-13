@@ -5,15 +5,25 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.*;
+import android.view.ContextMenu;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import com.mobeta.android.dslv.DragSortListView;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
@@ -27,12 +37,7 @@ import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.UndoBarController;
-import de.danoeh.antennapod.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Shows all items in the queue
@@ -47,7 +52,6 @@ public class QueueFragment extends Fragment {
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
-    private UndoBarController undoBarController;
 
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
@@ -111,7 +115,6 @@ public class QueueFragment extends Fragment {
     private void resetViewState() {
         unregisterForContextMenu(listView);
         listAdapter = null;
-        undoBarController = null;
         activity.set(null);
         viewsCreated = false;
         blockDownloadObserverUpdate = false;
@@ -185,6 +188,9 @@ public class QueueFragment extends Fragment {
             case R.id.move_to_bottom_item:
                 DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
                 return true;
+            case R.id.remove_from_queue_item:
+                DBWriter.removeQueueItem(getActivity(), selectedItem.getId(), false);
+                return true;
             default:
                 return super.onContextItemSelected(item);
         }
@@ -212,19 +218,6 @@ public class QueueFragment extends Fragment {
             }
         });
 
-        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
-            @Override
-            public void onUndo(Parcelable token) {
-                // Perform the undo
-                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
-                if (token != null) {
-                    long itemId = undoToken.getFeedItemId();
-                    int position = undoToken.getPosition();
-                    DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
-                }
-            }
-        });
-
         listView.setDragSortListener(new DragSortListView.DragSortListener() {
             @Override
             public void drag(int from, int to) {
@@ -245,13 +238,6 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
-                stopItemLoader();
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
-                undoBarController.showUndoBar(false,
-                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
-                                which)
-                );
             }
         });
 

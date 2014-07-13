@@ -22,5 +22,6 @@
     <item name="imageloader_key" type="id"/>
     <item name="notification_gpodnet_sync_error" type="id"/>
     <item name="notification_gpodnet_sync_autherror" type="id"/>
-
+    <item name="undobar_button" type="id"/>
+    <item name="undobar_message" type="id"/>
 </resources>
