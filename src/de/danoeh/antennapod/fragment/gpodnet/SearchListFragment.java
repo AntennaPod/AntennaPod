@@ -7,15 +7,14 @@ import android.view.MenuInflater;
 
 import org.apache.commons.lang3.Validate;
 
+import java.util.List;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-
-import java.util.List;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 /**
  * Performs a search on the gpodder.net directory and displays the results.
@@ -47,22 +46,24 @@ public class SearchListFragment extends PodcastListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-        sv.setQuery(query, false);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                changeQuery(s);
-                return true;
-            }
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+            sv.setQuery(query, false);
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    changeQuery(s);
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

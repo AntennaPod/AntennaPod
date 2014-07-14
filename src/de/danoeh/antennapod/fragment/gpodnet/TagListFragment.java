@@ -18,6 +18,7 @@ import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,22 +36,24 @@ public class TagListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
-                return true;
-            }
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            final SearchView sv = new SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

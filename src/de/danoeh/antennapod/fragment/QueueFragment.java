@@ -38,6 +38,7 @@ import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 /**
  * Shows all items in the queue
@@ -136,22 +137,24 @@ public class QueueFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
-                return true;
-            }
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            final SearchView sv = new SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.search_hint));
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override

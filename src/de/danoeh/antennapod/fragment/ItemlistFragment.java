@@ -12,13 +12,19 @@ import android.support.v4.app.ListFragment;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.Validate;
+
+import java.util.List;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -44,8 +50,7 @@ import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-
-import java.util.List;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 /**
  * Displays a list of FeedItems.
@@ -158,31 +163,36 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
 
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                if (itemsLoaded) {
-                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
+
+            final SearchView sv = new SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.search_hint));
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    if (itemsLoaded) {
+                        ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s, feed.getId()));
+                    }
+                    return true;
                 }
-                return true;
-            }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
+        }
     }
 
     @Override

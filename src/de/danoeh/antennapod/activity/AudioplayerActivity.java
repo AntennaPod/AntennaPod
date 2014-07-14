@@ -12,6 +12,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -42,6 +43,8 @@ import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.PlaybackController;
@@ -49,7 +52,8 @@ import de.danoeh.antennapod.util.playback.PlaybackController;
 /**
  * Activity for playing audio files.
  */
-public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback {
+public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback,
+        NavDrawerActivity {
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
@@ -437,6 +441,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         };
         typedArray.recycle();
         drawerToggle.setDrawerIndicatorEnabled(false);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -616,6 +621,29 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     public PlaybackController getPlaybackController() {
         return controller;
+    }
+
+    @Override
+    public boolean isDrawerOpen() {
+        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
+            return super.onPrepareOptionsMenu(menu);
+        } else {
+            return false;
+        }
     }
 
     public interface AudioplayerContentFragment {

@@ -21,6 +21,7 @@ import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 
@@ -44,22 +45,24 @@ public abstract class PodcastListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final android.support.v7.widget.SearchView sv = new android.support.v7.widget.SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
-                return true;
-            }
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            final android.support.v7.widget.SearchView sv = new android.support.v7.widget.SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+            sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
