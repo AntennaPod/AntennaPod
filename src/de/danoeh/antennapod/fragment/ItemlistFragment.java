@@ -164,7 +164,7 @@ public class ItemlistFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
             FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
 
             final SearchView sv = new SearchView(getActivity());
@@ -190,7 +190,7 @@ public class ItemlistFragment extends ListFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
             FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
         }
     }

@@ -137,7 +137,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
             final SearchView sv = new SearchView(getActivity());
             MenuItemUtils.addSearchItem(menu, sv);
             sv.setQueryHint(getString(R.string.search_hint));
