@@ -19,31 +19,63 @@ import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 import android.webkit.URLUtil;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
-import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.storage.*;
-import de.danoeh.antennapod.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
-import de.danoeh.antennapod.util.ChapterUtils;
-import de.danoeh.antennapod.util.DownloadError;
-import de.danoeh.antennapod.util.InvalidFeedException;
+
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpStatus;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
-import java.util.concurrent.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.Callable;
+import java.util.concurrent.CompletionService;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorCompletionService;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.DownloadAuthenticationActivity;
+import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.NavListAdapter;
+import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedImage;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.feed.FeedMedia;
+import de.danoeh.antennapod.feed.FeedPreferences;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DBTasks;
+import de.danoeh.antennapod.storage.DBWriter;
+import de.danoeh.antennapod.storage.DownloadRequestException;
+import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.util.ChapterUtils;
+import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.util.InvalidFeedException;
 
 /**
  * Manages the download of feedfiles in the app. Downloads can be enqueued viathe startService intent.
@@ -83,9 +115,14 @@ public class DownloadService extends Service {
     public static final String EXTRA_REQUEST = "request";
 
     /**
-     * Stores DownloadStatus objects of completed downloads for creating a report at the end of the lifecylce.
+     * Stores new media files that will be queued for auto-download if possible.
      */
-    private List<DownloadStatus> completedDownloads;
+    private List<Long> newMediaFiles;
+
+    /**
+     * Contains all completed downloads that have not been included in the report yet.
+     */
+    private List<DownloadStatus> reportQueue;
 
     private ExecutorService syncExecutor;
     private CompletionService<Downloader> downloadExecutor;
@@ -207,7 +244,8 @@ public class DownloadService extends Service {
             Log.d(TAG, "Service started");
         isRunning = true;
         handler = new Handler();
-        completedDownloads = Collections.synchronizedList(new ArrayList<DownloadStatus>());
+        newMediaFiles = Collections.synchronizedList(new ArrayList<Long>());
+        reportQueue = Collections.synchronizedList(new ArrayList<DownloadStatus>());
         downloads = new ArrayList<Downloader>();
         numberOfDownloads = new AtomicInteger(0);
 
@@ -286,7 +324,10 @@ public class DownloadService extends Service {
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
 
-        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
+        if (!newMediaFiles.isEmpty()) {
+            DBTasks.autodownloadUndownloadedItems(getApplicationContext(),
+                    ArrayUtils.toPrimitive(newMediaFiles.toArray(new Long[newMediaFiles.size()])));
+        }
     }
 
     @SuppressLint("NewApi")
@@ -481,7 +522,7 @@ public class DownloadService extends Service {
      * @param status the download that is going to be saved
      */
     private void saveDownloadStatus(DownloadStatus status) {
-        completedDownloads.add(status);
+        reportQueue.add(status);
         DBWriter.addDownloadStatus(this, status);
     }
 
@@ -504,7 +545,7 @@ public class DownloadService extends Service {
 
         // a download report is created if at least one download has failed
         // (excluding failed image downloads)
-        for (DownloadStatus status : completedDownloads) {
+        for (DownloadStatus status : reportQueue) {
             if (status.isSuccessful()) {
                 successfulDownloads++;
             } else if (!status.isCancelled()) {
@@ -551,7 +592,7 @@ public class DownloadService extends Service {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "No report is created");
         }
-        completedDownloads.clear();
+        reportQueue.clear();
     }
 
     /**
@@ -697,7 +738,8 @@ public class DownloadService extends Service {
                             Log.d(TAG, "Waiting for " + (startTime + WAIT_TIMEOUT - currentTime) + " ms");
                         sleep(startTime + WAIT_TIMEOUT - currentTime);
                     } catch (InterruptedException e) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "interrupted while waiting for more downloads");
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "interrupted while waiting for more downloads");
                         tasks += pollCompletedDownloads();
                     } finally {
                         currentTime = System.currentTimeMillis();
@@ -793,6 +835,14 @@ public class DownloadService extends Service {
                                     );
                                 }
                             }
+
+                            // queue new media files for automatic download
+                            for (FeedItem item : savedFeed.getItems()) {
+                                if (!item.isRead() && item.hasMedia() && !item.getMedia().isDownloaded()) {
+                                    newMediaFiles.add(item.getMedia().getId());
+                                }
+                            }
+
                             numberOfDownloads.decrementAndGet();
                         }
 
