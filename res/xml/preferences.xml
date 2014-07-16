@@ -92,10 +92,8 @@
                 <intent android:action=".activities.FlattrAuthActivity"/>
             </PreferenceScreen>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:enabled="false"
-                android:key="pref_auto_flattr"
+            <Preference
+                android:key="prefAutoFlattrPrefs"
                 android:summary="@string/pref_auto_flattr_sum"
                 android:title="@string/pref_auto_flattr_title" />
             <Preference

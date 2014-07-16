@@ -763,13 +763,12 @@ public class PlaybackService extends Service {
                 m.setPlayedDuration(m.getPlayedDuration() + ((int)(deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
                 if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
-                        (m.getPlayedDuration() > UserPreferences.getPlayedDurationAutoflattrThreshold() * duration)) {
+                        (m.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
 
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(m.getPlayedDuration())
-                                + " is " + UserPreferences.getPlayedDurationAutoflattrThreshold() * 100 + "% of file duration " + Integer.toString(duration));
-                    item.getFlattrStatus().setFlattrQueue();
-                    DBWriter.setFeedItemFlattrStatus(PodcastApp.getInstance(), item, false);
+                                + " is " + UserPreferences.getAutoFlattrPlayedDurationThreshold() * 100 + "% of file duration " + Integer.toString(duration));
+                    DBTasks.flattrItemIfLoggedIn(this, item);
                 }
             }
             playable.saveCurrentPosition(PreferenceManager
