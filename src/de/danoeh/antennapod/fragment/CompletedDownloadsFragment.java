@@ -68,6 +68,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         listAdapter = null;
         viewCreated = false;
         feedItemDialog = null;
+        stopItemLoader();
     }
 
     @Override
@@ -103,6 +104,7 @@ public class CompletedDownloadsFragment extends ListFragment {
             listAdapter = new DownloadedEpisodesListAdapter(getActivity(), itemAccess);
             setListAdapter(listAdapter);
         }
+        setListShown(true);
         listAdapter.notifyDataSetChanged();
         if (feedItemDialog != null) {
             boolean res = feedItemDialog.updateContent(queue, items);
@@ -171,7 +173,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         @Override
         protected void onPostExecute(Object[] results) {
             super.onPostExecute(results);
-            setListShown(true);
             if (results != null) {
                 items = (List<FeedItem>) results[0];
                 queue = (QueueAccess) results[1];
