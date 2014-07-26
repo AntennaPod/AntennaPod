@@ -43,6 +43,7 @@ import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
 
@@ -512,6 +513,11 @@ public class PlaybackService extends Service {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
             DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
+
+            // auto-flattr if enabled
+            if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
+                DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
+            }
         }
 
         // Load next episode if previous episode was in the queue and if there
@@ -762,7 +768,7 @@ public class PlaybackService extends Service {
                 FeedItem item = m.getItem();
                 m.setPlayedDuration(m.getPlayedDuration() + ((int)(deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
-                if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
+                if (isAutoFlattrable(m) &&
                         (m.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
 
                     if (BuildConfig.DEBUG)
@@ -1051,4 +1057,13 @@ public class PlaybackService extends Service {
         return mediaPlayer.getVideoSize();
     }
 
+    private boolean isAutoFlattrable(Playable p) {
+        if (p != null && p instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) p;
+            FeedItem item = ((FeedMedia) p).getItem();
+            return item != null && FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred();
+        } else {
+            return false;
+        }
+    }
 }

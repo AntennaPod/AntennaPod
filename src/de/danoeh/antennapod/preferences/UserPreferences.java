@@ -408,8 +408,17 @@ public class UserPreferences implements
         instance.updateInterval = newValue;
     }
 
+    /**
+     * Change the auto-flattr settings
+     *
+     * @param context For accessing the shared preferences
+     * @param enabled Whether automatic flattring should be enabled at all
+     * @param autoFlattrThreshold The percentage of playback time after which an episode should be
+     *                            flattrd. Must be a value between 0 and 1 (inclusive)
+     * */
     public static void setAutoFlattrSettings(Context context, boolean enabled, float autoFlattrThreshold) {
         instanceAvailable();
+        Validate.inclusiveBetween(0.0, 1.0, autoFlattrThreshold);
         PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext())
                 .edit()
                 .putBoolean(PREF_AUTO_FLATTR, enabled)
