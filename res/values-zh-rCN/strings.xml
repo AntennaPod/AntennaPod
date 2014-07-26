@@ -210,6 +210,7 @@
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>

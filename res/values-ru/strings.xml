@@ -186,7 +186,6 @@
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
   <string name="pref_auto_flattr_title">Автоматически поддерживать через Flattr</string>
-  <string name="pref_auto_flattr_sum">Поддерживать через Flattr эпизоды, прослушанные на 80%</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
   <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
@@ -211,6 +210,7 @@
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Поиск каналов или выпусков</string>
   <string name="found_in_shownotes_label">Найдено в описании выпуска</string>

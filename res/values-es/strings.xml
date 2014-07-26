@@ -184,7 +184,6 @@
   <string name="pref_revokeAccess_title">Revocar el acceso</string>
   <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
   <string name="pref_auto_flattr_title">Uso de Flattr automático</string>
-  <string name="pref_auto_flattr_sum">Hacer Flattr al reproducir el 80 por ciento de cada episodio</string>
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
   <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
@@ -209,6 +208,7 @@
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>

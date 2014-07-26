@@ -149,6 +149,7 @@
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
