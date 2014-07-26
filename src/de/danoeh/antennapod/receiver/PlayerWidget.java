@@ -5,6 +5,9 @@ import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.service.playback.PlayerWidgetService;
 
@@ -15,9 +18,9 @@ public class PlayerWidget extends AppWidgetProvider {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (intent.getAction().equals(FORCE_WIDGET_UPDATE)) {
+		if (StringUtils.equals(intent.getAction(), FORCE_WIDGET_UPDATE)) {
 			startUpdate(context);
-		} else if (intent.getAction().equals(STOP_WIDGET_UPDATE)) {
+		} else if (StringUtils.equals(intent.getAction(), STOP_WIDGET_UPDATE)) {
 			stopUpdate(context);
 		}
 

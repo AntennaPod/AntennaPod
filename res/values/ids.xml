@@ -12,6 +12,7 @@
     <item name="open_in_browser_item" type="id"/>
     <item name="copy_url_item" type="id"/>
     <item name="share_url_item" type="id"/>
+    <item name="go_to_position_item" type="id"/>
     <item name="organize_queue_item" type="id"/>
     <item name="drag_handle" type="id"/>
     <item name="skip_episode_item" type="id"/>
@@ -21,5 +22,6 @@
     <item name="imageloader_key" type="id"/>
     <item name="notification_gpodnet_sync_error" type="id"/>
     <item name="notification_gpodnet_sync_autherror" type="id"/>
-
+    <item name="undobar_button" type="id"/>
+    <item name="undobar_message" type="id"/>
 </resources>

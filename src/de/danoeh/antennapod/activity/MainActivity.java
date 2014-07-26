@@ -19,6 +19,9 @@ import android.util.Log;
 import android.view.*;
 import android.widget.AdapterView;
 import android.widget.ListView;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -28,13 +31,14 @@ import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends ActionBarActivity {
+public class MainActivity extends ActionBarActivity implements NavDrawerActivity{
     private static final String TAG = "MainActivity";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
@@ -61,7 +65,7 @@ public class MainActivity extends ActionBarActivity {
     private ListView navList;
     private NavListAdapter navAdapter;
 
-    private ActionBarDrawerToggle drawerToogle;
+    private ActionBarDrawerToggle drawerToggle;
 
     private CharSequence drawerTitle;
     private CharSequence currentTitle;
@@ -71,7 +75,7 @@ public class MainActivity extends ActionBarActivity {
     public void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
+        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
@@ -82,7 +86,7 @@ public class MainActivity extends ActionBarActivity {
         navList = (ListView) findViewById(R.id.nav_list);
 
         TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
-        drawerToogle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -101,7 +105,7 @@ public class MainActivity extends ActionBarActivity {
         };
         typedArray.recycle();
 
-        drawerLayout.setDrawerListener(drawerToogle);
+        drawerLayout.setDrawerListener(drawerToggle);
         FragmentManager fm = getSupportFragmentManager();
 
         FragmentTransaction transaction = fm.beginTransaction();
@@ -145,6 +149,10 @@ public class MainActivity extends ActionBarActivity {
 
     public ActionBar getMainActivtyActionBar() {
         return getSupportActionBar();
+    }
+
+    public boolean isDrawerOpen() {
+        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
     }
 
     public List<Feed> getFeeds() {
@@ -219,7 +227,7 @@ public class MainActivity extends ActionBarActivity {
     }
 
     public void loadChildFragment(Fragment fragment) {
-        if (fragment == null) throw new IllegalArgumentException("fragment = null");
+        Validate.notNull(fragment);
         FragmentManager fm = getSupportFragmentManager();
         fm.beginTransaction()
                 .replace(R.id.main_view, fragment, "main")
@@ -244,7 +252,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {
         super.onPostCreate(savedInstanceState);
-        drawerToogle.syncState();
+        drawerToggle.syncState();
         if (savedInstanceState != null) {
             currentTitle = savedInstanceState.getString("title");
             if (!drawerLayout.isDrawerOpen(navList)) {
@@ -257,7 +265,7 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public void onConfigurationChanged(Configuration newConfig) {
         super.onConfigurationChanged(newConfig);
-        drawerToogle.onConfigurationChanged(newConfig);
+        drawerToggle.onConfigurationChanged(newConfig);
     }
 
     @Override
@@ -296,7 +304,7 @@ public class MainActivity extends ActionBarActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToogle.onOptionsItemSelected(item)) {
+        if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
         }
         switch (item.getItemId()) {
@@ -311,7 +319,6 @@ public class MainActivity extends ActionBarActivity {
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-
         return true;
     }
 

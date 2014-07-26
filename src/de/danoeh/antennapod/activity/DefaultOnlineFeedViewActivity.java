@@ -5,19 +5,26 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.*;
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
 import de.danoeh.antennapod.asynctask.ImageDiskCache;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DownloadRequestException;
 import de.danoeh.antennapod.storage.DownloadRequester;
+import org.apache.commons.lang3.StringUtils;
+import org.jsoup.Jsoup;
+import org.jsoup.examples.HtmlToPlainText;
+import org.jsoup.nodes.Document;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,9 +32,11 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * Created by daniel on 24.08.13.
+ * Default implementation of OnlineFeedViewActivity. Shows the downloaded feed's items with their descriptions,
+ * a subscribe button and a spinner for choosing alternate feed URLs.
  */
 public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
+    private static final String TAG = "DefaultOnlineFeedViewActivity";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED | EventDistributor.FEED_LIST_UPDATE;
     private volatile List<Feed> feeds;
@@ -64,6 +73,24 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     }
 
     @Override
+    protected void beforeShowFeedInformation(Feed feed, Map<String, String> alternateFeedUrls) {
+        super.beforeShowFeedInformation(feed, alternateFeedUrls);
+
+        // remove HTML tags from descriptions
+
+        if (BuildConfig.DEBUG) Log.d(TAG, "Removing HTML from shownotes");
+        if (feed.getItems() != null) {
+            HtmlToPlainText formatter = new HtmlToPlainText();
+            for (FeedItem item : feed.getItems()) {
+                if (item.getDescription() != null) {
+                    Document description = Jsoup.parse(item.getDescription());
+                    item.setDescription(StringUtils.trim(formatter.getPlainText(description)));
+                }
+            }
+        }
+    }
+
+    @Override
     protected void showFeedInformation(final Feed feed, final Map<String, String> alternateFeedUrls) {
         super.showFeedInformation(feed, alternateFeedUrls);
         setContentView(R.layout.listview_activity);
@@ -74,7 +101,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         ListView listView = (ListView) findViewById(R.id.listview);
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-        View header = inflater.inflate(R.layout.onlinefeedview_header, null);
+        View header = inflater.inflate(R.layout.onlinefeedview_header, listView, false);
         listView.addHeaderView(header);
 
         listView.setAdapter(new FeedItemlistDescriptionAdapter(this, 0, feed.getItems()));
@@ -131,7 +158,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
             for (String url : alternateFeedUrls.keySet()) {
                 alternateUrlsTitleList.add(alternateFeedUrls.get(url));
             }
-            ArrayAdapter<String> adapter  = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
+            ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_item, alternateUrlsTitleList);
             adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
             spAlternateUrls.setAdapter(adapter);
             spAlternateUrls.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {

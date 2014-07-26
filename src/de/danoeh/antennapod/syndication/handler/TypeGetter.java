@@ -4,6 +4,8 @@ import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Feed;
 import org.apache.commons.io.input.XmlStreamReader;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -64,7 +66,7 @@ public class TypeGetter {
 						} else {
 							if (BuildConfig.DEBUG)
 								Log.d(TAG, "Type is invalid");
-							throw new UnsupportedFeedtypeException(Type.INVALID);
+							throw new UnsupportedFeedtypeException(Type.INVALID, tag);
 						}
 					} else {
 						eventType = xpp.next();
@@ -73,7 +75,19 @@ public class TypeGetter {
 
 			} catch (XmlPullParserException e) {
 				e.printStackTrace();
-			} catch (IOException e) {
+                // XML document might actually be a HTML document -> try to parse as HTML
+                String rootElement = null;
+                try {
+                    if (Jsoup.parse(new File(feed.getFile_url()), null) != null) {
+                        rootElement = "html";
+                    }
+                } catch (IOException e1) {
+                    e1.printStackTrace();
+                } finally {
+                    throw new UnsupportedFeedtypeException(Type.INVALID, rootElement);
+                }
+
+            } catch (IOException e) {
 				e.printStackTrace();
 			}
 		}

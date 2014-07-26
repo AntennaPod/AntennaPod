@@ -198,7 +198,6 @@
   <string name="pref_revokeAccess_title">Tilbagekald adgang</string>
   <string name="pref_revokeAccess_sum">Tilbagekald adgangen til din flattr konto fra denne app.</string>
   <string name="pref_auto_flattr_title">Flattr\'er automatisk</string>
-  <string name="pref_auto_flattr_sum">Flattr episoder der er 80 procent afspillet. </string>
   <string name="user_interface_label">Brugerflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_set_theme_sum">Skift AntennaPods udseende.</string>
@@ -223,6 +222,7 @@
   <string name="pref_playback_speed_sum">Tilpas tilgængelige hastigheder for variabelt afspilningshastigheds plugin</string>
   <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Søg efter feeds eller episoder</string>
   <string name="found_in_shownotes_label">Funder i showets noter</string>

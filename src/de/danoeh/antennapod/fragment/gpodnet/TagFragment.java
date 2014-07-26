@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
@@ -21,7 +24,7 @@ public class TagFragment extends PodcastListFragment {
     private GpodnetTag tag;
 
     public static TagFragment newInstance(String tagName) {
-        if (tagName == null) throw new IllegalArgumentException("tagName = null");
+        Validate.notNull(tagName);
         TagFragment fragment = new TagFragment();
         Bundle args = new Bundle();
         args.putString("tag", tagName);
@@ -34,7 +37,7 @@ public class TagFragment extends PodcastListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        if (args == null || args.getString("tag") == null) throw new IllegalArgumentException("args invalid");
+        Validate.isTrue(args != null && args.getString("tag") != null, "args invalid");
 
         tag = new GpodnetTag(args.getString("tag"));
         ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getName());

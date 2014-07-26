@@ -34,6 +34,15 @@
             android:key="prefPauseForFocusLoss"
             android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
             android:title="@string/pref_pausePlaybackForFocusLoss_title" />
+
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/seek_delta_values"
+            android:entryValues="@array/seek_delta_values"
+            android:key="prefSeekDeltaSecs"
+            android:summary="@string/pref_seek_delta_sum"
+            android:title="@string/pref_seek_delta_title" />
+
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
         <ListPreference
@@ -83,10 +92,8 @@
                 <intent android:action=".activities.FlattrAuthActivity"/>
             </PreferenceScreen>
 
-            <CheckBoxPreference
-                android:defaultValue="false"
-                android:enabled="false"
-                android:key="pref_auto_flattr"
+            <Preference
+                android:key="prefAutoFlattrPrefs"
                 android:summary="@string/pref_auto_flattr_sum"
                 android:title="@string/pref_auto_flattr_title" />
             <Preference

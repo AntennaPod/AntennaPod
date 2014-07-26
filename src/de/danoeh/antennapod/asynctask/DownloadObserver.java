@@ -5,6 +5,9 @@ import android.content.*;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.service.download.DownloadService;
 import de.danoeh.antennapod.service.download.Downloader;
@@ -45,9 +48,9 @@ public class DownloadObserver {
      * @throws java.lang.IllegalArgumentException if one of the arguments is null.
      */
     public DownloadObserver(Activity activity, Handler handler, Callback callback) {
-        if (activity == null) throw new IllegalArgumentException("activity = null");
-        if (handler == null) throw new IllegalArgumentException("handler = null");
-        if (callback == null) throw new IllegalArgumentException("callback = null");
+        Validate.notNull(activity);
+        Validate.notNull(handler);
+        Validate.notNull(callback);
 
         this.activity = activity;
         this.handler = handler;
@@ -166,7 +169,7 @@ public class DownloadObserver {
     }
 
     public void setActivity(Activity activity) {
-        if (activity == null) throw new IllegalArgumentException("activity = null");
+        Validate.notNull(activity);
         this.activity = activity;
     }
 

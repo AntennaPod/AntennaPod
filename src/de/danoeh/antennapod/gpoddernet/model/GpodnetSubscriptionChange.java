@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.gpoddernet.model;
 
+import org.apache.commons.lang3.Validate;
+
 import java.util.List;
 
 public class GpodnetSubscriptionChange {
@@ -9,10 +11,9 @@ public class GpodnetSubscriptionChange {
 
     public GpodnetSubscriptionChange(List<String> added, List<String> removed,
                                      long timestamp) {
-        if (added == null || removed == null) {
-            throw new IllegalArgumentException(
-                    "added and remove must not be null");
-        }
+        Validate.notNull(added);
+        Validate.notNull(removed);
+
         this.added = added;
         this.removed = removed;
         this.timestamp = timestamp;

@@ -20,6 +20,8 @@ import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.FeedSearcher;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 
@@ -131,26 +133,28 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
-        MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        final SearchView sv = new SearchView(getActivity());
-        sv.setQueryHint(getString(R.string.search_hint));
-        sv.setQuery(getArguments().getString(ARG_QUERY), false);
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                getArguments().putString(ARG_QUERY, s);
-                itemsLoaded = false;
-                startSearchTask();
-                return true;
-            }
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
+            MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+            final SearchView sv = new SearchView(getActivity());
+            sv.setQueryHint(getString(R.string.search_hint));
+            sv.setQuery(getArguments().getString(ARG_QUERY), false);
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    getArguments().putString(ARG_QUERY, s);
+                    itemsLoaded = false;
+                    startSearchTask();
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
-        MenuItemCompat.setActionView(item, sv);
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+            MenuItemCompat.setActionView(item, sv);
+        }
     }
 
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

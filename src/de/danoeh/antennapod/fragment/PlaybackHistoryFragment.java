@@ -25,6 +25,8 @@ import de.danoeh.antennapod.service.download.Downloader;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -129,17 +131,21 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-        MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-        TypedArray drawables = getActivity().obtainStyledAttributes(new int[] {R.attr.content_discard});
-        clearHistory.setIcon(drawables.getDrawable(0));
-        drawables.recycle();
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
+            MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
+            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
+            clearHistory.setIcon(drawables.getDrawable(0));
+            drawables.recycle();
+        }
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.clear_history_item).setVisible(playbackHistory != null && !playbackHistory.isEmpty());
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            menu.findItem(R.id.clear_history_item).setVisible(playbackHistory != null && !playbackHistory.isEmpty());
+        }
     }
 
     @Override

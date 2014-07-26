@@ -4,6 +4,9 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.view.View;
 import android.widget.ImageButton;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -20,11 +23,12 @@ public class ActionButtonUtils {
     private final Context context;
 
     public ActionButtonUtils(Context context) {
-        if (context == null) throw new IllegalArgumentException("context = null");
+        Validate.notNull(context);
+
         this.context = context;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.navigation_chapters});
-        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label};
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.navigation_chapters, R.attr.navigation_accept});
+        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label, R.string.mark_read_label};
     }
 
     /**
@@ -32,7 +36,8 @@ public class ActionButtonUtils {
      * action button so that it matches the state of the FeedItem.
      */
     public void configureActionButton(ImageButton butSecondary, FeedItem item) {
-        if (butSecondary == null || item == null) throw new IllegalArgumentException("butSecondary or item was null");
+        Validate.isTrue(butSecondary != null && item != null, "butSecondary or item was null");
+
         final FeedMedia media = item.getMedia();
         if (media != null) {
             final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
@@ -61,7 +66,13 @@ public class ActionButtonUtils {
                 butSecondary.setContentDescription(context.getString(labels[0]));
             }
         } else {
-            butSecondary.setVisibility(View.INVISIBLE);
+            if (item.isRead()) {
+                butSecondary.setVisibility(View.INVISIBLE);
+            } else {
+                butSecondary.setVisibility(View.VISIBLE);
+                butSecondary.setImageDrawable(drawables.getDrawable(4));
+                butSecondary.setContentDescription(context.getString(labels[3]));
+            }
         }
     }
 }

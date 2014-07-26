@@ -31,6 +31,7 @@
   <string name="copy_url_label">URL kopieren</string>
   <string name="share_url_label">URL teilen</string>
   <string name="copied_url_msg">URL wurde in die Zwischenablage kopiert.</string>
+  <string name="go_to_position_label">Gehe zu dieser Position</string>
   <!--Playback history-->
   <string name="clear_history_label">Chronik löschen</string>
   <!--Other-->
@@ -59,6 +60,7 @@
   <string name="auto_download_label">Automatisch herunterladen</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
+  <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
   <string name="txtvfeedurl_label">Podcast per URL hinzufügen</string>
   <string name="podcastdirectories_label">Podcast in Verzeichnis finden</string>
   <string name="podcastdirectories_descr">Bei gpodder.net kannst du nach neuen Podcasts nach Name, Kategorie oder Popularität suchen.</string>
@@ -133,6 +135,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Puffert</string>
   <string name="playbackservice_notification_title">Spiele Podcast ab</string>
+  <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Abspielliste leeren</string>
   <string name="undo">Rückgängig</string>
@@ -146,6 +149,7 @@
   <string name="return_home_label">Zur Hauptseite zurückkehren</string>
   <string name="flattr_auth_success">Die Authentifizierung war erfolgreich! Du kannst nun in der Anwendung Flattr verwenden.</string>
   <string name="no_flattr_token_title">Kein Flattr Token gefunden</string>
+  <string name="no_flattr_token_notification_msg">Dein Flattr Account scheint nicht mit AntennaPod verbunden zu sein. Tippe hier zum authentifizieren.</string>
   <string name="no_flattr_token_msg">Dein Flattr Account scheint nicht mit AntennaPod verbunden zu sein. Du kannst entweder deinen Account mit AntennaPod verbinden, um direkt in der Anwendung Flattr zu verwenden, oder du kannst die Flattr-Seite der Sache im Netz besuchen.</string>
   <string name="authenticate_now_label">Authentifizieren</string>
   <string name="action_forbidden_title">Aktion verboten</string>
@@ -199,7 +203,7 @@
   <string name="pref_revokeAccess_title">Zugriff entziehen</string>
   <string name="pref_revokeAccess_sum">Entziehe dieser Anwendung die Zugriffserlaubnis für deinen Flattr Account.</string>
   <string name="pref_auto_flattr_title">Automatisches Flattrn</string>
-  <string name="pref_auto_flattr_sum">Flattr Episoden, die zu 80 Prozent gespielt wurden.</string>
+  <string name="pref_auto_flattr_sum">Automatisches Flattrn konfigurieren</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
@@ -222,8 +226,15 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net profils</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
+  <string name="pref_seek_delta_title">Spul-Zeit</string>
+  <string name="pref_seek_delta_sum">Spule so viele Sekunden vor oder zurück</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
+  <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
+  <string name="auto_flattr_after_percent">Flattr eine Episode sobald %d Prozent gespielt worden sind</string>
+  <string name="auto_flattr_ater_beginning">Flattr Episode, sobald die Wiedergabe beginnt</string>
+  <string name="auto_flattr_ater_end">Flattr Episode, sobald die Wiedergabe endet</string>
   <!--Search-->
   <string name="search_hint">Suche nach Feeds oder Episoden</string>
   <string name="found_in_shownotes_label">In Sendungsnotizen gefunden</string>

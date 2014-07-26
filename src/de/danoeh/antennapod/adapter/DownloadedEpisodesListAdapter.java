@@ -54,7 +54,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloaded_episodeslist_item,
-                    null);
+                    parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView
                     .findViewById(R.id.txtvPublished);

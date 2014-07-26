@@ -11,6 +11,7 @@ import de.danoeh.antennapod.service.download.DownloadRequest;
 import de.danoeh.antennapod.service.download.HttpDownloader;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -48,9 +49,8 @@ public class ImageDiskCache {
      * Return an instance of an ImageDiskCache that stores images in the specified folder.
      */
     public static synchronized ImageDiskCache getInstance(String path, long maxCacheSize) {
-        if (path == null) {
-            throw new NullPointerException();
-        }
+        Validate.notNull(path);
+
         if (cacheSingletons.containsKey(path)) {
             return cacheSingletons.get(path);
         }
@@ -358,9 +358,7 @@ public class ImageDiskCache {
         private final long size;
 
         public DiskCacheObject(String fileUrl, long size) {
-            if (fileUrl == null) {
-                throw new NullPointerException();
-            }
+            Validate.notNull(fileUrl);
             this.fileUrl = fileUrl;
             this.timestamp = System.currentTimeMillis();
             this.size = size;

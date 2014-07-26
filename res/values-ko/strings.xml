@@ -180,7 +180,6 @@
   <string name="pref_revokeAccess_title">접근 철회</string>
   <string name="pref_revokeAccess_sum">이 앱이 Flattr 계정에 접근할 권한을 철회합니다.</string>
   <string name="pref_auto_flattr_title">자동 Flattr</string>
-  <string name="pref_auto_flattr_sum">80% 재생한 에피소드 Flattr하기.</string>
   <string name="user_interface_label">사용자 인터페이스</string>
   <string name="pref_set_theme_title">테마 선택</string>
   <string name="pref_set_theme_sum">안테나팟의 겉모양을 바꿉니다.</string>
@@ -205,6 +204,7 @@
   <string name="pref_playback_speed_sum">여러가지 오디오 재생 속도 직접 설정</string>
   <string name="pref_gpodnet_sethostname_title">호스트 이름 설정</string>
   <string name="pref_gpodnet_sethostname_use_default_host">기본 호스트 사용</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">피드나 에피소드 검색</string>
   <string name="found_in_shownotes_label">프로그램 메모에서 발견</string>

@@ -199,7 +199,6 @@
   <string name="pref_revokeAccess_title">Återkalla åtkomst</string>
   <string name="pref_revokeAccess_sum">Återkalla behörigheten till ditt Flattr-konto för denna app.</string>
   <string name="pref_auto_flattr_title">Automatisk Flattring</string>
-  <string name="pref_auto_flattr_sum">Flattra episoder som har spelats minst 80%.</string>
   <string name="user_interface_label">Användargränssnitt</string>
   <string name="pref_set_theme_title">Välj tema</string>
   <string name="pref_set_theme_sum">Ändra utseendet på AntennaPod.</string>
@@ -224,6 +223,7 @@
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Sök efter flöden eller avsnitt</string>
   <string name="found_in_shownotes_label">Hittad i shownotes</string>

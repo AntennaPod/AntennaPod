@@ -190,6 +190,7 @@
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
   <string name="pref_gpodnet_sethostname_title">Imposta l\'hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usa l\'host di default</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Ricerca per Feed o Episodi</string>
   <string name="found_in_shownotes_label">Trovato nelle note dell\'episodio</string>

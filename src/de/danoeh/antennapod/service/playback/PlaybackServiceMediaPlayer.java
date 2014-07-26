@@ -7,6 +7,9 @@ import android.media.RemoteControlClient;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
@@ -61,10 +64,8 @@ public class PlaybackServiceMediaPlayer {
     private final ThreadPoolExecutor executor;
 
     public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
-        if (context == null)
-            throw new IllegalArgumentException("context = null");
-        if (callback == null)
-            throw new IllegalArgumentException("callback = null");
+        Validate.notNull(context);
+        Validate.notNull(callback);
 
         this.context = context;
         this.callback = callback;
@@ -115,8 +116,8 @@ public class PlaybackServiceMediaPlayer {
      * @param prepareImmediately Set to true if the method should also prepare the episode for playback.
      */
     public void playMediaObject(final Playable playable, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        if (playable == null)
-            throw new IllegalArgumentException("playable = null");
+        Validate.notNull(playable);
+
         if (BuildConfig.DEBUG) Log.d(TAG, "Play media object.");
         executor.submit(new Runnable() {
             @Override
@@ -125,6 +126,7 @@ public class PlaybackServiceMediaPlayer {
                 try {
                     playMediaObject(playable, false, stream, startWhenPrepared, prepareImmediately);
                 } catch (RuntimeException e) {
+                    e.printStackTrace();
                     throw e;
                 } finally {
                     playerLock.unlock();
@@ -142,8 +144,7 @@ public class PlaybackServiceMediaPlayer {
      * @see #playMediaObject(de.danoeh.antennapod.util.playback.Playable, boolean, boolean, boolean)
      */
     private void playMediaObject(final Playable playable, final boolean forceReset, final boolean stream, final boolean startWhenPrepared, final boolean prepareImmediately) {
-        if (playable == null)
-            throw new IllegalArgumentException("playable = null");
+        Validate.notNull(playable);
         if (!playerLock.isHeldByCurrentThread())
             throw new IllegalStateException("method requires playerLock");
 
@@ -458,8 +459,8 @@ public class PlaybackServiceMediaPlayer {
      * Seek to the start of the specified chapter.
      */
     public void seekToChapter(Chapter c) {
-        if (c == null)
-            throw new IllegalArgumentException("c = null");
+        Validate.notNull(c);
+
         seekTo((int) c.getStart());
     }
 
@@ -662,8 +663,8 @@ public class PlaybackServiceMediaPlayer {
      * @param newMedia  The new playable object of the PSMP object. This can be null.
      */
     private synchronized void setPlayerStatus(PlayerStatus newStatus, Playable newMedia) {
-        if (newStatus == null)
-            throw new IllegalArgumentException("newStatus = null");
+        Validate.notNull(newStatus);
+
         if (BuildConfig.DEBUG) Log.d(TAG, "Setting player status to " + newStatus);
 
         this.playerStatus = newStatus;

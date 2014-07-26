@@ -9,6 +9,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -58,7 +61,8 @@ public class DownloadAuthenticationActivity extends ActionBarActivity {
         butCancel = (Button) findViewById(R.id.butCancel);
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
 
-        if (!getIntent().hasExtra(ARG_DOWNLOAD_REQUEST)) throw new IllegalArgumentException("Download request missing");
+        Validate.isTrue(getIntent().hasExtra(ARG_DOWNLOAD_REQUEST), "Download request missing");
+
         request = getIntent().getParcelableExtra(ARG_DOWNLOAD_REQUEST);
         sendToDownloadRequester = getIntent().getBooleanExtra(ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, false);
 

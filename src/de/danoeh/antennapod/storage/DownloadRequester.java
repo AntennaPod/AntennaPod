@@ -14,6 +14,7 @@ import de.danoeh.antennapod.util.URLChecker;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.io.File;
 import java.util.Map;
@@ -57,8 +58,9 @@ public class DownloadRequester {
      * @return True if the download request was accepted, false otherwise.
      */
     public boolean download(Context context, DownloadRequest request) {
-        if (context == null) throw new IllegalArgumentException("context = null");
-        if (request == null) throw new IllegalArgumentException("request = null");
+        Validate.notNull(context);
+        Validate.notNull(request);
+
         if (downloads.containsKey(request.getSource())) {
             if (BuildConfig.DEBUG) Log.i(TAG, "DownloadRequest is already stored.");
             return false;

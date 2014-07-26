@@ -15,7 +15,6 @@ import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceScreen;
-import android.support.v4.app.NavUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -25,6 +24,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.preferences.GpodnetPreferences;
@@ -47,7 +47,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
-    private static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
+    private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
     private static final String PREF_OPML_EXPORT = "prefOpmlExport";
     private static final String PREF_ABOUT = "prefAbout";
     private static final String PREF_CHOOSE_DATA_DIR = "prefChooseDataDir";
@@ -69,7 +69,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         super.onCreate(savedInstanceState);
 
         if (android.os.Build.VERSION.SDK_INT >= 11) {
-            ActionBar ab = getActionBar();
+            @SuppressLint("AppCompatMethod") ActionBar ab = getActionBar();
             if (ab != null) {
                 ab.setDisplayHomeAsUpEnabled(true);
             }
@@ -247,6 +247,26 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
                 return true;
             }
         });
+
+        findPreference(PREF_AUTO_FLATTR_PREFS).setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                AutoFlattrPreferenceDialog.newAutoFlattrPreferenceDialog(PreferenceActivity.this,
+                        new AutoFlattrPreferenceDialog.AutoFlattrPreferenceDialogInterface() {
+                    @Override
+                    public void onCancelled() {
+
+                    }
+
+                    @Override
+                    public void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue) {
+                        UserPreferences.setAutoFlattrSettings(PreferenceActivity.this, autoFlattrEnabled, autoFlattrValue);
+                        checkItemVisibility();
+                    }
+                });
+                return true;
+            }
+        });
         buildUpdateIntervalPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
@@ -314,7 +334,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
         findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
         findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
-        findPreference(PREF_AUTO_FLATTR).setEnabled(hasFlattrToken);
+        findPreference(PREF_AUTO_FLATTR_PREFS).setEnabled(hasFlattrToken);
 
         findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER)
                 .setEnabled(UserPreferences.isEnableAutodownload());

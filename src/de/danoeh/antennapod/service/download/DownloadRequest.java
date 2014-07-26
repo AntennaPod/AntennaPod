@@ -3,6 +3,8 @@ package de.danoeh.antennapod.service.download;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.apache.commons.lang3.Validate;
+
 public class DownloadRequest implements Parcelable {
 
     private final String destination;
@@ -21,15 +23,9 @@ public class DownloadRequest implements Parcelable {
 
     public DownloadRequest(String destination, String source, String title,
                            long feedfileId, int feedfileType, String username, String password, boolean deleteOnFailure) {
-        if (destination == null) {
-            throw new IllegalArgumentException("Destination must not be null");
-        }
-        if (source == null) {
-            throw new IllegalArgumentException("Source must not be null");
-        }
-        if (title == null) {
-            throw new IllegalArgumentException("Title must not be null");
-        }
+        Validate.notNull(destination);
+        Validate.notNull(source);
+        Validate.notNull(title);
 
         this.destination = destination;
         this.source = source;
@@ -110,11 +106,14 @@ public class DownloadRequest implements Parcelable {
         if (size != that.size) return false;
         if (soFar != that.soFar) return false;
         if (statusMsg != that.statusMsg) return false;
-        if (destination != null ? !destination.equals(that.destination) : that.destination != null) return false;
-        if (password != null ? !password.equals(that.password) : that.password != null) return false;
+        if (destination != null ? !destination.equals(that.destination) : that.destination != null)
+            return false;
+        if (password != null ? !password.equals(that.password) : that.password != null)
+            return false;
         if (source != null ? !source.equals(that.source) : that.source != null) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
-        if (username != null ? !username.equals(that.username) : that.username != null) return false;
+        if (username != null ? !username.equals(that.username) : that.username != null)
+            return false;
 
         return true;
     }

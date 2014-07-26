@@ -180,7 +180,6 @@
   <string name="pref_revokeAccess_title">בטל גישה</string>
   <string name="pref_revokeAccess_sum">בטל  הרשאת גישה לחשבון flattr ליישום זה.</string>
   <string name="pref_auto_flattr_title">תרומות Flattr אוטומטיות</string>
-  <string name="pref_auto_flattr_sum">תרום לפרקים ש80% מתוכם נוגן </string>
   <string name="user_interface_label">ממשק משתמש</string>
   <string name="pref_set_theme_title">בחר ערכת נושא</string>
   <string name="pref_set_theme_sum">שנה את מראה אנטנה-פוד</string>
@@ -205,6 +204,7 @@
   <string name="pref_playback_speed_sum">התאמת המהיריות הזמינות לניגון במהירות משתנה</string>
   <string name="pref_gpodnet_sethostname_title">הגדר שם שרת</string>
   <string name="pref_gpodnet_sethostname_use_default_host">השתמש בשרת ברירת מידל</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">חפש הזנות או פרקים</string>
   <string name="found_in_shownotes_label">נמצא בהערות פרק</string>

@@ -15,12 +15,17 @@ import android.view.View.OnClickListener;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.service.playback.PlayerStatus;
@@ -37,7 +42,6 @@ import java.util.concurrent.*;
 public abstract class PlaybackController {
     private static final String TAG = "PlaybackController";
 
-    public static final int DEFAULT_SEEK_DELTA = 30000;
     public static final int INVALID_TIME = -1;
 
     private final Activity activity;
@@ -62,8 +66,8 @@ public abstract class PlaybackController {
     private boolean reinitOnPause;
 
     public PlaybackController(Activity activity, boolean reinitOnPause) {
-        if (activity == null)
-            throw new IllegalArgumentException("activity = null");
+        Validate.notNull(activity);
+
         this.activity = activity;
         this.reinitOnPause = reinitOnPause;
         schedExecutor = new ScheduledThreadPoolExecutor(SCHED_EX_POOLSIZE,
@@ -360,7 +364,7 @@ public abstract class PlaybackController {
         @Override
         public void onReceive(Context context, Intent intent) {
             if (isConnectedToPlaybackService()) {
-                if (intent.getAction().equals(
+                if (StringUtils.equals(intent.getAction(),
                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                     release();
                     onShutdownNotification();
@@ -605,7 +609,7 @@ public abstract class PlaybackController {
             @Override
             public void onClick(View v) {
                 if (status == PlayerStatus.PLAYING) {
-                    playbackService.seekDelta(-DEFAULT_SEEK_DELTA);
+                    playbackService.seekDelta(-UserPreferences.getSeekDeltaMs());
                 }
             }
         };
@@ -616,7 +620,7 @@ public abstract class PlaybackController {
             @Override
             public void onClick(View v) {
                 if (status == PlayerStatus.PLAYING) {
-                    playbackService.seekDelta(DEFAULT_SEEK_DELTA);
+                    playbackService.seekDelta(UserPreferences.getSeekDeltaMs());
                 }
             }
         };
@@ -677,6 +681,12 @@ public abstract class PlaybackController {
     public void seekToChapter(Chapter chapter) {
         if (playbackService != null) {
             playbackService.seekToChapter(chapter);
+        }
+    }
+
+    public void seekTo(int time) {
+        if (playbackService != null) {
+            playbackService.seekTo(time);
         }
     }
 

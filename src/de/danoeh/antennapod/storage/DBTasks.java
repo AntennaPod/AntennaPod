@@ -156,7 +156,7 @@ public final class DBTasks {
 
                     if (FlattrUtils.hasToken()) {
                         if (BuildConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
-                        new FlattrClickWorker(context, FlattrClickWorker.FLATTR_NOTIFICATION).executeAsync(); // flattr pending things
+                        new FlattrClickWorker(context).executeAsync(); // flattr pending things
 
                         if (BuildConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
                         new FlattrStatusFetcher(context).start();
@@ -386,9 +386,11 @@ public final class DBTasks {
      * This method is executed on an internal single thread executor.
      *
      * @param context Used for accessing the DB.
+     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
+     *                 its media ID is in the mediaIds list.
      * @return A Future that can be used for waiting for the methods completion.
      */
-    public static Future<?> autodownloadUndownloadedItems(final Context context) {
+    public static Future<?> autodownloadUndownloadedItems(final Context context, final long... mediaIds) {
         return autodownloadExec.submit(new Runnable() {
             @Override
             public void run() {
@@ -417,11 +419,17 @@ public final class DBTasks {
                                 - (downloadedEpisodes - deletedEpisodes);
                     }
 
+                    Arrays.sort(mediaIds);    // sort for binary search
+                    final boolean ignoreMediaIds = mediaIds.length == 0;
                     List<FeedItem> itemsToDownload = new ArrayList<FeedItem>();
+
                     if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
                         for (int i = 0; i < queue.size(); i++) { // ignore playing item
                             FeedItem item = queue.get(i);
-                            if (item.hasMedia() && !item.getMedia().isDownloaded()
+                            long mediaId = (item.hasMedia()) ? item.getMedia().getId() : -1;
+                            if ((ignoreMediaIds || Arrays.binarySearch(mediaIds, mediaId) >= 0)
+                                    && item.hasMedia()
+                                    && !item.getMedia().isDownloaded()
                                     && !item.getMedia().isPlaying()
                                     && item.getFeed().getPreferences().getAutoDownload()) {
                                 itemsToDownload.add(item);
@@ -433,9 +441,13 @@ public final class DBTasks {
                             }
                         }
                     }
+
                     if (episodeSpaceLeft > 0 && undownloadedEpisodes > 0) {
                         for (FeedItem item : unreadItems) {
-                            if (item.hasMedia() && !item.getMedia().isDownloaded()
+                            long mediaId = (item.hasMedia()) ? item.getMedia().getId() : -1;
+                            if ((ignoreMediaIds || Arrays.binarySearch(mediaIds, mediaId) >= 0)
+                                    && item.hasMedia()
+                                    && !item.getMedia().isDownloaded()
                                     && item.getFeed().getPreferences().getAutoDownload()) {
                                 itemsToDownload.add(item);
                                 episodeSpaceLeft--;

@@ -34,7 +34,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 			holder = new Holder();
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.downloadlog_item, null);
+			convertView = inflater.inflate(R.layout.downloadlog_item, parent, false);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			holder.type = (TextView) convertView.findViewById(R.id.txtvType);
 			holder.date = (TextView) convertView.findViewById(R.id.txtvDate);

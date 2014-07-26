@@ -67,7 +67,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
             holder = new Holder();
             LayoutInflater inflater = (LayoutInflater) context
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-            convertView = inflater.inflate(R.layout.feeditemlist_item, null);
+            convertView = inflater.inflate(R.layout.feeditemlist_item, parent, false);
             holder.title = (TextView) convertView
                     .findViewById(R.id.txtvItemname);
             holder.lenSize = (TextView) convertView

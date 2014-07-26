@@ -3,10 +3,10 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.11.+'
+        classpath 'com.android.tools.build:gradle:0.12.+'
     }
 }
-apply plugin: 'android'
+apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
@@ -29,12 +29,16 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile project(':submodules:dslv:library')
 
-    compile 'com.jayway.android.robotium:robotium-solo:5.1'
+    compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+    compile ("com.doomonafireball.betterpickers:library:1.5.2") {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+    compile 'org.jsoup:jsoup:1.7.3'
 }
 
 android {
     compileSdkVersion 19
-    buildToolsVersion "19.1.0"
+    buildToolsVersion "20.0"
 
     defaultConfig {
         minSdkVersion 10
@@ -98,6 +102,11 @@ android {
 
     lintOptions {
         abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
     }
 }
 

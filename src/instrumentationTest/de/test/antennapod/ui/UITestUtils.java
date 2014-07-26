@@ -1,7 +1,11 @@
 package instrumentationTest.de.test.antennapod.ui;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.Build;
+
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.feed.*;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.PodDBAdapter;
@@ -24,12 +28,15 @@ import java.util.List;
  * Utility methods for UI tests.
  * Starts a web server that hosts feeds, episodes and images.
  */
+@TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class UITestUtils {
 
     private static final String DATA_FOLDER = "test/UITestUtils";
 
     public static final int NUM_FEEDS = 5;
     public static final int NUM_ITEMS_PER_FEED = 10;
+
+    public static final int HOME_VIEW = (Build.VERSION.SDK_INT >= 11) ? android.R.id.home : R.id.home;
 
 
     private Context context;

@@ -6,6 +6,8 @@ import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 
+import de.danoeh.antennapod.BuildConfig;
+
 /**
  * Allows "duck typing" or dynamic invocation based on method signature rather
  * than type hierarchy. In other words, rather than checking whether something
@@ -63,7 +65,7 @@ public class DuckType {
 	 */
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public <T> T to(Class iface) {
-		assert iface.isInterface() : "cannot coerce object to a class, must be an interface";
+		if (BuildConfig.DEBUG && !iface.isInterface()) throw new AssertionError("cannot coerce object to a class, must be an interface");
 		if (isA(iface)) {
 			return (T) iface.cast(objectToCoerce);
 		}

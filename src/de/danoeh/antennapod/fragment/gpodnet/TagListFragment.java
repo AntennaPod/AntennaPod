@@ -11,16 +11,17 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.fragment.SearchFragment;
 import de.danoeh.antennapod.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-
-import java.util.ArrayList;
-import java.util.List;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 public class TagListFragment extends ListFragment {
     private static final String TAG = "TagListFragment";
@@ -35,22 +36,24 @@ public class TagListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
-                return true;
-            }
+        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            final SearchView sv = new SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
@@ -66,11 +69,26 @@ public class TagListFragment extends ListFragment {
             }
         });
 
-        loadData();
+        startLoadTask();
     }
 
-    private void loadData() {
-        AsyncTask<Void, Void, List<GpodnetTag>> task = new AsyncTask<Void, Void, List<GpodnetTag>>() {
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        cancelLoadTask();
+    }
+
+    private AsyncTask<Void, Void, List<GpodnetTag>> loadTask;
+
+    private void cancelLoadTask() {
+        if (loadTask != null && !loadTask.isCancelled()) {
+            loadTask.cancel(true);
+        }
+    }
+
+    private void startLoadTask() {
+        cancelLoadTask();
+        loadTask = new AsyncTask<Void, Void, List<GpodnetTag>>() {
             private Exception exception;
 
             @Override
@@ -115,9 +133,9 @@ public class TagListFragment extends ListFragment {
             }
         };
         if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            task.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+            loadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
         } else {
-            task.execute();
+            loadTask.execute();
         }
     }
 }

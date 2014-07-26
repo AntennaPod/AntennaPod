@@ -67,9 +67,9 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
         LayoutInflater inflater = (LayoutInflater)
                 getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         views = new View[]{
-                inflater.inflate(R.layout.gpodnetauth_credentials, null),
-                inflater.inflate(R.layout.gpodnetauth_device, null),
-                inflater.inflate(R.layout.gpodnetauth_finish, null)
+                inflater.inflate(R.layout.gpodnetauth_credentials, viewFlipper, false),
+                inflater.inflate(R.layout.gpodnetauth_device, viewFlipper, false),
+                inflater.inflate(R.layout.gpodnetauth_finish, viewFlipper, false)
         };
         for (View view : views) {
             viewFlipper.addView(view);

@@ -103,11 +103,11 @@ public class OpmlFeedChooserActivity extends ActionBarActivity {
         super.onCreateOptionsMenu(menu);
         MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.select_all_item, Menu.NONE,
                 R.string.select_all_label),
-                MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
 
         MenuItemCompat.setShowAsAction(menu.add(Menu.NONE, R.id.deselect_all_item, Menu.NONE,
                 R.string.deselect_all_label),
-                MenuItem.SHOW_AS_ACTION_IF_ROOM);
+                MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
         return true;
     }
 

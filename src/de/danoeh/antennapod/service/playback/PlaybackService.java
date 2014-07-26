@@ -22,6 +22,10 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+import android.widget.Toast;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
@@ -39,9 +43,9 @@ import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
 
 import java.util.List;
 
@@ -282,7 +286,8 @@ public class PlaybackService extends Service {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Handling keycode: " + keycode);
 
-        final PlayerStatus status = mediaPlayer.getPSMPInfo().playerStatus;
+        final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        final PlayerStatus status = info.playerStatus;
         switch (keycode) {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
@@ -310,14 +315,20 @@ public class PlaybackService extends Service {
                     mediaPlayer.pause(true, true);
                 }
                 break;
-            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD: {
-                mediaPlayer.seekDelta(PlaybackController.DEFAULT_SEEK_DELTA);
+            case KeyEvent.KEYCODE_MEDIA_NEXT:
+            case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
+                mediaPlayer.seekDelta(UserPreferences.getSeekDeltaMs());
                 break;
-            }
-            case KeyEvent.KEYCODE_MEDIA_REWIND: {
-                mediaPlayer.seekDelta(-PlaybackController.DEFAULT_SEEK_DELTA);
+            case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
+            case KeyEvent.KEYCODE_MEDIA_REWIND:
+                mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
-            }
+            default:
+                if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
+                    String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
+                    Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+                }
+                break;
         }
     }
 
@@ -502,6 +513,11 @@ public class PlaybackService extends Service {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
             DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
+
+            // auto-flattr if enabled
+            if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
+                DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
+            }
         }
 
         // Load next episode if previous episode was in the queue and if there
@@ -752,14 +768,13 @@ public class PlaybackService extends Service {
                 FeedItem item = m.getItem();
                 m.setPlayedDuration(m.getPlayedDuration() + ((int)(deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
-                if (FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred() &&
-                        (m.getPlayedDuration() > UserPreferences.getPlayedDurationAutoflattrThreshold() * duration)) {
+                if (isAutoFlattrable(m) &&
+                        (m.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
 
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(m.getPlayedDuration())
-                                + " is " + UserPreferences.getPlayedDurationAutoflattrThreshold() * 100 + "% of file duration " + Integer.toString(duration));
-                    item.getFlattrStatus().setFlattrQueue();
-                    DBWriter.setFeedItemFlattrStatus(PodcastApp.getInstance(), item, false);
+                                + " is " + UserPreferences.getAutoFlattrPlayedDurationThreshold() * 100 + "% of file duration " + Integer.toString(duration));
+                    DBTasks.flattrItemIfLoggedIn(this, item);
                 }
             }
             playable.saveCurrentPosition(PreferenceManager
@@ -889,8 +904,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(Intent.ACTION_HEADSET_PLUG)) {
+            if (StringUtils.equals(intent.getAction(), Intent.ACTION_HEADSET_PLUG)) {
                 int state = intent.getIntExtra("state", -1);
                 if (state != -1) {
                     if (BuildConfig.DEBUG)
@@ -932,8 +946,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
+            if (StringUtils.equals(intent.getAction(), ACTION_SHUTDOWN_PLAYBACK_SERVICE)) {
                 stopSelf();
             }
         }
@@ -943,8 +956,7 @@ public class PlaybackService extends Service {
     private BroadcastReceiver skipCurrentEpisodeReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (intent.getAction() != null &&
-                    intent.getAction().equals(ACTION_SKIP_CURRENT_EPISODE)) {
+            if (StringUtils.equals(intent.getAction(), ACTION_SKIP_CURRENT_EPISODE)) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback();
@@ -1045,4 +1057,13 @@ public class PlaybackService extends Service {
         return mediaPlayer.getVideoSize();
     }
 
+    private boolean isAutoFlattrable(Playable p) {
+        if (p != null && p instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) p;
+            FeedItem item = ((FeedMedia) p).getItem();
+            return item != null && FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred();
+        } else {
+            return false;
+        }
+    }
 }

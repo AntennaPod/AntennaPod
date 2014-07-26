@@ -174,6 +174,7 @@
   <string name="pref_gpodnet_authenticate_title">Autentificare</string>
   <string name="pref_playback_speed_title">Viteze de ascutare</string>
   <string name="pref_playback_speed_sum">Modifică vitezele disponibile pentru viteza de ascultare.</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Caută feeduri sau episoade</string>
   <string name="found_in_shownotes_label">Găsit în notițe</string>

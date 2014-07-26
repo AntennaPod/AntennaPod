@@ -6,6 +6,9 @@ import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBTasks;
@@ -17,7 +20,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
 
 	@Override
 	public void onReceive(Context context, Intent intent) {
-		if (intent.getAction().equals(ACTION_REFRESH_FEEDS)) {
+		if (StringUtils.equals(intent.getAction(), ACTION_REFRESH_FEEDS)) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Received intent");
 			boolean mobileUpdate = UserPreferences.isAllowMobileUpdate();

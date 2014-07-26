@@ -20,7 +20,7 @@
             android:inputType="number"
             android:maxLength="2" >
 
-            <requestFocus />
+
         </EditText>
 
         <Spinner

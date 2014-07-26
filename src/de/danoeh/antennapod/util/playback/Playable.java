@@ -12,6 +12,7 @@ import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.Validate;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -216,9 +217,8 @@ public interface Playable extends Parcelable,
         private Playable playable;
 
         public DefaultPlayableImageLoader(Playable playable) {
-            if (playable == null) {
-                throw new IllegalArgumentException("Playable must not be null");
-            }
+            Validate.notNull(playable);
+
             this.playable = playable;
         }
 

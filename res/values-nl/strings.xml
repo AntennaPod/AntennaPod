@@ -180,7 +180,6 @@
   <string name="pref_revokeAccess_title">Toegang intrekken</string>
   <string name="pref_revokeAccess_sum">Trek de toegang van deze app in tot je Flattr account.</string>
   <string name="pref_auto_flattr_title">Automatische Flattr</string>
-  <string name="pref_auto_flattr_sum">Afleveringen automatisch Flattr nadat 80 procent van de episode gespeeld is</string>
   <string name="user_interface_label">User Interface</string>
   <string name="pref_set_theme_title">Kies theme</string>
   <string name="pref_set_theme_sum">Verander het uiterlijk van AntennaPod.</string>
@@ -205,6 +204,7 @@
   <string name="pref_playback_speed_sum">Pas de beschikbare snelheden aan voor de variabele audio afspeelsnelheid</string>
   <string name="pref_gpodnet_sethostname_title">Definieer hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Gebruik standaard host</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Feeds of afleveringen zoeken</string>
   <string name="found_in_shownotes_label">Gevonden in de shownotes</string>

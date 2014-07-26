@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.gpoddernet.model;
 
+import org.apache.commons.lang3.Validate;
+
 public class GpodnetPodcast {
     private String url;
     private String title;
@@ -11,10 +13,9 @@ public class GpodnetPodcast {
 
     public GpodnetPodcast(String url, String title, String description,
                           int subscribers, String logoUrl, String website, String mygpoLink) {
-        if (url == null || title == null || description == null) {
-            throw new IllegalArgumentException(
-                    "URL, title and description must not be null");
-        }
+        Validate.notNull(url);
+        Validate.notNull(title);
+        Validate.notNull(description);
 
         this.url = url;
         this.title = title;

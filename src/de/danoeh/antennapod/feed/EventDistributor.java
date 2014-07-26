@@ -2,6 +2,9 @@ package de.danoeh.antennapod.feed;
 
 import android.os.Handler;
 import android.util.Log;
+
+import org.apache.commons.lang3.Validate;
+
 import de.danoeh.antennapod.BuildConfig;
 
 import java.util.AbstractQueue;
@@ -90,10 +93,7 @@ public class EventDistributor extends Observable {
 	@Override
 	public void addObserver(Observer observer) {
 		super.addObserver(observer);
-		if (!(observer instanceof EventListener)) {
-			throw new IllegalArgumentException(
-					"Observer must be instance of EventListener");
-		}
+        Validate.isInstanceOf(EventListener.class, observer);
 	}
 
 	public void sendDownloadQueuedBroadcast() {

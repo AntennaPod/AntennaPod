@@ -38,7 +38,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
             LayoutInflater inflater = (LayoutInflater) getContext()
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.gpodnet_podcast_listitem, null);
+            convertView = inflater.inflate(R.layout.gpodnet_podcast_listitem, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.description = (TextView) convertView.findViewById(R.id.txtvDescription);
             holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);

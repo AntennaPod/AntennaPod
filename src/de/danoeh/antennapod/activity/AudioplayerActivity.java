@@ -12,32 +12,48 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
-import android.view.Window;
-import android.widget.*;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView.ScaleType;
+import android.widget.ListView;
+import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.feed.*;
+import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.service.playback.PlaybackService;
 import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.util.playback.ExternalMedia;
 import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.util.playback.PlaybackController;
 
 /**
  * Activity for playing audio files.
  */
-public class AudioplayerActivity extends MediaplayerActivity {
+public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback,
+        NavDrawerActivity {
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
@@ -123,7 +139,6 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        requestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         super.onCreate(savedInstanceState);
         getSupportActionBar().setDisplayShowTitleEnabled(false);
         detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
@@ -215,8 +230,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        if (getIntent().getAction() != null
-                && getIntent().getAction().equals(Intent.ACTION_VIEW)) {
+        if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Received VIEW intent: "
@@ -293,7 +307,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
                     case POS_DESCR:
                         if (descriptionFragment == null) {
                             descriptionFragment = ItemDescriptionFragment
-                                    .newInstance(media, true);
+                                    .newInstance(media, true, true);
                         }
                         currentlyShownFragment = descriptionFragment;
                         break;
@@ -427,6 +441,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
         };
         typedArray.recycle();
         drawerToggle.setDrawerIndicatorEnabled(false);
+        drawerLayout.setDrawerListener(drawerToggle);
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
@@ -603,6 +618,34 @@ public class AudioplayerActivity extends MediaplayerActivity {
         clearStatusMsg();
     }
 
+    @Override
+    public PlaybackController getPlaybackController() {
+        return controller;
+    }
+
+    @Override
+    public boolean isDrawerOpen() {
+        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
+            return super.onCreateOptionsMenu(menu);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
+            return super.onPrepareOptionsMenu(menu);
+        } else {
+            return false;
+        }
+    }
+
     public interface AudioplayerContentFragment {
         public void onDataSetChanged(Playable media);
     }
@@ -615,7 +658,7 @@ public class AudioplayerActivity extends MediaplayerActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
             return super.onOptionsItemSelected(item);

@@ -34,6 +34,7 @@ import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.storage.DownloadRequester;
 import de.danoeh.antennapod.util.QueueAccess;
 import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
@@ -138,31 +139,35 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        inflater.inflate(R.menu.new_episodes, menu);
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            inflater.inflate(R.menu.new_episodes, menu);
 
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
-        sv.setQueryHint(getString(R.string.search_hint));
-        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-            @Override
-            public boolean onQueryTextSubmit(String s) {
-                sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
-                return true;
-            }
+            final SearchView sv = new SearchView(getActivity());
+            MenuItemUtils.addSearchItem(menu, sv);
+            sv.setQueryHint(getString(R.string.search_hint));
+            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+                @Override
+                public boolean onQueryTextSubmit(String s) {
+                    sv.clearFocus();
+                    ((MainActivity) getActivity()).loadChildFragment(SearchFragment.newInstance(s));
+                    return true;
+                }
 
-            @Override
-            public boolean onQueryTextChange(String s) {
-                return false;
-            }
-        });
+                @Override
+                public boolean onQueryTextChange(String s) {
+                    return false;
+                }
+            });
+        }
     }
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        menu.findItem(R.id.mark_all_read_item).setVisible(unreadItems != null && !unreadItems.isEmpty());
-        menu.findItem(R.id.episode_filter_item).setChecked(showOnlyNewEpisodes);
+        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            menu.findItem(R.id.mark_all_read_item).setVisible(unreadItems != null && !unreadItems.isEmpty());
+            menu.findItem(R.id.episode_filter_item).setChecked(showOnlyNewEpisodes);
+        }
     }
 
     @Override

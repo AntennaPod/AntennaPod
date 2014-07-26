@@ -55,7 +55,7 @@ public class SearchlistAdapter extends BaseAdapter {
 			LayoutInflater inflater = (LayoutInflater) context
 					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-			convertView = inflater.inflate(R.layout.searchlist_item, null);
+			convertView = inflater.inflate(R.layout.searchlist_item, parent, false);
 			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
 			holder.cover = (ImageView) convertView
 					.findViewById(R.id.imgvFeedimage);

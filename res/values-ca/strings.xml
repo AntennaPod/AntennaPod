@@ -199,7 +199,6 @@
   <string name="pref_revokeAccess_title">Revoca l\'accés</string>
   <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
   <string name="pref_auto_flattr_title">Flattr automàtic</string>
-  <string name="pref_auto_flattr_sum">Comparteix per Flattr els episodis la reproducció dels quals hagi arribat al 80%.</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="pref_set_theme_title">Selecció de tema</string>
   <string name="pref_set_theme_sum">Canvieu l\'aparença d\'AntennaPod.</string>
@@ -224,6 +223,7 @@
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
+  <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Cerca canals o episodis</string>
   <string name="found_in_shownotes_label">Trobat a notes del programa</string>
