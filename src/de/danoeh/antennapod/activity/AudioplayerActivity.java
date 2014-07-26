@@ -658,7 +658,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (drawerToggle.onOptionsItemSelected(item)) {
+        if (drawerToggle != null && drawerToggle.onOptionsItemSelected(item)) {
             return true;
         } else {
             return super.onOptionsItemSelected(item);
