@@ -1,7 +1,9 @@
 package de.danoeh.antennapod.feed;
 
+import android.net.Uri;
+
 import de.danoeh.antennapod.PodcastApp;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoImageResource;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
 import de.danoeh.antennapod.util.flattr.FlattrStatus;
@@ -17,8 +19,7 @@ import java.util.concurrent.Callable;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements
-        ImageLoader.ImageWorkerTaskResource, ShownotesProvider, FlattrThing {
+public class FeedItem extends FeedComponent implements ShownotesProvider, FlattrThing, PicassoImageResource {
 
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
@@ -261,6 +262,17 @@ public class FeedItem extends FeedComponent implements
         };
     }
 
+    @Override
+    public Uri getImageUri() {
+        if (hasMedia()) {
+            return media.getImageUri();
+        } else if (feed != null) {
+            return feed.getImageUri();
+        } else {
+            return null;
+        }
+    }
+
     public enum State {
         NEW, IN_PROGRESS, READ, PLAYING
     }
@@ -275,45 +287,6 @@ public class FeedItem extends FeedComponent implements
             }
         }
         return (isRead() ? State.READ : State.NEW);
-    }
-
-    @Override
-    public InputStream openImageInputStream() {
-        InputStream out = null;
-        if (hasItemImageDownloaded()) {
-            out = image.openImageInputStream();
-        } else if (hasMedia()) {
-            out = media.openImageInputStream();
-        } else if (feed.getImage() != null) {
-            out = feed.getImage().openImageInputStream();
-        }
-        return out;
-    }
-
-    @Override
-    public InputStream reopenImageInputStream(InputStream input) {
-        InputStream out = null;
-        if (hasItemImageDownloaded()) {
-            out = image.reopenImageInputStream(input);
-        } else if (hasMedia()) {
-            out = media.reopenImageInputStream(input);
-        } else if (feed.getImage() != null) {
-            out = feed.getImage().reopenImageInputStream(input);
-        }
-        return out;
-    }
-
-    @Override
-    public String getImageLoaderCacheKey() {
-        String out = null;
-        if (hasItemImageDownloaded()) {
-            out = image.getImageLoaderCacheKey();
-        } else if (hasMedia()) {
-            out = media.getImageLoaderCacheKey();
-        } else if (feed.getImage() != null) {
-            out = feed.getImage().getImageLoaderCacheKey();
-        }
-        return out;
     }
 
     public long getFeedId() {

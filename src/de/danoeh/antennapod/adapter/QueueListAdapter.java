@@ -6,7 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -22,12 +22,15 @@ public class QueueListAdapter extends BaseAdapter {
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
 
+    private final int imageSize;
+
     public QueueListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
         this.context = context;
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
+        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_queue_item);
 
     }
 
@@ -92,13 +95,11 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
+        PicassoProvider.getMediaMetadataPicassoInstance(context)
+                .load(item.getImageUri())
+                .resize(imageSize, imageSize)
+                .into(holder.imageView);
 
-        ImageLoader.getInstance().loadThumbnailBitmap(
-                item,
-                holder.imageView,
-                (int) convertView.getResources().getDimension(
-                        R.dimen.thumbnail_length)
-        );
         return convertView;
     }
 

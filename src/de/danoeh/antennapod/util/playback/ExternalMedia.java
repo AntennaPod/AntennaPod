@@ -3,12 +3,14 @@ package de.danoeh.antennapod.util.playback;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
 import android.media.MediaMetadataRetriever;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.util.ChapterUtils;
 
+import java.io.File;
 import java.io.InputStream;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -224,22 +226,12 @@ public class ExternalMedia implements Playable {
 		}
 	};
 
-	@Override
-	public InputStream openImageInputStream() {
-		return new Playable.DefaultPlayableImageLoader(this)
-				.openImageInputStream();
-	}
-
-	@Override
-	public String getImageLoaderCacheKey() {
-		return new Playable.DefaultPlayableImageLoader(this)
-				.getImageLoaderCacheKey();
-	}
-
-	@Override
-	public InputStream reopenImageInputStream(InputStream input) {
-		return new Playable.DefaultPlayableImageLoader(this)
-				.reopenImageInputStream(input);
-	}
-
+    @Override
+    public Uri getImageUri() {
+        if (localFileAvailable()) {
+            return new Uri.Builder().scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl()).build();
+        } else {
+            return null;
+        }
+    }
 }

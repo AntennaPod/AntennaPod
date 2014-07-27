@@ -6,9 +6,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseExpandableListAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -19,276 +24,282 @@ import de.danoeh.antennapod.util.Converter;
  * structure of this list is: [header] [queueItems] [header] [unreadItems].
  */
 public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
-	private static final String TAG = "ExternalEpisodesListAdapter";
+    private static final String TAG = "ExternalEpisodesListAdapter";
 
-	public static final int GROUP_POS_QUEUE = 0;
-	public static final int GROUP_POS_UNREAD = 1;
+    public static final int GROUP_POS_QUEUE = 0;
+    public static final int GROUP_POS_UNREAD = 1;
 
-	private Context context;
+    private Context context;
     private ItemAccess itemAccess;
 
-	private ActionButtonCallback feedItemActionCallback;
-	private OnGroupActionClicked groupActionCallback;
+    private ActionButtonCallback feedItemActionCallback;
+    private OnGroupActionClicked groupActionCallback;
 
-	public ExternalEpisodesListAdapter(Context context,
-			ActionButtonCallback callback,
-			OnGroupActionClicked groupActionCallback,
-            ItemAccess itemAccess) {
-		super();
-		this.context = context;
+    private final int imageSize;
+
+    public ExternalEpisodesListAdapter(Context context,
+                                       ActionButtonCallback callback,
+                                       OnGroupActionClicked groupActionCallback,
+                                       ItemAccess itemAccess) {
+        super();
+        this.context = context;
         this.itemAccess = itemAccess;
-		this.feedItemActionCallback = callback;
-		this.groupActionCallback = groupActionCallback;
-	}
+        this.feedItemActionCallback = callback;
+        this.groupActionCallback = groupActionCallback;
+        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length);
+    }
 
-	@Override
-	public boolean areAllItemsEnabled() {
-		return true;
-	}
+    @Override
+    public boolean areAllItemsEnabled() {
+        return true;
+    }
 
-	@Override
-	public FeedItem getChild(int groupPosition, int childPosition) {
-		if (groupPosition == GROUP_POS_QUEUE) {
-			return itemAccess.getQueueItemAt(childPosition);
-		} else if (groupPosition == GROUP_POS_UNREAD) {
+    @Override
+    public FeedItem getChild(int groupPosition, int childPosition) {
+        if (groupPosition == GROUP_POS_QUEUE) {
+            return itemAccess.getQueueItemAt(childPosition);
+        } else if (groupPosition == GROUP_POS_UNREAD) {
             return itemAccess.getUnreadItemAt(childPosition);
-   		}
-		return null;
-	}
+        }
+        return null;
+    }
 
-	@Override
-	public long getChildId(int groupPosition, int childPosition) {
-		return childPosition;
-	}
+    @Override
+    public long getChildId(int groupPosition, int childPosition) {
+        return childPosition;
+    }
 
-	@Override
-	public View getChildView(int groupPosition, final int childPosition,
-			boolean isLastChild, View convertView, ViewGroup parent) {
-		Holder holder;
-		final FeedItem item = getChild(groupPosition, childPosition);
+    @Override
+    public View getChildView(int groupPosition, final int childPosition,
+                             boolean isLastChild, View convertView, ViewGroup parent) {
+        Holder holder;
+        final FeedItem item = getChild(groupPosition, childPosition);
 
-		if (convertView == null) {
-			holder = new Holder();
-			LayoutInflater inflater = (LayoutInflater) context
-					.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-			convertView = inflater.inflate(R.layout.external_itemlist_item,
-					parent, false);
-			holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-			holder.feedTitle = (TextView) convertView
-					.findViewById(R.id.txtvFeedname);
-			holder.lenSize = (TextView) convertView
-					.findViewById(R.id.txtvLenSize);
-			holder.downloadStatus = (ImageView) convertView
-					.findViewById(R.id.imgvDownloadStatus);
-			holder.feedImage = (ImageView) convertView
-					.findViewById(R.id.imgvFeedimage);
-			holder.butAction = (ImageButton) convertView
-					.findViewById(R.id.butAction);
-			holder.statusPlaying = (View) convertView
-					.findViewById(R.id.statusPlaying);
-			holder.episodeProgress = (ProgressBar) convertView
-					.findViewById(R.id.pbar_episode_progress);
-			convertView.setTag(holder);
-		} else {
-			holder = (Holder) convertView.getTag();
-		}
+        if (convertView == null) {
+            holder = new Holder();
+            LayoutInflater inflater = (LayoutInflater) context
+                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            convertView = inflater.inflate(R.layout.external_itemlist_item,
+                    parent, false);
+            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.feedTitle = (TextView) convertView
+                    .findViewById(R.id.txtvFeedname);
+            holder.lenSize = (TextView) convertView
+                    .findViewById(R.id.txtvLenSize);
+            holder.downloadStatus = (ImageView) convertView
+                    .findViewById(R.id.imgvDownloadStatus);
+            holder.feedImage = (ImageView) convertView
+                    .findViewById(R.id.imgvFeedimage);
+            holder.butAction = (ImageButton) convertView
+                    .findViewById(R.id.butAction);
+            holder.statusPlaying = (View) convertView
+                    .findViewById(R.id.statusPlaying);
+            holder.episodeProgress = (ProgressBar) convertView
+                    .findViewById(R.id.pbar_episode_progress);
+            convertView.setTag(holder);
+        } else {
+            holder = (Holder) convertView.getTag();
+        }
 
-		holder.title.setText(item.getTitle());
-		holder.feedTitle.setText(item.getFeed().getTitle());
-		FeedItem.State state = item.getState();
+        holder.title.setText(item.getTitle());
+        holder.feedTitle.setText(item.getFeed().getTitle());
+        FeedItem.State state = item.getState();
 
-		if (groupPosition == GROUP_POS_QUEUE) {
-			switch (state) {
-			case PLAYING:
-				holder.statusPlaying.setVisibility(View.VISIBLE);
-				holder.episodeProgress.setVisibility(View.VISIBLE);
-				break;
-			case IN_PROGRESS:
-				holder.statusPlaying.setVisibility(View.GONE);
-				holder.episodeProgress.setVisibility(View.VISIBLE);
-				break;
-			case NEW:
-				holder.statusPlaying.setVisibility(View.GONE);
-				holder.episodeProgress.setVisibility(View.GONE);
-				break;
-			default:
-				holder.statusPlaying.setVisibility(View.GONE);
-				holder.episodeProgress.setVisibility(View.GONE);
-				break;
-			}
-		} else {
-			holder.statusPlaying.setVisibility(View.GONE);
-			holder.episodeProgress.setVisibility(View.GONE);
-		}
+        if (groupPosition == GROUP_POS_QUEUE) {
+            switch (state) {
+                case PLAYING:
+                    holder.statusPlaying.setVisibility(View.VISIBLE);
+                    holder.episodeProgress.setVisibility(View.VISIBLE);
+                    break;
+                case IN_PROGRESS:
+                    holder.statusPlaying.setVisibility(View.GONE);
+                    holder.episodeProgress.setVisibility(View.VISIBLE);
+                    break;
+                case NEW:
+                    holder.statusPlaying.setVisibility(View.GONE);
+                    holder.episodeProgress.setVisibility(View.GONE);
+                    break;
+                default:
+                    holder.statusPlaying.setVisibility(View.GONE);
+                    holder.episodeProgress.setVisibility(View.GONE);
+                    break;
+            }
+        } else {
+            holder.statusPlaying.setVisibility(View.GONE);
+            holder.episodeProgress.setVisibility(View.GONE);
+        }
 
-		FeedMedia media = item.getMedia();
-		if (media != null) {
+        FeedMedia media = item.getMedia();
+        if (media != null) {
 
-			if (state == FeedItem.State.PLAYING
-					|| state == FeedItem.State.IN_PROGRESS) {
-				if (media.getDuration() > 0) {
-					holder.episodeProgress.setProgress((int) (((double) media
-							.getPosition()) / media.getDuration() * 100));
-					holder.lenSize.setText(Converter
-							.getDurationStringLong(media.getDuration()
-									- media.getPosition()));
-				}
-			} else if (!media.isDownloaded()) {
-				holder.lenSize.setText(context.getString(R.string.size_prefix)
-						+ Converter.byteToString(media.getSize()));
-			} else {
-				holder.lenSize.setText(context
-						.getString(R.string.length_prefix)
-						+ Converter.getDurationStringLong(media.getDuration()));
-			}
+            if (state == FeedItem.State.PLAYING
+                    || state == FeedItem.State.IN_PROGRESS) {
+                if (media.getDuration() > 0) {
+                    holder.episodeProgress.setProgress((int) (((double) media
+                            .getPosition()) / media.getDuration() * 100));
+                    holder.lenSize.setText(Converter
+                            .getDurationStringLong(media.getDuration()
+                                    - media.getPosition()));
+                }
+            } else if (!media.isDownloaded()) {
+                holder.lenSize.setText(context.getString(R.string.size_prefix)
+                        + Converter.byteToString(media.getSize()));
+            } else {
+                holder.lenSize.setText(context
+                        .getString(R.string.length_prefix)
+                        + Converter.getDurationStringLong(media.getDuration()));
+            }
 
-			TypedArray drawables = context.obtainStyledAttributes(new int[] {
-					R.attr.av_download, R.attr.navigation_refresh });
-            final int[] labels = new int[] {R.string.status_downloaded_label, R.string.downloading_label};
-			holder.lenSize.setVisibility(View.VISIBLE);
-			if (!media.isDownloaded()) {
-				if (DownloadRequester.getInstance().isDownloadingFile(media)) {
-					holder.downloadStatus.setVisibility(View.VISIBLE);
-					holder.downloadStatus.setImageDrawable(drawables
-							.getDrawable(1));
+            TypedArray drawables = context.obtainStyledAttributes(new int[]{
+                    R.attr.av_download, R.attr.navigation_refresh});
+            final int[] labels = new int[]{R.string.status_downloaded_label, R.string.downloading_label};
+            holder.lenSize.setVisibility(View.VISIBLE);
+            if (!media.isDownloaded()) {
+                if (DownloadRequester.getInstance().isDownloadingFile(media)) {
+                    holder.downloadStatus.setVisibility(View.VISIBLE);
+                    holder.downloadStatus.setImageDrawable(drawables
+                            .getDrawable(1));
                     holder.downloadStatus.setContentDescription(context.getString(labels[1]));
-				} else {
-					holder.downloadStatus.setVisibility(View.INVISIBLE);
-				}
-			} else {
-				holder.downloadStatus.setVisibility(View.VISIBLE);
-				holder.downloadStatus
-						.setImageDrawable(drawables.getDrawable(0));
+                } else {
+                    holder.downloadStatus.setVisibility(View.INVISIBLE);
+                }
+            } else {
+                holder.downloadStatus.setVisibility(View.VISIBLE);
+                holder.downloadStatus
+                        .setImageDrawable(drawables.getDrawable(0));
                 holder.downloadStatus.setContentDescription(context.getString(labels[0]));
-			}
-		} else {
-			holder.downloadStatus.setVisibility(View.INVISIBLE);
-			holder.lenSize.setVisibility(View.INVISIBLE);
-		}
+            }
+        } else {
+            holder.downloadStatus.setVisibility(View.INVISIBLE);
+            holder.lenSize.setVisibility(View.INVISIBLE);
+        }
 
-		ImageLoader.getInstance().loadThumbnailBitmap(
-				item,
-				holder.feedImage,
-				(int) convertView.getResources().getDimension(
-						R.dimen.thumbnail_length));
-		holder.butAction.setFocusable(false);
-		holder.butAction.setOnClickListener(new OnClickListener() {
+        PicassoProvider.getMediaMetadataPicassoInstance(context)
+                .load(item.getImageUri())
+                .resize(imageSize, imageSize)
+                .into(holder.feedImage);
 
-			@Override
-			public void onClick(View v) {
-				feedItemActionCallback.onActionButtonPressed(item);
-			}
-		});
+        holder.butAction.setFocusable(false);
+        holder.butAction.setOnClickListener(new OnClickListener() {
 
-		return convertView;
+            @Override
+            public void onClick(View v) {
+                feedItemActionCallback.onActionButtonPressed(item);
+            }
+        });
 
-	}
+        return convertView;
 
-	static class Holder {
-		TextView title;
-		TextView feedTitle;
-		TextView lenSize;
-		ImageView downloadStatus;
-		ImageView feedImage;
-		ImageButton butAction;
-		View statusPlaying;
-		ProgressBar episodeProgress;
-	}
+    }
 
-	@Override
-	public int getChildrenCount(int groupPosition) {
-		if (groupPosition == GROUP_POS_QUEUE) {
-			return itemAccess.getQueueSize();
-		} else if (groupPosition == GROUP_POS_UNREAD) {
-			return itemAccess.getUnreadItemsSize();
-		}
-		return 0;
-	}
+    static class Holder {
+        TextView title;
+        TextView feedTitle;
+        TextView lenSize;
+        ImageView downloadStatus;
+        ImageView feedImage;
+        ImageButton butAction;
+        View statusPlaying;
+        ProgressBar episodeProgress;
+    }
 
-	@Override
-	public int getGroupCount() {
-		// Hide 'unread items' group if empty
-		if (itemAccess.getUnreadItemsSize() > 0) {
-			return 2;
-		} else {
-			return 1;
-		}
-	}
+    @Override
+    public int getChildrenCount(int groupPosition) {
+        if (groupPosition == GROUP_POS_QUEUE) {
+            return itemAccess.getQueueSize();
+        } else if (groupPosition == GROUP_POS_UNREAD) {
+            return itemAccess.getUnreadItemsSize();
+        }
+        return 0;
+    }
 
-	@Override
-	public long getGroupId(int groupPosition) {
-		return groupPosition;
-	}
+    @Override
+    public int getGroupCount() {
+        // Hide 'unread items' group if empty
+        if (itemAccess.getUnreadItemsSize() > 0) {
+            return 2;
+        } else {
+            return 1;
+        }
+    }
 
-	@Override
-	public View getGroupView(final int groupPosition, boolean isExpanded,
-			View convertView, ViewGroup parent) {
-		LayoutInflater inflater = (LayoutInflater) context
-				.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-		convertView = inflater.inflate(R.layout.feeditemlist_header, parent, false);
-		TextView headerTitle = (TextView) convertView
-				.findViewById(0);
-		ImageButton actionButton = (ImageButton) convertView
-				.findViewById(R.id.butAction);	
-		TextView numItems = (TextView) convertView.findViewById(0);
-		
-		String headerString = null;
-		int childrenCount = 0;
-		
-		if (groupPosition == 0) {
-			headerString = context.getString(R.string.queue_label);
-			childrenCount = getChildrenCount(GROUP_POS_QUEUE);
-		} else {
-			headerString = context.getString(R.string.waiting_list_label);
-			childrenCount = getChildrenCount(GROUP_POS_UNREAD);
-		}
-		headerTitle.setText(headerString);
-		if (childrenCount <= 0) {
-			numItems.setVisibility(View.INVISIBLE);
-		} else {
-			numItems.setVisibility(View.VISIBLE);
-			numItems.setText(Integer.toString(childrenCount));
-		}
-		actionButton.setFocusable(false);
-		actionButton.setOnClickListener(new OnClickListener() {
+    @Override
+    public long getGroupId(int groupPosition) {
+        return groupPosition;
+    }
 
-			@Override
-			public void onClick(View v) {
-				groupActionCallback.onClick(getGroupId(groupPosition));
-			}
-		});
-		return convertView;
-	}
+    @Override
+    public View getGroupView(final int groupPosition, boolean isExpanded,
+                             View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        convertView = inflater.inflate(R.layout.feeditemlist_header, parent, false);
+        TextView headerTitle = (TextView) convertView
+                .findViewById(0);
+        ImageButton actionButton = (ImageButton) convertView
+                .findViewById(R.id.butAction);
+        TextView numItems = (TextView) convertView.findViewById(0);
 
-	@Override
-	public boolean isEmpty() {
-		return itemAccess.getUnreadItemsSize() == 0
-				&& itemAccess.getQueueSize() == 0;
-	}
+        String headerString = null;
+        int childrenCount = 0;
 
-	@Override
-	public Object getGroup(int groupPosition) {
-		return null;
-	}
+        if (groupPosition == 0) {
+            headerString = context.getString(R.string.queue_label);
+            childrenCount = getChildrenCount(GROUP_POS_QUEUE);
+        } else {
+            headerString = context.getString(R.string.waiting_list_label);
+            childrenCount = getChildrenCount(GROUP_POS_UNREAD);
+        }
+        headerTitle.setText(headerString);
+        if (childrenCount <= 0) {
+            numItems.setVisibility(View.INVISIBLE);
+        } else {
+            numItems.setVisibility(View.VISIBLE);
+            numItems.setText(Integer.toString(childrenCount));
+        }
+        actionButton.setFocusable(false);
+        actionButton.setOnClickListener(new OnClickListener() {
 
-	@Override
-	public boolean hasStableIds() {
-		return true;
-	}
+            @Override
+            public void onClick(View v) {
+                groupActionCallback.onClick(getGroupId(groupPosition));
+            }
+        });
+        return convertView;
+    }
 
-	@Override
-	public boolean isChildSelectable(int groupPosition, int childPosition) {
-		return true;
-	}
+    @Override
+    public boolean isEmpty() {
+        return itemAccess.getUnreadItemsSize() == 0
+                && itemAccess.getQueueSize() == 0;
+    }
 
-	public interface OnGroupActionClicked {
-		public void onClick(long groupId);
-	}
+    @Override
+    public Object getGroup(int groupPosition) {
+        return null;
+    }
+
+    @Override
+    public boolean hasStableIds() {
+        return true;
+    }
+
+    @Override
+    public boolean isChildSelectable(int groupPosition, int childPosition) {
+        return true;
+    }
+
+    public interface OnGroupActionClicked {
+        public void onClick(long groupId);
+    }
 
     public static interface ItemAccess {
         public int getQueueSize();
+
         public int getUnreadItemsSize();
+
         public FeedItem getQueueItemAt(int position);
+
         public FeedItem getUnreadItemAt(int position);
     }
 

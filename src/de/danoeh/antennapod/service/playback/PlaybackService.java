@@ -4,7 +4,12 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
@@ -26,11 +31,14 @@ import android.widget.Toast;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.IOException;
+import java.util.List;
+
 import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.VideoplayerActivity;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
@@ -41,13 +49,9 @@ import de.danoeh.antennapod.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.storage.DBTasks;
 import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.util.BitmapDecoder;
 import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.flattr.FlattrThing;
 import de.danoeh.antennapod.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.util.playback.Playable;
-
-import java.util.List;
 
 /**
  * Controls the MediaPlayer that plays a FeedMedia-file
@@ -257,7 +261,8 @@ public class PlaybackService extends Service {
         }
 
         if ((flags & Service.START_FLAG_REDELIVERY) != 0) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
+            if (BuildConfig.DEBUG)
+                Log.d(TAG, "onStartCommand is a redelivered intent, calling stopForeground now.");
             stopForeground(true);
         } else {
 
@@ -678,11 +683,16 @@ public class PlaybackService extends Service {
                     Log.d(TAG, "Starting background work");
                 if (android.os.Build.VERSION.SDK_INT >= 11) {
                     if (info.playable != null) {
-                        int iconSize = getResources().getDimensionPixelSize(
-                                android.R.dimen.notification_large_icon_width);
-                        icon = BitmapDecoder
-                                .decodeBitmapFromWorkerTaskResource(iconSize,
-                                        info.playable);
+                        try {
+                            int iconSize = getResources().getDimensionPixelSize(
+                                    android.R.dimen.notification_large_icon_width);
+                            icon = PicassoProvider.getMediaMetadataPicassoInstance(PlaybackService.this)
+                                    .load(info.playable.getImageUri())
+                                    .resize(iconSize, iconSize)
+                                    .get();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
 
                 }
@@ -766,7 +776,7 @@ public class PlaybackService extends Service {
             if (updatePlayedDuration && playable instanceof FeedMedia) {
                 FeedMedia m = (FeedMedia) playable;
                 FeedItem item = m.getItem();
-                m.setPlayedDuration(m.getPlayedDuration() + ((int)(deltaPlayedDuration * playbackSpeed)));
+                m.setPlayedDuration(m.getPlayedDuration() + ((int) (deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
                 if (isAutoFlattrable(m) &&
                         (m.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
@@ -778,8 +788,9 @@ public class PlaybackService extends Service {
                 }
             }
             playable.saveCurrentPosition(PreferenceManager
-                    .getDefaultSharedPreferences(getApplicationContext()),
-                    position);
+                            .getDefaultSharedPreferences(getApplicationContext()),
+                    position
+            );
         }
     }
 

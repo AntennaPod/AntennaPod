@@ -3,7 +3,6 @@ package de.danoeh.antennapod;
 import android.app.Application;
 import android.content.res.Configuration;
 import android.util.Log;
-import de.danoeh.antennapod.asynctask.ImageLoader;
 import de.danoeh.antennapod.feed.EventDistributor;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.preferences.UserPreferences;
@@ -34,13 +33,6 @@ public class PodcastApp extends Application {
 		EventDistributor.getInstance();
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
-	}
-
-	@Override
-	public void onLowMemory() {
-		super.onLowMemory();
-		Log.w(TAG, "Received onLowOnMemory warning. Cleaning image cache...");
-		ImageLoader.getInstance().wipeImageCache();
 	}
 
 	public static float getLogicalDensity() {

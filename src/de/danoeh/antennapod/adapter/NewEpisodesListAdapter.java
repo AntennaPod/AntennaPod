@@ -5,9 +5,14 @@ import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.storage.DownloadRequester;
@@ -22,6 +27,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
+    private final int imageSize;
 
     public NewEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
@@ -29,6 +35,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
+        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_itemlist);
     }
 
     @Override
@@ -124,13 +131,11 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
+        PicassoProvider.getMediaMetadataPicassoInstance(context)
+                .load(item.getImageUri())
+                .resize(imageSize, imageSize)
+                .into(holder.imageView);
 
-        ImageLoader.getInstance().loadThumbnailBitmap(
-                item,
-                holder.imageView,
-                (int) convertView.getResources().getDimension(
-                        R.dimen.thumbnail_length)
-        );
         return convertView;
     }
 

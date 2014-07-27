@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.feed;
 
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import android.net.Uri;
+
+import de.danoeh.antennapod.asynctask.PicassoImageResource;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -10,8 +13,7 @@ import java.io.InputStream;
 
 
 
-public class FeedImage extends FeedFile implements
-		ImageLoader.ImageWorkerTaskResource {
+public class FeedImage extends FeedFile implements PicassoImageResource {
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
 	protected String title;
@@ -64,30 +66,12 @@ public class FeedImage extends FeedFile implements
 		this.owner = owner;
 	}
 
-	@Override
-	public InputStream openImageInputStream() {
-		if (file_url != null) {
-			File file = new File(file_url);
-			if (file.exists()) {
-				try {
-					return new FileInputStream(file_url);
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		return null;
-	}
-
-	@Override
-	public String getImageLoaderCacheKey() {
-		return file_url;
-	}
-
-	@Override
-	public InputStream reopenImageInputStream(InputStream input) {
-		IOUtils.closeQuietly(input);
-		return openImageInputStream();
-	}
-
+    @Override
+    public Uri getImageUri() {
+        if (file_url != null && downloaded) {
+            return Uri.fromFile(new File(file_url));
+        } else {
+            return null;
+        }
+    }
 }

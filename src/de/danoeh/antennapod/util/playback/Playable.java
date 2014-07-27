@@ -2,27 +2,23 @@ package de.danoeh.antennapod.util.playback;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.media.MediaMetadataRetriever;
 import android.os.Parcelable;
 import android.util.Log;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+
+import java.util.List;
+
+import de.danoeh.antennapod.asynctask.PicassoImageResource;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.FeedMedia;
 import de.danoeh.antennapod.feed.MediaType;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.util.ShownotesProvider;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.Validate;
-
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-import java.util.List;
 
 /**
  * Interface for objects that can be played by the PlaybackService.
  */
 public interface Playable extends Parcelable,
-        ImageLoader.ImageWorkerTaskResource, ShownotesProvider {
+        ShownotesProvider, PicassoImageResource {
 
     /**
      * Save information about the playable in a preference so that it can be
@@ -207,70 +203,5 @@ public interface Playable extends Parcelable,
             super(throwable);
         }
 
-    }
-
-    /**
-     * Uses local file as image resource if it is available.
-     */
-    public static class DefaultPlayableImageLoader implements
-            ImageLoader.ImageWorkerTaskResource {
-        private Playable playable;
-
-        public DefaultPlayableImageLoader(Playable playable) {
-            Validate.notNull(playable);
-
-            this.playable = playable;
-        }
-
-        @Override
-        public InputStream openImageInputStream() {
-            if (playable.localFileAvailable()
-                    && playable.getLocalMediaUrl() != null) {
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                try {
-                    mmr.setDataSource(playable.getLocalMediaUrl());
-                } catch (IllegalArgumentException e) {
-                    e.printStackTrace();
-                    return null;
-                }
-                byte[] imgData = mmr.getEmbeddedPicture();
-                if (imgData != null) {
-                    return new PublicByteArrayInputStream(imgData);
-
-                }
-            }
-            return null;
-        }
-
-        @Override
-        public String getImageLoaderCacheKey() {
-            return playable.getLocalMediaUrl();
-        }
-
-        @Override
-        public InputStream reopenImageInputStream(InputStream input) {
-            if (input instanceof PublicByteArrayInputStream) {
-                IOUtils.closeQuietly(input);
-                byte[] imgData = ((PublicByteArrayInputStream) input)
-                        .getByteArray();
-                if (imgData != null) {
-                    ByteArrayInputStream out = new ByteArrayInputStream(imgData);
-                    return out;
-                }
-
-            }
-            return null;
-        }
-
-        private static class PublicByteArrayInputStream extends
-                ByteArrayInputStream {
-            public PublicByteArrayInputStream(byte[] buf) {
-                super(buf);
-            }
-
-            public byte[] getByteArray() {
-                return buf;
-            }
-        }
     }
 }

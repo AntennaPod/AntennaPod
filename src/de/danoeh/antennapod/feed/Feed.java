@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.feed;
 
 import android.content.Context;
+import android.net.Uri;
+
+import de.danoeh.antennapod.asynctask.PicassoImageResource;
 import de.danoeh.antennapod.preferences.UserPreferences;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.EpisodeFilter;
@@ -16,7 +19,7 @@ import java.util.List;
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements FlattrThing {
+public class Feed extends FeedFile implements FlattrThing, PicassoImageResource {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_RSS091 = "rss";
@@ -428,6 +431,15 @@ public class Feed extends FeedFile implements FlattrThing {
         super.setId(id);
         if (preferences != null) {
             preferences.setFeedID(id);
+        }
+    }
+
+    @Override
+    public Uri getImageUri() {
+        if (image != null) {
+            return image.getImageUri();
+        } else {
+            return null;
         }
     }
 }
