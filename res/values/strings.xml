@@ -90,6 +90,7 @@
     <string name="download_label">Download</string>
     <string name="play_label">Play</string>
     <string name="pause_label">Pause</string>
+    <string name="stop_label">Stop</string>
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
     <string name="remove_episode_lable">Remove episode</string>
