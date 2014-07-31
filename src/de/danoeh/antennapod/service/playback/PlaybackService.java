@@ -402,7 +402,13 @@ public class PlaybackService extends Service {
                     taskManager.cancelPositionSaver();
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
-//                    stopForeground(true);    // do not remove notification on pause
+                    if (UserPreferences.isPersistNotify()) {
+                      // do not remove notification on pause
+                    }
+                    else {
+                      // remove notifcation on pause
+                      stopForeground(true);    
+                    }
                     break;
 
                 case STOPPED:
@@ -744,13 +750,14 @@ public class PlaybackService extends Service {
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
                                 .setSmallIcon(R.drawable.ic_stat_antenna)
-                                .addAction(android.R.drawable.ic_media_pause, //pause action
-                                        getString(R.string.pause_label),
-                                        pauseButtonPendingIntent)
+                                .setPriority(UserPreferences.getNotifyPriority()) // set notification priority
                                 .addAction(android.R.drawable.ic_media_play, //play action
                                         getString(R.string.play_label),
                                         playButtonPendingIntent)
-                                .addAction(android.R.drawable.ic_media_stop, // stop action
+                                .addAction(android.R.drawable.ic_media_pause, //pause action
+                                        getString(R.string.pause_label),
+                                        pauseButtonPendingIntent)
+                                .addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
                                         getString(R.string.stop_label),
                                         stopButtonPendingIntent);
                         notification = notificationBuilder.build();
