@@ -6,12 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v4.view.WindowCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -50,10 +50,11 @@ public class VideoplayerActivity extends MediaplayerActivity {
         setTheme(R.style.Theme_AntennaPod_Dark);
     }
 
+    @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (Build.VERSION.SDK_INT >= 11) {
-            supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
+            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
         }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
