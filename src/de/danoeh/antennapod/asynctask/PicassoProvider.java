@@ -127,7 +127,11 @@ public class PicassoProvider {
                     mmr.setDataSource(uri.getPath());
                     byte[] data = mmr.getEmbeddedPicture();
                     mmr.release();
-                    return new Response(new ByteArrayInputStream(data), true, data.length);
+                    if (data != null) {
+                        return new Response(new ByteArrayInputStream(data), true, data.length);
+                    } else {
+                        return null;
+                    }
                 }
             }
 
