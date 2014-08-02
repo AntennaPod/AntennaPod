@@ -336,17 +336,7 @@ public class PlaybackServiceTaskManager {
             isWaiting = true;
             soonexpire = false;
 
-            // adding the shake listener
-            mShaker = new ShakeListener(context);
-            mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
-                public void onShake() {
-                    if (soonexpire) {
-                        Log.d(TAG, "Shake shake shake !!!!!!!!");
-                        callback.onSleepTimerReset();
-                        soonexpire = false;
-                    }
-                }
-            });
+
         }
 
         @Override
@@ -364,16 +354,31 @@ public class PlaybackServiceTaskManager {
                         Vibrator v = (Vibrator) context.getSystemService(Context.VIBRATOR_SERVICE);
                         v.vibrate(1000); // vibrate 1s to warn the user
                         soonexpire = true;
+
+                        // adding the shake listener event
+                        mShaker = new ShakeListener(context);
+                        mShaker.setOnShakeListener(new ShakeListener.OnShakeListener () {
+                            public void onShake() {
+                                if (soonexpire) {
+                                    Log.d(TAG, "Shake shake shake !!!!!!!!");
+                                    callback.onSleepTimerReset();
+                                    soonexpire = false;
+                                    mShaker.pause();
+                                    mShaker = null;
+                                }
+                            }
+                        });
                     }
 
-                    if (waitingTime <= 0) {
+                    if (waitingTime <= 0) { // Sleep timer ran out
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "Waiting completed");
+                        mShaker.pause(); // remove shake listener
+                        mShaker = null;
                         postExecute();
                         if (!Thread.currentThread().isInterrupted()) {
                             callback.onSleepTimerExpired();
                         }
-
                     }
                 } catch (InterruptedException e) {
                     Log.d(TAG, "Thread was interrupted while waiting");
