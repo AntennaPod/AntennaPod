@@ -9,6 +9,7 @@ import android.content.res.Resources.Theme;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
+import android.os.Build;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -59,6 +60,9 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     private static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
 
+    private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+
     private CheckBoxPreference[] selectedNetworks;
 
     @SuppressLint("NewApi")
@@ -76,6 +80,23 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         }
 
         addPreferencesFromResource(R.xml.preferences);
+
+        if (android.os.Build.VERSION.SDK_INT < Build.VERSION_CODES.JELLY_BEAN) {
+          // disable expanded notification option on unsupported android versions
+          findPreference(PREF_EXPANDED_NOTIFICATION).setEnabled(false);
+          findPreference(PREF_EXPANDED_NOTIFICATION).setOnPreferenceClickListener(
+            new OnPreferenceClickListener() {
+
+              @Override
+              public boolean onPreferenceClick(Preference preference) {
+                Toast toast = Toast.makeText(PreferenceActivity.this, R.string.pref_expand_notify_unsupport_toast, Toast.LENGTH_SHORT);
+                toast.show();
+                return true;
+              }
+            }
+          );
+        }
+
         findPreference(PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
                 new OnPreferenceClickListener() {
 
@@ -271,8 +292,6 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
-
-
     }
 
     private void updateGpodnetPreferenceScreen() {
