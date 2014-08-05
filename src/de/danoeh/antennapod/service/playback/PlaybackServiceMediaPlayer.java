@@ -4,6 +4,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RemoteControlClient;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -684,6 +685,7 @@ public class PlaybackServiceMediaPlayer {
             mediaPlayer = new AudioPlayer(context);
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         return setMediaPlayerListeners(mediaPlayer);
     }
 
