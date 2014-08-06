@@ -43,8 +43,8 @@ public class FlattrUtils {
 	private static volatile AccessToken cachedToken;
 
 	private static AndroidAuthenticator createAuthenticator() {
-		return new AndroidAuthenticator(HOST_NAME, FlattrConfig.APP_KEY,
-				FlattrConfig.APP_SECRET);
+		return new AndroidAuthenticator(HOST_NAME, BuildConfig.FLATTR_APP_KEY,
+				BuildConfig.FLATTR_APP_SECRET);
 	}
 
 	public static void startAuthProcess(Context context) throws FlattrException {
