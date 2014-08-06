@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.util.playback;
 
+import android.content.Context;
 import android.view.SurfaceHolder;
 
 import java.io.IOException;
@@ -63,4 +64,6 @@ public interface IPlayer {
 	void stop();
 
     public void setVideoScalingMode(int mode);
+
+    public void setWakeMode(Context context, int mode);
 }

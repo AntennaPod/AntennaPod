@@ -4,6 +4,8 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RemoteControlClient;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -63,6 +65,11 @@ public class PlaybackServiceMediaPlayer {
     private final Context context;
 
     private final ThreadPoolExecutor executor;
+
+    /**
+     * A wifi-lock that is acquired if the media file is being streamed.
+     */
+    private WifiManager.WifiLock wifiLock;
 
     public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
         Validate.notNull(context);
@@ -228,7 +235,7 @@ public class PlaybackServiceMediaPlayer {
                     audioFocusChangeListener, AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN);
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-
+                acquireWifiLockIfNecessary();
                 setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
                 mediaPlayer.start();
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -274,7 +281,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-
+                releaseWifiLockIfNecessary();
                 if (playerStatus == PlayerStatus.PLAYING) {
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "Pausing playback.");
@@ -375,7 +382,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-
+                releaseWifiLockIfNecessary();
                 if (media != null) {
                     playMediaObject(media, true, stream, startWhenPrepared.get(), false);
                 } else if (mediaPlayer != null) {
@@ -592,6 +599,7 @@ public class PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+        releaseWifiLockIfNecessary();
     }
 
     public void setVideoSurface(final SurfaceHolder surface) {
@@ -684,6 +692,7 @@ public class PlaybackServiceMediaPlayer {
             mediaPlayer = new AudioPlayer(context);
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         return setMediaPlayerListeners(mediaPlayer);
     }
 
@@ -751,6 +760,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
+                releaseWifiLockIfNecessary();
 
                 if (playerStatus != PlayerStatus.INDETERMINATE) {
                     setPlayerStatus(PlayerStatus.INDETERMINATE, media);
@@ -778,6 +788,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
+                releaseWifiLockIfNecessary();
 
                 if (playerStatus == PlayerStatus.INDETERMINATE) {
                     setPlayerStatus(PlayerStatus.STOPPED, null);
@@ -789,6 +800,23 @@ public class PlaybackServiceMediaPlayer {
 
             }
         });
+    }
+
+    private synchronized void acquireWifiLockIfNecessary() {
+        if (stream) {
+            if (wifiLock == null) {
+                wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+                        .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+                wifiLock.setReferenceCounted(false);
+            }
+            wifiLock.acquire();
+        }
+    }
+
+    private synchronized void releaseWifiLockIfNecessary() {
+        if (wifiLock != null && wifiLock.isHeld()) {
+            wifiLock.release();
+        }
     }
 
     /**
