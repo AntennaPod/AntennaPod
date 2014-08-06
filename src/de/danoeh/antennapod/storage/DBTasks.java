@@ -872,7 +872,7 @@ public final class DBTasks {
             item.getFlattrStatus().setFlattrQueue();
             DBWriter.setFlattredStatus(context, item, true);
         } else {
-            FlattrUtils.showNoTokenDialog(context, item.getPaymentLink());
+            FlattrUtils.showNoTokenDialogOrRedirect(context, item.getPaymentLink());
         }
     }
 
@@ -888,7 +888,7 @@ public final class DBTasks {
             feed.getFlattrStatus().setFlattrQueue();
             DBWriter.setFlattredStatus(context, feed, true);
         } else {
-            FlattrUtils.showNoTokenDialog(context, feed.getPaymentLink());
+            FlattrUtils.showNoTokenDialogOrRedirect(context, feed.getPaymentLink());
         }
     }
 

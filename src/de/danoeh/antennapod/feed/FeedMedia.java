@@ -2,20 +2,23 @@ package de.danoeh.antennapod.feed;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
+import java.util.Date;
+import java.util.List;
+import java.util.concurrent.Callable;
+
 import de.danoeh.antennapod.PodcastApp;
 import de.danoeh.antennapod.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.storage.DBReader;
 import de.danoeh.antennapod.storage.DBWriter;
 import de.danoeh.antennapod.util.ChapterUtils;
 import de.danoeh.antennapod.util.playback.Playable;
-
-import java.io.FileInputStream;
-import java.io.InputStream;
-import java.util.Date;
-import java.util.List;
-import java.util.concurrent.Callable;
 
 public class FeedMedia extends FeedFile implements Playable {
     private static final String TAG = "FeedMedia";
@@ -382,52 +385,13 @@ public class FeedMedia extends FeedFile implements Playable {
     };
 
     @Override
-    public InputStream openImageInputStream() {
-        InputStream out;
-        if (item.hasItemImageDownloaded()) {
-            out = item.openImageInputStream();
+    public Uri getImageUri() {
+        if (localFileAvailable()) {
+            return new Uri.Builder().scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl()).build();
+        } else if (item != null && item.getFeed() != null) {
+            return item.getFeed().getImageUri();
         } else {
-            out = new Playable.DefaultPlayableImageLoader(this)
-                    .openImageInputStream();
-        }
-        if (out == null) {
-            if (item.getFeed().getImage() != null) {
-                return item.getFeed().getImage().openImageInputStream();
-            }
-        }
-        return out;
-    }
-
-    @Override
-    public String getImageLoaderCacheKey() {
-        String out;
-        if (item == null) {
             return null;
-        } else if (item.hasItemImageDownloaded()) {
-            out = item.getImageLoaderCacheKey();
-        } else {
-            out = new Playable.DefaultPlayableImageLoader(this)
-                    .getImageLoaderCacheKey();
-        }
-        if (out == null) {
-            if (item.getFeed().getImage() != null) {
-                return item.getFeed().getImage().getImageLoaderCacheKey();
-            }
-        }
-        return out;
-    }
-
-    @Override
-    public InputStream reopenImageInputStream(InputStream input) {
-        if (input instanceof FileInputStream) {
-            if (item.hasItemImageDownloaded()) {
-                return item.getImage().reopenImageInputStream(input);
-            } else {
-                return item.getFeed().getImage().reopenImageInputStream(input);
-            }
-        } else {
-            return new Playable.DefaultPlayableImageLoader(this)
-                    .reopenImageInputStream(input);
         }
     }
 }

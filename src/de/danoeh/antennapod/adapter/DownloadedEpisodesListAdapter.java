@@ -9,8 +9,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.feed.FeedItem;
 import de.danoeh.antennapod.util.Converter;
 
@@ -22,10 +23,13 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
     private final Context context;
     private final ItemAccess itemAccess;
 
+    private final int imageSize;
+
     public DownloadedEpisodesListAdapter(Context context, ItemAccess itemAccess) {
         super();
         this.context = context;
         this.itemAccess = itemAccess;
+        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_downloaded_item);
     }
 
     @Override
@@ -83,12 +87,11 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
 
-        ImageLoader.getInstance().loadThumbnailBitmap(
-                item,
-                holder.imageView,
-                (int) convertView.getResources().getDimension(
-                        R.dimen.thumbnail_length)
-        );
+        PicassoProvider.getMediaMetadataPicassoInstance(context)
+                .load(item.getImageUri())
+                .resize(imageSize, imageSize)
+                .into(holder.imageView);
+
         return convertView;
     }
 

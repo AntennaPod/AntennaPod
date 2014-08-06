@@ -31,6 +31,7 @@
   <string name="copy_url_label">Copia l\'enllaç</string>
   <string name="share_url_label">Comparteix l\'enllaç</string>
   <string name="copied_url_msg">S\'ha copiat l\'enllaç al porta-retalls.</string>
+  <string name="go_to_position_label">Vés a aquesta posició</string>
   <!--Playback history-->
   <string name="clear_history_label">Esborra l\'historial</string>
   <!--Other-->
@@ -59,6 +60,7 @@
   <string name="auto_download_label">Inclou a baixades automàtiques</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Enllaç del canal</string>
+  <string name="etxtFeedurlHint">URL, canal o lloc web</string>
   <string name="txtvfeedurl_label">Afegeix podcast amb l\'URL</string>
   <string name="podcastdirectories_label">Cerca podcast al directori</string>
   <string name="podcastdirectories_descr">Podeu cercar nous podcasts al directori de gpodder.net mitjançant el seu nom, categoria o popularitat.</string>
@@ -133,6 +135,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">S\'està carregant</string>
   <string name="playbackservice_notification_title">Podcast en reproducció</string>
+  <string name="unknown_media_key">AntennaPod - Control desconegut: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Buida la cua</string>
   <string name="undo">Desfés</string>
@@ -146,6 +149,7 @@
   <string name="return_home_label">Torna a l\'inici</string>
   <string name="flattr_auth_success">L\'autenticació ha acabat correctament. Ja podeu compartir amb Flattr des de l\'aplicació.</string>
   <string name="no_flattr_token_title">No s\'ha trobat cap testimoni Flattr</string>
+  <string name="no_flattr_token_notification_msg">Sembla que el compte flattr no està vinculat amb AntennaPod. Toqueu aquí per autenticar-vos.</string>
   <string name="no_flattr_token_msg">Sembla que el vostre compte de Flattr no està vinculat amb AntennaPod. Podeu connectar el vostre compte Flattr amb AntennaPod per a compartir continguts des de l\'aplicació, o bé accediu a la plana web de Flattr i compartiu els continguts des d\'allà.</string>
   <string name="authenticate_now_label">Autentica</string>
   <string name="action_forbidden_title">L\'acció no és permesa</string>
@@ -199,6 +203,7 @@
   <string name="pref_revokeAccess_title">Revoca l\'accés</string>
   <string name="pref_revokeAccess_sum">Revoqueu el permís d\'accés d\'aquesta aplicació al vostre compte Flattr.</string>
   <string name="pref_auto_flattr_title">Flattr automàtic</string>
+  <string name="pref_auto_flattr_sum">Configura la compartició automàtica per Flattr</string>
   <string name="user_interface_label">Interfície d\'usuari</string>
   <string name="pref_set_theme_title">Selecció de tema</string>
   <string name="pref_set_theme_sum">Canvieu l\'aparença d\'AntennaPod.</string>
@@ -221,9 +226,15 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
+  <string name="pref_seek_delta_title">Salta a l\'instant</string>
+  <string name="pref_seek_delta_sum">Salta aquesta quantitat de segons en rebobinar o en avançar ràpidament</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
+  <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
+  <string name="auto_flattr_ater_beginning">Comparteix per Flattr l\'episodi en haver-ne iniciat la reproducció</string>
+  <string name="auto_flattr_ater_end">Comparteix per Flattr l\'episodi en acabar-se\'n la reproducció</string>
   <!--Search-->
   <string name="search_hint">Cerca canals o episodis</string>
   <string name="found_in_shownotes_label">Trobat a notes del programa</string>

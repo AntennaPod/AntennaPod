@@ -4,11 +4,22 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.media.AudioManager;
 import android.media.RemoteControlClient;
+import android.net.wifi.WifiManager;
+import android.os.PowerManager;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
 
 import org.apache.commons.lang3.Validate;
+
+import java.io.IOException;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.locks.ReentrantLock;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
@@ -19,14 +30,6 @@ import de.danoeh.antennapod.util.playback.AudioPlayer;
 import de.danoeh.antennapod.util.playback.IPlayer;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.playback.VideoPlayer;
-
-import java.io.IOException;
-import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.RejectedExecutionHandler;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Manages the MediaPlayer object of the PlaybackService.
@@ -62,6 +65,11 @@ public class PlaybackServiceMediaPlayer {
     private final Context context;
 
     private final ThreadPoolExecutor executor;
+
+    /**
+     * A wifi-lock that is acquired if the media file is being streamed.
+     */
+    private WifiManager.WifiLock wifiLock;
 
     public PlaybackServiceMediaPlayer(Context context, PSMPCallback callback) {
         Validate.notNull(context);
@@ -227,7 +235,7 @@ public class PlaybackServiceMediaPlayer {
                     audioFocusChangeListener, AudioManager.STREAM_MUSIC,
                     AudioManager.AUDIOFOCUS_GAIN);
             if (focusGained == AudioManager.AUDIOFOCUS_REQUEST_GRANTED) {
-
+                acquireWifiLockIfNecessary();
                 setSpeed(Float.parseFloat(UserPreferences.getPlaybackSpeed()));
                 mediaPlayer.start();
                 if (playerStatus == PlayerStatus.PREPARED && media.getPosition() > 0) {
@@ -273,7 +281,7 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-
+                releaseWifiLockIfNecessary();
                 if (playerStatus == PlayerStatus.PLAYING) {
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "Pausing playback.");
@@ -374,13 +382,14 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
-
+                releaseWifiLockIfNecessary();
                 if (media != null) {
                     playMediaObject(media, true, stream, startWhenPrepared.get(), false);
                 } else if (mediaPlayer != null) {
                     mediaPlayer.reset();
                 } else {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Call to reinit was ignored: media and mediaPlayer were null");
                 }
                 playerLock.unlock();
             }
@@ -590,6 +599,7 @@ public class PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+        releaseWifiLockIfNecessary();
     }
 
     public void setVideoSurface(final SurfaceHolder surface) {
@@ -682,6 +692,7 @@ public class PlaybackServiceMediaPlayer {
             mediaPlayer = new AudioPlayer(context);
         }
         mediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaPlayer.setWakeMode(context, PowerManager.PARTIAL_WAKE_LOCK);
         return setMediaPlayerListeners(mediaPlayer);
     }
 
@@ -694,59 +705,62 @@ public class PlaybackServiceMediaPlayer {
                 public void run() {
                     playerLock.lock();
 
-                    switch (focusChange) {
-                        case AudioManager.AUDIOFOCUS_LOSS:
-                            if (BuildConfig.DEBUG)
-                                Log.d(TAG, "Lost audio focus");
-                            pause(true, false);
-                            callback.shouldStop();
-                            break;
-                        case AudioManager.AUDIOFOCUS_GAIN:
-                            if (BuildConfig.DEBUG)
-                                Log.d(TAG, "Gained audio focus");
-                            if (pausedBecauseOfTransientAudiofocusLoss) // we paused => play now
-                                resume();
-                            else // we ducked => raise audio level back
-                                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                        AudioManager.ADJUST_RAISE, 0);
-                            break;
-                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK:
-                            if (playerStatus == PlayerStatus.PLAYING) {
-                                if (!UserPreferences.shouldPauseForFocusLoss()) {
-                                    if (BuildConfig.DEBUG)
-                                        Log.d(TAG, "Lost audio focus temporarily. Ducking...");
-                                    audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-                                            AudioManager.ADJUST_LOWER, 0);
-                                    pausedBecauseOfTransientAudiofocusLoss = false;
-                                } else {
-                                    if (BuildConfig.DEBUG)
-                                        Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
-                                    pause(false, false);
-                                    pausedBecauseOfTransientAudiofocusLoss = true;
-                                }
-                            }
-                            break;
-                        case AudioManager.AUDIOFOCUS_LOSS_TRANSIENT:
-                            if (playerStatus == PlayerStatus.PLAYING) {
+                    // If there is an incoming call, playback should be paused permanently
+                    TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
+                    final int callState = (tm != null) ? tm.getCallState() : 0;
+                    if (BuildConfig.DEBUG) Log.d(TAG, "Call state: " + callState);
+                    Log.i(TAG, "Call state:" + callState);
+
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS || callState != TelephonyManager.CALL_STATE_IDLE) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Lost audio focus");
+                        pause(true, false);
+                        callback.shouldStop();
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_GAIN) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Gained audio focus");
+                        if (pausedBecauseOfTransientAudiofocusLoss) { // we paused => play now
+                            resume();
+                        } else { // we ducked => raise audio level back
+                            audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                    AudioManager.ADJUST_RAISE, 0);
+                        }
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK) {
+                        if (playerStatus == PlayerStatus.PLAYING) {
+                            if (!UserPreferences.shouldPauseForFocusLoss()) {
                                 if (BuildConfig.DEBUG)
-                                    Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+                                    Log.d(TAG, "Lost audio focus temporarily. Ducking...");
+                                audioManager.adjustStreamVolume(AudioManager.STREAM_MUSIC,
+                                        AudioManager.ADJUST_LOWER, 0);
+                                pausedBecauseOfTransientAudiofocusLoss = false;
+                            } else {
+                                if (BuildConfig.DEBUG)
+                                    Log.d(TAG, "Lost audio focus temporarily. Could duck, but won't, pausing...");
                                 pause(false, false);
                                 pausedBecauseOfTransientAudiofocusLoss = true;
                             }
+                        }
+                    } else if (focusChange == AudioManager.AUDIOFOCUS_LOSS_TRANSIENT) {
+                        if (playerStatus == PlayerStatus.PLAYING) {
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, "Lost audio focus temporarily. Pausing...");
+                            pause(false, false);
+                            pausedBecauseOfTransientAudiofocusLoss = true;
+                        }
+                        playerLock.unlock();
                     }
-
-                    playerLock.unlock();
                 }
             });
-
         }
     };
+
 
     public void endPlayback() {
         executor.submit(new Runnable() {
             @Override
             public void run() {
                 playerLock.lock();
+                releaseWifiLockIfNecessary();
 
                 if (playerStatus != PlayerStatus.INDETERMINATE) {
                     setPlayerStatus(PlayerStatus.INDETERMINATE, media);
@@ -774,16 +788,35 @@ public class PlaybackServiceMediaPlayer {
             @Override
             public void run() {
                 playerLock.lock();
+                releaseWifiLockIfNecessary();
 
                 if (playerStatus == PlayerStatus.INDETERMINATE) {
                     setPlayerStatus(PlayerStatus.STOPPED, null);
                 } else {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Ignored call to stop: Current player state is: " + playerStatus);
                 }
                 playerLock.unlock();
 
             }
         });
+    }
+
+    private synchronized void acquireWifiLockIfNecessary() {
+        if (stream) {
+            if (wifiLock == null) {
+                wifiLock = ((WifiManager) context.getSystemService(Context.WIFI_SERVICE))
+                        .createWifiLock(WifiManager.WIFI_MODE_FULL, TAG);
+                wifiLock.setReferenceCounted(false);
+            }
+            wifiLock.acquire();
+        }
+    }
+
+    private synchronized void releaseWifiLockIfNecessary() {
+        if (wifiLock != null && wifiLock.isHeld()) {
+            wifiLock.release();
+        }
     }
 
     /**

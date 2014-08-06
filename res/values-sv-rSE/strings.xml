@@ -31,6 +31,7 @@
   <string name="copy_url_label">Kopiera URL</string>
   <string name="share_url_label">Dela URL</string>
   <string name="copied_url_msg">Kopierade URL till clipboard.</string>
+  <string name="go_to_position_label">Gå hit</string>
   <!--Playback history-->
   <string name="clear_history_label">Rensa historik</string>
   <!--Other-->
@@ -59,6 +60,7 @@
   <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Flödets URL</string>
+  <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
   <string name="txtvfeedurl_label">Lägg till podcast via URL</string>
   <string name="podcastdirectories_label">Hitta podcast i mapp</string>
   <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet på tjänsten gpodder.net</string>
@@ -133,6 +135,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffrar</string>
   <string name="playbackservice_notification_title">Spelar podcast</string>
+  <string name="unknown_media_key">AntannaPod - Okänd mediaknapp: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Rensa kön</string>
   <string name="undo">Ångra</string>
@@ -146,6 +149,7 @@
   <string name="return_home_label">Återgå till Startsidan</string>
   <string name="flattr_auth_success">Autentiseringen lyckades! Du kan nu Flattra saker i appen.</string>
   <string name="no_flattr_token_title">Ingen Flattr token hittades</string>
+  <string name="no_flattr_token_notification_msg">Ditt Flattr-konto verkar inte vara anslutet till AntennaPod. Tryck här för att autentisera.</string>
   <string name="no_flattr_token_msg">Ditt Flattr konto verkar inte vara ansluten till AntennaPod. Du kan antingen ansluta ditt konto till AntennaPod att Flattr saker i app eller så kan du besöka webbplatsen för att Flattr det där.</string>
   <string name="authenticate_now_label">Autentisera</string>
   <string name="action_forbidden_title">Åtgärd förbjuden</string>
@@ -167,7 +171,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Ladda ner tillägg</string>
   <string name="no_playback_plugin_title">Tillägg ej installerat</string>
-  <string name="no_playback_plugin_msg">För att variabel uppspelningshastighet skall fungera måste ett tredjepartstillägg installeras.\n\nTryck på \'Ladda ner tillägg\' för att ladda ner ett gratis tilläg från Play store.\n\nAntennaPod ansvarar inte för problem med detta tillägg och de bör rapporteras till tilläggets skapare.\n</string>
+  <string name="no_playback_plugin_msg">För att variabel uppspelningshastighet skall fungera måste ett tredjepartstillägg installeras.\n\nTryck på \'Ladda ner tillägg\' för att ladda ner ett gratis tillägg från Play Store.\n\nAntennaPod ansvarar inte för problem med detta tillägg och de bör rapporteras till tilläggets skapare.</string>
   <string name="set_playback_speed_label">Uppspelningshastigheter</string>
   <!--Empty list labels-->
   <string name="no_items_label">Det finns inget i denna lista.</string>
@@ -199,6 +203,7 @@
   <string name="pref_revokeAccess_title">Återkalla åtkomst</string>
   <string name="pref_revokeAccess_sum">Återkalla behörigheten till ditt Flattr-konto för denna app.</string>
   <string name="pref_auto_flattr_title">Automatisk Flattring</string>
+  <string name="pref_auto_flattr_sum">Konfigurerar automatisk Flattring</string>
   <string name="user_interface_label">Användargränssnitt</string>
   <string name="pref_set_theme_title">Välj tema</string>
   <string name="pref_set_theme_sum">Ändra utseendet på AntennaPod.</string>
@@ -221,9 +226,15 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
+  <string name="pref_seek_delta_title">Söktid</string>
+  <string name="pref_seek_delta_sum">Sök så här många sekunder vid snabbspolning bakåt eller framåt</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
+  <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
+  <string name="auto_flattr_ater_beginning">Flattra episoden när den startas</string>
+  <string name="auto_flattr_ater_end">Flattra episoden när den spelats klart</string>
   <!--Search-->
   <string name="search_hint">Sök efter flöden eller avsnitt</string>
   <string name="found_in_shownotes_label">Hittad i shownotes</string>
@@ -235,7 +246,7 @@
   <string name="opml_import_txtv_button_lable">OPML-filer låter dig flytta dina podcasts från en podcatcher till en annan.</string>
   <string name="opml_import_explanation">Om du vill importera en OPML-fil, måste du placera den i följande katalog och tryck på knappen nedan för att starta importen.</string>
   <string name="start_import_label">Påbörja importering</string>
-  <string name="opml_import_label">OPML import</string>
+  <string name="opml_import_label">Importera OPML-fil</string>
   <string name="opml_directory_error">FEL! </string>
   <string name="reading_opml_label">Läser OPML-fil</string>
   <string name="opml_reader_error">Ett fel har skett vid iläsning av opml dokumentet:</string>

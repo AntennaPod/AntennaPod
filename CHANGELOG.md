@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.9.3
+---------------
+* Fixed video playback problems
+* Improved image loading
+* Other bugfixes and improvements
+
 Version 0.9.9.2
 ---------------
 * Added support for feed discovery if a website URL is entered

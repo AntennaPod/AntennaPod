@@ -34,6 +34,10 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
     }
     compile 'org.jsoup:jsoup:1.7.3'
+    compile 'com.squareup.picasso:picasso:2.3.+'
+    compile 'com.squareup.okhttp:okhttp:2.0.+'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okio:okio:1.0.0'
 }
 
 android {
@@ -85,13 +89,23 @@ android {
     }
 
     buildTypes {
+        def STRING = "String"
+        def FLATTR_APP_KEY = "FLATTR_APP_KEY"
+        def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
+        def mFlattrAppKey = (project.hasProperty('flattrAppKey')) ? flattrAppKey : "\"\""
+        def mFlattrAppSecret = (project.hasProperty('flattrAppSecret')) ? flattrAppSecret : "\"\""
+
         debug {
             applicationIdSuffix ".debug"
+            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
         release {
             runProguard true
             proguardFile 'proguard.cfg'
             signingConfig signingConfigs.releaseConfig
+            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
         }
     }
 

@@ -34,7 +34,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.asynctask.DownloadObserver;
 import de.danoeh.antennapod.asynctask.FeedRemover;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
@@ -349,8 +349,13 @@ public class ItemlistFragment extends ListFragment {
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
-        ImageLoader.getInstance().loadThumbnailBitmap(feed.getImage(), imgvCover,
-                (int) getResources().getDimension(R.dimen.thumbnail_length_onlinefeedview));
+
+        int imageSize = (int) getResources().getDimension(R.dimen.thumbnail_length_onlinefeedview);
+        PicassoProvider.getDefaultPicassoInstance(getActivity())
+                .load(feed.getImageUri())
+                .resize(imageSize, imageSize)
+                .into(imgvCover);
+
         if (feed.getLink() == null) {
             butVisitWebsite.setVisibility(View.INVISIBLE);
         } else {

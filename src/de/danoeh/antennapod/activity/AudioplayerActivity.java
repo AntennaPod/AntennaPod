@@ -31,7 +31,7 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.EventDistributor;
@@ -381,8 +381,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
                         @Override
                         public void run() {
-                            ImageLoader.getInstance().loadThumbnailBitmap(media,
-                                    butNavLeft);
+                            PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
+                                    .load(media.getImageUri())
+                                    .into(butNavLeft);
                         }
                     });
                     butNavLeft.setContentDescription(getString(buttonTexts[2]));
@@ -396,9 +397,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
                         @Override
                         public void run() {
-                            ImageLoader.getInstance().loadThumbnailBitmap(media,
-                                    butNavLeft);
+                            PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
+                                    .load(media.getImageUri())
+                                    .into(butNavLeft);
                         }
+
                     });
                     butNavLeft.setContentDescription(getString(buttonTexts[2]));
 

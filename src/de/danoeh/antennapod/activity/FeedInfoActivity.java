@@ -12,7 +12,7 @@ import android.view.MenuItem;
 import android.widget.*;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.ImageLoader;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
 import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.feed.Feed;
 import de.danoeh.antennapod.feed.FeedPreferences;
@@ -78,8 +78,9 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            ImageLoader.getInstance().loadThumbnailBitmap(
-                                    feed.getImage(), imgvCover);
+                            PicassoProvider.getDefaultPicassoInstance(FeedInfoActivity.this)
+                                    .load(feed.getImageUri())
+                                    .into(imgvCover);
                         }
                     });
 

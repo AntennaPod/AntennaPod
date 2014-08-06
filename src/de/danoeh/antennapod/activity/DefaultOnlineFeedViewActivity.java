@@ -9,18 +9,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.*;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
-import de.danoeh.antennapod.asynctask.ImageDiskCache;
-import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.ListView;
+import android.widget.Spinner;
+import android.widget.TextView;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.examples.HtmlToPlainText;
@@ -30,6 +26,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
+import de.danoeh.antennapod.asynctask.PicassoProvider;
+import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.feed.EventDistributor;
+import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.storage.DownloadRequestException;
+import de.danoeh.antennapod.storage.DownloadRequester;
 
 /**
  * Default implementation of OnlineFeedViewActivity. Shows the downloaded feed's items with their descriptions,
@@ -115,9 +123,13 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
 
         if (feed.getImage() != null) {
-            ImageDiskCache.getDefaultInstance().loadThumbnailBitmap(feed.getImage().getDownload_url(), cover, (int) getResources().getDimension(
-                    R.dimen.thumbnail_length));
+            int imageSize = (int) getResources().getDimension(R.dimen.thumbnail_length);
+            PicassoProvider.getDefaultPicassoInstance(this)
+                    .load(feed.getImage().getDownload_url())
+                    .resize(imageSize, imageSize)
+                    .into(cover);
         }
+
         title.setText(feed.getTitle());
         author.setText(feed.getAuthor());
         description.setText(feed.getDescription());
