@@ -45,6 +45,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
     private static final String TAG = "PreferenceActivity";
 
     private static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
+    private static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     private static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     private static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
     private static final String PREF_AUTO_FLATTR_PREFS = "prefAutoFlattrPrefs";
@@ -332,6 +333,7 @@ public class PreferenceActivity extends android.preference.PreferenceActivity {
 
         boolean hasFlattrToken = FlattrUtils.hasToken();
 
+        findPreference(PREF_FLATTR_SETTINGS).setEnabled(FlattrUtils.hasAPICredentials());
         findPreference(PREF_FLATTR_AUTH).setEnabled(!hasFlattrToken);
         findPreference(PREF_FLATTR_REVOKE).setEnabled(hasFlattrToken);
         findPreference(PREF_AUTO_FLATTR_PREFS).setEnabled(hasFlattrToken);
