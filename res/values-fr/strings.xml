@@ -31,6 +31,7 @@
   <string name="copy_url_label">Copier l\'URL</string>
   <string name="share_url_label">Partager l\'URL</string>
   <string name="copied_url_msg">URL copiée dans le presse-papier</string>
+  <string name="go_to_position_label">Aller à cette position</string>
   <!--Playback history-->
   <string name="clear_history_label">Effacer le journal</string>
   <!--Other-->
@@ -59,6 +60,7 @@
   <string name="auto_download_label">Télécharger automatiquement à l\'avenir</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL du flux</string>
+  <string name="etxtFeedurlHint">URL ou flux ou site web</string>
   <string name="txtvfeedurl_label">Ajouter un podcast par son URL</string>
   <string name="podcastdirectories_label">Trouver le podcast dans la bibliothèque</string>
   <string name="podcastdirectories_descr">Vous pouvez chercher de nouveaux podcasts en filtrant par nom, catégorie ou popularité dans la bibliothèque gpodder.net</string>
@@ -133,6 +135,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Mise en mémoire</string>
   <string name="playbackservice_notification_title">Lecture de podcast en cours</string>
+  <string name="unknown_media_key">AntennaPod - Touche média inconnue : %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Effacer la liste</string>
   <string name="undo">Annuler</string>
@@ -146,6 +149,7 @@
   <string name="return_home_label">Revenir au départ</string>
   <string name="flattr_auth_success">L\'authentification a réussi. Vous pouvez maintenant flattr depuis cette application.</string>
   <string name="no_flattr_token_title">Aucun jeton Flattr trouvé.</string>
+  <string name="no_flattr_token_notification_msg">Votre compte flattr semble ne pas être connecté à AntennaPod. Touchez ici pour vous connecter.</string>
   <string name="no_flattr_token_msg">Votre compte Flattr se semble pas être connecté à AntennaPod. Vous pouvez soit connecter votre compte Flattr à AntennaPod pour pouvoir flattr depuis l\'application, ou vous pouvez aller sur le site de ce que vous voulez flattr.</string>
   <string name="authenticate_now_label">S\'authentifier</string>
   <string name="action_forbidden_title">Action interdite</string>
@@ -199,6 +203,7 @@
   <string name="pref_revokeAccess_title">Révoquer l\'accès</string>
   <string name="pref_revokeAccess_sum">Révoquer la permission d\'accès à votre compte Flattr depuis cette application.</string>
   <string name="pref_auto_flattr_title">Flattr automatique</string>
+  <string name="pref_auto_flattr_sum">Configurer les paiements flattr automatiques</string>
   <string name="user_interface_label">Interface utilisateur</string>
   <string name="pref_set_theme_title">Choisir un thème</string>
   <string name="pref_set_theme_sum">Modifier l\'apparence d\'AntennaPod.</string>
@@ -221,9 +226,14 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
+  <string name="pref_seek_delta_sum">Bouger d\'autant de secondes en rembobinant ou en faisant une avance rapide </string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
+  <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
+  <string name="auto_flattr_ater_beginning">Lancer le paiement flattr d\'un épisode dès que la lecture commence</string>
+  <string name="auto_flattr_ater_end">Lancer le paiement flattr d\'un épisode à la fin de la lecture</string>
   <!--Search-->
   <string name="search_hint">Chercher des flux ou épisodes</string>
   <string name="found_in_shownotes_label">Trouvé dans les notes</string>

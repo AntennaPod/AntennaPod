@@ -31,6 +31,7 @@
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Partilhar URL</string>
   <string name="copied_url_msg">URL copiado para a área de transferência.</string>
+  <string name="go_to_position_label">Ir para esta posição</string>
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
   <!--Other-->
@@ -59,6 +60,7 @@
   <string name="auto_download_label">Incluir nas transferências automáticas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
+  <string name="etxtFeedurlHint">URL da fonte ou sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
   <string name="podcastdirectories_descr">Pode procurar os novos podcasts no gPodder.net por nome, categoria ou popularidade.</string>
@@ -133,6 +135,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">A processar...</string>
   <string name="playbackservice_notification_title">Reproduzir podcast</string>
+  <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Anular</string>
@@ -146,6 +149,7 @@
   <string name="return_home_label">Voltar ao ecrã</string>
   <string name="flattr_auth_success">Autenticação efetuada! Já pode fazer o flattr com a aplicação.</string>
   <string name="no_flattr_token_title">Token flattr não encontrado</string>
+  <string name="no_flattr_token_notification_msg">Parece que a sua conta flattr não está integrada ao AntennaPod. Clique aqui para autenticar.</string>
   <string name="no_flattr_token_msg">Parece que a sua conta flattr não está vinculada ao AntennaPod. Pode vincular a sua conta ao AntennaPod ou aceder ao sítio web para fazer o flattr.</string>
   <string name="authenticate_now_label">Autenticar</string>
   <string name="action_forbidden_title">Ação negada</string>
@@ -199,6 +203,7 @@
   <string name="pref_revokeAccess_title">Revogar acesso</string>
   <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr.</string>
   <string name="pref_auto_flattr_title">Flattr automático</string>
+  <string name="pref_auto_flattr_sum">Configurar flattr automático</string>
   <string name="user_interface_label">Interface</string>
   <string name="pref_set_theme_title">Tema</string>
   <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod.</string>
@@ -221,9 +226,15 @@
   <string name="pref_gpodnet_setlogin_information_sum">Mudar informação de acesso à sua conta gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades de reprodução disponíveis.</string>
+  <string name="pref_seek_delta_title">Intervalo de procura</string>
+  <string name="pref_seek_delta_sum">Ao recuar ou avançar, procurar este valor de segundos</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar pré-definição</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Ativar flattr automático</string>
+  <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
+  <string name="auto_flattr_ater_beginning">Flattr de episodios ao iniciar a reprodução</string>
+  <string name="auto_flattr_ater_end">Flattr de episódios ao terminar a reprodução</string>
   <!--Search-->
   <string name="search_hint">Procurar fontes ou episódios</string>
   <string name="found_in_shownotes_label">Encontrado nas notas</string>
@@ -326,4 +337,5 @@
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios.</string>
   <!--AntennaPodSP-->
+  <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
 </resources>
