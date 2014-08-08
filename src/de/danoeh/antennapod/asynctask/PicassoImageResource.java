@@ -18,8 +18,20 @@ public interface PicassoImageResource {
      */
     public static final String SCHEME_MEDIA = "media";
 
+
+    /**
+     * Parameter key for an encoded fallback Uri. This Uri MUST point to a local image file
+     */
+    public static final String PARAM_FALLBACK = "fallback";
+
     /**
      * Returns a Uri to the image or null if no image is available.
+     * <p/>
+     * The Uri can either be an HTTP-URL, a URL pointing to a local image file or
+     * a non-image file (see SCHEME_MEDIA for more details).
+     * <p/>
+     * The Uri can also have an optional fallback-URL if loading the default URL
+     * failed (see PARAM_FALLBACK).
      */
     public Uri getImageUri();
 }
