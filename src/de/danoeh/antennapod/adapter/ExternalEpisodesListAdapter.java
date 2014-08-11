@@ -176,7 +176,7 @@ public class ExternalEpisodesListAdapter extends BaseExpandableListAdapter {
 
         PicassoProvider.getMediaMetadataPicassoInstance(context)
                 .load(item.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(holder.feedImage);
 
         holder.butAction.setFocusable(false);

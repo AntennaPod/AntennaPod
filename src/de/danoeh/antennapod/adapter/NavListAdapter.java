@@ -32,8 +32,6 @@ public class NavListAdapter extends BaseAdapter {
     private ItemAccess itemAccess;
     private Context context;
 
-    private final int imageSize;
-
     public NavListAdapter(ItemAccess itemAccess, Context context) {
         this.itemAccess = itemAccess;
         this.context = context;
@@ -43,7 +41,6 @@ public class NavListAdapter extends BaseAdapter {
         drawables = new Drawable[]{ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
                 ta.getDrawable(3), ta.getDrawable(4)};
         ta.recycle();
-        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_navlist);
     }
 
     @Override
@@ -195,7 +192,7 @@ public class NavListAdapter extends BaseAdapter {
 
         PicassoProvider.getDefaultPicassoInstance(context)
                 .load(feed.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(holder.image);
 
         return convertView;

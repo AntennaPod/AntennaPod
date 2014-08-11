@@ -382,6 +382,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                         public void run() {
                             PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
                                     .load(media.getImageUri())
+                                    .fit()
                                     .into(butNavLeft);
                         }
                     });
@@ -398,6 +399,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                         public void run() {
                             PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
                                     .load(media.getImageUri())
+                                    .fit()
                                     .into(butNavLeft);
                         }
 

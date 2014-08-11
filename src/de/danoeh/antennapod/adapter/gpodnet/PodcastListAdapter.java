@@ -18,11 +18,9 @@ import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
  * Adapter for displaying a list of GPodnetPodcast-Objects.
  */
 public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
-    private final int thumbnailLength;
 
     public PodcastListAdapter(Context context, int resource, List<GpodnetPodcast> objects) {
         super(context, resource, objects);
-        thumbnailLength = (int) context.getResources().getDimension(R.dimen.thumbnail_length);
     }
 
     @Override
@@ -52,7 +50,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
         PicassoProvider.getDefaultPicassoInstance(convertView.getContext())
                 .load(podcast.getLogoUrl())
-                .resize(thumbnailLength, thumbnailLength)
+                .fit()
                 .into(holder.image);
 
         return convertView;

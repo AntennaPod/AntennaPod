@@ -80,6 +80,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                         public void run() {
                             PicassoProvider.getDefaultPicassoInstance(FeedInfoActivity.this)
                                     .load(feed.getImageUri())
+                                    .fit()
                                     .into(imgvCover);
                         }
                     });

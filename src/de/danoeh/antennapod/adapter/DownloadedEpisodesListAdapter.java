@@ -89,7 +89,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
 
         PicassoProvider.getMediaMetadataPicassoInstance(context)
                 .load(item.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(holder.imageView);
 
         return convertView;

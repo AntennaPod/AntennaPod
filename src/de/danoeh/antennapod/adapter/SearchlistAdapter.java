@@ -23,12 +23,10 @@ public class SearchlistAdapter extends BaseAdapter {
     private final Context context;
     private final ItemAccess itemAccess;
 
-    private final int imageSize;
 
     public SearchlistAdapter(Context context, ItemAccess itemAccess) {
         this.context = context;
         this.itemAccess = itemAccess;
-        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length);
     }
 
     @Override
@@ -76,7 +74,7 @@ public class SearchlistAdapter extends BaseAdapter {
 
             PicassoProvider.getDefaultPicassoInstance(context)
                     .load(feed.getImageUri())
-                    .resize(imageSize, imageSize)
+                    .fit()
                     .into(holder.cover);
 
         } else if (component.getClass() == FeedItem.class) {
@@ -89,7 +87,7 @@ public class SearchlistAdapter extends BaseAdapter {
 
             PicassoProvider.getDefaultPicassoInstance(context)
                     .load(item.getFeed().getImageUri())
-                    .resize(imageSize, imageSize)
+                    .fit()
                     .into(holder.cover);
 
         }
