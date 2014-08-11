@@ -343,7 +343,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     } else {
                         ft.add(R.id.contentView, currentlyShownFragment);
                     }
-                    ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_OPEN);
                     ft.disallowAddToBackStack();
                     ft.commit();
                     updateNavButtonDrawable();
