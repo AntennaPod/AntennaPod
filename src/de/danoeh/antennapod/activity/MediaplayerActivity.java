@@ -502,18 +502,24 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress,
                                   boolean fromUser) {
-        prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
-                txtvPosition);
+        if (controller != null) {
+            prog = controller.onSeekBarProgressChanged(seekBar, progress, fromUser,
+                    txtvPosition);
+        }
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
-        controller.onSeekBarStartTrackingTouch(seekBar);
+        if (controller != null) {
+            controller.onSeekBarStartTrackingTouch(seekBar);
+        }
     }
 
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
-        controller.onSeekBarStopTrackingTouch(seekBar, prog);
+        if (controller != null) {
+            controller.onSeekBarStopTrackingTouch(seekBar, prog);
+        }
     }
 
 }
