@@ -90,7 +90,7 @@ public class FlattrUtils {
      */
     public static boolean hasAPICredentials() {
         return StringUtils.isNotEmpty(BuildConfig.FLATTR_APP_KEY)
-                && StringUtils.isNoneEmpty(BuildConfig.FLATTR_APP_SECRET);
+                && StringUtils.isNotEmpty(BuildConfig.FLATTR_APP_SECRET);
     }
 
     public static boolean hasToken() {
