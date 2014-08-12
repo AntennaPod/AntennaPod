@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -43,8 +44,11 @@ public class TagListFragment extends ListFragment {
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
                 public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                    Activity activity = getActivity();
+                    if (activity != null) {
+                        sv.clearFocus();
+                        ((MainActivity) activity).loadChildFragment(SearchListFragment.newInstance(s));
+                    }
                     return true;
                 }
 
