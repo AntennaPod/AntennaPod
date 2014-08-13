@@ -133,13 +133,16 @@ public class PicassoProvider {
                     } else {
 
                         // check for fallback Uri
-                        String fallback = Uri.decode(Uri.parse(uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK)).getPath());
-                        if (fallback != null) {
-                            File imageFile = new File(fallback);
-                            return new Response(new BufferedInputStream(new FileInputStream(imageFile)), true, imageFile.length());
-                        } else {
-                            return null;
+                        String fallbackParam = uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
+
+                        if (fallbackParam != null) {
+                            String fallback = Uri.decode(Uri.parse(fallbackParam).getPath());
+                            if (fallback != null) {
+                                File imageFile = new File(fallback);
+                                return new Response(new BufferedInputStream(new FileInputStream(imageFile)), true, imageFile.length());
+                            }
                         }
+                        return null;
                     }
                 }
             }
