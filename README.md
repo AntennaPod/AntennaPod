@@ -2,11 +2,8 @@
 
 This is the official repository of AntennaPod, a podcast manager for Android.
 
-
-<a href="https://play.google.com/store/apps/details?id=de.danoeh.antennapod" alt="Download from Google Play">
-  <img src="http://www.android.com/images/brand/android_app_on_play_large.png">
-</a>
-[AntennaPod on fdroid.org](http://f-droid.org/repository/browse/?fdcategory=Multimedia&fdid=de.danoeh.antennapod&fdpage=1)
+[![Download from Google Play](http://www.android.com/images/brand/android_app_on_play_large.png "Download from Google Play")](https://play.google.com/store/apps/details?id=de.danoeh.antennapod)
+[![AntennaPod on fdroid.org](https://camo.githubusercontent.com/7df0eafa4433fa4919a56f87c3d99cf81b68d01c/68747470733a2f2f662d64726f69642e6f72672f77696b692f696d616765732f632f63342f462d44726f69642d627574746f6e5f617661696c61626c652d6f6e2e706e67 "Download from fdroid.org")](http://f-droid.org/repository/browse/?fdcategory=Multimedia&fdid=de.danoeh.antennapod&fdpage=1)
 
 ## Feedback
 You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!forum/antennapod) for discussions about the app.
@@ -36,5 +33,6 @@ Information on how to build AntennaPod can be found in the [Wiki](https://github
   
 [![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/745609/Antennapod "AntennaPod")
 
-Bitcoin donations can be sent to this address: <pre>1DzvtuvdW8VhDsq9GUytMyALmsHeaHEKbg</pre>
+![Donate Bitcoin](https://en.bitcoin.it/w/images/en/7/74/BC_Rnd_64px.png)  
+Bitcoin address: `1DzvtuvdW8VhDsq9GUytMyALmsHeaHEKbg`
 
