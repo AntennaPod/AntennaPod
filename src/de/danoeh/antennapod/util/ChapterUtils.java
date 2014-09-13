@@ -3,17 +3,22 @@ package de.danoeh.antennapod.util;
 import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
+import de.danoeh.antennapod.feed.MP4Chapter;
 import de.danoeh.antennapod.util.comparator.ChapterStartTimeComparator;
 import de.danoeh.antennapod.util.id3reader.ChapterReader;
 import de.danoeh.antennapod.util.id3reader.ID3ReaderException;
 import de.danoeh.antennapod.util.playback.Playable;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentChapterReader;
 import de.danoeh.antennapod.util.vorbiscommentreader.VorbisCommentReaderException;
+import wseemann.media.FFmpegChapter;
+import wseemann.media.FFmpegMediaMetadataRetriever;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -190,6 +195,30 @@ public class ChapterUtils {
 		}
 	}
 
+    private static void readMP4ChaptersFromFileUrl(Playable p) {
+        if (!FFmpegMediaMetadataRetriever.LIB_AVAILABLE) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "FFmpegMediaMetadataRetriever not available on this architecture");
+            return;
+        }
+        if (BuildConfig.DEBUG) Log.d(TAG, "Trying to read mp4 chapters from file " + p.getEpisodeTitle());
+
+        FFmpegMediaMetadataRetriever retriever = new FFmpegMediaMetadataRetriever();
+        retriever.setDataSource(p.getLocalMediaUrl());
+        FFmpegChapter[] res = retriever.getChapters();
+        retriever.release();
+        if (res != null) {
+            List<Chapter> chapters = new ArrayList<Chapter>();
+            for (FFmpegChapter fFmpegChapter : res) {
+                chapters.add(new MP4Chapter(fFmpegChapter));
+            }
+            Collections.sort(chapters, new ChapterStartTimeComparator());
+            processChapters(chapters, p);
+            p.setChapters(chapters);
+        } else {
+            if (BuildConfig.DEBUG) Log.d(TAG, "No mp4 chapters found in " + p.getEpisodeTitle());
+        }
+    }
+
 	/** Makes sure that chapter does a title and an item attribute. */
 	private static void processChapters(List<Chapter> chapters, Playable p) {
 		for (int i = 0; i < chapters.size(); i++) {
@@ -254,6 +283,9 @@ public class ChapterUtils {
 			if (media.getChapters() == null) {
 				ChapterUtils.readOggChaptersFromPlayableFileUrl(media);
 			}
+            if (media.getChapters() == null) {
+                ChapterUtils.readMP4ChaptersFromFileUrl(media);
+            }
 		} else {
 			Log.e(TAG, "Could not load chapters from file url: local file not available");
 		}

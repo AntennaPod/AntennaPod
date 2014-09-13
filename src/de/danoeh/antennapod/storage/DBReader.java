@@ -262,6 +262,9 @@ public final class DBReader {
                                     chapter = new VorbisCommentChapter(start,
                                             title, item, link);
                                     break;
+                                case MP4Chapter.CHAPTERTYPE_MP4CHAPTER:
+                                    chapter = new MP4Chapter(start, title, item, link);
+                                    break;
                             }
                             if (chapter != null) {
                                 chapter.setId(chapterCursor
