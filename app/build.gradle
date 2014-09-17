@@ -1,0 +1,112 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'com.android.tools.build:gradle:0.12.2'
+    }
+}
+apply plugin: 'com.android.application'
+
+repositories {
+    mavenCentral()
+}
+dependencies {
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:appcompat-v7:20.0.0'
+    compile 'org.apache.commons:commons-lang3:3.3.2'
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.10') {
+        exclude group: 'org.apache.httpcomponents', module: 'httpcore'
+        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+        exclude group: 'org.json', module: 'json'
+    }
+    compile 'commons-io:commons-io:2.4'
+    compile 'com.nineoldandroids:library:2.4.0'
+    compile project('dslv:library')
+
+    compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
+    compile ("com.doomonafireball.betterpickers:library:1.5.2") {
+        exclude group: 'com.android.support', module: 'support-v4'
+    }
+    compile 'org.jsoup:jsoup:1.7.3'
+    compile 'com.squareup.picasso:picasso:2.3.4'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
+    compile 'com.squareup.okio:okio:1.0.0'
+}
+
+android {
+    compileSdkVersion 19
+    buildToolsVersion "20.0"
+
+    defaultConfig {
+        minSdkVersion 10
+        targetSdkVersion 19
+        testApplicationId "de.test.antennapod"
+        testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
+    }
+
+    signingConfigs {
+        releaseConfig {
+            if (project.hasProperty('releaseStoreFile')) {
+                storeFile file(releaseStoreFile)
+            } else {
+                storeFile file('keystore')
+            }
+            if (project.hasProperty('releaseStorePassword')) {
+                storePassword releaseStorePassword
+            } else {
+                storePassword "password"
+            }
+            if (project.hasProperty('releaseKeyAlias')) {
+                keyAlias releaseKeyAlias
+            } else {
+                keyAlias "alias"
+            }
+            if (project.hasProperty('releaseKeyPassword')) {
+                keyPassword releaseKeyPassword
+            } else {
+                keyPassword "password"
+            }
+        }
+    }
+
+    buildTypes {
+        def STRING = "String"
+        def FLATTR_APP_KEY = "FLATTR_APP_KEY"
+        def FLATTR_APP_SECRET = "FLATTR_APP_SECRET"
+        def mFlattrAppKey = (project.hasProperty('flattrAppKey')) ? flattrAppKey : "\"\""
+        def mFlattrAppSecret = (project.hasProperty('flattrAppSecret')) ? flattrAppSecret : "\"\""
+
+        debug {
+            applicationIdSuffix ".debug"
+            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+        }
+        release {
+            runProguard true
+            proguardFile 'proguard.cfg'
+            signingConfig signingConfigs.releaseConfig
+            buildConfigField STRING, FLATTR_APP_KEY, mFlattrAppKey
+            buildConfigField STRING, FLATTR_APP_SECRET, mFlattrAppSecret
+        }
+    }
+
+    packagingOptions {
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '1.12'
+}
