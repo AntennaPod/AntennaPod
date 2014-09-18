@@ -172,7 +172,7 @@ public class PlaybackService extends Service {
      * running, the type of the last played media will be looked up.
      */
     public static Intent getPlayerActivityIntent(Context context) {
-        if (isRunning) {
+        if (isRunning) { // TODO getPlayerActivityIntent
             if (currentMediaType == MediaType.VIDEO) {
                 return new Intent(context, VideoplayerActivity.class);
             } else {

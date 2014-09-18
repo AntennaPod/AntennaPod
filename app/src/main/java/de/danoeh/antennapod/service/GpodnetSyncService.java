@@ -166,7 +166,7 @@ public class GpodnetSyncService extends Service {
         }
 
         PendingIntent activityIntent = PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), PendingIntent.FLAG_UPDATE_CURRENT);
-
+// TODO getGpodnetSyncServiceErrorNotificationPendingIntent
         Notification notification = builder.setContentTitle(title)
                 .setContentText(description)
                 .setContentIntent(activityIntent)

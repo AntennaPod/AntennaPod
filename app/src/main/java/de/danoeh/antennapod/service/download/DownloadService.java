@@ -331,7 +331,7 @@ public class DownloadService extends Service {
     }
 
     @SuppressLint("NewApi")
-    private void setupNotificationBuilders() {
+    private void setupNotificationBuilders() { // TODO getNotificationContentIntent
         Intent intent = new Intent(this, MainActivity.class);
         intent.putExtra(MainActivity.EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
         intent.putExtra(MainActivity.EXTRA_NAV_INDEX, MainActivity.POS_DOWNLOADS);
@@ -556,7 +556,7 @@ public class DownloadService extends Service {
             }
         }
 
-        if (createReport) {
+        if (createReport) { // TODO getReportNotificationContentIntent
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Creating report");
             Intent intent = new Intent(this, MainActivity.class);
@@ -633,6 +633,7 @@ public class DownloadService extends Service {
                 final String resourceTitle = (downloadRequest.getTitle() != null)
                         ? downloadRequest.getTitle() : downloadRequest.getSource();
 
+                // TODO getAuthentificationNotificationContentIntent
                 final Intent activityIntent = new Intent(getApplicationContext(), DownloadAuthenticationActivity.class);
                 activityIntent.putExtra(DownloadAuthenticationActivity.ARG_DOWNLOAD_REQUEST, downloadRequest);
                 activityIntent.putExtra(DownloadAuthenticationActivity.ARG_SEND_TO_DOWNLOAD_REQUESTER_BOOL, true);

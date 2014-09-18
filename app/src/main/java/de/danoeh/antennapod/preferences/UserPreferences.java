@@ -21,7 +21,6 @@ import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.OpmlImportFromPathActivity;
 import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
 
 /**
@@ -32,6 +31,7 @@ import de.danoeh.antennapod.receiver.FeedUpdateReceiver;
  */
 public class UserPreferences implements
         SharedPreferences.OnSharedPreferenceChangeListener {
+    public static final String IMPORT_DIR = "import/";
     private static final String TAG = "UserPreferences";
 
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
@@ -523,7 +523,7 @@ public class UserPreferences implements
      */
     private static void createImportDirectory() {
         File importDir = getDataFolder(instance.context,
-                OpmlImportFromPathActivity.IMPORT_DIR);
+                IMPORT_DIR);
         if (importDir != null) {
             if (importDir.exists()) {
                 if (BuildConfig.DEBUG)

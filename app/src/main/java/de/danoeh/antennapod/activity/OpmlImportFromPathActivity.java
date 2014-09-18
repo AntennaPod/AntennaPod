@@ -23,7 +23,6 @@ import java.io.*;
  * Lets the user start the OPML-import process from a path
  */
 public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
-    public static final String IMPORT_DIR = "import/";
     private static final String TAG = "OpmlImportFromPathActivity";
     private TextView txtvPath;
     private Button butStart;
@@ -61,7 +60,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
      * directory.
      */
     private void setImportPath() {
-        File importDir = UserPreferences.getDataFolder(this, IMPORT_DIR);
+        File importDir = UserPreferences.getDataFolder(this, UserPreferences.IMPORT_DIR);
         boolean success = true;
         if (!importDir.exists()) {
             if (BuildConfig.DEBUG)

@@ -1302,7 +1302,7 @@ public class PodDBAdapter {
 
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
-                              final int newVersion) {
+                              final int newVersion) { // TODO onUpgrade
             Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
                     + newVersion + ".");
             if (oldVersion <= 1) {
