@@ -5,10 +5,10 @@ import android.os.Bundle;
 import org.apache.commons.lang3.Validate;
 
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
 
 import java.util.List;
 

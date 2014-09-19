@@ -2,8 +2,8 @@ package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
 import android.os.Bundle;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.LangUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.LangUtils;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;

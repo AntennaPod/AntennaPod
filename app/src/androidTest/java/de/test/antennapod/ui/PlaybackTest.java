@@ -9,12 +9,12 @@ import com.robotium.solo.Solo;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.playback.PlaybackService;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 import java.util.List;
 

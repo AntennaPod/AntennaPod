@@ -13,8 +13,8 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.opml.OpmlElement;
-import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.core.opml.OpmlElement;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.ArrayList;
 import java.util.List;

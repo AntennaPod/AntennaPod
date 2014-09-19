@@ -3,7 +3,7 @@ package de.test.antennapod.util;
 import java.io.File;
 import java.io.IOException;
 
-import de.danoeh.antennapod.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
 import android.test.AndroidTestCase;
 
 public class FilenameGeneratorTest extends AndroidTestCase {

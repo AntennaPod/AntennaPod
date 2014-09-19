@@ -13,11 +13,11 @@ import android.widget.TextView;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.service.playback.PlaybackService;
-import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 /**
  * Fragment which is supposed to be displayed outside of the MediaplayerActivity

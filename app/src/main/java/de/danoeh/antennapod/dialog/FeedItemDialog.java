@@ -33,16 +33,16 @@ import java.util.concurrent.Callable;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.DBTasks;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.ShownotesProvider;
-import de.danoeh.antennapod.util.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.ShownotesProvider;
+import de.danoeh.antennapod.core.util.menuhandler.FeedItemMenuHandler;
 
 /**
  * Shows information about a specific FeedItem and provides actions like playing, downloading, etc.

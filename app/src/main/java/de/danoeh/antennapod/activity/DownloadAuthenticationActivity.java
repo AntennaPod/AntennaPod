@@ -14,9 +14,9 @@ import org.apache.commons.lang3.Validate;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.download.DownloadRequest;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /**
  * Shows a username and a password text field.

@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core;
 
 import android.app.PendingIntent;
 
-import de.danoeh.antennapod.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
 
 /**
  * Callbacks for the DownloadService of the core module

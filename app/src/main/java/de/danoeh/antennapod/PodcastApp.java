@@ -2,10 +2,10 @@ package de.danoeh.antennapod;
 
 import android.app.Application;
 import android.content.res.Configuration;
-import android.util.Log;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.preferences.UserPreferences;
+
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.spa.SPAUtil;
 
 /** Main application class. */

@@ -2,7 +2,7 @@ package de.danoeh.antennapod.core;
 
 import android.content.Intent;
 
-import de.danoeh.antennapod.feed.MediaType;
+import de.danoeh.antennapod.core.feed.MediaType;
 
 /**
  * Callbacks for the PlaybackService of the core module

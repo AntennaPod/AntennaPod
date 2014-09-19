@@ -5,9 +5,9 @@ import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
-import de.danoeh.antennapod.asynctask.DownloadObserver;
-import de.danoeh.antennapod.service.download.Downloader;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 import java.util.List;
 

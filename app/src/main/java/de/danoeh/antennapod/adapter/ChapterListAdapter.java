@@ -16,10 +16,10 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.util.ChapterUtils;
-import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.util.ChapterUtils;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 import java.util.List;
 

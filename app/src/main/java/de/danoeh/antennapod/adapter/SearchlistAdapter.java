@@ -9,11 +9,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedComponent;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.SearchResult;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedComponent;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.SearchResult;
 
 /**
  * List adapter for search activity.

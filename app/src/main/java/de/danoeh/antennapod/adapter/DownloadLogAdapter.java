@@ -8,10 +8,10 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedImage;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
 
 /** Displays a list of DownloadStatus entries. */
 public class DownloadLogAdapter extends BaseAdapter {

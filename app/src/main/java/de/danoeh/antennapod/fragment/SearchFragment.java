@@ -16,12 +16,12 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.FeedSearcher;
-import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.FeedSearcher;
+import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 

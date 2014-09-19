@@ -6,9 +6,9 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.service.download.DownloadStatus;
-import de.danoeh.antennapod.storage.DBReader;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.storage.DBReader;
 
 import java.util.List;
 

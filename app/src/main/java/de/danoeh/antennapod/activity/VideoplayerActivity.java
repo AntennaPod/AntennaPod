@@ -21,11 +21,11 @@ import android.widget.SeekBar;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.service.playback.PlaybackService;
-import de.danoeh.antennapod.service.playback.PlayerStatus;
-import de.danoeh.antennapod.util.playback.ExternalMedia;
-import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.view.AspectRatioVideoView;
 
 /**

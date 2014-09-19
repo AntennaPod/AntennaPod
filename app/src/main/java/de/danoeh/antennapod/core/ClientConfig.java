@@ -7,12 +7,6 @@ package de.danoeh.antennapod.core;
 public class ClientConfig {
 
     /**
-     * Package name of the client. This string is used as a prefix
-     * for internal intents.
-     */
-    public static String CLIENT_PACKAGE_NAME;
-
-    /**
      * Should be used when setting User-Agent header for HTTP-requests.
      */
     public static String USER_AGENT;

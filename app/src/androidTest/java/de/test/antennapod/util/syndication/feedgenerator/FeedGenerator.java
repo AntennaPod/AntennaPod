@@ -1,6 +1,6 @@
 package de.test.antennapod.util.syndication.feedgenerator;
 
-import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.core.feed.Feed;
 
 import java.io.IOException;
 import java.io.OutputStream;

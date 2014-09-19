@@ -2,12 +2,12 @@ package de.test.antennapod.service.download;
 
 import android.test.InstrumentationTestCase;
 import android.util.Log;
-import de.danoeh.antennapod.feed.FeedFile;
-import de.danoeh.antennapod.service.download.DownloadRequest;
-import de.danoeh.antennapod.service.download.DownloadStatus;
-import de.danoeh.antennapod.service.download.Downloader;
-import de.danoeh.antennapod.service.download.HttpDownloader;
-import de.danoeh.antennapod.util.DownloadError;
+import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.util.DownloadError;
 import de.test.antennapod.util.service.download.HTTPBin;
 
 import java.io.File;

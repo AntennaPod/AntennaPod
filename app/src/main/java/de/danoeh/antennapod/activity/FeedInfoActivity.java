@@ -12,16 +12,16 @@ import android.view.MenuItem;
 import android.widget.*;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedPreferences;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.util.LangUtils;
-import de.danoeh.antennapod.util.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.util.LangUtils;
+import de.danoeh.antennapod.core.util.menuhandler.FeedMenuHandler;
 
 /**
  * Displays information about a feed.

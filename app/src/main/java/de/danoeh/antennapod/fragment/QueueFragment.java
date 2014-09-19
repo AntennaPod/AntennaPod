@@ -28,17 +28,17 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
-import de.danoeh.antennapod.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.service.download.Downloader;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.util.QueueAccess;
-import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
 
 /**
  * Shows all items in the queue

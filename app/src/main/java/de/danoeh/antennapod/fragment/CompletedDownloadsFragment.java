@@ -9,11 +9,11 @@ import android.view.View;
 import android.widget.ListView;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DBWriter;
-import de.danoeh.antennapod.util.QueueAccess;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.QueueAccess;
 
 import java.util.List;
 

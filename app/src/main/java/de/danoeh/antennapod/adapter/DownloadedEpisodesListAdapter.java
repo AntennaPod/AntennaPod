@@ -11,9 +11,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.util.Converter;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * Shows a list of downloaded episodes

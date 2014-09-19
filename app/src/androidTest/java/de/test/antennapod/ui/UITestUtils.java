@@ -6,8 +6,8 @@ import android.graphics.Bitmap;
 import android.os.Build;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import junit.framework.Assert;

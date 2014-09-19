@@ -30,14 +30,14 @@ import java.util.Map;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /**
  * Default implementation of OnlineFeedViewActivity. Shows the downloaded feed's items with their descriptions,

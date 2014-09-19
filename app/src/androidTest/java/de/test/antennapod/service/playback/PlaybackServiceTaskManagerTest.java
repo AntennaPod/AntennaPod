@@ -2,12 +2,12 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.service.playback.PlaybackServiceTaskManager;
-import de.danoeh.antennapod.storage.PodDBAdapter;
-import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 import java.util.ArrayList;
 import java.util.Date;

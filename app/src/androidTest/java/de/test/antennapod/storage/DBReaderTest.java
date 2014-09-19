@@ -2,14 +2,13 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.storage.FeedItemStatistics;
-import de.danoeh.antennapod.storage.PodDBAdapter;
-import de.danoeh.antennapod.util.flattr.FlattrStatus;
-import static de.test.antennapod.storage.DBTestUtils.*;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.FeedItemStatistics;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
 import java.util.ArrayList;
 import java.util.Date;

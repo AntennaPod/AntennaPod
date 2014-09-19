@@ -9,12 +9,11 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.storage.DownloadRequester;
-import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.ThemeUtils;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.ThemeUtils;
 
 /**
  * List adapter for items of feeds that the user has already subscribed to.

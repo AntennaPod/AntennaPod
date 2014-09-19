@@ -14,8 +14,8 @@ import android.widget.Button;
 import android.widget.TextView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /** Guides the user through the authentication process */

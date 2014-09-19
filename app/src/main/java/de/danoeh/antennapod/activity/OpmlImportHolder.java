@@ -1,6 +1,6 @@
 package de.danoeh.antennapod.activity;
 
-import de.danoeh.antennapod.opml.OpmlElement;
+import de.danoeh.antennapod.core.opml.OpmlElement;
 
 import java.util.ArrayList;
 

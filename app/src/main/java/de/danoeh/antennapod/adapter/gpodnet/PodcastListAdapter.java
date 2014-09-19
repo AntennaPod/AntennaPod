@@ -11,8 +11,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 
 /**
  * Adapter for displaying a list of GPodnetPodcast-Objects.

@@ -9,8 +9,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 /**
  * User interface tests for MainActivity

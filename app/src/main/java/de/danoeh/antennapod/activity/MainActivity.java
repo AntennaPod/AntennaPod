@@ -25,13 +25,13 @@ import org.apache.commons.lang3.Validate;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.fragment.*;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.util.StorageUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 

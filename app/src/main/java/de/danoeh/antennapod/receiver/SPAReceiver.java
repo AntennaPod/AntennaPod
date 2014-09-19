@@ -7,9 +7,9 @@ import android.util.Log;
 import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.storage.DownloadRequestException;
-import de.danoeh.antennapod.storage.DownloadRequester;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.Arrays;

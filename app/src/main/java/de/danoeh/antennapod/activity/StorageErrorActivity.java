@@ -12,8 +12,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.StorageUtils;
 
 /** Is show if there is now external storage available. */
 public class StorageErrorActivity extends ActionBarActivity {

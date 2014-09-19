@@ -1,7 +1,7 @@
 package de.test.antennapod.util.syndication;
 
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.util.syndication.FeedDiscoverer;
+import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 

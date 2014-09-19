@@ -1,8 +1,8 @@
 package de.test.antennapod.ui;
 
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import org.apache.http.HttpStatus;
 
 import java.io.File;

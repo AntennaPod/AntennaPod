@@ -15,12 +15,12 @@ import android.widget.*;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetDevice;
-import de.danoeh.antennapod.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.GpodnetSyncService;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.GpodnetSyncService;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;

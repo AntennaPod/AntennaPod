@@ -19,7 +19,7 @@ import android.widget.*;
 import android.widget.AdapterView.OnItemClickListener;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.io.File;
 import java.util.ArrayList;

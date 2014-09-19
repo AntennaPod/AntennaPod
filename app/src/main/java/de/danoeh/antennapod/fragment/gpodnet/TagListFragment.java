@@ -18,11 +18,11 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetTag;
-import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
+import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
 
 public class TagListFragment extends ListFragment {
     private static final String TAG = "TagListFragment";

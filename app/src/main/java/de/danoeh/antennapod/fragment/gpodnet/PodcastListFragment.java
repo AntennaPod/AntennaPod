@@ -5,23 +5,21 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.*;
 import android.util.Log;
 import android.view.*;
 import android.widget.*;
-import android.widget.SearchView;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.gpodnet.PodcastListAdapter;
-import de.danoeh.antennapod.fragment.SearchFragment;
-import de.danoeh.antennapod.gpoddernet.GpodnetService;
-import de.danoeh.antennapod.gpoddernet.GpodnetServiceException;
-import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
+import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
+import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 

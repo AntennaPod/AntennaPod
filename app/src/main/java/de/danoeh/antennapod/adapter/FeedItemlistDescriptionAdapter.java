@@ -7,7 +7,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItem;
 
 import java.util.List;
 

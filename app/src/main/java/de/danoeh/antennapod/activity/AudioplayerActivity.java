@@ -31,23 +31,23 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
-import de.danoeh.antennapod.feed.Chapter;
-import de.danoeh.antennapod.feed.EventDistributor;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.MediaType;
-import de.danoeh.antennapod.feed.SimpleChapter;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.service.playback.PlaybackService;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.util.menuhandler.NavDrawerActivity;
-import de.danoeh.antennapod.util.playback.ExternalMedia;
-import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.core.util.playback.ExternalMedia;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
 
 /**
  * Activity for playing audio files.

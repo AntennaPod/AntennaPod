@@ -7,7 +7,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.Arrays;
 import java.util.List;

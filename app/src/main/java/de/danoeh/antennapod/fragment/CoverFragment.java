@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
-import de.danoeh.antennapod.asynctask.PicassoProvider;
-import de.danoeh.antennapod.util.playback.Playable;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
  * Displays the cover and the title of a FeedItem.

@@ -28,15 +28,15 @@ import android.widget.Toast;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.storage.DBReader;
-import de.danoeh.antennapod.util.Converter;
-import de.danoeh.antennapod.util.ShareUtils;
-import de.danoeh.antennapod.util.ShownotesProvider;
-import de.danoeh.antennapod.util.playback.Playable;
-import de.danoeh.antennapod.util.playback.PlaybackController;
-import de.danoeh.antennapod.util.playback.Timeline;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.ShareUtils;
+import de.danoeh.antennapod.core.util.ShownotesProvider;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.core.util.playback.Timeline;
 
 /**
  * Displays the description of a Playable object in a Webview.

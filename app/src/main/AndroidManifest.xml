@@ -35,7 +35,7 @@
         android:name="de.danoeh.antennapod.PodcastApp"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
-        android:backupAgent=".backup.OpmlBackupAgent"
+        android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
         android:logo="@drawable/ic_launcher"
         android:theme="@style/Theme.AntennaPod.Light">
@@ -75,16 +75,16 @@
             android:launchMode="singleInstance"/>
 
         <service
-            android:name=".service.download.DownloadService"
+            android:name=".core.service.download.DownloadService"
             android:enabled="true"/>
         <service
-            android:name=".service.playback.PlaybackService"
+            android:name=".core.service.playback.PlaybackService"
             android:enabled="true"
             android:exported="true">
         </service>
 
         <service
-            android:name=".service.GpodnetSyncService"
+            android:name=".core.service.GpodnetSyncService"
             android:enabled="true">
         </service>
 
@@ -98,7 +98,7 @@
         </activity>
 
         <receiver
-            android:name=".receiver.MediaButtonReceiver"
+            android:name=".core.receiver.MediaButtonReceiver"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MEDIA_BUTTON"/>
@@ -112,12 +112,12 @@
         </activity>
 
         <service
-            android:name=".service.playback.PlayerWidgetService"
+            android:name=".core.service.playback.PlayerWidgetService"
             android:enabled="true"
             android:exported="false">
         </service>
 
-        <receiver android:name=".receiver.PlayerWidget">
+        <receiver android:name=".core.receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>
@@ -133,7 +133,7 @@
                 <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.FeedUpdateReceiver">
+        <receiver android:name=".core.receiver.FeedUpdateReceiver">
             <intent-filter>
                 <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds"/>
             </intent-filter>
@@ -324,12 +324,12 @@
         </activity>
 
 
-        <receiver android:name=".receiver.ConnectivityActionReceiver">
+        <receiver android:name=".core.receiver.ConnectivityActionReceiver">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".receiver.AlarmUpdateReceiver">
+        <receiver android:name=".core.receiver.AlarmUpdateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>

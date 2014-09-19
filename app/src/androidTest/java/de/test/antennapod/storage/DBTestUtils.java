@@ -1,12 +1,12 @@
 package de.test.antennapod.storage;
 
 import android.content.Context;
-import de.danoeh.antennapod.feed.Feed;
-import de.danoeh.antennapod.feed.FeedItem;
-import de.danoeh.antennapod.feed.FeedMedia;
-import de.danoeh.antennapod.storage.PodDBAdapter;
-import de.danoeh.antennapod.util.comparator.FeedItemPubdateComparator;
-import de.danoeh.antennapod.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
+import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import junit.framework.Assert;
 
 import java.util.ArrayList;

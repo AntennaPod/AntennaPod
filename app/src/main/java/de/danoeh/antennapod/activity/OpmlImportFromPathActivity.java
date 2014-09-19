@@ -13,9 +13,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.preferences.UserPreferences;
-import de.danoeh.antennapod.util.LangUtils;
-import de.danoeh.antennapod.util.StorageUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.LangUtils;
+import de.danoeh.antennapod.core.util.StorageUtils;
 
 import java.io.*;
 

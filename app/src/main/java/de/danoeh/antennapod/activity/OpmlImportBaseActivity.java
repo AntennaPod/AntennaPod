@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
-import de.danoeh.antennapod.asynctask.OpmlImportWorker;
-import de.danoeh.antennapod.opml.OpmlElement;
+import de.danoeh.antennapod.core.asynctask.OpmlFeedQueuer;
+import de.danoeh.antennapod.core.asynctask.OpmlImportWorker;
+import de.danoeh.antennapod.core.opml.OpmlElement;
 
 import java.io.Reader;
 import java.util.ArrayList;

@@ -2,9 +2,9 @@ package de.test.antennapod.handler;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.feed.*;
-import de.danoeh.antennapod.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.syndication.handler.UnsupportedFeedtypeException;
+import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
 import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
 import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
