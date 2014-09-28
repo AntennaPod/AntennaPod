@@ -11,6 +11,12 @@
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
+//
+// -----------------------------------------------------------------------
+// Compared to the original version, this class been slightly modified so
+// that any acquired WakeLocks are only held while the MediaPlayer is
+// playing (see the stayAwake method for more details).
+
 
 package com.aocate.media;
 
@@ -39,6 +45,8 @@ import com.aocate.presto.service.IOnPreparedListenerCallback_0_8;
 import com.aocate.presto.service.IOnSeekCompleteListenerCallback_0_8;
 import com.aocate.presto.service.IOnSpeedAdjustmentAvailableChangedListenerCallback_0_8;
 import com.aocate.presto.service.IPlayMedia_0_8;
+
+import de.danoeh.antennapod.BuildConfig;
 
 /**
  * Class for connecting to remote speed-altering, media playing Service
@@ -206,6 +214,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 	void error(int what, int extra) {
 		owningMediaPlayer.lock.lock();
 		Log.e(SBMP_TAG, "error(" + what + ", " + extra + ")");
+        stayAwake(false);
 		try {
 			if (!this.isErroring) {
 				this.isErroring = true;
@@ -478,6 +487,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			e.printStackTrace();
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
+        stayAwake(false);
 	}
 	
 	/**
@@ -581,6 +591,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			e.printStackTrace();
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
+        stayAwake(false);
 	}
 
 	/**
@@ -870,11 +881,27 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 				PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
 				// Since mode can't be changed on the fly, we have to allocate a new one
 				this.mWakeLock = pm.newWakeLock(mode, this.getClass().getName());
+                this.mWakeLock.setReferenceCounted(false);
 			}
 
 			this.mWakeLock.acquire();
 		}
 	}
+
+    /**
+     * Changes the state of the WakeLock if it has been acquired.
+     * If no WakeLock has been acquired with setWakeMode, this method does nothing.
+     * */
+    private void stayAwake(boolean awake) {
+        if (BuildConfig.DEBUG) Log.d(SBMP_TAG, "stayAwake(" + awake + ")");
+        if (mWakeLock != null) {
+            if (awake && !mWakeLock.isHeld()) {
+                mWakeLock.acquire();
+            } else if (!awake && mWakeLock.isHeld()) {
+                mWakeLock.release();
+            }
+        }
+    }
 
 	private IOnBufferingUpdateListenerCallback_0_8.Stub mOnBufferingUpdateCallback = null;
 	private void setOnBufferingUpdateCallback(IPlayMedia_0_8 iface) {
@@ -913,6 +940,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 					public void onCompletion() throws RemoteException {
 						owningMediaPlayer.lock.lock();
 						Log.d(SBMP_TAG, "onCompletionListener being called");
+                        stayAwake(false);
 						try {
 							if (owningMediaPlayer.onCompletionListener != null) {
 								owningMediaPlayer.onCompletionListener.onCompletion(owningMediaPlayer);
@@ -940,7 +968,8 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 				this.mOnErrorCallback = new IOnErrorListenerCallback_0_8.Stub() {
 					public boolean onError(int what, int extra) throws RemoteException {
 						owningMediaPlayer.lock.lock();
-						try {
+                        stayAwake(false);
+                        try {
 							if (owningMediaPlayer.onErrorListener != null) {
 								return owningMediaPlayer.onErrorListener.onError(owningMediaPlayer, what, extra);
 							}
@@ -1146,6 +1175,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			e.printStackTrace();
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
+        stayAwake(true);
 	}
 
 	/**
@@ -1166,5 +1196,6 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			e.printStackTrace();
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
+        stayAwake(false);
 	}
 }
