@@ -1,6 +1,12 @@
 Change Log
 ==========
 
+Version 0.9.9.4
+---------------
+* Added support for MP4 chapters (currently only for arm devices and downloaded episodes)
+* Fixed a bug where episode images were not loaded correctly
+* Fixed battery usage problems
+
 Version 0.9.9.3
 ---------------
 * Fixed video playback problems
