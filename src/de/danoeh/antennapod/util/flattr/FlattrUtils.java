@@ -133,7 +133,7 @@ public class FlattrUtils {
             throws FlattrException {
         if (hasToken()) {
             FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
-            fs.click(url);
+            fs.flattr(url);
         } else {
             Log.e(TAG, "clickUrl was called with null access token");
         }

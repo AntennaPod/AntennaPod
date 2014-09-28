@@ -3,7 +3,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:0.12.+'
+        classpath 'com.android.tools.build:gradle:0.13.2'
     }
 }
 apply plugin: 'com.android.application'
@@ -17,10 +17,10 @@ dependencies {
         println "Creating libs directory"
         libsdir.mkdir()
     }
-    compile 'com.android.support:support-v4:19.1.+'
-    compile 'com.android.support:appcompat-v7:19.1.+'
+    compile 'com.android.support:support-v4:20.0.0'
+    compile 'com.android.support:appcompat-v7:20.0.0'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.10') {
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.11') {
         exclude group: 'org.apache.httpcomponents', module: 'httpcore'
         exclude group: 'org.apache.httpcomponents', module: 'httpclient'
         exclude group: 'org.json', module: 'json'
@@ -34,8 +34,8 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-v4'
     }
     compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.3.+'
-    compile 'com.squareup.okhttp:okhttp:2.0.+'
+    compile 'com.squareup.picasso:picasso:2.3.4'
+    compile 'com.squareup.okhttp:okhttp:2.0.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.0.0'
     compile 'com.squareup.okio:okio:1.0.0'
 }
@@ -126,5 +126,5 @@ android {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '1.12'
+    gradleVersion = '2.1'
 }
