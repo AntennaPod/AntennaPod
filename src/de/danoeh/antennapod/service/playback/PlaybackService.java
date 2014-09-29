@@ -297,7 +297,12 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(true, true);
+                    if (UserPreferences.isPersistNotify()) {
+                      mediaPlayer.pause(false, true);
+                    }
+                    else {
+                      mediaPlayer.pause(true, true);
+                    }
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -317,7 +322,12 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
+                  if (UserPreferences.isPersistNotify()) {
+                    mediaPlayer.pause(false, true);
+                  }
+                  else {
                     mediaPlayer.pause(true, true);
+                  }
                 }
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
@@ -328,6 +338,12 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_REWIND:
                 mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
+            case KeyEvent.KEYCODE_MEDIA_STOP:
+              if (status == PlayerStatus.PLAYING) {
+                mediaPlayer.pause(true, true);
+              }
+              stopForeground(true); // gets rid of persistent notification
+              break;
             default:
                 if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
                     String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
@@ -401,7 +417,13 @@ public class PlaybackService extends Service {
                     taskManager.cancelPositionSaver();
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
-                    stopForeground(true);
+                    if (UserPreferences.isPersistNotify()) {
+                      // do not remove notification on pause
+                    }
+                    else {
+                      // remove notifcation on pause
+                      stopForeground(true);    
+                    }
                     break;
 
                 case STOPPED:
@@ -713,7 +735,7 @@ public class PlaybackService extends Service {
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
                     if (android.os.Build.VERSION.SDK_INT >= 16) {
-                        Intent pauseButtonIntent = new Intent(
+                        Intent pauseButtonIntent = new Intent( // pause button intent
                                 PlaybackService.this, PlaybackService.class);
                         pauseButtonIntent.putExtra(
                                 MediaButtonReceiver.EXTRA_KEYCODE,
@@ -721,6 +743,24 @@ public class PlaybackService extends Service {
                         PendingIntent pauseButtonPendingIntent = PendingIntent
                                 .getService(PlaybackService.this, 0,
                                         pauseButtonIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
+                        Intent playButtonIntent = new Intent( // play button intent
+                                PlaybackService.this, PlaybackService.class);
+                        playButtonIntent.putExtra(
+                                MediaButtonReceiver.EXTRA_KEYCODE,
+                                KeyEvent.KEYCODE_MEDIA_PLAY);
+                        PendingIntent playButtonPendingIntent = PendingIntent
+                                .getService(PlaybackService.this, 1,
+                                        playButtonIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
+                        Intent stopButtonIntent = new Intent( // stop button intent
+                                PlaybackService.this, PlaybackService.class);
+                        stopButtonIntent.putExtra(
+                                MediaButtonReceiver.EXTRA_KEYCODE,
+                                KeyEvent.KEYCODE_MEDIA_STOP);
+                        PendingIntent stopButtonPendingIntent = PendingIntent
+                                .getService(PlaybackService.this, 2,
+                                        stopButtonIntent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
                         Notification.Builder notificationBuilder = new Notification.Builder(
                                 PlaybackService.this)
@@ -730,9 +770,16 @@ public class PlaybackService extends Service {
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
                                 .setSmallIcon(R.drawable.ic_stat_antenna)
-                                .addAction(android.R.drawable.ic_media_pause,
+                                .setPriority(UserPreferences.getNotifyPriority()) // set notification priority
+                                .addAction(android.R.drawable.ic_media_play, //play action
+                                        getString(R.string.play_label),
+                                        playButtonPendingIntent)
+                                .addAction(android.R.drawable.ic_media_pause, //pause action
                                         getString(R.string.pause_label),
-                                        pauseButtonPendingIntent);
+                                        pauseButtonPendingIntent)
+                                .addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
+                                        getString(R.string.stop_label),
+                                        stopButtonPendingIntent);
                         notification = notificationBuilder.build();
                     } else {
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
@@ -949,7 +996,12 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
+          if (UserPreferences.isPersistNotify()) {
+            mediaPlayer.pause(false, true);
+          }
+          else {
             mediaPlayer.pause(true, true);
+          }
         }
     }
 

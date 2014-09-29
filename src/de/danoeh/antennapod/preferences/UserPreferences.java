@@ -53,6 +53,8 @@ public class UserPreferences implements
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
     private static final String PREF_SEEK_DELTA_SECS = "prefSeekDeltaSecs";
+    private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
+    private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
 
     // TODO: Make this value configurable
     private static final float PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT = 0.8f;
@@ -82,6 +84,8 @@ public class UserPreferences implements
     private boolean pauseForFocusLoss;
     private int seekDeltaSecs;
     private boolean isFreshInstall;
+    private int notifyPriority;
+    private boolean persistNotify;
 
     private UserPreferences(Context context) {
         this.context = context;
@@ -138,6 +142,13 @@ public class UserPreferences implements
                 PREF_PLAYBACK_SPEED_ARRAY, null));
         pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
         seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
+        if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
+          notifyPriority = 2; // max priority
+        }
+        else {
+          notifyPriority = 0; // default priority
+        }
+        persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
     }
 
     private int readThemeValue(String valueFromPrefs) {
@@ -242,6 +253,17 @@ public class UserPreferences implements
         instanceAvailable();
         return instance.autoFlattr;
     }
+
+    public static int getNotifyPriority() {
+        instanceAvailable();
+        return instance.notifyPriority;
+    }
+
+    public static boolean isPersistNotify() {
+        instanceAvailable();
+        return instance.persistNotify;
+    }
+
 
     /**
      * Returns the time after which an episode should be auto-flattr'd in percent of the episode's
@@ -366,6 +388,15 @@ public class UserPreferences implements
         } else if (key.equals(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD)) {
             autoFlattrPlayedDurationThreshold = sp.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD,
                     PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT);
+        } else if (key.equals(PREF_EXPANDED_NOTIFICATION)) {
+            if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
+              notifyPriority = 2; // max priority
+            }
+            else {
+              notifyPriority = 0; // default priority
+            }
+        } else if (key.equals(PREF_PERSISTENT_NOTIFICATION)) {
+            persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
         }
     }
 
