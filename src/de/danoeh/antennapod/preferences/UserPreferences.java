@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -143,10 +144,10 @@ public class UserPreferences implements
         pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
         seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
         if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
-          notifyPriority = 2; // max priority
+          notifyPriority = NotificationCompat.PRIORITY_MAX;
         }
         else {
-          notifyPriority = 0; // default priority
+          notifyPriority = NotificationCompat.PRIORITY_DEFAULT;
         }
         persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
     }
@@ -390,10 +391,10 @@ public class UserPreferences implements
                     PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT);
         } else if (key.equals(PREF_EXPANDED_NOTIFICATION)) {
             if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
-              notifyPriority = 2; // max priority
+              notifyPriority = NotificationCompat.PRIORITY_MAX;
             }
             else {
-              notifyPriority = 0; // default priority
+              notifyPriority = NotificationCompat.PRIORITY_DEFAULT;
             }
         } else if (key.equals(PREF_PERSISTENT_NOTIFICATION)) {
             persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
