@@ -9,6 +9,12 @@
             android:key="prefTheme"
             android:summary="@string/pref_set_theme_sum"
             android:defaultValue="0"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefLockscreenPersist"
+            android:summary="@string/pref_lockscreenPersistControls_sum"
+            android:title="@string/pref_lockscreenPersistControls_title"/>
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/playback_pref">
         <CheckBoxPreference

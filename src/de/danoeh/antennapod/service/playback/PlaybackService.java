@@ -297,7 +297,12 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(true, true);
+                    if (UserPreferences.isLockscreenPersist()) {
+                        mediaPlayer.pause(false, true);
+                    }
+                    else {
+                        mediaPlayer.pause(true, true);
+                    }
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -317,7 +322,12 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(true, true);
+                    if (UserPreferences.isLockscreenPersist()) {
+                        mediaPlayer.pause(false, true);
+                    }
+                    else {
+                        mediaPlayer.pause(true, true);
+                    }
                 }
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
@@ -949,7 +959,12 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
-            mediaPlayer.pause(true, true);
+            if (UserPreferences.isLockscreenPersist()) {
+                mediaPlayer.pause(false, true);
+            }
+            else {
+                mediaPlayer.pause(true, true);
+            }
         }
     }
 
