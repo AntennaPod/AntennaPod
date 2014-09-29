@@ -747,8 +747,8 @@ public class PlaybackServiceMediaPlayer {
                             pause(false, false);
                             pausedBecauseOfTransientAudiofocusLoss = true;
                         }
-                        playerLock.unlock();
                     }
+                    playerLock.unlock();
                 }
             });
         }
