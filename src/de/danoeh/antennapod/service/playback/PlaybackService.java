@@ -417,8 +417,8 @@ public class PlaybackService extends Service {
                     taskManager.cancelPositionSaver();
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
-                    if (UserPreferences.isPersistNotify()) {
-                      // do not remove notification on pause
+                    if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                      // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                     }
                     else {
                       // remove notifcation on pause
