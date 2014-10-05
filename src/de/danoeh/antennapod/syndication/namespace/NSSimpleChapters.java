@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.syndication.namespace;
 
+import android.util.Log;
+
+import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.feed.Chapter;
 import de.danoeh.antennapod.feed.SimpleChapter;
 import de.danoeh.antennapod.syndication.handler.HandlerState;
@@ -9,6 +12,8 @@ import org.xml.sax.Attributes;
 import java.util.ArrayList;
 
 public class NSSimpleChapters extends Namespace {
+    private static final String TAG = "NSSimpleChapters";
+
 	public static final String NSTAG = "psc|sc";
 	public static final String NSURI = "http://podlove.org/simple-chapters";
 
@@ -24,12 +29,16 @@ public class NSSimpleChapters extends Namespace {
 		if (localName.equals(CHAPTERS)) {
 			state.getCurrentItem().setChapters(new ArrayList<Chapter>());
 		} else if (localName.equals(CHAPTER)) {
-			state.getCurrentItem()
-					.getChapters()
-					.add(new SimpleChapter(SyndDateUtils
-							.parseTimeString(attributes.getValue(START)),
-							attributes.getValue(TITLE), state.getCurrentItem(),
-							attributes.getValue(HREF)));
+            try {
+                state.getCurrentItem()
+                        .getChapters()
+                        .add(new SimpleChapter(SyndDateUtils
+                                .parseTimeString(attributes.getValue(START)),
+                                attributes.getValue(TITLE), state.getCurrentItem(),
+                                attributes.getValue(HREF)));
+            } catch (NumberFormatException e) {
+                if (BuildConfig.DEBUG) Log.w(TAG, "Unable to read chapter", e);
+            }
 		}
 
 		return new SyndElement(localName, this);
