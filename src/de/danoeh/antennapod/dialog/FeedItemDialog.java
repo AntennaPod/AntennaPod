@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.widget.PopupMenu;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -115,6 +116,11 @@ public class FeedItemDialog extends Dialog {
         popupMenu = new PopupMenu(getContext(), butMore);
 
         webvDescription.setWebViewClient(new WebViewClient());
+
+        if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
+            txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
+        }
+
         txtvTitle.setText(item.getTitle());
 
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
