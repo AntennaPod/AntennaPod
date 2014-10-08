@@ -32,6 +32,9 @@
     </string-array>
     <string-array name="episode_cache_size_entries">
         <item>@string/pref_episode_cache_unlimited</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
         <item>10</item>
         <item>20</item>
         <item>40</item>
@@ -41,6 +44,9 @@
     </string-array>
     <string-array name="episode_cache_size_values">
         <item>-1</item>
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
         <item>10</item>
         <item>20</item>
         <item>40</item>
