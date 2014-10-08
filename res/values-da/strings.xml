@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Feeds</string>
+  <string name="add_feed_label">Tilføj podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODER</string>
   <string name="new_episodes_label">Nye episoder</string>
@@ -30,6 +31,7 @@
   <string name="copy_url_label">Kopier URL</string>
   <string name="share_url_label">Del URL</string>
   <string name="copied_url_msg">URL kopieret til udklipsholderen.</string>
+  <string name="go_to_position_label">Gå til denne position</string>
   <!--Playback history-->
   <string name="clear_history_label">Fjern historik</string>
   <!--Other-->
@@ -58,6 +60,7 @@
   <string name="auto_download_label">Inkluder i automatiske downloads</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
+  <string name="etxtFeedurlHint">URL af feed eller webside</string>
   <string name="txtvfeedurl_label">Tilføj Podcast med URL</string>
   <string name="podcastdirectories_label">Find podcast i mappen</string>
   <string name="podcastdirectories_descr">Du kan søge efter nye podcasts efter navn, kategori eller popularitet i gpodder.net biblioteket</string>
@@ -75,6 +78,7 @@
   <string name="download_label">Hent</string>
   <string name="play_label">Afspil</string>
   <string name="pause_label">Pause</string>
+  <string name="stop_label">Stop</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Fjern</string>
   <string name="remove_episode_lable">Fjern episode</string>
@@ -132,6 +136,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Buffering</string>
   <string name="playbackservice_notification_title">Afspiller podcast</string>
+  <string name="unknown_media_key">AntennaPod - ukendt medie nøgle: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Fjern kø</string>
   <string name="undo">Fortryd</string>
@@ -145,6 +150,7 @@
   <string name="return_home_label">Retuner hjem</string>
   <string name="flattr_auth_success">Godkendelse lykkedes! Du kan nu flattr emner inde i app\'en.</string>
   <string name="no_flattr_token_title">Ingen flattr polet fundet</string>
+  <string name="no_flattr_token_notification_msg">Din flattr konto ser ikke ud til at være forbundet med AntennaPod. Tryk her for at forbinde.</string>
   <string name="no_flattr_token_msg">Din flattr konto er vidst ikke forbundet til AntennaPod. Du kan forbinde din konto til AntennaPod for at flattr emner inde i app\'en, eller besøge websiden af mediet for at flattr det der.</string>
   <string name="authenticate_now_label">Godkender</string>
   <string name="action_forbidden_title">Forbudt handling</string>
@@ -166,7 +172,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Hent Plugin</string>
   <string name="no_playback_plugin_title">Plugin er ikke installeret</string>
-  <string name="no_playback_plugin_msg">For at få variabel afspilningshastighed til at virke skal der installeres et tredjepartsprogram.\n\nTryk \'Download Plugin\' for at downloade et gratis plugin fra Play Store\n\nAlle problemer forårsaget ved at bruge dette plugin er ikke AntennaPods ansvar og bør meldes til ejeren af plugin\'et.</string>
+  <string name="no_playback_plugin_msg">For at variabel afspilningshastighed virker skal der installeres et 3. part bibliotek.\n\nTap \'Download Plugin\' for at downloade et gratis plugin fra Play Store\n\nHvis der findes nogen problemer med dette plugin, så er det ikke AntennaPods ansvar, og problemet bør reporteres til ejeren af pluginet. </string>
   <string name="set_playback_speed_label">Afspilningshastigheder</string>
   <!--Empty list labels-->
   <string name="no_items_label">Der er ingen emner i denne liste.</string>
@@ -198,6 +204,7 @@
   <string name="pref_revokeAccess_title">Tilbagekald adgang</string>
   <string name="pref_revokeAccess_sum">Tilbagekald adgangen til din flattr konto fra denne app.</string>
   <string name="pref_auto_flattr_title">Flattr\'er automatisk</string>
+  <string name="pref_auto_flattr_sum">Konfigurer automatisk flattering</string>
   <string name="user_interface_label">Brugerflade</string>
   <string name="pref_set_theme_title">Vælg tema</string>
   <string name="pref_set_theme_sum">Skift AntennaPods udseende.</string>
@@ -220,9 +227,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">Skift din gpodder.net kontos login information.</string>
   <string name="pref_playback_speed_title">Afspilningshastigheder</string>
   <string name="pref_playback_speed_sum">Tilpas tilgængelige hastigheder for variabelt afspilningshastigheds plugin</string>
+  <string name="pref_seek_delta_title">Søg tid</string>
+  <string name="pref_seek_delta_sum">Søg så mange sekunder når der spoles tilbage eller frem</string>
   <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
+  <string name="pref_expandNotify_title">Udvid notifikation</string>
+  <string name="pref_expandNotify_sum">Altid udvid notifikationen for at vise afspilningsknapper.</string>
+  <string name="pref_persistNotify_title">Afspilningskontrol forbliver altid</string>
+  <string name="pref_persistNotify_sum">Behold notifikation og låseskærmskontrol når afspilningen pauses.</string>
+  <string name="pref_expand_notify_unsupport_toast">Android versioner før 4.1 understøtter ikke udvidede notifikationer.</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Aktiver automatisk flattring</string>
+  <string name="auto_flattr_after_percent">Flattr episoder så snart %d procent er blevet afspillet</string>
+  <string name="auto_flattr_ater_beginning">Flattr episoder når afspilning starter</string>
+  <string name="auto_flattr_ater_end">Flattr episoder når afspilning slutter</string>
   <!--Search-->
   <string name="search_hint">Søg efter feeds eller episoder</string>
   <string name="found_in_shownotes_label">Funder i showets noter</string>

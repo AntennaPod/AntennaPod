@@ -148,7 +148,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">הורד תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
-  <string name="no_playback_plugin_msg">לניגון במהירות משתנה תוסף מגורם שלישי צריך להיות מותקן. \n\nהקש על \'הורד תוסף\' להוריד תוסף חינמי מחנות Play\n\nבעיות בשימוש עם תוסף זה אינן באחריות אנטנה-פוד וצריך לדווחן ליוצר התוסף.</string>
   <string name="set_playback_speed_label">מהירויות ניגון</string>
   <!--Empty list labels-->
   <string name="no_items_label">אין פריטים ברשימה זו.</string>
@@ -244,7 +243,6 @@
   <string name="gpodnetauth_login_title">התחברות</string>
   <string name="gpodnetauth_login_descr">ברוך הבא להתחברות ל-gpodder.net. ראשית, הקלד את פרטי הכניסה שלך:</string>
   <string name="gpodnetauth_login_butLabel">התחברות</string>
-  <string name="gpodnetauth_login_register">אם אין לך עדיין חשבון, אתה יכול ליצור אחד כאן:\nhttps://gpodder.net/register/</string>
   <string name="username_label">שם משתמש:</string>
   <string name="password_label">ססמה:</string>
   <string name="gpodnetauth_device_title">בחירת מכשיר</string>

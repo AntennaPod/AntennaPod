@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='UTF-8'?>
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
-  <string name="app_name">\tऐन्टेनापॉड</string>
+  <string name="app_name">	ऐन्टेनापॉड</string>
   <string name="feeds_label">फिड्स</string>
   <string name="podcasts_label">पॉडकास्ट</string>
   <string name="episodes_label">एपिसोड</string>
@@ -26,7 +26,7 @@
   <!--Other-->
   <string name="confirm_label">पुष्टि करें</string>
   <string name="cancel_label">रद्द करें</string>
-  <string name="author_label">\tनिर्माता</string>
+  <string name="author_label">	निर्माता</string>
   <string name="language_label">भाषा</string>
   <string name="podcast_settings_label">सेटिंग्स</string>
   <string name="cover_label">तस्वीर</string>
@@ -54,7 +54,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">पढ़ने के रूप में सभी को चिह्नित करें</string>
   <string name="show_info_label">जानकारी दिखाएँ</string>
-  <string name="remove_feed_label">पॉडकास्ट हटाएँ\n</string>
+  <string name="remove_feed_label">पॉडकास्ट हटाएँ
+</string>
   <string name="share_link_label">शेयर वेबसाइट लिंक</string>
   <string name="share_source_label">शेयर फ़ीड लिंक</string>
   <string name="feed_delete_confirmation_msg">इसकी पुष्टि करें कि आप इस फ़ीड और इस फ़ीड के सभी प्रकरणों को हटाना चाहते हैं जिन्हें आपने डाउनलोड किया है.</string>
@@ -75,7 +76,8 @@
   <string name="download_all">सभी डाउनलोड</string>
   <string name="skip_episode_label">एपिसोड छोङें</string>
   <!--Download messages and labels-->
-  <string name="download_successful">सफल\n</string>
+  <string name="download_successful">सफल
+</string>
   <string name="download_failed">डाउनलोड विफल</string>
   <string name="download_pending">लंबित डाउनलोड</string>
   <string name="download_running">डाउनलोड चल रहा है</string>
@@ -142,7 +144,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">प्लगइन डाउनलोड करें</string>
   <string name="no_playback_plugin_title">प्लगइन स्थापित नहीं हुआ</string>
-  <string name="no_playback_plugin_msg">काम करने के लिए चर गति प्लेबैक के लिए, एक तीसरी पार्टी पुस्तकालय स्थापित किया जाना चाहिए. ⏎\n⏎\nप्ले स्टोर से एक मुक्त प्लगइन डाउनलोड करने के लिए \'डाउनलोड प्लगइन\' को ठोकें⏎\n⏎इस प्लगइन का उपयोग कर पाने में कोई समस्या है तो AntennaPod जिम्मेदार नहीं है और प्लगइन मालिक को सूचित किया जाना चाहिए.</string>
   <string name="set_playback_speed_label">प्लेबैक गति</string>
   <!--Empty list labels-->
   <string name="no_items_label">इस सूची में कोई आइटम नहीं हैं.</string>
@@ -180,7 +181,7 @@
   <string name="pref_automatic_download_sum">एपिसोड के स्वत: डाउनलोड विन्यस्त करें.</string>
   <string name="pref_autodl_wifi_filter_title">वाई-फाई फिल्टर सक्षम करें</string>
   <string name="pref_autodl_wifi_filter_sum">केवल चयनित वाई-फाई नेटवर्क के लिए स्वत: डाउनलोड की अनुमति दें.</string>
-  <string name="pref_episode_cache_title">\tगुप्त एपिसोड</string>
+  <string name="pref_episode_cache_title">	गुप्त एपिसोड</string>
   <string name="pref_theme_title_light">हलका</string>
   <string name="pref_theme_title_dark">अंधेरा</string>
   <string name="pref_episode_cache_unlimited">असीमित</string>
@@ -237,7 +238,6 @@
   <string name="gpodnetauth_login_title">लॉगिन</string>
   <string name="gpodnetauth_login_descr">Gpodder.net प्रवेश प्रक्रिया में आपका स्वागत है.पहले, अपनी प्रवेश जानकारी टाइप करें:</string>
   <string name="gpodnetauth_login_butLabel">लॉगिन</string>
-  <string name="gpodnetauth_login_register">अगर आप अभी तक कोई खाता नहीं है, तो आप एक यहाँ बना सकते हैं:⏎\nhttps://gpodder.net/register/</string>
   <string name="username_label">प्रयोक्ता नाम</string>
   <string name="password_label">पासवर्ड</string>
   <string name="gpodnetauth_device_title">डिवाइस चयन</string>

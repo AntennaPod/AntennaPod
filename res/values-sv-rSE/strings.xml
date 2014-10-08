@@ -78,6 +78,7 @@
   <string name="download_label">Ladda ned</string>
   <string name="play_label">Spela</string>
   <string name="pause_label">Pausa</string>
+  <string name="stop_label">Stopp</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Ta bort</string>
   <string name="remove_episode_lable">Ta bort episod</string>
@@ -230,6 +231,11 @@
   <string name="pref_seek_delta_sum">Sök så här många sekunder vid snabbspolning bakåt eller framåt</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
+  <string name="pref_expandNotify_title">Expandera notifieringar</string>
+  <string name="pref_expandNotify_sum">Expandera alltid notifieringen för att visa uppspelningskontrollerna.</string>
+  <string name="pref_persistNotify_title">Bestående uppspelningskontroller</string>
+  <string name="pref_persistNotify_sum">Behåll notifiering och kontroller på låsskärmen när uppspelningen pausas.</string>
+  <string name="pref_expand_notify_unsupport_toast">Androidversioner före 4.1 har inte stöd för expanderade notifieringar.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
