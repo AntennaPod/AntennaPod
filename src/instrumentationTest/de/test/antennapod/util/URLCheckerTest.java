@@ -32,7 +32,7 @@ public class URLCheckerTest extends AndroidTestCase {
         assertEquals("http://example.com", out);
     }
 
-    public void testPcastProtocol() {
+    public void testPcastProtocolNoScheme() {
         final String in = "pcast://example.com";
         final String out = URLChecker.prepareURL(in);
         assertEquals("http://example.com", out);
@@ -54,5 +54,23 @@ public class URLCheckerTest extends AndroidTestCase {
         final String in = "\n example.com \t";
         final String out = URLChecker.prepareURL(in);
         assertEquals("http://example.com", out);
+    }
+
+    public void testAntennaPodSubscribeProtocolNoScheme() throws Exception {
+        final String in = "antennapod-subscribe://example.com";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("http://example.com", out);
+    }
+
+    public void testPcastProtocolWithScheme() {
+        final String in = "pcast://https://example.com";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("https://example.com", out);
+    }
+
+    public void testAntennaPodSubscribeProtocolWithScheme() throws Exception {
+        final String in = "antennapod-subscribe://https://example.com";
+        final String out = URLChecker.prepareURL(in);
+        assertEquals("https://example.com", out);
     }
 }

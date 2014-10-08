@@ -293,6 +293,7 @@
                 <data android:scheme="itpc"/>
                 <data android:scheme="pcast"/>
                 <data android:scheme="feed"/>
+                <data android:scheme="antennapod-subscribe"/>
             </intent-filter>
 
             <intent-filter>
