@@ -3,7 +3,6 @@ Change Log
 
 Version 0.9.9.4
 ---------------
-* Added support for MP4 chapters (currently only for arm devices and downloaded episodes)
 * Added option to keep notification and lockscreen controls when playback is paused
 * Fixed a bug where episode images were not loaded correctly
 * Fixed battery usage problems
