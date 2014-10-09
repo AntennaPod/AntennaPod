@@ -122,11 +122,10 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
 
         subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
 
-        if (feed.getImage() != null) {
-            int imageSize = (int) getResources().getDimension(R.dimen.thumbnail_length);
+        if (feed.getImage() != null && StringUtils.isNoneBlank(feed.getImage().getDownload_url())) {
             PicassoProvider.getDefaultPicassoInstance(this)
                     .load(feed.getImage().getDownload_url())
-                    .resize(imageSize, imageSize)
+                    .fit()
                     .into(cover);
         }
 

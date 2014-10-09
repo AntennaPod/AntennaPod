@@ -22,6 +22,8 @@ public final class URLChecker {
      */
     private static final String TAG = "URLChecker";
 
+    private static final String AP_SUBSCRIBE = "antennapod-subscribe://";
+
     /**
      * Checks if URL is valid and modifies it if necessary.
      *
@@ -29,23 +31,24 @@ public final class URLChecker {
      * @return The prepared url
      */
     public static String prepareURL(String url) {
-        StringBuilder builder = new StringBuilder();
         url = StringUtils.trim(url);
         if (url.startsWith("feed://")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing feed:// with http://");
-            url = url.replaceFirst("feed://", "http://");
+            return url.replaceFirst("feed://", "http://");
         } else if (url.startsWith("pcast://")) {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Replacing pcast:// with http://");
-            url = url.replaceFirst("pcast://", "http://");
+            if (BuildConfig.DEBUG) Log.d(TAG, "Removing pcast://");
+            return prepareURL(StringUtils.removeStart(url, "pcast://"));
         } else if (url.startsWith("itpc")) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Replacing itpc:// with http://");
-            url = url.replaceFirst("itpc://", "http://");
+            return url.replaceFirst("itpc://", "http://");
+        } else if (url.startsWith(AP_SUBSCRIBE)) {
+            if (BuildConfig.DEBUG) Log.d(TAG, "Removing antennapod-subscribe://");
+            return prepareURL(StringUtils.removeStart(url, AP_SUBSCRIBE));
         } else if (!(url.startsWith("http://") || url.startsWith("https://"))) {
             if (BuildConfig.DEBUG) Log.d(TAG, "Adding http:// at the beginning of the URL");
-            builder.append("http://");
+            return "http://" + url;
+        } else {
+            return url;
         }
-        builder.append(url);
-
-        return builder.toString();
     }
 }

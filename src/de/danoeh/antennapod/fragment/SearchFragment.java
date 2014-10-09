@@ -160,7 +160,7 @@ public class SearchFragment extends ListFragment {
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & (EventDistributor.DOWNLOAD_QUEUED)) != 0) {
+            if ((arg & (EventDistributor.DOWNLOAD_QUEUED)) != 0 && feedItemDialog != null) {
                 feedItemDialog.updateMenuAppearance();
             }
             if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE

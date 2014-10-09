@@ -270,8 +270,10 @@ public class GpodnetAuthenticationActivity extends ActionBarActivity {
             @Override
             public void onClick(View v) {
                 final int position = spinnerDevices.getSelectedItemPosition();
-                selectedDevice = devices.get().get(position);
-                advance();
+                if (position != AdapterView.INVALID_POSITION) {
+                    selectedDevice = devices.get().get(position);
+                    advance();
+                }
             }
         });
     }

@@ -386,9 +386,23 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Uri getImageUri() {
+        final Uri feedImgUri = getFeedImageUri();
+
         if (localFileAvailable()) {
-            return new Uri.Builder().scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl()).build();
-        } else if (item != null && item.getFeed() != null) {
+            Uri.Builder builder = new Uri.Builder();
+            builder.scheme(SCHEME_MEDIA)
+                    .encodedPath(getLocalMediaUrl());
+            if (feedImgUri != null) {
+                builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
+            }
+            return builder.build();
+        } else {
+            return feedImgUri;
+        }
+    }
+
+    private Uri getFeedImageUri() {
+        if (item != null && item.getFeed() != null) {
             return item.getFeed().getImageUri();
         } else {
             return null;

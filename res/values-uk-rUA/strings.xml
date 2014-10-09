@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Канали</string>
+  <string name="add_feed_label">Додати подкаст</string>
   <string name="podcasts_label">Подкасти</string>
   <string name="episodes_label">Епізоди</string>
   <string name="new_episodes_label">Нові епізоди</string>
@@ -30,6 +31,7 @@
   <string name="copy_url_label">Копія URL</string>
   <string name="share_url_label">Поділитися URL</string>
   <string name="copied_url_msg">Копіювати URL в clipboard</string>
+  <string name="go_to_position_label">До цієї позиції</string>
   <!--Playback history-->
   <string name="clear_history_label">Забути</string>
   <!--Other-->
@@ -58,6 +60,7 @@
   <string name="auto_download_label">Включити до автозавантаження</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
+  <string name="etxtFeedurlHint">URL канала або сайта</string>
   <string name="txtvfeedurl_label">Додати подкаст за URL</string>
   <string name="podcastdirectories_label">Знайти подкаст в каталозі</string>
   <string name="podcastdirectories_descr">В каталозі gpodder.net можливий пошук за назвою, категорією або популярністю.</string>
@@ -75,6 +78,7 @@
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
   <string name="pause_label">Пауза</string>
+  <string name="stop_label">Стоп</string>
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
   <string name="remove_episode_lable">Видалити епізод</string>
@@ -132,6 +136,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферізую</string>
   <string name="playbackservice_notification_title">Грає подкаст</string>
+  <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
@@ -145,6 +150,7 @@
   <string name="return_home_label">Повернення до початку</string>
   <string name="flattr_auth_success">Вийшло авторізуватись. Тепер ви можете flattr things за допомогою додатку</string>
   <string name="no_flattr_token_title">Немає flattr token</string>
+  <string name="no_flattr_token_notification_msg">Ваш обліковий запис flattr, здається, не підключений до AntennaPod. Натисніть тут для підключення.</string>
   <string name="no_flattr_token_msg">Здається ваш обліковий запис flattr не під\'єднано до AntennaPod. Ви можете або під\'єднати її або відкривати web сторінку в браузері</string>
   <string name="authenticate_now_label">Пароль та логін</string>
   <string name="action_forbidden_title">Заборонено</string>
@@ -166,7 +172,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Завантажити Plugin</string>
   <string name="no_playback_plugin_title">Plugin не встановлено</string>
-  <string name="no_playback_plugin_msg">Для керування швидкістю програвання потрібно встановити plugin\nНатисніть \"Завантажити Plugin\" для завантаження безкоштовного plugin з Play Store\nЯкщо при використанні plugin будуть які небудь проблеми це відповідальність автору plugin, а не автору AntennaPod</string>
+  <string name="no_playback_plugin_msg">Для керування швидкістю програвання потрібно встановити додаток.\n\nНатисніть \"Завантажити додаток\" для завантаження безкоштовного додатку з Play Store\n\nЯкщо при використанні plugin виникнуть будь які проблеми - це відповідальність автора додатка, а не автора AntennaPod.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <!--Empty list labels-->
   <string name="no_items_label">Нічного в цьому списку</string>
@@ -198,6 +204,7 @@
   <string name="pref_revokeAccess_title">Відкликати доступ</string>
   <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
   <string name="pref_auto_flattr_title">Automatic Flattr</string>
+  <string name="pref_auto_flattr_sum">Налаштування автоматичного заохочення авторів через сервіс flattr</string>
   <string name="user_interface_label">Зовнішній вид</string>
   <string name="pref_set_theme_title">Обрати тему</string>
   <string name="pref_set_theme_sum">Змінити появу AntennaPod</string>
@@ -220,9 +227,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">Змінити вашу інформацію для вашего gpodder.net облікового запису</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
+  <string name="pref_seek_delta_title">Час перемотки</string>
+  <string name="pref_seek_delta_sum">Перейти на таку кількість секунд при перемотуванні назад або вперед</string>
   <string name="pref_gpodnet_sethostname_title">Встановити ім\'я хоста</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Використати хост по замовчанню</string>
+  <string name="pref_expandNotify_title">Розгорнути повідомлення</string>
+  <string name="pref_expandNotify_sum">Завжди розгортати повідомлення, щоб показати кнопки керування.</string>
+  <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
+  <string name="pref_persistNotify_sum">Показувати повідомлення та елементи керування на lockscreen в режимі паузи.</string>
+  <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
+  <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
+  <string name="auto_flattr_ater_beginning">Заохотити автора через Flattr коли починається відтворення</string>
+  <string name="auto_flattr_ater_end">Заохотити автора через Flattr коли закінчується відтворення</string>
   <!--Search-->
   <string name="search_hint">Пошук каналів та епізодів</string>
   <string name="found_in_shownotes_label">Знайдено у примітках</string>
@@ -231,7 +249,7 @@
   <string name="search_label">Пошук</string>
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подскати з однієї программи до іншої</string>
+  <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
   <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
   <string name="start_import_label">Почати імпорт</string>
   <string name="opml_import_label">OPML імпорт</string>
@@ -265,7 +283,7 @@
   <string name="gpodnetauth_login_title">Логін</string>
   <string name="gpodnetauth_login_descr">Ласкаво просимо до gpodder.net. Зпочатку заповнить вашу інформацію для входу</string>
   <string name="gpodnetauth_login_butLabel">Логін</string>
-  <string name="gpodnetauth_login_register">Якщо ви щє не маєте логіну, ви можете отримати тут:\nhttps://gpodder.net/register</string>
+  <string name="gpodnetauth_login_register">Якщо у вас немає облікового запису, ви можете створити його тут:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Ім\'я користувача</string>
   <string name="password_label">Пароль</string>
   <string name="gpodnetauth_device_title">Обрати пристрій</string>

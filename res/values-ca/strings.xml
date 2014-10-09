@@ -171,7 +171,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Baixa el connector</string>
   <string name="no_playback_plugin_title">Connector no instal·lat</string>
-  <string name="no_playback_plugin_msg">Per a què funcioni la velocitat de reproducció variable, cal instal·lar una biblioteca addicional.\n\nFeu un toc a «Baixa el connector» per baixar-vos el connector gratuït des de la Play Store.\n\nQualsevol problema que sorgeixi en utilitzar aquest connector no és culpa de l\'AntennaPod. Cal informar-ne, doncs, al propietari del connector.</string>
   <string name="set_playback_speed_label">Velocitats de reproducció</string>
   <!--Empty list labels-->
   <string name="no_items_label">No hi ha elements a la llista.</string>
@@ -277,7 +276,6 @@
   <string name="gpodnetauth_login_title">Inici de sessió</string>
   <string name="gpodnetauth_login_descr">Benvingut al procés d\'inici de sessió a gpodder.net. Primerament, introduïu la informació d\'accés:</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
-  <string name="gpodnetauth_login_register">Si encara no teniu un compte, creeu-ne un aquí:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Nom d\'usuari</string>
   <string name="password_label">Contrasenya</string>
   <string name="gpodnetauth_device_title">Selecció de dispositiu</string>

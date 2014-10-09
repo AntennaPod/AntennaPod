@@ -8,6 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -18,11 +20,9 @@ import de.danoeh.antennapod.gpoddernet.model.GpodnetPodcast;
  * Adapter for displaying a list of GPodnetPodcast-Objects.
  */
 public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
-    private final int thumbnailLength;
 
     public PodcastListAdapter(Context context, int resource, List<GpodnetPodcast> objects) {
         super(context, resource, objects);
-        thumbnailLength = (int) context.getResources().getDimension(R.dimen.thumbnail_length);
     }
 
     @Override
@@ -50,10 +50,12 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         holder.title.setText(podcast.getTitle());
         holder.description.setText(podcast.getDescription());
 
-        PicassoProvider.getDefaultPicassoInstance(convertView.getContext())
-                .load(podcast.getLogoUrl())
-                .resize(thumbnailLength, thumbnailLength)
-                .into(holder.image);
+        if (StringUtils.isNoneBlank(podcast.getLogoUrl())) {
+            PicassoProvider.getDefaultPicassoInstance(convertView.getContext())
+                    .load(podcast.getLogoUrl())
+                    .fit()
+                    .into(holder.image);
+        }
 
         return convertView;
     }

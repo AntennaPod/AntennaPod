@@ -350,10 +350,9 @@ public class ItemlistFragment extends ListFragment {
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
 
-        int imageSize = (int) getResources().getDimension(R.dimen.thumbnail_length_onlinefeedview);
         PicassoProvider.getDefaultPicassoInstance(getActivity())
                 .load(feed.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(imgvCover);
 
         if (feed.getLink() == null) {

@@ -22,7 +22,6 @@ public class QueueListAdapter extends BaseAdapter {
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
 
-    private final int imageSize;
 
     public QueueListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
@@ -30,8 +29,6 @@ public class QueueListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
-        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_queue_item);
-
     }
 
     @Override
@@ -97,7 +94,7 @@ public class QueueListAdapter extends BaseAdapter {
 
         PicassoProvider.getMediaMetadataPicassoInstance(context)
                 .load(item.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(holder.imageView);
 
         return convertView;

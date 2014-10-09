@@ -78,6 +78,7 @@
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
   <string name="pause_label">Pausieren</string>
+  <string name="stop_label">Stop</string>
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="remove_episode_lable">Episode entfernen</string>
@@ -171,7 +172,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
   <string name="no_playback_plugin_title">Plugin nicht installiert</string>
-  <string name="no_playback_plugin_msg">Um die Wiedergabegeschwindigkeit zu verändern, muss eine Drittanbieter-Bibliothek heruntegeladen werden.\n\nDrücke auf \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren.\n\nProbleme, die bei der Benutzung des Plugins auftreten, sollten dem Entwickler des Plugins gemeldet werden.</string>
+  <string name="no_playback_plugin_msg">Um die Wiedergabegeschwindigkeit zu verändern, muss eine Drittanbieter-Bibliothek heruntegeladen werden. Drücke auf \"Plugin herunterladen\", um ein kostenloses Plugin aus dem Play Store zu installieren. Probleme, die bei der Benutzung des Plugins auftreten, sollten dem Entwickler des Plugins gemeldet werden.</string>
   <string name="set_playback_speed_label">Wiedergabegeschwindigkeiten</string>
   <!--Empty list labels-->
   <string name="no_items_label">Es sind keine Einträge in dieser Liste.</string>
@@ -230,6 +231,11 @@
   <string name="pref_seek_delta_sum">Spule so viele Sekunden vor oder zurück</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
+  <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>
+  <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
+  <string name="pref_persistNotify_title">Persistente Wiedergabesteurung</string>
+  <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
+  <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode sobald %d Prozent gespielt worden sind</string>
@@ -277,7 +283,7 @@
   <string name="gpodnetauth_login_title">Anmeldung</string>
   <string name="gpodnetauth_login_descr">Willkommen beim gpodder.net Anmeldeprozess. Gib zuerst deine Anmeldeinformationen ein:</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
-  <string name="gpodnetauth_login_register">Falls du noch kein gpodder.net profil hast, kannst du hier eines erstellen:\nhttps://gpodder.net/register/</string>
+  <string name="gpodnetauth_login_register">Falls du noch kein gpodder.net profil hast, kannst du hier eines erstellen: https://gpodder.net/register/</string>
   <string name="username_label">Benutzername</string>
   <string name="password_label">Passwort</string>
   <string name="gpodnetauth_device_title">Geräte-Auswahl</string>

@@ -135,7 +135,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Scarica Plugin</string>
   <string name="no_playback_plugin_title">Plugin non installato</string>
-  <string name="no_playback_plugin_msg">Per la riproduzione a velocità variabile deve essere installata una libreria di terze parti.\n\nPremi \'Scarica Plugin\' per scaricare un plugin gratuito dal Play Store.\n\nEventuali problemi riscontrati utilizzando questo plugin non sono da imputare ad AntennaPod e devono essere segnalati al proprietario plugin.</string>
   <string name="set_playback_speed_label">Velocità di riproduzione</string>
   <!--Empty list labels-->
   <string name="no_items_label">Non ci sono oggetti in questa lista.</string>
@@ -230,7 +229,6 @@
   <string name="gpodnetauth_login_title">Login</string>
   <string name="gpodnetauth_login_descr">Benvenuto sul processo di login di gpodder.net. Per prima cosa, inserisci le tue informazioni di login:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
-  <string name="gpodnetauth_login_register">Se non possiedi ancora un account, puoi crearlo uno qui:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Username</string>
   <string name="password_label">Password</string>
   <string name="gpodnetauth_device_title">Scelta del dispositivo</string>

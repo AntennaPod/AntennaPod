@@ -207,10 +207,9 @@ public class ExternalPlayerFragment extends Fragment {
             if (media != null) {
                 txtvTitle.setText(media.getEpisodeTitle());
 
-                int imageSize = (int) getResources().getDimension(R.dimen.external_player_height);
                 PicassoProvider.getMediaMetadataPicassoInstance(getActivity())
                         .load(media.getImageUri())
-                        .resize(imageSize, imageSize)
+                        .fit()
                         .into(imgvCover);
 
                 fragmentLayout.setVisibility(View.VISIBLE);

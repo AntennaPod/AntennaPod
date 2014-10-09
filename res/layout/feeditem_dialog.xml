@@ -12,7 +12,8 @@
         android:id="@+id/txtvTitle"
         android:layout_alignParentTop="true"
         style="@style/AntennaPod.Dialog.Title"
-        android:maxLines="10"/>
+        android:maxLines="5"
+        android:ellipsize="none"/>
 
     <View
         android:id="@+id/title_divider"

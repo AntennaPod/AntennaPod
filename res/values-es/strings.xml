@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Canales</string>
+  <string name="add_feed_label">Añadir podcast</string>
   <string name="podcasts_label">PODCASTS</string>
   <string name="episodes_label">EPISODIOS</string>
   <string name="new_episodes_label">Episodios nuevos</string>
@@ -12,18 +13,25 @@
   <string name="settings_label">Ajustes</string>
   <string name="add_new_feed_label">Añadir podcast</string>
   <string name="downloads_label">Descargas</string>
+  <string name="downloads_running_label">En Curso</string>
+  <string name="downloads_completed_label">Completado</string>
+  <string name="downloads_log_label">Log</string>
   <string name="cancel_download_label">Cancelar descarga</string>
   <string name="playback_history_label">Histórico de reproducción</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
   <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Publicados Recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
   <!--Main activity-->
+  <string name="drawer_open">Abrir menú</string>
+  <string name="drawer_close">Cerrar Menú</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartir URL</string>
   <string name="copied_url_msg">URL copiada al portapapeles.</string>
+  <string name="go_to_position_label">Ir a esta posición</string>
   <!--Playback history-->
   <string name="clear_history_label">Vaciar el histórico</string>
   <!--Other-->
@@ -52,11 +60,16 @@
   <string name="auto_download_label">Incluir en auto descargas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
+  <string name="etxtFeedurlHint">URL del feed o del sitio web</string>
   <string name="txtvfeedurl_label">Añadir podcast por URL</string>
+  <string name="podcastdirectories_label">Buscar podcast en directorio</string>
+  <string name="podcastdirectories_descr">Se puede buscar nuevos podcast según nombre, categoría o popularidad en el directorio gpodder.net</string>
   <string name="browse_gpoddernet_label">Explorar gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
+  <string name="mark_all_read_msg">Marcar todos los episodios como leídos</string>
   <string name="show_info_label">Información del programa</string>
+  <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_source_label">Compartir el enlace del canal</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
@@ -65,8 +78,10 @@
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
+  <string name="stop_label">Stop</string>
   <string name="stream_label">Reproducir por streaming</string>
   <string name="remove_label">Quitar</string>
+  <string name="remove_episode_lable">Eliminar episodio</string>
   <string name="mark_read_label">Marcar como leído</string>
   <string name="mark_unread_label">Marcar como no leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
@@ -77,6 +92,8 @@
   <string name="download_all">Descargarlos todos</string>
   <string name="skip_episode_label">Omitir episodio</string>
   <!--Download messages and labels-->
+  <string name="download_successful">exitoso</string>
+  <string name="download_failed">fallido</string>
   <string name="download_pending">Descarga pendiente</string>
   <string name="download_running">Descarga en curso</string>
   <string name="download_error_device_not_found">No se ha encontrado un dispositivo de almacenamiento</string>
@@ -97,6 +114,7 @@
   <string name="download_error_request_error">Error de solicitud</string>
   <string name="download_error_db_access">Error de acceso a la base de datos</string>
   <string name="downloads_left">\u0020descargas restantes</string>
+  <string name="downloads_processing">Procesando descargas</string>
   <string name="download_notification_title">Descargando datos del podcast</string>
   <string name="download_report_content">%1$d descargas exitosas, %2$d fallidas</string>
   <string name="download_log_title_unknown">Título desconocido</string>
@@ -118,6 +136,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Almacenando</string>
   <string name="playbackservice_notification_title">Reproduciendo el podcast</string>
+  <string name="unknown_media_key">AntennaPod - Tecla multimedia desconocida: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Vaciar la cola</string>
   <string name="undo">Deshacer</string>
@@ -131,6 +150,7 @@
   <string name="return_home_label">Volver a la pantalla principal</string>
   <string name="flattr_auth_success">Autentificación exitosa. Ya puede valorar cosas en Flattr desde la aplicación.</string>
   <string name="no_flattr_token_title">No se ha encontrado un token de Flattr</string>
+  <string name="no_flattr_token_notification_msg">Tu cuenta Flatter parece no estar conectada con AntennaPod. Pulsa aquí para autenticar.</string>
   <string name="no_flattr_token_msg">Su cuenta de Flattr no está conectada con AntennaPod. Puede conectarla o puede visitar la página web de cada cosa para valorarla desde allí.</string>
   <string name="authenticate_now_label">Autenticarse</string>
   <string name="action_forbidden_title">Acción prohibida</string>
@@ -152,7 +172,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descargar complemento</string>
   <string name="no_playback_plugin_title">Complemento no instalado</string>
-  <string name="no_playback_plugin_msg">Para que la reproducción a velocidad variable funcione, es necesario instalar un complemento adicional.\n\nPulse «Descargar complemento» para descargar un complemento gratuito de la Play Store.\n\nSi aparece cualquier problema durante la utilización del complemento, informe de él al propietario, pues éste no es responsabilidad de AntennaPod.</string>
+  <string name="no_playback_plugin_msg">Para que funcione la reproducción a velocidad variable, es necesaria una librería de terceros.\n\nPulsa «Descargar plugin» para descargar un plugin gratuito desde el Play Store\n\nCualquier problema relacionado con este plugin no es responsabilidad de AntennaPod y deberían ser reportados al autor del plugin.</string>
   <string name="set_playback_speed_label">Velocidades de reproducción</string>
   <!--Empty list labels-->
   <string name="no_items_label">Esta lista no tiene elementos.</string>
@@ -184,6 +204,7 @@
   <string name="pref_revokeAccess_title">Revocar el acceso</string>
   <string name="pref_revokeAccess_sum">Rescindir el permiso de acceso de esta aplicación a su cuenta de Flattr.</string>
   <string name="pref_auto_flattr_title">Uso de Flattr automático</string>
+  <string name="pref_auto_flattr_sum">Configurar flattr automático</string>
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
   <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
@@ -206,9 +227,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
+  <string name="pref_seek_delta_title">Intervalo de búsqueda</string>
+  <string name="pref_seek_delta_sum">Avanzar o retroceder esta cantidad de segundos</string>
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
+  <string name="pref_expandNotify_title">Expandir Notificación</string>
+  <string name="pref_expandNotify_sum">Expandir siempre la notificación para mostrar los botones de reproducción</string>
+  <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
+  <string name="pref_persistNotify_sum">Mantener la notificación y controles en pantalla de bloqueo cuando se pausa.</string>
+  <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Habilitar Flattr automático</string>
+  <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
+  <string name="auto_flattr_ater_beginning">Hacer Flattr del episodio al comenzar la reproducción</string>
+  <string name="auto_flattr_ater_end">Hacer Flattr del episodio al terminar la reproducción</string>
   <!--Search-->
   <string name="search_hint">Buscar canales o episodios</string>
   <string name="found_in_shownotes_label">Encontrado en las notas del programa</string>
@@ -251,7 +283,7 @@
   <string name="gpodnetauth_login_title">Iniciar sesión</string>
   <string name="gpodnetauth_login_descr">Bienvenido al proceso de autenticación de gpodder.net. Primero, escriba sus datos de inicio de sesión:</string>
   <string name="gpodnetauth_login_butLabel">Iniciar sesión</string>
-  <string name="gpodnetauth_login_register">Si tiene una cuenta aún, puede crear una aquí:\nhttps://gpodder.net/register/</string>
+  <string name="gpodnetauth_login_register">Si no tienes una cuenta aún, puedes crearla en:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Nombre de usuario</string>
   <string name="password_label">Contraseña</string>
   <string name="gpodnetauth_device_title">Selección del dispositivo</string>
@@ -306,8 +338,10 @@
   <string name="in_queue_label">El episodio está en la cola</string>
   <string name="new_episodes_count_label">Cantidad de episodios nuevos</string>
   <string name="in_progress_episodes_count_label">Cantidad de episodios que ha comenzado a escuchar</string>
+  <string name="drag_handle_content_description">Arrastrar para cambiar la posición de este ítem</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticación</string>
+  <string name="authentication_descr">Cambiar nombre y contraseña de este podcast y sus episodios</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
 </resources>

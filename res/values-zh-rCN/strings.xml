@@ -155,7 +155,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
-  <string name="no_playback_plugin_msg">安装第三方库后播放速度设置起作用.\n点击 \'插件下载\' 从 \'Pay 商店\' 下载免费插件.\n使用这些插件中碰到的任何问题请报告给插件作者, 跟 AntennaPod 无关.</string>
   <string name="set_playback_speed_label">播放速度</string>
   <!--Empty list labels-->
   <string name="no_items_label">列表为空.</string>
@@ -183,7 +182,8 @@
   <string name="pref_flattr_auth_title">Flattr 登录</string>
   <string name="pref_flattr_auth_sum">登录 Flattr 账户, 以便直接使用本应用中的相关功能.</string>
   <string name="pref_flattr_this_app_title">Flattr 本应用</string>
-  <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!\n</string>
+  <string name="pref_flattr_this_app_sum">支持 AntennaPod 发展, 请 Flattring 他. 谢谢!!
+</string>
   <string name="pref_revokeAccess_title">撤销访问</string>
   <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
   <string name="user_interface_label">界面</string>
@@ -253,7 +253,6 @@
   <string name="gpodnetauth_login_title">登录</string>
   <string name="gpodnetauth_login_descr">欢迎进入 gpodder.net 登录流程. 首先, 输入请你的登录信息:</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
-  <string name="gpodnetauth_login_register">如果还没有账户, 从这里创建:⏎\nhttps://gpodder.net/register/</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>
   <string name="gpodnetauth_device_title">设备选择</string>

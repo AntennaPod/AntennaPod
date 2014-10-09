@@ -78,6 +78,7 @@
   <string name="download_label">Transferir</string>
   <string name="play_label">Reproduzir</string>
   <string name="pause_label">Pausa</string>
+  <string name="stop_label">Parar</string>
   <string name="stream_label">Emitir</string>
   <string name="remove_label">Remover</string>
   <string name="remove_episode_lable">Remover episódio</string>
@@ -171,7 +172,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Transferir extra</string>
   <string name="no_playback_plugin_title">Extra não instalado</string>
-  <string name="no_playback_plugin_msg">Para melhorar a reprodução, deve transferir  e instalar um biblioteca de terceiros.\nClique Transferir extra para transferir o extra através da loja Google.\n\nSe encontrar problemas ao utilizar esta biblioteca, os programadores do AntennaPod não podem ser responsabilizados e deve contactar o programador do extra.</string>
+  <string name="no_playback_plugin_msg">Para que a velocidade de reprodução variável funcione, tem que instalar um biblioteca de terceiros.\n\nClique em Transferir extra para a transferir no Google Play.\n\nQuaisquer problemas que ocorram na utilização do extra devem ser reportados diretamente ao seu programador.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <!--Empty list labels-->
   <string name="no_items_label">Não existem itens na lista.</string>
@@ -230,6 +231,11 @@
   <string name="pref_seek_delta_sum">Ao recuar ou avançar, procurar este valor de segundos</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar pré-definição</string>
+  <string name="pref_expandNotify_title">Expansão de notificação</string>
+  <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução.</string>
+  <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
+  <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa.</string>
+  <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>

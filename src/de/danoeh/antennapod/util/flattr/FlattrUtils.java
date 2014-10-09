@@ -90,7 +90,7 @@ public class FlattrUtils {
      */
     public static boolean hasAPICredentials() {
         return StringUtils.isNotEmpty(BuildConfig.FLATTR_APP_KEY)
-                && StringUtils.isNoneEmpty(BuildConfig.FLATTR_APP_SECRET);
+                && StringUtils.isNotEmpty(BuildConfig.FLATTR_APP_SECRET);
     }
 
     public static boolean hasToken() {
@@ -133,7 +133,7 @@ public class FlattrUtils {
             throws FlattrException {
         if (hasToken()) {
             FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
-            fs.click(url);
+            fs.flattr(url);
         } else {
             Log.e(TAG, "clickUrl was called with null access token");
         }

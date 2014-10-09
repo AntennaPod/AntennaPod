@@ -27,7 +27,6 @@ public class NewEpisodesListAdapter extends BaseAdapter {
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
-    private final int imageSize;
 
     public NewEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
@@ -35,7 +34,6 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
-        this.imageSize = (int) context.getResources().getDimension(R.dimen.thumbnail_length_itemlist);
     }
 
     @Override
@@ -133,7 +131,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
         PicassoProvider.getMediaMetadataPicassoInstance(context)
                 .load(item.getImageUri())
-                .resize(imageSize, imageSize)
+                .fit()
                 .into(holder.imageView);
 
         return convertView;

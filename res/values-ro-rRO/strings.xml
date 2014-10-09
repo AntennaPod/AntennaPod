@@ -126,7 +126,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Descarcă plugin</string>
   <string name="no_playback_plugin_title">Plugin neinstalat</string>
-  <string name="no_playback_plugin_msg">Pentru ca viteza variabilă de ascultare să funcționeze este necesară o librărie externă.\n\nApăsați \'Descarcă Plugin\' pentru a descărca un plugin gratuit din Play Store\n\nOrice probleme găsite folosind acest plugin nu sunt responsabilitatea AntennaPod și trebuie raportate autorului pluginului.</string>
   <string name="set_playback_speed_label">Viteze de ascultare</string>
   <!--Empty list labels-->
   <string name="no_items_label">Nu sunt elemente în listă.</string>

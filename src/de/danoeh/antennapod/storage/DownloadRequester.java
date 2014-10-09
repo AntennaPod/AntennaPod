@@ -34,7 +34,7 @@ public class DownloadRequester {
 
     private static DownloadRequester downloader;
 
-    Map<String, DownloadRequest> downloads;
+    private Map<String, DownloadRequest> downloads;
 
     private DownloadRequester() {
         downloads = new ConcurrentHashMap<String, DownloadRequest>();
@@ -57,7 +57,7 @@ public class DownloadRequester {
      *                call will return false.
      * @return True if the download request was accepted, false otherwise.
      */
-    public boolean download(Context context, DownloadRequest request) {
+    public synchronized boolean download(Context context, DownloadRequest request) {
         Validate.notNull(context);
         Validate.notNull(request);
 
@@ -145,7 +145,7 @@ public class DownloadRequester {
         return true;
     }
 
-    public void downloadFeed(Context context, Feed feed)
+    public synchronized void downloadFeed(Context context, Feed feed)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
@@ -156,7 +156,7 @@ public class DownloadRequester {
         }
     }
 
-    public void downloadImage(Context context, FeedImage image)
+    public synchronized void downloadImage(Context context, FeedImage image)
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
@@ -164,7 +164,7 @@ public class DownloadRequester {
         }
     }
 
-    public void downloadMedia(Context context, FeedMedia feedmedia)
+    public synchronized void downloadMedia(Context context, FeedMedia feedmedia)
             throws DownloadRequestException {
         if (feedFileValid(feedmedia)) {
             Feed feed = feedmedia.getItem().getFeed();
@@ -210,14 +210,14 @@ public class DownloadRequester {
     /**
      * Cancels a running download.
      */
-    public void cancelDownload(final Context context, final FeedFile f) {
+    public synchronized void cancelDownload(final Context context, final FeedFile f) {
         cancelDownload(context, f.getDownload_url());
     }
 
     /**
      * Cancels a running download.
      */
-    public void cancelDownload(final Context context, final String downloadUrl) {
+    public synchronized void cancelDownload(final Context context, final String downloadUrl) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Cancelling download with url " + downloadUrl);
         Intent cancelIntent = new Intent(DownloadService.ACTION_CANCEL_DOWNLOAD);
@@ -228,7 +228,7 @@ public class DownloadRequester {
     /**
      * Cancels all running downloads
      */
-    public void cancelAllDownloads(Context context) {
+    public synchronized void cancelAllDownloads(Context context) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Cancelling all running downloads");
         context.sendBroadcast(new Intent(
@@ -238,7 +238,7 @@ public class DownloadRequester {
     /**
      * Returns true if there is at least one Feed in the downloads queue.
      */
-    public boolean isDownloadingFeeds() {
+    public synchronized boolean isDownloadingFeeds() {
         for (DownloadRequest r : downloads.values()) {
             if (r.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 return true;
@@ -250,32 +250,32 @@ public class DownloadRequester {
     /**
      * Checks if feedfile is in the downloads list
      */
-    public boolean isDownloadingFile(FeedFile item) {
+    public synchronized boolean isDownloadingFile(FeedFile item) {
         if (item.getDownload_url() != null) {
             return downloads.containsKey(item.getDownload_url());
         }
         return false;
     }
 
-    public DownloadRequest getDownload(String downloadUrl) {
+    public synchronized DownloadRequest getDownload(String downloadUrl) {
         return downloads.get(downloadUrl);
     }
 
     /**
      * Checks if feedfile with the given download url is in the downloads list
      */
-    public boolean isDownloadingFile(String downloadUrl) {
+    public synchronized boolean isDownloadingFile(String downloadUrl) {
         return downloads.get(downloadUrl) != null;
     }
 
-    public boolean hasNoDownloads() {
+    public synchronized boolean hasNoDownloads() {
         return downloads.isEmpty();
     }
 
     /**
      * Remove an object from the downloads-list of the requester.
      */
-    public void removeDownload(DownloadRequest r) {
+    public synchronized void removeDownload(DownloadRequest r) {
         if (downloads.remove(r.getSource()) == null) {
             Log.e(TAG,
                     "Could not remove object with url " + r.getSource());
@@ -285,17 +285,17 @@ public class DownloadRequester {
     /**
      * Get the number of uncompleted Downloads
      */
-    public int getNumberOfDownloads() {
+    public synchronized int getNumberOfDownloads() {
         return downloads.size();
     }
 
-    public String getFeedfilePath(Context context)
+    public synchronized String getFeedfilePath(Context context)
             throws DownloadRequestException {
         return getExternalFilesDirOrThrowException(context, FEED_DOWNLOADPATH)
                 .toString() + "/";
     }
 
-    public String getFeedfileName(Feed feed) {
+    public synchronized String getFeedfileName(Feed feed) {
         String filename = feed.getDownload_url();
         if (feed.getTitle() != null && !feed.getTitle().isEmpty()) {
             filename = feed.getTitle();
@@ -303,13 +303,13 @@ public class DownloadRequester {
         return "feed-" + FileNameGenerator.generateFileName(filename);
     }
 
-    public String getImagefilePath(Context context)
+    public synchronized String getImagefilePath(Context context)
             throws DownloadRequestException {
         return getExternalFilesDirOrThrowException(context, IMAGE_DOWNLOADPATH)
                 .toString() + "/";
     }
 
-    public String getImagefileName(FeedImage image) {
+    public synchronized String getImagefileName(FeedImage image) {
         String filename = image.getDownload_url();
         if (image.getOwner() != null && image.getOwner().getHumanReadableIdentifier() != null) {
             filename = image.getOwner().getHumanReadableIdentifier();
@@ -317,7 +317,7 @@ public class DownloadRequester {
         return "image-" + FileNameGenerator.generateFileName(filename);
     }
 
-    public String getMediafilePath(Context context, FeedMedia media)
+    public synchronized String getMediafilePath(Context context, FeedMedia media)
             throws DownloadRequestException {
         File externalStorage = getExternalFilesDirOrThrowException(
                 context,
@@ -338,7 +338,7 @@ public class DownloadRequester {
         return result;
     }
 
-    public String getMediafilename(FeedMedia media) {
+    private String getMediafilename(FeedMedia media) {
         String filename;
         String titleBaseFilename = "";
 

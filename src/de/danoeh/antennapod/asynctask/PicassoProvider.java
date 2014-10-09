@@ -127,14 +127,25 @@ public class PicassoProvider {
                     mmr.setDataSource(uri.getPath());
                     byte[] data = mmr.getEmbeddedPicture();
                     mmr.release();
+
                     if (data != null) {
                         return new Response(new ByteArrayInputStream(data), true, data.length);
                     } else {
+
+                        // check for fallback Uri
+                        String fallbackParam = uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
+
+                        if (fallbackParam != null) {
+                            String fallback = Uri.decode(Uri.parse(fallbackParam).getPath());
+                            if (fallback != null) {
+                                File imageFile = new File(fallback);
+                                return new Response(new BufferedInputStream(new FileInputStream(imageFile)), true, imageFile.length());
+                            }
+                        }
                         return null;
                     }
                 }
             }
-
             return okHttpDownloader.load(uri, b);
         }
     }

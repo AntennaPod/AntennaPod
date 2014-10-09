@@ -24,6 +24,10 @@ public class PlayerWidgetService extends Service {
 	private static final String TAG = "PlayerWidgetService";
 
 	private PlaybackService playbackService;
+
+    /** Controls write access to playbackservice reference */
+    private Object psLock;
+
 	/** True while service is updating the widget */
 	private volatile boolean isUpdating;
 
@@ -36,6 +40,7 @@ public class PlayerWidgetService extends Service {
 		if (BuildConfig.DEBUG)
 			Log.d(TAG, "Service created");
 		isUpdating = false;
+        psLock = new Object();
 	}
 
 	@Override
@@ -148,16 +153,20 @@ public class PlayerWidgetService extends Service {
 		public void onServiceConnected(ComponentName className, IBinder service) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG, "Connection to service established");
-			playbackService = ((PlaybackService.LocalBinder) service)
-					.getService();
-			startViewUpdaterIfNotRunning();
+            synchronized (psLock) {
+                playbackService = ((PlaybackService.LocalBinder) service)
+                        .getService();
+                startViewUpdaterIfNotRunning();
+            }
 		}
 
 		@Override
 		public void onServiceDisconnected(ComponentName name) {
-			playbackService = null;
-			if (BuildConfig.DEBUG)
-				Log.d(TAG, "Disconnected from service");
+            synchronized (psLock) {
+                playbackService = null;
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Disconnected from service");
+            }
 		}
 
 	};
@@ -169,7 +178,7 @@ public class PlayerWidgetService extends Service {
 		}
 	}
 
-	static class ViewUpdater extends Thread {
+	class ViewUpdater extends Thread {
 		private static final String THREAD_NAME = "ViewUpdater";
 		private PlayerWidgetService service;
 
@@ -182,7 +191,9 @@ public class PlayerWidgetService extends Service {
 
 		@Override
 		public void run() {
-			service.updateViews();
+            synchronized (psLock) {
+                service.updateViews();
+            }
 		}
 
 	}

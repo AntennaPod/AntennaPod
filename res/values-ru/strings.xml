@@ -3,6 +3,7 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
   <string name="feeds_label">Каналы</string>
+  <string name="add_feed_label">Добавить подкаст</string>
   <string name="podcasts_label">Подкасты</string>
   <string name="episodes_label">Выпуски</string>
   <string name="new_episodes_label">Новые выпуски</string>
@@ -57,7 +58,7 @@
   <string name="mark_all_read_label">Отметить все как прочитанное</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить подкаст</string>
-  <string name="share_link_label">Ссылка на сайт</string>
+  <string name="share_link_label">Поделиться ссылкой на сайт</string>
   <string name="share_source_label">Ссылка на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
   <string name="feed_remover_msg">Удаление канала</string>
@@ -154,7 +155,6 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
-  <string name="no_playback_plugin_msg">Для изменения скорости воспроизведения должна быть установлена сторонняя библиотека.⏎\n⏎\nНажмите «Загрузить плагин», чтобы загрузить беспалтный плагин из Play Store⏎\n⏎\nЛюбые проблемы при использовании плагина не являются ответственностью AntennaPod и о них следует сообщать владельцу плагину.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>
@@ -250,7 +250,6 @@
   <string name="gpodnetauth_login_title">Войти</string>
   <string name="gpodnetauth_login_descr">Добро пожаловать в процесс авторизации на gpodder.net. Сначала введите вашу информацию для авторизации:</string>
   <string name="gpodnetauth_login_butLabel">Войти</string>
-  <string name="gpodnetauth_login_register">Если у вас ещё нет аккаунта, то вы можете создать его здесь:⏎\nhttps://gpodder.net/register/</string>
   <string name="username_label">Имя пользователя</string>
   <string name="password_label">Пароль</string>
   <string name="gpodnetauth_device_title">Выбор устройства</string>
