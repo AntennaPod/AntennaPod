@@ -35,6 +35,12 @@
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDelete"
+            android:summary="Delete epidsode when playback completes"
+            android:title="Delete On Finish"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
