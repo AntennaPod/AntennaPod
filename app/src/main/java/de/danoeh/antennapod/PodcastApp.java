@@ -12,7 +12,6 @@ import de.danoeh.antennapod.spa.SPAUtil;
 public class PodcastApp extends Application {
 
 	private static final String TAG = "PodcastApp";
-	public static final String EXPORT_DIR = "export/";
 
 	private static float LOGICAL_DENSITY;
 

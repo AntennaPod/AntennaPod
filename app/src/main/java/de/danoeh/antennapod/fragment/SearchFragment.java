@@ -20,8 +20,8 @@ import de.danoeh.antennapod.core.feed.*;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 

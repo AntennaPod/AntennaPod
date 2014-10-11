@@ -22,7 +22,7 @@ import android.widget.Toast;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
-import de.danoeh.antennapod.core.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;

@@ -13,8 +13,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
-import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Performs a search on the gpodder.net directory and displays the results.

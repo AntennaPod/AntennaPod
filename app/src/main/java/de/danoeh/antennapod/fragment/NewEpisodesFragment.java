@@ -33,8 +33,8 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;

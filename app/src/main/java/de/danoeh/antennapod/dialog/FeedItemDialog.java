@@ -42,7 +42,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
-import de.danoeh.antennapod.core.util.menuhandler.FeedItemMenuHandler;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 
 /**
  * Shows information about a specific FeedItem and provides actions like playing, downloading, etc.

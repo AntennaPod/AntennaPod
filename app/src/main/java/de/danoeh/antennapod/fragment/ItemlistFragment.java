@@ -48,9 +48,9 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.menuhandler.FeedMenuHandler;
-import de.danoeh.antennapod.core.util.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Displays a list of FeedItems.

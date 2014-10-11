@@ -112,12 +112,12 @@
         </activity>
 
         <service
-            android:name=".core.service.playback.PlayerWidgetService"
+            android:name=".service.PlayerWidgetService"
             android:enabled="true"
             android:exported="false">
         </service>
 
-        <receiver android:name=".core.receiver.PlayerWidget">
+        <receiver android:name=".receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
             </intent-filter>

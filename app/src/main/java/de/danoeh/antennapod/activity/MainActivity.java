@@ -31,7 +31,7 @@ import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.StorageUtils;
-import de.danoeh.antennapod.core.util.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 import java.util.List;
 

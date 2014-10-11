@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.util.LangUtils;
-import de.danoeh.antennapod.core.util.menuhandler.FeedMenuHandler;
+import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 
 /**
  * Displays information about a feed.

@@ -1,2 +1,2 @@
-include ':app'
+include ':app', ':core'
 include ':app:dslv:library'
