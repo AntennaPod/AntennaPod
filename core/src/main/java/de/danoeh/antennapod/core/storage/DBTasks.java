@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.core.feed.*;
@@ -162,7 +163,9 @@ public final class DBTasks {
                         new FlattrStatusFetcher(context).start();
 
                     }
-                    GpodnetSyncService.sendSyncIntent(context);
+                    if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                        GpodnetSyncService.sendSyncIntent(context);
+                    }
                     autodownloadUndownloadedItems(context);
                 }
             }.start();

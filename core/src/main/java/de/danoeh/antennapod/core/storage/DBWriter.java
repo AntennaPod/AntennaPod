@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.feed.*;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -196,7 +197,9 @@ public class DBWriter {
                     adapter.removeFeed(feed);
                     adapter.close();
 
-                    GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
+                    if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                        GpodnetPreferences.addRemovedFeed(feed.getDownload_url());
+                    }
                     EventDistributor.getInstance().sendFeedUpdateBroadcast();
 
                     BackupManager backupManager = new BackupManager(context);
@@ -697,8 +700,10 @@ public class DBWriter {
                 adapter.setCompleteFeed(feeds);
                 adapter.close();
 
-                for (Feed feed : feeds) {
-                    GpodnetPreferences.addAddedFeed(feed.getDownload_url());
+                if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
+                    for (Feed feed : feeds) {
+                        GpodnetPreferences.addAddedFeed(feed.getDownload_url());
+                    }
                 }
 
                 BackupManager backupManager = new BackupManager(context);
