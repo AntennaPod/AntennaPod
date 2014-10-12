@@ -1,17 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          package="de.danoeh.antennapod"
-          android:versionCode="40"
-          android:versionName="0.9.9.3">
+    package="de.danoeh.antennapod"
+    android:versionCode="40"
+    android:versionName="0.9.9.3">
 
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.WAKE_LOCK"/>
-
-    <uses-sdk
-        android:minSdkVersion="10"
-        android:targetSdkVersion="19"/>
-
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 
     <supports-screens
@@ -74,20 +69,6 @@
             android:name=".activity.DownloadAuthenticationActivity"
             android:launchMode="singleInstance"/>
 
-        <service
-            android:name=".core.service.download.DownloadService"
-            android:enabled="true"/>
-        <service
-            android:name=".core.service.playback.PlaybackService"
-            android:enabled="true"
-            android:exported="true">
-        </service>
-
-        <service
-            android:name=".core.service.GpodnetSyncService"
-            android:enabled="true">
-        </service>
-
         <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation"
@@ -96,17 +77,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
         </activity>
-
-        <receiver
-            android:name=".core.receiver.MediaButtonReceiver"
-            android:exported="true">
-            <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER"/>
-            </intent-filter>
-        </receiver>
 
         <activity android:name=".activity.FeedInfoActivity">
         </activity>
@@ -131,11 +101,6 @@
 
             <intent-filter>
                 <action android:name="de.danoeh.antennapod.STOP_WIDGET_UPDATE"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".core.receiver.FeedUpdateReceiver">
-            <intent-filter>
-                <action android:name="de.danoeh.antennapod.feedupdatereceiver.refreshFeeds"/>
             </intent-filter>
         </receiver>
 
@@ -323,13 +288,12 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
-
-        <receiver android:name=".core.receiver.ConnectivityActionReceiver">
+        <receiver android:name=".receiver.SPAReceiver">
             <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+                <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
             </intent-filter>
         </receiver>
-        <receiver android:name=".core.receiver.AlarmUpdateReceiver">
+        <receiver android:name="de.danoeh.antennapod.core.receiver.AlarmUpdateReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
             </intent-filter>
@@ -339,11 +303,6 @@
                 <data
                     android:path="de.danoeh.antennapod"
                     android:scheme="package"/>
-            </intent-filter>
-        </receiver>
-        <receiver android:name=".receiver.SPAReceiver">
-            <intent-filter>
-                <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
             </intent-filter>
         </receiver>
     </application>

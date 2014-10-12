@@ -11,6 +11,15 @@ import de.danoeh.antennapod.spa.SPAUtil;
 /** Main application class. */
 public class PodcastApp extends Application {
 
+    // make sure that ClientConfigurator executes its static code
+    static {
+        try {
+            Class.forName("de.danoeh.antennapod.config.ClientConfigurator");
+        } catch (Exception e) {
+            throw new RuntimeException("ClientConfigurator not found");
+        }
+    }
+
 	private static final String TAG = "PodcastApp";
 
 	private static float LOGICAL_DENSITY;
