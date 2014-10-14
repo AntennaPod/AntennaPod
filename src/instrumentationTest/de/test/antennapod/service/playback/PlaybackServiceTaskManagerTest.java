@@ -124,6 +124,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerReset() {
+
+            }
+
+            @Override
             public void onWidgetUpdaterTick() {
 
             }
@@ -168,6 +173,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             @Override
             public void onSleepTimerExpired() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -246,6 +256,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerReset() {
+
+            }
+
+            @Override
             public void onWidgetUpdaterTick() {
 
             }
@@ -278,6 +293,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             @Override
             public void onWidgetUpdaterTick() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -317,6 +337,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
         @Override
         public void onSleepTimerExpired() {
+
+        }
+
+        @Override
+        public void onSleepTimerReset() {
 
         }
 

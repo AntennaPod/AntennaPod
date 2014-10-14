@@ -390,6 +390,11 @@ public class PlaybackService extends Service {
 
 
         @Override
+        public void onSleepTimerReset() {
+            taskManager.setSleepTimer(900000); // Add 15 min to the sleeptimer
+        }
+
+        @Override
         public void onWidgetUpdaterTick() {
             updateWidget();
         }
