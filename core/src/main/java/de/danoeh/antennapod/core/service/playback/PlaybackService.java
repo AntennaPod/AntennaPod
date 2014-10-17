@@ -521,9 +521,14 @@ public class PlaybackService extends Service {
         // is an episode in the queue left.
         // Start playback immediately if continuous playback is enabled
         Playable nextMedia = null;
-        boolean loadNextItem = isInQueue && nextItem != null;
-        playNextEpisode = playNextEpisode && loadNextItem
-                && UserPreferences.isFollowQueue();
+        boolean loadNextItem = ClientConfig.playbackServiceCallbacks.useQueue() &&
+                isInQueue &&
+                nextItem != null;
+
+        playNextEpisode = playNextEpisode &&
+                loadNextItem &&
+                UserPreferences.isFollowQueue();
+
         if (loadNextItem) {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Loading next item in queue");
@@ -699,6 +704,10 @@ public class PlaybackService extends Service {
             @Override
             protected void onPostExecute(Void result) {
                 super.onPostExecute(result);
+                if (mediaPlayer == null) {
+                    return;
+                }
+                PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
                 if (!isCancelled() && info.playerStatus == PlayerStatus.PLAYING
                         && info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
@@ -735,7 +744,9 @@ public class PlaybackService extends Service {
                                 .setSmallIcon(R.drawable.ic_stat_antenna);
                         notification = notificationBuilder.getNotification();
                     }
-                    startForeground(NOTIFICATION_ID, notification);
+                    if (newInfo.playerStatus == PlayerStatus.PLAYING) {
+                        startForeground(NOTIFICATION_ID, notification);
+                    }
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "Notification set up");
                 }

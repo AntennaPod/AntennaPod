@@ -263,7 +263,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     @Override
     public Uri getImageUri() {
-        if (hasMedia()) {
+        if (hasItemImageDownloaded()) {
+           return image.getImageUri();
+        } else if (hasMedia()) {
             return media.getImageUri();
         } else if (feed != null) {
             return feed.getImageUri();

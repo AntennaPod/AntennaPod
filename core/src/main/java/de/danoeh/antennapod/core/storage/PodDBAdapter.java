@@ -158,7 +158,7 @@ public class PodDBAdapter {
     private static final String TABLE_PRIMARY_KEY = KEY_ID
             + " INTEGER PRIMARY KEY AUTOINCREMENT ,";
 
-    private static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEEDS = "CREATE TABLE "
             + TABLE_NAME_FEEDS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
             + KEY_DOWNLOADED + " INTEGER," + KEY_LINK + " TEXT,"
@@ -170,7 +170,7 @@ public class PodDBAdapter {
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT)";
 
-    private static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_CONTENT_ENCODED + " TEXT," + KEY_PUBDATE
             + " INTEGER," + KEY_READ + " INTEGER," + KEY_LINK + " TEXT,"
@@ -180,12 +180,12 @@ public class PodDBAdapter {
             + KEY_FLATTR_STATUS + " INTEGER,"
             + KEY_IMAGE + " INTEGER)";
 
-    private static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL + " TEXT,"
             + KEY_DOWNLOADED + " INTEGER)";
 
-    private static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
+    public static final String CREATE_TABLE_FEED_MEDIA = "CREATE TABLE "
             + TABLE_NAME_FEED_MEDIA + " (" + TABLE_PRIMARY_KEY + KEY_DURATION
             + " INTEGER," + KEY_FILE_URL + " TEXT," + KEY_DOWNLOAD_URL
             + " TEXT," + KEY_DOWNLOADED + " INTEGER," + KEY_POSITION
@@ -194,18 +194,18 @@ public class PodDBAdapter {
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER)";
 
-    private static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
+    public static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
             + " INTEGER," + KEY_FEEDFILETYPE + " INTEGER," + KEY_REASON
             + " INTEGER," + KEY_SUCCESSFUL + " INTEGER," + KEY_COMPLETION_DATE
             + " INTEGER," + KEY_REASON_DETAILED + " TEXT,"
             + KEY_DOWNLOADSTATUS_TITLE + " TEXT)";
 
-    private static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
+    public static final String CREATE_TABLE_QUEUE = "CREATE TABLE "
             + TABLE_NAME_QUEUE + "(" + KEY_ID + " INTEGER PRIMARY KEY,"
             + KEY_FEEDITEM + " INTEGER," + KEY_FEED + " INTEGER)";
 
-    private static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
+    public static final String CREATE_TABLE_SIMPLECHAPTERS = "CREATE TABLE "
             + TABLE_NAME_SIMPLECHAPTERS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
             + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";

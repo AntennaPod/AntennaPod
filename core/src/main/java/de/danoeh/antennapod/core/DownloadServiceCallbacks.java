@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core;
 import android.app.PendingIntent;
 import android.content.Context;
 
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 
 /**
@@ -37,8 +38,21 @@ public interface DownloadServiceCallbacks {
      * <p/>
      * The PendingIntent takes users to an activity where they can look at all successful and failed downloads.
      *
-     * @return A non-null PendingIntent for the notification.
+     * @return A non-null PendingIntent for the notification or null if shouldCreateReport()==false
      */
     public PendingIntent getReportNotificationContentIntent(Context context);
+
+    /**
+     * Called by the FeedSyncThread after a feed has been downloaded and parsed.
+     *
+     * @param feed The non-null feed that has been parsed.
+     */
+    public void onFeedParsed(Context context, Feed feed);
+
+    /**
+     * Returns true if the DownloadService should create a report that shows the number of failed
+     * downloads when the service shuts down.
+     * */
+    public boolean shouldCreateReport();
 }
 

@@ -305,7 +305,10 @@ public class DownloadService extends Service {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Service shutting down");
         isRunning = false;
-        updateReport();
+
+        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()) {
+            updateReport();
+        }
 
         stopForeground(true);
         NotificationManager nm = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
@@ -813,6 +816,9 @@ public class DownloadService extends Service {
                                 }
                             }
 
+                            ClientConfig.downloadServiceCallbacks.onFeedParsed(DownloadService.this,
+                                    savedFeed);
+
                             numberOfDownloads.decrementAndGet();
                         }
 
@@ -832,6 +838,8 @@ public class DownloadService extends Service {
                     e.printStackTrace();
                 }
             }
+
+
 
             if (BuildConfig.DEBUG) Log.d(TAG, "Shutting down");
 

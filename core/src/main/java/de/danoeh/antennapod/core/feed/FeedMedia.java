@@ -395,6 +395,8 @@ public class FeedMedia extends FeedFile implements Playable {
                 builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
             }
             return builder.build();
+        } else if (item.hasItemImageDownloaded()) {
+            return item.getImage().getImageUri();
         } else {
             return feedImgUri;
         }
