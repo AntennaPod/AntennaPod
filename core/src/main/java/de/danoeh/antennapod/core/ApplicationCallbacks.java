@@ -19,4 +19,6 @@ public interface ApplicationCallbacks {
      * activity.
      */
     public Intent getStorageErrorActivity(Context context);
+
+    public void setUpateInterval(long upateInterval);
 }

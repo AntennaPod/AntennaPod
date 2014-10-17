@@ -23,6 +23,11 @@ public interface PlaybackServiceCallbacks {
      * Returns true if the PlaybackService should load new episodes from the queue when playback ends
      * and false if the PlaybackService should ignore the queue and load no more episodes when playback
      * finishes.
-     * */
+     */
     public boolean useQueue();
+
+    /**
+     * Returns a drawable resource that is used for the notification of the playback service.
+     */
+    public int getNotificationIconResource(Context context);
 }

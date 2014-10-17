@@ -8,6 +8,7 @@ import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /** Listens for events that make it necessary to reset the update alarm. */
@@ -26,7 +27,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 				Log.d(TAG, "Resetting update alarm after app upgrade");
 		}
 
-		UserPreferences.restartUpdateAlarm(UserPreferences.getUpdateInterval());
+        ClientConfig.applicationCallbacks.setUpateInterval(UserPreferences.getUpdateInterval());
 
 	}
 

@@ -1,55 +1,49 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="de.danoeh.antennapod.core">
 
-    <uses-permission android:name="android.permission.INTERNET"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.WAKE_LOCK"/>
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
-    <application android:allowBackup="true"
-        android:label="@string/app_name"
-        android:icon="@drawable/ic_launcher">
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name">
 
         <service
             android:name=".service.download.DownloadService"
-            android:enabled="true"/>
+            android:enabled="true" />
         <service
             android:name=".service.playback.PlaybackService"
             android:enabled="true"
-            android:exported="true">
-        </service>
+            android:exported="true"/>
         <service
             android:name=".service.GpodnetSyncService"
-            android:enabled="true">
-        </service>
+            android:enabled="true"/>
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MEDIA_BUTTON"/>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
             </intent-filter>
             <intent-filter>
-                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER"/>
+                <action android:name="de.danoeh.antennapod.NOTIFY_BUTTON_RECEIVER" />
             </intent-filter>
         </receiver>
 
-        <receiver android:name=".receiver.ConnectivityActionReceiver">
-            <intent-filter>
-                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
-            </intent-filter>
-        </receiver>
         <receiver android:name=".receiver.AlarmUpdateReceiver">
             <intent-filter>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
             <intent-filter>
-                <action android:name="android.intent.action.PACKAGE_REPLACED"/>
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
                 <data
                     android:path="de.danoeh.antennapod"
-                    android:scheme="package"/>
+                    android:scheme="package" />
             </intent-filter>
         </receiver>
 

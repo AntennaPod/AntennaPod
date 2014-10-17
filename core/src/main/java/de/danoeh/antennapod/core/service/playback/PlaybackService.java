@@ -79,6 +79,7 @@ public class PlaybackService extends Service {
     public static final String EXTRA_PREPARE_IMMEDIATELY = "extra.de.danoeh.antennapod.core.service.prepareImmediately";
 
     public static final String ACTION_PLAYER_STATUS_CHANGED = "action.de.danoeh.antennapod.core.service.playerStatusChanged";
+    public static final String EXTRA_NEW_PLAYER_STATUS = "extra.de.danoeh.antennapod.service.playerStatusChanged.newStatus";
     private static final String AVRCP_ACTION_PLAYER_STATUS_CHANGED = "com.android.music.playstatechanged";
     private static final String AVRCP_ACTION_META_CHANGED = "com.android.music.metachanged";
 
@@ -417,6 +418,9 @@ public class PlaybackService extends Service {
 
             }
 
+            Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
+            statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
+            sendBroadcast(statusUpdate);
             sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
             updateWidget();
             refreshRemoteControlClientState(newInfo);
@@ -694,8 +698,8 @@ public class PlaybackService extends Service {
 
                 }
                 if (icon == null) {
-                    icon = BitmapFactory.decodeResource(getResources(),
-                            R.drawable.ic_stat_antenna);
+                    icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
+                            ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
                 }
 
                 return null;
@@ -708,6 +712,8 @@ public class PlaybackService extends Service {
                     return;
                 }
                 PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
+                final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
+
                 if (!isCancelled() && info.playerStatus == PlayerStatus.PLAYING
                         && info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
@@ -730,7 +736,7 @@ public class PlaybackService extends Service {
                                 .setOngoing(true)
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
-                                .setSmallIcon(R.drawable.ic_stat_antenna)
+                                .setSmallIcon(smallIcon)
                                 .addAction(android.R.drawable.ic_media_pause,
                                         getString(R.string.pause_label),
                                         pauseButtonPendingIntent);
@@ -741,7 +747,7 @@ public class PlaybackService extends Service {
                                 .setContentTitle(contentTitle)
                                 .setContentText(contentText).setOngoing(true)
                                 .setContentIntent(pIntent).setLargeIcon(icon)
-                                .setSmallIcon(R.drawable.ic_stat_antenna);
+                                .setSmallIcon(smallIcon);
                         notification = notificationBuilder.getNotification();
                     }
                     if (newInfo.playerStatus == PlayerStatus.PLAYING) {
