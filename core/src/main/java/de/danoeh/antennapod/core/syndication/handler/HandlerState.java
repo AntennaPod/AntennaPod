@@ -1,11 +1,15 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Stack;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
-
-import java.util.*;
 
 /**
  * Contains all relevant information to describe the current state of a
@@ -35,6 +39,11 @@ public class HandlerState {
      */
     protected StringBuffer contentBuf;
 
+    /**
+     * Temporarily saved objects.
+     */
+    protected HashMap<String, Object> tempObjects;
+
     public HandlerState(Feed feed) {
         this.feed = feed;
         alternateUrls = new LinkedHashMap<String, String>();
@@ -42,6 +51,7 @@ public class HandlerState {
         tagstack = new Stack<SyndElement>();
         namespaces = new HashMap<String, Namespace>();
         defaultNamespaces = new Stack<Namespace>();
+        tempObjects = new HashMap<String, Object>();
     }
 
     public Feed getFeed() {
@@ -95,4 +105,7 @@ public class HandlerState {
         alternateUrls.put(url, title);
     }
 
+    public HashMap<String, Object> getTempObjects() {
+        return tempObjects;
+    }
 }

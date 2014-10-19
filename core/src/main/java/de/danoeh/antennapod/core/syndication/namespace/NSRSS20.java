@@ -85,6 +85,13 @@ public class NSRSS20 extends Namespace {
 					state.getCurrentItem().setTitle(
 							state.getCurrentItem().getDescription());
 				}
+
+                if (state.getTempObjects().containsKey(NSITunes.DURATION)) {
+                    if (state.getCurrentItem().hasMedia()) {
+                        state.getCurrentItem().getMedia().setDuration((Integer) state.getTempObjects().get(NSITunes.DURATION));
+                    }
+                    state.getTempObjects().remove(NSITunes.DURATION);
+                }
 			}
 			state.setCurrentItem(null);
 		} else if (state.getTagstack().size() >= 2
