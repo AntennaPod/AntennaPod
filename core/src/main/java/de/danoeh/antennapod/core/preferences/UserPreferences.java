@@ -330,7 +330,7 @@ public class UserPreferences implements
         } else if (key.equals(PREF_UPDATE_INTERVAL)) {
             updateInterval = readUpdateInterval(sp.getString(
                     PREF_UPDATE_INTERVAL, "0"));
-            ClientConfig.applicationCallbacks.setUpateInterval(updateInterval);
+            ClientConfig.applicationCallbacks.setUpdateInterval(updateInterval);
 
         } else if (key.equals(PREF_AUTO_DELETE)) {
             autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);

@@ -2,31 +2,31 @@
 host = https://www.transifex.com
 
 [antennapod.english]
-source_file = res/values/strings.xml
+source_file = core/src/main/res/values/strings.xml
 source_lang = en
-trans.az = res/values-az/strings.xml
-trans.ca = res/values-ca/strings.xml
-trans.cs_CZ = res/values-cs-rCZ/strings.xml
-trans.da = res/values-da/strings.xml
-trans.de = res/values-de/strings.xml
-trans.es = res/values-es/strings.xml
-trans.es_ES = res/values-es-rES/strings.xml
-trans.fr = res/values-fr/strings.xml
-trans.he_IL = res/values-iw-rIL/strings.xml
-trans.hi_IN = res/values-hi-rIN/strings.xml
-trans.it_IT = res/values-it-rIT/strings.xml
-trans.ko = res/values-ko/strings.xml
-trans.nl = res/values-nl/strings.xml
-trans.pl_PL = res/values-pl-rPL/strings.xml
-trans.pt = res/values-pt/strings.xml
-trans.pt_BR = res/values-pt-rBR/strings.xml
-trans.ro_RO = res/values-ro-rRO/strings.xml
-trans.ru = res/values-ru/strings.xml
-trans.ru-RU = res/values-ru/strings.xml
-trans.ru_RU = res/values-ru/strings.xml
-trans.uk_UA = res/values-uk-rUA/strings.xml
-trans.zh_CN = res/values-zh-rCN/strings.xml
-trans.sv_SE = res/values-sv-rSE/strings.xml
+trans.az = core/src/main/res/values-az/strings.xml
+trans.ca = core/src/main/res/values-ca/strings.xml
+trans.cs_CZ = core/src/main/res/values-cs-rCZ/strings.xml
+trans.da = core/src/main/res/values-da/strings.xml
+trans.de = core/src/main/res/values-de/strings.xml
+trans.es = core/src/main/res/values-es/strings.xml
+trans.es_ES = core/src/main/res/values-es-rES/strings.xml
+trans.fr = core/src/main/res/values-fr/strings.xml
+trans.he_IL = core/src/main/res/values-iw-rIL/strings.xml
+trans.hi_IN = core/src/main/res/values-hi-rIN/strings.xml
+trans.it_IT = core/src/main/res/values-it-rIT/strings.xml
+trans.ko = core/src/main/res/values-ko/strings.xml
+trans.nl = core/src/main/res/values-nl/strings.xml
+trans.pl_PL = core/src/main/res/values-pl-rPL/strings.xml
+trans.pt = core/src/main/res/values-pt/strings.xml
+trans.pt_BR = core/src/main/res/values-pt-rBR/strings.xml
+trans.ro_RO = core/src/main/res/values-ro-rRO/strings.xml
+trans.ru = core/src/main/res/values-ru/strings.xml
+trans.ru-RU = core/src/main/res/values-ru/strings.xml
+trans.ru_RU = core/src/main/res/values-ru/strings.xml
+trans.uk_UA = core/src/main/res/values-uk-rUA/strings.xml
+trans.zh_CN = core/src/main/res/values-zh-rCN/strings.xml
+trans.sv_SE = core/src/main/res/values-sv-rSE/strings.xml
 
 [antennapod.description]
 file_filter = description/<lang>.txt

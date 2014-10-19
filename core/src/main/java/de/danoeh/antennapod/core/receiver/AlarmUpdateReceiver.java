@@ -27,7 +27,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 				Log.d(TAG, "Resetting update alarm after app upgrade");
 		}
 
-        ClientConfig.applicationCallbacks.setUpateInterval(UserPreferences.getUpdateInterval());
+        ClientConfig.applicationCallbacks.setUpdateInterval(UserPreferences.getUpdateInterval());
 
 	}
 

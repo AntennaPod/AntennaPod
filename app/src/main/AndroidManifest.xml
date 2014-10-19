@@ -288,6 +288,12 @@
                 android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
         </activity>
 
+        <receiver android:name=".receiver.ConnectivityActionReceiver">
+            <intent-filter>
+                <action android:name="android.net.conn.CONNECTIVITY_CHANGE"/>
+            </intent-filter>
+        </receiver>
+
         <receiver android:name=".receiver.SPAReceiver">
             <intent-filter>
                 <action android:name="de.danoeh.antennapdsp.intent.SP_APPS_QUERY_FEEDS_RESPONSE"/>
