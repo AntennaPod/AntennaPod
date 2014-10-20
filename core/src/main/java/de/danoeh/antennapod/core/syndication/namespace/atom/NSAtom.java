@@ -193,7 +193,7 @@ public class NSAtom extends Namespace {
                             SyndDateUtils.parseRFC3339Date(content));
                 }
             } else if (top.equals(IMAGE)) {
-                state.getFeed().setImage(new FeedImage(content, null));
+                state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));
             }
 
         }

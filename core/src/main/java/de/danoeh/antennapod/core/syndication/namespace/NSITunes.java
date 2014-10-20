@@ -29,11 +29,13 @@ public class NSITunes extends Namespace {
             if (state.getCurrentItem() != null) {
                 // this is an items image
                 image.setTitle(state.getCurrentItem().getTitle()+IMAGE_TITLE);
+                image.setOwner(state.getCurrentItem());
                 state.getCurrentItem().setImage(image);
 
             } else  {
                 // this is the feed image
                 if (state.getFeed().getImage() == null) {
+                    image.setOwner(state.getFeed());
                     state.getFeed().setImage(image);
                 }
             }

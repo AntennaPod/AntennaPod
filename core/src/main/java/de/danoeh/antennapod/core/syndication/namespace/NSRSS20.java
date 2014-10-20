@@ -68,6 +68,7 @@ public class NSRSS20 extends Namespace {
 				String parent = state.getTagstack().peek().getName();
 				if (parent.equals(CHANNEL)) {
 					state.getFeed().setImage(new FeedImage());
+                    state.getFeed().getImage().setOwner(state.getFeed());
 				}
 			}
 		}

@@ -13,10 +13,11 @@ public class FeedImage extends FeedFile implements PicassoImageResource {
 	protected String title;
 	protected FeedComponent owner;
 
-	public FeedImage(String download_url, String title) {
+	public FeedImage(FeedComponent owner, String download_url, String title) {
 		super(null, download_url, false);
 		this.download_url = download_url;
 		this.title = title;
+        this.owner = owner;
 	}
 
 	public FeedImage(long id, String title, String file_url,
@@ -25,6 +26,10 @@ public class FeedImage extends FeedFile implements PicassoImageResource {
 		this.id = id;
 		this.title = title;
 	}
+
+    public FeedImage() {
+        super();
+    }
 
 	@Override
 	public String getHumanReadableIdentifier() {
@@ -38,10 +43,6 @@ public class FeedImage extends FeedFile implements PicassoImageResource {
 	@Override
 	public int getTypeAsInt() {
 		return FEEDFILETYPE_FEEDIMAGE;
-	}
-
-	public FeedImage() {
-		super();
 	}
 
 	public String getTitle() {
