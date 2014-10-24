@@ -146,29 +146,4 @@
         <item name="android:text">@string/new_label</item>
     </style>
 
-    <style name="AntennaPodBetterPickerThemeLight">
-        <item name="bpDialogBackground">@drawable/dialog_full_holo_light</item>
-        <item name="bpTitleColor">@color/dialog_text_color_holo_light</item>
-        <item name="bpTextColor">@color/dialog_text_color_holo_light</item>
-        <item name="bpDeleteIcon">@drawable/ic_backspace_light</item>
-        <item name="bpCheckIcon">@drawable/ic_check_light</item>
-        <item name="bpKeyBackground">@drawable/borderless_button</item>
-        <item name="bpButtonBackground">@drawable/borderless_button</item>
-        <item name="bpTitleDividerColor">@color/default_keyboard_indicator_color_dark</item>
-        <item name="bpDividerColor">@color/default_divider_color_light</item>
-        <item name="bpKeyboardIndicatorColor">@color/selection_background_color_light</item>
-    </style>
-
-    <style name="AntennaPodBetterPickerThemeDark">
-        <item name="bpDialogBackground">@drawable/dialog_full_holo_dark</item>
-        <item name="bpTitleColor">@color/dialog_text_color_holo_dark</item>
-        <item name="bpTextColor">@color/dialog_text_color_holo_dark</item>
-        <item name="bpDeleteIcon">@drawable/ic_backspace_dark</item>
-        <item name="bpCheckIcon">@drawable/ic_check_dark</item>
-        <item name="bpKeyBackground">@drawable/borderless_button_dark</item>
-        <item name="bpButtonBackground">@drawable/borderless_button_dark</item>
-        <item name="bpTitleDividerColor">@color/default_keyboard_indicator_color_dark</item>
-        <item name="bpDividerColor">@color/default_divider_color_dark</item>
-        <item name="bpKeyboardIndicatorColor">@color/selection_background_color_dark</item>
-    </style>
 </resources>

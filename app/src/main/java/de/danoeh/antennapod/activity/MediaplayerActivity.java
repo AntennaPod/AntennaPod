@@ -6,7 +6,6 @@ import android.content.Intent;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
@@ -18,11 +17,9 @@ import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerBuilder;
-import com.doomonafireball.betterpickers.hmspicker.HmsPickerDialogFragment;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.dialog.TimeDialog;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -34,6 +31,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.TimeDialog;
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -320,34 +318,17 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     break;
                 case R.id.set_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        int pickerStyle = (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Light) ?
-                                R.style.AntennaPodBetterPickerThemeLight : R.style.AntennaPodBetterPickerThemeDark;
-                        if (Build.VERSION.SDK_INT > 10) {   // TODO remove this as soon as dialog is shown correctly on 2.3
-                            HmsPickerBuilder hpb = new HmsPickerBuilder()
-                                    .setStyleResId(pickerStyle)
-                                    .setFragmentManager(getSupportFragmentManager());
+                        TimeDialog td = new TimeDialog(this,
+                                R.string.set_sleeptimer_label,
+                                R.string.set_sleeptimer_label) {
 
-                            hpb.addHmsPickerDialogHandler(new HmsPickerDialogFragment.HmsPickerDialogHandler() {
-                                @Override
-                                public void onDialogHmsSet(int ref, int hours, int minutes, int seconds) {
-                                    if (controller != null && controller.serviceAvailable()) {
-                                        controller.setSleepTimer((hours * 3600 + minutes * 60 + seconds) * 1000);
-                                    }
-                                }
-                            });
-                            hpb.show();
-                        } else {
-                            TimeDialog td = new TimeDialog(this,
-                                    R.string.set_sleeptimer_label,
-                                    R.string.set_sleeptimer_label) {
+                            @Override
+                            public void onTimeEntered(long millis) {
+                                controller.setSleepTimer(millis);
+                            }
+                        };
+                        td.show();
 
-                                @Override
-                                public void onTimeEntered(long millis) {
-                                    controller.setSleepTimer(millis);
-                                }
-                            };
-                            td.show();
-                        }
                         break;
 
                     }
