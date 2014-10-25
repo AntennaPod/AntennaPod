@@ -32,6 +32,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.PicassoProvider;
+import de.danoeh.antennapod.core.util.id3reader.ChapterReader;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -429,12 +430,12 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
         TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
-            String currentTitle = getSupportActionBar().getTitle().toString();
+            CharSequence currentTitle = getSupportActionBar().getTitle();
 
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                currentTitle = getSupportActionBar().getTitle().toString();
+                currentTitle = getSupportActionBar().getTitle();
                 getSupportActionBar().setTitle(R.string.app_name);
                 supportInvalidateOptionsMenu();
             }
