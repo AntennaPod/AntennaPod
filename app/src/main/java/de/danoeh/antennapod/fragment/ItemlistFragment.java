@@ -350,7 +350,6 @@ public class ItemlistFragment extends ListFragment {
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
-        ImageButton butVisitWebsite = (ImageButton) header.findViewById(R.id.butVisitWebsite);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -360,18 +359,6 @@ public class ItemlistFragment extends ListFragment {
                 .fit()
                 .into(imgvCover);
 
-        if (feed.getLink() == null) {
-            butVisitWebsite.setVisibility(View.INVISIBLE);
-        } else {
-            butVisitWebsite.setVisibility(View.VISIBLE);
-            butVisitWebsite.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    Uri uri = Uri.parse(feed.getLink());
-                    startActivity(new Intent(Intent.ACTION_VIEW, uri));
-                }
-            });
-        }
         butShowInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

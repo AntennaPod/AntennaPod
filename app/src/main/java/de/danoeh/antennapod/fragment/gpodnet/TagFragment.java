@@ -1,16 +1,17 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
+import android.app.Activity;
 import android.os.Bundle;
 
 import org.apache.commons.lang3.Validate;
+
+import java.util.List;
 
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
-
-import java.util.List;
 
 /**
  * Shows all podcasts from gpodder.net that belong to a specific tag.
@@ -40,6 +41,11 @@ public class TagFragment extends PodcastListFragment {
         Validate.isTrue(args != null && args.getString("tag") != null, "args invalid");
 
         tag = new GpodnetTag(args.getString("tag"));
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
         ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getName());
     }
 

@@ -39,7 +39,7 @@
             android:layout_height="60dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:background="?attr/borderless_button"
+            android:background="?attr/selectableItemBackground"
             android:src="?attr/navigation_up" />
 
         <TextView

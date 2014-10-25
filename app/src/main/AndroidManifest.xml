@@ -70,6 +70,15 @@
             android:launchMode="singleInstance"/>
 
         <activity
+            android:name=".activity.PreferenceActivityGingerbread"
+            android:configChanges="keyboardHidden|orientation"
+            android:label="@string/settings_label">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="de.danoeh.antennapod.activity.MainActivity"/>
+        </activity>
+
+        <activity
             android:name=".activity.PreferenceActivity"
             android:configChanges="keyboardHidden|orientation"
             android:label="@string/settings_label">

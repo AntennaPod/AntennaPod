@@ -3,42 +3,51 @@ package de.danoeh.antennapod.activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
-import android.content.res.TypedArray;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.*;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
 import org.apache.commons.lang3.Validate;
+
+import java.util.List;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.fragment.*;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.StorageUtils;
+import de.danoeh.antennapod.fragment.AddFeedFragment;
+import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
+import de.danoeh.antennapod.fragment.ItemlistFragment;
+import de.danoeh.antennapod.fragment.NewEpisodesFragment;
+import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
+import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
+import de.danoeh.antennapod.preferences.PreferenceController;
 
 /**
  * The activity that is shown when the user launches the app.
  */
-public class MainActivity extends ActionBarActivity implements NavDrawerActivity{
+public class MainActivity extends ActionBarActivity implements NavDrawerActivity {
     private static final String TAG = "MainActivity";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
@@ -84,8 +93,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
 
-        TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
@@ -102,7 +110,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
             }
         };
-        typedArray.recycle();
 
         drawerLayout.setDrawerListener(drawerToggle);
         FragmentManager fm = getSupportFragmentManager();
@@ -308,7 +315,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
         switch (item.getItemId()) {
             case R.id.show_preferences:
-                startActivity(new Intent(this, PreferenceActivity.class));
+                startActivity(new Intent(this, PreferenceController.getPreferenceActivity()));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

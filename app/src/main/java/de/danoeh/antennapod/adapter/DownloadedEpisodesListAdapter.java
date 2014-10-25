@@ -72,7 +72,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
         holder.txtvSize.setText(Converter.byteToString(item.getMedia().getSize()));
         FeedItem.State state = item.getState();
 

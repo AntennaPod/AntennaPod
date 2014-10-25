@@ -39,7 +39,6 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
             convertView = inflater.inflate(R.layout.gpodnet_podcast_listitem, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.description = (TextView) convertView.findViewById(R.id.txtvDescription);
             holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
 
             convertView.setTag(holder);
@@ -48,7 +47,6 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         }
 
         holder.title.setText(podcast.getTitle());
-        holder.description.setText(podcast.getDescription());
 
         if (StringUtils.isNoneBlank(podcast.getLogoUrl())) {
             PicassoProvider.getDefaultPicassoInstance(convertView.getContext())
@@ -62,7 +60,6 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
     static class Holder {
         TextView title;
-        TextView description;
         ImageView image;
     }
 }

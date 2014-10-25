@@ -21,4 +21,9 @@
     <color name="selection_background_color_dark">#FEBB20</color>
     <color name="selection_background_color_light">#FEBB20</color>
 
+    <!-- Theme colors -->
+    <color name="primary_light">#FFFFFF</color>
+    <color name="color_accent">#009EC8</color>
+
+
 </resources>

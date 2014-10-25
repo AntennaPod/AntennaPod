@@ -6,7 +6,6 @@
         android:id="@+id/show_preferences"
         android:title="@string/settings_label"
         android:menuCategory="system"
-        android:icon="?attr/action_settings"
         custom:showAsAction="collapseActionView"/>
 
 

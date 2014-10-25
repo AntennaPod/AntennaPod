@@ -16,6 +16,8 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
+import de.danoeh.antennapod.preferences.PreferenceController;
+
 import org.shredzone.flattr4j.exception.FlattrException;
 
 /** Guides the user through the authentication process */
@@ -108,7 +110,7 @@ public class FlattrAuthActivity extends ActionBarActivity {
 		switch (item.getItemId()) {
 		case android.R.id.home:
 			if (authSuccessful) {
-				Intent intent = new Intent(this, PreferenceActivity.class);
+				Intent intent = new Intent(this, PreferenceController.getPreferenceActivity());
 				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
 				startActivity(intent);
 			} else {

@@ -1,27 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent">
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
 
     <TextView
         android:id="@+id/txtvTitle"
-        android:layout_margin="8dp"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="1"
-        android:ellipsize="end"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_small"/>
+        android:layout_margin="16dp" />
 
     <TextView
         android:id="@+id/txtvDescription"
-        android:layout_margin="8dp"
+        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:lines="3"
-        android:ellipsize="end"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro"/>
+        android:layout_marginBottom="16dp"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:lines="3" />
 </LinearLayout>

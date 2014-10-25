@@ -6,7 +6,7 @@
         android:id="@+id/refresh_item"
         android:icon="?attr/navigation_refresh"
         android:menuCategory="container"
-        custom:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="ifRoom"
         android:title="@string/refresh_label">
     </item>
     <item

@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="@dimen/listitem_iconwithtext_height">
 
 
     <ImageView
@@ -16,8 +16,9 @@
         android:adjustViewBounds="true"
         android:cropToPadding="true"
         android:scaleType="fitXY"
-        android:layout_marginTop="6dp"
-        android:layout_marginBottom="6dp"/>
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="@dimen/listitem_icon_leftpadding"/>
 
 
     <TextView
@@ -30,10 +31,10 @@
         android:textSize="@dimen/text_size_navdrawer"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="12dp"
-        android:layout_marginTop="14dp"
-        android:layout_marginBottom="14dp"
-        android:layout_marginRight="48dp"
+        android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
+        android:layout_marginTop="@dimen/listitem_iconwithtext_textverticalpadding"
+        android:layout_marginBottom="@dimen/listitem_iconwithtext_textverticalpadding"
+        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
         android:layout_toRightOf="@id/imgvCover"
         />
 </RelativeLayout>

@@ -107,22 +107,22 @@ public class FeedItemlistAdapter extends BaseAdapter {
             FeedItem.State state = item.getState();
             switch (state) {
                 case PLAYING:
-                    holder.statusUnread.setVisibility(View.GONE);
+                    holder.statusUnread.setVisibility(View.INVISIBLE);
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     break;
                 case IN_PROGRESS:
-                    holder.statusUnread.setVisibility(View.GONE);
+                    holder.statusUnread.setVisibility(View.INVISIBLE);
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     break;
                 case NEW:
                     holder.statusUnread.setVisibility(View.VISIBLE);
                     break;
                 default:
-                    holder.statusUnread.setVisibility(View.GONE);
+                    holder.statusUnread.setVisibility(View.INVISIBLE);
                     break;
             }
 
-            holder.published.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+            holder.published.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
 
 
             FeedMedia media = item.getMedia();
@@ -145,6 +145,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
                         item.getMedia())) {
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
+                    holder.published.setVisibility(View.GONE);
+                } else {
+                    holder.episodeProgress.setVisibility(View.GONE);
+                    holder.published.setVisibility(View.VISIBLE);
                 }
 
                 TypedArray typeDrawables = context.obtainStyledAttributes(

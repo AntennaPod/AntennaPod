@@ -4,6 +4,9 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.View;
+import android.widget.ListView;
+
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -32,6 +35,13 @@ public class RunningDownloadsFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // add padding
+        final ListView lv = getListView();
+        lv.setClipToPadding(false);
+        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
+        lv.setPadding(0, vertPadding, 0, vertPadding);
+
         final DownloadlistAdapter downloadlistAdapter = new DownloadlistAdapter(getActivity(), itemAccess);
         setListAdapter(downloadlistAdapter);
 

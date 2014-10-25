@@ -8,9 +8,10 @@ import com.robotium.solo.Solo;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.PreferenceActivity;
+import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.preferences.PreferenceController;
 
 /**
  * User interface tests for MainActivity
@@ -110,6 +111,6 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testGoToPreferences() {
         solo.setNavigationDrawer(Solo.CLOSED);
         solo.clickOnMenuItem(solo.getString(R.string.settings_label));
-        solo.waitForActivity(PreferenceActivity.class);
+        solo.waitForActivity(PreferenceController.getPreferenceActivity());
     }
 }

@@ -16,8 +16,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentRight="true"
             android:layout_margin="12dp"
-            android:background="@drawable/borderless_button_dark"
-            android:src="@drawable/av_play_dark" />
+            android:background="?attr/selectableItemBackground"
+            android:src="@drawable/ic_play_arrow_white_24dp" />
 
         <LinearLayout
             android:id="@+id/layout_left"
@@ -25,7 +25,7 @@
             android:layout_height="match_parent"
             android:layout_alignParentLeft="true"
             android:layout_toLeftOf="@id/butPlay"
-            android:background="@drawable/borderless_button_dark"
+            android:background="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:orientation="vertical" >
 

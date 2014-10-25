@@ -1,45 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             xmlns:tools="http://schemas.android.com/tools"
-             android:layout_width="match_parent"
-             android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <GridView
+        android:id="@+id/gridView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/gridView"
-        android:stretchMode="columnWidth"
-        android:numColumns="auto_fit"
-        android:verticalSpacing="8dp"
-        android:horizontalSpacing="8dp"
-        android:gravity="center"
+        android:clipToPadding="false"
         android:columnWidth="200dp"
-        tools:listitem="@layout/gpodnet_podcast_listitem"/>
+        android:gravity="center"
+        android:horizontalSpacing="8dp"
+        android:numColumns="auto_fit"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:stretchMode="columnWidth"
+        android:verticalSpacing="8dp"
+        tools:listitem="@layout/gpodnet_podcast_listitem" />
 
     <ProgressBar
+        android:id="@+id/progressBar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/progressBar"
         android:layout_centerInParent="true"
-        android:indeterminateOnly="true"/>
+        android:indeterminateOnly="true" />
 
     <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:id="@+id/txtvError"
-        android:layout_centerInParent="true"
-        android:visibility="gone"
-        android:textAlignment="center"
-        android:layout_margin="16dp"
-        android:textSize="@dimen/text_size_small"/>
-    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/butRetry"
-        android:text="@string/retry_label"
+        android:layout_centerInParent="true"
         android:layout_margin="16dp"
-        android:visibility="gone"
+        android:textAlignment="center"
+        android:textSize="@dimen/text_size_small"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/butRetry"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvError"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/txtvError"/>
+        android:layout_margin="16dp"
+        android:text="@string/retry_label"
+        android:visibility="gone" />
 </RelativeLayout>

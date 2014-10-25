@@ -1,26 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:orientation="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@android:color/transparent">
-
-    <TextView
-        android:id="@+id/txtvTitle"
-        android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_small"
-        android:typeface="sans"
-        android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="16dp"
-        android:paddingBottom="4dp"/>
+    android:layout_width="match_parent"
+    android:layout_height="24dp"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
 
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:layout_alignParentBottom="true"
-        android:background="@color/gray"/>
+        android:layout_height="1dp"
+        android:layout_centerVertical="true"
+        android:background="@color/gray" />
 </RelativeLayout>

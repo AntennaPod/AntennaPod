@@ -108,6 +108,13 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // add padding
+        final ListView lv = getListView();
+        lv.setClipToPadding(false);
+        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
+        lv.setPadding(0, vertPadding, 0, vertPadding);
+
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle(R.string.search_label);
         viewCreated = true;
         if (itemsLoaded) {

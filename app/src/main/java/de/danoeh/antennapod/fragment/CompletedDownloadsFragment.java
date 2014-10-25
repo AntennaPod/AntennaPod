@@ -7,6 +7,8 @@ import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
+
+import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -82,6 +84,13 @@ public class CompletedDownloadsFragment extends ListFragment {
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+
+        // add padding
+        final ListView lv = getListView();
+        lv.setClipToPadding(false);
+        final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
+        lv.setPadding(0, vertPadding, 0, vertPadding);
+
         viewCreated = true;
         if (itemsLoaded && getActivity() != null) {
             onFragmentLoaded();

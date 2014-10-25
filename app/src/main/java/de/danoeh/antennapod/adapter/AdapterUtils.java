@@ -4,7 +4,7 @@ import android.content.res.Resources;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import de.danoeh.antennapod.R;
+
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.util.Converter;
@@ -44,13 +44,9 @@ public class AdapterUtils {
                                 - media.getPosition()));
             }
         } else if (!media.isDownloaded()) {
-            txtvPos.setText(res.getString(
-                    R.string.size_prefix)
-                    + Converter.byteToString(media.getSize()));
+            txtvPos.setText(Converter.byteToString(media.getSize()));
         } else {
-            txtvPos.setText(res.getString(
-                    R.string.length_prefix)
-                    + Converter.getDurationStringLong(media
+            txtvPos.setText(Converter.getDurationStringLong(media
                     .getDuration()));
         }
     }

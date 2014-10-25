@@ -412,9 +412,9 @@ public abstract class PlaybackController {
 
         if (PlaybackService.getCurrentMediaType() == MediaType.AUDIO) {
             TypedArray res = activity.obtainStyledAttributes(new int[]{
-                    R.attr.av_play, R.attr.av_pause});
-            playResource = res.getResourceId(0, R.drawable.av_play);
-            pauseResource = res.getResourceId(1, R.drawable.av_pause);
+                    R.attr.av_play_big, R.attr.av_pause_big});
+            playResource = res.getResourceId(0, R.drawable.ic_play_arrow_grey600_36dp);
+            pauseResource = res.getResourceId(1, R.drawable.ic_pause_grey600_36dp);
             res.recycle();
         } else {
             playResource = R.drawable.ic_action_play_over_video;

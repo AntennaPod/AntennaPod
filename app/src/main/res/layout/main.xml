@@ -26,15 +26,6 @@
 
     </RelativeLayout>
 
-    <ListView
-        android:id="@+id/nav_list"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="match_parent"
-        android:layout_gravity="start"
-        android:choiceMode="singleChoice"
-        android:background="?attr/nav_drawer_background"
-        android:scrollbarStyle="outsideOverlay"
-        android:paddingLeft="8dp"
-        android:paddingRight="8dp"/>
+    <include layout="@layout/nav_list"/>
 
 </android.support.v4.widget.DrawerLayout>

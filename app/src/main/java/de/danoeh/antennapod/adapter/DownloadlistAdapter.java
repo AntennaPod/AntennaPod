@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -49,7 +50,7 @@ public class DownloadlistAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         Holder holder;
-        Downloader downloader  = getItem(position);
+        Downloader downloader = getItem(position);
         DownloadRequest request = downloader.getDownloadRequest();
         // Inflate layout
         if (convertView == null) {
@@ -58,8 +59,6 @@ public class DownloadlistAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.downloadlist_item, parent, false);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            holder.message = (TextView) convertView
-                    .findViewById(R.id.txtvMessage);
             holder.downloaded = (TextView) convertView
                     .findViewById(R.id.txtvDownloaded);
             holder.percent = (TextView) convertView
@@ -82,9 +81,9 @@ public class DownloadlistAdapter extends BaseAdapter {
         }
 
         holder.title.setText(request.getTitle());
-        if (request.getStatusMsg() != 0) {
-            holder.message.setText(request.getStatusMsg());
-        }
+
+        holder.progbar.setIndeterminate(request.getSoFar() <= 0);
+
         String strDownloaded = Converter.byteToString(request.getSoFar());
         if (request.getSize() != DownloadStatus.SIZE_UNKNOWN) {
             strDownloaded += " / " + Converter.byteToString(request.getSize());
@@ -115,7 +114,6 @@ public class DownloadlistAdapter extends BaseAdapter {
 
     static class Holder {
         TextView title;
-        TextView message;
         TextView downloaded;
         TextView percent;
         ProgressBar progbar;

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ListView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/nav_list"
+    android:layout_width="@dimen/drawer_width"
+    android:layout_height="match_parent"
+    android:layout_gravity="start"
+    android:background="?attr/nav_drawer_background"
+    android:choiceMode="singleChoice"
+    android:clipToPadding="false"
+    android:divider="@android:color/transparent"
+    android:dividerHeight="0dp"
+    android:paddingBottom="@dimen/list_vertical_padding"
+    android:paddingTop="@dimen/list_vertical_padding"
+    android:scrollbarStyle="outsideOverlay" />

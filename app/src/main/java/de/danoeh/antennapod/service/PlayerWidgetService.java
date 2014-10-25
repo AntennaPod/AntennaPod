@@ -104,12 +104,12 @@ public class PlayerWidgetService extends Service {
 				if (progressString != null) {
 					views.setTextViewText(R.id.txtvProgress, progressString);
 				}
-				views.setImageViewResource(R.id.butPlay, R.drawable.av_pause_dark);
+				views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause_white_24dp);
                 if (Build.VERSION.SDK_INT >= 15) {
                     views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
                 }
 			} else {
-				views.setImageViewResource(R.id.butPlay, R.drawable.av_play_dark);
+				views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
                 if (Build.VERSION.SDK_INT >= 15) {
                     views.setContentDescription(R.id.butPlay, getString(R.string.play_label));
                 }
@@ -120,7 +120,7 @@ public class PlayerWidgetService extends Service {
 			views.setViewVisibility(R.id.txtvProgress, View.INVISIBLE);
 			views.setTextViewText(R.id.txtvTitle,
 					this.getString(R.string.no_media_playing_label));
-			views.setImageViewResource(R.id.butPlay, R.drawable.av_play);
+			views.setImageViewResource(R.id.butPlay, R.drawable.ic_play_arrow_white_24dp);
 
 		}
 

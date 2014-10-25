@@ -34,7 +34,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:id="@+id/butAction1"
-            android:background="?attr/borderless_button"
+            android:background="?attr/selectableItemBackground"
             tools:ignore="ContentDescription"/>
 
         <ImageButton
@@ -42,7 +42,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:id="@+id/butAction2"
-            android:background="?attr/borderless_button"
+            android:background="?attr/selectableItemBackground"
             tools:ignore="ContentDescription"/>
 
         <ImageButton
@@ -50,7 +50,7 @@
             android:layout_height="48dp"
             android:layout_weight="1"
             android:id="@+id/butMoreActions"
-            android:background="?attr/borderless_button"
+            android:background="?attr/selectableItemBackground"
             android:src="?attr/ic_action_overflow"
             android:contentDescription="@string/butAction_label"/>
     </LinearLayout>

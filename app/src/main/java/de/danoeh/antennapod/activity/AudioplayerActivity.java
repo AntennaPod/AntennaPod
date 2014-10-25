@@ -6,11 +6,11 @@ import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.v4.app.ActionBarDrawerToggle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -32,23 +32,22 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.asynctask.PicassoProvider;
-import de.danoeh.antennapod.core.util.id3reader.ChapterReader;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
-import de.danoeh.antennapod.fragment.CoverFragment;
-import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
+import de.danoeh.antennapod.dialog.VariableSpeedDialog;
+import de.danoeh.antennapod.fragment.CoverFragment;
+import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
+import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Activity for playing audio files.
@@ -428,8 +427,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butNavRight = (ImageButton) findViewById(R.id.butNavRight);
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
 
-        TypedArray typedArray = obtainStyledAttributes(new int[]{R.attr.nav_drawer_toggle});
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, typedArray.getResourceId(0, 0), R.string.drawer_open, R.string.drawer_close) {
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             CharSequence currentTitle = getSupportActionBar().getTitle();
 
             @Override
@@ -447,7 +445,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                 supportInvalidateOptionsMenu();
             }
         };
-        typedArray.recycle();
+
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.setDrawerListener(drawerToggle);
 

@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -37,7 +38,7 @@ public class NavListAdapter extends BaseAdapter {
         this.context = context;
 
         TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.ic_new, R.attr.stat_playlist,
-                R.attr.av_download, R.attr.device_access_time, R.attr.content_new});
+                R.attr.av_download, R.attr.ic_history, R.attr.content_new});
         drawables = new Drawable[]{ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
                 ta.getDrawable(3), ta.getDrawable(4)};
         ta.recycle();
@@ -54,7 +55,7 @@ public class NavListAdapter extends BaseAdapter {
         if (viewType == VIEW_TYPE_NAV) {
             return context.getString(NAV_TITLES[position]);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            return context.getString(R.string.podcasts_label);
+            return "";
         } else {
             return itemAccess.getItem(position);
         }
@@ -88,11 +89,11 @@ public class NavListAdapter extends BaseAdapter {
         if (viewType == VIEW_TYPE_NAV) {
             v = getNavView((String) getItem(position), position, convertView, parent);
         } else if (viewType == VIEW_TYPE_SECTION_DIVIDER) {
-            v = getSectionDividerView((String) getItem(position), position, convertView, parent);
+            v = getSectionDividerView(convertView, parent);
         } else {
             v = getFeedView(position - SUBSCRIPTION_OFFSET, convertView, parent);
         }
-        if (v != null) {
+        if (v != null && viewType != VIEW_TYPE_SECTION_DIVIDER) {
             TextView txtvTitle = (TextView) v.findViewById(R.id.txtvTitle);
             if (position == itemAccess.getSelectedItemIndex()) {
                 txtvTitle.setTypeface(null, Typeface.BOLD);
@@ -147,22 +148,11 @@ public class NavListAdapter extends BaseAdapter {
         return convertView;
     }
 
-    private View getSectionDividerView(String title, int position, View convertView, ViewGroup parent) {
-        SectionHolder holder;
-        if (convertView == null) {
-            holder = new SectionHolder();
-            LayoutInflater inflater = (LayoutInflater) context
-                    .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    private View getSectionDividerView(View convertView, ViewGroup parent) {
+        LayoutInflater inflater = (LayoutInflater) context
+                .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
-            convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
-
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
-            convertView.setTag(holder);
-        } else {
-            holder = (SectionHolder) convertView.getTag();
-        }
-
-        holder.title.setText(title);
+        convertView = inflater.inflate(R.layout.nav_section_item, parent, false);
 
         convertView.setEnabled(false);
         convertView.setOnClickListener(null);
@@ -202,10 +192,6 @@ public class NavListAdapter extends BaseAdapter {
         TextView title;
         TextView count;
         ImageView image;
-    }
-
-    static class SectionHolder {
-        TextView title;
     }
 
     static class FeedHolder {

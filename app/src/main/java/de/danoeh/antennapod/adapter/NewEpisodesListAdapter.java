@@ -86,9 +86,9 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(item.getTitle());
-        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_SHOW_DATE));
+        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
         if (item.isRead()) {
-            holder.statusUnread.setVisibility(View.GONE);
+            holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
         }
@@ -99,6 +99,8 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
             if (media.getDuration() > 0) {
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
+            } else if (media.getSize() > 0) {
+                holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
             } else {
                 holder.txtvDuration.setText("");
             }
@@ -106,8 +108,10 @@ public class NewEpisodesListAdapter extends BaseAdapter {
             if (isDownloadingMedia) {
                 holder.downloadProgress.setVisibility(View.VISIBLE);
                 holder.txtvDuration.setVisibility(View.GONE);
+                holder.pubDate.setVisibility(View.GONE);
             } else {
                 holder.txtvDuration.setVisibility(View.VISIBLE);
+                holder.pubDate.setVisibility(View.VISIBLE);
                 holder.downloadProgress.setVisibility(View.GONE);
             }
 
