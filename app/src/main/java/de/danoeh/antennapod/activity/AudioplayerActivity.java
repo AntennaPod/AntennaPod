@@ -269,14 +269,17 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     protected void postStatusMsg(int resId) {
-        setSupportProgressBarIndeterminateVisibility(resId == R.string.player_preparing_msg
+        if (resId == R.string.player_preparing_msg
                 || resId == R.string.player_seeking_msg
-                || resId == R.string.player_buffering_msg);
+                || resId == R.string.player_buffering_msg) {
+            // TODO Show progress bar here
+        }
     }
 
     @Override
     protected void clearStatusMsg() {
-        setSupportProgressBarIndeterminateVisibility(false);
+        // TODO Hide progress bar here
+
     }
 
     /**

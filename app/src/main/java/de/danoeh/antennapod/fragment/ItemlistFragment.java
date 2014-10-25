@@ -37,7 +37,6 @@ import de.danoeh.antennapod.core.asynctask.FeedRemover;
 import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -48,6 +47,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -82,6 +82,7 @@ public class ItemlistFragment extends ListFragment {
     private FeedItemDialog feedItemDialog;
     private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
+    private boolean isUpdatingFeed;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -160,6 +161,17 @@ public class ItemlistFragment extends ListFragment {
         feedItemDialog = null;
     }
 
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
+        @Override
+        public boolean isRefreshing() {
+            if (feed != null && DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFile(feed)) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -185,6 +197,7 @@ public class ItemlistFragment extends ListFragment {
                     return false;
                 }
             });
+            isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
 
@@ -277,15 +290,7 @@ public class ItemlistFragment extends ListFragment {
     };
 
     private void updateProgressBarVisibility() {
-        if (feed != null) {
-            if (DownloadService.isRunning
-                    && DownloadRequester.getInstance().isDownloadingFile(feed)) {
-                ((ActionBarActivity) getActivity())
-                        .setSupportProgressBarIndeterminateVisibility(true);
-            } else {
-                ((ActionBarActivity) getActivity())
-                        .setSupportProgressBarIndeterminateVisibility(false);
-            }
+        if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
         }
     }

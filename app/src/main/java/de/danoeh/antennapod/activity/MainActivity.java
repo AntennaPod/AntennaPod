@@ -75,7 +75,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);

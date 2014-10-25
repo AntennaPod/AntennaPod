@@ -167,9 +167,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         chooseTheme();
         super.onCreate(savedInstanceState);
 
-        // subclasses might use this feature
-        supportRequestWindowFeature(Window.FEATURE_INDETERMINATE_PROGRESS);
-
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Creating Activity");
         StorageUtils.checkStorageAvailability(this);

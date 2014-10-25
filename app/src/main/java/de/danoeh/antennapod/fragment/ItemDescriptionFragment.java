@@ -349,10 +349,6 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             protected void onCancelled() {
                 super.onCancelled();
-                if (getActivity() != null) {
-                    ((ActionBarActivity) getActivity())
-                            .setSupportProgressBarIndeterminateVisibility(false);
-                }
                 webViewLoader = null;
             }
 
@@ -364,10 +360,6 @@ public class ItemDescriptionFragment extends Fragment {
                 // /webvDescription.loadData(url, "text/html", "utf-8");
                 webvDescription.loadDataWithBaseURL(null, data, "text/html",
                         "utf-8", "about:blank");
-                if (getActivity() != null) {
-                    ((ActionBarActivity) getActivity())
-                            .setSupportProgressBarIndeterminateVisibility(false);
-                }
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Webview loaded");
                 webViewLoader = null;
@@ -376,10 +368,6 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             protected void onPreExecute() {
                 super.onPreExecute();
-                if (getActivity() != null) {
-                    ((ActionBarActivity) getActivity())
-                            .setSupportProgressBarIndeterminateVisibility(false);
-                }
             }
 
             @Override

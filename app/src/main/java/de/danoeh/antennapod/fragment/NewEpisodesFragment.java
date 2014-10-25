@@ -7,6 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.view.*;
@@ -75,6 +76,8 @@ public class NewEpisodesFragment extends Fragment {
     private FeedItemDialog feedItemDialog;
     private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
+    private boolean isUpdatingFeeds;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -136,6 +139,14 @@ public class NewEpisodesFragment extends Fragment {
         feedItemDialog = null;
     }
 
+
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
+        @Override
+        public boolean isRefreshing() {
+            return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+        }
+    };
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
@@ -158,6 +169,7 @@ public class NewEpisodesFragment extends Fragment {
                     return false;
                 }
             });
+            isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
 
@@ -252,7 +264,6 @@ public class NewEpisodesFragment extends Fragment {
         }
         listAdapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
-        updateProgressBarVisibility();
         updateShowOnlyEpisodesListViewState();
     }
 
@@ -319,21 +330,14 @@ public class NewEpisodesFragment extends Fragment {
 
     };
 
-    private void updateProgressBarVisibility() {
-        if (!viewsCreated) {
-            return;
-        }
-        ((ActionBarActivity) getActivity())
-                .setSupportProgressBarIndeterminateVisibility(DownloadService.isRunning
-                        && DownloadRequester.getInstance().isDownloadingFeeds());
-    }
-
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
                 startItemLoader();
-                updateProgressBarVisibility();
+                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                    getActivity().supportInvalidateOptionsMenu();
+                }
             }
         }
     };
