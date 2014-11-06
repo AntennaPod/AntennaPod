@@ -82,6 +82,10 @@
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
     </style>
 
+    <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
+        <item name="windowActionBarOverlay">true</item>
+    </style>
+
     <style name="UndoBar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">48dp</item>

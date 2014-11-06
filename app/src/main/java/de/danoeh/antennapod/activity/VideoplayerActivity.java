@@ -6,12 +6,12 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.support.v4.view.WindowCompat;
 import android.util.Log;
 import android.util.Pair;
 import android.view.MotionEvent;
 import android.view.SurfaceHolder;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
@@ -47,17 +47,15 @@ public class VideoplayerActivity extends MediaplayerActivity {
 
     @Override
     protected void chooseTheme() {
-        setTheme(R.style.Theme_AntennaPod_Dark);
+        setTheme(R.style.Theme_AntennaPod_VideoPlayer);
     }
 
     @SuppressLint("AppCompatMethod")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-        }
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
         super.onCreate(savedInstanceState);
+        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
     }
 
@@ -336,6 +334,9 @@ public class VideoplayerActivity extends MediaplayerActivity {
         }
         if (Build.VERSION.SDK_INT >= 14) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+
         }
         videoOverlay.setVisibility(View.GONE);
         butPlay.setVisibility(View.GONE);
