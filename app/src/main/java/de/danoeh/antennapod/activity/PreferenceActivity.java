@@ -1,13 +1,14 @@
 package de.danoeh.antennapod.activity;
 
 import android.annotation.TargetApi;
-import android.app.ActionBar;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.ActionBarActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
@@ -21,7 +22,7 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  * PreferenceActivity for API 11+. In order to change the behavior of the preference UI, see
  * PreferenceController.
  */
-public class PreferenceActivity extends Activity {
+public class PreferenceActivity extends ActionBarActivity {
 
     private PreferenceController preferenceController;
     private MainFragment prefFragment;
@@ -48,7 +49,7 @@ public class PreferenceActivity extends Activity {
         super.onCreate(savedInstanceState);
         instance = this;
 
-        ActionBar ab = getActionBar();
+        ActionBar ab = getSupportActionBar();
         if (ab != null) {
             ab.setDisplayHomeAsUpEnabled(true);
         }
