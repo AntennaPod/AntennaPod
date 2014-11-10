@@ -549,7 +549,6 @@ public final class DBReader {
     public static List<FeedItem> getPlaybackHistory(final Context context) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Loading playback history");
-        final int PLAYBACK_HISTORY_SIZE = 50;
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();

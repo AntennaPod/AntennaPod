@@ -325,8 +325,9 @@ public class DBReaderTest extends InstrumentationTestCase {
 
     public void testGetPlaybackHistory() {
         final Context context = getInstrumentation().getTargetContext();
-        final int numItems = 10;
-        final int playedItems = 5;
+        final int numItems = (DBReader.PLAYBACK_HISTORY_SIZE+1) * 2;
+        final int playedItems = DBReader.PLAYBACK_HISTORY_SIZE + 1;
+        final int numReturnedItems = Math.min(playedItems, DBReader.PLAYBACK_HISTORY_SIZE);
         final int numFeeds = 1;
 
         Feed feed = DBTestUtils.saveFeedlist(context, numFeeds, numItems, true).get(0);
@@ -344,8 +345,8 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         List<FeedItem> saved = DBReader.getPlaybackHistory(context);
         assertNotNull(saved);
-        assertEquals("Wrong size: ", playedItems, saved.size());
-        for (int i = 0; i < playedItems; i++) {
+        assertEquals("Wrong size: ", numReturnedItems, saved.size());
+        for (int i = 0; i < numReturnedItems; i++) {
             FeedItem item = saved.get(i);
             assertNotNull(item.getMedia().getPlaybackCompletionDate());
             assertEquals("Wrong sort order: ", item.getId(), ids[i]);

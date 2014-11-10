@@ -1037,8 +1037,8 @@ public class PodDBAdapter {
         Validate.isTrue(limit >= 0, "Limit must be >= 0");
 
         Cursor c = db.query(TABLE_NAME_FEED_MEDIA, null,
-                KEY_PLAYBACK_COMPLETION_DATE + " > 0 LIMIT " + limit, null, null,
-                null, null);
+                KEY_PLAYBACK_COMPLETION_DATE + " > 0", null, null,
+                null, String.format("%s DESC LIMIT %d", KEY_PLAYBACK_COMPLETION_DATE, limit));
         return c;
     }
 
