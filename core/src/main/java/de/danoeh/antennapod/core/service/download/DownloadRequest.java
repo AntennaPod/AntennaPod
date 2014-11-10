@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -15,6 +16,7 @@ public class DownloadRequest implements Parcelable {
     private boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
+    private final Bundle arguments;
 
     protected int progressPercent;
     protected long soFar;
@@ -22,7 +24,7 @@ public class DownloadRequest implements Parcelable {
     protected int statusMsg;
 
     public DownloadRequest(String destination, String source, String title,
-                           long feedfileId, int feedfileType, String username, String password, boolean deleteOnFailure) {
+                           long feedfileId, int feedfileType, String username, String password, boolean deleteOnFailure, Bundle arguments) {
         Validate.notNull(destination);
         Validate.notNull(source);
         Validate.notNull(title);
@@ -35,11 +37,12 @@ public class DownloadRequest implements Parcelable {
         this.username = username;
         this.password = password;
         this.deleteOnFailure = deleteOnFailure;
+        this.arguments = (arguments != null) ? arguments : new Bundle();
     }
 
     public DownloadRequest(String destination, String source, String title,
                            long feedfileId, int feedfileType) {
-        this(destination, source, title, feedfileId, feedfileType, null, null, true);
+        this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
     }
 
     private DownloadRequest(Parcel in) {
@@ -49,6 +52,7 @@ public class DownloadRequest implements Parcelable {
         feedfileId = in.readLong();
         feedfileType = in.readInt();
         deleteOnFailure = (in.readByte() > 0);
+        arguments = in.readBundle();
         if (in.dataAvail() > 0) {
             username = in.readString();
         } else {
@@ -74,6 +78,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeLong(feedfileId);
         dest.writeInt(feedfileType);
         dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
+        dest.writeBundle(arguments);
         if (username != null) {
             dest.writeString(username);
         }
@@ -92,6 +97,7 @@ public class DownloadRequest implements Parcelable {
         }
     };
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -106,11 +112,11 @@ public class DownloadRequest implements Parcelable {
         if (size != that.size) return false;
         if (soFar != that.soFar) return false;
         if (statusMsg != that.statusMsg) return false;
-        if (destination != null ? !destination.equals(that.destination) : that.destination != null)
-            return false;
+        if (!arguments.equals(that.arguments)) return false;
+        if (!destination.equals(that.destination)) return false;
         if (password != null ? !password.equals(that.password) : that.password != null)
             return false;
-        if (source != null ? !source.equals(that.source) : that.source != null) return false;
+        if (!source.equals(that.source)) return false;
         if (title != null ? !title.equals(that.title) : that.title != null) return false;
         if (username != null ? !username.equals(that.username) : that.username != null)
             return false;
@@ -120,14 +126,15 @@ public class DownloadRequest implements Parcelable {
 
     @Override
     public int hashCode() {
-        int result = destination != null ? destination.hashCode() : 0;
-        result = 31 * result + (source != null ? source.hashCode() : 0);
+        int result = destination.hashCode();
+        result = 31 * result + source.hashCode();
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
         result = 31 * result + (deleteOnFailure ? 1 : 0);
         result = 31 * result + (int) (feedfileId ^ (feedfileId >>> 32));
         result = 31 * result + feedfileType;
+        result = 31 * result + arguments.hashCode();
         result = 31 * result + progressPercent;
         result = 31 * result + (int) (soFar ^ (soFar >>> 32));
         result = 31 * result + (int) (size ^ (size >>> 32));
@@ -205,5 +212,9 @@ public class DownloadRequest implements Parcelable {
 
     public boolean isDeleteOnFailure() {
         return deleteOnFailure;
+    }
+
+    public Bundle getArguments() {
+        return arguments;
     }
 }

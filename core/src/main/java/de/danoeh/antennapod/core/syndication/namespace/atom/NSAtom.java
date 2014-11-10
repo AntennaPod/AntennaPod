@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.core.syndication.namespace.atom;
 
 import android.util.Log;
+
+import org.xml.sax.Attributes;
+
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -12,7 +15,6 @@ import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
 import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
-import org.xml.sax.Attributes;
 
 public class NSAtom extends Namespace {
     private static final String TAG = "NSAtom";
@@ -44,6 +46,7 @@ public class NSAtom extends Namespace {
     private static final String LINK_REL_PAYMENT = "payment";
     private static final String LINK_REL_RELATED = "related";
     private static final String LINK_REL_SELF = "self";
+    private static final String LINK_REL_NEXT = "next";
     // type-values
     private static final String LINK_TYPE_ATOM = "application/atom+xml";
     private static final String LINK_TYPE_HTML = "text/html";
@@ -120,6 +123,9 @@ public class NSAtom extends Namespace {
                     }
                 } else if (rel.equals(LINK_REL_PAYMENT)) {
                     state.getFeed().setPaymentLink(href);
+                } else if (rel.equals(LINK_REL_NEXT)) {
+                    state.getFeed().setPaged(true);
+                    state.getFeed().setNextPageLink(href);
                 }
             }
         }

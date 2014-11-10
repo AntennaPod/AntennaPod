@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -44,9 +43,11 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -81,6 +82,8 @@ public class ItemlistFragment extends ListFragment {
 
     private FeedItemDialog feedItemDialog;
     private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
+
+    private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
 
@@ -293,12 +296,17 @@ public class ItemlistFragment extends ListFragment {
         if (isUpdatingFeed != updateRefreshMenuItemChecker.isRefreshing()) {
             getActivity().supportInvalidateOptionsMenu();
         }
+        if (listFooter != null) {
+            listFooter.setLoadingState(DownloadRequester.getInstance().isDownloadingFeeds());
+        }
+
     }
 
     private void onFragmentLoaded() {
         if (adapter == null) {
             getListView().setAdapter(null);
             setupHeaderView();
+            setupFooterView();
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
@@ -313,6 +321,11 @@ public class ItemlistFragment extends ListFragment {
             feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
         }
         getActivity().supportInvalidateOptionsMenu();
+
+        if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
+            getListView().removeFooterView(listFooter.getRoot());
+        }
+
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -370,6 +383,34 @@ public class ItemlistFragment extends ListFragment {
                 }
             }
         });
+    }
+
+    private void setupFooterView() {
+        if (getListView() == null || feed == null) {
+            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            return;
+        }
+        if (feed.isPaged() && feed.getNextPageLink() != null) {
+            ListView lv = getListView();
+            LayoutInflater inflater = (LayoutInflater)
+                    getActivity().getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View header = inflater.inflate(R.layout.more_content_list_footer, lv, false);
+            lv.addFooterView(header);
+            listFooter = new MoreContentListFooterUtil(header);
+            listFooter.setClickListener(new MoreContentListFooterUtil.Listener() {
+                @Override
+                public void onClick() {
+                    if (feed != null) {
+                        try {
+                            DBTasks.loadNextPageOfFeed(getActivity(), feed, false);
+                        } catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
+                        }
+                    }
+                }
+            });
+        }
     }
 
     private FeedItemlistAdapter.ItemAccess itemAccess = new FeedItemlistAdapter.ItemAccess() {

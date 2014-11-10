@@ -65,7 +65,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
 
     private Downloader download(String url, String title, boolean expectedResult, boolean deleteExisting, String username, String password, boolean deleteOnFail) {
         FeedFile feedFile = setupFeedFile(url, title, deleteExisting);
-        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail);
+        DownloadRequest request = new DownloadRequest(feedFile.getFile_url(), url, title, 0, feedFile.getTypeAsInt(), username, password, deleteOnFail, null);
         Downloader downloader = new HttpDownloader(request);
         downloader.call();
         DownloadStatus status = downloader.getResult();

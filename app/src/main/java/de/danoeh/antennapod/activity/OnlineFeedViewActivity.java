@@ -183,14 +183,14 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, new Date());
         if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, true, username, password));
+            feed.setPreferences(new FeedPreferences(0, false, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url()))
                 .toString();
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
-                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password, true);
+                feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password, true, null);
         downloader = new HttpDownloader(
                 request);
         new Thread() {

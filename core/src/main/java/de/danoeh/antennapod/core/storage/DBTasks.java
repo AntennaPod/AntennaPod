@@ -4,11 +4,32 @@ import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.FutureTask;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
-import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
@@ -19,10 +40,6 @@ import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-
-import java.util.*;
-import java.util.concurrent.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * Provides methods for doing common tasks that use DBReader and DBWriter.
@@ -240,6 +257,49 @@ public final class DBTasks {
     }
 
     /**
+     * Downloads all pages of the given feed.
+     *
+     * @param context Used for requesting the download.
+     * @param feed    The Feed object.
+     */
+    public static void refreshCompleteFeed(final Context context, final Feed feed) {
+        try {
+            refreshFeed(context, feed, true);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            DBWriter.addDownloadStatus(
+                    context,
+                    new DownloadStatus(feed, feed
+                            .getHumanReadableIdentifier(),
+                            DownloadError.ERROR_REQUEST_ERROR, false, e
+                            .getMessage()
+                    )
+            );
+        }
+    }
+
+    /**
+     * Queues the next page of this Feed for download. The given Feed has to be a paged
+     * Feed (isPaged()=true) and must contain a nextPageLink.
+     *
+     * @param context      Used for requesting the download.
+     * @param feed         The feed whose next page should be loaded.
+     * @param loadAllPages True if any subsequent pages should also be loaded, false otherwise.
+     */
+    public static void loadNextPageOfFeed(final Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
+        if (feed.isPaged() && feed.getNextPageLink() != null) {
+            int pageNr = feed.getPageNr() + 1;
+            Feed nextFeed = new Feed(feed.getNextPageLink(), new Date(), feed.getTitle() + "(" + pageNr + ")");
+            nextFeed.setPageNr(pageNr);
+            nextFeed.setPaged(true);
+            nextFeed.setId(feed.getId());
+            DownloadRequester.getInstance().downloadFeed(context, nextFeed, loadAllPages);
+        } else {
+            Log.e(TAG, "loadNextPageOfFeed: Feed was either not paged or contained no nextPageLink");
+        }
+    }
+
+    /**
      * Updates a specific Feed.
      *
      * @param context Used for requesting the download.
@@ -247,6 +307,10 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
+        refreshFeed(context, feed, false);
+    }
+
+    private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         Feed f;
         if (feed.getPreferences() == null) {
             f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
@@ -255,7 +319,7 @@ public final class DBTasks {
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
-        DownloadRequester.getInstance().downloadFeed(context, f);
+        DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages);
     }
 
     /**
@@ -388,7 +452,7 @@ public final class DBTasks {
      * 2. There is free space in the episode cache
      * This method is executed on an internal single thread executor.
      *
-     * @param context Used for accessing the DB.
+     * @param context  Used for accessing the DB.
      * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
      *                 its media ID is in the mediaIds list.
      * @return A Future that can be used for waiting for the methods completion.
@@ -687,11 +751,21 @@ public final class DBTasks {
                             + " already exists. Syncing new with existing one.");
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
-                if (savedFeed.compareWithOther(newFeed)) {
+
+                final boolean markNewItemsAsUnread;
+                if (newFeed.getPageNr() == savedFeed.getPageNr()) {
+                    if (savedFeed.compareWithOther(newFeed)) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG,
+                                    "Feed has updated attribute values. Updating old feed's attributes");
+                        savedFeed.updateFromOther(newFeed);
+                    }
+                    markNewItemsAsUnread = true;
+                } else {
                     if (BuildConfig.DEBUG)
-                        Log.d(TAG,
-                                "Feed has updated attribute values. Updating old feed's attributes");
-                    savedFeed.updateFromOther(newFeed);
+                        Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
+                    markNewItemsAsUnread = false;
+                    savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
                     if (BuildConfig.DEBUG)
@@ -708,7 +782,9 @@ public final class DBTasks {
                         final int i = idx;
                         item.setFeed(savedFeed);
                         savedFeed.getItems().add(i, item);
-                        item.setRead(false);
+                        if (markNewItemsAsUnread) {
+                            item.setRead(false);
+                        }
                     } else {
                         oldItem.updateFromOther(item);
                     }

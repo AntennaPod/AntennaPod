@@ -3,16 +3,18 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import android.net.Uri;
 
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
 import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.EpisodeFilter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Data Object for a whole feed
@@ -59,11 +61,32 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
     private FeedPreferences preferences;
 
     /**
+     * The page number that this feed is on. Only feeds with page number "0" should be stored in the
+     * database, feed objects with a higher page number only exist temporarily and should be merged
+     * into feeds with page number "0".
+     * <p/>
+     * This attribute's value is not saved in the database
+     */
+    private int pageNr;
+
+    /**
+     * True if this is a "paged feed", i.e. there exist other feed files that belong to the same
+     * logical feed.
+     */
+    private boolean paged;
+
+    /**
+     * Link to the next page of this feed. If this feed object represents a logical feed (i.e. a feed
+     * that is saved in the database) this might be null while still being a paged feed.
+     */
+    private String nextPageLink;
+
+    /**
      * This constructor is used for restoring a feed from the database.
      */
     public Feed(long id, Date lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
-                String downloadUrl, boolean downloaded, FlattrStatus status) {
+                String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.title = title;
@@ -81,6 +104,8 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         this.feedIdentifier = feedIdentifier;
         this.image = image;
         this.flattrStatus = status;
+        this.paged = paged;
+        this.nextPageLink = nextPageLink;
 
         items = new ArrayList<FeedItem>();
     }
@@ -92,7 +117,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, link, description, paymentLink, author, language, type, feedIdentifier, image,
-                fileUrl, downloadUrl, downloaded, new FlattrStatus());
+                fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null);
     }
 
     /**
@@ -270,6 +295,12 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         if (other.flattrStatus != null) {
             flattrStatus = other.flattrStatus;
         }
+        // this feed's nextPage might already point to a higher page, so we only update the nextPage value
+        // if this feed is not paged and the other feed is.
+        if (!this.paged && other.paged) {
+            this.paged = other.paged;
+            this.nextPageLink = other.nextPageLink;
+        }
     }
 
     public boolean compareWithOther(Feed other) {
@@ -309,6 +340,12 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
             if (paymentLink == null || !paymentLink.equals(other.paymentLink)) {
                 return true;
             }
+        }
+        if (other.isPaged() && !this.isPaged()) {
+            return true;
+        }
+        if (!StringUtils.equals(other.getNextPageLink(), this.getNextPageLink())) {
+            return true;
         }
         return false;
     }
@@ -374,13 +411,13 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         this.feedIdentifier = feedIdentifier;
     }
 
-	public void setFlattrStatus(FlattrStatus status) {
-		this.flattrStatus = status;
-	}
+    public void setFlattrStatus(FlattrStatus status) {
+        this.flattrStatus = status;
+    }
 
-	public FlattrStatus getFlattrStatus() {
-		return flattrStatus;
-	}
+    public FlattrStatus getFlattrStatus() {
+        return flattrStatus;
+    }
 
     public String getPaymentLink() {
         return paymentLink;
@@ -441,5 +478,29 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         } else {
             return null;
         }
+    }
+
+    public int getPageNr() {
+        return pageNr;
+    }
+
+    public void setPageNr(int pageNr) {
+        this.pageNr = pageNr;
+    }
+
+    public boolean isPaged() {
+        return paged;
+    }
+
+    public void setPaged(boolean paged) {
+        this.paged = paged;
+    }
+
+    public String getNextPageLink() {
+        return nextPageLink;
+    }
+
+    public void setNextPageLink(String nextPageLink) {
+        this.nextPageLink = nextPageLink;
     }
 }

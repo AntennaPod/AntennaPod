@@ -15,6 +15,7 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.util.Pair;
 import android.util.Log;
 import android.webkit.URLUtil;
 
@@ -66,6 +67,7 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandlerResult;
 import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
 import de.danoeh.antennapod.core.util.ChapterUtils;
 import de.danoeh.antennapod.core.util.DownloadError;
@@ -669,7 +671,7 @@ public class DownloadService extends Service {
         private static final String TAG = "FeedSyncThread";
 
         private BlockingQueue<DownloadRequest> completedRequests = new LinkedBlockingDeque<DownloadRequest>();
-        private CompletionService<Feed> parserService = new ExecutorCompletionService<Feed>(Executors.newSingleThreadExecutor());
+        private CompletionService<Pair<DownloadRequest, FeedHandlerResult>> parserService = new ExecutorCompletionService<Pair<DownloadRequest, FeedHandlerResult>>(Executors.newSingleThreadExecutor());
         private ExecutorService dbService = Executors.newSingleThreadExecutor();
         private Future<?> dbUpdateFuture;
         private volatile boolean isActive = true;
@@ -684,8 +686,8 @@ public class DownloadService extends Service {
          *
          * @return Collected feeds or null if the method has been interrupted during the first waiting period.
          */
-        private List<Feed> collectCompletedRequests() {
-            List<Feed> results = new LinkedList<Feed>();
+        private List<Pair<DownloadRequest, FeedHandlerResult>> collectCompletedRequests() {
+            List<Pair<DownloadRequest, FeedHandlerResult>> results = new LinkedList<Pair<DownloadRequest, FeedHandlerResult>>();
             DownloadRequester requester = DownloadRequester.getInstance();
             int tasks = 0;
 
@@ -727,9 +729,9 @@ public class DownloadService extends Service {
 
             for (int i = 0; i < tasks; i++) {
                 try {
-                    Feed f = parserService.take().get();
-                    if (f != null) {
-                        results.add(f);
+                    Pair<DownloadRequest, FeedHandlerResult> result = parserService.take().get();
+                    if (result != null) {
+                        results.add(result);
                     }
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -754,16 +756,16 @@ public class DownloadService extends Service {
         @Override
         public void run() {
             while (isActive) {
-                final List<Feed> feeds = collectCompletedRequests();
+                final List<Pair<DownloadRequest, FeedHandlerResult>> results = collectCompletedRequests();
 
-                if (feeds == null) {
+                if (results == null) {
                     continue;
                 }
 
-                if (BuildConfig.DEBUG) Log.d(TAG, "Bundling " + feeds.size() + " feeds");
+                if (BuildConfig.DEBUG) Log.d(TAG, "Bundling " + results.size() + " feeds");
 
-                for (Feed feed : feeds) {
-                    removeDuplicateImages(feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
+                for (Pair<DownloadRequest, FeedHandlerResult> result : results) {
+                    removeDuplicateImages(result.second.feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
                 }
 
                 // Save information of feed in DB
@@ -780,9 +782,10 @@ public class DownloadService extends Service {
                 dbUpdateFuture = dbService.submit(new Runnable() {
                     @Override
                     public void run() {
-                        Feed[] savedFeeds = DBTasks.updateFeed(DownloadService.this, feeds.toArray(new Feed[feeds.size()]));
+                        Feed[] savedFeeds = DBTasks.updateFeed(DownloadService.this, getFeeds(results));
 
-                        for (Feed savedFeed : savedFeeds) {
+                        for (int i = 0; i < savedFeeds.length; i++) {
+                            Feed savedFeed = savedFeeds[i];
                             // Download Feed Image if provided and not downloaded
                             if (savedFeed.getImage() != null
                                     && savedFeed.getImage().isDownloaded() == false) {
@@ -816,6 +819,19 @@ public class DownloadService extends Service {
                                 }
                             }
 
+                            // If loadAllPages=true, check if another page is available and queue it for download
+
+                            final boolean loadAllPages = results.get(i).first.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
+                            final Feed feed = results.get(i).second.feed;
+                            if (loadAllPages && feed.getNextPageLink() != null) {
+                                try {
+                                    feed.setId(savedFeed.getId());
+                                    DBTasks.loadNextPageOfFeed(DownloadService.this, savedFeed, true);
+                                } catch (DownloadRequestException e) {
+                                    Log.e(TAG, "Error trying to load next page", e);
+                                }
+                            }
+
                             ClientConfig.downloadServiceCallbacks.onFeedParsed(DownloadService.this,
                                     savedFeed);
 
@@ -840,12 +856,22 @@ public class DownloadService extends Service {
             }
 
 
-
             if (BuildConfig.DEBUG) Log.d(TAG, "Shutting down");
 
         }
 
-        private class FeedParserTask implements Callable<Feed> {
+        /**
+         * Helper method
+         */
+        private Feed[] getFeeds(List<Pair<DownloadRequest, FeedHandlerResult>> results) {
+            Feed[] feeds = new Feed[results.size()];
+            for (int i = 0; i < results.size(); i++) {
+                feeds[i] = results.get(i).second.feed;
+            }
+            return feeds;
+        }
+
+        private class FeedParserTask implements Callable<Pair<DownloadRequest, FeedHandlerResult>> {
 
             private DownloadRequest request;
 
@@ -854,27 +880,28 @@ public class DownloadService extends Service {
             }
 
             @Override
-            public Feed call() throws Exception {
+            public Pair<DownloadRequest, FeedHandlerResult> call() throws Exception {
                 return parseFeed(request);
             }
         }
 
-        private Feed parseFeed(DownloadRequest request) {
-            Feed savedFeed = null;
-
+        private Pair<DownloadRequest, FeedHandlerResult> parseFeed(DownloadRequest request) {
             Feed feed = new Feed(request.getSource(), new Date());
             feed.setFile_url(request.getDestination());
             feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);
-            feed.setPreferences(new FeedPreferences(0, true, request.getUsername(), request.getPassword()));
+            feed.setPreferences(new FeedPreferences(0, true,
+                    request.getUsername(), request.getPassword()));
+            feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
 
             DownloadError reason = null;
             String reasonDetailed = null;
             boolean successful = true;
             FeedHandler feedHandler = new FeedHandler();
 
+            FeedHandlerResult result = null;
             try {
-                feed = feedHandler.parseFeed(feed).feed;
+                result = feedHandler.parseFeed(feed);
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, feed.getTitle() + " parsed");
                 if (checkFeedData(feed) == false) {
@@ -909,17 +936,14 @@ public class DownloadService extends Service {
             }
 
             // cleanup();
-            if (savedFeed == null) {
-                savedFeed = feed;
-            }
 
 
             if (successful) {
-                return savedFeed;
+                return Pair.create(request, result);
             } else {
                 numberOfDownloads.decrementAndGet();
-                saveDownloadStatus(new DownloadStatus(savedFeed,
-                        savedFeed.getHumanReadableIdentifier(), reason, successful,
+                saveDownloadStatus(new DownloadStatus(feed,
+                        feed.getHumanReadableIdentifier(), reason, successful,
                         reasonDetailed));
                 return null;
             }

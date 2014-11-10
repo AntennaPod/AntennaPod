@@ -1,8 +1,8 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
-import de.danoeh.antennapod.core.feed.Feed;
-
 import java.util.Map;
+
+import de.danoeh.antennapod.core.feed.Feed;
 
 /**
  * Container for results returned by the Feed parser

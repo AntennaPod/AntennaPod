@@ -2,15 +2,10 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.util.Log;
 import android.webkit.URLUtil;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.*;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadRequest;
-import de.danoeh.antennapod.core.service.download.DownloadService;
-import de.danoeh.antennapod.core.util.FileNameGenerator;
-import de.danoeh.antennapod.core.util.URLChecker;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
@@ -18,6 +13,18 @@ import org.apache.commons.lang3.Validate;
 import java.io.File;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+
+import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
+import de.danoeh.antennapod.core.service.download.DownloadService;
+import de.danoeh.antennapod.core.util.FileNameGenerator;
+import de.danoeh.antennapod.core.util.URLChecker;
 
 
 /**
@@ -30,6 +37,16 @@ public class DownloadRequester {
     public static final String IMAGE_DOWNLOADPATH = "images/";
     public static final String FEED_DOWNLOADPATH = "cache/";
     public static final String MEDIA_DOWNLOADPATH = "media/";
+
+    /**
+     * Denotes the page of the feed that is contained in the DownloadRequest sent by the DownloadRequester.
+     */
+    public static final String REQUEST_ARG_PAGE_NR = "page";
+
+    /**
+     * True if all pages after the feed that is contained in this DownloadRequest should be downloaded.
+     */
+    public static final String REQUEST_ARG_LOAD_ALL_PAGES = "loadAllPages";
 
     private static DownloadRequester downloader;
 
@@ -74,7 +91,7 @@ public class DownloadRequester {
     }
 
     private void download(Context context, FeedFile item, File dest,
-                          boolean overwriteIfExists, String username, String password, boolean deleteOnFailure) {
+                          boolean overwriteIfExists, String username, String password, boolean deleteOnFailure, Bundle arguments) {
         if (!isDownloadingFile(item)) {
             if (!isFilenameAvailable(dest.toString()) || (deleteOnFailure && dest.exists())) {
                 if (BuildConfig.DEBUG)
@@ -116,7 +133,7 @@ public class DownloadRequester {
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
                     URLChecker.prepareURL(item.getDownload_url()), item.getHumanReadableIdentifier(),
-                    item.getId(), item.getTypeAsInt(), username, password, deleteOnFailure);
+                    item.getId(), item.getTypeAsInt(), username, password, deleteOnFailure, arguments);
 
             download(context, request);
         } else {
@@ -144,22 +161,30 @@ public class DownloadRequester {
         return true;
     }
 
-    public synchronized void downloadFeed(Context context, Feed feed)
+    public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
 
+            Bundle args = new Bundle();
+            args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
+            args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
+
             download(context, feed, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true, username, password, true);
+                    getFeedfileName(feed)), true, username, password, true, args);
         }
+    }
+
+    public synchronized void downloadFeed(Context context, Feed feed) throws DownloadRequestException {
+        downloadFeed(context, feed, false);
     }
 
     public synchronized void downloadImage(Context context, FeedImage image)
             throws DownloadRequestException {
         if (feedFileValid(image)) {
             download(context, image, new File(getImagefilePath(context),
-                    getImagefileName(image)), false, null, null, false);
+                    getImagefileName(image)), false, null, null, false, null);
         }
     }
 
@@ -185,8 +210,7 @@ public class DownloadRequester {
                         getMediafilename(feedmedia));
             }
             download(context, feedmedia,
-                    dest, false, username, password, false
-            );
+                    dest, false, username, password, false, null);
         }
     }
 

@@ -6,29 +6,35 @@
         android:id="@+id/refresh_item"
         android:icon="?attr/navigation_refresh"
         android:menuCategory="container"
-        custom:showAsAction="ifRoom"
-        android:title="@string/refresh_label">
+        android:title="@string/refresh_label"
+        custom:showAsAction="ifRoom">
+    </item>
+    <item
+        android:id="@+id/refresh_complete_item"
+        android:menuCategory="container"
+        android:title="@string/load_complete_feed"
+        custom:showAsAction="collapseActionView">
     </item>
     <item
         android:id="@+id/mark_all_read_item"
         android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/mark_all_read_label">
+        android:title="@string/mark_all_read_label"
+        custom:showAsAction="collapseActionView">
     </item>
     <item
         android:id="@+id/support_item"
         android:menuCategory="container"
-        custom:showAsAction="collapseActionView"
         android:title="@string/support_label"
-        android:visible="false">
+        android:visible="false"
+        custom:showAsAction="collapseActionView">
     </item>
     <item
         android:id="@+id/remove_item"
-        android:menuCategory="container"
         android:icon="?attr/content_discard"
-        custom:showAsAction="collapseActionView"
+        android:menuCategory="container"
         android:title="@string/remove_feed_label"
-        android:visible="true">
+        android:visible="true"
+        custom:showAsAction="collapseActionView">
     </item>
 
 </menu>

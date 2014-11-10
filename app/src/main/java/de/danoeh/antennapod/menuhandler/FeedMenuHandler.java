@@ -41,6 +41,8 @@ public class FeedMenuHandler {
         else
             menu.findItem(R.id.support_item).setVisible(false);
 
+        menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
+
         return true;
     }
 
@@ -54,6 +56,9 @@ public class FeedMenuHandler {
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 DBTasks.refreshFeed(context, selectedFeed);
+                break;
+            case R.id.refresh_complete_item:
+                DBTasks.refreshCompleteFeed(context, selectedFeed);
                 break;
             case R.id.mark_all_read_item:
                 DBWriter.markFeedRead(context, selectedFeed.getId());
