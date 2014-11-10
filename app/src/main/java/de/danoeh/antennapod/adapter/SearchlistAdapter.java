@@ -8,8 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -72,7 +73,7 @@ public class SearchlistAdapter extends BaseAdapter {
             holder.title.setText(feed.getTitle());
             holder.subtitle.setVisibility(View.GONE);
 
-            PicassoProvider.getDefaultPicassoInstance(context)
+            Picasso.with(context)
                     .load(feed.getImageUri())
                     .fit()
                     .into(holder.cover);
@@ -85,7 +86,7 @@ public class SearchlistAdapter extends BaseAdapter {
                 holder.subtitle.setText(result.getSubtitle());
             }
 
-            PicassoProvider.getDefaultPicassoInstance(context)
+            Picasso.with(context)
                     .load(item.getFeed().getImageUri())
                     .fit()
                     .into(holder.cover);

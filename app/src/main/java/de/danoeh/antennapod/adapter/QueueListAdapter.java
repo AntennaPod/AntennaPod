@@ -4,9 +4,15 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -92,7 +98,7 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        PicassoProvider.getMediaMetadataPicassoInstance(context)
+        Picasso.with(context)
                 .load(item.getImageUri())
                 .fit()
                 .into(holder.imageView);

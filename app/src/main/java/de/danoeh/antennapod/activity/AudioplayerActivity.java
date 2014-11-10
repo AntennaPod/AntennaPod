@@ -25,13 +25,14 @@ import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -383,7 +384,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
                         @Override
                         public void run() {
-                            PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
+                            Picasso.with(AudioplayerActivity.this)
                                     .load(media.getImageUri())
                                     .fit()
                                     .into(butNavLeft);
@@ -400,7 +401,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
                         @Override
                         public void run() {
-                            PicassoProvider.getMediaMetadataPicassoInstance(AudioplayerActivity.this)
+                            Picasso.with(AudioplayerActivity.this)
                                     .load(media.getImageUri())
                                     .fit()
                                     .into(butNavLeft);

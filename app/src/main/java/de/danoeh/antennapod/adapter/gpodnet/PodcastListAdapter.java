@@ -8,12 +8,13 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 
 /**
@@ -49,7 +50,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         holder.title.setText(podcast.getTitle());
 
         if (StringUtils.isNoneBlank(podcast.getLogoUrl())) {
-            PicassoProvider.getDefaultPicassoInstance(convertView.getContext())
+            Picasso.with(convertView.getContext())
                     .load(podcast.getLogoUrl())
                     .fit()
                     .into(holder.image);

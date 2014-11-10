@@ -9,10 +9,16 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.*;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
+
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -78,7 +84,7 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            PicassoProvider.getDefaultPicassoInstance(FeedInfoActivity.this)
+                            Picasso.with(FeedInfoActivity.this)
                                     .load(feed.getImageUri())
                                     .fit()
                                     .into(imgvCover);
@@ -167,7 +173,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         super.onPrepareOptionsMenu(menu);
         menu.findItem(R.id.support_item).setVisible(
                 feed != null && feed.getPaymentLink() != null);
-        menu.findItem(R.id.share_link_item).setVisible(feed != null &&feed.getLink() != null);
+        menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
         menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null);
         return true;
     }

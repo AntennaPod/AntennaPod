@@ -1,26 +1,26 @@
 package de.danoeh.antennapod.core.asynctask;
 
+import android.content.ContentResolver;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.util.Log;
-import android.webkit.MimeTypeMap;
 
 import com.squareup.picasso.Cache;
-import com.squareup.picasso.Downloader;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
 import com.squareup.picasso.Picasso;
+import com.squareup.picasso.Request;
+import com.squareup.picasso.RequestHandler;
 
-import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.Validate;
 
-import java.io.BufferedInputStream;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -34,9 +34,6 @@ public class PicassoProvider {
 
     private static ExecutorService executorService;
     private static Cache memoryCache;
-
-    private static Picasso defaultPicassoInstance;
-    private static Picasso mediaMetadataPicassoInstance;
 
     private static synchronized ExecutorService getExecutorService() {
         if (executorService == null) {
@@ -52,101 +49,161 @@ public class PicassoProvider {
         return memoryCache;
     }
 
-    /**
-     * Returns a Picasso instance that uses an OkHttpDownloader. This instance can only load images
-     * from image files.
-     * <p/>
-     * This instance should be used as long as no images from media files are loaded.
-     */
-    public static synchronized Picasso getDefaultPicassoInstance(Context context) {
-        Validate.notNull(context);
-        if (defaultPicassoInstance == null) {
-            defaultPicassoInstance = new Picasso.Builder(context)
-                    .indicatorsEnabled(DEBUG)
-                    .loggingEnabled(DEBUG)
-                    .downloader(new OkHttpDownloader(context))
-                    .executor(getExecutorService())
-                    .memoryCache(getMemoryCache(context))
-                    .listener(new Picasso.Listener() {
-                        @Override
-                        public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
-                            Log.e(TAG, "Failed to load Uri:" + uri.toString());
-                            e.printStackTrace();
-                        }
-                    })
-                    .build();
+    private static volatile boolean picassoSetup = false;
+
+    public static synchronized void setupPicassoInstance(Context appContext) {
+        if (picassoSetup) {
+            return;
         }
-        return defaultPicassoInstance;
+        Picasso picasso = new Picasso.Builder(appContext)
+                .indicatorsEnabled(DEBUG)
+                .loggingEnabled(DEBUG)
+                .downloader(new OkHttpDownloader(appContext))
+                .addRequestHandler(new MediaRequestHandler(appContext))
+                .executor(getExecutorService())
+                .memoryCache(getMemoryCache(appContext))
+                .listener(new Picasso.Listener() {
+                    @Override
+                    public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
+                        Log.e(TAG, "Failed to load Uri:" + uri.toString());
+                        e.printStackTrace();
+                    }
+                })
+                .build();
+        Picasso.setSingletonInstance(picasso);
+        picassoSetup = true;
     }
 
-    /**
-     * Returns a Picasso instance that uses a MediaMetadataRetriever if the given Uri is a media file
-     * and a default OkHttpDownloader otherwise.
-     */
-    public static synchronized Picasso getMediaMetadataPicassoInstance(Context context) {
-        Validate.notNull(context);
-        if (mediaMetadataPicassoInstance == null) {
-            mediaMetadataPicassoInstance = new Picasso.Builder(context)
-                    .indicatorsEnabled(DEBUG)
-                    .loggingEnabled(DEBUG)
-                    .downloader(new MediaMetadataDownloader(context))
-                    .executor(getExecutorService())
-                    .memoryCache(getMemoryCache(context))
-                    .listener(new Picasso.Listener() {
-                        @Override
-                        public void onImageLoadFailed(Picasso picasso, Uri uri, Exception e) {
-                            Log.e(TAG, "Failed to load Uri:" + uri.toString());
-                            e.printStackTrace();
-                        }
-                    })
-                    .build();
-        }
-        return mediaMetadataPicassoInstance;
-    }
+    private static class MediaRequestHandler extends RequestHandler {
 
-    private static class MediaMetadataDownloader implements Downloader {
+        final MediaMetadataRetriever mmr;
+        final Context context;
 
-        private static final String TAG = "MediaMetadataDownloader";
-
-        private final OkHttpDownloader okHttpDownloader;
-
-        public MediaMetadataDownloader(Context context) {
-            Validate.notNull(context);
-            okHttpDownloader = new OkHttpDownloader(context);
+        public MediaRequestHandler(Context context) {
+            super();
+            this.context = context;
+            mmr = new MediaMetadataRetriever();
         }
 
         @Override
-        public Response load(Uri uri, boolean b) throws IOException {
-            if (StringUtils.equals(uri.getScheme(), PicassoImageResource.SCHEME_MEDIA)) {
-                String type = MimeTypeMap.getSingleton().getMimeTypeFromExtension(FilenameUtils.getExtension(uri.getLastPathSegment()));
-                if (StringUtils.startsWith(type, "image")) {
-                    File imageFile = new File(uri.toString());
-                    return new Response(new BufferedInputStream(new FileInputStream(imageFile)), true, imageFile.length());
-                } else {
-                    MediaMetadataRetriever mmr = new MediaMetadataRetriever();
-                    mmr.setDataSource(uri.getPath());
-                    byte[] data = mmr.getEmbeddedPicture();
-                    mmr.release();
+        protected void finalize() throws Throwable {
+            super.finalize();
+            mmr.release();
+        }
 
-                    if (data != null) {
-                        return new Response(new ByteArrayInputStream(data), true, data.length);
-                    } else {
+        @Override
+        public boolean canHandleRequest(Request data) {
+            return StringUtils.equals(data.uri.getScheme(), PicassoImageResource.SCHEME_MEDIA);
+        }
 
-                        // check for fallback Uri
-                        String fallbackParam = uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
+        @Override
+        public Result load(Request data) throws IOException {
+            Bitmap bitmap = null;
+            mmr.setDataSource(data.uri.getPath());
+            byte[] image = mmr.getEmbeddedPicture();
+            if (image != null) {
+                bitmap = decodeStreamFromByteArray(data, image);
+            }
+            if (bitmap == null) {
+                // check for fallback Uri
+                String fallbackParam = data.uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
 
-                        if (fallbackParam != null) {
-                            String fallback = Uri.decode(Uri.parse(fallbackParam).getPath());
-                            if (fallback != null) {
-                                File imageFile = new File(fallback);
-                                return new Response(new BufferedInputStream(new FileInputStream(imageFile)), true, imageFile.length());
-                            }
-                        }
-                        return null;
-                    }
+                if (fallbackParam != null) {
+                    Uri fallback = Uri.parse(fallbackParam);
+                    bitmap = decodeStreamFromFile(data, fallback);
                 }
             }
-            return okHttpDownloader.load(uri, b);
+            return new Result(bitmap, Picasso.LoadedFrom.DISK);
+
+        }
+
+        /* Copied/Adapted from Picasso RequestHandler classes  */
+
+        private Bitmap decodeStreamFromByteArray(Request data, byte[] bytes) throws IOException {
+
+            final BitmapFactory.Options options = createBitmapOptions(data);
+            final ByteArrayInputStream in = new ByteArrayInputStream(bytes);
+            in.mark(0);
+            if (requiresInSampleSize(options)) {
+                try {
+                    BitmapFactory.decodeStream(in, null, options);
+                } finally {
+                    in.reset();
+                }
+                calculateInSampleSize(data.targetWidth, data.targetHeight, options, data);
+            }
+            try {
+                return BitmapFactory.decodeStream(in, null, options);
+            } finally {
+                IOUtils.closeQuietly(in);
+            }
+        }
+
+        private Bitmap decodeStreamFromFile(Request data, Uri uri) throws IOException {
+            ContentResolver contentResolver = context.getContentResolver();
+            final BitmapFactory.Options options = createBitmapOptions(data);
+            if (requiresInSampleSize(options)) {
+                InputStream is = null;
+                try {
+                    is = contentResolver.openInputStream(uri);
+                    BitmapFactory.decodeStream(is, null, options);
+                } finally {
+                    IOUtils.closeQuietly(is);
+                }
+                calculateInSampleSize(data.targetWidth, data.targetHeight, options, data);
+            }
+            InputStream is = contentResolver.openInputStream(uri);
+            try {
+                return BitmapFactory.decodeStream(is, null, options);
+            } finally {
+                IOUtils.closeQuietly(is);
+            }
+        }
+
+        private BitmapFactory.Options createBitmapOptions(Request data) {
+            final boolean justBounds = data.hasSize();
+            final boolean hasConfig = data.config != null;
+            BitmapFactory.Options options = null;
+            if (justBounds || hasConfig) {
+                options = new BitmapFactory.Options();
+                options.inJustDecodeBounds = justBounds;
+                if (hasConfig) {
+                    options.inPreferredConfig = data.config;
+                }
+            }
+            return options;
+        }
+
+        private static boolean requiresInSampleSize(BitmapFactory.Options options) {
+            return options != null && options.inJustDecodeBounds;
+        }
+
+        private static void calculateInSampleSize(int reqWidth, int reqHeight, BitmapFactory.Options options,
+                                                  Request request) {
+            calculateInSampleSize(reqWidth, reqHeight, options.outWidth, options.outHeight, options,
+                    request);
+        }
+
+        private static void calculateInSampleSize(int reqWidth, int reqHeight, int width, int height,
+                                                  BitmapFactory.Options options, Request request) {
+            int sampleSize = 1;
+            if (height > reqHeight || width > reqWidth) {
+                final int heightRatio;
+                final int widthRatio;
+                if (reqHeight == 0) {
+                    sampleSize = (int) Math.floor((float) width / (float) reqWidth);
+                } else if (reqWidth == 0) {
+                    sampleSize = (int) Math.floor((float) height / (float) reqHeight);
+                } else {
+                    heightRatio = (int) Math.floor((float) height / (float) reqHeight);
+                    widthRatio = (int) Math.floor((float) width / (float) reqWidth);
+                    sampleSize = request.centerInside
+                            ? Math.max(heightRatio, widthRatio)
+                            : Math.min(heightRatio, widthRatio);
+                }
+            }
+            options.inSampleSize = sampleSize;
+            options.inJustDecodeBounds = false;
         }
     }
 }

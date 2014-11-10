@@ -11,9 +11,10 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -207,7 +208,7 @@ public class ExternalPlayerFragment extends Fragment {
             if (media != null) {
                 txtvTitle.setText(media.getEpisodeTitle());
 
-                PicassoProvider.getMediaMetadataPicassoInstance(getActivity())
+                Picasso.with(getActivity())
                         .load(media.getImageUri())
                         .fit()
                         .into(imgvCover);

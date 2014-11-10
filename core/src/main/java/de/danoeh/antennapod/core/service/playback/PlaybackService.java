@@ -29,6 +29,8 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
@@ -37,7 +39,6 @@ import java.util.List;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -291,10 +292,9 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
                     if (UserPreferences.isPersistNotify()) {
-                      mediaPlayer.pause(false, true);
-                    }
-                    else {
-                      mediaPlayer.pause(true, true);
+                        mediaPlayer.pause(false, true);
+                    } else {
+                        mediaPlayer.pause(true, true);
                     }
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
@@ -315,12 +315,11 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                  if (UserPreferences.isPersistNotify()) {
-                    mediaPlayer.pause(false, true);
-                  }
-                  else {
-                    mediaPlayer.pause(true, true);
-                  }
+                    if (UserPreferences.isPersistNotify()) {
+                        mediaPlayer.pause(false, true);
+                    } else {
+                        mediaPlayer.pause(true, true);
+                    }
                 }
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
@@ -332,11 +331,11 @@ public class PlaybackService extends Service {
                 mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
                 break;
             case KeyEvent.KEYCODE_MEDIA_STOP:
-              if (status == PlayerStatus.PLAYING) {
-                mediaPlayer.pause(true, true);
-              }
-              stopForeground(true); // gets rid of persistent notification
-              break;
+                if (status == PlayerStatus.PLAYING) {
+                    mediaPlayer.pause(true, true);
+                }
+                stopForeground(true); // gets rid of persistent notification
+                break;
             default:
                 if (info.playable != null && info.playerStatus == PlayerStatus.PLAYING) {   // only notify the user about an unknown key event if it is actually doing something
                     String message = String.format(getResources().getString(R.string.unknown_media_key), keycode);
@@ -411,11 +410,10 @@ public class PlaybackService extends Service {
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
                     if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                      // do not remove notification on pause based on user pref and whether android version supports expanded notifications
-                    }
-                    else {
-                      // remove notifcation on pause
-                      stopForeground(true);    
+                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                    } else {
+                        // remove notifcation on pause
+                        stopForeground(true);
                     }
                     break;
 
@@ -709,7 +707,7 @@ public class PlaybackService extends Service {
                         try {
                             int iconSize = getResources().getDimensionPixelSize(
                                     android.R.dimen.notification_large_icon_width);
-                            icon = PicassoProvider.getMediaMetadataPicassoInstance(PlaybackService.this)
+                            icon = Picasso.with(PlaybackService.this)
                                     .load(info.playable.getImageUri())
                                     .resize(iconSize, iconSize)
                                     .get();
@@ -1005,12 +1003,11 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
-          if (UserPreferences.isPersistNotify()) {
-            mediaPlayer.pause(false, true);
-          }
-          else {
-            mediaPlayer.pause(true, true);
-          }
+            if (UserPreferences.isPersistNotify()) {
+                mediaPlayer.pause(false, true);
+            } else {
+                mediaPlayer.pause(true, true);
+            }
         }
     }
 

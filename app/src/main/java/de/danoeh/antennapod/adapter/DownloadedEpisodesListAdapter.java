@@ -10,8 +10,9 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.util.Converter;
 
@@ -87,7 +88,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
 
-        PicassoProvider.getMediaMetadataPicassoInstance(context)
+        Picasso.with(context)
                 .load(item.getImageUri())
                 .fit()
                 .into(holder.imageView);

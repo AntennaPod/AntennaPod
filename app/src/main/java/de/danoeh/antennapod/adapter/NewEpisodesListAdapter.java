@@ -11,8 +11,9 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -133,7 +134,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        PicassoProvider.getMediaMetadataPicassoInstance(context)
+        Picasso.with(context)
                 .load(item.getImageUri())
                 .fit()
                 .into(holder.imageView);

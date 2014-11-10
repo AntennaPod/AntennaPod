@@ -9,10 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -68,7 +69,7 @@ public class CoverFragment extends Fragment implements
                 public void run() {
                     Context c = getActivity();
                     if (c != null) {
-                        PicassoProvider.getMediaMetadataPicassoInstance(c)
+                        Picasso.with(c)
                                 .load(media.getImageUri())
                                 .into(imgvCover);
                     }

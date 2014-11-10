@@ -17,6 +17,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
 import org.jsoup.examples.HtmlToPlainText;
@@ -30,7 +32,6 @@ import java.util.Map;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.FeedItemlistDescriptionAdapter;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -123,7 +124,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
 
         if (feed.getImage() != null && StringUtils.isNoneBlank(feed.getImage().getDownload_url())) {
-            PicassoProvider.getDefaultPicassoInstance(this)
+            Picasso.with(this)
                     .load(feed.getImage().getDownload_url())
                     .fit()
                     .into(cover);

@@ -11,8 +11,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.Feed;
 
 /**
@@ -180,7 +181,7 @@ public class NavListAdapter extends BaseAdapter {
 
         holder.title.setText(feed.getTitle());
 
-        PicassoProvider.getDefaultPicassoInstance(context)
+        Picasso.with(context)
                 .load(feed.getImageUri())
                 .fit()
                 .into(holder.image);

@@ -21,6 +21,8 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.squareup.picasso.Picasso;
+
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
@@ -33,7 +35,6 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -367,7 +368,7 @@ public class ItemlistFragment extends ListFragment {
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
 
-        PicassoProvider.getDefaultPicassoInstance(getActivity())
+        Picasso.with(getActivity())
                 .load(feed.getImageUri())
                 .fit()
                 .into(imgvCover);
