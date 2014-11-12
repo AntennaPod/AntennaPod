@@ -8,7 +8,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 public class ClientConfigurator {
 
     static {
-        ClientConfig.USER_AGENT = "AntennaPod/0.9.9.4";
+        ClientConfig.USER_AGENT = "AntennaPod/0.9.9.5";
         ClientConfig.applicationCallbacks = new ApplicationCallbacksImpl();
         ClientConfig.downloadServiceCallbacks = new DownloadServiceCallbacksImpl();
         ClientConfig.gpodnetCallbacks = new GpodnetCallbacksImpl();

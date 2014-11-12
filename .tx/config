@@ -15,6 +15,7 @@ trans.fr = core/src/main/res/values-fr/strings.xml
 trans.he_IL = core/src/main/res/values-iw-rIL/strings.xml
 trans.hi_IN = core/src/main/res/values-hi-rIN/strings.xml
 trans.it_IT = core/src/main/res/values-it-rIT/strings.xml
+trans.ja = core/src/main/res/values-ja/strings.xml
 trans.ko = core/src/main/res/values-ko/strings.xml
 trans.nl = core/src/main/res/values-nl/strings.xml
 trans.pl_PL = core/src/main/res/values-pl-rPL/strings.xml
@@ -27,6 +28,7 @@ trans.ru_RU = core/src/main/res/values-ru/strings.xml
 trans.uk_UA = core/src/main/res/values-uk-rUA/strings.xml
 trans.zh_CN = core/src/main/res/values-zh-rCN/strings.xml
 trans.sv_SE = core/src/main/res/values-sv-rSE/strings.xml
+trans.tr = core/src/main/res/values-tr/strings.xml
 
 [antennapod.description]
 file_filter = description/<lang>.txt
