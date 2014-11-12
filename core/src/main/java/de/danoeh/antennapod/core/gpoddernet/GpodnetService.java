@@ -1,20 +1,16 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.MediaType;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.RequestBody;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
+
 import org.apache.commons.lang3.Validate;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.AuthenticationException;
-import org.apache.http.auth.UsernamePasswordCredentials;
 import org.apache.http.client.ClientProtocolException;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.client.methods.HttpPut;
-import org.apache.http.client.methods.HttpRequestBase;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.auth.BasicScheme;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -22,14 +18,18 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
+import java.net.CookieManager;
+import java.net.CookiePolicy;
+import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
+import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetSubscriptionChange;
@@ -48,7 +48,11 @@ public class GpodnetService {
     public static final String DEFAULT_BASE_HOST = "gpodder.net";
     private final String BASE_HOST;
 
-    private final HttpClient httpClient;
+    private static final MediaType TEXT = MediaType.parse("plain/text; charset=utf-8");
+    private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
+
+    private final OkHttpClient httpClient;
+
 
     public GpodnetService() {
         httpClient = AntennapodHttpClient.getHttpClient();
@@ -60,16 +64,16 @@ public class GpodnetService {
      */
     public List<GpodnetTag> getTopTags(int count)
             throws GpodnetServiceException {
-        URI uri;
+        URL url;
         try {
-            uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/tags/%d.json", count), null);
-        } catch (URISyntaxException e1) {
-            e1.printStackTrace();
-            throw new IllegalStateException(e1);
+            url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/tags/%d.json", count), null).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+            throw new GpodnetServiceException(e);
         }
 
-        HttpGet request = new HttpGet(uri);
+        Request.Builder request = new Request.Builder().url(url);
         String response = executeRequest(request);
         try {
             JSONArray jsonTagList = new JSONArray(response);
@@ -98,21 +102,17 @@ public class GpodnetService {
         Validate.notNull(tag);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/tag/%s/%d.json", tag.getName(), count), null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/tag/%s/%d.json", tag.getName(), count), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
             return readPodcastListFromJSONArray(jsonArray);
 
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
-
         }
     }
 
@@ -127,21 +127,17 @@ public class GpodnetService {
         Validate.isTrue(count >= 1 && count <= 100, "Count must be in range 1..100");
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/toplist/%d.json", count), null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/toplist/%d.json", count), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
             return readPodcastListFromJSONArray(jsonArray);
 
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-
         }
     }
 
@@ -161,17 +157,14 @@ public class GpodnetService {
         Validate.isTrue(count >= 1 && count <= 100, "Count must be in range 1..100");
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/suggestions/%d.json", count), null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/suggestions/%d.json", count), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
             return readPodcastListFromJSONArray(jsonArray);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
@@ -191,22 +184,20 @@ public class GpodnetService {
                 .format("q=%s&scale_logo=%d", query, scaledLogoSize) : String
                 .format("q=%s", query);
         try {
-            URI uri = new URI(BASE_SCHEME, null, BASE_HOST, -1, "/search.json",
-                    parameters, null);
-            System.out.println(uri.toASCIIString());
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, null, BASE_HOST, -1, "/search.json",
+                    parameters, null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 
             JSONArray jsonArray = new JSONArray(response);
             return readPodcastListFromJSONArray(jsonArray);
 
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);
-
         }
     }
 
@@ -225,18 +216,13 @@ public class GpodnetService {
         Validate.notNull(username);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/devices/%s.json", username), null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/devices/%s.json", username), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
             JSONArray devicesArray = new JSONArray(response);
-            List<GpodnetDevice> result = readDeviceListFromJSONArray(devicesArray);
-
-            return result;
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        } catch (JSONException e) {
+            return readDeviceListFromJSONArray(devicesArray);
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
@@ -260,9 +246,9 @@ public class GpodnetService {
         Validate.notNull(deviceId);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/devices/%s/%s.json", username, deviceId), null);
-            HttpPost request = new HttpPost(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/devices/%s/%s.json", username, deviceId), null).toURL();
+            String content;
             if (caption != null || type != null) {
                 JSONObject jsonContent = new JSONObject();
                 if (caption != null) {
@@ -271,19 +257,14 @@ public class GpodnetService {
                 if (type != null) {
                     jsonContent.put("type", type.toString());
                 }
-                StringEntity strEntity = new StringEntity(
-                        jsonContent.toString(), "UTF-8");
-                strEntity.setContentType("application/json");
-                request.setEntity(strEntity);
+                content = jsonContent.toString();
+            } else {
+                content = "";
             }
+            RequestBody body = RequestBody.create(JSON, content);
+            Request.Builder request = new Request.Builder().post(body).url(url);
             executeRequest(request);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalArgumentException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
@@ -307,14 +288,13 @@ public class GpodnetService {
         Validate.notNull(deviceId);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/subscriptions/%s/%s.opml", username, deviceId), null);
-            HttpGet request = new HttpGet(uri);
-            String response = executeRequest(request);
-            return response;
-        } catch (URISyntaxException e) {
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/subscriptions/%s/%s.opml", username, deviceId), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
+            return executeRequest(request);
+        } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e);
+            throw new GpodnetServiceException(e);
         }
     }
 
@@ -334,14 +314,14 @@ public class GpodnetService {
         Validate.notNull(username);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/subscriptions/%s.opml", username), null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/subscriptions/%s.opml", username), null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
             return response;
-        } catch (URISyntaxException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
-            throw new IllegalArgumentException(e);
+            throw new GpodnetServiceException(e);
         }
     }
 
@@ -365,24 +345,19 @@ public class GpodnetService {
                     "Username, device ID and subscriptions must not be null");
         }
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/subscriptions/%s/%s.txt", username, deviceId), null);
-            HttpPut request = new HttpPut(uri);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/subscriptions/%s/%s.txt", username, deviceId), null).toURL();
             StringBuilder builder = new StringBuilder();
             for (String s : subscriptions) {
                 builder.append(s);
                 builder.append("\n");
             }
-            StringEntity entity = new StringEntity(builder.toString(), "UTF-8");
-            request.setEntity(entity);
-
+            RequestBody body = RequestBody.create(TEXT, builder.toString());
+            Request.Builder request = new Request.Builder().put(body).url(url);
             executeRequest(request);
-        } catch (URISyntaxException e) {
+        } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
-            throw new IllegalStateException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
+            throw new GpodnetServiceException(e);
         }
     }
 
@@ -398,9 +373,9 @@ public class GpodnetService {
      * @param removed  Collection of feed URLs of removed feeds. This Collection MUST NOT contain any duplicates
      * @return a GpodnetUploadChangesResponse. See {@link de.danoeh.antennapod.core.gpoddernet.model.GpodnetUploadChangesResponse}
      * for details.
-     * @throws java.lang.IllegalArgumentException                      if username, deviceId, added or removed is null.
+     * @throws java.lang.IllegalArgumentException                           if username, deviceId, added or removed is null.
      * @throws de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException if added or removed contain duplicates or if there
-     *                                                                 is an authentication error.
+     *                                                                      is an authentication error.
      */
     public GpodnetUploadChangesResponse uploadChanges(String username, String deviceId, Collection<String> added,
                                                       Collection<String> removed) throws GpodnetServiceException {
@@ -410,28 +385,21 @@ public class GpodnetService {
         Validate.notNull(removed);
 
         try {
-            URI uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/subscriptions/%s/%s.json", username, deviceId), null);
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/subscriptions/%s/%s.json", username, deviceId), null).toURL();
 
             final JSONObject requestObject = new JSONObject();
             requestObject.put("add", new JSONArray(added));
             requestObject.put("remove", new JSONArray(removed));
 
-            HttpPost request = new HttpPost(uri);
-            StringEntity entity = new StringEntity(requestObject.toString(), "UTF-8");
-            request.setEntity(entity);
+            RequestBody body = RequestBody.create(JSON, requestObject.toString());
+            Request.Builder request = new Request.Builder().post(body).url(url);
 
             final String response = executeRequest(request);
             return GpodnetUploadChangesResponse.fromJSONObject(response);
-        } catch (URISyntaxException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-            throw new IllegalStateException(e);
         }
 
     }
@@ -459,9 +427,9 @@ public class GpodnetService {
         String path = String.format("/api/2/subscriptions/%s/%s.json",
                 username, deviceId);
         try {
-            URI uri = new URI(BASE_SCHEME, null, BASE_HOST, -1, path, params,
-                    null);
-            HttpGet request = new HttpGet(uri);
+            URL url = new URI(BASE_SCHEME, null, BASE_HOST, -1, path, params,
+                    null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
 
             String response = executeRequest(request);
             JSONObject changes = new JSONObject(response);
@@ -469,7 +437,7 @@ public class GpodnetService {
         } catch (URISyntaxException e) {
             e.printStackTrace();
             throw new IllegalStateException(e);
-        } catch (JSONException e) {
+        } catch (JSONException | MalformedURLException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
@@ -487,15 +455,15 @@ public class GpodnetService {
         Validate.notNull(username);
         Validate.notNull(password);
 
-        URI uri;
+        URL url;
         try {
-            uri = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/auth/%s/login.json", username), null);
-        } catch (URISyntaxException e) {
+            url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/auth/%s/login.json", username), null).toURL();
+        } catch (MalformedURLException | URISyntaxException e) {
             e.printStackTrace();
-            throw new GpodnetServiceException();
+            throw new GpodnetServiceException(e);
         }
-        HttpPost request = new HttpPost(uri);
+        Request.Builder request = new Request.Builder().url(url).post(null);
         executeRequestWithAuthentication(request, username, password);
     }
 
@@ -512,26 +480,27 @@ public class GpodnetService {
         }.start();
     }
 
-    private String executeRequest(HttpRequestBase request)
+    private String executeRequest(Request.Builder requestB)
             throws GpodnetServiceException {
-        Validate.notNull(request);
+        Validate.notNull(requestB);
 
+        Request request = requestB.header("User-Agent", ClientConfig.USER_AGENT).build();
         String responseString = null;
-        HttpResponse response = null;
+        Response response = null;
+        ResponseBody body = null;
         try {
-            response = httpClient.execute(request);
+
+            response = httpClient.newCall(request).execute();
             checkStatusCode(response);
-            responseString = getStringFromEntity(response.getEntity());
-        } catch (ClientProtocolException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
+            body = response.body();
+            responseString = getStringFromResponseBody(body);
         } catch (IOException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } finally {
-            if (response != null) {
+            if (response != null && body != null) {
                 try {
-                    response.getEntity().consumeContent();
+                    body.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                     throw new GpodnetServiceException(e);
@@ -542,35 +511,33 @@ public class GpodnetService {
         return responseString;
     }
 
-    private String executeRequestWithAuthentication(HttpRequestBase request,
+    private String executeRequestWithAuthentication(Request.Builder requestB,
                                                     String username, String password) throws GpodnetServiceException {
-        if (request == null || username == null || password == null) {
+        if (requestB == null || username == null || password == null) {
             throw new IllegalArgumentException(
                     "request and credentials must not be null");
         }
+
+        Request request = requestB.header("User-Agent", ClientConfig.USER_AGENT).build();
         String result = null;
-        HttpResponse response = null;
+        ResponseBody body = null;
         try {
-            Header auth = new BasicScheme().authenticate(
-                    new UsernamePasswordCredentials(username, password),
-                    request);
-            request.addHeader(auth);
-            response = httpClient.execute(request);
+            String credential = Credentials.basic(username, password);
+            Request authRequest = request.newBuilder().header("Authorization", credential).build();
+            Response response = httpClient.newCall(authRequest).execute();
             checkStatusCode(response);
-            result = getStringFromEntity(response.getEntity());
+            body = response.body();
+            result = getStringFromResponseBody(body);
         } catch (ClientProtocolException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         } catch (IOException e) {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
-        } catch (AuthenticationException e) {
-            e.printStackTrace();
-            throw new GpodnetServiceException(e);
         } finally {
-            if (response != null) {
+            if (body != null) {
                 try {
-                    response.getEntity().consumeContent();
+                    body.close();
                 } catch (IOException e) {
                     e.printStackTrace();
                     throw new GpodnetServiceException(e);
@@ -580,12 +547,12 @@ public class GpodnetService {
         return result;
     }
 
-    private String getStringFromEntity(HttpEntity entity)
+    private String getStringFromResponseBody(ResponseBody body)
             throws GpodnetServiceException {
-        Validate.notNull(entity);
+        Validate.notNull(body);
 
         ByteArrayOutputStream outputStream;
-        int contentLength = (int) entity.getContentLength();
+        int contentLength = (int) body.contentLength();
         if (contentLength > 0) {
             outputStream = new ByteArrayOutputStream(contentLength);
         } else {
@@ -593,7 +560,7 @@ public class GpodnetService {
         }
         try {
             byte[] buffer = new byte[8 * 1024];
-            InputStream in = entity.getContent();
+            InputStream in = body.byteStream();
             int count;
             while ((count = in.read(buffer)) > 0) {
                 outputStream.write(buffer, 0, count);
@@ -602,14 +569,13 @@ public class GpodnetService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-        // System.out.println(outputStream.toString());
         return outputStream.toString();
     }
 
-    private void checkStatusCode(HttpResponse response)
+    private void checkStatusCode(Response response)
             throws GpodnetServiceException {
         Validate.notNull(response);
-        int responseCode = response.getStatusLine().getStatusCode();
+        int responseCode = response.code();
         if (responseCode != HttpStatus.SC_OK) {
             if (responseCode == HttpStatus.SC_UNAUTHORIZED) {
                 throw new GpodnetServiceAuthenticationException("Wrong username or password");

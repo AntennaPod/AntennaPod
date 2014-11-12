@@ -2,26 +2,13 @@ package de.danoeh.antennapod.core.service.download;
 
 import android.util.Log;
 
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.params.HttpClientParams;
-import org.apache.http.conn.ClientConnectionManager;
-import org.apache.http.conn.params.ConnManagerPNames;
-import org.apache.http.conn.scheme.PlainSocketFactory;
-import org.apache.http.conn.scheme.Scheme;
-import org.apache.http.conn.scheme.SchemeRegistry;
-import org.apache.http.conn.ssl.SSLSocketFactory;
-import org.apache.http.impl.client.AbstractHttpClient;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.impl.conn.tsccm.ThreadSafeClientConnManager;
-import org.apache.http.params.BasicHttpParams;
-import org.apache.http.params.CoreProtocolPNames;
-import org.apache.http.params.HttpConnectionParams;
-import org.apache.http.params.HttpParams;
+import com.squareup.okhttp.OkHttpClient;
 
+import java.net.CookieManager;
+import java.net.CookiePolicy;
 import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.ClientConfig;
 
 /**
  * Provides access to a HttpClient singleton.
@@ -29,37 +16,41 @@ import de.danoeh.antennapod.core.ClientConfig;
 public class AntennapodHttpClient {
     private static final String TAG = "AntennapodHttpClient";
 
-    public static final long EXPIRED_CONN_TIMEOUT_SEC = 30;
-
-    public static final int MAX_REDIRECTS = 5;
     public static final int CONNECTION_TIMEOUT = 30000;
-    public static final int SOCKET_TIMEOUT = 30000;
+    public static final int READ_TIMEOUT = 30000;
 
     public static final int MAX_CONNECTIONS = 8;
 
 
-    private static volatile HttpClient httpClient = null;
+    private static volatile OkHttpClient httpClient = null;
 
     /**
      * Returns the HttpClient singleton.
      */
-    public static synchronized HttpClient getHttpClient() {
+    public static synchronized OkHttpClient getHttpClient() {
         if (httpClient == null) {
+
             if (BuildConfig.DEBUG) Log.d(TAG, "Creating new instance of HTTP client");
 
-            HttpParams params = new BasicHttpParams();
-            params.setParameter(CoreProtocolPNames.USER_AGENT, ClientConfig.USER_AGENT);
-            params.setIntParameter("http.protocol.max-redirects", MAX_REDIRECTS);
-            params.setBooleanParameter("http.protocol.reject-relative-redirect",
-                    false);
-            HttpConnectionParams.setSoTimeout(params, SOCKET_TIMEOUT);
-            HttpConnectionParams.setConnectionTimeout(params, CONNECTION_TIMEOUT);
-            HttpClientParams.setRedirecting(params, true);
+            System.setProperty("http.maxConnections", String.valueOf(MAX_CONNECTIONS));
 
-            httpClient = new DefaultHttpClient(createClientConnectionManager(), params);
-            // Workaround for broken URLs in redirection
-            ((AbstractHttpClient) httpClient)
-                    .setRedirectHandler(new APRedirectHandler());
+            OkHttpClient client = new OkHttpClient();
+
+            // set cookie handler
+            CookieManager cm = new CookieManager();
+            cm.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+            client.setCookieHandler(cm);
+
+            // set timeouts
+            client.setConnectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
+            client.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+            client.setWriteTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+
+            // configure redirects
+            client.setFollowRedirects(true);
+            client.setFollowSslRedirects(true);
+
+            httpClient = client;
         }
         return httpClient;
     }
@@ -70,29 +61,7 @@ public class AntennapodHttpClient {
      */
     public static synchronized void cleanup() {
         if (httpClient != null) {
-            httpClient.getConnectionManager().closeExpiredConnections();
-            httpClient.getConnectionManager().closeIdleConnections(EXPIRED_CONN_TIMEOUT_SEC, TimeUnit.SECONDS);
+            // does nothing at the moment
         }
     }
-
-
-    private static ClientConnectionManager createClientConnectionManager() {
-        HttpParams params = new BasicHttpParams();
-        params.setIntParameter(ConnManagerPNames.MAX_TOTAL_CONNECTIONS, MAX_CONNECTIONS);
-        return new ThreadSafeClientConnManager(params, prepareSchemeRegistry());
-    }
-
-    private static SchemeRegistry prepareSchemeRegistry() {
-        SchemeRegistry sr = new SchemeRegistry();
-
-        Scheme http = new Scheme("http",
-                PlainSocketFactory.getSocketFactory(), 80);
-        sr.register(http);
-        Scheme https = new Scheme("https",
-                SSLSocketFactory.getSocketFactory(), 443);
-        sr.register(https);
-
-        return sr;
-    }
-
 }

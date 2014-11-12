@@ -1,19 +1,16 @@
 package de.danoeh.antennapod.core.service.download;
 
-import android.net.http.AndroidHttpClient;
 import android.util.Log;
+
+import com.squareup.okhttp.Credentials;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+import com.squareup.okhttp.ResponseBody;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.Header;
-import org.apache.http.HttpEntity;
-import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
-import org.apache.http.auth.UsernamePasswordCredentials;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.auth.BasicScheme;
-import org.apache.http.message.BasicHeader;
 
 import java.io.BufferedInputStream;
 import java.io.File;
@@ -22,6 +19,7 @@ import java.io.InputStream;
 import java.io.RandomAccessFile;
 import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
+import java.net.URI;
 import java.net.UnknownHostException;
 
 import de.danoeh.antennapod.core.BuildConfig;
@@ -57,54 +55,56 @@ public class HttpDownloader extends Downloader {
             }
         }
 
-        HttpClient httpClient = AntennapodHttpClient.getHttpClient();
+        OkHttpClient httpClient = AntennapodHttpClient.getHttpClient();
         RandomAccessFile out = null;
-        InputStream connection = null;
+        InputStream connection;
+        ResponseBody responseBody = null;
+
         try {
-            HttpGet httpGet = new HttpGet(URIUtil.getURIFromRequestUrl(request.getSource()));
+            final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
+            Request.Builder httpReq = new Request.Builder().url(uri.toURL())
+                    .header("User-Agent", ClientConfig.USER_AGENT);
 
             // add authentication information
-            String userInfo = httpGet.getURI().getUserInfo();
+            String userInfo = uri.getUserInfo();
             if (userInfo != null) {
                 String[] parts = userInfo.split(":");
                 if (parts.length == 2) {
-                    httpGet.addHeader(BasicScheme.authenticate(
-                            new UsernamePasswordCredentials(parts[0], parts[1]),
-                            "UTF-8", false));
+                    String credentials = Credentials.basic(parts[0], parts[1]);
+                    httpReq.header("Authorization", credentials);
                 }
             } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
-                httpGet.addHeader(BasicScheme.authenticate(new UsernamePasswordCredentials(request.getUsername(),
-                        request.getPassword()), "UTF-8", false));
+                String credentials = Credentials.basic(request.getUsername(), request.getPassword());
+                httpReq.header("Authorization", credentials);
             }
 
             // add range header if necessary
             if (fileExists) {
                 request.setSoFar(destination.length());
-                httpGet.addHeader(new BasicHeader("Range",
-                        "bytes=" + request.getSoFar() + "-"));
+                httpReq.addHeader("Range",
+                        "bytes=" + request.getSoFar() + "-");
                 if (BuildConfig.DEBUG) Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
-            HttpResponse response = httpClient.execute(httpGet);
-            HttpEntity httpEntity = response.getEntity();
-            int responseCode = response.getStatusLine().getStatusCode();
-            Header contentEncodingHeader = response.getFirstHeader("Content-Encoding");
+            Response response = httpClient.newCall(httpReq.build()).execute();
+            responseBody = response.body();
 
-            final boolean isGzip = contentEncodingHeader != null &&
-                    contentEncodingHeader.getValue().equalsIgnoreCase("gzip");
+            String contentEncodingHeader = response.header("Content-Encoding");
+
+            final boolean isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
 
             if (BuildConfig.DEBUG)
-                Log.d(TAG, "Response code is " + responseCode);
+                Log.d(TAG, "Response code is " + response.code());
 
-            if (responseCode / 100 != 2 || httpEntity == null) {
+            if (!response.isSuccessful() || response.body() == null) {
                 final DownloadError error;
                 final String details;
-                if (responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                if (response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
                     error = DownloadError.ERROR_UNAUTHORIZED;
-                    details = String.valueOf(responseCode);
+                    details = String.valueOf(response.code());
                 } else {
                     error = DownloadError.ERROR_HTTP_DATA_ERROR;
-                    details = String.valueOf(responseCode);
+                    details = String.valueOf(response.code());
                 }
                 onFail(error, details);
                 return;
@@ -115,15 +115,14 @@ public class HttpDownloader extends Downloader {
                 return;
             }
 
-            connection = new BufferedInputStream(AndroidHttpClient
-                    .getUngzippedContent(httpEntity));
+            connection = new BufferedInputStream(responseBody.byteStream());
 
-            Header[] contentRangeHeaders = (fileExists) ? response.getHeaders("Content-Range") : null;
+            String contentRangeHeader = (fileExists) ? response.header("Content-Range") : null;
 
-            if (fileExists && responseCode == HttpStatus.SC_PARTIAL_CONTENT
-                    && contentRangeHeaders != null && contentRangeHeaders.length > 0) {
-                String start = contentRangeHeaders[0].getValue().substring("bytes ".length(),
-                        contentRangeHeaders[0].getValue().indexOf("-"));
+            if (fileExists && response.code() == HttpStatus.SC_PARTIAL_CONTENT
+                    && !StringUtils.isEmpty(contentRangeHeader)) {
+                String start = contentRangeHeader.substring("bytes ".length(),
+                        contentRangeHeader.indexOf("-"));
                 request.setSoFar(Long.valueOf(start));
                 Log.d(TAG, "Starting download at position " + request.getSoFar());
 
@@ -141,7 +140,7 @@ public class HttpDownloader extends Downloader {
             request.setStatusMsg(R.string.download_running);
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Getting size of download");
-            request.setSize(httpEntity.getContentLength() + request.getSoFar());
+            request.setSize(responseBody.contentLength() + request.getSoFar());
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Size is " + request.getSize());
             if (request.getSize() < 0) {
@@ -205,6 +204,7 @@ public class HttpDownloader extends Downloader {
         } finally {
             IOUtils.closeQuietly(out);
             AntennapodHttpClient.cleanup();
+            IOUtils.closeQuietly(responseBody);
         }
     }
 
