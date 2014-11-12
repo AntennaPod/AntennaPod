@@ -76,19 +76,11 @@ public class PicassoProvider {
 
     private static class MediaRequestHandler extends RequestHandler {
 
-        final MediaMetadataRetriever mmr;
         final Context context;
 
         public MediaRequestHandler(Context context) {
             super();
             this.context = context;
-            mmr = new MediaMetadataRetriever();
-        }
-
-        @Override
-        protected void finalize() throws Throwable {
-            super.finalize();
-            mmr.release();
         }
 
         @Override
@@ -99,11 +91,22 @@ public class PicassoProvider {
         @Override
         public Result load(Request data) throws IOException {
             Bitmap bitmap = null;
-            mmr.setDataSource(data.uri.getPath());
-            byte[] image = mmr.getEmbeddedPicture();
-            if (image != null) {
-                bitmap = decodeStreamFromByteArray(data, image);
+            MediaMetadataRetriever mmr = null;
+            try {
+                mmr = new MediaMetadataRetriever();
+                mmr.setDataSource(data.uri.getPath());
+                byte[] image = mmr.getEmbeddedPicture();
+                if (image != null) {
+                    bitmap = decodeStreamFromByteArray(data, image);
+                }
+            } catch (RuntimeException e) {
+                Log.e(TAG, "Failed to decode image in media file", e);
+            } finally {
+                if (mmr != null) {
+                    mmr.release();
+                }
             }
+
             if (bitmap == null) {
                 // check for fallback Uri
                 String fallbackParam = data.uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
