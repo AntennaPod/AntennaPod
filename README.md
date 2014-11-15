@@ -37,3 +37,5 @@ Information on how to build AntennaPod can be found in the [Wiki](https://github
 Bitcoin address: `1DzvtuvdW8VhDsq9GUytMyALmsHeaHEKbg`
 
 [![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=370084)](https://www.bountysource.com/trackers/370084-antennapod?utm_source=370084&utm_medium=shield&utm_campaign=TRACKER_BADGE)
+
+[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/danieloeh/)
