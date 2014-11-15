@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
-import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.Validate;
 
@@ -39,13 +39,12 @@ public class TagFragment extends PodcastListFragment {
 
         Bundle args = getArguments();
         Validate.isTrue(args != null && args.getString("tag") != null, "args invalid");
-
         tag = new GpodnetTag(args.getString("tag"));
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
         ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getName());
     }
 
