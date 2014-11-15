@@ -49,7 +49,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
 
         holder.title.setText(podcast.getTitle());
 
-        if (StringUtils.isNoneBlank(podcast.getLogoUrl())) {
+        if (StringUtils.isNotBlank(podcast.getLogoUrl())) {
             Picasso.with(convertView.getContext())
                     .load(podcast.getLogoUrl())
                     .fit()
