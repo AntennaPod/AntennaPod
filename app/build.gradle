@@ -4,8 +4,8 @@ repositories {
     mavenCentral()
 }
 dependencies {
-    compile 'com.android.support:support-v4:21.0.0'
-    compile 'com.android.support:appcompat-v7:21.0.0'
+    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.2'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile('org.shredzone.flattr4j:flattr4j-core:2.10') {
         exclude group: 'org.apache.httpcomponents', module: 'httpcore'
@@ -26,7 +26,7 @@ dependencies {
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.0"
+    buildToolsVersion "21.1.1"
 
     defaultConfig {
         minSdkVersion 10
