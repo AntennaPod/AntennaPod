@@ -74,7 +74,7 @@ public class OpmlImportWorker extends
 		if (exception != null) {
 			if (BuildConfig.DEBUG)
 				Log.d(TAG,
-						"An error occured while trying to parse the opml document");
+						"An error occurred while trying to parse the opml document");
 			AlertDialog.Builder alert = new AlertDialog.Builder(context);
 			alert.setTitle(R.string.error_label);
 			alert.setMessage(context.getString(R.string.opml_reader_error)
