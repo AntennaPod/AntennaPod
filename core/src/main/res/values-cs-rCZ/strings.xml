@@ -2,7 +2,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <!--Activitiy and fragment titles-->
   <string name="app_name">AntennaPod</string>
-  <string name="feeds_label">Zdroje</string>
+  <string name="feeds_label">Kanály</string>
   <string name="add_feed_label">Přidat podcast</string>
   <string name="podcasts_label">PODCASTY</string>
   <string name="episodes_label">EPIZODY</string>
@@ -59,8 +59,8 @@
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
   <!--'Add Feed' Activity labels-->
-  <string name="feedurl_label">URL zdroje</string>
-  <string name="etxtFeedurlHint">URL nebo webová stránka zdroje</string>
+  <string name="feedurl_label">URL kanálu</string>
+  <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
   <string name="txtvfeedurl_label">Přidat podcast pomocí URL</string>
   <string name="podcastdirectories_label">Najít podcast v seznamu</string>
   <string name="podcastdirectories_descr">Můžete vyhledávat nové podcasty podle jména, kategorie nebo popularity v seznamu gpodder.net.</string>
@@ -71,9 +71,10 @@
   <string name="show_info_label">Informace o zdroji</string>
   <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_link_label">Sdílet odkaz</string>
-  <string name="share_source_label">Sdílet adresu zdroje</string>
-  <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento zdroj včetně všech stažených epizod.</string>
-  <string name="feed_remover_msg">Odstranit zdroj</string>
+  <string name="share_source_label">Sdílet adresu kanálu</string>
+  <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento kanál včetně všech stažených epizod.</string>
+  <string name="feed_remover_msg">Odstranit kanál</string>
+  <string name="load_complete_feed">Obnovit kompletní kanál</string>
   <!--actions on feeditems-->
   <string name="download_label">Stáhnout</string>
   <string name="play_label">Přehrát</string>
@@ -102,7 +103,7 @@
   <string name="download_error_http_data_error">HTTP chyba</string>
   <string name="download_error_error_unknown">Neznámá chyba</string>
   <string name="download_error_parser_exception">Výjimka parseru</string>
-  <string name="download_error_unsupported_type">Nepodporovaný typ zdroje</string>
+  <string name="download_error_unsupported_type">Nepodporovaný typ kanálu</string>
   <string name="download_error_connection_error">Chyba spojení</string>
   <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
@@ -118,7 +119,7 @@
   <string name="download_notification_title">Stahuji podcast data</string>
   <string name="download_report_content">%1$d úspěšných stahování, %2$d selhalo</string>
   <string name="download_log_title_unknown">Neznámý název</string>
-  <string name="download_type_feed">Zdroj</string>
+  <string name="download_type_feed">Kanál</string>
   <string name="download_type_media">Soubor</string>
   <string name="download_type_image">Obrázek</string>
   <string name="download_request_error_dialog_message_prefix">Nastala chyba při pokusu o stažení souboru:\u0020</string>
@@ -158,6 +159,10 @@
   <string name="access_revoked_title">Přístup ukončen</string>
   <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
   <!--Flattr-->
+  <string name="flattring_thing">Flattruji %s</string>
+  <string name="flattring_label">AntennaPod flattruje</string>
+  <string name="flattrd_label">AntennaPod flattroval</string>
+  <string name="flattrd_failed_label">AntennaPod flattr selhal</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout plugin</string>
   <string name="no_playback_plugin_title">Plugin není nainstalován</string>
@@ -165,7 +170,7 @@
   <string name="set_playback_speed_label">Rychlosti přehrávání</string>
   <!--Empty list labels-->
   <string name="no_items_label">Žádné položky v seznamu.</string>
-  <string name="no_feeds_label">Zatím nebyly přidány žádné zdroje.</string>
+  <string name="no_feeds_label">Zatím nebyly přidány žádné kanály.</string>
   <!--Preferences-->
   <string name="other_pref">Ostatní</string>
   <string name="about_pref">O aplikaci</string>
@@ -177,7 +182,7 @@
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
   <string name="pref_autoUpdateIntervall_title">Interval aktualizace zdrojů</string>
-  <string name="pref_autoUpdateIntervall_sum">Udává interval, ve kterém se zdroje automaticky aktualizují nebo tuto funkci deaktivuje</string>
+  <string name="pref_autoUpdateIntervall_sum">Udává interval, ve kterém se kanály automaticky aktualizují nebo tuto funkci deaktivuje</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Stahovat soubory pouze pomocí WiFi</string>
   <string name="pref_followQueue_title">Kontinuální přehrávání</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi stahování</string>
@@ -227,8 +232,11 @@
   <string name="pref_expand_notify_unsupport_toast">Verze Androidu nižší než 4.1 nepodporují rozšířená upozornění.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
+  <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
+  <string name="auto_flattr_ater_beginning">Flattrovat díl po začátku přehrávání</string>
+  <string name="auto_flattr_ater_end">Flattrovat díl po konci přehrávání</string>
   <!--Search-->
-  <string name="search_hint">Hledat zdroje a epizody</string>
+  <string name="search_hint">Hledat kanály a epizody</string>
   <string name="found_in_shownotes_label">Nalezeno v poznámkách k show</string>
   <string name="found_in_chapters_label">Nalezeno v kapitolách</string>
   <string name="search_status_no_results">Žádné výsledky</string>
@@ -325,6 +333,7 @@
   <string name="new_episodes_count_label">Počet nových epizod</string>
   <string name="in_progress_episodes_count_label">Počet epizod u kterých byl započat poslech</string>
   <string name="drag_handle_content_description">Tahem změnit pozici této položky</string>
+  <string name="load_next_page_label">Načíst další stranu</string>
   <!--Feed information screen-->
   <string name="authentication_label">Ověření</string>
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>

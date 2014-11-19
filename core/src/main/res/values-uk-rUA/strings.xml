@@ -74,6 +74,7 @@
   <string name="share_source_label">Поділитися URL каналу</string>
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
   <string name="feed_remover_msg">Удаляю канал</string>
+  <string name="load_complete_feed">Оновити канал цілком</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Кількість нових епізодів</string>
   <string name="in_progress_episodes_count_label">Кількість епізодів що ви почали слухати</string>
   <string name="drag_handle_content_description">Перетягніть щоб змінити позицію</string>
+  <string name="load_next_page_label">Завантажити наступну сторінку</string>
   <!--Feed information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>

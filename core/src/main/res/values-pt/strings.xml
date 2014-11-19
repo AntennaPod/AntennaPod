@@ -74,6 +74,7 @@
   <string name="share_source_label">Partilhar ligação da fonte</string>
   <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela petencentes.</string>
   <string name="feed_remover_msg">Remover fonte</string>
+  <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
   <!--actions on feeditems-->
   <string name="download_label">Transferir</string>
   <string name="play_label">Reproduzir</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Número de novos episódios</string>
   <string name="in_progress_episodes_count_label">Número de episódios que já foi iniciada a reprodução</string>
   <string name="drag_handle_content_description">Arraste para mudar a posição deste item</string>
+  <string name="load_next_page_label">Carregar próxima página</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticação</string>
   <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios.</string>

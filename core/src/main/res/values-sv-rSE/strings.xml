@@ -16,7 +16,7 @@
   <string name="downloads_running_label">Körs</string>
   <string name="downloads_completed_label">Färdiga</string>
   <string name="downloads_log_label">Logg</string>
-  <string name="cancel_download_label">Avbryt  nedladdnin</string>
+  <string name="cancel_download_label">Avbryt  nedladdning</string>
   <string name="playback_history_label">Uppspelningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
@@ -63,7 +63,7 @@
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
   <string name="txtvfeedurl_label">Lägg till podcast via URL</string>
   <string name="podcastdirectories_label">Hitta podcast i mapp</string>
-  <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet på tjänsten gpodder.net</string>
+  <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet med tjänsten gpodder.net</string>
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som lästa</string>
@@ -74,12 +74,13 @@
   <string name="share_source_label">Dela flödeslänk</string>
   <string name="feed_delete_confirmation_msg">Bekräfta att du vill ta bort denna feed och ALLA avsnitt av denna feed som du har hämtat.</string>
   <string name="feed_remover_msg">Tar bort flöde</string>
+  <string name="load_complete_feed">Uppdatera hela flödet</string>
   <!--actions on feeditems-->
   <string name="download_label">Ladda ned</string>
   <string name="play_label">Spela</string>
   <string name="pause_label">Pausa</string>
   <string name="stop_label">Stopp</string>
-  <string name="stream_label">Stream</string>
+  <string name="stream_label">Strömma</string>
   <string name="remove_label">Ta bort</string>
   <string name="remove_episode_lable">Ta bort episod</string>
   <string name="mark_read_label">Markera som läst</string>
@@ -87,10 +88,10 @@
   <string name="add_to_queue_label">Lägg till i kön</string>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <string name="visit_website_label">Besök websidan</string>
-  <string name="support_label">Flattr det här</string>
+  <string name="support_label">Flattra det här</string>
   <string name="enqueue_all_new">Lägg till alla i kön</string>
   <string name="download_all">Ladda ner alla</string>
-  <string name="skip_episode_label">Hoppa över avsnitt</string>
+  <string name="skip_episode_label">Hoppa över episod</string>
   <!--Download messages and labels-->
   <string name="download_successful">lyckades</string>
   <string name="download_failed">misslyckades</string>
@@ -101,7 +102,7 @@
   <string name="download_error_file_error">Filfel</string>
   <string name="download_error_http_data_error">HTTP data fel</string>
   <string name="download_error_error_unknown">Okänt fel</string>
-  <string name="download_error_parser_exception">Parserfel</string>
+  <string name="download_error_parser_exception">Tolkningsfel</string>
   <string name="download_error_unsupported_type">Flödestyp utan stöd</string>
   <string name="download_error_connection_error">Anslutningsfel</string>
   <string name="download_error_unknown_host">Okänd värd</string>
@@ -195,7 +196,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar bortkopplade</string>
   <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
   <string name="pref_mobileUpdate_sum">Tillåt uppdateringar via mobil dataanslutning</string>
-  <string name="refreshing_label">Uppdatera</string>
+  <string name="refreshing_label">Uppdaterar</string>
   <string name="flattr_settings_label">Flattr inställningar</string>
   <string name="pref_flattr_auth_title">Flattr inloggning</string>
   <string name="pref_flattr_auth_sum">För att Flattra saker direkt från appen, logga in på ditt Flattr-konto.</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Antal nya episoder</string>
   <string name="in_progress_episodes_count_label">Antal episoder du har börjat lyssna på</string>
   <string name="drag_handle_content_description">Dra för att ändra dess position</string>
+  <string name="load_next_page_label">Ladda nästa sida</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autentisering</string>
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>

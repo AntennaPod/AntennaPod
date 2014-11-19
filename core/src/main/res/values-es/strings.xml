@@ -74,6 +74,7 @@
   <string name="share_source_label">Compartir el enlace del canal</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <string name="feed_remover_msg">Eliminando el canal</string>
+  <string name="load_complete_feed">Actualizar el feed completo</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Cantidad de episodios nuevos</string>
   <string name="in_progress_episodes_count_label">Cantidad de episodios que ha comenzado a escuchar</string>
   <string name="drag_handle_content_description">Arrastrar para cambiar la posición de este ítem</string>
+  <string name="load_next_page_label">Cargar la página siguiente</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticación</string>
   <string name="authentication_descr">Cambiar nombre y contraseña de este podcast y sus episodios</string>

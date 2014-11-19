@@ -74,10 +74,12 @@
   <string name="share_source_label">Comparteix l\'enllaç del canal</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
+  <string name="load_complete_feed">S\'ha actualitzat el canal</string>
   <!--actions on feeditems-->
   <string name="download_label">Baixa</string>
   <string name="play_label">Reprodueix</string>
   <string name="pause_label">Pausa</string>
+  <string name="stop_label">Atura</string>
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
   <string name="remove_episode_lable">Esborra episodi</string>

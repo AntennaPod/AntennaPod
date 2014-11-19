@@ -3,24 +3,35 @@
   <!--Activitiy and fragment titles-->
   <string name="app_name">אנטנה-פוד</string>
   <string name="feeds_label">הזנות</string>
+  <string name="add_feed_label">הוסף פודקאסט</string>
   <string name="podcasts_label">פודקאסטים</string>
   <string name="episodes_label">פרקים</string>
+  <string name="new_episodes_label">פרקים חדשים</string>
+  <string name="all_episodes_label">כל הפרקים</string>
   <string name="new_label">חדש</string>
   <string name="waiting_list_label">רשימת המתנה</string>
   <string name="settings_label">הגדרות</string>
   <string name="add_new_feed_label">הוסף פודקאסט</string>
   <string name="downloads_label">הורדות</string>
+  <string name="downloads_running_label">פועל</string>
+  <string name="downloads_completed_label">סיים</string>
+  <string name="downloads_log_label">יומן</string>
   <string name="cancel_download_label">בטל הורדה</string>
   <string name="playback_history_label">היסטוריית ניגון</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">התחברות אל gpodder.net</string>
   <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">פורסם לאחרונה</string>
+  <string name="episode_filter_label">הצג רק פרקים חדשים</string>
   <!--Main activity-->
+  <string name="drawer_open">פתח תפריט</string>
+  <string name="drawer_close">סגור תפריט</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">פתח בדפדפן</string>
   <string name="copy_url_label">העתק כתובת אתר</string>
   <string name="share_url_label">שתף כתובת אתר</string>
   <string name="copied_url_msg">כתובת אתרהועתקה ללוח.</string>
+  <string name="go_to_position_label">עבור למיקום זה</string>
   <!--Playback history-->
   <string name="clear_history_label">נקה היסטוריה</string>
   <!--Other-->
@@ -49,20 +60,29 @@
   <string name="auto_download_label">כלול בהורדות אוטומטיות</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
+  <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
   <string name="txtvfeedurl_label">הוסף פודקאסט לפי כתובת אתר</string>
+  <string name="podcastdirectories_label">חפש פודקאסט בספריה</string>
+  <string name="podcastdirectories_descr">אפשר לחפש פודקסטים חדשים לפי בשם, קטגוריה או פופולריות בספריית gpodder.net.</string>
+  <string name="browse_gpoddernet_label">עיין בgpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">סמן הכל כנקרא</string>
+  <string name="mark_all_read_msg">סמן את כל הפרקים כנקרא</string>
   <string name="show_info_label">הצג מידע</string>
+  <string name="remove_feed_label">הסר פודקאסט</string>
   <string name="share_link_label">שתף קישור אתר</string>
   <string name="share_source_label">שתף קישור הזנה</string>
   <string name="feed_delete_confirmation_msg">אשר מחיקת הזנה זו ואת כל פרקי ההזנה שהורדת.</string>
   <string name="feed_remover_msg">הסר הזנה</string>
+  <string name="load_complete_feed">רענן את כל ההזנה</string>
   <!--actions on feeditems-->
   <string name="download_label">הורד</string>
   <string name="play_label">נגן</string>
   <string name="pause_label">השהה</string>
+  <string name="stop_label">עצור</string>
   <string name="stream_label">הזרם</string>
   <string name="remove_label">הסר</string>
+  <string name="remove_episode_lable">הסר פרק</string>
   <string name="mark_read_label">סמן כנקרא</string>
   <string name="mark_unread_label">סמן כלא נקרא</string>
   <string name="add_to_queue_label">הוסף לתור</string>
@@ -73,6 +93,8 @@
   <string name="download_all">הורד הכל</string>
   <string name="skip_episode_label">דלג על הפרק</string>
   <!--Download messages and labels-->
+  <string name="download_successful">הצלחה</string>
+  <string name="download_failed">כישלון</string>
   <string name="download_pending">הורדה עתידית</string>
   <string name="download_running">הורדה מתבצעת</string>
   <string name="download_error_device_not_found">התקן איחסון לא נמצא</string>
@@ -93,6 +115,7 @@
   <string name="download_error_request_error">שגיאת בקשה</string>
   <string name="download_error_db_access">שגיאת גישה למסד הנתונים</string>
   <string name="downloads_left">הורדות נותרוu0020\</string>
+  <string name="downloads_processing">מעבד הורדות</string>
   <string name="download_notification_title">מוריד פודקאסט</string>
   <string name="download_report_content">%1$d הורדות הצליחו, %2$d ניכשלו</string>
   <string name="download_log_title_unknown">כותרת לא ידועה</string>
@@ -114,6 +137,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">ממלא חוצץ</string>
   <string name="playbackservice_notification_title">מנגן פודקאסט</string>
+  <string name="unknown_media_key">אנטנה-פוד - מפתח מדיה לא ידוע: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">נקה תור</string>
   <string name="undo">בטל</string>
@@ -127,6 +151,7 @@
   <string name="return_home_label">חזור למסך הבית</string>
   <string name="flattr_auth_success">האימות הצליח! עכשיו אתה יכול לתרום באמצעות flattr מתוך האפליקציה.</string>
   <string name="no_flattr_token_title">אסימון flattr לא נמצא</string>
+  <string name="no_flattr_token_notification_msg">חשבון ה-flattr שלך אינו מחובר לאנטנה-פוד. הקש כאן לאימות.</string>
   <string name="no_flattr_token_msg">חשבון ה-flattr שלך אינו מחובר לאנטנה-פוד. אתה יכול לקשראת  לחשבונך לאנטנה-פוד לתרום באמצעות flattr מתוך האפליקציה או שאתה יכול לבקר באתר האינטרנט של הדבר לו תרצה לתרום.</string>
   <string name="authenticate_now_label">אמת</string>
   <string name="action_forbidden_title">הפעולה אסורה</string>
@@ -148,6 +173,8 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">הורד תוסף</string>
   <string name="no_playback_plugin_title">תוסף לא מותקן</string>
+  <string name="no_playback_plugin_msg">לאפשר השמעה במהירות משתנה, יש להתקין ספריית צד שלישית.\n\nלחץ על \'הורד תוסף\' להוריד תוסף חינמי מחנות Play.\n\n כל בעיה שתמצא בשימוש עם תוסף זה אינה באחריות של אנטנה-פוד ויש לדווחה לבעל התוסף.
+ </string>
   <string name="set_playback_speed_label">מהירויות ניגון</string>
   <!--Empty list labels-->
   <string name="no_items_label">אין פריטים ברשימה זו.</string>
@@ -179,6 +206,7 @@
   <string name="pref_revokeAccess_title">בטל גישה</string>
   <string name="pref_revokeAccess_sum">בטל  הרשאת גישה לחשבון flattr ליישום זה.</string>
   <string name="pref_auto_flattr_title">תרומות Flattr אוטומטיות</string>
+  <string name="pref_auto_flattr_sum">הגדר תרומות flattr אוטומטיות</string>
   <string name="user_interface_label">ממשק משתמש</string>
   <string name="pref_set_theme_title">בחר ערכת נושא</string>
   <string name="pref_set_theme_sum">שנה את מראה אנטנה-פוד</string>
@@ -201,9 +229,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">שנה פרטי התחברות של חשבון gpodder.net.</string>
   <string name="pref_playback_speed_title">מהירויות ניגון</string>
   <string name="pref_playback_speed_sum">התאמת המהיריות הזמינות לניגון במהירות משתנה</string>
+  <string name="pref_seek_delta_title">זמן דילוג</string>
+  <string name="pref_seek_delta_sum">דלג מספר שניות זה בדילוג לאחור או קדימה</string>
   <string name="pref_gpodnet_sethostname_title">הגדר שם שרת</string>
   <string name="pref_gpodnet_sethostname_use_default_host">השתמש בשרת ברירת מידל</string>
+  <string name="pref_expandNotify_title">הרחב הודעה</string>
+  <string name="pref_expandNotify_sum">תמיד הרחב את ההודעה כדי להראות את לחצני הפעלה.</string>
+  <string name="pref_persistNotify_title">פקדי הפעלה קבועים</string>
+  <string name="pref_persistNotify_sum">שמר בקרי הודעה ומסך נעילה בעת השהיית השמעה.</string>
+  <string name="pref_expand_notify_unsupport_toast">גרסאות אנדרויד לפני 4.1 לא תומכות בהודעות מורחבות.</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">הפעל תרומות flattr אוטומטיות</string>
+  <string name="auto_flattr_after_percent">תרום באמצעות flattr כשנוגן %d אחוזים מהפרק</string>
+  <string name="auto_flattr_ater_beginning">תרום באמצעות flattr כשניגון פרק מתחיל</string>
+  <string name="auto_flattr_ater_end">תרום באמצעות flattr כשניגון פרק מסתיים</string>
   <!--Search-->
   <string name="search_hint">חפש הזנות או פרקים</string>
   <string name="found_in_shownotes_label">נמצא בהערות פרק</string>
@@ -235,6 +274,9 @@
   <string name="sleep_timer_label">טיימר שינה</string>
   <string name="time_left_label">זמן נותר:\u0020</string>
   <string name="time_dialog_invalid_input">קלט לא חוקי, זמן חייב להיות מספר שלם</string>
+  <string name="time_unit_seconds">שניות</string>
+  <string name="time_unit_minutes">דקות</string>
+  <string name="time_unit_hours">שעות</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">קטגוריות</string>
   <string name="gpodnet_toplist_header">פודקאסטים בכירים</string>
@@ -243,6 +285,7 @@
   <string name="gpodnetauth_login_title">התחברות</string>
   <string name="gpodnetauth_login_descr">ברוך הבא להתחברות ל-gpodder.net. ראשית, הקלד את פרטי הכניסה שלך:</string>
   <string name="gpodnetauth_login_butLabel">התחברות</string>
+  <string name="gpodnetauth_login_register">אם אין לך עדיין חשבון, תוכל לפתוח אחד דרך: \nhttps://gpodder.net/register/</string>
   <string name="username_label">שם משתמש:</string>
   <string name="password_label">ססמה:</string>
   <string name="gpodnetauth_device_title">בחירת מכשיר</string>
@@ -284,7 +327,7 @@
   <string name="show_chapters_label">הצג פרקים</string>
   <string name="show_shownotes_label">הצג הערות פרק</string>
   <string name="show_cover_label">הצג תמונה</string>
-  <string name="rewind_label">הרץ לאחור</string>
+  <string name="rewind_label">דלג לאחור</string>
   <string name="fast_forward_label">הרץ קדימה</string>
   <string name="media_type_audio_label">שמע</string>
   <string name="media_type_video_label">וידאו</string>
@@ -297,7 +340,11 @@
   <string name="in_queue_label">הפרק בתור</string>
   <string name="new_episodes_count_label">מספר הפרקים החדשים</string>
   <string name="in_progress_episodes_count_label">מספר הפרקים שהתחלת להאזין להם</string>
+  <string name="drag_handle_content_description">גרור לשינוי מיקום פריט זה</string>
+  <string name="load_next_page_label">טען את הדף הבא</string>
   <!--Feed information screen-->
+  <string name="authentication_label">אימות</string>
+  <string name="authentication_descr">שנה את שם המשתמש והסיסמה שלך לפודקאסט ופרקים שלו.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
 </resources>

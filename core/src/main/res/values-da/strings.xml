@@ -74,6 +74,7 @@
   <string name="share_source_label">Del feed link</string>
   <string name="feed_delete_confirmation_msg">Bekræft venligst at du vil fjerne dette feed og ALLE episoder du har downloadet fra dette feed.</string>
   <string name="feed_remover_msg">Fjerner feed</string>
+  <string name="load_complete_feed">Opdater hele feed\'et</string>
   <!--actions on feeditems-->
   <string name="download_label">Hent</string>
   <string name="play_label">Afspil</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Antal nye episoder</string>
   <string name="in_progress_episodes_count_label">Antallet af episoder du er begyndt at lytte til</string>
   <string name="drag_handle_content_description">Træk for at skifte denne tings position</string>
+  <string name="load_next_page_label">Indlæs næste side</string>
   <!--Feed information screen-->
   <string name="authentication_label">Godkendelse</string>
   <string name="authentication_descr">Skift dit brugernavn og kodeord for denne podcast og dets episoder.</string>

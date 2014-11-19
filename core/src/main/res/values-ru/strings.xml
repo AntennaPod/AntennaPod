@@ -13,17 +13,25 @@
   <string name="settings_label">Настройки</string>
   <string name="add_new_feed_label">Добавить подкаст</string>
   <string name="downloads_label">Загрузки</string>
+  <string name="downloads_running_label">Выполняется</string>
+  <string name="downloads_completed_label">Завершено</string>
+  <string name="downloads_log_label">Журнал</string>
   <string name="cancel_download_label">Отменить загрузку</string>
   <string name="playback_history_label">История воспроизведения</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
   <!--New episodes fragment-->
+  <string name="recently_published_episodes_label">Свежие</string>
+  <string name="episode_filter_label">Только новые</string>
   <!--Main activity-->
+  <string name="drawer_open">Открыть меню</string>
+  <string name="drawer_close">Закрыть меню</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Открыть в браузере</string>
   <string name="copy_url_label">Скопировать ссылку</string>
   <string name="share_url_label">Поделиться ссылкой</string>
   <string name="copied_url_msg">Ссылка скопирована в буфер</string>
+  <string name="go_to_position_label">Перейти к этой позиции</string>
   <!--Playback history-->
   <string name="clear_history_label">Очистить историю</string>
   <!--Other-->
@@ -52,22 +60,28 @@
   <string name="auto_download_label">Добавить в автозагрузки</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
+  <string name="etxtFeedurlHint">Адрес канала или сайта</string>
   <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
   <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
+  <string name="podcastdirectories_descr">Вы можете искать новые подкасты в каталоге gpodder.net по имени, категории или популярности/</string>
+  <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Отметить все как прочитанное</string>
+  <string name="mark_all_read_label">Отметить как прослушанное</string>
+  <string name="mark_all_read_msg">Отметить все выпуски как прослушанные</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить подкаст</string>
   <string name="share_link_label">Поделиться ссылкой на сайт</string>
   <string name="share_source_label">Ссылка на канал</string>
-  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и ВСЕХ загруженных с этого канала выпусков.</string>
+  <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и всех выпусков, загруженных с этого канала.</string>
   <string name="feed_remover_msg">Удаление канала</string>
   <!--actions on feeditems-->
   <string name="download_label">Загрузить</string>
   <string name="play_label">Воспроизвести</string>
   <string name="pause_label">Пауза</string>
-  <string name="stream_label">Потоковое воспроизведение</string>
+  <string name="stop_label">Остановить</string>
+  <string name="stream_label">Воспроизвести из сети</string>
   <string name="remove_label">Удалить</string>
+  <string name="remove_episode_lable">Удалить</string>
   <string name="mark_read_label">Отметить как прочитанное</string>
   <string name="mark_unread_label">Отметить как непрочитанное</string>
   <string name="add_to_queue_label">Добавить в очередь</string>
@@ -85,7 +99,7 @@
   <string name="download_error_device_not_found">Устройство хранения не найдено</string>
   <string name="download_error_insufficient_space">Недостаточно места</string>
   <string name="download_error_file_error">Ошибка файла</string>
-  <string name="download_error_http_data_error">Ошибка протокола HTTP</string>
+  <string name="download_error_http_data_error">Ошибка данных HTTP</string>
   <string name="download_error_error_unknown">Неизвестная ошибка</string>
   <string name="download_error_parser_exception">Ошибка обработки</string>
   <string name="download_error_unsupported_type">Неподдерживаемый тип канала</string>
@@ -100,6 +114,7 @@
   <string name="download_error_request_error">Ошибка запроса</string>
   <string name="download_error_db_access">Ошибка доступа к базе данных</string>
   <string name="downloads_left">Осталось\u0020загрузок</string>
+  <string name="downloads_processing">Производится загрузка</string>
   <string name="download_notification_title">Получение данных подкаста</string>
   <string name="download_report_content">%1$d загрузок завершено, %2$d не удалось</string>
   <string name="download_log_title_unknown">Неизвестное название</string>
@@ -148,7 +163,7 @@
   <string name="flattr_click_failure">Не поддержано через Flattr:  %s.</string>
   <string name="flattr_click_enqueued">Будет поддержано через Flattr потом</string>
   <string name="flattring_thing">%s поддерживается через Flattr</string>
-  <string name="flattring_label">AntennaPod поддерживает через Flattr</string>
+  <string name="flattring_label">AntennaPod поддерживается через Flattr</string>
   <string name="flattrd_label">Вы поддержали AntennaPod через Flattr</string>
   <string name="flattrd_failed_label">Ошибка</string>
   <string name="flattr_retrieving_status">Получение списка поддержаного через Flattr</string>
@@ -210,6 +225,11 @@
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
+  <string name="pref_expandNotify_title">Расширенное уведомление</string>
+  <string name="pref_expandNotify_sum">Всегда показывать в уведомлении кнопки управления вопспроизведением</string>
+  <string name="pref_persistNotify_title">Постоянный контрооль воспроизведения</string>
+  <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки воспроизведения на экране блокировки во время паузы.</string>
+  <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">Поиск каналов или выпусков</string>
@@ -242,6 +262,9 @@
   <string name="sleep_timer_label">Таймер сна</string>
   <string name="time_left_label">Осталось времени:\u0020</string>
   <string name="time_dialog_invalid_input">Неправильный ввод, время должно быть в виде числа</string>
+  <string name="time_unit_seconds">с</string>
+  <string name="time_unit_minutes">м</string>
+  <string name="time_unit_hours">ч</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Категории</string>
   <string name="gpodnet_toplist_header">Лучшее</string>
@@ -256,7 +279,7 @@
   <string name="gpodnetauth_device_descr">Создайте новое устройство, чтобы использовать ваш аккаунт на gpodder.net или выберите существующее:</string>
   <string name="gpodnetauth_device_deviceID">Идентификатор устройства:\u0020</string>
   <string name="gpodnetauth_device_caption">Название устройства</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Создайте новое устройство</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Создать новое устройство</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Выберите существующее устройство:</string>
   <string name="gpodnetauth_device_errorEmpty">Поле с Device ID не должно быть пустым</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">Device ID уже используется</string>
@@ -282,14 +305,14 @@
   <string name="folder_not_empty_dialog_msg">Выбранная папка не пуста. Загрузки и прочие файлы будут сохранены в эту папку. Продолжить?</string>
   <string name="set_to_default_folder">Выберите папку по умолчанию</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Пауза вместо уменьшения громкости, когда другое приложение проигрывает звуки</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">Пауза при смене аудиофокуса</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Пауза при прерывании</string>
   <!--Online feed view-->
   <string name="subscribe_label">Подписаться</string>
   <string name="subscribed_label">Подписка оформлена</string>
   <string name="downloading_label">Загрузка...</string>
   <!--Content descriptions for image buttons-->
-  <string name="show_chapters_label">Показать разделы</string>
-  <string name="show_shownotes_label">Показать заметки к эпизодам</string>
+  <string name="show_chapters_label">Показать главы</string>
+  <string name="show_shownotes_label">Показать примечания к выпуску</string>
   <string name="show_cover_label">Показать изображение</string>
   <string name="rewind_label">Назад</string>
   <string name="fast_forward_label">Вперед</string>
@@ -297,14 +320,17 @@
   <string name="media_type_video_label">Видео</string>
   <string name="navigate_upwards_label">Перейти выше</string>
   <string name="butAction_label">Другие действия</string>
-  <string name="status_playing_label">Эпизод воспроизводится</string>
-  <string name="status_downloading_label">Эпизод загружается</string>
-  <string name="status_downloaded_label">Эпизод загружен</string>
-  <string name="status_unread_label">Новый</string>
-  <string name="in_queue_label">Эпизод в очереди</string>
-  <string name="new_episodes_count_label">Количество новых эпизодов</string>
-  <string name="in_progress_episodes_count_label">Количество начатых эпизодов</string>
+  <string name="status_playing_label">Выпуск воспроизводится</string>
+  <string name="status_downloading_label">Выпуск загружается</string>
+  <string name="status_downloaded_label">Выпуск загружен</string>
+  <string name="status_unread_label">Новый элемент</string>
+  <string name="in_queue_label">Выпуск в очереди</string>
+  <string name="new_episodes_count_label">Количество новых выпусков</string>
+  <string name="in_progress_episodes_count_label">Количество начатых выпусков</string>
+  <string name="drag_handle_content_description">Перетяните чтобы изменить позицию этого элемента</string>
+  <string name="load_next_page_label">Загрузить следующую страницу</string>
   <!--Feed information screen-->
+  <string name="authentication_label">Авторизация</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
 </resources>

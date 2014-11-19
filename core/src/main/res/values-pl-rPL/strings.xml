@@ -74,6 +74,7 @@
   <string name="share_source_label">Udostępnij kanał</string>
   <string name="feed_delete_confirmation_msg">Potwierdź chęć usunięcia tego kanału wraz ze WSZYSTKIMI odcinkami, które zostały pobrane.</string>
   <string name="feed_remover_msg">Usuwanie kanału</string>
+  <string name="load_complete_feed">Odśwież cały kanał</string>
   <!--actions on feeditems-->
   <string name="download_label">Pobierz</string>
   <string name="play_label">Odtwórz</string>
@@ -227,10 +228,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
   <string name="pref_playback_speed_title">Prędkość odtwarzania</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania audio o zmiennej prędkości</string>
+  <string name="pref_seek_delta_title">Seek time</string>
+  <string name="pref_seek_delta_sum">Przeskocz o tyle sekund przewijając</string>
   <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
   <string name="pref_expandNotify_title">Rozwiń Powiadomienia</string>
+  <string name="pref_expandNotify_sum">Zawsze rozwijaj powiadomienie żeby pokazać przyciski odtwarzacza.</string>
+  <string name="pref_persistNotify_title">Stałe przyciski odtwarzacza</string>
+  <string name="pref_persistNotify_sum">Utrzymuj powiadomienie i przyciski odtwarzania na ekranie blokady gdy odtwarzanie jest wstrzymane.</string>
+  <string name="pref_expand_notify_unsupport_toast">Android starszy niż 4.1 nie wspiera rozszerzonych powiadomień.</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Włącz automatyczne wspieranie na flattr.</string>
+  <string name="auto_flattr_after_percent">Z-flattr-uj odcinki odegrane %d procentach.</string>
+  <string name="auto_flattr_ater_beginning">Z-flattr-uj odcinek gdy odtawarzanie zostanie rozpoczęte</string>
+  <string name="auto_flattr_ater_end">Z-flattr-uj odcinek gdy odtwarzanie zostanie zakończone</string>
   <!--Search-->
   <string name="search_hint">Szukaj kanałów lub odcinków</string>
   <string name="found_in_shownotes_label">Znaleziono w notatkach</string>
@@ -273,6 +284,8 @@
   <string name="gpodnetauth_login_title">Login</string>
   <string name="gpodnetauth_login_descr">Witamy w procesie logowania do gpodder.net. Najpierw podaj swoje dane logowania:</string>
   <string name="gpodnetauth_login_butLabel">Login</string>
+  <string name="gpodnetauth_login_register">Jeśli nie masz jeszcze konta, możesz utworzyć je tutaj:
+https://gpodder.net/register/</string>
   <string name="username_label">Nazwa użytkownika</string>
   <string name="password_label">Hasło</string>
   <string name="gpodnetauth_device_title">Wybór urządzenia</string>
@@ -328,6 +341,7 @@
   <string name="new_episodes_count_label">Liczba nowych odcinków</string>
   <string name="in_progress_episodes_count_label">Liczba odcinków, których zacząłeś słuchać</string>
   <string name="drag_handle_content_description">Przeciągnij aby zmienić pozycję elementu</string>
+  <string name="load_next_page_label">Załaduj następną stronę</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autoryzacja</string>
   <string name="authentication_descr">Zmień swoją nazwę użytkownika oraz hasło dla tego podcastu i jego odcinków</string>

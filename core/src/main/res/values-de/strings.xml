@@ -74,6 +74,7 @@
   <string name="share_source_label">Feed-Link teilen</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
   <string name="feed_remover_msg">Entferne Feed</string>
+  <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
@@ -339,6 +340,7 @@
   <string name="new_episodes_count_label">Anzahl neuer Episoden</string>
   <string name="in_progress_episodes_count_label">Anzahl der Episoden, die du angefangen hast zu hören</string>
   <string name="drag_handle_content_description">Ziehe, um die Position dieses Objekts zu verändern</string>
+  <string name="load_next_page_label">Nächste Seite laden</string>
   <!--Feed information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
