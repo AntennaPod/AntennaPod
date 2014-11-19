@@ -1,1 +1,2 @@
-include ':submodules:dslv:library'
+include ':app', ':core'
+include ':app:dslv:library'

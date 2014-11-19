@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:custom="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/refresh_item"
+        android:title="@string/refresh_label"
+        android:menuCategory="container"
+        custom:showAsAction="ifRoom"
+        android:icon="?attr/navigation_refresh"/>
+
+    <item
+        android:id="@+id/mark_all_read_item"
+        android:title="@string/mark_all_read_label"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:icon="?attr/navigation_accept"/>
+
+    <item
+        android:id="@+id/episode_filter_item"
+        android:title="@string/episode_filter_label"
+        android:menuCategory="container"
+        android:checkable="true"
+        custom:showAsAction="collapseActionView"/>
+
+</menu>

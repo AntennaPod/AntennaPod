@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/listitem_threeline_height"
+    android:orientation="horizontal">
+
+    <ImageView
+        android:id="@+id/imgvImage"
+        android:layout_width="@dimen/thumbnail_length_downloaded_item"
+        android:layout_height="@dimen/thumbnail_length_downloaded_item"
+        android:layout_gravity="center_vertical"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:contentDescription="@string/cover_label"
+        android:scaleType="centerCrop" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
+        android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="4dp" />
+
+        <TextView
+            android:id="@+id/txtvSize"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtvTitle" />
+
+        <TextView
+            android:id="@+id/txtvPublished"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtvTitle" />
+
+    </RelativeLayout>
+
+    <include layout="@layout/vertical_list_divider"/>
+
+    <ImageButton
+        android:id="@+id/butSecondaryAction"
+        android:layout_width="@dimen/listview_secondary_button_width"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="false"
+        android:contentDescription="@string/remove_episode_lable"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:src="?attr/content_discard" />
+
+</LinearLayout>

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <dimen name="thumbnail_length">170dp</dimen>
+    <dimen name="thumbnail_length_queue_item">64dp</dimen>
+    <dimen name="thumbnail_length_downloaded_item">64dp</dimen>
+    <dimen name="queue_title_text_size">@dimen/text_size_medium</dimen>
+</resources>

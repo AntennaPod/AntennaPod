@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listitem_iconwithtext_height">
+
+
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:contentDescription="@string/cover_label"
+        android:layout_width="@dimen/thumbnail_length_navlist"
+        android:layout_height="@dimen/thumbnail_length_navlist"
+        android:layout_alignParentLeft="true"
+        android:layout_centerVertical="true"
+        android:adjustViewBounds="true"
+        android:cropToPadding="true"
+        android:scaleType="fitXY"
+        android:layout_marginTop="8dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginLeft="@dimen/listitem_icon_leftpadding"/>
+
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        android:lines="1"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:layout_centerVertical="true"
+        android:textColor="?android:attr/textColorPrimary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_iconwithtext_textleftpadding"
+        android:layout_marginTop="@dimen/listitem_iconwithtext_textverticalpadding"
+        android:layout_marginBottom="@dimen/listitem_iconwithtext_textverticalpadding"
+        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
+        android:layout_toRightOf="@id/imgvCover"
+        />
+</RelativeLayout>

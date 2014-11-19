@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/listitem_threeline_height"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/txtvTitle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp" />
+
+        <ProgressBar
+            android:id="@+id/progProgress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="16dp"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginTop="4dp" />
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+            android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+            android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding">
+
+            <TextView
+                android:id="@+id/txtvDownloaded"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size_small" />
+
+            <TextView
+                android:id="@+id/txtvPercent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:ellipsize="end"
+                android:lines="1"
+                android:textColor="?android:attr/textColorPrimary"
+                android:textSize="@dimen/text_size_small" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <include layout="@layout/vertical_list_divider"/>
+
+    <ImageButton
+        android:id="@+id/butSecondaryAction"
+        android:layout_width="@dimen/listview_secondary_button_width"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="false"
+        android:contentDescription="@string/cancel_download_label"
+        android:focusable="false"
+        android:focusableInTouchMode="false"
+        android:src="?attr/navigation_cancel" />
+</LinearLayout>

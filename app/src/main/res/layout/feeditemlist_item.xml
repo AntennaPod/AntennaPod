@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/listitem_threeline_height"
+    android:orientation="horizontal">
+
+    <RelativeLayout
+
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_weight="1">
+
+        <TextView
+            android:id="@+id/statusUnread"
+            style="@style/AntennaPod.TextView.UnreadIndicator"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_margin="16dp" />
+
+        <TextView
+            android:id="@+id/txtvItemname"
+            style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginBottom="8dp"
+            android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+            android:layout_toLeftOf="@id/statusUnread" />
+
+
+        <ImageView
+            android:id="@+id/imgvInPlaylist"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_alignParentRight="true"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginRight="4dp"
+            android:contentDescription="@string/in_queue_label"
+            android:src="?attr/stat_playlist"
+            android:visibility="visible" />
+
+        <ImageView
+            android:id="@+id/imgvType"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@+id/imgvInPlaylist"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/txtvLenSize"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_below="@id/txtvItemname" />
+
+        <ProgressBar
+            android:id="@+id/pbar_episode_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/imgvType"
+            android:layout_toRightOf="@id/txtvLenSize" />
+
+
+        <TextView
+            android:id="@+id/txtvPublished"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginRight="4dp"
+            android:layout_toLeftOf="@id/imgvType" />
+    </RelativeLayout>
+
+    <include layout="@layout/vertical_list_divider"/>
+
+    <include layout="@layout/secondary_action"/>
+
+</LinearLayout>

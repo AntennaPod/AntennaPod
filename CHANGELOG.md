@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 0.9.9.5
+---------------
+* Added support for paged feeds
+* Improved user interface
+* Added Japanese and Turkish translations
+* Fixed more image loading problems
+* Other bugfixes and improvements
+
 Version 0.9.9.4
 ---------------
 * Added option to keep notification and lockscreen controls when playback is paused

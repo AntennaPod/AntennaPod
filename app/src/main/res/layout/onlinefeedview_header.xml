@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/imgvCover"
+        android:layout_width="@dimen/thumbnail_length_onlinefeedview"
+        android:layout_height="@dimen/thumbnail_length_onlinefeedview"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:contentDescription="@string/cover_label" />
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        style="@style/AntennaPod.TextView.Heading"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_toRightOf="@id/imgvCover"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:maxLines="2" />
+
+    <TextView
+        android:id="@+id/txtvAuthor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/txtvTitle"
+        android:layout_marginBottom="8dp"
+        android:layout_marginRight="16dp"
+        android:layout_toRightOf="@id/imgvCover"
+        android:ellipsize="end"
+        android:lines="1"
+        android:textColor="?android:attr/textColorSecondary"
+        android:textSize="@dimen/text_size_small" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgvCover"
+        android:orientation="vertical">
+
+
+        <Spinner
+            android:id="@+id/spinnerAlternateUrls"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:layout_marginTop="8dp"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="@dimen/text_size_micro" />
+
+        <Button
+            android:id="@+id/butSubscribe"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:focusable="false"
+            android:text="@string/subscribe_label" />
+
+        <TextView
+            android:id="@+id/txtvDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:textColor="?android:attr/textColorSecondary"
+            android:textSize="@dimen/text_size_small" />
+
+    </LinearLayout>
+</RelativeLayout>
