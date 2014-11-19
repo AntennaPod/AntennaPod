@@ -54,8 +54,8 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY); // has to be called before setting layout content
         super.onCreate(savedInstanceState);
-        supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
     }
 
