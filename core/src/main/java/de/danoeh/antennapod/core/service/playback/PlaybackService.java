@@ -210,6 +210,8 @@ public class PlaybackService extends Service {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -232,6 +234,7 @@ public class PlaybackService extends Service {
 
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
+        unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
@@ -990,6 +993,21 @@ public class PlaybackService extends Service {
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+                }
+            }
+        }
+    };
+
+    private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED)) {
+                int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
+                int prevState = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_PREVIOUS_STATE, -1);
+                if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Received bluetooth connection intent");
+                    unpauseIfPauseOnDisconnect();
                 }
             }
         }
