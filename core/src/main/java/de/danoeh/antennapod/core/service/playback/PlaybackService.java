@@ -144,6 +144,10 @@ public class PlaybackService extends Service {
      * Is true if service has received a valid start command.
      */
     public static boolean started = false;
+    /**
+     * Is true if the service was running, but paused due to headphone disconnect
+     */
+    public static boolean headphonePause = false;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -966,6 +970,7 @@ public class PlaybackService extends Service {
     private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
         private static final String TAG = "headsetDisconnected";
         private static final int UNPLUGGED = 0;
+        private static final int PLUGGED = 1;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -978,6 +983,10 @@ public class PlaybackService extends Service {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "Headset was unplugged during playback.");
                         pauseIfPauseOnDisconnect();
+                    } else if (state == PLUGGED) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Headset was plugged in during playback.");
+                        unpauseIfPauseOnDisconnect();
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
@@ -1003,11 +1012,21 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
+            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
+                headphonePause = true;
+            }
             if (UserPreferences.isPersistNotify()) {
                 mediaPlayer.pause(false, true);
             } else {
                 mediaPlayer.pause(true, true);
             }
+        }
+    }
+
+    private void unpauseIfPauseOnDisconnect() {
+        if (UserPreferences.isPauseOnHeadsetDisconnect() && headphonePause) {
+            headphonePause = false;
+            mediaPlayer.resume();
         }
     }
 
