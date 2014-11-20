@@ -147,7 +147,7 @@ public class PlaybackService extends Service {
     /**
      * Is true if the service was running, but paused due to headphone disconnect
      */
-    public static boolean headphonePause = false;
+    public static boolean transientPause = false;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -1013,7 +1013,7 @@ public class PlaybackService extends Service {
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
             if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
-                headphonePause = true;
+                transientPause = true;
             }
             if (UserPreferences.isPersistNotify()) {
                 mediaPlayer.pause(false, true);
@@ -1024,8 +1024,8 @@ public class PlaybackService extends Service {
     }
 
     private void unpauseIfPauseOnDisconnect() {
-        if (UserPreferences.isPauseOnHeadsetDisconnect() && headphonePause) {
-            headphonePause = false;
+        if (UserPreferences.isPauseOnHeadsetDisconnect() && transientPause) {
+            transientPause = false;
             mediaPlayer.resume();
         }
     }
