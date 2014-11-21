@@ -1042,9 +1042,11 @@ public class PlaybackService extends Service {
     }
 
     private void unpauseIfPauseOnDisconnect() {
-        if (UserPreferences.isPauseOnHeadsetDisconnect() && transientPause) {
+        if (transientPause) {
             transientPause = false;
-            mediaPlayer.resume();
+            if (UserPreferences.isPauseOnHeadsetDisconnect() && UserPreferences.isUnpauseOnHeadsetReconnect()) {
+                mediaPlayer.resume();
+            }
         }
     }
 

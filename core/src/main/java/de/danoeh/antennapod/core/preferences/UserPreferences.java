@@ -37,6 +37,7 @@ public class UserPreferences implements
     private static final String TAG = "UserPreferences";
 
     public static final String PREF_PAUSE_ON_HEADSET_DISCONNECT = "prefPauseOnHeadsetDisconnect";
+    public static final String PREF_UNPAUSE_ON_HEADSET_RECONNECT = "prefUnpauseOnHeadsetReconnect";
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
@@ -68,6 +69,7 @@ public class UserPreferences implements
 
     // Preferences
     private boolean pauseOnHeadsetDisconnect;
+    private boolean unpauseOnHeadsetReconnect;
     private boolean followQueue;
     private boolean downloadMediaOnWifiOnly;
     private long updateInterval;
@@ -120,6 +122,8 @@ public class UserPreferences implements
                 R.integer.episode_cache_size_unlimited);
         pauseOnHeadsetDisconnect = sp.getBoolean(
                 PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
+        unpauseOnHeadsetReconnect = sp.getBoolean(
+                PREF_UNPAUSE_ON_HEADSET_RECONNECT, true);
         followQueue = sp.getBoolean(PREF_FOLLOW_QUEUE, false);
         downloadMediaOnWifiOnly = sp.getBoolean(
                 PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY, true);
@@ -218,6 +222,11 @@ public class UserPreferences implements
     public static boolean isPauseOnHeadsetDisconnect() {
         instanceAvailable();
         return instance.pauseOnHeadsetDisconnect;
+    }
+
+    public static boolean isUnpauseOnHeadsetReconnect() {
+        instanceAvailable();
+        return instance.unpauseOnHeadsetReconnect;
     }
 
     public static boolean isFollowQueue() {
@@ -387,6 +396,8 @@ public class UserPreferences implements
             seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
         } else if (key.equals(PREF_PAUSE_ON_HEADSET_DISCONNECT)) {
             pauseOnHeadsetDisconnect = sp.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
+        } else if (key.equals(PREF_UNPAUSE_ON_HEADSET_RECONNECT)) {
+            unpauseOnHeadsetReconnect = sp.getBoolean(PREF_UNPAUSE_ON_HEADSET_RECONNECT, true);
         } else if (key.equals(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD)) {
             autoFlattrPlayedDurationThreshold = sp.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD,
                     PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT);
