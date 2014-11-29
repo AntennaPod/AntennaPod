@@ -5,7 +5,6 @@ android {
     buildToolsVersion "21.1.1"
 
     defaultConfig {
-        applicationId "de.danoeh.antennapod.core"
         minSdkVersion 10
         targetSdkVersion 21
         versionCode 1
