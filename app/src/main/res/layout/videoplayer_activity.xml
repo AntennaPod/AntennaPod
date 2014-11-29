@@ -21,12 +21,11 @@
     <ImageButton
         android:id="@+id/butPlay"
         android:contentDescription="@string/pause_label"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:scaleType="fitXY"
         android:background="@drawable/overlay_button_circle_background"
-        android:src="@drawable/ic_action_pause_over_video"/>
+        android:src="@drawable/ic_av_pause_circle_outline_80dp"/>
 
     <LinearLayout
         android:id="@+id/overlay"
