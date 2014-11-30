@@ -19,10 +19,10 @@
         <service
             android:name=".service.playback.PlaybackService"
             android:enabled="true"
-            android:exported="true"/>
+            android:exported="true" />
         <service
             android:name=".service.GpodnetSyncService"
-            android:enabled="true"/>
+            android:enabled="true" />
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"
@@ -45,6 +45,9 @@
                     android:path="de.danoeh.antennapod"
                     android:scheme="package" />
             </intent-filter>
+        </receiver>
+
+        <receiver android:name=".receiver.FeedUpdateReceiver">
         </receiver>
 
     </application>
