@@ -83,7 +83,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 		super(owningMediaPlayer, context);
 		Log.d(SBMP_TAG, "Instantiating ServiceBackedMediaPlayer 87");
 		this.playMediaServiceIntent = 
-			new Intent(INTENT_NAME);
+			MediaPlayer.getPrestoServiceIntent(context, INTENT_NAME);
 		this.mPlayMediaServiceConnection = new ServiceConnection() {
 			public void onServiceConnected(ComponentName name, IBinder service) {
 				IPlayMedia_0_8 tmpPlayMediaInterface = IPlayMedia_0_8.Stub.asInterface((IBinder) service);
@@ -135,6 +135,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 		
 		Log.d(SBMP_TAG, "Connecting PlayMediaService 124");
 		if (!ConnectPlayMediaService()) {
+            Log.e(SBMP_TAG, "bindService failed");
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
 	}
@@ -149,6 +150,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 					Log.d(SBMP_TAG, "Binding service");
 					return mContext.bindService(playMediaServiceIntent, mPlayMediaServiceConnection, Context.BIND_AUTO_CREATE);
 				} catch (Exception e) {
+                    Log.e(SBMP_TAG, "Could not bind with service", e);
 					return false;
 				}
 			} else {
