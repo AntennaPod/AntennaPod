@@ -134,9 +134,11 @@ public class SyndDateUtils {
             result += Integer.valueOf(parts[idx]) * 3600000L;
             idx++;
         }
-        result += Integer.valueOf(parts[idx]) * 60000L;
-        idx++;
-        result += (Float.valueOf(parts[idx])) * 1000L;
+        if (parts.length >= 2) {
+            result += Integer.valueOf(parts[idx]) * 60000L;
+            idx++;
+            result += (Float.valueOf(parts[idx])) * 1000L;
+        }
         return result;
     }
 
