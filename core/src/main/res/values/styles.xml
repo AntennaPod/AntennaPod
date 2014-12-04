@@ -157,4 +157,10 @@
         <item name="android:text">@string/new_label</item>
     </style>
 
+    <style name="BigBlurryBackground">
+        <item name="android:scaleType">centerCrop</item>
+        <item name="android:tint">@color/image_readability_tint</item>
+
+    </style>
+
 </resources>

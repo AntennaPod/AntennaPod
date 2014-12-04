@@ -35,6 +35,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -362,11 +363,19 @@ public class ItemlistFragment extends ListFragment {
 
         TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
+
+        Picasso.with(getActivity())
+                .load(feed.getImageUri())
+                .placeholder(R.color.image_readability_tint)
+                .error(R.color.image_readability_tint)
+                .transform(PicassoProvider.blurTransformation)
+                .into(imgvBackground);
 
         Picasso.with(getActivity())
                 .load(feed.getImageUri())

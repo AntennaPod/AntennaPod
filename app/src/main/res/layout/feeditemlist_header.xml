@@ -7,6 +7,12 @@
     tools:context="de.danoeh.antennapod.activity.MainActivity">
 
     <ImageView
+        android:id="@+id/imgvBackground"
+        style="@style/BigBlurryBackground"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <ImageView
         android:id="@+id/imgvCover"
         android:layout_width="@dimen/thumbnail_length_onlinefeedview"
         android:layout_height="@dimen/thumbnail_length_onlinefeedview"
@@ -29,7 +35,7 @@
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/show_info_label"
-        android:src="?attr/action_about" />
+        android:src="@drawable/ic_info_white_24dp" />
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -43,7 +49,10 @@
         android:layout_toLeftOf="@id/butShowInfo"
         android:layout_toRightOf="@id/imgvCover"
         android:ellipsize="end"
-        android:maxLines="2" />
+        android:maxLines="2"
+        android:shadowColor="@color/black"
+        android:shadowRadius="3"
+        android:textColor="@color/white" />
 
     <TextView
         android:id="@+id/txtvAuthor"
@@ -56,7 +65,9 @@
         android:layout_toRightOf="@id/imgvCover"
         android:ellipsize="end"
         android:lines="1"
-        android:textColor="?android:attr/textColorSecondary"
+        android:shadowColor="@color/black"
+        android:shadowRadius="3"
+        android:textColor="@color/white"
         android:textSize="@dimen/text_size_small" />
 
 
