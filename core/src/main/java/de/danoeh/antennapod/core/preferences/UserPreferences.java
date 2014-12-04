@@ -291,6 +291,15 @@ public class UserPreferences implements
         return instance.theme;
     }
 
+    public static int getNoTitleTheme() {
+        int theme = getTheme();
+        if (theme == R.style.Theme_AntennaPod_Dark) {
+            return R.style.Theme_AntennaPod_Dark_NoTitle;
+        } else {
+            return R.style.Theme_AntennaPod_Light_NoTitle;
+        }
+    }
+
     public static boolean isEnableAutodownloadWifiFilter() {
         instanceAvailable();
         return instance.enableAutodownloadWifiFilter;

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -31,16 +32,18 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 	private Playable media;
 	
 	private int defaultTextColor;
+    private final Callback callback;
 
 	public ChapterListAdapter(Context context, int textViewResourceId,
-			List<Chapter> objects, Playable media) {
+			List<Chapter> objects, Playable media, Callback callback) {
 		super(context, textViewResourceId, objects);
 		this.chapters = objects;
 		this.media = media;
+        this.callback = callback;
 	}
 
 	@Override
-	public View getView(int position, View convertView, ViewGroup parent) {
+	public View getView(final int position, View convertView, ViewGroup parent) {
 		Holder holder;
 
 		Chapter sc = getItem(position);
@@ -56,6 +59,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 			defaultTextColor = holder.title.getTextColors().getDefaultColor();
 			holder.start = (TextView) convertView.findViewById(R.id.txtvStart);
 			holder.link = (TextView) convertView.findViewById(R.id.txtvLink);
+            holder.butPlayChapter = (ImageButton) convertView.findViewById(R.id.butPlayChapter);
 			convertView.setTag(holder);
 		} else {
 			holder = (Holder) convertView.getTag();
@@ -122,6 +126,14 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 
 			}
 		});
+        holder.butPlayChapter.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (callback != null) {
+                    callback.onPlayChapterButtonClicked(position);
+                }
+            }
+        });
 		Chapter current = ChapterUtils.getCurrentChapter(media);
 		if (current != null) {
 			if (current == sc) {
@@ -144,6 +156,7 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 		TextView title;
 		TextView start;
 		TextView link;
+        ImageButton butPlayChapter;
 	}
 
 	@Override
@@ -176,5 +189,9 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 		}
 		return super.getItem(position);
 	}
+
+    public static interface Callback {
+        public void onPlayChapterButtonClicked(int position);
+    }
 
 }

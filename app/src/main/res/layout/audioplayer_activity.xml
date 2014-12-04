@@ -1,173 +1,152 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v4.widget.DrawerLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:id="@+id/content"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:background="?attr/non_transparent_background"
-                    android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        <RelativeLayout
-            android:id="@+id/navBar"
-            android:layout_width="fill_parent"
-            android:layout_height="60dp"
-            android:layout_alignParentTop="true">
-
-            <ImageButton
-                android:id="@+id/butNavLeft"
-                android:contentDescription="@string/show_shownotes_label"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="true"
-                android:background="?attr/selectableItemBackground"
-                android:padding="4dp"/>
-
-            <ImageButton
-                android:id="@+id/butNavRight"
-                android:contentDescription="@string/show_chapters_label"
-                android:layout_width="60dp"
-                android:layout_height="match_parent"
-                android:layout_alignParentRight="true"
-                android:background="?attr/selectableItemBackground"
-                android:padding="4dp"/>
-
-            <TextView
-                android:id="@+id/txtvTitle"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:layout_alignParentTop="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_toLeftOf="@id/butNavRight"
-                android:layout_toRightOf="@id/butNavLeft"
-                android:ellipsize="marquee"
-                android:marqueeRepeatLimit="marquee_forever"
-                android:maxLines="2"
-                android:textColor="?android:attr/textColorPrimary"
-                android:textSize="16sp"
-                android:fontFamily="sans-serif-light"
-                />
-        </RelativeLayout>
-
-        <View
-            android:id="@+id/navBarDivider"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_below="@id/navBar"
-            android:background="@color/bright_blue"/>
-
-        <RelativeLayout
-            android:id="@+id/player_control"
-            android:layout_width="match_parent"
-            android:layout_height="80dp"
-            android:layout_alignParentBottom="true"
-            android:background="?attr/overlay_background">
-
-            <ImageButton
-                android:id="@+id/butPlay"
-                android:contentDescription="@string/pause_label"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_centerHorizontal="true"
-                android:background="?attr/selectableItemBackground"
-                android:src="?attr/av_pause"/>
-
-            <ImageButton
-                android:id="@+id/butRev"
-                android:contentDescription="@string/rewind_label"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_toLeftOf="@id/butPlay"
-                android:background="?attr/selectableItemBackground"
-                android:src="?attr/av_rew_big"/>
-
-            <ImageButton
-                android:id="@+id/butFF"
-                android:contentDescription="@string/fast_forward_label"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/butPlay"
-                android:background="?attr/selectableItemBackground"
-                android:src="?attr/av_ff_big"/>
-
-            <Button
-                android:id="@+id/butPlaybackSpeed"
-                android:contentDescription="@string/set_playback_speed_label"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:layout_toRightOf="@id/butFF"
-                android:background="?attr/selectableItemBackground"
-                android:src="?attr/av_fast_forward"
-                android:textColor="@color/gray"
-                android:textSize="@dimen/text_size_medium"
-                android:visibility="gone"/>
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/playtime_layout"
+        <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@id/player_control"
-            android:layout_alignParentLeft="true"
-            android:background="?attr/overlay_drawable">
+            android:background="?attr/colorPrimary"
+            android:minHeight="?attr/actionBarSize">
 
-            <TextView
-                android:id="@+id/txtvPosition"
-                android:layout_width="wrap_content"
+            <ImageButton
+                android:id="@+id/butCover"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:layout_margin="8dp"
+                android:background="?attr/selectableItemBackground"
+                android:contentDescription="@string/show_cover_label" />
+        </android.support.v7.widget.Toolbar>
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="?attr/non_transparent_background"
+            android:foreground="?android:windowContentOverlay"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/player_control"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/audioplayer_playercontrols_length"
+                android:layout_alignParentBottom="true"
+                android:background="?attr/overlay_background">
+
+                <ImageButton
+                    android:id="@+id/butPlay"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="match_parent"
+                    android:layout_centerHorizontal="true"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/pause_label"
+                    android:src="?attr/av_pause" />
+
+                <ImageButton
+                    android:id="@+id/butRev"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/butPlay"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/rewind_label"
+                    android:src="?attr/av_rew_big" />
+
+                <ImageButton
+                    android:id="@+id/butFF"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/butPlay"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/fast_forward_label"
+                    android:src="?attr/av_ff_big" />
+
+                <Button
+                    android:id="@+id/butPlaybackSpeed"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="match_parent"
+                    android:layout_toRightOf="@id/butFF"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/set_playback_speed_label"
+                    android:src="?attr/av_fast_forward"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/text_size_medium"
+                    android:visibility="gone" />
+
+                <ImageButton
+                    android:id="@+id/butNavChaptersShownotes"
+                    android:layout_width="@dimen/audioplayer_playercontrols_length"
+                    android:layout_height="match_parent"
+                    android:layout_toLeftOf="@id/butRev"
+                    android:background="?attr/selectableItemBackground"
+                    android:scaleType="centerInside" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/playtime_layout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_above="@id/player_control"
                 android:layout_alignParentLeft="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/position_default_label"
-                android:textColor="?android:attr/textColorSecondary"
-                android:fontFamily="sans-serif-light"
-                android:textSize="@dimen/text_size_micro"/>
+                android:background="?attr/overlay_drawable">
 
-            <TextView
-                android:id="@+id/txtvLength"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
+                <TextView
+                    android:id="@+id/txtvPosition"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="@dimen/text_size_micro" />
+
+                <TextView
+                    android:id="@+id/txtvLength"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:text="@string/position_default_label"
+                    android:textColor="?android:attr/textColorSecondary"
+                    android:textSize="@dimen/text_size_micro" />
+
+                <SeekBar
+                    android:id="@+id/sbPosition"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_toLeftOf="@id/txtvLength"
+                    android:layout_toRightOf="@id/txtvPosition"
+                    android:max="500" />
+            </RelativeLayout>
+
+            <FrameLayout
+                android:id="@+id/contentView"
+                android:layout_width="match_parent"
+                android:layout_height="0px"
+                android:layout_above="@id/playtime_layout"
                 android:layout_alignParentTop="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-                android:text="@string/position_default_label"
-                android:textColor="?android:attr/textColorSecondary"
-                android:fontFamily="sans-serif-light"
-                android:textSize="@dimen/text_size_micro"/>
+                android:foreground="?android:windowContentOverlay" />
 
-            <SeekBar
-                android:id="@+id/sbPosition"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-                android:layout_toLeftOf="@id/txtvLength"
-                android:layout_toRightOf="@id/txtvPosition"
-                android:max="500"/>
         </RelativeLayout>
 
-        <FrameLayout
-            android:id="@+id/contentView"
-            android:layout_width="match_parent"
-            android:layout_height="0px"
-            android:layout_above="@id/playtime_layout"
-            android:layout_below="@id/navBarDivider">
-        </FrameLayout>
 
-    </RelativeLayout>
+    </LinearLayout>
 
-    <include layout="@layout/nav_list"/>
+    <include layout="@layout/nav_list" />
 
 </android.support.v4.widget.DrawerLayout>
