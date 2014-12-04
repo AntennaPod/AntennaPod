@@ -15,8 +15,6 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -71,6 +69,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private ExternalPlayerFragment externalPlayerFragment;
     private DrawerLayout drawerLayout;
 
+    private View navDrawer;
     private ListView navList;
     private NavListAdapter navAdapter;
 
@@ -90,8 +89,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
         drawerTitle = currentTitle = getTitle();
 
+
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
+        navDrawer = findViewById(R.id.nav_layout);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
@@ -134,6 +135,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
 
+        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(navDrawer);
+                startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
+            }
+        });
+
         checkFirstLaunch();
     }
 
@@ -143,7 +152,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawerLayout.openDrawer(navList);
+                    drawerLayout.openDrawer(navDrawer);
                 }
             }, 1500);
 
@@ -158,7 +167,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public boolean isDrawerOpen() {
-        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+        return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
     public List<Feed> getFeeds() {
@@ -251,7 +260,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 selectedNavListIndex = position;
                 navAdapter.notifyDataSetChanged();
             }
-            drawerLayout.closeDrawer(navList);
+            drawerLayout.closeDrawer(navDrawer);
         }
     };
 
@@ -261,7 +270,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         drawerToggle.syncState();
         if (savedInstanceState != null) {
             currentTitle = savedInstanceState.getString("title");
-            if (!drawerLayout.isDrawerOpen(navList)) {
+            if (!drawerLayout.isDrawerOpen(navDrawer)) {
                 getSupportActionBar().setTitle(currentTitle);
             }
             selectedNavListIndex = savedInstanceState.getInt("selectedNavIndex");
@@ -312,29 +321,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        switch (item.getItemId()) {
-            case R.id.show_preferences:
-                startActivity(new Intent(this, PreferenceController.getPreferenceActivity()));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
 
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;

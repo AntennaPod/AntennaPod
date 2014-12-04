@@ -24,6 +24,7 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
@@ -178,7 +179,7 @@ public class PreferenceController {
                             @Override
                             public boolean onPreferenceChange(
                                     Preference preference, Object newValue) {
-                                Intent i = activity.getIntent();
+                                Intent i = new Intent(activity, MainActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK
                                         | Intent.FLAG_ACTIVITY_NEW_TASK);
                                 activity.finish();

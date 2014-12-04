@@ -48,6 +48,7 @@ import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.preferences.PreferenceController;
 
 /**
  * Activity for playing audio files.
@@ -68,6 +69,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
+    private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
     private Fragment[] detachedFragments;
@@ -426,6 +428,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
+        navDrawer = findViewById(R.id.nav_layout);
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
         butNavChaptersShownotes = (ImageButton) findViewById(R.id.butNavChaptersShownotes);
         butShowCover = (ImageButton) findViewById(R.id.butCover);
@@ -465,10 +468,18 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
                     startActivity(intent);
                 }
-                drawerLayout.closeDrawer(navList);
+                drawerLayout.closeDrawer(navDrawer);
             }
         });
         drawerToggle.syncState();
+
+        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(navDrawer);
+                startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
+            }
+        });
 
         butNavChaptersShownotes.setOnClickListener(new OnClickListener() {
             @Override
@@ -644,7 +655,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     public boolean isDrawerOpen() {
-        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+        return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
     @Override

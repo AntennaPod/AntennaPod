@@ -73,15 +73,6 @@ public class PreferenceActivity extends ActionBarActivity {
     }
 
     @Override
-    public void onBackPressed() {
-        // The default back button behavior has to be overwritten because changing the theme clears the back stack
-        Intent destIntent = new Intent(this, MainActivity.class);
-        destIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(destIntent);
-        finish();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         super.onCreateOptionsMenu(menu);
         return true;
@@ -91,9 +82,6 @@ public class PreferenceActivity extends ActionBarActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case android.R.id.home:
-                Intent destIntent = new Intent(this, MainActivity.class);
-                destIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                startActivity(destIntent);
                 finish();
                 return true;
             default:

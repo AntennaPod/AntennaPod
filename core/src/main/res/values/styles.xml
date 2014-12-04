@@ -40,6 +40,7 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
@@ -80,6 +81,7 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="@style/Theme.AppCompat.Light.NoActionBar">
@@ -122,6 +124,7 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_grey600_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_grey600_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_grey600_36dp</item>
+        <item name="attr/ic_settings">@drawable/ic_settings_grey600_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="@style/Theme.AppCompat.NoActionBar">
@@ -163,6 +166,7 @@
         <item name="attr/av_pause_big">@drawable/ic_pause_white_36dp</item>
         <item name="attr/av_ff_big">@drawable/ic_fast_forward_white_36dp</item>
         <item name="attr/av_rew_big">@drawable/ic_fast_rewind_white_36dp</item>
+        <item name="attr/ic_settings">@drawable/ic_settings_white_24dp</item>
     </style>
 
     <style name="Theme.AntennaPod.VideoPlayer" parent="@style/Theme.AntennaPod.Dark">
