@@ -86,6 +86,7 @@
 
     <style name="Theme.AntennaPod.Light.NoTitle" parent="@style/Theme.AppCompat.Light.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
@@ -129,6 +130,7 @@
 
     <style name="Theme.AntennaPod.Dark.NoTitle" parent="@style/Theme.AppCompat.NoActionBar">
         <item name="windowActionBar">false</item>
+        <item name="windowActionModeOverlay">true</item>
         <item name="colorAccent">@color/color_accent</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>

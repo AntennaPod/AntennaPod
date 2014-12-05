@@ -23,6 +23,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
@@ -86,6 +87,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
      */
     private int savedPosition = -1;
 
+    private TextView txtvTitle;
     private Button butPlaybackSpeed;
     private ImageButton butNavChaptersShownotes;
     private ImageButton butShowCover;
@@ -432,6 +434,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
         butNavChaptersShownotes = (ImageButton) findViewById(R.id.butNavChaptersShownotes);
         butShowCover = (ImageButton) findViewById(R.id.butCover);
+        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             CharSequence currentTitle = getSupportActionBar().getTitle();
@@ -588,8 +591,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         if (media == null) {
             return false;
         }
-        getSupportActionBar().setTitle(media.getEpisodeTitle());
-
+        txtvTitle.setText(media.getEpisodeTitle());
+        getSupportActionBar().setTitle("");
         Picasso.with(this)
                 .load(media.getImageUri())
                 .fit()

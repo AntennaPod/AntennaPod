@@ -16,13 +16,38 @@
             android:background="?attr/colorPrimary"
             android:minHeight="?attr/actionBarSize">
 
-            <ImageButton
-                android:id="@+id/butCover"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_margin="8dp"
-                android:background="?attr/selectableItemBackground"
-                android:contentDescription="@string/show_cover_label" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+
+                <TextView
+                    android:id="@+id/txtvTitle"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_weight="1"
+                    android:ellipsize="end"
+                    android:gravity="left"
+                    android:maxLines="2"
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:textSize="16sp" />
+
+                <ImageButton
+                    android:id="@+id/butCover"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="8dp"
+                    android:background="?attr/selectableItemBackground"
+                    android:contentDescription="@string/show_cover_label"
+                    android:gravity="right" />
+
+
+            </LinearLayout>
         </android.support.v7.widget.Toolbar>
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
