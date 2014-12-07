@@ -44,12 +44,45 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private boolean read;
     private String paymentLink;
     private FlattrStatus flattrStatus;
+
+    /**
+     * Is true if the database contains any chapters that belong to this item. This attribute is only
+     * written once by DBReader on initialization.
+     * The FeedItem might still have a non-null chapters value. In this case, the list of chapters
+     * has not been saved in the database yet.
+     * */
+    private final boolean hasChapters;
+
+    /**
+     * The list of chapters of this item. This might be null even if there are chapters of this item
+     * in the database. The 'hasChapters' attribute should be used to check if this item has any chapters.
+     * */
     private List<Chapter> chapters;
     private FeedImage image;
 
     public FeedItem() {
         this.read = true;
         this.flattrStatus = new FlattrStatus();
+        this.hasChapters = false;
+    }
+
+    /**
+     * This constructor is used by DBReader.
+     * */
+    public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
+                    FlattrStatus flattrStatus, boolean hasChapters, FeedImage image, boolean read,
+                    String itemIdentifier) {
+        this.id = id;
+        this.title = title;
+        this.link = link;
+        this.pubDate = pubDate;
+        this.paymentLink = paymentLink;
+        this.feedId = feedId;
+        this.flattrStatus = flattrStatus;
+        this.hasChapters = hasChapters;
+        this.image = image;
+        this.read = read;
+        this.itemIdentifier = itemIdentifier;
     }
 
     /**
@@ -64,6 +97,22 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.read = read;
         this.feed = feed;
         this.flattrStatus = new FlattrStatus();
+        this.hasChapters = false;
+    }
+
+    /**
+     * This constructor should be used for creating test objects involving chapter marks.
+     */
+    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, boolean read, Feed feed, boolean hasChapters) {
+        this.id = id;
+        this.title = title;
+        this.itemIdentifier = itemIdentifier;
+        this.link = link;
+        this.pubDate = (pubDate != null) ? (Date) pubDate.clone() : null;
+        this.read = read;
+        this.feed = feed;
+        this.flattrStatus = new FlattrStatus();
+        this.hasChapters = hasChapters;
     }
 
     public void updateFromOther(FeedItem other) {
@@ -330,5 +379,9 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     @Override
     public String getHumanReadableIdentifier() {
         return title;
+    }
+
+    public boolean hasChapters() {
+        return hasChapters;
     }
 }

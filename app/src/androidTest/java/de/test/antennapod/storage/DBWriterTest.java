@@ -4,10 +4,13 @@ import android.content.Context;
 import android.database.Cursor;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
+
+import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -101,7 +104,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         List<File> itemFiles = new ArrayList<File>();
         // create items with downloaded media files
         for (int i = 0; i < 10; i++) {
-            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed);
+            FeedItem item = new FeedItem(0, "Item " + i, "Item" + i, "url", new Date(), true, feed, true);
             feed.getItems().add(item);
 
             File enc = new File(destFolder, "file " + i);
@@ -110,6 +113,9 @@ public class DBWriterTest extends InstrumentationTestCase {
 
             FeedMedia media = new FeedMedia(0, item, 1, 1, 1, "mime_type", enc.getAbsolutePath(), "download_url", true, null, 0);
             item.setMedia(media);
+
+            item.setChapters(new ArrayList<Chapter>());
+            item.getChapters().add(new SimpleChapter(0, "item " + i, item, "example.com"));
         }
 
         PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getContext());
@@ -122,6 +128,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         for (FeedItem item : feed.getItems()) {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
+            assertTrue(item.getChapters().get(0).getId() != 0);
         }
 
         DBWriter.deleteFeed(getInstrumentation().getTargetContext(), feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
@@ -135,18 +142,20 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter = new PodDBAdapter(getInstrumentation().getContext());
         adapter.open();
         Cursor c = adapter.getFeedCursor(feed.getId());
-        assertTrue(c.getCount() == 0);
+        assertEquals(0, c.getCount());
         c.close();
         c = adapter.getImageCursor(image.getId());
-        assertTrue(c.getCount() == 0);
+        assertEquals(0, c.getCount());
         c.close();
         for (FeedItem item : feed.getItems()) {
             c = adapter.getFeedItemCursor(String.valueOf(item.getId()));
-            assertTrue(c.getCount() == 0);
+            assertEquals(0, c.getCount());
             c.close();
             c = adapter.getSingleFeedMediaCursor(item.getMedia().getId());
-            assertTrue(c.getCount() == 0);
+            assertEquals(0, c.getCount());
             c.close();
+            c = adapter.getSimpleChaptersOfFeedItemCursor(item);
+            assertEquals(0, c.getCount());
         }
     }
 

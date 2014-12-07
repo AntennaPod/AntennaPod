@@ -4,8 +4,22 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.util.Log;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.ID3Chapter;
+import de.danoeh.antennapod.core.feed.SimpleChapter;
+import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
@@ -13,11 +27,6 @@ import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
 
 /**
  * Provides methods for reading data from the AntennaPod database.
@@ -203,75 +212,26 @@ public final class DBReader {
 
         if (itemlistCursor.moveToFirst()) {
             do {
-                FeedItem item = new FeedItem();
+                long imageIndex = itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_IMAGE);
+                FeedImage image = null;
+                if (imageIndex != 0) {
+                    image = getFeedImage(adapter, imageIndex);
+                }
 
-                item.setId(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_ID));
-                item.setTitle(itemlistCursor
-                        .getString(PodDBAdapter.IDX_FI_SMALL_TITLE));
-                item.setLink(itemlistCursor
-                        .getString(PodDBAdapter.IDX_FI_SMALL_LINK));
-                item.setPubDate(new Date(itemlistCursor
-                        .getLong(PodDBAdapter.IDX_FI_SMALL_PUBDATE)));
-                item.setPaymentLink(itemlistCursor
-                        .getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK));
-                item.setFeedId(itemlistCursor
-                        .getLong(PodDBAdapter.IDX_FI_SMALL_FEED));
+                FeedItem item = new FeedItem(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_ID),
+                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_TITLE),
+                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_LINK),
+                        new Date(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_PUBDATE)),
+                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_PAYMENT_LINK),
+                        itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_FEED),
+                        new FlattrStatus(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)),
+                        itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0,
+                        image,
+                        (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0),
+                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
+
                 itemIds.add(String.valueOf(item.getId()));
 
-                item.setRead((itemlistCursor
-                        .getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0));
-                item.setItemIdentifier(itemlistCursor
-                        .getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
-                item.setFlattrStatus(new FlattrStatus(itemlistCursor
-                        .getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)));
-
-                long imageIndex = itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_IMAGE);
-                if (imageIndex != 0) {
-                    item.setImage(getFeedImage(adapter, imageIndex));
-                }
-
-                // extract chapters
-                boolean hasSimpleChapters = itemlistCursor
-                        .getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0;
-                if (hasSimpleChapters) {
-                    Cursor chapterCursor = adapter
-                            .getSimpleChaptersOfFeedItemCursor(item);
-                    if (chapterCursor.moveToFirst()) {
-                        item.setChapters(new ArrayList<Chapter>());
-                        do {
-                            int chapterType = chapterCursor
-                                    .getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
-                            Chapter chapter = null;
-                            long start = chapterCursor
-                                    .getLong(PodDBAdapter.KEY_CHAPTER_START_INDEX);
-                            String title = chapterCursor
-                                    .getString(PodDBAdapter.KEY_TITLE_INDEX);
-                            String link = chapterCursor
-                                    .getString(PodDBAdapter.KEY_CHAPTER_LINK_INDEX);
-
-                            switch (chapterType) {
-                                case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
-                                    chapter = new SimpleChapter(start, title, item,
-                                            link);
-                                    break;
-                                case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
-                                    chapter = new ID3Chapter(start, title, item,
-                                            link);
-                                    break;
-                                case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
-                                    chapter = new VorbisCommentChapter(start,
-                                            title, item, link);
-                                    break;
-                            }
-                            if (chapter != null) {
-                                chapter.setId(chapterCursor
-                                        .getLong(PodDBAdapter.KEY_ID_INDEX));
-                                item.getChapters().add(chapter);
-                            }
-                        } while (chapterCursor.moveToNext());
-                    }
-                    chapterCursor.close();
-                }
                 items.add(item);
             } while (itemlistCursor.moveToNext());
         }
@@ -366,6 +326,7 @@ public final class DBReader {
         feed.setPreferences(preferences);
         return feed;
     }
+
 
     private static FeedItem getMatchingItemForMedia(long itemId,
                                                     List<FeedItem> items) {
@@ -689,6 +650,9 @@ public final class DBReader {
             if (list.size() > 0) {
                 item = list.get(0);
                 loadFeedDataOfFeedItemlist(context, list);
+                if (item.hasChapters()) {
+                    loadChaptersOfFeedItem(adapter, item);
+                }
             }
         }
         return item;
@@ -696,12 +660,13 @@ public final class DBReader {
     }
 
     /**
-     * Loads a specific FeedItem from the database.
+     * Loads a specific FeedItem from the database. This method should not be used for loading more
+     * than one FeedItem because this method might query the database several times for each item.
      *
      * @param context A context that is used for opening a database connection.
      * @param itemId  The ID of the FeedItem
-     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes of the FeedItem will
-     * also be loaded from the database.
+     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
+     * as well as chapter marks of the FeedItem will also be loaded from the database.
      */
     public static FeedItem getFeedItem(final Context context, final long itemId) {
         if (BuildConfig.DEBUG)
@@ -734,6 +699,63 @@ public final class DBReader {
             item.setContentEncoded(contentEncoded);
         }
         adapter.close();
+    }
+
+    /**
+     * Loads the list of chapters that belongs to this FeedItem if available. This method overwrites
+     * any chapters that this FeedItem has. If no chapters were found in the database, the chapters
+     * reference of the FeedItem will be set to null.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param item    The FeedItem
+     */
+    public static void loadChaptersOfFeedItem(final Context context, final FeedItem item) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        loadChaptersOfFeedItem(adapter, item);
+        adapter.close();
+    }
+
+    static void loadChaptersOfFeedItem(PodDBAdapter adapter, FeedItem item) {
+        Cursor chapterCursor = adapter
+                .getSimpleChaptersOfFeedItemCursor(item);
+        if (chapterCursor.moveToFirst()) {
+            item.setChapters(new ArrayList<Chapter>());
+            do {
+                int chapterType = chapterCursor
+                        .getInt(PodDBAdapter.KEY_CHAPTER_TYPE_INDEX);
+                Chapter chapter = null;
+                long start = chapterCursor
+                        .getLong(PodDBAdapter.KEY_CHAPTER_START_INDEX);
+                String title = chapterCursor
+                        .getString(PodDBAdapter.KEY_TITLE_INDEX);
+                String link = chapterCursor
+                        .getString(PodDBAdapter.KEY_CHAPTER_LINK_INDEX);
+
+                switch (chapterType) {
+                    case SimpleChapter.CHAPTERTYPE_SIMPLECHAPTER:
+                        chapter = new SimpleChapter(start, title, item,
+                                link);
+                        break;
+                    case ID3Chapter.CHAPTERTYPE_ID3CHAPTER:
+                        chapter = new ID3Chapter(start, title, item,
+                                link);
+                        break;
+                    case VorbisCommentChapter.CHAPTERTYPE_VORBISCOMMENT_CHAPTER:
+                        chapter = new VorbisCommentChapter(start,
+                                title, item, link);
+                        break;
+                }
+                if (chapter != null) {
+                    chapter.setId(chapterCursor
+                            .getLong(PodDBAdapter.KEY_ID_INDEX));
+                    item.getChapters().add(chapter);
+                }
+            } while (chapterCursor.moveToNext());
+        } else {
+            item.setChapters(null);
+        }
+        chapterCursor.close();
     }
 
     /**
@@ -788,7 +810,7 @@ public final class DBReader {
     static FeedImage getFeedImage(PodDBAdapter adapter, final long id) {
         Cursor cursor = adapter.getImageCursor(id);
         if ((cursor.getCount() == 0) || !cursor.moveToFirst()) {
-            throw new SQLException("No FeedImage found at index: " + id);
+            return null;
         }
         FeedImage image = new FeedImage(id, cursor.getString(cursor
                 .getColumnIndex(PodDBAdapter.KEY_TITLE)),
