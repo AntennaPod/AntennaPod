@@ -3,7 +3,7 @@ Change Log
 
 Version 0.9.9.6
 ---------------
-- Fixed problems related to variable speed playback
+- Fixed problems related to variable playback speed plugins
 - Fixed automatic feed update problems
 - Several other bugfixes and improvements
 
