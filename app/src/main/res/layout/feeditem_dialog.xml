@@ -1,58 +1,59 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:tools="http://schemas.android.com/tools"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/contentContainer"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
     <TextView
+        android:id="@+id/txtvTitle"
+        style="@style/AntennaPod.Dialog.Title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp"
-        android:id="@+id/txtvTitle"
         android:layout_alignParentTop="true"
-        style="@style/AntennaPod.Dialog.Title"
-        android:maxLines="5"
-        android:ellipsize="none"/>
+        android:layout_margin="16dp"
+        android:ellipsize="none"
+        android:maxLines="5" />
 
     <View
         android:id="@+id/title_divider"
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/txtvTitle"
-        android:background="@color/bright_blue"/>
+        android:background="@color/bright_blue" />
 
     <LinearLayout
         android:id="@+id/header"
-        android:orientation="horizontal"
-        android:layout_below="@id/title_divider"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_divider"
+        android:orientation="horizontal">
 
         <ImageButton
-            android:layout_width="0dp"
-            android:layout_height="48dp"
-            android:layout_weight="1"
             android:id="@+id/butAction1"
-            android:background="?attr/selectableItemBackground"
-            tools:ignore="ContentDescription"/>
-
-        <ImageButton
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
             android:id="@+id/butAction2"
-            android:background="?attr/selectableItemBackground"
-            tools:ignore="ContentDescription"/>
-
-        <ImageButton
             android:layout_width="0dp"
             android:layout_height="48dp"
             android:layout_weight="1"
-            android:id="@+id/butMoreActions"
             android:background="?attr/selectableItemBackground"
-            android:src="?attr/ic_action_overflow"
-            android:contentDescription="@string/butAction_label"/>
+            tools:ignore="ContentDescription" />
+
+        <ImageButton
+            android:id="@+id/butMoreActions"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="?attr/selectableItemBackground"
+            android:contentDescription="@string/butAction_label"
+            android:src="?attr/ic_action_overflow" />
     </LinearLayout>
 
     <View
@@ -60,13 +61,13 @@
         android:layout_width="match_parent"
         android:layout_height="2dp"
         android:layout_below="@id/header"
-        android:background="@color/bright_blue"/>
+        android:background="@color/bright_blue" />
 
     <WebView
+        android:id="@+id/webview"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_below="@id/divider"
         android:layout_alignParentBottom="true"
-        android:id="@+id/webview"/>
+        android:layout_below="@id/divider" />
 
 </RelativeLayout>
