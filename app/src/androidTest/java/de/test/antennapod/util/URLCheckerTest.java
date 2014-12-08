@@ -73,4 +73,32 @@ public class URLCheckerTest extends AndroidTestCase {
         final String out = URLChecker.prepareURL(in);
         assertEquals("https://example.com", out);
     }
+
+    public void testProtocolRelativeUrlIsAbsolute() throws Exception {
+        final String in = "https://example.com";
+        final String inBase = "http://examplebase.com";
+        final String out = URLChecker.prepareURL(in, inBase);
+        assertEquals(in, out);
+    }
+
+    public void testProtocolRelativeUrlIsRelativeHttps() throws Exception {
+        final String in = "//example.com";
+        final String inBase = "https://examplebase.com";
+        final String out = URLChecker.prepareURL(in, inBase);
+        assertEquals("https://example.com", out);
+
+    }
+
+    public void testProtocolRelativeUrlIsHttpsWithAPSubscribeProtocol() throws Exception {
+        final String in = "//example.com";
+        final String inBase = "antennapod-subscribe://https://examplebase.com";
+        final String out = URLChecker.prepareURL(in, inBase);
+        assertEquals("https://example.com", out);
+    }
+
+    public void testProtocolRelativeUrlBaseUrlNull() throws Exception {
+        final String in = "example.com";
+        final String out = URLChecker.prepareURL(in, null);
+        assertEquals("http://example.com", out);
+    }
 }

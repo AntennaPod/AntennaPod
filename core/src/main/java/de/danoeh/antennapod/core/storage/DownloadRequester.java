@@ -90,7 +90,7 @@ public class DownloadRequester {
         return true;
     }
 
-    private void download(Context context, FeedFile item, File dest,
+    private void download(Context context, FeedFile item, FeedFile container, File dest,
                           boolean overwriteIfExists, String username, String password, boolean deleteOnFailure, Bundle arguments) {
         if (!isDownloadingFile(item)) {
             if (!isFilenameAvailable(dest.toString()) || (deleteOnFailure && dest.exists())) {
@@ -129,7 +129,8 @@ public class DownloadRequester {
             if (BuildConfig.DEBUG)
                 Log.d(TAG,
                         "Requesting download of url " + item.getDownload_url());
-            item.setDownload_url(URLChecker.prepareURL(item.getDownload_url()));
+            String baseUrl = (container != null) ? container.getDownload_url() : null;
+            item.setDownload_url(URLChecker.prepareURL(item.getDownload_url(), baseUrl));
 
             DownloadRequest request = new DownloadRequest(dest.toString(),
                     URLChecker.prepareURL(item.getDownload_url()), item.getHumanReadableIdentifier(),
@@ -171,7 +172,7 @@ public class DownloadRequester {
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
-            download(context, feed, new File(getFeedfilePath(context),
+            download(context, feed, null, new File(getFeedfilePath(context),
                     getFeedfileName(feed)), true, username, password, true, args);
         }
     }
@@ -183,7 +184,8 @@ public class DownloadRequester {
     public synchronized void downloadImage(Context context, FeedImage image)
             throws DownloadRequestException {
         if (feedFileValid(image)) {
-            download(context, image, new File(getImagefilePath(context),
+            FeedFile container = (image.getOwner() instanceof FeedFile) ? (FeedFile) image.getOwner() : null;
+            download(context, image, container, new File(getImagefilePath(context),
                     getImagefileName(image)), false, null, null, false, null);
         }
     }
@@ -209,7 +211,7 @@ public class DownloadRequester {
                 dest = new File(getMediafilePath(context, feedmedia),
                         getMediafilename(feedmedia));
             }
-            download(context, feedmedia,
+            download(context, feedmedia, feed,
                     dest, false, username, password, false, null);
         }
     }
