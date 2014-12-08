@@ -120,6 +120,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
         if (Build.VERSION.SDK_INT >= 16) {
             videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
         }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoOverlay.setFitsSystemWindows(true);
+        }
+
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
@@ -340,6 +344,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
             int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
             getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
                     | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+            videoOverlay.setFitsSystemWindows(true);
         }
         videoOverlay.setVisibility(View.GONE);
         butPlay.setVisibility(View.GONE);

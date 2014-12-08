@@ -33,6 +33,4 @@
     <dimen name="listitem_icon_leftpadding">16dp</dimen>
     <dimen name="listitem_icon_rightpadding">16dp</dimen>
 
-    <dimen name="navigation_bar_width">0dp</dimen>
-
 </resources>
