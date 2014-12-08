@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.util;
 
+import android.net.Uri;
 import android.util.Log;
 
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +50,30 @@ public final class URLChecker {
             return "http://" + url;
         } else {
             return url;
+        }
+    }
+
+    /**
+     * Checks if URL is valid and modifies it if necessary.
+     * This method also handles protocol relative URLs.
+     *
+     * @param url  The url which is going to be prepared
+     * @param base The url against which the (possibly relative) url is applied. If this is null,
+     *             the result of prepareURL(url) is returned instead.
+     * @return The prepared url
+     */
+    public static String prepareURL(String url, String base) {
+        if (base == null) {
+            return prepareURL(url);
+        }
+        url = StringUtils.trim(url);
+        base = prepareURL(base);
+        Uri urlUri = Uri.parse(url);
+        Uri baseUri = Uri.parse(base);
+        if (urlUri.isRelative() && baseUri.isAbsolute()) {
+            return urlUri.buildUpon().scheme(baseUri.getScheme()).build().toString();
+        } else {
+            return prepareURL(url);
         }
     }
 }

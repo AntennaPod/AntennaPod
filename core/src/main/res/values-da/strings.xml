@@ -17,7 +17,7 @@
   <string name="downloads_completed_label">Fuldført</string>
   <string name="downloads_log_label">Log</string>
   <string name="cancel_download_label">Annuller Download</string>
-  <string name="playback_history_label">Afspilnings historik</string>
+  <string name="playback_history_label">Afspilningshistorik</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">gpodder.net login</string>
   <!--New episodes fragment-->

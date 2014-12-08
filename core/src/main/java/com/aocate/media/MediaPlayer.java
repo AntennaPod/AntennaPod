@@ -35,6 +35,8 @@ import java.util.concurrent.locks.ReentrantLock;
 import de.danoeh.antennapod.core.BuildConfig;
 
 public class MediaPlayer {
+    public static final String TAG = "com.aocate.media.MediaPlayer";
+
     public interface OnBufferingUpdateListener {
         public abstract void onBufferingUpdate(MediaPlayer arg0, int percent);
     }
@@ -107,6 +109,36 @@ public class MediaPlayer {
         List<ResolveInfo> list = packageManager.queryIntentServices(intent,
                 PackageManager.MATCH_DEFAULT_ONLY);
         return list.size() > 0;
+    }
+
+    /**
+     * Returns an explicit Intent for a service that accepts the given Intent
+     * or null if no such service was found.
+     *
+     * @param context The application's environment.
+     * @param action  The Intent action to check for availability.
+     * @return The explicit service Intent or null if no service was found.
+     */
+    public static Intent getPrestoServiceIntent(Context context, String action) {
+        final PackageManager packageManager = context.getPackageManager();
+        final Intent actionIntent = new Intent(action);
+        List<ResolveInfo> list = packageManager.queryIntentServices(actionIntent,
+                PackageManager.MATCH_DEFAULT_ONLY);
+        if (list.size() > 0) {
+            ResolveInfo first = list.get(0);
+            if (first.serviceInfo != null) {
+                Intent intent = new Intent();
+                intent.setComponent(new ComponentName(first.serviceInfo.packageName,
+                        first.serviceInfo.name));
+                Log.i(TAG, "Returning intent:" + intent.toString());
+                return intent;
+            } else {
+                Log.e(TAG, "Found service that accepts " + action + ", but serviceInfo was null");
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     /**

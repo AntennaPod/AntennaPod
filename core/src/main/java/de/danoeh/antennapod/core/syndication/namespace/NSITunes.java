@@ -50,7 +50,7 @@ public class NSITunes extends Namespace {
         if (localName.equals(AUTHOR)) {
             state.getFeed().setAuthor(state.getContentBuf().toString());
         } else if (localName.equals(DURATION)) {
-            String[] parts = state.getContentBuf().toString().split(":");
+            String[] parts = state.getContentBuf().toString().trim().split(":");
             try {
                 int duration = 0;
                 if (parts.length == 2) {

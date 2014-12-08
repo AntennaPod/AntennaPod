@@ -693,7 +693,7 @@ public class PodDBAdapter {
         }
         values.put(KEY_FEED, item.getFeed().getId());
         values.put(KEY_READ, item.isRead());
-        values.put(KEY_HAS_CHAPTERS, item.getChapters() != null);
+        values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
         if (item.hasItemImage()) {
@@ -848,7 +848,7 @@ public class PodDBAdapter {
         if (item.getMedia() != null) {
             removeFeedMedia(item.getMedia());
         }
-        if (item.getChapters() != null) {
+        if (item.hasChapters() || item.getChapters() != null) {
             removeChaptersOfItem(item);
         }
         if (item.hasItemImage()) {

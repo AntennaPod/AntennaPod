@@ -20,6 +20,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -582,8 +583,7 @@ public class UserPreferences implements
         AlarmManager alarmManager = (AlarmManager) instance.context
                 .getSystemService(Context.ALARM_SERVICE);
         PendingIntent updateIntent = PendingIntent.getBroadcast(
-                instance.context, 0, new Intent(
-                        FeedUpdateReceiver.ACTION_REFRESH_FEEDS), 0);
+                instance.context, 0, new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
         if (intervalMillis != 0) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis,

@@ -162,11 +162,6 @@ public class ItemDescriptionFragment extends Fragment {
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-    }
-
-    @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         if (BuildConfig.DEBUG)
@@ -190,6 +185,10 @@ public class ItemDescriptionFragment extends Fragment {
             Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
+        }
+        if (webvDescription != null) {
+            webvDescription.removeAllViews();
+            webvDescription.destroy();
         }
     }
 

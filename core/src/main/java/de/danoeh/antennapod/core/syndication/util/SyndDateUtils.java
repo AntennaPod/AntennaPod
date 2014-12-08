@@ -7,13 +7,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
+import de.danoeh.antennapod.core.BuildConfig;
+
 /**
  * Parses several date formats.
  */
 public class SyndDateUtils {
     private static final String TAG = "DateUtils";
 
-    private static final String[] RFC822DATES = {"dd MMM yy HH:mm:ss Z",};
+    private static final String[] RFC822DATES = {"dd MMM yy HH:mm:ss Z",
+            "dd MMM yy HH:mm Z"};
 
     /**
      * RFC 3339 date format for UTC dates.
@@ -51,17 +54,18 @@ public class SyndDateUtils {
             date = date.substring(date.indexOf(",") + 1).trim();
         }
         SimpleDateFormat format = RFC822Formatter.get();
-        for (int i = 0; i < RFC822DATES.length; i++) {
+
+        for (String RFC822DATE : RFC822DATES) {
             try {
-                format.applyPattern(RFC822DATES[i]);
+                format.applyPattern(RFC822DATE);
                 result = format.parse(date);
                 break;
             } catch (ParseException e) {
-                e.printStackTrace();
+                if (BuildConfig.DEBUG) Log.d(TAG, "ParserException", e);
             }
         }
         if (result == null) {
-            Log.e(TAG, "Unable to parse feed date correctly");
+            Log.e(TAG, "Unable to parse feed date correctly:" + date);
         }
 
         return result;
@@ -134,9 +138,11 @@ public class SyndDateUtils {
             result += Integer.valueOf(parts[idx]) * 3600000L;
             idx++;
         }
-        result += Integer.valueOf(parts[idx]) * 60000L;
-        idx++;
-        result += (Float.valueOf(parts[idx])) * 1000L;
+        if (parts.length >= 2) {
+            result += Integer.valueOf(parts[idx]) * 60000L;
+            idx++;
+            result += (Float.valueOf(parts[idx])) * 1000L;
+        }
         return result;
     }
 

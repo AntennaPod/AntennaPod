@@ -16,6 +16,7 @@ import android.util.Log;
 import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -54,6 +55,7 @@ public class FeedItemDialog extends Dialog {
     private FeedItem item;
     private QueueAccess queue;
 
+    private ViewGroup contentContainer;
     private View header;
     private TextView txtvTitle;
     private WebView webvDescription;
@@ -107,6 +109,7 @@ public class FeedItemDialog extends Dialog {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.feeditem_dialog);
 
+        contentContainer = (ViewGroup) findViewById(R.id.contentContainer);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
         header = findViewById(R.id.header);
         webvDescription = (WebView) findViewById(R.id.webview);
@@ -225,6 +228,14 @@ public class FeedItemDialog extends Dialog {
         updateMenuAppearance();
     }
 
+    @Override
+    public void dismiss() {
+        super.dismiss();
+        if (contentContainer != null && webvDescription != null) {
+            contentContainer.removeAllViews();
+            webvDescription.destroy();
+        }
+    }
 
     private final FeedItemMenuHandler.MenuInterface popupMenuInterface = new FeedItemMenuHandler.MenuInterface() {
         @Override

@@ -54,6 +54,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN);
         supportRequestWindowFeature(WindowCompat.FEATURE_ACTION_BAR_OVERLAY); // has to be called before setting layout content
         super.onCreate(savedInstanceState);
         getSupportActionBar().setBackgroundDrawable(new ColorDrawable(0x80000000));
@@ -115,6 +116,13 @@ public class VideoplayerActivity extends MediaplayerActivity {
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);
         videoview.getHolder().addCallback(surfaceHolderCallback);
         videoview.setOnTouchListener(onVideoviewTouched);
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION);
+        }
+        if (Build.VERSION.SDK_INT >= 14) {
+            videoOverlay.setFitsSystemWindows(true);
+        }
 
         setupVideoControlsToggler();
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
@@ -333,10 +341,10 @@ public class VideoplayerActivity extends MediaplayerActivity {
             butPlay.startAnimation(animation);
         }
         if (Build.VERSION.SDK_INT >= 14) {
-            videoview.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE);
-            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_FULLSCREEN
-                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
-
+            int videoviewFlag = (Build.VERSION.SDK_INT >= 16) ? View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION : 0;
+            getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LOW_PROFILE | View.SYSTEM_UI_FLAG_FULLSCREEN
+                    | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | videoviewFlag);
+            videoOverlay.setFitsSystemWindows(true);
         }
         videoOverlay.setVisibility(View.GONE);
         butPlay.setVisibility(View.GONE);

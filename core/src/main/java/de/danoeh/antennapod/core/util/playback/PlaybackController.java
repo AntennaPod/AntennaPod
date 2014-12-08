@@ -417,8 +417,8 @@ public abstract class PlaybackController {
             pauseResource = res.getResourceId(1, R.drawable.ic_pause_grey600_36dp);
             res.recycle();
         } else {
-            playResource = R.drawable.ic_action_play_over_video;
-            pauseResource = R.drawable.ic_action_pause_over_video;
+            playResource = R.drawable.ic_av_play_circle_outline_80dp;
+            pauseResource = R.drawable.ic_av_pause_circle_outline_80dp;
         }
 
         switch (status) {

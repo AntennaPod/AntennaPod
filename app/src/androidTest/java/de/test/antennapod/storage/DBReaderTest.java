@@ -2,6 +2,12 @@ package de.test.antennapod.storage;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Random;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -9,11 +15,6 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedItemStatistics;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
@@ -325,7 +326,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
     public void testGetPlaybackHistory() {
         final Context context = getInstrumentation().getTargetContext();
-        final int numItems = (DBReader.PLAYBACK_HISTORY_SIZE+1) * 2;
+        final int numItems = (DBReader.PLAYBACK_HISTORY_SIZE + 1) * 2;
         final int playedItems = DBReader.PLAYBACK_HISTORY_SIZE + 1;
         final int numReturnedItems = Math.min(playedItems, DBReader.PLAYBACK_HISTORY_SIZE);
         final int numFeeds = 1;
@@ -404,5 +405,65 @@ public class DBReaderTest extends InstrumentationTestCase {
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
         assertEquals(NUM_UNREAD, navDrawerData.numUnreadItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
+    }
+
+    public void testGetFeedItemlistCheckChaptersFalse() throws Exception {
+        Context context = getInstrumentation().getTargetContext();
+        List<Feed> feeds = DBTestUtils.saveFeedlist(context, 10, 10, false, false, 0);
+        for (Feed feed : feeds) {
+            for (FeedItem item : feed.getItems()) {
+                assertFalse(item.hasChapters());
+            }
+        }
+    }
+
+    public void testGetFeedItemlistCheckChaptersTrue() throws Exception {
+        Context context = getInstrumentation().getTargetContext();
+        List<Feed> feeds = saveFeedlist(context, 10, 10, false, true, 10);
+        for (Feed feed : feeds) {
+            for (FeedItem item : feed.getItems()) {
+                assertTrue(item.hasChapters());
+            }
+        }
+    }
+
+    public void testLoadChaptersOfFeedItemNoChapters() throws Exception {
+        Context context = getInstrumentation().getTargetContext();
+        List<Feed> feeds = saveFeedlist(context, 1, 3, false, false, 0);
+        saveFeedlist(context, 1, 3, false, true, 3);
+        for (Feed feed : feeds) {
+            for (FeedItem item : feed.getItems()) {
+                assertFalse(item.hasChapters());
+                DBReader.loadChaptersOfFeedItem(context, item);
+                assertFalse(item.hasChapters());
+                assertNull(item.getChapters());
+            }
+        }
+    }
+
+    public void testLoadChaptersOfFeedItemWithChapters() throws Exception {
+        Context context = getInstrumentation().getTargetContext();
+        final int NUM_CHAPTERS = 3;
+        DBTestUtils.saveFeedlist(context, 1, 3, false, false, 0);
+        List<Feed> feeds = saveFeedlist(context, 1, 3, false, true, NUM_CHAPTERS);
+        for (Feed feed : feeds) {
+            for (FeedItem item : feed.getItems()) {
+                assertTrue(item.hasChapters());
+                DBReader.loadChaptersOfFeedItem(context, item);
+                assertTrue(item.hasChapters());
+                assertNotNull(item.getChapters());
+                assertEquals(NUM_CHAPTERS, item.getChapters().size());
+            }
+        }
+    }
+
+    public void testGetItemWithChapters() throws Exception {
+        Context context = getInstrumentation().getTargetContext();
+        final int NUM_CHAPTERS = 3;
+        List<Feed> feeds = saveFeedlist(context, 1, 1, false, true, NUM_CHAPTERS);
+        FeedItem item1 = feeds.get(0).getItems().get(0);
+        FeedItem item2 = DBReader.getFeedItem(context, item1.getId());
+        assertTrue(item2.hasChapters());
+        assertEquals(item1.getChapters(), item2.getChapters());
     }
 }
