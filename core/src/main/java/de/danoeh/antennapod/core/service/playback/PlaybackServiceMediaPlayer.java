@@ -586,6 +586,10 @@ public class PlaybackServiceMediaPlayer {
         return mediaType;
     }
 
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
+
     public boolean isStreaming() {
         return stream;
     }
