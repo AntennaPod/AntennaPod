@@ -27,16 +27,21 @@ public class AspectRatioVideoView extends VideoView {
     private int mVideoHeight;
 
     public AspectRatioVideoView(Context context) {
-        this(context, null);
+        super(context);
+        init();
     }
 
     public AspectRatioVideoView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+        super(context, attrs);
+        init();
     }
 
     public AspectRatioVideoView(Context context, AttributeSet attrs, int defStyle) {
         super(context, attrs, defStyle);
+        init();
+    }
 
+    private void init() {
         mVideoWidth = 0;
         mVideoHeight = 0;
     }
