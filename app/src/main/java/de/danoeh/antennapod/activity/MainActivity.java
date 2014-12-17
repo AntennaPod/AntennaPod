@@ -61,6 +61,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
+    public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
+    public static final String SAVE_SELECTED_NAV_INDEX = "selectedNavIndex";
+    public static final String SAVE_TITLE = "title";
+
+
     public static final int POS_NEW = 0,
             POS_QUEUE = 1,
             POS_DOWNLOADS = 2,
@@ -96,7 +101,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
-
+        Log.i(TAG, "");
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -115,8 +120,21 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         };
 
+        if (savedInstanceState != null) {
+            int backstackCount = savedInstanceState.getInt(SAVE_BACKSTACK_COUNT, 0);
+            drawerToggle.setDrawerIndicatorEnabled(backstackCount == 0);
+        }
+
         drawerLayout.setDrawerListener(drawerToggle);
-        FragmentManager fm = getSupportFragmentManager();
+
+        final FragmentManager fm = getSupportFragmentManager();
+
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
+            }
+        });
 
         FragmentTransaction transaction = fm.beginTransaction();
 
@@ -280,11 +298,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
         if (savedInstanceState != null) {
-            currentTitle = savedInstanceState.getString("title");
+            currentTitle = savedInstanceState.getString(SAVE_TITLE);
             if (!drawerLayout.isDrawerOpen(navDrawer)) {
                 getSupportActionBar().setTitle(currentTitle);
             }
-            selectedNavListIndex = savedInstanceState.getInt("selectedNavIndex");
+            selectedNavListIndex = savedInstanceState.getInt(SAVE_SELECTED_NAV_INDEX);
         }
     }
 
@@ -297,8 +315,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title", getSupportActionBar().getTitle().toString());
-        outState.putInt("selectedNavIndex", selectedNavListIndex);
+        outState.putString(SAVE_TITLE, getSupportActionBar().getTitle().toString());
+        outState.putInt(SAVE_SELECTED_NAV_INDEX, selectedNavListIndex);
+        outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
 
     }
 
@@ -331,6 +350,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
+            return true;
+        } else if (item.getItemId() == android.R.id.home) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                dismissChildFragment();
+            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);
