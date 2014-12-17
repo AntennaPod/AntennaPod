@@ -96,6 +96,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(3.0f);
+
         drawerTitle = currentTitle = getTitle();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);

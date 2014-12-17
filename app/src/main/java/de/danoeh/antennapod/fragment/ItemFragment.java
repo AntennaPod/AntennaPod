@@ -22,6 +22,7 @@ import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -92,8 +93,8 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private ImageView imgvCover;
     private ProgressBar progbarDownload;
     private ProgressBar progbarLoading;
-    private ImageButton butAction1;
-    private ImageButton butAction2;
+    private Button butAction1;
+    private Button butAction2;
     private ImageButton butMore;
     private PopupMenu popupMenu;
 
@@ -185,8 +186,8 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         progbarDownload = (ProgressBar) header.findViewById(R.id.progbarDownload);
         progbarLoading = (ProgressBar) layout.findViewById(R.id.progbarLoading);
-        butAction1 = (ImageButton) header.findViewById(R.id.butAction1);
-        butAction2 = (ImageButton) header.findViewById(R.id.butAction2);
+        butAction1 = (Button) header.findViewById(R.id.butAction1);
+        butAction2 = (Button) header.findViewById(R.id.butAction2);
         butMore = (ImageButton) header.findViewById(R.id.butMoreActions);
         popupMenu = new PopupMenu(getActivity(), butMore);
 
@@ -307,16 +308,16 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                     R.attr.location_web_site});
 
             if (!item.isRead()) {
-                butAction1.setImageDrawable(drawables.getDrawable(0));
-                butAction1.setContentDescription(getActivity().getString(R.string.mark_read_label));
+                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
+                butAction1.setText(getActivity().getString(R.string.mark_read_label));
                 butAction1.setVisibility(View.VISIBLE);
             } else {
                 butAction1.setVisibility(View.INVISIBLE);
             }
 
             if (item.getLink() != null) {
-                butAction2.setImageDrawable(drawables.getDrawable(1));
-                butAction2.setContentDescription(getActivity().getString(R.string.visit_website_label));
+                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(1), null, null, null);
+                butAction2.setText(getActivity().getString(R.string.visit_website_label));
             } else {
                 butAction2.setEnabled(false);
             }
@@ -328,22 +329,22 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                     R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel});
 
             if (!media.isDownloaded()) {
-                butAction2.setImageDrawable(drawables.getDrawable(2));
-                butAction2.setContentDescription(getActivity().getString(R.string.stream_label));
+                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(2), null, null, null);
+                butAction2.setText(getActivity().getString(R.string.stream_label));
             } else {
-                butAction2.setImageDrawable(drawables.getDrawable(3));
-                butAction2.setContentDescription(getActivity().getString(R.string.remove_episode_lable));
+                butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(3), null, null, null);
+                butAction2.setText(getActivity().getString(R.string.remove_episode_lable));
             }
 
             if (isDownloading) {
-                butAction1.setImageDrawable(drawables.getDrawable(4));
-                butAction1.setContentDescription(getActivity().getString(R.string.cancel_download_label));
+                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(4), null, null, null);
+                butAction1.setText(getActivity().getString(R.string.cancel_download_label));
             } else if (media.isDownloaded()) {
-                butAction1.setImageDrawable(drawables.getDrawable(0));
-                butAction1.setContentDescription(getActivity().getString(R.string.play_label));
+                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
+                butAction1.setText(getActivity().getString(R.string.play_label));
             } else {
-                butAction1.setImageDrawable(drawables.getDrawable(1));
-                butAction1.setContentDescription(getActivity().getString(R.string.download_label));
+                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(1), null, null, null);
+                butAction1.setText(getActivity().getString(R.string.download_label));
             }
 
             drawables.recycle();

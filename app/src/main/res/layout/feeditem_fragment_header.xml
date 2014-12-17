@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -68,25 +67,32 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
+        android:layout_marginRight="8dp"
         android:orientation="horizontal">
 
-        <ImageButton
+        <Button
             android:id="@+id/butAction1"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
+            android:ellipsize="end"
             android:paddingTop="4dp"
-            tools:ignore="ContentDescription" />
+            android:textSize="@dimen/text_size_small" />
 
-        <ImageButton
+        <Button
             android:id="@+id/butAction2"
             android:layout_width="0dp"
             android:layout_height="48dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginLeft="8dp"
             android:layout_weight="1"
             android:background="?attr/selectableItemBackground"
+            android:ellipsize="end"
             android:paddingTop="4dp"
-            tools:ignore="ContentDescription" />
+            android:textSize="@dimen/text_size_small" />
 
     </LinearLayout>
 
