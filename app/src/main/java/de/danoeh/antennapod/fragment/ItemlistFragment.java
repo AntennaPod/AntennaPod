@@ -50,7 +50,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -81,9 +80,6 @@ public class ItemlistFragment extends ListFragment {
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     private MoreContentListFooterUtil listFooter;
 
@@ -160,10 +156,6 @@ public class ItemlistFragment extends ListFragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -273,8 +265,9 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        feedItemDialog = FeedItemDialog.newInstance(getActivity(), selection, queue);
-        feedItemDialog.show();
+        if (selection != null) {
+            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(selection.getId()));
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -317,11 +310,6 @@ public class ItemlistFragment extends ListFragment {
         setListShown(true);
         adapter.notifyDataSetChanged();
 
-        if (feedItemDialog != null) {
-            feedItemDialog.updateContent(queue, feed.getItems());
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
-        }
         getActivity().supportInvalidateOptionsMenu();
 
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
@@ -335,9 +323,6 @@ public class ItemlistFragment extends ListFragment {
         public void onContentChanged() {
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 

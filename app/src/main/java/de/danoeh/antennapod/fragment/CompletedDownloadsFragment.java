@@ -8,16 +8,16 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.List;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DownloadedEpisodesListAdapter;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.QueueAccess;
-
-import java.util.List;
 
 /**
  * Displays all running downloads and provides a button to delete them
@@ -35,8 +35,6 @@ public class CompletedDownloadsFragment extends ListFragment {
 
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
-
-    private FeedItemDialog feedItemDialog;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -69,7 +67,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onDestroyView();
         listAdapter = null;
         viewCreated = false;
-        feedItemDialog = null;
         stopItemLoader();
     }
 
@@ -102,8 +99,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         FeedItem item = listAdapter.getItem(position - l.getHeaderViewsCount());
         if (item != null) {
-            feedItemDialog = FeedItemDialog.newInstance(getActivity(), item, queue);
-            feedItemDialog.show();
+            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
         }
 
     }
@@ -115,12 +111,6 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
         setListShown(true);
         listAdapter.notifyDataSetChanged();
-        if (feedItemDialog != null) {
-            boolean res = feedItemDialog.updateContent(queue, items);
-            if (!res && feedItemDialog.isShowing()) {
-                feedItemDialog.dismiss();
-            }
-        }
     }
 
     private DownloadedEpisodesListAdapter.ItemAccess itemAccess = new DownloadedEpisodesListAdapter.ItemAccess() {
@@ -143,11 +133,7 @@ public class CompletedDownloadsFragment extends ListFragment {
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.DOWNLOAD_QUEUED) != 0) {
-                if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                    feedItemDialog.updateMenuAppearance();
-                }
-            } else if ((arg & EVENTS) != 0) {
+            if ((arg & EVENTS) != 0) {
                 startItemLoader();
             }
         }

@@ -89,7 +89,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
-        setSupportActionBar((Toolbar) findViewById(R.id.toolbar));
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
         drawerTitle = currentTitle = getTitle();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -250,6 +251,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 .replace(R.id.main_view, fragment, "main")
                 .addToBackStack(null)
                 .commit();
+    }
+
+    public void dismissChildFragment() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
     }
 
     private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
