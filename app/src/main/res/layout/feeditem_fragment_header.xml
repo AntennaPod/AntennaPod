@@ -50,7 +50,6 @@
             android:layout_marginTop="16dp"
             android:layout_toLeftOf="@id/butMoreActions"
             android:layout_toRightOf="@id/imgvCover"
-            android:ellipsize="end"
             android:maxLines="5" />
     </RelativeLayout>
 

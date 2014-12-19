@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -153,6 +155,7 @@ public class ItemlistFragment extends ListFragment {
     private void resetViewState() {
         adapter = null;
         viewsCreated = false;
+        listFooter = null;
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
@@ -252,6 +255,15 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
+    public void setListAdapter(ListAdapter adapter) {
+        // This workaround prevents the ListFragment from setting a list adapter when its state is restored.
+        // This is only necessary on API 10 because addFooterView throws an internal exception in this case.
+        if (Build.VERSION.SDK_INT > 10 || insideOnFragmentLoaded) {
+            super.setListAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
@@ -297,9 +309,12 @@ public class ItemlistFragment extends ListFragment {
 
     }
 
+    private boolean insideOnFragmentLoaded = false;
+
     private void onFragmentLoaded() {
+        insideOnFragmentLoaded = true;
         if (adapter == null) {
-            getListView().setAdapter(null);
+            setListAdapter(null);
             setupHeaderView();
             setupFooterView();
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
@@ -315,6 +330,8 @@ public class ItemlistFragment extends ListFragment {
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
             getListView().removeFooterView(listFooter.getRoot());
         }
+
+        insideOnFragmentLoaded = false;
 
     }
 
