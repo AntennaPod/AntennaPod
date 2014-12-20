@@ -290,7 +290,11 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_HEADSETHOOK:
             case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    mediaPlayer.pause(false, true);
+                    if (UserPreferences.isPersistNotify()) {
+                        mediaPlayer.pause(false, true);
+                    } else {
+                        mediaPlayer.pause(true, true);
+                    }
                 } else if (status == PlayerStatus.PAUSED || status == PlayerStatus.PREPARED) {
                     mediaPlayer.resume();
                 } else if (status == PlayerStatus.PREPARING) {
@@ -312,6 +316,12 @@ public class PlaybackService extends Service {
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(false, true);
                 }
+                if (UserPreferences.isPersistNotify()) {
+                    mediaPlayer.pause(false, true);
+                } else {
+                    mediaPlayer.pause(true, true);
+                }
+
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -402,7 +412,14 @@ public class PlaybackService extends Service {
                     taskManager.cancelPositionSaver();
                     saveCurrentPosition(false, 0);
                     taskManager.cancelWidgetUpdater();
-                    setupNotification(newInfo);
+                    if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                        // Change [Play] button to [Pause]
+                        setupNotification(newInfo);
+                    } else {
+                        // remove notifcation on pause
+                        stopForeground(true);
+                    }
 
                     break;
 
@@ -767,7 +784,7 @@ public class PlaybackService extends Service {
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                        if(newInfo.playerStatus==PlayerStatus.PLAYING){
+                        if(newInfo.playerStatus == PlayerStatus.PLAYING){
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
@@ -776,9 +793,11 @@ public class PlaybackService extends Service {
                                     getString(R.string.play_label),
                                     playButtonPendingIntent);
                         }
-                        notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
-                                        getString(R.string.stop_label),
-                                        stopButtonPendingIntent);
+                        if(UserPreferences.isPersistNotify()) {
+                            notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
+                                    getString(R.string.stop_label),
+                                    stopButtonPendingIntent);
+                        }
                         notification = notificationBuilder.build();
                     } else {
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
@@ -1000,7 +1019,6 @@ public class PlaybackService extends Service {
             } else {
                 mediaPlayer.pause(true, true);
             }
-        }
     }
 
     private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
