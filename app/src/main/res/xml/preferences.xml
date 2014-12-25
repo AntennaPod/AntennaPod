@@ -30,6 +30,13 @@
             android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:dependency="prefPauseOnHeadsetDisconnect"
+            android:key="prefUnpauseOnHeadsetReconnect"
+            android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
+            android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
+        <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefFollowQueue"

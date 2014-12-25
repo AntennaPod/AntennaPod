@@ -111,6 +111,7 @@ public class VideoplayerActivity extends MediaplayerActivity {
     @Override
     protected void setupGUI() {
         super.setupGUI();
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         videoOverlay = (LinearLayout) findViewById(R.id.overlay);
         videoview = (AspectRatioVideoView) findViewById(R.id.videoview);
         progressIndicator = (ProgressBar) findViewById(R.id.progressIndicator);

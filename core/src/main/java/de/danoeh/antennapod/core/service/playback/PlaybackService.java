@@ -144,6 +144,10 @@ public class PlaybackService extends Service {
      * Is true if service has received a valid start command.
      */
     public static boolean started = false;
+    /**
+     * Is true if the service was running, but paused due to headphone disconnect
+     */
+    public static boolean transientPause = false;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -206,6 +210,8 @@ public class PlaybackService extends Service {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -228,6 +234,7 @@ public class PlaybackService extends Service {
 
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
+        unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
@@ -966,6 +973,7 @@ public class PlaybackService extends Service {
     private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
         private static final String TAG = "headsetDisconnected";
         private static final int UNPLUGGED = 0;
+        private static final int PLUGGED = 1;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -978,9 +986,28 @@ public class PlaybackService extends Service {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "Headset was unplugged during playback.");
                         pauseIfPauseOnDisconnect();
+                    } else if (state == PLUGGED) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Headset was plugged in during playback.");
+                        unpauseIfPauseOnDisconnect();
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+                }
+            }
+        }
+    };
+
+    private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED)) {
+                int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
+                int prevState = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_PREVIOUS_STATE, -1);
+                if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Received bluetooth connection intent");
+                    unpauseIfPauseOnDisconnect();
                 }
             }
         }
@@ -1003,10 +1030,22 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
+            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
+                transientPause = true;
+            }
             if (UserPreferences.isPersistNotify()) {
                 mediaPlayer.pause(false, true);
             } else {
                 mediaPlayer.pause(true, true);
+            }
+        }
+    }
+
+    private void unpauseIfPauseOnDisconnect() {
+        if (transientPause) {
+            transientPause = false;
+            if (UserPreferences.isPauseOnHeadsetDisconnect() && UserPreferences.isUnpauseOnHeadsetReconnect()) {
+                mediaPlayer.resume();
             }
         }
     }

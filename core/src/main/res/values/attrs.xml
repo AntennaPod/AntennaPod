@@ -35,6 +35,7 @@
     <attr name="av_pause_big" format="reference"/>
     <attr name="av_ff_big" format="reference"/>
     <attr name="av_rew_big" format="reference"/>
+    <attr name="ic_settings" format="reference"/>
 
     <!-- Used in itemdescription -->
     <attr name="non_transparent_background" format="reference"/>

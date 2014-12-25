@@ -13,11 +13,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -27,9 +31,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PlaybackHistoryFragment extends ListFragment {
     private static final String TAG = "PlaybackHistoryFragment";
@@ -45,9 +46,6 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,10 +101,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     @Override
@@ -130,8 +124,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onListItemClick(l, v, position, id);
         FeedItem item = adapter.getItem(position - l.getHeaderViewsCount());
         if (item != null) {
-            feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, queue);
-            feedItemDialog.show();
+            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
         }
     }
 
@@ -158,7 +151,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
-            switch(item.getItemId()) {
+            switch (item.getItemId()) {
                 case R.id.clear_history_item:
                     DBWriter.clearPlaybackHistory(getActivity());
                     return true;
@@ -190,11 +183,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
-        if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.updateContent(queue, playbackHistory);
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
-        }
         getActivity().supportInvalidateOptionsMenu();
     }
 
@@ -203,9 +191,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         public void onContentChanged() {
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 

@@ -7,21 +7,28 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.view.MenuItemCompat;
-import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
-import android.view.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
+
 import com.mobeta.android.dslv.DragSortListView;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicReference;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -36,9 +43,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 /**
  * Shows unread or recently published episodes
@@ -72,9 +76,6 @@ public class NewEpisodesFragment extends Fragment {
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
     private DownloadObserver downloadObserver = null;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     private boolean isUpdatingFeeds;
 
@@ -133,10 +134,6 @@ public class NewEpisodesFragment extends Fragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
 
@@ -226,8 +223,7 @@ public class NewEpisodesFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, queueAccess);
-                    feedItemDialog.show();
+                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
 
             }
@@ -257,11 +253,6 @@ public class NewEpisodesFragment extends Fragment {
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
-        if (feedItemDialog != null) {
-            feedItemDialog.updateContent(queueAccess, unreadItems, recentItems);
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
-        }
         listAdapter.notifyDataSetChanged();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
@@ -272,9 +263,6 @@ public class NewEpisodesFragment extends Fragment {
         public void onContentChanged() {
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 
