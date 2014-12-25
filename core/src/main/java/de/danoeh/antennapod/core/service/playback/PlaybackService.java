@@ -1019,6 +1019,7 @@ public class PlaybackService extends Service {
             } else {
                 mediaPlayer.pause(true, true);
             }
+        }
     }
 
     private BroadcastReceiver shutdownReceiver = new BroadcastReceiver() {
