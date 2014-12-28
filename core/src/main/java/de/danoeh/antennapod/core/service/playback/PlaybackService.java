@@ -423,7 +423,7 @@ public class PlaybackService extends Service {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
                         // Change [Play] button to [Pause]
                         setupNotification(newInfo);
-                    } else {
+                    } else if (!UserPreferences.isPersistNotify()) {
                         // remove notifcation on pause
                         stopForeground(true);
                     }
