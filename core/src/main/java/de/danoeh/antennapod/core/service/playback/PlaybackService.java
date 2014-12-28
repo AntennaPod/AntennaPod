@@ -291,7 +291,6 @@ public class PlaybackService extends Service {
     private void handleKeycode(int keycode) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Handling keycode: " + keycode);
-
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
         switch (keycode) {
@@ -322,12 +321,14 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    if (UserPreferences.isPersistNotify()) {
-                        mediaPlayer.pause(false, true);
-                    } else {
-                        mediaPlayer.pause(true, true);
-                    }
+                    mediaPlayer.pause(false, true);
                 }
+                if (UserPreferences.isPersistNotify()) {
+                    mediaPlayer.pause(false, true);
+                } else {
+                    mediaPlayer.pause(true, true);
+                }
+
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -340,7 +341,9 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
+                    started = false;
                 }
+
                 stopForeground(true); // gets rid of persistent notification
                 break;
             default:
@@ -418,10 +421,13 @@ public class PlaybackService extends Service {
                     taskManager.cancelWidgetUpdater();
                     if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
+                        // Change [Play] button to [Pause]
+                        setupNotification(newInfo);
                     } else {
                         // remove notifcation on pause
                         stopForeground(true);
                     }
+
                     break;
 
                 case STOPPED:
@@ -438,6 +444,7 @@ public class PlaybackService extends Service {
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
                     setupNotification(newInfo);
+                    started = true;
                     break;
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
@@ -741,8 +748,9 @@ public class PlaybackService extends Service {
                 PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
-                if (!isCancelled() && info.playerStatus == PlayerStatus.PLAYING
-                        && info.playable != null) {
+                if (!isCancelled() &&
+                      started == true  &&
+                      info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
@@ -782,16 +790,21 @@ public class PlaybackService extends Service {
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
-                                .setPriority(UserPreferences.getNotifyPriority()) // set notification priority
-                                .addAction(android.R.drawable.ic_media_play, //play action
-                                        getString(R.string.play_label),
-                                        playButtonPendingIntent)
-                                .addAction(android.R.drawable.ic_media_pause, //pause action
-                                        getString(R.string.pause_label),
-                                        pauseButtonPendingIntent)
-                                .addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
-                                        getString(R.string.stop_label),
-                                        stopButtonPendingIntent);
+                                .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                        if(newInfo.playerStatus == PlayerStatus.PLAYING){
+                            notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
+                                    getString(R.string.pause_label),
+                                    pauseButtonPendingIntent);
+                        } else {
+                            notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
+                                    getString(R.string.play_label),
+                                    playButtonPendingIntent);
+                        }
+                        if(UserPreferences.isPersistNotify()) {
+                            notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
+                                    getString(R.string.stop_label),
+                                    stopButtonPendingIntent);
+                        }
                         notification = notificationBuilder.build();
                     } else {
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
@@ -802,9 +815,7 @@ public class PlaybackService extends Service {
                                 .setSmallIcon(smallIcon);
                         notification = notificationBuilder.getNotification();
                     }
-                    if (newInfo.playerStatus == PlayerStatus.PLAYING) {
-                        startForeground(NOTIFICATION_ID, notification);
-                    }
+                    startForeground(NOTIFICATION_ID, notification);
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "Notification set up");
                 }
