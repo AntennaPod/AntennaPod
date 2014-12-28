@@ -92,8 +92,9 @@ public class DownloadRequester {
 
     private void download(Context context, FeedFile item, FeedFile container, File dest,
                           boolean overwriteIfExists, String username, String password, boolean deleteOnFailure, Bundle arguments) {
+        final boolean partiallyDownloadedFileExists = item.getFile_url() != null;
         if (!isDownloadingFile(item)) {
-            if (!isFilenameAvailable(dest.toString()) || (deleteOnFailure && dest.exists())) {
+            if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Filename already used.");
                 if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
