@@ -79,6 +79,7 @@
             android:background="?attr/selectableItemBackground"
             android:ellipsize="end"
             android:paddingTop="4dp"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_small" />
 
         <Button
@@ -91,6 +92,7 @@
             android:background="?attr/selectableItemBackground"
             android:ellipsize="end"
             android:paddingTop="4dp"
+            android:textColor="?android:attr/textColorPrimary"
             android:textSize="@dimen/text_size_small" />
 
     </LinearLayout>
