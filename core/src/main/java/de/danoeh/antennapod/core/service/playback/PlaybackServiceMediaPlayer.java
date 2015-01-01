@@ -6,6 +6,9 @@ import android.media.AudioManager;
 import android.media.RemoteControlClient;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.support.v4.media.MediaMetadataCompat;
+import android.support.v4.media.session.MediaSessionCompat;
+import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
@@ -48,6 +51,10 @@ public class PlaybackServiceMediaPlayer {
     private volatile PlayerStatus statusBeforeSeeking;
     private volatile IPlayer mediaPlayer;
     private volatile Playable media;
+    /**
+     * Only used for Lollipop notifications.
+     */
+    private final MediaSessionCompat mediaSession;
 
     private volatile boolean stream;
     private volatile MediaType mediaType;
@@ -88,6 +95,10 @@ public class PlaybackServiceMediaPlayer {
                     }
                 }
         );
+
+        mediaSession = new MediaSessionCompat(context, TAG);
+        mediaSession.setCallback(sessionCallback);
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
 
         mediaPlayer = null;
         statusBeforeSeeking = null;
@@ -181,6 +192,7 @@ public class PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
+            mediaSession.setMetadata(getMediaSessionMetadata(media));
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
@@ -209,6 +221,13 @@ public class PlaybackServiceMediaPlayer {
             e.printStackTrace();
             setPlayerStatus(PlayerStatus.ERROR, null);
         }
+    }
+
+    private MediaMetadataCompat getMediaSessionMetadata(Playable p) {
+        MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+        return builder.build();
     }
 
 
@@ -603,6 +622,9 @@ public class PlaybackServiceMediaPlayer {
         if (mediaPlayer != null) {
             mediaPlayer.release();
         }
+        if (mediaSession != null) {
+            mediaSession.release();
+        }
         releaseWifiLockIfNecessary();
     }
 
@@ -667,6 +689,16 @@ public class PlaybackServiceMediaPlayer {
     }
 
     /**
+     * Returns a token to this object's MediaSession. The MediaSession should only be used for notifications
+     * at the moment.
+     *
+     * @return The MediaSessionCompat.Token object.
+     */
+    public MediaSessionCompat.Token getSessionToken() {
+        return mediaSession.getSessionToken();
+    }
+
+    /**
      * Sets the player status of the PSMP object. PlayerStatus and media attributes have to be set at the same time
      * so that getPSMPInfo can't return an invalid state (e.g. status is PLAYING, but media is null).
      * <p/>
@@ -683,6 +715,45 @@ public class PlaybackServiceMediaPlayer {
 
         this.playerStatus = newStatus;
         this.media = newMedia;
+
+        PlaybackStateCompat.Builder sessionState = new PlaybackStateCompat.Builder();
+
+        int state;
+        if (playerStatus != null) {
+            switch (playerStatus) {
+                case PLAYING:
+                    state = PlaybackStateCompat.STATE_PLAYING;
+                    break;
+                case PREPARED:
+                case PAUSED:
+                    state = PlaybackStateCompat.STATE_PAUSED;
+                    break;
+                case STOPPED:
+                    state = PlaybackStateCompat.STATE_STOPPED;
+                    break;
+                case SEEKING:
+                    state = PlaybackStateCompat.STATE_FAST_FORWARDING;
+                    break;
+                case PREPARING:
+                case INITIALIZING:
+                    state = PlaybackStateCompat.STATE_CONNECTING;
+                    break;
+                case INITIALIZED:
+                case INDETERMINATE:
+                    state = PlaybackStateCompat.STATE_NONE;
+                    break;
+                case ERROR:
+                    state = PlaybackStateCompat.STATE_ERROR;
+                    break;
+                default:
+                    state = PlaybackStateCompat.STATE_NONE;
+                    break;
+            }
+        } else {
+            state = PlaybackStateCompat.STATE_NONE;
+        }
+        sessionState.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, getPlaybackSpeed());
+
         callback.statusChanged(new PSMPInfo(playerStatus, media));
     }
 
@@ -980,4 +1051,54 @@ public class PlaybackServiceMediaPlayer {
             }
         });
     }
+
+    private final MediaSessionCompat.Callback sessionCallback = new MediaSessionCompat.Callback() {
+
+        @Override
+        public void onPlay() {
+            if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                resume();
+            } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                setStartWhenPrepared(true);
+                prepare();
+            }
+        }
+
+        @Override
+        public void onPause() {
+            super.onPause();
+            if (playerStatus == PlayerStatus.PLAYING) {
+                pause(false, true);
+            }
+            if (UserPreferences.isPersistNotify()) {
+                pause(false, true);
+            } else {
+                pause(true, true);
+            }
+        }
+
+        @Override
+        public void onSkipToNext() {
+            super.onSkipToNext();
+            endPlayback();
+        }
+
+        @Override
+        public void onFastForward() {
+            super.onFastForward();
+            seekDelta(UserPreferences.getSeekDeltaMs());
+        }
+
+        @Override
+        public void onRewind() {
+            super.onRewind();
+            seekDelta(-UserPreferences.getSeekDeltaMs());
+        }
+
+        @Override
+        public void onSeekTo(long pos) {
+            super.onSeekTo(pos);
+            seekTo((int) pos);
+        }
+    };
 }

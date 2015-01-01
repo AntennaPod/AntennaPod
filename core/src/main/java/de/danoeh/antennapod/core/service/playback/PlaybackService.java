@@ -749,8 +749,8 @@ public class PlaybackService extends Service {
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
                 if (!isCancelled() &&
-                      started == true  &&
-                      info.playable != null) {
+                        started &&
+                        info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
@@ -791,7 +791,7 @@ public class PlaybackService extends Service {
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                        if(newInfo.playerStatus == PlayerStatus.PLAYING){
+                        if (newInfo.playerStatus == PlayerStatus.PLAYING) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
@@ -800,11 +800,20 @@ public class PlaybackService extends Service {
                                     getString(R.string.play_label),
                                     playButtonPendingIntent);
                         }
-                        if(UserPreferences.isPersistNotify()) {
+                        if (UserPreferences.isPersistNotify()) {
                             notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
                                     getString(R.string.stop_label),
                                     stopButtonPendingIntent);
                         }
+
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            notificationBuilder.setStyle(new Notification.MediaStyle()
+                                    .setMediaSession((android.media.session.MediaSession.Token) mediaPlayer.getSessionToken().getToken())
+                                    .setShowActionsInCompactView(0))
+                                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                                    .setColor(Notification.COLOR_DEFAULT);
+                        }
+
                         notification = notificationBuilder.build();
                     } else {
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
@@ -813,7 +822,7 @@ public class PlaybackService extends Service {
                                 .setContentText(contentText).setOngoing(true)
                                 .setContentIntent(pIntent).setLargeIcon(icon)
                                 .setSmallIcon(smallIcon);
-                        notification = notificationBuilder.getNotification();
+                        notification = notificationBuilder.build();
                     }
                     startForeground(NOTIFICATION_ID, notification);
                     if (BuildConfig.DEBUG)
