@@ -197,14 +197,18 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                                           @Override
 
                                           public void onClick(View v) {
+                                              if (item == null) {
+                                                  return;
+                                              }
                                               actionButtonCallback.onActionButtonPressed(item);
                                               FeedMedia media = item.getMedia();
                                               if (media != null && media.isDownloaded()) {
                                                   // playback was started, dialog should close itself
                                                   ((MainActivity) getActivity()).dismissChildFragment();
                                               }
-
                                           }
+
+
                                       }
         );
 
@@ -213,6 +217,10 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                                       {
                                           @Override
                                           public void onClick(View v) {
+                                              if (item == null) {
+                                                  return;
+                                              }
+
                                               if (item.hasMedia()) {
                                                   FeedMedia media = item.getMedia();
                                                   if (!media.isDownloaded()) {
@@ -232,6 +240,9 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         butMore.setOnClickListener(new View.OnClickListener() {
                                        @Override
                                        public void onClick(View v) {
+                                           if (item == null) {
+                                               return;
+                                           }
                                            popupMenu.getMenu().clear();
                                            popupMenu.inflate(R.menu.feeditem_dialog);
                                            if (item.hasMedia()) {
