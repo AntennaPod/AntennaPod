@@ -378,10 +378,13 @@ public class DownloadRequester {
 
         String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),
                 null, media.getMime_type());
-        ;
 
-        if (titleBaseFilename != "") {
+        if (!titleBaseFilename.equals("")) {
             // Append extension
+            final int FILENAME_MAX_LENGTH = 220;
+            if (titleBaseFilename.length() > FILENAME_MAX_LENGTH) {
+                titleBaseFilename = titleBaseFilename.substring(0, FILENAME_MAX_LENGTH);
+            }
             filename = titleBaseFilename + FilenameUtils.EXTENSION_SEPARATOR +
                     FilenameUtils.getExtension(URLBaseFilename);
         } else {
