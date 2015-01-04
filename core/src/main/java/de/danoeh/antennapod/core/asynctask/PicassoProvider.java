@@ -211,7 +211,8 @@ public class PicassoProvider {
         }
     }
 
-    public static final int BLUR_RADIUS = 10;
+    public static final int BLUR_RADIUS = 1;
+    public static final int BLUR_IMAGE_SIZE = 100;
     public static final String BLUR_KEY = "blur";
 
     public static final Transformation blurTransformation = new Transformation() {

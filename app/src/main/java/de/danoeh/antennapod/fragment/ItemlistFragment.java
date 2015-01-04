@@ -377,6 +377,7 @@ public class ItemlistFragment extends ListFragment {
                 .placeholder(R.color.image_readability_tint)
                 .error(R.color.image_readability_tint)
                 .transform(PicassoProvider.blurTransformation)
+                .resize(PicassoProvider.BLUR_IMAGE_SIZE, PicassoProvider.BLUR_IMAGE_SIZE)
                 .into(imgvBackground);
 
         Picasso.with(getActivity())
