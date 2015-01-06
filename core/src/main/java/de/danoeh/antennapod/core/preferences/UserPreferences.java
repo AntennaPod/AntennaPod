@@ -51,6 +51,7 @@ public class UserPreferences implements
     public static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_ENABLE_AUTODL = "prefEnableAutoDl";
     public static final String PREF_ENABLE_AUTODL_WIFI_FILTER = "prefEnableAutoDownloadWifiFilter";
+    public static final String PREF_ENABLE_AUTODL_ON_BATTERY = "prefEnableAutoDownloadOnBattery";
     private static final String PREF_AUTODL_SELECTED_NETWORKS = "prefAutodownloadSelectedNetworks";
     public static final String PREF_EPISODE_CACHE_SIZE = "prefEpisodeCacheSize";
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -82,6 +83,7 @@ public class UserPreferences implements
     private int theme;
     private boolean enableAutodownload;
     private boolean enableAutodownloadWifiFilter;
+    private boolean enableAutodownloadOnBattery;
     private String[] autodownloadSelectedNetworks;
     private int episodeCacheSize;
     private String playbackSpeed;
@@ -144,6 +146,7 @@ public class UserPreferences implements
         episodeCacheSize = readEpisodeCacheSizeInternal(sp.getString(
                 PREF_EPISODE_CACHE_SIZE, "20"));
         enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+        enableAutodownloadOnBattery = sp.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
         playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
         playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
                 PREF_PLAYBACK_SPEED_ARRAY, null));
@@ -344,6 +347,11 @@ public class UserPreferences implements
         return instance.enableAutodownload;
     }
 
+    public static boolean isEnableAutodownloadOnBattery() {
+        instanceAvailable();
+        return instance.enableAutodownloadOnBattery;
+    }
+
     public static boolean shouldPauseForFocusLoss() {
         instanceAvailable();
         return instance.pauseForFocusLoss;
@@ -395,6 +403,8 @@ public class UserPreferences implements
                     PREF_EPISODE_CACHE_SIZE, "20"));
         } else if (key.equals(PREF_ENABLE_AUTODL)) {
             enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
+        } else if (key.equals(PREF_ENABLE_AUTODL_ON_BATTERY)) {
+            enableAutodownloadOnBattery = sp.getBoolean(PREF_ENABLE_AUTODL_ON_BATTERY, true);
         } else if (key.equals(PREF_PLAYBACK_SPEED)) {
             playbackSpeed = sp.getString(PREF_PLAYBACK_SPEED, "1.0");
         } else if (key.equals(PREF_PLAYBACK_SPEED_ARRAY)) {
