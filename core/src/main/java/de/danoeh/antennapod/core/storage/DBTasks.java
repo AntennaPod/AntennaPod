@@ -463,12 +463,20 @@ public final class DBTasks {
         return autodownloadExec.submit(new Runnable() {
             @Override
             public void run() {
-                if (BuildConfig.DEBUG)
+
+                // true if we should auto download based on network status
+                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable(context)
+                        && UserPreferences.isEnableAutodownload();
+
+                // true if we should auto download based on power status
+                boolean powerShouldAutoDl = PowerUtils.deviceCharging(context)
+                        || UserPreferences.isEnableAutodownloadOnBattery();
+
+                // we should only auto download if both network AND power are happy
+                if (networkShouldAutoDl && powerShouldAutoDl) {
+
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
-                if ((NetworkUtils.autodownloadNetworkAvailable(context)
-                        && UserPreferences.isEnableAutodownload())
-                     && (PowerUtils.deviceCharging(context)
-                        || UserPreferences.isEnableAutodownloadOnBattery())) {
+
                     final List<FeedItem> queue = DBReader.getQueue(context);
                     final List<FeedItem> unreadItems = DBReader
                             .getUnreadItemsList(context);
