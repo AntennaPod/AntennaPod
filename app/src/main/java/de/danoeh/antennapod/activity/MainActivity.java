@@ -144,7 +144,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         if (mainFragment != null) {
             transaction.replace(R.id.main_view, mainFragment);
         } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_NEW, null);
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_QUEUE, null);
         }
 
         externalPlayerFragment = new ExternalPlayerFragment();
