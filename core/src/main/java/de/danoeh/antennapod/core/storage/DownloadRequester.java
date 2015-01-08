@@ -255,8 +255,7 @@ public class DownloadRequester {
      * Cancels all running downloads
      */
     public synchronized void cancelAllDownloads(Context context) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Cancelling all running downloads");
+        Log.d(TAG, "Cancelling all running downloads");
         context.sendBroadcast(new Intent(
                 DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
     }

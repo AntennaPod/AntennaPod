@@ -36,6 +36,7 @@ import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.danoeh.antennapod.core.util.PowerUtils;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
@@ -449,7 +450,8 @@ public final class DBTasks {
     /**
      * Looks for undownloaded episodes in the queue or list of unread items and request a download if
      * 1. Network is available
-     * 2. There is free space in the episode cache
+     * 2. The device is charging or the user allows auto download on battery
+     * 3. There is free space in the episode cache
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
@@ -461,10 +463,20 @@ public final class DBTasks {
         return autodownloadExec.submit(new Runnable() {
             @Override
             public void run() {
-                if (BuildConfig.DEBUG)
+
+                // true if we should auto download based on network status
+                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable(context)
+                        && UserPreferences.isEnableAutodownload();
+
+                // true if we should auto download based on power status
+                boolean powerShouldAutoDl = PowerUtils.deviceCharging(context)
+                        || UserPreferences.isEnableAutodownloadOnBattery();
+
+                // we should only auto download if both network AND power are happy
+                if (networkShouldAutoDl && powerShouldAutoDl) {
+
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
-                if (NetworkUtils.autodownloadNetworkAvailable(context)
-                        && UserPreferences.isEnableAutodownload()) {
+
                     final List<FeedItem> queue = DBReader.getQueue(context);
                     final List<FeedItem> unreadItems = DBReader
                             .getUnreadItemsList(context);

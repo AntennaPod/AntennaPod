@@ -93,6 +93,11 @@
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
             <CheckBoxPreference
+                android:key="prefEnableAutoDownloadOnBattery"
+                android:title="@string/pref_automatic_download_on_battery_title"
+                android:summary="@string/pref_automatic_download_on_battery_sum"
+                android:defaultValue="true"/>
+            <CheckBoxPreference
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"
                 android:summary="@string/pref_autodl_wifi_filter_sum"/>

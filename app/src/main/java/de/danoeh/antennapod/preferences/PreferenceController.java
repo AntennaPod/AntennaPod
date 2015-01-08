@@ -195,6 +195,7 @@ public class PreferenceController {
                         if (newValue instanceof Boolean) {
                             ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_WIFI_FILTER).setEnabled((Boolean) newValue);
                             setSelectedNetworksEnabled((Boolean) newValue && UserPreferences.isEnableAutodownloadWifiFilter());
+                            ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY).setEnabled((Boolean) newValue);
                         }
                         return true;
                     }
@@ -376,6 +377,8 @@ public class PreferenceController {
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownload()
                 && UserPreferences.isEnableAutodownloadWifiFilter());
 
+        ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
+                .setEnabled(UserPreferences.isEnableAutodownload());
     }
 
     private void setEpisodeCacheSizeText(int cacheSize) {
