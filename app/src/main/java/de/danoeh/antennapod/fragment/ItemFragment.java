@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.TargetApi;
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
@@ -181,7 +182,20 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         webvDescription.getSettings().setLayoutAlgorithm(
                 WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
-        webvDescription.setWebViewClient(new WebViewClient());
+        webvDescription.setWebViewClient(new WebViewClient() {
+
+            @Override
+            public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+                try {
+                    startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                    return true;
+                }
+                return true;
+            }
+        });
 
         imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         progbarDownload = (ProgressBar) header.findViewById(R.id.progbarDownload);
