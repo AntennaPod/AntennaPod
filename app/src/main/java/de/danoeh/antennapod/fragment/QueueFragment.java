@@ -294,17 +294,9 @@ public class QueueFragment extends Fragment {
         }
         listAdapter.notifyDataSetChanged();
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            // we need to refresh the options menu because it sometimes
-            // needs data that may have just been loaded.
-            // Things will still work on APIs lower than honeycomb
-            // but they may have to change away from this view
-            // and then back to get the options menu.
-            Activity theActivity = activity.get();
-            if (theActivity != null) {
-                theActivity.invalidateOptionsMenu();
-            }
-        }
+        // we need to refresh the options menu because it sometimes
+        // needs data that may have just been loaded.
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
