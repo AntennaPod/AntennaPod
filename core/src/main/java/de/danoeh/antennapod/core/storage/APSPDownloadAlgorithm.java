@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.util.Log;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 
@@ -39,11 +40,16 @@ public class APSPDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
                 if (NetworkUtils.autodownloadNetworkAvailable(context)
                         && UserPreferences.isEnableAutodownload()) {
+
+                    Arrays.sort(mediaIds);
                     List<FeedItem> itemsToDownload = DBReader.getRecentlyPublishedEpisodes(context,
                             numberOfNewAutomaticallyDownloadedEpisodes);
                     Iterator<FeedItem> it = itemsToDownload.iterator();
+
                     for (FeedItem item = it.next(); it.hasNext(); item = it.next()) {
-                        if (item.getMedia().isDownloaded()) {
+                        if (!item.hasMedia()
+                                || item.getMedia().isDownloaded()
+                                || Arrays.binarySearch(mediaIds, item.getMedia().getId()) < 0) {
                             it.remove();
                         }
                     }

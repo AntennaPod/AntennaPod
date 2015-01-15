@@ -13,7 +13,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.FeedItem;
 
 /**
@@ -39,7 +38,7 @@ public class APSPCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
      */
     @Override
     public int performCleanup(Context context, Integer episodeSize) {
-        if (BuildConfig.DEBUG) Log.d(TAG, String.format("performAutoCleanup(%d)", episodeSize));
+        Log.i(TAG, String.format("performAutoCleanup(%d)", episodeSize));
         if (episodeSize <= 0) {
             return 0;
         }
@@ -64,20 +63,25 @@ public class APSPCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
         });
         // listened episodes will be deleted first
         Iterator<FeedItem> it = candidates.iterator();
-        for (FeedItem i = it.next(); it.hasNext() && deletedEpisodesSize <= episodeSize; i = it.next()) {
-            if (!i.getMedia().isPlaying() && i.getMedia().getPlaybackCompletionDate() != null) {
-                it.remove();
-                deleteList.add(i);
-                deletedEpisodesSize += i.getMedia().getSize();
+        if (it.hasNext()) {
+            for (FeedItem i = it.next(); it.hasNext() && deletedEpisodesSize <= episodeSize; i = it.next()) {
+                if (!i.getMedia().isPlaying() && i.getMedia().getPlaybackCompletionDate() != null) {
+                    it.remove();
+                    deleteList.add(i);
+                    deletedEpisodesSize += i.getMedia().getSize();
+                }
             }
         }
+
         // delete unlistened old episodes if necessary
         it = candidates.iterator();
-        for (FeedItem i = it.next(); it.hasNext() && deletedEpisodesSize <= episodeSize; i = it.next()) {
-            if (!i.getMedia().isPlaying()) {
-                it.remove();
-                deleteList.add(i);
-                deletedEpisodesSize += i.getMedia().getSize();
+        if (it.hasNext()) {
+            for (FeedItem i = it.next(); it.hasNext() && deletedEpisodesSize <= episodeSize; i = it.next()) {
+                if (!i.getMedia().isPlaying()) {
+                    it.remove();
+                    deleteList.add(i);
+                    deletedEpisodesSize += i.getMedia().getSize();
+                }
             }
         }
         for (FeedItem item : deleteList) {
@@ -89,9 +93,8 @@ public class APSPCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
                 e.printStackTrace();
             }
         }
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, String.format("performAutoCleanup(%d) deleted %d episodes and free'd %d bytes of memory",
-                    episodeSize, deleteList.size(), deletedEpisodesSize));
+        Log.i(TAG, String.format("performAutoCleanup(%d) deleted %d episodes and freed %d bytes of memory",
+                episodeSize, deleteList.size(), deletedEpisodesSize));
         return deleteList.size();
     }
 
