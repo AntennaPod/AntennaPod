@@ -16,5 +16,6 @@ public class ClientConfigurator {
         ClientConfig.playbackServiceCallbacks = new PlaybackServiceCallbacksImpl();
         ClientConfig.storageCallbacks = new StorageCallbacksImpl();
         ClientConfig.flattrCallbacks = new FlattrCallbacksImpl();
+        ClientConfig.dbTasksCallbacks = new DBTasksCallbacksImpl();
     }
 }
