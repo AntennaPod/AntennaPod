@@ -207,6 +207,8 @@
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
     <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
+    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_title">Auto Delete</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervall_title">Update interval</string>

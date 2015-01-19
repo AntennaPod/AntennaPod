@@ -553,6 +553,15 @@ public class PlaybackService extends Service {
             if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
                 DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
             }
+
+            //Delete episode if enabled
+            if(UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(PlaybackService.this, item.getMedia().getId());
+
+                if(BuildConfig.DEBUG)
+                    Log.d(TAG, "Episode Deleted");
+            }
+
         }
 
         // Load next episode if previous episode was in the queue and if there
