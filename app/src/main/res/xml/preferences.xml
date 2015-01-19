@@ -39,13 +39,13 @@
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefAutoDelete"
-            android:summary="Delete epidsode when playback completes"
-            android:title="Delete On Finish"/>
+            android:summary="@string/pref_auto_delete_sum"
+            android:title="@string/pref_auto_delete_title"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
-        
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
