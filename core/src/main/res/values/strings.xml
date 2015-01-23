@@ -159,6 +159,9 @@
     <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
+    <string name="sort">Sort</string>
+    <string name="date_asc">ascending date</string>
+    <string name="date_desc">descending date</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>

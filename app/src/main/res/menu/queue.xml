@@ -9,5 +9,19 @@
         android:menuCategory="container"
         custom:showAsAction="ifRoom"
         android:icon="?attr/navigation_refresh"/>
-    
+
+    <item
+        android:id="@+id/queue_sort"
+        android:title="@string/sort">
+
+        <menu>
+          <item
+            android:id="@+id/queue_sort_date_asc"
+            android:title="@string/date_asc"/>
+          <item
+            android:id="@+id/queue_sort_date_desc"
+            android:title="@string/date_desc"/>
+        </menu>
+      </item>
+
 </menu>

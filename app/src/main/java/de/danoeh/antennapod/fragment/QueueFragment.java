@@ -174,6 +174,12 @@ public class QueueFragment extends Fragment {
                         DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
                     return true;
+                case R.id.queue_sort_date_asc:
+                    DBWriter.sortQueueItemByDate(getActivity(), true, true);
+                    return true;
+                case R.id.queue_sort_date_desc:
+                    DBWriter.sortQueueItemByDate(getActivity(), false, true);
+                    return true;
                 default:
                     return false;
             }
