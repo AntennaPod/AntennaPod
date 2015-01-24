@@ -160,8 +160,11 @@
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
     <string name="sort">Sort</string>
-    <string name="date_asc">ascending date</string>
-    <string name="date_desc">descending date</string>
+    <string name="alpha">Alphabetically</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>

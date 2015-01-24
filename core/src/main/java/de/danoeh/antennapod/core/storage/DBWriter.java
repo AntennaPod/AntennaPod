@@ -595,39 +595,24 @@ public class DBWriter {
      * This function must be run using the ExecutorService (dbExec).
      *
      * @param context         A context that is used for opening a database connection.
-     * @param asc             true sort by ascending order
-     *                        false sort by descending order
+     * @param comparator      FeedItem comparator
      * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
      *                        false if the caller wants to avoid unexpected updates of the GUI.
      */
-    public static void sortQueueItemByDate(final Context context, final boolean asc, final boolean broadcastUpdate) {
+    public static void sort (final Context context, Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
         final PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         final List<FeedItem> queue = DBReader.getQueue(context, adapter);
 
         if (queue != null) {
-            if (asc) {
-                Collections.sort(queue, new Comparator<FeedItem>() {
-                    public int compare(FeedItem f1, FeedItem f2) {
-                        return f1.getPubDate().compareTo(f2.getPubDate());
-                    }
-                });
-            } else {
-                Collections.sort(queue, new Comparator<FeedItem>() {
-                    public int compare(FeedItem f1, FeedItem f2) {
-                        return f2.getPubDate().compareTo(f1.getPubDate());
-                    }
-                });
-            }
-
+            Collections.sort(queue, comparator);
             adapter.setQueue(queue);
             if (broadcastUpdate) {
                 EventDistributor.getInstance()
                         .sendQueueUpdateBroadcast();
             }
-
         } else {
-            Log.e(TAG, "sortQueueItemByDate: Could not load queue");
+            Log.e(TAG, "sort: Could not load queue");
         }
         adapter.close();
     }

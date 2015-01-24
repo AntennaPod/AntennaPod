@@ -15,13 +15,49 @@
         android:title="@string/sort">
 
         <menu>
-          <item
-            android:id="@+id/queue_sort_date_asc"
-            android:title="@string/date_asc"/>
-          <item
-            android:id="@+id/queue_sort_date_desc"
-            android:title="@string/date_desc"/>
+            <item
+                android:id="@+id/queue_sort_alpha"
+                android:title="@string/alpha">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_alpha_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_alpha_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
+
+            <item
+                android:id="@+id/queue_sort_date"
+                android:title="@string/date">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_date_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_date_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
+
+            <item
+                android:id="@+id/queue_sort_duration"
+                android:title="@string/duration">
+
+                <menu>
+                    <item
+                        android:id="@+id/queue_sort_duration_asc"
+                        android:title="@string/ascending"/>
+                    <item
+                        android:id="@+id/queue_sort_duration_desc"
+                        android:title="@string/descending"/>
+                </menu>
+            </item>
+
         </menu>
-      </item>
+    </item>
 
 </menu>

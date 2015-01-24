@@ -40,6 +40,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -174,11 +175,23 @@ public class QueueFragment extends Fragment {
                         DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
                     return true;
+                case R.id.queue_sort_alpha_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
+                    return true;
+                case R.id.queue_sort_alpha_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_DESC, true);
+                    return true;
                 case R.id.queue_sort_date_asc:
-                    DBWriter.sortQueueItemByDate(getActivity(), true, true);
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_ASC, true);
                     return true;
                 case R.id.queue_sort_date_desc:
-                    DBWriter.sortQueueItemByDate(getActivity(), false, true);
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_DESC, true);
+                    return true;
+                case R.id.queue_sort_duration_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_ASC, true);
+                    return true;
+                case R.id.queue_sort_duration_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_DESC, true);
                     return true;
                 default:
                     return false;
