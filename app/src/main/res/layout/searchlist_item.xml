@@ -1,7 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height">
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/listitem_threeline_height"
+                tools:background="@android:color/darker_gray">
 
     <ImageView
         android:id="@+id/imgvFeedimage"
@@ -13,7 +15,9 @@
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:contentDescription="@string/cover_label"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -22,21 +26,26 @@
         android:layout_marginRight="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:layout_toRightOf="@id/imgvFeedimage"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:background="@android:color/holo_red_dark">
 
         <TextView
             android:id="@+id/txtvTitle"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp" />
+            android:layout_marginBottom="8dp"
+            tools:text="Search item title"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvSubtitle"
             style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:lines="1" />
+            android:lines="1"
+            tools:text="Search item subtitle"
+            tools:background="@android:color/holo_blue_light"/>
     </LinearLayout>
 
 </RelativeLayout>

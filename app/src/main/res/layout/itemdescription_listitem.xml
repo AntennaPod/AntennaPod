@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@android:color/holo_orange_light">
 
     <TextView
         android:id="@+id/txtvTitle"
         style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="16dp" />
+        android:layout_margin="16dp"
+        tools:text="Feed item title"
+        tools:background="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/txtvDescription"
@@ -20,5 +24,7 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginRight="16dp"
-        android:lines="3" />
+        android:lines="3"
+        tools:text="Feed item description"
+        tools:background="@android:color/holo_green_dark" />
 </LinearLayout>

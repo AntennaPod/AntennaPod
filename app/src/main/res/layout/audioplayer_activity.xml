@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/drawer_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    tools:background="@android:color/holo_red_dark">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -14,7 +16,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            android:minHeight="?attr/actionBarSize">
+            android:minHeight="?attr/actionBarSize"
+            tools:background="@android:color/darker_gray">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -34,7 +37,9 @@
                     android:gravity="left"
                     android:maxLines="2"
                     android:textColor="?android:attr/textColorPrimary"
-                    android:textSize="16sp" />
+                    android:textSize="16sp"
+                    tools:text="Audio title"
+                    tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
                     android:id="@+id/butCover"
@@ -44,7 +49,9 @@
                     android:layout_marginLeft="8dp"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/show_cover_label"
-                    android:gravity="right" />
+                    android:gravity="right"
+                    tools:src="@drawable/ic_stat_antenna_default"
+                    tools:background="@android:color/holo_green_dark" />
 
 
             </LinearLayout>
@@ -63,7 +70,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/audioplayer_playercontrols_length"
                 android:layout_alignParentBottom="true"
-                android:background="?attr/overlay_background">
+                android:background="?attr/overlay_background"
+                tools:background="@android:color/holo_purple">
 
                 <ImageButton
                     android:id="@+id/butPlay"
@@ -72,7 +80,9 @@
                     android:layout_centerHorizontal="true"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/pause_label"
-                    android:src="?attr/av_pause" />
+                    android:src="?attr/av_pause"
+                    tools:src="@drawable/ic_pause_white_36dp"
+                    tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
                     android:id="@+id/butRev"
@@ -81,7 +91,9 @@
                     android:layout_toLeftOf="@id/butPlay"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/rewind_label"
-                    android:src="?attr/av_rew_big" />
+                    android:src="?attr/av_rew_big"
+                    tools:src="@drawable/ic_fast_rewind_white_36dp"
+                    tools:background="@android:color/holo_blue_dark" />
 
                 <ImageButton
                     android:id="@+id/butFF"
@@ -90,7 +102,9 @@
                     android:layout_toRightOf="@id/butPlay"
                     android:background="?attr/selectableItemBackground"
                     android:contentDescription="@string/fast_forward_label"
-                    android:src="?attr/av_ff_big" />
+                    android:src="?attr/av_ff_big"
+                    tools:src="@drawable/ic_fast_forward_white_36dp"
+                    tools:background="@android:color/holo_blue_dark" />
 
                 <Button
                     android:id="@+id/butPlaybackSpeed"
@@ -102,7 +116,8 @@
                     android:src="?attr/av_fast_forward"
                     android:textColor="@color/gray"
                     android:textSize="@dimen/text_size_medium"
-                    android:visibility="gone" />
+                    android:visibility="gone"
+                    tools:background="@android:color/holo_green_dark" />
 
                 <ImageButton
                     android:id="@+id/butNavChaptersShownotes"
@@ -110,7 +125,9 @@
                     android:layout_height="match_parent"
                     android:layout_toLeftOf="@id/butRev"
                     android:background="?attr/selectableItemBackground"
-                    android:scaleType="centerInside" />
+                    android:scaleType="centerInside"
+                    android:src="@drawable/ic_toc_white_36dp"
+                    tools:background="@android:color/holo_green_dark" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -131,7 +148,8 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="@dimen/text_size_micro" />
+                    android:textSize="@dimen/text_size_micro"
+                    tools:background="@android:color/holo_green_dark" />
 
                 <TextView
                     android:id="@+id/txtvLength"
@@ -144,7 +162,8 @@
                     android:layout_marginTop="16dp"
                     android:text="@string/position_default_label"
                     android:textColor="?android:attr/textColorSecondary"
-                    android:textSize="@dimen/text_size_micro" />
+                    android:textSize="@dimen/text_size_micro"
+                    tools:background="@android:color/holo_green_dark" />
 
                 <SeekBar
                     android:id="@+id/sbPosition"
@@ -156,7 +175,8 @@
                     android:layout_marginTop="16dp"
                     android:layout_toLeftOf="@id/txtvLength"
                     android:layout_toRightOf="@id/txtvPosition"
-                    android:max="500" />
+                    android:max="500"
+                    tools:background="@android:color/holo_green_dark" />
             </RelativeLayout>
 
             <FrameLayout
@@ -165,7 +185,8 @@
                 android:layout_height="0px"
                 android:layout_above="@id/playtime_layout"
                 android:layout_alignParentTop="true"
-                android:foreground="?android:windowContentOverlay" />
+                android:foreground="?android:windowContentOverlay"
+                tools:background="@android:color/holo_orange_light" />
 
         </RelativeLayout>
 

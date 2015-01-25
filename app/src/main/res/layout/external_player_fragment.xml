@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:id="@+id/fragmentLayout"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
               android:orientation="vertical"
               android:visibility="gone"
-              android:background="?attr/colorPrimary">
+              android:background="?attr/colorPrimary"
+              tools:visibility="visible"
+              tools:background="@android:color/darker_gray">
 
     <View
         android:layout_width="match_parent"
@@ -32,7 +35,9 @@
                 android:padding="4dp"
                 android:adjustViewBounds="true"
                 android:cropToPadding="true"
-                android:scaleType="fitXY"/>
+                android:scaleType="fitXY"
+                tools:src="@drawable/ic_stat_antenna_default"
+                tools:background="@android:color/holo_green_dark" />
 
             <TextView
                 android:id="@+id/txtvTitle"
@@ -46,7 +51,9 @@
                 android:ellipsize="end"
                 android:maxLines="2"
                 android:textSize="18sp"
-                android:fontFamily="sans-serif-light"/>
+                android:fontFamily="sans-serif-light"
+                tools:text="Playback item title"
+                tools:background="@android:color/holo_green_dark"/>
         </RelativeLayout>
 
         <ImageButton
@@ -54,7 +61,9 @@
             android:contentDescription="@string/pause_label"
             android:layout_width="@dimen/external_player_height"
             android:layout_height="@dimen/external_player_height"
-            android:background="?attr/selectableItemBackground"/>
+            android:background="?attr/selectableItemBackground"
+            tools:src="@drawable/ic_play_arrow_white_36dp"
+            tools:background="@android:color/holo_green_dark"/>
     </LinearLayout>
 
 </LinearLayout>

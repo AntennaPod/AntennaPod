@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical" >
+    android:orientation="vertical"
+    tools:background="@android:color/darker_gray">
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
-        android:text="@string/opml_import_explanation" />
+        android:text="@string/opml_import_explanation"
+        tools:background="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/txtvPath"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_margin="8dp" />
+        android:layout_margin="8dp"
+        tools:text="Path"
+        tools:background="@android:color/holo_green_dark" />
 
     <Button
         android:id="@+id/butStartImport"

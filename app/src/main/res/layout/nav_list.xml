@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_layout"
     android:layout_width="@dimen/drawer_width"
     android:layout_height="match_parent"
@@ -19,13 +20,16 @@
         android:dividerHeight="0dp"
         android:paddingBottom="@dimen/list_vertical_padding"
         android:paddingTop="@dimen/list_vertical_padding"
-        android:scrollbarStyle="outsideOverlay" />
+        android:scrollbarStyle="outsideOverlay"
+        tools:listitem="@layout/nav_listitem"
+        tools:background="@android:color/holo_purple" />
 
     <View
         android:layout_width="@dimen/drawer_width"
         android:layout_height="1dp"
         android:layout_centerVertical="true"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        tools:background="@android:color/holo_red_dark" />
 
     <LinearLayout
         android:id="@+id/nav_settings"
@@ -49,7 +53,9 @@
             android:cropToPadding="true"
             android:padding="8dp"
             android:scaleType="centerCrop"
-            android:src="?attr/ic_settings" />
+            android:src="?attr/ic_settings"
+            tools:src="@android:drawable/sym_def_app_icon"
+            tools:background="@android:color/holo_orange_dark" />
 
         <TextView
             android:layout_width="0dp"
@@ -60,7 +66,8 @@
             android:gravity="center_vertical"
             android:text="@string/settings_label"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_navdrawer" />
+            android:textSize="@dimen/text_size_navdrawer"
+            tools:background="@android:color/holo_green_light"/>
 
     </LinearLayout>
 

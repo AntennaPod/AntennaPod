@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="24dp"
     android:background="@android:color/transparent"
@@ -10,5 +11,6 @@
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_centerVertical="true"
-        android:background="?android:attr/listDivider" />
+        android:background="?android:attr/listDivider"
+        tools:background="@android:color/holo_red_dark"/>
 </RelativeLayout>
