@@ -7,18 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
-import de.danoeh.antennapod.core.feed.*;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
-import de.danoeh.antennapod.core.service.download.DownloadStatus;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
-import de.danoeh.antennapod.core.util.flattr.FlattrThing;
-import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
+
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -34,6 +23,24 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 import java.util.concurrent.ThreadFactory;
+
+import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
+import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
+import de.danoeh.antennapod.core.util.flattr.FlattrThing;
+import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -590,34 +597,6 @@ public class DBWriter {
     }
 
     /**
-     * Sort the FeedItems in the queue by date.
-     * <p/>
-     * This function must be run using the ExecutorService (dbExec).
-     *
-     * @param context         A context that is used for opening a database connection.
-     * @param comparator      FeedItem comparator
-     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
-     *                        false if the caller wants to avoid unexpected updates of the GUI.
-     */
-    public static void sort (final Context context, Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
-        final PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-        final List<FeedItem> queue = DBReader.getQueue(context, adapter);
-
-        if (queue != null) {
-            Collections.sort(queue, comparator);
-            adapter.setQueue(queue);
-            if (broadcastUpdate) {
-                EventDistributor.getInstance()
-                        .sendQueueUpdateBroadcast();
-            }
-        } else {
-            Log.e(TAG, "sort: Could not load queue");
-        }
-        adapter.close();
-    }
-
-    /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
      *
      * @param context            A context that is used for opening a database connection.
@@ -849,7 +828,8 @@ public class DBWriter {
                 PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 for (String key : urls.keySet()) {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Replacing URL " + key + " with url " + urls.get(key));
 
                     adapter.setFeedDownloadUrl(key, urls.get(key));
                 }
@@ -1001,6 +981,37 @@ public class DBWriter {
                 adapter.open();
                 for (Flattr flattr : flattrList) {
                     adapter.setItemFlattrStatus(formatURIForQuery(flattr.getThing().getUrl()), new FlattrStatus(flattr.getCreated().getTime()));
+                }
+                adapter.close();
+            }
+        });
+    }
+
+    /**
+     * Sort the FeedItems in the queue with the given Comparator.
+     *
+     * @param context         A context that is used for opening a database connection.
+     * @param comparator      FeedItem comparator
+     * @param broadcastUpdate true if this operation should trigger a QueueUpdateBroadcast. This option should be set to
+     *                        false if the caller wants to avoid unexpected updates of the GUI.
+     */
+    public static Future<?> sortQueue(final Context context, final Comparator<FeedItem> comparator, final boolean broadcastUpdate) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                final List<FeedItem> queue = DBReader.getQueue(context, adapter);
+
+                if (queue != null) {
+                    Collections.sort(queue, comparator);
+                    adapter.setQueue(queue);
+                    if (broadcastUpdate) {
+                        EventDistributor.getInstance()
+                                .sendQueueUpdateBroadcast();
+                    }
+                } else {
+                    Log.e(TAG, "sortQueue: Could not load queue");
                 }
                 adapter.close();
             }
