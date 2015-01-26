@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/header"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_gravity="center_horizontal"
     android:background="?attr/colorPrimary"
     android:gravity="center_horizontal"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@android:color/darker_gray">
 
 
     <RelativeLayout
@@ -24,7 +26,9 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="16dp"
             android:contentDescription="@string/cover_label"
-            android:gravity="center_vertical" />
+            android:gravity="center_vertical"
+            tools:src="@drawable/ic_stat_antenna_default"
+            tools:background="@android:color/holo_green_dark" />
 
 
         <ImageButton
@@ -36,7 +40,9 @@
             android:background="?attr/selectableItemBackground"
             android:contentDescription="@string/butAction_label"
             android:paddingTop="4dp"
-            android:src="?attr/ic_action_overflow" />
+            android:src="?attr/ic_action_overflow"
+            tools:src="@drawable/ic_info_white_24dp"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -50,7 +56,9 @@
             android:layout_marginTop="16dp"
             android:layout_toLeftOf="@id/butMoreActions"
             android:layout_toRightOf="@id/imgvCover"
-            android:maxLines="5" />
+            android:maxLines="5"
+            tools:text="Podcast title"
+            tools:background="@android:color/holo_green_dark" />
     </RelativeLayout>
 
     <ProgressBar
@@ -67,7 +75,8 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:layout_marginRight="8dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:background="@android:color/holo_blue_bright">
 
         <Button
             android:id="@+id/butAction1"
@@ -80,7 +89,9 @@
             android:ellipsize="end"
             android:paddingTop="4dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="@dimen/text_size_small"
+            tools:text="Button 1"
+            tools:background="@android:color/holo_red_light" />
 
         <Button
             android:id="@+id/butAction2"
@@ -93,7 +104,9 @@
             android:ellipsize="end"
             android:paddingTop="4dp"
             android:textColor="?android:attr/textColorPrimary"
-            android:textSize="@dimen/text_size_small" />
+            android:textSize="@dimen/text_size_small"
+            tools:text="Button 2"
+            tools:background="@android:color/holo_orange_dark" />
 
     </LinearLayout>
 

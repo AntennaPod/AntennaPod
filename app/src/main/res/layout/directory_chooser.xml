@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
@@ -40,7 +41,9 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:background="?attr/selectableItemBackground"
-            android:src="?attr/navigation_up" />
+            android:src="?attr/navigation_up"
+            tools:src="@drawable/navigation_up"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvSelectedFolderLabel"
@@ -52,7 +55,8 @@
             android:layout_marginTop="8dp"
             android:layout_toRightOf="@id/butNavUp"
             android:text="@string/selected_folder_label"
-            android:textStyle="bold" >
+            android:textStyle="bold"
+            tools:background="@android:color/holo_blue_bright">
         </TextView>
 
         <TextView
@@ -65,7 +69,9 @@
             android:layout_toRightOf="@id/butNavUp"
             android:ellipsize="start"
             android:scrollHorizontally="true"
-            android:singleLine="true" />
+            android:singleLine="true"
+            tools:text="/path/to/selected/folder"
+            tools:background="@android:color/holo_blue_bright"/>
 
         <View
             android:id="@+id/divider"

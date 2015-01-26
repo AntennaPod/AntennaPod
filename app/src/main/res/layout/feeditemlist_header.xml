@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/feeditemlist_header_height"
-    tools:context="de.danoeh.antennapod.activity.MainActivity">
+    tools:context="de.danoeh.antennapod.activity.MainActivity"
+    tools:background="@android:color/darker_gray">
 
     <ImageView
         android:id="@+id/imgvBackground"
@@ -22,7 +23,9 @@
         android:layout_marginBottom="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="16dp"
-        android:contentDescription="@string/cover_label" />
+        android:contentDescription="@string/cover_label"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark"/>
 
     <ImageButton
         android:id="@+id/butShowInfo"
@@ -35,7 +38,8 @@
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/show_info_label"
-        android:src="@drawable/ic_info_white_24dp" />
+        android:src="@drawable/ic_info_white_24dp"
+        tools:background="@android:color/holo_green_dark"/>
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -52,7 +56,9 @@
         android:maxLines="2"
         android:shadowColor="@color/black"
         android:shadowRadius="3"
-        android:textColor="@color/white" />
+        android:textColor="@color/white"
+        tools:text="Podcast title"
+        tools:background="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/txtvAuthor"
@@ -68,7 +74,9 @@
         android:shadowColor="@color/black"
         android:shadowRadius="3"
         android:textColor="@color/white"
-        android:textSize="@dimen/text_size_small" />
+        android:textSize="@dimen/text_size_small"
+        tools:text="Podcast author"
+        tools:background="@android:color/holo_green_dark" />
 
 
 </RelativeLayout>
