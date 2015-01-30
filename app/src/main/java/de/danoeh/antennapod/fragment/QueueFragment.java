@@ -175,6 +175,9 @@ public class QueueFragment extends Fragment {
                         DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
                     return true;
+                case R.id.clear_queue:
+                    DBWriter.clearQueue(getActivity());
+                    return true;
                 case R.id.queue_sort_alpha_asc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
                     return true;
