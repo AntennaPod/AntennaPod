@@ -1,43 +1,73 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingBottom="12dp"
-    android:paddingTop="12dp">
+    android:layout_height="@dimen/listitem_threeline_height"
+    android:orientation="horizontal"
+    tools:background="@android:color/darker_gray">
 
     <TextView
         android:id="@+id/txtvStart"
+        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"
-        android:layout_margin="8dp"
-        android:textColor="?android:attr/textColorSecondary"
-        android:textSize="@dimen/text_size_small"/>
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:gravity="center_vertical"
+        tools:text="Start"
+        tools:background="@android:color/holo_green_dark" />
 
-    <TextView
-        android:id="@+id/txtvTitle"
+    <LinearLayout
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentTop="true"
-        android:padding="8dp"
-        android:layout_toLeftOf="@id/txtvStart"
-        android:textColor="?android:attr/textColorPrimary"
-        android:textSize="@dimen/text_size_small"/>
+        android:layout_height="match_parent"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_weight="1"
+        android:gravity="center_vertical"
+        android:orientation="vertical"
+        tools:background="@android:color/holo_red_dark">
 
-    <TextView
-        android:id="@+id/txtvLink"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_below="@id/txtvTitle"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_toLeftOf="@id/txtvStart"
+        <TextView
+            android:id="@+id/txtvTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="4dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            android:textColor="?android:attr/textColorPrimary"
+            android:textSize="16sp"
+            tools:text="Chapter title"
+            tools:background="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/txtvLink"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:focusable="false"
+            android:focusableInTouchMode="false"
+            android:maxLines="1"
+            android:visibility="gone"
+            tools:visibility="visible"
+            tools:text="Link"
+            tools:background="@android:color/holo_green_dark" />
+
+    </LinearLayout>
+
+    <include layout="@layout/vertical_list_divider" />
+
+    <ImageButton xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/butPlayChapter"
+        android:layout_width="@dimen/listview_secondary_button_width"
+        android:layout_height="match_parent"
+        android:background="?attr/selectableItemBackground"
+        android:clickable="false"
+        android:contentDescription="@string/chapters_label"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:visibility="gone"
-        android:maxLines="2" />
+        android:src="?attr/av_play"
+        tools:src="@drawable/ic_play_arrow_white_36dp"
+        tools:background="@android:color/holo_green_dark" />
 
-</RelativeLayout>
+</LinearLayout>

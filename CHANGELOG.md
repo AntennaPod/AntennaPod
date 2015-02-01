@@ -1,6 +1,14 @@
 Change Log
 ==========
 
+Version 1.0
+-----------
+* The queue can now be sorted
+* Added option to delete episode after playback
+* Fixed a bug that caused chapters to be displayed multiple times
+* Several other improvements and bugfixes
+
+
 Version 0.9.9.6
 ---------------
 * Fixed problems related to variable playback speed plugins

@@ -30,16 +30,29 @@
             android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:dependency="prefPauseOnHeadsetDisconnect"
+            android:key="prefUnpauseOnHeadsetReconnect"
+            android:summary="@string/pref_unpauseOnHeadsetReconnect_sum"
+            android:title="@string/pref_unpauseOnHeadsetReconnect_title"/>
+        <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefFollowQueue"
             android:summary="@string/pref_followQueue_sum"
             android:title="@string/pref_followQueue_title"/>
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefAutoDelete"
+            android:summary="@string/pref_auto_delete_sum"
+            android:title="@string/pref_auto_delete_title"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
             android:title="@string/pref_playback_speed_title" />
-        
+
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -85,6 +98,11 @@
                 android:key="prefEnableAutoDl"
                 android:title="@string/pref_automatic_download_title"
                 android:defaultValue="false"/>
+            <CheckBoxPreference
+                android:key="prefEnableAutoDownloadOnBattery"
+                android:title="@string/pref_automatic_download_on_battery_title"
+                android:summary="@string/pref_automatic_download_on_battery_sum"
+                android:defaultValue="true"/>
             <CheckBoxPreference
                 android:key="prefEnableAutoDownloadWifiFilter"
                 android:title="@string/pref_autodl_wifi_filter_title"

@@ -2,7 +2,7 @@ apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 21
-    buildToolsVersion "21.1.1"
+    buildToolsVersion "21.1.2"
 
     defaultConfig {
         minSdkVersion 10
@@ -31,19 +31,17 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    compile 'com.android.support:appcompat-v7:21.0.2'
-    compile 'com.android.support:support-v4:21.0.2'
+    compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:support-v4:21.0.3'
     compile 'org.apache.commons:commons-lang3:3.3.2'
-    compile ('org.shredzone.flattr4j:flattr4j-core:2.11') {
-        exclude group: 'org.apache.httpcomponents', module: 'httpcore'
-        exclude group: 'org.apache.httpcomponents', module: 'httpclient'
+    compile ('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
     }
     compile 'commons-io:commons-io:2.4'
     compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     compile 'org.jsoup:jsoup:1.7.3'
     compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.squareup.okhttp:okhttp:2.1.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.1.0'
-    compile 'com.squareup.okio:okio:1.0.1'
+    compile 'com.squareup.okhttp:okhttp:2.2.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+    compile 'com.squareup.okio:okio:1.2.0'
 }

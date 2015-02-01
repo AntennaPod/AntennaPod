@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -18,6 +19,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -35,6 +37,7 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
+import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -49,7 +52,6 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -80,9 +82,6 @@ public class ItemlistFragment extends ListFragment {
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     private MoreContentListFooterUtil listFooter;
 
@@ -156,13 +155,10 @@ public class ItemlistFragment extends ListFragment {
     private void resetViewState() {
         adapter = null;
         viewsCreated = false;
+        listFooter = null;
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
@@ -259,6 +255,15 @@ public class ItemlistFragment extends ListFragment {
     }
 
     @Override
+    public void setListAdapter(ListAdapter adapter) {
+        // This workaround prevents the ListFragment from setting a list adapter when its state is restored.
+        // This is only necessary on API 10 because addFooterView throws an internal exception in this case.
+        if (Build.VERSION.SDK_INT > 10 || insideOnFragmentLoaded) {
+            super.setListAdapter(adapter);
+        }
+    }
+
+    @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
@@ -272,8 +277,9 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView l, View v, int position, long id) {
         FeedItem selection = adapter.getItem(position - l.getHeaderViewsCount());
-        feedItemDialog = FeedItemDialog.newInstance(getActivity(), selection, queue);
-        feedItemDialog.show();
+        if (selection != null) {
+            ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(selection.getId()));
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -303,9 +309,12 @@ public class ItemlistFragment extends ListFragment {
 
     }
 
+    private boolean insideOnFragmentLoaded = false;
+
     private void onFragmentLoaded() {
+        insideOnFragmentLoaded = true;
         if (adapter == null) {
-            getListView().setAdapter(null);
+            setListAdapter(null);
             setupHeaderView();
             setupFooterView();
             adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
@@ -316,16 +325,13 @@ public class ItemlistFragment extends ListFragment {
         setListShown(true);
         adapter.notifyDataSetChanged();
 
-        if (feedItemDialog != null) {
-            feedItemDialog.updateContent(queue, feed.getItems());
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
-        }
         getActivity().supportInvalidateOptionsMenu();
 
         if (feed != null && feed.getNextPageLink() == null && listFooter != null) {
             getListView().removeFooterView(listFooter.getRoot());
         }
+
+        insideOnFragmentLoaded = false;
 
     }
 
@@ -334,9 +340,6 @@ public class ItemlistFragment extends ListFragment {
         public void onContentChanged() {
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 
@@ -362,11 +365,20 @@ public class ItemlistFragment extends ListFragment {
 
         TextView txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
         TextView txtvAuthor = (TextView) header.findViewById(R.id.txtvAuthor);
+        ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
+
+        Picasso.with(getActivity())
+                .load(feed.getImageUri())
+                .placeholder(R.color.image_readability_tint)
+                .error(R.color.image_readability_tint)
+                .transform(PicassoProvider.blurTransformation)
+                .resize(PicassoProvider.BLUR_IMAGE_SIZE, PicassoProvider.BLUR_IMAGE_SIZE)
+                .into(imgvBackground);
 
         Picasso.with(getActivity())
                 .load(feed.getImageUri())

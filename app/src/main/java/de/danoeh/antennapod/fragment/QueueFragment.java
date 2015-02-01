@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -29,14 +30,17 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -59,13 +63,11 @@ public class QueueFragment extends Fragment {
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
+    private boolean isUpdatingFeeds = false;
 
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
     private DownloadObserver downloadObserver = null;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     /**
      * Download observer updates won't result in an upate of the list adapter if this is true.
@@ -122,10 +124,6 @@ public class QueueFragment extends Fragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     @Override
@@ -134,10 +132,19 @@ public class QueueFragment extends Fragment {
         resetViewState();
     }
 
+    private final MenuItemUtils.UpdateRefreshMenuItemChecker updateRefreshMenuItemChecker = new MenuItemUtils.UpdateRefreshMenuItemChecker() {
+        @Override
+        public boolean isRefreshing() {
+            return DownloadService.isRunning && DownloadRequester.getInstance().isDownloadingFeeds();
+        }
+    };
+
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
         if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+            inflater.inflate(R.menu.queue, menu);
+
             final SearchView sv = new SearchView(getActivity());
             MenuItemUtils.addSearchItem(menu, sv);
             sv.setQueryHint(getString(R.string.search_hint));
@@ -154,7 +161,45 @@ public class QueueFragment extends Fragment {
                     return false;
                 }
             });
+            isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (!super.onOptionsItemSelected(item)) {
+            switch (item.getItemId()) {
+                case R.id.refresh_item:
+                    List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
+                    if (feeds != null) {
+                        DBTasks.refreshAllFeeds(getActivity(), feeds);
+                    }
+                    return true;
+                case R.id.queue_sort_alpha_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
+                    return true;
+                case R.id.queue_sort_alpha_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_DESC, true);
+                    return true;
+                case R.id.queue_sort_date_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_ASC, true);
+                    return true;
+                case R.id.queue_sort_date_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DATE_DESC, true);
+                    return true;
+                case R.id.queue_sort_duration_asc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_ASC, true);
+                    return true;
+                case R.id.queue_sort_duration_desc:
+                    QueueSorter.sort(getActivity(), QueueSorter.Rule.DURATION_DESC, true);
+                    return true;
+                default:
+                    return false;
+            }
+        } else {
+            return true;
+        }
+
     }
 
     @Override
@@ -215,8 +260,7 @@ public class QueueFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, QueueAccess.ItemListAccess(queue));
-                    feedItemDialog.show();
+                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
             }
         });
@@ -268,11 +312,10 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
-        if (feedItemDialog != null) {
-            feedItemDialog.updateContent(QueueAccess.ItemListAccess(queue), queue);
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
-        }
+
+        // we need to refresh the options menu because it sometimes
+        // needs data that may have just been loaded.
+        getActivity().supportInvalidateOptionsMenu();
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -280,9 +323,6 @@ public class QueueFragment extends Fragment {
         public void onContentChanged() {
             if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 
@@ -325,6 +365,9 @@ public class QueueFragment extends Fragment {
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
                 startItemLoader();
+                if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
+                    getActivity().supportInvalidateOptionsMenu();
+                }
             }
         }
     };

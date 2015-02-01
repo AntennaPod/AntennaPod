@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
                 android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/listitem_iconwithtext_height">
+                android:layout_height="@dimen/listitem_iconwithtext_height"
+                tools:background="@android:color/darker_gray">
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -18,7 +20,9 @@
         android:padding="8dp"
         android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
         android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"/>
+        android:layout_marginBottom="8dp"
+        tools:src="@drawable/ic_new_releases_white_24dp"
+        tools:background="@android:color/holo_green_dark"/>
 
 
     <TextView
@@ -36,6 +40,8 @@
         android:layout_marginBottom="@dimen/listitem_iconwithtext_textverticalpadding"
         android:layout_marginRight="48dp"
         android:layout_toRightOf="@id/imgvCover"
+        tools:text="Navigation item title"
+        tools:background="@android:color/holo_green_dark"
         />
 
     <TextView
@@ -50,5 +56,7 @@
         android:layout_marginBottom="14dp"
         android:layout_marginRight="@dimen/listitem_icon_rightpadding"
         android:layout_alignParentRight="true"
-        android:layout_centerVertical="true"/>
+        android:layout_centerVertical="true"
+        tools:text="23"
+        tools:background="@android:color/holo_green_dark"/>
 </RelativeLayout>

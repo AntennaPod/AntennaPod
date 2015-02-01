@@ -159,6 +159,12 @@
     <string name="removed_from_queue">Item removed</string>
     <string name="move_to_top_label">Move to top</string>
     <string name="move_to_bottom_label">Move to bottom</string>
+    <string name="sort">Sort</string>
+    <string name="alpha">Alphabetically</string>
+    <string name="date">Date</string>
+    <string name="duration">Duration</string>
+    <string name="ascending">Ascending</string>
+    <string name="descending">Descending</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
@@ -205,7 +211,10 @@
     <string name="services_label">Services</string>
     <string name="flattr_label">Flattr</string>
     <string name="pref_pauseOnHeadsetDisconnect_sum">Pause playback when the headphones are disconnected</string>
+    <string name="pref_unpauseOnHeadsetReconnect_sum">Resume playback when the headphones are reconnected</string>
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
+    <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
+    <string name="pref_auto_delete_title">Auto Delete</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervall_title">Update interval</string>
@@ -214,6 +223,7 @@
     <string name="pref_followQueue_title">Continuous playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
     <string name="pref_pauseOnHeadsetDisconnect_title">Headphones disconnect</string>
+    <string name="pref_unpauseOnHeadsetReconnect_title">Headphones reconnect</string>
     <string name="pref_mobileUpdate_title">Mobile updates</string>
     <string name="pref_mobileUpdate_sum">Allow updates over the mobile data connection</string>
     <string name="refreshing_label">Refreshing</string>
@@ -233,6 +243,8 @@
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
     <string name="pref_autodl_wifi_filter_title">Enable Wi-Fi filter</string>
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
+    <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
+    <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
     <string name="pref_episode_cache_title">Episode cache</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>

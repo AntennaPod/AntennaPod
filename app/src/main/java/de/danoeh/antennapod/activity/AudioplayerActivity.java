@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,7 +22,6 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.ImageView.ScaleType;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -49,6 +49,7 @@ import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.danoeh.antennapod.preferences.PreferenceController;
 
 /**
  * Activity for playing audio files.
@@ -59,6 +60,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
     private static final int NUM_CONTENT_FRAGMENTS = 3;
+    private static final int POS_NONE = -1;
 
     final String TAG = "AudioplayerActivity";
     private static final String PREFS = "AudioPlayerActivityPreferences";
@@ -68,6 +70,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private DrawerLayout drawerLayout;
     private NavListAdapter navAdapter;
     private ListView navList;
+    private View navDrawer;
     private ActionBarDrawerToggle drawerToggle;
 
     private Fragment[] detachedFragments;
@@ -78,6 +81,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     private Fragment currentlyShownFragment;
     private int currentlyShownPosition = -1;
+    private int lastShownPosition = POS_NONE;
     /**
      * Used if onResume was called without loadMediaInfo.
      */
@@ -85,8 +89,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     private TextView txtvTitle;
     private Button butPlaybackSpeed;
-    private ImageButton butNavLeft;
-    private ImageButton butNavRight;
+    private ImageButton butNavChaptersShownotes;
+    private ImageButton butShowCover;
 
     private void resetFragmentView() {
         FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
@@ -139,9 +143,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     }
 
     @Override
+    protected void chooseTheme() {
+        setTheme(UserPreferences.getNoTitleTheme());
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        getSupportActionBar().setDisplayShowTitleEnabled(false);
         detachedFragments = new Fragment[NUM_CONTENT_FRAGMENTS];
     }
 
@@ -320,24 +328,32 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                             chapterFragment = new ListFragment() {
 
                                 @Override
-                                public void onListItemClick(ListView l, View v,
-                                                            int position, long id) {
-                                    super.onListItemClick(l, v, position, id);
-                                    Chapter chapter = (Chapter) this
-                                            .getListAdapter().getItem(position);
-                                    controller.seekToChapter(chapter);
+                                public void onViewCreated(View view, Bundle savedInstanceState) {
+                                    super.onViewCreated(view, savedInstanceState);
+                                    // add padding
+                                    final ListView lv = getListView();
+                                    lv.setClipToPadding(false);
+                                    final int vertPadding = getResources().getDimensionPixelSize(R.dimen.list_vertical_padding);
+                                    lv.setPadding(0, vertPadding, 0, vertPadding);
                                 }
-
                             };
                             chapterFragment.setListAdapter(new ChapterListAdapter(
                                     AudioplayerActivity.this, 0, media
-                                    .getChapters(), media
+                                    .getChapters(), media, new ChapterListAdapter.Callback() {
+                                @Override
+                                public void onPlayChapterButtonClicked(int position) {
+                                    Chapter chapter = (Chapter)
+                                            chapterFragment.getListAdapter().getItem(position);
+                                    controller.seekToChapter(chapter);
+                                }
+                            }
                             ));
                         }
                         currentlyShownFragment = chapterFragment;
                         break;
                 }
                 if (currentlyShownFragment != null) {
+                    lastShownPosition = currentlyShownPosition;
                     currentlyShownPosition = pos;
                     if (detachedFragments[pos] != null) {
                         if (BuildConfig.DEBUG)
@@ -355,78 +371,70 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
     }
 
+    /**
+     * Switches to the fragment that was displayed before the current one or the description fragment
+     * if no fragment was previously displayed.
+     */
+    public void switchToLastFragment() {
+        if (lastShownPosition != POS_NONE) {
+            switchToFragment(lastShownPosition);
+        } else {
+            switchToFragment(POS_DESCR);
+        }
+    }
+
     private void updateNavButtonDrawable() {
 
         final int[] buttonTexts = new int[]{R.string.show_shownotes_label,
-                R.string.show_chapters_label, R.string.show_cover_label};
+                R.string.show_chapters_label};
 
         final TypedArray drawables = obtainStyledAttributes(new int[]{
                 R.attr.navigation_shownotes, R.attr.navigation_chapters});
         final Playable media = controller.getMedia();
-        if (butNavLeft != null && butNavRight != null && media != null) {
+        if (butNavChaptersShownotes != null && butShowCover != null && media != null) {
 
-            butNavRight.setTag(R.id.imageloader_key, null);
-            butNavLeft.setTag(R.id.imageloader_key, null);
-
+            butNavChaptersShownotes.setTag(R.id.imageloader_key, null);
+            setNavButtonVisibility();
             switch (currentlyShownPosition) {
                 case POS_COVER:
-                    butNavLeft.setScaleType(ScaleType.CENTER);
-                    butNavLeft.setImageDrawable(drawables.getDrawable(0));
-                    butNavLeft.setContentDescription(getString(buttonTexts[0]));
-
-                    butNavRight.setImageDrawable(drawables.getDrawable(1));
-                    butNavRight.setContentDescription(getString(buttonTexts[1]));
-
+                    butShowCover.setVisibility(View.GONE);
+                    if (lastShownPosition == POS_CHAPTERS) {
+                        butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(1));
+                        butNavChaptersShownotes.setContentDescription(getString(buttonTexts[1]));
+                    } else {
+                        butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(0));
+                        butNavChaptersShownotes.setContentDescription(getString(buttonTexts[0]));
+                    }
                     break;
                 case POS_DESCR:
-                    butNavLeft.setScaleType(ScaleType.CENTER_CROP);
-                    butNavLeft.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Picasso.with(AudioplayerActivity.this)
-                                    .load(media.getImageUri())
-                                    .fit()
-                                    .into(butNavLeft);
-                        }
-                    });
-                    butNavLeft.setContentDescription(getString(buttonTexts[2]));
-
-                    butNavRight.setImageDrawable(drawables.getDrawable(1));
-                    butNavRight.setContentDescription(getString(buttonTexts[1]));
+                    butShowCover.setVisibility(View.VISIBLE);
+                    butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(1));
+                    butNavChaptersShownotes.setContentDescription(getString(buttonTexts[1]));
                     break;
                 case POS_CHAPTERS:
-                    butNavLeft.setScaleType(ScaleType.CENTER_CROP);
-                    butNavLeft.post(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Picasso.with(AudioplayerActivity.this)
-                                    .load(media.getImageUri())
-                                    .fit()
-                                    .into(butNavLeft);
-                        }
-
-                    });
-                    butNavLeft.setContentDescription(getString(buttonTexts[2]));
-
-                    butNavRight.setImageDrawable(drawables.getDrawable(0));
-                    butNavRight.setContentDescription(getString(buttonTexts[0]));
+                    butShowCover.setVisibility(View.VISIBLE);
+                    butNavChaptersShownotes.setImageDrawable(drawables.getDrawable(0));
+                    butNavChaptersShownotes.setContentDescription(getString(buttonTexts[0]));
                     break;
             }
         }
+        drawables.recycle();
     }
 
     @Override
     protected void setupGUI() {
         super.setupGUI();
         resetFragmentView();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
-        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
-        butNavLeft = (ImageButton) findViewById(R.id.butNavLeft);
-        butNavRight = (ImageButton) findViewById(R.id.butNavRight);
+        navDrawer = findViewById(R.id.nav_layout);
         butPlaybackSpeed = (Button) findViewById(R.id.butPlaybackSpeed);
+        butNavChaptersShownotes = (ImageButton) findViewById(R.id.butNavChaptersShownotes);
+        butShowCover = (ImageButton) findViewById(R.id.butCover);
+        txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             CharSequence currentTitle = getSupportActionBar().getTitle();
@@ -463,35 +471,36 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
                     startActivity(intent);
                 }
-                drawerLayout.closeDrawer(navList);
+                drawerLayout.closeDrawer(navDrawer);
             }
         });
         drawerToggle.syncState();
 
-        butNavLeft.setOnClickListener(new OnClickListener() {
-
+        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (currentlyShownFragment == null
-                        || currentlyShownPosition == POS_DESCR) {
-                    switchToFragment(POS_COVER);
-                } else if (currentlyShownPosition == POS_COVER) {
-                    switchToFragment(POS_DESCR);
-                } else if (currentlyShownPosition == POS_CHAPTERS) {
-                    switchToFragment(POS_COVER);
-                }
+                drawerLayout.closeDrawer(navDrawer);
+                startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
             }
         });
 
-        butNavRight.setOnClickListener(new OnClickListener() {
-
+        butNavChaptersShownotes.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (currentlyShownPosition == POS_CHAPTERS) {
                     switchToFragment(POS_DESCR);
-                } else {
+                } else if (currentlyShownPosition == POS_DESCR) {
                     switchToFragment(POS_CHAPTERS);
+                } else if (currentlyShownPosition == POS_COVER) {
+                    switchToLastFragment();
                 }
+            }
+        });
+
+        butShowCover.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToFragment(POS_COVER);
             }
         });
 
@@ -539,6 +548,22 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         });
     }
 
+    private void setNavButtonVisibility() {
+        if (butNavChaptersShownotes != null) {
+            if (controller != null) {
+                Playable media = controller.getMedia();
+                if (media != null) {
+                    if (media.getChapters() != null || currentlyShownPosition == POS_COVER) {
+                        butNavChaptersShownotes.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                }
+            }
+            butNavChaptersShownotes.setVisibility(View.GONE);
+        }
+
+    }
+
     @Override
     protected void onPlaybackSpeedChange() {
         super.onPlaybackSpeedChange();
@@ -567,12 +592,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             return false;
         }
         txtvTitle.setText(media.getEpisodeTitle());
-        if (media.getChapters() != null) {
-            butNavRight.setVisibility(View.VISIBLE);
-        } else {
-            butNavRight.setVisibility(View.INVISIBLE);
-        }
+        getSupportActionBar().setTitle("");
+        Picasso.with(this)
+                .load(media.getImageUri())
+                .fit()
+                .into(butShowCover);
 
+        setNavButtonVisibility();
 
         if (currentlyShownPosition == -1) {
             if (!restoreFromPreferences()) {
@@ -632,7 +658,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     public boolean isDrawerOpen() {
-        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+        return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
     @Override

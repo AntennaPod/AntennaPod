@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -13,6 +14,7 @@ import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
@@ -57,6 +59,15 @@ public class CoverFragment extends Fragment implements
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.cover_fragment, container, false);
         imgvCover = (ImageView) root.findViewById(R.id.imgvCover);
+        imgvCover.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Activity activity = getActivity();
+                if (activity != null && activity instanceof AudioplayerActivity) {
+                    ((AudioplayerActivity)activity).switchToLastFragment();
+                }
+            }
+        });
         viewCreated = true;
         return root;
     }

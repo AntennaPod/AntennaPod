@@ -1,5 +1,10 @@
 # AntennaPod
 
+```
+Please note that AntennaPod will not receive any future updates until further notice.
+```
+
+
 This is the official repository of AntennaPod, a podcast manager for Android.
 
 [![Download from Google Play](http://www.android.com/images/brand/android_app_on_play_large.png "Download from Google Play")](https://play.google.com/store/apps/details?id=de.danoeh.antennapod)

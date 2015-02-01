@@ -8,4 +8,6 @@
     android:clickable="false"
     android:focusable="false"
     android:focusableInTouchMode="false"
-    tools:ignore="ContentDescription" />
+    tools:ignore="ContentDescription"
+    tools:src="@drawable/ic_play_arrow_grey600_36dp"
+    tools:background="@android:color/holo_green_dark" />

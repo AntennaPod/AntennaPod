@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources
+        xmlns:tools="http://schemas.android.com/tools"
+        tools:ignore="MissingTranslation">
+
+    <!--
+    DESIGN TIME ATTRIBUTES
+    Put too long strings to embed in layout files here.
+    -->
+
+    <string name="design_time_lorem_ipsum">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus ullamcorper
+        tempor metus, at varius tellus dignissim et. Fusce quis justo sollicitudin,
+        feugiat mi in, accumsan erat. Fusce tempor, sapien ut luctus scelerisque,
+        lectus nisi hendrerit odio, eget mattis lorem massa id eros. Integer consequat
+        tellus eu rhoncus pellentesque. Quisque et leo faucibus, aliquam nisi ut,
+        feugiat lectus.
+    </string>
+    <string name="design_time_downloaded_log_failure_reason">
+        IO Error: failed to connect to feeds.example.com/100.100.100.100
+        (port 80) after 3000ms: isConnected failed: ECONNREFUSED (Connection refused)
+    </string>
+
+</resources>

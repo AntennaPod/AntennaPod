@@ -35,7 +35,10 @@
         android:layout_margin="16dp"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_small"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:text="Error message"
+        tools:background="@android:color/holo_red_light" />
 
     <Button
         android:id="@+id/butRetry"
@@ -45,5 +48,7 @@
         android:layout_centerHorizontal="true"
         android:layout_margin="16dp"
         android:text="@string/retry_label"
-        android:visibility="gone" />
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:background="@android:color/holo_red_light" />
 </RelativeLayout>

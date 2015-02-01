@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Föremålet avlägsnades</string>
   <string name="move_to_top_label">Flytta längst upp</string>
   <string name="move_to_bottom_label">Flytta längst ned</string>
+  <string name="sort">Sortering</string>
+  <string name="alpha">Alfabetiskt</string>
+  <string name="date">Datum</string>
+  <string name="duration">Längd</string>
+  <string name="ascending">Stigande</string>
+  <string name="descending">Fallande</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr inloggning</string>
   <string name="flattr_auth_explanation">Tryck på knappen nedan för att starta autentiseringen. Du kommer att vidarebefordras till Flattrs inloggningsskärm i din webbläsare och uppmanas att ge AntennaPod tillstånd att Flattra saker. Efter att du har gett tillstånd, kommer du automatiskt tillbaka till den här skärmen.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Tjänster</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausa uppspelningen när hörlurarna bortkopplas</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Fortsätt uppspelningen när hörlurarna återansluts</string>
   <string name="pref_followQueue_sum">Hoppa till nästa i kön när uppspelningen är klar</string>
+  <string name="pref_auto_delete_sum">Ta bort episoden när uppspelningen är klar</string>
+  <string name="pref_auto_delete_title">Automatisk borttagning</string>
   <string name="playback_pref">Uppspelning</string>
   <string name="network_pref">Nätverk </string>
   <string name="pref_autoUpdateIntervall_title">Uppdateringsintervall</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Kontinuerlig uppspelning</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi nedladdning</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Hörlurar bortkopplade</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Hörlurar återanslutna</string>
   <string name="pref_mobileUpdate_title">Mobila uppdateringar</string>
   <string name="pref_mobileUpdate_sum">Tillåt uppdateringar via mobil dataanslutning</string>
   <string name="refreshing_label">Uppdaterar</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Konfigurera automatisk nedladdning av episoder.</string>
   <string name="pref_autodl_wifi_filter_title">Aktivera WiFi filtrering</string>
   <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
+  <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
+  <string name="pref_automatic_download_on_battery_sum">Tillåt automatisk nedladdning när batteriet inte laddas</string>
   <string name="pref_episode_cache_title">Avsnittscache</string>
   <string name="pref_theme_title_light">Ljust</string>
   <string name="pref_theme_title_dark">Mörkt</string>
@@ -228,7 +240,7 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
-  <string name="pref_seek_delta_title">Söktid</string>
+  <string name="pref_seek_delta_title">Söklängd</string>
   <string name="pref_seek_delta_sum">Sök så här många sekunder vid snabbspolning bakåt eller framåt</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>

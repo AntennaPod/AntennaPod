@@ -144,6 +144,10 @@ public class PlaybackService extends Service {
      * Is true if service has received a valid start command.
      */
     public static boolean started = false;
+    /**
+     * Is true if the service was running, but paused due to headphone disconnect
+     */
+    public static boolean transientPause = false;
 
     private static final int NOTIFICATION_ID = 1;
 
@@ -206,6 +210,8 @@ public class PlaybackService extends Service {
                 Intent.ACTION_HEADSET_PLUG));
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        registerReceiver(bluetoothStateUpdated, new IntentFilter(
+                AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -228,6 +234,7 @@ public class PlaybackService extends Service {
 
         unregisterReceiver(headsetDisconnected);
         unregisterReceiver(shutdownReceiver);
+        unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
@@ -284,7 +291,6 @@ public class PlaybackService extends Service {
     private void handleKeycode(int keycode) {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Handling keycode: " + keycode);
-
         final PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         final PlayerStatus status = info.playerStatus;
         switch (keycode) {
@@ -315,12 +321,14 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_PAUSE:
                 if (status == PlayerStatus.PLAYING) {
-                    if (UserPreferences.isPersistNotify()) {
-                        mediaPlayer.pause(false, true);
-                    } else {
-                        mediaPlayer.pause(true, true);
-                    }
+                    mediaPlayer.pause(false, true);
                 }
+                if (UserPreferences.isPersistNotify()) {
+                    mediaPlayer.pause(false, true);
+                } else {
+                    mediaPlayer.pause(true, true);
+                }
+
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
@@ -333,7 +341,9 @@ public class PlaybackService extends Service {
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
                     mediaPlayer.pause(true, true);
+                    started = false;
                 }
+
                 stopForeground(true); // gets rid of persistent notification
                 break;
             default:
@@ -411,10 +421,13 @@ public class PlaybackService extends Service {
                     taskManager.cancelWidgetUpdater();
                     if (UserPreferences.isPersistNotify() && android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                         // do not remove notification on pause based on user pref and whether android version supports expanded notifications
-                    } else {
+                        // Change [Play] button to [Pause]
+                        setupNotification(newInfo);
+                    } else if (!UserPreferences.isPersistNotify()) {
                         // remove notifcation on pause
                         stopForeground(true);
                     }
+
                     break;
 
                 case STOPPED:
@@ -431,6 +444,7 @@ public class PlaybackService extends Service {
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
                     setupNotification(newInfo);
+                    started = true;
                     break;
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
@@ -539,6 +553,15 @@ public class PlaybackService extends Service {
             if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
                 DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
             }
+
+            //Delete episode if enabled
+            if(UserPreferences.isAutoDelete()) {
+                DBWriter.deleteFeedMediaOfItem(PlaybackService.this, item.getMedia().getId());
+
+                if(BuildConfig.DEBUG)
+                    Log.d(TAG, "Episode Deleted");
+            }
+
         }
 
         // Load next episode if previous episode was in the queue and if there
@@ -734,8 +757,9 @@ public class PlaybackService extends Service {
                 PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
-                if (!isCancelled() && info.playerStatus == PlayerStatus.PLAYING
-                        && info.playable != null) {
+                if (!isCancelled() &&
+                        started &&
+                        info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
@@ -775,16 +799,30 @@ public class PlaybackService extends Service {
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
-                                .setPriority(UserPreferences.getNotifyPriority()) // set notification priority
-                                .addAction(android.R.drawable.ic_media_play, //play action
-                                        getString(R.string.play_label),
-                                        playButtonPendingIntent)
-                                .addAction(android.R.drawable.ic_media_pause, //pause action
-                                        getString(R.string.pause_label),
-                                        pauseButtonPendingIntent)
-                                .addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
-                                        getString(R.string.stop_label),
-                                        stopButtonPendingIntent);
+                                .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                        if (newInfo.playerStatus == PlayerStatus.PLAYING) {
+                            notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
+                                    getString(R.string.pause_label),
+                                    pauseButtonPendingIntent);
+                        } else {
+                            notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
+                                    getString(R.string.play_label),
+                                    playButtonPendingIntent);
+                        }
+                        if (UserPreferences.isPersistNotify()) {
+                            notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
+                                    getString(R.string.stop_label),
+                                    stopButtonPendingIntent);
+                        }
+
+                        if (Build.VERSION.SDK_INT >= 21) {
+                            notificationBuilder.setStyle(new Notification.MediaStyle()
+                                    .setMediaSession((android.media.session.MediaSession.Token) mediaPlayer.getSessionToken().getToken())
+                                    .setShowActionsInCompactView(0))
+                                    .setVisibility(Notification.VISIBILITY_PUBLIC)
+                                    .setColor(Notification.COLOR_DEFAULT);
+                        }
+
                         notification = notificationBuilder.build();
                     } else {
                         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(
@@ -793,11 +831,9 @@ public class PlaybackService extends Service {
                                 .setContentText(contentText).setOngoing(true)
                                 .setContentIntent(pIntent).setLargeIcon(icon)
                                 .setSmallIcon(smallIcon);
-                        notification = notificationBuilder.getNotification();
+                        notification = notificationBuilder.build();
                     }
-                    if (newInfo.playerStatus == PlayerStatus.PLAYING) {
-                        startForeground(NOTIFICATION_ID, notification);
-                    }
+                    startForeground(NOTIFICATION_ID, notification);
                     if (BuildConfig.DEBUG)
                         Log.d(TAG, "Notification set up");
                 }
@@ -966,6 +1002,7 @@ public class PlaybackService extends Service {
     private BroadcastReceiver headsetDisconnected = new BroadcastReceiver() {
         private static final String TAG = "headsetDisconnected";
         private static final int UNPLUGGED = 0;
+        private static final int PLUGGED = 1;
 
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -978,9 +1015,28 @@ public class PlaybackService extends Service {
                         if (BuildConfig.DEBUG)
                             Log.d(TAG, "Headset was unplugged during playback.");
                         pauseIfPauseOnDisconnect();
+                    } else if (state == PLUGGED) {
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Headset was plugged in during playback.");
+                        unpauseIfPauseOnDisconnect();
                     }
                 } else {
                     Log.e(TAG, "Received invalid ACTION_HEADSET_PLUG intent");
+                }
+            }
+        }
+    };
+
+    private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED)) {
+                int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
+                int prevState = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_PREVIOUS_STATE, -1);
+                if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Received bluetooth connection intent");
+                    unpauseIfPauseOnDisconnect();
                 }
             }
         }
@@ -1003,10 +1059,22 @@ public class PlaybackService extends Service {
      */
     private void pauseIfPauseOnDisconnect() {
         if (UserPreferences.isPauseOnHeadsetDisconnect()) {
+            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
+                transientPause = true;
+            }
             if (UserPreferences.isPersistNotify()) {
                 mediaPlayer.pause(false, true);
             } else {
                 mediaPlayer.pause(true, true);
+            }
+        }
+    }
+
+    private void unpauseIfPauseOnDisconnect() {
+        if (transientPause) {
+            transientPause = false;
+            if (UserPreferences.isPauseOnHeadsetDisconnect() && UserPreferences.isUnpauseOnHeadsetReconnect()) {
+                mediaPlayer.resume();
             }
         }
     }

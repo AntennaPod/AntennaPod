@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Emne slettet</string>
   <string name="move_to_top_label">Flyt til toppen</string>
   <string name="move_to_bottom_label">Flyt til bunden</string>
+  <string name="sort">Sorter</string>
+  <string name="alpha">Alfabetisk</string>
+  <string name="date">Dato</string>
+  <string name="duration">Varighed</string>
+  <string name="ascending">Stigende</string>
+  <string name="descending">Faldende</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr log ind</string>
   <string name="flattr_auth_explanation">Tryk på knappen nedenfor for at starte godkendelsesprocessen. Du vil blive ført til flattr log ind siden i din browser og bedt om at give AntennaPod tilladelse til at flattr emner. Efter at du har givet tilladelsen vil du automatisk vende tilbage til denne side.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Tjenester</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Sæt afspilning på pause når hovedtelefoner afbrydes</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Genoptag afspilning når hovedtelefoner tilsluttes igen</string>
   <string name="pref_followQueue_sum">Hop til næste medie i køen når afspilning er færdig</string>
+  <string name="pref_auto_delete_sum">Slet episode når afspilningen er færdig</string>
+  <string name="pref_auto_delete_title">Slet Automatisk</string>
   <string name="playback_pref">Afspilning</string>
   <string name="network_pref">Netværk</string>
   <string name="pref_autoUpdateIntervall_title">Opdaterings interval</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Kontinuerlig afspilning</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi medie download</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Hovedtelefoner afbrudt</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Hovedtelefoner tilsluttes igen</string>
   <string name="pref_mobileUpdate_title">Mobile opdateringer</string>
   <string name="pref_mobileUpdate_sum">Tillad opdateringer over mobil data forbindelse</string>
   <string name="refreshing_label">Opdaterer</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Konfigurer automatisk download af episoder</string>
   <string name="pref_autodl_wifi_filter_title">Sæt Wi-Fi filter til</string>
   <string name="pref_autodl_wifi_filter_sum">Tillad kun automatisk download for de valgte Wi-Fi netværk</string>
+  <string name="pref_automatic_download_on_battery_title">Download når der ikke oplades</string>
+  <string name="pref_automatic_download_on_battery_sum">Tillad automatisk download når batteriet ikke oplades</string>
   <string name="pref_episode_cache_title">Episode cache</string>
   <string name="pref_theme_title_light">Lys</string>
   <string name="pref_theme_title_dark">Mørk</string>

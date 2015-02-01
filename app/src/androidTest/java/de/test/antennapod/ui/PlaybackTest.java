@@ -41,6 +41,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         adapter.open();
         adapter.close();
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
+        prefs.edit().putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false).commit();
         prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false).commit();
     }
 

@@ -144,6 +144,12 @@
   <string name="removed_from_queue">הסר פריט</string>
   <string name="move_to_top_label">העבר למעלה</string>
   <string name="move_to_bottom_label">העבר למטה</string>
+  <string name="sort">מיין</string>
+  <string name="alpha">בסדר אלפביתי</string>
+  <string name="date">תאריך</string>
+  <string name="duration">משך</string>
+  <string name="ascending">בסדר עולה</string>
+  <string name="descending">בסדר יורד</string>
   <!--Flattr-->
   <string name="flattr_auth_label">כניסה ל-Fattr</string>
   <string name="flattr_auth_explanation">לחץ על הכפתור למטה כדי להתחיל את תהליך האימות. אתה תועבר למסך כניסת flattr בדפדפן שלך ותתבקש לתת לאנטנה-פוד רשות לתרום באמצעות flattr. לאחר שקבלת אישור, תוכל לחזור למסך זה באופן אוטומטי.</string>
@@ -186,7 +192,10 @@
   <string name="services_label">שירותים</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">השהה השמעה בניתוק האוזניות </string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">המשך את הניגון כשהאוזניות מחוברות מחדש</string>
   <string name="pref_followQueue_sum">עבור לפריט הבא בתור כאשר הניגון מסתיים</string>
+  <string name="pref_auto_delete_sum">מחק פרק כהניגון מסתיים</string>
+  <string name="pref_auto_delete_title">מחיקה אוטומטית</string>
   <string name="playback_pref">ניגון</string>
   <string name="network_pref">רשת</string>
   <string name="pref_autoUpdateIntervall_title">זמן בין עידכונים</string>
@@ -195,6 +204,7 @@
   <string name="pref_followQueue_title">ניגון מתמשך</string>
   <string name="pref_downloadMediaOnWifiOnly_title">הורדת מדיה דרך אינטרנט אלחוטי</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">ניתוק אוזניות</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">חיבור אוזניות מחדש</string>
   <string name="pref_mobileUpdate_title">עידכון דרך רשת סלולרית</string>
   <string name="pref_mobileUpdate_sum">אפשר עידכונים דרך רשת סלולרית</string>
   <string name="refreshing_label">מרענן</string>
@@ -214,6 +224,8 @@
   <string name="pref_automatic_download_sum">הגדר הורדה אטומטית של פרקים.</string>
   <string name="pref_autodl_wifi_filter_title">אפשר סינון אינטרנט אלחוטי</string>
   <string name="pref_autodl_wifi_filter_sum">אפשר הורדה אוטומטית דרך רשתות אלחוטייות נבחרות.</string>
+  <string name="pref_automatic_download_on_battery_title">הורדה כשלא טוען</string>
+  <string name="pref_automatic_download_on_battery_sum">אפשר הורדה אוטומטית כשהסוללה אינה נטענת</string>
   <string name="pref_episode_cache_title">מטמון פרקים</string>
   <string name="pref_theme_title_light">בהיר</string>
   <string name="pref_theme_title_dark">כהה</string>

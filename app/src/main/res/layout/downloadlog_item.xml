@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:background="@android:color/darker_gray">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -17,7 +19,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding" />
+            android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
+            tools:text="Media file"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -26,7 +30,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
-            android:layout_toLeftOf="@id/txtvType" />
+            android:layout_toLeftOf="@id/txtvType"
+            tools:text="Download item title"
+            tools:background="@android:color/holo_blue_light" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -42,14 +48,18 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_marginRight="8dp" />
+            android:layout_marginRight="8dp"
+            tools:text="January 23"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvStatus"
             style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true" />
+            android:layout_alignParentRight="true"
+            tools:text="successful"
+            tools:background="@android:color/holo_green_dark" />
 
     </RelativeLayout>
 
@@ -61,6 +71,8 @@
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
         android:textColor="?android:attr/textColorTertiary"
-        android:textSize="@dimen/text_size_micro" />
+        android:textSize="@dimen/text_size_micro"
+        tools:text="@string/design_time_downloaded_log_failure_reason"
+        tools:background="@android:color/holo_green_dark" />
 
 </LinearLayout>

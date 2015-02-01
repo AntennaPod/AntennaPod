@@ -1,3 +1,7 @@
+```
+Please note that AntennaPod is no longer maintained until further notice.
+```
+
 How to report a bug
 -------------------
 - Use the search function to see if someone else has already reported the bug. If an issue has already been opened, see if you can add any useful information to it.

@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Item removido</string>
   <string name="move_to_top_label">Mover para o topo</string>
   <string name="move_to_bottom_label">Mover para o fundo</string>
+  <string name="sort">Organização</string>
+  <string name="alpha">Alfabética</string>
+  <string name="date">Data</string>
+  <string name="duration">Duração</string>
+  <string name="ascending">Crescente</string>
+  <string name="descending">Decrescente</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Serviços</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Parar reprodução ao remover os auscultadores</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Continuar reprodução ao ligar os auscultadores</string>
   <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
+  <string name="pref_auto_delete_sum">Eliminar episódio ao terminar a reprodução</string>
+  <string name="pref_auto_delete_title">Eliminação automática</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo entre atualizações</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Transferência Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Auscultadores removidos</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Auscultadores ligados</string>
   <string name="pref_mobileUpdate_title">Atualizações móveis</string>
   <string name="pref_mobileUpdate_sum">Permitir atualizações através da rede de dados</string>
   <string name="refreshing_label">A atualizar</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios.</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios.</string>
+  <string name="pref_automatic_download_on_battery_title">Transferência se não estiver a carregar</string>
+  <string name="pref_automatic_download_on_battery_sum">Permitir transferência automática se a bateria não estiver a ser carregada</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
