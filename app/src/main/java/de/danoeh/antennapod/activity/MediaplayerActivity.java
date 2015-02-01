@@ -174,7 +174,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
         orientation = getResources().getConfiguration().orientation;
         getWindow().setFormat(PixelFormat.TRANSPARENT);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     @Override

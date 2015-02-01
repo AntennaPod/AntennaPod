@@ -13,7 +13,7 @@ public class StorageCallbacksImpl implements StorageCallbacks {
 
     @Override
     public int getDatabaseVersion() {
-        return 13;
+        return 14;
     }
 
     @Override
@@ -105,9 +105,24 @@ public class StorageCallbacksImpl implements StorageCallbacks {
         }
         if (oldVersion <= 12) {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
-                + " ADD COLUMN " + PodDBAdapter.KEY_IS_PAGED + " INTEGER DEFAULT 0");
+                    + " ADD COLUMN " + PodDBAdapter.KEY_IS_PAGED + " INTEGER DEFAULT 0");
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_NEXT_PAGE_LINK + " TEXT");
+        }
+        if (oldVersion <= 13) {
+            // remove duplicate rows in "Chapters" table that were created because of a bug.
+            db.execSQL(String.format("DELETE FROM %s WHERE %s NOT IN " +
+                            "(SELECT MIN(%s) as %s FROM %s GROUP BY %s,%s,%s,%s,%s)",
+                    PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS,
+                    PodDBAdapter.KEY_ID,
+                    PodDBAdapter.KEY_ID,
+                    PodDBAdapter.KEY_ID,
+                    PodDBAdapter.TABLE_NAME_SIMPLECHAPTERS,
+                    PodDBAdapter.KEY_TITLE,
+                    PodDBAdapter.KEY_START,
+                    PodDBAdapter.KEY_FEEDITEM,
+                    PodDBAdapter.KEY_LINK,
+                    PodDBAdapter.KEY_CHAPTER_TYPE));
         }
     }
 }
