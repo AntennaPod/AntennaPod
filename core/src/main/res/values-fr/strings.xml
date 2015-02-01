@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Élément retiré</string>
   <string name="move_to_top_label">Déplacer vers le haut de haut de la liste</string>
   <string name="move_to_bottom_label">Déplacer vers le bas de la liste</string>
+  <string name="sort">Trier</string>
+  <string name="alpha">Ordre alphabétique</string>
+  <string name="date">Date</string>
+  <string name="duration">Durée</string>
+  <string name="ascending">Ordre croissant</string>
+  <string name="descending">Ordre décroissant</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
   <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Services</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Interrompre la lecture lorsque le casque est débranché</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Reprendre la lecture quand les écouteurs sont reconnectés</string>
   <string name="pref_followQueue_sum">Après la fin d\'un épisode, passer au suivant</string>
+  <string name="pref_auto_delete_sum">Supprimer l\'épisode quand la lecture est finie</string>
+  <string name="pref_auto_delete_title">Supression automatique</string>
   <string name="playback_pref">Lecture</string>
   <string name="network_pref">Réseau</string>
   <string name="pref_autoUpdateIntervall_title">Intervalle de mise à jour</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Lecture continue</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Téléchargement en Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Déconnexion du casque</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Reconnexion du casque</string>
   <string name="pref_mobileUpdate_title">Mise à jour mobile</string>
   <string name="pref_mobileUpdate_sum">Autoriser les mises à jour à travers la connexion de données mobile</string>
   <string name="refreshing_label">Mise à jour en cours</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Configurer le téléchargement automatique des épisodes.</string>
   <string name="pref_autodl_wifi_filter_title">Activer le filtre Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
+  <string name="pref_automatic_download_on_battery_title">Télécharger lorsque l\'appareil n\'est pas en charge</string>
+  <string name="pref_automatic_download_on_battery_sum">Autoriser le téléchargement automatique quand l\'appareil n\'est pas en train de charger</string>
   <string name="pref_episode_cache_title">Épisodes stockés localement</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>

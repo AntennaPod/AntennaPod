@@ -13,27 +13,27 @@
   <string name="settings_label">Ajustes</string>
   <string name="add_new_feed_label">Añadir podcast</string>
   <string name="downloads_label">Descargas</string>
-  <string name="downloads_running_label">En Curso</string>
-  <string name="downloads_completed_label">Completado</string>
-  <string name="downloads_log_label">Log</string>
+  <string name="downloads_running_label">En curso</string>
+  <string name="downloads_completed_label">Completadas</string>
+  <string name="downloads_log_label">Registro</string>
   <string name="cancel_download_label">Cancelar descarga</string>
-  <string name="playback_history_label">Histórico de reproducción</string>
+  <string name="playback_history_label">Historial de reproducciones</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Iniciar sesión en gpodder.net</string>
   <!--New episodes fragment-->
-  <string name="recently_published_episodes_label">Publicados Recientemente</string>
+  <string name="recently_published_episodes_label">Publicados recientemente</string>
   <string name="episode_filter_label">Mostrar solo episodios nuevos</string>
   <!--Main activity-->
   <string name="drawer_open">Abrir menú</string>
-  <string name="drawer_close">Cerrar Menú</string>
+  <string name="drawer_close">Cerrar menú</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Compartir URL</string>
-  <string name="copied_url_msg">URL copiada al portapapeles.</string>
+  <string name="copied_url_msg">URL copiada en el portapapeles.</string>
   <string name="go_to_position_label">Ir a esta posición</string>
   <!--Playback history-->
-  <string name="clear_history_label">Vaciar el histórico</string>
+  <string name="clear_history_label">Vaciar el historial</string>
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
@@ -42,7 +42,7 @@
   <string name="podcast_settings_label">Ajustes</string>
   <string name="cover_label">Imagen</string>
   <string name="error_label">Error</string>
-  <string name="error_msg_prefix">Ha ocurrido un error:</string>
+  <string name="error_msg_prefix">Se produjo un error:</string>
   <string name="refresh_label">Actualizar</string>
   <string name="external_storage_error_msg">No se encuentra un almacenamiento externo. Asegúrese de que su almacenamiento externo esté montado para que la aplicación funcione correctamente.</string>
   <string name="chapters_label">Capítulos</string>
@@ -57,32 +57,32 @@
   <string name="save_username_password_label">Guardar usuario y contraseña</string>
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Reintentar</string>
-  <string name="auto_download_label">Incluir en auto descargas</string>
+  <string name="auto_download_label">Incluir en descargas automáticas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
-  <string name="etxtFeedurlHint">URL del feed o del sitio web</string>
+  <string name="etxtFeedurlHint">URL del canal o del sitio web</string>
   <string name="txtvfeedurl_label">Añadir podcast por URL</string>
   <string name="podcastdirectories_label">Buscar podcast en directorio</string>
-  <string name="podcastdirectories_descr">Se puede buscar nuevos podcast según nombre, categoría o popularidad en el directorio gpodder.net</string>
+  <string name="podcastdirectories_descr">Es posible buscar podcasts nuevos por nombre, categoría o popularidad en el directorio de gpodder.net.</string>
   <string name="browse_gpoddernet_label">Explorar gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
-  <string name="mark_all_read_msg">Marcar todos los episodios como leídos</string>
+  <string name="mark_all_read_msg">Se marcaron todos los episodios como leídos</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_source_label">Compartir el enlace del canal</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
-  <string name="feed_remover_msg">Eliminando el canal</string>
-  <string name="load_complete_feed">Actualizar el feed completo</string>
+  <string name="feed_remover_msg">Quitando el canal</string>
+  <string name="load_complete_feed">Actualizar el canal completo</string>
   <!--actions on feeditems-->
   <string name="download_label">Descargar</string>
   <string name="play_label">Reproducir</string>
   <string name="pause_label">Pausar</string>
-  <string name="stop_label">Stop</string>
-  <string name="stream_label">Reproducir por streaming</string>
+  <string name="stop_label">Detener</string>
+  <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
-  <string name="remove_episode_lable">Eliminar episodio</string>
+  <string name="remove_episode_lable">Quitar episodio</string>
   <string name="mark_read_label">Marcar como leído</string>
   <string name="mark_unread_label">Marcar como no leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
@@ -123,10 +123,10 @@
   <string name="download_type_media">Archivo de medios</string>
   <string name="download_type_image">Imagen</string>
   <string name="download_request_error_dialog_message_prefix">Ha ocurrido un error al intentar descargar el archivo:\u0020</string>
-  <string name="authentication_notification_title">Autenticación requerida</string>
-  <string name="authentication_notification_msg">El recurso solicitado requiere usuario y contraseña</string>
+  <string name="authentication_notification_title">Se necesita autenticación</string>
+  <string name="authentication_notification_msg">Para acceder al recurso solicitado debe proporcionar un usuario y contraseña</string>
   <!--Mediaplayer messages-->
-  <string name="player_error_msg">¡Error!</string>
+  <string name="player_error_msg">Error</string>
   <string name="player_stopped_msg">No hay medios en reproducción</string>
   <string name="player_preparing_msg">Preparando</string>
   <string name="player_ready_msg">Listo</string>
@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Artículo eliminado</string>
   <string name="move_to_top_label">Mover al principio</string>
   <string name="move_to_bottom_label">Mover al final</string>
+  <string name="sort">Ordenar</string>
+  <string name="alpha">Alfabéticamente</string>
+  <string name="date">Fecha</string>
+  <string name="duration">Duración</string>
+  <string name="ascending">Ascendente</string>
+  <string name="descending">Descendente</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Identificarse en Flattr</string>
   <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Servicios</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausar la reproducción al desconectar los auriculares</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Reanudar reproducción cuando se reconecten los auriculares</string>
   <string name="pref_followQueue_sum">Saltar al siguiente elemento de la cola al acabar la reproducción</string>
+  <string name="pref_auto_delete_sum">Borrar episodio cuando finalice la reproducción</string>
+  <string name="pref_auto_delete_title">Eliminar automáticamente</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo de actualización</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Reproducción continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Desconexión de los cascos</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Reconectar auriculares</string>
   <string name="pref_mobileUpdate_title">Actualizaciones por red móvil</string>
   <string name="pref_mobileUpdate_sum">Permitir actualizaciones por red de datos móvil</string>
   <string name="refreshing_label">Actualizando</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Configurar la descarga automática de episodios.</string>
   <string name="pref_autodl_wifi_filter_title">Activar el filtro WiFi</string>
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
+  <string name="pref_automatic_download_on_battery_title">Descargar cuando no se está cargando</string>
+  <string name="pref_automatic_download_on_battery_sum">Permitir la descarga automática cuando la batería no está cargando</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Oscuro</string>
@@ -291,7 +303,7 @@
   <string name="gpodnetauth_device_descr">Cree un nuevo dispositivo para usar con su cuenta de gpodder.net o elija uno existente:</string>
   <string name="gpodnetauth_device_deviceID">Id. de dispositivo:\u0020</string>
   <string name="gpodnetauth_device_caption">Descripción</string>
-  <string name="gpodnetauth_device_butCreateNewDevice">Crear nuevo dispositivo</string>
+  <string name="gpodnetauth_device_butCreateNewDevice">Crear dispositivo nuevo</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Elegir dispositivo existente:</string>
   <string name="gpodnetauth_device_errorEmpty">El ID de dispositivo no puede estar vacío</string>
   <string name="gpodnetauth_device_errorAlreadyUsed">El ID de dispositivo ya está en uso</string>

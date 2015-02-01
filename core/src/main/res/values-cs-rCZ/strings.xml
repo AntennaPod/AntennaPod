@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Položka odebrána</string>
   <string name="move_to_top_label">Posunout na začátek</string>
   <string name="move_to_bottom_label">Posunout na konec</string>
+  <string name="sort">Řazení</string>
+  <string name="alpha">Abecedně</string>
+  <string name="date">Datum</string>
+  <string name="duration">Délka</string>
+  <string name="ascending">Vzestupně</string>
+  <string name="descending">Sestupně</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr přihlášení</string>
   <string name="flattr_auth_explanation">Stiskněte následující tlačítko pro spuštění autentizačního procesu. Budete přesměrováni na přihlašovací obrazovku flattru a vyzváni k potvrzení udělení práv pro použití flattru aplikací AntennaPod. Po udělení práv se automaticky vrátíte na tuto obrazovku.</string>
@@ -177,8 +183,11 @@
   <string name="queue_label">Fronta</string>
   <string name="services_label">Služby</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek automaticky pozastavit přehrávání.</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Při odpojení sluchátek pozastavit přehrávání.</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Pokračovat v přehrávání po připojení sluchátek</string>
   <string name="pref_followQueue_sum">Po přehrání položky z fronty přejít automaticky na další</string>
+  <string name="pref_auto_delete_sum">Smazat díl po jeho přehrání</string>
+  <string name="pref_auto_delete_title">Automatické mazání</string>
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
   <string name="pref_autoUpdateIntervall_title">Interval aktualizace zdrojů</string>
@@ -186,7 +195,8 @@
   <string name="pref_downloadMediaOnWifiOnly_sum">Stahovat soubory pouze pomocí WiFi</string>
   <string name="pref_followQueue_title">Kontinuální přehrávání</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi stahování</string>
-  <string name="pref_pauseOnHeadsetDisconnect_title">Odpojení sluchátek</string>
+  <string name="pref_pauseOnHeadsetDisconnect_title">Sluchátka odpojena</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Sluchátka připojena</string>
   <string name="pref_mobileUpdate_title">Mobilní aktualizace</string>
   <string name="pref_mobileUpdate_sum">Povolit aktualizace pomocí mobilního připojení</string>
   <string name="refreshing_label">Obnovuji</string>
@@ -206,6 +216,8 @@
   <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
   <string name="pref_autodl_wifi_filter_title">Zapnout Wi-Fi filtr</string>
   <string name="pref_autodl_wifi_filter_sum">Povolit automatické stahování pouze pomocí vybraných Wi-Fi sítí.</string>
+  <string name="pref_automatic_download_on_battery_title">Stahovat, pokud neprobíhá nabíjení</string>
+  <string name="pref_automatic_download_on_battery_sum">Povolit automatické stahování i pokud není baterie nabíjena</string>
   <string name="pref_episode_cache_title">Historie epizod</string>
   <string name="pref_theme_title_light">Světlý</string>
   <string name="pref_theme_title_dark">Tmavý</string>
