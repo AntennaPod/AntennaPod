@@ -43,6 +43,7 @@ import java.util.concurrent.ThreadFactory;
  */
 public class DBWriter {
     private static final String TAG = "DBWriter";
+    private static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
 
     private static final ExecutorService dbExec;
 
@@ -378,7 +379,10 @@ public class DBWriter {
 
                                 if (item != null) {
                                     // add item to either front ot back of queue
-                                    if(PreferenceManager){
+                                    boolean addToFront = PreferenceManager.getDefaultSharedPreferences(context)
+                                            .getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
+
+                                    if(addToFront){
                                         queue.add(0, item);
                                     }else{
                                         queue.add(item);

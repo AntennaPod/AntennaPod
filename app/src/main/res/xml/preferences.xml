@@ -22,11 +22,22 @@
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/queue_label">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefQueueAddToFront"
+            android:summary="@string/pref_queueAddToFront_sum"
+            android:title="@string/pref_queueAddToFront_title"/>
+        />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/playback_pref">
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
-            android:key="prefPauseOnHeadsetDisconnect"
+            android:key="prefPauseOnHeadsetDisconnec"
             android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
@@ -92,17 +103,6 @@
 
         </PreferenceScreen>
 
-    </PreferenceCategory>
-
-
-    <PreferenceCategory android:title="@string/queue_label">
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="true"
-            android:key="prefQueueAddToFront"
-            android:summary="@string/pref_queueAddToFront_sum"
-            android:title="@string/pref_queueAddToFront_title"/>
-        />
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/services_label">
