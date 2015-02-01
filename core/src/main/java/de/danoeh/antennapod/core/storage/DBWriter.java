@@ -377,7 +377,13 @@ public class DBWriter {
                                         context, itemIds[i]);
 
                                 if (item != null) {
-                                    queue.add(item);
+                                    // add item to either front ot back of queue
+                                    if(PreferenceManager){
+                                        queue.add(0, item);
+                                    }else{
+                                        queue.add(item);
+                                    }
+
                                     queueModified = true;
                                     if (!item.isRead()) {
                                         item.setRead(true);
