@@ -37,7 +37,7 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
-            android:key="prefPauseOnHeadsetDisconnec"
+            android:key="prefPauseOnHeadsetDisconnect"
             android:summary="@string/pref_pauseOnHeadsetDisconnect_sum"
             android:title="@string/pref_pauseOnHeadsetDisconnect_title"/>
         <CheckBoxPreference
