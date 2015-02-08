@@ -29,14 +29,12 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -63,9 +61,6 @@ public class QueueFragment extends Fragment {
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
     private DownloadObserver downloadObserver = null;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     /**
      * Download observer updates won't result in an upate of the list adapter if this is true.
@@ -122,10 +117,6 @@ public class QueueFragment extends Fragment {
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     @Override
@@ -215,8 +206,7 @@ public class QueueFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 FeedItem item = (FeedItem) listAdapter.getItem(position - listView.getHeaderViewsCount());
                 if (item != null) {
-                    feedItemDialog = FeedItemDialog.newInstance(activity.get(), item, QueueAccess.ItemListAccess(queue));
-                    feedItemDialog.show();
+                    ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
             }
         });
@@ -268,11 +258,6 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
-        if (feedItemDialog != null) {
-            feedItemDialog.updateContent(QueueAccess.ItemListAccess(queue), queue);
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(activity.get(), feedItemDialogSavedInstance);
-        }
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
@@ -280,9 +265,6 @@ public class QueueFragment extends Fragment {
         public void onContentChanged() {
             if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();
-            }
-            if (feedItemDialog != null && feedItemDialog.isShowing()) {
-                feedItemDialog.updateMenuAppearance();
             }
         }
 

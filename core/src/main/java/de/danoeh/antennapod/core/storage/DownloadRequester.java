@@ -92,8 +92,9 @@ public class DownloadRequester {
 
     private void download(Context context, FeedFile item, FeedFile container, File dest,
                           boolean overwriteIfExists, String username, String password, boolean deleteOnFailure, Bundle arguments) {
+        final boolean partiallyDownloadedFileExists = item.getFile_url() != null;
         if (!isDownloadingFile(item)) {
-            if (!isFilenameAvailable(dest.toString()) || (deleteOnFailure && dest.exists())) {
+            if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Filename already used.");
                 if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
@@ -254,8 +255,7 @@ public class DownloadRequester {
      * Cancels all running downloads
      */
     public synchronized void cancelAllDownloads(Context context) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Cancelling all running downloads");
+        Log.d(TAG, "Cancelling all running downloads");
         context.sendBroadcast(new Intent(
                 DownloadService.ACTION_CANCEL_ALL_DOWNLOADS));
     }
@@ -377,10 +377,13 @@ public class DownloadRequester {
 
         String URLBaseFilename = URLUtil.guessFileName(media.getDownload_url(),
                 null, media.getMime_type());
-        ;
 
-        if (titleBaseFilename != "") {
+        if (!titleBaseFilename.equals("")) {
             // Append extension
+            final int FILENAME_MAX_LENGTH = 220;
+            if (titleBaseFilename.length() > FILENAME_MAX_LENGTH) {
+                titleBaseFilename = titleBaseFilename.substring(0, FILENAME_MAX_LENGTH);
+            }
             filename = titleBaseFilename + FilenameUtils.EXTENSION_SEPARATOR +
                     FilenameUtils.getExtension(URLBaseFilename);
         } else {

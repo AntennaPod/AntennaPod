@@ -84,13 +84,4 @@ public class PreferenceActivityGingerbread extends android.preference.Preference
                             );
         return false;
     }
-
-    @Override
-    public void onBackPressed() {
-        // The default back button behavior has to be overwritten because changing the theme clears the back stack
-        Intent destIntent = new Intent(this, MainActivity.class);
-        destIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(destIntent);
-        finish();
-    }
 }

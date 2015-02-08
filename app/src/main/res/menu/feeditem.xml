@@ -5,19 +5,19 @@
     <item
         android:id="@+id/download_item"
         android:icon="?attr/av_download"
-        custom:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/download_label">
     </item>
     <item
         android:id="@+id/stream_item"
         android:icon="?attr/action_stream"
-        custom:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/stream_label">
     </item>
     <item
         android:id="@+id/play_item"
         android:icon="?attr/av_play"
-        custom:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/play_label">
     </item>
     <item
@@ -65,7 +65,7 @@
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        custom:showAsAction="ifRoom|collapseActionView"
+        custom:showAsAction="collapseActionView"
         android:title="@string/visit_website_label">
     </item>
     <item

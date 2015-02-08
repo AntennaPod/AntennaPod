@@ -14,9 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -62,15 +61,22 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
+    public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
+    public static final String SAVE_SELECTED_NAV_INDEX = "selectedNavIndex";
+    public static final String SAVE_TITLE = "title";
+
+
     public static final int POS_NEW = 0,
             POS_QUEUE = 1,
             POS_DOWNLOADS = 2,
             POS_HISTORY = 3,
             POS_ADD = 4;
 
+    private Toolbar toolbar;
     private ExternalPlayerFragment externalPlayerFragment;
     private DrawerLayout drawerLayout;
 
+    private View navDrawer;
     private ListView navList;
     private NavListAdapter navAdapter;
 
@@ -82,17 +88,22 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
-        setTheme(UserPreferences.getTheme());
+        setTheme(UserPreferences.getNoTitleTheme());
         super.onCreate(savedInstanceState);
         StorageUtils.checkStorageAvailability(this);
         setContentView(R.layout.main);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setElevation(3.0f);
+
         drawerTitle = currentTitle = getTitle();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
-
+        navDrawer = findViewById(R.id.nav_layout);
+        Log.i(TAG, "");
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -111,8 +122,21 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         };
 
+        if (savedInstanceState != null) {
+            int backstackCount = savedInstanceState.getInt(SAVE_BACKSTACK_COUNT, 0);
+            drawerToggle.setDrawerIndicatorEnabled(backstackCount == 0);
+        }
+
         drawerLayout.setDrawerListener(drawerToggle);
-        FragmentManager fm = getSupportFragmentManager();
+
+        final FragmentManager fm = getSupportFragmentManager();
+
+        fm.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                drawerToggle.setDrawerIndicatorEnabled(fm.getBackStackEntryCount() == 0);
+            }
+        });
 
         FragmentTransaction transaction = fm.beginTransaction();
 
@@ -120,7 +144,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         if (mainFragment != null) {
             transaction.replace(R.id.main_view, mainFragment);
         } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_NEW, null);
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_QUEUE, null);
         }
 
         externalPlayerFragment = new ExternalPlayerFragment();
@@ -134,6 +158,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
 
+        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                drawerLayout.closeDrawer(navDrawer);
+                startActivity(new Intent(MainActivity.this, PreferenceController.getPreferenceActivity()));
+            }
+        });
+
         checkFirstLaunch();
     }
 
@@ -143,7 +175,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    drawerLayout.openDrawer(navList);
+                    drawerLayout.openDrawer(navDrawer);
                 }
             }, 1500);
 
@@ -158,7 +190,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public boolean isDrawerOpen() {
-        return drawerLayout != null && navList != null && drawerLayout.isDrawerOpen(navList);
+        return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
     }
 
     public List<Feed> getFeeds() {
@@ -241,6 +273,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 .commit();
     }
 
+    public void dismissChildFragment() {
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public Toolbar getToolbar() {
+        return toolbar;
+    }
+
     private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -251,7 +291,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 selectedNavListIndex = position;
                 navAdapter.notifyDataSetChanged();
             }
-            drawerLayout.closeDrawer(navList);
+            drawerLayout.closeDrawer(navDrawer);
         }
     };
 
@@ -260,11 +300,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         super.onPostCreate(savedInstanceState);
         drawerToggle.syncState();
         if (savedInstanceState != null) {
-            currentTitle = savedInstanceState.getString("title");
-            if (!drawerLayout.isDrawerOpen(navList)) {
+            currentTitle = savedInstanceState.getString(SAVE_TITLE);
+            if (!drawerLayout.isDrawerOpen(navDrawer)) {
                 getSupportActionBar().setTitle(currentTitle);
             }
-            selectedNavListIndex = savedInstanceState.getInt("selectedNavIndex");
+            selectedNavListIndex = savedInstanceState.getInt(SAVE_SELECTED_NAV_INDEX);
         }
     }
 
@@ -277,8 +317,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putString("title", getSupportActionBar().getTitle().toString());
-        outState.putInt("selectedNavIndex", selectedNavListIndex);
+        outState.putString(SAVE_TITLE, getSupportActionBar().getTitle().toString());
+        outState.putInt(SAVE_SELECTED_NAV_INDEX, selectedNavListIndex);
+        outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
 
     }
 
@@ -312,29 +353,16 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        }
-        switch (item.getItemId()) {
-            case R.id.show_preferences:
-                startActivity(new Intent(this, PreferenceController.getPreferenceActivity()));
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
+        } else if (item.getItemId() == android.R.id.home) {
+            if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
+                dismissChildFragment();
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        return true;
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        super.onCreateOptionsMenu(menu);
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.main, menu);
-        return true;
-    }
 
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;

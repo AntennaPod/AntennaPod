@@ -12,18 +12,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
+
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.SearchlistAdapter;
-import de.danoeh.antennapod.dialog.FeedItemDialog;
-import de.danoeh.antennapod.core.feed.*;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedComponent;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -41,9 +45,6 @@ public class SearchFragment extends ListFragment {
     private boolean itemsLoaded = false;
 
     private QueueAccess queue;
-
-    private FeedItemDialog feedItemDialog;
-    private FeedItemDialog.FeedItemDialogSavedInstance feedItemDialogSavedInstance;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -99,10 +100,6 @@ public class SearchFragment extends ListFragment {
         super.onDestroyView();
         searchAdapter = null;
         viewCreated = false;
-        if (feedItemDialog != null) {
-            feedItemDialogSavedInstance = feedItemDialog.save();
-        }
-        feedItemDialog = null;
     }
 
     @Override
@@ -128,11 +125,11 @@ public class SearchFragment extends ListFragment {
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
-            ((MainActivity)getActivity()).loadFeedFragment(comp.getId());
+            ((MainActivity) getActivity()).loadFeedFragment(comp.getId());
         } else {
             if (comp.getClass() == FeedItem.class) {
-                feedItemDialog = FeedItemDialog.newInstance(getActivity(), (FeedItem) comp, queue);
-                feedItemDialog.show();
+                FeedItem item = (FeedItem) comp;
+                ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
             }
         }
     }
@@ -167,9 +164,6 @@ public class SearchFragment extends ListFragment {
     private final EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & (EventDistributor.DOWNLOAD_QUEUED)) != 0 && feedItemDialog != null) {
-                feedItemDialog.updateMenuAppearance();
-            }
             if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE
                     | EventDistributor.DOWNLOAD_HANDLED
                     | EventDistributor.QUEUE_UPDATE)) != 0) {
@@ -185,18 +179,6 @@ public class SearchFragment extends ListFragment {
         }
         searchAdapter.notifyDataSetChanged();
         setListShown(true);
-        if (feedItemDialog != null && feedItemDialog.isShowing()) {
-            feedItemDialog.setQueue(queue);
-            for (SearchResult result : searchResults) {
-                FeedComponent comp = result.getComponent();
-                if (comp.getClass() == FeedItem.class && ((FeedItem) comp).getId() == feedItemDialog.getItem().getId()) {
-                    feedItemDialog.setItem((FeedItem) comp);
-                }
-            }
-            feedItemDialog.updateMenuAppearance();
-        } else if (feedItemDialogSavedInstance != null) {
-            feedItemDialog = FeedItemDialog.newInstance(getActivity(), feedItemDialogSavedInstance);
-        }
     }
 
     private final SearchlistAdapter.ItemAccess itemAccess = new SearchlistAdapter.ItemAccess() {
