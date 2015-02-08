@@ -43,6 +43,9 @@ public class PlaybackPreferences implements
 	/** True if last played media was a video. */
 	public static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
+    /** Value of PREF_QUEUE_ADD_TO_FRONT if no media is playing. */
+    public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+
 	/** Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing. */
 	public static final long NO_MEDIA_PLAYING = -1;
 
