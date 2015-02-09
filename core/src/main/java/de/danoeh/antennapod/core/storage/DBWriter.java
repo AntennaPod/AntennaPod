@@ -13,6 +13,7 @@ import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.feed.*;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -379,7 +380,7 @@ public class DBWriter {
                                 if (item != null) {
                                     // add item to either front ot back of queue
                                     boolean addToFront = PreferenceManager.getDefaultSharedPreferences(context)
-                                            .getBoolean(PlaybackPreferences.PREF_QUEUE_ADD_TO_FRONT, false);
+                                            .getBoolean(UserPreferences.PREF_QUEUE_ADD_TO_FRONT, false);
 
                                     if(addToFront){
                                         queue.add(0, item);

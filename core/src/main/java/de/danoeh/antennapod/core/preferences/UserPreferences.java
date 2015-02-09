@@ -60,6 +60,7 @@ public class UserPreferences implements
     private static final String PREF_SEEK_DELTA_SECS = "prefSeekDeltaSecs";
     private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
 
     // TODO: Make this value configurable
     private static final float PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT = 0.8f;
