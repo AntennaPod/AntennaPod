@@ -75,6 +75,15 @@ public class QueueFragment extends Fragment {
      */
     private boolean blockDownloadObserverUpdate = false;
 
+    /**
+     *First visible list item on the screen
+     */
+    private int topItemIndex;
+
+    /**
+     *Top offset of the list view
+     */
+    private int listViewTopOffset;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,6 +96,8 @@ public class QueueFragment extends Fragment {
     public void onResume() {
         super.onResume();
         startItemLoader();
+        //Scroll listView to its old position if possible
+        listView.setSelectionFromTop(topItemIndex, listViewTopOffset);
     }
 
     @Override
@@ -108,6 +119,11 @@ public class QueueFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         stopItemLoader();
+
+        //Save listView offset to retain its scroll position
+        topItemIndex = listView.getFirstVisiblePosition();
+        View firstItem = listView.getChildAt(0);
+        listViewTopOffset = (firstItem == null) ? 0 :  firstItem.getTop() - listView.getPaddingTop();
     }
 
     @Override
