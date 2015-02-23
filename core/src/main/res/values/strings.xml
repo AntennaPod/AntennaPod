@@ -79,6 +79,8 @@
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as read</string>
     <string name="mark_all_read_msg">Marked all episodes as read</string>
+    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being read.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being read.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_link_label">Share website link</string>

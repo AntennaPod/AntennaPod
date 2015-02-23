@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.menuhandler;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.MenuItem;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -51,8 +53,8 @@ public class FeedMenuHandler {
      *
      * @throws DownloadRequestException
      */
-    public static boolean onOptionsItemClicked(Context context, MenuItem item,
-                                               Feed selectedFeed) throws DownloadRequestException {
+    public static boolean onOptionsItemClicked(final Context context, final MenuItem item,
+                                               final Feed selectedFeed) throws DownloadRequestException {
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 DBTasks.refreshFeed(context, selectedFeed);
@@ -61,7 +63,18 @@ public class FeedMenuHandler {
                 DBTasks.refreshCompleteFeed(context, selectedFeed);
                 break;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(context, selectedFeed.getId());
+                ConfirmationDialog conDialog = new ConfirmationDialog(context,
+                        R.string.mark_all_read_label,
+                        R.string.mark_all_read_feed_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedRead(context, selectedFeed.getId());
+                    }
+                };
+                conDialog.createNewDialog().show();
                 break;
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(selectedFeed.getLink());
