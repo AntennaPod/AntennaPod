@@ -167,6 +167,7 @@
     <string name="duration">Duration</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
