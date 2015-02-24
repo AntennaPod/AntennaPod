@@ -130,7 +130,7 @@ public class NewEpisodesFragment extends Fragment {
         //Save listView offset to retain its scroll position
         topItemIndex = listView.getFirstVisiblePosition();
         View firstItem = listView.getChildAt(0);
-        listViewTopOffset = (firstItem == null) ? 0 :  firstItem.getTop() - listView.getPaddingTop();
+        listViewTopOffset = (firstItem == null) ? 0 :  firstItem.getTop();
     }
 
     @Override
