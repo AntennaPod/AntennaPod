@@ -1,0 +1,26 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+xmlns:tools="http://schemas.android.com/tools"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+tools:context="de.danoeh.antennapod.activity.ITunesSearchActivity">
+<android.support.v7.widget.SearchView
+    android:id="@+id/itunes_search_view"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    />
+<GridView
+    android:id="@+id/gridView"
+    android:layout_below="@id/itunes_search_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToPadding="false"
+    android:columnWidth="200dp"
+    android:gravity="center"
+    android:horizontalSpacing="8dp"
+    android:numColumns="auto_fit"
+    android:paddingBottom="@dimen/list_vertical_padding"
+    android:paddingTop="@dimen/list_vertical_padding"
+    android:stretchMode="columnWidth"
+    android:verticalSpacing="8dp"
+    tools:listitem="@layout/gpodnet_podcast_listitem" />
+</RelativeLayout>

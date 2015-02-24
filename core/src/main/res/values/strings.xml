@@ -73,7 +73,7 @@
     <string name="etxtFeedurlHint">URL of feed or website</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
     <string name="podcastdirectories_label">Find podcast in directory</string>
-    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory.</string>
+    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory, or search the iTunes store.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
@@ -396,4 +396,5 @@
     <!-- AntennaPodSP -->
 
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
+    <string name="search_itunes_label">Search iTunes</string>
 </resources>
