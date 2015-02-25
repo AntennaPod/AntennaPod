@@ -210,6 +210,11 @@
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
+  <string name="pref_expandNotify_title">扩展通知</string>
+  <string name="pref_expandNotify_sum">总是扩展通知以显示播放按钮</string>
+  <string name="pref_persistNotify_title">保持播放控制</string>
+  <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
+  <string name="pref_expand_notify_unsupport_toast">Android 版本 4.1 之前不支持扩展通知</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">搜索订阅或者单集</string>
