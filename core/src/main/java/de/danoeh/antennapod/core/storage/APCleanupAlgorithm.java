@@ -76,7 +76,7 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
 
     @Override
     public Integer getDefaultCleanupParameter(Context context) {
-        return 0;
+        return getPerformAutoCleanupArgs(context, 0);
     }
 
     @Override

@@ -74,6 +74,7 @@
   <string name="share_source_label">피드 링크 공유</string>
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
+  <string name="load_complete_feed">전체 피드 새로고침</string>
   <!--actions on feeditems-->
   <string name="download_label">다운로드</string>
   <string name="play_label">재생</string>
@@ -143,6 +144,12 @@
   <string name="removed_from_queue">항목을 제거했습니다</string>
   <string name="move_to_top_label">맨 위로 이동</string>
   <string name="move_to_bottom_label">맨 아래로 이동</string>
+  <string name="sort">정렬</string>
+  <string name="alpha">사전순</string>
+  <string name="date">날짜</string>
+  <string name="duration">기간</string>
+  <string name="ascending">오름차순</string>
+  <string name="descending">내림차순</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 로그인</string>
   <string name="flattr_auth_explanation">인증 절차를 시작하려면 아래 버튼을 누르십시오. 브라우저의 Flattr 로그인 화면으로 이동하고, 안테나팟에 Flattr를 사용을 허락 여부를 물어봅니다. 허락을 하면 자동으로 이 화면으로 돌아옵니다.</string>
@@ -184,7 +191,10 @@
   <string name="services_label">서비스</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">헤드폰의 연결이 끊어졌을 때 재생을 일시 중지</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">헤드폰 다시 연결할 때 재생 계속</string>
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
+  <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
+  <string name="pref_auto_delete_title">자동 삭제</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
   <string name="pref_autoUpdateIntervall_title">업데이트 주기</string>
@@ -193,6 +203,7 @@
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">헤드폰 연결 끊김</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">헤드폰 재연결</string>
   <string name="pref_mobileUpdate_title">휴대전화망 업데이트</string>
   <string name="pref_mobileUpdate_sum">휴대전화 데이터 연결을 통해 업데이트 허용</string>
   <string name="refreshing_label">새로 고치는 중</string>
@@ -212,6 +223,8 @@
   <string name="pref_automatic_download_sum">에피소드 자동 다운로드를 설정합니다.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi 필터 사용</string>
   <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
+  <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
+  <string name="pref_automatic_download_on_battery_sum">배터리 충전 중이 아닐 때 자동 다운로드 허용</string>
   <string name="pref_episode_cache_title">에피소드 임시 저장</string>
   <string name="pref_theme_title_light">밝게</string>
   <string name="pref_theme_title_dark">어둡게</string>
@@ -339,6 +352,7 @@
   <string name="new_episodes_count_label">새 에피소드 개수</string>
   <string name="in_progress_episodes_count_label">듣기를 시작한 에피소드 개수</string>
   <string name="drag_handle_content_description">이 항목의 위치를 바꾸려면 드래그하십시오</string>
+  <string name="load_next_page_label">다음 페이지 읽기</string>
   <!--Feed information screen-->
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>

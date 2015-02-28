@@ -28,9 +28,9 @@
   <string name="drawer_close">Сховати меню</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
-  <string name="copy_url_label">Копія URL</string>
+  <string name="copy_url_label">Копіювати URL</string>
   <string name="share_url_label">Поділитися URL</string>
-  <string name="copied_url_msg">Копіювати URL в clipboard</string>
+  <string name="copied_url_msg">URL скопійовано в буфер</string>
   <string name="go_to_position_label">До цієї позиції</string>
   <!--Playback history-->
   <string name="clear_history_label">Забути</string>
@@ -66,8 +66,8 @@
   <string name="podcastdirectories_descr">В каталозі gpodder.net можливий пошук за назвою, категорією або популярністю.</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Все прочитано</string>
-  <string name="mark_all_read_msg">Позначити всі епізоди як переглянуті</string>
+  <string name="mark_all_read_label">Позначити всі як переглянуті</string>
+  <string name="mark_all_read_msg">Позначено всі епізоди як переглянуті</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_link_label">Поділитися URL сайту</string>
@@ -83,8 +83,8 @@
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
   <string name="remove_episode_lable">Видалити епізод</string>
-  <string name="mark_read_label">Прочитано</string>
-  <string name="mark_unread_label">Непрочитано</string>
+  <string name="mark_read_label">Позначити як переглянутий</string>
+  <string name="mark_unread_label">Позначити як не переглянутий</string>
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="visit_website_label">Відкрити сайт</string>
@@ -103,7 +103,7 @@
   <string name="download_error_http_data_error">Помилка HTTP</string>
   <string name="download_error_error_unknown">Щось трапилось</string>
   <string name="download_error_parser_exception">Помилка парсера</string>
-  <string name="download_error_unsupported_type">Непідтримую такий канал</string>
+  <string name="download_error_unsupported_type">Не підтримую канали такого типа</string>
   <string name="download_error_connection_error">Помилка з\'єднання</string>
   <string name="download_error_unknown_host">Невідомий host</string>
   <string name="download_error_unauthorized">Помилка автентифікації</string>
@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Видалено</string>
   <string name="move_to_top_label">Догори</string>
   <string name="move_to_bottom_label">Донизу</string>
+  <string name="sort">Впорядкувати</string>
+  <string name="alpha">За абеткою</string>
+  <string name="date">За датою</string>
+  <string name="duration">За тривалістю</string>
+  <string name="ascending">За зростанням</string>
+  <string name="descending">За спаданням</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Увійти до Flattr</string>
   <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
@@ -159,12 +165,12 @@
   <string name="access_revoked_title">Доступ відкликано</string>
   <string name="access_revoked_info">Ви відкликали доступ AntennaPod до облікового запису. Для закінчення процессу вам потрібно видалити додаток з затвержденного списку в вашому облікову запису на сайті flattr</string>
   <!--Flattr-->
-  <string name="flattr_click_success">Flattr\'ed one thing!</string>
+  <string name="flattr_click_success">Підтримано через Flattr!</string>
   <string name="flattr_click_success_count">Flattr\'ed %d things!</string>
-  <string name="flattr_click_success_queue">Flattr\'ed: %s.</string>
+  <string name="flattr_click_success_queue">Підтримано через Flattr: %s.</string>
   <string name="flattr_click_failure_count">Failed to flattr %d things!</string>
-  <string name="flattr_click_failure">Not flattr\'ed: %s.</string>
-  <string name="flattr_click_enqueued">Thing will be flattr\'ed later</string>
+  <string name="flattr_click_failure">Не підтримано через flattr: %s.</string>
+  <string name="flattr_click_enqueued">Буде підтримано через flattr пізніше</string>
   <string name="flattring_thing">Flattring %s</string>
   <string name="flattring_label">AntennaPod is flattring</string>
   <string name="flattrd_label">AntennaPod has flattr\'ed</string>
@@ -176,43 +182,49 @@
   <string name="no_playback_plugin_msg">Для керування швидкістю програвання потрібно встановити додаток.\n\nНатисніть \"Завантажити додаток\" для завантаження безкоштовного додатку з Play Store\n\nЯкщо при використанні plugin виникнуть будь які проблеми - це відповідальність автора додатка, а не автора AntennaPod.</string>
   <string name="set_playback_speed_label">Швидкість програвання</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Нічного в цьому списку</string>
+  <string name="no_items_label">Нічого в цьому списку</string>
   <string name="no_feeds_label">Немає підписаних каналів </string>
   <!--Preferences-->
   <string name="other_pref">Інше</string>
-  <string name="about_pref">О</string>
+  <string name="about_pref">Про програму</string>
   <string name="queue_label">Черга</string>
   <string name="services_label">Сервіси</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Зупинятись коли навушники витягнуті</string>
-  <string name="pref_followQueue_sum">До наступної черги коли дограє до кінця</string>
-  <string name="playback_pref">Грає</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Поновити відтворення коли навушники повторно під’єднано</string>
+  <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
+  <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
+  <string name="pref_auto_delete_title">Автовидалення</string>
+  <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
-  <string name="pref_autoUpdateIntervall_title">Коли оновлювати</string>
-  <string name="pref_autoUpdateIntervall_sum">Визначати як час для автооновлювання або відключити автооновлення</string>
+  <string name="pref_autoUpdateIntervall_title">Частота оновлень</string>
+  <string name="pref_autoUpdateIntervall_sum">Визначити інтервал часу для автооновлювання або відключити автооновлення</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
   <string name="pref_followQueue_title">Грати безперервно</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Навушники витягнуті</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Повторне під’єднання навушників</string>
   <string name="pref_mobileUpdate_title">Мобільне оновлення</string>
   <string name="pref_mobileUpdate_sum">Дозволити оновлення через оператора зв\'язку</string>
   <string name="refreshing_label">Оновлення</string>
   <string name="flattr_settings_label">Налаштування Flattr</string>
   <string name="pref_flattr_auth_title">Увійти до Flattr</string>
-  <string name="pref_flattr_auth_sum">Увійти в облікову flattr в flattr things напряму з додатку</string>
+  <string name="pref_flattr_auth_sum">Увійти в облікову flattr для підтримки авторів напряму з додатку</string>
   <string name="pref_flattr_this_app_title">Flattr цій додаток</string>
   <string name="pref_flattr_this_app_sum">Підтримайте розробку AntennaPod за допомогою flattr. Дякую!</string>
   <string name="pref_revokeAccess_title">Відкликати доступ</string>
   <string name="pref_revokeAccess_sum">Відкликати дозвіл на доступ до вашого flattr з цього додатку</string>
   <string name="pref_auto_flattr_title">Automatic Flattr</string>
   <string name="pref_auto_flattr_sum">Налаштування автоматичного заохочення авторів через сервіс flattr</string>
-  <string name="user_interface_label">Зовнішній вид</string>
+  <string name="user_interface_label">Вигляд</string>
   <string name="pref_set_theme_title">Обрати тему</string>
-  <string name="pref_set_theme_sum">Змінити появу AntennaPod</string>
+  <string name="pref_set_theme_sum">Змінити вигляд AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматичне завантаження</string>
   <string name="pref_automatic_download_sum">Налаштування автоматичного завантаження епізодів</string>
   <string name="pref_autodl_wifi_filter_title">Увімкнути фільтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки в цих Wi-Fi мережах</string>
+  <string name="pref_automatic_download_on_battery_title">Завантаження без зарядного пристрою</string>
+  <string name="pref_automatic_download_on_battery_sum">Дозволити завантаження коли зарядний пристрій не підключено</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
   <string name="pref_theme_title_light">Світла</string>
   <string name="pref_theme_title_dark">Темна</string>
@@ -222,10 +234,10 @@
   <string name="pref_update_interval_hours_manual">Інструкція</string>
   <string name="pref_gpodnet_authenticate_title">Логін</string>
   <string name="pref_gpodnet_authenticate_sum">Увійти до свого облікового запису gpodder.net для сінхронізації ваших каналів</string>
-  <string name="pref_gpodnet_logout_title">Виход</string>
+  <string name="pref_gpodnet_logout_title">Вихід</string>
   <string name="pref_gpodnet_logout_toast">Успішно закрили доступ</string>
   <string name="pref_gpodnet_setlogin_information_title">Змінити інформацію для входу</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Змінити вашу інформацію для вашего gpodder.net облікового запису</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
   <string name="pref_seek_delta_title">Час перемотки</string>
@@ -311,9 +323,9 @@
   <string name="create_folder_msg">Створити папку з ім\'ям \"%1$s\"?</string>
   <string name="create_folder_success">Створена нова папка</string>
   <string name="create_folder_error_no_write_access">Не можу записати в цю папку</string>
-  <string name="create_folder_error_already_exists">Папка вже є</string>
+  <string name="create_folder_error_already_exists">Папка вже існує</string>
   <string name="create_folder_error">Не можу создати папку</string>
-  <string name="folder_not_empty_dialog_title">В папці щось є</string>
+  <string name="folder_not_empty_dialog_title">Папка не є пустою</string>
   <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
   <string name="set_to_default_folder">Обрати папку по замовчанню</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>

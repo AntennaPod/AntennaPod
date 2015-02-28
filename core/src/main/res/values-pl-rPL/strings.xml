@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Element usunięty</string>
   <string name="move_to_top_label">Przesuń na górę</string>
   <string name="move_to_bottom_label">Przesuń na dół</string>
+  <string name="sort">Sortuj</string>
+  <string name="alpha">Alfabetycznie</string>
+  <string name="date">Według daty</string>
+  <string name="duration">Według długości</string>
+  <string name="ascending">Rosnąco</string>
+  <string name="descending">Malejąco</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Logowanie do Flattr</string>
   <string name="flattr_auth_explanation">Naciśnij przycisk poniżej by zacząć proces autoryzacji. Zostaniesz przekierowany na stronę logowania do flattr w przeglądarce i zostaniesz poproszony o przyznanie zezwolenia AntennaPod-owi na flattr-owanie. Po daniu zezwolenia powrócisz do tej strony automatycznie.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Usługi</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Wstrzymaj odtwarzanie kiedy słuchawki zostaną odłączone</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Wznów odtwarzanie kiedy słuchawki zostaną podłączone ponownie</string>
   <string name="pref_followQueue_sum">Przeskocz do następnego elementu kolejki po zakończeniu odtwarzania</string>
+  <string name="pref_auto_delete_sum">Usuń odcinek kiedy jego odtwarzanie zostanie zakończone</string>
+  <string name="pref_auto_delete_title">Automatyczne usuwanie</string>
   <string name="playback_pref">Odtwarzanie</string>
   <string name="network_pref">Sieć</string>
   <string name="pref_autoUpdateIntervall_title">Częstość aktualizacji</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Odtwarzanie ciągłe</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi media pobrane</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Słuchawki odłączone</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Słuchawki podłączone ponownie</string>
   <string name="pref_mobileUpdate_title">Aktualizacje mobilne</string>
   <string name="pref_mobileUpdate_sum">Zezwól na aktualizacje poprzez sieć komórkową</string>
   <string name="refreshing_label">Odświeżanie</string>

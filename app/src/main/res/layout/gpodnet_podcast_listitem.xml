@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+   xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/listitem_threeline_height">
+    android:layout_height="@dimen/listitem_threeline_height"
+    tools:background="@android:color/darker_gray">
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -17,7 +19,9 @@
         android:adjustViewBounds="true"
         android:contentDescription="@string/cover_label"
         android:cropToPadding="true"
-        android:scaleType="fitXY" />
+        android:scaleType="fitXY"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark" />
 
     <TextView
         android:id="@+id/txtvTitle"
@@ -28,5 +32,7 @@
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
         android:layout_toRightOf="@id/imgvCover"
-        android:maxLines="1" />
+        android:maxLines="1"
+        tools:text="Podcast title"
+        tools:background="@android:color/holo_green_dark" />
 </RelativeLayout>

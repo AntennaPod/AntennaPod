@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:background="@android:color/darker_gray" >
 
     <ImageView
         android:id="@+id/drag_handle"
@@ -13,7 +14,9 @@
         android:layout_margin="8dp"
         android:contentDescription="@string/drag_handle_content_description"
         android:scaleType="center"
-        android:src="?attr/dragview_background" />
+        android:src="?attr/dragview_background"
+        tools:src="@drawable/ic_drag_handle"
+        tools:background="@android:color/holo_green_dark" />
 
     <ImageView
         android:id="@+id/imgvImage"
@@ -23,7 +26,9 @@
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:contentDescription="@string/cover_label"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark"/>
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -32,7 +37,8 @@
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:background="@android:color/holo_red_dark">
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -41,7 +47,9 @@
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true" />
+            android:layout_alignParentTop="true"
+            android:text="Queue item title"
+            tools:background="@android:color/holo_blue_light" />
 
         <RelativeLayout
             android:id="@+id/bottom_bar"
@@ -57,7 +65,9 @@
                 style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentLeft="true" />
+                android:layout_alignParentLeft="true"
+                android:text="00:42:23"
+                tools:background="@android:color/holo_blue_light" />
 
             <ProgressBar
                 android:id="@+id/pbar_download_progress"
@@ -67,7 +77,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
                 android:layout_toRightOf="@id/txtvPosition"
-                android:max="100" />
+                android:max="100"
+                tools:background="@android:color/holo_blue_light" />
 
         </RelativeLayout>
     </RelativeLayout>

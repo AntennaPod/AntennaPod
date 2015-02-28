@@ -1,9 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:background="@android:color/darker_gray">
 
     <ImageView
         android:id="@+id/imgvImage"
@@ -14,7 +16,9 @@
         android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
         android:contentDescription="@string/cover_label"
-        android:scaleType="centerCrop" />
+        android:scaleType="centerCrop"
+        tools:src="@drawable/ic_stat_antenna_default"
+        tools:background="@android:color/holo_green_dark" />
 
     <RelativeLayout
         android:layout_width="0dp"
@@ -22,7 +26,8 @@
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
         android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
-        android:layout_weight="1">
+        android:layout_weight="1"
+        tools:background="@android:color/holo_red_dark">
 
         <TextView
             android:id="@+id/txtvTitle"
@@ -33,7 +38,9 @@
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="4dp" />
+            android:layout_marginBottom="4dp"
+            tools:text="Downloaded episode title"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvSize"
@@ -41,7 +48,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
-            android:layout_below="@id/txtvTitle" />
+            android:layout_below="@id/txtvTitle"
+            tools:text="23 MB"
+            tools:background="@android:color/holo_green_dark" />
 
         <TextView
             android:id="@+id/txtvPublished"
@@ -49,7 +58,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
-            android:layout_below="@id/txtvTitle" />
+            android:layout_below="@id/txtvTitle"
+            tools:text="Jan 23"
+            tools:background="@android:color/holo_green_dark" />
 
     </RelativeLayout>
 
@@ -64,6 +75,8 @@
         android:contentDescription="@string/remove_episode_lable"
         android:focusable="false"
         android:focusableInTouchMode="false"
-        android:src="?attr/content_discard" />
+        android:src="?attr/content_discard"
+        tools:src="@drawable/ic_delete_white_24dp"
+        tools:background="@android:color/holo_green_dark" />
 
 </LinearLayout>

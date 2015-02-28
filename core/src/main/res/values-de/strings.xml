@@ -111,7 +111,7 @@
   <string name="download_cancelled_msg">Download abgebrochen</string>
   <string name="download_report_title">Download abgeschlossen</string>
   <string name="download_error_malformed_url">Fehler in URL</string>
-  <string name="download_error_io_error">IO Error</string>
+  <string name="download_error_io_error">E/A Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
   <string name="download_error_db_access">Datenbankzugriffsfehler</string>
   <string name="downloads_left">\u0020Downloads übrig</string>
@@ -144,6 +144,12 @@
   <string name="removed_from_queue">Element entfernt</string>
   <string name="move_to_top_label">Zum Anfang verschieben</string>
   <string name="move_to_bottom_label">Zum Ende verschieben</string>
+  <string name="sort">Sortieren</string>
+  <string name="alpha">Alphabetisch</string>
+  <string name="date">Datum</string>
+  <string name="duration">Dauer</string>
+  <string name="ascending">Aufsteigend</string>
+  <string name="descending">Absteigend</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
   <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
@@ -185,7 +191,10 @@
   <string name="services_label">Dienste</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe wenn der Kopfhörer entfernt worden ist.</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen wenn Kopfhörer wieder reingesteckt werden</string>
   <string name="pref_followQueue_sum">Springe zur nächsten Episode  wenn die vorherige Episode endet</string>
+  <string name="pref_auto_delete_sum">Episode löschen wenn Wiedergabe beendet</string>
+  <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervall_title">Aktualisierungsintervall</string>
@@ -194,6 +203,7 @@
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer-Trennung</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder reingesteckt</string>
   <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
   <string name="pref_mobileUpdate_sum">Erlaube Aktualisierungen über die mobile Datenverbindung</string>
   <string name="refreshing_label">Aktualisiere</string>
@@ -213,6 +223,8 @@
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
   <string name="pref_autodl_wifi_filter_title">W-LAN-Filter aktivieren</string>
   <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
+  <string name="pref_automatic_download_on_battery_title">Automatischer Download im Batterie Modus</string>
+  <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn die Batterie nicht geladen wird</string>
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>

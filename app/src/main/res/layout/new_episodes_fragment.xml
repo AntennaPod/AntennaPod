@@ -2,6 +2,7 @@
 
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:dslv="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools"
              android:orientation="vertical"
              android:layout_width="match_parent"
              android:layout_height="match_parent">
@@ -25,7 +26,8 @@
             dslv:sort_enabled="false"
             dslv:track_drag_sort="false"
             dslv:float_background_color="?attr/dragview_float_background"
-            dslv:use_default_controller="true"/>
+            dslv:use_default_controller="true"
+            tools:background="@android:color/holo_green_dark"/>
 
     <TextView
         android:id="@id/android:empty"
@@ -41,6 +43,10 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:indeterminateOnly="true"
-        android:visibility="gone"/>
+        android:visibility="gone"
+        tools:visibility="visible"
+        tools:layout_width="match_parent"
+        tools:layout_height="64dp"
+        tools:background="@android:color/holo_red_light"/>
 
 </FrameLayout>
