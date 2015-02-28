@@ -163,9 +163,10 @@ public class PreferenceController {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        activity.startActivityForResult(
-                                new Intent(activity,
-                                        DirectoryChooserActivity.class),
+                        Intent intent = new Intent(activity,
+                                DirectoryChooserActivity.class);
+                        intent.putExtra(DirectoryChooserActivity.NON_EMPTY_DIRECTORY_WARNING, true);
+                        activity.startActivityForResult(intent,
                                 DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
                         );
                         return true;

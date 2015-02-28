@@ -15,16 +15,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Let's the user choose a directory on the storage device. The selected folder
@@ -37,6 +44,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	public static final String RESULT_SELECTED_DIR = "selected_dir";
 	public static final int RESULT_CODE_DIR_SELECTED = 1;
+    public static final String NON_EMPTY_DIRECTORY_WARNING = "warn_non_empty_directory";
 
 	private Button butConfirm;
 	private Button butCancel;
@@ -52,6 +60,8 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	private FileObserver fileObserver;
 
+    private boolean warnNonEmptyDirectory = false;
+
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		setTheme(UserPreferences.getTheme());
@@ -65,15 +75,18 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 		txtvSelectedFolder = (TextView) findViewById(R.id.txtvSelectedFolder);
 		listDirectories = (ListView) findViewById(R.id.directory_list);
 
-		butConfirm.setOnClickListener(new OnClickListener() {
+        if(getIntent().getExtras() != null) {
+            warnNonEmptyDirectory = getIntent().getExtras().getBoolean(NON_EMPTY_DIRECTORY_WARNING, false);
+        }
 
+		butConfirm.setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
 				if (isValidFile(selectedDir)) {
-					if (selectedDir.list().length == 0) {
-						returnSelectedFolder();
+                    if(warnNonEmptyDirectory && selectedDir.list().length > 0) {
+                        showNonEmptyDirectoryWarning();
 					} else {
-						showNonEmptyDirectoryWarning();
+                        returnSelectedFolder();
 					}
 				}
 			}

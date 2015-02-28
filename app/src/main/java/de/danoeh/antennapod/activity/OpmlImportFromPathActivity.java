@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -11,13 +12,18 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
+import java.io.Reader;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
-
-import java.io.*;
 
 /**
  * Lets the user start the OPML-import process from a path
@@ -25,6 +31,7 @@ import java.io.*;
 public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     private static final String TAG = "OpmlImportFromPathActivity";
     private TextView txtvPath;
+    private Button butChoose;
     private Button butStart;
     private String importPath;
 
@@ -36,9 +43,20 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setContentView(R.layout.opml_import);
 
+        butChoose = (Button)findViewById(R.id.butChoosePath);
         txtvPath = (TextView) findViewById(R.id.txtvPath);
         butStart = (Button) findViewById(R.id.butStartImport);
 
+        butChoose.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivityForResult(
+                        new Intent(OpmlImportFromPathActivity.this,
+                                DirectoryChooserActivity.class),
+                        DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
+                );
+            }
+        });
         butStart.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,13 +64,13 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
             }
 
         });
+        setImportPath();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        setImportPath();
     }
 
     /**
@@ -167,5 +185,18 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         dialog.create().show();
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "activity result: " + requestCode + " " + resultCode);
+        if (requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+            if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+                String dir = data
+                        .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
+                Log.d(TAG, dir);
+                txtvPath.setText(dir);
+                importPath = dir.toString();
+            }
+        }
+    }
 
 }
