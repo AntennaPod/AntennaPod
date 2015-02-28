@@ -80,6 +80,17 @@
                 android:max="100"
                 tools:background="@android:color/holo_blue_light" />
 
+            <TextView
+                android:id="@+id/txtvPublished"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="4dp"
+                android:ellipsize="end"
+                tools:text="Jan 23"
+                tools:background="@android:color/holo_green_dark" />
+
         </RelativeLayout>
     </RelativeLayout>
 
