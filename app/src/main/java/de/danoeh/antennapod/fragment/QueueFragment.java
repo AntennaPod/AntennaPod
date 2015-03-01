@@ -3,7 +3,6 @@ package de.danoeh.antennapod.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -285,6 +284,10 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                final FeedItem item = queue.remove(which);
+                DBWriter.removeQueueItem(getActivity(), item.getId(), false);
+                listAdapter.notifyDataSetChanged();
             }
         });
 
