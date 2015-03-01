@@ -301,6 +301,10 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                final FeedItem item = queue.remove(which);
+                DBWriter.removeQueueItem(getActivity(), item.getId(), false);
+                listAdapter.notifyDataSetChanged();
             }
         });
 
