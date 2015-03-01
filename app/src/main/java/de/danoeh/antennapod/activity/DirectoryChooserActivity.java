@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Environment;
 import android.os.FileObserver;
 import android.support.v4.app.NavUtils;
 import android.support.v7.app.ActionBarActivity;
@@ -158,7 +157,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 		listDirectoriesAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, filenames);
 		listDirectories.setAdapter(listDirectoriesAdapter);
-		changeDirectory(Environment.getExternalStorageDirectory());
+        changeDirectory(UserPreferences.getDataFolder(this, null));
 	}
 
 	/**
