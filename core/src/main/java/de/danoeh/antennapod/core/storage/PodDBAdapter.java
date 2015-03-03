@@ -889,10 +889,6 @@ public class PodDBAdapter {
         db.update(TABLE_NAME_FEED_MEDIA, values, null, null);
     }
 
-    public void clearDownloadLog() {
-        db.delete(TABLE_NAME_DOWNLOAD_LOG, null, null);
-    }
-
     /**
      * Get all Feeds from the Feed Table.
      *

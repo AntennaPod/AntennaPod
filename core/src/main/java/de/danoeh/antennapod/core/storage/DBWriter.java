@@ -239,26 +239,6 @@ public class DBWriter {
     }
 
     /**
-     * Deletes the entire download log.
-     *
-     * @param context A context that is used for opening a database connection.
-     */
-    public static Future<?> clearDownloadLog(final Context context) {
-        return dbExec.submit(new Runnable() {
-            @Override
-            public void run() {
-                PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                adapter.clearDownloadLog();
-                adapter.close();
-                EventDistributor.getInstance()
-                        .sendDownloadLogUpdateBroadcast();
-            }
-        });
-    }
-
-
-    /**
      * Adds a FeedMedia object to the playback history. A FeedMedia object is in the playback history if
      * its playback completion date is set to a non-null value. This method will set the playback completion date to the
      * current date regardless of the current value.
