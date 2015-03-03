@@ -61,6 +61,8 @@ public class PreferenceController {
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
 
+    private static final int REQUEST_CHOOSE_DATA_DIR = 1;
+    private static final int REQUEST_CHOOSE_OMPL_EXPORT_DIR = 2;
 
     private final PreferenceUI ui;
 
@@ -150,9 +152,12 @@ public class PreferenceController {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        new OpmlExportWorker(activity)
-                                .executeAsync();
-
+                        Intent intent = new Intent(activity,
+                                DirectoryChooserActivity.class);
+                        intent.putExtra(DirectoryChooserActivity.NON_EMPTY_DIRECTORY_WARNING, false);
+                        activity.startActivityForResult(intent,
+                                REQUEST_CHOOSE_OMPL_EXPORT_DIR
+                        );
                         return true;
                     }
                 }
@@ -163,10 +168,11 @@ public class PreferenceController {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        activity.startActivityForResult(
-                                new Intent(activity,
-                                        DirectoryChooserActivity.class),
-                                DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
+                        Intent intent = new Intent(activity,
+                                DirectoryChooserActivity.class);
+                        intent.putExtra(DirectoryChooserActivity.NON_EMPTY_DIRECTORY_WARNING, true);
+                        activity.startActivityForResult(intent,
+                                REQUEST_CHOOSE_DATA_DIR
                         );
                         return true;
                     }
@@ -311,9 +317,18 @@ public class PreferenceController {
         if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
             String dir = data
                     .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Setting data folder");
-            UserPreferences.setDataFolder(dir);
+            switch(requestCode) {
+                case REQUEST_CHOOSE_DATA_DIR:
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Setting data folder");
+                    UserPreferences.setDataFolder(dir);
+                    break;
+                case REQUEST_CHOOSE_OMPL_EXPORT_DIR:
+                    File path = new File(dir, OpmlExportWorker.DEFAULT_OUTPUT_NAME);
+                    new OpmlExportWorker(ui.getActivity(), path)
+                            .executeAsync();
+                    break;
+            }
         }
     }
 
