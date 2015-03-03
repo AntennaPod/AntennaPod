@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,18 +72,29 @@ public class QueueListAdapter extends BaseAdapter {
             holder.progress = (ProgressBar) convertView
                     .findViewById(R.id.pbar_download_progress);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
+            holder.pubDate = (TextView) convertView
+                    .findViewById(R.id.txtvPublished);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
         }
 
         holder.title.setText(item.getTitle());
+        holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
 
         AdapterUtils.updateEpisodePlaybackProgress(item, context.getResources(), holder.position, holder.progress);
 
         FeedMedia media = item.getMedia();
         if (media != null) {
             final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
+
+            if (isDownloadingMedia) {
+                holder.progress.setVisibility(View.VISIBLE);
+                holder.pubDate.setVisibility(View.GONE);
+            } else {
+                holder.progress.setVisibility(View.GONE);
+                holder.pubDate.setVisibility(View.VISIBLE);
+            }
 
             if (!media.isDownloaded()) {
                 if (isDownloadingMedia) {
@@ -121,6 +133,7 @@ public class QueueListAdapter extends BaseAdapter {
         TextView position;
         ProgressBar progress;
         ImageButton butSecondary;
+        TextView pubDate;
     }
 
     public interface ItemAccess {
