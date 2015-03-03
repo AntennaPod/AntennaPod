@@ -24,10 +24,10 @@ import de.danoeh.antennapod.core.util.LangUtils;
  */
 public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
     private static final String TAG = "OpmlExportWorker";
-    public static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds.opml";
+    private static final String DEFAULT_OUTPUT_NAME = "antennapod-feeds.opml";
     public static final String EXPORT_DIR = "export/";
 
-    private final Context context;
+    private Context context;
     private File output;
 
     private ProgressDialog progDialog;
