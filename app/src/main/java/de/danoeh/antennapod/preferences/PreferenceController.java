@@ -59,8 +59,6 @@ public class PreferenceController {
     public static final String PREF_GPODNET_LOGOUT = "pref_gpodnet_logout";
     public static final String PREF_GPODNET_HOSTNAME = "pref_gpodnet_hostname";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
-    private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
-
 
     private final PreferenceUI ui;
 

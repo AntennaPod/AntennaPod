@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
-
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -35,6 +34,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.QueueAccess;
@@ -386,7 +386,16 @@ public class DBWriter {
                                         context, itemIds[i]);
 
                                 if (item != null) {
-                                    queue.add(item);
+                                    // add item to either front ot back of queue
+                                    boolean addToFront = PreferenceManager.getDefaultSharedPreferences(context)
+                                            .getBoolean(UserPreferences.PREF_QUEUE_ADD_TO_FRONT, false);
+
+                                    if(addToFront){
+                                        queue.add(0, item);
+                                    }else{
+                                        queue.add(item);
+                                    }
+
                                     queueModified = true;
                                     if (!item.isRead()) {
                                         item.setRead(true);
