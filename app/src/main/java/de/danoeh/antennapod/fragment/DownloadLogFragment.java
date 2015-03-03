@@ -1,34 +1,24 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
-import android.support.v4.view.MenuItemCompat;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
-
-import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadLogAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+
+import java.util.List;
 
 /**
  * Shows the download log
  */
 public class DownloadLogFragment extends ListFragment {
-
-    private static final String TAG = "DownloadLogFragment";
 
     private List<DownloadStatus> downloadLog;
     private DownloadLogAdapter adapter;
@@ -39,7 +29,6 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onStart() {
         super.onStart();
-        setHasOptionsMenu(true);
         EventDistributor.getInstance().register(contentUpdate);
         startItemLoader();
     }
@@ -74,7 +63,7 @@ public class DownloadLogFragment extends ListFragment {
         }
         setListShown(true);
         adapter.notifyDataSetChanged();
-        getActivity().supportInvalidateOptionsMenu();
+
     }
 
     private DownloadLogAdapter.ItemAccess itemAccess = new DownloadLogAdapter.ItemAccess() {
@@ -113,41 +102,6 @@ public class DownloadLogFragment extends ListFragment {
     private void stopItemLoader() {
         if (itemLoader != null) {
             itemLoader.cancel(true);
-        }
-    }
-
-    @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
-            MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
-            TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
-            clearHistory.setIcon(drawables.getDrawable(0));
-            drawables.recycle();
-        }
-    }
-
-    @Override
-    public void onPrepareOptionsMenu(Menu menu) {
-        super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            menu.findItem(R.id.clear_history_item).setVisible(downloadLog != null && !downloadLog.isEmpty());
-        }
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (!super.onOptionsItemSelected(item)) {
-            switch (item.getItemId()) {
-                case R.id.clear_history_item:
-                    DBWriter.clearDownloadLog(getActivity());
-                    return true;
-                default:
-                    return false;
-            }
-        } else {
-            return true;
         }
     }
 
