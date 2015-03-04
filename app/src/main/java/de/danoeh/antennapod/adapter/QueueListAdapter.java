@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.Converter;
 
 /**
  * List adapter for the queue.
@@ -64,12 +66,16 @@ public class QueueListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.queue_listitem,
                     parent, false);
+            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
+            holder.progressLeft = (TextView) convertView.findViewById(R.id.txtvProgressLeft);
+            holder.progressRight = (TextView) convertView
+                    .findViewById(R.id.txtvProgressRight);
             holder.butSecondary = (ImageButton) convertView
                     .findViewById(R.id.butSecondaryAction);
-            holder.position = (TextView) convertView.findViewById(R.id.txtvPosition);
             holder.progress = (ProgressBar) convertView
-                    .findViewById(R.id.pbar_download_progress);
+                    .findViewById(R.id.progressBar);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             convertView.setTag(holder);
         } else {
@@ -77,19 +83,39 @@ public class QueueListAdapter extends BaseAdapter {
         }
 
         holder.title.setText(item.getTitle());
-
-        AdapterUtils.updateEpisodePlaybackProgress(item, context.getResources(), holder.position, holder.progress);
-
         FeedMedia media = item.getMedia();
+
+
+        holder.title.setText(item.getTitle());
+        String pubDate = DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL);
+        holder.pubDate.setText(pubDate.replace(" ", "\n"));
+
         if (media != null) {
             final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
-
-            if (!media.isDownloaded()) {
-                if (isDownloadingMedia) {
-                    // item is being downloaded
-                    holder.progress.setVisibility(View.VISIBLE);
-                    holder.progress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
+            FeedItem.State state = item.getState();
+            if (isDownloadingMedia) {
+                holder.progressLeft.setText(Converter.byteToString(itemAccess.getItemDownloadedBytes(item)));
+                if(itemAccess.getItemDownloadSize(item) > 0) {
+                    holder.progressRight.setText(Converter.byteToString(itemAccess.getItemDownloadSize(item)));
+                } else {
+                    holder.progressRight.setText(Converter.byteToString(media.getSize()));
                 }
+                holder.progress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
+                holder.progress.setVisibility(View.VISIBLE);
+            } else if (state == FeedItem.State.PLAYING
+                    || state == FeedItem.State.IN_PROGRESS) {
+                if (media.getDuration() > 0) {
+                    int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                    holder.progress.setProgress(progress);
+                    holder.progress.setVisibility(View.VISIBLE);
+                    holder.progressLeft.setText(Converter
+                            .getDurationStringLong(media.getPosition()));
+                    holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
+                }
+            } else {
+                holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
+                holder.progress.setVisibility(View.GONE);
             }
         }
 
@@ -116,18 +142,20 @@ public class QueueListAdapter extends BaseAdapter {
 
 
     static class Holder {
-        TextView title;
         ImageView imageView;
-        TextView position;
+        TextView title;
+        TextView pubDate;
+        TextView progressLeft;
+        TextView progressRight;
         ProgressBar progress;
         ImageButton butSecondary;
     }
 
     public interface ItemAccess {
-        int getCount();
-
         FeedItem getItem(int position);
-
+        int getCount();
+        long getItemDownloadedBytes(FeedItem item);
+        long getItemDownloadSize(FeedItem item);
         int getItemDownloadProgressPercent(FeedItem item);
     }
 }

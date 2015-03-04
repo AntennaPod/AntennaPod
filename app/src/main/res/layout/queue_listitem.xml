@@ -32,7 +32,7 @@
 
     <RelativeLayout
         android:layout_width="0dp"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
         android:layout_marginLeft="@dimen/listitem_threeline_textleftpadding"
         android:layout_marginRight="@dimen/listitem_threeline_textrightpadding"
@@ -40,45 +40,71 @@
         android:layout_weight="1"
         tools:background="@android:color/holo_red_dark">
 
+        <!-- order is important, pubDate first! -->
+        <TextView
+            android:id="@+id/txtvPubDate"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:lines="2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginLeft="8dp"
+            android:gravity="right|bottom"
+            android:text="Feb\n12"
+            tools:background="@android:color/holo_blue_light" />
+
         <TextView
             android:id="@+id/txtvTitle"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/txtvPubDate"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
             android:text="Queue item title"
+            android:ellipsize="end"
             tools:background="@android:color/holo_blue_light" />
 
         <RelativeLayout
             android:id="@+id/bottom_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtvTitle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginTop="16dp">
+            android:layout_alignParentRight="true">
 
             <TextView
-                android:id="@+id/txtvPosition"
+                android:id="@+id/txtvProgressLeft"
                 style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
+                android:layout_marginBottom="0dp"
                 android:text="00:42:23"
-                tools:background="@android:color/holo_blue_light" />
+                tools:background="@android:color/holo_blue_light"/>
 
-            <ProgressBar
-                android:id="@+id/pbar_download_progress"
-                style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/txtvProgressRight"
+                style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentRight="true"
-                android:layout_marginLeft="8dp"
-                android:layout_toRightOf="@id/txtvPosition"
+                android:layout_marginBottom="0dp"
+                tools:text="Jan 23"
+                tools:background="@android:color/holo_green_dark" />
+
+            <ProgressBar
+                android:id="@+id/progressBar"
+                style="?android:attr/progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/txtvProgressLeft"
+                android:layout_marginTop="-2dp"
                 android:max="100"
                 tools:background="@android:color/holo_blue_light" />
+
 
         </RelativeLayout>
     </RelativeLayout>
