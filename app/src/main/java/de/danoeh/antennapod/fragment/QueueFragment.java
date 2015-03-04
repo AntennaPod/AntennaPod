@@ -367,6 +367,33 @@ public class QueueFragment extends Fragment {
         }
 
         @Override
+        public long getItemDownloadedBytes(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded bytes: " + downloader.getDownloadRequest().getSoFar());
+                        return downloader.getDownloadRequest().getSoFar();
+                    }
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public long getItemDownloadSize(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded size: " + downloader.getDownloadRequest().getSize());
+                        return downloader.getDownloadRequest().getSize();
+                    }
+                }
+            }
+            return 0;
+        }
+        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
