@@ -1,5 +1,5 @@
 ```
-Please note that AntennaPod is no longer maintained until further notice.
+Please note that AntennaPod is no longer maintained until further notice. See #604 for details about the future.
 ```
 
 How to report a bug
