@@ -4,14 +4,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:gravity="center"
     tools:background="@android:color/darker_gray">
 
-    <TextView
-        android:layout_width="match_parent"
+    <Button
+        android:id="@+id/butChoosePath"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
         android:layout_margin="8dp"
-        android:text="@string/opml_import_explanation"
-        tools:background="@android:color/holo_green_dark" />
+        android:text="@string/choose_data_directory" />
 
     <TextView
         android:id="@+id/txtvPath"
@@ -19,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         tools:text="Path"
-        tools:background="@android:color/holo_green_dark" />
+        tools:background="@android:color/holo_green_dark"
+        android:gravity="center"/>
 
     <Button
         android:id="@+id/butStartImport"
