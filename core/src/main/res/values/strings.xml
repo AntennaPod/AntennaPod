@@ -286,7 +286,7 @@
 
     <!-- OPML import and export -->
     <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
-    <string name="opml_import_explanation">To import an OPML file, you have to place it in the following directory and press the button below to start the import process. </string>
+    <string name="opml_import_explanation">To import an OPML file, you can either manually place it in the import directory or choose a file, then press the \'Start import\'-button. </string>
     <string name="start_import_label">Start import</string>
     <string name="opml_import_label">OPML import</string>
     <string name="opml_directory_error">ERROR!</string>
