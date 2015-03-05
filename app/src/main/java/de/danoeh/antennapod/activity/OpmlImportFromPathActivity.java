@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
@@ -24,7 +27,9 @@ import java.io.*;
  */
 public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     private static final String TAG = "OpmlImportFromPathActivity";
+    private static final int CHOOSE_OPML_FILE = 1;
     private TextView txtvPath;
+    private Button butChoose;
     private Button butStart;
     private String importPath;
 
@@ -37,7 +42,15 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         setContentView(R.layout.opml_import);
 
         txtvPath = (TextView) findViewById(R.id.txtvPath);
+        butChoose = (Button) findViewById(R.id.butChooseImport);
         butStart = (Button) findViewById(R.id.butStartImport);
+
+        butChoose.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                chooseFileToImport();
+            }
+        });
 
         butStart.setOnClickListener(new OnClickListener() {
             @Override
@@ -52,7 +65,9 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        setImportPath();
+        if (txtvPath.getText().equals("")) {
+            setImportPath();
+        }
     }
 
     /**
@@ -118,6 +133,8 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
                                 Toast.LENGTH_LONG);
                 toast.show();
             }
+        } else if (dir.isFile()) {
+            startImport(dir);
         }
     }
 
@@ -167,5 +184,32 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         dialog.create().show();
     }
 
+    /**
+     * Creates an implicit intent to launch a file manager which lets
+     * the user choose a specific OPML-file to import from.
+     */
+    private void chooseFileToImport() {
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setData(Uri.parse("file://"));
+        try {
+            startActivityForResult(intent, CHOOSE_OPML_FILE);
+        } catch (ActivityNotFoundException e) {
+            Log.e(TAG, "No activity found. Trying without URI scheme.");
+            intent.setData(null);
+            startActivityForResult(intent, CHOOSE_OPML_FILE);
+        }
+    }
+
+    /**
+     * Gets the path of the file chosen with chooseFileToImport()
+     */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
+            importPath = data.getData().getPath();
+            txtvPath.setText(importPath);
+        }
+    }
 
 }

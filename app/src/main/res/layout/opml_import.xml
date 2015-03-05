@@ -22,6 +22,14 @@
         tools:background="@android:color/holo_green_dark" />
 
     <Button
+        android:id="@+id/butChooseImport"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:layout_margin="8dp"
+        android:text="@string/choose_file_to_import_label" />
+
+    <Button
         android:id="@+id/butStartImport"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
