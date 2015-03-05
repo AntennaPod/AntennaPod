@@ -44,4 +44,5 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp:2.2.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'com.squareup.okio:okio:1.2.0'
+    compile 'com.nineoldandroids:library:2.4.0'
 }

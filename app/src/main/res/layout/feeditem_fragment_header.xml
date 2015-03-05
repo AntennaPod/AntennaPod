@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
         android:orientation="horizontal"
-        android:paddingBottom="8dp">
+        android:paddingBottom="0dp">
 
         <ImageView
             android:id="@+id/imgvCover"
@@ -59,6 +59,29 @@
             android:maxLines="5"
             tools:text="Podcast title"
             tools:background="@android:color/holo_green_dark" />
+
+        <TextView
+            android:id="@+id/txtvDuration"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/imgvCover"
+            android:layout_below="@id/txtvTitle"
+            android:layout_marginLeft="16dp"
+            tools:text="00:42:23"
+            tools:background="@android:color/holo_green_dark"/>
+
+        <TextView
+            android:id="@+id/txtvPublished"
+            style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/butMoreActions"
+            android:layout_marginRight="8dp"
+            tools:text="Jan 23"
+            tools:background="@android:color/holo_green_dark"
+            android:layout_below="@+id/txtvTitle"/>
+
     </RelativeLayout>
 
     <ProgressBar
