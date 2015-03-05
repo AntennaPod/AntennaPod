@@ -16,6 +16,7 @@ import android.support.v4.util.Pair;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -49,6 +50,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
@@ -91,6 +93,8 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private View header;
     private WebView webvDescription;
     private TextView txtvTitle;
+    private TextView txtvDuration;
+    private TextView txtvPublished;
     private ImageView imgvCover;
     private ProgressBar progbarDownload;
     private ProgressBar progbarLoading;
@@ -166,6 +170,8 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         header = inflater.inflate(R.layout.feeditem_fragment_header, toolbar, false);
         root = (ViewGroup) layout.findViewById(R.id.content_root);
         txtvTitle = (TextView) header.findViewById(R.id.txtvTitle);
+        txtvDuration = (TextView) header.findViewById(R.id.txtvDuration);
+        txtvPublished = (TextView) header.findViewById(R.id.txtvPublished);
         if (Build.VERSION.SDK_INT >= 14) { // ellipsize is causing problems on old versions, see #448
             txtvTitle.setEllipsize(TextUtils.TruncateAt.END);
         }
@@ -313,6 +319,8 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private void updateAppearance() {
         txtvTitle.setText(item.getTitle());
+        txtvPublished.setText(DateUtils.formatDateTime(getActivity(), item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
+
         Picasso.with(getActivity()).load(item.getImageUri())
                 .fit()
                 .into(imgvCover);
@@ -348,7 +356,10 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
             }
 
             drawables.recycle();
-        } else {
+        } else {if(media.getDuration() > 0) {
+                txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
+            }
+
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.av_play,
                     R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel});
