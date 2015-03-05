@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -66,6 +67,10 @@ public class QueueFragment extends Fragment {
     private boolean viewsCreated = false;
     private boolean isUpdatingFeeds = false;
 
+    private static final String PREFS = "QueueFragment";
+    private static final String PREF_KEY_LIST_TOP = "list_top";
+    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
+
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
     private DownloadObserver downloadObserver = null;
@@ -101,6 +106,18 @@ public class QueueFragment extends Fragment {
         if (viewsCreated && itemsLoaded) {
             onFragmentLoaded();
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
+        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.commit();
     }
 
     @Override
@@ -328,6 +345,11 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
+
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
+        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
+        listView.setSelectionFromTop(listSelection, top);
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
