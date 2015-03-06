@@ -2,8 +2,8 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -30,6 +30,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -174,6 +175,21 @@ public class QueueFragment extends Fragment {
                     if (feeds != null) {
                         DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
+                    return true;
+                case R.id.clear_queue:
+                    // make sure the user really wants to clear the queue
+                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                            R.string.clear_queue_label,
+                            R.string.clear_queue_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(
+                                DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.clearQueue(getActivity());
+                        }
+                    };
+                    conDialog.createNewDialog().show();
                     return true;
                 case R.id.queue_sort_alpha_asc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
