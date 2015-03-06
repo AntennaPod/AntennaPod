@@ -116,13 +116,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onPause() {
         super.onPause();
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
-        View v = listView.getChildAt(0);
-        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
-        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
-        editor.putInt(PREF_KEY_LIST_TOP, top);
-        editor.commit();
+        saveScrollPosition();
     }
 
     @Override
@@ -136,6 +130,30 @@ public class QueueFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set((MainActivity) activity);
+    }
+
+    private void saveScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
+        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.commit();
+    }
+
+    private void restoreScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
+        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
+        if(listSelection > 0 || top > 0) {
+            listView.setSelectionFromTop(listSelection, top);
+            // restore once, then forget
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
+            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.commit();
+        }
     }
 
     private void resetViewState() {
@@ -374,10 +392,7 @@ public class QueueFragment extends Fragment {
         }
         listAdapter.notifyDataSetChanged();
 
-        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
-        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
-        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
-        listView.setSelectionFromTop(listSelection, top);
+        restoreScrollPosition();
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
