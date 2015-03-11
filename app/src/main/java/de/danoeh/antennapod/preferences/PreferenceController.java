@@ -9,10 +9,14 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.preference.CheckBoxPreference;
+import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import java.io.File;
@@ -214,6 +218,52 @@ public class PreferenceController {
                             }
                         }
                 );
+        ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)
+                .setOnPreferenceChangeListener(
+                        new Preference.OnPreferenceChangeListener() {
+                            @Override
+                            public boolean onPreferenceChange(Preference preference, Object o) {
+                                if (o instanceof String) {
+                                    try {
+                                        int value = Integer.valueOf((String) o);
+                                        if (1 <= value && value <= 50) {
+                                            setParallelDownloadsText(value);
+                                            return true;
+                                        }
+                                    } catch(NumberFormatException e) {
+                                        return false;
+                                    }
+                                }
+                                return false;
+                            }
+                        }
+                );
+        // validate and set correct value: number of downloads between 1 and 50 (inclusive)
+        final EditText ev = ((EditTextPreference)ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)).getEditText();
+        ev.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.length() > 0) {
+                    try {
+                        int value = Integer.valueOf(s.toString());
+                        if (value <= 0) {
+                            ev.setText("1");
+                        } else if (value > 50) {
+                            ev.setText("50");
+                        }
+                    } catch(NumberFormatException e) {
+                        ev.setText("6");
+                    }
+                    ev.setSelection(ev.getText().length());
+                }
+            }
+        });
         ui.findPreference(UserPreferences.PREF_EPISODE_CACHE_SIZE)
                 .setOnPreferenceChangeListener(
                         new Preference.OnPreferenceChangeListener() {
@@ -300,6 +350,7 @@ public class PreferenceController {
 
     public void onResume() {
         checkItemVisibility();
+        setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
         updateGpodnetPreferenceScreen();
@@ -377,6 +428,15 @@ public class PreferenceController {
 
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
                 .setEnabled(UserPreferences.isEnableAutodownload());
+    }
+
+
+    private void setParallelDownloadsText(int downloads) {
+        final Resources res = ui.getActivity().getResources();
+
+        String s = Integer.toString(downloads)
+                    + res.getString(R.string.parallel_downloads_suffix);
+        ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS).setSummary(s);
     }
 
     private void setEpisodeCacheSizeText(int cacheSize) {
