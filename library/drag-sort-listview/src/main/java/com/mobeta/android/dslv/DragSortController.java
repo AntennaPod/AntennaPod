@@ -446,18 +446,15 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
                 @Override
                 public final boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX,
                         float velocityY) {
-                    // Log.d("mobeta", "on fling remove called");
+                    ViewConfiguration vc = ViewConfiguration.get(mDslv.getContext());
+                    int minSwipeVelocity = vc.getScaledMinimumFlingVelocity();
+                    int maxSwipeVelocity = vc.getScaledMaximumFlingVelocity();
                     if (mRemoveEnabled && mIsRemoving) {
                         int w = mDslv.getWidth();
-                        int minPos = w / 5;
-                        if (velocityX > mFlingSpeed) {
-                            if (mPositionX > -minPos) {
-                                mDslv.stopDragWithVelocity(true, velocityX);
-                            }
-                        } else if (velocityX < -mFlingSpeed) {
-                            if (mPositionX < minPos) {
-                                mDslv.stopDragWithVelocity(true, velocityX);
-                            }
+                        if(mPositionX >= w/2) {
+                            mDslv.stopDragWithVelocity(true, velocityX);
+                        } else if(mPositionX >= w/5 && minSwipeVelocity <= velocityX && velocityX <= maxSwipeVelocity) {
+                            mDslv.stopDragWithVelocity(true, velocityX);
                         }
                         mIsRemoving = false;
                     }
