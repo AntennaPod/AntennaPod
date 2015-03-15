@@ -9,9 +9,10 @@
 
     <ImageView
         android:id="@+id/drag_handle"
-        android:layout_width="24dp"
+        android:layout_width="104dp"
         android:layout_height="match_parent"
-        android:layout_margin="8dp"
+        android:layout_marginLeft="-32dp"
+        android:layout_marginRight="-32dp"
         android:contentDescription="@string/drag_handle_content_description"
         android:scaleType="center"
         android:src="?attr/dragview_background"
