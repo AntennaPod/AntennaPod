@@ -66,12 +66,19 @@
                 android:layout_margin="8dp"
                 android:text="@string/browse_gpoddernet_label"/>
 
+            <Button
+                android:id="@+id/butSearchItunes"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/butBrowseGpoddernet"
+                android:layout_margin="8dp"
+                android:text="@string/search_itunes_label"/>
 
             <TextView
                 android:id="@+id/txtvOpmlImport"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/butBrowseGpoddernet"
+                android:layout_below="@id/butSearchItunes"
                 android:layout_margin="8dp"
                 style="@style/AntennaPod.TextView.Heading"
                 android:text="@string/opml_import_label"/>
