@@ -95,6 +95,11 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title"/>
+        <EditTextPreference
+            android:defaultValue="6"
+            android:inputType="number"
+            android:key="prefParallelDownloads"
+            android:title="@string/pref_parallel_downloads_title"/>
         <ListPreference
             android:defaultValue="20"
             android:entries="@array/episode_cache_size_entries"

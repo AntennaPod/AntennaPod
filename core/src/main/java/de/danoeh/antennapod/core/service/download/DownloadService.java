@@ -52,7 +52,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -61,6 +60,7 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -172,12 +172,11 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            if (BuildConfig.DEBUG) Log.d(TAG, "downloadCompletionThread was started");
+            Log.d(TAG, "downloadCompletionThread was started");
             while (!isInterrupted()) {
                 try {
                     Downloader downloader = downloadExecutor.take().get();
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Received 'Download Complete' - message.");
+                    Log.d(TAG, "Received 'Download Complete' - message.");
                     removeDownload(downloader);
                     DownloadStatus status = downloader.getResult();
                     boolean successful = status.isSuccessful();
@@ -213,13 +212,13 @@ public class DownloadService extends Service {
                         queryDownloadsAsync();
                     }
                 } catch (InterruptedException e) {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "DownloadCompletionThread was interrupted");
+                    Log.d(TAG, "DownloadCompletionThread was interrupted");
                 } catch (ExecutionException e) {
                     e.printStackTrace();
                     numberOfDownloads.decrementAndGet();
                 }
             }
-            if (BuildConfig.DEBUG) Log.d(TAG, "End of downloadCompletionThread");
+            Log.d(TAG, "End of downloadCompletionThread");
         }
     };
 
@@ -236,8 +235,7 @@ public class DownloadService extends Service {
     @SuppressLint("NewApi")
     @Override
     public void onCreate() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Service started");
+        Log.d(TAG, "Service started");
         isRunning = true;
         handler = new Handler();
         newMediaFiles = Collections.synchronizedList(new ArrayList<Long>());
@@ -258,8 +256,9 @@ public class DownloadService extends Service {
                 return t;
             }
         });
+        Log.d(TAG, "parallel downloads: " + UserPreferences.getParallelDownloads());
         downloadExecutor = new ExecutorCompletionService<Downloader>(
-                Executors.newFixedThreadPool(NUM_PARALLEL_DOWNLOADS,
+                Executors.newFixedThreadPool(UserPreferences.getParallelDownloads(),
                         new ThreadFactory() {
 
                             @Override
@@ -304,8 +303,7 @@ public class DownloadService extends Service {
 
     @Override
     public void onDestroy() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Service shutting down");
+        Log.d(TAG, "Service shutting down");
         isRunning = false;
 
         if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()) {
@@ -346,8 +344,7 @@ public class DownloadService extends Service {
                     .setLargeIcon(icon)
                     .setSmallIcon(R.drawable.stat_notify_sync);
         }
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Notification set up");
+        Log.d(TAG, "Notification set up");
     }
 
     /**
@@ -427,8 +424,7 @@ public class DownloadService extends Service {
                 String url = intent.getStringExtra(EXTRA_DOWNLOAD_URL);
                 Validate.notNull(url, "ACTION_CANCEL_DOWNLOAD intent needs download url extra");
 
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Cancelling download with url " + url);
+                Log.d(TAG, "Cancelling download with url " + url);
                 Downloader d = getDownloader(url);
                 if (d != null) {
                     d.cancel();
@@ -439,8 +435,7 @@ public class DownloadService extends Service {
             } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
                     d.cancel();
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Cancelled all downloads");
+                    Log.d(TAG, "Cancelled all downloads");
                 }
                 sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 
@@ -451,8 +446,7 @@ public class DownloadService extends Service {
     };
 
     private void onDownloadQueued(Intent intent) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Received enqueue request");
+        Log.d(TAG, "Received enqueue request");
         DownloadRequest request = intent.getParcelableExtra(EXTRA_REQUEST);
         if (request == null) {
             throw new IllegalArgumentException(
@@ -462,7 +456,12 @@ public class DownloadService extends Service {
         Downloader downloader = getDownloader(request);
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
-            downloads.add(downloader);
+            // smaller rss feeds before bigger media files
+            if(request.getFeedfileId() == Feed.FEEDFILETYPE_FEED) {
+                downloads.add(0, downloader);
+            } else {
+                downloads.add(downloader);
+            }
             downloadExecutor.submit(downloader);
             sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
         }
@@ -490,12 +489,10 @@ public class DownloadService extends Service {
         handler.post(new Runnable() {
             @Override
             public void run() {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Removing downloader: "
-                            + d.getDownloadRequest().getSource());
+                Log.d(TAG, "Removing downloader: "
+                        + d.getDownloadRequest().getSource());
                 boolean rc = downloads.remove(d);
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Result of downloads.remove: " + rc);
+                Log.d(TAG, "Result of downloads.remove: " + rc);
                 DownloadRequester.getInstance().removeDownload(d.getDownloadRequest());
                 sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
             }
@@ -544,8 +541,7 @@ public class DownloadService extends Service {
         }
 
         if (createReport) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Creating report");
+            Log.d(TAG, "Creating report");
             // create notification object
             Notification notification = new NotificationCompat.Builder(this)
                     .setTicker(
@@ -569,8 +565,7 @@ public class DownloadService extends Service {
             NotificationManager nm = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
             nm.notify(REPORT_ID, notification);
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "No report is created");
+            Log.d(TAG, "No report is created");
         }
         reportQueue.clear();
     }
@@ -592,13 +587,10 @@ public class DownloadService extends Service {
      * Check if there's something else to download, otherwise stop
      */
     void queryDownloads() {
-        if (BuildConfig.DEBUG) {
-            Log.d(TAG, numberOfDownloads.get() + " downloads left");
-        }
+        Log.d(TAG, numberOfDownloads.get() + " downloads left");
 
         if (numberOfDownloads.get() <= 0 && DownloadRequester.getInstance().hasNoDownloads()) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
+            Log.d(TAG, "Number of downloads is " + numberOfDownloads.get() + ", attempting shutdown");
             stopSelf();
         } else {
             setupNotificationUpdater();
@@ -634,8 +626,7 @@ public class DownloadService extends Service {
      * Is called whenever a Feed is downloaded
      */
     private void handleCompletedFeedDownload(DownloadRequest request) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Handling completed Feed Download");
+        Log.d(TAG, "Handling completed Feed Download");
         feedSyncThread.submitCompletedDownload(request);
 
     }
@@ -644,8 +635,7 @@ public class DownloadService extends Service {
      * Is called whenever a Feed-Image is downloaded
      */
     private void handleCompletedImageDownload(DownloadStatus status, DownloadRequest request) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Handling completed Image Download");
+        Log.d(TAG, "Handling completed Image Download");
         syncExecutor.execute(new ImageHandlerThread(status, request));
     }
 
@@ -653,13 +643,12 @@ public class DownloadService extends Service {
      * Is called whenever a FeedMedia is downloaded.
      */
     private void handleCompletedFeedMediaDownload(DownloadStatus status, DownloadRequest request) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Handling completed FeedMedia Download");
+        Log.d(TAG, "Handling completed FeedMedia Download");
         syncExecutor.execute(new MediaHandlerThread(status, request));
     }
 
     private void handleFailedDownload(DownloadStatus status, DownloadRequest request) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "Handling failed download");
+        Log.d(TAG, "Handling failed download");
         syncExecutor.execute(new FailedDownloadHandler(status, request));
     }
 
@@ -709,12 +698,10 @@ public class DownloadService extends Service {
                 long currentTime = startTime;
                 while (requester.isDownloadingFeeds() && (currentTime - startTime) < WAIT_TIMEOUT) {
                     try {
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "Waiting for " + (startTime + WAIT_TIMEOUT - currentTime) + " ms");
+                        Log.d(TAG, "Waiting for " + (startTime + WAIT_TIMEOUT - currentTime) + " ms");
                         sleep(startTime + WAIT_TIMEOUT - currentTime);
                     } catch (InterruptedException e) {
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "interrupted while waiting for more downloads");
+                        Log.d(TAG, "interrupted while waiting for more downloads");
                         tasks += pollCompletedDownloads();
                     } finally {
                         currentTime = System.currentTimeMillis();
@@ -762,7 +749,7 @@ public class DownloadService extends Service {
                     continue;
                 }
 
-                if (BuildConfig.DEBUG) Log.d(TAG, "Bundling " + results.size() + " feeds");
+                Log.d(TAG, "Bundling " + results.size() + " feeds");
 
                 for (Pair<DownloadRequest, FeedHandlerResult> result : results) {
                     removeDuplicateImages(result.second.feed); // duplicate images have to removed because the DownloadRequester does not accept two downloads with the same download URL yet.
@@ -789,8 +776,7 @@ public class DownloadService extends Service {
                             // Download Feed Image if provided and not downloaded
                             if (savedFeed.getImage() != null
                                     && savedFeed.getImage().isDownloaded() == false) {
-                                if (BuildConfig.DEBUG)
-                                    Log.d(TAG, "Feed has image; Downloading....");
+                                Log.d(TAG, "Feed has image; Downloading....");
                                 savedFeed.getImage().setOwner(savedFeed);
                                 final Feed savedFeedRef = savedFeed;
                                 try {
@@ -856,7 +842,7 @@ public class DownloadService extends Service {
             }
 
 
-            if (BuildConfig.DEBUG) Log.d(TAG, "Shutting down");
+            Log.d(TAG, "Shutting down");
 
         }
 
@@ -902,8 +888,7 @@ public class DownloadService extends Service {
             FeedHandlerResult result = null;
             try {
                 result = feedHandler.parseFeed(feed);
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, feed.getTitle() + " parsed");
+                Log.d(TAG, feed.getTitle() + " parsed");
                 if (checkFeedData(feed) == false) {
                     throw new InvalidFeedException();
                 }
@@ -1008,13 +993,13 @@ public class DownloadService extends Service {
          */
         private void cleanup(Feed feed) {
             if (feed.getFile_url() != null) {
-                if (new File(feed.getFile_url()).delete())
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Successfully deleted cache file.");
-                    else
-                        Log.e(TAG, "Failed to delete cache file.");
+                if (new File(feed.getFile_url()).delete()) {
+                    Log.d(TAG, "Successfully deleted cache file.");
+                } else {
+                    Log.e(TAG, "Failed to delete cache file.");
+                }
                 feed.setFile_url(null);
-            } else if (BuildConfig.DEBUG) {
+            } else {
                 Log.d(TAG, "Didn't delete cache file: File url is not set.");
             }
         }
@@ -1056,7 +1041,7 @@ public class DownloadService extends Service {
         @Override
         public void run() {
             if (request.isDeleteOnFailure()) {
-                if (BuildConfig.DEBUG) Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
+                Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
             } else {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
@@ -1144,8 +1129,7 @@ public class DownloadService extends Service {
                 mmr.setDataSource(media.getFile_url());
                 String durationStr = mmr.extractMetadata(MediaMetadataRetriever.METADATA_KEY_DURATION);
                 media.setDuration(Integer.parseInt(durationStr));
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Duration of file is " + media.getDuration());
+                Log.d(TAG, "Duration of file is " + media.getDuration());
             } catch (NumberFormatException e) {
                 e.printStackTrace();
             } catch (RuntimeException e) {
@@ -1191,8 +1175,7 @@ public class DownloadService extends Service {
      * Schedules the notification updater task if it hasn't been scheduled yet.
      */
     private void setupNotificationUpdater() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Setting up notification updater");
+        Log.d(TAG, "Setting up notification updater");
         if (notificationUpdater == null) {
             notificationUpdater = new NotificationUpdater();
             notificationUpdaterFuture = schedExecutor.scheduleAtFixedRate(
