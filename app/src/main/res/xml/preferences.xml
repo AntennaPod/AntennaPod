@@ -95,7 +95,7 @@
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title"/>
-        <EditTextPreference
+        <de.danoeh.antennapod.preferences.CustomEditTextPreference
             android:defaultValue="6"
             android:inputType="number"
             android:key="prefParallelDownloads"
