@@ -10,14 +10,13 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.adapter.gpodnet.TagListAdapter;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
@@ -67,13 +66,19 @@ public class TagListFragment extends ListFragment {
         getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String selectedTag = (String) getListAdapter().getItem(position);
+                GpodnetTag tag = (GpodnetTag) getListAdapter().getItem(position);
                 MainActivity activity = (MainActivity) getActivity();
-                activity.loadChildFragment(TagFragment.newInstance(selectedTag));
+                activity.loadChildFragment(TagFragment.newInstance(tag));
             }
         });
 
         startLoadTask();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(R.string.add_feed_label);
     }
 
     @Override
@@ -121,11 +126,7 @@ public class TagListFragment extends ListFragment {
                 final Context context = getActivity();
                 if (context != null) {
                     if (gpodnetTags != null) {
-                        List<String> tagNames = new ArrayList<String>();
-                        for (GpodnetTag tag : gpodnetTags) {
-                            tagNames.add(tag.getName());
-                        }
-                        setListAdapter(new ArrayAdapter<String>(context, android.R.layout.simple_list_item_1, tagNames));
+                        setListAdapter(new TagListAdapter(context, android.R.layout.simple_list_item_1, gpodnetTags));
                     } else if (exception != null) {
                         TextView txtvError = new TextView(getActivity());
                         txtvError.setText(exception.getMessage());
