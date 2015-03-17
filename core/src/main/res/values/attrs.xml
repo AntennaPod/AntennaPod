@@ -11,6 +11,7 @@
     <attr name="av_rewind" format="reference"/>
     <attr name="content_discard" format="reference"/>
     <attr name="content_new" format="reference"/>
+    <attr name="feed" format="reference"/>
     <attr name="device_access_time" format="reference"/>
     <attr name="location_web_site" format="reference"/>
     <attr name="navigation_accept" format="reference"/>
