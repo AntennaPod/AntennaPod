@@ -13,21 +13,9 @@ import android.widget.ArrayAdapter;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.RelativeLayout;
-
-import org.apache.commons.lang3.StringUtils;
-import org.xml.sax.SAXException;
-
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
-
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -43,7 +31,16 @@ import de.danoeh.antennapod.core.util.FileNameGenerator;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.URLChecker;
 import de.danoeh.antennapod.core.util.syndication.FeedDiscoverer;
-import de.danoeh.antennapod.dialog.AuthenticationDialog;
+import org.apache.commons.lang3.StringUtils;
+import org.xml.sax.SAXException;
+
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  * Downloads a feed from a feed URL and parses it. Subclasses can display the
@@ -184,7 +181,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
-        feed = new Feed(url, new Date(0));
+        feed = new Feed(url, new Date());
         if (username != null && password != null) {
             feed.setPreferences(new FeedPreferences(0, false, username, password));
         }

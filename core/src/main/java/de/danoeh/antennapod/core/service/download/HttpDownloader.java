@@ -7,7 +7,6 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
-import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,8 +21,6 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
@@ -67,12 +64,6 @@ public class HttpDownloader extends Downloader {
             final URI uri = URIUtil.getURIFromRequestUrl(request.getSource());
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
-            if(request.getIfModifiedSince() > 0) {
-                Date date = new Date(request.getIfModifiedSince());
-                Log.d(TAG, "Header If-Modified-Since: "
-                        + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(date));
-                httpReq.addHeader("If-Modified-Since", HttpDate.format(date));
-            }
 
             // add authentication information
             String userInfo = uri.getUserInfo();
@@ -92,7 +83,7 @@ public class HttpDownloader extends Downloader {
                 request.setSoFar(destination.length());
                 httpReq.addHeader("Range",
                         "bytes=" + request.getSoFar() + "-");
-                Log.d(TAG, "Adding range header: " + request.getSoFar());
+                if (BuildConfig.DEBUG) Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
             Response response = httpClient.newCall(httpReq.build()).execute();
@@ -104,12 +95,6 @@ public class HttpDownloader extends Downloader {
 
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Response code is " + response.code());
-
-            if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-                Log.d(TAG, "Feed not modified since last update, Download canceled");
-                onCancelled();
-                return;
-            }
 
             if (!response.isSuccessful() || response.body() == null) {
                 final DownloadError error;

@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.io.File;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -92,53 +91,57 @@ public class DownloadRequester {
     }
 
     private void download(Context context, FeedFile item, FeedFile container, File dest,
-                          boolean overwriteIfExists, String username, String password,
-                          long ifModifiedSince, boolean deleteOnFailure, Bundle arguments) {
+                          boolean overwriteIfExists, String username, String password, boolean deleteOnFailure, Bundle arguments) {
         final boolean partiallyDownloadedFileExists = item.getFile_url() != null;
-        if (isDownloadingFile(item)) {
-                Log.e(TAG, "URL " + item.getDownload_url()
-                        + " is already being downloaded");
-            return;
-        }
-        if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
-            Log.d(TAG, "Filename already used.");
-            if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
-                boolean result = dest.delete();
-                Log.d(TAG, "Deleting file. Result: " + result);
-            } else {
-                // find different name
-                File newDest = null;
-                for (int i = 1; i < Integer.MAX_VALUE; i++) {
-                    String newName = FilenameUtils.getBaseName(dest
-                            .getName())
-                            + "-"
-                            + i
-                            + FilenameUtils.EXTENSION_SEPARATOR
-                            + FilenameUtils.getExtension(dest.getName());
-                    Log.d(TAG, "Testing filename " + newName);
-                    newDest = new File(dest.getParent(), newName);
-                    if (!newDest.exists()
-                            && isFilenameAvailable(newDest.toString())) {
-                        Log.d(TAG, "File doesn't exist yet. Using " + newName);
-                        break;
+        if (!isDownloadingFile(item)) {
+            if (!isFilenameAvailable(dest.toString()) || (!partiallyDownloadedFileExists && dest.exists())) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Filename already used.");
+                if (isFilenameAvailable(dest.toString()) && overwriteIfExists) {
+                    boolean result = dest.delete();
+                    if (BuildConfig.DEBUG)
+                        Log.d(TAG, "Deleting file. Result: " + result);
+                } else {
+                    // find different name
+                    File newDest = null;
+                    for (int i = 1; i < Integer.MAX_VALUE; i++) {
+                        String newName = FilenameUtils.getBaseName(dest
+                                .getName())
+                                + "-"
+                                + i
+                                + FilenameUtils.EXTENSION_SEPARATOR
+                                + FilenameUtils.getExtension(dest.getName());
+                        if (BuildConfig.DEBUG)
+                            Log.d(TAG, "Testing filename " + newName);
+                        newDest = new File(dest.getParent(), newName);
+                        if (!newDest.exists()
+                                && isFilenameAvailable(newDest.toString())) {
+                            if (BuildConfig.DEBUG)
+                                Log.d(TAG, "File doesn't exist yet. Using "
+                                        + newName);
+                            break;
+                        }
+                    }
+                    if (newDest != null) {
+                        dest = newDest;
                     }
                 }
-                if (newDest != null) {
-                    dest = newDest;
-                }
             }
-        }
-        Log.d(TAG, "Requesting download of url " + item.getDownload_url());
-        String baseUrl = (container != null) ? container.getDownload_url() : null;
-        item.setDownload_url(URLChecker.prepareURL(item.getDownload_url(), baseUrl));
+            if (BuildConfig.DEBUG)
+                Log.d(TAG,
+                        "Requesting download of url " + item.getDownload_url());
+            String baseUrl = (container != null) ? container.getDownload_url() : null;
+            item.setDownload_url(URLChecker.prepareURL(item.getDownload_url(), baseUrl));
 
-        DownloadRequest.Builder builder = new DownloadRequest.Builder(dest.toString(), item)
-                .withAuthentication(username, password)
-                .ifModifiedSince(ifModifiedSince)
-                .deleteOnFailure(deleteOnFailure)
-                .withArguments(arguments);
-        DownloadRequest request = builder.build();
-        download(context, request);
+            DownloadRequest request = new DownloadRequest(dest.toString(),
+                    URLChecker.prepareURL(item.getDownload_url()), item.getHumanReadableIdentifier(),
+                    item.getId(), item.getTypeAsInt(), username, password, deleteOnFailure, arguments);
+
+            download(context, request);
+        } else {
+            Log.e(TAG, "URL " + item.getDownload_url()
+                    + " is already being downloaded");
+        }
     }
 
     /**
@@ -165,15 +168,13 @@ public class DownloadRequester {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            Date lastUpdate = feed.getLastUpdate();
-            long ifModifiedSince = lastUpdate.getTime() - 30; // account for some processing time
 
             Bundle args = new Bundle();
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
             args.putBoolean(REQUEST_ARG_LOAD_ALL_PAGES, loadAllPages);
 
             download(context, feed, null, new File(getFeedfilePath(context),
-                    getFeedfileName(feed)), true, username, password, ifModifiedSince, true, args);
+                    getFeedfileName(feed)), true, username, password, true, args);
         }
     }
 
@@ -186,7 +187,7 @@ public class DownloadRequester {
         if (feedFileValid(image)) {
             FeedFile container = (image.getOwner() instanceof FeedFile) ? (FeedFile) image.getOwner() : null;
             download(context, image, container, new File(getImagefilePath(context),
-                    getImagefileName(image)), false, null, null, 0, false, null);
+                    getImagefileName(image)), false, null, null, false, null);
         }
     }
 
@@ -212,7 +213,7 @@ public class DownloadRequester {
                         getMediafilename(feedmedia));
             }
             download(context, feedmedia, feed,
-                    dest, false, username, password, 0, false, null);
+                    dest, false, username, password, false, null);
         }
     }
 
