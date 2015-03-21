@@ -5,15 +5,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 import android.widget.Toast;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Arrays;
+import java.util.Date;
+
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.Arrays;
-import java.util.Date;
 
 /**
  * Receives intents from AntennaPod Single Purpose apps
@@ -34,7 +36,7 @@ public class SPAReceiver extends BroadcastReceiver{
                 if (feedUrls != null) {
                     if (BuildConfig.DEBUG) Log.d(TAG, "Received feeds list: " + Arrays.toString(feedUrls));
                     for (String url : feedUrls) {
-                        Feed f  = new Feed(url, new Date());
+                        Feed f  = new Feed(url, new Date(0));
                         try {
                             DownloadRequester.getInstance().downloadFeed(context, f);
                         } catch (DownloadRequestException e) {
