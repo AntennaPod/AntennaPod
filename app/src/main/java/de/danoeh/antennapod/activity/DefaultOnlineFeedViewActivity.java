@@ -138,7 +138,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
             @Override
             public void onClick(View v) {
                 try {
-                    Feed f = new Feed(selectedDownloadUrl, new Date(0), feed.getTitle());
+                    Feed f = new Feed(selectedDownloadUrl, new Date(), feed.getTitle());
                     f.setPreferences(feed.getPreferences());
                     DefaultOnlineFeedViewActivity.this.feed = f;
 
