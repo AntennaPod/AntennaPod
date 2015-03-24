@@ -67,18 +67,21 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
+    <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
     <string name="etxtFeedurlHint">URL of feed or website</string>
     <string name="txtvfeedurl_label">Add Podcast by URL</string>
     <string name="podcastdirectories_label">Find podcast in directory</string>
-    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory.</string>
+    <string name="podcastdirectories_descr">You can search for new podcasts by name, category or popularity in the gpodder.net directory, or search the iTunes store.</string>
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
     <string name="mark_all_read_label">Mark all as read</string>
     <string name="mark_all_read_msg">Marked all episodes as read</string>
+    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being read.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being read.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_link_label">Share website link</string>
@@ -165,6 +168,7 @@
     <string name="duration">Duration</string>
     <string name="ascending">Ascending</string>
     <string name="descending">Descending</string>
+    <string name="clear_queue_confirmation_msg">Please confirm that you want to clear the queue of ALL of the episodes in it</string>
 
     <!-- Flattr -->
     <string name="flattr_auth_label">Flattr sign-in</string>
@@ -245,6 +249,7 @@
     <string name="pref_autodl_wifi_filter_sum">Allow automatic download only for selected Wi-Fi networks.</string>
     <string name="pref_automatic_download_on_battery_title">Download when not charging</string>
     <string name="pref_automatic_download_on_battery_sum">Allow automatic download when the battery is not charging</string>
+    <string name="pref_parallel_downloads_title">Parallel downloads</string>
     <string name="pref_episode_cache_title">Episode cache</string>
     <string name="pref_theme_title_light">Light</string>
     <string name="pref_theme_title_dark">Dark</string>
@@ -269,6 +274,8 @@
     <string name="pref_persistNotify_title">Persistent playback controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
+    <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
+    <string name="pref_queueAddToFront_title">Enqueue at front.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -391,4 +398,5 @@
     <!-- AntennaPodSP -->
 
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
+    <string name="search_itunes_label">Search iTunes</string>
 </resources>

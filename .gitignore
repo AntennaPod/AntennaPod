@@ -33,7 +33,6 @@ gen-external-apklibs
 out
 #transifex downloads
 changelog
-description
 
 # other
 *.odg#
@@ -42,3 +41,4 @@ libs
 *.DS_Store
 src/de/danoeh/antennapod/util/flattr/FlattrConfig.java
 gradle.properties
+*.keystore

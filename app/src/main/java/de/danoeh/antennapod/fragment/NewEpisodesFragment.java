@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -29,6 +30,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -190,8 +192,19 @@ public class NewEpisodesFragment extends Fragment {
                     }
                     return true;
                 case R.id.mark_all_read_item:
-                    DBWriter.markAllItemsRead(getActivity());
-                    Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                            R.string.mark_all_read_label,
+                            R.string.mark_all_read_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(
+                                DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.markAllItemsRead(getActivity());
+                            Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    conDialog.createNewDialog().show();
                     return true;
                 case R.id.episode_filter_item:
                     boolean newVal = !item.isChecked();

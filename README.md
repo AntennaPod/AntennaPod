@@ -1,8 +1,8 @@
 # AntennaPod
 
-```
-Please note that AntennaPod will not receive any future updates until further notice.
-```
+
+### Please note that AntennaPod will not receive any future updates until further notice (see issue [#604](https://github.com/antennapod/antennapod/issues/604) for more information).
+
 
 
 This is the official repository of AntennaPod, a podcast manager for Android.
