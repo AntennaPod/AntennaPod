@@ -101,6 +101,12 @@ public class PlaybackService extends Service {
     public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
 
     /**
+     * If the PlaybackService receives this action, it will end pause the playback
+     * of the current episode.
+     */
+    public static final String ACTION_PAUSE_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pauseCurrentEpisode";
+
+    /**
      * Used in NOTIFICATION_TYPE_RELOAD.
      */
     public static final int EXTRA_CODE_AUDIO = 1;
@@ -216,6 +222,8 @@ public class PlaybackService extends Service {
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_SKIP_CURRENT_EPISODE));
+        registerReceiver(pauseCurrentEpisodeReceiver, new IntentFilter(
+                ACTION_PAUSE_CURRENT_EPISODE));
         remoteControlClient = setupRemoteControlClient();
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
@@ -1097,6 +1105,17 @@ public class PlaybackService extends Service {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback();
+            }
+        }
+    };
+
+    private BroadcastReceiver pauseCurrentEpisodeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), ACTION_PAUSE_CURRENT_EPISODE)) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Received PAUSE_CURRENT_EPISODE intent");
+                mediaPlayer.pause(true, false);
             }
         }
     };
