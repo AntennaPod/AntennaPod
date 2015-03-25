@@ -2,16 +2,18 @@ package de.test.antennapod.service.download;
 
 import android.test.InstrumentationTestCase;
 import android.util.Log;
+
+import java.io.File;
+import java.io.IOException;
+
 import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.test.antennapod.util.service.download.HTTPBin;
-
-import java.io.File;
-import java.io.IOException;
 
 public class HttpDownloaderTest extends InstrumentationTestCase {
     private static final String TAG = "HttpDownloaderTest";
@@ -41,6 +43,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
+        UserPreferences.createInstance(getInstrumentation().getTargetContext());
         destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());
@@ -90,7 +93,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     }
 
     public void testGzip() {
-        download("http://httpbin.org/gzip", "testGzip", true);
+        download(HTTPBin.BASE_URL + "/gzip/100", "testGzip", true);
     }
 
     public void test404() {
