@@ -46,7 +46,9 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 DownloadRequester.getInstance().cancelDownload(context, media);
                 Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
             } else { // media is downloaded
-                DBTasks.playMedia(context, media, true, true, false);
+                if (item.getState() != FeedItem.State.PLAYING) {
+                    DBTasks.playMedia(context, media, false, true, false);
+                }
             }
         } else {
             if (!item.isRead()) {

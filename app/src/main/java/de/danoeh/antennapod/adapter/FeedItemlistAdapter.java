@@ -9,6 +9,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.*;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -187,6 +188,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
             callback.onActionButtonPressed(item);
+            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
+            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         }
     };
 
