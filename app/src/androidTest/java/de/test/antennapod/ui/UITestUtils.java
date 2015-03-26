@@ -5,12 +5,8 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.*;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.test.antennapod.util.service.download.HTTPBin;
-import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 import junit.framework.Assert;
+
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -22,6 +18,16 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.test.antennapod.util.service.download.HTTPBin;
+import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 
 /**
  * Utility methods for UI tests.
@@ -174,7 +180,8 @@ public class UITestUtils {
             feed.setDownloaded(true);
             if (feed.getImage() != null) {
                 FeedImage image = feed.getImage();
-                image.setFile_url(image.getDownload_url());
+                int fileId = Integer.parseInt(StringUtils.substringAfter(image.getDownload_url(), "files/"));
+                image.setFile_url(server.accessFile(fileId).getAbsolutePath());
                 image.setDownloaded(true);
             }
             if (downloadEpisodes) {

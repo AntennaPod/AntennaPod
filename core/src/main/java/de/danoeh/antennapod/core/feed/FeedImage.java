@@ -2,9 +2,9 @@ package de.danoeh.antennapod.core.feed;
 
 import android.net.Uri;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
-
 import java.io.File;
+
+import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
 
 
 public class FeedImage extends FeedFile implements PicassoImageResource {
@@ -65,6 +65,8 @@ public class FeedImage extends FeedFile implements PicassoImageResource {
     public Uri getImageUri() {
         if (file_url != null && downloaded) {
             return Uri.fromFile(new File(file_url));
+        } else if(download_url != null) {
+            return Uri.parse(download_url);
         } else {
             return null;
         }

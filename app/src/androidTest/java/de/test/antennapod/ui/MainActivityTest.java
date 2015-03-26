@@ -3,12 +3,13 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
-import android.view.View;
+import android.widget.ListView;
+
 import com.robotium.solo.Solo;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -49,10 +50,14 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         super.tearDown();
     }
 
+    private void openNavDrawer() {
+        solo.clickOnScreen(50, 50);
+    }
+
     public void testAddFeed() throws Exception {
         uiTestUtils.addHostedFeedData();
         final Feed feed = uiTestUtils.hostedFeeds.get(0);
-        solo.setNavigationDrawer(Solo.OPENED);
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.add_feed_label));
         solo.enterText(0, feed.getDownload_url());
         solo.clickOnButton(0);
@@ -65,39 +70,43 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
-        final View home = solo.getView(UITestUtils.HOME_VIEW);
 
         // all episodes
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.all_episodes_label));
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.all_episodes_label), getActionbarTitle());
+
         // queue
-        solo.clickOnView(home);
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.queue_label));
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.queue_label), getActionbarTitle());
 
         // downloads
-        solo.clickOnView(home);
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.downloads_label));
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.downloads_label), getActionbarTitle());
 
         // playback history
-        solo.clickOnView(home);
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.playback_history_label));
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.playback_history_label), getActionbarTitle());
 
         // add podcast
-        solo.clickOnView(home);
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.add_feed_label));
         solo.waitForView(R.id.txtvFeedurl);
         assertEquals(solo.getString(R.string.add_feed_label), getActionbarTitle());
 
         // podcasts
+        ListView list = (ListView)solo.getView(R.id.nav_list);
         for (int i = 0; i < uiTestUtils.hostedFeeds.size(); i++) {
             Feed f = uiTestUtils.hostedFeeds.get(i);
-            solo.clickOnView(home);
+            solo.clickOnScreen(50, 50); // open nav drawer
+            solo.scrollListToLine(list, i);
             solo.clickOnText(f.getTitle());
             solo.waitForView(android.R.id.list);
             assertEquals("", getActionbarTitle());
@@ -109,7 +118,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     }
 
     public void testGoToPreferences() {
-        solo.setNavigationDrawer(Solo.CLOSED);
+        openNavDrawer();
         solo.clickOnMenuItem(solo.getString(R.string.settings_label));
         solo.waitForActivity(PreferenceController.getPreferenceActivity());
     }
