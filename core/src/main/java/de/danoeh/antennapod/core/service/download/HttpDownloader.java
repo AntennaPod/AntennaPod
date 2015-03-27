@@ -7,6 +7,7 @@ import com.squareup.okhttp.OkHttpClient;
 import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 import com.squareup.okhttp.ResponseBody;
+import com.squareup.okhttp.internal.http.HttpDate;
 
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -93,7 +94,7 @@ public class HttpDownloader extends Downloader {
                 request.setSoFar(destination.length());
                 httpReq.addHeader("Range",
                         "bytes=" + request.getSoFar() + "-");
-                if (BuildConfig.DEBUG) Log.d(TAG, "Adding range header: " + request.getSoFar());
+                Log.d(TAG, "Adding range header: " + request.getSoFar());
             }
 
             Response response = httpClient.newCall(httpReq.build()).execute();
