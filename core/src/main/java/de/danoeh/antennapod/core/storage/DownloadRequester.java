@@ -163,11 +163,19 @@ public class DownloadRequester {
         return true;
     }
 
+    /**
+     * Downloads a feed
+     *
+     * @param context The application's environment.
+     * @param feed Feed to download
+     * @param loadAllPages Set to true to download all pages
+     */
     public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
+            long ifModifiedSince = feed.getLastUpdate().getTime();
 
             Bundle args = new Bundle();
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
