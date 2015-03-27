@@ -11,7 +11,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.io.File;
-import java.util.Date;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -160,13 +159,19 @@ public class DownloadRequester {
         return true;
     }
 
+    /**
+     * Downloads a feed
+     *
+     * @param context The application's environment.
+     * @param feed Feed to download
+     * @param loadAllPages Set to true to download all pages
+     */
     public synchronized void downloadFeed(Context context, Feed feed, boolean loadAllPages)
             throws DownloadRequestException {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            Date lastUpdate = feed.getLastUpdate();
-            long ifModifiedSince = lastUpdate.getTime() - 30; // account for some processing time
+            long ifModifiedSince = feed.getLastUpdate().getTime();
 
             Bundle args = new Bundle();
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());

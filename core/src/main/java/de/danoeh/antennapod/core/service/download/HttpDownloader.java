@@ -22,7 +22,6 @@ import java.net.HttpURLConnection;
 import java.net.SocketTimeoutException;
 import java.net.URI;
 import java.net.UnknownHostException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import de.danoeh.antennapod.core.BuildConfig;
@@ -68,10 +67,13 @@ public class HttpDownloader extends Downloader {
             Request.Builder httpReq = new Request.Builder().url(uri.toURL())
                     .header("User-Agent", ClientConfig.USER_AGENT);
             if(request.getIfModifiedSince() > 0) {
-                Date date = new Date(request.getIfModifiedSince());
-                Log.d(TAG, "Header If-Modified-Since: "
-                        + new SimpleDateFormat("EEE, d MMM yyyy HH:mm:ss Z").format(date));
-                httpReq.addHeader("If-Modified-Since", HttpDate.format(date));
+                long threeDaysAgo = System.currentTimeMillis() - 1000*60*60*24*3;
+                if(request.getIfModifiedSince() > threeDaysAgo) {
+                    Date date = new Date(request.getIfModifiedSince());
+                    String httpDate = HttpDate.format(date);
+                    Log.d(TAG, "addHeader(\"If-Modified-Since\", \"" + httpDate + "\")");
+                    httpReq.addHeader("If-Modified-Since", httpDate);
+                }
             }
 
             // add authentication information
@@ -106,7 +108,7 @@ public class HttpDownloader extends Downloader {
                 Log.d(TAG, "Response code is " + response.code());
 
             if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
-                Log.d(TAG, "Feed not modified since last update, Download canceled");
+                Log.d(TAG, "Feed '" + request.getSource() + "' not modified since last update, Download canceled");
                 onCancelled();
                 return;
             }

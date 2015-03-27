@@ -298,7 +298,8 @@ public final class DBTasks {
     }
 
     /**
-     * Updates a specific Feed.
+     * Refresh a specific Feed. The refresh may get canceled if the feed does not seem to be modified
+     * and the last update was only few days ago.
      *
      * @param context Used for requesting the download.
      * @param feed    The Feed object.
@@ -311,9 +312,9 @@ public final class DBTasks {
     private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         Feed f;
         if (feed.getPreferences() == null) {
-            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle());
+            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle());
         } else {
-            f = new Feed(feed.getDownload_url(), new Date(), feed.getTitle(),
+            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle(),
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
