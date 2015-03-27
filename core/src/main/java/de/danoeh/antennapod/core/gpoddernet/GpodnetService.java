@@ -172,9 +172,10 @@ public class GpodnetService {
                     jsonTagList.length());
             for (int i = 0; i < jsonTagList.length(); i++) {
                 JSONObject jObj = jsonTagList.getJSONObject(i);
-                String name = jObj.getString("tag");
+                String title = jObj.getString("title");
+                String tag = jObj.getString("tag");
                 int usage = jObj.getInt("usage");
-                tagList.add(new GpodnetTag(name, usage));
+                tagList.add(new GpodnetTag(title, tag, usage));
             }
             return tagList;
         } catch (JSONException e) {
@@ -194,7 +195,7 @@ public class GpodnetService {
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/tag/%s/%d.json", tag.getName(), count), null).toURL();
+                    "/api/2/tag/%s/%d.json", tag.getTag(), count), null).toURL();
             Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 
