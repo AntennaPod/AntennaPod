@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -32,6 +33,8 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -119,6 +122,15 @@ public class DBWriter {
                                 context.sendBroadcast(new Intent(
                                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
                             }
+                        }
+                        // Gpodder: queue delete action for synchronization
+                        if(GpodnetPreferences.loggedIn()) {
+                            FeedItem item = media.getItem();
+                            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DELETE)
+                                    .currentDeviceId()
+                                    .currentTimestamp()
+                                    .build();
+                            GpodnetPreferences.enqueueEpisodeAction(action);
                         }
                     }
                     if (BuildConfig.DEBUG)
@@ -637,18 +649,6 @@ public class DBWriter {
     public static Future<?> markItemRead(Context context, FeedItem item, boolean read, boolean resetMediaPosition) {
         long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
         return markItemRead(context, item.getId(), read, mediaId, resetMediaPosition);
-    }
-
-    /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
-     *
-     * @param context A context that is used for opening a database connection.
-     * @param itemId  ID of the FeedItem
-     * @param read    New value of the 'read'-attribute
-     */
-    public static Future<?> markItemRead(final Context context, final long itemId,
-                                         final boolean read) {
-        return markItemRead(context, itemId, read, 0, false);
     }
 
     private static Future<?> markItemRead(final Context context, final long itemId,

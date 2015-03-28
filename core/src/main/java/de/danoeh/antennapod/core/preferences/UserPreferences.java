@@ -45,6 +45,7 @@ public class UserPreferences implements
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
     public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
     public static final String PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD = "prefAutoFlattrPlayedDurationThreshold";
     public static final String PREF_THEME = "prefTheme";
@@ -79,6 +80,7 @@ public class UserPreferences implements
     private boolean allowMobileUpdate;
     private boolean displayOnlyEpisodes;
     private boolean autoDelete;
+    private int smartMarkAsPlayedSecs;
     private boolean autoFlattr;
     private float autoFlattrPlayedDurationThreshold;
     private int theme;
@@ -137,6 +139,7 @@ public class UserPreferences implements
         allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
         displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
         autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
+        smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
         autoFlattrPlayedDurationThreshold = sp.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD,
                 PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT);
@@ -267,6 +270,11 @@ public class UserPreferences implements
         return instance.autoDelete;
     }
 
+    public static int getSmartMarkAsPlayedSecs() {
+        instanceAvailable();;
+        return instance.smartMarkAsPlayedSecs;
+    }
+
     public static boolean isAutoFlattr() {
         instanceAvailable();
         return instance.autoFlattr;
@@ -372,8 +380,7 @@ public class UserPreferences implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Registered change of user preferences. Key: " + key);
+        Log.d(TAG, "Registered change of user preferences. Key: " + key);
 
         if (key.equals(PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY)) {
             downloadMediaOnWifiOnly = sp.getBoolean(
@@ -389,10 +396,10 @@ public class UserPreferences implements
             updateInterval = readUpdateInterval(sp.getString(
                     PREF_UPDATE_INTERVAL, "0"));
             ClientConfig.applicationCallbacks.setUpdateInterval(updateInterval);
-
         } else if (key.equals(PREF_AUTO_DELETE)) {
             autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
-
+        } else if (key.equals(PREF_SMART_MARK_AS_PLAYED_SECS)) {
+            smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         } else if (key.equals(PREF_AUTO_FLATTR)) {
             autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
         } else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {

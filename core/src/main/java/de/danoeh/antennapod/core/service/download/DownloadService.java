@@ -60,6 +60,9 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -800,6 +803,18 @@ public class DownloadService extends Service {
 
                             // queue new media files for automatic download
                             for (FeedItem item : savedFeed.getItems()) {
+                                if(item.getPubDate() == null) {
+                                    Log.d(TAG, item.toString());
+                                }
+                                if(item.getImage() != null && item.getImage().isDownloaded() == false) {
+                                    item.getImage().setOwner(item);
+                                    try {
+                                        requester.downloadImage(DownloadService.this,
+                                            item.getImage());
+                                    } catch (DownloadRequestException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 if (!item.isRead() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
                                 }
@@ -1165,6 +1180,15 @@ public class DownloadService extends Service {
 
             saveDownloadStatus(status);
             sendDownloadHandledIntent();
+
+            if(GpodnetPreferences.loggedIn()) {
+                FeedItem item = media.getItem();
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
 
             numberOfDownloads.decrementAndGet();
             queryDownloadsAsync();

@@ -12,19 +12,18 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.Window;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -167,8 +166,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         chooseTheme();
         super.onCreate(savedInstanceState);
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Creating Activity");
+        Log.d(TAG, "onCreate()");
         StorageUtils.checkStorageAvailability(this);
         setVolumeControlStream(AudioManager.STREAM_MUSIC);
 
@@ -224,8 +222,18 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onStop() {
         super.onStop();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Activity stopped");
+        Log.d(TAG, "onStop()");
+
+        // delete if auto delete is enabled and less than 3% of episode is left
+        Playable playable = controller.getMedia();
+        if(playable instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) playable;
+            if(UserPreferences.isAutoDelete() && media.hasAlmostEnded()) {
+                Log.d(TAG, "Delete " + media.toString());
+                DBWriter.deleteFeedMediaOfItem(this, media.getId());
+            }
+        }
+
         if (controller != null) {
             controller.release();
         }
@@ -234,8 +242,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Activity destroyed");
+        Log.d(TAG, "onDestroy()");
     }
 
     @Override
@@ -358,8 +365,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     @Override
     protected void onResume() {
         super.onResume();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Resuming Activity");
+        Log.d(TAG, "onResume()");
         StorageUtils.checkStorageAvailability(this);
         controller.init();
     }
@@ -393,8 +399,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     }
 
     private void updateProgressbarPosition(int position, int duration) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Updating progressbar info");
+        Log.d(TAG, "updateProgressbarPosition(" + position + ", " + duration +")");
         float progress = ((float) position) / duration;
         sbPosition.setProgress((int) (progress * sbPosition.getMax()));
     }
@@ -406,8 +411,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
      * FeedMedia object.
      */
     protected boolean loadMediaInfo() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Loading media info");
+        Log.d(TAG, "loadMediaInfo()");
         Playable media = controller.getMedia();
         if (media != null) {
             txtvPosition.setText(Converter.getDurationStringLong((media

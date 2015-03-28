@@ -2,7 +2,6 @@ package de.danoeh.antennapod.core.storage;
 
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.util.Log;
 
 import java.util.ArrayList;
@@ -678,6 +677,42 @@ public final class DBReader {
         adapter.close();
         return item;
 
+    }
+
+    static FeedItem getFeedItem(final Context context, final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
+        Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
+        FeedItem item = null;
+        Cursor itemCursor = adapter.getFeedItemCursor(podcastUrl, episodeUrl);
+        if (itemCursor.moveToFirst()) {
+            List<FeedItem> list = extractItemlistFromCursor(adapter, itemCursor);
+            if (list.size() > 0) {
+                item = list.get(0);
+                loadFeedDataOfFeedItemlist(context, list);
+                if (item.hasChapters()) {
+                    loadChaptersOfFeedItem(adapter, item);
+                }
+            }
+        }
+        return item;
+    }
+
+    /**
+     * Loads a specific FeedItem from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param podcastUrl the corresponding feed's url
+     * @param episodeUrl the feed item's url
+     * @return The FeedItem or null if the FeedItem could not be found. All FeedComponent-attributes
+     * as well as chapter marks of the FeedItem will also be loaded from the database.
+     */
+    public static FeedItem getFeedItem(final Context context, final String podcastUrl, final String episodeUrl) {
+        Log.d(TAG, "Loading feeditem with podcast url " + podcastUrl + " and episode url " + episodeUrl);
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        FeedItem item = getFeedItem(context, podcastUrl, episodeUrl, adapter);
+        adapter.close();
+        return item;
     }
 
     /**

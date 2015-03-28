@@ -7,6 +7,10 @@ import android.net.Uri;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -156,9 +160,27 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_read_item:
                 DBWriter.markItemRead(context, selectedItem, true, true);
+                if(GpodnetPreferences.loggedIn()) {
+                    FeedMedia media = selectedItem.getMedia();
+                    GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, Action.PLAY)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .started(media.getDuration() / 1000)
+                            .position(media.getDuration() / 1000)
+                            .total(media.getDuration() / 1000)
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(actionPlay);
+                }
                 break;
             case R.id.mark_unread_item:
                 DBWriter.markItemRead(context, selectedItem, false, true);
+                if(GpodnetPreferences.loggedIn()) {
+                    GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(actionNew);
+                }
                 break;
             case R.id.add_to_queue_item:
                 DBWriter.addQueueItem(context, selectedItem.getId());

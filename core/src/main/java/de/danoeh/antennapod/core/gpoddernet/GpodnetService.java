@@ -45,6 +45,9 @@ import javax.security.auth.x500.X500Principal;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeActionGetResponse;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeActionPostResponse;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetSubscriptionChange;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
@@ -537,6 +540,85 @@ public class GpodnetService {
     }
 
     /**
+     * Updates the episode actions
+     * <p/>
+     * This method requires authentication.
+     *
+     * @param episodeActions    Collection of episode actions.
+     * @return a GpodnetUploadChangesResponse. See {@link de.danoeh.antennapod.core.gpoddernet.model.GpodnetUploadChangesResponse}
+     * for details.
+     * @throws java.lang.IllegalArgumentException                           if username, deviceId, added or removed is null.
+     * @throws de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException if added or removed contain duplicates or if there
+     *                                                                      is an authentication error.
+     */
+    public GpodnetEpisodeActionPostResponse uploadEpisodeActions(Collection<GpodnetEpisodeAction> episodeActions)
+            throws GpodnetServiceException {
+
+        Validate.notNull(episodeActions);
+
+        String username = GpodnetPreferences.getUsername();
+
+        try {
+            URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
+                    "/api/2/episodes/%s.json", username), null).toURL();
+
+            final JSONArray list = new JSONArray();
+            for(GpodnetEpisodeAction episodeAction : episodeActions) {
+                JSONObject obj = episodeAction.writeToJSONObject();
+                if(obj != null) {
+                    list.put(obj);
+                }
+            }
+
+            RequestBody body = RequestBody.create(JSON, list.toString());
+            Request.Builder request = new Request.Builder().post(body).url(url);
+
+            final String response = executeRequest(request);
+            return GpodnetEpisodeActionPostResponse.fromJSONObject(response);
+        } catch (JSONException | MalformedURLException | URISyntaxException e) {
+            e.printStackTrace();
+            throw new GpodnetServiceException(e);
+        }
+
+    }
+
+    /**
+     * Returns all subscription changes of a specific device.
+     * <p/>
+     * This method requires authentication.
+     *
+     * @param timestamp A timestamp that can be used to receive all changes since a
+     *                  specific point in time.
+     * @throws IllegalArgumentException              If username or deviceId is null.
+     * @throws GpodnetServiceAuthenticationException If there is an authentication error.
+     */
+    public GpodnetEpisodeActionGetResponse getEpisodeChanges(long timestamp) throws GpodnetServiceException {
+
+        String username = GpodnetPreferences.getUsername();
+
+        String params = String.format("since=%d", timestamp);
+        String path = String.format("/api/2/episodes/%s.json",
+                username);
+        try {
+            URL url = new URI(BASE_SCHEME, null, BASE_HOST, -1, path, params,
+                    null).toURL();
+            Request.Builder request = new Request.Builder().url(url);
+
+            String response = executeRequest(request);
+            JSONObject json = new JSONObject(response);
+            return readEpisodeActionsFromJSONObject(json);
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+            throw new IllegalStateException(e);
+        } catch (JSONException | MalformedURLException e) {
+            e.printStackTrace();
+            throw new GpodnetServiceException(e);
+        }
+
+    }
+
+
+    /**
      * Logs in a specific user. This method must be called if any of the methods
      * that require authentication is used.
      *
@@ -773,4 +855,24 @@ public class GpodnetService {
         long timestamp = object.getLong("timestamp");
         return new GpodnetSubscriptionChange(added, removed, timestamp);
     }
+
+    private GpodnetEpisodeActionGetResponse readEpisodeActionsFromJSONObject(
+            JSONObject object) throws JSONException {
+        Validate.notNull(object);
+
+        List<GpodnetEpisodeAction> episodeActions = new ArrayList<GpodnetEpisodeAction>();
+
+        long timestamp = object.getLong("timestamp");
+        JSONArray jsonActions = object.getJSONArray("actions");
+        for(int i=0; i < jsonActions.length(); i++) {
+            JSONObject jsonAction = jsonActions.getJSONObject(i);
+            GpodnetEpisodeAction episodeAction = GpodnetEpisodeAction.readFromJSONObject(jsonAction);
+            if(episodeAction != null) {
+                episodeActions.add(episodeAction);
+            }
+        }
+        return new GpodnetEpisodeActionGetResponse(episodeActions, timestamp);
+    }
+
+
 }

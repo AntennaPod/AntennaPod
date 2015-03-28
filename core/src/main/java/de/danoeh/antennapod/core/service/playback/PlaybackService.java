@@ -43,6 +43,9 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
@@ -166,6 +169,8 @@ public class PlaybackService extends Service {
     private RemoteControlClient remoteControlClient;
     private PlaybackServiceMediaPlayer mediaPlayer;
     private PlaybackServiceTaskManager taskManager;
+
+    private int startPosition;
 
     private static volatile MediaType currentMediaType = MediaType.UNKNOWN;
 
@@ -445,6 +450,37 @@ public class PlaybackService extends Service {
                     }
                     writePlayerStatusPlaybackPreferences();
 
+                    final Playable playable = mediaPlayer.getPSMPInfo().playable;
+
+                    // Gpodder: send play action
+                    if(GpodnetPreferences.loggedIn() && playable instanceof FeedMedia) {
+                        FeedMedia media = (FeedMedia) playable;
+                        FeedItem item = media.getItem();
+                        GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
+                                .currentDeviceId()
+                                .currentTimestamp()
+                                .started(startPosition / 1000)
+                                .position(getCurrentPosition() / 1000)
+                                .total(getDuration() / 1000)
+                                .build();
+                        GpodnetPreferences.enqueueEpisodeAction(action);
+                    }
+
+                    // if episode is near end [outro playing]:
+                    // mark as read, remove from queue, add to playlist history
+                    // auto delete: see {@link de.danoeh.antennapod.activity.MediaPlayerActivity#onStop()}
+                    if (playable instanceof FeedMedia) {
+                        FeedMedia media = (FeedMedia) playable;
+                        if(media.hasAlmostEnded()) {
+                            FeedItem item = media.getItem();
+                            Log.d(TAG, "smart mark as read");
+                            DBWriter.markItemRead(PlaybackService.this, item, true, false);
+                            DBWriter.removeQueueItem(PlaybackService.this, item.getId(), false);
+                            DBWriter.addItemToPlaybackHistory(PlaybackService.this, media);
+                            // episode should already be flattered, no action required
+                        }
+                    }
+
                     break;
 
                 case STOPPED:
@@ -463,6 +499,7 @@ public class PlaybackService extends Service {
                     writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
+                    startPosition = mediaPlayer.getPosition();
                     break;
 
                 case ERROR:
@@ -540,8 +577,8 @@ public class PlaybackService extends Service {
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Playback ended");
 
-        final Playable media = mediaPlayer.getPSMPInfo().playable;
-        if (media == null) {
+        final Playable playable = mediaPlayer.getPSMPInfo().playable;
+        if (playable == null) {
             Log.e(TAG, "Cannot end playback: media was null");
             return;
         }
@@ -551,13 +588,14 @@ public class PlaybackService extends Service {
         boolean isInQueue = false;
         FeedItem nextItem = null;
 
-        if (media instanceof FeedMedia) {
-            FeedItem item = ((FeedMedia) media).getItem();
+        if (playable instanceof FeedMedia) {
+            FeedMedia media = (FeedMedia) playable;
+            FeedItem item = media.getItem();
             DBWriter.markItemRead(PlaybackService.this, item, true, true);
 
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
-                isInQueue = QueueAccess.ItemListAccess(queue).contains(((FeedMedia) media).getItem().getId());
+                isInQueue = QueueAccess.ItemListAccess(queue).contains(item.getId());
                 nextItem = DBTasks.getQueueSuccessorOfItem(this, item.getId(), queue);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -566,21 +604,30 @@ public class PlaybackService extends Service {
             if (isInQueue) {
                 DBWriter.removeQueueItem(PlaybackService.this, item.getId(), true);
             }
-            DBWriter.addItemToPlaybackHistory(PlaybackService.this, (FeedMedia) media);
+            DBWriter.addItemToPlaybackHistory(PlaybackService.this, media);
 
             // auto-flattr if enabled
             if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {
                 DBTasks.flattrItemIfLoggedIn(PlaybackService.this, item);
             }
 
-            //Delete episode if enabled
+            // Delete episode if enabled
             if(UserPreferences.isAutoDelete()) {
-                DBWriter.deleteFeedMediaOfItem(PlaybackService.this, item.getMedia().getId());
-
-                if(BuildConfig.DEBUG)
-                    Log.d(TAG, "Episode Deleted");
+                DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
+                Log.d(TAG, "Episode Deleted");
             }
 
+            // gpodder play action
+            if(GpodnetPreferences.loggedIn()) {
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .started(startPosition / 1000)
+                        .position(getDuration() / 1000)
+                        .total(getDuration() / 1000)
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
         }
 
         // Load next episode if previous episode was in the queue and if there
@@ -605,12 +652,10 @@ public class PlaybackService extends Service {
         final boolean stream;
 
         if (playNextEpisode) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Playback of next episode will start immediately.");
+            Log.d(TAG, "Playback of next episode will start immediately.");
             prepareImmediately = startWhenPrepared = true;
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "No more episodes available to play");
+            Log.d(TAG, "No more episodes available to play");
 
             prepareImmediately = startWhenPrepared = false;
             stopForeground(true);
@@ -619,7 +664,7 @@ public class PlaybackService extends Service {
 
         writePlaybackPreferencesNoMediaPlaying();
         if (nextMedia != null) {
-            stream = !media.localFileAvailable();
+            stream = !playable.localFileAvailable();
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
                     (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
@@ -631,8 +676,7 @@ public class PlaybackService extends Service {
     }
 
     public void setSleepTimer(long waitingTime) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
+        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
                     + " milliseconds");
         taskManager.setSleepTimer(waitingTime);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
@@ -675,8 +719,7 @@ public class PlaybackService extends Service {
     }
 
     private void writePlaybackPreferences() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Writing playback preferences");
+        Log.d(TAG, "Writing playback preferences");
 
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
@@ -918,15 +961,15 @@ public class PlaybackService extends Service {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Saving current position to " + position);
             if (updatePlayedDuration && playable instanceof FeedMedia) {
-                FeedMedia m = (FeedMedia) playable;
-                FeedItem item = m.getItem();
-                m.setPlayedDuration(m.getPlayedDuration() + ((int) (deltaPlayedDuration * playbackSpeed)));
+                FeedMedia media = (FeedMedia) playable;
+                FeedItem item = media.getItem();
+                media.setPlayedDuration(media.getPlayedDuration() + ((int) (deltaPlayedDuration * playbackSpeed)));
                 // Auto flattr
-                if (isAutoFlattrable(m) &&
-                        (m.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
+                if (isAutoFlattrable(media) &&
+                        (media.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
 
                     if (BuildConfig.DEBUG)
-                        Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(m.getPlayedDuration())
+                        Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(media.getPlayedDuration())
                                 + " is " + UserPreferences.getAutoFlattrPlayedDurationThreshold() * 100 + "% of file duration " + Integer.toString(duration));
                     DBTasks.flattrItemIfLoggedIn(this, item);
                 }
@@ -1231,7 +1274,26 @@ public class PlaybackService extends Service {
 
 
     public void seekTo(final int t) {
+        if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING
+                && GpodnetPreferences.loggedIn()) {
+            final Playable playable = mediaPlayer.getPSMPInfo().playable;
+            if (playable instanceof FeedMedia) {
+                FeedMedia media = (FeedMedia) playable;
+                FeedItem item = media.getItem();
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.PLAY)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .started(startPosition / 1000)
+                        .position(getCurrentPosition() / 1000)
+                        .total(getDuration() / 1000)
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
+        }
         mediaPlayer.seekTo(t);
+        if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING ) {
+            startPosition = t;
+        }
     }
 
 
@@ -1270,10 +1332,9 @@ public class PlaybackService extends Service {
         return mediaPlayer.getVideoSize();
     }
 
-    private boolean isAutoFlattrable(Playable p) {
-        if (p != null && p instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) p;
-            FeedItem item = ((FeedMedia) p).getItem();
+    private boolean isAutoFlattrable(FeedMedia media) {
+        if (media != null) {
+            FeedItem item = media.getItem();
             return item != null && FlattrUtils.hasToken() && UserPreferences.isAutoFlattr() && item.getPaymentLink() != null && item.getFlattrStatus().getUnflattred();
         } else {
             return false;

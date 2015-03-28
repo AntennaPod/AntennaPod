@@ -135,11 +135,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void onStop() {
         super.onStop();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "onStop");
+        Log.d(TAG, "onStop()");
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
-
     }
 
     @Override

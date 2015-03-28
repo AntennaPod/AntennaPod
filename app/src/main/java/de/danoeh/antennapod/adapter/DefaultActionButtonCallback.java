@@ -11,6 +11,8 @@ import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -61,6 +63,19 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         } else {
             if (!item.isRead()) {
                 DBWriter.markItemRead(context, item, true, true);
+
+                if(GpodnetPreferences.loggedIn()) {
+                    // gpodder: send played action
+                    FeedMedia media = item.getMedia();
+                    GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.PLAY)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .started(media.getDuration() / 1000)
+                            .position(media.getDuration() / 1000)
+                            .total(media.getDuration() / 1000)
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(action);
+                }
             }
         }
     }
