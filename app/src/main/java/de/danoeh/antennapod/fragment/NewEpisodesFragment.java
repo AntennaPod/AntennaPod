@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +44,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -239,6 +241,34 @@ public class NewEpisodesFragment extends Fragment {
                     ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
 
+            }
+        });
+
+        listView.setDragSortListener(new DragSortListView.DragSortListener() {
+
+            @Override
+            public void drag(int from, int to) {
+                // no drag
+            }
+
+            @Override
+            public void drop(int from, int to) {
+                // no drop
+            }
+
+            @Override
+            public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.markItemRead(getActivity(), item.getId(), true);
+                // TODO: provide undo?
+                /*
+                undoBarController.showUndoBar(false,
+                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
+                                which)
+                );
+                */
             }
         });
 

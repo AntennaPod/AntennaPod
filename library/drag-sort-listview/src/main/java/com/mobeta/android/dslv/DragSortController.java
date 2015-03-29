@@ -236,7 +236,8 @@ public class DragSortController extends SimpleFloatViewManager implements View.O
 
     @Override
     public boolean onTouch(View v, MotionEvent ev) {
-        if (!mDslv.isDragEnabled() || mDslv.listViewIntercepted()) {
+        if (!(mDslv.isDragEnabled() || mRemoveEnabled)
+                || mDslv.listViewIntercepted()) {
             return false;
         }
 
