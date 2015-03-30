@@ -27,7 +27,7 @@ public class ActionButtonUtils {
 
         this.context = context;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.borderless_button, R.attr.navigation_accept});
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.av_pause, R.attr.navigation_accept});
         labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label, R.string.mark_read_label};
     }
 
@@ -57,7 +57,7 @@ public class ActionButtonUtils {
             } else {
                 // item is not being downloaded
                 butSecondary.setVisibility(View.VISIBLE);
-                if (media.isPlaying()) {
+                if (media.isCurrentlyPlaying()) {
                     butSecondary.setImageDrawable(drawables.getDrawable(3));
                 } else {
                     butSecondary

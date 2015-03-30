@@ -188,8 +188,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
             callback.onActionButtonPressed(item);
-            EventDistributor.getInstance().sendPlaybackHistoryUpdateBroadcast();
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         }
     };
 

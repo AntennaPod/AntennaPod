@@ -127,6 +127,15 @@ public class FeedMedia extends FeedFile implements Playable {
                 && PlaybackPreferences.getCurrentlyPlayingFeedMediaId() == id;
     }
 
+    /**
+     * Reads playback preferences to determine whether this FeedMedia object is
+     * currently being played and the player status is playing.
+     */
+    public boolean isCurrentlyPlaying() {
+        return isPlaying() && PlaybackPreferences.getPlayerStatusIsPlaying();
+    }
+
+
     @Override
     public int getTypeAsInt() {
         return FEEDFILETYPE_FEEDMEDIA;

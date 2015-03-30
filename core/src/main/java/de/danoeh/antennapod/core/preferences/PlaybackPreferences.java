@@ -8,6 +8,7 @@ import android.util.Log;
 import org.apache.commons.lang3.Validate;
 
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.feed.EventDistributor;
 
 /**
  * Provides access to preferences set by the playback service. A private
@@ -43,6 +44,9 @@ public class PlaybackPreferences implements
 	/** True if last played media was a video. */
 	public static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
+    /** True if player status is playing. */
+    public static final String PREF_PLAYER_STATUS_IS_PLAYING = "de.danoeh.antennapod.preferences.playerStatusIsPlaying";
+
 	/** Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing. */
 	public static final long NO_MEDIA_PLAYING = -1;
 
@@ -51,6 +55,7 @@ public class PlaybackPreferences implements
 	private long currentlyPlayingMedia;
 	private boolean currentEpisodeIsStream;
 	private boolean currentEpisodeIsVideo;
+    private boolean playerStatusIsPlaying;
 
 	private static PlaybackPreferences instance;
 	private Context context;
@@ -87,6 +92,7 @@ public class PlaybackPreferences implements
 				NO_MEDIA_PLAYING);
 		currentEpisodeIsStream = sp.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
 		currentEpisodeIsVideo = sp.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
+        playerStatusIsPlaying = sp.getBoolean(PREF_PLAYER_STATUS_IS_PLAYING, false);
 	}
 
 	@Override
@@ -109,6 +115,11 @@ public class PlaybackPreferences implements
 			currentlyPlayingFeedMediaId = sp.getLong(
 					PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
 		}
+        else if (key.equals(PREF_PLAYER_STATUS_IS_PLAYING)) {
+            playerStatusIsPlaying = sp.getBoolean(
+                    PREF_PLAYER_STATUS_IS_PLAYING, false);
+            EventDistributor.getInstance().sendPlayerStatusUpdateBroadcast();
+        }
 	}
 
 	private static void instanceAvailable() {
@@ -142,5 +153,11 @@ public class PlaybackPreferences implements
 		instanceAvailable();
 		return instance.currentEpisodeIsVideo;
 	}
+
+    public static boolean getPlayerStatusIsPlaying() {
+        instanceAvailable();
+        return instance.playerStatusIsPlaying;
+    }
+
 
 }

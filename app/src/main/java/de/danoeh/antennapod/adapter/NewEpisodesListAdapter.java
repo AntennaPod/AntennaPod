@@ -148,7 +148,6 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         public void onClick(View v) {
             FeedItem item = (FeedItem) v.getTag();
             actionButtonCallback.onActionButtonPressed(item);
-            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         }
     };
 

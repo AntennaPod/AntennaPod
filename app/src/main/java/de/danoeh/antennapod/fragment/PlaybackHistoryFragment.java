@@ -171,6 +171,9 @@ public class PlaybackHistoryFragment extends ListFragment {
                 startItemLoader();
                 getActivity().supportInvalidateOptionsMenu();
             }
+            if ((arg & EventDistributor.PLAYER_STATUS_UPDATE) != 0) {
+                adapter.notifyDataSetChanged();
+            }
         }
     };
 

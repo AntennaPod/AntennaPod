@@ -296,6 +296,9 @@ public class ItemlistFragment extends ListFragment {
                     updateProgressBarVisibility();
                 }
             }
+            if ((arg & EventDistributor.PLAYER_STATUS_UPDATE) != 0) {
+                adapter.notifyDataSetChanged();
+            }
         }
     };
 

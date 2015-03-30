@@ -477,6 +477,9 @@ public class QueueFragment extends Fragment {
                     getActivity().supportInvalidateOptionsMenu();
                 }
             }
+            if ((arg & EventDistributor.PLAYER_STATUS_UPDATE) != 0) {
+                listAdapter.notifyDataSetChanged();
+            }
         }
     };
 
