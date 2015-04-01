@@ -34,6 +34,8 @@ import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 public class PlaybackHistoryFragment extends ListFragment {
     private static final String TAG = "PlaybackHistoryFragment";
+    private static final int EVENTS = EventDistributor.PLAYBACK_HISTORY_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
     private QueueAccess queue;
@@ -167,12 +169,9 @@ public class PlaybackHistoryFragment extends ListFragment {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((arg & EventDistributor.PLAYBACK_HISTORY_UPDATE) != 0) {
+            if ((arg & EVENTS) != 0) {
                 startItemLoader();
                 getActivity().supportInvalidateOptionsMenu();
-            }
-            if ((arg & EventDistributor.PLAYER_STATUS_UPDATE) != 0) {
-                adapter.notifyDataSetChanged();
             }
         }
     };

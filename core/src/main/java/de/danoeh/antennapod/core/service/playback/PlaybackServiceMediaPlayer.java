@@ -179,6 +179,10 @@ public class PlaybackServiceMediaPlayer {
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PLAYING || playerStatus == PlayerStatus.PREPARED) {
                     mediaPlayer.stop();
                 }
+                // set temporarily to pause in order to update list with current position
+                if (playerStatus == PlayerStatus.PLAYING) {
+                    setPlayerStatus(PlayerStatus.PAUSED, media);
+                }
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }
         }

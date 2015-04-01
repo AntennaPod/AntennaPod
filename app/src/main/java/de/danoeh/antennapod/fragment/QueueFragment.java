@@ -56,7 +56,8 @@ public class QueueFragment extends Fragment {
     private static final String TAG = "QueueFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE;
+            EventDistributor.QUEUE_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private DragSortListView listView;
     private QueueListAdapter listAdapter;
@@ -476,9 +477,6 @@ public class QueueFragment extends Fragment {
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
-            }
-            if ((arg & EventDistributor.PLAYER_STATUS_UPDATE) != 0) {
-                listAdapter.notifyDataSetChanged();
             }
         }
     };
