@@ -169,7 +169,8 @@ public class PlaybackServiceMediaPlayer {
 
 
         if (media != null) {
-            if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())) {
+            if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())
+                    && playerStatus == PlayerStatus.PLAYING) {
                 // episode is already playing -> ignore method call
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Method call to playMediaObject was ignored: media file already playing.");

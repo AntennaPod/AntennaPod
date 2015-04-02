@@ -44,18 +44,27 @@ public class PlaybackPreferences implements
 	/** True if last played media was a video. */
 	public static final String PREF_CURRENT_EPISODE_IS_VIDEO = "de.danoeh.antennapod.preferences.lastIsVideo";
 
-    /** True if player status is playing. */
-    public static final String PREF_PLAYER_STATUS_IS_PLAYING = "de.danoeh.antennapod.preferences.playerStatusIsPlaying";
+    /** The current player status as int. */
+    public static final String PREF_CURRENT_PLAYER_STATUS = "de.danoeh.antennapod.preferences.currentPlayerStatus";
 
 	/** Value of PREF_CURRENTLY_PLAYING_MEDIA if no media is playing. */
 	public static final long NO_MEDIA_PLAYING = -1;
+
+    /** Value of PREF_CURRENT_PLAYER_STATUS if media player status is playing. */
+    public static final int PLAYER_STATUS_PLAYING = 1;
+
+    /** Value of PREF_CURRENT_PLAYER_STATUS if media player status is paused. */
+    public static final int PLAYER_STATUS_PAUSED = 2;
+
+    /** Value of PREF_CURRENT_PLAYER_STATUS if media player status is neither playing nor paused. */
+    public static final int PLAYER_STATUS_OTHER = 3;
 
 	private long currentlyPlayingFeedId;
 	private long currentlyPlayingFeedMediaId;
 	private long currentlyPlayingMedia;
 	private boolean currentEpisodeIsStream;
 	private boolean currentEpisodeIsVideo;
-    private boolean playerStatusIsPlaying;
+    private int currentPlayerStatus;
 
 	private static PlaybackPreferences instance;
 	private Context context;
@@ -92,7 +101,8 @@ public class PlaybackPreferences implements
 				NO_MEDIA_PLAYING);
 		currentEpisodeIsStream = sp.getBoolean(PREF_CURRENT_EPISODE_IS_STREAM, true);
 		currentEpisodeIsVideo = sp.getBoolean(PREF_CURRENT_EPISODE_IS_VIDEO, false);
-        playerStatusIsPlaying = sp.getBoolean(PREF_PLAYER_STATUS_IS_PLAYING, false);
+        currentPlayerStatus = sp.getInt(PREF_CURRENT_PLAYER_STATUS,
+                PLAYER_STATUS_OTHER);
 	}
 
 	@Override
@@ -115,9 +125,9 @@ public class PlaybackPreferences implements
 			currentlyPlayingFeedMediaId = sp.getLong(
 					PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID, NO_MEDIA_PLAYING);
 		}
-        else if (key.equals(PREF_PLAYER_STATUS_IS_PLAYING)) {
-            playerStatusIsPlaying = sp.getBoolean(
-                    PREF_PLAYER_STATUS_IS_PLAYING, false);
+        else if (key.equals(PREF_CURRENT_PLAYER_STATUS)) {
+            currentPlayerStatus = sp.getInt(PREF_CURRENT_PLAYER_STATUS,
+                    PLAYER_STATUS_OTHER);
             EventDistributor.getInstance().sendPlayerStatusUpdateBroadcast();
         }
 	}
@@ -154,9 +164,9 @@ public class PlaybackPreferences implements
 		return instance.currentEpisodeIsVideo;
 	}
 
-    public static boolean getPlayerStatusIsPlaying() {
+    public static int getCurrentPlayerStatus() {
         instanceAvailable();
-        return instance.playerStatusIsPlaying;
+        return instance.currentPlayerStatus;
     }
 
 

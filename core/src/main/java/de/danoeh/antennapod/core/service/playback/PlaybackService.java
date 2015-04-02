@@ -653,11 +653,26 @@ public class PlaybackService extends Service {
         editor.putLong(
                 PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
                 PlaybackPreferences.NO_MEDIA_PLAYING);
-        editor.putBoolean(
-                PlaybackPreferences.PREF_PLAYER_STATUS_IS_PLAYING, false);
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS,
+                PlaybackPreferences.PLAYER_STATUS_OTHER);
         editor.commit();
     }
 
+    private int getCurrentPlayerStatusAsInt(PlayerStatus playerStatus) {
+        int playerStatusAsInt;
+        switch (playerStatus) {
+            case PLAYING:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PLAYING;
+                break;
+            case PAUSED:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PAUSED;
+                break;
+            default:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_OTHER;
+        }
+        return playerStatusAsInt;
+    }
 
     private void writePlaybackPreferences() {
         if (BuildConfig.DEBUG)
@@ -668,7 +683,7 @@ public class PlaybackService extends Service {
         PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         MediaType mediaType = mediaPlayer.getCurrentMediaType();
         boolean stream = mediaPlayer.isStreaming();
-        boolean isPlaying = (info.playerStatus == PlayerStatus.PLAYING);
+        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
 
         if (info.playable != null) {
             editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
@@ -705,8 +720,8 @@ public class PlaybackService extends Service {
                     PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
                     PlaybackPreferences.NO_MEDIA_PLAYING);
         }
-        editor.putBoolean(
-                PlaybackPreferences.PREF_PLAYER_STATUS_IS_PLAYING, isPlaying);
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
 
         editor.commit();
     }
@@ -718,10 +733,10 @@ public class PlaybackService extends Service {
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
         PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-        boolean isPlaying = (info.playerStatus == PlayerStatus.PLAYING);
+        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
 
-        editor.putBoolean(
-                PlaybackPreferences.PREF_PLAYER_STATUS_IS_PLAYING, isPlaying);
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
 
         editor.commit();
     }
