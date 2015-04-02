@@ -150,16 +150,18 @@ public class GpodnetSyncService extends Service {
             GpodnetEpisodeActionGetResponse getResponse = service.getEpisodeChanges(timestamp);
             long lastUpdate = getResponse.getTimestamp();
             Log.d(TAG, "Downloaded episode actions: " + getResponse);
-            processEpisodeActions(getResponse.getEpisodeActions());
+            List<GpodnetEpisodeAction> remoteActions = getResponse.getEpisodeActions();
 
-            // upload local
-            Collection<GpodnetEpisodeAction> episodeActions = GpodnetPreferences.getQueuedEpisodeActions();
-            if(episodeActions.size() > 0) {
-                Log.d(TAG, "Uploading episode actions: " + episodeActions);
-                GpodnetEpisodeActionPostResponse postResponse = service.uploadEpisodeActions(episodeActions);
+            List<GpodnetEpisodeAction> localActions = GpodnetPreferences.getQueuedEpisodeActions();
+            processEpisodeActions(localActions, remoteActions);
+
+            // upload local actions
+            if(localActions.size() > 0) {
+                Log.d(TAG, "Uploading episode actions: " + localActions);
+                GpodnetEpisodeActionPostResponse postResponse = service.uploadEpisodeActions(localActions);
                 lastUpdate = postResponse.timestamp;
                 Log.d(TAG, "Upload episode response: " + postResponse);
-                GpodnetPreferences.removeQueuedEpisodeActions(episodeActions);
+                GpodnetPreferences.removeQueuedEpisodeActions(localActions);
             }
             GpodnetPreferences.setLastEpisodeActionsSyncTimestamp(lastUpdate);
             clearErrorNotifications();
@@ -183,33 +185,45 @@ public class GpodnetSyncService extends Service {
         }
     }
 
-    private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> episodeActions) throws DownloadRequestException {
-        if(episodeActions.size() == 0) {
+    private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions, List<GpodnetEpisodeAction> remoteActions) throws DownloadRequestException {
+        if(remoteActions.size() == 0) {
             return;
         }
-        Map<Pair<String, String>, GpodnetEpisodeAction> mostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
-        for (GpodnetEpisodeAction episodeAction : episodeActions) {
-            switch (episodeAction.getAction()) {
+        Map<Pair<String, String>, GpodnetEpisodeAction> localMostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
+        Map<Pair<String, String>, GpodnetEpisodeAction> remoteMostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
+        // make sure more recent local actions are not overwritten by older remote actions
+        for(GpodnetEpisodeAction action : localActions) {
+            Pair key = new Pair(action.getPodcast(), action.getEpisode());
+            GpodnetEpisodeAction mostRecent = localMostRecentPlayAction.get(key);
+            if (mostRecent == null) {
+                localMostRecentPlayAction.put(key, action);
+            } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
+                localMostRecentPlayAction.put(key, action);
+            }
+        }
+        for (GpodnetEpisodeAction action : remoteActions) {
+            switch (action.getAction()) {
                 case NEW:
-                    FeedItem newItem = DBReader.getFeedItem(this, episodeAction.getPodcast(), episodeAction.getEpisode());
+                    FeedItem newItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
                     if(newItem != null) {
                         DBWriter.markItemRead(this, newItem, false, true);
                     } else {
-                        Log.i(TAG, "Unknown feed item: " + episodeAction);
+                        Log.i(TAG, "Unknown feed item: " + action);
                     }
                     break;
                 case DOWNLOAD:
                     break;
                 case PLAY:
-                    if(episodeAction.getTimestamp() == null) {
-                        break;
-                    }
-                    Pair key = new Pair(episodeAction.getPodcast(), episodeAction.getEpisode());
-                    GpodnetEpisodeAction mostRecent = mostRecentPlayAction.get(key);
-                    if (mostRecent == null) {
-                        mostRecentPlayAction.put(key, episodeAction);
-                    } else if (mostRecent.getTimestamp().before(episodeAction.getTimestamp())) {
-                        mostRecentPlayAction.put(key, episodeAction);
+                    Pair key = new Pair(action.getPodcast(), action.getEpisode());
+                    GpodnetEpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
+                    if(localMostRecent == null ||
+                            localMostRecent.getTimestamp().before(action.getTimestamp())) {
+                        GpodnetEpisodeAction mostRecent = remoteMostRecentPlayAction.get(key);
+                        if (mostRecent == null) {
+                            remoteMostRecentPlayAction.put(key, action);
+                        } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
+                            remoteMostRecentPlayAction.put(key, action);
+                        }
                     }
                     break;
                 case DELETE:
@@ -217,10 +231,10 @@ public class GpodnetSyncService extends Service {
                     break;
             }
         }
-        for (GpodnetEpisodeAction episodeAction : mostRecentPlayAction.values()) {
-            FeedItem playItem = DBReader.getFeedItem(this, episodeAction.getPodcast(), episodeAction.getEpisode());
+        for (GpodnetEpisodeAction action : remoteMostRecentPlayAction.values()) {
+            FeedItem playItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
             if (playItem != null) {
-                playItem.getMedia().setPosition(episodeAction.getPosition() * 1000);
+                playItem.getMedia().setPosition(action.getPosition() * 1000);
                 if(playItem.getMedia().hasAlmostEnded()) {
                     DBWriter.markItemRead(this, playItem, true, true);
                     DBWriter.addItemToPlaybackHistory(this, playItem.getMedia());

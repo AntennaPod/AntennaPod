@@ -49,7 +49,6 @@ public class GpodnetPreferences {
     private static Set<String> addedFeeds;
     private static Set<String> removedFeeds;
 
-    private static ReentrantLock episodeActionListLock = new ReentrantLock();
     private static List<GpodnetEpisodeAction> queuedEpisodeActions;
 
     /**
@@ -222,18 +221,18 @@ public class GpodnetPreferences {
         writePreference(PREF_SYNC_REMOVED, removedFeeds);
     }
 
-    public static void enqueueEpisodeAction(GpodnetEpisodeAction action) {
+    public static synchronized void enqueueEpisodeAction(GpodnetEpisodeAction action) {
         ensurePreferencesLoaded();
         queuedEpisodeActions.add(action);
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
     }
 
-    public static Collection<GpodnetEpisodeAction> getQueuedEpisodeActions() {
+    public static List<GpodnetEpisodeAction> getQueuedEpisodeActions() {
         ensurePreferencesLoaded();
-        return Collections.unmodifiableCollection(queuedEpisodeActions);
+        return Collections.unmodifiableList(queuedEpisodeActions);
     }
 
-    public static void removeQueuedEpisodeActions(Collection<GpodnetEpisodeAction> queued) {
+    public static synchronized void removeQueuedEpisodeActions(Collection<GpodnetEpisodeAction> queued) {
         ensurePreferencesLoaded();
         queuedEpisodeActions.removeAll(queued);
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
