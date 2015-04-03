@@ -249,18 +249,7 @@ public class NewEpisodesFragment extends Fragment {
             }
         });
 
-        listView.setDragSortListener(new DragSortListView.DragSortListener() {
-
-            @Override
-            public void drag(int from, int to) {
-                // no drag
-            }
-
-            @Override
-            public void drop(int from, int to) {
-                // no drop
-            }
-
+        listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {
                 Log.d(TAG, "remove("+which+")");
@@ -271,13 +260,6 @@ public class NewEpisodesFragment extends Fragment {
                         getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
                                 which)
                 );
-                // TODO: provide undo?
-                /*
-                undoBarController.showUndoBar(false,
-                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
-                                which)
-                );
-                */
             }
         });
 
