@@ -169,7 +169,8 @@ public class PlaybackServiceMediaPlayer {
 
 
         if (media != null) {
-            if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())) {
+            if (!forceReset && media.getIdentifier().equals(playable.getIdentifier())
+                    && playerStatus == PlayerStatus.PLAYING) {
                 // episode is already playing -> ignore method call
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Method call to playMediaObject was ignored: media file already playing.");
@@ -178,6 +179,10 @@ public class PlaybackServiceMediaPlayer {
                 // stop playback of this episode
                 if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PLAYING || playerStatus == PlayerStatus.PREPARED) {
                     mediaPlayer.stop();
+                }
+                // set temporarily to pause in order to update list with current position
+                if (playerStatus == PlayerStatus.PLAYING) {
+                    setPlayerStatus(PlayerStatus.PAUSED, media);
                 }
                 setPlayerStatus(PlayerStatus.INDETERMINATE, null);
             }

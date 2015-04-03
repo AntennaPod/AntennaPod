@@ -54,7 +54,8 @@ public class NewEpisodesFragment extends Fragment {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.QUEUE_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
+            EventDistributor.UNREAD_ITEMS_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String PREF_NAME = "PrefNewEpisodesFragment";

@@ -101,6 +101,18 @@ public class PlaybackService extends Service {
     public static final String ACTION_SKIP_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.skipCurrentEpisode";
 
     /**
+     * If the PlaybackService receives this action, it will pause playback.
+     */
+    public static final String ACTION_PAUSE_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.pausePlayCurrentEpisode";
+
+
+    /**
+     * If the PlaybackService receives this action, it will resume playback.
+     */
+    public static final String ACTION_RESUME_PLAY_CURRENT_EPISODE = "action.de.danoeh.antennapod.core.service.resumePlayCurrentEpisode";
+
+
+    /**
      * Used in NOTIFICATION_TYPE_RELOAD.
      */
     public static final int EXTRA_CODE_AUDIO = 1;
@@ -216,6 +228,10 @@ public class PlaybackService extends Service {
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_SKIP_CURRENT_EPISODE));
+        registerReceiver(pausePlayCurrentEpisodeReceiver, new IntentFilter(
+                ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+        registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
+                ACTION_RESUME_PLAY_CURRENT_EPISODE));
         remoteControlClient = setupRemoteControlClient();
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
@@ -427,6 +443,7 @@ public class PlaybackService extends Service {
                         // remove notifcation on pause
                         stopForeground(true);
                     }
+                    writePlayerStatusPlaybackPreferences();
 
                     break;
 
@@ -443,9 +460,11 @@ public class PlaybackService extends Service {
 
                     taskManager.startPositionSaver();
                     taskManager.startWidgetUpdater();
+                    writePlayerStatusPlaybackPreferences();
                     setupNotification(newInfo);
                     started = true;
                     break;
+
                 case ERROR:
                     writePlaybackPreferencesNoMediaPlaying();
                     break;
@@ -634,9 +653,26 @@ public class PlaybackService extends Service {
         editor.putLong(
                 PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
                 PlaybackPreferences.NO_MEDIA_PLAYING);
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS,
+                PlaybackPreferences.PLAYER_STATUS_OTHER);
         editor.commit();
     }
 
+    private int getCurrentPlayerStatusAsInt(PlayerStatus playerStatus) {
+        int playerStatusAsInt;
+        switch (playerStatus) {
+            case PLAYING:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PLAYING;
+                break;
+            case PAUSED:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_PAUSED;
+                break;
+            default:
+                playerStatusAsInt = PlaybackPreferences.PLAYER_STATUS_OTHER;
+        }
+        return playerStatusAsInt;
+    }
 
     private void writePlaybackPreferences() {
         if (BuildConfig.DEBUG)
@@ -647,6 +683,7 @@ public class PlaybackService extends Service {
         PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
         MediaType mediaType = mediaPlayer.getCurrentMediaType();
         boolean stream = mediaPlayer.isStreaming();
+        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
 
         if (info.playable != null) {
             editor.putLong(PlaybackPreferences.PREF_CURRENTLY_PLAYING_MEDIA,
@@ -683,6 +720,23 @@ public class PlaybackService extends Service {
                     PlaybackPreferences.PREF_CURRENTLY_PLAYING_FEEDMEDIA_ID,
                     PlaybackPreferences.NO_MEDIA_PLAYING);
         }
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
+
+        editor.commit();
+    }
+
+    private void writePlayerStatusPlaybackPreferences() {
+        if (BuildConfig.DEBUG)
+            Log.d(TAG, "Writing player status playback preferences");
+
+        SharedPreferences.Editor editor = PreferenceManager
+                .getDefaultSharedPreferences(getApplicationContext()).edit();
+        PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
+        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
+
+        editor.putInt(
+                PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
 
         editor.commit();
     }
@@ -1097,6 +1151,28 @@ public class PlaybackService extends Service {
                 if (BuildConfig.DEBUG)
                     Log.d(TAG, "Received SKIP_CURRENT_EPISODE intent");
                 mediaPlayer.endPlayback();
+            }
+        }
+    };
+
+    private BroadcastReceiver pauseResumeCurrentEpisodeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), ACTION_RESUME_PLAY_CURRENT_EPISODE)) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Received RESUME_PLAY_CURRENT_EPISODE intent");
+                mediaPlayer.resume();
+            }
+        }
+    };
+
+    private BroadcastReceiver pausePlayCurrentEpisodeReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            if (StringUtils.equals(intent.getAction(), ACTION_PAUSE_PLAY_CURRENT_EPISODE)) {
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Received PAUSE_PLAY_CURRENT_EPISODE intent");
+                mediaPlayer.pause(false, false);
             }
         }
     };

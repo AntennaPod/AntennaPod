@@ -66,7 +66,8 @@ public class ItemlistFragment extends ListFragment {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.QUEUE_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE;
+            | EventDistributor.UNREAD_ITEMS_UPDATE
+            | EventDistributor.PLAYER_STATUS_UPDATE;
 
     public static final String EXTRA_SELECTED_FEEDITEM = "extra.de.danoeh.antennapod.activity.selected_feeditem";
     public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
