@@ -50,4 +50,18 @@
         tools:layout_height="64dp"
         tools:background="@android:color/holo_red_light"/>
 
+    <LinearLayout
+        android:id="@+id/undobar"
+        style="@style/UndoBar">
+
+        <TextView
+            android:id="@+id/undobar_message"
+            style="@style/UndoBarMessage"/>
+
+        <Button
+            android:id="@+id/undobar_button"
+            style="@style/UndoBarButton"/>
+
+    </LinearLayout>
+
 </FrameLayout>
