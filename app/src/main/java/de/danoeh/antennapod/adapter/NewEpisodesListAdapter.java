@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -138,6 +139,11 @@ public class NewEpisodesListAdapter extends BaseAdapter {
                 .load(item.getImageUri())
                 .fit()
                 .into(holder.imageView);
+
+        if (item.isRead()) {
+            // grey it out
+            convertView.setBackgroundColor(Color.GRAY);
+        }
 
         return convertView;
     }

@@ -379,7 +379,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private void updateShowOnlyEpisodes() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, false);
+        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, true);
     }
 
     private void setShowOnlyNewEpisodes(boolean newVal) {
