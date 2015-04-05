@@ -144,6 +144,8 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         if (item.isRead()) {
             // grey it out
             ViewHelper.setAlpha(convertView, .2f);
+        } else {
+            ViewHelper.setAlpha(convertView, 1.0f);
         }
 
         return convertView;

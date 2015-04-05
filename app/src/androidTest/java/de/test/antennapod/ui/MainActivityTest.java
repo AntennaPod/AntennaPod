@@ -73,9 +73,9 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
         // all episodes
         openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.all_episodes_label));
+        solo.clickOnText(solo.getString(R.string.new_episodes_label));
         solo.waitForView(android.R.id.list);
-        assertEquals(solo.getString(R.string.all_episodes_label), getActionbarTitle());
+        assertEquals(solo.getString(R.string.new_episodes_label), getActionbarTitle());
 
         // queue
         openNavDrawer();

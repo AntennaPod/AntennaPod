@@ -230,7 +230,7 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.all_episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
 
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
 
