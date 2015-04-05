@@ -1,7 +1,3 @@
-```
-Please note that AntennaPod is no longer maintained until further notice.
-```
-
 How to report a bug
 -------------------
 - Use the search function to see if someone else has already reported the bug. If an issue has already been opened, see if you can add any useful information to it.
@@ -29,7 +25,7 @@ Submit a pull-request
 - If you want to work on a feature that has been requested or fix a bug that has been reported on the "issues" page, add a comment to it so that other people know that you are working on it.  
 - Fork the repository  
 - Almost all changes of AntennaPod are done on the `develop` branch. If a new version of AntennaPod is released, the `develop` branch is merged into `master`. As a result, the `master` branch probably doesn't contain the latest changes when you are reading this. Please make sure that you are branching from `develop`! Otherwise, there might be a lot of merge-conflicts when merging your changes into `develop` and therefore it might take longer to review your pull-request. Exceptions are changes in files like README.md, CONTRIBUTING.md and other files that are not directly related to the source code.  
-- If your pull-request fixes a bug that has been reported or implements a feature that has been requested in another issue, try to mention it so that it can be closed once your pull-request has been merged.  
+- If your pull-request fixes a bug that has been reported or implements a feature that has been requested in another issue, try to mention it so that it can be closed once your pull-request has been merged. If you use special keywords in the [commit comment](https://help.github.com/articles/closing-issues-via-commit-messages/) or [pull request text](https://github.com/blog/1506-closing-issues-via-pull-requests) github will close the issues automatically when the changes lands at the master branch.
 - Although not every part of AntennaPod's source code is fully documented yet, it would be very nice if you could add documentation to your changes if it is a larger pull-request.  
 - If possible, add unit tests for your pull-request and make sure that they pass. Information on how to add unit tests and run them can be found here: [TODO] 
 
