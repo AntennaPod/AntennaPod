@@ -23,7 +23,6 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -223,23 +222,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-
-        // delete if auto delete is enabled and less than 3% of episode is left
-        Playable playable = controller.getMedia();
-        if(playable != null && playable instanceof FeedMedia) {
-            FeedMedia media = (FeedMedia) playable;
-            if(media.hasAlmostEnded()) {
-                Log.d(TAG, "smart mark as read");
-                FeedItem item = media.getItem();
-                DBWriter.markItemRead(this, item, true, false);
-                DBWriter.removeQueueItem(this, item, false);
-                DBWriter.addItemToPlaybackHistory(this, media);
-                if (UserPreferences.isAutoDelete()) {
-                    Log.d(TAG, "Delete " + media.toString());
-                    DBWriter.deleteFeedMediaOfItem(this, media.getId());
-                }
-            }
-        }
 
         if (controller != null) {
             controller.release();

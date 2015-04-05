@@ -83,6 +83,14 @@ public class UndoBarController<T> {
         }
     }
 
+    public boolean isShowing() {
+        return mBarView.getVisibility() == View.VISIBLE;
+    }
+
+    public void close() {
+        mHideHandler.post(mHideRunnable);
+    }
+
     public void hideUndoBar(boolean immediate) {
         mHideHandler.removeCallbacks(mHideRunnable);
         if (immediate) {

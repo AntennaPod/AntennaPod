@@ -128,6 +128,9 @@ public class QueueFragment extends Fragment {
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
         stopItemLoader();
+        if(undoBarController.isShowing()) {
+            undoBarController.close();
+        }
     }
 
     @Override
@@ -366,24 +369,26 @@ public class QueueFragment extends Fragment {
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar),
                 new UndoBarController.UndoListener<FeedItemUndoToken>() {
 
+            private final Context context = getActivity();
+
             @Override
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
                     int position = token.getPosition();
-                    DBWriter.markItemRead(getActivity(), itemId, false);
-                    DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
+                    DBWriter.markItemRead(context, itemId, false);
+                    DBWriter.addQueueItemAt(context, itemId, position, false);
                 }
             }
 
             @Override
             public void onHide(FeedItemUndoToken token) {
-                if (token != null) {
+                if (token != null && context != null) {
                     long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(getActivity(), itemId);
+                    FeedItem item = DBReader.getFeedItem(context, itemId);
                     FeedMedia media = item.getMedia();
                     if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
                     }
                 }
             }
