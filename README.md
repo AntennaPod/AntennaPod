@@ -10,6 +10,8 @@ You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!foru
 
 Bug reports and feature requests can be submitted [here](https://github.com/danieloeh/AntennaPod/issues/new) (please read the [instructions](https://github.com/danieloeh/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
 
+## Alpha Testing
+You can participate in alpha testing by joining the Google Plus [AntennaPod Alpha](https://plus.google.com/communities/117446128636140585144) community.
 
 ## Nightly Builds
 
