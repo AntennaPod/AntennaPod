@@ -64,7 +64,8 @@ public class NewEpisodesFragment extends Fragment {
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_EPISODE_FILTER_BOOL = "newEpisodeFilterEnabled";
-
+    private static final String PREF_KEY_LIST_TOP = "list_top";
+    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
     private DragSortListView listView;
     private NewEpisodesListAdapter listAdapter;
@@ -118,6 +119,12 @@ public class NewEpisodesFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPosition();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
@@ -134,6 +141,30 @@ public class NewEpisodesFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
         resetViewState();
+    }
+
+    private void saveScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
+        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.commit();
+    }
+
+    private void restoreScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
+        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
+        if(listSelection > 0 || top > 0) {
+            listView.setSelectionFromTop(listSelection, top);
+            // restore once, then forget
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
+            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.commit();
+        }
     }
 
     private void resetViewState() {
@@ -302,6 +333,7 @@ public class NewEpisodesFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
+        restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
     }
