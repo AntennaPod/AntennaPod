@@ -37,6 +37,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -44,11 +45,16 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
+
+import de.danoeh.antennapod.core.util.LongList;
+
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 /**
  * Shows unread or recently published episodes
@@ -57,7 +63,6 @@ public class NewEpisodesFragment extends Fragment {
     private static final String TAG = "NewEpisodesFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -75,7 +80,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private List<FeedItem> unreadItems;
     private List<FeedItem> recentItems;
-    private QueueAccess queueAccess;
+    private LongList queue;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -357,7 +362,7 @@ public class NewEpisodesFragment extends Fragment {
         @Override
         public boolean isInQueue(FeedItem item) {
             if (itemsLoaded) {
-                return queueAccess.contains(item.getId());
+                return queue.contains(item.getId());
             } else {
                 return false;
             }
@@ -437,9 +442,11 @@ public class NewEpisodesFragment extends Fragment {
         protected Object[] doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return new Object[]{DBReader.getUnreadItemsList(context),
+                return new Object[] {
+                        DBReader.getUnreadItemsList(context),
                         DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                        DBReader.getQueueIDList(context)
+                };
             } else {
                 return null;
             }
@@ -454,7 +461,7 @@ public class NewEpisodesFragment extends Fragment {
             if (lists != null) {
                 unreadItems = (List<FeedItem>) lists[0];
                 recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (QueueAccess) lists[2];
+                queue = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

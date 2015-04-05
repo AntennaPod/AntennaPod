@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -37,6 +36,8 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -48,6 +49,7 @@ import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 /**
  * Shows all items in the queue
@@ -295,7 +297,7 @@ public class QueueFragment extends Fragment {
                 DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
                 return true;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(getActivity(), selectedItem.getId(), false);
+                DBWriter.removeQueueItem(getActivity(), selectedItem, false);
                 return true;
             default:
                 return super.onContextItemSelected(item);

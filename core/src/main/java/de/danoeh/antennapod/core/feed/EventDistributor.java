@@ -5,8 +5,6 @@ import android.util.Log;
 
 import org.apache.commons.lang3.Validate;
 
-import de.danoeh.antennapod.core.BuildConfig;
-
 import java.util.AbstractQueue;
 import java.util.Observable;
 import java.util.Observer;
@@ -71,23 +69,17 @@ public class EventDistributor extends Observable {
 
 	private void processEventQueue() {
 		Integer result = 0;
-		if (BuildConfig.DEBUG)
-			Log.d(TAG,
-					"Processing event queue. Number of events: "
-							+ events.size());
+		Log.d(TAG, "Processing event queue. Number of events: " + events.size());
 		for (Integer current = events.poll(); current != null; current = events
 				.poll()) {
 			result |= current;
 		}
 		if (result != 0) {
-			if (BuildConfig.DEBUG)
-				Log.d(TAG, "Notifying observers. Data: " + result);
+			Log.d(TAG, "Notifying observers. Data: " + result);
 			setChanged();
 			notifyObservers(result);
 		} else {
-			if (BuildConfig.DEBUG)
-				Log.d(TAG,
-						"Event queue didn't contain any new events. Observers will not be notified.");
+			Log.d(TAG, "Event queue didn't contain any new events. Observers will not be notified.");
 		}
 	}
 

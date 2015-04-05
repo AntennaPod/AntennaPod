@@ -33,17 +33,19 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
+import de.greenrobot.event.EventBus;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -126,16 +128,15 @@ public class DBWriter {
                         // Gpodder: queue delete action for synchronization
                         if(GpodnetPreferences.loggedIn()) {
                             FeedItem item = media.getItem();
-                            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DELETE)
+                            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
                                     .currentDeviceId()
                                     .currentTimestamp()
                                     .build();
                             GpodnetPreferences.enqueueEpisodeAction(action);
                         }
                     }
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Deleting File. Result: " + result);
-                    EventDistributor.getInstance().sendQueueUpdateBroadcast();
+                    Log.d(TAG, "Deleting File. Result: " + result);
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.DELETED_MEDIA, media.getItem()));
                     EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
                 }
             }
@@ -370,8 +371,7 @@ public class DBWriter {
                     }
                     if (queueModified) {
                         adapter.setQueue(queue);
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                     }
                     if (unreadItemsModified && item != null) {
                         adapter.setSingleFeedItem(item);
@@ -439,8 +439,7 @@ public class DBWriter {
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
-                            EventDistributor.getInstance()
-                                    .sendQueueUpdateBroadcast();
+                            EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
                         }
                         if (unreadItemsModified) {
                             adapter.setFeedItemlist(itemsToSave);
@@ -471,7 +470,7 @@ public class DBWriter {
                 adapter.clearQueue();
                 adapter.close();
 
-                EventDistributor.getInstance().sendQueueUpdateBroadcast();
+                EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.CLEARED));
             }
         });
     }
@@ -480,11 +479,11 @@ public class DBWriter {
      * Removes a FeedItem object from the queue.
      *
      * @param context             A context that is used for opening a database connection.
-     * @param itemId              ID of the FeedItem that should be removed.
+     * @param item                FeedItem that should be removed.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final long itemId, final boolean performAutoDownload) {
+                                            final FeedItem item, final boolean performAutoDownload) {
         return dbExec.submit(new Runnable() {
 
             @Override
@@ -498,16 +497,14 @@ public class DBWriter {
                 if (queue != null) {
                     boolean queueModified = false;
                     QueueAccess queueAccess = QueueAccess.ItemListAccess(queue);
-                    if (queueAccess.contains(itemId)) {
-                        item = DBReader.getFeedItem(context, itemId);
+                    if (queueAccess.contains(item.getId())) {
                         if (item != null) {
-                            queueModified = queueAccess.remove(itemId);
+                            queueModified = queueAccess.remove(item.getId());
                         }
                     }
                     if (queueModified) {
                         adapter.setQueue(queue);
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item));
                     } else {
                         Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                     }
@@ -535,16 +532,13 @@ public class DBWriter {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
-                List<Long> queueIdList = DBReader.getQueueIDList(context);
-                int currentLocation = 0;
-                for (long id : queueIdList) {
-                    if (id == itemId) {
-                        moveQueueItemHelper(context, currentLocation, 0, broadcastUpdate);
-                        return;
-                    }
-                    currentLocation++;
+                LongList queueIdList = DBReader.getQueueIDList(context);
+                int index = queueIdList.indexOf(itemId);
+                if (index >=0) {
+                    moveQueueItemHelper(context, index, 0, broadcastUpdate);
+                } else {
+                    Log.e(TAG, "moveQueueItemToTop: item not found");
                 }
-                Log.e(TAG, "moveQueueItemToTop: item not found");
             }
         });
     }
@@ -562,17 +556,14 @@ public class DBWriter {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
-                List<Long> queueIdList = DBReader.getQueueIDList(context);
-                int currentLocation = 0;
-                for (long id : queueIdList) {
-                    if (id == itemId) {
-                        moveQueueItemHelper(context, currentLocation, queueIdList.size() - 1,
-                                broadcastUpdate);
-                        return;
-                    }
-                    currentLocation++;
+                LongList queueIdList = DBReader.getQueueIDList(context);
+                int index = queueIdList.indexOf(itemId);
+                if(index >= 0) {
+                    moveQueueItemHelper(context, index, queueIdList.size() - 1,
+                            broadcastUpdate);
+                } else {
+                    Log.e(TAG, "moveQueueItemToBottom: item not found");
                 }
-                Log.e(TAG, "moveQueueItemToBottom: item not found");
             }
         });
     }
@@ -626,8 +617,8 @@ public class DBWriter {
 
                 adapter.setQueue(queue);
                 if (broadcastUpdate) {
-                    EventDistributor.getInstance()
-                            .sendQueueUpdateBroadcast();
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item));
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, to));
                 }
 
             }
@@ -1036,8 +1027,7 @@ public class DBWriter {
                     Collections.sort(queue, comparator);
                     adapter.setQueue(queue);
                     if (broadcastUpdate) {
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.SORTED));
                     }
                 } else {
                     Log.e(TAG, "sortQueue: Could not load queue");

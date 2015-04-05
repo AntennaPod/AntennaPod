@@ -1,9 +1,9 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-
 import java.util.Iterator;
 import java.util.List;
+
+import de.danoeh.antennapod.core.feed.FeedItem;
 
 /**
  * Provides methods for accessing the queue. It is possible to load only a part of the information about the queue that
@@ -25,23 +25,6 @@ public abstract class QueueAccess {
     public abstract boolean remove(long id);
 
     private QueueAccess() {
-
-    }
-
-    public static QueueAccess IDListAccess(final List<Long> ids) {
-        return new QueueAccess() {
-            @Override
-            public boolean contains(long id) {
-                return (ids != null) && ids.contains(id);
-            }
-
-            @Override
-            public boolean remove(long id) {
-                return ids.remove(id);
-            }
-
-
-        };
     }
 
     public static QueueAccess ItemListAccess(final List<FeedItem> items) {

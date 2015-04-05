@@ -2,6 +2,9 @@ package de.danoeh.antennapod.core.feed;
 
 import android.net.Uri;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -383,5 +386,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public boolean hasChapters() {
         return hasChapters;
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

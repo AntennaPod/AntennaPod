@@ -25,11 +25,11 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -42,6 +42,7 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
+import de.greenrobot.event.EventBus;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -440,8 +441,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent.");
                 loadData();
             }
         }

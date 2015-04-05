@@ -14,6 +14,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedItemStatistics;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
@@ -194,7 +195,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         final Context context = getInstrumentation().getTargetContext();
         final int numItems = 10;
         List<FeedItem> queue = saveQueue(numItems);
-        List<Long> ids = DBReader.getQueueIDList(context);
+        LongList ids = DBReader.getQueueIDList(context);
         assertNotNull(ids);
         assertTrue(queue.size() == ids.size());
         for (int i = 0; i < queue.size(); i++) {

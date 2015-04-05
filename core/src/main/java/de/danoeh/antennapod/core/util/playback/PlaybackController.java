@@ -1,7 +1,13 @@
 package de.danoeh.antennapod.core.util.playback;
 
 import android.app.Activity;
-import android.content.*;
+import android.content.BroadcastReceiver;
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
+import android.content.ServiceConnection;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
 import android.os.AsyncTask;
@@ -19,6 +25,13 @@ import android.widget.TextView;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
+import java.util.concurrent.RejectedExecutionHandler;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -32,8 +45,6 @@ import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable.PlayableUtils;
-
-import java.util.concurrent.*;
 
 /**
  * Communicates with the playback service. GUI classes should use this class to
@@ -118,8 +129,7 @@ public abstract class PlaybackController {
      * example in the activity's onStop() method.
      */
     public void release() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Releasing PlaybackController");
+        Log.d(TAG, "Releasing PlaybackController");
 
         try {
             activity.unregisterReceiver(statusUpdate);
@@ -177,7 +187,7 @@ public abstract class PlaybackController {
                 boolean bound = false;
                 if (!PlaybackService.started) {
                     if (serviceIntent != null) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "Calling start service");
+                        Log.d(TAG, "Calling start service");
                         activity.startService(serviceIntent);
                         bound = activity.bindService(serviceIntent, mConnection, 0);
                     } else {
@@ -186,14 +196,11 @@ public abstract class PlaybackController {
                         handleStatus();
                     }
                 } else {
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG,
-                                "PlaybackService is running, trying to connect without start command.");
+                    Log.d(TAG, "PlaybackService is running, trying to connect without start command.");
                     bound = activity.bindService(new Intent(activity,
                             PlaybackService.class), mConnection, 0);
                 }
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Result for service binding: " + bound);
+                Log.d(TAG, "Result for service binding: " + bound);
             }
         };
         intentLoader.execute();
@@ -272,8 +279,7 @@ public abstract class PlaybackController {
                     .getService();
             if (!released) {
                 queryService();
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Connection to Service established");
+                Log.d(TAG, "Connection to Service established");
             } else {
                 Log.i(TAG, "Connection to playback service has been established, but controller has already been released");
             }
@@ -282,9 +288,7 @@ public abstract class PlaybackController {
         @Override
         public void onServiceDisconnected(ComponentName name) {
             playbackService = null;
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Disconnected from Service");
-
+            Log.d(TAG, "Disconnected from Service");
         }
     };
 

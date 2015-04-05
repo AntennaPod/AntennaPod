@@ -21,6 +21,7 @@ import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.comparator.PlaybackCompletionDateComparator;
@@ -338,8 +339,7 @@ public final class DBReader {
     }
 
     static List<FeedItem> getQueue(Context context, PodDBAdapter adapter) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Extracting queue");
+        Log.d(TAG, "getQueue()");
 
         Cursor itemlistCursor = adapter.getQueueCursor();
         List<FeedItem> items = extractItemlistFromCursor(adapter,
@@ -358,21 +358,21 @@ public final class DBReader {
      * @return A list of IDs sorted by the same order as the queue. The caller can wrap the returned
      * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
      */
-    public static List<Long> getQueueIDList(Context context) {
+    public static LongList getQueueIDList(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
 
         adapter.open();
-        List<Long> result = getQueueIDList(adapter);
+        LongList result = getQueueIDList(adapter);
         adapter.close();
 
         return result;
     }
 
-    static List<Long> getQueueIDList(PodDBAdapter adapter) {
+    static LongList getQueueIDList(PodDBAdapter adapter) {
         adapter.open();
         Cursor queueCursor = adapter.getQueueIDCursor();
 
-        List<Long> queueIds = new ArrayList<Long>(queueCursor.getCount());
+        LongList queueIds = new LongList(queueCursor.getCount());
         if (queueCursor.moveToFirst()) {
             do {
                 queueIds.add(queueCursor.getLong(0));
@@ -383,6 +383,22 @@ public final class DBReader {
 
 
     /**
+     * Return the size of the queue.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return Size of the queue.
+     */
+    public static int getQueueSize(Context context) {
+        Log.d(TAG, "getQueueSize()");
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        int size = adapter.getQueueSize();
+        adapter.close();
+        return size;
+    }
+
+    /**
      * Loads a list of the FeedItems in the queue. If the FeedItems of the queue are not used directly, consider using
      * {@link #getQueueIDList(android.content.Context)} instead.
      *
@@ -391,8 +407,7 @@ public final class DBReader {
      * list in a {@link de.danoeh.antennapod.core.util.QueueAccess} object for easier access to the queue's properties.
      */
     public static List<FeedItem> getQueue(Context context) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Extracting queue");
+        Log.d(TAG, "getQueue()");
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();

@@ -4,8 +4,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
@@ -16,6 +16,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
@@ -126,7 +127,7 @@ public class FeedItemMenuHandler {
      * @return true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(MenuInterface mi,
-                                        FeedItem selectedItem, boolean showExtendedMenu, QueueAccess queueAccess, int... excludeIds) {
+                                        FeedItem selectedItem, boolean showExtendedMenu, LongList queueAccess, int... excludeIds) {
         boolean rc = onPrepareMenu(mi, selectedItem, showExtendedMenu, queueAccess);
         if (rc && excludeIds != null) {
             for (int id : excludeIds) {
@@ -186,7 +187,7 @@ public class FeedItemMenuHandler {
                 DBWriter.addQueueItem(context, selectedItem.getId());
                 break;
             case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(context, selectedItem.getId(), true);
+                DBWriter.removeQueueItem(context, selectedItem, true);
                 break;
             case R.id.stream_item:
                 DBTasks.playMedia(context, selectedItem.getMedia(), true, true,

@@ -7,7 +7,9 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,12 +27,14 @@ import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 public class PlaybackHistoryFragment extends ListFragment {
     private static final String TAG = "PlaybackHistoryFragment";
@@ -38,7 +42,7 @@ public class PlaybackHistoryFragment extends ListFragment {
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private List<FeedItem> playbackHistory;
-    private QueueAccess queue;
+    private LongList queue;
     private FeedItemlistAdapter adapter;
 
     private boolean itemsLoaded = false;
@@ -251,27 +255,27 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, Object[]> {
+    private class ItemLoader extends AsyncTask<Void, Void, Pair<List<FeedItem>,LongList>> {
 
         @Override
-        protected Object[] doInBackground(Void... params) {
+        protected Pair<List<FeedItem>,LongList> doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                List<FeedItem> ph = DBReader.getPlaybackHistory(context);
-                DBReader.loadFeedDataOfFeedItemlist(context, ph);
-                return new Object[]{ph,
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                List<FeedItem> history = DBReader.getPlaybackHistory(context);
+                LongList queue = DBReader.getQueueIDList(context);
+                DBReader.loadFeedDataOfFeedItemlist(context, history);
+                return Pair.create(history, queue);
             } else {
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(Object[] res) {
+        protected void onPostExecute(Pair<List<FeedItem>,LongList> res) {
             super.onPostExecute(res);
             if (res != null) {
-                playbackHistory = (List<FeedItem>) res[0];
-                queue = (QueueAccess) res[1];
+                playbackHistory = res.first;
+                queue = res.second;
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();
