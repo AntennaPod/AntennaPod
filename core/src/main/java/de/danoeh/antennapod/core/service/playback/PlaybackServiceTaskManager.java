@@ -76,18 +76,13 @@ public class PlaybackServiceTaskManager {
             }
         });
         loadQueue();
-        EventDistributor.getInstance().register(eventDistributorListener);
+        EventBus.getDefault().register(this);
     }
 
-    private final EventDistributor.EventListener eventDistributorListener = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EventDistributor.QUEUE_UPDATE & arg) != 0) {
-                cancelQueueLoader();
-                loadQueue();
-            }
-        }
-    };
+    public void onEvent(QueueEvent event) {
+        cancelQueueLoader();
+        loadQueue();
+    }
 
     private synchronized boolean isQueueLoaderActive() {
         return queueFuture != null && !queueFuture.isDone();
@@ -319,7 +314,7 @@ public class PlaybackServiceTaskManager {
      * execution of this method.
      */
     public synchronized void shutdown() {
-        EventDistributor.getInstance().unregister(eventDistributorListener);
+        EventBus.getDefault().unregister(this);
         cancelAllTasks();
         schedExecutor.shutdown();
     }

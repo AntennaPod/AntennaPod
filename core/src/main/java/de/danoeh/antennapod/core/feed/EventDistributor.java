@@ -24,7 +24,6 @@ public class EventDistributor extends Observable {
 
 	public static final int FEED_LIST_UPDATE = 1;
 	public static final int UNREAD_ITEMS_UPDATE = 2;
-	public static final int QUEUE_UPDATE = 4;
 	public static final int DOWNLOADLOG_UPDATE = 8;
 	public static final int PLAYBACK_HISTORY_UPDATE = 16;
 	public static final int DOWNLOAD_QUEUED = 32;
@@ -95,10 +94,6 @@ public class EventDistributor extends Observable {
 
 	public void sendUnreadItemsUpdateBroadcast() {
 		addEvent(UNREAD_ITEMS_UPDATE);
-	}
-
-	public void sendQueueUpdateBroadcast() {
-		addEvent(QUEUE_UPDATE);
 	}
 
 	public void sendFeedUpdateBroadcast() {

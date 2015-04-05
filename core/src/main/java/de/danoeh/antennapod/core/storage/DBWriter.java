@@ -41,7 +41,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
@@ -350,8 +349,7 @@ public class DBWriter {
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
+                final List<FeedItem> queue = DBReader.getQueue(context, adapter);
                 FeedItem item = null;
 
                 if (queue != null) {
@@ -490,21 +488,14 @@ public class DBWriter {
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
-                FeedItem item = null;
+                final List<FeedItem> queue = DBReader.getQueue(context, adapter);
 
                 if (queue != null) {
-                    boolean queueModified = false;
-                    QueueAccess queueAccess = QueueAccess.ItemListAccess(queue);
-                    if (queueAccess.contains(item.getId())) {
-                        if (item != null) {
-                            queueModified = queueAccess.remove(item.getId());
-                        }
-                    }
-                    if (queueModified) {
+                    int position = queue.indexOf(item);
+                    if(position >= 0) {
+                        queue.remove(position);
                         adapter.setQueue(queue);
-                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item));
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
                     } else {
                         Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                     }
@@ -627,6 +618,19 @@ public class DBWriter {
         }
         adapter.close();
     }
+
+    /**
+     * Sets the 'read'-attribute of a FeedItem to the specified value.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param itemId  ID of the FeedItem
+     * @param read    New value of the 'read'-attribute
+     */
+    public static Future<?> markItemRead(final Context context, final long itemId,
+                                         final boolean read) {
+        return markItemRead(context, itemId, read, 0, false);
+    }
+
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.

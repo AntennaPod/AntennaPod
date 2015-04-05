@@ -204,6 +204,6 @@ public class UITestUtils {
         adapter.setQueue(queue);
         adapter.close();
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-        EventDistributor.getInstance().sendQueueUpdateBroadcast();
+        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
     }
 }

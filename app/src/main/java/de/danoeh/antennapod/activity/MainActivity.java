@@ -52,8 +52,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.QUEUE_UPDATE;
+            | EventDistributor.UNREAD_ITEMS_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
@@ -325,6 +324,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
@@ -333,7 +339,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        EventDistributor.getInstance().register(contentUpdate);
 
         Intent intent = getIntent();
         if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
@@ -348,6 +353,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         super.onStop();
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -434,6 +440,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         if (loadTask != null) {
             loadTask.cancel(true);
         }
+    }
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        loadData();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

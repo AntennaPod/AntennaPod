@@ -70,12 +70,14 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
     }
 
     @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -167,6 +169,11 @@ public class PlaybackHistoryFragment extends ListFragment {
         } else {
             return true;
         }
+    }
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

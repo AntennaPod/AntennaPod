@@ -67,7 +67,6 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private static final String ARG_FEEDITEM = "feeditem";
@@ -129,6 +128,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -143,6 +143,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
     }
 
     private void resetViewState() {
@@ -392,6 +393,10 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         }
     }
 
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        getLoaderManager().restartLoader(0, null, ItemFragment.this);
+    }
 
     @Override
     public Loader<Pair<FeedItem,LongList>> onCreateLoader(int id, Bundle args) {

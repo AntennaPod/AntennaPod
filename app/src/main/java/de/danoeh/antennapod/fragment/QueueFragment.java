@@ -58,7 +58,6 @@ public class QueueFragment extends Fragment {
     private static final String TAG = "QueueFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private DragSortListView listView;
@@ -66,7 +65,7 @@ public class QueueFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progLoading;
 
-    private UndoBarController undoBarController;
+    private UndoBarController<FeedItemUndoToken> undoBarController;
 
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
@@ -106,6 +105,7 @@ public class QueueFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         this.activity.set((MainActivity) getActivity());
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
@@ -126,6 +126,7 @@ public class QueueFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -133,6 +134,15 @@ public class QueueFragment extends Fragment {
     public void onAttach(Activity activity) {
         super.onAttach(activity);
         this.activity.set((MainActivity) activity);
+    }
+
+    public void onEventMainThread(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if(event.action == QueueEvent.Action.REMOVED) {
+            undoBarController.showUndoBar(false, getString(R.string.removed_from_queue),
+                    new FeedItemUndoToken(event.item, event.position));
+        }
+        startItemLoader();
     }
 
     private void saveScrollPosition() {
@@ -345,29 +355,40 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
-                Log.d(TAG, "remove("+which+")");
+                Log.d(TAG, "remove(" + which + ")");
                 stopItemLoader();
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
-                undoBarController.showUndoBar(false,
-                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
-                                which)
-                );
+                DBWriter.markItemRead(getActivity(), item.getId(), true);
+                DBWriter.removeQueueItem(getActivity(), item, true);
             }
         });
 
-        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
-                        @Override
-                        public void onUndo(Parcelable token) {
-                                // Perform the undo
-                        FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
-                                if (token != null) {
-                                        long itemId = undoToken.getFeedItemId();
-                                        int position = undoToken.getPosition();
-                                        DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
-                                    }
-                            }
-                    });
+        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar),
+                new UndoBarController.UndoListener<FeedItemUndoToken>() {
+
+            @Override
+            public void onUndo(FeedItemUndoToken token) {
+                if (token != null) {
+                    long itemId = token.getFeedItemId();
+                    int position = token.getPosition();
+                    DBWriter.markItemRead(getActivity(), itemId, false);
+                    DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
+                }
+            }
+
+            @Override
+            public void onHide(FeedItemUndoToken token) {
+                if (token != null) {
+                    long itemId = token.getFeedItemId();
+                    FeedItem item = DBReader.getFeedItem(getActivity(), itemId);
+                    FeedMedia media = item.getMedia();
+                    if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                    }
+                }
+            }
+
+        });
 
 
         registerForContextMenu(listView);

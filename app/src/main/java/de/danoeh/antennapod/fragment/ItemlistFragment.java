@@ -67,7 +67,6 @@ public class ItemlistFragment extends ListFragment {
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
-            | EventDistributor.QUEUE_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -120,6 +119,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -133,6 +133,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -283,6 +284,11 @@ public class ItemlistFragment extends ListFragment {
         if (selection != null) {
             ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(selection.getId()));
         }
+    }
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

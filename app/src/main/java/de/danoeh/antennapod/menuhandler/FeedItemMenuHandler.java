@@ -17,7 +17,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
 /**
@@ -57,7 +56,7 @@ public class FeedItemMenuHandler {
      * @return Returns true if selectedItem is not null.
      */
     public static boolean onPrepareMenu(MenuInterface mi,
-                                        FeedItem selectedItem, boolean showExtendedMenu, QueueAccess queueAccess) {
+                                        FeedItem selectedItem, boolean showExtendedMenu, LongList queueAccess) {
         if (selectedItem == null) {
             return false;
         }

@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -45,13 +44,9 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
-
-import de.danoeh.antennapod.core.util.LongList;
-
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
@@ -112,6 +107,7 @@ public class NewEpisodesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         this.activity.set((MainActivity) getActivity());
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
@@ -126,6 +122,7 @@ public class NewEpisodesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -269,15 +266,24 @@ public class NewEpisodesFragment extends Fragment {
             }
         });
 
-        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
             @Override
-            public void onUndo(Parcelable token) {
-                // Perform the undo
-                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+            public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
-                    long itemId = undoToken.getFeedItemId();
-                    int position = undoToken.getPosition();
+                    long itemId = token.getFeedItemId();
+                    int position = token.getPosition();
                     DBWriter.markItemRead(getActivity(), itemId, false);
+                }
+            }
+            @Override
+            public void onHide(FeedItemUndoToken token) {
+                if (token != null) {
+                    long itemId = token.getFeedItemId();
+                    FeedItem item = DBReader.getFeedItem(getActivity(), itemId);
+                    FeedMedia media = item.getMedia();
+                    if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(getActivity(), media.getId());
+                    }
                 }
             }
         });
@@ -370,6 +376,11 @@ public class NewEpisodesFragment extends Fragment {
 
 
     };
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
+    }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
