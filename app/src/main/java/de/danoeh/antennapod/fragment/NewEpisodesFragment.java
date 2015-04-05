@@ -7,8 +7,10 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -43,6 +45,8 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
+import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -66,6 +70,8 @@ public class NewEpisodesFragment extends Fragment {
     private NewEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private UndoBarController undoBarController;
 
     private List<FeedItem> unreadItems;
     private List<FeedItem> recentItems;
@@ -134,6 +140,7 @@ public class NewEpisodesFragment extends Fragment {
         listAdapter = null;
         activity.set(null);
         viewsCreated = false;
+        undoBarController = null;
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
@@ -224,7 +231,7 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.all_episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
 
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
 
@@ -240,6 +247,33 @@ public class NewEpisodesFragment extends Fragment {
                     ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
 
+            }
+        });
+
+        listView.setRemoveListener(new DragSortListView.RemoveListener() {
+            @Override
+            public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.markItemRead(getActivity(), item.getId(), true);
+                undoBarController.showUndoBar(false,
+                        getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
+                                which)
+                );
+            }
+        });
+
+        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+            @Override
+            public void onUndo(Parcelable token) {
+                // Perform the undo
+                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+                if (token != null) {
+                    long itemId = undoToken.getFeedItemId();
+                    int position = undoToken.getPosition();
+                    DBWriter.markItemRead(getActivity(), itemId, false);
+                }
             }
         });
 
@@ -346,7 +380,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private void updateShowOnlyEpisodes() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, false);
+        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, true);
     }
 
     private void setShowOnlyNewEpisodes(boolean newVal) {

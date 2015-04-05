@@ -66,8 +66,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String SAVE_TITLE = "title";
 
 
-    public static final int POS_NEW = 0,
-            POS_QUEUE = 1,
+    public static final int POS_QUEUE = 0,
+            POS_NEW = 1,
             POS_DOWNLOADS = 2,
             POS_HISTORY = 3,
             POS_ADD = 4;

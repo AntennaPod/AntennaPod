@@ -79,7 +79,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private void startLocalPlayback() {
         assertTrue(solo.waitForActivity(MainActivity.class));
         openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.all_episodes_label));
+        solo.clickOnText(solo.getString(R.string.new_episodes_label));
         solo.waitForView(android.R.id.list);
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
         assertTrue(solo.waitForActivity(AudioplayerActivity.class));
