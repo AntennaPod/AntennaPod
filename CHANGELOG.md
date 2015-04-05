@@ -1,5 +1,15 @@
 Change Log
 ==========
+Version 1.1
+-----------
+* iTunes podcast integration
+* Swipe to remove items from the queue
+* Set the number of parallel downloads
+* Fix for gpodder.net on old devices
+* Fixed date problems for some feeds
+* Display improvements
+* Usability improvements
+* Several other bugfixes
 
 Version 1.0
 -----------
