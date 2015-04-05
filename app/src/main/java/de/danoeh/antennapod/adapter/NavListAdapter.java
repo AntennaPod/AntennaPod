@@ -38,7 +38,7 @@ public class NavListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.context = context;
 
-        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.ic_new, R.attr.stat_playlist,
+        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.stat_playlist, R.attr.ic_new,
                 R.attr.av_download, R.attr.ic_history, R.attr.content_new});
         drawables = new Drawable[]{ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
                 ta.getDrawable(3), ta.getDrawable(4)};
