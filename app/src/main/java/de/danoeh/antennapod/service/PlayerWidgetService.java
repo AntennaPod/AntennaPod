@@ -12,14 +12,18 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.widget.RemoteViews;
-import de.danoeh.antennapod.core.BuildConfig;
+
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
-import de.danoeh.antennapod.receiver.PlayerWidget;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.playback.Playable;
+import de.danoeh.antennapod.receiver.PlayerWidget;
 
 /** Updates the state of the player widget */
 public class PlayerWidgetService extends Service {
@@ -39,8 +43,7 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public void onCreate() {
 		super.onCreate();
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Service created");
+		Log.d(TAG, "Service created");
 		isUpdating = false;
         psLock = new Object();
 	}
@@ -48,8 +51,24 @@ public class PlayerWidgetService extends Service {
 	@Override
 	public void onDestroy() {
 		super.onDestroy();
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Service is about to be destroyed");
+		Log.d(TAG, "Service is about to be destroyed");
+
+		Playable playable = playbackService.getPlayable();
+		if(playable != null && playable instanceof FeedMedia) {
+			FeedMedia media = (FeedMedia) playable;
+			if(media.hasAlmostEnded()) {
+				Log.d(TAG, "smart mark as read");
+				FeedItem item = media.getItem();
+				DBWriter.markItemRead(this, item, true, false);
+				DBWriter.removeQueueItem(this, item, false);
+				DBWriter.addItemToPlaybackHistory(this, media);
+				if (UserPreferences.isAutoDelete()) {
+					Log.d(TAG, "Delete " + media.toString());
+					DBWriter.deleteFeedMediaOfItem(this, media.getId());
+				}
+			}
+		}
+
 		try {
 			unbindService(mConnection);
 		} catch (IllegalArgumentException e) {
@@ -72,9 +91,7 @@ public class PlayerWidgetService extends Service {
 				startViewUpdaterIfNotRunning();
 			}
 		} else {
-			if (BuildConfig.DEBUG)
-				Log.d(TAG,
-						"Service was called while updating. Ignoring update request");
+			Log.d(TAG, "Service was called while updating. Ignoring update request");
 		}
 		return Service.START_NOT_STICKY;
 	}
@@ -153,8 +170,7 @@ public class PlayerWidgetService extends Service {
 
 	private ServiceConnection mConnection = new ServiceConnection() {
 		public void onServiceConnected(ComponentName className, IBinder service) {
-			if (BuildConfig.DEBUG)
-				Log.d(TAG, "Connection to service established");
+			Log.d(TAG, "Connection to service established");
             synchronized (psLock) {
                 playbackService = ((PlaybackService.LocalBinder) service)
                         .getService();
@@ -166,8 +182,7 @@ public class PlayerWidgetService extends Service {
 		public void onServiceDisconnected(ComponentName name) {
             synchronized (psLock) {
                 playbackService = null;
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Disconnected from service");
+                Log.d(TAG, "Disconnected from service");
             }
 		}
 

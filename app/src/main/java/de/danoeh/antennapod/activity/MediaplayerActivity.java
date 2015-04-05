@@ -226,11 +226,18 @@ public abstract class MediaplayerActivity extends ActionBarActivity
 
         // delete if auto delete is enabled and less than 3% of episode is left
         Playable playable = controller.getMedia();
-        if(playable instanceof FeedMedia) {
+        if(playable != null && playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
-            if(UserPreferences.isAutoDelete() && media.hasAlmostEnded()) {
-                Log.d(TAG, "Delete " + media.toString());
-                DBWriter.deleteFeedMediaOfItem(this, media.getId());
+            if(media.hasAlmostEnded()) {
+                Log.d(TAG, "smart mark as read");
+                FeedItem item = media.getItem();
+                DBWriter.markItemRead(this, item, true, false);
+                DBWriter.removeQueueItem(this, item, false);
+                DBWriter.addItemToPlaybackHistory(this, media);
+                if (UserPreferences.isAutoDelete()) {
+                    Log.d(TAG, "Delete " + media.toString());
+                    DBWriter.deleteFeedMediaOfItem(this, media.getId());
+                }
             }
         }
 
