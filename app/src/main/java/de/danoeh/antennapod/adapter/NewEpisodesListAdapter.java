@@ -12,6 +12,7 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nineoldandroids.view.ViewHelper;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
@@ -142,7 +143,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
         if (item.isRead()) {
             // grey it out
-            convertView.setBackgroundColor(Color.GRAY);
+            ViewHelper.setAlpha(convertView, .2f);
         }
 
         return convertView;
