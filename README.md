@@ -1,10 +1,5 @@
 # AntennaPod
 
-
-### Please note that AntennaPod will not receive any future updates until further notice (see issue [#604](https://github.com/antennapod/antennapod/issues/604) for more information).
-
-
-
 This is the official repository of AntennaPod, a podcast manager for Android.
 
 [![Download from Google Play](http://www.android.com/images/brand/android_app_on_play_large.png "Download from Google Play")](https://play.google.com/store/apps/details?id=de.danoeh.antennapod)
@@ -15,12 +10,14 @@ You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!foru
 
 Bug reports and feature requests can be submitted [here](https://github.com/danieloeh/AntennaPod/issues/new) (please read the [instructions](https://github.com/danieloeh/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
 
+## Alpha Testing
+You can participate in alpha testing by joining the Google Plus [AntennaPod Alpha](https://plus.google.com/communities/117446128636140585144) community.
 
 ## Nightly Builds
 
 There are APKs available for every branch that is actively worked on. Please note that these might be very unstable versions of the app, which can break your current installation. Install them at your own risk!
 
-Click [here](https://www.dropbox.com/sh/45vgg13bmh8jmhp/uZ_3KJIi5K) to get to the nightly builds folder.
+Click [here](https://www.dropbox.com/sh/4h2kfa2d2jesnu8/AABF7u5QsOn8Lg8MDie4Z4Ama?dl=0) to get to the nightly builds folder.
     
 ## License
 
