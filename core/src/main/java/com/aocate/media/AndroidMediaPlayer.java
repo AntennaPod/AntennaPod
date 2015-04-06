@@ -14,12 +14,12 @@
 
 package com.aocate.media;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.media.MediaPlayer;
 import android.net.Uri;
 import android.util.Log;
+
+import java.io.IOException;
 
 public class AndroidMediaPlayer extends MediaPlayerImpl {
 	private final static String AMP_TAG = "AocateAndroidMediaPlayer";

@@ -19,7 +19,9 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
+
 import de.greenrobot.event.EventBus;
+
 
 /**
  * Manages the background tasks of PlaybackSerivce, i.e.
@@ -147,9 +149,9 @@ public class PlaybackServiceTaskManager {
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
-            if (BuildConfig.DEBUG) Log.d(TAG, "Started PositionSaver");
+            Log.d(TAG, "Started PositionSaver");
         } else {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Call to startPositionSaver was ignored.");
+            Log.d(TAG, "Call to startPositionSaver was ignored.");
         }
     }
 
