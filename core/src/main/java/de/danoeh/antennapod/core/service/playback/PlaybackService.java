@@ -344,11 +344,11 @@ public class PlaybackService extends Service {
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
-                mediaPlayer.seekDelta(UserPreferences.getSeekDeltaMs());
+                mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                 break;
             case KeyEvent.KEYCODE_MEDIA_PREVIOUS:
             case KeyEvent.KEYCODE_MEDIA_REWIND:
-                mediaPlayer.seekDelta(-UserPreferences.getSeekDeltaMs());
+                mediaPlayer.seekDelta(-UserPreferences.getRewindSecs() * 1000);
                 break;
             case KeyEvent.KEYCODE_MEDIA_STOP:
                 if (status == PlayerStatus.PLAYING) {
@@ -481,9 +481,8 @@ public class PlaybackService extends Service {
             }
 
             Intent statusUpdate = new Intent(ACTION_PLAYER_STATUS_CHANGED);
-            statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
+            // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
             sendBroadcast(statusUpdate);
-            sendBroadcast(new Intent(ACTION_PLAYER_STATUS_CHANGED));
             updateWidget();
             refreshRemoteControlClientState(newInfo);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
@@ -626,7 +625,6 @@ public class PlaybackService extends Service {
             prepareImmediately = startWhenPrepared = true;
         } else {
             Log.d(TAG, "No more episodes available to play");
-
             prepareImmediately = startWhenPrepared = false;
             stopForeground(true);
             stopWidgetUpdater();
@@ -933,7 +931,6 @@ public class PlaybackService extends Service {
                 // Auto flattr
                 if (isAutoFlattrable(media) &&
                         (media.getPlayedDuration() > UserPreferences.getAutoFlattrPlayedDurationThreshold() * duration)) {
-
                     Log.d(TAG, "saveCurrentPosition: performing auto flattr since played duration " + Integer.toString(media.getPlayedDuration())
                                 + " is " + UserPreferences.getAutoFlattrPlayedDurationThreshold() * 100 + "% of file duration " + Integer.toString(duration));
                     DBTasks.flattrItemIfLoggedIn(this, item);

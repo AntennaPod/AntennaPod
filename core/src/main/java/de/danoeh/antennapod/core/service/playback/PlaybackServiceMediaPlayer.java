@@ -449,15 +449,15 @@ public class PlaybackServiceMediaPlayer {
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
                 || playerStatus == PlayerStatus.PREPARED) {
-            if (stream) {
-                //    statusBeforeSeeking = playerStatus;
-                //    setPlayerStatus(PlayerStatus.SEEKING, media);
+            if (!stream) {
+                statusBeforeSeeking = playerStatus;
+                setPlayerStatus(PlayerStatus.SEEKING, media);
             }
             mediaPlayer.seekTo(t);
 
         } else if (playerStatus == PlayerStatus.INITIALIZED) {
             media.setPosition(t);
-            startWhenPrepared.set(true);
+            startWhenPrepared.set(false);
             prepare();
         }
         playerLock.unlock();
@@ -534,20 +534,20 @@ public class PlaybackServiceMediaPlayer {
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
     public int getPosition() {
-        if (!playerLock.tryLock()) {
-            return INVALID_TIME;
-        }
+        playerLock.lock();
 
         int retVal = INVALID_TIME;
         if (playerStatus == PlayerStatus.PLAYING
                 || playerStatus == PlayerStatus.PAUSED
-                || playerStatus == PlayerStatus.PREPARED) {
+                || playerStatus == PlayerStatus.PREPARED
+                || playerStatus == PlayerStatus.SEEKING) {
             retVal = mediaPlayer.getCurrentPosition();
         } else if (media != null && media.getPosition() > 0) {
             retVal = media.getPosition();
         }
 
         playerLock.unlock();
+        Log.d(TAG, "getPosition() -> " + retVal);
         return retVal;
     }
 
@@ -735,6 +735,7 @@ public class PlaybackServiceMediaPlayer {
 
         int state;
         if (playerStatus != null) {
+            Log.d(TAG, "playerStatus: " + playerStatus.toString());
             switch (playerStatus) {
                 case PLAYING:
                     state = PlaybackStateCompat.STATE_PLAYING;
@@ -1095,13 +1096,13 @@ public class PlaybackServiceMediaPlayer {
         @Override
         public void onFastForward() {
             super.onFastForward();
-            seekDelta(UserPreferences.getSeekDeltaMs());
+            seekDelta(UserPreferences.getFastFowardSecs() * 1000);
         }
 
         @Override
         public void onRewind() {
             super.onRewind();
-            seekDelta(-UserPreferences.getSeekDeltaMs());
+            seekDelta(-UserPreferences.getRewindSecs() * 1000);
         }
 
         @Override
