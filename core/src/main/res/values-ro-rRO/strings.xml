@@ -182,7 +182,6 @@
   <string name="search_label">Caută</string>
   <string name="found_in_title_label">Găsit în titlu</string>
   <!--OPML import and export-->
-  <string name="opml_import_explanation">Pentru a importa un fișier OPML trebuie să-l salvați în următorul director și apăsați butonul de mai jos pentru a începe procesul.</string>
   <string name="start_import_label">Începe importarea</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">EROARE!</string>
@@ -191,11 +190,9 @@
   <string name="opml_import_error_dir_empty">Directorul de import este gol.</string>
   <string name="select_all_label">Selectează toate</string>
   <string name="deselect_all_label">Deselectează toate</string>
-  <string name="choose_file_to_import_label">Alege fișier pentru import</string>
   <string name="opml_export_label">Exportă OPML</string>
   <string name="exporting_label">Exportă...</string>
   <string name="export_error_label">Eroare exportare</string>
-  <string name="opml_export_success_title">Exportare opml cu succes.</string>
   <string name="opml_export_success_sum">Fișierul .opml a fost scris în:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Setează cronometru somn</string>

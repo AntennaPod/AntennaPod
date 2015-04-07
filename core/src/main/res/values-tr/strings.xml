@@ -60,10 +60,8 @@
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Besleme Adresi</string>
-  <string name="etxtFeedurlHint">Besleme veya web sayfası URLsi</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
   <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
-  <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini okundu olarak işaretle</string>
@@ -144,6 +142,12 @@
   <string name="removed_from_queue">Öge kaldırıldı</string>
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
+  <string name="sort">Sırala</string>
+  <string name="alpha">Alfabetik olarak</string>
+  <string name="date">Tarih</string>
+  <string name="duration">Süre</string>
+  <string name="ascending">Artan</string>
+  <string name="descending">Azalan</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr giriş</string>
   <string name="flattr_auth_explanation">Yetkilendirme işlemini başlatmak için aşağıdaki butona basın. Tarayıcınızda flattr giriş ekranına yönlendirileceksiniz ve AntennaPod\'un flattr ile etkileşime girebilmesi için izniniz istenecek. İzin verdikten sonra otomatik olarak bu ekrana döneceksiniz.</string>
@@ -185,7 +189,10 @@
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Kulaklıklar çıkarıldığında çalmayı duraklat</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
+  <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
+  <string name="pref_auto_delete_title">Otomatik Silme</string>
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
   <string name="pref_autoUpdateIntervall_title">Güncelleme aralığı</string>
@@ -194,6 +201,7 @@
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kulaklık bağlı değil</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
   <string name="pref_mobileUpdate_sum">Mobil veri üzerinden güncellemelere izin ver</string>
   <string name="refreshing_label">Yenileniyor</string>
@@ -213,6 +221,8 @@
   <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filtresini etkinleştir</string>
   <string name="pref_autodl_wifi_filter_sum">Seçilen kablosuz ağlar için otomatik indirmeye izin ver.</string>
+  <string name="pref_automatic_download_on_battery_title">Şarj olmuyorken indir</string>
+  <string name="pref_automatic_download_on_battery_sum">Pil şarj olmuyorken otomatik indirmeye izin ver</string>
   <string name="pref_episode_cache_title">Bölüm ön belleği</string>
   <string name="pref_theme_title_light">Aydınlık</string>
   <string name="pref_theme_title_dark">Karanlık</string>
@@ -251,7 +261,6 @@
   <string name="found_in_title_label">Başlıkta bulundu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML dosyaları cep yayınlarını bir cihazdan diğerine aktarmanıza yarar.</string>
-  <string name="opml_import_explanation">Bir OPML dosyasını içe aktarmak için onu aşağıdaki klasöre koyun ve aşağıdaki butona tıklayın.</string>
   <string name="start_import_label">İçe aktarmayı başlat</string>
   <string name="opml_import_label">OPML içe aktar</string>
   <string name="opml_directory_error">HATA!</string>
@@ -260,11 +269,9 @@
   <string name="opml_import_error_dir_empty">İça aktarma dizini boş</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
-  <string name="choose_file_to_import_label">İçe aktarılacak dosyayı seç</string>
   <string name="opml_export_label">OPML dışa aktar</string>
   <string name="exporting_label">Dışa aktarılıyor...</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
-  <string name="opml_export_success_title">Opml dışa aktarma başarılı</string>
   <string name="opml_export_success_sum">.opml dosyasy yazıldı: \u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Zamanlayıcıyı ayarla</string>

@@ -208,7 +208,6 @@
   <string name="found_in_title_label">शीर्षक में मिला</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML फ़ाइलें आपको एक podcatcher से दूसरे को अपने पॉडकास्ट स्थानांतरित करने के लिए अनुमति देते हैं.</string>
-  <string name="opml_import_explanation">एक OPML फ़ाइल आयात करने के लिए, आपको इसे निम्नलिखित निर्देशिका में डालना है और आयात की प्रक्रिया शुरू करने के लिए नीचे दिए गए बटन को प्रेस करना है.</string>
   <string name="start_import_label">आयात प्रारंभ</string>
   <string name="opml_import_label">OPML आयात</string>
   <string name="opml_directory_error">त्रुटि!</string>
@@ -217,11 +216,9 @@
   <string name="opml_import_error_dir_empty">आयात निर्देशिका खाली है.</string>
   <string name="select_all_label">सभी का चयन करें</string>
   <string name="deselect_all_label">सभी का चयन रद्द करें</string>
-  <string name="choose_file_to_import_label">आयात करने के लिए फ़ाइल चुनें</string>
   <string name="opml_export_label">OPML निर्यात</string>
   <string name="exporting_label">निर्यात ...</string>
   <string name="export_error_label">निर्यात त्रुटि</string>
-  <string name="opml_export_success_title">OPML निर्यात सफल.</string>
   <string name="opml_export_success_sum">.ompl फ़ाइल लिखा गया था:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">स्लीप टाइमर सेट</string>

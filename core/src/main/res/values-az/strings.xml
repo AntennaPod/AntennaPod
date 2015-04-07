@@ -173,7 +173,6 @@
   <string name="search_label">Axtar</string>
   <string name="found_in_title_label">Başlığda tapıldı</string>
   <!--OPML import and export-->
-  <string name="opml_import_explanation">OPML faylın idxalı üçün onu aşağıdakı qovluqa yerləşdirin və idxal prosesini başlamaq üçün düyməyi basın.</string>
   <string name="start_import_label">İdxalı başla</string>
   <string name="opml_import_label">OPML idxalı</string>
   <string name="opml_directory_error">XƏTA!</string>
@@ -182,11 +181,9 @@
   <string name="opml_import_error_dir_empty">İdxal qovliqu boşdur.</string>
   <string name="select_all_label">Hamısını seç</string>
   <string name="deselect_all_label">Seçimi ləğv et</string>
-  <string name="choose_file_to_import_label">İdxal üçün fayl seç</string>
   <string name="opml_export_label">OPML ixraçı</string>
   <string name="exporting_label">İxrac...</string>
   <string name="export_error_label">İxracın xətası</string>
-  <string name="opml_export_success_title">OPML ixracı uğurlu keçdi</string>
   <string name="opml_export_success_sum">OPML fayl:\u0020 yazılıb</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Yuxu taymerini qoy</string>

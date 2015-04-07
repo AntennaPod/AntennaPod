@@ -58,6 +58,7 @@
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluir en descargas automáticas</string>
+  <string name="parallel_downloads_suffix">\u0020descargas paralelas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <string name="etxtFeedurlHint">URL del canal o del sitio web</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="mark_all_read_msg">Se marcaron todos los episodios como leídos</string>
+  <string name="mark_all_read_confirmation_msg">Por favor, confirme que desea marcar todos los episodios como leídos.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Por favor, confirme que desea marcar todos los episodios de este feed como leídos.</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
@@ -150,6 +153,7 @@
   <string name="duration">Duración</string>
   <string name="ascending">Ascendente</string>
   <string name="descending">Descendente</string>
+  <string name="clear_queue_confirmation_msg">Por favor, confirme que desea borrar TODOS los episodios de la cola</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Identificarse en Flattr</string>
   <string name="flattr_auth_explanation">Pulse el botón inferior para comenzar la autenticación. Su navegador abrirá la pantalla de identificación de Flattr y le preguntará si quiere conceder permiso a AntennaPod para valorar cosas. Tras concederlo, volverá a esta pantalla automáticamente.</string>
@@ -225,6 +229,7 @@
   <string name="pref_autodl_wifi_filter_sum">Permitir la descarga automática sólo para las redes WiFi marcadas.</string>
   <string name="pref_automatic_download_on_battery_title">Descargar cuando no se está cargando</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir la descarga automática cuando la batería no está cargando</string>
+  <string name="pref_parallel_downloads_title">Descargas paralelas</string>
   <string name="pref_episode_cache_title">Caché de episodios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Oscuro</string>
@@ -249,6 +254,8 @@
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y controles en pantalla de bloqueo cuando se pausa.</string>
   <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
+  <string name="pref_queueAddToFront_sum">Agregar nuevos episodios al principio de la cola.</string>
+  <string name="pref_queueAddToFront_title">Poner al principio de la cola.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -263,7 +270,9 @@
   <string name="found_in_title_label">Encontrado en el título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Los archivos OPML le permiten migrar sus podcasts de una aplicación a otra.</string>
-  <string name="opml_import_explanation">Para importar un archivo OPML, debe copiarlo al siguiente directorio y pulsar el botón que se muestra abajo.</string>
+  <string name="opml_import_explanation_1">Elegir un una ruta del sistema de ficheros local.</string>
+  <string name="opml_import_explanation_2">Usar una aplicación externa tipo Dropbox, Google Drive or su gestor de ficheros favorito para abrir un archivo OPML.</string>
+  <string name="opml_import_explanation_3">Muchas aplicaciones como Google Mail, Dropbox, Google Drive y la mayoría de gestores de ficheros pueden <i>abrir</i> archivos OPML <i>con</i> AntennaPod.</string>
   <string name="start_import_label">Comenzar la importación</string>
   <string name="opml_import_label">Importación de OPML</string>
   <string name="opml_directory_error">¡ERROR!</string>
@@ -272,7 +281,8 @@
   <string name="opml_import_error_dir_empty">El directorio de importación está vacío.</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
-  <string name="choose_file_to_import_label">Elegir qué archivo importar</string>
+  <string name="choose_file_from_filesystem">Desde el sistema de ficheros local</string>
+  <string name="choose_file_from_external_application">Usar aplicación externa</string>
   <string name="opml_export_label">Exportar a OPML</string>
   <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Error en la exportación</string>
@@ -358,4 +368,5 @@
   <string name="authentication_descr">Cambiar nombre y contraseña de este podcast y sus episodios</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
+  <string name="search_itunes_label">Buscar en iTunes</string>
 </resources>
