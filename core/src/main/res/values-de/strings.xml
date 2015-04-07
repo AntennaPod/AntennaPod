@@ -58,16 +58,19 @@
   <string name="close_label">Schließen</string>
   <string name="retry_label">Erneut versuchen</string>
   <string name="auto_download_label">Automatisch herunterladen</string>
+  <string name="parallel_downloads_suffix">\u0020gleichzeitige Downloads</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
   <string name="txtvfeedurl_label">Podcast per URL hinzufügen</string>
   <string name="podcastdirectories_label">Podcast in Verzeichnis finden</string>
-  <string name="podcastdirectories_descr">Bei gpodder.net kannst du nach neuen Podcasts nach Name, Kategorie oder Popularität suchen.</string>
+  <string name="podcastdirectories_descr">Bei gpodder.net kannst du neue Podcasts nach Name, Kategorie oder Popularität suchen.</string>
   <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Markiere alle als gelesen</string>
-  <string name="mark_all_read_msg">Alle Episoden als gelesen markieren</string>
+  <string name="mark_all_read_label">Alle als gespielt markieren</string>
+  <string name="mark_all_read_msg">Alle Episoden als gespielt markieren</string>
+  <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_link_label">Webseiten-Link teilen</string>
@@ -83,12 +86,13 @@
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="remove_episode_lable">Episode entfernen</string>
-  <string name="mark_read_label">Als gelesen markieren</string>
-  <string name="mark_unread_label">Als ungelesen markieren</string>
+  <string name="mark_read_label">Als gespielt markieren</string>
+  <string name="mark_unread_label">Als ungespielt markieren</string>
+  <string name="marked_as_read_label">Als gespielt markiert</string>
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
-  <string name="support_label">Flattr this</string>
+  <string name="support_label">Flattrn</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
   <string name="download_all">Alle herunterladen</string>
   <string name="skip_episode_label">Episode überspringen</string>
@@ -150,9 +154,10 @@
   <string name="duration">Dauer</string>
   <string name="ascending">Aufsteigend</string>
   <string name="descending">Absteigend</string>
+  <string name="clear_queue_confirmation_msg">Bitte bestätige, dass alle Episoden in der Warteschlange gelöscht werden sollen</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr Anmeldung</string>
-  <string name="flattr_auth_explanation">Drücke den Button unten um den Authentifizierungsprozess zu starten. Du wirst dann zur Flattr-Anmeldeseite weitergeleitet, wo du gefragt wirst, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
+  <string name="flattr_auth_explanation">Drücke den Button unten, um den Authentifizierungsprozess zu starten. Du wirst zur Flattr-Anmeldeseite weitergeleitet. Hier wirst du gefragt, AntennaPod die Erlaubnis zu geben, Dinge zu flattrn. Nachdem du die Erlaubnis erteilt hast, kehrst du automatisch zu diesem Bildschirm zurück.</string>
   <string name="authenticate_label">Authentifizieren</string>
   <string name="return_home_label">Zur Hauptseite zurückkehren</string>
   <string name="flattr_auth_success">Die Authentifizierung war erfolgreich! Du kannst nun in der Anwendung Flattr verwenden.</string>
@@ -170,12 +175,12 @@
   <string name="flattr_click_success_queue">Geflattrt: %s</string>
   <string name="flattr_click_failure_count">Flattrn von %d Sachen fehlgeschlagen!</string>
   <string name="flattr_click_failure">Nicht geflattrt: %s</string>
-  <string name="flattr_click_enqueued">Sache wird später gelfattrt</string>
+  <string name="flattr_click_enqueued">Sache wird später geflattrt</string>
   <string name="flattring_thing">Flattrt: %s</string>
   <string name="flattring_label">AntennaPod flattrt</string>
   <string name="flattrd_label">AntennaPod hat geflattrt</string>
   <string name="flattrd_failed_label">AntennaPod Flattrn fehlgeschlagen</string>
-  <string name="flattr_retrieving_status">Rufe geflatterte Sachen ab</string>
+  <string name="flattr_retrieving_status">Rufe geflattrte Sachen ab</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Plugin herunterladen</string>
   <string name="no_playback_plugin_title">Plugin nicht installiert</string>
@@ -190,10 +195,10 @@
   <string name="queue_label">Abspielliste</string>
   <string name="services_label">Dienste</string>
   <string name="flattr_label">Flattr</string>
-  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe wenn der Kopfhörer entfernt worden ist.</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen wenn Kopfhörer wieder reingesteckt werden</string>
-  <string name="pref_followQueue_sum">Springe zur nächsten Episode  wenn die vorherige Episode endet</string>
-  <string name="pref_auto_delete_sum">Episode löschen wenn Wiedergabe beendet</string>
+  <string name="pref_pauseOnHeadsetDisconnect_sum">Pausiere die Wiedergabe, wenn der Kopfhörer entfernt worden ist.</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Wiedergabe fortsetzen, wenn Kopfhörer wieder reingesteckt werden</string>
+  <string name="pref_followQueue_sum">Springe zur nächsten Episode, wenn die vorherige Episode endet</string>
+  <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
@@ -203,7 +208,7 @@
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kopfhörer-Trennung</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder reingesteckt</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Kopfhörer wieder eingesteckt</string>
   <string name="pref_mobileUpdate_title">Mobile Aktualisierungen</string>
   <string name="pref_mobileUpdate_sum">Erlaube Aktualisierungen über die mobile Datenverbindung</string>
   <string name="refreshing_label">Aktualisiere</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">Erlaube das automatische Herunterladen nur in ausgewählten W-LAN Netzwerken.</string>
   <string name="pref_automatic_download_on_battery_title">Automatischer Download im Batterie Modus</string>
   <string name="pref_automatic_download_on_battery_sum">Automatische Downloads auch erlauben, wenn die Batterie nicht geladen wird</string>
+  <string name="pref_parallel_downloads_title">Parallele Downloads</string>
   <string name="pref_episode_cache_title">Episodenspeicher</string>
   <string name="pref_theme_title_light">Hell</string>
   <string name="pref_theme_title_dark">Dunkel</string>
@@ -233,11 +239,11 @@
   <string name="pref_update_interval_hours_singular">Stunde</string>
   <string name="pref_update_interval_hours_manual">Manuell</string>
   <string name="pref_gpodnet_authenticate_title">Anmelden</string>
-  <string name="pref_gpodnet_authenticate_sum">Melde dich mit deinem gpodder.net profil an um deine Abonnements zu synchronisieren</string>
+  <string name="pref_gpodnet_authenticate_sum">Melde dich mit deinem gpodder.net Profil an, um deine Abonnements zu synchronisieren</string>
   <string name="pref_gpodnet_logout_title">Abmelden</string>
   <string name="pref_gpodnet_logout_toast">Abmeldung war erfolgreich</string>
   <string name="pref_gpodnet_setlogin_information_title">Anmeldeinformationen ändern</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net profils</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
   <string name="pref_seek_delta_title">Spul-Zeit</string>
@@ -249,9 +255,11 @@
   <string name="pref_persistNotify_title">Persistente Wiedergabesteurung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
+  <string name="pref_queueAddToFront_sum">Fügen Sie neue Folgen auf den Anfang der Warteschlange.</string>
+  <string name="pref_queueAddToFront_title">Vorne in Abspielliste einreihen</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
-  <string name="auto_flattr_after_percent">Flattr eine Episode sobald %d Prozent gespielt worden sind</string>
+  <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
   <string name="auto_flattr_ater_beginning">Flattr Episode, sobald die Wiedergabe beginnt</string>
   <string name="auto_flattr_ater_end">Flattr Episode, sobald die Wiedergabe endet</string>
   <!--Search-->
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">In Titel gefunden</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Mit OPML Dateien kannst du deine Podcasts von einem Podcatcher auf einen anderen übertragen</string>
-  <string name="opml_import_explanation">Um eine OPML Datei zu importieren, musst du diese im folgenden Ordner platzieren und den unteren Button antippen, um den Import Prozess zu starten.</string>
+  <string name="opml_import_explanation_1">Wähle einen bestimmten Dateipfad aus dem lokalen Dateisystem.</string>
+  <string name="opml_import_explanation_2">Verwende externe Anwendungen wie Dropbox, Google Drive oder deinen Lieblingsdateimanager, um eine OPML-Datei zu öffnen.</string>
+  <string name="opml_import_explanation_3">Viele Anwendungen wie Google Mail, Dropbox, Google Drive und die meisten Dateimanager können OPML-Dateien &lt;i&gt;mit&lt;/ i&gt; AntennaPod &lt;i&gt;öffnen&lt;/i&gt;.</string>
   <string name="start_import_label">Import starten</string>
   <string name="opml_import_label">OPML Import</string>
   <string name="opml_directory_error">FEHLER!</string>
@@ -272,12 +282,13 @@
   <string name="opml_import_error_dir_empty">Der Import-Ordner ist leer.</string>
   <string name="select_all_label">Alle auswählen</string>
   <string name="deselect_all_label">Auswahl zurücksetzen</string>
-  <string name="choose_file_to_import_label">Wähle eine Datei zum Importieren aus</string>
+  <string name="choose_file_from_filesystem">Vom lokalen Dateisystem</string>
+  <string name="choose_file_from_external_application">Verwende externe Anwendung</string>
   <string name="opml_export_label">OPML Export</string>
   <string name="exporting_label">Exportiere...</string>
   <string name="export_error_label">Exportfehler</string>
   <string name="opml_export_success_title">OPML Export erfolgreich</string>
-  <string name="opml_export_success_sum">Die .opml Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
+  <string name="opml_export_success_sum">Die OPML Datei wurde unter dem folgenden Pfad gespeichert:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Schlummerfunktion</string>
   <string name="disable_sleeptimer_label">Schlummerfunktion deaktivieren</string>
@@ -296,11 +307,11 @@
   <string name="gpodnetauth_login_title">Anmeldung</string>
   <string name="gpodnetauth_login_descr">Willkommen beim gpodder.net Anmeldeprozess. Gib zuerst deine Anmeldeinformationen ein:</string>
   <string name="gpodnetauth_login_butLabel">Anmelden</string>
-  <string name="gpodnetauth_login_register">Falls du noch kein gpodder.net profil hast, kannst du hier eines erstellen: https://gpodder.net/register/</string>
+  <string name="gpodnetauth_login_register">Falls du noch kein gpodder.net Profil hast, kannst du hier eines erstellen: https://gpodder.net/register/</string>
   <string name="username_label">Benutzername</string>
   <string name="password_label">Passwort</string>
   <string name="gpodnetauth_device_title">Geräte-Auswahl</string>
-  <string name="gpodnetauth_device_descr">Erstelle ein neues Gerät für dein gpodder.net profil oder wähle ein bereits vorhandenes:</string>
+  <string name="gpodnetauth_device_descr">Erstelle ein neues Gerät für dein gpodder.net Profil oder wähle ein bereits vorhandenes:</string>
   <string name="gpodnetauth_device_deviceID">Geräte-ID:\u0020</string>
   <string name="gpodnetauth_device_caption">Beschreibung</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Neues Gerät erstellen</string>
@@ -309,7 +320,7 @@
   <string name="gpodnetauth_device_errorAlreadyUsed">Geräte-ID wird bereits verwendet</string>
   <string name="gpodnetauth_device_butChoose">Auswählen</string>
   <string name="gpodnetauth_finish_title">Anmeldung erfolgreich!</string>
-  <string name="gpodnetauth_finish_descr">Glückwunsch! Dein gpodder.net profil ist jetzt mit deinem Gerät verbunden. Von nun an wird AntennaPod automatisch deine Abonnements mit deinem gpodder.net profil synchronisieren.</string>
+  <string name="gpodnetauth_finish_descr">Glückwunsch! Dein gpodder.net Profil ist jetzt mit deinem Gerät verbunden. Von nun an wird AntennaPod automatisch deine Abonnements mit deinem gpodder.net Profil synchronisieren.</string>
   <string name="gpodnetauth_finish_butsyncnow">Jetzt synchronisieren</string>
   <string name="gpodnetauth_finish_butgomainscreen">Zum Hauptbildschirm zurückkehren</string>
   <string name="gpodnetsync_auth_error_title">gpodder.net Anmeldefehler</string>
@@ -328,7 +339,7 @@
   <string name="folder_not_empty_dialog_title">Ordner ist nicht leer</string>
   <string name="folder_not_empty_dialog_msg">Der ausgewählte Ordner ist nicht leer. Medien-Downloads und andere Daten werden direkt in diesem Ordner gespeichert. Trotzdem fortfahren?</string>
   <string name="set_to_default_folder">Standardordner auswählen</string>
-  <string name="pref_pausePlaybackForFocusLoss_sum">Pausiere die Wiedergabe anstatt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
+  <string name="pref_pausePlaybackForFocusLoss_sum">Pausiere die Wiedergabe statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
@@ -348,7 +359,7 @@
   <string name="status_downloading_label">Episode wird gerade heruntergeladen</string>
   <string name="status_downloaded_label">Episode ist heruntergeladen</string>
   <string name="status_unread_label">Eintrag ist neu</string>
-  <string name="in_queue_label">Episode befindet sich inder Abspielliste</string>
+  <string name="in_queue_label">Episode befindet sich in der Abspielliste</string>
   <string name="new_episodes_count_label">Anzahl neuer Episoden</string>
   <string name="in_progress_episodes_count_label">Anzahl der Episoden, die du angefangen hast zu hören</string>
   <string name="drag_handle_content_description">Ziehe, um die Position dieses Objekts zu verändern</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
+  <string name="search_itunes_label">iTunes suchen</string>
 </resources>

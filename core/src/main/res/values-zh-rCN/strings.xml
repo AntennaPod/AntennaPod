@@ -166,7 +166,10 @@
   <string name="services_label">服务</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">耳机断开时暂停播放 </string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
+  <string name="pref_auto_delete_sum">当播放完成后删除单集</string>
+  <string name="pref_auto_delete_title">自动删除</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
   <string name="pref_autoUpdateIntervall_title">更新周期</string>
@@ -175,6 +178,7 @@
   <string name="pref_followQueue_title">连续播放</string>
   <string name="pref_downloadMediaOnWifiOnly_title">仅在 WIFI 情况下载</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">耳机断开</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">耳机重新连接</string>
   <string name="pref_mobileUpdate_title">数据网络时更新</string>
   <string name="pref_mobileUpdate_sum">允许移动数据网络情况下进行数据链接</string>
   <string name="refreshing_label">刷新中</string>
@@ -208,6 +212,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
+  <string name="pref_seek_delta_title">定位时间</string>
+  <string name="pref_seek_delta_sum">当倒退或快速回放时以这些秒为单位</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <string name="pref_expandNotify_title">扩展通知</string>
@@ -215,12 +221,6 @@
   <string name="pref_persistNotify_title">保持播放控制</string>
   <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
   <string name="pref_expand_notify_unsupport_toast">Android 版本 4.1 之前不支持扩展通知</string>
-  <string name="pref_seek_delta_title">定位时间</string>
-  <string name="pref_seek_delta_sum">当倒退或快速回放时以这些秒为单位</string>
-  <string name="pref_auto_delete_sum">当播放完成后删除单集</string>
-  <string name="pref_auto_delete_title">自动删除</string>
-  <string name="pref_unpauseOnHeadsetReconnect_title">耳机重新连接</string>
-  <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <!--Auto-Flattr dialog-->
   <!--Search-->
   <string name="search_hint">搜索订阅或者曲目</string>
@@ -231,7 +231,6 @@
   <string name="found_in_title_label">标题中查找</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 文件可以方便的从别的播客转移数据过来。</string>
-  <string name="opml_import_explanation">导入 OPML 文件, 您必须将它放在以下目录, 之后按下面的按钮开始导入处理. </string>
   <string name="start_import_label">开始导入</string>
   <string name="opml_import_label">OPML 导入</string>
   <string name="opml_directory_error">错误!</string>
@@ -240,7 +239,6 @@
   <string name="opml_import_error_dir_empty">导入目录为空.</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
-  <string name="choose_file_to_import_label">选择导入文件</string>
   <string name="opml_export_label">OPML 导出</string>
   <string name="exporting_label">导出中...</string>
   <string name="export_error_label">导出出错</string>

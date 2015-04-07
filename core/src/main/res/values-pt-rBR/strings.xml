@@ -198,7 +198,6 @@
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Arquivos OPML permitem que você mova seus podcasts de um programa de podcasts para outro.</string>
-  <string name="opml_import_explanation">Para importar um arquivo OPML, você precisa armazená-lo neste diretório e pressionar o botão abaixo para iniciar o processo de importação.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação de OPML</string>
   <string name="opml_directory_error">ERRO!</string>
@@ -207,11 +206,9 @@
   <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
   <string name="select_all_label">Selecionar todos</string>
   <string name="deselect_all_label">Remover seleção</string>
-  <string name="choose_file_to_import_label">Escolher arquivo para importar</string>
   <string name="opml_export_label">Exportar OPML</string>
   <string name="exporting_label">Exportando...</string>
   <string name="export_error_label">Erro na exportação</string>
-  <string name="opml_export_success_title">OMPL exportado com sucesso</string>
   <string name="opml_export_success_sum">O arquivo .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Configura desligamento automático</string>

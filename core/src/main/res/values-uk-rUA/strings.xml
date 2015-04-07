@@ -263,7 +263,6 @@
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
-  <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
   <string name="start_import_label">Почати імпорт</string>
   <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_directory_error">Помилка!</string>
@@ -272,7 +271,6 @@
   <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
-  <string name="choose_file_to_import_label">Обрати файл для імпорту</string>
   <string name="opml_export_label">OPML экспорт</string>
   <string name="exporting_label">Експорт ...</string>
   <string name="export_error_label">Помилка експорту</string>

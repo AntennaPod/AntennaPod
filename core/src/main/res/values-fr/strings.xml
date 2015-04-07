@@ -58,6 +58,7 @@
   <string name="close_label">Fermer</string>
   <string name="retry_label">Réessayer</string>
   <string name="auto_download_label">Télécharger automatiquement à l\'avenir</string>
+  <string name="parallel_downloads_suffix">\u0020téléchargements parallèles</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL du flux</string>
   <string name="etxtFeedurlHint">URL ou flux ou site web</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Tous marquer comme lus</string>
   <string name="mark_all_read_msg">Tous les épisodes ont été marqués comme lus</string>
+  <string name="mark_all_read_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisodes comme lus</string>
+  <string name="mark_all_read_feed_confirmation_msg">Veuillez confirmer que vous voulez bien marquer tous les épisode de ce flux comme lus</string>
   <string name="show_info_label">Voir les détails</string>
   <string name="remove_feed_label">Supprimer le podcast</string>
   <string name="share_link_label">Partager un lien vers le site</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">Supprimer cet épisode</string>
   <string name="mark_read_label">Marquer comme lu</string>
   <string name="mark_unread_label">Marquer comme non lu</string>
+  <string name="marked_as_read_label">Les épisodes ont été marqués comme lus</string>
   <string name="add_to_queue_label">Ajouter à la liste</string>
   <string name="remove_from_queue_label">Supprimer de la liste</string>
   <string name="visit_website_label">Visiter le site</string>
@@ -150,6 +154,7 @@
   <string name="duration">Durée</string>
   <string name="ascending">Ordre croissant</string>
   <string name="descending">Ordre décroissant</string>
+  <string name="clear_queue_confirmation_msg">Veuillez confirmer que vous voulez bien supprimer TOUS les épisodes de la file d\'attente</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Connecter à Flattr</string>
   <string name="flattr_auth_explanation">Appuyez sur le bouton ci-dessous pour vous authentifier. Vous serez envoyés à l\'écran de connexion Flattr dans le navigateur, et il vous sera demandé de donner à AntennaPod la permission de flattr. Une fois ceci fait, vous reviendrez automatiquement à cet écran.</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">Autoriser le téléchargement automatique uniquement sur les réseaux Wi-Fi sélectionnés.</string>
   <string name="pref_automatic_download_on_battery_title">Télécharger lorsque l\'appareil n\'est pas en charge</string>
   <string name="pref_automatic_download_on_battery_sum">Autoriser le téléchargement automatique quand l\'appareil n\'est pas en train de charger</string>
+  <string name="pref_parallel_downloads_title">Téléchargements simultanés</string>
   <string name="pref_episode_cache_title">Épisodes stockés localement</string>
   <string name="pref_theme_title_light">Clair</string>
   <string name="pref_theme_title_dark">Sombre</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">Boutons de lecture permanents</string>
   <string name="pref_persistNotify_sum">Garder les notifications et les boutons de lecture sur l\'écran de verouillage quand la lecture est en pause</string>
   <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android antérieures à 4.1 ne sont pas compatibles avec les notifications élargies</string>
+  <string name="pref_queueAddToFront_sum">Ajouter de nouveaux épisodes en tête de file</string>
+  <string name="pref_queueAddToFront_title">Mettre au début de la file d\'attente</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activer le paiement flattr automatique</string>
   <string name="auto_flattr_after_percent">Lancer un paiement flattr pour un épisode dès que %d de l\'épisode a été joué</string>
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">Trouvé dans le titre</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Les fichiers OPML vous permettent de bouger vos podcasts d\'un logiciel à un autre.</string>
-  <string name="opml_import_explanation">Pour importer un fichier OPML, copiez-le dans le répertoire suivant, et appuyez sur le bouton ci-dessous pour l\'importer.</string>
+  <string name="opml_import_explanation_1">Choisir un chemin de fichier spécifique dans le système de fichiers local</string>
+  <string name="opml_import_explanation_2">Utiliser une application tierce comme Dropbox, Google Drive ou votre gestionnaire de fichier favori pour ouvrir un fichier OPML</string>
+  <string name="opml_import_explanation_3">De nombreuses applications comme Google Mail, Dropbox ou Google Drive et la plupart des gestionnaires de fichiers peuvent <i>ouvrir</i> les fichiers OPML <i>avec</i> AntennaPod.</string>
   <string name="start_import_label">Démarrer l\'importation</string>
   <string name="opml_import_label">Importation OPML</string>
   <string name="opml_directory_error">ERREUR !</string>
@@ -272,7 +282,8 @@
   <string name="opml_import_error_dir_empty">Le répertoire d\'importation est vide.</string>
   <string name="select_all_label">Tout choisir</string>
   <string name="deselect_all_label">Ne rien choisir</string>
-  <string name="choose_file_to_import_label">Choisir le fichier à importer</string>
+  <string name="choose_file_from_filesystem">Depuis le système de fichier local</string>
+  <string name="choose_file_from_external_application">Utiliser une application tierce</string>
   <string name="opml_export_label">Exportation OPML</string>
   <string name="exporting_label">Exportation en cours...</string>
   <string name="export_error_label">Erreur d\'exportation</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">Modifier votre identifiant et mot de passe pour ce podcast et tous ses épisodes</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importation des abonnements à partir d\'applications à usage unique...</string>
+  <string name="search_itunes_label">Chercher sur iTunes</string>
 </resources>

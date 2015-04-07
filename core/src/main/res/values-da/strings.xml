@@ -263,7 +263,6 @@
   <string name="found_in_title_label">Fundet i titel</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML filer lader dig flytte dine podcasts fra en podcastafspiller til en anden.</string>
-  <string name="opml_import_explanation">For at importere en OPML fil, skal du først placere den i følgende mappe og tryk på knappen nedenfor for at starte import-processen.</string>
   <string name="start_import_label">Start import</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">FEJL!</string>
@@ -272,7 +271,6 @@
   <string name="opml_import_error_dir_empty">Import mappen er tom.</string>
   <string name="select_all_label">Vælg alt</string>
   <string name="deselect_all_label">Fravælg alt</string>
-  <string name="choose_file_to_import_label">Vælg fil at importere</string>
   <string name="opml_export_label">OPML eksport</string>
   <string name="exporting_label">Eksporterer...</string>
   <string name="export_error_label">Eksport fejl</string>

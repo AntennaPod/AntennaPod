@@ -60,10 +60,8 @@
   <string name="auto_download_label">Добавить в автозагрузки</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
-  <string name="etxtFeedurlHint">Адрес канала или сайта</string>
   <string name="txtvfeedurl_label">Добавить подкаст по URL</string>
   <string name="podcastdirectories_label">Найти подкаст в каталоге</string>
-  <string name="podcastdirectories_descr">Вы можете искать новые подкасты в каталоге gpodder.net по имени, категории или популярности/</string>
   <string name="browse_gpoddernet_label">Просмотр gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Отметить как прослушанное</string>
@@ -142,6 +140,12 @@
   <string name="removed_from_queue">Удалено</string>
   <string name="move_to_top_label">Переместить вверх</string>
   <string name="move_to_bottom_label">Переместить вниз</string>
+  <string name="sort">Сортировать</string>
+  <string name="alpha">По алфавиту</string>
+  <string name="date">По дате</string>
+  <string name="duration">По продолжительности</string>
+  <string name="ascending">По возрастанию</string>
+  <string name="descending">По убыванию</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Авторизоваться в Flattr</string>
   <string name="flattr_auth_explanation">Нажмите кнопку, чтобы начать процесс авторизации. Вы будете перенаправлены на сайт Flattr, где нужно будет разрешить AntennaPod использовать ваш аккаунт. После этого вы автоматически будете перенаправлены обратно.</string>
@@ -181,7 +185,10 @@
   <string name="services_label">Сервисы</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Приостановить воспроизведение, когда наушники отсоединены</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Продолжать воспроизведение после подключения наушников</string>
   <string name="pref_followQueue_sum">После завершения воспроизведения перейти к следующему в очереди</string>
+  <string name="pref_auto_delete_sum">Удалять эпизод после завершения воспроизведения</string>
+  <string name="pref_auto_delete_title">Автоматическое удаление</string>
   <string name="playback_pref">Воспроизведение</string>
   <string name="network_pref">Сеть</string>
   <string name="pref_autoUpdateIntervall_title">Интервал обновлений</string>
@@ -190,6 +197,7 @@
   <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Наушники отсоединены</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Наушники отсоединены</string>
   <string name="pref_mobileUpdate_title">Мобильные обновления</string>
   <string name="pref_mobileUpdate_sum">Позволить обновления через мобильное интернет-подключение</string>
   <string name="refreshing_label">Обновление</string>
@@ -208,6 +216,8 @@
   <string name="pref_automatic_download_sum">Настроить автоматическую загрузку выпусков.</string>
   <string name="pref_autodl_wifi_filter_title">Включить фильтр Wi-Fi</string>
   <string name="pref_autodl_wifi_filter_sum">Разрешать автоматическую загрузку только для выбранных сетей Wi-Fi.</string>
+  <string name="pref_automatic_download_on_battery_title">Загружать без зарядки</string>
+  <string name="pref_automatic_download_on_battery_sum">Разрешать автоматическую загрузку когда батарея не заряжается</string>
   <string name="pref_episode_cache_title">Кэш выпусков</string>
   <string name="pref_theme_title_light">Светлая</string>
   <string name="pref_theme_title_dark">Тёмная</string>
@@ -223,6 +233,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
+  <string name="pref_seek_delta_title">Перемотка</string>
+  <string name="pref_seek_delta_sum">Пропускать секунд при перемотке назад или вперед</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
   <string name="pref_expandNotify_title">Расширенное уведомление</string>
@@ -240,7 +252,6 @@
   <string name="found_in_title_label">Найдено в заголовке</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
-  <string name="opml_import_explanation">Для импорта файла OPML его нужно поместить в указанный каталог и нажать кнопку внизу для запуска импорта.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
   <string name="opml_directory_error">Ошибка</string>
@@ -249,11 +260,9 @@
   <string name="opml_import_error_dir_empty">Каталог для импорта пуст.</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
-  <string name="choose_file_to_import_label">Выбрать файл для импорта</string>
   <string name="opml_export_label">Экспорт в OPML</string>
   <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
-  <string name="opml_export_success_title">Экспорт OPML завершён.</string>
   <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Установить таймер сна</string>

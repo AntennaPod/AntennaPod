@@ -263,7 +263,6 @@
   <string name="found_in_title_label">제목에서 발견</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 파일을 이용하면 팟캐스트 목록을 한 팟캐스트 프로그램에서 다른 팟캐스트 프로그램으로 옮길 수 있습니다.</string>
-  <string name="opml_import_explanation">OPML 파일을 가져오려면, 다음 디렉터리에 파일을 저장하고 아래 버튼을 누르면 가져오기 처리를 시작합니다.</string>
   <string name="start_import_label">가져오기 시작</string>
   <string name="opml_import_label">OPML 가져오기</string>
   <string name="opml_directory_error">오류!</string>
@@ -272,7 +271,6 @@
   <string name="opml_import_error_dir_empty">가져오기 디렉터리가 비어 있습니다.</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
-  <string name="choose_file_to_import_label">가져올 파일을 고르십시오</string>
   <string name="opml_export_label">OPML 내보내기</string>
   <string name="exporting_label">내보내는 중...</string>
   <string name="export_error_label">내보내기 오류</string>
