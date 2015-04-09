@@ -3,7 +3,7 @@ package de.test.antennapod.util.syndication.feedgenerator;
 import android.util.Xml;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
@@ -79,7 +79,7 @@ public class RSS2Generator implements FeedGenerator{
                 }
                 if (item.getPubDate() != null) {
                     xml.startTag(null, "pubDate");
-                    xml.text(SyndDateUtils.formatRFC822Date(item.getPubDate()));
+                    xml.text(DateUtils.formatRFC822Date(item.getPubDate()));
                     xml.endTag(null, "pubDate");
                 }
                 if ((flags & FEATURE_WRITE_GUID) != 0) {

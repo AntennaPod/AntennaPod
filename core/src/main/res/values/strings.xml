@@ -98,9 +98,9 @@
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
     <string name="remove_episode_lable">Remove episode</string>
-    <string name="mark_read_label">Mark as read</string>
-    <string name="mark_unread_label">Mark as unread</string>
-    <string name="marked_as_read_label">Marked as read</string>
+    <string name="mark_read_label">Mark as played</string>
+    <string name="mark_unread_label">Mark as unplayed</string>
+    <string name="marked_as_read_label">Marked as played</string>
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
     <string name="visit_website_label">Visit Website</string>
@@ -220,6 +220,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
+    <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
+    <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervall_title">Update interval</string>
@@ -277,6 +279,8 @@
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
     <string name="pref_queueAddToFront_title">Enqueue at front.</string>
+    <string name="pref_smart_mark_as_played_disabled">Disabled</string>
+
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>

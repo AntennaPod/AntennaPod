@@ -13,8 +13,8 @@ import de.danoeh.antennapod.core.syndication.namespace.NSITunes;
 import de.danoeh.antennapod.core.syndication.namespace.NSRSS20;
 import de.danoeh.antennapod.core.syndication.namespace.Namespace;
 import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
-import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
 import de.danoeh.antennapod.core.syndication.util.SyndTypeUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 public class NSAtom extends Namespace {
     private static final String TAG = "NSAtom";
@@ -191,12 +191,12 @@ public class NSAtom extends Namespace {
                 if (second.equals(ENTRY)
                         && state.getCurrentItem().getPubDate() == null) {
                     state.getCurrentItem().setPubDate(
-                            SyndDateUtils.parseRFC3339Date(content));
+                            DateUtils.parse(content));
                 }
             } else if (top.equals(PUBLISHED)) {
                 if (second.equals(ENTRY)) {
                     state.getCurrentItem().setPubDate(
-                            SyndDateUtils.parseRFC3339Date(content));
+                            DateUtils.parse(content));
                 }
             } else if (top.equals(IMAGE)) {
                 state.getFeed().setImage(new FeedImage(state.getFeed(), content, null));

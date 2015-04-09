@@ -59,6 +59,13 @@
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/smart_mark_as_played_values"
+            android:entryValues="@array/smart_mark_as_played_values"
+            android:key="prefSmartMarkAsPlayedSecs"
+            android:summary="@string/pref_smart_mark_as_played_sum"
+            android:title="@string/pref_smart_mark_as_played_title"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"

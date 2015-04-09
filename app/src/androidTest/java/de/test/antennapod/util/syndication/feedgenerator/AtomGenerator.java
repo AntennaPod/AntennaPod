@@ -1,14 +1,16 @@
 package de.test.antennapod.util.syndication.feedgenerator;
 
 import android.util.Xml;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
+
 import org.xmlpull.v1.XmlSerializer;
 
 import java.io.IOException;
 import java.io.OutputStream;
+
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 /**
  * Creates Atom feeds. See FeedGenerator for more information.
@@ -83,9 +85,9 @@ public class AtomGenerator implements FeedGenerator{
                 if (item.getPubDate() != null) {
                     xml.startTag(null, "published");
                     if ((flags & FEATURE_USE_RFC3339LOCAL) != 0) {
-                        xml.text(SyndDateUtils.formatRFC3339Local(item.getPubDate()));
+                        xml.text(DateUtils.formatRFC3339Local(item.getPubDate()));
                     } else {
-                        xml.text(SyndDateUtils.formatRFC3339UTC(item.getPubDate()));
+                        xml.text(DateUtils.formatRFC3339UTC(item.getPubDate()));
                     }
                     xml.endTag(null, "published");
                 }

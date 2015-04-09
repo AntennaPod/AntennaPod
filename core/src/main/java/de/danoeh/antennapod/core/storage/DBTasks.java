@@ -34,7 +34,7 @@ import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.DownloadError;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
 import de.danoeh.antennapod.core.util.exception.MediaFileNotFoundException;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
@@ -524,8 +524,8 @@ public final class DBTasks {
      * @param feedItemId ID of the FeedItem
      */
     public static boolean isInQueue(Context context, final long feedItemId) {
-        List<Long> queue = DBReader.getQueueIDList(context);
-        return QueueAccess.IDListAccess(queue).contains(feedItemId);
+        LongList queue = DBReader.getQueueIDList(context);
+        return queue.contains(feedItemId);
     }
 
     private static Feed searchFeedByIdentifyingValueOrID(Context context, PodDBAdapter adapter,

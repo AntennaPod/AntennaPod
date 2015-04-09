@@ -2,18 +2,21 @@ package de.test.antennapod.service.playback;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.feed.EventDistributor;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
 
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.feed.EventDistributor;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceTaskManager;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.greenrobot.event.EventBus;
 
 /**
  * Test class for PlaybackServiceTaskManager
@@ -94,7 +97,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         };
         EventDistributor.getInstance().register(queueListener);
         List<FeedItem> queue = writeTestQueue("a");
-        EventDistributor.getInstance().sendQueueUpdateBroadcast();
+        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
         countDownLatch.await(5000, TimeUnit.MILLISECONDS);
 
         assertNotNull(queue);

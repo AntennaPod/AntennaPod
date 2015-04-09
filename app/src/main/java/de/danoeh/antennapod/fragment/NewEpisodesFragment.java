@@ -7,7 +7,6 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -37,6 +36,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -44,11 +44,12 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 /**
  * Shows unread or recently published episodes
@@ -57,7 +58,6 @@ public class NewEpisodesFragment extends Fragment {
     private static final String TAG = "NewEpisodesFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -76,7 +76,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private List<FeedItem> unreadItems;
     private List<FeedItem> recentItems;
-    private QueueAccess queueAccess;
+    private LongList queue;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -108,6 +108,7 @@ public class NewEpisodesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         this.activity.set((MainActivity) getActivity());
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
@@ -128,7 +129,11 @@ public class NewEpisodesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
+        if(undoBarController.isShowing()) {
+            undoBarController.close();
+        }
     }
 
     @Override
@@ -295,15 +300,26 @@ public class NewEpisodesFragment extends Fragment {
             }
         });
 
-        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
+
+            private final Context context = getActivity();
+
             @Override
-            public void onUndo(Parcelable token) {
-                // Perform the undo
-                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+            public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
-                    long itemId = undoToken.getFeedItemId();
-                    int position = undoToken.getPosition();
-                    DBWriter.markItemRead(getActivity(), itemId, false);
+                    long itemId = token.getFeedItemId();
+                    DBWriter.markItemRead(context, itemId, false);
+                }
+            }
+            @Override
+            public void onHide(FeedItemUndoToken token) {
+                if (token != null && context != null) {
+                    long itemId = token.getFeedItemId();
+                    FeedItem item = DBReader.getFeedItem(context, itemId);
+                    FeedMedia media = item.getMedia();
+                    if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
+                    }
                 }
             }
         });
@@ -389,7 +405,7 @@ public class NewEpisodesFragment extends Fragment {
         @Override
         public boolean isInQueue(FeedItem item) {
             if (itemsLoaded) {
-                return queueAccess.contains(item.getId());
+                return queue.contains(item.getId());
             } else {
                 return false;
             }
@@ -397,6 +413,11 @@ public class NewEpisodesFragment extends Fragment {
 
 
     };
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
+    }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
         @Override
@@ -469,9 +490,11 @@ public class NewEpisodesFragment extends Fragment {
         protected Object[] doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return new Object[]{DBReader.getUnreadItemsList(context),
+                return new Object[] {
+                        DBReader.getUnreadItemsList(context),
                         DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                        DBReader.getQueueIDList(context)
+                };
             } else {
                 return null;
             }
@@ -486,7 +509,7 @@ public class NewEpisodesFragment extends Fragment {
             if (lists != null) {
                 unreadItems = (List<FeedItem>) lists[0];
                 recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (QueueAccess) lists[2];
+                queue = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

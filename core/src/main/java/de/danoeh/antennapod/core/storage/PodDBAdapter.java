@@ -1120,7 +1120,11 @@ public class PodDBAdapter {
         return c;
     }
 
-    public final Cursor getFeedItemCursor(final String... ids) {
+    public final Cursor getFeedItemCursor(final String id) {
+        return getFeedItemCursor(new String[] { id });
+    }
+
+    public final Cursor getFeedItemCursor(final String[] ids) {
         if (ids.length > IN_OPERATOR_MAXIMUM) {
             throw new IllegalArgumentException(
                     "number of IDs must not be larger than "
@@ -1131,6 +1135,15 @@ public class PodDBAdapter {
         return db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_ID + " IN "
                 + buildInOperator(ids.length), ids, null, null, null);
 
+    }
+
+    public final Cursor getFeedItemCursor(final String podcastUrl, final String episodeUrl) {
+        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " +
+                    TABLE_NAME_FEEDS + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" +
+                    TABLE_NAME_FEEDS + "." + KEY_ID + " WHERE " + TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER + "='" +
+                    episodeUrl + "' AND " + TABLE_NAME_FEEDS + "." + KEY_DOWNLOAD_URL + "='" + podcastUrl + "'";
+        return db.rawQuery(query, null);
     }
 
     public int getQueueSize() {

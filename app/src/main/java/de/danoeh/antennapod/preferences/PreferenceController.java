@@ -343,6 +343,7 @@ public class PreferenceController {
             }
         });
         buildUpdateIntervalPreference();
+        buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences
                 .isEnableAutodownloadWifiFilter());
@@ -403,6 +404,24 @@ public class PreferenceController {
 
     }
 
+    private void buildSmartMarkAsPlayedPreference() {
+        final Resources res = ui.getActivity().getResources();
+
+        ListPreference pref = (ListPreference) ui.findPreference(UserPreferences.PREF_SMART_MARK_AS_PLAYED_SECS);
+        String[] values = res.getStringArray(
+                R.array.smart_mark_as_played_values);
+        String[] entries = new String[values.length];
+        for (int x = 0; x < values.length; x++) {
+            if(x == 0) {
+                entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
+            } else {
+                Integer v = Integer.parseInt(values[x]);
+                entries[x] = v + " " + res.getString(R.string.time_unit_seconds);
+            }
+        }
+        pref.setEntries(entries);
+    }
+
     private void setSelectedNetworksEnabled(boolean b) {
         if (selectedNetworks != null) {
             for (Preference p : selectedNetworks) {
@@ -429,7 +448,6 @@ public class PreferenceController {
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
                 .setEnabled(UserPreferences.isEnableAutodownload());
     }
-
 
     private void setParallelDownloadsText(int downloads) {
         final Resources res = ui.getActivity().getResources();

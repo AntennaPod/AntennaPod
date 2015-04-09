@@ -8,6 +8,7 @@ import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -17,7 +18,6 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.util.QueueAccess;
 
 /**
  * Displays all running downloads and provides a button to delete them
@@ -26,11 +26,9 @@ public class CompletedDownloadsFragment extends ListFragment {
     private static final int EVENTS =
             EventDistributor.DOWNLOAD_HANDLED |
                     EventDistributor.DOWNLOADLOG_UPDATE |
-                    EventDistributor.QUEUE_UPDATE |
                     EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private List<FeedItem> items;
-    private QueueAccess queue;
     private DownloadedEpisodesListAdapter listAdapter;
 
     private boolean viewCreated = false;
@@ -155,7 +153,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, Object[]> {
+    private class ItemLoader extends AsyncTask<Void, Void, List<FeedItem>> {
 
         @Override
         protected void onPreExecute() {
@@ -166,11 +164,10 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(Object[] results) {
+        protected void onPostExecute(List<FeedItem> results) {
             super.onPostExecute(results);
             if (results != null) {
-                items = (List<FeedItem>) results[0];
-                queue = (QueueAccess) results[1];
+                items = results;
                 itemsLoaded = true;
                 if (viewCreated && getActivity() != null) {
                     onFragmentLoaded();
@@ -179,13 +176,12 @@ public class CompletedDownloadsFragment extends ListFragment {
         }
 
         @Override
-        protected Object[] doInBackground(Void... params) {
+        protected List<FeedItem> doInBackground(Void... params) {
             Context context = getActivity();
             if (context != null) {
-                return new Object[]{DBReader.getDownloadedItems(context),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                return DBReader.getDownloadedItems(context);
             }
-            return null;
+            return Collections.emptyList();
         }
     }
 }
