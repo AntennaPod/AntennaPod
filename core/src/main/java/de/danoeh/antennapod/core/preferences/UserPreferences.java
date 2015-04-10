@@ -460,12 +460,14 @@ public class UserPreferences implements
     }
 
     public static void setPrefFastForwardSecs(int secs) {
+        Log.d(TAG, "setPrefFastForwardSecs(" + secs +")");
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(instance.context).edit();
         editor.putInt(PREF_FAST_FORWARD_SECS, secs);
         editor.commit();
     }
 
     public static void setPrefRewindSecs(int secs) {
+        Log.d(TAG, "setPrefRewindSecs(" + secs +")");
         SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(instance.context).edit();
         editor.putInt(PREF_REWIND_SECS, secs);
         editor.commit();
