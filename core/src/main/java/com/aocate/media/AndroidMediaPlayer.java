@@ -14,12 +14,14 @@
 
 package com.aocate.media;
 
-import java.io.IOException;
-
 import android.content.Context;
 import android.media.MediaPlayer;
+import android.media.audiofx.LoudnessEnhancer;
 import android.net.Uri;
+import android.os.Build;
 import android.util.Log;
+
+import java.io.IOException;
 
 public class AndroidMediaPlayer extends MediaPlayerImpl {
 	private final static String AMP_TAG = "AocateAndroidMediaPlayer";
@@ -205,6 +207,15 @@ public class AndroidMediaPlayer extends MediaPlayerImpl {
 		Log.d(AMP_TAG, " ++++++++++++++++++++++++++++++++ Setting prepared listener to this.onPreparedListener");
 		mp.setOnPreparedListener(this.onPreparedListener);
 		mp.setOnSeekCompleteListener(this.onSeekCompleteListener);
+
+		// loudness enhancer
+		if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+			int audioSession = mp.getAudioSessionId();
+			LoudnessEnhancer effect = new LoudnessEnhancer(audioSession);
+			effect.setTargetGain(600); // amplify up to 6 dB
+			effect.setEnabled(true);
+			Log.d(AMP_TAG, "Loudness enhancer enabled");
+		}
 	}
 
 	@Override
