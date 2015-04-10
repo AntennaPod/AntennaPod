@@ -418,8 +418,7 @@ public class DBWriter {
 
                                 if (item != null) {
                                     // add item to either front ot back of queue
-                                    boolean addToFront = PreferenceManager.getDefaultSharedPreferences(context)
-                                            .getBoolean(UserPreferences.PREF_QUEUE_ADD_TO_FRONT, false);
+                                    boolean addToFront = UserPreferences.enqueueAtFront();
 
                                     if(addToFront){
                                         queue.add(0, item);

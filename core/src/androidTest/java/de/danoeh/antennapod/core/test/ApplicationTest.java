@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core;
+package de.danoeh.antennapod.core.test;
 
 import android.app.Application;
 import android.test.ApplicationTestCase;

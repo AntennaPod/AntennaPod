@@ -3,6 +3,7 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.FlakyTest;
 import android.widget.ListView;
 
 import com.robotium.solo.Solo;
@@ -85,6 +86,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForText(solo.getString(R.string.subscribed_label));
     }
 
+    @FlakyTest(tolerance = 3)
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
 
@@ -142,6 +144,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         return ((MainActivity)solo.getCurrentActivity()).getMainActivtyActionBar().getTitle().toString();
     }
 
+    @FlakyTest(tolerance = 3)
     public void testGoToPreferences() {
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.settings_label));
