@@ -12,6 +12,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+
+import android.view.View;
 import android.widget.ImageButton;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -46,7 +48,9 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected SeekBar sbPosition;
     protected ImageButton butPlay;
     protected ImageButton butRev;
+    protected TextView txtvRev;
     protected ImageButton butFF;
+    protected TextView txtvFF;
 
     private PlaybackController newPlaybackController() {
         return new PlaybackController(this, false) {
@@ -222,7 +226,6 @@ public abstract class MediaplayerActivity extends ActionBarActivity
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-
         if (controller != null) {
             controller.release();
         }
@@ -373,6 +376,8 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         if (controller != null) {
             int currentPosition = controller.getPosition();
             int duration = controller.getDuration();
+            Log.d(TAG, "currentPosition " + Converter
+                    .getDurationStringLong(currentPosition));
             if (currentPosition != PlaybackService.INVALID_TIME
                     && duration != PlaybackService.INVALID_TIME
                     && controller.getMedia() != null) {
@@ -381,8 +386,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                 txtvLength.setText(Converter.getDurationStringLong(duration));
                 updateProgressbarPosition(currentPosition, duration);
             } else {
-                Log.w(TAG,
-                        "Could not react to position observer update because of invalid time");
+                Log.w(TAG, "Could not react to position observer update because of invalid time");
             }
         }
     }
@@ -426,7 +430,11 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         txtvLength = (TextView) findViewById(R.id.txtvLength);
         butPlay = (ImageButton) findViewById(R.id.butPlay);
         butRev = (ImageButton) findViewById(R.id.butRev);
+        txtvRev = (TextView) findViewById(R.id.txtvRev);
+        txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
         butFF = (ImageButton) findViewById(R.id.butFF);
+        txtvFF = (TextView) findViewById(R.id.txtvFF);
+        txtvFF.setText(String.valueOf(UserPreferences.getFastFowardSecs()));
 
         // SEEKBAR SETUP
 
@@ -437,10 +445,100 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         butPlay.setOnClickListener(controller.newOnPlayButtonClickListener());
 
         if (butFF != null) {
-            butFF.setOnClickListener(controller.newOnFFButtonClickListener());
+            butFF.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int curr = controller.getPosition();
+                    controller.seekTo(curr + UserPreferences.getFastFowardSecs() * 1000);
+                }
+            });
+            butFF.setOnLongClickListener(new View.OnLongClickListener() {
+
+                int choice;
+
+                @Override
+                public boolean onLongClick(View v) {
+                    int checked = 0;
+                    int rewindSecs = UserPreferences.getFastFowardSecs();
+                    final int[] values = getResources().getIntArray(R.array.seek_delta_values);
+                    final String[] choices = new String[values.length];
+                    for(int i=0; i < values.length; i++) {
+                        if (rewindSecs == values[i]) {
+                            checked = i;
+                        }
+                        choices[i] = String.valueOf(values[i]) + " "
+                                + getString(R.string.time_unit_seconds);
+                    }
+                    choice = values[checked];
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
+                    builder.setTitle(R.string.pref_fast_forward);
+                    builder.setSingleChoiceItems(choices, checked,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    choice = values[which];
+                                }
+                            });
+                    builder.setNegativeButton(R.string.cancel_label, null);
+                    builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            UserPreferences.setPrefFastForwardSecs(choice);
+                            txtvFF.setText(String.valueOf(choice));
+                        }
+                    });
+                    builder.create().show();
+                    return true;
+                }
+            });
         }
         if (butRev != null) {
-            butRev.setOnClickListener(controller.newOnRevButtonClickListener());
+            butRev.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    int curr = controller.getPosition();
+                    controller.seekTo(curr - UserPreferences.getRewindSecs() * 1000);
+                }
+            });
+            butRev.setOnLongClickListener(new View.OnLongClickListener() {
+
+                int choice;
+
+                @Override
+                public boolean onLongClick(View v) {
+                    int checked = 0;
+                    int rewindSecs = UserPreferences.getRewindSecs();
+                    final int[] values = getResources().getIntArray(R.array.seek_delta_values);
+                    final String[] choices = new String[values.length];
+                    for(int i=0; i < values.length; i++) {
+                        if (rewindSecs == values[i]) {
+                            checked = i;
+                        }
+                        choices[i] = String.valueOf(values[i]) + " "
+                                + getString(R.string.time_unit_seconds);
+                    }
+                    choice = values[checked];
+                    AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
+                    builder.setTitle(R.string.pref_rewind);
+                    builder.setSingleChoiceItems(choices, checked,
+                            new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    choice = values[which];
+                                }
+                            });
+                    builder.setNegativeButton(R.string.cancel_label, null);
+                    builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            UserPreferences.setPrefRewindSecs(choice);
+                            txtvRev.setText(String.valueOf(choice));
+                        }
+                    });
+                    builder.create().show();
+                    return true;
+                }
+            });
         }
 
     }
