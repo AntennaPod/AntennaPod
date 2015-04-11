@@ -81,11 +81,12 @@ public class HttpDownloader extends Downloader {
             if (userInfo != null) {
                 String[] parts = userInfo.split(":");
                 if (parts.length == 2) {
-                    String credentials = Credentials.basic(parts[0], parts[1]);
+                    String credentials = encodeCredentials(parts[0], parts[1], "ISO-8859-1");
                     httpReq.header("Authorization", credentials);
                 }
             } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
-                String credentials = Credentials.basic(request.getUsername(), request.getPassword());
+                String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
+                        "ISO-8859-1");
                 httpReq.header("Authorization", credentials);
             }
 
@@ -104,6 +105,24 @@ public class HttpDownloader extends Downloader {
 
             Log.d(TAG, "Response code is " + response.code());
 
+            if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                Log.d(TAG, "Authorization failed, re-trying with UTF-8 encoding");
+                if (userInfo != null) {
+                    String[] parts = userInfo.split(":");
+                    if (parts.length == 2) {
+                        String credentials = encodeCredentials(parts[0], parts[1], "UTF-8");
+                        httpReq.header("Authorization", credentials);
+                    }
+                } else if (!StringUtils.isEmpty(request.getUsername()) && request.getPassword() != null) {
+                    String credentials = encodeCredentials(request.getUsername(), request.getPassword(),
+                            "UTF-8");
+                    httpReq.header("Authorization", credentials);
+                }
+                response = httpClient.newCall(httpReq.build()).execute();
+                responseBody = response.body();
+                contentEncodingHeader = response.header("Content-Encoding");
+                isGzip = StringUtils.equalsIgnoreCase(contentEncodingHeader, "gzip");
+            }
 
             if(!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_NOT_MODIFIED) {
                 Log.d(TAG, "Feed '" + request.getSource() + "' not modified since last update, Download canceled");
@@ -250,6 +269,17 @@ public class HttpDownloader extends Downloader {
             } else {
                 Log.d(TAG, "cleanup() didn't delete file: does not exist.");
             }
+        }
+    }
+
+    private static String encodeCredentials(String username, String password, String charset) {
+        try {
+            String credentials = username + ":" + password;
+            byte[] bytes = credentials.getBytes(charset);
+            String encoded = ByteString.of(bytes).base64();
+            return "Basic " + encoded;
+        } catch (UnsupportedEncodingException e) {
+            throw new AssertionError();
         }
     }
 

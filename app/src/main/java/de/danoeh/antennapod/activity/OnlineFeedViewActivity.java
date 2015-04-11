@@ -376,7 +376,12 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                         String selectedUrl = urls.get(which);
                         dialog.dismiss();
                         resetIntent(selectedUrl, titles.get(which));
-                        startFeedDownload(selectedUrl, null, null);
+                        FeedPreferences prefs = feed.getPreferences();
+                        if(prefs != null) {
+                            startFeedDownload(selectedUrl, prefs.getUsername(), prefs.getPassword());
+                        } else {
+                            startFeedDownload(selectedUrl, null, null);
+                        }
                     }
                 };
 
