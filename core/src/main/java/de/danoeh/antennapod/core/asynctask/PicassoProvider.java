@@ -6,8 +6,12 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.MediaMetadataRetriever;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.squareup.okhttp.Interceptor;
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Response;
 import com.squareup.picasso.Cache;
 import com.squareup.picasso.LruCache;
 import com.squareup.picasso.OkHttpDownloader;
@@ -22,13 +26,18 @@ import org.apache.commons.lang3.StringUtils;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+
+import de.danoeh.antennapod.core.service.download.HttpDownloader;
+import de.danoeh.antennapod.core.storage.DBReader;
 
 /**
  * Provides access to Picasso instances.
  */
 public class PicassoProvider {
+
     private static final String TAG = "PicassoProvider";
 
     private static final boolean DEBUG = false;
@@ -56,10 +65,12 @@ public class PicassoProvider {
         if (picassoSetup) {
             return;
         }
+        OkHttpClient client = new OkHttpClient();
+        client.networkInterceptors().add(new BasicAuthenticationInterceptor(appContext));
         Picasso picasso = new Picasso.Builder(appContext)
                 .indicatorsEnabled(DEBUG)
                 .loggingEnabled(DEBUG)
-                .downloader(new OkHttpDownloader(appContext))
+                .downloader(new OkHttpDownloader(client))
                 .addRequestHandler(new MediaRequestHandler(appContext))
                 .executor(getExecutorService())
                 .memoryCache(getMemoryCache(appContext))
@@ -73,6 +84,45 @@ public class PicassoProvider {
                 .build();
         Picasso.setSingletonInstance(picasso);
         picassoSetup = true;
+    }
+
+    private static class BasicAuthenticationInterceptor implements Interceptor {
+
+        private final Context context;
+
+        public BasicAuthenticationInterceptor(Context context) {
+            this.context = context;
+        }
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            com.squareup.okhttp.Request request = chain.request();
+            String url = request.urlString();
+            // add authentication
+            String authentication = DBReader.getImageAuthentication(context, url);
+            if(TextUtils.isEmpty(authentication) == false) {
+                String[] auth = authentication.split(":");
+                String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1],  "ISO-8859-1");
+                com.squareup.okhttp.Request newRequest = request
+                        .newBuilder()
+                        .addHeader("Authorization", credentials)
+                        .build();
+                Response response = chain.proceed(newRequest);
+                if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                    credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "UTF-8");
+                    newRequest = request
+                            .newBuilder()
+                            .addHeader("Authorization", credentials)
+                            .build();
+                    return chain.proceed(newRequest);
+                } else {
+                    return response;
+                }
+            }
+            else { // no authentication required
+                return chain.proceed(request);
+            }
+        }
     }
 
     private static class MediaRequestHandler extends RequestHandler {

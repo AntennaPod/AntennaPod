@@ -1146,6 +1146,20 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public Cursor getImageAuthenticationCursor(final String imageUrl) {
+        final String query = "SELECT " + KEY_USERNAME + "," + KEY_PASSWORD + " FROM "
+                + TABLE_NAME_FEED_IMAGES + " INNER JOIN " + TABLE_NAME_FEEDS + " ON " +
+                TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" + TABLE_NAME_FEEDS + "." + KEY_IMAGE + " WHERE "
+                + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + imageUrl + "' UNION SELECT "
+                + KEY_USERNAME + "," + KEY_PASSWORD + " FROM " + TABLE_NAME_FEED_IMAGES + " INNER JOIN "
+                + TABLE_NAME_FEED_ITEMS + " ON " + TABLE_NAME_FEED_IMAGES + "." + KEY_ID + "=" +
+                TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE + " INNER JOIN " + TABLE_NAME_FEEDS + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_FEED + "=" + TABLE_NAME_FEEDS + "." + KEY_ID + " WHERE "
+                + TABLE_NAME_FEED_IMAGES + "." + KEY_DOWNLOAD_URL + "='" + imageUrl + "'";
+        Log.d(TAG, "Query: " + query);
+        return db.rawQuery(query, null);
+    }
+
     public int getQueueSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_QUEUE);
         Cursor c = db.rawQuery(query, null);

@@ -272,7 +272,7 @@ public class HttpDownloader extends Downloader {
         }
     }
 
-    private static String encodeCredentials(String username, String password, String charset) {
+    public static String encodeCredentials(String username, String password, String charset) {
         try {
             String credentials = username + ":" + password;
             byte[] bytes = credentials.getBytes(charset);
