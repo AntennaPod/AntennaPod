@@ -66,7 +66,7 @@ public class PicassoProvider {
             return;
         }
         OkHttpClient client = new OkHttpClient();
-        client.networkInterceptors().add(new BasicAuthenticationInterceptor(appContext));
+        client.interceptors().add(new BasicAuthenticationInterceptor(appContext));
         Picasso picasso = new Picasso.Builder(appContext)
                 .indicatorsEnabled(DEBUG)
                 .loggingEnabled(DEBUG)
@@ -98,29 +98,32 @@ public class PicassoProvider {
         public Response intercept(Chain chain) throws IOException {
             com.squareup.okhttp.Request request = chain.request();
             String url = request.urlString();
-            // add authentication
             String authentication = DBReader.getImageAuthentication(context, url);
-            if(TextUtils.isEmpty(authentication) == false) {
-                String[] auth = authentication.split(":");
-                String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1],  "ISO-8859-1");
-                com.squareup.okhttp.Request newRequest = request
+
+            if(TextUtils.isEmpty(authentication)) {
+                Log.d(TAG, "no credentials for '" + url + "'");
+                return chain.proceed(request);
+            }
+
+            // add authentication
+            String[] auth = authentication.split(":");
+            String credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "ISO-8859-1");
+            com.squareup.okhttp.Request newRequest = request
+                    .newBuilder()
+                    .addHeader("Authorization", credentials)
+                    .build();
+            Log.d(TAG, "Basic authentication with ISO-8859-1 encoding");
+            Response response = chain.proceed(newRequest);
+            if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
+                credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "UTF-8");
+                newRequest = request
                         .newBuilder()
                         .addHeader("Authorization", credentials)
                         .build();
-                Response response = chain.proceed(newRequest);
-                if (!response.isSuccessful() && response.code() == HttpURLConnection.HTTP_UNAUTHORIZED) {
-                    credentials = HttpDownloader.encodeCredentials(auth[0], auth[1], "UTF-8");
-                    newRequest = request
-                            .newBuilder()
-                            .addHeader("Authorization", credentials)
-                            .build();
-                    return chain.proceed(newRequest);
-                } else {
-                    return response;
-                }
-            }
-            else { // no authentication required
-                return chain.proceed(request);
+                Log.d(TAG, "Basic authentication with UTF-8 encoding");
+                return chain.proceed(newRequest);
+            } else {
+                return response;
             }
         }
     }
@@ -140,7 +143,7 @@ public class PicassoProvider {
         }
 
         @Override
-        public Result load(Request data) throws IOException {
+        public Result load(Request data, int networkPolicy) throws IOException {
             Bitmap bitmap = null;
             MediaMetadataRetriever mmr = null;
             try {
