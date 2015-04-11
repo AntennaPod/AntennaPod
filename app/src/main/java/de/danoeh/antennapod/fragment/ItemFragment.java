@@ -362,13 +362,15 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
             }
 
             drawables.recycle();
-        } else {if(media.getDuration() > 0) {
+        } else {
+            if(media.getDuration() > 0) {
                 txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             }
 
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.av_play,
-                    R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel});
+                    R.attr.av_download, R.attr.action_stream, R.attr.content_discard, R.attr.navigation_cancel,
+                    R.attr.content_new});
 
             if (!media.isDownloaded()) {
                 butAction2.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(2), null, null, null);
@@ -378,7 +380,10 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                 butAction2.setText(getActivity().getString(R.string.remove_episode_lable));
             }
 
-            if (isDownloading) {
+            if (!DBTasks.isInQueue(getActivity(), item.getId())) {
+                butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(5), null, null, null);
+                butAction1.setText(getActivity().getString(R.string.add_to_queue_label));
+            } else if (isDownloading) {
                 butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(4), null, null, null);
                 butAction1.setText(getActivity().getString(R.string.cancel_download_label));
             } else if (media.isDownloaded()) {
