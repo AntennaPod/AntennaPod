@@ -26,7 +26,6 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -91,12 +90,10 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
             getSupportActionBar().setTitle(R.string.add_new_feed_label);
         } else {
-            throw new IllegalArgumentException(
-                    "Activity must be started with feedurl argument!");
+            throw new IllegalArgumentException("Activity must be started with feedurl argument!");
         }
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Activity was started with url " + feedUrl);
+        Log.d(TAG, "Activity was started with url " + feedUrl);
         setLoadingLayout();
         if (savedInstanceState == null) {
             startFeedDownload(feedUrl, null, null);
@@ -147,7 +144,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
 
             @Override
             public void run() {
-                if (BuildConfig.DEBUG) Log.d(TAG, "Download was completed");
+                Log.d(TAG, "Download was completed");
                 DownloadStatus status = downloader.getResult();
                 if (status != null) {
                     if (!status.isCancelled()) {
@@ -164,15 +161,13 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                                     OnlineFeedViewActivity.this);
                             if (errorMsg != null
                                     && status.getReasonDetailed() != null) {
-                                errorMsg += " ("
-                                        + status.getReasonDetailed() + ")";
+                                errorMsg += " (" + status.getReasonDetailed() + ")";
                             }
                             showErrorDialog(errorMsg);
                         }
                     }
                 } else {
-                    Log.wtf(TAG,
-                            "DownloadStatus returned by Downloader was null");
+                    Log.wtf(TAG, "DownloadStatus returned by Downloader was null");
                     finish();
                 }
             }
@@ -181,21 +176,18 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
     }
 
     private void startFeedDownload(String url, String username, String password) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Starting feed download");
+        Log.d(TAG, "Starting feed download");
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, new Date(0));
         if (username != null && password != null) {
             feed.setPreferences(new FeedPreferences(0, false, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
-                FileNameGenerator.generateFileName(feed.getDownload_url()))
-                .toString();
+                FileNameGenerator.generateFileName(feed.getDownload_url())).toString();
         feed.setFile_url(fileUrl);
         final DownloadRequest request = new DownloadRequest(feed.getFile_url(),
                 feed.getDownload_url(), "OnlineFeed", 0, Feed.FEEDFILETYPE_FEED, username, password, true, null);
-        downloader = new HttpDownloader(
-                request);
+        downloader = new HttpDownloader(request);
         new Thread() {
             @Override
             public void run() {
@@ -233,8 +225,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     "feed must be non-null and downloaded when parseFeed is called");
         }
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Parsing feed");
+        Log.d(TAG, "Parsing feed");
 
         Thread thread = new Thread() {
 
@@ -258,7 +249,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     e.printStackTrace();
                     reasonDetailed = e.getMessage();
                 } catch (UnsupportedFeedtypeException e) {
-                    if (BuildConfig.DEBUG) Log.d(TAG, "Unsupported feed type detected");
+                    Log.d(TAG, "Unsupported feed type detected");
                     if (StringUtils.equalsIgnoreCase("html", e.getRootElement())) {
                         if (showFeedDiscoveryDialog(new File(feed.getFile_url()), feed.getDownload_url())) {
                             return;
@@ -269,8 +260,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
                     }
                 } finally {
                     boolean rc = new File(feed.getFile_url()).delete();
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Deleted feed source file. Result: " + rc);
+                    Log.d(TAG, "Deleted feed source file. Result: " + rc);
                 }
 
                 if (successful) {
