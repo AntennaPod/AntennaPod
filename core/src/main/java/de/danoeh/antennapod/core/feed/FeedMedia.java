@@ -2,9 +2,11 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -34,6 +36,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private String mime_type;
     private volatile FeedItem item;
     private Date playbackCompletionDate;
+    private boolean hasEmbeddedPicture;
 
     /* Used for loading item when restoring from parcel. */
     private long itemID;
@@ -50,6 +53,7 @@ public class FeedMedia extends FeedFile implements Playable {
                      long size, String mime_type, String file_url, String download_url,
                      boolean downloaded, Date playbackCompletionDate, int played_duration) {
         super(file_url, download_url, downloaded);
+        checkEmbeddedPicture();
         this.id = id;
         this.item = item;
         this.duration = duration;
@@ -59,12 +63,6 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
-    }
-
-    public FeedMedia(long id, FeedItem item) {
-        super();
-        this.id = id;
-        this.item = item;
     }
 
     @Override
@@ -227,16 +225,14 @@ public class FeedMedia extends FeedFile implements Playable {
         return (this.position > 0);
     }
 
-    public FeedImage getImage() {
-        if (item != null) {
-            return (item.hasItemImageDownloaded()) ? item.getImage() : item.getFeed().getImage();
-        }
-        return null;
-    }
-
     @Override
     public int describeContents() {
         return 0;
+    }
+
+    public boolean hasEmbeddedPicture() {
+        Log.d(TAG, "hasEmbeddedPicture() -> " + hasEmbeddedPicture);
+        return this.hasEmbeddedPicture;
     }
 
     @Override
@@ -415,28 +411,46 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Uri getImageUri() {
-        final Uri feedImgUri = getFeedImageUri();
-
-        if (localFileAvailable()) {
+        if (hasEmbeddedPicture) {
             Uri.Builder builder = new Uri.Builder();
-            builder.scheme(SCHEME_MEDIA)
-                    .encodedPath(getLocalMediaUrl());
-            if (feedImgUri != null) {
-                builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
-            }
+            builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
             return builder.build();
-        } else if (item.hasItemImageDownloaded()) {
-            return item.getImage().getImageUri();
         } else {
-            return feedImgUri;
+            return item.getImageUri();
         }
     }
 
-    private Uri getFeedImageUri() {
-        if (item != null && item.getFeed() != null) {
-            return item.getFeed().getImageUri();
-        } else {
-            return null;
+    @Override
+    public void setDownloaded(boolean downloaded) {
+        super.setDownloaded(downloaded);
+        checkEmbeddedPicture();
+    }
+
+    @Override
+    public void setFile_url(String file_url) {
+        super.setFile_url(file_url);
+        checkEmbeddedPicture();
+    }
+
+    private void checkEmbeddedPicture() {
+        Log.d(TAG, "checkEmbeddedPicture()");
+        if (!localFileAvailable()) {
+            hasEmbeddedPicture = false;
+            return;
+        }
+        MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+        try {
+            mmr.setDataSource(getLocalMediaUrl());
+            byte[] image = mmr.getEmbeddedPicture();
+            if(image != null) {
+                hasEmbeddedPicture = true;
+            }
+            else {
+                hasEmbeddedPicture = false;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            hasEmbeddedPicture = false;
         }
     }
 }
