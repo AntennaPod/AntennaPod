@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -41,9 +42,17 @@ public class AddFeedFragment extends Fragment {
         Button butBrowserGpoddernet = (Button) root.findViewById(R.id.butBrowseGpoddernet);
         Button butOpmlImport = (Button) root.findViewById(R.id.butOpmlImport);
         Button butConfirm = (Button) root.findViewById(R.id.butConfirm);
+        Button butSearchITunes = (Button) root.findViewById(R.id.butSearchItunes);
 
         final MainActivity activity = (MainActivity) getActivity();
         activity.getMainActivtyActionBar().setTitle(R.string.add_feed_label);
+
+        butSearchITunes.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                activity.loadChildFragment(new ItunesSearchFragment());
+            }
+        });
 
         butBrowserGpoddernet.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -53,7 +62,6 @@ public class AddFeedFragment extends Fragment {
         });
 
         butOpmlImport.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(getActivity(),

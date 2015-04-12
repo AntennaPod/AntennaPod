@@ -15,6 +15,7 @@
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
         <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
+        <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
         <item name="attr/navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
@@ -56,6 +57,7 @@
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
         <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
+        <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
         <item name="attr/navigation_cancel">@drawable/ic_cancel_white_24dp</item>
@@ -100,6 +102,7 @@
         <item name="attr/content_discard">@drawable/ic_delete_grey600_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_grey600_24dp</item>
         <item name="attr/device_access_time">@drawable/ic_timer_grey600_24dp</item>
+        <item name="attr/feed">@drawable/ic_feed_grey600_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_grey600_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_grey600_24dp</item>
         <item name="attr/navigation_cancel">@drawable/ic_cancel_grey600_24dp</item>
@@ -143,6 +146,7 @@
         <item name="attr/content_discard">@drawable/ic_delete_white_24dp</item>
         <item name="attr/content_new">@drawable/ic_add_white_24dp</item>
         <item name="attr/device_access_time">@drawable/ic_timer_white_24dp</item>
+        <item name="attr/feed">@drawable/ic_feed_white_24dp</item>
         <item name="attr/location_web_site">@drawable/ic_web_white_24dp</item>
         <item name="attr/navigation_accept">@drawable/ic_done_white_24dp</item>
         <item name="attr/navigation_cancel">@drawable/ic_cancel_white_24dp</item>
@@ -215,7 +219,6 @@
 
     <style name="AntennaPod.TextView.Heading" parent="@android:style/TextAppearance.Medium">
         <item name="android:textSize">@dimen/text_size_large</item>
-        <item name="android:textStyle">italic</item>
         <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 

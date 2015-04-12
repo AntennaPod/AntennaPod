@@ -1,5 +1,8 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
+import android.os.Build;
+import android.util.Log;
+
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -18,16 +21,27 @@ import org.json.JSONObject;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.CookieManager;
-import java.net.CookiePolicy;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.security.KeyStore;
+import java.security.Principal;
+import java.security.cert.CertificateException;
+import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSocketFactory;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.TrustManagerFactory;
+import javax.net.ssl.X509TrustManager;
+import javax.security.auth.x500.X500Principal;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
@@ -43,6 +57,8 @@ import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
  */
 public class GpodnetService {
 
+    private static final String TAG = "GpodnetService";
+
     private static final String BASE_SCHEME = "https";
 
     public static final String DEFAULT_BASE_HOST = "gpodder.net";
@@ -56,7 +72,82 @@ public class GpodnetService {
 
     public GpodnetService() {
         httpClient = AntennapodHttpClient.getHttpClient();
+        if (Build.VERSION.SDK_INT <= 10) {
+            Log.d(TAG, "Use custom SSL factory");
+            SSLSocketFactory factory = getCustomSslSocketFactory();
+            httpClient.setSslSocketFactory(factory);
+        }
         BASE_HOST = GpodnetPreferences.getHostname();
+    }
+
+    private synchronized static SSLSocketFactory getCustomSslSocketFactory() {
+        try {
+            TrustManagerFactory defaultTrustManagerFactory = TrustManagerFactory.getInstance(TrustManagerFactory.getDefaultAlgorithm());
+            defaultTrustManagerFactory.init((KeyStore) null); // use system keystore
+            final X509TrustManager defaultTrustManager = (X509TrustManager) defaultTrustManagerFactory.getTrustManagers()[0];
+            TrustManager[] customTrustManagers = new TrustManager[]{new X509TrustManager() {
+                @Override
+                public java.security.cert.X509Certificate[] getAcceptedIssuers() {
+                    return null;
+                }
+                @Override
+                public void checkClientTrusted(java.security.cert.X509Certificate[] chain, String authType) throws CertificateException {
+                }
+                @Override
+                public void checkServerTrusted(X509Certificate[] chain, String authType)
+                        throws CertificateException {
+                    // chain may out of order - construct data structures to walk from server certificate to root certificate
+                    Map<Principal, X509Certificate> certificates = new HashMap<Principal, X509Certificate>(chain.length - 1);
+                    X509Certificate subject = null;
+                    for (X509Certificate cert : chain) {
+                        cert.checkValidity();
+                        if (cert.getSubjectDN().toString().startsWith("CN=" + DEFAULT_BASE_HOST)) {
+                            subject = cert;
+                        } else {
+                            certificates.put(cert.getSubjectDN(), cert);
+                        }
+                    }
+                    if (subject == null) {
+                        throw new CertificateException("Chain does not contain a certificate for " + DEFAULT_BASE_HOST);
+                    }
+                    // follow chain to root CA
+                    while (certificates.get(subject.getIssuerDN()) != null) {
+                        subject.checkValidity();
+                        X509Certificate issuer = certificates.get(subject.getIssuerDN());
+                        try {
+                            subject.verify(issuer.getPublicKey());
+                        } catch (Exception e) {
+                            Log.d(TAG, "failed: " + issuer.getSubjectDN() + " -> " + subject.getSubjectDN());
+                            throw new CertificateException("Could not verify certificate");
+                        }
+                        subject = issuer;
+                    }
+                    X500Principal rootAuthority = subject.getIssuerX500Principal();
+                    boolean accepted = false;
+                    for (X509Certificate cert :
+                            defaultTrustManager.getAcceptedIssuers()) {
+                        if (cert.getSubjectX500Principal().equals(rootAuthority)) {
+                            try {
+                                subject.verify(cert.getPublicKey());
+                                accepted = true;
+                            } catch (Exception e) {
+                                Log.d(TAG, "failed: " + cert.getSubjectDN() + " -> " + subject.getSubjectDN());
+                                throw new CertificateException("Could not verify root certificate");
+                            }
+                        }
+                    }
+                    if (accepted == false) {
+                        throw new CertificateException("Could not verify root certificate");
+                    }
+                }
+            }};
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, customTrustManagers, null);
+            return sslContext.getSocketFactory();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     /**
@@ -81,9 +172,10 @@ public class GpodnetService {
                     jsonTagList.length());
             for (int i = 0; i < jsonTagList.length(); i++) {
                 JSONObject jObj = jsonTagList.getJSONObject(i);
-                String name = jObj.getString("tag");
+                String title = jObj.getString("title");
+                String tag = jObj.getString("tag");
                 int usage = jObj.getInt("usage");
-                tagList.add(new GpodnetTag(name, usage));
+                tagList.add(new GpodnetTag(title, tag, usage));
             }
             return tagList;
         } catch (JSONException e) {
@@ -103,7 +195,7 @@ public class GpodnetService {
 
         try {
             URL url = new URI(BASE_SCHEME, BASE_HOST, String.format(
-                    "/api/2/tag/%s/%d.json", tag.getName(), count), null).toURL();
+                    "/api/2/tag/%s/%d.json", tag.getTag(), count), null).toURL();
             Request.Builder request = new Request.Builder().url(url);
             String response = executeRequest(request);
 

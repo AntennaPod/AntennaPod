@@ -213,7 +213,6 @@
   <string name="found_in_title_label">Gevonden in de titel</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Met OPML-bestanden kan je podcasts van de ene naar de andere podcatcher verplaatsen.</string>
-  <string name="opml_import_explanation">Om een OPML-bestand te importeren moet je het in de volgende map zetten en op onderstaande knop drukken.</string>
   <string name="start_import_label">Start importeren</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">FOUT!</string>
@@ -222,11 +221,9 @@
   <string name="opml_import_error_dir_empty">De import map is leeg.</string>
   <string name="select_all_label">Selecteer alles</string>
   <string name="deselect_all_label">Deselecteer alles</string>
-  <string name="choose_file_to_import_label">Kies het te importeren bestand</string>
   <string name="opml_export_label">OPML export</string>
   <string name="exporting_label">Aan het exporteren...</string>
   <string name="export_error_label">Export fout</string>
-  <string name="opml_export_success_title">OPML export succesvol.</string>
   <string name="opml_export_success_sum"> Het OPML-bestand is in \u0020 geplaatst</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Slaap timer instellen</string>

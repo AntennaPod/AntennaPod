@@ -7,8 +7,15 @@
         android:id="@+id/refresh_item"
         android:title="@string/refresh_label"
         android:menuCategory="container"
-        custom:showAsAction="ifRoom"
+        custom:showAsAction="always"
         android:icon="?attr/navigation_refresh"/>
+
+    <item
+        android:id="@+id/clear_queue"
+        android:title="Clear Queue"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:icon="?attr/navigation_accept"/>
 
     <item
         android:id="@+id/queue_sort"

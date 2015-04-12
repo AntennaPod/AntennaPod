@@ -58,16 +58,19 @@
   <string name="close_label">Fechar</string>
   <string name="retry_label">Tentar novamente</string>
   <string name="auto_download_label">Incluir nas transferências automáticas</string>
+  <string name="parallel_downloads_suffix">\u0020transferências simultâneas</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL da fonte</string>
   <string name="etxtFeedurlHint">URL da fonte ou sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
-  <string name="podcastdirectories_descr">Pode procurar os novos podcasts no gPodder.net por nome, categoria ou popularidade.</string>
+  <string name="podcastdirectories_descr">Pode procurar os novos podcasts no gPodder.net por nome, categoria ou popularidade e também na loja iTunes.</string>
   <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Marcar tudo como lido</string>
   <string name="mark_all_read_msg">Marcar todos os episódios como lidos</string>
+  <string name="mark_all_read_confirmation_msg">Por favor confirme que deseja marcar todos os episódios como lidos.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme que deseja marcar todos os episódios desta fonte como lidos.</string>
   <string name="show_info_label">Mostrar informações</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_link_label">Partilhar ligação do sítio web</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">Remover episódio</string>
   <string name="mark_read_label">Marcar como lido</string>
   <string name="mark_unread_label">Marcar como novo</string>
+  <string name="marked_as_read_label">Marcar como lido</string>
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
   <string name="visit_website_label">Aceder ao sítio web</string>
@@ -150,6 +154,7 @@
   <string name="duration">Duração</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
+  <string name="clear_queue_confirmation_msg">Por favor confirme que deseja limpar todos os episódios da fila de reprodução.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios.</string>
   <string name="pref_automatic_download_on_battery_title">Transferência se não estiver a carregar</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir transferência automática se a bateria não estiver a ser carregada</string>
+  <string name="pref_parallel_downloads_title">Transferências simultâneas</string>
   <string name="pref_episode_cache_title">Cache de episódios</string>
   <string name="pref_theme_title_light">Claro</string>
   <string name="pref_theme_title_dark">Escuro</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
   <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa.</string>
   <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações.</string>
+  <string name="pref_queueAddToFront_sum">Colocar novos episódios no inicio da fila.</string>
+  <string name="pref_queueAddToFront_title">Novos episódios no inicio</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações.</string>
-  <string name="opml_import_explanation">Para importar um ficheiro OPML, tem que o colocar neste diretório e premir o botão abaixo para iniciar o processo.</string>
+  <string name="opml_import_explanation_1">Escolha um caminho especifico no sistema local de ficheiros.</string>
+  <string name="opml_import_explanation_2">Utilize aplicações externas como o Dropbox, Google Drive ou o seu gestor de ficheiros preferido para abrir o ficheiro OPML.</string>
+  <string name="opml_import_explanation_3">As aplicações como o Google Mail, Dropbox, Google Drive ou gestores de ficheiros podem <i>abrir</i> os ficheiros OPML <i>através</i> do AntennaPod.</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação OPML</string>
   <string name="opml_directory_error">Erro!</string>
@@ -272,7 +282,8 @@
   <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
   <string name="select_all_label">Marcar tudo</string>
   <string name="deselect_all_label">Desmarcar tudo</string>
-  <string name="choose_file_to_import_label">Escolha o ficheiro a importar</string>
+  <string name="choose_file_from_filesystem">Do sistema local de ficheiros</string>
+  <string name="choose_file_from_external_application">Utilizar aplicação externa</string>
   <string name="opml_export_label">Exportação OPML</string>
   <string name="exporting_label">Exportação...</string>
   <string name="export_error_label">Erro de exportação</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
+  <string name="search_itunes_label">Procurar no iTunes</string>
 </resources>

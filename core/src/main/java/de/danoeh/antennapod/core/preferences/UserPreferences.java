@@ -20,7 +20,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import de.danoeh.antennapod.core.ApplicationCallbacks;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -42,6 +41,7 @@ public class UserPreferences implements
     public static final String PREF_FOLLOW_QUEUE = "prefFollowQueue";
     public static final String PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY = "prefDownloadMediaOnWifiOnly";
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
+    public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
     public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
@@ -60,6 +60,7 @@ public class UserPreferences implements
     private static final String PREF_SEEK_DELTA_SECS = "prefSeekDeltaSecs";
     private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
 
     // TODO: Make this value configurable
     private static final float PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT = 0.8f;
@@ -85,6 +86,7 @@ public class UserPreferences implements
     private boolean enableAutodownloadWifiFilter;
     private boolean enableAutodownloadOnBattery;
     private String[] autodownloadSelectedNetworks;
+    private int parallelDownloads;
     private int episodeCacheSize;
     private String playbackSpeed;
     private String[] playbackSpeedArray;
@@ -143,6 +145,7 @@ public class UserPreferences implements
                 PREF_ENABLE_AUTODL_WIFI_FILTER, false);
         autodownloadSelectedNetworks = StringUtils.split(
                 sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+        parallelDownloads = Integer.valueOf(sp.getString(PREF_PARALLEL_DOWNLOADS, "6"));
         episodeCacheSize = readEpisodeCacheSizeInternal(sp.getString(
                 PREF_EPISODE_CACHE_SIZE, "20"));
         enableAutodownload = sp.getBoolean(PREF_ENABLE_AUTODL, false);
@@ -313,6 +316,11 @@ public class UserPreferences implements
         return instance.autodownloadSelectedNetworks;
     }
 
+    public static int getParallelDownloads() {
+        instanceAvailable();
+        return instance.parallelDownloads;
+    }
+
     public static int getEpisodeCacheSizeUnlimited() {
         return EPISODE_CACHE_SIZE_UNLIMITED;
     }
@@ -398,6 +406,8 @@ public class UserPreferences implements
         } else if (key.equals(PREF_AUTODL_SELECTED_NETWORKS)) {
             autodownloadSelectedNetworks = StringUtils.split(
                     sp.getString(PREF_AUTODL_SELECTED_NETWORKS, ""), ',');
+        } else if(key.equals(PREF_PARALLEL_DOWNLOADS)) {
+            parallelDownloads = Integer.valueOf(sp.getString(PREF_PARALLEL_DOWNLOADS, "6"));
         } else if (key.equals(PREF_EPISODE_CACHE_SIZE)) {
             episodeCacheSize = readEpisodeCacheSizeInternal(sp.getString(
                     PREF_EPISODE_CACHE_SIZE, "20"));

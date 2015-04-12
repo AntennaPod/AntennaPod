@@ -57,7 +57,7 @@ public class ActionButtonUtils {
             } else {
                 // item is not being downloaded
                 butSecondary.setVisibility(View.VISIBLE);
-                if (media.isPlaying()) {
+                if (media.isCurrentlyPlaying()) {
                     butSecondary.setImageDrawable(drawables.getDrawable(3));
                 } else {
                     butSecondary

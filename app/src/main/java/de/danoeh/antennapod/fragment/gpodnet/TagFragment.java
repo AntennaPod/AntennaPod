@@ -24,11 +24,11 @@ public class TagFragment extends PodcastListFragment {
 
     private GpodnetTag tag;
 
-    public static TagFragment newInstance(String tagName) {
-        Validate.notNull(tagName);
+    public static TagFragment newInstance(GpodnetTag tag) {
+        Validate.notNull(tag);
         TagFragment fragment = new TagFragment();
         Bundle args = new Bundle();
-        args.putString("tag", tagName);
+        args.putParcelable("tag", tag);
         fragment.setArguments(args);
         return fragment;
     }
@@ -38,14 +38,14 @@ public class TagFragment extends PodcastListFragment {
         super.onCreate(savedInstanceState);
 
         Bundle args = getArguments();
-        Validate.isTrue(args != null && args.getString("tag") != null, "args invalid");
-        tag = new GpodnetTag(args.getString("tag"));
+        Validate.isTrue(args != null && args.getParcelable("tag") != null, "args invalid");
+        tag = args.getParcelable("tag");
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
-        ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getName());
+        ((MainActivity) getActivity()).getMainActivtyActionBar().setTitle(tag.getTitle());
     }
 
     @Override

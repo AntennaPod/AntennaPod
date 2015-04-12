@@ -58,16 +58,19 @@
   <string name="close_label">Kapat</string>
   <string name="retry_label">Yeniden dene</string>
   <string name="auto_download_label">Otomatik indirmelere dahil et</string>
+  <string name="parallel_downloads_suffix">\u0020paralel indirmeler</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Besleme Adresi</string>
-  <string name="etxtFeedurlHint">Besleme veya web sayfası URLsi</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">URL ile cep yayını ekle</string>
   <string name="podcastdirectories_label">Dizinde cep yayını bul</string>
-  <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz.</string>
+  <string name="podcastdirectories_descr">gdpodder.net dizininde yeni cep yayınlarını isme, kategoriye veya popülerliğe göre arayabilirsiniz veya iTunes mağazasında arama yapabilirsiniz.</string>
   <string name="browse_gpoddernet_label">gpodder.net\'e gözat</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Hepsini okundu olarak işaretle</string>
   <string name="mark_all_read_msg">Tüm bölümler okundu olarak işaretlendi</string>
+  <string name="mark_all_read_confirmation_msg">Lütfen tüm bölümleri okundu olarak işaretlemek istediğinizi onaylayın.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Lütfen bu besleme içindeki tüm bölümleri okundu olarak işaretlemek istediğinizi onaylayın.</string>
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
   <string name="share_link_label">Web sayfası bağlantısı paylaş</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">Bölümü kaldır</string>
   <string name="mark_read_label">Okundu olarak işaretle</string>
   <string name="mark_unread_label">Okunmadı olarak işaretle</string>
+  <string name="marked_as_read_label">Okundu olarak işaretlendi</string>
   <string name="add_to_queue_label">Kuyruğa Ekle</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
   <string name="visit_website_label">Siteyi Ziyaret Et</string>
@@ -144,6 +148,13 @@
   <string name="removed_from_queue">Öge kaldırıldı</string>
   <string name="move_to_top_label">En üste taşı</string>
   <string name="move_to_bottom_label">En alta taşı</string>
+  <string name="sort">Sırala</string>
+  <string name="alpha">Alfabetik olarak</string>
+  <string name="date">Tarih</string>
+  <string name="duration">Süre</string>
+  <string name="ascending">Artan</string>
+  <string name="descending">Azalan</string>
+  <string name="clear_queue_confirmation_msg">Lütfen içerisindeki BÜTÜN ölümlerle birlikte kuyruğu temizleme isteğinizi onaylayın.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr giriş</string>
   <string name="flattr_auth_explanation">Yetkilendirme işlemini başlatmak için aşağıdaki butona basın. Tarayıcınızda flattr giriş ekranına yönlendirileceksiniz ve AntennaPod\'un flattr ile etkileşime girebilmesi için izniniz istenecek. İzin verdikten sonra otomatik olarak bu ekrana döneceksiniz.</string>
@@ -185,7 +196,10 @@
   <string name="services_label">Servisler</string>
   <string name="flattr_label">Flattr</string>
   <string name="pref_pauseOnHeadsetDisconnect_sum">Kulaklıklar çıkarıldığında çalmayı duraklat</string>
+  <string name="pref_unpauseOnHeadsetReconnect_sum">Kulaklıklar yeniden bağlandığında çalmaya devam et</string>
   <string name="pref_followQueue_sum">Çalma tamamlandığında kuyruktaki diğer öğeye geç</string>
+  <string name="pref_auto_delete_sum">Çalma bittiğinde bölümü sil</string>
+  <string name="pref_auto_delete_title">Otomatik Silme</string>
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
   <string name="pref_autoUpdateIntervall_title">Güncelleme aralığı</string>
@@ -194,6 +208,7 @@
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
   <string name="pref_pauseOnHeadsetDisconnect_title">Kulaklık bağlı değil</string>
+  <string name="pref_unpauseOnHeadsetReconnect_title">Kulaklıklar yeniden bağlı</string>
   <string name="pref_mobileUpdate_title">Mobil güncellemeler</string>
   <string name="pref_mobileUpdate_sum">Mobil veri üzerinden güncellemelere izin ver</string>
   <string name="refreshing_label">Yenileniyor</string>
@@ -213,6 +228,9 @@
   <string name="pref_automatic_download_sum">Bölümlerin otomatik indirilmesini yapılandır.</string>
   <string name="pref_autodl_wifi_filter_title">Wi-Fi filtresini etkinleştir</string>
   <string name="pref_autodl_wifi_filter_sum">Seçilen kablosuz ağlar için otomatik indirmeye izin ver.</string>
+  <string name="pref_automatic_download_on_battery_title">Şarj olmuyorken indir</string>
+  <string name="pref_automatic_download_on_battery_sum">Pil şarj olmuyorken otomatik indirmeye izin ver</string>
+  <string name="pref_parallel_downloads_title">Paralel indirmeler</string>
   <string name="pref_episode_cache_title">Bölüm ön belleği</string>
   <string name="pref_theme_title_light">Aydınlık</string>
   <string name="pref_theme_title_dark">Karanlık</string>
@@ -237,6 +255,8 @@
   <string name="pref_persistNotify_title">Kalıcı oynatma kontrolleri</string>
   <string name="pref_persistNotify_sum">Çalma duraklatıldığında bildirim ve ekran kilidi ayarlarını sakla.</string>
   <string name="pref_expand_notify_unsupport_toast">Android 4.1 öncesi sürümler genişletilmiş bildirimleri desteklememektedir.</string>
+  <string name="pref_queueAddToFront_sum">Yeni bölümleri kuyruğun önüne ekle.</string>
+  <string name="pref_queueAddToFront_title">Kuyruğun önüne ekle.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Otomatik Flattr\'lamayı etkinleştir</string>
   <string name="auto_flattr_after_percent">Bölümün yüzde %d kısmı oynatıldığında Flattr\'la</string>
@@ -251,7 +271,9 @@
   <string name="found_in_title_label">Başlıkta bulundu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML dosyaları cep yayınlarını bir cihazdan diğerine aktarmanıza yarar.</string>
-  <string name="opml_import_explanation">Bir OPML dosyasını içe aktarmak için onu aşağıdaki klasöre koyun ve aşağıdaki butona tıklayın.</string>
+  <string name="opml_import_explanation_1">Yerel dosya sisteminden belirli bir yol seçin.</string>
+  <string name="opml_import_explanation_2">OPML dosyasını açmak için harici uygulamalardan Dropbox, Google Drive veya kendi favori dosya yöneticinizi kullanın.</string>
+  <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive gibi birçok uygulama ve çoğu dosya yöneticisi OPML dosyalarını AntennaPod <i>ile</i> <i>açabilir.</i></string>
   <string name="start_import_label">İçe aktarmayı başlat</string>
   <string name="opml_import_label">OPML içe aktar</string>
   <string name="opml_directory_error">HATA!</string>
@@ -260,11 +282,12 @@
   <string name="opml_import_error_dir_empty">İça aktarma dizini boş</string>
   <string name="select_all_label">Hepsini seç</string>
   <string name="deselect_all_label">Tüm seçimleri geri al</string>
-  <string name="choose_file_to_import_label">İçe aktarılacak dosyayı seç</string>
+  <string name="choose_file_from_filesystem">Yerel dosya sisteminden</string>
+  <string name="choose_file_from_external_application">Harici uygulama kullan</string>
   <string name="opml_export_label">OPML dışa aktar</string>
   <string name="exporting_label">Dışa aktarılıyor...</string>
   <string name="export_error_label">Dışa aktarma hatası</string>
-  <string name="opml_export_success_title">Opml dışa aktarma başarılı</string>
+  <string name="opml_export_success_title">Opml dışa aktarma başarılı.</string>
   <string name="opml_export_success_sum">.opml dosyasy yazıldı: \u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Zamanlayıcıyı ayarla</string>
@@ -346,4 +369,5 @@
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
+  <string name="search_itunes_label">iTunes\'da Arama</string>
 </resources>

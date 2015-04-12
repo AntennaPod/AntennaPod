@@ -2,12 +2,15 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,6 +32,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -41,6 +45,8 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
+import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -52,17 +58,21 @@ public class NewEpisodesFragment extends Fragment {
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.QUEUE_UPDATE |
-            EventDistributor.UNREAD_ITEMS_UPDATE;
+            EventDistributor.UNREAD_ITEMS_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
     private static final String PREF_EPISODE_FILTER_BOOL = "newEpisodeFilterEnabled";
-
+    private static final String PREF_KEY_LIST_TOP = "list_top";
+    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
     private DragSortListView listView;
     private NewEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private UndoBarController undoBarController;
 
     private List<FeedItem> unreadItems;
     private List<FeedItem> recentItems;
@@ -109,6 +119,12 @@ public class NewEpisodesFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPosition();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
@@ -127,10 +143,35 @@ public class NewEpisodesFragment extends Fragment {
         resetViewState();
     }
 
+    private void saveScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
+        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.commit();
+    }
+
+    private void restoreScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
+        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
+        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
+        if(listSelection > 0 || top > 0) {
+            listView.setSelectionFromTop(listSelection, top);
+            // restore once, then forget
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
+            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.commit();
+        }
+    }
+
     private void resetViewState() {
         listAdapter = null;
         activity.set(null);
         viewsCreated = false;
+        undoBarController = null;
         if (downloadObserver != null) {
             downloadObserver.onPause();
         }
@@ -190,8 +231,19 @@ public class NewEpisodesFragment extends Fragment {
                     }
                     return true;
                 case R.id.mark_all_read_item:
-                    DBWriter.markAllItemsRead(getActivity());
-                    Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                            R.string.mark_all_read_label,
+                            R.string.mark_all_read_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(
+                                DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.markAllItemsRead(getActivity());
+                            Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
+                        }
+                    };
+                    conDialog.createNewDialog().show();
                     return true;
                 case R.id.episode_filter_item:
                     boolean newVal = !item.isChecked();
@@ -210,7 +262,7 @@ public class NewEpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.all_episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
 
         View root = inflater.inflate(R.layout.new_episodes_fragment, container, false);
 
@@ -226,6 +278,33 @@ public class NewEpisodesFragment extends Fragment {
                     ((MainActivity) getActivity()).loadChildFragment(ItemFragment.newInstance(item.getId()));
                 }
 
+            }
+        });
+
+        listView.setRemoveListener(new DragSortListView.RemoveListener() {
+            @Override
+            public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.markItemRead(getActivity(), item.getId(), true);
+                undoBarController.showUndoBar(false,
+                        getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
+                                which)
+                );
+            }
+        });
+
+        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+            @Override
+            public void onUndo(Parcelable token) {
+                // Perform the undo
+                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+                if (token != null) {
+                    long itemId = undoToken.getFeedItemId();
+                    int position = undoToken.getPosition();
+                    DBWriter.markItemRead(getActivity(), itemId, false);
+                }
             }
         });
 
@@ -254,6 +333,7 @@ public class NewEpisodesFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
+        restoreScrollPosition();
         getActivity().supportInvalidateOptionsMenu();
         updateShowOnlyEpisodesListViewState();
     }
@@ -332,7 +412,7 @@ public class NewEpisodesFragment extends Fragment {
 
     private void updateShowOnlyEpisodes() {
         SharedPreferences prefs = getActivity().getSharedPreferences(PREF_NAME, Context.MODE_PRIVATE);
-        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, false);
+        showOnlyNewEpisodes = prefs.getBoolean(PREF_EPISODE_FILTER_BOOL, true);
     }
 
     private void setShowOnlyNewEpisodes(boolean newVal) {

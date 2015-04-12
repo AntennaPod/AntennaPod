@@ -224,6 +224,7 @@
   <string name="pref_autodl_wifi_filter_title">Activa el filtre de la xarxa sense fils</string>
   <string name="pref_autodl_wifi_filter_sum">Permet les baixades automàtiques només per a les xarxes sense fils seleccionades.</string>
   <string name="pref_automatic_download_on_battery_title">Baixa mentre no es carrega</string>
+  <string name="pref_automatic_download_on_battery_sum">Permet les baixades automàtiques mentre la bateria no es carrega</string>
   <string name="pref_episode_cache_title">Memòria d\'episodis</string>
   <string name="pref_theme_title_light">Clar</string>
   <string name="pref_theme_title_dark">Fosc</string>
@@ -243,6 +244,11 @@
   <string name="pref_seek_delta_sum">Salta aquesta quantitat de segons en rebobinar o en avançar ràpidament</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
+  <string name="pref_expandNotify_title">Amplia la notificació</string>
+  <string name="pref_expandNotify_sum">Amplia sempre les notificacions per mostrar els botons de reproducció.</string>
+  <string name="pref_persistNotify_title">Botons de reproducció persistents</string>
+  <string name="pref_persistNotify_sum">Mantén els controls a l\'àrea de notificacions i pantalla de bloqueig quan la reproducció estigui aturada</string>
+  <string name="pref_expand_notify_unsupport_toast">Les versions d\'Android anteriors a la 4.1 no suporten les notificacions ampliades.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Activa la compartició automàtica per Flattr</string>
   <string name="auto_flattr_after_percent">Comparteix per Flattr l\'episodi en haver-ne reproduït el %d per cent</string>
@@ -257,7 +263,6 @@
   <string name="found_in_title_label">Trobat al títol</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">Els fitxers OPML us permeten moure els podcasts d\'un gestor de podcasts a un altre.</string>
-  <string name="opml_import_explanation">Per importar un fitxer OPML, ubiqueu-lo al següent directori i premeu el botó de sota per iniciar el procés. </string>
   <string name="start_import_label">Inicia la importació</string>
   <string name="opml_import_label">Importació OPML</string>
   <string name="opml_directory_error">Error!</string>
@@ -266,7 +271,6 @@
   <string name="opml_import_error_dir_empty">El directori d\'importacions és buit.</string>
   <string name="select_all_label">Selecciona-ho tot</string>
   <string name="deselect_all_label">Deselecciona-ho tot</string>
-  <string name="choose_file_to_import_label">Seleccioneu el fitxer a importar</string>
   <string name="opml_export_label">Exportació OPML</string>
   <string name="exporting_label">S\'està exportant...</string>
   <string name="export_error_label">Error d\'exportació</string>
@@ -290,6 +294,7 @@
   <string name="gpodnetauth_login_title">Inici de sessió</string>
   <string name="gpodnetauth_login_descr">Benvingut al procés d\'inici de sessió a gpodder.net. Primerament, introduïu la informació d\'accés:</string>
   <string name="gpodnetauth_login_butLabel">Entra</string>
+  <string name="gpodnetauth_login_register">Si no teniu compte, podeu crear-ne un aquí:\nhttps://gpodder.net/register/</string>
   <string name="username_label">Nom d\'usuari</string>
   <string name="password_label">Contrasenya</string>
   <string name="gpodnetauth_device_title">Selecció de dispositiu</string>
@@ -345,6 +350,7 @@
   <string name="new_episodes_count_label">Nombre d\'episodis nous</string>
   <string name="in_progress_episodes_count_label">Nombre d\'episodis que heu començat a escoltar</string>
   <string name="drag_handle_content_description">Arrossegueu l\'element per canviar-ne la posició</string>
+  <string name="load_next_page_label">Carrega la següent pàgina</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>

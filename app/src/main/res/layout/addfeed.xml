@@ -1,100 +1,107 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:orientation="vertical">
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:scrollbars="vertical">
 
-    <ScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:scrollbars="vertical">
+        android:paddingTop="8dp"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp"
+        android:paddingBottom="8dp"
+        android:orientation="vertical">
 
-        <RelativeLayout
+        <TextView
+            android:id="@+id/txtvFeedurl"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.Heading"
+            android:text="@string/txtvfeedurl_label"/>
 
-            <TextView
-                android:id="@+id/txtvFeedurl"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_margin="16dp"
-                style="@style/AntennaPod.TextView.Heading"
-                android:text="@string/txtvfeedurl_label"/>
+        <EditText
+            android:id="@+id/etxtFeedurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:hint="@string/etxtFeedurlHint"
+            android:inputType="textUri"/>
 
-            <EditText
-                android:id="@+id/etxtFeedurl"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtvFeedurl"
-                android:layout_margin="8dp"
-                android:hint="@string/etxtFeedurlHint"
-                android:inputType="textUri"/>
+        <Button
+            android:id="@+id/butConfirm"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/confirm_label"/>
 
-            <Button
-                android:id="@+id/butConfirm"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/etxtFeedurl"
-                android:layout_margin="8dp"
-                android:text="@string/confirm_label"/>
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="?android:attr/listDivider"/>
 
-            <TextView
-                android:id="@+id/txtvPodcastDirectories"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/butConfirm"
-                android:layout_margin="8dp"
-                style="@style/AntennaPod.TextView.Heading"
-                android:text="@string/podcastdirectories_label"/>
+        <TextView
+            android:id="@+id/txtvPodcastDirectories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider1"
+            style="@style/AntennaPod.TextView.Heading"
+            android:text="@string/podcastdirectories_label"/>
 
-            <TextView
-                android:id="@+id/txtvPodcastDirectoriesDescr"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/podcastdirectories_descr"
-                android:textSize="@dimen/text_size_medium"
-                android:layout_below="@id/txtvPodcastDirectories"
-                android:layout_margin="8dp"/>
+        <TextView
+            android:id="@+id/txtvPodcastDirectoriesDescr"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/podcastdirectories_descr"
+            android:textSize="@dimen/text_size_medium"
+            android:layout_marginTop="4dp"/>
 
-            <Button
-                android:id="@+id/butBrowseGpoddernet"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtvPodcastDirectoriesDescr"
-                android:layout_margin="8dp"
-                android:text="@string/browse_gpoddernet_label"/>
+        <Button
+            android:id="@+id/butBrowseGpoddernet"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/browse_gpoddernet_label"/>
 
+        <Button
+            android:id="@+id/butSearchItunes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/search_itunes_label"/>
 
-            <TextView
-                android:id="@+id/txtvOpmlImport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/butBrowseGpoddernet"
-                android:layout_margin="8dp"
-                style="@style/AntennaPod.TextView.Heading"
-                android:text="@string/opml_import_label"/>
+        <View
+            android:id="@+id/divider2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="?android:attr/listDivider"/>
 
-            <TextView
-                android:id="@+id/txtvOpmlImportExpl"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtvOpmlImport"
-                android:layout_margin="8dp"
-                android:textSize="@dimen/text_size_medium"
-                android:text="@string/opml_import_txtv_button_lable"/>
+        <TextView
+            android:id="@+id/txtvOpmlImport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            style="@style/AntennaPod.TextView.Heading"
+            android:text="@string/opml_import_label"/>
 
-            <Button
-                android:id="@+id/butOpmlImport"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/txtvOpmlImportExpl"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:text="@string/opml_import_label"/>
-        </RelativeLayout>
-    </ScrollView>
+        <TextView
+            android:id="@+id/txtvOpmlImportExpl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textSize="@dimen/text_size_medium"
+            android:text="@string/opml_import_txtv_button_lable"/>
 
-</RelativeLayout>
+        <Button
+            android:id="@+id/butOpmlImport"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/opml_import_label"/>
+
+    </LinearLayout>
+
+</ScrollView>

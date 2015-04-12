@@ -28,6 +28,8 @@ public class SyndDateUtils {
      */
     public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
 
+    public static final String ISO8601_SHORT = "yyyy-MM-dd";
+
     private static ThreadLocal<SimpleDateFormat> RFC822Formatter = new ThreadLocal<SimpleDateFormat>() {
         @Override
         protected SimpleDateFormat initialValue() {
@@ -40,6 +42,14 @@ public class SyndDateUtils {
         @Override
         protected SimpleDateFormat initialValue() {
             return new SimpleDateFormat(RFC3339UTC, Locale.US);
+        }
+
+    };
+
+    private static ThreadLocal<SimpleDateFormat> ISO8601ShortFormatter = new ThreadLocal<SimpleDateFormat>() {
+        @Override
+        protected SimpleDateFormat initialValue() {
+            return new SimpleDateFormat(ISO8601_SHORT, Locale.US);
         }
 
     };
@@ -121,6 +131,23 @@ public class SyndDateUtils {
 
         return result;
 
+    }
+
+    public static Date parseISO8601Date(String date) {
+        if(date.length() > ISO8601_SHORT.length()) {
+            return parseRFC3339Date(date);
+        }
+        Date result = null;
+        if(date.length() == "YYYYMMDD".length()) {
+            date = date.substring(0, 4) + "-" + date.substring(4, 6) + "-" + date.substring(6,8);
+        }
+        SimpleDateFormat format = ISO8601ShortFormatter.get();
+        try {
+            result = format.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return result;
     }
 
     /**

@@ -256,7 +256,6 @@
   <string name="found_in_title_label">Nalezeno v názvu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML soubory umožňují přenést vaše podcasty z jednoho přehrávače na jiný.</string>
-  <string name="opml_import_explanation">Pro načtení OPML souboru je třeba ho nejdříve umístit do následujícího adresáře a poté stisknout tlačítko pro zahájení procesu importu. </string>
   <string name="start_import_label">Importovat</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">CHYBA!</string>
@@ -265,7 +264,6 @@
   <string name="opml_import_error_dir_empty">Adresář importu je prázdný.</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
-  <string name="choose_file_to_import_label">Vyberte soubor k importování</string>
   <string name="opml_export_label">OPML export</string>
   <string name="exporting_label">Exportuji...</string>
   <string name="export_error_label">Chyba exportu</string>

@@ -1,2 +1,2 @@
 include ':app', ':core'
-include ':app:dslv:library'
+include ':library:drag-sort-listview'

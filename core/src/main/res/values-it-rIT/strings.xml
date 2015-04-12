@@ -60,7 +60,7 @@
   <string name="auto_download_label">Includi nei download automatici</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
-  <string name="etxtFeedurlHint">URL del feed o del sito web</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">Aggiungi un Podcast tramite URL</string>
   <string name="podcastdirectories_label">Trova un podcast nella directory</string>
   <string name="podcastdirectories_descr">Puoi cercare dei nuovi podcast in base al nome, alla categoria o alla popolarità nella directory di gpodder.net.</string>
@@ -85,6 +85,7 @@
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
   <string name="mark_read_label">Segna come letto</string>
   <string name="mark_unread_label">Segna come non letto</string>
+  <string name="marked_as_read_label">Segnato come letto</string>
   <string name="add_to_queue_label">Aggiungi alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <string name="visit_website_label">Visita il sito</string>
@@ -225,6 +226,7 @@
   <string name="pref_autodl_wifi_filter_sum">Abilita il download automatico solo per alcune reti Wi-Fi selezionate.</string>
   <string name="pref_automatic_download_on_battery_title">Scarica quando la batteria non è in carica</string>
   <string name="pref_automatic_download_on_battery_sum">Permetti il download automatico quando la batteria non è in carica</string>
+  <string name="pref_parallel_downloads_title">Download paralleli</string>
   <string name="pref_episode_cache_title">Cache degli episodi</string>
   <string name="pref_theme_title_light">Light</string>
   <string name="pref_theme_title_dark">Dark</string>
@@ -263,7 +265,6 @@
   <string name="found_in_title_label">Trovato nel titolo</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">I file OPML ti permettono di spostare i tuoi podcast da un programma ad un altro.</string>
-  <string name="opml_import_explanation">Per importare un file OPML devi posizionarlo nella directory indicata e premere il tasto seguente in modo da iniziare il processo di importazione.</string>
   <string name="start_import_label">Avvio importazione</string>
   <string name="opml_import_label">Importazione OPML</string>
   <string name="opml_directory_error">ERRORE!</string>
@@ -272,7 +273,6 @@
   <string name="opml_import_error_dir_empty">La directory di importazione è vuota.</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
-  <string name="choose_file_to_import_label">Scegli il file da importare</string>
   <string name="opml_export_label">Esportazione su OPML</string>
   <string name="exporting_label">Esportazione in corso...</string>
   <string name="export_error_label">Errore di esportazione</string>
@@ -358,4 +358,5 @@
   <string name="authentication_descr">Cambia il tuo nome utente e la tua password per questo podcast e i suoi episodi.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
+  <string name="search_itunes_label">Cerca su iTunes</string>
 </resources>

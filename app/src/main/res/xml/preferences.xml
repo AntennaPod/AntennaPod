@@ -22,6 +22,17 @@
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
     </PreferenceCategory>
+
+    <PreferenceCategory android:title="@string/queue_label">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="true"
+            android:key="prefQueueAddToFront"
+            android:summary="@string/pref_queueAddToFront_sum"
+            android:title="@string/pref_queueAddToFront_title"/>
+        />
+    </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/playback_pref">
         <CheckBoxPreference
             android:defaultValue="true"
@@ -77,13 +88,17 @@
             android:key="prefAutoUpdateIntervall"
             android:summary="@string/pref_autoUpdateIntervall_sum"
             android:title="@string/pref_autoUpdateIntervall_title"/>
-
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
             android:key="prefMobileUpdate"
             android:summary="@string/pref_mobileUpdate_sum"
             android:title="@string/pref_mobileUpdate_title"/>
+        <de.danoeh.antennapod.preferences.CustomEditTextPreference
+            android:defaultValue="6"
+            android:inputType="number"
+            android:key="prefParallelDownloads"
+            android:title="@string/pref_parallel_downloads_title"/>
         <ListPreference
             android:defaultValue="20"
             android:entries="@array/episode_cache_size_entries"
@@ -111,6 +126,7 @@
         </PreferenceScreen>
 
     </PreferenceCategory>
+
     <PreferenceCategory android:title="@string/services_label">
         <PreferenceScreen
             android:key="prefFlattrSettings"

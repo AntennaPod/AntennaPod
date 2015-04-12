@@ -58,6 +58,7 @@
   <string name="close_label">閉じる</string>
   <string name="retry_label">再試行</string>
   <string name="auto_download_label">自動ダウンロードに含む</string>
+  <string name="parallel_downloads_suffix">\u0020パラレル ダウンロード</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">フィードURL</string>
   <string name="etxtFeedurlHint">フィードまたはWebサイトのURL</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">既読としてマーク</string>
   <string name="mark_all_read_msg">すべてのエピソードを既読にしました</string>
+  <string name="mark_all_read_confirmation_msg">既読としてマークするすべてのエピソードを確認してください。</string>
+  <string name="mark_all_read_feed_confirmation_msg">既読としてマークするこのフィードのすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_link_label">Webサイトのリンクを共有</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">エピソードを削除</string>
   <string name="mark_read_label">既読にする</string>
   <string name="mark_unread_label">未読にする</string>
+  <string name="marked_as_read_label">既読</string>
   <string name="add_to_queue_label">キューに追加</string>
   <string name="remove_from_queue_label">キューから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
@@ -150,6 +154,7 @@
   <string name="duration">継続時間</string>
   <string name="ascending">昇順</string>
   <string name="descending">降順</string>
+  <string name="clear_queue_confirmation_msg">クリアする、キューに含まれるすべてのエピソードを確認してください。</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattrにサインイン</string>
   <string name="flattr_auth_explanation">認証処理を開始するには、下のボタンを押します。お使いのブラウザでflattrのログイン画面に転送され、AntennaPodにflattrする許可を与えるように求められます。あなたが許可を与えた後、自動的にこの画面に戻ります。</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">選択したWi-Fiネットワークに対してのみ自動ダウンロードを許可します。</string>
   <string name="pref_automatic_download_on_battery_title">充電中以外の時にダウンロード</string>
   <string name="pref_automatic_download_on_battery_sum">バッテリーを充電していない時に自動ダウンロードを許可します</string>
+  <string name="pref_parallel_downloads_title">パラレル ダウンロード</string>
   <string name="pref_episode_cache_title">エピソードキャッシュ</string>
   <string name="pref_theme_title_light">ライト</string>
   <string name="pref_theme_title_dark">ダーク</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">永続再生コントロール</string>
   <string name="pref_persistNotify_sum">再生が一時停止された時に、通知およびロック画面のコントロールを保持します。</string>
   <string name="pref_expand_notify_unsupport_toast">Androidバージョン4.1以前では、拡張通知をサポートしていません。</string>
+  <string name="pref_queueAddToFront_sum">新しいエピソードをキューの先頭に追加します。</string>
+  <string name="pref_queueAddToFront_title">キューの先頭に入れる</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">タイトルで見つかりました</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPMLファイルで、あるポッドキャッチャーから別のものにポッドキャストを移動することができます。</string>
-  <string name="opml_import_explanation">OPMLファイルをインポートするには、次のディレクトリにファイルを置き、以下のボタンを押してインポート処理を開始します。</string>
+  <string name="opml_import_explanation_1">ローカルのファイルシステムから指定するファイルパスを選択してください。</string>
+  <string name="opml_import_explanation_2">Dropbox、Google ドライブ、またはお好みのファイルマネージャなどの外部アプリケーションを使用して、OPML ファイルを開いてください。</string>
+  <string name="opml_import_explanation_3">Google メール、Dropbox、Google ドライブ、および多くのファイルマネージャーなどのアプリケーションで、AntennaPod <i>の</i> OPML ファイルを <i>開く</i> ことができます。</string>
   <string name="start_import_label">インポート開始</string>
   <string name="opml_import_label">OPMLインポート</string>
   <string name="opml_directory_error">エラー!</string>
@@ -272,7 +282,8 @@
   <string name="opml_import_error_dir_empty">インポートディレクトリが空です。</string>
   <string name="select_all_label">すべてを選択</string>
   <string name="deselect_all_label">選択解除</string>
-  <string name="choose_file_to_import_label">インポートするファイルを選択してください</string>
+  <string name="choose_file_from_filesystem">ローカル ファイルシステムから</string>
+  <string name="choose_file_from_external_application">外部アプリケーションを使用する</string>
   <string name="opml_export_label">OPMLエクスポート</string>
   <string name="exporting_label">エクスポート中...</string>
   <string name="export_error_label">エクスポートエラー</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">このポッドキャストとそのエピソード用のあなたのユーザー名とパスワードを変更します。</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">単一目的のアプリから購読をインポート中…</string>
+  <string name="search_itunes_label">iTunes を検索</string>
 </resources>

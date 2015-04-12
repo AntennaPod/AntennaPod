@@ -2,14 +2,27 @@ package de.test.antennapod.util.service.download;
 
 import android.util.Base64;
 import android.util.Log;
-import de.danoeh.antennapod.BuildConfig;
+
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.*;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URLConnection;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
 import java.util.zip.GZIPOutputStream;
+
+import de.danoeh.antennapod.BuildConfig;
 
 /**
  * Http server for testing purposes
@@ -264,7 +277,7 @@ public class HTTPBin extends NanoHTTPD {
 
     private Response getGzippedResponse(int size) throws IOException {
         try {
-            Thread.sleep(5000);
+            Thread.sleep(200);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -272,14 +285,15 @@ public class HTTPBin extends NanoHTTPD {
         Random random = new Random(System.currentTimeMillis());
         random.nextBytes(buffer);
 
-        ByteArrayOutputStream compressed = new ByteArrayOutputStream();
+        ByteArrayOutputStream compressed = new ByteArrayOutputStream(buffer.length);
         GZIPOutputStream gzipOutputStream = new GZIPOutputStream(compressed);
         gzipOutputStream.write(buffer);
+        gzipOutputStream.close();
 
         InputStream inputStream = new ByteArrayInputStream(compressed.toByteArray());
         Response response = new Response(Response.Status.OK, MIME_PLAIN, inputStream);
-        response.addHeader("Content-encoding", "gzip");
-        response.addHeader("Content-length", String.valueOf(compressed.size()));
+        response.addHeader("Content-Encoding", "gzip");
+        response.addHeader("Content-Length", String.valueOf(compressed.size()));
         return response;
     }
 

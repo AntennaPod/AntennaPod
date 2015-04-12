@@ -13,16 +13,19 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 // modified from http://developer.android.com/training/monitoring-device-state/battery-monitoring.html
 // and ConnectivityActionReceiver.java
+// Updated based on http://stackoverflow.com/questions/20833241/android-charge-intent-has-no-extra-data
+// Since the intent doesn't have the EXTRA_STATUS like the android.com article says it does
+// (though it used to)
 public class PowerConnectionReceiver extends BroadcastReceiver {
 	private static final String TAG = "PowerConnectionReceiver";
 
 	@Override
     public void onReceive(Context context, Intent intent) {
-        int status = intent.getIntExtra(BatteryManager.EXTRA_STATUS, -1);
-        boolean isCharging = status == BatteryManager.BATTERY_STATUS_CHARGING ||
-                status == BatteryManager.BATTERY_STATUS_FULL;
+        final String action = intent.getAction();
 
-        if (isCharging) {
+        Log.d(TAG, "charging intent: " + action);
+
+        if (Intent.ACTION_POWER_CONNECTED.equals(action)) {
             Log.d(TAG, "charging, starting auto-download");
             // we're plugged in, this is a great time to auto-download if everything else is
             // right. So, even if the user allows auto-dl on battery, let's still start

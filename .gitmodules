@@ -1,6 +1,0 @@
-[submodule "submodules/dslv"]
-	path = submodules/dslv
-	url = git://github.com/danieloeh/drag-sort-listview.git
-[submodule "app/dslv"]
-	path = app/dslv
-	url = https://github.com/danieloeh/drag-sort-listview.git

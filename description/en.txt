@@ -1,0 +1,22 @@
+An open-source podcast manager for Android.
+
+AntennaPod is an open-source podcast manager for Android 2.3.3 and above. It offers all the basic features you expect from a podcatcher, like streaming and downloading episodes, refreshing all feeds automatically or adding them to a queue to listen to them later. Moreover, AntennaPod lets you flattr podcasts and episodes from within the app.
+
+So far the following features are implemented:
+
+* Downloading and Streaming of episodes
+* Variable speed playback (requires Presto Sound Library or Prestissimo)
+* Support for Atom and RSS feeds
+* Support for password-protected feeds and episodes
+* Support for searching iTunes listings
+* OPML import and export
+* Flattr integration including automatic flattring
+* Player homescreen widget
+* Search
+* Automatic feed updates
+* Automatic download of new episodes
+* Sleep timer
+* Access to the gpodder.net podcast directory
+* Subscription syncing with the gpodder.net service
+* Supports MP3 chapters, VorbisComment chapters and Podlove Simple Chapters
+* Supports paged feeds (http://podlove.org/paged-feeds/)

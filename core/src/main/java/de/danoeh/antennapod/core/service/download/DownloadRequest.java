@@ -6,6 +6,9 @@ import android.os.Parcelable;
 
 import org.apache.commons.lang3.Validate;
 
+import de.danoeh.antennapod.core.feed.FeedFile;
+import de.danoeh.antennapod.core.util.URLChecker;
+
 public class DownloadRequest implements Parcelable {
 
     private final String destination;
@@ -13,6 +16,7 @@ public class DownloadRequest implements Parcelable {
     private final String title;
     private String username;
     private String password;
+    private long ifModifiedSince;
     private boolean deleteOnFailure;
     private final long feedfileId;
     private final int feedfileType;
@@ -45,12 +49,26 @@ public class DownloadRequest implements Parcelable {
         this(destination, source, title, feedfileId, feedfileType, null, null, true, null);
     }
 
+    public DownloadRequest(Builder builder) {
+        this.destination = builder.destination;
+        this.source = builder.source;
+        this.title = builder.title;
+        this.feedfileId = builder.feedfileId;
+        this.feedfileType = builder.feedfileType;
+        this.username = builder.username;
+        this.password = builder.password;
+        this.ifModifiedSince = builder.ifModifiedSince;
+        this.deleteOnFailure = builder.deleteOnFailure;
+        this.arguments = (builder.arguments != null) ? builder.arguments : new Bundle();
+    }
+
     private DownloadRequest(Parcel in) {
         destination = in.readString();
         source = in.readString();
         title = in.readString();
         feedfileId = in.readLong();
         feedfileType = in.readInt();
+        ifModifiedSince = in.readLong();
         deleteOnFailure = (in.readByte() > 0);
         arguments = in.readBundle();
         if (in.dataAvail() > 0) {
@@ -77,6 +95,7 @@ public class DownloadRequest implements Parcelable {
         dest.writeString(title);
         dest.writeLong(feedfileId);
         dest.writeInt(feedfileType);
+        dest.writeLong(ifModifiedSince);
         dest.writeByte((deleteOnFailure) ? (byte) 1 : 0);
         dest.writeBundle(arguments);
         if (username != null) {
@@ -105,6 +124,7 @@ public class DownloadRequest implements Parcelable {
 
         DownloadRequest that = (DownloadRequest) o;
 
+        if (ifModifiedSince != that.ifModifiedSince) return false;
         if (deleteOnFailure != that.deleteOnFailure) return false;
         if (feedfileId != that.feedfileId) return false;
         if (feedfileType != that.feedfileType) return false;
@@ -131,6 +151,7 @@ public class DownloadRequest implements Parcelable {
         result = 31 * result + (title != null ? title.hashCode() : 0);
         result = 31 * result + (username != null ? username.hashCode() : 0);
         result = 31 * result + (password != null ? password.hashCode() : 0);
+        result = 31 * result + (int)ifModifiedSince;
         result = 31 * result + (deleteOnFailure ? 1 : 0);
         result = 31 * result + (int) (feedfileId ^ (feedfileId >>> 32));
         result = 31 * result + feedfileType;
@@ -210,11 +231,70 @@ public class DownloadRequest implements Parcelable {
         this.password = password;
     }
 
+    public DownloadRequest setIfModifiedSince(long time) {
+        this.ifModifiedSince = time;
+        return this;
+    }
+
+    public long getIfModifiedSince() {
+        return this.ifModifiedSince;
+    }
+
     public boolean isDeleteOnFailure() {
         return deleteOnFailure;
     }
 
     public Bundle getArguments() {
         return arguments;
+    }
+
+    public static class Builder {
+        private String destination;
+        private String source;
+        private String title;
+        private String username;
+        private String password;
+        private long ifModifiedSince;
+        private boolean deleteOnFailure = false;
+        private long feedfileId;
+        private int feedfileType;
+        private Bundle arguments;
+
+        public Builder(String destination, FeedFile item) {
+            this.destination = destination;
+            this.source = URLChecker.prepareURL(item.getDownload_url());
+            this.title = item.getHumanReadableIdentifier();
+            this.feedfileId = item.getId();
+            this.feedfileType = item.getTypeAsInt();
+        }
+
+        public Builder deleteOnFailure(boolean deleteOnFailure) {
+            this.deleteOnFailure = deleteOnFailure;
+            return this;
+        }
+
+        public Builder ifModifiedSince(long time) {
+            this.ifModifiedSince = time;
+            return this;
+        }
+
+        public Builder withAuthentication(String username, String password) {
+            this.username = username;
+            this.password = password;
+            return this;
+        }
+
+        public DownloadRequest build() {
+            Validate.notNull(destination);
+            Validate.notNull(source);
+            Validate.notNull(title);
+            return new DownloadRequest(this);
+        }
+
+        public Builder withArguments(Bundle args) {
+            this.arguments = args;
+            return this;
+        }
+
     }
 }

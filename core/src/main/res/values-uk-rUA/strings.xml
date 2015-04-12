@@ -58,6 +58,7 @@
   <string name="close_label">Закрити</string>
   <string name="retry_label">Повторити знову</string>
   <string name="auto_download_label">Включити до автозавантаження</string>
+  <string name="parallel_downloads_suffix">\u0020паралельні завантаження</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Посилання на канал</string>
   <string name="etxtFeedurlHint">URL канала або сайта</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Позначити всі як переглянуті</string>
   <string name="mark_all_read_msg">Позначено всі епізоди як переглянуті</string>
+  <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як прочитані.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди цього канала як прочитані.</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_link_label">Поділитися URL сайту</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">Видалити епізод</string>
   <string name="mark_read_label">Позначити як переглянутий</string>
   <string name="mark_unread_label">Позначити як не переглянутий</string>
+  <string name="marked_as_read_label">Позначено як прочитане</string>
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="visit_website_label">Відкрити сайт</string>
@@ -150,6 +154,7 @@
   <string name="duration">За тривалістю</string>
   <string name="ascending">За зростанням</string>
   <string name="descending">За спаданням</string>
+  <string name="clear_queue_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте вилучити всі епізоди з черги.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Увійти до Flattr</string>
   <string name="flattr_auth_explanation">Нажміть цю кнопку для початку авторізації. Буде відкрито flattr в браузері, буде запит на дозвіл доступу Antennapod до flattr. Після надання доступу ви повернетесь до цього екрану автоматично</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">Дозволити автоматичне завантаження тільки в цих Wi-Fi мережах</string>
   <string name="pref_automatic_download_on_battery_title">Завантаження без зарядного пристрою</string>
   <string name="pref_automatic_download_on_battery_sum">Дозволити завантаження коли зарядний пристрій не підключено</string>
+  <string name="pref_parallel_downloads_title">Паралельні завантаження</string>
   <string name="pref_episode_cache_title">Кеш епізодів</string>
   <string name="pref_theme_title_light">Світла</string>
   <string name="pref_theme_title_dark">Темна</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">Завжди показувати елементи керування відтворенням</string>
   <string name="pref_persistNotify_sum">Показувати повідомлення та елементи керування на lockscreen в режимі паузи.</string>
   <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
+  <string name="pref_queueAddToFront_sum">Додавати нові епізоди до початку черги.</string>
+  <string name="pref_queueAddToFront_title">Додавати в початок черги.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">Знайдено у назві</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файли дозволяют вам перенести подкасти з однієї программи до іншої</string>
-  <string name="opml_import_explanation">Для імпорту OPML файлу, скопіюйте його в цю папку та натіснить кнопку внизу для початку імпорту</string>
+  <string name="opml_import_explanation_1">Виберіть локальну папку.</string>
+  <string name="opml_import_explanation_2">Вибрати OPML файл за допомогою таких додатків як Dropbox, Google Drive або файловий менеджер.</string>
+  <string name="opml_import_explanation_3">Багато додатків таких як Google Mail, Dropbox, Google Drive та більшість файлових менеджерів здатні <i>відкрити</i> OPML файли <i>для</i> AntennaPod.</string>
   <string name="start_import_label">Почати імпорт</string>
   <string name="opml_import_label">OPML імпорт</string>
   <string name="opml_directory_error">Помилка!</string>
@@ -272,7 +282,8 @@
   <string name="opml_import_error_dir_empty">Директорія імпорту пуста</string>
   <string name="select_all_label">Обрати все</string>
   <string name="deselect_all_label">Убрати виділення</string>
-  <string name="choose_file_to_import_label">Обрати файл для імпорту</string>
+  <string name="choose_file_from_filesystem">З локальної файлової системи</string>
+  <string name="choose_file_from_external_application">За допомогою додатка</string>
   <string name="opml_export_label">OPML экспорт</string>
   <string name="exporting_label">Експорт ...</string>
   <string name="export_error_label">Помилка експорту</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
+  <string name="search_itunes_label">Пошук в iTunes</string>
 </resources>

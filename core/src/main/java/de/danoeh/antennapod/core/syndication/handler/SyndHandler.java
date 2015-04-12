@@ -1,13 +1,22 @@
 package de.danoeh.antennapod.core.syndication.handler;
 
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.syndication.namespace.*;
-import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
+
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
+
+import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.syndication.namespace.NSContent;
+import de.danoeh.antennapod.core.syndication.namespace.NSDublinCore;
+import de.danoeh.antennapod.core.syndication.namespace.NSITunes;
+import de.danoeh.antennapod.core.syndication.namespace.NSMedia;
+import de.danoeh.antennapod.core.syndication.namespace.NSRSS20;
+import de.danoeh.antennapod.core.syndication.namespace.NSSimpleChapters;
+import de.danoeh.antennapod.core.syndication.namespace.Namespace;
+import de.danoeh.antennapod.core.syndication.namespace.SyndElement;
+import de.danoeh.antennapod.core.syndication.namespace.atom.NSAtom;
 
 /** Superclass for all SAX Handlers which process Syndication formats */
 public class SyndHandler extends DefaultHandler {
@@ -100,7 +109,12 @@ public class SyndHandler extends DefaultHandler {
 				state.namespaces.put(uri, new NSMedia());
 				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Recognized media namespace");
-			}
+			} else if (uri.equals(NSDublinCore.NSURI)
+                    && prefix.equals(NSDublinCore.NSTAG)) {
+                state.namespaces.put(uri, new NSDublinCore());
+                if (BuildConfig.DEBUG)
+                    Log.d(TAG, "Recognized DublinCore namespace");
+            }
 		}
 	}
 

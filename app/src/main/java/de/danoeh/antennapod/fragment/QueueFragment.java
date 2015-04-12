@@ -2,10 +2,12 @@ package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -30,6 +32,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.QueueListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -41,6 +44,8 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueSorter;
+import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
+import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -51,12 +56,15 @@ public class QueueFragment extends Fragment {
     private static final String TAG = "QueueFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE;
+            EventDistributor.QUEUE_UPDATE |
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private DragSortListView listView;
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private UndoBarController undoBarController;
 
     private List<FeedItem> queue;
     private List<Downloader> downloaderList;
@@ -64,6 +72,10 @@ public class QueueFragment extends Fragment {
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
     private boolean isUpdatingFeeds = false;
+
+    private static final String PREFS = "QueueFragment";
+    private static final String PREF_KEY_LIST_TOP = "list_top";
+    private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
     private AtomicReference<Activity> activity = new AtomicReference<Activity>();
 
@@ -103,6 +115,12 @@ public class QueueFragment extends Fragment {
     }
 
     @Override
+    public void onPause() {
+        super.onPause();
+        saveScrollPosition();
+    }
+
+    @Override
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
@@ -115,10 +133,35 @@ public class QueueFragment extends Fragment {
         this.activity.set((MainActivity) activity);
     }
 
+    private void saveScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        View v = listView.getChildAt(0);
+        int top = (v == null) ? 0 : (v.getTop() - listView.getPaddingTop());
+        editor.putInt(PREF_KEY_LIST_SELECTION, listView.getFirstVisiblePosition());
+        editor.putInt(PREF_KEY_LIST_TOP, top);
+        editor.commit();
+    }
+
+    private void restoreScrollPosition() {
+        SharedPreferences prefs = getActivity().getSharedPreferences(PREFS, Context.MODE_PRIVATE);
+        int listSelection = prefs.getInt(PREF_KEY_LIST_SELECTION, 0);
+        int top = prefs.getInt(PREF_KEY_LIST_TOP, 0);
+        if(listSelection > 0 || top > 0) {
+            listView.setSelectionFromTop(listSelection, top);
+            // restore once, then forget
+            SharedPreferences.Editor editor = prefs.edit();
+            editor.putInt(PREF_KEY_LIST_SELECTION, 0);
+            editor.putInt(PREF_KEY_LIST_TOP, 0);
+            editor.commit();
+        }
+    }
+
     private void resetViewState() {
         unregisterForContextMenu(listView);
         listAdapter = null;
         activity.set(null);
+        undoBarController = null;
         viewsCreated = false;
         blockDownloadObserverUpdate = false;
         if (downloadObserver != null) {
@@ -174,6 +217,21 @@ public class QueueFragment extends Fragment {
                     if (feeds != null) {
                         DBTasks.refreshAllFeeds(getActivity(), feeds);
                     }
+                    return true;
+                case R.id.clear_queue:
+                    // make sure the user really wants to clear the queue
+                    ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
+                            R.string.clear_queue_label,
+                            R.string.clear_queue_confirmation_msg) {
+
+                        @Override
+                        public void onConfirmButtonPressed(
+                                DialogInterface dialog) {
+                            dialog.dismiss();
+                            DBWriter.clearQueue(getActivity());
+                        }
+                    };
+                    conDialog.createNewDialog().show();
                     return true;
                 case R.id.queue_sort_alpha_asc:
                     QueueSorter.sort(getActivity(), QueueSorter.Rule.ALPHA_ASC, true);
@@ -285,8 +343,30 @@ public class QueueFragment extends Fragment {
 
             @Override
             public void remove(int which) {
+                Log.d(TAG, "remove("+which+")");
+                stopItemLoader();
+                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+                DBWriter.removeQueueItem(getActivity(), item.getId(), true);
+                undoBarController.showUndoBar(false,
+                        getString(R.string.removed_from_queue), new FeedItemUndoToken(item,
+                                which)
+                );
             }
         });
+
+        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+                        @Override
+                        public void onUndo(Parcelable token) {
+                                // Perform the undo
+                        FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+                                if (token != null) {
+                                        long itemId = undoToken.getFeedItemId();
+                                        int position = undoToken.getPosition();
+                                        DBWriter.addQueueItemAt(getActivity(), itemId, position, false);
+                                    }
+                            }
+                    });
+
 
         registerForContextMenu(listView);
 
@@ -312,6 +392,8 @@ public class QueueFragment extends Fragment {
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
+
+        restoreScrollPosition();
 
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
@@ -346,6 +428,33 @@ public class QueueFragment extends Fragment {
             return (itemsLoaded) ? queue.get(position) : null;
         }
 
+        @Override
+        public long getItemDownloadedBytes(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded bytes: " + downloader.getDownloadRequest().getSoFar());
+                        return downloader.getDownloadRequest().getSoFar();
+                    }
+                }
+            }
+            return 0;
+        }
+
+        @Override
+        public long getItemDownloadSize(FeedItem item) {
+            if (downloaderList != null) {
+                for (Downloader downloader : downloaderList) {
+                    if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
+                            && downloader.getDownloadRequest().getFeedfileId() == item.getMedia().getId()) {
+                        Log.d(TAG, "downloaded size: " + downloader.getDownloadRequest().getSize());
+                        return downloader.getDownloadRequest().getSize();
+                    }
+                }
+            }
+            return 0;
+        }
         @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {

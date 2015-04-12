@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nineoldandroids.view.ViewHelper;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -138,6 +141,13 @@ public class NewEpisodesListAdapter extends BaseAdapter {
                 .load(item.getImageUri())
                 .fit()
                 .into(holder.imageView);
+
+        if (item.isRead()) {
+            // grey it out
+            ViewHelper.setAlpha(convertView, .2f);
+        } else {
+            ViewHelper.setAlpha(convertView, 1.0f);
+        }
 
         return convertView;
     }

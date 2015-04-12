@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center_vertical"
+                tools:background="@android:color/darker_gray">
+
+    <TextView
+        android:id="@+id/txtvTitle"
+        style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+        android:lines="1"
+        tools:text="Tag Title"
+        tools:background="@android:color/holo_green_dark" />
+
+    <TextView
+        android:id="@+id/txtvUsage"
+        style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/listitem_threeline_horizontalpadding"
+        android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
+        android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
+        tools:text="301"
+        tools:background="@android:color/holo_green_dark"/>
+
+</RelativeLayout>

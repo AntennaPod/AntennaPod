@@ -5,7 +5,11 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.widget.TextView;
+
 import com.robotium.solo.Solo;
+
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -15,8 +19,6 @@ import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
-import java.util.List;
 
 /**
  * Test cases for starting and ending playback from the MainActivity and AudioPlayerActivity
@@ -40,6 +42,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
         adapter.open();
         adapter.close();
+
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
         prefs.edit().putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false).commit();
         prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false).commit();
@@ -59,6 +62,10 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         super.tearDown();
     }
 
+    private void openNavDrawer() {
+        solo.clickOnScreen(50, 50);
+    }
+
     private void setContinuousPlaybackPreference(boolean value) {
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).commit();
@@ -71,7 +78,9 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     private void startLocalPlayback() {
         assertTrue(solo.waitForActivity(MainActivity.class));
-        solo.setNavigationDrawer(Solo.CLOSED);
+        openNavDrawer();
+        solo.clickOnText(solo.getString(R.string.new_episodes_label));
+        solo.waitForView(android.R.id.list);
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
         assertTrue(solo.waitForActivity(AudioplayerActivity.class));
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
@@ -79,10 +88,10 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     private void startLocalPlaybackFromQueue() {
         assertTrue(solo.waitForActivity(MainActivity.class));
-        solo.clickOnView(solo.getView(UITestUtils.HOME_VIEW));
+        openNavDrawer();
         solo.clickOnText(solo.getString(R.string.queue_label));
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
-        solo.clickOnImageButton(0);
+        solo.clickOnImageButton(1);
         assertTrue(solo.waitForActivity(AudioplayerActivity.class));
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
     }
@@ -108,7 +117,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
         List<FeedItem> queue = DBReader.getQueue(getInstrumentation().getTargetContext());
-        FeedItem second = queue.get(1);
+        FeedItem second = queue.get(0);
 
         startLocalPlaybackFromQueue();
         assertTrue(solo.waitForText(second.getTitle()));
@@ -147,4 +156,6 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     public void testReplayEpisodeContinuousPlaybackOff() throws Exception {
         replayEpisodeCheck(false);
     }
+
+
 }

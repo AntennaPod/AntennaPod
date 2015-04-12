@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.widget.Toast;
 
 import org.apache.commons.lang3.Validate;
@@ -9,6 +10,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -46,7 +48,15 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 DownloadRequester.getInstance().cancelDownload(context, media);
                 Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
             } else { // media is downloaded
-                DBTasks.playMedia(context, media, true, true, false);
+                if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {
+                    context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));
+                }
+                else if (item.hasMedia() && item.getMedia().isCurrentlyPaused()) {
+                    context.sendBroadcast(new Intent(PlaybackService.ACTION_RESUME_PLAY_CURRENT_EPISODE));
+                }
+                else {
+                    DBTasks.playMedia(context, media, false, true, false);
+                }
             }
         } else {
             if (!item.isRead()) {

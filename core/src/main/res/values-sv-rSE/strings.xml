@@ -58,6 +58,7 @@
   <string name="close_label">Stäng</string>
   <string name="retry_label">Försök igen</string>
   <string name="auto_download_label">Inkludera i automatiska nedladdningar</string>
+  <string name="parallel_downloads_suffix">\u0020parallella nedladdningar</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Flödets URL</string>
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som lästa</string>
   <string name="mark_all_read_msg">Markera alla episoder som lästa</string>
+  <string name="mark_all_read_confirmation_msg">Bekräfta att du vill markera alla avsnitt som lästa.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Bekräfta att du vill markera alla avsnitt i detta flöde som lästa.</string>
   <string name="show_info_label">Visa information</string>
   <string name="remove_feed_label">Ta bort podcast</string>
   <string name="share_link_label">Dela hemsidans länk</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">Ta bort episod</string>
   <string name="mark_read_label">Markera som läst</string>
   <string name="mark_unread_label">Markera som oläst</string>
+  <string name="marked_as_read_label">Markerad som läst</string>
   <string name="add_to_queue_label">Lägg till i kön</string>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <string name="visit_website_label">Besök websidan</string>
@@ -150,6 +154,7 @@
   <string name="duration">Längd</string>
   <string name="ascending">Stigande</string>
   <string name="descending">Fallande</string>
+  <string name="clear_queue_confirmation_msg">Bekräfta att du vill rensa kön från ALLA avsnitt.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr inloggning</string>
   <string name="flattr_auth_explanation">Tryck på knappen nedan för att starta autentiseringen. Du kommer att vidarebefordras till Flattrs inloggningsskärm i din webbläsare och uppmanas att ge AntennaPod tillstånd att Flattra saker. Efter att du har gett tillstånd, kommer du automatiskt tillbaka till den här skärmen.</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">Tillåt automatisk nedladdning endast för utvalda WiFi-nätverk.</string>
   <string name="pref_automatic_download_on_battery_title">Nedladdning vid batteridrift</string>
   <string name="pref_automatic_download_on_battery_sum">Tillåt automatisk nedladdning när batteriet inte laddas</string>
+  <string name="pref_parallel_downloads_title">Parallella nedladdningar</string>
   <string name="pref_episode_cache_title">Avsnittscache</string>
   <string name="pref_theme_title_light">Ljust</string>
   <string name="pref_theme_title_dark">Mörkt</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">Bestående uppspelningskontroller</string>
   <string name="pref_persistNotify_sum">Behåll notifiering och kontroller på låsskärmen när uppspelningen pausas.</string>
   <string name="pref_expand_notify_unsupport_toast">Androidversioner före 4.1 har inte stöd för expanderade notifieringar.</string>
+  <string name="pref_queueAddToFront_sum">Lägg till avsnitt först i kön.</string>
+  <string name="pref_queueAddToFront_title">Köa först.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Aktivera automatisk Flattring</string>
   <string name="auto_flattr_after_percent">Flattra episoden så snart %d procent har spelats</string>
@@ -263,7 +271,9 @@
   <string name="found_in_title_label">Hittad i titeln</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML-filer låter dig flytta dina podcasts från en podcatcher till en annan.</string>
-  <string name="opml_import_explanation">Om du vill importera en OPML-fil, måste du placera den i följande katalog och tryck på knappen nedan för att starta importen.</string>
+  <string name="opml_import_explanation_1">Välj en specifik sökväg från det lokala filsystemet.</string>
+  <string name="opml_import_explanation_2">Använd en extern applikation som Dropbox, Google Drive eller ditt favoritval av filhanterare för att öppna en OPML fil.</string>
+  <string name="opml_import_explanation_3">Flera applikationer som Google Mail, Dropbox, Google Drive och de flesta filhanterare kan <i>öppna</i> OPML filer <i>med</i> AntennaPod.</string>
   <string name="start_import_label">Påbörja importering</string>
   <string name="opml_import_label">Importera OPML-fil</string>
   <string name="opml_directory_error">FEL! </string>
@@ -272,7 +282,8 @@
   <string name="opml_import_error_dir_empty">Katalogen är tom.</string>
   <string name="select_all_label">Välj alla</string>
   <string name="deselect_all_label">Avmarkera alla</string>
-  <string name="choose_file_to_import_label">Välj fil att importera</string>
+  <string name="choose_file_from_filesystem">Från lokalt filsystem</string>
+  <string name="choose_file_from_external_application">Använd extern applikation</string>
   <string name="opml_export_label">OPML export</string>
   <string name="exporting_label">Exporterar...</string>
   <string name="export_error_label">Exporteringsfel</string>
@@ -358,4 +369,5 @@
   <string name="authentication_descr">Byt ditt användarnamn och lösenord för den här podcasten och dess episoder.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importerar prenumerationer från appar gjorda för ett enda syfte...</string>
+  <string name="search_itunes_label">Leta i iTunes</string>
 </resources>
