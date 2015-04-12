@@ -58,16 +58,19 @@
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
+  <string name="parallel_downloads_suffix">\u0020동시 다운로드</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">피드 URL</string>
   <string name="etxtFeedurlHint">피드의 URL 또는 홈페이지</string>
   <string name="txtvfeedurl_label">URL로 팟캐스트를 추가</string>
   <string name="podcastdirectories_label">디렉터리에서 팟캐스트 찾기</string>
-  <string name="podcastdirectories_descr">gpodder.net 디렉터리에서 이름, 분류, 인기에 따라 새 팟캐스트를 검색할 수 있습니다</string>
+  <string name="podcastdirectories_descr">gpodder.net 디렉터리에서 이름, 분류, 인기에 따라 새 팟캐스트를 검색할 수 있고, iTunes 스토어에서 검색할 수도 있습니다.</string>
   <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">모두 읽은 것으로 표시</string>
   <string name="mark_all_read_msg">모든 에피소드 읽은 것으로 표시</string>
+  <string name="mark_all_read_confirmation_msg">에피소드 모두를 읽은 것으로 표시하는지 확인하십시오.</string>
+  <string name="mark_all_read_feed_confirmation_msg">이 피드의 에피소드 모두를 읽은 것으로 표시하는지 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">에피소드 제거</string>
   <string name="mark_read_label">읽은 것으로 표시</string>
   <string name="mark_unread_label">읽지 않은 것으로 표시</string>
+  <string name="marked_as_read_label">읽은 것으로 표시</string>
   <string name="add_to_queue_label">대기열에 추가</string>
   <string name="remove_from_queue_label">대기열에서 제거</string>
   <string name="visit_website_label">홈페이지 보기</string>
@@ -150,6 +154,7 @@
   <string name="duration">기간</string>
   <string name="ascending">오름차순</string>
   <string name="descending">내림차순</string>
+  <string name="clear_queue_confirmation_msg">내부의 모든 에피소드 대기열을 지울지 확인하십시오.</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 로그인</string>
   <string name="flattr_auth_explanation">인증 절차를 시작하려면 아래 버튼을 누르십시오. 브라우저의 Flattr 로그인 화면으로 이동하고, 안테나팟에 Flattr를 사용을 허락 여부를 물어봅니다. 허락을 하면 자동으로 이 화면으로 돌아옵니다.</string>
@@ -225,6 +230,7 @@
   <string name="pref_autodl_wifi_filter_sum">선택한 Wi-Fi 네트워크에 대해서만 자동 다운로드를 허용합니다.</string>
   <string name="pref_automatic_download_on_battery_title">충전하지 않을 때 다운로드</string>
   <string name="pref_automatic_download_on_battery_sum">배터리 충전 중이 아닐 때 자동 다운로드 허용</string>
+  <string name="pref_parallel_downloads_title">동시 다운로드</string>
   <string name="pref_episode_cache_title">에피소드 임시 저장</string>
   <string name="pref_theme_title_light">밝게</string>
   <string name="pref_theme_title_dark">어둡게</string>
@@ -249,6 +255,8 @@
   <string name="pref_persistNotify_title">재생 조작 고정</string>
   <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능 유지</string>
   <string name="pref_expand_notify_unsupport_toast">안드로이드 4.1 전 버전에서는 알림 확장을 지원하지 않습니다.</string>
+  <string name="pref_queueAddToFront_sum">새 에피소드를 대기열 앞에 추가합니다.</string>
+  <string name="pref_queueAddToFront_title">대기열 앞에 추가</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
@@ -263,6 +271,9 @@
   <string name="found_in_title_label">제목에서 발견</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 파일을 이용하면 팟캐스트 목록을 한 팟캐스트 프로그램에서 다른 팟캐스트 프로그램으로 옮길 수 있습니다.</string>
+  <string name="opml_import_explanation_1">로컬 파일시스템의 특정 파일 경로를 선택하십시오.</string>
+  <string name="opml_import_explanation_2">OPML 파일을 여는데 Dropbox, Google Drive, 또는 파일 관리자 와 같은 외부 앱을 사용합니다.</string>
+  <string name="opml_import_explanation_3">Google Mail, Dropbox, Google Drive 및 대부분의 파일 관리자는 OPML 파일을 안테나팟<i>으로</i> <i>열 수</i> 있습니다.</string>
   <string name="start_import_label">가져오기 시작</string>
   <string name="opml_import_label">OPML 가져오기</string>
   <string name="opml_directory_error">오류!</string>
@@ -271,6 +282,8 @@
   <string name="opml_import_error_dir_empty">가져오기 디렉터리가 비어 있습니다.</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
+  <string name="choose_file_from_filesystem">로컬 파일시스템에서</string>
+  <string name="choose_file_from_external_application">외부 앱 사용</string>
   <string name="opml_export_label">OPML 내보내기</string>
   <string name="exporting_label">내보내는 중...</string>
   <string name="export_error_label">내보내기 오류</string>
@@ -356,4 +369,5 @@
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
+  <string name="search_itunes_label">iTunes 검색</string>
 </resources>

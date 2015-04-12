@@ -58,6 +58,7 @@
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
   <string name="auto_download_label">כלול בהורדות אוטומטיות</string>
+  <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>
@@ -68,6 +69,8 @@
   <!--Actions on feeds-->
   <string name="mark_all_read_label">סמן הכל כנקרא</string>
   <string name="mark_all_read_msg">סמן את כל הפרקים כנקרא</string>
+  <string name="mark_all_read_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים כנקראים.</string>
+  <string name="mark_all_read_feed_confirmation_msg">אנא אשר שאתה רוצה לסמן את כל פרקים בהזנה זו כנקראים.</string>
   <string name="show_info_label">הצג מידע</string>
   <string name="remove_feed_label">הסר פודקאסט</string>
   <string name="share_link_label">שתף קישור אתר</string>
@@ -85,6 +88,7 @@
   <string name="remove_episode_lable">הסר פרק</string>
   <string name="mark_read_label">סמן כנקרא</string>
   <string name="mark_unread_label">סמן כלא נקרא</string>
+  <string name="marked_as_read_label">סומן כנקרא</string>
   <string name="add_to_queue_label">הוסף לתור</string>
   <string name="remove_from_queue_label">הסר מהתור</string>
   <string name="visit_website_label">בקר באתר</string>
@@ -150,6 +154,7 @@
   <string name="duration">משך</string>
   <string name="ascending">בסדר עולה</string>
   <string name="descending">בסדר יורד</string>
+  <string name="clear_queue_confirmation_msg">אנא אשר שאתה רוצה לנקות את התור מכל הפרקים שבו</string>
   <!--Flattr-->
   <string name="flattr_auth_label">כניסה ל-Fattr</string>
   <string name="flattr_auth_explanation">לחץ על הכפתור למטה כדי להתחיל את תהליך האימות. אתה תועבר למסך כניסת flattr בדפדפן שלך ותתבקש לתת לאנטנה-פוד רשות לתרום באמצעות flattr. לאחר שקבלת אישור, תוכל לחזור למסך זה באופן אוטומטי.</string>
@@ -226,6 +231,7 @@
   <string name="pref_autodl_wifi_filter_sum">אפשר הורדה אוטומטית דרך רשתות אלחוטייות נבחרות.</string>
   <string name="pref_automatic_download_on_battery_title">הורדה כשלא טוען</string>
   <string name="pref_automatic_download_on_battery_sum">אפשר הורדה אוטומטית כשהסוללה אינה נטענת</string>
+  <string name="pref_parallel_downloads_title">הורדות במקביל</string>
   <string name="pref_episode_cache_title">מטמון פרקים</string>
   <string name="pref_theme_title_light">בהיר</string>
   <string name="pref_theme_title_dark">כהה</string>
@@ -250,6 +256,8 @@
   <string name="pref_persistNotify_title">פקדי הפעלה קבועים</string>
   <string name="pref_persistNotify_sum">שמר בקרי הודעה ומסך נעילה בעת השהיית השמעה.</string>
   <string name="pref_expand_notify_unsupport_toast">גרסאות אנדרויד לפני 4.1 לא תומכות בהודעות מורחבות.</string>
+  <string name="pref_queueAddToFront_sum">הוסף פרקים חדשים לראש התור.</string>
+  <string name="pref_queueAddToFront_title">הוסף לראש התור.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">הפעל תרומות flattr אוטומטיות</string>
   <string name="auto_flattr_after_percent">תרום באמצעות flattr כשנוגן %d אחוזים מהפרק</string>
@@ -264,6 +272,9 @@
   <string name="found_in_title_label">נמצא בכותרת</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">קבצי OPML יאפשרו לכך לנייד פודקאסטים מלוכד פודקאסטים אחד למשנו.</string>
+  <string name="opml_import_explanation_1">בחר נתיב קובץ ספציפי במערכת הקבצים המקומית.</string>
+  <string name="opml_import_explanation_2">השתמש ביישומים חיצוניים כמו Dropbox, Google Drive או מנהל הקבצים האהוב עליך לפתוח קובץ OPML.</string>
+  <string name="opml_import_explanation_3">יישומים רבים כמו Google Mail, Dropbox, Google Drive ורוב מנהלי הקבצים יכולים <i>לפתוח</i> קבצי OPML <i>עם</i> אנטנה-פוד.</string>
   <string name="start_import_label">התחל יבוא</string>
   <string name="opml_import_label">יבוא OPML</string>
   <string name="opml_directory_error">שגיאה!</string>
@@ -272,6 +283,8 @@
   <string name="opml_import_error_dir_empty">ספריית היבוא ריקה.</string>
   <string name="select_all_label">בחר הכל</string>
   <string name="deselect_all_label">בטל בחירות</string>
+  <string name="choose_file_from_filesystem">ממערכת הקבצים המקומית</string>
+  <string name="choose_file_from_external_application">השתמש באפליקציה חיצונית</string>
   <string name="opml_export_label">יצוא OPML</string>
   <string name="exporting_label">מייצא...</string>
   <string name="export_error_label">שגיאת יצוא</string>
@@ -357,4 +370,5 @@
   <string name="authentication_descr">שנה את שם המשתמש והסיסמה שלך לפודקאסט ופרקים שלו.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">מייבא רישום מאפליקציות יעודיות...</string>
+  <string name="search_itunes_label">חפש בiTunes</string>
 </resources>

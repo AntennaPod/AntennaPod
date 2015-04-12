@@ -33,6 +33,7 @@ gen-external-apklibs
 out
 #transifex downloads
 changelog
+description
 
 # other
 *.odg#
