@@ -19,7 +19,7 @@ import de.danoeh.antennapod.core.util.gui.UndoBarController;
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
-public class NewEpisodesFragment extends EpisodesFragment {
+public class NewEpisodesFragment extends AllEpisodesFragment {
 
     private static final String TAG = "NewEpisodesFragment";
     private static final String PREF_NAME = "PrefNewEpisodesFragment";

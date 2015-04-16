@@ -7,10 +7,8 @@ import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.SearchView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,7 +35,6 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -45,16 +42,14 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
-import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Shows unread or recently published episodes
  */
-public class EpisodesFragment extends Fragment {
-    private static final String TAG = "EpisodesFragment";
+public class AllEpisodesFragment extends Fragment {
+    private static final String TAG = "AllEpisodesFragment";
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.QUEUE_UPDATE |
@@ -62,7 +57,7 @@ public class EpisodesFragment extends Fragment {
             EventDistributor.PLAYER_STATUS_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
-    private static final String DEFAULT_PREF_NAME = "PrefEpisodesFragment";
+    private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
     private static final String PREF_KEY_LIST_TOP = "list_top";
     private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
@@ -87,7 +82,7 @@ public class EpisodesFragment extends Fragment {
 
     private boolean isUpdatingFeeds;
 
-    public EpisodesFragment() {
+    public AllEpisodesFragment() {
         // by default we show all the episodes
         this(false, DEFAULT_PREF_NAME);
     }
@@ -96,7 +91,7 @@ public class EpisodesFragment extends Fragment {
     // The Android docs say to avoid non-default constructors
     // but I think this will be OK since it will only be invoked
     // from a fragment via a default constructor
-    protected EpisodesFragment(boolean showOnlyNewEpisodes, String prefName) {
+    protected AllEpisodesFragment(boolean showOnlyNewEpisodes, String prefName) {
         this.showOnlyNewEpisodes = showOnlyNewEpisodes;
         this.prefName = prefName;
     }
@@ -265,7 +260,7 @@ public class EpisodesFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.episodes_fragment, R.string.all_episodes_label);
+                R.layout.all_episodes_fragment, R.string.all_episodes_label);
     }
 
     protected View onCreateViewHelper(LayoutInflater inflater,
@@ -331,7 +326,7 @@ public class EpisodesFragment extends Fragment {
 
         @Override
         public void onDownloadDataAvailable(List<Downloader> downloaderList) {
-            EpisodesFragment.this.downloaderList = downloaderList;
+            AllEpisodesFragment.this.downloaderList = downloaderList;
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();
             }
