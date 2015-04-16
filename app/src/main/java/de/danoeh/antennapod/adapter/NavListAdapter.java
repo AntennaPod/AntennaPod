@@ -25,7 +25,13 @@ public class NavListAdapter extends BaseAdapter {
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
     public static final int VIEW_TYPE_SUBSCRIPTION = 2;
 
-    public static final int[] NAV_TITLES = {R.string.queue_label, R.string.new_episodes_label, R.string.downloads_label, R.string.playback_history_label, R.string.add_feed_label};
+    public static final int[] NAV_TITLES = {
+            R.string.queue_label,
+            R.string.new_episodes_label,
+            R.string.all_episodes_label,
+            R.string.downloads_label,
+            R.string.playback_history_label,
+            R.string.add_feed_label};
 
     private final Drawable[] drawables;
 
@@ -38,10 +44,16 @@ public class NavListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.context = context;
 
-        TypedArray ta = context.obtainStyledAttributes(new int[]{R.attr.stat_playlist, R.attr.ic_new,
-                R.attr.av_download, R.attr.ic_history, R.attr.content_new});
+        TypedArray ta = context.obtainStyledAttributes(new int[]{
+                R.attr.stat_playlist,
+                // TODO: wouldn't be bad to have a different icon for all/new episodes
+                R.attr.ic_new,
+                R.attr.ic_new,
+                R.attr.av_download,
+                R.attr.ic_history,
+                R.attr.content_new});
         drawables = new Drawable[]{ta.getDrawable(0), ta.getDrawable(1), ta.getDrawable(2),
-                ta.getDrawable(3), ta.getDrawable(4)};
+                ta.getDrawable(3), ta.getDrawable(4), ta.getDrawable(5)};
         ta.recycle();
     }
 
