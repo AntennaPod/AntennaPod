@@ -46,9 +46,9 @@ public class NavListAdapter extends BaseAdapter {
 
         TypedArray ta = context.obtainStyledAttributes(new int[]{
                 R.attr.stat_playlist,
-                // TODO: wouldn't be bad to have a different icon for all/new episodes
                 R.attr.ic_new,
-                R.attr.ic_new,
+                // TODO: wouldn't be bad to have a different icon for queue and all episodes
+                R.attr.stat_playlist,
                 R.attr.av_download,
                 R.attr.ic_history,
                 R.attr.content_new});

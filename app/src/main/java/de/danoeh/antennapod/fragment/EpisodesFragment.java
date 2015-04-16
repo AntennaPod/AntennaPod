@@ -264,12 +264,17 @@ public class EpisodesFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return onCreateViewHelper(inflater, container, savedInstanceState, R.layout.episodes_fragment);
+        return onCreateViewHelper(inflater, container, savedInstanceState,
+                R.layout.episodes_fragment, R.string.all_episodes_label);
     }
 
-    protected View onCreateViewHelper(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState, int fragmentResource) {
+    protected View onCreateViewHelper(LayoutInflater inflater,
+                                      ViewGroup container,
+                                      Bundle savedInstanceState,
+                                      int fragmentResource,
+                                      int titleString) {
         super.onCreateView(inflater, container, savedInstanceState);
-        ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.new_episodes_label);
+        ((MainActivity) getActivity()).getSupportActionBar().setTitle(titleString);
 
         View root = inflater.inflate(fragmentResource, container, false);
 

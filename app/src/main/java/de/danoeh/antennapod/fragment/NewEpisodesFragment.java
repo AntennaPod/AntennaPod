@@ -38,7 +38,8 @@ public class NewEpisodesFragment extends EpisodesFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View root = super.onCreateViewHelper(inflater, container, savedInstanceState, R.layout.new_episodes_fragment);
+        View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
+                R.layout.new_episodes_fragment, R.string.new_episodes_label);
 
         final DragSortListView listView = (DragSortListView) root.findViewById(android.R.id.list);
 
