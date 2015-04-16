@@ -41,8 +41,6 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.new_episodes_fragment, R.string.new_episodes_label);
 
-        final DragSortListView listView = (DragSortListView) root.findViewById(android.R.id.list);
-
         listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override
             public void remove(int which) {

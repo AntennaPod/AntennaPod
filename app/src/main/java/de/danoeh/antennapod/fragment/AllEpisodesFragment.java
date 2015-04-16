@@ -62,7 +62,7 @@ public class AllEpisodesFragment extends Fragment {
     private static final String PREF_KEY_LIST_SELECTION = "list_selection";
 
     private String prefName;
-    private DragSortListView listView;
+    protected DragSortListView listView;
     private NewEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
