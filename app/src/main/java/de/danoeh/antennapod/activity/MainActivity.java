@@ -56,6 +56,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
+    public static final String PREF_LAST_FRAGMENT = "prefMainActivityLastFragment";
 
     public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_NAV_TYPE = "nav_type";
@@ -144,7 +145,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         if (mainFragment != null) {
             transaction.replace(R.id.main_view, mainFragment);
         } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, POS_QUEUE, null);
+            loadFragment(NavListAdapter.VIEW_TYPE_NAV, getLastNavFragment(), null);
         }
 
         externalPlayerFragment = new ExternalPlayerFragment();
@@ -167,6 +168,18 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         });
 
         checkFirstLaunch();
+    }
+
+    private void saveLastNavFragment(int relPos) {
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor edit = prefs.edit();
+        edit.putInt(PREF_LAST_FRAGMENT, relPos);
+        edit.commit();
+    }
+
+    private int getLastNavFragment() {
+        SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
+        return prefs.getInt(PREF_LAST_FRAGMENT, POS_QUEUE);
     }
 
     private void checkFirstLaunch() {
@@ -227,6 +240,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
             currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
             selectedNavListIndex = relPos;
+            saveLastNavFragment(relPos);
 
         } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
             Feed feed = itemAccess.getItem(relPos);
