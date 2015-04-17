@@ -126,4 +126,14 @@
         <item>0</item>
         <item>1</item>
     </string-array>
+
+    <string-array name="nav_drawer_titles">
+        <item>@string/queue_label</item>
+        <item>@string/new_episodes_label</item>
+        <item>@string/all_episodes_label</item>
+        <item>@string/downloads_label</item>
+        <item>@string/playback_history_label</item>
+        <item>@string/add_feed_label</item>
+    </string-array>
+
 </resources>
