@@ -442,10 +442,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int viewType = parent.getAdapter().getItemViewType(position);
                 if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-                    int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
                     Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
                     intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
+                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
                     startActivity(intent);
                 }
                 drawerLayout.closeDrawer(navDrawer);

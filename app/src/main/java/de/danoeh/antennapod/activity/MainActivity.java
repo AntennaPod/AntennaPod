@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -49,7 +51,9 @@ import de.greenrobot.event.EventBus;
  * The activity that is shown when the user launches the app.
  */
 public class MainActivity extends ActionBarActivity implements NavDrawerActivity {
+
     private static final String TAG = "MainActivity";
+
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
@@ -59,21 +63,23 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
     public static final String PREF_LAST_FRAGMENT = "prefMainActivityLastFragment";
 
-    public static final String EXTRA_NAV_INDEX = "nav_index";
     public static final String EXTRA_NAV_TYPE = "nav_type";
+    public static final String EXTRA_NAV_INDEX = "nav_index";
+    public static final String EXTRA_FRAGMENT_TAG = "fragment_tag";
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
     public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
     public static final String SAVE_SELECTED_NAV_INDEX = "selectedNavIndex";
     public static final String SAVE_TITLE = "title";
 
-
-    public static final int POS_QUEUE = 0,
-            POS_NEW = 1,
-            POS_ALL_EPISODES = 2,
-            POS_DOWNLOADS = 3,
-            POS_HISTORY = 4,
-            POS_ADD = 5;
+    public static final String[] NAV_DRAWER_TAGS = {
+            QueueFragment.TAG,
+            NewEpisodesFragment.TAG,
+            AllEpisodesFragment.TAG,
+            DownloadsFragment.TAG,
+            PlaybackHistoryFragment.TAG,
+            AddFeedFragment.TAG
+    };
 
     private Toolbar toolbar;
     private ExternalPlayerFragment externalPlayerFragment;
@@ -87,7 +93,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private CharSequence drawerTitle;
     private CharSequence currentTitle;
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -141,19 +146,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         });
 
-        FragmentTransaction transaction = fm.beginTransaction();
-
-        Fragment mainFragment = fm.findFragmentByTag("main");
-        if (mainFragment != null) {
-            transaction.replace(R.id.main_view, mainFragment);
-        } else {
-            loadFragment(NavListAdapter.VIEW_TYPE_NAV, getLastNavFragment(), null);
-        }
-
-        externalPlayerFragment = new ExternalPlayerFragment();
-        transaction.replace(R.id.playerFragment, externalPlayerFragment);
-        transaction.commit();
-
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
 
@@ -170,19 +162,32 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             }
         });
 
+        FragmentTransaction transaction = fm.beginTransaction();
+
+        Fragment mainFragment = fm.findFragmentByTag("main");
+        if (mainFragment != null) {
+            transaction.replace(R.id.main_view, mainFragment);
+        } else {
+            loadFragment(getLastNavFragment(), null);
+        }
+        externalPlayerFragment = new ExternalPlayerFragment();
+        transaction.replace(R.id.playerFragment, externalPlayerFragment);
+        transaction.commit();
+
+
         checkFirstLaunch();
     }
 
-    private void saveLastNavFragment(int relPos) {
+    private void saveLastNavFragment(String tag) {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        edit.putInt(PREF_LAST_FRAGMENT, relPos);
+        edit.putString(PREF_LAST_FRAGMENT, tag);
         edit.commit();
     }
 
-    private int getLastNavFragment() {
+    private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        return prefs.getInt(PREF_LAST_FRAGMENT, POS_QUEUE);
+        return prefs.getString(PREF_LAST_FRAGMENT, QueueFragment.TAG);
     }
 
     private void checkFirstLaunch() {
@@ -248,76 +253,83 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         return (navDrawerData != null) ? navDrawerData.feeds : null;
     }
 
-    private void loadFragment(int viewType, int relPos, Bundle args) {
+    public void loadFragment(int index, Bundle args) {
+        int numTags = navAdapter.getTags().size();
+        if (index <= numTags) {
+            String tag = navAdapter.getTags().get(index);
+            loadFragment(tag, args);
+        } else {
+            int pos = index - numTags;
+            loadFeedFragmentByPosition(pos, args);
+        }
+    }
+
+    public void loadFragment(final String tag, Bundle args) {
+        Fragment fragment = null;
+        switch (tag) {
+            case NewEpisodesFragment.TAG:
+                fragment = new NewEpisodesFragment();
+                break;
+            case QueueFragment.TAG:
+                fragment = new QueueFragment();
+                break;
+            case DownloadsFragment.TAG:
+                fragment = new DownloadsFragment();
+                break;
+            case PlaybackHistoryFragment.TAG:
+                fragment = new PlaybackHistoryFragment();
+                break;
+            case AddFeedFragment.TAG:
+                fragment = new AddFeedFragment();
+                break;
+        }
+        String title = navAdapter.getLabel(tag);
+        getSupportActionBar().setTitle(title);
+        selectedNavListIndex = navAdapter.getTags().indexOf(tag);
+        if (args != null) {
+            fragment.setArguments(args);
+        }
+        loadFragment(fragment);
+    }
+
+    private void loadFeedFragmentByPosition(int relPos, Bundle args) {
+        if(relPos < 0) {
+            return;
+        }
+        Feed feed = itemAccess.getItem(relPos);
+        Fragment fragment = ItemlistFragment.newInstance(feed.getId());
+        selectedNavListIndex = navAdapter.getSubscriptionOffset() + relPos;
+        getSupportActionBar().setTitle("");
+        loadFragment(fragment);
+    }
+
+    public void loadFeedFragmentById(long feedId) {
+        if (navDrawerData != null) {
+            int relPos = -1;
+            for (int i = 0; relPos < 0 && i < navDrawerData.feeds.size(); i++) {
+                if (navDrawerData.feeds.get(i).getId() == feedId) {
+                    relPos = i;
+                }
+            }
+            loadFeedFragmentByPosition(relPos, null);
+        }
+    }
+
+    private void loadFragment(Fragment fragment) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         // clear back stack
         for (int i = 0; i < fragmentManager.getBackStackEntryCount(); i++) {
             fragmentManager.popBackStack();
         }
-
-        FragmentTransaction fT = fragmentManager.beginTransaction();
-        Fragment fragment = null;
-        if (viewType == NavListAdapter.VIEW_TYPE_NAV) {
-            switch (relPos) {
-                case POS_NEW:
-                    fragment = new NewEpisodesFragment();
-                    break;
-                case POS_ALL_EPISODES:
-                    fragment = new AllEpisodesFragment();
-                    break;
-                case POS_QUEUE:
-                    fragment = new QueueFragment();
-                    break;
-                case POS_DOWNLOADS:
-                    fragment = new DownloadsFragment();
-                    break;
-                case POS_HISTORY:
-                    fragment = new PlaybackHistoryFragment();
-                    break;
-                case POS_ADD:
-                    fragment = new AddFeedFragment();
-                    break;
-
-            }
-            currentTitle = getString(NavListAdapter.NAV_TITLES[relPos]);
-            selectedNavListIndex = relPos;
-            saveLastNavFragment(relPos);
-
-        } else if (viewType == NavListAdapter.VIEW_TYPE_SUBSCRIPTION) {
-            Feed feed = itemAccess.getItem(relPos);
-            currentTitle = "";
-            fragment = ItemlistFragment.newInstance(feed.getId());
-            selectedNavListIndex = NavListAdapter.SUBSCRIPTION_OFFSET + relPos;
-
-        }
-        if (fragment != null) {
-            if (args != null) {
-                fragment.setArguments(args);
-            }
-            fT.replace(R.id.main_view, fragment, "main");
-            fragmentManager.popBackStack();
-        }
-        fT.commit();
-        getSupportActionBar().setTitle(currentTitle);
+        FragmentTransaction t = fragmentManager.beginTransaction();
+        t.replace(R.id.main_view, fragment, "main");
+        fragmentManager.popBackStack();
+        t.commit();
         if (navAdapter != null) {
             navAdapter.notifyDataSetChanged();
         }
     }
 
-    public void loadNavFragment(int position, Bundle args) {
-        loadFragment(NavListAdapter.VIEW_TYPE_NAV, position, args);
-    }
-
-    public void loadFeedFragment(long feedID) {
-        if (navDrawerData != null) {
-            for (int i = 0; i < navDrawerData.feeds.size(); i++) {
-                if (navDrawerData.feeds.get(i).getId() == feedID) {
-                    loadFragment(NavListAdapter.VIEW_TYPE_SUBSCRIPTION, i, null);
-                    break;
-                }
-            }
-        }
-    }
 
     public void loadChildFragment(Fragment fragment) {
         Validate.notNull(fragment);
@@ -341,8 +353,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER && position != selectedNavListIndex) {
-                int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
-                loadFragment(viewType, relPos, null);
+                loadFragment(position, null);
                 selectedNavListIndex = position;
                 navAdapter.notifyDataSetChanged();
             }
@@ -529,10 +540,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private void handleNavIntent() {
         Intent intent = getIntent();
         if (intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
-            int index = intent.getIntExtra(EXTRA_NAV_INDEX, 0);
-            int type = intent.getIntExtra(EXTRA_NAV_TYPE, NavListAdapter.VIEW_TYPE_NAV);
+            int index = intent.getIntExtra(EXTRA_NAV_INDEX, -1);
+            String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
-            loadFragment(type, index, args);
+            if (index >= 0) {
+                loadFragment(index, args);
+            } else if (tag != null) {
+                loadFragment(tag, args);
+            }
         }
         setIntent(new Intent(MainActivity.this, MainActivity.class)); // to avoid handling the intent twice when the configuration changes
     }

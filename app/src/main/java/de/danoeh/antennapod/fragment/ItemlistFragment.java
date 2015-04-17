@@ -224,7 +224,7 @@ public class ItemlistFragment extends ListFragment {
                                 @Override
                                 protected void onPostExecute(Void result) {
                                     super.onPostExecute(result);
-                                    ((MainActivity) getActivity()).loadNavFragment(MainActivity.POS_NEW, null);
+                                    ((MainActivity) getActivity()).loadFragment(NewEpisodesFragment.TAG, null);
                                 }
                             };
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
