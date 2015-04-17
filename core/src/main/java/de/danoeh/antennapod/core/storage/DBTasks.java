@@ -591,7 +591,7 @@ public final class DBTasks {
 
                 // Add a new Feed
                 // all new feeds will have the most recent item marked as unplayed
-                FeedItem mostRecent = newFeed.getMostRecentItem(false);
+                FeedItem mostRecent = newFeed.getMostRecentItem();
                 if (mostRecent != null) {
                     mostRecent.setRead(false);
                 }

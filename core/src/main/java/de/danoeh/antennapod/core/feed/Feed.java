@@ -350,14 +350,17 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         return false;
     }
 
-    public FeedItem getMostRecentItem(boolean enableEpisodeFilter) {
-        // we're going to assume the most recent item is the first one...
-        // we can sort later if needed
-        int numItems = getNumOfItems(enableEpisodeFilter);
-        if (numItems > 0) {
-            return getItemAtIndex(enableEpisodeFilter, 0);
+    public FeedItem getMostRecentItem() {
+        // we could sort, but we don't need to, a simple search is fine...
+        Date mostRecentDate = new Date(0);
+        FeedItem mostRecentItem = null;
+        for (FeedItem item : items) {
+            if (item.getPubDate().after(mostRecentDate)) {
+                mostRecentDate = item.getPubDate();
+                mostRecentItem = item;
+            }
         }
-        return null;
+        return mostRecentItem;
     }
 
     @Override
