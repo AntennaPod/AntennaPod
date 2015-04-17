@@ -37,7 +37,9 @@ import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
 
 public class PlaybackHistoryFragment extends ListFragment {
-    private static final String TAG = "PlaybackHistoryFragment";
+
+    public static final String TAG = "PlaybackHistoryFragment";
+
     private static final int EVENTS = EventDistributor.PLAYBACK_HISTORY_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 

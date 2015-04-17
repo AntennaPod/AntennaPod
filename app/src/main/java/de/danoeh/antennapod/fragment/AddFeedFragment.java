@@ -20,7 +20,8 @@ import de.danoeh.antennapod.fragment.gpodnet.GpodnetMainFragment;
  * Provides actions for adding new podcast subscriptions
  */
 public class AddFeedFragment extends Fragment {
-    private static final String TAG = "AddFeedFragment";
+
+    public static final String TAG = "AddFeedFragment";
 
     /**
      * Preset value for url text field.

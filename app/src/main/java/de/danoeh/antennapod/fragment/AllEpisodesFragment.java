@@ -51,7 +51,7 @@ import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
  */
 public class AllEpisodesFragment extends Fragment {
 
-    private static final String TAG = "AllEpisodesFragment";
+    public static final String TAG = "AllEpisodesFragment";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |

@@ -55,7 +55,9 @@ import de.greenrobot.event.EventBus;
  * Shows all items in the queue
  */
 public class QueueFragment extends Fragment {
-    private static final String TAG = "QueueFragment";
+
+    public static final String TAG = "QueueFragment";
+
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.PLAYER_STATUS_UPDATE;

@@ -118,6 +118,7 @@
     <string-array name="autodl_select_networks_default_values">
         <item>0</item>
     </string-array>
+
     <string-array name="theme_options">
         <item>@string/pref_theme_title_light</item>
         <item>@string/pref_theme_title_dark</item>
