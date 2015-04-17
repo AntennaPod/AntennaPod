@@ -160,6 +160,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
+        navList.setOnItemLongClickListener(newListLongClickListener);
 
         findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -199,6 +200,41 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             edit.commit();
         }
     }
+
+    public void showDrawerPreferencesDialog() {
+        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
+        String[] navLabels = new String[NAV_DRAWER_TAGS.length];
+        final boolean[] checked = new boolean[NAV_DRAWER_TAGS.length];
+        for (int i = 0; i < NAV_DRAWER_TAGS.length; i++) {
+            String tag = NAV_DRAWER_TAGS[i];
+            navLabels[i] = navAdapter.getLabel(tag);
+            if (!hiddenDrawerItems.contains(tag)) {
+                checked[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+        builder.setTitle(R.string.drawer_preferences);
+        builder.setMultiChoiceItems(navLabels, checked, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
+                } else {
+                    hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                UserPreferences.setHiddenDrawerItems(MainActivity.this, hiddenDrawerItems);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
+
 
     public ActionBar getMainActivtyActionBar() {
         return getSupportActionBar();
@@ -313,6 +349,19 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             drawerLayout.closeDrawer(navDrawer);
         }
     };
+
+    private AdapterView.OnItemLongClickListener newListLongClickListener = new AdapterView.OnItemLongClickListener() {
+        @Override
+        public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
+            if(position < navAdapter.getTags().size()) {
+                showDrawerPreferencesDialog();
+                return true;
+            } else {
+                return false;
+            }
+        }
+    };
+
 
     @Override
     protected void onPostCreate(Bundle savedInstanceState) {

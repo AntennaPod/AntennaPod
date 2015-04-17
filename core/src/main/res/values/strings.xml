@@ -32,6 +32,7 @@
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
+    <string name="drawer_preferences">Drawer Preferences</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
