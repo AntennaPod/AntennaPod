@@ -350,6 +350,16 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         return false;
     }
 
+    public FeedItem getMostRecentItem(boolean enableEpisodeFilter) {
+        // we're going to assume the most recent item is the first one...
+        // we can sort later if needed
+        int numItems = getNumOfItems(enableEpisodeFilter);
+        if (numItems > 0) {
+            return getItemAtIndex(enableEpisodeFilter, 0);
+        }
+        return null;
+    }
+
     @Override
     public int getTypeAsInt() {
         return FEEDFILETYPE_FEED;

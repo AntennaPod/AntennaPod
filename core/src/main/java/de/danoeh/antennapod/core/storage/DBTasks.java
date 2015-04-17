@@ -560,7 +560,7 @@ public final class DBTasks {
     /**
      * Adds new Feeds to the database or updates the old versions if they already exists. If another Feed with the same
      * identifying value already exists, this method will add new FeedItems from the new Feed to the existing Feed.
-     * These FeedItems will be marked as unread.
+     * These FeedItems will be marked as unread with the exception of the most recent FeedItem.
      * <p/>
      * This method can update multiple feeds at once. Submitting a feed twice in the same method call can result in undefined behavior.
      * <p/>
@@ -586,12 +586,16 @@ public final class DBTasks {
             final Feed savedFeed = searchFeedByIdentifyingValueOrID(context, adapter,
                     newFeed);
             if (savedFeed == null) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG,
-                            "Found no existing Feed with title "
-                                    + newFeed.getTitle() + ". Adding as new one."
-                    );
+                Log.d(TAG, "Found no existing Feed with title "
+                                + newFeed.getTitle() + ". Adding as new one.");
+
                 // Add a new Feed
+                // all new feeds will have the most recent item marked as unplayed
+                FeedItem mostRecent = newFeed.getMostRecentItem(false);
+                if (mostRecent != null) {
+                    mostRecent.setRead(false);
+                }
+
                 newFeedsList.add(newFeed);
                 resultFeeds[feedIdx] = newFeed;
             } else {
