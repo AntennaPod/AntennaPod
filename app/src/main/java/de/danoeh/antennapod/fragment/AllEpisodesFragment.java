@@ -219,7 +219,10 @@ public class AllEpisodesFragment extends Fragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            menu.findItem(R.id.mark_all_read_item).setVisible(unreadItems != null && !unreadItems.isEmpty());
+            MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
+            if (menuItem != null) {
+                menuItem.setVisible(unreadItems != null && !unreadItems.isEmpty());
+            }
         }
     }
 
