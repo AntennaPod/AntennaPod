@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
+import android.database.DataSetObserver;
 import android.media.AudioManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -23,6 +24,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
@@ -69,7 +71,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String EXTRA_FRAGMENT_ARGS = "fragment_args";
 
     public static final String SAVE_BACKSTACK_COUNT = "backstackCount";
-    public static final String SAVE_SELECTED_NAV_INDEX = "selectedNavIndex";
     public static final String SAVE_TITLE = "title";
 
     public static final String[] NAV_DRAWER_TAGS = {
@@ -153,6 +154,14 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
 
+        navAdapter.registerDataSetObserver(new DataSetObserver() {
+            @Override
+            public void onChanged() {
+                Log.d(TAG, "NavListAdapter dataSet onChanged()");
+                selectedNavListIndex = getSelectedNavListIndex();
+            }
+        });
+
         findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,12 +176,18 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         if (mainFragment != null) {
             transaction.replace(R.id.main_view, mainFragment);
         } else {
-            loadFragment(getLastNavFragment(), null);
+            String lastFragment = getLastNavFragment();
+            if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+                loadFragment(lastFragment, null);
+            } else { // last fragment was not a list, but a feed
+                long feedId = Long.valueOf(lastFragment);
+                loadFeedFragmentById(feedId);
+            }
+
         }
         externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment);
         transaction.commit();
-
 
         checkFirstLaunch();
     }
@@ -239,7 +254,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         builder.create().show();
     }
 
-
     public ActionBar getMainActivtyActionBar() {
         return getSupportActionBar();
     }
@@ -287,7 +301,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
         currentTitle = navAdapter.getLabel(tag);
         getSupportActionBar().setTitle(currentTitle);
-        selectedNavListIndex = navAdapter.getTags().indexOf(tag);
+        saveLastNavFragment(tag);
         if (args != null) {
             fragment.setArguments(args);
         }
@@ -299,8 +313,12 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return;
         }
         Feed feed = itemAccess.getItem(relPos);
-        Fragment fragment = ItemlistFragment.newInstance(feed.getId());
-        selectedNavListIndex = navAdapter.getSubscriptionOffset() + relPos;
+        long feedId = feed.getId();
+        Fragment fragment = ItemlistFragment.newInstance(feedId);
+        if(args != null) {
+            fragment.setArguments(args);
+        }
+        saveLastNavFragment(String.valueOf(feed.getId()));
         currentTitle = "";
         getSupportActionBar().setTitle(currentTitle);
         loadFragment(fragment);
@@ -309,12 +327,15 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public void loadFeedFragmentById(long feedId) {
         if (navDrawerData != null) {
             int relPos = -1;
-            for (int i = 0; relPos < 0 && i < navDrawerData.feeds.size(); i++) {
-                if (navDrawerData.feeds.get(i).getId() == feedId) {
+            List<Feed> feeds = navDrawerData.feeds;
+            for (int i = 0; relPos < 0 && i < feeds.size(); i++) {
+                if (feeds.get(i).getId() == feedId) {
                     relPos = i;
                 }
             }
-            loadFeedFragmentByPosition(relPos, null);
+            if(relPos >= 0) {
+                loadFeedFragmentByPosition(relPos, null);
+            }
         }
     }
 
@@ -333,7 +354,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
-
     public void loadChildFragment(Fragment fragment) {
         Validate.notNull(fragment);
         FragmentManager fm = getSupportFragmentManager();
@@ -351,14 +371,34 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         return toolbar;
     }
 
+    private int getSelectedNavListIndex() {
+        String lastFragment = getLastNavFragment();
+        int tagIndex = navAdapter.getTags().indexOf(lastFragment);
+        if(tagIndex >= 0) {
+            return tagIndex;
+        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+            // the fragment was just hidden
+            return -1;
+        } else { // last fragment was not a list, but a feed
+            long feedId = Long.parseLong(lastFragment);
+            List<Feed> feeds = navDrawerData.feeds;
+            for (int i = 0; i < feeds.size(); i++) {
+                if (feeds.get(i).getId() == feedId) {
+                    return i + navAdapter.getSubscriptionOffset();
+                }
+            }
+            return -1;
+        }
+    }
+
     private AdapterView.OnItemClickListener navListClickListener = new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             int viewType = parent.getAdapter().getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER && position != selectedNavListIndex) {
                 loadFragment(position, null);
-                selectedNavListIndex = position;
-                navAdapter.notifyDataSetChanged();
+                // selectedNavListIndex = position;
+                // navAdapter.notifyDataSetChanged();
             }
             drawerLayout.closeDrawer(navDrawer);
         }
@@ -386,7 +426,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             if (!drawerLayout.isDrawerOpen(navDrawer)) {
                 getSupportActionBar().setTitle(currentTitle);
             }
-            selectedNavListIndex = savedInstanceState.getInt(SAVE_SELECTED_NAV_INDEX);
+            selectedNavListIndex = getSelectedNavListIndex();
         }
     }
 
@@ -400,9 +440,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     protected void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putString(SAVE_TITLE, getSupportActionBar().getTitle().toString());
-        outState.putInt(SAVE_SELECTED_NAV_INDEX, selectedNavListIndex);
         outState.putInt(SAVE_BACKSTACK_COUNT, getSupportFragmentManager().getBackStackEntryCount());
-
     }
 
     @Override
@@ -453,7 +491,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
-
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
     private int selectedNavListIndex = 0;
@@ -491,7 +528,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         public int getNumberOfUnreadItems() {
             return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
         }
-
 
     };
 

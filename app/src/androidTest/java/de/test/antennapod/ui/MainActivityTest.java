@@ -81,6 +81,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     public void testClickNavDrawer() throws Exception {
         uiTestUtils.addLocalFeedData(false);
 
+        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+
         // queue
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.queue_label));
@@ -187,5 +189,23 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         for(String tag : MainActivity.NAV_DRAWER_TAGS) {
             assertTrue(hidden.contains(tag));
         }
+    }
+
+    public void testDrawerPreferencesHideCurrentElement() {
+        UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), new ArrayList<String>());
+
+        openNavDrawer();
+        String downloads = solo.getString(R.string.downloads_label);
+        solo.clickOnText(downloads);
+        solo.waitForView(android.R.id.list);
+        openNavDrawer();
+        solo.clickLongOnText(downloads);
+        solo.waitForDialogToOpen();
+        solo.clickOnText(downloads);
+        solo.clickOnText(solo.getString(R.string.confirm_label));
+        solo.waitForDialogToClose();
+        List<String> hidden = UserPreferences.getHiddenDrawerItems();
+        assertEquals(1, hidden.size());
+        assertTrue(hidden.contains(DownloadsFragment.TAG));
     }
 }
