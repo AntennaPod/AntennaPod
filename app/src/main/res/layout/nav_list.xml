@@ -66,4 +66,12 @@
 
     </LinearLayout>
 
+    <View
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="1dp"
+        android:layout_centerVertical="true"
+        android:layout_above="@id/nav_settings"
+        android:background="?android:attr/listDivider"
+        tools:background="@android:color/holo_red_dark" />
+
 </RelativeLayout>

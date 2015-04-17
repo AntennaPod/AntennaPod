@@ -546,12 +546,12 @@ public class UserPreferences implements
 
     public static void setHiddenDrawerItems(Context context, List<String> items) {
         instanceAvailable();
+        instance.hiddenDrawerItems = items;
         String str = StringUtils.join(items, ',');
         PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext())
                 .edit()
                 .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
                 .commit();
-        instance.hiddenDrawerItems = items;
     }
 
 

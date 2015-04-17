@@ -36,7 +36,8 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 /**
  * BaseAdapter for the navigation drawer
  */
-public class NavListAdapter extends BaseAdapter {
+public class NavListAdapter extends BaseAdapter
+        implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final int VIEW_TYPE_COUNT = 3;
     public static final int VIEW_TYPE_NAV = 0;
     public static final int VIEW_TYPE_SECTION_DIVIDER = 1;
@@ -48,17 +49,6 @@ public class NavListAdapter extends BaseAdapter {
     private ItemAccess itemAccess;
     private Context context;
 
-    private SharedPreferences.OnSharedPreferenceChangeListener listener =
-            new SharedPreferences.OnSharedPreferenceChangeListener() {
-                @Override
-                public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                    if(key.equals(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)) {
-                        loadItems();
-                    }
-                }
-            };
-
-
     public NavListAdapter(ItemAccess itemAccess, Context context) {
         this.itemAccess = itemAccess;
         this.context = context;
@@ -67,7 +57,13 @@ public class NavListAdapter extends BaseAdapter {
         loadItems();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        prefs.registerOnSharedPreferenceChangeListener(listener);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if (key.equals(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)) {
+            loadItems();
+        }
     }
 
     private void loadItems() {
@@ -122,7 +118,7 @@ public class NavListAdapter extends BaseAdapter {
 
     @Override
     public int getCount() {
-        return tags.size() + itemAccess.getCount() + (tags.size() > 0 ? 1 : 0);
+        return getSubscriptionOffset() + itemAccess.getCount();
     }
 
     @Override
@@ -146,7 +142,7 @@ public class NavListAdapter extends BaseAdapter {
     public int getItemViewType(int position) {
         if (0 <= position && position < tags.size()) {
             return VIEW_TYPE_NAV;
-        } else if (position < tags.size() + 1) {
+        } else if (position < getSubscriptionOffset()) {
             return VIEW_TYPE_SECTION_DIVIDER;
         } else {
             return VIEW_TYPE_SUBSCRIPTION;
@@ -159,7 +155,7 @@ public class NavListAdapter extends BaseAdapter {
     }
 
     public int getSubscriptionOffset() {
-        return tags.size() + 1;
+        return tags.size() > 0 ? tags.size() + 1 : 0;
     }
 
 

@@ -111,7 +111,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
-        Log.i(TAG, "");
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
@@ -254,24 +253,27 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
-        int numTags = navAdapter.getTags().size();
-        if (index <= numTags) {
+        if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
         } else {
-            int pos = index - numTags;
+            int pos = index - navAdapter.getSubscriptionOffset();
             loadFeedFragmentByPosition(pos, args);
         }
     }
 
     public void loadFragment(final String tag, Bundle args) {
+        Log.d(TAG, "loadFragment(\"" + tag + "\", " + args + ")");
         Fragment fragment = null;
         switch (tag) {
+            case QueueFragment.TAG:
+                fragment = new QueueFragment();
+                break;
             case NewEpisodesFragment.TAG:
                 fragment = new NewEpisodesFragment();
                 break;
-            case QueueFragment.TAG:
-                fragment = new QueueFragment();
+            case AllEpisodesFragment.TAG:
+                fragment = new AllEpisodesFragment();
                 break;
             case DownloadsFragment.TAG:
                 fragment = new DownloadsFragment();
@@ -283,8 +285,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 fragment = new AddFeedFragment();
                 break;
         }
-        String title = navAdapter.getLabel(tag);
-        getSupportActionBar().setTitle(title);
+        currentTitle = navAdapter.getLabel(tag);
+        getSupportActionBar().setTitle(currentTitle);
         selectedNavListIndex = navAdapter.getTags().indexOf(tag);
         if (args != null) {
             fragment.setArguments(args);
@@ -299,7 +301,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         Feed feed = itemAccess.getItem(relPos);
         Fragment fragment = ItemlistFragment.newInstance(feed.getId());
         selectedNavListIndex = navAdapter.getSubscriptionOffset() + relPos;
-        getSupportActionBar().setTitle("");
+        currentTitle = "";
+        getSupportActionBar().setTitle(currentTitle);
         loadFragment(fragment);
     }
 
@@ -420,7 +423,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         StorageUtils.checkStorageAvailability(this);
 
         Intent intent = getIntent();
-        if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+        if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_TYPE) &&
+                (intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG))) {
             handleNavIntent();
         }
 
@@ -538,8 +542,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     };
 
     private void handleNavIntent() {
+        Log.d(TAG, "handleNavIntent()");
         Intent intent = getIntent();
-        if (intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
+        if (intent.hasExtra(EXTRA_NAV_TYPE) &&
+                intent.hasExtra(EXTRA_NAV_INDEX) || intent.hasExtra(EXTRA_FRAGMENT_TAG)) {
             int index = intent.getIntExtra(EXTRA_NAV_INDEX, -1);
             String tag = intent.getStringExtra(EXTRA_FRAGMENT_TAG);
             Bundle args = intent.getBundleExtra(EXTRA_FRAGMENT_ARGS);
