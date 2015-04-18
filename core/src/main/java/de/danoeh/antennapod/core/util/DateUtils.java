@@ -13,45 +13,14 @@ import java.util.Locale;
  * Parses several date formats.
  */
 public class DateUtils {
-    private static final String TAG = "DateUtils";
+    
+	private static final String TAG = "DateUtils";
 
-    private static final String[] RFC822DATES = {"dd MMM yy HH:mm:ss Z",
-            "dd MMM yy HH:mm Z"};
-
-    /**
-     * RFC 3339 date format for UTC dates.
-     */
-    public static final String RFC3339UTC = "yyyy-MM-dd'T'HH:mm:ss'Z'";
-
-    /**
-     * RFC 3339 date format for localtime dates with offset.
-     */
-    public static final String RFC3339LOCAL = "yyyy-MM-dd'T'HH:mm:ssZ";
-
-    public static final String ISO8601_SHORT = "yyyy-MM-dd";
-
-    private static ThreadLocal<SimpleDateFormat> RFC822Formatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("dd MMM yy HH:mm:ss Z", Locale.US);
-        }
-
-    };
-
-    private static ThreadLocal<SimpleDateFormat> RFC3339Formatter = new ThreadLocal<SimpleDateFormat>() {
-        @Override
-        protected SimpleDateFormat initialValue() {
-            return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-        }
-
-    };
-
-    public static Date parse(String date) {
-        if(date == null) {
+    public static Date parse(final String input) {
+        if(input == null) {
             throw new IllegalArgumentException("Date most not be null");
         }
-        date = date.replace('/', ' ');
-        date = date.replace('-', ' ');
+        String date = input.replace('/', '-');
         if(date.contains(".")) {
             int start = date.indexOf('.');
             int current = start+1;
@@ -77,15 +46,16 @@ public class DateUtils {
                 "dd MMM yy HH:mm:ss Z",
                 "dd MMM yy HH:mm Z",
                 "EEE, dd MMM yyyy HH:mm:ss Z",
+                "EEE, dd MMMM yyyy HH:mm:ss Z",
                 "EEEE, dd MMM yy HH:mm:ss Z",
                 "EEE MMM d HH:mm:ss yyyy",
-                "yyyy MM dd'T'HH:mm:ss",
-                "yyyy MM dd'T'HH:mm:ss.SSS",
-                "yyyy MM dd'T'HH:mm:ss.SSS Z",
-                "yyyy MM dd'T'HH:mm:ssZ",
-                "yyyy MM dd'T'HH:mm:ss'Z'",
-                "yyyy MM ddZ",
-                "yyyy MM dd"
+                "yyyy-MM-dd'T'HH:mm:ss",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS Z",
+                "yyyy-MM-dd'T'HH:mm:ssZ",
+                "yyyy-MM-dd'T'HH:mm:ss'Z'",
+                "yyyy-MM-ddZ",
+                "yyyy-MM-dd"
         };
         SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
         parser.setLenient(false);
@@ -98,7 +68,8 @@ public class DateUtils {
                 return result;
             }
         }
-        Log.d(TAG, "Could not parse '" + date + "'");
+
+        Log.d(TAG, "Could not parse date string \"" + input + "\"");
         return null;
     }
 
