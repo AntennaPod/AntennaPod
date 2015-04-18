@@ -40,9 +40,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        if(event.action == QueueEvent.Action.ADDED) {
-            startItemLoader();
-        }
+        startItemLoader();
     }
 
     @Override

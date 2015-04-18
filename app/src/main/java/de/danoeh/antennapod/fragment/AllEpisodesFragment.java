@@ -41,6 +41,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -70,7 +71,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private List<FeedItem> unreadItems;
     private List<FeedItem> recentItems;
-    private QueueAccess queueAccess;
+    private LongList queueAccess;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -448,7 +449,7 @@ public class AllEpisodesFragment extends Fragment {
             if (lists != null) {
                 unreadItems = (List<FeedItem>) lists[0];
                 recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (QueueAccess) lists[2];
+                queueAccess = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();
