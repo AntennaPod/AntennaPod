@@ -152,7 +152,10 @@ public class PlaybackHistoryFragment extends ListFragment {
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
         if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            menu.findItem(R.id.clear_history_item).setVisible(playbackHistory != null && !playbackHistory.isEmpty());
+            MenuItem menuItem = menu.findItem(R.id.clear_history_item);
+            if (menuItem != null) {
+                menuItem.setVisible(playbackHistory != null && !playbackHistory.isEmpty());
+            }
         }
     }
 
