@@ -10,7 +10,7 @@ import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
-import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 public class NSSimpleChapters extends Namespace {
     private static final String TAG = "NSSimpleChapters";
@@ -33,7 +33,7 @@ public class NSSimpleChapters extends Namespace {
             try {
                 state.getCurrentItem()
                         .getChapters()
-                        .add(new SimpleChapter(SyndDateUtils
+                        .add(new SimpleChapter(DateUtils
                                 .parseTimeString(attributes.getValue(START)),
                                 attributes.getValue(TITLE), state.getCurrentItem(),
                                 attributes.getValue(HREF)));

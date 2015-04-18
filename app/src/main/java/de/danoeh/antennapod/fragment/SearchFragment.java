@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -23,9 +24,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
@@ -43,8 +42,6 @@ public class SearchFragment extends ListFragment {
 
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
-
-    private QueueAccess queue;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -165,8 +162,7 @@ public class SearchFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE
-                    | EventDistributor.DOWNLOAD_HANDLED
-                    | EventDistributor.QUEUE_UPDATE)) != 0) {
+                    | EventDistributor.DOWNLOAD_HANDLED)) != 0) {
                 startSearchTask();
             }
         }
@@ -209,17 +205,16 @@ public class SearchFragment extends ListFragment {
         }
     }
 
-    private class SearchTask extends AsyncTask<Bundle, Void, Object[]> {
+    private class SearchTask extends AsyncTask<Bundle, Void, List<SearchResult>> {
         @Override
-        protected Object[] doInBackground(Bundle... params) {
+        protected List<SearchResult> doInBackground(Bundle... params) {
             String query = params[0].getString(ARG_QUERY);
             long feed = params[0].getLong(ARG_FEED);
             Context context = getActivity();
             if (context != null) {
-                return new Object[]{FeedSearcher.performSearch(context, query, feed),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                return FeedSearcher.performSearch(context, query, feed);
             } else {
-                return null;
+                return Collections.emptyList();
             }
         }
 
@@ -232,12 +227,11 @@ public class SearchFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(Object[] results) {
+        protected void onPostExecute(List<SearchResult> results) {
             super.onPostExecute(results);
             if (results != null) {
                 itemsLoaded = true;
-                searchResults = (List<SearchResult>) results[0];
-                queue = (QueueAccess) results[1];
+                searchResults = results;
                 if (viewCreated) {
                     onFragmentLoaded();
                 }

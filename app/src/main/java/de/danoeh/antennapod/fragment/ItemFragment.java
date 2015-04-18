@@ -17,6 +17,7 @@ import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -43,6 +44,7 @@ import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -51,18 +53,20 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
+import de.greenrobot.event.EventBus;
 
 /**
  * Displays information about a FeedItem and actions.
  */
-public class ItemFragment extends Fragment implements LoaderManager.LoaderCallbacks<Pair<FeedItem, QueueAccess>> {
+public class ItemFragment extends Fragment implements LoaderManager.LoaderCallbacks<Pair<FeedItem, LongList>> {
+
+    private static final String TAG = "ItemFragment";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE;
 
     private static final String ARG_FEEDITEM = "feeditem";
@@ -84,7 +88,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private boolean itemsLoaded = false;
     private long itemID;
     private FeedItem item;
-    private QueueAccess queue;
+    private LongList queue;
     private String webviewData;
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
@@ -124,6 +128,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -138,6 +143,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
     }
 
     private void resetViewState() {
@@ -387,25 +393,29 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         }
     }
 
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        getLoaderManager().restartLoader(0, null, ItemFragment.this);
+    }
 
     @Override
-    public Loader<Pair<FeedItem, QueueAccess>> onCreateLoader(int id, Bundle args) {
-        return new DBTaskLoader<Pair<FeedItem, QueueAccess>>(getActivity()) {
+    public Loader<Pair<FeedItem,LongList>> onCreateLoader(int id, Bundle args) {
+        return new DBTaskLoader<Pair<FeedItem,LongList>>(getActivity()) {
             @Override
-            public Pair<FeedItem, QueueAccess> loadInBackground() {
+            public Pair<FeedItem,LongList> loadInBackground() {
                 FeedItem data1 = DBReader.getFeedItem(getContext(), itemID);
                 if (data1 != null) {
                     Timeline t = new Timeline(getActivity(), data1);
                     webviewData = t.processShownotes(false);
                 }
-                QueueAccess data2 = QueueAccess.IDListAccess(DBReader.getQueueIDList(getContext()));
+                LongList data2 = DBReader.getQueueIDList(getContext());
                 return Pair.create(data1, data2);
             }
         };
     }
 
     @Override
-    public void onLoadFinished(Loader<Pair<FeedItem, QueueAccess>> loader, Pair<FeedItem, QueueAccess> data) {
+    public void onLoadFinished(Loader<Pair<FeedItem,LongList>> loader, Pair<FeedItem,LongList> data) {
 
         if (data != null) {
             item = data.first;
@@ -420,8 +430,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     }
 
     @Override
-    public void onLoaderReset(Loader<Pair<FeedItem, QueueAccess>> loader) {
-
+    public void onLoaderReset(Loader<Pair<FeedItem,LongList>> loader) {
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

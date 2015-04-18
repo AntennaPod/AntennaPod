@@ -45,6 +45,7 @@ public class UserPreferences implements
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
     public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
+    public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
     public static final String PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD = "prefAutoFlattrPlayedDurationThreshold";
     public static final String PREF_THEME = "prefTheme";
@@ -57,7 +58,8 @@ public class UserPreferences implements
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
-    private static final String PREF_SEEK_DELTA_SECS = "prefSeekDeltaSecs";
+    private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
+    private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -79,6 +81,7 @@ public class UserPreferences implements
     private boolean allowMobileUpdate;
     private boolean displayOnlyEpisodes;
     private boolean autoDelete;
+    private int smartMarkAsPlayedSecs;
     private boolean autoFlattr;
     private float autoFlattrPlayedDurationThreshold;
     private int theme;
@@ -91,7 +94,8 @@ public class UserPreferences implements
     private String playbackSpeed;
     private String[] playbackSpeedArray;
     private boolean pauseForFocusLoss;
-    private int seekDeltaSecs;
+    private int fastForwardSecs;
+    private int rewindSecs;
     private boolean isFreshInstall;
     private int notifyPriority;
     private boolean persistNotify;
@@ -107,8 +111,7 @@ public class UserPreferences implements
      * @throws IllegalArgumentException if context is null
      */
     public static void createInstance(Context context) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Creating new instance of UserPreferences");
+        Log.d(TAG, "Creating new instance of UserPreferences");
         Validate.notNull(context);
 
         instance = new UserPreferences(context);
@@ -137,6 +140,7 @@ public class UserPreferences implements
         allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
         displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
         autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
+        smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
         autoFlattrPlayedDurationThreshold = sp.getFloat(PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD,
                 PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT);
@@ -154,7 +158,8 @@ public class UserPreferences implements
         playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
                 PREF_PLAYBACK_SPEED_ARRAY, null));
         pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
-        seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
+        fastForwardSecs = sp.getInt(PREF_FAST_FORWARD_SECS, 30);
+        rewindSecs = sp.getInt(PREF_REWIND_SECS, 30);
         if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
           notifyPriority = NotificationCompat.PRIORITY_MAX;
         }
@@ -267,6 +272,11 @@ public class UserPreferences implements
         return instance.autoDelete;
     }
 
+    public static int getSmartMarkAsPlayedSecs() {
+        instanceAvailable();;
+        return instance.smartMarkAsPlayedSecs;
+    }
+
     public static boolean isAutoFlattr() {
         instanceAvailable();
         return instance.autoFlattr;
@@ -335,9 +345,14 @@ public class UserPreferences implements
         return instance.playbackSpeedArray;
     }
 
-    public static int getSeekDeltaMs() {
+    public static int getFastFowardSecs() {
         instanceAvailable();
-        return 1000 * instance.seekDeltaSecs;
+        return instance.fastForwardSecs;
+    }
+
+    public static int getRewindSecs() {
+        instanceAvailable();
+        return instance.rewindSecs;
     }
 
     /**
@@ -372,8 +387,7 @@ public class UserPreferences implements
 
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Registered change of user preferences. Key: " + key);
+        Log.d(TAG, "Registered change of user preferences. Key: " + key);
 
         if (key.equals(PREF_DOWNLOAD_MEDIA_ON_WIFI_ONLY)) {
             downloadMediaOnWifiOnly = sp.getBoolean(
@@ -389,10 +403,10 @@ public class UserPreferences implements
             updateInterval = readUpdateInterval(sp.getString(
                     PREF_UPDATE_INTERVAL, "0"));
             ClientConfig.applicationCallbacks.setUpdateInterval(updateInterval);
-
         } else if (key.equals(PREF_AUTO_DELETE)) {
             autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
-
+        } else if (key.equals(PREF_SMART_MARK_AS_PLAYED_SECS)) {
+            smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         } else if (key.equals(PREF_AUTO_FLATTR)) {
             autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
         } else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
@@ -422,8 +436,10 @@ public class UserPreferences implements
                     PREF_PLAYBACK_SPEED_ARRAY, null));
         } else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
             pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
-        } else if (key.equals(PREF_SEEK_DELTA_SECS)) {
-            seekDeltaSecs = Integer.valueOf(sp.getString(PREF_SEEK_DELTA_SECS, "30"));
+        } else if (key.equals(PREF_FAST_FORWARD_SECS)) {
+            fastForwardSecs = sp.getInt(PREF_FAST_FORWARD_SECS, 30);
+        } else if (key.equals(PREF_REWIND_SECS)) {
+            rewindSecs = sp.getInt(PREF_REWIND_SECS, 30);
         } else if (key.equals(PREF_PAUSE_ON_HEADSET_DISCONNECT)) {
             pauseOnHeadsetDisconnect = sp.getBoolean(PREF_PAUSE_ON_HEADSET_DISCONNECT, true);
         } else if (key.equals(PREF_UNPAUSE_ON_HEADSET_RECONNECT)) {
@@ -441,6 +457,20 @@ public class UserPreferences implements
         } else if (key.equals(PREF_PERSISTENT_NOTIFICATION)) {
             persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
         }
+    }
+
+    public static void setPrefFastForwardSecs(int secs) {
+        Log.d(TAG, "setPrefFastForwardSecs(" + secs +")");
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(instance.context).edit();
+        editor.putInt(PREF_FAST_FORWARD_SECS, secs);
+        editor.commit();
+    }
+
+    public static void setPrefRewindSecs(int secs) {
+        Log.d(TAG, "setPrefRewindSecs(" + secs +")");
+        SharedPreferences.Editor editor = PreferenceManager.getDefaultSharedPreferences(instance.context).edit();
+        editor.putInt(PREF_REWIND_SECS, secs);
+        editor.commit();
     }
 
     public static void setPlaybackSpeed(String speed) {
@@ -517,8 +547,7 @@ public class UserPreferences implements
                 .getDefaultSharedPreferences(context.getApplicationContext());
         String strDir = prefs.getString(PREF_DATA_FOLDER, null);
         if (strDir == null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Using default data folder");
+            Log.d(TAG, "Using default data folder");
             return context.getExternalFilesDir(type);
         } else {
             File dataDir = new File(strDir);
@@ -549,8 +578,7 @@ public class UserPreferences implements
                 if (!typeDir.exists()) {
                     if (dataDir.canWrite()) {
                         if (!typeDir.mkdir()) {
-                            Log.e(TAG, "Could not create data folder named "
-                                    + type);
+                            Log.e(TAG, "Could not create data folder named " + type);
                             return null;
                         }
                     }
@@ -562,8 +590,7 @@ public class UserPreferences implements
     }
 
     public static void setDataFolder(String dir) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Result from DirectoryChooser: " + dir);
+        Log.d(TAG, "Result from DirectoryChooser: " + dir);
         instanceAvailable();
         SharedPreferences prefs = PreferenceManager
                 .getDefaultSharedPreferences(instance.context);
@@ -600,16 +627,13 @@ public class UserPreferences implements
                 IMPORT_DIR);
         if (importDir != null) {
             if (importDir.exists()) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Import directory already exists");
+                Log.d(TAG, "Import directory already exists");
             } else {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Creating import directory");
+                Log.d(TAG, "Creating import directory");
                 importDir.mkdir();
             }
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Could not access external storage.");
+            Log.d(TAG, "Could not access external storage.");
         }
     }
 
@@ -618,8 +642,7 @@ public class UserPreferences implements
      */
     public static void restartUpdateAlarm(long triggerAtMillis, long intervalMillis) {
         instanceAvailable();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Restarting update alarm.");
+        Log.d(TAG, "Restarting update alarm.");
         AlarmManager alarmManager = (AlarmManager) instance.context
                 .getSystemService(Context.ALARM_SERVICE);
         PendingIntent updateIntent = PendingIntent.getBroadcast(
@@ -628,11 +651,9 @@ public class UserPreferences implements
         if (intervalMillis != 0) {
             alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis,
                     updateIntent);
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Changed alarm to new interval");
+            Log.d(TAG, "Changed alarm to new interval");
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Automatic update was deactivated");
+            Log.d(TAG, "Automatic update was deactivated");
         }
     }
 

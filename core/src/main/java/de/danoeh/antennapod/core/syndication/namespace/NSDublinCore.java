@@ -3,7 +3,7 @@ package de.danoeh.antennapod.core.syndication.namespace;
 import org.xml.sax.Attributes;
 
 import de.danoeh.antennapod.core.syndication.handler.HandlerState;
-import de.danoeh.antennapod.core.syndication.util.SyndDateUtils;
+import de.danoeh.antennapod.core.util.DateUtils;
 
 public class NSDublinCore extends Namespace {
     private static final String TAG = "NSDublinCore";
@@ -30,7 +30,7 @@ public class NSDublinCore extends Namespace {
             String second = secondElement.getName();
             if (top.equals(DATE) && second.equals(ITEM)) {
                 state.getCurrentItem().setPubDate(
-                        SyndDateUtils.parseISO8601Date(content));
+                        DateUtils.parse(content));
             }
         }
     }

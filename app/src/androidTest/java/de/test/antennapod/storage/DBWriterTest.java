@@ -5,16 +5,6 @@ import android.database.Cursor;
 import android.test.InstrumentationTestCase;
 import android.util.Log;
 
-import de.danoeh.antennapod.core.feed.Chapter;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.SimpleChapter;
-import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -24,6 +14,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.SimpleChapter;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 /**
  * Test class for DBWriter
@@ -674,13 +674,13 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
         }
         for (int removeIndex = 0; removeIndex < NUM_ITEMS; removeIndex++) {
-            final long id = feed.getItems().get(removeIndex).getId();
+            final FeedItem item = feed.getItems().get(removeIndex);
             adapter = new PodDBAdapter(context);
             adapter.open();
             adapter.setQueue(feed.getItems());
             adapter.close();
 
-            DBWriter.removeQueueItem(context, id, false).get(TIMEOUT, TimeUnit.SECONDS);
+            DBWriter.removeQueueItem(context, item, false).get(TIMEOUT, TimeUnit.SECONDS);
             adapter = new PodDBAdapter(context);
             adapter.open();
             Cursor queue = adapter.getQueueIDCursor();
@@ -688,10 +688,10 @@ public class DBWriterTest extends InstrumentationTestCase {
             for (int i = 0; i < queue.getCount(); i++) {
                 assertTrue(queue.moveToPosition(i));
                 final long queueID = queue.getLong(0);
-                assertTrue(queueID != id);  // removed item is no longer in queue
+                assertTrue(queueID != item.getId());  // removed item is no longer in queue
                 boolean idFound = false;
-                for (FeedItem item : feed.getItems()) { // items that were not removed are still in the queue
-                    idFound = idFound | (item.getId() == queueID);
+                for (FeedItem other : feed.getItems()) { // items that were not removed are still in the queue
+                    idFound = idFound | (other.getId() == queueID);
                 }
                 assertTrue(idFound);
             }

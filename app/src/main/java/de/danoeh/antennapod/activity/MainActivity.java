@@ -25,11 +25,11 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -43,6 +43,7 @@ import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
+import de.greenrobot.event.EventBus;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -52,8 +53,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
             | EventDistributor.FEED_LIST_UPDATE
-            | EventDistributor.UNREAD_ITEMS_UPDATE
-            | EventDistributor.QUEUE_UPDATE;
+            | EventDistributor.UNREAD_ITEMS_UPDATE;
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
@@ -343,6 +343,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     @Override
+    public void onStart() {
+        super.onStart();
+        EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
     protected void onPause() {
         super.onPause();
     }
@@ -351,7 +358,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     protected void onResume() {
         super.onResume();
         StorageUtils.checkStorageAvailability(this);
-        EventDistributor.getInstance().register(contentUpdate);
 
         Intent intent = getIntent();
         if (navDrawerData != null && intent.hasExtra(EXTRA_NAV_INDEX) && intent.hasExtra(EXTRA_NAV_TYPE)) {
@@ -366,6 +372,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         super.onStop();
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -454,13 +461,17 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        loadData();
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent.");
                 loadData();
             }
         }

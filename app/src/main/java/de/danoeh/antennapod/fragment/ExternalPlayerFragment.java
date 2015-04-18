@@ -13,7 +13,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.util.Converter;
@@ -54,8 +53,7 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onClick(View v) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "layoutInfo was clicked");
+                Log.d(TAG, "layoutInfo was clicked");
 
                 if (controller.getMedia() != null) {
                     startActivity(PlaybackService.getPlayerActivityIntent(
@@ -90,14 +88,10 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onBufferStart() {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
             public void onBufferEnd() {
-                // TODO Auto-generated method stub
-
             }
 
             @Override
@@ -153,7 +147,6 @@ public class ExternalPlayerFragment extends Fragment {
                     butPlay.setOnClickListener(controller
                             .newOnPlayButtonClickListener());
                 }
-
             }
 
             @Override
@@ -170,8 +163,6 @@ public class ExternalPlayerFragment extends Fragment {
 
             @Override
             public void onPlaybackSpeedChange() {
-                // TODO Auto-generated method stub
-
             }
         };
     }
@@ -185,8 +176,7 @@ public class ExternalPlayerFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Fragment is about to be destroyed");
+        Log.d(TAG, "Fragment is about to be destroyed");
         if (controller != null) {
             controller.release();
         }
@@ -201,8 +191,7 @@ public class ExternalPlayerFragment extends Fragment {
     }
 
     private boolean loadMediaInfo() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Loading media info");
+        Log.d(TAG, "Loading media info");
         if (controller.serviceAvailable()) {
             Playable media = controller.getMedia();
             if (media != null) {
@@ -221,13 +210,11 @@ public class ExternalPlayerFragment extends Fragment {
                 }
                 return true;
             } else {
-                Log.w(TAG,
-                        "loadMediaInfo was called while the media object of playbackService was null!");
+                Log.w(TAG,  "loadMediaInfo was called while the media object of playbackService was null!");
                 return false;
             }
         } else {
-            Log.w(TAG,
-                    "loadMediaInfo was called while playbackService was null!");
+            Log.w(TAG, "loadMediaInfo was called while playbackService was null!");
             return false;
         }
     }

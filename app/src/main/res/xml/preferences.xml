@@ -59,6 +59,13 @@
             android:key="prefAutoDelete"
             android:summary="@string/pref_auto_delete_sum"
             android:title="@string/pref_auto_delete_title"/>
+        <ListPreference
+            android:defaultValue="30"
+            android:entries="@array/smart_mark_as_played_values"
+            android:entryValues="@array/smart_mark_as_played_values"
+            android:key="prefSmartMarkAsPlayedSecs"
+            android:summary="@string/pref_smart_mark_as_played_sum"
+            android:title="@string/pref_smart_mark_as_played_title"/>
         <Preference
             android:key="prefPlaybackSpeedLauncher"
             android:summary="@string/pref_playback_speed_sum"
@@ -70,14 +77,6 @@
             android:key="prefPauseForFocusLoss"
             android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
             android:title="@string/pref_pausePlaybackForFocusLoss_title" />
-
-        <ListPreference
-            android:defaultValue="30"
-            android:entries="@array/seek_delta_values"
-            android:entryValues="@array/seek_delta_values"
-            android:key="prefSeekDeltaSecs"
-            android:summary="@string/pref_seek_delta_sum"
-            android:title="@string/pref_seek_delta_title" />
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">

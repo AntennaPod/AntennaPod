@@ -1,9 +1,6 @@
 package de.danoeh.antennapod.core.util.gui;
 
-import android.os.Bundle;
 import android.os.Handler;
-import android.os.Parcelable;
-import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -16,23 +13,36 @@ import de.danoeh.antennapod.core.R;
 
 import static com.nineoldandroids.view.ViewPropertyAnimator.animate;
 
-public class UndoBarController {
+public class UndoBarController<T> {
     private View mBarView;
     private TextView mMessageView;
     private ViewPropertyAnimator mBarAnimator;
     private Handler mHideHandler = new Handler();
 
-    private UndoListener mUndoListener;
+    private UndoListener<T> mUndoListener;
 
     // State objects
-    private Parcelable mUndoToken;
+    private T mUndoToken;
     private CharSequence mUndoMessage;
 
-    public interface UndoListener {
-        void onUndo(Parcelable token);
+    public interface UndoListener<T> {
+        /**
+         * This callback function is called when the undo button is pressed
+         *
+         * @param token
+         */
+        void onUndo(T token);
+
+        /**
+         *
+         * This callback function is called when the bar fades out without button press
+         *
+         * @param token
+         */
+        void onHide(T token);
     }
 
-    public UndoBarController(View undoBarView, UndoListener undoListener) {
+    public UndoBarController(View undoBarView, UndoListener<T> undoListener) {
         mBarView = undoBarView;
         mBarAnimator = animate(mBarView);
         mUndoListener = undoListener;
@@ -50,7 +60,7 @@ public class UndoBarController {
         hideUndoBar(true);
     }
 
-    public void showUndoBar(boolean immediate, CharSequence message, Parcelable undoToken) {
+    public void showUndoBar(boolean immediate, CharSequence message, T undoToken) {
         mUndoToken = undoToken;
         mUndoMessage = message;
         mMessageView.setText(mUndoMessage);
@@ -71,6 +81,14 @@ public class UndoBarController {
                                     .getInteger(android.R.integer.config_shortAnimTime))
                     .setListener(null);
         }
+    }
+
+    public boolean isShowing() {
+        return mBarView.getVisibility() == View.VISIBLE;
+    }
+
+    public void close() {
+        mHideHandler.post(mHideRunnable);
     }
 
     public void hideUndoBar(boolean immediate) {
@@ -96,26 +114,11 @@ public class UndoBarController {
         }
     }
 
-    public void onSaveInstanceState(Bundle outState) {
-        outState.putCharSequence("undo_message", mUndoMessage);
-        outState.putParcelable("undo_token", mUndoToken);
-    }
-
-    public void onRestoreInstanceState(Bundle savedInstanceState) {
-        if (savedInstanceState != null) {
-            mUndoMessage = savedInstanceState.getCharSequence("undo_message");
-            mUndoToken = savedInstanceState.getParcelable("undo_token");
-
-            if (mUndoToken != null || !TextUtils.isEmpty(mUndoMessage)) {
-                showUndoBar(true, mUndoMessage, mUndoToken);
-            }
-        }
-    }
-
     private Runnable mHideRunnable = new Runnable() {
         @Override
         public void run() {
             hideUndoBar(false);
+            mUndoListener.onHide(mUndoToken);
         }
     };
 }

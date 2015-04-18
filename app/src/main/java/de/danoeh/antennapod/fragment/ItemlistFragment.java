@@ -9,6 +9,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.util.Pair;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -29,7 +30,6 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -44,17 +44,19 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 /**
  * Displays a list of FeedItems.
@@ -65,7 +67,6 @@ public class ItemlistFragment extends ListFragment {
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
-            | EventDistributor.QUEUE_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -76,7 +77,7 @@ public class ItemlistFragment extends ListFragment {
 
     private long feedID;
     private Feed feed;
-    protected QueueAccess queue;
+    private LongList queue;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -118,6 +119,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -131,6 +133,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -283,13 +286,17 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent.");
                 if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
                     updateProgressBarVisibility();
                 } else {
@@ -474,25 +481,26 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Long, Void, Object[]> {
+    private class ItemLoader extends AsyncTask<Long, Void, Pair<Feed,LongList>> {
         @Override
-        protected Object[] doInBackground(Long... params) {
+        protected Pair<Feed,LongList> doInBackground(Long... params) {
             long feedID = params[0];
             Context context = getActivity();
             if (context != null) {
-                return new Object[]{DBReader.getFeed(context, feedID),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                Feed feed = DBReader.getFeed(context, feedID);
+                LongList queue = DBReader.getQueueIDList(context);
+                return Pair.create(feed, queue);
             } else {
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(Object[] res) {
+        protected void onPostExecute(Pair<Feed,LongList> res) {
             super.onPostExecute(res);
             if (res != null) {
-                feed = (Feed) res[0];
-                queue = (QueueAccess) res[1];
+                feed = res.first;
+                queue = res.second;
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

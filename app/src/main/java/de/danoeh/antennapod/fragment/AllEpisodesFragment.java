@@ -49,10 +49,11 @@ import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
  * Shows unread or recently published episodes
  */
 public class AllEpisodesFragment extends Fragment {
+
     private static final String TAG = "AllEpisodesFragment";
+
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -399,7 +400,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private ItemLoader itemLoader;
 
-    private void startItemLoader() {
+    protected void startItemLoader() {
         if (itemLoader != null) {
             itemLoader.cancel(true);
         }
@@ -429,9 +430,10 @@ public class AllEpisodesFragment extends Fragment {
         protected Object[] doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return new Object[]{DBReader.getUnreadItemsList(context),
+                return new Object[]{
+                        DBReader.getUnreadItemsList(context),
                         DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                        DBReader.getQueueIDList(context)};
             } else {
                 return null;
             }
