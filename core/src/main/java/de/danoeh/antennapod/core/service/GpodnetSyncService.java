@@ -176,7 +176,7 @@ public class GpodnetSyncService extends Service {
     private synchronized void processSubscriptionChanges(List<String> localSubscriptions, GpodnetSubscriptionChange changes) throws DownloadRequestException {
         for (String downloadUrl : changes.getAdded()) {
             if (!localSubscriptions.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, new Date());
+                Feed feed = new Feed(downloadUrl, new Date(0));
                 DownloadRequester.getInstance().downloadFeed(this, feed);
             }
         }

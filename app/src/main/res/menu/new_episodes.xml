@@ -17,11 +17,4 @@
         custom:showAsAction="collapseActionView"
         android:icon="?attr/navigation_accept"/>
 
-    <item
-        android:id="@+id/episode_filter_item"
-        android:title="@string/episode_filter_label"
-        android:menuCategory="container"
-        android:checkable="true"
-        custom:showAsAction="collapseActionView"/>
-
 </menu>

@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.util;
 
+import android.util.Log;
+
 import org.apache.commons.lang3.StringUtils;
 
 import java.text.ParsePosition;
@@ -96,6 +98,7 @@ public class DateUtils {
                 return result;
             }
         }
+        Log.d(TAG, "Could not parse '" + date + "'");
         return null;
     }
 

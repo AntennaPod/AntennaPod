@@ -88,6 +88,7 @@
   <string name="remove_episode_lable">Quitar episodio</string>
   <string name="mark_read_label">Marcar como leído</string>
   <string name="mark_unread_label">Marcar como no leído</string>
+  <string name="marked_as_read_label">Marcado como leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="remove_from_queue_label">Quitar de la cola</string>
   <string name="visit_website_label">Visitar el sitio web</string>
