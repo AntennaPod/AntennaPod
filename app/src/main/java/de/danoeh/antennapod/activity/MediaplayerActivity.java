@@ -431,10 +431,14 @@ public abstract class MediaplayerActivity extends ActionBarActivity
         butPlay = (ImageButton) findViewById(R.id.butPlay);
         butRev = (ImageButton) findViewById(R.id.butRev);
         txtvRev = (TextView) findViewById(R.id.txtvRev);
-        txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
+        if(txtvRev != null) {
+            txtvRev.setText(String.valueOf(UserPreferences.getRewindSecs()));
+        }
         butFF = (ImageButton) findViewById(R.id.butFF);
         txtvFF = (TextView) findViewById(R.id.txtvFF);
-        txtvFF.setText(String.valueOf(UserPreferences.getFastFowardSecs()));
+        if(txtvFF != null) {
+            txtvFF.setText(String.valueOf(UserPreferences.getFastFowardSecs()));
+        }
 
         // SEEKBAR SETUP
 

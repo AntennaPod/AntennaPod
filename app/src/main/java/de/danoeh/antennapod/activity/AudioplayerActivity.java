@@ -413,6 +413,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butShowCover = (ImageButton) findViewById(R.id.butCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
+        /*
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             CharSequence currentTitle = getSupportActionBar().getTitle();
 
@@ -430,7 +431,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                 getSupportActionBar().setTitle(currentTitle);
                 supportInvalidateOptionsMenu();
             }
-        };
+        }; */
 
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.setDrawerListener(drawerToggle);

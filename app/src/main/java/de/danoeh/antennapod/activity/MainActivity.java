@@ -112,21 +112,21 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
+
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
             @Override
             public void onDrawerOpened(View drawerView) {
                 super.onDrawerOpened(drawerView);
-                currentTitle = getSupportActionBar().getTitle();
-                getSupportActionBar().setTitle(drawerTitle);
-                supportInvalidateOptionsMenu();
+                //currentTitle = getSupportActionBar().getTitle();
+                //getSupportActionBar().setTitle(drawerTitle);
+                //supportInvalidateOptionsMenu();
             }
 
             @Override
             public void onDrawerClosed(View drawerView) {
                 super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(currentTitle);
-                supportInvalidateOptionsMenu();
-
+                //getSupportActionBar().setTitle(currentTitle);
+                //supportInvalidateOptionsMenu();
             }
         };
 
@@ -481,7 +481,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        } else if (item.getItemId() == android.R.id.home) {
+        } else
+        if (item.getItemId() == android.R.id.home) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 dismissChildFragment();
             }

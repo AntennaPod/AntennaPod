@@ -32,6 +32,8 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     private Solo solo;
     private UITestUtils uiTestUtils;
 
+    private SharedPreferences prefs;
+
     public MainActivityTest() {
         super(MainActivity.class);
     }
@@ -48,7 +50,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         adapter.close();
 
         // override first launch preference
-        SharedPreferences prefs = getInstrumentation().getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
+        prefs = getInstrumentation().getTargetContext().getSharedPreferences(MainActivity.PREF_NAME, Context.MODE_PRIVATE);
         prefs.edit().putBoolean(MainActivity.PREF_IS_FIRST_LAUNCH, false).commit();
     }
 
@@ -56,7 +58,12 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
     protected void tearDown() throws Exception {
         uiTestUtils.tearDown();
         solo.finishOpenedActivities();
+
         PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+
+        // reset preferences
+        prefs.edit().clear().commit();
+
         super.tearDown();
     }
 
