@@ -10,21 +10,6 @@
     android:background="?attr/nav_drawer_background"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/nav_list"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:choiceMode="singleChoice"
-        android:clipToPadding="false"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:scrollbarStyle="outsideOverlay"
-        tools:listitem="@layout/nav_listitem"
-        tools:background="@android:color/holo_purple" />
-
     <LinearLayout
         android:id="@+id/nav_settings"
         android:layout_width="@dimen/drawer_width"
@@ -67,11 +52,29 @@
     </LinearLayout>
 
     <View
+        android:id="@+id/divider"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="1dp"
         android:layout_centerVertical="true"
         android:layout_above="@id/nav_settings"
         android:background="?android:attr/listDivider"
         tools:background="@android:color/holo_red_dark" />
+
+    <ListView
+        android:id="@+id/nav_list"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_above="@id/divider"
+        android:layout_alignParentTop="true"
+        android:choiceMode="singleChoice"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:scrollbarStyle="outsideOverlay"
+        tools:listitem="@layout/nav_listitem"
+        tools:background="@android:color/holo_purple" />
 
 </RelativeLayout>
