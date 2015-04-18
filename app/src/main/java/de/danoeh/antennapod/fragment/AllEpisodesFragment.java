@@ -194,7 +194,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             inflater.inflate(R.menu.new_episodes, menu);
 
             final SearchView sv = new SearchView(getActivity());
@@ -220,7 +220,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
             if (menuItem != null) {
                 menuItem.setVisible(unreadItems != null && !unreadItems.isEmpty());

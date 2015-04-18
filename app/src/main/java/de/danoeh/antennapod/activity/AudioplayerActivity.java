@@ -46,7 +46,6 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 
@@ -413,26 +412,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butShowCover = (ImageButton) findViewById(R.id.butCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
-        /*
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-            CharSequence currentTitle = getSupportActionBar().getTitle();
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                currentTitle = getSupportActionBar().getTitle();
-                getSupportActionBar().setTitle(R.string.app_name);
-                supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(currentTitle);
-                supportInvalidateOptionsMenu();
-            }
-        }; */
-
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.setDrawerListener(drawerToggle);
 
@@ -638,20 +618,12 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onCreateOptionsMenu(menu);
-        } else {
-            return false;
-        }
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onPrepareOptionsMenu(menu);
-        } else {
-            return false;
-        }
+        return super.onPrepareOptionsMenu(menu);
     }
 
     public interface AudioplayerContentFragment {

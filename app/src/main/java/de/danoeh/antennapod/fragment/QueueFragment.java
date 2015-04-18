@@ -202,7 +202,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             inflater.inflate(R.menu.queue, menu);
 
             final SearchView sv = new SearchView(getActivity());

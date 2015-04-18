@@ -113,28 +113,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList = (ListView) findViewById(R.id.nav_list);
         navDrawer = findViewById(R.id.nav_layout);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                //currentTitle = getSupportActionBar().getTitle();
-                //getSupportActionBar().setTitle(drawerTitle);
-                //supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                //getSupportActionBar().setTitle(currentTitle);
-                //supportInvalidateOptionsMenu();
-            }
-        };
-
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         if (savedInstanceState != null) {
             int backstackCount = savedInstanceState.getInt(SAVE_BACKSTACK_COUNT, 0);
             drawerToggle.setDrawerIndicatorEnabled(backstackCount == 0);
         }
-
         drawerLayout.setDrawerListener(drawerToggle);
 
         final FragmentManager fm = getSupportFragmentManager();
