@@ -63,7 +63,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public static final String PREF_NAME = "MainActivityPrefs";
     public static final String PREF_IS_FIRST_LAUNCH = "prefMainActivityIsFirstLaunch";
-    public static final String PREF_LAST_FRAGMENT = "prefMainActivityLastFragment";
+    public static final String PREF_LAST_FRAGMENT_TAG = "prefMainActivityLastFragmentTag";
 
     public static final String EXTRA_NAV_TYPE = "nav_type";
     public static final String EXTRA_NAV_INDEX = "nav_index";
@@ -178,13 +178,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private void saveLastNavFragment(String tag) {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        edit.putString(PREF_LAST_FRAGMENT, tag);
+        edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
         edit.commit();
     }
 
     private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        return prefs.getString(PREF_LAST_FRAGMENT, QueueFragment.TAG);
+        return prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
     }
 
     private void checkFirstLaunch() {
