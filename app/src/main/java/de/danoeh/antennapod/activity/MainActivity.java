@@ -140,7 +140,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
             public void onChanged() {
-                Log.d(TAG, "NavListAdapter dataSet onChanged()");
                 selectedNavListIndex = getSelectedNavListIndex();
             }
         });
@@ -162,11 +161,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             String lastFragment = getLastNavFragment();
             if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
-            } else { // last fragment was not a list, but a feed
-                long feedId = Long.valueOf(lastFragment);
-                loadFeedFragmentById(feedId);
             }
-
+            // else: lastFragment contains feed id - drawer data is not loaded yet,
+            //       so loading is postponed until then
         }
         externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment);
@@ -178,7 +175,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private void saveLastNavFragment(String tag) {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
-        edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
+        if(tag != null) {
+            edit.putString(PREF_LAST_FRAGMENT_TAG, tag);
+        } else {
+            edit.remove(PREF_LAST_FRAGMENT_TAG);
+        }
         edit.commit();
     }
 
@@ -530,6 +531,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
                 navDrawerData = result;
                 navAdapter.notifyDataSetChanged();
+
+                String lastFragment = getLastNavFragment();
+                if(!ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+                    long feedId = Long.valueOf(lastFragment);
+                    loadFeedFragmentById(feedId);
+                    saveLastNavFragment(null);
+                }
 
                 if (handleIntent) {
                     handleNavIntent();
