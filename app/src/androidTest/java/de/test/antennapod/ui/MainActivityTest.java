@@ -144,7 +144,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
 
     public void testGoToPreferences() {
         openNavDrawer();
-        solo.clickOnMenuItem(solo.getString(R.string.settings_label));
+        solo.clickOnText(solo.getString(R.string.settings_label));
         solo.waitForActivity(PreferenceController.getPreferenceActivity());
     }
 
