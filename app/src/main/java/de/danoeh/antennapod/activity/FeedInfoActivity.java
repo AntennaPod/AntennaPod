@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,12 +11,15 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
@@ -48,6 +53,27 @@ public class FeedInfoActivity extends ActionBarActivity {
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
 
+    private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(feed != null && feed.getDownload_url() != null) {
+                String url = feed.getDownload_url();
+                if (android.os.Build.VERSION.SDK_INT >= 11) {
+                    ClipData clipData = ClipData.newPlainText(url, url);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) FeedInfoActivity.this
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
+                } else {
+                    android.text.ClipboardManager cm = (android.text.ClipboardManager) FeedInfoActivity.this
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(url);
+                }
+                Toast t = Toast.makeText(FeedInfoActivity.this, R.string.copied_url_msg, Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
+    };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         setTheme(UserPreferences.getTheme());
@@ -65,6 +91,8 @@ public class FeedInfoActivity extends ActionBarActivity {
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
+
+        txtvUrl.setOnClickListener(copyUrlToClipboard);
 
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
@@ -100,7 +128,8 @@ public class FeedInfoActivity extends ActionBarActivity {
                         txtvLanguage.setText(LangUtils
                                 .getLanguageString(feed.getLanguage()));
                     }
-                    txtvUrl.setText(feed.getDownload_url());
+                    txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+                            Iconify.addIcons(txtvUrl);
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(feed.getPreferences().getAutoDownload());
