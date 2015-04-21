@@ -17,7 +17,6 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -44,6 +43,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private TextView txtvDescription;
     private TextView txtvLanguage;
     private TextView txtvAuthor;
+    private TextView txtvUrl;
     private EditText etxtUsername;
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
@@ -61,6 +61,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+        txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
@@ -76,10 +77,9 @@ public class FeedInfoActivity extends ActionBarActivity {
             protected void onPostExecute(Feed result) {
                 if (result != null) {
                     feed = result;
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Language is " + feed.getLanguage());
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Author is " + feed.getAuthor());
+                    Log.d(TAG, "Language is " + feed.getLanguage());
+                    Log.d(TAG, "Author is " + feed.getAuthor());
+                    Log.d(TAG, "URL is " + feed.getDownload_url());
                     imgvCover.post(new Runnable() {
 
                         @Override
@@ -92,7 +92,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                     });
 
                     txtvTitle.setText(feed.getTitle());
-                    txtvDescription.setText(feed.getDescription());
+                    txtvDescription.setText(feed.getDescription().trim());
                     if (feed.getAuthor() != null) {
                         txtvAuthor.setText(feed.getAuthor());
                     }
@@ -100,6 +100,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                         txtvLanguage.setText(LangUtils
                                 .getLanguageString(feed.getLanguage()));
                     }
+                    txtvUrl.setText(feed.getDownload_url());
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(feed.getPreferences().getAutoDownload());

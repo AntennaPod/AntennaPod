@@ -48,6 +48,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
+    <string name="url_label">URL</string>
     <string name="podcast_settings_label">Settings</string>
     <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
