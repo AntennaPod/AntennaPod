@@ -38,6 +38,8 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -307,6 +309,11 @@ public class QueueFragment extends Fragment {
 
         menu.findItem(R.id.move_to_top_item).setEnabled(!queue.isEmpty() && queue.get(0) != item);
         menu.findItem(R.id.move_to_bottom_item).setEnabled(!queue.isEmpty() && queue.get(queue.size() - 1) != item);
+        if(item.isRead()) {
+            menu.findItem(R.id.mark_read_item).setVisible(false);
+        } else {
+            menu.findItem(R.id.mark_unread_item).setVisible(false);
+        }
     }
 
     @Override
@@ -322,6 +329,33 @@ public class QueueFragment extends Fragment {
         switch (item.getItemId()) {
             case R.id.move_to_top_item:
                 DBWriter.moveQueueItemToTop(getActivity(), selectedItem.getId(), true);
+                return true;
+            case R.id.mark_read_item:
+                DBWriter.markItemRead(getActivity(), selectedItem, true, false);
+                selectedItem.setRead(true);
+                if(GpodnetPreferences.loggedIn()) {
+                    FeedMedia media = selectedItem.getMedia();
+                    GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, GpodnetEpisodeAction.Action.PLAY)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .started(media.getDuration() / 1000)
+                            .position(media.getDuration() / 1000)
+                            .total(media.getDuration() / 1000)
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(actionPlay);
+                }
+                return true;
+            case R.id.mark_unread_item:
+                DBWriter.markItemRead(getActivity(), selectedItem, false, false);
+                selectedItem.setRead(false);
+                if(GpodnetPreferences.loggedIn()) {
+                    GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, GpodnetEpisodeAction.Action.NEW)
+                            .currentDeviceId()
+                            .currentTimestamp()
+                            .build();
+                    GpodnetPreferences.enqueueEpisodeAction(actionNew);
+                }
+                startItemLoader();
                 return true;
             case R.id.move_to_bottom_item:
                 DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);

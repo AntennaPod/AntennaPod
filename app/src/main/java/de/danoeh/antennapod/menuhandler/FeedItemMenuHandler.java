@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.net.Uri;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
@@ -100,8 +99,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_link_item, false);
         }
 
-        if (!BuildConfig.DEBUG
-                || !(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
+        if (!(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {
             mi.setItemVisibility(R.id.mark_unread_item, false);
         }
         if (!(state == FeedItem.State.NEW || state == FeedItem.State.IN_PROGRESS)) {
