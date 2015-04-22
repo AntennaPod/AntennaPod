@@ -6,8 +6,18 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
+import java.util.List;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -19,9 +29,6 @@ import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
 
 /**
  * Displays a list of GPodnetPodcast-Objects in a GridView
@@ -43,24 +50,22 @@ public abstract class PodcastListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            final android.support.v7.widget.SearchView sv = new android.support.v7.widget.SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
-            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-            sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
-                    return true;
-                }
+        final android.support.v7.widget.SearchView sv = new android.support.v7.widget.SearchView(getActivity());
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                return true;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-        }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

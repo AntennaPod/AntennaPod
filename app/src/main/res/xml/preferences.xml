@@ -9,6 +9,10 @@
             android:key="prefTheme"
             android:summary="@string/pref_set_theme_sum"
             android:defaultValue="0"/>
+        <Preference
+            android:key="prefHiddenDrawerItems"
+            android:summary="@string/pref_nav_drawer_items_sum"
+            android:title="@string/pref_nav_drawer_items_title" />
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"

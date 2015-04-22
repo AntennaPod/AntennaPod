@@ -32,6 +32,7 @@
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
+    <string name="drawer_preferences">Drawer Preferences</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -246,6 +247,8 @@
     <string name="pref_auto_flattr_sum">Configure automatic flattring</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select theme</string>
+    <string name="pref_nav_drawer_items_title">Change navigation drawer</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>

@@ -55,7 +55,9 @@ import de.greenrobot.event.EventBus;
  * Shows all items in the queue
  */
 public class QueueFragment extends Fragment {
-    private static final String TAG = "QueueFragment";
+
+    public static final String TAG = "QueueFragment";
+
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.PLAYER_STATUS_UPDATE;
@@ -200,7 +202,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             inflater.inflate(R.menu.queue, menu);
 
             final SearchView sv = new SearchView(getActivity());

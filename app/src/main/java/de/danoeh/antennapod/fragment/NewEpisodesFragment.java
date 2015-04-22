@@ -28,7 +28,7 @@ import de.greenrobot.event.EventBus;
 
 public class NewEpisodesFragment extends AllEpisodesFragment {
 
-    private static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "NewEpisodesFragment";
 
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
 

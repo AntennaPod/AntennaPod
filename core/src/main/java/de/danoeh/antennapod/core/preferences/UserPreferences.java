@@ -16,6 +16,8 @@ import org.json.JSONException;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -63,6 +65,7 @@ public class UserPreferences implements
     private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
+    public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
 
     // TODO: Make this value configurable
     private static final float PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT = 0.8f;
@@ -99,6 +102,7 @@ public class UserPreferences implements
     private boolean isFreshInstall;
     private int notifyPriority;
     private boolean persistNotify;
+    private List<String> hiddenDrawerItems;
 
     private UserPreferences(Context context) {
         this.context = context;
@@ -167,6 +171,7 @@ public class UserPreferences implements
           notifyPriority = NotificationCompat.PRIORITY_DEFAULT;
         }
         persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
+        hiddenDrawerItems = Arrays.asList(StringUtils.split(sp.getString(PREF_HIDDEN_DRAWER_ITEMS, ""), ','));
     }
 
     private int readThemeValue(String valueFromPrefs) {
@@ -355,6 +360,11 @@ public class UserPreferences implements
         return instance.rewindSecs;
     }
 
+    public static List<String> getHiddenDrawerItems() {
+        instanceAvailable();
+        return new ArrayList<String>(instance.hiddenDrawerItems);
+    }
+
     /**
      * Returns the capacity of the episode cache. This method will return the
      * negative integer EPISODE_CACHE_SIZE_UNLIMITED if the cache size is set to
@@ -456,6 +466,8 @@ public class UserPreferences implements
             }
         } else if (key.equals(PREF_PERSISTENT_NOTIFICATION)) {
             persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
+        } else if (key.equals(PREF_HIDDEN_DRAWER_ITEMS)) {
+            hiddenDrawerItems = Arrays.asList(StringUtils.split(sp.getString(PREF_HIDDEN_DRAWER_ITEMS, ""), ','));
         }
     }
 
@@ -531,6 +543,17 @@ public class UserPreferences implements
         instance.autoFlattr = enabled;
         instance.autoFlattrPlayedDurationThreshold = autoFlattrThreshold;
     }
+
+    public static void setHiddenDrawerItems(Context context, List<String> items) {
+        instanceAvailable();
+        instance.hiddenDrawerItems = items;
+        String str = StringUtils.join(items, ',');
+        PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext())
+                .edit()
+                .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
+                .commit();
+    }
+
 
     /**
      * Return the folder where the app stores all of its data. This method will

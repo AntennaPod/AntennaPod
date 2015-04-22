@@ -20,8 +20,6 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Shows the download log
@@ -119,7 +117,7 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
             MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
@@ -131,8 +129,11 @@ public class DownloadLogFragment extends ListFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            menu.findItem(R.id.clear_history_item).setVisible(downloadLog != null && !downloadLog.isEmpty());
+        if (itemsLoaded) {
+            MenuItem menuItem = menu.findItem(R.id.clear_history_item);
+            if(menuItem != null) {
+                menuItem.setVisible(downloadLog != null && !downloadLog.isEmpty());
+            }
         }
     }
 

@@ -25,8 +25,6 @@ import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -122,7 +120,7 @@ public class SearchFragment extends ListFragment {
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
-            ((MainActivity) getActivity()).loadFeedFragment(comp.getId());
+            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId());
         } else {
             if (comp.getClass() == FeedItem.class) {
                 FeedItem item = (FeedItem) comp;
@@ -134,7 +132,7 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
             MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
             final SearchView sv = new SearchView(getActivity());

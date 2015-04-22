@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -46,7 +45,6 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 
@@ -413,25 +411,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butShowCover = (ImageButton) findViewById(R.id.butCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-            CharSequence currentTitle = getSupportActionBar().getTitle();
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                currentTitle = getSupportActionBar().getTitle();
-                getSupportActionBar().setTitle(R.string.app_name);
-                supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(currentTitle);
-                supportInvalidateOptionsMenu();
-            }
-        };
-
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.setDrawerListener(drawerToggle);
 
@@ -442,10 +422,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int viewType = parent.getAdapter().getItemViewType(position);
                 if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-                    int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
                     Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
                     intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
+                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
                     startActivity(intent);
                 }
                 drawerLayout.closeDrawer(navDrawer);
@@ -634,24 +613,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onCreateOptionsMenu(menu);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onPrepareOptionsMenu(menu);
-        } else {
-            return false;
-        }
     }
 
     public interface AudioplayerContentFragment {

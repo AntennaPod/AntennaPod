@@ -32,12 +32,12 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
 
 public class PlaybackHistoryFragment extends ListFragment {
-    private static final String TAG = "PlaybackHistoryFragment";
+
+    public static final String TAG = "PlaybackHistoryFragment";
+
     private static final int EVENTS = EventDistributor.PLAYBACK_HISTORY_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -139,7 +139,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem clearHistory = menu.add(Menu.NONE, R.id.clear_history_item, Menu.CATEGORY_CONTAINER, R.string.clear_history_label);
             MenuItemCompat.setShowAsAction(clearHistory, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.content_discard});
@@ -151,7 +151,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.clear_history_item);
             if (menuItem != null) {
                 menuItem.setVisible(playbackHistory != null && !playbackHistory.isEmpty());

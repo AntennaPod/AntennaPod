@@ -17,6 +17,8 @@ import de.danoeh.antennapod.R;
  */
 public class DownloadsFragment extends Fragment {
 
+    public static final String TAG = "DownloadsFragment";
+
     public static final String ARG_SELECTED_TAB = "selected_tab";
 
     public static final int POS_RUNNING = 0;

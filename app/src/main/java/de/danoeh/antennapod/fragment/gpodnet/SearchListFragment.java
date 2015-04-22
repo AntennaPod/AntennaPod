@@ -14,7 +14,6 @@ import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Performs a search on the gpodder.net directory and displays the results.
@@ -46,24 +45,22 @@ public class SearchListFragment extends PodcastListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         final SearchView sv = new SearchView(getActivity());
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            MenuItemUtils.addSearchItem(menu, sv);
-            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-            sv.setQuery(query, false);
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    changeQuery(s);
-                    return true;
-                }
+        MenuItemUtils.addSearchItem(menu, sv);
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setQuery(query, false);
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                changeQuery(s);
+                return true;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-        }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

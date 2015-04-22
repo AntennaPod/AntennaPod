@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.preferences;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -190,6 +191,15 @@ public class PreferenceController {
                             }
                         }
                 );
+        ui.findPreference(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS)
+                .setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        showDrawerPreferencesDialog();
+                        return true;
+                    }
+                });
+
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL)
                 .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
@@ -560,6 +570,43 @@ public class PreferenceController {
             }
         }
     }
+
+    private void showDrawerPreferencesDialog() {
+        final Context context = ui.getActivity();
+        final List<String> hiddenDrawerItems = UserPreferences.getHiddenDrawerItems();
+        final String[] navTitles = context.getResources().getStringArray(R.array.nav_drawer_titles);
+        final String[] NAV_DRAWER_TAGS = MainActivity.NAV_DRAWER_TAGS;
+        boolean[] checked = new boolean[MainActivity.NAV_DRAWER_TAGS.length];
+        for(int i=0; i < NAV_DRAWER_TAGS.length; i++) {
+            String tag = NAV_DRAWER_TAGS[i];
+            if(!hiddenDrawerItems.contains(tag)) {
+                checked[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.drawer_preferences);
+        builder.setMultiChoiceItems(navTitles, checked, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
+                } else {
+                    hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                UserPreferences.setHiddenDrawerItems(context, hiddenDrawerItems);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+    }
+
+
 
 
     public static interface PreferenceUI {

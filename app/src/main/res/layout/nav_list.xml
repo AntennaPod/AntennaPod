@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_layout"
     android:layout_width="@dimen/drawer_width"
@@ -9,32 +10,11 @@
     android:background="?attr/nav_drawer_background"
     android:orientation="vertical">
 
-    <ListView
-        android:id="@+id/nav_list"
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:choiceMode="singleChoice"
-        android:clipToPadding="false"
-        android:divider="@android:color/transparent"
-        android:dividerHeight="0dp"
-        android:paddingBottom="@dimen/list_vertical_padding"
-        android:paddingTop="@dimen/list_vertical_padding"
-        android:scrollbarStyle="outsideOverlay"
-        tools:listitem="@layout/nav_listitem"
-        tools:background="@android:color/holo_purple" />
-
-    <View
-        android:layout_width="@dimen/drawer_width"
-        android:layout_height="1dp"
-        android:layout_centerVertical="true"
-        android:background="?android:attr/listDivider"
-        tools:background="@android:color/holo_red_dark" />
-
     <LinearLayout
         android:id="@+id/nav_settings"
         android:layout_width="@dimen/drawer_width"
         android:layout_height="@dimen/listitem_iconwithtext_height"
+        android:layout_alignParentBottom="true"
         android:background="?attr/selectableItemBackground"
         android:contentDescription="@string/settings_label"
         android:orientation="horizontal">
@@ -45,9 +25,9 @@
             android:layout_height="@dimen/thumbnail_length_navlist"
             android:layout_alignParentLeft="true"
             android:layout_centerVertical="true"
-            android:layout_marginBottom="8dp"
+            android:layout_marginBottom="4dp"
             android:layout_marginLeft="@dimen/listitem_icon_leftpadding"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="4dp"
             android:adjustViewBounds="true"
             android:contentDescription="@string/cover_label"
             android:cropToPadding="true"
@@ -58,10 +38,10 @@
             tools:background="@android:color/holo_orange_dark" />
 
         <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"
-            android:layout_margin="16dp"
+            android:layout_marginLeft="16dp"
             android:layout_weight="1"
             android:gravity="center_vertical"
             android:text="@string/settings_label"
@@ -71,4 +51,30 @@
 
     </LinearLayout>
 
-</LinearLayout>
+    <View
+        android:id="@+id/divider"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="1dp"
+        android:layout_centerVertical="true"
+        android:layout_above="@id/nav_settings"
+        android:background="?android:attr/listDivider"
+        tools:background="@android:color/holo_red_dark" />
+
+    <ListView
+        android:id="@+id/nav_list"
+        android:layout_width="@dimen/drawer_width"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_above="@id/divider"
+        android:layout_alignParentTop="true"
+        android:choiceMode="singleChoice"
+        android:clipToPadding="false"
+        android:divider="@android:color/transparent"
+        android:dividerHeight="0dp"
+        android:paddingBottom="@dimen/list_vertical_padding"
+        android:paddingTop="@dimen/list_vertical_padding"
+        android:scrollbarStyle="outsideOverlay"
+        tools:listitem="@layout/nav_listitem"
+        tools:background="@android:color/holo_purple" />
+
+</RelativeLayout>
