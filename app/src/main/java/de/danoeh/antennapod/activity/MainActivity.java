@@ -381,8 +381,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             int viewType = parent.getAdapter().getItemViewType(position);
             if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER && position != selectedNavListIndex) {
                 loadFragment(position, null);
-                // selectedNavListIndex = position;
-                // navAdapter.notifyDataSetChanged();
             }
             drawerLayout.closeDrawer(navDrawer);
         }
@@ -465,8 +463,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public boolean onOptionsItemSelected(MenuItem item) {
         if (drawerToggle.onOptionsItemSelected(item)) {
             return true;
-        } else
-        if (item.getItemId() == android.R.id.home) {
+        } else if (item.getItemId() == android.R.id.home) {
             if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
                 dismissChildFragment();
             }

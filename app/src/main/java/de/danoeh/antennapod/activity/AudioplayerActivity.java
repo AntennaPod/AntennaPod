@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -614,16 +613,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return super.onCreateOptionsMenu(menu);
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        return super.onPrepareOptionsMenu(menu);
     }
 
     public interface AudioplayerContentFragment {

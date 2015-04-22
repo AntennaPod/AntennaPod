@@ -19,13 +19,4 @@ public class MenuItemUtils extends de.danoeh.antennapod.core.menuhandler.MenuIte
         return item;
     }
 
-    /**
-     * Checks if the navigation drawer of the DrawerActivity is opened. This can be useful for Fragments
-     * that hide their menu if the navigation drawer is open.
-     *
-     * @return True if the drawer is open, false otherwise (also if the parameter is null)
-     */
-    public static boolean isActivityDrawerOpen(NavDrawerActivity activity) {
-        return activity != null && activity.isDrawerOpen();
-    }
 }
