@@ -6,6 +6,7 @@ repositories {
 dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:gridlayout-v7:21.0.3'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
@@ -18,6 +19,7 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
     compile 'com.squareup.okio:okio:1.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.joanzapata.android:android-iconify:1.0.9'
     compile project(':core')
     compile project(':library:drag-sort-listview')
 }
