@@ -418,7 +418,6 @@ public class QueueFragment extends Fragment {
                 Log.d(TAG, "remove(" + which + ")");
                 stopItemLoader();
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.markItemRead(getActivity(), item.getId(), true);
                 DBWriter.removeQueueItem(getActivity(), item, true);
             }
         });
@@ -433,7 +432,6 @@ public class QueueFragment extends Fragment {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
                     int position = token.getPosition();
-                    DBWriter.markItemRead(context, itemId, false);
                     DBWriter.addQueueItemAt(context, itemId, position, false);
                 }
             }

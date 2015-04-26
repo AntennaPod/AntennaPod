@@ -29,6 +29,8 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
+;
+
 // TODO Remove media column from feeditem table
 
 /**
@@ -151,6 +153,7 @@ public class PodDBAdapter {
     public static final String KEY_IS_PAGED = "is_paged";
     public static final String KEY_NEXT_PAGE_LINK = "next_page_link";
     public static final String KEY_HIDE = "hide";
+    public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -250,7 +253,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
             TABLE_NAME_FEEDS + "." + KEY_USERNAME,
             TABLE_NAME_FEEDS + "." + KEY_PASSWORD,
-            TABLE_NAME_FEEDS + "." + KEY_HIDE
+            TABLE_NAME_FEEDS + "." + KEY_HIDE,
+            TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
     };
 
     // column indices for FEED_SEL_STD
@@ -274,6 +278,7 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_NEXT_PAGE_LINK = 17;
     public static final int IDX_FEED_SEL_PREFERENCES_USERNAME = 18;
     public static final int IDX_FEED_SEL_PREFERENCES_PASSWORD = 19;
+    public static final int IDX_FEED_SEL_STD_LAST_UPDATE_FAILED = 20;
 
 
     /**
@@ -408,6 +413,7 @@ public class PodDBAdapter {
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
         values.put(KEY_HIDE, StringUtils.join(feed.getItemFilter(), ","));
+        values.put(KEY_LAST_UPDATE_FAILED, feed.hasLastUpdateFailed());
         if (feed.getId() == 0) {
             // Create new entry
             Log.d(this.toString(), "Inserting new Feed into db");
@@ -777,6 +783,12 @@ public class PodDBAdapter {
                         new String[]{String.valueOf(chapter.getId())});
             }
         }
+    }
+
+    public void setFeedLastUpdateFailed(long feedId, boolean failed) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_LAST_UPDATE_FAILED, failed ? 1 : 0);
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
     /**
@@ -1149,7 +1161,7 @@ public class PodDBAdapter {
     }
 
     public final Cursor getFeedItemCursor(final String id) {
-        return getFeedItemCursor(new String[] { id });
+        return getFeedItemCursor(new String[]{id});
     }
 
     public final Cursor getFeedItemCursor(final String[] ids) {
@@ -1202,6 +1214,18 @@ public class PodDBAdapter {
     public final int getNumberOfUnreadItems() {
         final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_ITEMS +
                 " WHERE " + KEY_READ + " = 0";
+        Cursor c = db.rawQuery(query, null);
+        int result = 0;
+        if (c.moveToFirst()) {
+            result = c.getInt(0);
+        }
+        c.close();
+        return result;
+    }
+
+    public final int getNumberOfUnreadItems(long feedId) {
+        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_ITEMS +
+                " WHERE " + KEY_FEED + " = " + feedId + " AND " + KEY_READ + " = 0";
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {

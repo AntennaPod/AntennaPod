@@ -318,6 +318,7 @@ public final class DBReader {
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_IS_PAGED) > 0,
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK),
                 cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE))
+                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_LAST_UPDATE_FAILED) > 0
                 );
 
         if (image != null) {
@@ -960,6 +961,20 @@ public final class DBReader {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         final int result = adapter.getNumberOfUnreadItems();
+        adapter.close();
+        return result;
+    }
+
+    /**
+     * Returns the number of unread items.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The number of unread items.
+     */
+    public static int getNumberOfUnreadItems(final Context context, long feedId) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        final int result = adapter.getNumberOfUnreadItems(feedId);
         adapter.close();
         return result;
     }

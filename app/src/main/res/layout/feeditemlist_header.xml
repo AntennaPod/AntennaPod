@@ -78,6 +78,21 @@
         tools:text="Podcast author"
         tools:background="@android:color/holo_green_dark" />
 
+    <IconTextView
+        android:id="@+id/txtvFailure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgvBackground"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:background="@color/download_failed_red"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:text="@string/refresh_failed_msg"
+        tools:text="(!) Last refresh failed"
+        />
+
     <TextView
         android:id="@+id/txtvInformation"
         android:layout_width="match_parent"

@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.IconTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -91,6 +92,8 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
+    
+    private IconTextView txtvFailure;
 
     private TextView txtvInformation;
 
@@ -309,7 +312,7 @@ public class ItemlistFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
                 if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
                     updateProgressBarVisibility();
                 } else {
@@ -358,6 +361,11 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
+        if(feed.hasLastUpdateFailed()) {
+            txtvFailure.setVisibility(View.VISIBLE);
+        } else {
+            txtvFailure.setVisibility(View.GONE);
+        }
         if(feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if(filter.getValues().length > 0) {
@@ -368,6 +376,7 @@ public class ItemlistFragment extends ListFragment {
                 txtvInformation.setVisibility(View.GONE);
             }
         } else {
+
             txtvInformation.setVisibility(View.GONE);
         }
     }
@@ -407,6 +416,7 @@ public class ItemlistFragment extends ListFragment {
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
+        txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -436,6 +446,7 @@ public class ItemlistFragment extends ListFragment {
             }
         });
     }
+
 
     private void setupFooterView() {
         if (getListView() == null || feed == null) {

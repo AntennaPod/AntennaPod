@@ -79,6 +79,8 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     private String nextPageLink;
 
+    private boolean lastUpdateFailed;
+
     /**
      * Contains property strings. If such a property applies to a feed item, it is not shown in the feed list
      */
@@ -90,7 +92,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
     public Feed(long id, Date lastUpdate, String title, String link, String description, String paymentLink,
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
                 String downloadUrl, boolean downloaded, FlattrStatus status, boolean paged, String nextPageLink,
-                String filter) {
+                String filter, boolean lastUpdateFailed) {
         super(fileUrl, downloadUrl, downloaded);
         this.id = id;
         this.title = title;
@@ -110,13 +112,13 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         this.flattrStatus = status;
         this.paged = paged;
         this.nextPageLink = nextPageLink;
+        this.items = new ArrayList<FeedItem>();
         if(filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         } else {
             this.itemfilter = new FeedItemFilter(new String[0]);
         }
-
-        items = new ArrayList<FeedItem>();
+        this.lastUpdateFailed = lastUpdateFailed;
     }
 
     /**
@@ -126,7 +128,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
                 String author, String language, String type, String feedIdentifier, FeedImage image, String fileUrl,
                 String downloadUrl, boolean downloaded) {
         this(id, lastUpdate, title, link, description, paymentLink, author, language, type, feedIdentifier, image,
-                fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null, null);
+                fileUrl, downloadUrl, downloaded, new FlattrStatus(), false, null, null, false);
     }
 
     /**
@@ -134,7 +136,6 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public Feed() {
         super();
-        items = new ArrayList<FeedItem>();
         lastUpdate = new Date();
         this.flattrStatus = new FlattrStatus();
     }
@@ -483,14 +484,23 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         this.nextPageLink = nextPageLink;
     }
 
+
     public FeedItemFilter getItemFilter() {
         return itemfilter;
     }
 
     public void setFeedItemsFilter(String[] filter) {
-        if(filter != null) {
+        if (filter != null) {
             this.itemfilter = new FeedItemFilter(filter);
         }
+    }
+
+    public boolean hasLastUpdateFailed() {
+        return this.lastUpdateFailed;
+    }
+
+    public void setLastUpdateFailed(boolean lastUpdateFailed) {
+        this.lastUpdateFailed = lastUpdateFailed;
     }
 
 }

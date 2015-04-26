@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.IconTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -26,6 +27,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -190,9 +192,9 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_listitem, parent, false);
 
+            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
-            holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
             convertView.setTag(holder);
         } else {
             holder = (NavHolder) convertView.getTag();
@@ -248,45 +250,57 @@ public class NavListAdapter extends BaseAdapter
 
             convertView = inflater.inflate(R.layout.nav_feedlistitem, parent, false);
 
-            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.image = (ImageView) convertView.findViewById(R.id.imgvCover);
+            holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
+            holder.failure = (IconTextView) convertView.findViewById(R.id.itxtvFailure);
+            holder.count = (TextView) convertView.findViewById(R.id.txtvCount);
             convertView.setTag(holder);
         } else {
             holder = (FeedHolder) convertView.getTag();
         }
-
-        holder.title.setText(feed.getTitle());
 
         Picasso.with(context)
                 .load(feed.getImageUri())
                 .fit()
                 .into(holder.image);
 
+        holder.title.setText(feed.getTitle());
+
+        int feedUnreadItems = DBReader.getNumberOfUnreadItems(context, feed.getId());
+        if(feed.hasLastUpdateFailed()) {
+            holder.failure.setVisibility(View.VISIBLE);
+        } else {
+            holder.failure.setVisibility(View.GONE);
+        }
+        if(feedUnreadItems > 0) {
+            holder.count.setVisibility(View.VISIBLE);
+            holder.count.setText(String.valueOf(feedUnreadItems));
+            holder.count.setTypeface(holder.title.getTypeface());
+        } else {
+            holder.count.setVisibility(View.GONE);
+        }
         return convertView;
     }
 
     static class NavHolder {
+        ImageView image;
         TextView title;
         TextView count;
-        ImageView image;
     }
 
     static class FeedHolder {
-        TextView title;
         ImageView image;
+        TextView title;
+        IconTextView failure;
+        TextView count;
     }
 
-
     public interface ItemAccess {
-        public int getCount();
-
-        public Feed getItem(int position);
-
-        public int getSelectedItemIndex();
-
-        public int getQueueSize();
-
-        public int getNumberOfUnreadItems();
+        int getCount();
+        Feed getItem(int position);
+        int getSelectedItemIndex();
+        int getQueueSize();
+        int getNumberOfUnreadItems();
     }
 
 }

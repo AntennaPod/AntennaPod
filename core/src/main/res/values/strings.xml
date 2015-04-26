@@ -100,6 +100,7 @@
     <string name="hide_downloaded_episodes_label">Downloaded</string>
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="filtered_label">Filtered</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>

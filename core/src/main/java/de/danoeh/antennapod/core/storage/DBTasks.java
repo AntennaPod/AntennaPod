@@ -20,7 +20,6 @@ import java.util.concurrent.FutureTask;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
@@ -221,8 +220,7 @@ public final class DBTasks {
      * @param context Used for DB access.
      */
     public static void refreshExpiredFeeds(final Context context) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Refreshing expired feeds");
+        Log.d(TAG, "Refreshing expired feeds");
 
         new Thread() {
             public void run() {
@@ -620,6 +618,7 @@ public final class DBTasks {
                 // update attributes
                 savedFeed.setLastUpdate(newFeed.getLastUpdate());
                 savedFeed.setType(newFeed.getType());
+                savedFeed.setLastUpdateFailed(false);
 
                 updatedFeedsList.add(savedFeed);
                 resultFeeds[feedIdx] = savedFeed;
