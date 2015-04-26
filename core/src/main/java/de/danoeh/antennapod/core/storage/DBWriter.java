@@ -608,8 +608,7 @@ public class DBWriter {
 
                 adapter.setQueue(queue);
                 if (broadcastUpdate) {
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item));
-                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, to));
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.MOVED, item, to));
                 }
 
             }
