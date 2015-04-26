@@ -1,11 +1,12 @@
 package de.danoeh.antennapod.core.util;
 
-import de.danoeh.antennapod.core.feed.FeedItem;
-
 import java.util.ArrayList;
 import java.util.List;
 
+import de.danoeh.antennapod.core.feed.FeedItem;
+
 public class EpisodeFilter {
+
 	private EpisodeFilter() {
 
 	}

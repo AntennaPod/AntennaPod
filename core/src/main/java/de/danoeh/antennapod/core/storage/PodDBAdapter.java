@@ -11,6 +11,7 @@ import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
@@ -149,6 +150,7 @@ public class PodDBAdapter {
     public static final String KEY_PASSWORD = "password";
     public static final String KEY_IS_PAGED = "is_paged";
     public static final String KEY_NEXT_PAGE_LINK = "next_page_link";
+    public static final String KEY_HIDE = "hide";
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -175,7 +177,8 @@ public class PodDBAdapter {
             + KEY_USERNAME + " TEXT,"
             + KEY_PASSWORD + " TEXT,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
-            + KEY_NEXT_PAGE_LINK + " TEXT)";
+            + KEY_NEXT_PAGE_LINK + " TEXT,"
+            + KEY_HIDE + " TEXT)";
 
 
     public static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
@@ -247,6 +250,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_NEXT_PAGE_LINK,
             TABLE_NAME_FEEDS + "." + KEY_USERNAME,
             TABLE_NAME_FEEDS + "." + KEY_PASSWORD,
+            TABLE_NAME_FEEDS + "." + KEY_HIDE
     };
 
     // column indices for FEED_SEL_STD
@@ -403,17 +407,15 @@ public class PodDBAdapter {
         values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
+        values.put(KEY_HIDE, StringUtils.join(feed.getItemFilter(), ","));
         if (feed.getId() == 0) {
             // Create new entry
-            if (BuildConfig.DEBUG)
-                Log.d(this.toString(), "Inserting new Feed into db");
+            Log.d(this.toString(), "Inserting new Feed into db");
             feed.setId(db.insert(TABLE_NAME_FEEDS, null, values));
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(this.toString(), "Updating existing Feed in db");
+            Log.d(this.toString(), "Updating existing Feed in db");
             db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?",
                     new String[]{String.valueOf(feed.getId())});
-
         }
         return feed.getId();
     }
@@ -427,6 +429,13 @@ public class PodDBAdapter {
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
+    }
+
+    public void setFeedItemFilter(long feedId, List<String> filterValues) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_HIDE, StringUtils.join(filterValues, ","));
+        Log.d(TAG, StringUtils.join(filterValues, ","));
+        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
     /**

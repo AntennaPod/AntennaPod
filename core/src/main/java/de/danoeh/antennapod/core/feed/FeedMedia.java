@@ -6,7 +6,6 @@ import android.media.MediaMetadataRetriever;
 import android.net.Uri;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
 import java.util.Date;
 import java.util.List;
@@ -231,7 +230,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        Log.d(TAG, "hasEmbeddedPicture() -> " + hasEmbeddedPicture);
         return this.hasEmbeddedPicture;
     }
 
@@ -433,7 +431,6 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     private void checkEmbeddedPicture() {
-        Log.d(TAG, "checkEmbeddedPicture()");
         if (!localFileAvailable()) {
             hasEmbeddedPicture = false;
             return;
