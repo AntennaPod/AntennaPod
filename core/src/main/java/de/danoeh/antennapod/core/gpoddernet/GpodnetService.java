@@ -726,7 +726,12 @@ public class GpodnetService {
         Validate.notNull(body);
 
         ByteArrayOutputStream outputStream;
-        int contentLength = (int) body.contentLength();
+        int contentLength = 0;
+        try {
+            contentLength = (int) body.contentLength();
+        } catch (IOException ignore) {
+            // ignore
+        }
         if (contentLength > 0) {
             outputStream = new ByteArrayOutputStream(contentLength);
         } else {

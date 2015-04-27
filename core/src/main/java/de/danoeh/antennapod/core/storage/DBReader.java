@@ -712,6 +712,35 @@ public final class DBReader {
     }
 
     /**
+     * Returns credentials based on image URL
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param imageUrl  The URL of the image
+     * @return Credentials in format "<Username>:<Password>", empty String if no authorization given
+     */
+    public static String getImageAuthentication(final Context context, final String imageUrl) {
+        Log.d(TAG, "Loading credentials for image with URL " + imageUrl);
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        String credentials = getImageAuthentication(context, imageUrl, adapter);
+        adapter.close();
+        return credentials;
+
+    }
+
+    static String getImageAuthentication(final Context context, final String imageUrl, PodDBAdapter adapter) {
+        String credentials = null;
+        Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl);
+        if (cursor.moveToFirst()) {
+            String username = cursor.getString(0);
+            String password = cursor.getString(1);
+            return username + ":" + password;
+        }
+        return "";
+    }
+
+    /**
      * Loads a specific FeedItem from the database.
      *
      * @param context A context that is used for opening a database connection.
