@@ -977,6 +977,14 @@ public class PodDBAdapter {
         return c;
     }
 
+    public final Cursor getDownloadLog(final int feedFileType, final long feedFileId) {
+        final String query = "SELECT * FROM " + TABLE_NAME_DOWNLOAD_LOG +
+                " WHERE " + KEY_FEEDFILE + "=" + feedFileId + " AND " + KEY_FEEDFILETYPE + "=" + feedFileType
+                + " ORDER BY " + KEY_ID + " DESC";
+        Cursor c = db.rawQuery(query, null);
+        return c;
+    }
+
     public final Cursor getDownloadLogCursor(final int limit) {
         Cursor c = db.query(TABLE_NAME_DOWNLOAD_LOG, null, null, null, null,
                 null, KEY_COMPLETION_DATE + " DESC LIMIT " + limit);

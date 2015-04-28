@@ -327,6 +327,21 @@ public final class DBReader {
         return feed;
     }
 
+    private static DownloadStatus extractDownloadStatusFromCursorRow(final Cursor cursor) {
+        long id = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+        long feedfileId = cursor.getLong(PodDBAdapter.KEY_FEEDFILE_INDEX);
+        int feedfileType = cursor.getInt(PodDBAdapter.KEY_FEEDFILETYPE_INDEX);
+        boolean successful = cursor.getInt(PodDBAdapter.KEY_SUCCESSFUL_INDEX) > 0;
+        int reason = cursor.getInt(PodDBAdapter.KEY_REASON_INDEX);
+        String reasonDetailed = cursor.getString(PodDBAdapter.KEY_REASON_DETAILED_INDEX);
+        String title = cursor.getString(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE_INDEX);
+        Date completionDate = new Date(cursor.getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX));
+
+        return new DownloadStatus(id, title, feedfileId,
+                feedfileType, successful, DownloadError.fromCode(reason), completionDate,
+                reasonDetailed);
+    }
+
 
     private static FeedItem getMatchingItemForMedia(long itemId,
                                                     List<FeedItem> items) {
@@ -565,30 +580,64 @@ public final class DBReader {
 
         if (logCursor.moveToFirst()) {
             do {
-                long id = logCursor.getLong(PodDBAdapter.KEY_ID_INDEX);
-
-                long feedfileId = logCursor
-                        .getLong(PodDBAdapter.KEY_FEEDFILE_INDEX);
-                int feedfileType = logCursor
-                        .getInt(PodDBAdapter.KEY_FEEDFILETYPE_INDEX);
-                boolean successful = logCursor
-                        .getInt(PodDBAdapter.KEY_SUCCESSFUL_INDEX) > 0;
-                int reason = logCursor.getInt(PodDBAdapter.KEY_REASON_INDEX);
-                String reasonDetailed = logCursor
-                        .getString(PodDBAdapter.KEY_REASON_DETAILED_INDEX);
-                String title = logCursor
-                        .getString(PodDBAdapter.KEY_DOWNLOADSTATUS_TITLE_INDEX);
-                Date completionDate = new Date(
-                        logCursor
-                                .getLong(PodDBAdapter.KEY_COMPLETION_DATE_INDEX)
-                );
-                downloadLog.add(new DownloadStatus(id, title, feedfileId,
-                        feedfileType, successful, DownloadError.fromCode(reason), completionDate,
-                        reasonDetailed));
-
+                downloadLog.add(extractDownloadStatusFromCursorRow(logCursor));
             } while (logCursor.moveToNext());
         }
         logCursor.close();
+        Collections.sort(downloadLog, new DownloadStatusComparator());
+        return downloadLog;
+    }
+
+    /**
+     * Loads the download log for a particular feed from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feed Feed for which the download log is loaded
+     * @return A list with DownloadStatus objects that represent the feed's download log,
+     *         newest events first.
+     */
+    public static List<DownloadStatus> getFeedDownloadLog(Context context, Feed feed) {
+        Log.d(TAG, "getFeedDownloadLog(CONTEXT, " + feed.toString() + ")");
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getDownloadLog(Feed.FEEDFILETYPE_FEED, feed.getId());
+        List<DownloadStatus> downloadLog = new ArrayList<DownloadStatus>(
+                cursor.getCount());
+
+        if (cursor.moveToFirst()) {
+            do {
+                downloadLog.add(extractDownloadStatusFromCursorRow(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        Collections.sort(downloadLog, new DownloadStatusComparator());
+        return downloadLog;
+    }
+
+    /**
+     * Loads the download log for a particular feed media from the database.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param media Feed media for which the download log is loaded
+     * @return A list with DownloadStatus objects that represent the feed media's download log,
+     *         newest events first.
+     */
+    public static List<DownloadStatus> getFeedMediaDownloadLog(Context context, FeedMedia media) {
+        Log.d(TAG, "getFeedDownloadLog(CONTEXT, " + media.toString() + ")");
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getDownloadLog(FeedMedia.FEEDFILETYPE_FEEDMEDIA, media.getId());
+        List<DownloadStatus> downloadLog = new ArrayList<DownloadStatus>(
+                cursor.getCount());
+
+        if (cursor.moveToFirst()) {
+            do {
+                downloadLog.add(extractDownloadStatusFromCursorRow(cursor));
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
         Collections.sort(downloadLog, new DownloadStatusComparator());
         return downloadLog;
     }
