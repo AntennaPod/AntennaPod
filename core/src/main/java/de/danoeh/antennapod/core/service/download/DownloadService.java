@@ -520,7 +520,7 @@ public class DownloadService extends Service {
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
-     * created if there is at least one failed download excluding images 
+     * created if there is at least one failed download excluding images
      */
     private void updateReport() {
         // check if report should be created
@@ -548,7 +548,7 @@ public class DownloadService extends Service {
                     .setTicker(
                             getString(R.string.download_report_title))
                     .setContentTitle(
-                            getString(R.string.download_report_title))
+                            getString(R.string.download_report_content_title))
                     .setContentText(
                             String.format(
                                     getString(R.string.download_report_content),
