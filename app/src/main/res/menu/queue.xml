@@ -4,6 +4,12 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
+        android:id="@+id/queue_lock"
+        android:title=""
+        android:menuCategory="container"
+        custom:showAsAction="ifRoom" />
+
+    <item
         android:id="@+id/refresh_item"
         android:title="@string/refresh_label"
         android:menuCategory="container"

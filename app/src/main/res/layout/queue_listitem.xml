@@ -1,17 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/listitem_threeline_height"
     android:orientation="horizontal"
+    android:paddingLeft="16dp"
     tools:background="@android:color/darker_gray" >
 
     <ImageView
         android:id="@+id/drag_handle"
         android:layout_width="100dp"
         android:layout_height="match_parent"
-        android:layout_marginLeft="8dp"
+        android:layout_marginLeft="-8dp"
         android:layout_marginRight="-64dp"
         android:contentDescription="@string/drag_handle_content_description"
         android:scaleType="fitXY"

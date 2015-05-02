@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
@@ -48,7 +49,6 @@ import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -66,6 +66,8 @@ public class QueueFragment extends Fragment {
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private MenuItem queueLock;
 
     private UndoBarController<FeedItemUndoToken> undoBarController;
 
@@ -221,6 +223,9 @@ public class QueueFragment extends Fragment {
                     return false;
                 }
             });
+
+            MenuItemUtils.refreshLockItem(getActivity(), menu, queueLock);
+
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
@@ -229,6 +234,17 @@ public class QueueFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
+                case R.id.queue_lock:
+                    boolean locked = !UserPreferences.isQueueLocked();
+                    if(locked) {
+                        listView.setDragEnabled(false);
+                    } else {
+                        listView.setDragEnabled(true);
+                    }
+                    UserPreferences.setQueueLocked(locked);
+                    getActivity().supportInvalidateOptionsMenu();
+                    listAdapter.setLocked(locked);
+                    return true;
                 case R.id.refresh_item:
                     List<Feed> feeds = ((MainActivity) getActivity()).getFeeds();
                     if (feeds != null) {
@@ -329,6 +345,12 @@ public class QueueFragment extends Fragment {
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
         listView.setEmptyView(txtvEmpty);
+
+        if(UserPreferences.isQueueLocked()) {
+            listView.setDragEnabled(false);
+        } else {
+            listView.setDragEnabled(true);
+        }
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
