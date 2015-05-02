@@ -520,9 +520,7 @@ public class DownloadService extends Service {
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
-     * created if the number of successfully downloaded feeds is bigger than 1
-     * or if there is at least one failed download which is not an image or if
-     * there is at least one downloaded media file.
+     * created if there is at least one failed download excluding images
      */
     private void updateReport() {
         // check if report should be created
@@ -550,16 +548,16 @@ public class DownloadService extends Service {
                     .setTicker(
                             getString(R.string.download_report_title))
                     .setContentTitle(
-                            getString(R.string.download_report_title))
+                            getString(R.string.download_report_content_title))
                     .setContentText(
                             String.format(
                                     getString(R.string.download_report_content),
                                     successfulDownloads, failedDownloads)
                     )
-                    .setSmallIcon(R.drawable.stat_notify_sync)
+                    .setSmallIcon(R.drawable.stat_notify_sync_error)
                     .setLargeIcon(
                             BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.stat_notify_sync)
+                                    R.drawable.stat_notify_sync_error)
                     )
                     .setContentIntent(
                             ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
