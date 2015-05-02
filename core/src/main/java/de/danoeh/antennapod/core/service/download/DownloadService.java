@@ -939,6 +939,13 @@ public class DownloadService extends Service {
 
 
             if (successful) {
+                // we create a 'successful' download log if the feed's last refresh failed
+                List<DownloadStatus> log = DBReader.getFeedDownloadLog(DownloadService.this, feed);
+                if(log.size() > 0 && log.get(0).isSuccessful() == false) {
+                    saveDownloadStatus(new DownloadStatus(feed,
+                            feed.getHumanReadableIdentifier(), DownloadError.SUCCESS, successful,
+                            reasonDetailed));
+                }
                 return Pair.create(request, result);
             } else {
                 numberOfDownloads.decrementAndGet();
