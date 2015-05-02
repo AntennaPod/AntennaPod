@@ -254,6 +254,8 @@ public class PlaybackService extends Service {
         unregisterReceiver(bluetoothStateUpdated);
         unregisterReceiver(audioBecomingNoisy);
         unregisterReceiver(skipCurrentEpisodeReceiver);
+        unregisterReceiver(pausePlayCurrentEpisodeReceiver);
+        unregisterReceiver(pauseResumeCurrentEpisodeReceiver);
         mediaPlayer.shutdown();
         taskManager.shutdown();
     }
