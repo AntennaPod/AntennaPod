@@ -14,12 +14,13 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 /**
@@ -31,7 +32,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
 
     private final Context context;
 
-    private final int TEN_MINUTES_IN_MILLIS = 60 * 1000 * 10;
+    private static final int TEN_MINUTES_IN_MILLIS = 60 * 1000 * 10;
 
     // remember timestamp when user allowed downloading via mobile connection
     private static long allowMobileDownloadsTimestamp;
@@ -42,6 +43,14 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         this.context = context;
     }
 
+    public static boolean userAllowedMobileDownloads() {
+        return System.currentTimeMillis() - allowMobileDownloadsTimestamp < TEN_MINUTES_IN_MILLIS;
+    }
+
+    public static boolean userChoseAddToQueue() {
+        return System.currentTimeMillis() - onlyAddToQueueTimeStamp < TEN_MINUTES_IN_MILLIS;
+    }
+
     @Override
     public void onActionButtonPressed(final FeedItem item) {
 
@@ -49,8 +58,8 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             final FeedMedia media = item.getMedia();
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             if (!isDownloading && !media.isDownloaded()) {
-                if (UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi(context) ||
-                        (System.currentTimeMillis()-allowMobileDownloadsTimestamp) < TEN_MINUTES_IN_MILLIS) {
+                LongList queueIds = DBReader.getQueueIDList(context);
+                if (NetworkUtils.isDownloadAllowed(context) || userAllowedMobileDownloads()) {
                     try {
                         DBTasks.downloadFeedItems(context, item);
                         Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();
@@ -58,13 +67,11 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                         e.printStackTrace();
                         DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
                     }
+                } else if(userChoseAddToQueue() && !queueIds.contains(item.getId())) {
+                    DBWriter.addQueueItem(context, item.getId());
+                    Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
                 } else {
-                    if(System.currentTimeMillis() - onlyAddToQueueTimeStamp < TEN_MINUTES_IN_MILLIS) {
-                        DBWriter.addQueueItem(context, item.getId());
-                        Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
-                    } else {
-                        confirmMobileDownload(context, item);
-                    }
+                    confirmMobileDownload(context, item);
                 }
             } else if (isDownloading) {
                 DownloadRequester.getInstance().cancelDownload(context, media);
@@ -118,17 +125,23 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                                     DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
                                 }
                             }
-                        })
-                .setNeutralButton(R.string.confirm_mobile_download_dialog_only_add_to_queue,
-                        new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                onlyAddToQueueTimeStamp = System.currentTimeMillis();
-                                DBWriter.addQueueItem(context, item.getId());
-                                Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
-                            }
-                        })
-                .setNegativeButton(R.string.cancel_label, null)
+                        });
+        LongList queueIds = DBReader.getQueueIDList(context);
+        if(!queueIds.contains(item.getId())) {
+            builder.setNeutralButton(R.string.confirm_mobile_download_dialog_only_add_to_queue,
+                    new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            onlyAddToQueueTimeStamp = System.currentTimeMillis();
+                            DBWriter.addQueueItem(context, item.getId());
+                            Toast.makeText(context, R.string.added_to_queue_label, Toast.LENGTH_SHORT).show();
+                        }
+                    })
+            .setMessage(context.getText(R.string.confirm_mobile_download_dialog_message_not_in_queue));
+        } else {
+            builder.setMessage(context.getText(R.string.confirm_mobile_download_dialog_message));
+        }
+        builder.setNegativeButton(R.string.cancel_label, null)
                 .create()
                 .show();
     }

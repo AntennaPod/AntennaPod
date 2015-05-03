@@ -68,6 +68,10 @@ public class NetworkUtils {
         return info != null && info.isConnected();
     }
 
+	public static boolean isDownloadAllowed(Context context) {
+		return UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi(context);
+	}
+
 	public static boolean connectedToWifi(Context context) {
 		ConnectivityManager connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
