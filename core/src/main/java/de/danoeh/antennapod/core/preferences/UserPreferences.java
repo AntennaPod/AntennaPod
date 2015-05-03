@@ -397,7 +397,7 @@ public class UserPreferences implements
     }
 
     public static boolean shouldResumeAfterCall() {
-        instanceAvailable();;
+        instanceAvailable();
         return instance.resumeAfterCall;
     }
 
@@ -463,7 +463,7 @@ public class UserPreferences implements
         } else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
             pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
         } else if (key.equals(PREF_RESUME_AFTER_CALL)) {
-            resumeAfterCall = sp.getBoolean(PREF_RESUME_AFTER_CALL, false);
+            resumeAfterCall = sp.getBoolean(PREF_RESUME_AFTER_CALL, true);
         } else if (key.equals(PREF_FAST_FORWARD_SECS)) {
             fastForwardSecs = sp.getInt(PREF_FAST_FORWARD_SECS, 30);
         } else if (key.equals(PREF_REWIND_SECS)) {
