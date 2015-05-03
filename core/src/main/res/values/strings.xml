@@ -161,6 +161,8 @@
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
     <!-- Queue operations -->
+    <string name="lock_queue">Lock queue</string>
+    <string name="unlock_queue">Unlock queue</string>
     <string name="clear_queue_label">Clear queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>

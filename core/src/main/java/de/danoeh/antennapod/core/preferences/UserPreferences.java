@@ -66,6 +66,7 @@ public class UserPreferences implements
     private static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
+    public static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
 
     // TODO: Make this value configurable
     private static final float PREF_AUTO_FLATTR_PLAYED_DURATION_THRESHOLD_DEFAULT = 0.8f;
@@ -103,6 +104,7 @@ public class UserPreferences implements
     private int notifyPriority;
     private boolean persistNotify;
     private List<String> hiddenDrawerItems;
+    private boolean queueLocked;
 
     private UserPreferences(Context context) {
         this.context = context;
@@ -172,6 +174,7 @@ public class UserPreferences implements
         }
         persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
         hiddenDrawerItems = Arrays.asList(StringUtils.split(sp.getString(PREF_HIDDEN_DRAWER_ITEMS, ""), ','));
+        queueLocked = sp.getBoolean(PREF_QUEUE_LOCKED, false);
     }
 
     private int readThemeValue(String valueFromPrefs) {
@@ -395,6 +398,11 @@ public class UserPreferences implements
         return instance.isFreshInstall;
     }
 
+    public static boolean isQueueLocked() {
+        instanceAvailable();
+        return instance.queueLocked;
+    }
+
     @Override
     public void onSharedPreferenceChanged(SharedPreferences sp, String key) {
         Log.d(TAG, "Registered change of user preferences. Key: " + key);
@@ -468,6 +476,8 @@ public class UserPreferences implements
             persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
         } else if (key.equals(PREF_HIDDEN_DRAWER_ITEMS)) {
             hiddenDrawerItems = Arrays.asList(StringUtils.split(sp.getString(PREF_HIDDEN_DRAWER_ITEMS, ""), ','));
+        } else if(key.equals(PREF_QUEUE_LOCKED)) {
+            queueLocked = sp.getBoolean(PREF_QUEUE_LOCKED, false);
         }
     }
 
@@ -551,6 +561,15 @@ public class UserPreferences implements
         PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext())
                 .edit()
                 .putString(PREF_HIDDEN_DRAWER_ITEMS, str)
+                .commit();
+    }
+
+    public static void setQueueLocked(boolean locked) {
+        instanceAvailable();
+        instance.queueLocked = locked;
+        PreferenceManager.getDefaultSharedPreferences(instance.context)
+                .edit()
+                .putBoolean(PREF_QUEUE_LOCKED, locked)
                 .commit();
     }
 
