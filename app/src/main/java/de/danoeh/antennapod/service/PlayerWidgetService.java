@@ -52,19 +52,20 @@ public class PlayerWidgetService extends Service {
 	public void onDestroy() {
 		super.onDestroy();
 		Log.d(TAG, "Service is about to be destroyed");
-
-		Playable playable = playbackService.getPlayable();
-		if(playable != null && playable instanceof FeedMedia) {
-			FeedMedia media = (FeedMedia) playable;
-			if(media.hasAlmostEnded()) {
-				Log.d(TAG, "smart mark as read");
-				FeedItem item = media.getItem();
-				DBWriter.markItemRead(this, item, true, false);
-				DBWriter.removeQueueItem(this, item, false);
-				DBWriter.addItemToPlaybackHistory(this, media);
-				if (UserPreferences.isAutoDelete()) {
-					Log.d(TAG, "Delete " + media.toString());
-					DBWriter.deleteFeedMediaOfItem(this, media.getId());
+		if (playbackService != null) {
+			Playable playable = playbackService.getPlayable();
+			if (playable != null && playable instanceof FeedMedia) {
+				FeedMedia media = (FeedMedia) playable;
+				if (media.hasAlmostEnded()) {
+					Log.d(TAG, "smart mark as read");
+					FeedItem item = media.getItem();
+					DBWriter.markItemRead(this, item, true, false);
+					DBWriter.removeQueueItem(this, item, false);
+					DBWriter.addItemToPlaybackHistory(this, media);
+					if (UserPreferences.isAutoDelete()) {
+						Log.d(TAG, "Delete " + media.toString());
+						DBWriter.deleteFeedMediaOfItem(this, media.getId());
+					}
 				}
 			}
 		}
