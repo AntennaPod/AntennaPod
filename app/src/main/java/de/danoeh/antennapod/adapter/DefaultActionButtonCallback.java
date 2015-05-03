@@ -17,7 +17,6 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-
 /**
  * Default implementation of an ActionButtonCallback
  */
@@ -38,7 +37,9 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         if (item.hasMedia()) {
             final FeedMedia media = item.getMedia();
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
-            if (!isDownloading && !media.isDownloaded()) {
+            if (!DBTasks.isInQueue(context, item.getId())) {
+                DBWriter.addQueueItem(context, item.getId());
+            } else if (!isDownloading && !media.isDownloaded()) {
                 try {
                     DBTasks.downloadFeedItems(context, item);
                     Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();

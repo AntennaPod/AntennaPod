@@ -10,6 +10,7 @@ import org.apache.commons.lang3.Validate;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 
 /**
@@ -27,8 +28,9 @@ public class ActionButtonUtils {
 
         this.context = context;
         drawables = context.obtainStyledAttributes(new int[]{
-                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.av_pause, R.attr.navigation_accept});
-        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label, R.string.mark_read_label};
+                R.attr.av_play, R.attr.navigation_cancel, R.attr.av_download, R.attr.av_pause, R.attr.navigation_accept,
+                R.attr.content_new});
+        labels = new int[]{R.string.play_label, R.string.cancel_download_label, R.string.download_label, R.string.mark_read_label, R.string.add_to_queue_label};
     }
 
     /**
@@ -39,9 +41,16 @@ public class ActionButtonUtils {
         Validate.isTrue(butSecondary != null && item != null, "butSecondary or item was null");
 
         final FeedMedia media = item.getMedia();
+        // this logic needs to match the logic in ItemFragment.updateAppearance and
+        // DefaultActionButtonCallback.onActionButtonPressed
         if (media != null) {
             final boolean isDownloadingMedia = DownloadRequester.getInstance().isDownloadingFile(media);
-            if (!media.isDownloaded()) {
+            if (!DBTasks.isInQueue(context, item.getId())) {
+                // item isn't in the queue
+                butSecondary.setVisibility(View.VISIBLE);
+                butSecondary.setImageDrawable(drawables.getDrawable(5));
+                butSecondary.setContentDescription(context.getString(labels[4]));
+            } else if (!media.isDownloaded()) {
                 if (isDownloadingMedia) {
                     // item is being downloaded
                     butSecondary.setVisibility(View.VISIBLE);
