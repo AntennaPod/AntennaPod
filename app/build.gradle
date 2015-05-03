@@ -1,3 +1,5 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: 'com.android.application'
 
 repositories {
@@ -24,6 +26,20 @@ dependencies {
     compile project(':library:drag-sort-listview')
 }
 
+def getMyVersionName() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse('app/src/main/AndroidManifest.xml')
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionName'
+}
+
+def getMyVersionCode() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse('app/src/main/AndroidManifest.xml')
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionCode'.toInteger()
+}
+
 android {
     compileSdkVersion 21
     buildToolsVersion "21.1.2"
@@ -31,6 +47,8 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 21
+        versionCode getMyVersionCode()
+        versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
     }
@@ -89,4 +107,23 @@ android {
     lintOptions {
         abortOnError false
     }
+}
+
+// about.html is templatized so that we can automatically insert
+// our version string in to it at build time.
+task filterAbout {
+    inputs.files files(['src/main/templates/about.html',
+                        'src/main/AndroidManifest.xml'])
+    outputs.file 'src/main/assests/about.html'
+} << {
+    copy {
+        from 'src/main/templates/about.html'
+        into 'src/main/assets'
+        filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
+                                       versioncode: android.defaultConfig.versionCode.toString()])
+    }
+}
+
+gradle.projectsEvaluated {
+    preBuild.dependsOn filterAbout
 }
