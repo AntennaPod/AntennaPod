@@ -124,6 +124,4 @@ task filterAbout {
     }
 }
 
-gradle.projectsEvaluated {
-    preBuild.dependsOn filterAbout
-}
+preBuild.dependsOn filterAbout
