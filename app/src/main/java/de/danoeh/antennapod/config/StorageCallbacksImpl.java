@@ -13,7 +13,7 @@ public class StorageCallbacksImpl implements StorageCallbacks {
 
     @Override
     public int getDatabaseVersion() {
-        return 14;
+        return 15;
     }
 
     @Override
@@ -123,6 +123,16 @@ public class StorageCallbacksImpl implements StorageCallbacks {
                     PodDBAdapter.KEY_FEEDITEM,
                     PodDBAdapter.KEY_LINK,
                     PodDBAdapter.KEY_CHAPTER_TYPE));
+        }
+        if(oldVersion <= 14) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DOWNLOAD + " INTEGER");
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " SET " + PodDBAdapter.KEY_AUTO_DOWNLOAD + " = "
+                    + "(SELECT " + PodDBAdapter.KEY_AUTO_DOWNLOAD
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " WHERE " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_ID
+                    + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED + ")");
         }
     }
 }
