@@ -5,6 +5,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
@@ -14,6 +15,7 @@ import android.preference.EditTextPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceScreen;
+import android.support.v4.content.LocalBroadcastManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -33,6 +35,7 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
+import de.danoeh.antennapod.asynctask.OpmlExportWorker.OpmlExportWorkerReceiver;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -153,8 +156,14 @@ public class PreferenceController {
 
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        new OpmlExportWorker(activity)
-                                .executeAsync();
+                        final String INTENT_FILTER = "PreferenceController_opmlExportReceiver";
+                        OpmlExportWorkerReceiver opmlExportReceiver = new OpmlExportWorkerReceiver(activity);
+                        LocalBroadcastManager.getInstance(activity)
+                            .registerReceiver(opmlExportReceiver, new IntentFilter(INTENT_FILTER));
+                        opmlExportReceiver.showProgDialog();
+                        Intent opmlExportWorker = new Intent(activity, OpmlExportWorker.class);
+                        opmlExportWorker.putExtra("INTENT_FILTER", INTENT_FILTER);
+                        activity.startService(opmlExportWorker);
 
                         return true;
                     }
