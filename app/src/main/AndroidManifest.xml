@@ -96,6 +96,8 @@
             android:exported="false">
         </service>
 
+        <service android:name=".asynctask.OpmlFeedQueuer" android:exported="false"/>
+
         <receiver android:name=".receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
