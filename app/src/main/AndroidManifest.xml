@@ -98,6 +98,7 @@
 
         <service android:name=".asynctask.OpmlFeedQueuer" android:exported="false"/>
         <service android:name=".asynctask.OpmlExportWorker" android:exported="false"/>
+        <service android:name=".fragment.ItemDescriptionFragment$GetFeedItemService" android:exported="false"/>
 
         <receiver android:name=".receiver.PlayerWidget">
             <intent-filter>
