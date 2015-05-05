@@ -5,8 +5,9 @@ package de.danoeh.antennapod.core.feed;
  *
  * @author daniel
  */
-public abstract class FeedComponent {
+public abstract class FeedComponent implements java.io.Serializable {
 
+    private static final long serialVersionUID = 4368540112109834054L;
     protected long id;
 
     public FeedComponent() {

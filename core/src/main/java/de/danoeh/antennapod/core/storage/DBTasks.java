@@ -125,7 +125,7 @@ public final class DBTasks {
             }
             // Start playback Service
             Intent launchIntent = new Intent(context, PlaybackService.class);
-            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+            launchIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, (android.os.Parcelable) media);
             launchIntent.putExtra(PlaybackService.EXTRA_START_WHEN_PREPARED,
                     startWhenPrepared);
             launchIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
