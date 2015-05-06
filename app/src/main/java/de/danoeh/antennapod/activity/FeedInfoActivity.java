@@ -1,9 +1,13 @@
 package de.danoeh.antennapod.activity;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
-import android.os.AsyncTask;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Bundle;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -37,6 +41,7 @@ import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
  * Displays information about a feed.
  */
 public class FeedInfoActivity extends ActionBarActivity {
+    private static final String FEED_INFO_FILTER = "FeedInfoActivity_feedReceiver";
     private static final String TAG = "FeedInfoActivity";
 
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
@@ -52,6 +57,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private EditText etxtUsername;
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
+    private BroadcastReceiver feedReceiver;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -94,15 +100,10 @@ public class FeedInfoActivity extends ActionBarActivity {
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
-        AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
-
+        feedReceiver = new BroadcastReceiver() {
             @Override
-            protected Feed doInBackground(Long... params) {
-                return DBReader.getFeed(FeedInfoActivity.this, params[0]);
-            }
-
-            @Override
-            protected void onPostExecute(Feed result) {
+            public void onReceive(Context receiverContext, Intent receiverIntent) {
+                Feed result = (Feed) receiverIntent.getSerializableExtra("feed");
                 if (result != null) {
                     feed = result;
                     Log.d(TAG, "Language is " + feed.getLanguage());
@@ -154,9 +155,20 @@ public class FeedInfoActivity extends ActionBarActivity {
                 }
             }
         };
-        loadTask.execute(feedId);
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(feedReceiver, new IntentFilter(FEED_INFO_FILTER));
+        Intent getFeed = new Intent(this, GetFeedService.class);
+        getFeed.putExtra("feedId", feedId);
+        this.startService(getFeed);
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (feedReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(feedReceiver);
+        }
+    }
 
     private boolean authInfoChanged = false;
 
@@ -223,6 +235,20 @@ public class FeedInfoActivity extends ActionBarActivity {
                             e.getMessage());
                 }
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    public static class GetFeedService extends IntentService {
+        public GetFeedService() {
+            super("GetFeedService");
+        }
+
+        public void onHandleIntent(Intent intent) {
+            long feedId = intent.getLongExtra("feedId", 0);
+            Intent resultIntent = new Intent(FEED_INFO_FILTER);
+            resultIntent.putExtra("feed", DBReader.getFeed(this, feedId));
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+            return;
         }
     }
 }
