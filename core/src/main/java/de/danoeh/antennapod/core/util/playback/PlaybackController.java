@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.util.playback;
 
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -10,9 +11,9 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.media.MediaPlayer;
-import android.os.AsyncTask;
 import android.os.IBinder;
 import android.preference.PreferenceManager;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.util.Pair;
 import android.view.SurfaceHolder;
@@ -173,14 +174,10 @@ public abstract class PlaybackController {
      */
     private void bindToService() {
         Log.d(TAG, "Trying to connect to service");
-        AsyncTask<Void, Void, Intent> intentLoader = new AsyncTask<Void, Void, Intent>() {
+        BroadcastReceiver getMeidiaReceiver = new BroadcastReceiver() {
             @Override
-            protected Intent doInBackground(Void... voids) {
-                return getPlayLastPlayedMediaIntent();
-            }
-
-            @Override
-            protected void onPostExecute(Intent serviceIntent) {
+            public void onReceive(Context receiverContext, Intent receiverIntent) {
+                Intent serviceIntent = (Intent) receiverIntent.getParcelableExtra("mediaIntent");
                 boolean bound = false;
                 if (!PlaybackService.started) {
                     if (serviceIntent != null) {
@@ -200,44 +197,12 @@ public abstract class PlaybackController {
                 Log.d(TAG, "Result for service binding: " + bound);
             }
         };
-        intentLoader.execute();
-    }
-
-    /**
-     * Returns an intent that starts the PlaybackService and plays the last
-     * played media or null if no last played media could be found.
-     */
-    private Intent getPlayLastPlayedMediaIntent() {
-        Log.d(TAG, "Trying to restore last played media");
-        SharedPreferences prefs = PreferenceManager
-                .getDefaultSharedPreferences(activity.getApplicationContext());
-        long currentlyPlayingMedia = PlaybackPreferences
-                .getCurrentlyPlayingMedia();
-        if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
-            Playable media = PlayableUtils.createInstanceFromPreferences(activity,
-                    (int) currentlyPlayingMedia, prefs);
-            if (media != null) {
-                Intent serviceIntent = new Intent(activity,
-                        PlaybackService.class);
-                serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
-                serviceIntent.putExtra(
-                        PlaybackService.EXTRA_START_WHEN_PREPARED, false);
-                serviceIntent.putExtra(
-                        PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
-                boolean fileExists = media.localFileAvailable();
-                boolean lastIsStream = PlaybackPreferences
-                        .getCurrentEpisodeIsStream();
-                if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
-                    DBTasks.notifyMissingFeedMediaFile(
-                            activity, (FeedMedia) media);
-                }
-                serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
-                        lastIsStream || !fileExists);
-                return serviceIntent;
-            }
-        }
-        Log.d(TAG, "No last played media found");
-        return null;
+        final String GET_MEDIA_FILTER = "PlaybackController_getMeidiaReceiver";
+        LocalBroadcastManager.getInstance(activity)
+            .registerReceiver(getMeidiaReceiver, new IntentFilter(GET_MEDIA_FILTER));
+        Intent getMediaIntent = new Intent(activity, GetPlayedMediaIntent.class);
+        getMediaIntent.putExtra("FILTER", GET_MEDIA_FILTER);
+        activity.startService(getMediaIntent);
     }
 
     public abstract void setupGUI();
@@ -759,6 +724,57 @@ public abstract class PlaybackController {
                     }
                 });
             }
+        }
+    }
+
+    public static class GetPlayedMediaIntent extends IntentService {
+
+        public GetPlayedMediaIntent() {
+            super("GetPlayedMediaIntent");
+        }
+
+        public void onHandleIntent(Intent intent) {
+            Intent resultIntent = new Intent(intent.getStringExtra("FILTER"));
+            resultIntent.putExtra("mediaIntent", getPlayLastPlayedMediaIntent());
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+            return;
+        }
+
+        /**
+         * Returns an intent that starts the PlaybackService and plays the last
+         * played media or null if no last played media could be found.
+         */
+        private Intent getPlayLastPlayedMediaIntent() {
+            Log.d(TAG, "Trying to restore last played media");
+            SharedPreferences prefs = PreferenceManager
+                    .getDefaultSharedPreferences(getApplicationContext());
+            long currentlyPlayingMedia = PlaybackPreferences
+                    .getCurrentlyPlayingMedia();
+            if (currentlyPlayingMedia != PlaybackPreferences.NO_MEDIA_PLAYING) {
+                Playable media = PlayableUtils.createInstanceFromPreferences(this,
+                        (int) currentlyPlayingMedia, prefs);
+                if (media != null) {
+                    Intent serviceIntent = new Intent(this,
+                            PlaybackService.class);
+                    serviceIntent.putExtra(PlaybackService.EXTRA_PLAYABLE, media);
+                    serviceIntent.putExtra(
+                            PlaybackService.EXTRA_START_WHEN_PREPARED, false);
+                    serviceIntent.putExtra(
+                            PlaybackService.EXTRA_PREPARE_IMMEDIATELY, false);
+                    boolean fileExists = media.localFileAvailable();
+                    boolean lastIsStream = PlaybackPreferences
+                            .getCurrentEpisodeIsStream();
+                    if (!fileExists && !lastIsStream && media instanceof FeedMedia) {
+                        DBTasks.notifyMissingFeedMediaFile(
+                                this, (FeedMedia) media);
+                    }
+                    serviceIntent.putExtra(PlaybackService.EXTRA_SHOULD_STREAM,
+                            lastIsStream || !fileExists);
+                    return serviceIntent;
+                }
+            }
+            Log.d(TAG, "No last played media found");
+            return null;
         }
     }
 }
