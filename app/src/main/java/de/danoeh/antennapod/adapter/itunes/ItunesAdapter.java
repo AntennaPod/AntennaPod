@@ -156,7 +156,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
      * Represents an individual podcast on the iTunes Store.
      */
-    public static class Podcast { //TODO: Move this out eventually. Possibly to core.itunes.model
+    public static class Podcast implements java.io.Serializable { //TODO: Move this out eventually. Possibly to core.itunes.model
+
+        private static final long serialVersionUID = 866610209692496362L;
 
         /**
          * The name of the podcast
