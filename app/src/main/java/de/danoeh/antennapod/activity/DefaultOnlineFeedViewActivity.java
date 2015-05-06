@@ -1,10 +1,13 @@
 package de.danoeh.antennapod.activity;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.NavUtils;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -45,6 +48,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  * a subscribe button and a spinner for choosing alternate feed URLs.
  */
 public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
+    private static final String FEEDLIST_FILTER = "DefaultOnlineFeedViewActivity_feedListReceiver";
     private static final String TAG = "DefaultOnlineFeedViewActivity";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED | EventDistributor.DOWNLOAD_QUEUED | EventDistributor.FEED_LIST_UPDATE;
@@ -53,11 +57,30 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     private String selectedDownloadUrl;
 
     private Button subscribeButton;
+    private BroadcastReceiver feedListReceiver;
 
     @Override
     protected void onCreate(Bundle arg0) {
         super.onCreate(arg0);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        feedListReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context receiverContext, Intent receiverIntent) {
+                ArrayList<Feed> feeds = (ArrayList<Feed>) receiverIntent.getSerializableExtra("feedList");
+                DefaultOnlineFeedViewActivity.this.feeds = feeds;
+                setSubscribeButtonState(feed);
+            }
+        };
+        LocalBroadcastManager.getInstance(this)
+            .registerReceiver(feedListReceiver, new IntentFilter(FEEDLIST_FILTER));
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (feedListReceiver != null) {
+            LocalBroadcastManager.getInstance(this).unregisterReceiver(feedListReceiver);
+        }
     }
 
     @Override
@@ -221,19 +244,9 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                new AsyncTask<Void, Void, List<Feed>>() {
-                    @Override
-                    protected List<Feed> doInBackground(Void... params) {
-                        return DBReader.getFeedList(DefaultOnlineFeedViewActivity.this);
-                    }
-
-                    @Override
-                    protected void onPostExecute(List<Feed> feeds) {
-                        super.onPostExecute(feeds);
-                        DefaultOnlineFeedViewActivity.this.feeds = feeds;
-                        setSubscribeButtonState(feed);
-                    }
-                }.execute();
+                Intent getFeedList = new Intent(DefaultOnlineFeedViewActivity.this,
+                        GetFeedListService.class);
+                DefaultOnlineFeedViewActivity.this.startService(getFeedList);
             } else if ((arg & EVENTS) != 0) {
                 setSubscribeButtonState(feed);
             }
@@ -244,6 +257,19 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
     protected void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(listener);
+    }
+
+    public static class GetFeedListService extends IntentService {
+        public GetFeedListService() {
+            super("GetFeedListService");
+        }
+
+        public void onHandleIntent(Intent intent) {
+            Intent resultIntent = new Intent(FEEDLIST_FILTER);
+            resultIntent.putExtra("feedList", (ArrayList<Feed>) DBReader.getFeedList(this));
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+            return;
+        }
     }
 }
 
