@@ -1,9 +1,14 @@
 package de.danoeh.antennapod.fragment;
 
+import android.app.Activity;
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,11 +33,13 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.*;
 
 //Searches iTunes store for given string and displays results in a list
 public class ItunesSearchFragment extends Fragment {
+    private static final String SEARCH_FILTER = "ItunesSearchFragment_searchReceiver";
     final String TAG = "ItunesSearchFragment";
     /**
      *  Search input field
@@ -48,6 +55,7 @@ public class ItunesSearchFragment extends Fragment {
      * List of podcasts retreived from the search
      */
     private List<Podcast> searchResults;
+    private SearchReceiver searchReceiver;
 
     /**
      * Replace adapter data with provided search results from SearchTask.
@@ -70,6 +78,22 @@ public class ItunesSearchFragment extends Fragment {
      */
     public ItunesSearchFragment() {
         // Required empty public constructor
+    }
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        searchReceiver = new SearchReceiver();
+        LocalBroadcastManager.getInstance(activity)
+            .registerReceiver(searchReceiver, new IntentFilter(SEARCH_FILTER));
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        if (searchReceiver != null) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(searchReceiver);
+        }
     }
 
     @Override
@@ -114,7 +138,9 @@ public class ItunesSearchFragment extends Fragment {
                 //This prevents onQueryTextSubmit() from being called twice when keyboard is used
                 //to submit the query.
                 searchView.clearFocus();
-                new SearchTask(s).execute();
+                Intent search = new Intent(getActivity(), SearchService.class);
+                search.putExtra("query", s);
+                getActivity().startService(search);
                 return false;
             }
 
@@ -130,7 +156,17 @@ public class ItunesSearchFragment extends Fragment {
     /**
      * Search the iTunes store for podcasts using the given query
      */
-    class SearchTask extends AsyncTask<Void,Void,Void> {
+    class SearchReceiver extends BroadcastReceiver {
+
+        //Save the data and update the list
+        @Override
+        public void onReceive(Context receiverContext, Intent receiverIntent) {
+            ArrayList<Podcast> taskData = (ArrayList<Podcast>) receiverIntent.getSerializableExtra("taskData");
+            updateData(taskData);
+        }
+    }
+
+    public static class SearchService extends IntentService {
         /**
          * Incomplete iTunes API search URL
          */
@@ -139,32 +175,22 @@ public class ItunesSearchFragment extends Fragment {
         /**
          * Search terms
          */
-        final String query;
+        private String query;
 
         /**
          * Search result
          */
-        final List<Podcast> taskData = new ArrayList<>();
+        final ArrayList<Podcast> taskData = new ArrayList<>();
 
-        /**
-         * Constructor
-         *
-         * @param query Search string
-         */
-        public SearchTask(String query){
-            this.query = query;
+        public SearchService() {
+            super("SearchService");
         }
 
-        //Get the podcast data
-        @Override
-        protected Void doInBackground(Void... params) {
-
-            //Spaces in the query need to be replaced with '+' character.
+        public void onHandleIntent(Intent intent) {
+            query = intent.getStringExtra("query");
             String formattedUrl = String.format(apiUrl, query).replace(' ', '+');
-
             HttpClient client = new DefaultHttpClient();
             HttpGet get = new HttpGet(formattedUrl);
-
             try {
                 HttpResponse response = client.execute(get);
                 String resultString = EntityUtils.toString(response.getEntity());
@@ -176,18 +202,12 @@ public class ItunesSearchFragment extends Fragment {
                     Podcast podcast = new Podcast(podcastJson);
                     taskData.add(podcast);
                 }
-
             } catch (IOException | JSONException e) {
                 e.printStackTrace();
             }
-            return null;
-        }
-
-        //Save the data and update the list
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-            updateData(taskData);
+            Intent resultIntent = new Intent(SEARCH_FILTER);
+            resultIntent.putExtra("taskData", taskData);
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
         }
     }
 }
