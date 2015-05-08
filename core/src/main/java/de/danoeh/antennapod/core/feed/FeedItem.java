@@ -63,6 +63,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private List<Chapter> chapters;
     private FeedImage image;
 
+    private boolean autoDownload = true;
+
     public FeedItem() {
         this.read = true;
         this.flattrStatus = new FlattrStatus();
@@ -74,7 +76,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     FlattrStatus flattrStatus, boolean hasChapters, FeedImage image, boolean read,
-                    String itemIdentifier) {
+                    String itemIdentifier, boolean autoDownload) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -86,6 +88,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.image = image;
         this.read = read;
         this.itemIdentifier = itemIdentifier;
+        this.autoDownload = autoDownload;
     }
 
     /**
@@ -386,6 +389,22 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public boolean hasChapters() {
         return hasChapters;
+    }
+
+    public void setAutoDownload(boolean autoDownload) {
+        this.autoDownload = autoDownload;
+    }
+
+    public boolean getAutoDownload() {
+        return this.autoDownload;
+    }
+
+    public boolean isAutoDownloadable() {
+        return this.hasMedia() &&
+                false == this.getMedia().isPlaying() &&
+                false == this.getMedia().isDownloaded() &&
+                false == this.isRead() &&
+                this.getAutoDownload();
     }
 
     @Override

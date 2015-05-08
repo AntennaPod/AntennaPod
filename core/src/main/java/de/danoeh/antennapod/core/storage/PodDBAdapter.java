@@ -186,7 +186,8 @@ public class PodDBAdapter {
             + KEY_MEDIA + " INTEGER," + KEY_FEED + " INTEGER,"
             + KEY_HAS_CHAPTERS + " INTEGER," + KEY_ITEM_IDENTIFIER + " TEXT,"
             + KEY_FLATTR_STATUS + " INTEGER,"
-            + KEY_IMAGE + " INTEGER)";
+            + KEY_IMAGE + " INTEGER,"
+            + KEY_AUTO_DOWNLOAD + " INTEGER)";
 
     public static final String CREATE_TABLE_FEED_IMAGES = "CREATE TABLE "
             + TABLE_NAME_FEED_IMAGES + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -286,7 +287,9 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
             TABLE_NAME_FEED_ITEMS + "." + KEY_FLATTR_STATUS,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE};
+            TABLE_NAME_FEED_ITEMS + "." + KEY_IMAGE,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_AUTO_DOWNLOAD
+    };
 
     /**
      * Contains FEEDITEM_SEL_FI_SMALL as comma-separated list. Useful for raw queries.
@@ -696,6 +699,7 @@ public class PodDBAdapter {
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
+        values.put(KEY_AUTO_DOWNLOAD, item.getAutoDownload());
         if (item.hasItemImage()) {
             if (item.getImage().getId() == 0) {
                 setImage(item.getImage());
@@ -785,6 +789,13 @@ public class PodDBAdapter {
                     new String[]{String.valueOf(status.getId())});
         }
         return status.getId();
+    }
+
+    public void setFeedItemAutoDownload(FeedItem feedItem, boolean autoDownload) {
+        ContentValues values = new ContentValues();
+        values.put(KEY_AUTO_DOWNLOAD, autoDownload);
+        db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
+                    new String[] { String.valueOf(feedItem.getId()) } );
     }
 
     public long getDownloadLogSize() {

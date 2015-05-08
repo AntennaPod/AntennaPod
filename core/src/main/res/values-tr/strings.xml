@@ -112,7 +112,7 @@
   <string name="download_error_unknown_host">Bilinmeyen sunucu</string>
   <string name="download_error_unauthorized">Yetkilendirme hatası</string>
   <string name="cancel_all_downloads_label">Bütün indirmeleri iptal et</string>
-  <string name="download_cancelled_msg">İndirme iptal edildi</string>
+  <string name="download_canceled_msg">İndirme iptal edildi</string>
   <string name="download_report_title">İndirme tamamlandı</string>
   <string name="download_error_malformed_url">Bozuk URL</string>
   <string name="download_error_io_error">G/Ç Hatası</string>

@@ -1039,4 +1039,28 @@ public class DBWriter {
             }
         });
     }
+
+    /**
+     * Sets the 'auto_download'-attribute of specific FeedItem.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedItem  FeedItem.
+     */
+    public static Future<?> setFeedItemAutoDownload(final Context context, final FeedItem feedItem,
+                                                    final boolean autoDownload) {
+        Log.d(TAG, "FeedItem[id=" + feedItem.getId() + "] SET auto_download " + autoDownload);
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemAutoDownload(feedItem, autoDownload);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+
+    }
 }

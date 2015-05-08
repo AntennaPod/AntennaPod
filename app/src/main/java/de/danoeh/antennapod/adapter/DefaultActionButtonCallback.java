@@ -12,9 +12,11 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
-import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -75,7 +77,12 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 }
             } else if (isDownloading) {
                 DownloadRequester.getInstance().cancelDownload(context, media);
-                Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
+                if(UserPreferences.isEnableAutodownload()) {
+                    DBWriter.setFeedItemAutoDownload(context, media.getItem(), false);
+                    Toast.makeText(context, R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
+                } else {
+                    Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
+                }
             } else { // media is downloaded
                 if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {
                     context.sendBroadcast(new Intent(PlaybackService.ACTION_PAUSE_PLAY_CURRENT_EPISODE));

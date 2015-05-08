@@ -85,7 +85,7 @@
   <string name="download_error_connection_error">Erro de conexão</string>
   <string name="download_error_unknown_host">Host desconhecido</string>
   <string name="cancel_all_downloads_label">Cancelar todos os downloads</string>
-  <string name="download_cancelled_msg">Download cancelado</string>
+  <string name="download_canceled_msg">Download cancelado</string>
   <string name="download_report_title">Downloads finalizados</string>
   <string name="download_error_malformed_url">URL inválida</string>
   <string name="download_error_io_error">Erro de IO</string>

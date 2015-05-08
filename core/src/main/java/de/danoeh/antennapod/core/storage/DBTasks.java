@@ -428,25 +428,6 @@ public final class DBTasks {
         }
     }
 
-    static int getNumberOfUndownloadedEpisodes(
-            final List<FeedItem> queue, final List<FeedItem> unreadItems) {
-        int counter = 0;
-        for (FeedItem item : queue) {
-            if (item.hasMedia() && !item.getMedia().isDownloaded()
-                    && !item.getMedia().isPlaying()
-                    && item.getFeed().getPreferences().getAutoDownload()) {
-                counter++;
-            }
-        }
-        for (FeedItem item : unreadItems) {
-            if (item.hasMedia() && !item.getMedia().isDownloaded()
-                    && item.getFeed().getPreferences().getAutoDownload()) {
-                counter++;
-            }
-        }
-        return counter;
-    }
-
     /**
      * Looks for undownloaded episodes in the queue or list of unread items and request a download if
      * 1. Network is available
@@ -599,8 +580,7 @@ public final class DBTasks {
                 newFeedsList.add(newFeed);
                 resultFeeds[feedIdx] = newFeed;
             } else {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Feed with title " + newFeed.getTitle()
+                Log.d(TAG, "Feed with title " + newFeed.getTitle()
                             + " already exists. Syncing new with existing one.");
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
@@ -608,21 +588,17 @@ public final class DBTasks {
                 final boolean markNewItemsAsUnread;
                 if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                     if (savedFeed.compareWithOther(newFeed)) {
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG,
-                                    "Feed has updated attribute values. Updating old feed's attributes");
+                        Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
                         savedFeed.updateFromOther(newFeed);
                     }
                     markNewItemsAsUnread = true;
                 } else {
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
+                    Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
                     markNewItemsAsUnread = false;
                     savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
+                    Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
                     savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
                 }
                 // Look for new or updated Items
@@ -634,6 +610,7 @@ public final class DBTasks {
                         // item is new
                         final int i = idx;
                         item.setFeed(savedFeed);
+                        item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
                         savedFeed.getItems().add(i, item);
                         if (markNewItemsAsUnread) {
                             item.setRead(false);

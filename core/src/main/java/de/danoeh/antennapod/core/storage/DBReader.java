@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.util.Log;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -228,7 +230,9 @@ public final class DBReader {
                         itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0,
                         image,
                         (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0),
-                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER));
+                        itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER),
+                        itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD)) > 0
+                        );
 
                 itemIds.add(String.valueOf(item.getId()));
 
@@ -719,6 +723,31 @@ public final class DBReader {
             }
         }
         return item;
+    }
+
+    static List<FeedItem> getFeedItems(final Context context, PodDBAdapter adapter,  final long... itemIds) {
+
+        String[] ids = new String[itemIds.length];
+        for(int i = 0; i < itemIds.length; i++) {
+            long itemId = itemIds[i];
+            ids[i] = Long.toString(itemId);
+        }
+
+        List<FeedItem> result;
+
+        Cursor itemCursor = adapter.getFeedItemCursor(ids);
+        if (itemCursor.moveToFirst()) {
+            result = extractItemlistFromCursor(adapter, itemCursor);
+            loadFeedDataOfFeedItemlist(context, result);
+            for(FeedItem item : result) {
+                if (item.hasChapters()) {
+                    loadChaptersOfFeedItem(adapter, item);
+                }
+            }
+        } else {
+            result = Collections.emptyList();
+        }
+        return result;
 
     }
 
@@ -740,7 +769,6 @@ public final class DBReader {
         FeedItem item = getFeedItem(context, itemId, adapter);
         adapter.close();
         return item;
-
     }
 
     static FeedItem getFeedItem(final Context context, final String podcastUrl, final String episodeUrl, PodDBAdapter adapter) {
@@ -759,6 +787,26 @@ public final class DBReader {
         }
         return item;
     }
+
+    /**
+     * Loads specific FeedItems from the database. This method canbe used for loading more
+     * than one FeedItem
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param itemIds  The IDs of the FeedItems
+     * @return The FeedItems or an empty list if none of the FeedItems could be found. All FeedComponent-attributes
+     * as well as chapter marks of the FeedItems will also be loaded from the database.
+     */
+    public static List<FeedItem> getFeedItems(final Context context, final long... itemIds) {
+        Log.d(TAG, "Loading feeditem with ids: " + StringUtils.join(itemIds, ","));
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        List<FeedItem> items = getFeedItems(context, adapter, itemIds);
+        adapter.close();
+        return items;
+    }
+
 
     /**
      * Returns credentials based on image URL
