@@ -81,6 +81,12 @@
             android:key="prefPauseForFocusLoss"
             android:summary="@string/pref_pausePlaybackForFocusLoss_sum"
             android:title="@string/pref_pausePlaybackForFocusLoss_title" />
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefResumeAfterCall"
+            android:summary="@string/pref_resumeAfterCall_sum"
+            android:title="@string/pref_resumeAfterCall_title"/>
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">

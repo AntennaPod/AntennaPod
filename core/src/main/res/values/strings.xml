@@ -385,6 +385,8 @@
     <string name="set_to_default_folder">Choose default folder</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
+    <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
+    <string name="pref_resumeAfterCall_title">Resume after call</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>

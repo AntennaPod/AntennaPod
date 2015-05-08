@@ -60,6 +60,7 @@ public class UserPreferences implements
     private static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_PLAYBACK_SPEED_ARRAY = "prefPlaybackSpeedArray";
     public static final String PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS = "prefPauseForFocusLoss";
+    public static final String PREF_RESUME_AFTER_CALL = "prefResumeAfterCall";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     private static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
@@ -98,6 +99,7 @@ public class UserPreferences implements
     private String playbackSpeed;
     private String[] playbackSpeedArray;
     private boolean pauseForFocusLoss;
+    private boolean resumeAfterCall;
     private int fastForwardSecs;
     private int rewindSecs;
     private boolean isFreshInstall;
@@ -164,6 +166,7 @@ public class UserPreferences implements
         playbackSpeedArray = readPlaybackSpeedArray(sp.getString(
                 PREF_PLAYBACK_SPEED_ARRAY, null));
         pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
+        resumeAfterCall = sp.getBoolean(PREF_RESUME_AFTER_CALL, true);
         fastForwardSecs = sp.getInt(PREF_FAST_FORWARD_SECS, 30);
         rewindSecs = sp.getInt(PREF_REWIND_SECS, 30);
         if (sp.getBoolean(PREF_EXPANDED_NOTIFICATION, false)) {
@@ -393,6 +396,11 @@ public class UserPreferences implements
         return instance.pauseForFocusLoss;
     }
 
+    public static boolean shouldResumeAfterCall() {
+        instanceAvailable();
+        return instance.resumeAfterCall;
+    }
+
     public static boolean isFreshInstall() {
         instanceAvailable();
         return instance.isFreshInstall;
@@ -454,6 +462,8 @@ public class UserPreferences implements
                     PREF_PLAYBACK_SPEED_ARRAY, null));
         } else if (key.equals(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS)) {
             pauseForFocusLoss = sp.getBoolean(PREF_PAUSE_PLAYBACK_FOR_FOCUS_LOSS, false);
+        } else if (key.equals(PREF_RESUME_AFTER_CALL)) {
+            resumeAfterCall = sp.getBoolean(PREF_RESUME_AFTER_CALL, true);
         } else if (key.equals(PREF_FAST_FORWARD_SECS)) {
             fastForwardSecs = sp.getInt(PREF_FAST_FORWARD_SECS, 30);
         } else if (key.equals(PREF_REWIND_SECS)) {

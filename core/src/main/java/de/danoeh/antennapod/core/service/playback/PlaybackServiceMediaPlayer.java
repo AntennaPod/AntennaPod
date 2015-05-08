@@ -40,7 +40,7 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
  * Manages the MediaPlayer object of the PlaybackService.
  */
 public class PlaybackServiceMediaPlayer {
-    public static final String TAG = "PlaybackServiceMediaPlayer";
+    public static final String TAG = "PlaybackSvcMediaPlayer";
 
     /**
      * Return value of some PSMP methods if the method call failed.
@@ -799,10 +799,10 @@ public class PlaybackServiceMediaPlayer {
                     // If there is an incoming call, playback should be paused permanently
                     TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
                     final int callState = (tm != null) ? tm.getCallState() : 0;
-                    Log.d(TAG, "Call state: " + callState);
                     Log.i(TAG, "Call state:" + callState);
 
-                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS || callState != TelephonyManager.CALL_STATE_IDLE) {
+                    if (focusChange == AudioManager.AUDIOFOCUS_LOSS ||
+                            (!UserPreferences.shouldResumeAfterCall() && callState != TelephonyManager.CALL_STATE_IDLE)) {
                         Log.d(TAG, "Lost audio focus");
                         pause(true, false);
                         callback.shouldStop();
