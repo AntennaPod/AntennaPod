@@ -103,7 +103,7 @@
   <string name="download_error_unknown_host">未知主机</string>
   <string name="download_error_unauthorized">认证错误</string>
   <string name="cancel_all_downloads_label">取消所有下载</string>
-  <string name="download_cancelled_msg">已取消下载</string>
+  <string name="download_canceled_msg">已取消下载</string>
   <string name="download_report_title">下载完成</string>
   <string name="download_error_malformed_url">畸形 URL</string>
   <string name="download_error_io_error">IO 错误</string>

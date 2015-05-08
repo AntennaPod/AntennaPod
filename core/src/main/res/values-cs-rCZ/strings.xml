@@ -108,7 +108,7 @@
   <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
   <string name="cancel_all_downloads_label">Zrušit všechna stahování</string>
-  <string name="download_cancelled_msg">Stahování zrušeno</string>
+  <string name="download_canceled_msg">Stahování zrušeno</string>
   <string name="download_report_title">Všechna stahování dokončena</string>
   <string name="download_error_malformed_url">Chybné URL</string>
   <string name="download_error_io_error">IO chyba</string>

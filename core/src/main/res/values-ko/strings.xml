@@ -112,7 +112,7 @@
   <string name="download_error_unknown_host">알 수 없는 호스트</string>
   <string name="download_error_unauthorized">인증 오류</string>
   <string name="cancel_all_downloads_label">모든 다운로드 취소</string>
-  <string name="download_cancelled_msg">다운로드 취소됨</string>
+  <string name="download_canceled_msg">다운로드 취소됨</string>
   <string name="download_report_title">다운로드 마침</string>
   <string name="download_error_malformed_url">URL 형식 틀림</string>
   <string name="download_error_io_error">입출력 오류</string>

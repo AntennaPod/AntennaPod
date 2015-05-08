@@ -79,9 +79,9 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 DownloadRequester.getInstance().cancelDownload(context, media);
                 if(UserPreferences.isEnableAutodownload()) {
                     DBWriter.setFeedItemAutoDownload(context, media.getItem(), false);
-                    Toast.makeText(context, R.string.download_cancelled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
                 } else {
-                    Toast.makeText(context, R.string.download_cancelled_msg, Toast.LENGTH_LONG).show();
+                    Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
                 }
             } else { // media is downloaded
                 if (item.hasMedia() && item.getMedia().isCurrentlyPlaying()) {

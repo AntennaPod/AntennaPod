@@ -86,7 +86,7 @@
   <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatie fout</string>
   <string name="cancel_all_downloads_label">Alle downloads annuleren</string>
-  <string name="download_cancelled_msg">Download geannuleerd</string>
+  <string name="download_canceled_msg">Download geannuleerd</string>
   <string name="download_report_title">Downloads afgerond</string>
   <string name="download_error_malformed_url">Misvormde URL</string>
   <string name="download_error_io_error">IO fout</string>

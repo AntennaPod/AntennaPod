@@ -86,9 +86,9 @@ public class RunningDownloadsFragment extends ListFragment {
                     UserPreferences.isEnableAutodownload()) {
                 FeedMedia media = DBReader.getFeedMedia(getActivity(), downloadRequest.getFeedfileId());
                 DBWriter.setFeedItemAutoDownload(getActivity(), media.getItem(), false);
-                Toast.makeText(getActivity(), R.string.download_cancelled_autodownload_enabled_msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_SHORT).show();
             } else {
-                Toast.makeText(getActivity(), R.string.download_cancelled_msg, Toast.LENGTH_SHORT).show();
+                Toast.makeText(getActivity(), R.string.download_canceled_msg, Toast.LENGTH_SHORT).show();
             }
         }
     };

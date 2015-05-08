@@ -112,7 +112,7 @@
   <string name="download_error_unknown_host">Okänd värd</string>
   <string name="download_error_unauthorized">Autentiseringsproblem</string>
   <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
-  <string name="download_cancelled_msg">Nedladdning avbruten</string>
+  <string name="download_canceled_msg">Nedladdning avbruten</string>
   <string name="download_report_title">Nedladdningar färdiga</string>
   <string name="download_error_malformed_url">Felaktig webbadress</string>
   <string name="download_error_io_error">IO fel</string>
