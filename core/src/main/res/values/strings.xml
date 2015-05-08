@@ -104,6 +104,7 @@
     <string name="mark_unread_label">Mark as unplayed</string>
     <string name="marked_as_read_label">Marked as played</string>
     <string name="add_to_queue_label">Add to Queue</string>
+    <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
@@ -145,6 +146,11 @@
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
+    <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily or just add to queue?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_only_add_to_queue">Only add to Queue</string>
+    <string name="confirm_mobile_download_dialog_enable_temporarily">Enable temporarily</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
