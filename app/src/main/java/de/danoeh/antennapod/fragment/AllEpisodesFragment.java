@@ -43,9 +43,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
-import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Shows unread or recently published episodes
@@ -70,14 +68,13 @@ public class AllEpisodesFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progLoading;
 
-    private List<FeedItem> unreadItems;
-    private List<FeedItem> recentItems;
+    private List<FeedItem> episodes;
     private LongList queueAccess;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
-    private boolean showOnlyNewEpisodes = false;
+    private final boolean showOnlyNewEpisodes;
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
@@ -225,7 +222,7 @@ public class AllEpisodesFragment extends Fragment {
         if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
             if (menuItem != null) {
-                menuItem.setVisible(unreadItems != null && !unreadItems.isEmpty());
+                menuItem.setVisible(episodes != null && !episodes.isEmpty());
             }
         }
     }
@@ -345,7 +342,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public int getCount() {
             if (itemsLoaded) {
-                return (showOnlyNewEpisodes) ? unreadItems.size() : recentItems.size();
+                return episodes.size();
             }
             return 0;
         }
@@ -353,7 +350,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public FeedItem getItem(int position) {
             if (itemsLoaded) {
-                return (showOnlyNewEpisodes) ? unreadItems.get(position) : recentItems.get(position);
+                return episodes.get(position);
             }
             return null;
         }
@@ -436,10 +433,17 @@ public class AllEpisodesFragment extends Fragment {
         protected Object[] doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return new Object[]{
-                        DBReader.getUnreadItemsList(context),
-                        DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        DBReader.getQueueIDList(context)};
+                if(showOnlyNewEpisodes) {
+                    return new Object[] {
+                            DBReader.getNewItemsList(context),
+                            DBReader.getQueueIDList(context)
+                    };
+                } else {
+                    return new Object[]{
+                            DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
+                            DBReader.getQueueIDList(context)
+                    };
+                }
             } else {
                 return null;
             }
@@ -452,9 +456,8 @@ public class AllEpisodesFragment extends Fragment {
             progLoading.setVisibility(View.GONE);
 
             if (lists != null) {
-                unreadItems = (List<FeedItem>) lists[0];
-                recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (LongList) lists[2];
+                episodes = (List<FeedItem>) lists[0];
+                queueAccess = (LongList) lists[1];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

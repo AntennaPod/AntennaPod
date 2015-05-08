@@ -32,7 +32,6 @@ public final class LongList {
 
     @Override
     public int hashCode() {
-        Arrays.hashCode(values);
         int hashCode = 1;
         for (int i = 0; i < size; i++) {
             long value = values[i];

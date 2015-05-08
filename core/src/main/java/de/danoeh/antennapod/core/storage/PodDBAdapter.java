@@ -27,6 +27,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
+import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
 ;
@@ -181,8 +182,8 @@ public class PodDBAdapter {
             + KEY_PASSWORD + " TEXT,"
             + KEY_IS_PAGED + " INTEGER DEFAULT 0,"
             + KEY_NEXT_PAGE_LINK + " TEXT,"
-            + KEY_HIDE + " TEXT)";
-
+            + KEY_HIDE + " TEXT,"
+            + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0)";
 
     public static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -207,7 +208,8 @@ public class PodDBAdapter {
             + " INTEGER," + KEY_SIZE + " INTEGER," + KEY_MIME_TYPE + " TEXT,"
             + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
             + KEY_FEEDITEM + " INTEGER,"
-            + KEY_PLAYED_DURATION + " INTEGER)";
+            + KEY_PLAYED_DURATION + " INTEGER,"
+            + KEY_AUTO_DOWNLOAD + " INTEGER)";
 
     public static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -1065,7 +1067,27 @@ public class PodDBAdapter {
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID},
                 KEY_READ + "=0", null, null, null, KEY_PUBDATE + " DESC");
         return c;
+    }
 
+    /**
+     * Returns a cursor which contains all feed items that are considered new.
+     * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     */
+    public final Cursor getNewItemsCursor() {
+        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
+                + " LEFT OUTER JOIN " + TABLE_NAME_QUEUE + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                + " WHERE "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
+                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
+        Cursor c = db.rawQuery(query, null);
+        return c;
     }
 
     public final Cursor getRecentlyPublishedItemsCursor(int limit) {
@@ -1223,13 +1245,20 @@ public class PodDBAdapter {
         return result;
     }
 
-    public final int getNumberOfUnreadItems(long feedId) {
-        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_ITEMS +
-                " WHERE " + KEY_FEED + " = " + feedId + " AND " + KEY_READ + " = 0";
+    public final LongIntMap getNumberOfUnreadFeedItems(long... feedIds) {
+        final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_FEED + " IN (" + StringUtils.join(feedIds, ',') + ") "
+                + " AND " + KEY_READ + " = 0"
+                + " GROUP BY " + KEY_FEED;
         Cursor c = db.rawQuery(query, null);
-        int result = 0;
+        LongIntMap result = new LongIntMap(c.getCount());
         if (c.moveToFirst()) {
-            result = c.getInt(0);
+            do {
+                long feedId = c.getLong(0);
+                int count = c.getInt(1);
+                result.put(feedId, count);
+            } while(c.moveToNext());
         }
         c.close();
         return result;

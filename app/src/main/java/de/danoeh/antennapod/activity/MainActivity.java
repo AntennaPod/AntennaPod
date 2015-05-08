@@ -511,6 +511,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
         }
 
+        @Override
+        public int getNumberOfUnreadFeedItems(long feedId) {
+            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
+        }
+
     };
 
     private void loadData() {

@@ -706,5 +706,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         public int getNumberOfUnreadItems() {
             return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
         }
+
+        @Override
+        public int getNumberOfUnreadFeedItems(long feedId) {
+            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
+        }
     };
 }

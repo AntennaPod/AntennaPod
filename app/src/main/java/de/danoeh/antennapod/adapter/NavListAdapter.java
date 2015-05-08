@@ -27,7 +27,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
@@ -266,12 +265,13 @@ public class NavListAdapter extends BaseAdapter
 
         holder.title.setText(feed.getTitle());
 
-        int feedUnreadItems = DBReader.getNumberOfUnreadItems(context, feed.getId());
+
         if(feed.hasLastUpdateFailed()) {
             holder.failure.setVisibility(View.VISIBLE);
         } else {
             holder.failure.setVisibility(View.GONE);
         }
+        int feedUnreadItems = itemAccess.getNumberOfUnreadFeedItems(feed.getId());
         if(feedUnreadItems > 0) {
             holder.count.setVisibility(View.VISIBLE);
             holder.count.setText(String.valueOf(feedUnreadItems));
@@ -301,6 +301,7 @@ public class NavListAdapter extends BaseAdapter
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfUnreadItems();
+        int getNumberOfUnreadFeedItems(long feedId);
     }
 
 }
