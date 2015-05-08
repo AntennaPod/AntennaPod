@@ -41,10 +41,10 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
                 Date r = rhs.getMedia().getPlaybackCompletionDate();
 
                 if (l == null) {
-                    l = new Date(0);
+                    l = new Date();
                 }
                 if (r == null) {
-                    r = new Date(0);
+                    r = new Date();
                 }
                 return l.compareTo(r);
             }
