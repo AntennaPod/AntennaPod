@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -24,6 +25,7 @@ import android.widget.TextView;
 
 import com.mobeta.android.dslv.DragSortListView;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -311,9 +313,23 @@ public class QueueFragment extends Fragment {
         menu.findItem(R.id.move_to_bottom_item).setEnabled(!queue.isEmpty() && queue.get(queue.size() - 1) != item);
         if(item.isRead()) {
             menu.findItem(R.id.mark_read_item).setVisible(false);
-        } else {
-            menu.findItem(R.id.mark_unread_item).setVisible(false);
+        } else if(!isResettable(item)){
+            menu.findItem(R.id.reset_attributes).setVisible(false);
         }
+    }
+
+    private static boolean isResettable(FeedItem item) {
+        // TODO add auto_download
+        if(item.isRead()) {
+            return true;
+        }
+        if(item.getMedia() != null) {
+            FeedMedia media = item.getMedia();
+            if(media.getPosition() > 0 || media.getPlayedDuration() > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     @Override
@@ -345,17 +361,8 @@ public class QueueFragment extends Fragment {
                     GpodnetPreferences.enqueueEpisodeAction(actionPlay);
                 }
                 return true;
-            case R.id.mark_unread_item:
-                DBWriter.markItemRead(getActivity(), selectedItem, false, false);
-                selectedItem.setRead(false);
-                if(GpodnetPreferences.loggedIn()) {
-                    GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, GpodnetEpisodeAction.Action.NEW)
-                            .currentDeviceId()
-                            .currentTimestamp()
-                            .build();
-                    GpodnetPreferences.enqueueEpisodeAction(actionNew);
-                }
-                startItemLoader();
+            case R.id.reset_attributes:
+                showResetAttributesDialog(selectedItem);
                 return true;
             case R.id.move_to_bottom_item:
                 DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
@@ -366,6 +373,100 @@ public class QueueFragment extends Fragment {
             default:
                 return super.onContextItemSelected(item);
         }
+    }
+
+    private void showResetAttributesDialog(final FeedItem item) {
+        final String resetReadValue = "RESET_READ";
+        final String resetPositionValue = "RESET_POSITION";
+        final String activateAutoDownloadValue = "ACTIVATE_AUTO_DOWNLOAD";
+        final String unflattrValue = "UNFLATTR";
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        builder.setTitle(R.string.reset_attributes_title);
+        final List<String> resettableItems = new ArrayList<String>();
+        final List<String> resettableValues = new ArrayList<String>();
+        if(item.isRead()) {
+            resettableItems.add(getString(R.string.mark_unread_label));
+            resettableValues.add(resetReadValue);
+        }
+        // TODO
+        /*
+        if(false == item.getAutoDownload) {
+            resettableItems.add(getString(R.string.mark_unread_label));
+            resettableValues.add("ACTIVATE_AUTO_DOWNLOAD");
+        }
+
+        if(item.getFlattrStatus().getUnflattred() == false) {
+            resettableItems.add(getString(R.string.reset));
+            resettableValues.add("ACTIVATE_AUTO_DOWNLOAD");
+        }
+        */
+        if(item.getMedia() != null) {
+            FeedMedia media = item.getMedia();
+            if(media.getPosition() > 0) {
+                resettableItems.add(getString(R.string.reset_attribute_position));
+                resettableValues.add(resetPositionValue);
+            }
+        }
+
+        String[] items = resettableItems.toArray(new String[resettableItems.size()]);
+        final boolean[] checked = new boolean[items.length];
+        builder.setMultiChoiceItems(items, checked, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                checked[which] = isChecked;
+                if(resettableValues.get(which).equals(resetPositionValue) && isChecked) {
+                    AlertDialog alertDialog = (AlertDialog) dialog;
+                    int position = resettableValues.indexOf(resetReadValue);
+                    alertDialog.getListView().setItemChecked(position, true);
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                boolean markAsUnplayed = false;
+                boolean resetPosition = false;
+                boolean unflattr = false;
+                boolean activateAutoDownload = false;
+                for(int i=0; i < checked.length; i++) {
+                    if(checked[i]) {
+                        switch(resettableValues.get(i)) {
+                            case resetReadValue:
+                                markAsUnplayed = true;
+                                break;
+                            case resetPositionValue:
+                                resetPosition = true;
+                                break;
+                            case unflattrValue:
+                                unflattr = true;
+                                break;
+                            case activateAutoDownloadValue:
+                                activateAutoDownload = true;
+                        }
+                    }
+                }
+                if(markAsUnplayed) {
+                    DBWriter.markItemRead(getActivity(), item, false, resetPosition);
+                    if(GpodnetPreferences.loggedIn()) {
+                        GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(item,
+                                GpodnetEpisodeAction.Action.NEW)
+                                .currentDeviceId()
+                                .currentTimestamp()
+                                .build();
+                        GpodnetPreferences.enqueueEpisodeAction(actionNew);
+                    }
+                }
+                if(unflattr) {
+                    // TODO
+                }
+                if(activateAutoDownload) {
+                    // TODO
+                }
+            }
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
     }
 
     @Override
