@@ -14,11 +14,13 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.IconTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -58,6 +60,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
@@ -78,6 +81,7 @@ public class ItemlistFragment extends ListFragment {
     public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     protected FeedItemlistAdapter adapter;
+    private ContextMenu contextMenu;
 
     private long feedID;
     private Feed feed;
@@ -264,8 +268,59 @@ public class ItemlistFragment extends ListFragment {
         } else {
             return true;
         }
-
     }
+
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem item = itemAccess.getItem(adapterInfo.position-1);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.feeditemlist_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        contextMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, false, queue);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            // context menu doesn't contain download functionality
+            return true;
+        }
+    }
+
 
     @Override
     public void setListAdapter(ListAdapter adapter) {
@@ -280,6 +335,8 @@ public class ItemlistFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
+
+        registerForContextMenu(getListView());
 
         viewsCreated = true;
         if (itemsLoaded) {

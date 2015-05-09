@@ -121,13 +121,9 @@
     <string name="enqueue_all_new">Enqueue all</string>
     <string name="download_all">Download all</string>
     <string name="skip_episode_label">Skip episode</string>
-    <string name="reset_attributes">Reset episode ...</string>
-
-    <!-- reset attributes dialog -->
-    <string name="reset_attributes_title">Reset episode</string>
-    <string name="reset_attribute_auto_download">Activate auto download</string>
-    <string name="reset_attribute_position">Reset playback position</string>
-    <string name="reset_attribute_unflattr">Unflattr episode</string>
+    <string name="activate_auto_download">Activate auto download</string>
+    <string name="deactivate_auto_download">Deactivate auto download</string>
+    <string name="reset_position">Reset playback position</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>

@@ -270,7 +270,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                                                return;
                                            }
                                            popupMenu.getMenu().clear();
-                                           popupMenu.inflate(R.menu.feeditem_dialog);
+                                           popupMenu.inflate(R.menu.feeditem_options);
                                            if (item.hasMedia()) {
                                                FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue);
                                            } else {

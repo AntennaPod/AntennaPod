@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -22,10 +21,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobeta.android.dslv.DragSortListView;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -40,18 +39,19 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
 
@@ -70,6 +70,8 @@ public class QueueFragment extends Fragment {
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private ContextMenu contextMenu;
 
     private UndoBarController<FeedItemUndoToken> undoBarController;
 
@@ -296,6 +298,19 @@ public class QueueFragment extends Fragment {
 
     }
 
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -309,27 +324,12 @@ public class QueueFragment extends Fragment {
             menu.setHeaderTitle(item.getTitle());
         }
 
-        menu.findItem(R.id.move_to_top_item).setEnabled(!queue.isEmpty() && queue.get(0) != item);
-        menu.findItem(R.id.move_to_bottom_item).setEnabled(!queue.isEmpty() && queue.get(queue.size() - 1) != item);
-        if(item.isRead()) {
-            menu.findItem(R.id.mark_read_item).setVisible(false);
-        } else if(!isResettable(item)){
-            menu.findItem(R.id.reset_attributes).setVisible(false);
+        contextMenu = menu;
+        LongList queueIds = new LongList(queue.size());
+        for(FeedItem queueItem : queue) {
+            queueIds.add(queueItem.getId());
         }
-    }
-
-    private static boolean isResettable(FeedItem item) {
-        // TODO add auto_download
-        if(item.isRead()) {
-            return true;
-        }
-        if(item.getMedia() != null) {
-            FeedMedia media = item.getMedia();
-            if(media.getPosition() > 0 || media.getPlayedDuration() > 0) {
-                return true;
-            }
-        }
-        return false;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, false, queueIds);
     }
 
     @Override
@@ -342,132 +342,16 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        switch (item.getItemId()) {
-            case R.id.move_to_top_item:
-                DBWriter.moveQueueItemToTop(getActivity(), selectedItem.getId(), true);
-                return true;
-            case R.id.mark_read_item:
-                DBWriter.markItemRead(getActivity(), selectedItem, true, false);
-                selectedItem.setRead(true);
-                if(GpodnetPreferences.loggedIn()) {
-                    FeedMedia media = selectedItem.getMedia();
-                    GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, GpodnetEpisodeAction.Action.PLAY)
-                            .currentDeviceId()
-                            .currentTimestamp()
-                            .started(media.getDuration() / 1000)
-                            .position(media.getDuration() / 1000)
-                            .total(media.getDuration() / 1000)
-                            .build();
-                    GpodnetPreferences.enqueueEpisodeAction(actionPlay);
-                }
-                return true;
-            case R.id.reset_attributes:
-                showResetAttributesDialog(selectedItem);
-                return true;
-            case R.id.move_to_bottom_item:
-                DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
-                return true;
-            case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(getActivity(), selectedItem, false);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
         }
     }
 
-    private void showResetAttributesDialog(final FeedItem item) {
-        final String resetReadValue = "RESET_READ";
-        final String resetPositionValue = "RESET_POSITION";
-        final String activateAutoDownloadValue = "ACTIVATE_AUTO_DOWNLOAD";
-        final String unflattrValue = "UNFLATTR";
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        builder.setTitle(R.string.reset_attributes_title);
-        final List<String> resettableItems = new ArrayList<String>();
-        final List<String> resettableValues = new ArrayList<String>();
-        if(item.isRead()) {
-            resettableItems.add(getString(R.string.mark_unread_label));
-            resettableValues.add(resetReadValue);
-        }
-        // TODO
-        /*
-        if(false == item.getAutoDownload) {
-            resettableItems.add(getString(R.string.mark_unread_label));
-            resettableValues.add("ACTIVATE_AUTO_DOWNLOAD");
-        }
-
-        if(item.getFlattrStatus().getUnflattred() == false) {
-            resettableItems.add(getString(R.string.reset));
-            resettableValues.add("ACTIVATE_AUTO_DOWNLOAD");
-        }
-        */
-        if(item.getMedia() != null) {
-            FeedMedia media = item.getMedia();
-            if(media.getPosition() > 0) {
-                resettableItems.add(getString(R.string.reset_attribute_position));
-                resettableValues.add(resetPositionValue);
-            }
-        }
-
-        String[] items = resettableItems.toArray(new String[resettableItems.size()]);
-        final boolean[] checked = new boolean[items.length];
-        builder.setMultiChoiceItems(items, checked, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                checked[which] = isChecked;
-                if(resettableValues.get(which).equals(resetPositionValue) && isChecked) {
-                    AlertDialog alertDialog = (AlertDialog) dialog;
-                    int position = resettableValues.indexOf(resetReadValue);
-                    alertDialog.getListView().setItemChecked(position, true);
-                }
-            }
-        });
-        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                boolean markAsUnplayed = false;
-                boolean resetPosition = false;
-                boolean unflattr = false;
-                boolean activateAutoDownload = false;
-                for(int i=0; i < checked.length; i++) {
-                    if(checked[i]) {
-                        switch(resettableValues.get(i)) {
-                            case resetReadValue:
-                                markAsUnplayed = true;
-                                break;
-                            case resetPositionValue:
-                                resetPosition = true;
-                                break;
-                            case unflattrValue:
-                                unflattr = true;
-                                break;
-                            case activateAutoDownloadValue:
-                                activateAutoDownload = true;
-                        }
-                    }
-                }
-                if(markAsUnplayed) {
-                    DBWriter.markItemRead(getActivity(), item, false, resetPosition);
-                    if(GpodnetPreferences.loggedIn()) {
-                        GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(item,
-                                GpodnetEpisodeAction.Action.NEW)
-                                .currentDeviceId()
-                                .currentTimestamp()
-                                .build();
-                        GpodnetPreferences.enqueueEpisodeAction(actionNew);
-                    }
-                }
-                if(unflattr) {
-                    // TODO
-                }
-                if(activateAutoDownload) {
-                    // TODO
-                }
-            }
-        });
-        builder.setNegativeButton(R.string.cancel_label, null);
-        builder.create().show();
-    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
