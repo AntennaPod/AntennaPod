@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Intent;
+import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -28,6 +29,7 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.*;
 
@@ -123,6 +125,13 @@ public class ItunesSearchFragment extends Fragment {
                 return false;
             }
         });
+
+        SearchView.SearchAutoComplete textField = (SearchView.SearchAutoComplete) searchView.findViewById(de.danoeh.antennapod.R.id.search_src_text);
+        if(UserPreferences.getTheme() == de.danoeh.antennapod.R.style.Theme_AntennaPod_Dark) {
+            textField.setTextColor(Resources.getSystem().getColor(android.R.color.white));
+        } else {
+            textField.setTextColor(Resources.getSystem().getColor(android.R.color.black));
+        }
 
         return view;
     }
