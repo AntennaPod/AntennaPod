@@ -23,6 +23,9 @@
         <service
             android:name=".service.GpodnetSyncService"
             android:enabled="true" />
+        <service
+            android:name=".util.playback.PlaybackController$GetPlayedMediaIntent"
+            android:exported="false" />
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"

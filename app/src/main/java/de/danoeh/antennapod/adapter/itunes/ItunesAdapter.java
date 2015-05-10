@@ -1,9 +1,13 @@
 package de.danoeh.antennapod.adapter.itunes;
 
+import android.app.IntentService;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -24,6 +28,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 
 public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
+    private static final String FETCH_IMAGE_FILTER = "ItunesAdapter_receiver";
+
     /**
      * Related Context
      */
@@ -49,12 +55,7 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
      * Updates the given ImageView with the image in the given Podcast's imageUrl
      */
-    class FetchImageTask extends  AsyncTask<Void,Void,Bitmap>{
-        /**
-         * Current podcast
-         */
-        private final Podcast podcast;
-
+    class FetchImageReceiver extends BroadcastReceiver {
         /**
          * ImageView to be updated
          */
@@ -63,34 +64,46 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         /**
          * Constructor
          *
-         * @param podcast Podcast that has the image
          * @param imageView UI image to be updated
          */
-        FetchImageTask(Podcast podcast, ImageView imageView){
-            this.podcast = podcast;
+        FetchImageReceiver(ImageView imageView){
             this.imageView = imageView;
-        }
-
-        //Get the image from the url
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet get = new HttpGet(podcast.imageUrl);
-            try {
-                HttpResponse response = client.execute(get);
-                return BitmapFactory.decodeStream(response.getEntity().getContent());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
         }
 
         //Set the background image for the podcast
         @Override
-        protected void onPostExecute(Bitmap img) {
-            super.onPostExecute(img);
+        public void onReceive(Context receiverContext, Intent receiverIntent) {
+            Bitmap img = (Bitmap) receiverIntent.getParcelableExtra("bitmap");
             if(img!=null) {
                 imageView.setImageBitmap(img);
+            }
+        }
+    }
+
+    public static class FetchImageService extends IntentService {
+        /**
+         * Current podcast that has the image
+         */
+        Podcast podcast;
+
+        public FetchImageService() {
+            super("FetchImageService");
+        }
+
+        //Get the image from the url
+        public void onHandleIntent(Intent intent) {
+            podcast = (Podcast) intent.getSerializableExtra("podcast");
+            HttpClient client = new DefaultHttpClient();
+            HttpGet get = new HttpGet(podcast.imageUrl);
+            try {
+                HttpResponse response = client.execute(get);
+                Intent resultIntent = new Intent(FETCH_IMAGE_FILTER);
+                resultIntent.putExtra("bitmap", BitmapFactory
+                        .decodeStream(response.getEntity().getContent()));
+                LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+                return;
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
     }
@@ -121,7 +134,12 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         viewHolder.titleView.setText(podcast.title);
 
         //Update the empty imageView with the image from the feed
-        new FetchImageTask(podcast,viewHolder.coverView).execute();
+        FetchImageReceiver receiver = new FetchImageReceiver(viewHolder.coverView);
+        LocalBroadcastManager.getInstance(context)
+            .registerReceiver(receiver, new IntentFilter(FETCH_IMAGE_FILTER));
+        Intent fetchImage = new Intent(context, FetchImageService.class);
+        fetchImage.putExtra("podcast", podcast);
+        context.startService(fetchImage);
 
         //Feed the grid view
         return view;
@@ -156,7 +174,9 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
     /**
      * Represents an individual podcast on the iTunes Store.
      */
-    public static class Podcast { //TODO: Move this out eventually. Possibly to core.itunes.model
+    public static class Podcast implements java.io.Serializable { //TODO: Move this out eventually. Possibly to core.itunes.model
+
+        private static final long serialVersionUID = 866610209692496362L;
 
         /**
          * The name of the podcast

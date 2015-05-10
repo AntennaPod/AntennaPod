@@ -1,10 +1,14 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.asynctask.OpmlFeedQueuer;
+import de.danoeh.antennapod.asynctask.OpmlFeedQueuer.OpmlFeedQueuerReceiver;
 import de.danoeh.antennapod.asynctask.OpmlImportWorker;
 import de.danoeh.antennapod.core.opml.OpmlElement;
 
@@ -16,8 +20,35 @@ import java.util.ArrayList;
  * */
 public class OpmlImportBaseActivity extends ActionBarActivity {
 
+    private static final String OPML_FEED_RECEVIER = "OpmlImportBaseActivity_opmlFeedQueuerReceiver";
     private static final String TAG = "OpmlImportBaseActivity";
     private OpmlImportWorker importWorker;
+    private OpmlFeedQueuerReceiver opmlFeedQueuerReceiver;
+
+    @Override
+    protected void onCreate(android.os.Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		opmlFeedQueuerReceiver = new OpmlFeedQueuerReceiver(this) {
+			@Override
+			public void onReceive(Context receiverContext, Intent receiverIntent) {
+				super.onReceive(receiverContext, receiverIntent);
+				Intent intent = new Intent(OpmlImportBaseActivity.this, MainActivity.class);
+				intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
+						| Intent.FLAG_ACTIVITY_NEW_TASK);
+				startActivity(intent);
+			}
+		};
+		LocalBroadcastManager.getInstance(this)
+			.registerReceiver(opmlFeedQueuerReceiver, new IntentFilter(OPML_FEED_RECEVIER));
+	}
+
+    @Override
+    protected void onDestroy() {
+		super.onDestroy();
+		if (opmlFeedQueuerReceiver != null) {
+			LocalBroadcastManager.getInstance(this).unregisterReceiver(opmlFeedQueuerReceiver);
+		}
+	}
 
     /**
 	 * Handles the choices made by the user in the OpmlFeedChooserActivity and
@@ -36,19 +67,11 @@ public class OpmlImportBaseActivity extends ActionBarActivity {
 			int[] selected = data
 					.getIntArrayExtra(OpmlFeedChooserActivity.EXTRA_SELECTED_ITEMS);
 			if (selected != null && selected.length > 0) {
-				OpmlFeedQueuer queuer = new OpmlFeedQueuer(this, selected) {
-
-					@Override
-					protected void onPostExecute(Void result) {
-						super.onPostExecute(result);
-						Intent intent = new Intent(OpmlImportBaseActivity.this, MainActivity.class);
-						intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP
-								| Intent.FLAG_ACTIVITY_NEW_TASK);
-						startActivity(intent);
-					}
-
-				};
-				queuer.executeAsync();
+				Intent opmlFeedQueuer = new Intent(this, OpmlFeedQueuer.class);
+				opmlFeedQueuerReceiver.showProgDialog();
+				opmlFeedQueuer.putExtra("selection", selected);
+				opmlFeedQueuer.putExtra("INTENT_FILTER", OPML_FEED_RECEVIER);
+				this.startService(opmlFeedQueuer);
 			} else {
 				if (BuildConfig.DEBUG)
 					Log.d(TAG, "No items were selected");

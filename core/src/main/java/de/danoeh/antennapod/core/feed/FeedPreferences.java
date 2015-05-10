@@ -7,8 +7,9 @@ import org.apache.commons.lang3.StringUtils;
 /**
  * Contains preferences for a single feed.
  */
-public class FeedPreferences {
+public class FeedPreferences implements java.io.Serializable {
 
+    private static final long serialVersionUID = 4695407354058817609L;
     private long feedID;
     private boolean autoDownload;
     private String username;

@@ -96,6 +96,14 @@
             android:exported="false">
         </service>
 
+        <service android:name=".asynctask.OpmlFeedQueuer" android:exported="false"/>
+        <service android:name=".asynctask.OpmlExportWorker" android:exported="false"/>
+        <service android:name=".fragment.ItemDescriptionFragment$GetFeedItemService" android:exported="false"/>
+        <service android:name=".activity.FeedInfoActivity$GetFeedService" android:exported="false"/>
+        <service android:name=".adapter.itunes.ItunesAdapter$FetchImageService" android:exported="false"/>
+        <service android:name=".fragment.ItunesSearchFragment$SearchService" android:exported="false"/>
+        <service android:name=".activity.DefaultOnlineFeedViewActivity$GetFeedListService" android:exported="false"/>
+
         <receiver android:name=".receiver.PlayerWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>

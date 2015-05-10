@@ -2,7 +2,9 @@ package de.danoeh.antennapod.core.util.flattr;
 
 import java.util.Calendar;
 
-public class FlattrStatus {
+public class FlattrStatus implements java.io.Serializable {
+
+	private static final long serialVersionUID = -1077957744810896350L;
 	public static final int STATUS_UNFLATTERED = 0;
 	public static final int STATUS_QUEUE = 1;
 	public static final int STATUS_FLATTRED = 2;

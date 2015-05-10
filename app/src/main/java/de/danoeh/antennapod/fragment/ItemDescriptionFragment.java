@@ -2,16 +2,20 @@ package de.danoeh.antennapod.fragment;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.IntentService;
 import android.content.ActivityNotFoundException;
+import android.content.BroadcastReceiver;
 import android.content.ClipData;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.LocalBroadcastManager;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.ContextMenu.ContextMenuInfo;
@@ -42,6 +46,7 @@ import de.danoeh.antennapod.core.util.playback.Timeline;
  */
 public class ItemDescriptionFragment extends Fragment {
 
+    private static final String GET_FEEDITEM_FILTER = "ItemDescriptionFragment_getFeedItemReceiver";
     private static final String TAG = "ItemDescriptionFragment";
 
     private static final String PREF = "ItemDescriptionFragmentPrefs";
@@ -58,6 +63,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     private ShownotesProvider shownotesProvider;
     private Playable media;
+    private BroadcastReceiver getFeedItemReceiver;
 
 
     private AsyncTask<Void, Void, Void> webViewLoader;
@@ -165,6 +171,17 @@ public class ItemDescriptionFragment extends Fragment {
         super.onAttach(activity);
         if (BuildConfig.DEBUG)
             Log.d(TAG, "Fragment attached");
+
+        getFeedItemReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context receiverContext, Intent receiverIntent) {
+                FeedItem feedItem = (FeedItem) receiverIntent.getSerializableExtra("feedItem");
+                shownotesProvider = feedItem;
+                startLoader();
+            }
+        };
+        LocalBroadcastManager.getInstance(getActivity())
+            .registerReceiver(getFeedItemReceiver, new IntentFilter(GET_FEEDITEM_FILTER));
     }
 
     @Override
@@ -174,6 +191,9 @@ public class ItemDescriptionFragment extends Fragment {
             Log.d(TAG, "Fragment detached");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
+        }
+        if (getFeedItemReceiver != null) {
+            LocalBroadcastManager.getInstance(getActivity()).unregisterReceiver(getFeedItemReceiver);
         }
     }
 
@@ -212,25 +232,10 @@ public class ItemDescriptionFragment extends Fragment {
             shownotesProvider = media;
             startLoader();
         } else if (args.containsKey(ARG_FEEDITEM_ID)) {
-            AsyncTask<Void, Void, FeedItem> itemLoadTask = new AsyncTask<Void, Void, FeedItem>() {
-
-                @Override
-                protected FeedItem doInBackground(Void... voids) {
-                    return DBReader.getFeedItem(getActivity(), getArguments().getLong(ARG_FEEDITEM_ID));
-                }
-
-                @Override
-                protected void onPostExecute(FeedItem feedItem) {
-                    super.onPostExecute(feedItem);
-                    shownotesProvider = feedItem;
-                    startLoader();
-                }
-            };
-            if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-                itemLoadTask.executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-            } else {
-                itemLoadTask.execute();
-            }
+            final long arg = getArguments().getLong(ARG_FEEDITEM_ID);
+            Intent getFeedItem = new Intent(getActivity(), GetFeedItemService.class);
+            getFeedItem.putExtra("arg", arg);
+            getActivity().startService(getFeedItem);
         }
 
 
@@ -458,5 +463,18 @@ public class ItemDescriptionFragment extends Fragment {
 
     public interface ItemDescriptionFragmentCallback {
         public PlaybackController getPlaybackController();
+    }
+
+    public static class GetFeedItemService extends IntentService {
+        public GetFeedItemService() {
+            super("GetFeedItemService");
+        }
+
+        public void onHandleIntent(Intent intent) {
+            long arg = intent.getLongExtra("arg", 0);
+            Intent resultIntent = new Intent(GET_FEEDITEM_FILTER);
+            resultIntent.putExtra("feedItem", DBReader.getFeedItem(this, arg));
+            LocalBroadcastManager.getInstance(this).sendBroadcast(resultIntent);
+        }
     }
 }
