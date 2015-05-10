@@ -29,6 +29,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -1063,4 +1064,28 @@ public class DBWriter {
         });
 
     }
+
+    /**
+     * Set filter of the feed
+     *
+     * @param context     Used for opening a database connection.
+     * @param feedId  The feed's ID
+     * @param filterValues Values that represent properties to filter by
+     */
+    public static Future<?> setFeedItemsFilter(final Context context, final long feedId,
+                                               final List<String> filterValues) {
+        Log.d(TAG, "setFeedFilter");
+
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemFilter(feedId, filterValues);
+                adapter.close();
+                EventBus.getDefault().post(new FeedEvent(FeedEvent.Action.FILTER_CHANGED, feedId));
+            }
+        });
+    }
+
 }

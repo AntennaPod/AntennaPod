@@ -45,7 +45,6 @@ public class UserPreferences implements
     public static final String PREF_UPDATE_INTERVAL = "prefAutoUpdateIntervall";
     public static final String PREF_PARALLEL_DOWNLOADS = "prefParallelDownloads";
     public static final String PREF_MOBILE_UPDATE = "prefMobileUpdate";
-    public static final String PREF_DISPLAY_ONLY_EPISODES = "prefDisplayOnlyEpisodes";
     public static final String PREF_AUTO_DELETE = "prefAutoDelete";
     public static final String PREF_SMART_MARK_AS_PLAYED_SECS = "prefSmartMarkAsPlayedSecs";
     public static final String PREF_AUTO_FLATTR = "pref_auto_flattr";
@@ -84,7 +83,6 @@ public class UserPreferences implements
     private boolean downloadMediaOnWifiOnly;
     private long updateInterval;
     private boolean allowMobileUpdate;
-    private boolean displayOnlyEpisodes;
     private boolean autoDelete;
     private int smartMarkAsPlayedSecs;
     private boolean autoFlattr;
@@ -146,7 +144,6 @@ public class UserPreferences implements
         updateInterval = readUpdateInterval(sp.getString(PREF_UPDATE_INTERVAL,
                 "0"));
         allowMobileUpdate = sp.getBoolean(PREF_MOBILE_UPDATE, false);
-        displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES, false);
         autoDelete = sp.getBoolean(PREF_AUTO_DELETE, false);
         smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
@@ -270,12 +267,6 @@ public class UserPreferences implements
     public static boolean isAllowMobileUpdate() {
         instanceAvailable();
         return instance.allowMobileUpdate;
-    }
-
-    public static boolean isDisplayOnlyEpisodes() {
-        instanceAvailable();
-        //return instance.displayOnlyEpisodes;
-        return false;
     }
 
     public static boolean isAutoDelete() {
@@ -435,9 +426,6 @@ public class UserPreferences implements
             smartMarkAsPlayedSecs = Integer.valueOf(sp.getString(PREF_SMART_MARK_AS_PLAYED_SECS, "30"));
         } else if (key.equals(PREF_AUTO_FLATTR)) {
             autoFlattr = sp.getBoolean(PREF_AUTO_FLATTR, false);
-        } else if (key.equals(PREF_DISPLAY_ONLY_EPISODES)) {
-            displayOnlyEpisodes = sp.getBoolean(PREF_DISPLAY_ONLY_EPISODES,
-                    false);
         } else if (key.equals(PREF_THEME)) {
             theme = readThemeValue(sp.getString(PREF_THEME, ""));
         } else if (key.equals(PREF_ENABLE_AUTODL_WIFI_FILTER)) {

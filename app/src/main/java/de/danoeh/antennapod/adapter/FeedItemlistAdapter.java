@@ -7,9 +7,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.*;
+import android.widget.Adapter;
+import android.widget.BaseAdapter;
+import android.widget.ImageButton;
+import android.widget.ImageView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -211,8 +216,8 @@ public class FeedItemlistAdapter extends BaseAdapter {
         notifyDataSetChanged();
     }
 
-    public static interface ItemAccess {
-        public boolean isInQueue(FeedItem item);
+    public interface ItemAccess {
+        boolean isInQueue(FeedItem item);
 
         int getItemDownloadProgressPercent(FeedItem item);
 

@@ -24,6 +24,7 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.Validate;
@@ -42,7 +43,9 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
@@ -55,7 +58,6 @@ import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.greenrobot.event.EventBus;
 
 /**
@@ -88,6 +90,8 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
+
+    private TextView txtvInformation;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -291,6 +295,13 @@ public class ItemlistFragment extends ListFragment {
         startItemLoader();
     }
 
+    public void onEvent(FeedEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if(event.feedId == feedID) {
+            startItemLoader();
+        }
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
@@ -330,6 +341,7 @@ public class ItemlistFragment extends ListFragment {
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
+        refreshHeaderView();
         setListShown(true);
         adapter.notifyDataSetChanged();
 
@@ -342,6 +354,22 @@ public class ItemlistFragment extends ListFragment {
         insideOnFragmentLoaded = false;
 
     }
+
+    private void refreshHeaderView() {
+        if(feed.getItemFilter() != null) {
+            FeedItemFilter filter = feed.getItemFilter();
+            if(filter.getValues().length > 0) {
+                txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+                Iconify.addIcons(txtvInformation);
+                txtvInformation.setVisibility(View.VISIBLE);
+            } else {
+                txtvInformation.setVisibility(View.GONE);
+            }
+        } else {
+            txtvInformation.setVisibility(View.GONE);
+        }
+    }
+
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
@@ -376,6 +404,7 @@ public class ItemlistFragment extends ListFragment {
         ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
+        txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -488,6 +517,10 @@ public class ItemlistFragment extends ListFragment {
             Context context = getActivity();
             if (context != null) {
                 Feed feed = DBReader.getFeed(context, feedID);
+                if(feed.getItemFilter() != null) {
+                    FeedItemFilter filter = feed.getItemFilter();
+                    feed.setItems(filter.filter(context, feed.getItems()));
+                }
                 LongList queue = DBReader.getQueueIDList(context);
                 return Pair.create(feed, queue);
             } else {

@@ -316,7 +316,9 @@ public final class DBReader {
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_DOWNLOADED) > 0,
                 new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_IS_PAGED) > 0,
-                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK));
+                cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK),
+                cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE))
+                );
 
         if (image != null) {
             image.setOwner(feed);

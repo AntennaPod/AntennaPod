@@ -133,6 +133,8 @@ public class StorageCallbacksImpl implements StorageCallbacks {
                     + " FROM " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " WHERE " + PodDBAdapter.TABLE_NAME_FEEDS + "." + PodDBAdapter.KEY_ID
                     + " = " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_FEED + ")");
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                    + " ADD COLUMN " + PodDBAdapter.KEY_HIDE + " TEXT");
         }
     }
 }

@@ -23,10 +23,10 @@ import de.danoeh.antennapod.core.util.ShareUtils;
  * Handles interactions with the FeedItemMenu.
  */
 public class FeedItemMenuHandler {
+
     private static final String TAG = "FeedItemMenuHandler";
 
     private FeedItemMenuHandler() {
-
     }
 
     /**

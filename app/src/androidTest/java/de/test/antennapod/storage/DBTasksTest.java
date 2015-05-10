@@ -4,6 +4,14 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.InstrumentationTestCase;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -13,14 +21,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static de.test.antennapod.storage.DBTestUtils.*;
+import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
 /**
  * Test class for DBTasks
@@ -296,7 +297,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final Context context = getInstrumentation().getTargetContext();
         UserPreferences.setUpdateInterval(context, expirationTime);
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null);
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
