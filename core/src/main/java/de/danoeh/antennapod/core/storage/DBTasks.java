@@ -302,6 +302,7 @@ public final class DBTasks {
      */
     public static void refreshFeed(Context context, Feed feed)
             throws DownloadRequestException {
+        Log.d(TAG, "id " + feed.getId());
         refreshFeed(context, feed, false);
     }
 

@@ -302,8 +302,6 @@ public class PodDBAdapter {
     public static final int IDX_FEED_SEL_STD_NEXT_PAGE_LINK = 17;
     public static final int IDX_FEED_SEL_PREFERENCES_USERNAME = 18;
     public static final int IDX_FEED_SEL_PREFERENCES_PASSWORD = 19;
-    public static final int IDX_FEED_SEL_STD_LAST_UPDATE_FAILED = 20;
-
 
     /**
      * Select all columns from the feeditems-table except description and
@@ -810,9 +808,10 @@ public class PodDBAdapter {
     }
 
     public void setFeedLastUpdateFailed(long feedId, boolean failed) {
-        ContentValues values = new ContentValues();
-        values.put(KEY_LAST_UPDATE_FAILED, failed ? 1 : 0);
-        db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
+        final String sql = "UPDATE " + TABLE_NAME_FEEDS
+                + " SET " + KEY_LAST_UPDATE_FAILED+ "=" + (failed ? "1" : "0")
+                + " WHERE " + KEY_ID + "="+ feedId;
+        db.execSQL(sql);
     }
 
     /**

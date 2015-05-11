@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -41,8 +43,10 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 
 /**
@@ -67,6 +71,7 @@ public class AllEpisodesFragment extends Fragment {
     private AllEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+    private ContextMenu contextMenu;
 
     private List<FeedItem> episodes;
     private LongList queuedItemsIds;
@@ -293,6 +298,8 @@ public class AllEpisodesFragment extends Fragment {
             }
         });
 
+        registerForContextMenu(listView);
+
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
             txtvEmpty.setVisibility(View.GONE);
@@ -305,6 +312,55 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         return root;
+    }
+
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        FeedItem item = itemAccess.getItem(adapterInfo.position);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.allepisodes_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        contextMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
+        }
     }
 
     private void onFragmentLoaded() {

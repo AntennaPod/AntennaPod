@@ -319,7 +319,7 @@ public final class DBReader {
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_IS_PAGED) > 0,
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK),
                 cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE)),
-                cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_LAST_UPDATE_FAILED) > 0
+                cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED)) > 0
                 );
 
         if (image != null) {

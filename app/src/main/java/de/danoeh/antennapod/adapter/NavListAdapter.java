@@ -277,7 +277,7 @@ public class NavListAdapter extends BaseAdapter
             holder.count.setText(String.valueOf(feedUnreadItems));
             holder.count.setTypeface(holder.title.getTypeface());
         } else {
-            holder.count.setVisibility(View.GONE);
+            holder.count.setVisibility(View.INVISIBLE);
         }
         return convertView;
     }

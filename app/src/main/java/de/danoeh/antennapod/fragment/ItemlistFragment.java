@@ -26,6 +26,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.joanzapata.android.iconify.Iconify;
@@ -301,7 +302,7 @@ public class ItemlistFragment extends ListFragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, false, queuedItemsIds);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
@@ -428,6 +429,10 @@ public class ItemlistFragment extends ListFragment {
         if(feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if(filter.getValues().length > 0) {
+                if(feed.hasLastUpdateFailed()) {
+                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
+                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
+                }
                 txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setVisibility(View.VISIBLE);
