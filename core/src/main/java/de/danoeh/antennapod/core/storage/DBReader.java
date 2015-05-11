@@ -178,8 +178,7 @@ public final class DBReader {
      */
     public static List<FeedItem> getFeedItemList(Context context,
                                                  final Feed feed) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
+        Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -319,7 +318,7 @@ public final class DBReader {
                 new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_IS_PAGED) > 0,
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK),
-                cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE))
+                cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE)),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_LAST_UPDATE_FAILED) > 0
                 );
 
@@ -521,15 +520,16 @@ public final class DBReader {
      * @return A list of IDs of the FeedItems whose 'read'-attribute is set to false. This method should be preferred
      * over {@link #getUnreadItemsList(android.content.Context)} if the FeedItems in the UnreadItems list are not used.
      */
-    public static long[] getUnreadItemIds(Context context) {
+    public static LongList getNewItemIds(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        Cursor cursor = adapter.getUnreadItemIdsCursor();
-        long[] itemIds = new long[cursor.getCount()];
+        Cursor cursor = adapter.getNewItemIdsCursor();
+        LongList itemIds = new LongList(cursor.getCount());
         int i = 0;
         if (cursor.moveToFirst()) {
             do {
-                itemIds[i] = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                long id = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                itemIds.add(id);
                 i++;
             } while (cursor.moveToNext());
         }

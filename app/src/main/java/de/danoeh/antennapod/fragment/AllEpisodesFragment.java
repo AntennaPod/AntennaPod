@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -64,12 +64,13 @@ public class AllEpisodesFragment extends Fragment {
 
     private String prefName;
     protected DragSortListView listView;
-    private NewEpisodesListAdapter listAdapter;
+    private AllEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
 
     private List<FeedItem> episodes;
-    private LongList queueAccess;
+    private LongList queuedItemsIds;
+    private LongList newItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -308,7 +309,8 @@ public class AllEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new NewEpisodesListAdapter(activity.get(), itemAccess, new DefaultActionButtonCallback(activity.get()));
+            listAdapter = new AllEpisodesListAdapter(activity.get(), itemAccess,
+                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
             listView.setAdapter(listAdapter);
             listView.setEmptyView(txtvEmpty);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
@@ -337,7 +339,7 @@ public class AllEpisodesFragment extends Fragment {
         }
     };
 
-    private NewEpisodesListAdapter.ItemAccess itemAccess = new NewEpisodesListAdapter.ItemAccess() {
+    private AllEpisodesListAdapter.ItemAccess itemAccess = new AllEpisodesListAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
@@ -371,7 +373,17 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public boolean isInQueue(FeedItem item) {
             if (itemsLoaded) {
-                return queueAccess.contains(item.getId());
+                return queuedItemsIds.contains(item.getId());
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean isNew(FeedItem item) {
+            if (itemsLoaded) {
+                // should actually never be called in NewEpisodesFragment, but better safe than sorry
+                return showOnlyNewEpisodes || newItemsIds.contains(item.getId());
             } else {
                 return false;
             }
@@ -436,12 +448,14 @@ public class AllEpisodesFragment extends Fragment {
                 if(showOnlyNewEpisodes) {
                     return new Object[] {
                             DBReader.getNewItemsList(context),
-                            DBReader.getQueueIDList(context)
+                            DBReader.getQueueIDList(context),
+                            null // see ItemAccess.isNew
                     };
                 } else {
                     return new Object[]{
                             DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                            DBReader.getQueueIDList(context)
+                            DBReader.getQueueIDList(context),
+                            DBReader.getNewItemIds(context)
                     };
                 }
             } else {
@@ -457,7 +471,8 @@ public class AllEpisodesFragment extends Fragment {
 
             if (lists != null) {
                 episodes = (List<FeedItem>) lists[0];
-                queueAccess = (LongList) lists[1];
+                queuedItemsIds = (LongList) lists[1];
+                newItemsIds = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

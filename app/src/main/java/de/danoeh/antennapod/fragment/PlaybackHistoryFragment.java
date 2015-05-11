@@ -226,6 +226,11 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
 
         @Override
+        public boolean isNew(FeedItem item) {
+            return false;
+        }
+
+        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {

@@ -179,7 +179,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public boolean hasNewItems(boolean enableEpisodeFilter) {
         for (FeedItem item : items) {
-            if (item.getState() == FeedItem.State.NEW) {
+            if (item.getState() == FeedItem.State.UNREAD) {
                 if (item.getMedia() != null) {
                     return true;
                 }

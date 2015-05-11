@@ -227,6 +227,28 @@ public class PodDBAdapter {
             + " TEXT," + KEY_START + " INTEGER," + KEY_FEEDITEM + " INTEGER,"
             + KEY_LINK + " TEXT," + KEY_CHAPTER_TYPE + " INTEGER)";
 
+    // SQL Statements for creating indexes
+    public static final String CREATE_INDEX_FEEDITEMS_FEED = "CREATE INDEX "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_FEED + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_FEED + ")";
+
+    public static final String CREATE_INDEX_FEEDITEMS_IMAGE = "CREATE INDEX "
+            + TABLE_NAME_FEED_ITEMS + "_" + KEY_IMAGE + " ON " + TABLE_NAME_FEED_ITEMS + " ("
+            + KEY_IMAGE + ")";
+
+    public static final String CREATE_INDEX_QUEUE_FEEDITEM = "CREATE INDEX "
+            + TABLE_NAME_QUEUE + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_QUEUE + " ("
+            + KEY_FEEDITEM + ")";
+
+    public static final String CREATE_INDEX_FEEDMEDIA_FEEDITEM = "CREATE INDEX "
+            + TABLE_NAME_FEED_MEDIA + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_FEED_MEDIA + " ("
+            + KEY_FEEDITEM + ")";
+
+    public static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
+            + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
+            + KEY_FEEDITEM + ")";
+
+
     private SQLiteDatabase db;
     private final Context context;
     private PodDBHelper helper;
@@ -1063,10 +1085,21 @@ public class PodDBAdapter {
         return c;
     }
 
-    public final Cursor getUnreadItemIdsCursor() {
-        Cursor c = db.query(TABLE_NAME_FEED_ITEMS, new String[]{KEY_ID},
-                KEY_READ + "=0", null, null, null, KEY_PUBDATE + " DESC");
-        return c;
+    public final Cursor getNewItemIdsCursor() {
+        final String query = "SELECT " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
+                + " LEFT OUTER JOIN " + TABLE_NAME_QUEUE + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                + " WHERE "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
+                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
+        return db.rawQuery(query, null);
     }
 
     /**
@@ -1085,7 +1118,8 @@ public class PodDBAdapter {
                 + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
                 + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
                 + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
-                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
+                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"  // not in queue
+                + " ORDER BY " + KEY_PUBDATE + " DESC";
         Cursor c = db.rawQuery(query, null);
         return c;
     }
@@ -1425,6 +1459,12 @@ public class PodDBAdapter {
             db.execSQL(CREATE_TABLE_DOWNLOAD_LOG);
             db.execSQL(CREATE_TABLE_QUEUE);
             db.execSQL(CREATE_TABLE_SIMPLECHAPTERS);
+
+            db.execSQL(CREATE_INDEX_FEEDITEMS_FEED);
+            db.execSQL(CREATE_INDEX_FEEDITEMS_IMAGE);
+            db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
+            db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
+            db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
         }
 
         @Override

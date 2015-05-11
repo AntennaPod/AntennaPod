@@ -9,8 +9,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -85,7 +85,9 @@ public class ItemlistFragment extends ListFragment {
 
     private long feedID;
     private Feed feed;
-    private LongList queue;
+    private LongList queuedItemsIds;
+    private LongList newItemsIds;
+
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -299,7 +301,7 @@ public class ItemlistFragment extends ListFragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, false, queue);
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, false, queuedItemsIds);
     }
 
     @Override
@@ -547,7 +549,12 @@ public class ItemlistFragment extends ListFragment {
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            return (queue != null) && queue.contains(item.getId());
+            return (queuedItemsIds != null) && queuedItemsIds.contains(item.getId());
+        }
+
+        @Override
+        public boolean isNew(FeedItem item) {
+            return (newItemsIds != null) && newItemsIds.contains(item.getId());
         }
 
         @Override
@@ -580,9 +587,9 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Long, Void, Pair<Feed,LongList>> {
+    private class ItemLoader extends AsyncTask<Long, Void, Object[]> {
         @Override
-        protected Pair<Feed,LongList> doInBackground(Long... params) {
+        protected Object[] doInBackground(Long... params) {
             long feedID = params[0];
             Context context = getActivity();
             if (context != null) {
@@ -591,19 +598,21 @@ public class ItemlistFragment extends ListFragment {
                     FeedItemFilter filter = feed.getItemFilter();
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
-                LongList queue = DBReader.getQueueIDList(context);
-                return Pair.create(feed, queue);
+                LongList queuedItemsIds = DBReader.getQueueIDList(context);
+                LongList newItemsIds = DBReader.getNewItemIds(context);
+                return new Object[] { feed, queuedItemsIds, newItemsIds };
             } else {
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(Pair<Feed,LongList> res) {
+        protected void onPostExecute(Object[] res) {
             super.onPostExecute(res);
             if (res != null) {
-                feed = res.first;
-                queue = res.second;
+                feed = (Feed) res[0];
+                queuedItemsIds = (LongList) res[1];
+                newItemsIds = res[2] == null ? null : (LongList) res[2];
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

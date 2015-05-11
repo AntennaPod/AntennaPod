@@ -88,7 +88,7 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.share_link_item, false);
         }
 
-        if (!(state == FeedItem.State.NEW || state == FeedItem.State.IN_PROGRESS)) {
+        if (!(state == FeedItem.State.UNREAD || state == FeedItem.State.IN_PROGRESS)) {
             mi.setItemVisibility(R.id.mark_read_item, false);
         }
         if (!(state == FeedItem.State.IN_PROGRESS || state == FeedItem.State.READ)) {

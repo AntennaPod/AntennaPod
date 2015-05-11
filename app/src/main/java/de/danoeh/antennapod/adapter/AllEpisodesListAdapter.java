@@ -22,19 +22,22 @@ import de.danoeh.antennapod.core.util.Converter;
 /**
  * List adapter for the list of new episodes
  */
-public class NewEpisodesListAdapter extends BaseAdapter {
+public class AllEpisodesListAdapter extends BaseAdapter {
 
     private final Context context;
     private final ItemAccess itemAccess;
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
+    private final boolean showOnlyNewEpisodes;
 
-    public NewEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
+    public AllEpisodesListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback,
+                                  boolean showOnlyNewEpisodes) {
         super();
         this.context = context;
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
+        this.showOnlyNewEpisodes = showOnlyNewEpisodes;
     }
 
     @Override
@@ -88,7 +91,7 @@ public class NewEpisodesListAdapter extends BaseAdapter {
 
         holder.title.setText(item.getTitle());
         holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
-        if (item.isRead()) {
+        if (showOnlyNewEpisodes || item.isRead() || false == itemAccess.isNew(item)) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
@@ -175,5 +178,8 @@ public class NewEpisodesListAdapter extends BaseAdapter {
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
+
+        boolean isNew(FeedItem item);
+
     }
 }

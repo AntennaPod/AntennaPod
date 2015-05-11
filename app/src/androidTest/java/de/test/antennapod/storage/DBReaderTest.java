@@ -301,7 +301,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
-    public void testGetUnreadItemIds() {
+    public void testGetNewItemIds() {
         final Context context = getInstrumentation().getTargetContext();
         final int numItems = 10;
 
@@ -310,10 +310,11 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < unread.size(); i++) {
             unreadIds[i] = unread.get(i).getId();
         }
-        long[] unreadSaved = DBReader.getUnreadItemIds(context);
+        LongList unreadSaved = DBReader.getNewItemIds(context);
         assertNotNull(unreadSaved);
-        assertTrue(unread.size() == unreadSaved.length);
-        for (long savedId : unreadSaved) {
+        assertTrue(unread.size() == unreadSaved.size());
+        for(int i=0; i < unreadSaved.size(); i++) {
+            long savedId = unreadSaved.get(i);
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {

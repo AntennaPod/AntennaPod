@@ -408,27 +408,17 @@ public class DBWriter {
 
                                     if(addToFront){
                                         queue.add(0, item);
-                                    }else{
+                                    } else {
                                         queue.add(item);
                                     }
 
                                     queueModified = true;
-                                    if (!item.isRead()) {
-                                        item.setRead(true);
-                                        itemsToSave.add(item);
-                                        unreadItemsModified = true;
-                                    }
                                 }
                             }
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
-                        }
-                        if (unreadItemsModified) {
-                            adapter.setFeedItemlist(itemsToSave);
-                            EventDistributor.getInstance()
-                                    .sendUnreadItemsUpdateBroadcast();
                         }
                     }
                     adapter.close();

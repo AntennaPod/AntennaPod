@@ -456,14 +456,6 @@ public final class DBTasks {
     }
 
     /**
-     * Adds all FeedItem objects whose 'read'-attribute is false to the queue in a separate thread.
-     */
-    public static void enqueueAllNewItems(final Context context) {
-        long[] unreadItems = DBReader.getUnreadItemIds(context);
-        DBWriter.addQueueItem(context, unreadItems);
-    }
-
-    /**
      * Returns the successor of a FeedItem in the queue.
      *
      * @param context Used for accessing the DB.

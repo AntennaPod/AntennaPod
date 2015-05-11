@@ -239,7 +239,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     public boolean isRead() {
-        return read || isInProgress();
+        return read;
     }
 
     public void setRead(boolean read) {
@@ -330,7 +330,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     public enum State {
-        NEW, IN_PROGRESS, READ, PLAYING
+        UNREAD, IN_PROGRESS, READ, PLAYING
     }
 
     public State getState() {
@@ -342,7 +342,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
                 return State.IN_PROGRESS;
             }
         }
-        return (isRead() ? State.READ : State.NEW);
+        return (isRead() ? State.READ : State.UNREAD);
     }
 
     public long getFeedId() {

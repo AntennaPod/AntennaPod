@@ -142,6 +142,12 @@ public class StorageCallbacksImpl implements StorageCallbacks {
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0");
 
+            // create indexes
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_FEED);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDITEMS_IMAGE);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_FEEDITEM);
+            db.execSQL(PodDBAdapter.CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
         }
     }
 }
