@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
 import android.net.Uri;
+import android.support.annotation.Nullable;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -188,21 +189,16 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
     /**
      * Returns the number of FeedItems.
      *
-     * @param enableEpisodeFilter true if this method should only count items with episodes if
-     *                            the 'display only episodes' - preference is set to true by the
-     *                            user.
      */
-    public int getNumOfItems(boolean enableEpisodeFilter) {
+    public int getNumOfItems() {
         return items.size();
     }
 
     /**
      * Returns the item at the specified index.
      *
-     * @param enableEpisodeFilter true if this method should ignore items without episdodes if
-     *                            the episodes filter has been enabled by the user.
      */
-    public FeedItem getItemAtIndex(boolean enableEpisodeFilter, int position) {
+    public FeedItem getItemAtIndex(int position) {
         return items.get(position);
     }
 
@@ -481,14 +477,14 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         this.nextPageLink = nextPageLink;
     }
 
-
+    @Nullable
     public FeedItemFilter getItemFilter() {
         return itemfilter;
     }
 
-    public void setFeedItemsFilter(String[] filter) {
-        if (filter != null) {
-            this.itemfilter = new FeedItemFilter(filter);
+    public void setHiddenItemProperties(String[] properties) {
+        if (properties != null) {
+            this.itemfilter = new FeedItemFilter(properties);
         }
     }
 

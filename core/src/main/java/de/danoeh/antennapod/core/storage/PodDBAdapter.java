@@ -434,7 +434,11 @@ public class PodDBAdapter {
         values.put(KEY_FLATTR_STATUS, feed.getFlattrStatus().toLong());
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
-        values.put(KEY_HIDE, StringUtils.join(feed.getItemFilter(), ","));
+        if(feed.getItemFilter() != null && feed.getItemFilter().getValues().length > 0) {
+            values.put(KEY_HIDE, StringUtils.join(feed.getItemFilter().getValues(), ","));
+        } else {
+            values.put(KEY_HIDE, "");
+        }
         values.put(KEY_LAST_UPDATE_FAILED, feed.hasLastUpdateFailed());
         if (feed.getId() == 0) {
             // Create new entry
@@ -1464,6 +1468,7 @@ public class PodDBAdapter {
             db.execSQL(CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+
         }
 
         @Override

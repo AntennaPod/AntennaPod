@@ -129,7 +129,7 @@ public class FeedMenuHandler {
         builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                feed.setFeedItemsFilter(hidden.toArray(new String[hidden.size()]));
+                feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
                 DBWriter.setFeedItemsFilter(context, feed.getId(), hidden);
             }
         });
