@@ -171,10 +171,10 @@ public final class DBTasks {
                     isRefreshing.set(false);
 
                     if (FlattrUtils.hasToken()) {
-                        if (BuildConfig.DEBUG) Log.d(TAG, "Flattring all pending things.");
+                        Log.d(TAG, "Flattring all pending things.");
                         new FlattrClickWorker(context).executeAsync(); // flattr pending things
 
-                        if (BuildConfig.DEBUG) Log.d(TAG, "Fetching flattr status.");
+                        Log.d(TAG, "Fetching flattr status.");
                         new FlattrStatusFetcher(context).start();
 
                     }
@@ -185,9 +185,7 @@ public final class DBTasks {
                 }
             }.start();
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG,
-                        "Ignoring request to refresh all feeds: Refresh lock is locked");
+            Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
     }
 
