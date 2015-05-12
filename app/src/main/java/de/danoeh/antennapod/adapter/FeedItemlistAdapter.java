@@ -139,12 +139,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
                         item.getMedia())) {
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
-                    holder.published.setVisibility(View.GONE);
                 } else {
                     if(media.getPosition() == 0) {
                         holder.episodeProgress.setVisibility(View.GONE);
                     }
-                    holder.published.setVisibility(View.VISIBLE);
                 }
 
                 TypedArray typeDrawables = context.obtainStyledAttributes(

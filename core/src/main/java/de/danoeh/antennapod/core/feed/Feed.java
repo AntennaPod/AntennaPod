@@ -173,11 +173,8 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
     /**
      * Returns true if at least one item in the itemlist is unread.
      *
-     * @param enableEpisodeFilter true if this method should only count items with episodes if
-     *                            the 'display only episodes' - preference is set to true by the
-     *                            user.
      */
-    public boolean hasNewItems(boolean enableEpisodeFilter) {
+    public boolean hasNewItems() {
         for (FeedItem item : items) {
             if (item.getState() == FeedItem.State.UNREAD) {
                 if (item.getMedia() != null) {
