@@ -1,9 +1,11 @@
 package de.danoeh.antennapod.fragment.gpodnet;
 
 import android.os.Bundle;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 
 import org.apache.commons.lang3.Validate;
 
@@ -44,8 +46,11 @@ public class SearchListFragment extends PodcastListFragment {
 
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        final SearchView sv = new SearchView(getActivity());
-        MenuItemUtils.addSearchItem(menu, sv);
+        super.onCreateOptionsMenu(menu, inflater);
+        // parent already inflated menu
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
         sv.setQueryHint(getString(R.string.gpodnet_search_hint));
         sv.setQuery(query, false);
         sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {

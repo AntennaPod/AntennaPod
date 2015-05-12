@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.ContextMenu;
@@ -65,8 +66,6 @@ public class QueueFragment extends Fragment {
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
-
-    private MenuItem queueLock;
 
     private UndoBarController<FeedItemUndoToken> undoBarController;
 
@@ -206,8 +205,9 @@ public class QueueFragment extends Fragment {
         if (itemsLoaded) {
             inflater.inflate(R.menu.queue, menu);
 
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+            MenuItemUtils.adjustTextColor(getActivity(), sv);
             sv.setQueryHint(getString(R.string.search_hint));
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -223,7 +223,7 @@ public class QueueFragment extends Fragment {
                 }
             });
 
-            MenuItemUtils.refreshLockItem(getActivity(), menu, queueLock);
+            MenuItemUtils.refreshLockItem(getActivity(), menu);
 
             isUpdatingFeeds = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }

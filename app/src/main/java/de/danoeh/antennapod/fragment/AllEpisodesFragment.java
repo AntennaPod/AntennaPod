@@ -8,6 +8,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -197,8 +198,9 @@ public class AllEpisodesFragment extends Fragment {
         if (itemsLoaded) {
             inflater.inflate(R.menu.new_episodes, menu);
 
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+            MenuItemUtils.adjustTextColor(getActivity(), sv);
             sv.setQueryHint(getString(R.string.search_hint));
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
