@@ -12,7 +12,6 @@ import android.util.Log;
 import android.util.Pair;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -22,6 +21,7 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceAuthenticationException;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
@@ -50,17 +50,38 @@ public class GpodnetSyncService extends Service {
     public static final String ARG_ACTION = "action";
 
     public static final String ACTION_SYNC = "de.danoeh.antennapod.intent.action.sync";
+    public static final String ACTION_SYNC_SUBSCRIPTIONS = "de.danoeh.antennapod.intent.action.sync_subscriptions";
+    public static final String ACTION_SYNC_ACTIONS = "de.danoeh.antennapod.intent.action.sync_ACTIONS";
 
     private GpodnetService service;
+
+    private boolean syncSubscriptions = false;
+    private boolean syncActions = false;
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         final String action = (intent != null) ? intent.getStringExtra(ARG_ACTION) : null;
-        if (action != null && action.equals(ACTION_SYNC)) {
-        Log.d(TAG, String.format("Waiting %d milliseconds before uploading changes", WAIT_INTERVAL));
-            syncWaiterThread.restart();
+        if (action != null) {
+            switch(action) {
+                case ACTION_SYNC:
+                    syncSubscriptions = true;
+                    syncActions = true;
+                    break;
+                case ACTION_SYNC_SUBSCRIPTIONS:
+                    syncSubscriptions = true;
+                    break;
+                case ACTION_SYNC_ACTIONS:
+                    syncActions = true;
+                    break;
+                default:
+                    Log.e(TAG, "Received invalid intent: action argument is invalid");
+            }
+            if(syncSubscriptions || syncActions) {
+                Log.d(TAG, String.format("Waiting %d milliseconds before uploading changes", WAIT_INTERVAL));
+                syncWaiterThread.restart();
+            }
         } else {
-            Log.e(TAG, "Received invalid intent: action argument is null or invalid");
+            Log.e(TAG, "Received invalid intent: action argument is null");
         }
         return START_FLAG_REDELIVERY;
     }
@@ -91,8 +112,14 @@ public class GpodnetSyncService extends Service {
             stopSelf();
             return;
         }
-        syncSubscriptionChanges();
-        syncEpisodeActions();
+        if(syncSubscriptions) {
+            syncSubscriptionChanges();
+            syncSubscriptions = false;
+        }
+        if(syncActions) {
+            syncEpisodeActions();
+            syncActions = false;
+        }
         stopSelf();
     }
 
@@ -100,43 +127,63 @@ public class GpodnetSyncService extends Service {
         final long timestamp = GpodnetPreferences.getLastSubscriptionSyncTimestamp();
         try {
             final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls(this);
+            Collection<String> localAdded = GpodnetPreferences.getAddedFeedsCopy();
+            Collection<String> localRemoved = GpodnetPreferences.getRemovedFeedsCopy();
             GpodnetService service = tryLogin();
 
             // first sync: download all subscriptions...
             GpodnetSubscriptionChange subscriptionChanges = service.getSubscriptionChanges(GpodnetPreferences.getUsername(),
                     GpodnetPreferences.getDeviceID(), timestamp);
-            long lastUpdate = subscriptionChanges.getTimestamp();
+            long newTimeStamp = subscriptionChanges.getTimestamp();
 
             Log.d(TAG, "Downloaded subscription changes: " + subscriptionChanges);
-            processSubscriptionChanges(localSubscriptions, subscriptionChanges);
+            processSubscriptionChanges(localSubscriptions, localAdded, localRemoved, subscriptionChanges);
 
-            Collection<String> added;
-            Collection<String> removed;
-            if (timestamp == 0) {
-                added = localSubscriptions;
-                GpodnetPreferences.removeRemovedFeeds(GpodnetPreferences.getRemovedFeedsCopy());
-                removed = Collections.emptyList();
-            } else {
-                added = GpodnetPreferences.getAddedFeedsCopy();
-                removed = GpodnetPreferences.getRemovedFeedsCopy();
+            if(timestamp == 0) {
+                // this is this apps first sync with gpodder:
+                // only submit changes gpodder has not just sent us
+                localAdded = localSubscriptions;
+                localAdded.removeAll(subscriptionChanges.getAdded());
+                localRemoved.removeAll(subscriptionChanges.getRemoved());
             }
-            if(added.size() > 0 || removed.size() > 0) {
+            if(localAdded.size() > 0 || localRemoved.size() > 0) {
                 Log.d(TAG, String.format("Uploading subscriptions, Added: %s\nRemoved: %s",
-                        added, removed));
+                        localAdded, localRemoved));
                 GpodnetUploadChangesResponse uploadResponse = service.uploadChanges(GpodnetPreferences.getUsername(),
-                        GpodnetPreferences.getDeviceID(), added, removed);
-                lastUpdate = uploadResponse.timestamp;
+                        GpodnetPreferences.getDeviceID(), localAdded, localRemoved);
+                newTimeStamp = uploadResponse.timestamp;
                 Log.d(TAG, "Upload changes response: " + uploadResponse);
-                GpodnetPreferences.removeAddedFeeds(added);
-                GpodnetPreferences.removeRemovedFeeds(removed);
+                GpodnetPreferences.removeAddedFeeds(localAdded);
+                GpodnetPreferences.removeRemovedFeeds(localRemoved);
             }
-            GpodnetPreferences.setLastSubscriptionSyncTimestamp(lastUpdate);
+            GpodnetPreferences.setLastSubscriptionSyncTimestamp(newTimeStamp);
             clearErrorNotifications();
         } catch (GpodnetServiceException e) {
             e.printStackTrace();
             updateErrorNotification(e);
         } catch (DownloadRequestException e) {
             e.printStackTrace();
+        }
+    }
+
+    private synchronized void processSubscriptionChanges(List<String> localSubscriptions,
+                                                         Collection<String> localAdded,
+                                                         Collection<String> localRemoved,
+                                                         GpodnetSubscriptionChange changes) throws DownloadRequestException {
+        // local changes are always superior to remote changes!
+        // add subscription if (1) not already subscribed and (2) not just unsubscribed
+        for (String downloadUrl : changes.getAdded()) {
+            if (false == localSubscriptions.contains(downloadUrl) &&
+                    false == localRemoved.contains(downloadUrl)) {
+                Feed feed = new Feed(downloadUrl, new Date(0));
+                DownloadRequester.getInstance().downloadFeed(this, feed);
+            }
+        }
+        // remove subscription if not just subscribed (again)
+        for (String downloadUrl : changes.getRemoved()) {
+            if(false == localAdded.contains(downloadUrl)) {
+                DBTasks.removeFeedWithDownloadUrl(GpodnetSyncService.this, downloadUrl);
+            }
         }
     }
 
@@ -173,25 +220,13 @@ public class GpodnetSyncService extends Service {
         }
     }
 
-    private synchronized void processSubscriptionChanges(List<String> localSubscriptions, GpodnetSubscriptionChange changes) throws DownloadRequestException {
-        for (String downloadUrl : changes.getAdded()) {
-            if (!localSubscriptions.contains(downloadUrl)) {
-                Feed feed = new Feed(downloadUrl, new Date(0));
-                DownloadRequester.getInstance().downloadFeed(this, feed);
-            }
-        }
-        for (String downloadUrl : changes.getRemoved()) {
-            DBTasks.removeFeedWithDownloadUrl(GpodnetSyncService.this, downloadUrl);
-        }
-    }
 
-    private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions, List<GpodnetEpisodeAction> remoteActions) throws DownloadRequestException {
+    private synchronized void processEpisodeActions(List<GpodnetEpisodeAction> localActions,
+                                                    List<GpodnetEpisodeAction> remoteActions) throws DownloadRequestException {
         if(remoteActions.size() == 0) {
             return;
         }
         Map<Pair<String, String>, GpodnetEpisodeAction> localMostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
-        Map<Pair<String, String>, GpodnetEpisodeAction> remoteMostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
-        // make sure more recent local actions are not overwritten by older remote actions
         for(GpodnetEpisodeAction action : localActions) {
             Pair key = new Pair(action.getPodcast(), action.getEpisode());
             GpodnetEpisodeAction mostRecent = localMostRecentPlayAction.get(key);
@@ -201,6 +236,9 @@ public class GpodnetSyncService extends Service {
                 localMostRecentPlayAction.put(key, action);
             }
         }
+
+        // make sure more recent local actions are not overwritten by older remote actions
+        Map<Pair<String, String>, GpodnetEpisodeAction> mostRecentPlayAction = new HashMap<Pair<String, String>, GpodnetEpisodeAction>();
         for (GpodnetEpisodeAction action : remoteActions) {
             switch (action.getAction()) {
                 case NEW:
@@ -218,11 +256,11 @@ public class GpodnetSyncService extends Service {
                     GpodnetEpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
                     if(localMostRecent == null ||
                             localMostRecent.getTimestamp().before(action.getTimestamp())) {
-                        GpodnetEpisodeAction mostRecent = remoteMostRecentPlayAction.get(key);
+                        GpodnetEpisodeAction mostRecent = mostRecentPlayAction.get(key);
                         if (mostRecent == null) {
-                            remoteMostRecentPlayAction.put(key, action);
+                            mostRecentPlayAction.put(key, action);
                         } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
-                            remoteMostRecentPlayAction.put(key, action);
+                            mostRecentPlayAction.put(key, action);
                         }
                     }
                     break;
@@ -231,10 +269,12 @@ public class GpodnetSyncService extends Service {
                     break;
             }
         }
-        for (GpodnetEpisodeAction action : remoteMostRecentPlayAction.values()) {
+        for (GpodnetEpisodeAction action : mostRecentPlayAction.values()) {
             FeedItem playItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
             if (playItem != null) {
-                playItem.getMedia().setPosition(action.getPosition() * 1000);
+                FeedMedia media = playItem.getMedia();
+                media.setPosition(action.getPosition() * 1000);
+                DBWriter.setFeedMedia(this, media);
                 if(playItem.getMedia().hasAlmostEnded()) {
                     DBWriter.markItemRead(this, playItem, true, true);
                     DBWriter.addItemToPlaybackHistory(this, playItem.getMedia());
@@ -339,6 +379,22 @@ public class GpodnetSyncService extends Service {
         if (GpodnetPreferences.loggedIn()) {
             Intent intent = new Intent(context, GpodnetSyncService.class);
             intent.putExtra(ARG_ACTION, ACTION_SYNC);
+            context.startService(intent);
+        }
+    }
+
+    public static void sendSyncSubscriptionsIntent(Context context) {
+        if (GpodnetPreferences.loggedIn()) {
+            Intent intent = new Intent(context, GpodnetSyncService.class);
+            intent.putExtra(ARG_ACTION, ACTION_SYNC_SUBSCRIPTIONS);
+            context.startService(intent);
+        }
+    }
+
+    public static void sendSyncActionsIntent(Context context) {
+        if (GpodnetPreferences.loggedIn()) {
+            Intent intent = new Intent(context, GpodnetSyncService.class);
+            intent.putExtra(ARG_ACTION, ACTION_SYNC_ACTIONS);
             context.startService(intent);
         }
     }

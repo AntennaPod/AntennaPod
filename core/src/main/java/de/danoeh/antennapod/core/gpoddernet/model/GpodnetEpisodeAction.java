@@ -258,7 +258,7 @@ public class GpodnetEpisodeAction {
         private int total = -1;
 
         public Builder(FeedItem item, Action action) {
-            this(item.getFeed().getDownload_url(), item.getItemIdentifier(), action);
+            this(item.getFeed().getDownload_url(), item.getMedia().getDownload_url(), action);
         }
 
         public Builder(String podcast, String episode, Action action) {

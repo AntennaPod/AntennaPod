@@ -173,7 +173,7 @@ public class GpodnetPreferences {
             writePreference(PREF_SYNC_REMOVED, removedFeeds);
         }
         feedListLock.unlock();
-        GpodnetSyncService.sendSyncIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
+        GpodnetSyncService.sendSyncSubscriptionsIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
     }
 
     public static void addRemovedFeed(String feed) {
@@ -186,7 +186,7 @@ public class GpodnetPreferences {
             writePreference(PREF_SYNC_ADDED, addedFeeds);
         }
         feedListLock.unlock();
-        GpodnetSyncService.sendSyncIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
+        GpodnetSyncService.sendSyncSubscriptionsIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
     }
 
     public static Set<String> getAddedFeedsCopy() {
@@ -225,6 +225,7 @@ public class GpodnetPreferences {
         ensurePreferencesLoaded();
         queuedEpisodeActions.add(action);
         writePreference(PREF_SYNC_EPISODE_ACTIONS, writeEpisodeActionsToString(queuedEpisodeActions));
+        GpodnetSyncService.sendSyncActionsIntent(ClientConfig.applicationCallbacks.getApplicationInstance());
     }
 
     public static List<GpodnetEpisodeAction> getQueuedEpisodeActions() {
