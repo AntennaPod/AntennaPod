@@ -26,7 +26,7 @@
     <item
         android:id="@+id/action_search"
         android:icon="?attr/action_search"
-        custom:showAsAction="collapseActionView|ifRoom"
+        custom:showAsAction="always"
         custom:actionViewClass="android.support.v7.widget.SearchView"
         android:title="@string/search_label"/>
 
