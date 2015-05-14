@@ -31,8 +31,8 @@ public class GpodnetMainFragment extends Fragment {
 
 
         private static final int NUM_PAGES = 2;
-        private static final int POS_TAGS = 0;
-        private static final int POS_TOPLIST = 1;
+        private static final int POS_TOPLIST = 0;
+        private static final int POS_TAGS = 1;
         private static final int POS_SUGGESTIONS = 2;
 
         Resources resources;

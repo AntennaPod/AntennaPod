@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.support.v4.util.Pair;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -187,8 +188,9 @@ public class ItemlistFragment extends ListFragment {
         if (itemsLoaded) {
             FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
 
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+            MenuItemUtils.adjustTextColor(getActivity(), sv);
             sv.setQueryHint(getString(R.string.search_hint));
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
