@@ -122,7 +122,11 @@ public class NewEpisodesListAdapter extends BaseAdapter {
                     holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 }
             }
+        } else {
+            holder.downloadProgress.setVisibility(View.GONE);
+            holder.txtvDuration.setVisibility(View.GONE);
         }
+
         if (itemAccess.isInQueue(item)) {
             holder.queueStatus.setVisibility(View.VISIBLE);
         } else {
