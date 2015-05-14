@@ -3,6 +3,7 @@ package de.test.antennapod.ui;
 import android.content.Context;
 import android.content.res.Resources;
 import android.test.ActivityInstrumentationTestCase2;
+import android.test.FlakyTest;
 
 import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
@@ -424,6 +425,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         }, Timeout.getLargeTimeout());
     }
 
+    @FlakyTest(tolerance = 3)
     public void testAbout() throws IOException {
         int numViews = 0, numLinks = 0;
         InputStream input = getActivity().getResources().getAssets().open("about.html");
