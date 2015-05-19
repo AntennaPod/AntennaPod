@@ -210,7 +210,7 @@ public class NavListAdapter extends BaseAdapter
                 holder.count.setVisibility(View.GONE);
             }
         } else if (tags.get(position).equals(NewEpisodesFragment.TAG)) {
-            int unreadItems = itemAccess.getNumberOfUnreadItems();
+            int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setVisibility(View.VISIBLE);
                 holder.count.setText(String.valueOf(unreadItems));
@@ -300,7 +300,7 @@ public class NavListAdapter extends BaseAdapter
         Feed getItem(int position);
         int getSelectedItemIndex();
         int getQueueSize();
-        int getNumberOfUnreadItems();
+        int getNumberOfNewItems();
         int getNumberOfUnreadFeedItems(long feedId);
     }
 

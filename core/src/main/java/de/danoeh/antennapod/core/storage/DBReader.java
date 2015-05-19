@@ -982,10 +982,10 @@ public final class DBReader {
      * @param context A context that is used for opening a database connection.
      * @return The number of unread items.
      */
-    public static int getNumberOfUnreadItems(final Context context) {
+    public static int getNumberOfNewItems(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        final int result = adapter.getNumberOfUnreadItems();
+        final int result = adapter.getNumberOfNewItems();
         adapter.close();
         return result;
     }
@@ -1144,15 +1144,15 @@ public final class DBReader {
                     // reverse natural order: podcast with most unplayed episodes first
                     return -1;
                 } else if(numUnreadLhs == numUnreadRhs) {
-                    return 0;
+                    return lhs.getTitle().compareTo(rhs.getTitle());
                 } else {
                     return 1;
                 }
             }
         });
         int queueSize = adapter.getQueueSize();
-        int numUnreadItems = adapter.getNumberOfUnreadItems();
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numUnreadItems, numUnreadFeedItems);
+        int numNewItems = adapter.getNumberOfNewItems();
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numUnreadFeedItems);
         adapter.close();
         return result;
     }
@@ -1160,14 +1160,14 @@ public final class DBReader {
     public static class NavDrawerData {
         public List<Feed> feeds;
         public int queueSize;
-        public int numUnreadItems;
+        public int numNewItems;
         public LongIntMap numUnreadFeedItems;
 
-        public NavDrawerData(List<Feed> feeds, int queueSize, int numUnreadItems,
+        public NavDrawerData(List<Feed> feeds, int queueSize, int numNewItems,
                              LongIntMap numUnreadFeedItems) {
             this.feeds = feeds;
             this.queueSize = queueSize;
-            this.numUnreadItems = numUnreadItems;
+            this.numNewItems = numNewItems;
             this.numUnreadFeedItems = numUnreadFeedItems;
         }
     }

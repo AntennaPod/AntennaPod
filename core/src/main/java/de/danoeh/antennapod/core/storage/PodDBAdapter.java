@@ -1270,9 +1270,20 @@ public class PodDBAdapter {
         return result;
     }
 
-    public final int getNumberOfUnreadItems() {
-        final String query = "SELECT COUNT(DISTINCT " + KEY_ID + ") AS count FROM " + TABLE_NAME_FEED_ITEMS +
-                " WHERE " + KEY_READ + " = 0";
+    public final int getNumberOfNewItems() {
+        final String query = "SELECT COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ")"
+                +" FROM " + TABLE_NAME_FEED_ITEMS
+                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
+                + " LEFT JOIN " + TABLE_NAME_QUEUE + " ON "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
+                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
+                + " WHERE "
+                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
+                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
+                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL";  // not in queue
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {
