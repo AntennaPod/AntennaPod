@@ -1,17 +1,18 @@
 package de.test.antennapod.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
-import android.widget.TextView;
 
+import com.robotium.solo.Condition;
 import com.robotium.solo.Solo;
+import com.robotium.solo.Timeout;
 
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -28,6 +29,8 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private Solo solo;
     private UITestUtils uiTestUtils;
 
+    private Context context;
+
     public PlaybackTest() {
         super(MainActivity.class);
     }
@@ -36,28 +39,33 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     public void setUp() throws Exception {
         super.setUp();
         solo = new Solo(getInstrumentation(), getActivity());
-        uiTestUtils = new UITestUtils(getInstrumentation().getTargetContext());
+        context = getInstrumentation().getContext();
+
+        uiTestUtils = new UITestUtils(context);
         uiTestUtils.setup();
+
         // create database
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.close();
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
-        prefs.edit().putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false).commit();
-        prefs.edit().putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false).commit();
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.edit()
+                .putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false)
+                .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
+                .putString(UserPreferences.PREF_HIDDEN_DRAWER_ITEMS, "")
+                .commit();
     }
 
     @Override
     public void tearDown() throws Exception {
         uiTestUtils.tearDown();
         solo.finishOpenedActivities();
-        PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+        PodDBAdapter.deleteDatabase(context);
 
         // shut down playback service
         skipEpisode();
-        getInstrumentation().getTargetContext().sendBroadcast(
-                new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
+        context.sendBroadcast(new Intent(PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
 
         super.tearDown();
     }
@@ -67,70 +75,97 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     }
 
     private void setContinuousPlaybackPreference(boolean value) {
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext());
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit().putBoolean(UserPreferences.PREF_FOLLOW_QUEUE, value).commit();
     }
 
     private void skipEpisode() {
         Intent skipIntent = new Intent(PlaybackService.ACTION_SKIP_CURRENT_EPISODE);
-        getInstrumentation().getTargetContext().sendBroadcast(skipIntent);
+        context.sendBroadcast(skipIntent);
     }
 
     private void startLocalPlayback() {
-        assertTrue(solo.waitForActivity(MainActivity.class));
         openNavDrawer();
+
         solo.clickOnText(solo.getString(R.string.all_episodes_label));
-        solo.waitForView(android.R.id.list);
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(context, 10);
+        assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+
         solo.clickOnView(solo.getView(R.id.butSecondaryAction));
-        assertTrue(solo.waitForActivity(AudioplayerActivity.class));
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return episodes.get(0).getMedia().isCurrentlyPlaying();
+            }
+        }, Timeout.getLargeTimeout());
     }
 
     private void startLocalPlaybackFromQueue() {
-        assertTrue(solo.waitForActivity(MainActivity.class));
-        openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.queue_label));
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
+        final List<FeedItem> queue = DBReader.getQueue(context);
         solo.clickOnImageButton(1);
-        assertTrue(solo.waitForActivity(AudioplayerActivity.class));
         assertTrue(solo.waitForView(solo.getView(R.id.butPlay)));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return queue.get(0).getMedia().isCurrentlyPlaying();
+            }
+        }, Timeout.getLargeTimeout());
     }
 
     public void testStartLocal() throws Exception {
         uiTestUtils.addLocalFeedData(true);
-        DBWriter.clearQueue(getInstrumentation().getTargetContext()).get();
+        DBWriter.clearQueue(context).get();
         startLocalPlayback();
-
-        solo.clickOnView(solo.getView(R.id.butPlay));
     }
 
     public void testContinousPlaybackOffSingleEpisode() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
-        DBWriter.clearQueue(getInstrumentation().getTargetContext()).get();
+        DBWriter.clearQueue(context).get();
         startLocalPlayback();
-        assertTrue(solo.waitForActivity(MainActivity.class));
     }
 
 
     public void testContinousPlaybackOffMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(false);
         uiTestUtils.addLocalFeedData(true);
-        List<FeedItem> queue = DBReader.getQueue(getInstrumentation().getTargetContext());
-        FeedItem second = queue.get(0);
+        List<FeedItem> queue = DBReader.getQueue(context);
+        final FeedItem first = queue.get(0);
+        final FeedItem second = queue.get(1);
 
         startLocalPlaybackFromQueue();
-        assertTrue(solo.waitForText(second.getTitle()));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return first.getMedia().isCurrentlyPlaying() == false;
+            }
+        }, 10000);
+        Thread.sleep(1000);
+        assertTrue(second.getMedia().isCurrentlyPlaying() == false);
     }
 
     public void testContinuousPlaybackOnMultipleEpisodes() throws Exception {
         setContinuousPlaybackPreference(true);
         uiTestUtils.addLocalFeedData(true);
-        List<FeedItem> queue = DBReader.getQueue(getInstrumentation().getTargetContext());
-        FeedItem second = queue.get(1);
+        List<FeedItem> queue = DBReader.getQueue(context);
+        final FeedItem first = queue.get(0);
+        final FeedItem second = queue.get(1);
 
         startLocalPlaybackFromQueue();
-        assertTrue(solo.waitForText(second.getTitle()));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return first.getMedia().isCurrentlyPlaying() == false;
+            }
+        }, 10000);
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return second.getMedia().isCurrentlyPlaying() == true;
+            }
+        }, 10000);
     }
 
     /**
@@ -139,14 +174,24 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private void replayEpisodeCheck(boolean followQueue) throws Exception {
         setContinuousPlaybackPreference(followQueue);
         uiTestUtils.addLocalFeedData(true);
-        DBWriter.clearQueue(getInstrumentation().getTargetContext()).get();
-        String title = ((TextView) solo.getView(R.id.txtvTitle)).getText().toString();
+        DBWriter.clearQueue(context).get();
+        final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(context, 10);
+
         startLocalPlayback();
-        assertTrue(solo.waitForText(title));
-        assertTrue(solo.waitForActivity(MainActivity.class));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return false == episodes.get(0).getMedia().isCurrentlyPlaying();
+            }
+        }, Timeout.getLargeTimeout());
+
         startLocalPlayback();
-        assertTrue(solo.waitForText(title));
-        assertTrue(solo.waitForActivity(MainActivity.class));
+        solo.waitForCondition(new Condition() {
+            @Override
+            public boolean isSatisfied() {
+                return false == episodes.get(0).getMedia().isCurrentlyPlaying();
+            }
+        }, Timeout.getLargeTimeout());
     }
 
     public void testReplayEpisodeContinuousPlaybackOn() throws Exception {

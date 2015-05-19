@@ -56,4 +56,20 @@ public class DateUtilsTest extends AndroidTestCase {
         assertEquals(900, actual.getTime()%1000);
     }
 
+    public void testParseDateWithTimezoneName() throws Exception {
+        GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 6, 31, 4);
+        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected = new Date(exp.getTimeInMillis());
+        Date actual = DateUtils.parse("Sat, 28 Mar 2015 01:31:04 EST");
+        assertEquals(expected, actual);
+    }
+
+    public void testParseDateWithTimeZoneOffset() throws Exception {
+        GregorianCalendar exp = new GregorianCalendar(2015, 2, 28, 12, 16, 12);
+        exp.setTimeZone(TimeZone.getTimeZone("UTC"));
+        Date expected = new Date(exp.getTimeInMillis());
+        Date actual = DateUtils.parse("Sat, 28 March 2015 08:16:12 -0400");
+        assertEquals(expected, actual);
+    }
+
 }

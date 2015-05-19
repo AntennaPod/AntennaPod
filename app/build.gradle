@@ -5,6 +5,7 @@ apply plugin: 'com.android.application'
 repositories {
     mavenCentral()
 }
+
 dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
@@ -14,7 +15,6 @@ dependencies {
         exclude group: 'org.json', module: 'json'
     }
     compile 'commons-io:commons-io:2.4'
-    compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     compile 'org.jsoup:jsoup:1.7.3'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
@@ -22,6 +22,7 @@ dependencies {
     compile 'com.squareup.okio:okio:1.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'com.joanzapata.android:android-iconify:1.0.9'
+    
     compile project(':core')
     compile project(':library:drag-sort-listview')
 }
