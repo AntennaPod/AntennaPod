@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -114,6 +116,11 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.statusUnread.setVisibility(View.VISIBLE);
             } else {
                 holder.statusUnread.setVisibility(View.INVISIBLE);
+            }
+            if(item.isRead()) {
+                ViewHelper.setAlpha(convertView, 0.5f);
+            } else {
+                ViewHelper.setAlpha(convertView, 1.0f);
             }
 
             holder.published.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
