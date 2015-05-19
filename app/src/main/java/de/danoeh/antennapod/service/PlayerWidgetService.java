@@ -117,11 +117,12 @@ public class PlayerWidgetService extends Service {
 
 			views.setTextViewText(R.id.txtvTitle, media.getEpisodeTitle());
 
+			String progressString = getProgressString(media);
+			if (progressString != null) {
+				views.setTextViewText(R.id.txtvProgress, progressString);
+			}
+
 			if (status == PlayerStatus.PLAYING) {
-				String progressString = getProgressString(playbackService);
-				if (progressString != null) {
-					views.setTextViewText(R.id.txtvProgress, progressString);
-				}
 				views.setImageViewResource(R.id.butPlay, R.drawable.ic_pause_white_24dp);
                 if (Build.VERSION.SDK_INT >= 15) {
                     views.setContentDescription(R.id.butPlay, getString(R.string.pause_label));
@@ -157,11 +158,10 @@ public class PlayerWidgetService extends Service {
 		return PendingIntent.getBroadcast(this, 0, startingIntent, 0);
 	}
 
-	private String getProgressString(PlaybackService ps) {
-		int position = ps.getCurrentPosition();
-		int duration = ps.getDuration();
-		if (position != PlaybackService.INVALID_TIME
-				&& duration != PlaybackService.INVALID_TIME) {
+	private String getProgressString(Playable media) {
+		int position = media.getPosition();
+		int duration = media.getDuration();
+		if (position > 0 && duration > 0) {
 			return Converter.getDurationStringLong(position) + " / "
 					+ Converter.getDurationStringLong(duration);
 		} else {
