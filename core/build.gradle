@@ -9,6 +9,8 @@ android {
         targetSdkVersion 21
         versionCode 1
         versionName "1.0"
+        testApplicationId "de.danoeh.antennapod.core.tests"
+        testInstrumentationRunner "de.danoeh.antennapod.core.tests.AntennaPodTestRunner"
     }
     buildTypes {
         release {

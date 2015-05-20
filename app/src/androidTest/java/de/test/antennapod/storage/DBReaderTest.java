@@ -376,7 +376,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(0, navDrawerData.numUnreadItems);
+        assertEquals(0, navDrawerData.numNewItems);
         assertEquals(0, navDrawerData.queueSize);
     }
 
@@ -405,7 +405,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_UNREAD, navDrawerData.numUnreadItems);
+        assertEquals(NUM_UNREAD, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }
 
