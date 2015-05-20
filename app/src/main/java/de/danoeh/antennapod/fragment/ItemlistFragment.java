@@ -9,20 +9,24 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
-import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.IconTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.joanzapata.android.iconify.Iconify;
@@ -57,6 +61,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
@@ -77,10 +82,13 @@ public class ItemlistFragment extends ListFragment {
     public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     protected FeedItemlistAdapter adapter;
+    private ContextMenu contextMenu;
 
     private long feedID;
     private Feed feed;
-    private LongList queue;
+    private LongList queuedItemsIds;
+    private LongList newItemsIds;
+
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -91,6 +99,8 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
+    
+    private IconTextView txtvFailure;
 
     private TextView txtvInformation;
 
@@ -261,8 +271,59 @@ public class ItemlistFragment extends ListFragment {
         } else {
             return true;
         }
-
     }
+
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem item = itemAccess.getItem(adapterInfo.position-1);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.feeditemlist_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        contextMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            // context menu doesn't contain download functionality
+            return true;
+        }
+    }
+
 
     @Override
     public void setListAdapter(ListAdapter adapter) {
@@ -277,6 +338,8 @@ public class ItemlistFragment extends ListFragment {
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
+
+        registerForContextMenu(getListView());
 
         viewsCreated = true;
         if (itemsLoaded) {
@@ -309,7 +372,7 @@ public class ItemlistFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
                 if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
                     updateProgressBarVisibility();
                 } else {
@@ -358,9 +421,18 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
+        if(feed.hasLastUpdateFailed()) {
+            txtvFailure.setVisibility(View.VISIBLE);
+        } else {
+            txtvFailure.setVisibility(View.GONE);
+        }
         if(feed.getItemFilter() != null) {
             FeedItemFilter filter = feed.getItemFilter();
             if(filter.getValues().length > 0) {
+                if(feed.hasLastUpdateFailed()) {
+                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
+                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
+                }
                 txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
                 Iconify.addIcons(txtvInformation);
                 txtvInformation.setVisibility(View.VISIBLE);
@@ -368,6 +440,7 @@ public class ItemlistFragment extends ListFragment {
                 txtvInformation.setVisibility(View.GONE);
             }
         } else {
+
             txtvInformation.setVisibility(View.GONE);
         }
     }
@@ -407,6 +480,7 @@ public class ItemlistFragment extends ListFragment {
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
         txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
+        txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -436,6 +510,7 @@ public class ItemlistFragment extends ListFragment {
             }
         });
     }
+
 
     private void setupFooterView() {
         if (getListView() == null || feed == null) {
@@ -469,17 +544,22 @@ public class ItemlistFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (feed != null) ? feed.getItemAtIndex(true, position) : null;
+            return (feed != null) ? feed.getItemAtIndex(position) : null;
         }
 
         @Override
         public int getCount() {
-            return (feed != null) ? feed.getNumOfItems(true) : 0;
+            return (feed != null) ? feed.getNumOfItems() : 0;
         }
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            return (queue != null) && queue.contains(item.getId());
+            return (queuedItemsIds != null) && queuedItemsIds.contains(item.getId());
+        }
+
+        @Override
+        public boolean isNew(FeedItem item) {
+            return (newItemsIds != null) && newItemsIds.contains(item.getId());
         }
 
         @Override
@@ -512,9 +592,9 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
-    private class ItemLoader extends AsyncTask<Long, Void, Pair<Feed,LongList>> {
+    private class ItemLoader extends AsyncTask<Long, Void, Object[]> {
         @Override
-        protected Pair<Feed,LongList> doInBackground(Long... params) {
+        protected Object[] doInBackground(Long... params) {
             long feedID = params[0];
             Context context = getActivity();
             if (context != null) {
@@ -523,19 +603,21 @@ public class ItemlistFragment extends ListFragment {
                     FeedItemFilter filter = feed.getItemFilter();
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
-                LongList queue = DBReader.getQueueIDList(context);
-                return Pair.create(feed, queue);
+                LongList queuedItemsIds = DBReader.getQueueIDList(context);
+                LongList newItemsIds = DBReader.getNewItemIds(context);
+                return new Object[] { feed, queuedItemsIds, newItemsIds };
             } else {
                 return null;
             }
         }
 
         @Override
-        protected void onPostExecute(Pair<Feed,LongList> res) {
+        protected void onPostExecute(Object[] res) {
             super.onPostExecute(res);
             if (res != null) {
-                feed = res.first;
-                queue = res.second;
+                feed = (Feed) res[0];
+                queuedItemsIds = (LongList) res[1];
+                newItemsIds = res[2] == null ? null : (LongList) res[2];
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

@@ -45,7 +45,7 @@ public class DBReaderTest extends InstrumentationTestCase {
     private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null, false);
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -301,7 +301,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
-    public void testGetUnreadItemIds() {
+    public void testGetNewItemIds() {
         final Context context = getInstrumentation().getTargetContext();
         final int numItems = 10;
 
@@ -310,10 +310,11 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < unread.size(); i++) {
             unreadIds[i] = unread.get(i).getId();
         }
-        long[] unreadSaved = DBReader.getUnreadItemIds(context);
+        LongList unreadSaved = DBReader.getNewItemIds(context);
         assertNotNull(unreadSaved);
-        assertTrue(unread.size() == unreadSaved.length);
-        for (long savedId : unreadSaved) {
+        assertTrue(unread.size() == unreadSaved.size());
+        for(int i=0; i < unreadSaved.size(); i++) {
+            long savedId = unreadSaved.get(i);
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
@@ -375,7 +376,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(0, navDrawerData.numUnreadItems);
+        assertEquals(0, navDrawerData.numNewItems);
         assertEquals(0, navDrawerData.queueSize);
     }
 
@@ -404,7 +405,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_UNREAD, navDrawerData.numUnreadItems);
+        assertEquals(NUM_UNREAD, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }
 

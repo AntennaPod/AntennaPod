@@ -15,7 +15,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -39,10 +38,8 @@ public class FeedMenuHandler {
             return true;
         }
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Preparing options menu");
-        menu.findItem(R.id.mark_all_read_item).setVisible(
-                selectedFeed.hasNewItems(true));
+        Log.d(TAG, "Preparing options menu");
+        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
         if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable())
             menu.findItem(R.id.support_item).setVisible(true);
         else
@@ -132,7 +129,7 @@ public class FeedMenuHandler {
         builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                feed.setFeedItemsFilter(hidden.toArray(new String[hidden.size()]));
+                feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
                 DBWriter.setFeedItemsFilter(context, feed.getId(), hidden);
             }
         });

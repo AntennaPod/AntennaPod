@@ -1060,9 +1060,11 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            if (request.isDeleteOnFailure()) {
+            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                DBWriter.setFeedLastUpdateFailed(DownloadService.this, request.getFeedfileId(), true);
+            } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            } else {
+            } else  {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");

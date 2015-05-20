@@ -8,6 +8,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 
@@ -23,6 +24,7 @@ import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.DownloadError;
+import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.comparator.DownloadStatusComparator;
 import de.danoeh.antennapod.core.util.comparator.FeedItemPubdateComparator;
@@ -176,8 +178,7 @@ public final class DBReader {
      */
     public static List<FeedItem> getFeedItemList(Context context,
                                                  final Feed feed) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
+        Log.d(TAG, "Extracting Feeditems of feed " + feed.getTitle());
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -317,7 +318,8 @@ public final class DBReader {
                 new FlattrStatus(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_FLATTR_STATUS)),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_STD_IS_PAGED) > 0,
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_STD_NEXT_PAGE_LINK),
-                cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE))
+                cursor.getString(cursor.getColumnIndex(PodDBAdapter.KEY_HIDE)),
+                cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED)) > 0
                 );
 
         if (image != null) {
@@ -489,21 +491,45 @@ public final class DBReader {
     }
 
     /**
+     * Loads a list of FeedItems that are considered new.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedItems that are considered new.
+     */
+    public static List<FeedItem> getNewItemsList(Context context) {
+        Log.d(TAG, "getNewItemsList()");
+
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+
+        Cursor itemlistCursor = adapter.getNewItemsCursor();
+        List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
+        itemlistCursor.close();
+
+        loadFeedDataOfFeedItemlist(context, items);
+
+        adapter.close();
+
+        return items;
+    }
+
+    /**
      * Loads the IDs of the FeedItems whose 'read'-attribute is set to false.
      *
      * @param context A context that is used for opening a database connection.
      * @return A list of IDs of the FeedItems whose 'read'-attribute is set to false. This method should be preferred
      * over {@link #getUnreadItemsList(android.content.Context)} if the FeedItems in the UnreadItems list are not used.
      */
-    public static long[] getUnreadItemIds(Context context) {
+    public static LongList getNewItemIds(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        Cursor cursor = adapter.getUnreadItemIdsCursor();
-        long[] itemIds = new long[cursor.getCount()];
+        Cursor cursor = adapter.getNewItemIdsCursor();
+        LongList itemIds = new LongList(cursor.getCount());
         int i = 0;
         if (cursor.moveToFirst()) {
             do {
-                itemIds[i] = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                long id = cursor.getLong(PodDBAdapter.KEY_ID_INDEX);
+                itemIds.add(id);
                 i++;
             } while (cursor.moveToNext());
         }
@@ -956,10 +982,24 @@ public final class DBReader {
      * @param context A context that is used for opening a database connection.
      * @return The number of unread items.
      */
-    public static int getNumberOfUnreadItems(final Context context) {
+    public static int getNumberOfNewItems(final Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        final int result = adapter.getNumberOfUnreadItems();
+        final int result = adapter.getNumberOfNewItems();
+        adapter.close();
+        return result;
+    }
+
+    /**
+     * Returns a map containing the number of unread items per feed
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return The number of unread items per feed.
+     */
+    public static LongIntMap getNumberOfUnreadFeedItems(final Context context, long... feedIds) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        final LongIntMap result = adapter.getNumberOfUnreadFeedItems(feedIds);
         adapter.close();
         return result;
     }
@@ -1088,9 +1128,31 @@ public final class DBReader {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         List<Feed> feeds = getFeedList(adapter);
+        long[] feedIds = new long[feeds.size()];
+        for(int i=0; i < feeds.size(); i++) {
+            feedIds[i] = feeds.get(i).getId();
+        }
+        final LongIntMap numUnreadFeedItems = adapter.getNumberOfUnreadFeedItems(feedIds);
+        Collections.sort(feeds, new Comparator<Feed>() {
+            @Override
+            public int compare(Feed lhs, Feed rhs) {
+                long numUnreadLhs = numUnreadFeedItems.get(lhs.getId());
+                Log.d(TAG, "feed with id " + lhs.getId() + " has " + numUnreadLhs + " unread items");
+                long numUnreadRhs = numUnreadFeedItems.get(rhs.getId());
+                Log.d(TAG, "feed with id " + rhs.getId() + " has " + numUnreadRhs + " unread items");
+                if(numUnreadLhs > numUnreadRhs) {
+                    // reverse natural order: podcast with most unplayed episodes first
+                    return -1;
+                } else if(numUnreadLhs == numUnreadRhs) {
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                } else {
+                    return 1;
+                }
+            }
+        });
         int queueSize = adapter.getQueueSize();
-        int numUnreadItems = adapter.getNumberOfUnreadItems();
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numUnreadItems);
+        int numNewItems = adapter.getNumberOfNewItems();
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numUnreadFeedItems);
         adapter.close();
         return result;
     }
@@ -1098,12 +1160,15 @@ public final class DBReader {
     public static class NavDrawerData {
         public List<Feed> feeds;
         public int queueSize;
-        public int numUnreadItems;
+        public int numNewItems;
+        public LongIntMap numUnreadFeedItems;
 
-        public NavDrawerData(List<Feed> feeds, int queueSize, int numUnreadItems) {
+        public NavDrawerData(List<Feed> feeds, int queueSize, int numNewItems,
+                             LongIntMap numUnreadFeedItems) {
             this.feeds = feeds;
             this.queueSize = queueSize;
-            this.numUnreadItems = numUnreadItems;
+            this.numNewItems = numNewItems;
+            this.numUnreadFeedItems = numUnreadFeedItems;
         }
     }
 }

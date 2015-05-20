@@ -7,7 +7,6 @@
                 android:layout_height="@dimen/listitem_iconwithtext_height"
                 tools:background="@android:color/darker_gray">
 
-
     <ImageView
         android:id="@+id/imgvCover"
         android:contentDescription="@string/cover_label"
@@ -24,7 +23,6 @@
         tools:src="@drawable/ic_stat_antenna_default"
         tools:background="@android:color/holo_green_dark"/>
 
-
     <TextView
         android:id="@+id/txtvTitle"
         android:lines="1"
@@ -39,6 +37,34 @@
         android:layout_marginRight="@dimen/listitem_icon_rightpadding"
         android:layout_toRightOf="@id/imgvCover"
         tools:text="Navigation feed item title"
-        tools:background="@android:color/holo_green_dark"
-        />
+        tools:background="@android:color/holo_green_dark"/>
+
+    <TextView
+        android:id="@+id/txtvCount"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:lines="1"
+        android:textColor="?android:attr/textColorTertiary"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="@dimen/listitem_icon_rightpadding"
+        android:layout_alignParentRight="true"
+        android:layout_centerVertical="true"
+        tools:text="23"
+        tools:background="@android:color/holo_green_dark"/>
+
+    <IconTextView
+        android:id="@+id/itxtvFailure"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@id/txtvCount"
+        android:lines="1"
+        android:text="{fa-exclamation-circle}"
+        android:textColor="@color/download_failed_red"
+        android:textSize="@dimen/text_size_navdrawer"
+        android:layout_marginLeft="8dp"
+        android:layout_centerVertical="true"
+        tools:text="!"
+        tools:background="@android:color/holo_green_dark"/>
+
 </RelativeLayout>

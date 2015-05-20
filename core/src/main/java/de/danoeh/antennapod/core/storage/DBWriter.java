@@ -354,30 +354,16 @@ public class DBWriter {
                 FeedItem item = null;
 
                 if (queue != null) {
-                    boolean queueModified = false;
-                    boolean unreadItemsModified = false;
-
                     if (!itemListContains(queue, itemId)) {
                         item = DBReader.getFeedItem(context, itemId);
                         if (item != null) {
                             queue.add(index, item);
-                            queueModified = true;
-                            if (!item.isRead()) {
-                                item.setRead(true);
-                                unreadItemsModified = true;
-                            }
+                            adapter.setQueue(queue);
+                            EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                         }
                     }
-                    if (queueModified) {
-                        adapter.setQueue(queue);
-                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
-                    }
-                    if (unreadItemsModified && item != null) {
-                        adapter.setSingleFeedItem(item);
-                        EventDistributor.getInstance()
-                                .sendUnreadItemsUpdateBroadcast();
-                    }
                 }
+
                 adapter.close();
                 if (performAutoDownload) {
                     DBTasks.autodownloadUndownloadedItems(context);
@@ -422,27 +408,17 @@ public class DBWriter {
 
                                     if(addToFront){
                                         queue.add(0, item);
-                                    }else{
+                                    } else {
                                         queue.add(item);
                                     }
 
                                     queueModified = true;
-                                    if (!item.isRead()) {
-                                        item.setRead(true);
-                                        itemsToSave.add(item);
-                                        unreadItemsModified = true;
-                                    }
                                 }
                             }
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
-                        }
-                        if (unreadItemsModified) {
-                            adapter.setFeedItemlist(itemsToSave);
-                            EventDistributor.getInstance()
-                                    .sendUnreadItemsUpdateBroadcast();
                         }
                     }
                     adapter.close();
@@ -931,6 +907,26 @@ public class DBWriter {
                 if (startFlattrClickWorker) {
                     new FlattrClickWorker(context).executeAsync();
                 }
+            }
+        });
+    }
+
+    /**
+     * Saves if a feed's last update failed
+     *
+     * @param lastUpdateFailed true if last update failed
+     */
+    public static Future<?> setFeedLastUpdateFailed(final Context context,
+                                                 final long feedId,
+                                                 final boolean lastUpdateFailed) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedLastUpdateFailed(feedId, lastUpdateFailed);
+                adapter.close();
             }
         });
     }

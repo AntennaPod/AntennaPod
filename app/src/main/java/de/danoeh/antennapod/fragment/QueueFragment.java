@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mobeta.android.dslv.DragSortListView;
 
@@ -44,10 +45,13 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
 
@@ -66,6 +70,8 @@ public class QueueFragment extends Fragment {
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+
+    private ContextMenu contextMenu;
 
     private UndoBarController<FeedItemUndoToken> undoBarController;
 
@@ -292,6 +298,19 @@ public class QueueFragment extends Fragment {
 
     }
 
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
@@ -305,8 +324,12 @@ public class QueueFragment extends Fragment {
             menu.setHeaderTitle(item.getTitle());
         }
 
-        menu.findItem(R.id.move_to_top_item).setEnabled(!queue.isEmpty() && queue.get(0) != item);
-        menu.findItem(R.id.move_to_bottom_item).setEnabled(!queue.isEmpty() && queue.get(queue.size() - 1) != item);
+        contextMenu = menu;
+        LongList queueIds = new LongList(queue.size());
+        for(FeedItem queueItem : queue) {
+            queueIds.add(queueItem.getId());
+        }
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queueIds);
     }
 
     @Override
@@ -319,20 +342,15 @@ public class QueueFragment extends Fragment {
             return super.onContextItemSelected(item);
         }
 
-        switch (item.getItemId()) {
-            case R.id.move_to_top_item:
-                DBWriter.moveQueueItemToTop(getActivity(), selectedItem.getId(), true);
-                return true;
-            case R.id.move_to_bottom_item:
-                DBWriter.moveQueueItemToBottom(getActivity(), selectedItem.getId(), true);
-                return true;
-            case R.id.remove_from_queue_item:
-                DBWriter.removeQueueItem(getActivity(), selectedItem, false);
-                return true;
-            default:
-                return super.onContextItemSelected(item);
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
         }
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -384,7 +402,6 @@ public class QueueFragment extends Fragment {
                 Log.d(TAG, "remove(" + which + ")");
                 stopItemLoader();
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.markItemRead(getActivity(), item.getId(), true);
                 DBWriter.removeQueueItem(getActivity(), item, true);
             }
         });
@@ -399,7 +416,6 @@ public class QueueFragment extends Fragment {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
                     int position = token.getPosition();
-                    DBWriter.markItemRead(context, itemId, false);
                     DBWriter.addQueueItemAt(context, itemId, position, false);
                 }
             }
@@ -417,7 +433,6 @@ public class QueueFragment extends Fragment {
             }
 
         });
-
 
         registerForContextMenu(listView);
 

@@ -80,10 +80,10 @@
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
-    <string name="mark_all_read_label">Mark all as read</string>
-    <string name="mark_all_read_msg">Marked all episodes as read</string>
-    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being read.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being read.</string>
+    <string name="mark_all_read_label">Mark all as played</string>
+    <string name="mark_all_read_msg">Marked all episodes as played</string>
+    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_link_label">Share website link</string>
@@ -100,6 +100,7 @@
     <string name="hide_downloaded_episodes_label">Downloaded</string>
     <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
     <string name="filtered_label">Filtered</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -120,6 +121,9 @@
     <string name="enqueue_all_new">Enqueue all</string>
     <string name="download_all">Download all</string>
     <string name="skip_episode_label">Skip episode</string>
+    <string name="activate_auto_download">Activate auto download</string>
+    <string name="deactivate_auto_download">Deactivate auto download</string>
+    <string name="reset_position">Reset playback position</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>

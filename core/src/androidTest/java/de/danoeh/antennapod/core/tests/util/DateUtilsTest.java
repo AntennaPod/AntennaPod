@@ -1,4 +1,4 @@
-package de.danoeh.antennapod.core.util;
+package de.danoeh.antennapod.core.tests.util;
 
 
 import android.test.AndroidTestCase;
@@ -6,6 +6,8 @@ import android.test.AndroidTestCase;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.TimeZone;
+
+import de.danoeh.antennapod.core.util.DateUtils;
 
 public class DateUtilsTest extends AndroidTestCase {
 

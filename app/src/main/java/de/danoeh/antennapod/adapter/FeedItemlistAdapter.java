@@ -14,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.nineoldandroids.view.ViewHelper;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -110,22 +112,15 @@ public class FeedItemlistAdapter extends BaseAdapter {
             }
             holder.title.setText(buffer.toString());
 
-            FeedItem.State state = item.getState();
-            switch (state) {
-                case PLAYING:
-                    holder.statusUnread.setVisibility(View.INVISIBLE);
-                    holder.episodeProgress.setVisibility(View.VISIBLE);
-                    break;
-                case IN_PROGRESS:
-                    holder.statusUnread.setVisibility(View.INVISIBLE);
-                    holder.episodeProgress.setVisibility(View.VISIBLE);
-                    break;
-                case NEW:
-                    holder.statusUnread.setVisibility(View.VISIBLE);
-                    break;
-                default:
-                    holder.statusUnread.setVisibility(View.INVISIBLE);
-                    break;
+            if(false == item.isRead() && itemAccess.isNew(item)) {
+                holder.statusUnread.setVisibility(View.VISIBLE);
+            } else {
+                holder.statusUnread.setVisibility(View.INVISIBLE);
+            }
+            if(item.isRead()) {
+                ViewHelper.setAlpha(convertView, 0.5f);
+            } else {
+                ViewHelper.setAlpha(convertView, 1.0f);
             }
 
             holder.published.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
@@ -151,10 +146,10 @@ public class FeedItemlistAdapter extends BaseAdapter {
                         item.getMedia())) {
                     holder.episodeProgress.setVisibility(View.VISIBLE);
                     holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
-                    holder.published.setVisibility(View.GONE);
                 } else {
-                    holder.episodeProgress.setVisibility(View.GONE);
-                    holder.published.setVisibility(View.VISIBLE);
+                    if(media.getPosition() == 0) {
+                        holder.episodeProgress.setVisibility(View.GONE);
+                    }
                 }
 
                 TypedArray typeDrawables = context.obtainStyledAttributes(
@@ -217,6 +212,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
     }
 
     public interface ItemAccess {
+
         boolean isInQueue(FeedItem item);
 
         int getItemDownloadProgressPercent(FeedItem item);
@@ -224,6 +220,9 @@ public class FeedItemlistAdapter extends BaseAdapter {
         int getCount();
 
         FeedItem getItem(int position);
+
+        boolean isNew(FeedItem item);
+
     }
 
 }

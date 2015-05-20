@@ -11,7 +11,7 @@ import de.danoeh.antennapod.core.storage.DBReader;
 
 public class FeedItemFilter {
 
-    private final String[] filter;
+    private final String[] properties;
 
     private boolean hideUnplayed = false;
     private boolean hidePaused = false;
@@ -21,15 +21,15 @@ public class FeedItemFilter {
     private boolean hideDownloaded = false;
     private boolean hideNotDownloaded = false;
 
-    public FeedItemFilter(String filter) {
-        this(StringUtils.split(filter, ','));
+    public FeedItemFilter(String properties) {
+        this(StringUtils.split(properties, ','));
     }
 
-    public FeedItemFilter(String[] filter) {
-        this.filter = filter;
-        for(String f : filter) {
+    public FeedItemFilter(String[] properties) {
+        this.properties = properties;
+        for(String property : properties) {
             // see R.arrays.feed_filter_values
-            switch(f) {
+            switch(property) {
                 case "unplayed":
                     hideUnplayed = true;
                     break;
@@ -56,7 +56,7 @@ public class FeedItemFilter {
     }
 
     public List<FeedItem> filter(Context context, List<FeedItem> items) {
-        if(filter.length == 0) {
+        if(properties.length == 0) {
             return items;
         }
         List<FeedItem> result = new ArrayList<FeedItem>();
@@ -76,7 +76,7 @@ public class FeedItemFilter {
     }
 
     public String[] getValues() {
-        return filter.clone();
+        return properties.clone();
     }
 
 }
