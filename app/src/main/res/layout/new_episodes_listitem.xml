@@ -99,8 +99,8 @@
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
                 android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/txtvPublished"
-                android:layout_toRightOf="@id/txtvDuration"
+                android:layout_alignParentLeft="true"
+                android:layout_toLeftOf="@id/imgvInPlaylist"
                 android:max="100" />
 
         </RelativeLayout>
