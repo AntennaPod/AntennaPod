@@ -109,22 +109,22 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 holder.txtvDuration.setText("");
             }
 
+            FeedItem.State state = item.getState();
             if (isDownloadingMedia) {
                 holder.downloadProgress.setVisibility(View.VISIBLE);
-                holder.txtvDuration.setVisibility(View.GONE);
-                holder.pubDate.setVisibility(View.GONE);
+                // item is being downloaded
+                holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
+            } else if (state == FeedItem.State.PLAYING
+                || state == FeedItem.State.IN_PROGRESS) {
+                if (media.getDuration() > 0) {
+                    int progress = (int) (100.0 * media.getPosition() / media.getDuration());
+                    holder.downloadProgress.setProgress(progress);
+                    holder.downloadProgress.setVisibility(View.VISIBLE);
+                }
             } else {
-                holder.txtvDuration.setVisibility(View.VISIBLE);
-                holder.pubDate.setVisibility(View.VISIBLE);
                 holder.downloadProgress.setVisibility(View.GONE);
             }
 
-            if (!media.isDownloaded()) {
-                if (isDownloadingMedia) {
-                    // item is being downloaded
-                    holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
-                }
-            }
         } else {
             holder.downloadProgress.setVisibility(View.GONE);
             holder.txtvDuration.setVisibility(View.GONE);
