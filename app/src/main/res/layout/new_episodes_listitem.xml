@@ -43,7 +43,7 @@
         <TextView
             android:id="@+id/txtvTitle"
             style="@style/AntennaPod.TextView.ListItemPrimaryTitle"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
@@ -55,10 +55,10 @@
             android:id="@+id/bottom_bar"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_below="@id/txtvTitle"
             android:layout_alignParentBottom="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentRight="true"
-            android:layout_marginTop="16dp"
             tools:background="@android:color/holo_red_light" >
 
             <TextView
@@ -93,14 +93,12 @@
                 tools:background="@android:color/holo_green_dark" />
 
             <ProgressBar
-                android:id="@+id/pbar_download_progress"
+                android:id="@+id/pbar_progress"
                 style="?android:attr/progressBarStyleHorizontal"
-                android:layout_width="0dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_toLeftOf="@id/txtvPublished"
-                android:layout_toRightOf="@id/txtvDuration"
+                android:layout_below="@id/txtvDuration"
+                android:layout_marginTop="-2dp"
                 android:max="100" />
 
         </RelativeLayout>
