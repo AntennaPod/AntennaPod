@@ -80,8 +80,8 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                     .findViewById(R.id.butSecondaryAction);
             holder.queueStatus = (ImageView) convertView
                     .findViewById(R.id.imgvInPlaylist);
-            holder.downloadProgress = (ProgressBar) convertView
-                    .findViewById(R.id.pbar_download_progress);
+            holder.progress = (ProgressBar) convertView
+                    .findViewById(R.id.pbar_progress);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.txtvDuration = (TextView) convertView.findViewById(R.id.txtvDuration);
             convertView.setTag(holder);
@@ -111,22 +111,22 @@ public class AllEpisodesListAdapter extends BaseAdapter {
 
             FeedItem.State state = item.getState();
             if (isDownloadingMedia) {
-                holder.downloadProgress.setVisibility(View.VISIBLE);
+                holder.progress.setVisibility(View.VISIBLE);
                 // item is being downloaded
-                holder.downloadProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
+                holder.progress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
             } else if (state == FeedItem.State.PLAYING
                 || state == FeedItem.State.IN_PROGRESS) {
                 if (media.getDuration() > 0) {
                     int progress = (int) (100.0 * media.getPosition() / media.getDuration());
-                    holder.downloadProgress.setProgress(progress);
-                    holder.downloadProgress.setVisibility(View.VISIBLE);
+                    holder.progress.setProgress(progress);
+                    holder.progress.setVisibility(View.VISIBLE);
                 }
             } else {
-                holder.downloadProgress.setVisibility(View.GONE);
+                holder.progress.setVisibility(View.GONE);
             }
 
         } else {
-            holder.downloadProgress.setVisibility(View.GONE);
+            holder.progress.setVisibility(View.GONE);
             holder.txtvDuration.setVisibility(View.GONE);
         }
 
@@ -164,7 +164,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         View statusUnread;
         ImageView queueStatus;
         ImageView imageView;
-        ProgressBar downloadProgress;
+        ProgressBar progress;
         TextView txtvDuration;
         ImageButton butSecondary;
     }

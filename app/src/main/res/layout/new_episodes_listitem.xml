@@ -93,7 +93,7 @@
                 tools:background="@android:color/holo_green_dark" />
 
             <ProgressBar
-                android:id="@+id/pbar_download_progress"
+                android:id="@+id/pbar_progress"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
