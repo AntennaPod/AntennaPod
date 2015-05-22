@@ -67,7 +67,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_marginBottom="0dp"
                 tools:text="00:42:23"
                 tools:background="@android:color/holo_blue_dark" />
 
@@ -77,7 +76,6 @@
                 android:layout_height="@dimen/enc_icons_size"
                 android:layout_alignParentRight="true"
                 android:layout_marginLeft="8dp"
-                android:layout_marginBottom="0dp"
                 android:contentDescription="@string/in_queue_label"
                 android:src="?attr/stat_playlist"
                 tools:src="@drawable/ic_list_grey600_24dp"
@@ -90,7 +88,6 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_toLeftOf="@id/imgvInPlaylist"
-                android:layout_marginBottom="0dp"
                 android:ellipsize="end"
                 tools:text="Jan 23"
                 tools:background="@android:color/holo_green_dark" />
