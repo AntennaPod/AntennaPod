@@ -172,8 +172,19 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
-            String filename = data.getData().getPath();
-            startImport(new File(filename));
+            Uri uri = data.getData();
+
+            if ("content".equals(uri.getScheme())) {
+                try {
+                    Reader mReader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
+                    startImport(mReader);
+                } catch (FileNotFoundException e) {
+                    Log.d(TAG, "File not found");
+                }
+            } else {
+                String filename = uri.getPath();
+                startImport(new File(filename));
+            }
         }
     }
 
