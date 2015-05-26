@@ -208,7 +208,8 @@
 
         <activity
             android:name=".activity.DefaultOnlineFeedViewActivity"
-            android:configChanges="orientation">
+            android:configChanges="orientation"
+            android:label="@string/add_feed_label">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="de.danoeh.antennapod.activity.MainActivity"/>
