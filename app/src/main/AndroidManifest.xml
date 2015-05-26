@@ -155,21 +155,14 @@
 
                 <data
                     android:host="*"
-                    android:mimeType="*/*"
                     android:pathPattern=".*\\.opml"
-                    android:scheme="file"/>
-            </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSABLE"/>
-
+                    android:scheme="file"
+                    android:mimeType="*/*"/>
                 <data
                     android:host="*"
                     android:pathPattern=".*\\.opml"
-                    android:scheme="file"
-                    android:mimeType="text/*"/>
+                    android:scheme="content"
+                    android:mimeType="*/*"/>
             </intent-filter>
         </activity>
         <activity
