@@ -169,7 +169,7 @@
                     android:host="*"
                     android:pathPattern=".*\\.opml"
                     android:scheme="file"
-                    android:mimeType="text/x-opml"/>
+                    android:mimeType="text/*"/>
             </intent-filter>
         </activity>
         <activity
