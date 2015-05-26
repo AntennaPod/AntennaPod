@@ -534,7 +534,9 @@ public class PlaybackServiceMediaPlayer {
      * Returns the position of the current media object or INVALID_TIME if the position could not be retrieved.
      */
     public int getPosition() {
-        playerLock.lock();
+        if (!playerLock.tryLock()) {
+            return INVALID_TIME;
+        }
 
         int retVal = INVALID_TIME;
         if (playerStatus == PlayerStatus.PLAYING
