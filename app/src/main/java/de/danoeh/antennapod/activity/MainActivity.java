@@ -23,12 +23,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
-
-import org.apache.commons.lang3.ArrayUtils;
-import org.apache.commons.lang3.Validate;
-
-import java.util.List;
-
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -45,9 +39,13 @@ import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
+import java.util.List;
+import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.Validate;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -79,6 +77,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             AllEpisodesFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
+            SubscriptionFragment.TAG,
             AddFeedFragment.TAG
     };
 
@@ -282,6 +281,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
                 break;
+            case SubscriptionFragment.TAG:
+                SubscriptionFragment subscriptionFragment = new SubscriptionFragment();
+                subscriptionFragment.setItemAccess(itemAccess);
+                fragment = subscriptionFragment;
+                break;
         }
         currentTitle = navAdapter.getLabel(tag);
         getSupportActionBar().setTitle(currentTitle);
@@ -291,6 +295,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
         loadFragment(fragment);
     }
+
 
     private void loadFeedFragmentByPosition(int relPos, Bundle args) {
         if(relPos < 0) {
@@ -305,7 +310,15 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         saveLastNavFragment(String.valueOf(feed.getId()));
         currentTitle = "";
         getSupportActionBar().setTitle(currentTitle);
-        loadFragment(fragment);
+        loadChildFragment(fragment);
+    }
+
+    private void loadFeedFragment(Feed feed){
+        long feedId = feed.getId();
+        Fragment fragment = ItemlistFragment.newInstance(feedId);
+        currentTitle = "";
+        getSupportActionBar().setTitle(currentTitle);
+        loadChildFragment(fragment);
     }
 
     public void loadFeedFragmentById(long feedId) {
@@ -537,7 +550,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 String lastFragment = getLastNavFragment();
                 if(!ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                     long feedId = Long.valueOf(lastFragment);
-                    loadFeedFragmentById(feedId);
+                    //loadFeedFragmentById(feedId);
                     saveLastNavFragment(null);
                 }
 
@@ -558,6 +571,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadData();
+    }
+
+    public void onEvent(SubscriptionFragment.SubscriptionEvent event){
+        loadFeedFragment(event.feed);
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -592,5 +609,16 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+        // Make sure to have consistent behaviour across android apps
+        // Close the nav drawer if open on the first back button press
+        if(drawerLayout.isDrawerOpen(navDrawer)){
+            drawerLayout.closeDrawer(navDrawer);
+            return;
+        }
+        super.onBackPressed();
     }
 }
