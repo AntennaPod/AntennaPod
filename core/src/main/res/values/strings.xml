@@ -161,10 +161,10 @@
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
     <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
-    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily or just add to queue?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
-    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nEnable temporarily?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
-    <string name="confirm_mobile_download_dialog_only_add_to_queue">Only add to Queue</string>
-    <string name="confirm_mobile_download_dialog_enable_temporarily">Enable temporarily</string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remember for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remember for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
+    <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>

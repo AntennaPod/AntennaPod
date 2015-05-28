@@ -119,7 +119,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         builder
                 .setTitle(R.string.confirm_mobile_download_dialog_title)
                 .setMessage(context.getText(R.string.confirm_mobile_download_dialog_message))
-                .setPositiveButton(R.string.confirm_mobile_download_dialog_enable_temporarily,
+                .setPositiveButton(context.getText(R.string.confirm_mobile_download_dialog_enable_temporarily),
                         new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
@@ -135,7 +135,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                         });
         LongList queueIds = DBReader.getQueueIDList(context);
         if(!queueIds.contains(item.getId())) {
-            builder.setNeutralButton(R.string.confirm_mobile_download_dialog_only_add_to_queue,
+            builder.setNeutralButton(context.getText(R.string.confirm_mobile_download_dialog_only_add_to_queue),
                     new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialog, int which) {
@@ -148,8 +148,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         } else {
             builder.setMessage(context.getText(R.string.confirm_mobile_download_dialog_message));
         }
-        builder.setNegativeButton(R.string.cancel_label, null)
-                .create()
+        builder.create()
                 .show();
     }
 }
