@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.IconTextView;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -267,8 +268,12 @@ public class NavListAdapter extends BaseAdapter
 
 
         if(feed.hasLastUpdateFailed()) {
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
+            p.addRule(RelativeLayout.LEFT_OF, R.id.itxtvFailure);
             holder.failure.setVisibility(View.VISIBLE);
         } else {
+            RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) holder.title.getLayoutParams();
+            p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
             holder.failure.setVisibility(View.GONE);
         }
         int feedUnreadItems = itemAccess.getNumberOfUnreadFeedItems(feed.getId());
@@ -277,7 +282,7 @@ public class NavListAdapter extends BaseAdapter
             holder.count.setText(String.valueOf(feedUnreadItems));
             holder.count.setTypeface(holder.title.getTypeface());
         } else {
-            holder.count.setVisibility(View.INVISIBLE);
+            holder.count.setVisibility(View.GONE);
         }
         return convertView;
     }
