@@ -308,10 +308,11 @@ public final class DBTasks {
 
     private static void refreshFeed(Context context, Feed feed, boolean loadAllPages) throws DownloadRequestException {
         Feed f;
+        Date lastUpdate = feed.hasLastUpdateFailed() ? new Date(0) : feed.getLastUpdate();
         if (feed.getPreferences() == null) {
-            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle());
+            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle());
         } else {
-            f = new Feed(feed.getDownload_url(), feed.getLastUpdate(), feed.getTitle(),
+            f = new Feed(feed.getDownload_url(), lastUpdate, feed.getTitle(),
                     feed.getPreferences().getUsername(), feed.getPreferences().getPassword());
         }
         f.setId(feed.getId());
