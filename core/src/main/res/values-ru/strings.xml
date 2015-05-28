@@ -141,6 +141,7 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">Буферизация</string>
   <string name="playbackservice_notification_title">Воспроизведение подкаста</string>
+  <string name="unknown_media_key">AntennaPod - неизвестный ключ носителя: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">Очистить очередь</string>
   <string name="undo">Отмена</string>
@@ -161,6 +162,7 @@
   <string name="return_home_label">Вернуться к началу</string>
   <string name="flattr_auth_success">Успешная авторизация. Теперь можно использовать Flattr прямо из приложения.</string>
   <string name="no_flattr_token_title">Токен Flattr не найден</string>
+  <string name="no_flattr_token_notification_msg">Ваша учетная запись Flattr не подключена к AntennaPod. Нажмите здесь, чтобы войти.</string>
   <string name="no_flattr_token_msg">Кажется, ваш аккаунт Flattr не подключен к AntennaPod. Можно подключить аккаунт к AntennaPod или посетить сайт канала, чтобы пожертвовать через Flattr прямо на сайте.</string>
   <string name="authenticate_now_label">Авторизоваться</string>
   <string name="action_forbidden_title">Действие запрещено</string>
@@ -182,6 +184,7 @@
   <!--Variable Speed-->
   <string name="download_plugin_label">Загрузить плагин</string>
   <string name="no_playback_plugin_title">Плагин не установлен</string>
+  <string name="no_playback_plugin_msg">Для работы переменной скорости воспроизведения нужно установить библиотеку стороннего разработчика.\n\nНажмите \"Загрузить плагин\", чтобы скачать бесплатный плагин из Play Store\n\nЛюбые вопросы по работе плагина находятся вне ответственности AntennaPod и должны быть направлены владельцу плагина.</string>
   <string name="set_playback_speed_label">Скорость воспроизведения</string>
   <!--Empty list labels-->
   <string name="no_items_label">Список пуст</string>
@@ -217,6 +220,7 @@
   <string name="pref_revokeAccess_title">Отозвать доступ</string>
   <string name="pref_revokeAccess_sum">Отменить доступ этого приложения к вашему аккаунту Flattr.</string>
   <string name="pref_auto_flattr_title">Автоматически поддерживать через Flattr</string>
+  <string name="pref_auto_flattr_sum">Настройка автоматической поддержки через Flattr</string>
   <string name="user_interface_label">Интерфейс</string>
   <string name="pref_set_theme_title">Выбор темы</string>
   <string name="pref_set_theme_sum">Изменить тему оформления AntennaPod</string>
@@ -242,8 +246,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Изменить информацию авторизации для аккаунта gpodder.net</string>
   <string name="pref_playback_speed_title">Скорость воспроизведения</string>
   <string name="pref_playback_speed_sum">Настроить скорости воспроизведения</string>
-  <string name="pref_seek_delta_title">Перемотка</string>
-  <string name="pref_seek_delta_sum">Пропускать секунд при перемотке назад или вперед</string>
   <string name="pref_gpodnet_sethostname_title">Задать имя узла</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Использовать узел по умолчанию</string>
   <string name="pref_expandNotify_title">Расширенное уведомление</string>
@@ -251,7 +253,10 @@
   <string name="pref_persistNotify_title">Постоянный контрооль воспроизведения</string>
   <string name="pref_persistNotify_sum">Сохранять уведомление и кнопки воспроизведения на экране блокировки во время паузы.</string>
   <string name="pref_expand_notify_unsupport_toast">Версии Android ниже 4.1 не поддерживают расширенные уведомления.</string>
+  <string name="pref_queueAddToFront_sum">Добавлять новые выпуски в начало очереди.</string>
+  <string name="pref_queueAddToFront_title">В начало очереди.</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">Включить автоматическую поддержку через Flattr</string>
   <string name="auto_flattr_after_percent">Поддерживать через Flattr эпизоды, прослушанные на %d процентов</string>
   <string name="auto_flattr_ater_beginning">Поддерживать эпизод через Flattr в начале воспроизведения</string>
   <string name="auto_flattr_ater_end">Поддерживать эпизод через Flattr в конце воспроизведения</string>
@@ -265,6 +270,8 @@
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
   <string name="opml_import_explanation_1">Укажите путь к файлу на устройстве</string>
+  <string name="opml_import_explanation_2">Откройте OPML-файл с помощью внешних приложений: Dropbox, Google Drive или любой файловый менеджер.</string>
+  <string name="opml_import_explanation_3">Множество приложений умеют <i>открывать</i> OPML-файлы <i>в</i> AntennaPod, например: Google Mail, Dropbox, Google Drive и большинство файловых менеджеров.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
   <string name="opml_directory_error">Ошибка</string>
@@ -273,9 +280,12 @@
   <string name="opml_import_error_dir_empty">Каталог для импорта пуст.</string>
   <string name="select_all_label">Отметить все</string>
   <string name="deselect_all_label">Снять все отметки</string>
+  <string name="choose_file_from_filesystem">Из файловой системы</string>
+  <string name="choose_file_from_external_application">С помощью внешнего приложения</string>
   <string name="opml_export_label">Экспорт в OPML</string>
   <string name="exporting_label">Экспортируется...</string>
   <string name="export_error_label">Ошибка экспорта</string>
+  <string name="opml_export_success_title">OPML успешно экспортирован.</string>
   <string name="opml_export_success_sum">Файл OPML был записан в:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Установить таймер сна</string>
@@ -354,6 +364,7 @@
   <string name="load_next_page_label">Загрузить следующую страницу</string>
   <!--Feed information screen-->
   <string name="authentication_label">Авторизация</string>
+  <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
   <string name="search_itunes_label">Поиск в iTunes</string>

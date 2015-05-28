@@ -39,7 +39,6 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar todo como leído</string>
   <string name="show_info_label">Información del programa</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
   <string name="share_source_label">Compartir el enlace del canal</string>
@@ -50,8 +49,6 @@
   <string name="pause_label">Pausar</string>
   <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
-  <string name="mark_read_label">Marcar como leído</string>
-  <string name="mark_unread_label">Marcar como no leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="remove_from_queue_label">Quitar de la cola</string>
   <string name="visit_website_label">Visitar el sitio web</string>
@@ -72,8 +69,6 @@
   <string name="download_error_connection_error">Error de conexión</string>
   <string name="download_error_unknown_host">Host desconocido</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
-  <string name="download_canceled_msg">Descarga cancelada</string>
-  <string name="download_report_title">Descargas completadas</string>
   <string name="download_error_malformed_url">URL malformada</string>
   <string name="download_error_io_error">Error de E/S</string>
   <string name="download_error_request_error">Error de petición</string>

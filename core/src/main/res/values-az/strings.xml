@@ -43,7 +43,6 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Kanalın URLı</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
   <string name="share_link_label">Web-səhifəyi paylaş</string>
   <string name="share_source_label">Kanalı paylaş</string>
@@ -54,8 +53,6 @@
   <string name="pause_label">Pauza</string>
   <string name="stream_label">İnternetən yayimla</string>
   <string name="remove_label">Sil</string>
-  <string name="mark_read_label">Oxumuş kimi işarələ</string>
-  <string name="mark_unread_label">Oxunmamış kimi işarələ</string>
   <string name="add_to_queue_label">Növbəyə əlavə et</string>
   <string name="remove_from_queue_label">Növbədən sil</string>
   <string name="visit_website_label">Web-səhifəsini aç</string>
@@ -76,8 +73,6 @@
   <string name="download_error_connection_error">Əlaqə xətasi</string>
   <string name="download_error_unknown_host">Naməlum xost</string>
   <string name="cancel_all_downloads_label">Yükləmələrin hamısını ləğv et</string>
-  <string name="download_canceled_msg">Yükləmə ləğv olundu</string>
-  <string name="download_report_title">Yükləmə başa çatdı</string>
   <string name="download_error_malformed_url">Yanlış URL</string>
   <string name="download_error_io_error">IO xətasi</string>
   <string name="download_error_request_error">Tələbin xətası</string>

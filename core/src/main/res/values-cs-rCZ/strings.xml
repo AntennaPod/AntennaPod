@@ -58,6 +58,7 @@
   <string name="close_label">Zavřít</string>
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
+  <string name="parallel_downloads_suffix">\u0020paralelních stahování</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL kanálu</string>
   <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
@@ -66,8 +67,6 @@
   <string name="podcastdirectories_descr">Můžete vyhledávat nové podcasty podle jména, kategorie nebo popularity v seznamu gpodder.net.</string>
   <string name="browse_gpoddernet_label">Prohledávat gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Označit vše jako přečtené</string>
-  <string name="mark_all_read_msg">Označit všechny epizody jako přečtené</string>
   <string name="show_info_label">Informace o zdroji</string>
   <string name="remove_feed_label">Odstranit podcast</string>
   <string name="share_link_label">Sdílet odkaz</string>
@@ -83,8 +82,6 @@
   <string name="stream_label">Vysílat</string>
   <string name="remove_label">Odstranit</string>
   <string name="remove_episode_lable">Odstranit epizodu</string>
-  <string name="mark_read_label">Označit jako přečtené</string>
-  <string name="mark_unread_label">Označit jako nepřečtené</string>
   <string name="add_to_queue_label">Přidat do fronty</string>
   <string name="remove_from_queue_label">Odebrat z fronty</string>
   <string name="visit_website_label">Navštívit stránku</string>
@@ -108,8 +105,6 @@
   <string name="download_error_unknown_host">Neznámý host</string>
   <string name="download_error_unauthorized">Chyba přihlášení</string>
   <string name="cancel_all_downloads_label">Zrušit všechna stahování</string>
-  <string name="download_canceled_msg">Stahování zrušeno</string>
-  <string name="download_report_title">Všechna stahování dokončena</string>
   <string name="download_error_malformed_url">Chybné URL</string>
   <string name="download_error_io_error">IO chyba</string>
   <string name="download_error_request_error">Chyba požadavku</string>
@@ -150,6 +145,7 @@
   <string name="duration">Délka</string>
   <string name="ascending">Vzestupně</string>
   <string name="descending">Sestupně</string>
+  <string name="clear_queue_confirmation_msg">Prosím potvrďte, že chcete vyčistit tuto frontu a VŠECHNY v ní obsažené epizody</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr přihlášení</string>
   <string name="flattr_auth_explanation">Stiskněte následující tlačítko pro spuštění autentizačního procesu. Budete přesměrováni na přihlašovací obrazovku flattru a vyzváni k potvrzení udělení práv pro použití flattru aplikací AntennaPod. Po udělení práv se automaticky vrátíte na tuto obrazovku.</string>
@@ -165,10 +161,17 @@
   <string name="access_revoked_title">Přístup ukončen</string>
   <string name="access_revoked_info">Úspěšně revokován přístup AntennPodu k vašemu účtu. Pro dokončení tohoto procesu je  ještě zapotřebí na stránkách flattru odebrat z vašeho účtu AntennaPod ze seznamu povolených aplikací.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">Flattrován jeden příspěvek!</string>
+  <string name="flattr_click_success_count">Flattrováno %d příspěvků!</string>
+  <string name="flattr_click_success_queue">Flattrován: %s.</string>
+  <string name="flattr_click_failure_count">Selhalo flattrování %d příspěvků!</string>
+  <string name="flattr_click_failure">Neflattrováno: %s.</string>
+  <string name="flattr_click_enqueued">Příspěvek bude flattrován později</string>
   <string name="flattring_thing">Flattruji %s</string>
   <string name="flattring_label">AntennaPod flattruje</string>
   <string name="flattrd_label">AntennaPod flattroval</string>
   <string name="flattrd_failed_label">AntennaPod flattr selhal</string>
+  <string name="flattr_retrieving_status">Získávání flattrovaných příspěvků</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">Stáhnout plugin</string>
   <string name="no_playback_plugin_title">Plugin není nainstalován</string>
@@ -218,6 +221,7 @@
   <string name="pref_autodl_wifi_filter_sum">Povolit automatické stahování pouze pomocí vybraných Wi-Fi sítí.</string>
   <string name="pref_automatic_download_on_battery_title">Stahovat, pokud neprobíhá nabíjení</string>
   <string name="pref_automatic_download_on_battery_sum">Povolit automatické stahování i pokud není baterie nabíjena</string>
+  <string name="pref_parallel_downloads_title">Paralelní stahování</string>
   <string name="pref_episode_cache_title">Historie epizod</string>
   <string name="pref_theme_title_light">Světlý</string>
   <string name="pref_theme_title_dark">Tmavý</string>
@@ -233,8 +237,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Změní přihlašovací údaje k vašemu gpodder.net účtu.</string>
   <string name="pref_playback_speed_title">Rychlosti přehrávání</string>
   <string name="pref_playback_speed_sum">Přizpůsobení rychlosti je dostupné pro přehrávání zvuku různými rychlostmi</string>
-  <string name="pref_seek_delta_title">Čas poskočení</string>
-  <string name="pref_seek_delta_sum">Poskočí o vybraný počet sekund při posunu zpět nebo vpřed</string>
   <string name="pref_gpodnet_sethostname_title">Nastavit hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Použít přednastaveného hosta</string>
   <string name="pref_expandNotify_title">Rozšířené upozornění</string>
@@ -242,6 +244,8 @@
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
   <string name="pref_expand_notify_unsupport_toast">Verze Androidu nižší než 4.1 nepodporují rozšířená upozornění.</string>
+  <string name="pref_queueAddToFront_sum">Přidávat nové epizody na začátek fronty.</string>
+  <string name="pref_queueAddToFront_title">Přidat na začátek.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
@@ -256,6 +260,9 @@
   <string name="found_in_title_label">Nalezeno v názvu</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML soubory umožňují přenést vaše podcasty z jednoho přehrávače na jiný.</string>
+  <string name="opml_import_explanation_1">Vybrat umístění v místním souborovém systému.</string>
+  <string name="opml_import_explanation_2">Použít externí aplikaci jako třeba Dropbox, Google Drive nebo oblíbeného správce souborů k otevření OPML souboru.</string>
+  <string name="opml_import_explanation_3">Mnoho aplikací jako třeba Google Mail, Dropbox, Google Drive a většina správců souborů umí <i>otevřít</i> OPML soubory <i>v aplikaci</i> AntennaPod.</string>
   <string name="start_import_label">Importovat</string>
   <string name="opml_import_label">OPML import</string>
   <string name="opml_directory_error">CHYBA!</string>
@@ -264,6 +271,8 @@
   <string name="opml_import_error_dir_empty">Adresář importu je prázdný.</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
+  <string name="choose_file_from_filesystem">Z místního souborového systému</string>
+  <string name="choose_file_from_external_application">Použít externí aplikaci</string>
   <string name="opml_export_label">OPML export</string>
   <string name="exporting_label">Exportuji...</string>
   <string name="export_error_label">Chyba exportu</string>
@@ -283,7 +292,7 @@
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
   <string name="gpodnet_suggestions_header">DOPORUČENÉ</string>
-  <string name="gpodnet_search_hint">Vyhledat na gpodder.net</string>
+  <string name="gpodnet_search_hint">Prohledat gpodder.net</string>
   <string name="gpodnetauth_login_title">Přihlásit</string>
   <string name="gpodnetauth_login_descr">Vítejte do průvodce přihlášením ke gpodder.net účtu. Zadejte vaše přihlašovací údaje:</string>
   <string name="gpodnetauth_login_butLabel">Přihlásit</string>
@@ -349,4 +358,5 @@
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
+  <string name="search_itunes_label">Prohledat iTunes</string>
 </resources>

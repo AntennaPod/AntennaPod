@@ -51,7 +51,6 @@
   <string name="feedurl_label">URL do Feed</string>
   <string name="txtvfeedurl_label">Adicionar podcast por URL</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="share_link_label">Compartilhar link do site</string>
   <string name="share_source_label">Compartilhar link do feed</string>
@@ -63,8 +62,6 @@
   <string name="pause_label">Pausar</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Remover</string>
-  <string name="mark_read_label">Marcar como lido</string>
-  <string name="mark_unread_label">Marcar como não lido</string>
   <string name="add_to_queue_label">Adicionar à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
   <string name="visit_website_label">Visitar Website</string>
@@ -85,8 +82,6 @@
   <string name="download_error_connection_error">Erro de conexão</string>
   <string name="download_error_unknown_host">Host desconhecido</string>
   <string name="cancel_all_downloads_label">Cancelar todos os downloads</string>
-  <string name="download_canceled_msg">Download cancelado</string>
-  <string name="download_report_title">Downloads finalizados</string>
   <string name="download_error_malformed_url">URL inválida</string>
   <string name="download_error_io_error">Erro de IO</string>
   <string name="download_error_request_error">Erro de requisição</string>

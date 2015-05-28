@@ -67,10 +67,6 @@
   <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet med tjänsten gpodder.net</string>
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Markera alla som lästa</string>
-  <string name="mark_all_read_msg">Markera alla episoder som lästa</string>
-  <string name="mark_all_read_confirmation_msg">Bekräfta att du vill markera alla avsnitt som lästa.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bekräfta att du vill markera alla avsnitt i detta flöde som lästa.</string>
   <string name="show_info_label">Visa information</string>
   <string name="remove_feed_label">Ta bort podcast</string>
   <string name="share_link_label">Dela hemsidans länk</string>
@@ -86,9 +82,6 @@
   <string name="stream_label">Strömma</string>
   <string name="remove_label">Ta bort</string>
   <string name="remove_episode_lable">Ta bort episod</string>
-  <string name="mark_read_label">Markera som läst</string>
-  <string name="mark_unread_label">Markera som oläst</string>
-  <string name="marked_as_read_label">Markerad som läst</string>
   <string name="add_to_queue_label">Lägg till i kön</string>
   <string name="remove_from_queue_label">Ta bort från Kön</string>
   <string name="visit_website_label">Besök websidan</string>
@@ -112,8 +105,6 @@
   <string name="download_error_unknown_host">Okänd värd</string>
   <string name="download_error_unauthorized">Autentiseringsproblem</string>
   <string name="cancel_all_downloads_label">Avbryt alla nedladdningar</string>
-  <string name="download_canceled_msg">Nedladdning avbruten</string>
-  <string name="download_report_title">Nedladdningar färdiga</string>
   <string name="download_error_malformed_url">Felaktig webbadress</string>
   <string name="download_error_io_error">IO fel</string>
   <string name="download_error_request_error">Request fel</string>
@@ -246,8 +237,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändra inloggningsinformationen för ditt gpodder.net konto.</string>
   <string name="pref_playback_speed_title">Uppspelningshastigheter</string>
   <string name="pref_playback_speed_sum">Anpassa de tillgängliga hastigheterna för variabel uppspelningshastighet.</string>
-  <string name="pref_seek_delta_title">Söklängd</string>
-  <string name="pref_seek_delta_sum">Sök så här många sekunder vid snabbspolning bakåt eller framåt</string>
   <string name="pref_gpodnet_sethostname_title">Sätt värdnamn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Använd standardvärden</string>
   <string name="pref_expandNotify_title">Expandera notifieringar</string>

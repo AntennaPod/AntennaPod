@@ -67,10 +67,6 @@
   <string name="podcastdirectories_descr">Es posible buscar podcasts nuevos por nombre, categoría o popularidad en el directorio de gpodder.net.</string>
   <string name="browse_gpoddernet_label">Explorar gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar todo como leído</string>
-  <string name="mark_all_read_msg">Se marcaron todos los episodios como leídos</string>
-  <string name="mark_all_read_confirmation_msg">Por favor, confirme que desea marcar todos los episodios como leídos.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor, confirme que desea marcar todos los episodios de este feed como leídos.</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
@@ -86,9 +82,6 @@
   <string name="stream_label">Transmitir</string>
   <string name="remove_label">Quitar</string>
   <string name="remove_episode_lable">Quitar episodio</string>
-  <string name="mark_read_label">Marcar como leído</string>
-  <string name="mark_unread_label">Marcar como no leído</string>
-  <string name="marked_as_read_label">Marcado como leído</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="remove_from_queue_label">Quitar de la cola</string>
   <string name="visit_website_label">Visitar el sitio web</string>
@@ -112,8 +105,6 @@
   <string name="download_error_unknown_host">Host desconocido</string>
   <string name="download_error_unauthorized">Error de autenticación</string>
   <string name="cancel_all_downloads_label">Cancelar todas las descargas</string>
-  <string name="download_canceled_msg">Descarga cancelada</string>
-  <string name="download_report_title">Descargas completadas</string>
   <string name="download_error_malformed_url">URL con formato incorrecto</string>
   <string name="download_error_io_error">Error de E/S</string>
   <string name="download_error_request_error">Error de solicitud</string>
@@ -246,8 +237,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modificar datos de inicio de sesión en gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocidades de reproducción</string>
   <string name="pref_playback_speed_sum">Personalice las velocidades disponibles para la reproducción de audio a velocidad variable</string>
-  <string name="pref_seek_delta_title">Intervalo de búsqueda</string>
-  <string name="pref_seek_delta_sum">Avanzar o retroceder esta cantidad de segundos</string>
   <string name="pref_gpodnet_sethostname_title">Definir nombre de equipo</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usar nombre de equipo por defecto</string>
   <string name="pref_expandNotify_title">Expandir Notificación</string>

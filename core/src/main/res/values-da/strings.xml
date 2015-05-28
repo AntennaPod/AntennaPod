@@ -66,8 +66,6 @@
   <string name="podcastdirectories_descr">Du kan søge efter nye podcasts efter navn, kategori eller popularitet i gpodder.net biblioteket</string>
   <string name="browse_gpoddernet_label">Gennemse gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marker alle som læst</string>
-  <string name="mark_all_read_msg">Marker alle episoder som læst</string>
   <string name="show_info_label">Vis information</string>
   <string name="remove_feed_label">Fjern podcast</string>
   <string name="share_link_label">Del webside link</string>
@@ -83,8 +81,6 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Fjern</string>
   <string name="remove_episode_lable">Fjern episode</string>
-  <string name="mark_read_label">Marker som læst</string>
-  <string name="mark_unread_label">Marker som ulæst</string>
   <string name="add_to_queue_label">Tilføj til kø</string>
   <string name="remove_from_queue_label">Fjern fra kø</string>
   <string name="visit_website_label">Besøg webside</string>
@@ -108,8 +104,6 @@
   <string name="download_error_unknown_host">Ukendt vært</string>
   <string name="download_error_unauthorized">Godkendelses fejl</string>
   <string name="cancel_all_downloads_label">Annuller alle downloads</string>
-  <string name="download_canceled_msg">Download afbrudt</string>
-  <string name="download_report_title">Downloads afsluttet</string>
   <string name="download_error_malformed_url">Misdannet URL</string>
   <string name="download_error_io_error">IO fejl</string>
   <string name="download_error_request_error">Anmode fejl</string>
@@ -240,8 +234,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Skift din gpodder.net kontos login information.</string>
   <string name="pref_playback_speed_title">Afspilningshastigheder</string>
   <string name="pref_playback_speed_sum">Tilpas tilgængelige hastigheder for variabelt afspilningshastigheds plugin</string>
-  <string name="pref_seek_delta_title">Søg tid</string>
-  <string name="pref_seek_delta_sum">Søg så mange sekunder når der spoles tilbage eller frem</string>
   <string name="pref_gpodnet_sethostname_title">Indstil værtsnavn</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Brug standard vært</string>
   <string name="pref_expandNotify_title">Udvid notifikation</string>

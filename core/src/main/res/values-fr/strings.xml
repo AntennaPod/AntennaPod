@@ -246,8 +246,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
-  <string name="pref_seek_delta_title">Chercher un moment spécifique</string>
-  <string name="pref_seek_delta_sum">Bouger d\'autant de secondes en rembobinant ou en faisant une avance rapide </string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
   <string name="pref_expandNotify_title">Etendre la notification</string>

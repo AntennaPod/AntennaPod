@@ -67,10 +67,6 @@
   <string name="podcastdirectories_descr">Bei gpodder.net kannst du neue Podcasts nach Name, Kategorie oder Popularität suchen.</string>
   <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Alle als gespielt markieren</string>
-  <string name="mark_all_read_msg">Alle Episoden als gespielt markieren</string>
-  <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
   <string name="share_link_label">Webseiten-Link teilen</string>
@@ -86,9 +82,6 @@
   <string name="stream_label">Streamen</string>
   <string name="remove_label">Entfernen</string>
   <string name="remove_episode_lable">Episode entfernen</string>
-  <string name="mark_read_label">Als gespielt markieren</string>
-  <string name="mark_unread_label">Als ungespielt markieren</string>
-  <string name="marked_as_read_label">Als gespielt markiert</string>
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
@@ -112,8 +105,6 @@
   <string name="download_error_unknown_host">Unbekannter Host</string>
   <string name="download_error_unauthorized">Authentifizierungsfehler</string>
   <string name="cancel_all_downloads_label">Alle Downloads abbrechen</string>
-  <string name="download_canceled_msg">Download abgebrochen</string>
-  <string name="download_report_title">Download abgeschlossen</string>
   <string name="download_error_malformed_url">Fehler in URL</string>
   <string name="download_error_io_error">E/A Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
@@ -246,8 +237,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
-  <string name="pref_seek_delta_title">Spul-Zeit</string>
-  <string name="pref_seek_delta_sum">Spule so viele Sekunden vor oder zurück</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
   <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>

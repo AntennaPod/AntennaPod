@@ -26,6 +26,7 @@
   <!--Main activity-->
   <string name="drawer_open">Показати меню</string>
   <string name="drawer_close">Сховати меню</string>
+  <string name="drawer_preferences">Настройки навігації</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Відкрити в браузері</string>
   <string name="copy_url_label">Копіювати URL</string>
@@ -39,6 +40,7 @@
   <string name="cancel_label">Скасувати</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Мова</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Налаштування</string>
   <string name="cover_label">Зображення</string>
   <string name="error_label">Помилка</string>
@@ -67,10 +69,10 @@
   <string name="podcastdirectories_descr">В каталозі gpodder.net можливий пошук за назвою, категорією або популярністю.</string>
   <string name="browse_gpoddernet_label">Переглянути gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Позначити всі як переглянуті</string>
-  <string name="mark_all_read_msg">Позначено всі епізоди як переглянуті</string>
-  <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як прочитані.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди цього канала як прочитані.</string>
+  <string name="mark_all_read_label">Позначити всі як грані</string>
+  <string name="mark_all_read_msg">Позначено всі епізоди як грані</string>
+  <string name="mark_all_read_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди як грані.</string>
+  <string name="mark_all_read_feed_confirmation_msg">Будь ласка, підтвердіть що ви бажаєте позначити всі епізоди цього канала як грані.</string>
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_link_label">Поділитися URL сайту</string>
@@ -78,6 +80,16 @@
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
+  <string name="hide_episodes_title">Приховати епізоди</string>
+  <string name="hide_unplayed_episodes_label">Неграні</string>
+  <string name="hide_paused_episodes_label">На паузі</string>
+  <string name="hide_played_episodes_label">Грані</string>
+  <string name="hide_queued_episodes_label">В черзі</string>
+  <string name="hide_not_queued_episodes_label">Не в черзі</string>
+  <string name="hide_downloaded_episodes_label">Завантажені</string>
+  <string name="hide_not_downloaded_episodes_label">Не завантажені</string>
+  <string name="filtered_label">Фільтровані</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Останнє оновлення було невдалим</string>
   <!--actions on feeditems-->
   <string name="download_label">Завантажити</string>
   <string name="play_label">Грати</string>
@@ -86,16 +98,20 @@
   <string name="stream_label">Прослухати без завантаження</string>
   <string name="remove_label">Видалити</string>
   <string name="remove_episode_lable">Видалити епізод</string>
-  <string name="mark_read_label">Позначити як переглянутий</string>
-  <string name="mark_unread_label">Позначити як не переглянутий</string>
-  <string name="marked_as_read_label">Позначено як прочитане</string>
+  <string name="mark_read_label">Позначити як граний</string>
+  <string name="mark_unread_label">Позначити як не граний</string>
+  <string name="marked_as_read_label">Позначено як граний</string>
   <string name="add_to_queue_label">Додати до черги</string>
+  <string name="added_to_queue_label">Додано до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
   <string name="visit_website_label">Відкрити сайт</string>
   <string name="support_label">Підтримати за допомогою Flattr</string>
   <string name="enqueue_all_new">Додати до черги</string>
   <string name="download_all">Завантажити все</string>
   <string name="skip_episode_label">Пропустити епізод</string>
+  <string name="activate_auto_download">Включити автоматичне завантаження</string>
+  <string name="deactivate_auto_download">Виключити автозавантаження</string>
+  <string name="reset_position">Вернути початкову позицію відтворення</string>
   <!--Download messages and labels-->
   <string name="download_successful">успішно</string>
   <string name="download_failed">з помилками</string>
@@ -112,8 +128,10 @@
   <string name="download_error_unknown_host">Невідомий host</string>
   <string name="download_error_unauthorized">Помилка автентифікації</string>
   <string name="cancel_all_downloads_label">Скасувати всі завантаження</string>
-  <string name="download_canceled_msg">Відмінено завантаження</string>
-  <string name="download_report_title">Завантажили</string>
+  <string name="download_canceled_msg">Завантаження скасоване</string>
+  <string name="download_canceled_autodownload_enabled_msg">Завантаження скасоване\nВимкнуто <i>автоматичне завантаження</i> для цього елемента</string>
+  <string name="download_report_title">Завантаження завершені з помилками</string>
+  <string name="download_report_content_title">Звіт про завантаження</string>
   <string name="download_error_malformed_url">Невірний URL</string>
   <string name="download_error_io_error">Помилка IO</string>
   <string name="download_error_request_error">Помилка запиту</string>
@@ -129,6 +147,11 @@
   <string name="download_request_error_dialog_message_prefix">Помилка при завантажені файлу:\u0020</string>
   <string name="authentication_notification_title">Потрібна автентифікація</string>
   <string name="authentication_notification_msg">Для доступа до цього ресурса потрібні ім\'я та пароль </string>
+  <string name="confirm_mobile_download_dialog_title">Підтвердження мобільних завантажень</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Завантаження через мобільний зв\'язок вимкнено в настройках.\n\nУвімкнути тимчасово або тільки додати до черги?\n\n<small>Ваш вибір буде запам\'ятовано на 10 хвилин.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Завантаження через мобільний зв\'язок вимкнено в настройках.\n\nУвімкнути тимчасово?\n\n<small>Ваш вибір буде запам\'ятовано на 10 хвилин.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Лише додати до черги</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Увімкнути тимчасово</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Помилка!</string>
   <string name="player_stopped_msg"> Нічого грати</string>
@@ -143,6 +166,8 @@
   <string name="playbackservice_notification_title">Грає подкаст</string>
   <string name="unknown_media_key">AntennaPod - Невідомий медіа ключ: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Заблокувати чергу</string>
+  <string name="unlock_queue">Розблокувати чергу</string>
   <string name="clear_queue_label">Очистити чергу</string>
   <string name="undo">Скасувати</string>
   <string name="removed_from_queue">Видалено</string>
@@ -200,6 +225,8 @@
   <string name="pref_followQueue_sum">Перейти до наступного епізода в черзі коли поточний закінчено</string>
   <string name="pref_auto_delete_sum">Видалити епізод після повного відтворення</string>
   <string name="pref_auto_delete_title">Автовидалення</string>
+  <string name="pref_smart_mark_as_played_sum">Позначити епізоди як грані навіть якщо залишилось менш ніж зазначене число секунд до кінця відтворення</string>
+  <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
   <string name="pref_autoUpdateIntervall_title">Частота оновлень</string>
@@ -223,6 +250,8 @@
   <string name="pref_auto_flattr_sum">Налаштування автоматичного заохочення авторів через сервіс flattr</string>
   <string name="user_interface_label">Вигляд</string>
   <string name="pref_set_theme_title">Обрати тему</string>
+  <string name="pref_nav_drawer_items_title">Змінити настройки навігації</string>
+  <string name="pref_nav_drawer_items_sum">Вибрати елементи для використання у навігації</string>
   <string name="pref_set_theme_sum">Змінити вигляд AntennaPod</string>
   <string name="pref_automatic_download_title">Автоматичне завантаження</string>
   <string name="pref_automatic_download_sum">Налаштування автоматичного завантаження епізодів</string>
@@ -246,8 +275,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">Змінити інформацію щодо облікового запису gpodder.net</string>
   <string name="pref_playback_speed_title">Швидкість програвання</string>
   <string name="pref_playback_speed_sum">Налаштування швідкості доступно для змінної швидкості програвання</string>
-  <string name="pref_seek_delta_title">Час перемотки</string>
-  <string name="pref_seek_delta_sum">Перейти на таку кількість секунд при перемотуванні назад або вперед</string>
+  <string name="pref_fast_forward">Час перемотки вперед</string>
+  <string name="pref_rewind">Час перемотки назад</string>
   <string name="pref_gpodnet_sethostname_title">Встановити ім\'я хоста</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Використати хост по замовчанню</string>
   <string name="pref_expandNotify_title">Розгорнути повідомлення</string>
@@ -257,6 +286,7 @@
   <string name="pref_expand_notify_unsupport_toast">Android до версії 4.1 не підтримує розширені повідомлення.</string>
   <string name="pref_queueAddToFront_sum">Додавати нові епізоди до початку черги.</string>
   <string name="pref_queueAddToFront_title">Додавати в початок черги.</string>
+  <string name="pref_smart_mark_as_played_disabled">Вимкнено</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Включити автоматичне заохочення авторів через сервіс flattr</string>
   <string name="auto_flattr_after_percent">Заохотити автора через Flattr щойно %d відсотків епізода було відтворено</string>
@@ -340,7 +370,9 @@
   <string name="folder_not_empty_dialog_msg">В папці щось є. Всі завантаження зберігаються в цю папку. Все рівно продовжувати?</string>
   <string name="set_to_default_folder">Обрати папку по замовчанню</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Призупиняти програвання замість зниження гучності коли інша програма хоче програти звук</string>
-  <string name="pref_pausePlaybackForFocusLoss_title">Пауза для перевивання</string>
+  <string name="pref_pausePlaybackForFocusLoss_title">Пауза в разі переривання</string>
+  <string name="pref_resumeAfterCall_sum">Відновити відтворення після закінчення дзвінка</string>
+  <string name="pref_resumeAfterCall_title">Відновити після дзвінка</string>
   <!--Online feed view-->
   <string name="subscribe_label">Підписатися</string>
   <string name="subscribed_label">Підписано</string>
