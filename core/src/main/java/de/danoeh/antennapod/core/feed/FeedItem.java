@@ -403,7 +403,6 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         return this.hasMedia() &&
                 false == this.getMedia().isPlaying() &&
                 false == this.getMedia().isDownloaded() &&
-                false == this.isRead() &&
                 this.getAutoDownload();
     }
 
