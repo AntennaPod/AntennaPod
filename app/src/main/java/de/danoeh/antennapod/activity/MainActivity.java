@@ -365,10 +365,12 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return -1;
         } else { // last fragment was not a list, but a feed
             long feedId = Long.parseLong(lastFragment);
-            List<Feed> feeds = navDrawerData.feeds;
-            for (int i = 0; i < feeds.size(); i++) {
-                if (feeds.get(i).getId() == feedId) {
-                    return i + navAdapter.getSubscriptionOffset();
+            if (navDrawerData != null) {
+                List<Feed> feeds = navDrawerData.feeds;
+                for (int i = 0; i < feeds.size(); i++) {
+                    if (feeds.get(i).getId() == feedId) {
+                        return i + navAdapter.getSubscriptionOffset();
+                    }
                 }
             }
             return -1;

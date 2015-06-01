@@ -120,7 +120,8 @@ public class FeedInfoActivity extends ActionBarActivity {
                     });
 
                     txtvTitle.setText(feed.getTitle());
-                    txtvDescription.setText(feed.getDescription().trim());
+                    String description = feed.getDescription();
+                    txtvDescription.setText((description != null) ? description.trim() : "");
                     if (feed.getAuthor() != null) {
                         txtvAuthor.setText(feed.getAuthor());
                     }
