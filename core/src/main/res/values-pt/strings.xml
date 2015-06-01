@@ -147,6 +147,9 @@
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao transferir o ficheiro:\u0020</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma senha</string>
+  <string name="confirm_mobile_download_dialog_title">Confirmação de transferência</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente ou apenas adicionar à fila?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_message">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
   <string name="confirm_mobile_download_dialog_only_add_to_queue">Apenas adicionados à fila</string>
   <string name="confirm_mobile_download_dialog_enable_temporarily">Ativar temporariamente</string>
   <!--Mediaplayer messages-->
@@ -222,6 +225,8 @@
   <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
   <string name="pref_auto_delete_sum">Eliminar episódio ao terminar a reprodução</string>
   <string name="pref_auto_delete_title">Eliminação automática</string>
+  <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
+  <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo entre atualizações</string>
@@ -246,7 +251,7 @@
   <string name="user_interface_label">Interface</string>
   <string name="pref_set_theme_title">Tema</string>
   <string name="pref_nav_drawer_items_title">Alterar itens da gaveta</string>
-  <string name="pref_nav_drawer_items_sum">Alterar os itens a aparecer na gaveta de navegação</string>
+  <string name="pref_nav_drawer_items_sum">Alterar os itens que aparecem na gaveta de navegação</string>
   <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod</string>
   <string name="pref_automatic_download_title">Transferência automática</string>
   <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios</string>
@@ -281,7 +286,7 @@
   <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações</string>
   <string name="pref_queueAddToFront_sum">Colocar novos episódios no inicio da fila</string>
   <string name="pref_queueAddToFront_title">Novos episódios no inicio</string>
-  <string name="pref_smart_mark_as_played_disabled">Desativado</string>
+  <string name="pref_smart_mark_as_played_disabled">Desativada</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
