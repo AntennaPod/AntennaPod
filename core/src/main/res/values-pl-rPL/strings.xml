@@ -66,6 +66,8 @@
   <string name="podcastdirectories_descr">Możesz wyszukiwać nowe podcasty ze względu na nazwę, kategorię lub popularność na gpodder.net</string>
   <string name="browse_gpoddernet_label">Przeglądaj gpodder.net</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Oznacz wszystkie jako przeczytane</string>
+  <string name="mark_all_read_msg">Wszystkie odcinki zaznaczone jako przeczytane</string>
   <string name="show_info_label">Pokaż informacje</string>
   <string name="remove_feed_label">Usuń podcast</string>
   <string name="share_link_label">Udostępnij stronę</string>
@@ -81,6 +83,8 @@
   <string name="stream_label">Strumień</string>
   <string name="remove_label">Usuń</string>
   <string name="remove_episode_lable">Usuń odcinek</string>
+  <string name="mark_read_label">Oznacz jako przeczytane</string>
+  <string name="mark_unread_label">Oznacz jako nieprzeczytane</string>
   <string name="add_to_queue_label">Dodaj do kolejki</string>
   <string name="remove_from_queue_label">Usuń z kolejki</string>
   <string name="visit_website_label">Odwiedź stronę</string>
@@ -104,6 +108,8 @@
   <string name="download_error_unknown_host">Nieznany host</string>
   <string name="download_error_unauthorized">Błąd autoryzacji</string>
   <string name="cancel_all_downloads_label">Anuluj wszystkie pobierania</string>
+  <string name="download_canceled_msg">Pobieranie anulowane</string>
+  <string name="download_report_title">Pobieranie ukończone</string>
   <string name="download_error_malformed_url">Niepoprawny adres</string>
   <string name="download_error_io_error">Błąd wejścia/wyjścia</string>
   <string name="download_error_request_error">Błąd żądania</string>
@@ -232,6 +238,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">Zmień dane logowania konta gpodder.net.</string>
   <string name="pref_playback_speed_title">Prędkość odtwarzania</string>
   <string name="pref_playback_speed_sum">Dostosuj prędkości dostępne dla odtwarzania audio o zmiennej prędkości</string>
+  <string name="pref_seek_delta_title">Seek time</string>
+  <string name="pref_seek_delta_sum">Przeskocz o tyle sekund przewijając</string>
   <string name="pref_gpodnet_sethostname_title">Ustaw nazwę hosta</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Użyj domyślnego hosta</string>
   <string name="pref_expandNotify_title">Rozwiń Powiadomienia</string>

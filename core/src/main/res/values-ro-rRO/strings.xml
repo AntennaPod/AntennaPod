@@ -47,6 +47,7 @@
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Adresă feed</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
   <string name="share_link_label">Împarte adresă website</string>
   <string name="share_source_label">Împarte adresă feed</string>
@@ -57,6 +58,8 @@
   <string name="pause_label">Pauză</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Elimină</string>
+  <string name="mark_read_label">Marchează ca citit</string>
+  <string name="mark_unread_label">Marchează ca necitit</string>
   <string name="add_to_queue_label">Adaugă la Coadă</string>
   <string name="remove_from_queue_label">Șterge din Coadă</string>
   <string name="visit_website_label">Vizitează Website</string>
@@ -77,6 +80,8 @@
   <string name="download_error_connection_error">Eroare de conexiune</string>
   <string name="download_error_unknown_host">Host necunoscut</string>
   <string name="cancel_all_downloads_label">Anulează toate descărcările</string>
+  <string name="download_canceled_msg">Descărcare anulată</string>
+  <string name="download_report_title">Descărcări terminate</string>
   <string name="download_error_malformed_url">URL malformat</string>
   <string name="download_error_io_error">Eroare IO</string>
   <string name="download_error_request_error">Eroare cerere</string>

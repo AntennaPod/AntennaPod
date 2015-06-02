@@ -51,6 +51,7 @@
   <string name="feedurl_label">Feed URL</string>
   <string name="txtvfeedurl_label">Podcast toevoegen bij URL</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Alles als gelezen markeren</string>
   <string name="show_info_label">Toon informatie</string>
   <string name="share_link_label">Website link delen</string>
   <string name="share_source_label">Feed link delen</string>
@@ -62,6 +63,8 @@
   <string name="pause_label">Pauze</string>
   <string name="stream_label">Stream</string>
   <string name="remove_label">Verwijderen</string>
+  <string name="mark_read_label">Als gelezen markeren</string>
+  <string name="mark_unread_label">Als ongelezen markeren</string>
   <string name="add_to_queue_label">Voeg toe aan wachtrij</string>
   <string name="remove_from_queue_label">Verwijder van wachtrij</string>
   <string name="visit_website_label">Website bezoeken</string>
@@ -83,6 +86,8 @@
   <string name="download_error_unknown_host">Onbekende host</string>
   <string name="download_error_unauthorized">Authenticatie fout</string>
   <string name="cancel_all_downloads_label">Alle downloads annuleren</string>
+  <string name="download_canceled_msg">Download geannuleerd</string>
+  <string name="download_report_title">Downloads afgerond</string>
   <string name="download_error_malformed_url">Misvormde URL</string>
   <string name="download_error_io_error">IO fout</string>
   <string name="download_error_request_error">Fout in de aanvraag</string>

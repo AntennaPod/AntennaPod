@@ -66,6 +66,8 @@
   <string name="podcastdirectories_descr">Podeu cercar nous podcasts al directori de gpodder.net mitjançant el seu nom, categoria o popularitat.</string>
   <string name="browse_gpoddernet_label">Navega gpodder.net</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Marca-ho tot com a llegit</string>
+  <string name="mark_all_read_msg">S\'han marcat tots els episodis com a llegits</string>
   <string name="show_info_label">Mostra informació</string>
   <string name="remove_feed_label">Esborra podcast</string>
   <string name="share_link_label">Comparteix l\'enllaç de la plana</string>
@@ -81,6 +83,8 @@
   <string name="stream_label">Reprodueix sense baixar</string>
   <string name="remove_label">Suprimeix</string>
   <string name="remove_episode_lable">Esborra episodi</string>
+  <string name="mark_read_label">Marca com a llegit</string>
+  <string name="mark_unread_label">Marca com a pendent</string>
   <string name="add_to_queue_label">Afegeix a la cua</string>
   <string name="remove_from_queue_label">Suprimeix de la cua</string>
   <string name="visit_website_label">Visita el lloc web</string>
@@ -104,6 +108,8 @@
   <string name="download_error_unknown_host">Amfitrió desconegut</string>
   <string name="download_error_unauthorized">Error d\'autenticació</string>
   <string name="cancel_all_downloads_label">Cancel·la totes les baixades</string>
+  <string name="download_canceled_msg">S\'ha cancel·lat la baixada</string>
+  <string name="download_report_title">Baixades completades</string>
   <string name="download_error_malformed_url">URL mal formatada</string>
   <string name="download_error_io_error">Error d\'E/S</string>
   <string name="download_error_request_error">Error de petició</string>
@@ -234,6 +240,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
+  <string name="pref_seek_delta_title">Salta a l\'instant</string>
+  <string name="pref_seek_delta_sum">Salta aquesta quantitat de segons en rebobinar o en avançar ràpidament</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <string name="pref_expandNotify_title">Amplia la notificació</string>
