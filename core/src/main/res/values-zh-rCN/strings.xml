@@ -67,6 +67,8 @@
   <string name="podcastdirectories_descr">您可以在 gpodder.net 通过名称、类别或热门来搜索新播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">全部标识已读</string>
+  <string name="mark_all_read_msg">将所有曲目标记为已读</string>
   <string name="show_info_label">查看信息</string>
   <string name="remove_feed_label">删除播客</string>
   <string name="share_link_label">分享网站链接</string>
@@ -82,6 +84,8 @@
   <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
   <string name="remove_episode_lable">移除曲目</string>
+  <string name="mark_read_label">标记已读</string>
+  <string name="mark_unread_label">标记未读</string>
   <string name="add_to_queue_label">添加到播放列表</string>
   <string name="remove_from_queue_label">从播放列表中删除</string>
   <string name="visit_website_label">访问网站</string>
@@ -105,6 +109,8 @@
   <string name="download_error_unknown_host">未知主机</string>
   <string name="download_error_unauthorized">认证错误</string>
   <string name="cancel_all_downloads_label">取消所有下载</string>
+  <string name="download_canceled_msg">已取消下载</string>
+  <string name="download_report_title">下载完成</string>
   <string name="download_error_malformed_url">畸形 URL</string>
   <string name="download_error_io_error">IO 错误</string>
   <string name="download_error_request_error">请求出错</string>

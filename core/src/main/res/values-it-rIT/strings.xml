@@ -67,6 +67,8 @@
   <string name="podcastdirectories_descr">Puoi cercare dei nuovi podcast in base al nome, alla categoria o alla popolarità nella directory di gpodder.net.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <!--Actions on feeds-->
+  <string name="mark_all_read_label">Segna tutti come letti</string>
+  <string name="mark_all_read_msg">Segnati tutti gli episodi come letti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
   <string name="share_link_label">Condividi il link al sito</string>
@@ -82,6 +84,9 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Rimuovi</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
+  <string name="mark_read_label">Segna come letto</string>
+  <string name="mark_unread_label">Segna come non letto</string>
+  <string name="marked_as_read_label">Segnato come letto</string>
   <string name="add_to_queue_label">Aggiungi alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <string name="visit_website_label">Visita il sito</string>
@@ -105,6 +110,8 @@
   <string name="download_error_unknown_host">Host sconosciuto</string>
   <string name="download_error_unauthorized">Errore di autenticazione</string>
   <string name="cancel_all_downloads_label">Annulla tutti i download</string>
+  <string name="download_canceled_msg">Download annullato</string>
+  <string name="download_report_title">Download completati</string>
   <string name="download_error_malformed_url">URL malformato</string>
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
