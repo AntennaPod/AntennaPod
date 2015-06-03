@@ -188,13 +188,17 @@ public class HttpDownloader extends Downloader {
             }
 
             Log.d(TAG, "Starting download");
-            while (!cancelled
-                    && (count = connection.read(buffer)) != -1) {
-                out.write(buffer, 0, count);
-                request.setSoFar(request.getSoFar() + count);
-                request.setProgressPercent((int) (((double) request
-                        .getSoFar() / (double) request
-                        .getSize()) * 100));
+            try {
+                while (!cancelled
+                        && (count = connection.read(buffer)) != -1) {
+                    out.write(buffer, 0, count);
+                    request.setSoFar(request.getSoFar() + count);
+                    request.setProgressPercent((int) (((double) request
+                            .getSoFar() / (double) request
+                            .getSize()) * 100));
+                }
+            } catch(IOException e) {
+                Log.e(TAG, Log.getStackTraceString(e));
             }
             if (cancelled) {
                 onCancelled();
@@ -209,6 +213,9 @@ public class HttpDownloader extends Downloader {
                                     " does not equal expected size " +
                                     request.getSize()
                     );
+                    return;
+                } else if(request.getSoFar() == 0){
+                    onFail(DownloadError.ERROR_IO_ERROR, "Download completed, but nothing was read");
                     return;
                 }
                 onSuccess();
