@@ -26,6 +26,7 @@
   <!--Main activity-->
   <string name="drawer_open">Menü öffnen</string>
   <string name="drawer_close">Menü schließen</string>
+  <string name="drawer_preferences">Seitenleisten-Einstellungen</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Im Browser öffnen</string>
   <string name="copy_url_label">URL kopieren</string>
@@ -39,6 +40,7 @@
   <string name="cancel_label">Abbrechen</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Sprache</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Einstellungen</string>
   <string name="cover_label">Bild</string>
   <string name="error_label">Fehler</string>
@@ -64,7 +66,7 @@
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
   <string name="txtvfeedurl_label">Podcast per URL hinzufügen</string>
   <string name="podcastdirectories_label">Podcast in Verzeichnis finden</string>
-  <string name="podcastdirectories_descr">Bei gpodder.net kannst du neue Podcasts nach Name, Kategorie oder Popularität suchen.</string>
+  <string name="podcastdirectories_descr">Bei gpodder.net kannst du neue Podcasts nach Name, Kategorie oder Popularität suchen. Oder suche bei iTunes.</string>
   <string name="browse_gpoddernet_label">gpodder.net durchsuchen</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Alle als gespielt markieren</string>
@@ -78,6 +80,16 @@
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
   <string name="feed_remover_msg">Entferne Feed</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
+  <string name="hide_episodes_title">Episoden verbergen</string>
+  <string name="hide_unplayed_episodes_label">Ungespielt</string>
+  <string name="hide_paused_episodes_label">Pausiert</string>
+  <string name="hide_played_episodes_label">Gespielt</string>
+  <string name="hide_queued_episodes_label">In Abspielliste</string>
+  <string name="hide_not_queued_episodes_label">Nicht in Abspielliste</string>
+  <string name="hide_downloaded_episodes_label">Heruntergeladen</string>
+  <string name="hide_not_downloaded_episodes_label">Nicht heruntergeladen</string>
+  <string name="filtered_label">Gefiltert</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Aktualisierung fehlgeschlagen</string>
   <!--actions on feeditems-->
   <string name="download_label">Herunterladen</string>
   <string name="play_label">Abspielen</string>
@@ -90,12 +102,16 @@
   <string name="mark_unread_label">Als ungespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
+  <string name="added_to_queue_label">Zur Abspielliste hinzugefügt</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
   <string name="visit_website_label">Webseite besuchen</string>
   <string name="support_label">Flattrn</string>
   <string name="enqueue_all_new">Alle zur Abspielliste hinzufügen</string>
   <string name="download_all">Alle herunterladen</string>
   <string name="skip_episode_label">Episode überspringen</string>
+  <string name="activate_auto_download">Automatischen Download aktivieren</string>
+  <string name="deactivate_auto_download">Automatischen Download deaktivieren</string>
+  <string name="reset_position">Wiedergabe-Position zurücksetzen</string>
   <!--Download messages and labels-->
   <string name="download_successful">erfolgreich</string>
   <string name="download_failed">fehlgeschlagen</string>
@@ -113,7 +129,9 @@
   <string name="download_error_unauthorized">Authentifizierungsfehler</string>
   <string name="cancel_all_downloads_label">Alle Downloads abbrechen</string>
   <string name="download_canceled_msg">Download abgebrochen</string>
-  <string name="download_report_title">Download abgeschlossen</string>
+  <string name="download_canceled_autodownload_enabled_msg">Download abgebrochen\n<i>Automatischen Download</i> für diese Episode deaktiviert</string>
+  <string name="download_report_title">Downloads endeten mit Fehler(n)</string>
+  <string name="download_report_content_title">Download-Bericht</string>
   <string name="download_error_malformed_url">Fehler in URL</string>
   <string name="download_error_io_error">E/A Error</string>
   <string name="download_error_request_error">Anfragefehler</string>
@@ -129,6 +147,11 @@
   <string name="download_request_error_dialog_message_prefix">Beim Herunterladen der Datei ist ein Fehler aufgetreten:\u0020</string>
   <string name="authentication_notification_title">Authentifizierung erforderlich</string>
   <string name="authentication_notification_msg">Die angeforderte Quelle erfordert einen Benutzernamen und ein Passwort</string>
+  <string name="confirm_mobile_download_dialog_title">Mobilen Download bestätigen</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">Das Herunterladen über die mobile Datenverbindung ist in den Einstellungen deaktiviert.\n\nVorübergehend erlauben oder nur zur Abspielliste hinzufügen?\n\n<small>Deine Entscheidung wird für 10 Minuten gespeichert.</small></string>
+  <string name="confirm_mobile_download_dialog_message">Das Herunterladen über die mobile Datenverbindung ist in den Einstellungen deaktiviert.\n\nVorübergehend erlauben?\n\n<small>Deine Entscheidung wird für 10 Minuten gespeichert.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Zur Abspielliste hinzufügen</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Vorübergehend erlauben</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Fehler!</string>
   <string name="player_stopped_msg">Keine Medienwiedergabe</string>
@@ -143,6 +166,8 @@
   <string name="playbackservice_notification_title">Spiele Podcast ab</string>
   <string name="unknown_media_key">AntennaPod - Unbekannte Medientaste: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Abspielliste sperren</string>
+  <string name="unlock_queue">Abspielliste entsperren</string>
   <string name="clear_queue_label">Abspielliste leeren</string>
   <string name="undo">Rückgängig</string>
   <string name="removed_from_queue">Element entfernt</string>
@@ -200,6 +225,8 @@
   <string name="pref_followQueue_sum">Springe zur nächsten Episode, wenn die vorherige Episode endet</string>
   <string name="pref_auto_delete_sum">Episode löschen, wenn die Wiedergabe endet</string>
   <string name="pref_auto_delete_title">Automatisches Löschen</string>
+  <string name="pref_smart_mark_as_played_sum">Episoden werden als gespielt markiert, wenn weniger als eine bestimmte Anzahl Sekunden Restspielzeit übrig sind</string>
+  <string name="pref_smart_mark_as_played_title">Schlaues als gespielt markieren</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervall_title">Aktualisierungsintervall</string>
@@ -223,6 +250,8 @@
   <string name="pref_auto_flattr_sum">Automatisches Flattrn konfigurieren</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
+  <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
+  <string name="pref_nav_drawer_items_sum">Ändere, welche Listen in der Seitenleiste erscheinen</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -246,8 +275,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">Ändere die Anmeldeinformationen deines gpodder.net Profils</string>
   <string name="pref_playback_speed_title">Wiedergabegeschwindigkeiten</string>
   <string name="pref_playback_speed_sum">Lege die verfügbaren Werte für die Veränderung der Wiedergabeschwindigkeit fest</string>
-  <string name="pref_seek_delta_title">Spul-Zeit</string>
-  <string name="pref_seek_delta_sum">Spule so viele Sekunden vor oder zurück</string>
+  <string name="pref_fast_forward">Vorspulzeit</string>
+  <string name="pref_rewind">Rückspulzeit</string>
   <string name="pref_gpodnet_sethostname_title">Hostname ändern</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Standard-Host verwenden</string>
   <string name="pref_expandNotify_title">Benachrichtigung erweitern</string>
@@ -257,6 +286,7 @@
   <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
   <string name="pref_queueAddToFront_sum">Fügen Sie neue Folgen auf den Anfang der Warteschlange.</string>
   <string name="pref_queueAddToFront_title">Vorne in Abspielliste einreihen</string>
+  <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -341,6 +371,8 @@
   <string name="set_to_default_folder">Standardordner auswählen</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausiere die Wiedergabe statt die Lautstärke zu reduzieren, wenn eine andere Anwendung Töne abspielt</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
+  <string name="pref_resumeAfterCall_sum">Wiedergabe fortsetzen, wenn Anruf beendet ist</string>
+  <string name="pref_resumeAfterCall_title">Nach Anruf fortsetzen</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribed_label">Abonniert</string>
@@ -369,5 +401,5 @@
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
-  <string name="search_itunes_label">iTunes suchen</string>
+  <string name="search_itunes_label">iTunes durchsuchen</string>
 </resources>

@@ -31,6 +31,7 @@
   <string name="copy_url_label">复制 URL</string>
   <string name="share_url_label">分享 URL</string>
   <string name="copied_url_msg">复制 URL 到剪贴板.</string>
+  <string name="go_to_position_label">去往该位置</string>
   <!--Playback history-->
   <string name="clear_history_label">清空历史</string>
   <!--Other-->
@@ -57,9 +58,12 @@
   <string name="close_label">关闭</string>
   <string name="retry_label">重试</string>
   <string name="auto_download_label">包含到自动下载</string>
+  <string name="parallel_downloads_suffix">\u0020 并行下载</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">订阅 URL</string>
+  <string name="etxtFeedurlHint">www.example.com/feed</string>
   <string name="txtvfeedurl_label">添加播客 URL</string>
+  <string name="podcastdirectories_label">从目录中寻找播客</string>
   <string name="podcastdirectories_descr">您可以在 gpodder.net 通过名称、类别或热门来搜索新播客</string>
   <string name="browse_gpoddernet_label">浏览 gpodder.net</string>
   <!--Actions on feeds-->
@@ -71,10 +75,12 @@
   <string name="share_source_label">分享订阅链接</string>
   <string name="feed_delete_confirmation_msg">确认要删除这些订阅吗? 该订阅所有已经下载的曲目将一并删除. </string>
   <string name="feed_remover_msg">删除订阅</string>
+  <string name="load_complete_feed">刷新全部订阅</string>
   <!--actions on feeditems-->
   <string name="download_label">下载</string>
   <string name="play_label">播放</string>
   <string name="pause_label">暂停</string>
+  <string name="stop_label">停止</string>
   <string name="stream_label">流媒体</string>
   <string name="remove_label">删除</string>
   <string name="remove_episode_lable">移除曲目</string>
@@ -132,12 +138,20 @@
   <string name="position_default_label">00:00:00</string>
   <string name="player_buffering_msg">缓冲中</string>
   <string name="playbackservice_notification_title">播客播放中</string>
+  <string name="unknown_media_key">AntennaPod - 未知媒体密钥: %1$d</string>
   <!--Queue operations-->
   <string name="clear_queue_label">清空播放列表</string>
   <string name="undo">撤消</string>
   <string name="removed_from_queue">已删除项</string>
   <string name="move_to_top_label">移到顶端</string>
   <string name="move_to_bottom_label">移到下部</string>
+  <string name="sort">排序</string>
+  <string name="alpha">按字母</string>
+  <string name="date">按日期</string>
+  <string name="duration">按时长</string>
+  <string name="ascending">升序</string>
+  <string name="descending">降序</string>
+  <string name="clear_queue_confirmation_msg">请确认您要清除队列中的全部曲目</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Flattr 登录</string>
   <string name="flattr_auth_explanation">按下面的按钮开始身份验证过程. 将在浏览器中打开 Flattr 登录界面并要求给予 AntennaPod 访问 Flattr 的权限. 权限许可后, 将自动回到这个界面.</string>
@@ -145,16 +159,29 @@
   <string name="return_home_label">返回主页</string>
   <string name="flattr_auth_success">验证成功!  现在可以使用应用内 Flattr 相关功能了.</string>
   <string name="no_flattr_token_title">没有找到 Flattr 验证令牌信息</string>
-  <string name="no_flattr_token_msg">您的 flattr 账户似乎并没有连接到 AntennaPod. You can either connect your account to AntennaPod to flattr things within the app or you can visit the website of the thing to flattr it there.</string>
+  <string name="no_flattr_token_notification_msg">您的 flattr 账户似乎并没有连接到 AntennaPod，点这里验证。</string>
+  <string name="no_flattr_token_msg">您的 flattr 账户似乎并没有连接到 AntennaPod. 您可以关联您的账户到AntennaPod以便在应用内flattr条目，或者您可以自己访问条目的网站完成flattr</string>
   <string name="authenticate_now_label">验证</string>
   <string name="action_forbidden_title">被禁止</string>
   <string name="action_forbidden_msg">AntennaPod 没有权限执行本动作. 原因可能是: AntennaPod 对您账户的访问令牌被撤销. 你可以重新\"验证\"或访问该网站来授权.</string>
   <string name="access_revoked_title">撤销访问</string>
   <string name="access_revoked_info">您已经成功撤销 AntennaPod 对账户令牌的访问. 为了完成这个过程, 您必须到 Flattr 网站 \"账户设置-&gt;已批准应用\" 列表内删除本应用.</string>
   <!--Flattr-->
+  <string name="flattr_click_success">成功Flattr一个条目</string>
+  <string name="flattr_click_success_count">成功Flattr%d个条目</string>
+  <string name="flattr_click_success_queue">Flattr%s成功.</string>
+  <string name="flattr_click_failure_count">Flattr失败%d个条目</string>
+  <string name="flattr_click_failure">%sFlattr失败.</string>
+  <string name="flattr_click_enqueued">稍后将Flattr该条目</string>
+  <string name="flattring_thing">正在Flattr%s</string>
+  <string name="flattring_label">AntennaPod正在Flattr</string>
+  <string name="flattrd_label">AntennaPod已经Flattr</string>
+  <string name="flattrd_failed_label">AntennaPod Flattr失败</string>
+  <string name="flattr_retrieving_status">查询Flattr结果状态</string>
   <!--Variable Speed-->
   <string name="download_plugin_label">插件下载</string>
   <string name="no_playback_plugin_title">插件没有安装</string>
+  <string name="no_playback_plugin_msg">要使播放速度可变，必须安装第三方库。\n\n点击 \'插件下载\' 从 \'Play 商店\' 下载免费插件\n\n使用这些插件中碰到的任何问题请报告给插件作者，与 AntennaPod 无关。</string>
   <string name="set_playback_speed_label">播放速度</string>
   <!--Empty list labels-->
   <string name="no_items_label">列表为空.</string>
@@ -168,7 +195,7 @@
   <string name="pref_pauseOnHeadsetDisconnect_sum">耳机断开时暂停播放 </string>
   <string name="pref_unpauseOnHeadsetReconnect_sum">当耳机重新连接时恢复播放</string>
   <string name="pref_followQueue_sum">播放完成跳转到播放列表下一项</string>
-  <string name="pref_auto_delete_sum">当播放完成后删除单集</string>
+  <string name="pref_auto_delete_sum">当播放完成后删除曲目</string>
   <string name="pref_auto_delete_title">自动删除</string>
   <string name="playback_pref">播放</string>
   <string name="network_pref">网络</string>
@@ -190,6 +217,8 @@
 </string>
   <string name="pref_revokeAccess_title">撤销访问</string>
   <string name="pref_revokeAccess_sum">撤销访问本应用对您 Flattr 账户的访问权限.</string>
+  <string name="pref_auto_flattr_title">自动Flattr</string>
+  <string name="pref_auto_flattr_sum">设置自动 flattring</string>
   <string name="user_interface_label">界面</string>
   <string name="pref_set_theme_title">主题选择</string>
   <string name="pref_set_theme_sum">改变 AntennaPod 外观</string>
@@ -197,6 +226,9 @@
   <string name="pref_automatic_download_sum">配置自动下载的曲目</string>
   <string name="pref_autodl_wifi_filter_title">打开 Wi-Fi 过滤器</string>
   <string name="pref_autodl_wifi_filter_sum">只允许在 Wi-Fi 网络下自动下载</string>
+  <string name="pref_automatic_download_on_battery_title">未充电时下载</string>
+  <string name="pref_automatic_download_on_battery_sum">未充电时允许自动下载</string>
+  <string name="pref_parallel_downloads_title">并行下载</string>
   <string name="pref_episode_cache_title">曲目缓存</string>
   <string name="pref_theme_title_light">浅色</string>
   <string name="pref_theme_title_dark">暗色</string>
@@ -212,16 +244,20 @@
   <string name="pref_gpodnet_setlogin_information_sum">改变 gpodder.net 账户登录信息.</string>
   <string name="pref_playback_speed_title">播放速度</string>
   <string name="pref_playback_speed_sum">自定义音频播放速度</string>
-  <string name="pref_seek_delta_title">定位时间</string>
-  <string name="pref_seek_delta_sum">当倒退或快速回放时以这些秒为单位</string>
   <string name="pref_gpodnet_sethostname_title">设置主机名</string>
   <string name="pref_gpodnet_sethostname_use_default_host">使用默认主机</string>
   <string name="pref_expandNotify_title">扩展通知</string>
   <string name="pref_expandNotify_sum">总是扩展通知以显示播放按钮</string>
   <string name="pref_persistNotify_title">保持播放控制</string>
   <string name="pref_persistNotify_sum">在暂停时保持通知和锁屏界面的控制。</string>
-  <string name="pref_expand_notify_unsupport_toast">Android 版本 4.1 之前不支持扩展通知</string>
+  <string name="pref_expand_notify_unsupport_toast">Android 4.1 之前不支持扩展通知。</string>
+  <string name="pref_queueAddToFront_sum">添加新曲目到队列之前。</string>
+  <string name="pref_queueAddToFront_title">新曲目从播放列表的前排插入</string>
   <!--Auto-Flattr dialog-->
+  <string name="auto_flattr_enable">启用自动 flattring</string>
+  <string name="auto_flattr_after_percent">当播放到百分之%d时Flattr改曲目</string>
+  <string name="auto_flattr_ater_beginning">当播放开始时Flattr改曲目</string>
+  <string name="auto_flattr_ater_end">当播放结束时Flattr改曲目</string>
   <!--Search-->
   <string name="search_hint">搜索订阅或者曲目</string>
   <string name="found_in_shownotes_label">笔记中查找</string>
@@ -231,6 +267,9 @@
   <string name="found_in_title_label">标题中查找</string>
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML 文件可以方便的从别的播客转移数据过来。</string>
+  <string name="opml_import_explanation_1">从本地文件系统选择一个特定文件地址。</string>
+  <string name="opml_import_explanation_2">使用外部应用程序，例如 Dropbox，Google Drive 或您喜爱的文件管理器打开 OPML 文件。</string>
+  <string name="opml_import_explanation_3"><i>与</i> AntennaPod 一样，许多应用例如Google Mail，Dropbox，Google Drive和大多数文件管理器均可 <i>打开</i> OPML文件。</string>
   <string name="start_import_label">开始导入</string>
   <string name="opml_import_label">OPML 导入</string>
   <string name="opml_directory_error">错误!</string>
@@ -239,6 +278,8 @@
   <string name="opml_import_error_dir_empty">导入目录为空.</string>
   <string name="select_all_label">全选</string>
   <string name="deselect_all_label">取消所有选择</string>
+  <string name="choose_file_from_filesystem">来自本地文件系统</string>
+  <string name="choose_file_from_external_application">使用外部应用</string>
   <string name="opml_export_label">OPML 导出</string>
   <string name="exporting_label">导出中...</string>
   <string name="export_error_label">导出出错</string>
@@ -262,6 +303,7 @@
   <string name="gpodnetauth_login_title">登录</string>
   <string name="gpodnetauth_login_descr">欢迎进入 gpodder.net 登录流程. 首先, 输入请你的登录信息:</string>
   <string name="gpodnetauth_login_butLabel">登录</string>
+  <string name="gpodnetauth_login_register">如果您目前没有账户，可以从这里创建：\nhttps://gpodder.net/register/</string>
   <string name="username_label">用户名</string>
   <string name="password_label">密码</string>
   <string name="gpodnetauth_device_title">设备选择</string>
@@ -317,9 +359,11 @@
   <string name="new_episodes_count_label">新曲目数</string>
   <string name="in_progress_episodes_count_label">已收听曲目数</string>
   <string name="drag_handle_content_description">拖动以变更本项目的位置</string>
+  <string name="load_next_page_label">载入下一页</string>
   <!--Feed information screen-->
   <string name="authentication_label">验证</string>
   <string name="authentication_descr">给本播客及曲目变更用户名及密码</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">正在从选定的应用中导入订阅...</string>
+  <string name="search_itunes_label">搜索 iTunes</string>
 </resources>

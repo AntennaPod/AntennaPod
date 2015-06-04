@@ -1,5 +1,15 @@
 Change Log
 ==========
+Version 1.2
+------------------
+* Optionally disable swiping and dragging in the queue
+* Resume playback after phone call
+* Filter episodes in the Podcast feed
+* Hide items in the Nav drawer
+* Customize times for fast forward and rewind
+* Resolved issues with opening some OPML files
+* Various bug fixes and usability improvements
+
 Version 1.1
 -----------
 * iTunes podcast integration

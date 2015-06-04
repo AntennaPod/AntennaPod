@@ -26,11 +26,12 @@
   <!--Main activity-->
   <string name="drawer_open">Abrir menu</string>
   <string name="drawer_close">Fechar menu</string>
+  <string name="drawer_preferences">Preferências da gaveta</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir no navegador</string>
   <string name="copy_url_label">Copiar URL</string>
   <string name="share_url_label">Partilhar URL</string>
-  <string name="copied_url_msg">URL copiado para a área de transferência.</string>
+  <string name="copied_url_msg">URL copiado para a área de transferência</string>
   <string name="go_to_position_label">Ir para esta posição</string>
   <!--Playback history-->
   <string name="clear_history_label">Limpar histórico</string>
@@ -39,6 +40,7 @@
   <string name="cancel_label">Cancelar</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Definições</string>
   <string name="cover_label">Imagem</string>
   <string name="error_label">Erro</string>
@@ -64,20 +66,30 @@
   <string name="etxtFeedurlHint">URL da fonte ou sítio web</string>
   <string name="txtvfeedurl_label">Adicionar podcast via URL</string>
   <string name="podcastdirectories_label">Localizar podcasts no diretório</string>
-  <string name="podcastdirectories_descr">Pode procurar os novos podcasts no gPodder.net por nome, categoria ou popularidade e também na loja iTunes.</string>
+  <string name="podcastdirectories_descr">Pode procurar por novos podcasts no gPodder.net e também na loja iTunes. Pode procurar por nome, categoria e popularidade.</string>
   <string name="browse_gpoddernet_label">Procurar no gPodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Marcar tudo como lido</string>
-  <string name="mark_all_read_msg">Marcar todos os episódios como lidos</string>
-  <string name="mark_all_read_confirmation_msg">Por favor confirme que deseja marcar todos os episódios como lidos.</string>
-  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme que deseja marcar todos os episódios desta fonte como lidos.</string>
+  <string name="mark_all_read_label">Marcar tudo como reproduzido</string>
+  <string name="mark_all_read_msg">Marcar todos os episódios como reproduzidos</string>
+  <string name="mark_all_read_confirmation_msg">Por favor confirme que deseja marcar todos os episódios como reproduzidos</string>
+  <string name="mark_all_read_feed_confirmation_msg">Por favor confirme que deseja marcar todos os episódios desta fonte como reproduzidos</string>
   <string name="show_info_label">Mostrar informações</string>
   <string name="remove_feed_label">Remover podcast</string>
   <string name="share_link_label">Partilhar ligação do sítio web</string>
   <string name="share_source_label">Partilhar ligação da fonte</string>
-  <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela petencentes.</string>
+  <string name="feed_delete_confirmation_msg">Confirme a eliminação desta fonte e de todos os episódios a ela pertencentes</string>
   <string name="feed_remover_msg">Remover fonte</string>
   <string name="load_complete_feed">Atualizar todas as páginas da fonte</string>
+  <string name="hide_episodes_title">Ocultar episódios</string>
+  <string name="hide_unplayed_episodes_label">Não reproduzidos</string>
+  <string name="hide_paused_episodes_label">Em pausa</string>
+  <string name="hide_played_episodes_label">Reproduzidos</string>
+  <string name="hide_queued_episodes_label">Na fila</string>
+  <string name="hide_not_queued_episodes_label">Não na fila</string>
+  <string name="hide_downloaded_episodes_label">Transferidos</string>
+  <string name="hide_not_downloaded_episodes_label">Não transferidos</string>
+  <string name="filtered_label">Filtrados</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Última atualização falhada</string>
   <!--actions on feeditems-->
   <string name="download_label">Transferir</string>
   <string name="play_label">Reproduzir</string>
@@ -86,16 +98,20 @@
   <string name="stream_label">Emitir</string>
   <string name="remove_label">Remover</string>
   <string name="remove_episode_lable">Remover episódio</string>
-  <string name="mark_read_label">Marcar como lido</string>
-  <string name="mark_unread_label">Marcar como novo</string>
-  <string name="marked_as_read_label">Marcar como lido</string>
+  <string name="mark_read_label">Marcar como reproduzido</string>
+  <string name="mark_unread_label">Marcar como não reproduzido</string>
+  <string name="marked_as_read_label">Marcado como reproduzido</string>
   <string name="add_to_queue_label">Adicionar à fila</string>
+  <string name="added_to_queue_label">Adicionado à fila</string>
   <string name="remove_from_queue_label">Remover da fila</string>
   <string name="visit_website_label">Aceder ao sítio web</string>
   <string name="support_label">Flattr</string>
   <string name="enqueue_all_new">Colocar tudo na fila</string>
   <string name="download_all">Transferir tudo</string>
   <string name="skip_episode_label">Ignorar episódio</string>
+  <string name="activate_auto_download">Ativar transferência automática</string>
+  <string name="deactivate_auto_download">Desativar transferência automática</string>
+  <string name="reset_position">Repor posição de reprodução</string>
   <!--Download messages and labels-->
   <string name="download_successful">sucesso</string>
   <string name="download_failed">falha</string>
@@ -113,7 +129,9 @@
   <string name="download_error_unauthorized">Erro de autenticação</string>
   <string name="cancel_all_downloads_label">Cancelar transferências</string>
   <string name="download_canceled_msg">Transferência cancelada</string>
-  <string name="download_report_title">Transferências terminadas</string>
+  <string name="download_canceled_autodownload_enabled_msg">Transferência cancelada\n<i>Transferência automática</i> desativada para este item</string>
+  <string name="download_report_title">Transferências terminadas com erros</string>
+  <string name="download_report_content_title">Relatório de transferências</string>
   <string name="download_error_malformed_url">URL inválido</string>
   <string name="download_error_io_error">Erro I/O</string>
   <string name="download_error_request_error">Erro de pedido</string>
@@ -129,6 +147,11 @@
   <string name="download_request_error_dialog_message_prefix">Ocorreu um erro ao transferir o ficheiro:\u0020</string>
   <string name="authentication_notification_title">Requer autenticação</string>
   <string name="authentication_notification_msg">O recurso solicitado requer um utilizador e uma senha</string>
+  <string name="confirm_mobile_download_dialog_title">Confirmação de transferência</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente ou apenas adicionar à fila?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_message">A transferência através de dados móveis está desativada nas definições.\n\nAtivar temporariamente?\n\n<small>A sua decisão será memorizada durante 10 minutos.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Apenas adicionados à fila</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Ativar temporariamente</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Erro!</string>
   <string name="player_stopped_msg">Nada em reprodução</string>
@@ -143,6 +166,8 @@
   <string name="playbackservice_notification_title">Reproduzir podcast</string>
   <string name="unknown_media_key">Tecla multimédia desconhecida: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Bloquear fila</string>
+  <string name="unlock_queue">Desbloquear fila</string>
   <string name="clear_queue_label">Limpar fila</string>
   <string name="undo">Anular</string>
   <string name="removed_from_queue">Item removido</string>
@@ -154,7 +179,7 @@
   <string name="duration">Duração</string>
   <string name="ascending">Crescente</string>
   <string name="descending">Decrescente</string>
-  <string name="clear_queue_confirmation_msg">Por favor confirme que deseja limpar todos os episódios da fila de reprodução.</string>
+  <string name="clear_queue_confirmation_msg">Tem a certeza de que deseja remover todos os episódios da lista de reprodução?</string>
   <!--Flattr-->
   <string name="flattr_auth_label">Sessão Flattr</string>
   <string name="flattr_auth_explanation">Prima o botão abaixo para iniciar a autenticação. O seu navegador web abrirá o ecrã da sessão flattr e ser-lhe-á solicitada a permissão para o AntennaPod efetuar as alterações. Após ser dada a permissão, voltará novamente a este ecrã.</string>
@@ -187,8 +212,8 @@
   <string name="no_playback_plugin_msg">Para que a velocidade de reprodução variável funcione, tem que instalar um biblioteca de terceiros.\n\nClique em Transferir extra para a transferir no Google Play.\n\nQuaisquer problemas que ocorram na utilização do extra devem ser reportados diretamente ao seu programador.</string>
   <string name="set_playback_speed_label">Velocidades de reprodução</string>
   <!--Empty list labels-->
-  <string name="no_items_label">Não existem itens na lista.</string>
-  <string name="no_feeds_label">Ainda não possui quaisquer fontes.</string>
+  <string name="no_items_label">Não existem itens nesta lista.</string>
+  <string name="no_feeds_label">Ainda não possui quaisquer fontes</string>
   <!--Preferences-->
   <string name="other_pref">Outras</string>
   <string name="about_pref">Sobre</string>
@@ -200,6 +225,8 @@
   <string name="pref_followQueue_sum">Ir para a faixa seguinte ao terminar a reprodução</string>
   <string name="pref_auto_delete_sum">Eliminar episódio ao terminar a reprodução</string>
   <string name="pref_auto_delete_title">Eliminação automática</string>
+  <string name="pref_smart_mark_as_played_sum">Marcar episódios como reproduzidos mesmo que restem alguns segundos de reprodução</string>
+  <string name="pref_smart_mark_as_played_title">Marcar como reproduzido (inteligente)</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
   <string name="pref_autoUpdateIntervall_title">Intervalo entre atualizações</string>
@@ -214,20 +241,22 @@
   <string name="refreshing_label">A atualizar</string>
   <string name="flattr_settings_label">Definições flattr</string>
   <string name="pref_flattr_auth_title">Sessão flattr</string>
-  <string name="pref_flattr_auth_sum">Inicie sessão na sua conta flattr para fazer o flattr no AntennaPod.</string>
+  <string name="pref_flattr_auth_sum">Inicie sessão na sua conta flattr para fazer o flattr no AntennaPod</string>
   <string name="pref_flattr_this_app_title">Flattr desta aplicação</string>
   <string name="pref_flattr_this_app_sum">Ajude no desenvolvimento do AntennaPod através do Flattr. Obrigado!</string>
   <string name="pref_revokeAccess_title">Revogar acesso</string>
-  <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr.</string>
+  <string name="pref_revokeAccess_sum">Revogar permissões de acesso da aplicação à sua conta flattr</string>
   <string name="pref_auto_flattr_title">Flattr automático</string>
   <string name="pref_auto_flattr_sum">Configurar flattr automático</string>
   <string name="user_interface_label">Interface</string>
   <string name="pref_set_theme_title">Tema</string>
-  <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod.</string>
+  <string name="pref_nav_drawer_items_title">Alterar itens da gaveta</string>
+  <string name="pref_nav_drawer_items_sum">Alterar os itens que aparecem na gaveta de navegação</string>
+  <string name="pref_set_theme_sum">Mudar o aspeto do AntennaPod</string>
   <string name="pref_automatic_download_title">Transferência automática</string>
-  <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios.</string>
+  <string name="pref_automatic_download_sum">Configure a transferência automática dos episódios</string>
   <string name="pref_autodl_wifi_filter_title">Ativar filtro Wi-Fi</string>
-  <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios.</string>
+  <string name="pref_autodl_wifi_filter_sum">Apenas permitir transferências automáticas através de redes sem fios</string>
   <string name="pref_automatic_download_on_battery_title">Transferência se não estiver a carregar</string>
   <string name="pref_automatic_download_on_battery_sum">Permitir transferência automática se a bateria não estiver a ser carregada</string>
   <string name="pref_parallel_downloads_title">Transferências simultâneas</string>
@@ -239,24 +268,25 @@
   <string name="pref_update_interval_hours_singular">hora</string>
   <string name="pref_update_interval_hours_manual">Manual</string>
   <string name="pref_gpodnet_authenticate_title">Acesso</string>
-  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições.</string>
+  <string name="pref_gpodnet_authenticate_sum">Aceda à sua conta gpodder.net para poder sincronizar as subscrições</string>
   <string name="pref_gpodnet_logout_title">Sair</string>
   <string name="pref_gpodnet_logout_toast">Sessão terminada</string>
   <string name="pref_gpodnet_setlogin_information_title">Mudar informação de acesso</string>
-  <string name="pref_gpodnet_setlogin_information_sum">Mudar informação de acesso à sua conta gpodder.net.</string>
+  <string name="pref_gpodnet_setlogin_information_sum">Mudar informação de acesso à sua conta gpodder.net</string>
   <string name="pref_playback_speed_title">Velocidades de reprodução</string>
   <string name="pref_playback_speed_sum">Personalize as velocidades de reprodução disponíveis.</string>
-  <string name="pref_seek_delta_title">Intervalo de procura</string>
-  <string name="pref_seek_delta_sum">Ao recuar ou avançar, procurar este valor de segundos</string>
+  <string name="pref_fast_forward">Tempo a avançar</string>
+  <string name="pref_rewind">Tempo a recuar</string>
   <string name="pref_gpodnet_sethostname_title">Definir nome de servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilizar pré-definição</string>
   <string name="pref_expandNotify_title">Expansão de notificação</string>
-  <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução.</string>
+  <string name="pref_expandNotify_sum">Expandir sempre a notificação para mostrar os botões de reprodução</string>
   <string name="pref_persistNotify_title">Controlos de reprodução persistentes</string>
-  <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa.</string>
-  <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações.</string>
-  <string name="pref_queueAddToFront_sum">Colocar novos episódios no inicio da fila.</string>
+  <string name="pref_persistNotify_sum">Manter controlos de notificação e ecrã de bloqueio ao colocar a reprodução em pausa</string>
+  <string name="pref_expand_notify_unsupport_toast">As versões Android anteriores à 4.1 não possuem suporte à expansão de notificações</string>
+  <string name="pref_queueAddToFront_sum">Colocar novos episódios no inicio da fila</string>
   <string name="pref_queueAddToFront_title">Novos episódios no inicio</string>
+  <string name="pref_smart_mark_as_played_disabled">Desativada</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Ativar flattr automático</string>
   <string name="auto_flattr_after_percent">Flattr de episódios ao atingir %d porcento de reprodução</string>
@@ -270,16 +300,16 @@
   <string name="search_label">Procura</string>
   <string name="found_in_title_label">Encontrado no título</string>
   <!--OPML import and export-->
-  <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações.</string>
-  <string name="opml_import_explanation_1">Escolha um caminho especifico no sistema local de ficheiros.</string>
-  <string name="opml_import_explanation_2">Utilize aplicações externas como o Dropbox, Google Drive ou o seu gestor de ficheiros preferido para abrir o ficheiro OPML.</string>
-  <string name="opml_import_explanation_3">As aplicações como o Google Mail, Dropbox, Google Drive ou gestores de ficheiros podem <i>abrir</i> os ficheiros OPML <i>através</i> do AntennaPod.</string>
+  <string name="opml_import_txtv_button_lable">Os ficheiros OPML permitem-lhe mover os podcasts entre aplicações</string>
+  <string name="opml_import_explanation_1">Escolha um caminho especifico no sistema local de ficheiros</string>
+  <string name="opml_import_explanation_2">Utilize aplicações externas como o Dropbox, Google Drive ou o seu gestor de ficheiros preferido para abrir o ficheiro OPML</string>
+  <string name="opml_import_explanation_3">As aplicações como o Google Mail, Dropbox, Google Drive ou gestores de ficheiros podem <i>abrir</i> os ficheiros OPML <i>através</i> do AntennaPod</string>
   <string name="start_import_label">Iniciar importação</string>
   <string name="opml_import_label">Importação OPML</string>
   <string name="opml_directory_error">Erro!</string>
   <string name="reading_opml_label">A ler ficheiro OPML</string>
   <string name="opml_reader_error">Ocorreu um erro ao ler o ficheiro OPML:</string>
-  <string name="opml_import_error_dir_empty">O diretório de importação está vazio.</string>
+  <string name="opml_import_error_dir_empty">O diretório de importação está vazio</string>
   <string name="select_all_label">Marcar tudo</string>
   <string name="deselect_all_label">Desmarcar tudo</string>
   <string name="choose_file_from_filesystem">Do sistema local de ficheiros</string>
@@ -287,7 +317,7 @@
   <string name="opml_export_label">Exportação OPML</string>
   <string name="exporting_label">Exportação...</string>
   <string name="export_error_label">Erro de exportação</string>
-  <string name="opml_export_success_title">Exportação efetuada.</string>
+  <string name="opml_export_success_title">Exportação efetuada</string>
   <string name="opml_export_success_sum">O ficheiro .opml foi gravado em:\u0020</string>
   <!--Sleep timer-->
   <string name="set_sleeptimer_label">Definir temporizador</string>
@@ -313,7 +343,7 @@
   <string name="gpodnetauth_device_title">Seleção de dispositivo</string>
   <string name="gpodnetauth_device_descr">Criar um novo dispositivo ou escolher um existente para aceder à sua conta gpodder.net</string>
   <string name="gpodnetauth_device_deviceID">ID do dispositivo:\u0020</string>
-  <string name="gpodnetauth_device_caption">Legenda</string>
+  <string name="gpodnetauth_device_caption">Nome</string>
   <string name="gpodnetauth_device_butCreateNewDevice">Criar novo dispositivo</string>
   <string name="gpodnetauth_device_chooseExistingDevice">Escolher dispositivo:</string>
   <string name="gpodnetauth_device_errorEmpty">ID do dispositivo não pode estar vazia</string>
@@ -329,7 +359,7 @@
   <string name="gpodnetsync_error_descr">Ocorreu um erro ao sincronizar:\u0020</string>
   <!--Directory chooser-->
   <string name="selected_folder_label">Diretório escolhido:</string>
-  <string name="create_folder_label">Criar diretório</string>
+  <string name="create_folder_label">Criar pasta</string>
   <string name="choose_data_directory">Escolha o diretório</string>
   <string name="create_folder_msg">Criar um diretório com o nome \"%1$s\"?</string>
   <string name="create_folder_success">Novo diretório criado</string>
@@ -341,10 +371,12 @@
   <string name="set_to_default_folder">Escolha a pasta pré-definida</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Pausa na reprodução em vez de baixar o volume se outra aplicação quiser reproduzir sons</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa nas interrupções</string>
+  <string name="pref_resumeAfterCall_sum">Continuar reprodução ao terminar a chamada</string>
+  <string name="pref_resumeAfterCall_title">Continuar após a chamada</string>
   <!--Online feed view-->
   <string name="subscribe_label">Subscrever</string>
   <string name="subscribed_label">Subscrito</string>
-  <string name="downloading_label">Transferência...</string>
+  <string name="downloading_label">A transferir...</string>
   <!--Content descriptions for image buttons-->
   <string name="show_chapters_label">Mostrar capítulos</string>
   <string name="show_shownotes_label">Mostrar notas</string>
@@ -366,7 +398,7 @@
   <string name="load_next_page_label">Carregar próxima página</string>
   <!--Feed information screen-->
   <string name="authentication_label">Autenticação</string>
-  <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios.</string>
+  <string name="authentication_descr">Altere o seu nome de utilizador e senha para este podcast e seus episódios</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importar subscrições de aplicações single-purpose...</string>
   <string name="search_itunes_label">Procurar no iTunes</string>

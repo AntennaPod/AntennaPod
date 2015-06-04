@@ -58,6 +58,7 @@
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
+  <string name="parallel_downloads_suffix">\u0020download paralleli</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -242,8 +243,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
-  <string name="pref_seek_delta_title">Tempo di ricerca</string>
-  <string name="pref_seek_delta_sum">Cerca tutti questi secondi quando si riavvolge o si va avanti velocemente</string>
   <string name="pref_gpodnet_sethostname_title">Imposta l\'hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usa l\'host di default</string>
   <string name="pref_expandNotify_title">Espandi le notifiche</string>
@@ -273,6 +272,7 @@
   <string name="opml_import_error_dir_empty">La directory di importazione è vuota.</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
+  <string name="choose_file_from_external_application">Utilizza un\'applicazione esterna</string>
   <string name="opml_export_label">Esportazione su OPML</string>
   <string name="exporting_label">Esportazione in corso...</string>
   <string name="export_error_label">Errore di esportazione</string>
