@@ -66,7 +66,7 @@
   <string name="etxtFeedurlHint">URL till flöde eller webbsida</string>
   <string name="txtvfeedurl_label">Lägg till podcast via URL</string>
   <string name="podcastdirectories_label">Hitta podcast i mapp</string>
-  <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet med tjänsten gpodder.net</string>
+  <string name="podcastdirectories_descr">Du kan söka efter podcasts baserat på namn, kategori eller populäritet med tjänsten gpodder.net eller på iTunes Store.</string>
   <string name="browse_gpoddernet_label">Bläddra på gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Markera alla som spelade</string>
