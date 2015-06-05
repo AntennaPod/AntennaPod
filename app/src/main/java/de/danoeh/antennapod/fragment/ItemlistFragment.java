@@ -83,6 +83,7 @@ public class ItemlistFragment extends ListFragment {
 
     protected FeedItemlistAdapter adapter;
     private ContextMenu contextMenu;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private long feedID;
     private Feed feed;
@@ -217,6 +218,11 @@ public class ItemlistFragment extends ListFragment {
                     return false;
                 }
             });
+            if(feed == null || feed.getLink() == null) {
+                menu.findItem(R.id.share_link_item).setVisible(false);
+                menu.findItem(R.id.visit_website_item).setVisible(false);
+            }
+
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
@@ -302,12 +308,16 @@ public class ItemlistFragment extends ListFragment {
         }
 
         contextMenu = menu;
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
         // because of addHeaderView(), positions are increased by 1!
         FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
 

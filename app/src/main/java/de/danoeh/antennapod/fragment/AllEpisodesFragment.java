@@ -30,8 +30,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -72,6 +72,7 @@ public class AllEpisodesFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progLoading;
     private ContextMenu contextMenu;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private List<FeedItem> episodes;
     private LongList queuedItemsIds;
@@ -341,12 +342,16 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         contextMenu = menu;
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
         FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
 
         if (selectedItem == null) {

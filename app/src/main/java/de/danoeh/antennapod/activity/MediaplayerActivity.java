@@ -278,6 +278,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
             startActivity(intent);
             return true;
         } else if (media != null) {
+            FeedItem feedItem = ((FeedMedia) media).getItem();
             switch (item.getItemId()) {
                 case R.id.disable_sleeptimer_item:
                     if (controller.serviceAvailable()) {
@@ -333,12 +334,20 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     break;
                 case R.id.support_item:
                     if (media instanceof FeedMedia) {
-                        FeedItem feedItem = ((FeedMedia) media).getItem();
                         DBTasks.flattrItemIfLoggedIn(this, feedItem);
                     }
                     break;
                 case R.id.share_link_item:
-                    ShareUtils.shareLink(this, media.getWebsiteLink());
+                    ShareUtils.shareFeedItemLink(this, feedItem);
+                    break;
+                case R.id.share_download_url_item:
+                    ShareUtils.shareFeedItemDownloadLink(this, feedItem);
+                    break;
+                case R.id.share_link_with_position_item:
+                    ShareUtils.shareFeedItemLink(this, feedItem, true);
+                    break;
+                case R.id.share_download_url_with_position_item:
+                    ShareUtils.shareFeedItemDownloadLink(this, feedItem, true);
                     break;
                 case R.id.skip_episode_item:
                     sendBroadcast(new Intent(

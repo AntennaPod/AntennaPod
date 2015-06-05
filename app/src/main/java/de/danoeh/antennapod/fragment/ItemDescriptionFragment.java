@@ -277,7 +277,8 @@ public class ItemDescriptionFragment extends Fragment {
                     }
                     break;
                 case R.id.share_url_item:
-                    ShareUtils.shareLink(getActivity(), selectedURL);
+                    String subject = getString(R.string.share_url_label);
+                    ShareUtils.shareLink(getActivity(), subject, selectedURL);
                     break;
                 case R.id.copy_url_item:
                     if (android.os.Build.VERSION.SDK_INT >= 11) {

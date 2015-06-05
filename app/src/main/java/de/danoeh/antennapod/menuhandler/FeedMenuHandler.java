@@ -42,10 +42,11 @@ public class FeedMenuHandler {
 
         Log.d(TAG, "Preparing options menu");
         menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
-        if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable())
+        if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) {
             menu.findItem(R.id.support_item).setVisible(true);
-        else
+        } else {
             menu.findItem(R.id.support_item).setVisible(false);
+        }
 
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
 
@@ -99,7 +100,7 @@ public class FeedMenuHandler {
             case R.id.share_link_item:
                 ShareUtils.shareFeedlink(context, selectedFeed);
                 break;
-            case R.id.share_source_item:
+            case R.id.share_download_url_item:
                 ShareUtils.shareFeedDownloadLink(context, selectedFeed);
                 break;
             default:
