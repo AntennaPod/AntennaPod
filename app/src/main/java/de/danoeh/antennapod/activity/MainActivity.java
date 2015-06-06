@@ -332,7 +332,13 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         FragmentTransaction t = fragmentManager.beginTransaction();
         t.replace(R.id.main_view, fragment, "main");
         fragmentManager.popBackStack();
-        t.commit();
+        // TODO: we have to allow state loss here
+        // since this function can get called from an AsyncTask which
+        // could be finishing after our app has already committed state
+        // and is about to get shutdown.  What we *should* do is
+        // not commit anything in an AsyncTask, but that's a bigger
+        // change than we want now.
+        t.commitAllowingStateLoss();
         if (navAdapter != null) {
             navAdapter.notifyDataSetChanged();
         }
