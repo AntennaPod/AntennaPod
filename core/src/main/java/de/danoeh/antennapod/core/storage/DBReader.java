@@ -261,8 +261,8 @@ public final class DBReader {
                     item.getMedia().setItem(item);
                 }
             } while (cursor.moveToNext());
-            cursor.close();
         }
+        cursor.close();
     }
 
     private static FeedMedia extractFeedMediaFromCursorRow(final Cursor cursor) {
@@ -401,6 +401,7 @@ public final class DBReader {
                 queueIds.add(queueCursor.getLong(0));
             } while (queueCursor.moveToNext());
         }
+        queueCursor.close();
         return queueIds;
     }
 
@@ -533,6 +534,7 @@ public final class DBReader {
                 i++;
             } while (cursor.moveToNext());
         }
+        cursor.close();
         return itemIds;
     }
 
@@ -750,6 +752,7 @@ public final class DBReader {
                 }
             }
         }
+        itemCursor.close();
         return item;
     }
 
@@ -775,6 +778,7 @@ public final class DBReader {
         } else {
             result = Collections.emptyList();
         }
+        itemCursor.close();
         return result;
 
     }
@@ -813,6 +817,7 @@ public final class DBReader {
                 }
             }
         }
+        itemCursor.close();
         return item;
     }
 
@@ -857,12 +862,16 @@ public final class DBReader {
     static String getImageAuthentication(final Context context, final String imageUrl, PodDBAdapter adapter) {
         String credentials = null;
         Cursor cursor = adapter.getImageAuthenticationCursor(imageUrl);
-        if (cursor.moveToFirst()) {
-            String username = cursor.getString(0);
-            String password = cursor.getString(1);
-            return username + ":" + password;
+        try {
+            if (cursor.moveToFirst()) {
+                String username = cursor.getString(0);
+                String password = cursor.getString(1);
+                return username + ":" + password;
+            }
+            return "";
+        } finally {
+            cursor.close();
         }
-        return "";
     }
 
     /**
@@ -902,6 +911,7 @@ public final class DBReader {
             item.setDescription(description);
             item.setContentEncoded(contentEncoded);
         }
+        extraCursor.close();
         adapter.close();
     }
 
