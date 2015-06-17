@@ -3,7 +3,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/feeditemlist_header_height"
+    android:layout_height="wrap_content"
     tools:context="de.danoeh.antennapod.activity.MainActivity"
     tools:background="@android:color/darker_gray">
 
@@ -11,7 +11,7 @@
         android:id="@+id/imgvBackground"
         style="@style/BigBlurryBackground"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="@dimen/feeditemlist_header_height" />
 
     <ImageView
         android:id="@+id/imgvCover"
@@ -78,5 +78,31 @@
         tools:text="Podcast author"
         tools:background="@android:color/holo_green_dark" />
 
+    <IconTextView
+        android:id="@+id/txtvFailure"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgvBackground"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:background="@color/download_failed_red"
+        android:gravity="center"
+        android:textColor="@color/white"
+        android:visibility="gone"
+        android:text="@string/refresh_failed_msg"
+        tools:text="(!) Last refresh failed"
+        />
+
+    <TextView
+        android:id="@+id/txtvInformation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/imgvBackground"
+        android:paddingTop="2dp"
+        android:paddingBottom="2dp"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:text="(i) Information"
+        />
 
 </RelativeLayout>

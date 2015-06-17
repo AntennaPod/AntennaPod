@@ -12,7 +12,7 @@ import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 
 /**
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
@@ -24,7 +24,7 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
     public int performCleanup(Context context, Integer episodeNumber) {
         List<FeedItem> candidates = new ArrayList<FeedItem>();
         List<FeedItem> downloadedItems = DBReader.getDownloadedItems(context);
-        QueueAccess queue = QueueAccess.IDListAccess(DBReader.getQueueIDList(context));
+        LongList queue = DBReader.getQueueIDList(context);
         List<FeedItem> delete;
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
@@ -41,10 +41,10 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
                 Date r = rhs.getMedia().getPlaybackCompletionDate();
 
                 if (l == null) {
-                    l = new Date(0);
+                    l = new Date();
                 }
                 if (r == null) {
-                    r = new Date(0);
+                    r = new Date();
                 }
                 return l.compareTo(r);
             }

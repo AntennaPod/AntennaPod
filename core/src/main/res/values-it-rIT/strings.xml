@@ -39,6 +39,7 @@
   <string name="cancel_label">Annulla</string>
   <string name="author_label">Autore</string>
   <string name="language_label">Lingua</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">Impostazioni</string>
   <string name="cover_label">Immagine</string>
   <string name="error_label">Errore</string>
@@ -58,6 +59,7 @@
   <string name="close_label">Chiudi</string>
   <string name="retry_label">Riprova</string>
   <string name="auto_download_label">Includi nei download automatici</string>
+  <string name="parallel_downloads_suffix">\u0020download paralleli</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del feed</string>
   <string name="etxtFeedurlHint">www.example.com/feed</string>
@@ -66,8 +68,8 @@
   <string name="podcastdirectories_descr">Puoi cercare dei nuovi podcast in base al nome, alla categoria o alla popolarità nella directory di gpodder.net.</string>
   <string name="browse_gpoddernet_label">Esplora gpodder.net</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">Segna tutti come letti</string>
-  <string name="mark_all_read_msg">Segnati tutti gli episodi come letti</string>
+  <string name="mark_all_read_label">Segna tutti come riprodotti</string>
+  <string name="mark_all_read_msg">Segnati tutti gli episodi come riprodotti</string>
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
   <string name="share_link_label">Condividi il link al sito</string>
@@ -75,6 +77,16 @@
   <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
+  <string name="hide_episodes_title">Nascondi gli episodi</string>
+  <string name="hide_unplayed_episodes_label">Non riprodotti</string>
+  <string name="hide_paused_episodes_label">In pausa</string>
+  <string name="hide_played_episodes_label">Riprodotti</string>
+  <string name="hide_queued_episodes_label">In coda</string>
+  <string name="hide_not_queued_episodes_label">Non in coda</string>
+  <string name="hide_downloaded_episodes_label">Scaricati</string>
+  <string name="hide_not_downloaded_episodes_label">Non scaricati</string>
+  <string name="filtered_label">Filtrati</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} Ultimo aggiornamento fallito</string>
   <!--actions on feeditems-->
   <string name="download_label">Download</string>
   <string name="play_label">Riproduci</string>
@@ -83,16 +95,20 @@
   <string name="stream_label">Stream</string>
   <string name="remove_label">Rimuovi</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
-  <string name="mark_read_label">Segna come letto</string>
-  <string name="mark_unread_label">Segna come non letto</string>
-  <string name="marked_as_read_label">Segnato come letto</string>
+  <string name="mark_read_label">Segna come riprodotto</string>
+  <string name="mark_unread_label">Segna come non riprodotto</string>
+  <string name="marked_as_read_label">Segnato come riprodotto</string>
   <string name="add_to_queue_label">Aggiungi alla coda</string>
+  <string name="added_to_queue_label">Aggiunto alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
   <string name="visit_website_label">Visita il sito</string>
   <string name="support_label">Carica questo su Flattr</string>
   <string name="enqueue_all_new">Accoda tutti</string>
   <string name="download_all">Scarica tutti</string>
   <string name="skip_episode_label">Salta l\'episodio</string>
+  <string name="activate_auto_download">Attiva il download automatico</string>
+  <string name="deactivate_auto_download">Disattiva il download automatico</string>
+  <string name="reset_position">Azzera la posizione della riproduzione</string>
   <!--Download messages and labels-->
   <string name="download_successful">successo</string>
   <string name="download_failed">fallito</string>
@@ -109,8 +125,8 @@
   <string name="download_error_unknown_host">Host sconosciuto</string>
   <string name="download_error_unauthorized">Errore di autenticazione</string>
   <string name="cancel_all_downloads_label">Annulla tutti i download</string>
-  <string name="download_cancelled_msg">Download annullato</string>
-  <string name="download_report_title">Download completati</string>
+  <string name="download_canceled_msg">Download annullato</string>
+  <string name="download_report_content_title">Rapporto del downoad</string>
   <string name="download_error_malformed_url">URL malformato</string>
   <string name="download_error_io_error">Errore IO</string>
   <string name="download_error_request_error">Errore della richiesta</string>
@@ -126,6 +142,9 @@
   <string name="download_request_error_dialog_message_prefix">Rilevato errore durante il download del file:\u0020</string>
   <string name="authentication_notification_title">Autenticazione richiesta</string>
   <string name="authentication_notification_msg">La risorsa che hai richiesto richiede un nome utente e una password</string>
+  <string name="confirm_mobile_download_dialog_title">Conferma il download su cellulare</string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">Aggiungi solo alla coda</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">Abilita temporaneamente</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">Errore!</string>
   <string name="player_stopped_msg">Nessun media in riproduzione</string>
@@ -140,6 +159,8 @@
   <string name="playbackservice_notification_title">Riproduzione del podcast in corso</string>
   <string name="unknown_media_key">AntennaPod - Chiave dell\'elemento multimediale sconosciuta: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">Blocca la coda</string>
+  <string name="unlock_queue">Sblocca la coda</string>
   <string name="clear_queue_label">Svuota la coda</string>
   <string name="undo">Undo</string>
   <string name="removed_from_queue">Oggetto rimosso</string>
@@ -242,8 +263,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Cambia le informazioni di login per il tuo account gpodder.net.</string>
   <string name="pref_playback_speed_title">Velocità di riproduzione</string>
   <string name="pref_playback_speed_sum">Personalizza le velocità disponibili per la riproduzione audio a velocità variabile</string>
-  <string name="pref_seek_delta_title">Tempo di ricerca</string>
-  <string name="pref_seek_delta_sum">Cerca tutti questi secondi quando si riavvolge o si va avanti velocemente</string>
   <string name="pref_gpodnet_sethostname_title">Imposta l\'hostname</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Usa l\'host di default</string>
   <string name="pref_expandNotify_title">Espandi le notifiche</string>
@@ -251,6 +270,7 @@
   <string name="pref_persistNotify_title">Controlli di riproduzione persistenti</string>
   <string name="pref_persistNotify_sum">Mantieni le notifiche e i controlli del blocco dello schermo quando la riproduzione è in pausa.</string>
   <string name="pref_expand_notify_unsupport_toast">Le versioni di Android prima della 4.1 non supportano le notifiche estese.</string>
+  <string name="pref_smart_mark_as_played_disabled">Disabilitato</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Abilita l\'esecuzione automatica di Flattr</string>
   <string name="auto_flattr_after_percent">Carica l\'episodio su Flattr appena è stato riprodotto al %d percento</string>
@@ -273,6 +293,8 @@
   <string name="opml_import_error_dir_empty">La directory di importazione è vuota.</string>
   <string name="select_all_label">Seleziona tutti</string>
   <string name="deselect_all_label">Deseleziona tutti</string>
+  <string name="choose_file_from_filesystem">Dal filesystem locale</string>
+  <string name="choose_file_from_external_application">Utilizza un\'applicazione esterna</string>
   <string name="opml_export_label">Esportazione su OPML</string>
   <string name="exporting_label">Esportazione in corso...</string>
   <string name="export_error_label">Errore di esportazione</string>
@@ -330,6 +352,7 @@
   <string name="set_to_default_folder">Scegli la cartella predefinita</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">Sospendi la riproduzione invece di abbassare il volume quando un\'altra app emette un suono</string>
   <string name="pref_pausePlaybackForFocusLoss_title">Pausa su interruzione</string>
+  <string name="pref_resumeAfterCall_title">Riprendi dopo la chiamata</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abbonati</string>
   <string name="subscribed_label">Abbonato</string>

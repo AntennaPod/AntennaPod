@@ -26,6 +26,7 @@
   <!--Main activity-->
   <string name="drawer_open">메뉴 열기</string>
   <string name="drawer_close">메뉴 닫기</string>
+  <string name="drawer_preferences">드로어 기본 설정</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">브라우저에서 열기</string>
   <string name="copy_url_label">URL 복사</string>
@@ -39,6 +40,7 @@
   <string name="cancel_label">취소</string>
   <string name="author_label">저자</string>
   <string name="language_label">언어</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">설정</string>
   <string name="cover_label">그림</string>
   <string name="error_label">오류</string>
@@ -67,10 +69,10 @@
   <string name="podcastdirectories_descr">gpodder.net 디렉터리에서 이름, 분류, 인기에 따라 새 팟캐스트를 검색할 수 있고, iTunes 스토어에서 검색할 수도 있습니다.</string>
   <string name="browse_gpoddernet_label">gpodder.net 둘러보기</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">모두 읽은 것으로 표시</string>
-  <string name="mark_all_read_msg">모든 에피소드 읽은 것으로 표시</string>
-  <string name="mark_all_read_confirmation_msg">에피소드 모두를 읽은 것으로 표시하는지 확인하십시오.</string>
-  <string name="mark_all_read_feed_confirmation_msg">이 피드의 에피소드 모두를 읽은 것으로 표시하는지 확인하십시오.</string>
+  <string name="mark_all_read_label">모두 재생했다고 표시</string>
+  <string name="mark_all_read_msg">모든 에피소드를 재생했다고 표시했습니다</string>
+  <string name="mark_all_read_confirmation_msg">모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
+  <string name="mark_all_read_feed_confirmation_msg">이 피드에 들어 있는 모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
   <string name="show_info_label">정보 표시</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
@@ -78,6 +80,16 @@
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
+  <string name="hide_episodes_title">에피소드 감추기</string>
+  <string name="hide_unplayed_episodes_label">재생 안 함</string>
+  <string name="hide_paused_episodes_label">일시 중지</string>
+  <string name="hide_played_episodes_label">재생함</string>
+  <string name="hide_queued_episodes_label">대기열 추가</string>
+  <string name="hide_not_queued_episodes_label">대기열 추가 안 함</string>
+  <string name="hide_downloaded_episodes_label">다운로드함</string>
+  <string name="hide_not_downloaded_episodes_label">다운로드 안 함</string>
+  <string name="filtered_label">필터링함</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} 최근 새로 고침 실패</string>
   <!--actions on feeditems-->
   <string name="download_label">다운로드</string>
   <string name="play_label">재생</string>
@@ -86,16 +98,20 @@
   <string name="stream_label">스트리밍</string>
   <string name="remove_label">제거</string>
   <string name="remove_episode_lable">에피소드 제거</string>
-  <string name="mark_read_label">읽은 것으로 표시</string>
-  <string name="mark_unread_label">읽지 않은 것으로 표시</string>
-  <string name="marked_as_read_label">읽은 것으로 표시</string>
+  <string name="mark_read_label">재생했다고 표시</string>
+  <string name="mark_unread_label">재생하지 않음으로 표시</string>
+  <string name="marked_as_read_label">재생했다고 표시함</string>
   <string name="add_to_queue_label">대기열에 추가</string>
+  <string name="added_to_queue_label">대기열에 추가함</string>
   <string name="remove_from_queue_label">대기열에서 제거</string>
   <string name="visit_website_label">홈페이지 보기</string>
   <string name="support_label">Flattr하기</string>
   <string name="enqueue_all_new">모두 대기열에 추가</string>
   <string name="download_all">모두 다운로드</string>
   <string name="skip_episode_label">에피소드 건너뛰기</string>
+  <string name="activate_auto_download">자동 다운로드 활성화</string>
+  <string name="deactivate_auto_download">자동 다운로드 해제</string>
+  <string name="reset_position">재생 위치 초기화</string>
   <!--Download messages and labels-->
   <string name="download_successful">성공</string>
   <string name="download_failed">실패</string>
@@ -112,8 +128,10 @@
   <string name="download_error_unknown_host">알 수 없는 호스트</string>
   <string name="download_error_unauthorized">인증 오류</string>
   <string name="cancel_all_downloads_label">모든 다운로드 취소</string>
-  <string name="download_cancelled_msg">다운로드 취소됨</string>
-  <string name="download_report_title">다운로드 마침</string>
+  <string name="download_canceled_msg">다운로드 취소함</string>
+  <string name="download_canceled_autodownload_enabled_msg">다운로드 취소함\n이 항목에 <i>자동 다운로드</i>를 해제합니다</string>
+  <string name="download_report_title">다운로드 마침 (오류 있음)</string>
+  <string name="download_report_content_title">다운로드 보고서</string>
   <string name="download_error_malformed_url">URL 형식 틀림</string>
   <string name="download_error_io_error">입출력 오류</string>
   <string name="download_error_request_error">요청 오류</string>
@@ -129,6 +147,11 @@
   <string name="download_request_error_dialog_message_prefix">파일을 다운로드하는 중 오류가 발생했습니다:\u0020</string>
   <string name="authentication_notification_title">인증이 필요합니다</string>
   <string name="authentication_notification_msg">요청한 자원은 사용자 이름과 암호가 필요합니다</string>
+  <string name="confirm_mobile_download_dialog_title">휴대전화망 다운로드 확인</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">휴대전화망 데이터 연결을 통한 다운로드는 설정에서 막혀 있습니다.\n\n임시로 다운로드를 허용할 수도 있고, 대기열에 추가만 할 수도 있습니다.\n\n<small>여기서 선택한 사항은 10분 동안 유지됩니다.</small></string>
+  <string name="confirm_mobile_download_dialog_message">휴대전화망 데이터 연결을 통한 다운로드는 설정에서 막혀 있습니다.\n\n임시로 다운로드를 열 수 있습니다\n\n<small>여기서 선택한 사항은 10분 동안 유지됩니다.</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">대기열에 추가만</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">임시로 허용</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">오류!</string>
   <string name="player_stopped_msg">재생 중인 미디어 없음</string>
@@ -143,6 +166,8 @@
   <string name="playbackservice_notification_title">팟캐스트 재생 중</string>
   <string name="unknown_media_key">안테나팟 - 알 수 없는 미디어 키: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">대기열 잠그기</string>
+  <string name="unlock_queue">대기열 잠금 해제</string>
   <string name="clear_queue_label">대기열 지우기</string>
   <string name="undo">실행 취소</string>
   <string name="removed_from_queue">항목을 제거했습니다</string>
@@ -200,6 +225,8 @@
   <string name="pref_followQueue_sum">재생을 마쳤을 때 다음 대기열로 이동</string>
   <string name="pref_auto_delete_sum">재생이 끝나면 에피소드 삭제</string>
   <string name="pref_auto_delete_title">자동 삭제</string>
+  <string name="pref_smart_mark_as_played_sum">재생이 일정한 시간보다 (초 단위) 적게 남으면 에피소드를 재생한 것으로 표시</string>
+  <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
   <string name="pref_autoUpdateIntervall_title">업데이트 주기</string>
@@ -223,6 +250,8 @@
   <string name="pref_auto_flattr_sum">자동 flattr 설정</string>
   <string name="user_interface_label">사용자 인터페이스</string>
   <string name="pref_set_theme_title">테마 선택</string>
+  <string name="pref_nav_drawer_items_title">네비게이션 드로어 바꾸기</string>
+  <string name="pref_nav_drawer_items_sum">네비게이션 드로어에 어떤 항목을 표시할지 바꿉니다.</string>
   <string name="pref_set_theme_sum">안테나팟의 겉모양을 바꿉니다.</string>
   <string name="pref_automatic_download_title">자동 다운로드</string>
   <string name="pref_automatic_download_sum">에피소드 자동 다운로드를 설정합니다.</string>
@@ -246,8 +275,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.net 계정의 로그인 정보를 바꿉니다.</string>
   <string name="pref_playback_speed_title">재생 속도</string>
   <string name="pref_playback_speed_sum">여러가지 오디오 재생 속도 직접 설정</string>
-  <string name="pref_seek_delta_title">넘기기 간격</string>
-  <string name="pref_seek_delta_sum">뒤나 앞으로 이동할 때 몇 초를 넘어갈지 지정합니다</string>
+  <string name="pref_fast_forward">빠르게 감기 시간</string>
+  <string name="pref_rewind">뒤로 감기 시간</string>
   <string name="pref_gpodnet_sethostname_title">호스트 이름 설정</string>
   <string name="pref_gpodnet_sethostname_use_default_host">기본 호스트 사용</string>
   <string name="pref_expandNotify_title">알림 확장</string>
@@ -257,6 +286,7 @@
   <string name="pref_expand_notify_unsupport_toast">안드로이드 4.1 전 버전에서는 알림 확장을 지원하지 않습니다.</string>
   <string name="pref_queueAddToFront_sum">새 에피소드를 대기열 앞에 추가합니다.</string>
   <string name="pref_queueAddToFront_title">대기열 앞에 추가</string>
+  <string name="pref_smart_mark_as_played_disabled">사용 안 함</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
@@ -341,6 +371,8 @@
   <string name="set_to_default_folder">기본 폴더 선택</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">다른 앱이 소리를 낼 때 볼륨을 줄이지 않고 재생을 일시 중지</string>
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
+  <string name="pref_resumeAfterCall_sum">전화 통화가 끝난 후에 재생 다시 시작</string>
+  <string name="pref_resumeAfterCall_title">통화 후에 다시 시작</string>
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribed_label">구독함</string>

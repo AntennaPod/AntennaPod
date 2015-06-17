@@ -5,14 +5,23 @@ import android.util.Log;
 
 import org.apache.commons.lang3.Validate;
 
+import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
+
 import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
-import java.util.List;
-import java.util.concurrent.*;
+import de.greenrobot.event.EventBus;
+
 
 /**
  * Manages the background tasks of PlaybackSerivce, i.e.
@@ -69,18 +78,13 @@ public class PlaybackServiceTaskManager {
             }
         });
         loadQueue();
-        EventDistributor.getInstance().register(eventDistributorListener);
+        EventBus.getDefault().register(this);
     }
 
-    private final EventDistributor.EventListener eventDistributorListener = new EventDistributor.EventListener() {
-        @Override
-        public void update(EventDistributor eventDistributor, Integer arg) {
-            if ((EventDistributor.QUEUE_UPDATE & arg) != 0) {
-                cancelQueueLoader();
-                loadQueue();
-            }
-        }
-    };
+    public void onEvent(QueueEvent event) {
+        cancelQueueLoader();
+        loadQueue();
+    }
 
     private synchronized boolean isQueueLoaderActive() {
         return queueFuture != null && !queueFuture.isDone();
@@ -145,9 +149,9 @@ public class PlaybackServiceTaskManager {
             positionSaverFuture = schedExecutor.scheduleWithFixedDelay(positionSaver, POSITION_SAVER_WAITING_INTERVAL,
                     POSITION_SAVER_WAITING_INTERVAL, TimeUnit.MILLISECONDS);
 
-            if (BuildConfig.DEBUG) Log.d(TAG, "Started PositionSaver");
+            Log.d(TAG, "Started PositionSaver");
         } else {
-            if (BuildConfig.DEBUG) Log.d(TAG, "Call to startPositionSaver was ignored.");
+            Log.d(TAG, "Call to startPositionSaver was ignored.");
         }
     }
 
@@ -312,7 +316,7 @@ public class PlaybackServiceTaskManager {
      * execution of this method.
      */
     public synchronized void shutdown() {
-        EventDistributor.getInstance().unregister(eventDistributorListener);
+        EventBus.getDefault().unregister(this);
         cancelAllTasks();
         schedExecutor.shutdown();
     }

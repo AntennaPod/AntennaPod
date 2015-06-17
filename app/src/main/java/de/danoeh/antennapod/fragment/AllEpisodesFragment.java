@@ -8,7 +8,10 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
+import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -28,7 +31,7 @@ import java.util.concurrent.atomic.AtomicReference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
-import de.danoeh.antennapod.adapter.NewEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -40,19 +43,21 @@ import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Shows unread or recently published episodes
  */
 public class AllEpisodesFragment extends Fragment {
-    private static final String TAG = "AllEpisodesFragment";
+
+    public static final String TAG = "AllEpisodesFragment";
+
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
             EventDistributor.DOWNLOAD_QUEUED |
-            EventDistributor.QUEUE_UPDATE |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -63,18 +68,19 @@ public class AllEpisodesFragment extends Fragment {
 
     private String prefName;
     protected DragSortListView listView;
-    private NewEpisodesListAdapter listAdapter;
+    private AllEpisodesListAdapter listAdapter;
     private TextView txtvEmpty;
     private ProgressBar progLoading;
+    private ContextMenu contextMenu;
 
-    private List<FeedItem> unreadItems;
-    private List<FeedItem> recentItems;
-    private QueueAccess queueAccess;
+    private List<FeedItem> episodes;
+    private LongList queuedItemsIds;
+    private LongList newItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
-    private boolean showOnlyNewEpisodes = false;
+    private final boolean showOnlyNewEpisodes;
 
     private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
 
@@ -192,11 +198,12 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             inflater.inflate(R.menu.new_episodes, menu);
 
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+            MenuItemUtils.adjustTextColor(getActivity(), sv);
             sv.setQueryHint(getString(R.string.search_hint));
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -218,10 +225,10 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
         super.onPrepareOptionsMenu(menu);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem menuItem = menu.findItem(R.id.mark_all_read_item);
             if (menuItem != null) {
-                menuItem.setVisible(unreadItems != null && !unreadItems.isEmpty());
+                menuItem.setVisible(episodes != null && !episodes.isEmpty());
             }
         }
     }
@@ -291,6 +298,8 @@ public class AllEpisodesFragment extends Fragment {
             }
         });
 
+        registerForContextMenu(listView);
+
         if (!itemsLoaded) {
             progLoading.setVisibility(View.VISIBLE);
             txtvEmpty.setVisibility(View.GONE);
@@ -305,9 +314,59 @@ public class AllEpisodesFragment extends Fragment {
         return root;
     }
 
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        FeedItem item = itemAccess.getItem(adapterInfo.position);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.allepisodes_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        contextMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            e.printStackTrace();
+            Toast.makeText(getActivity(), e.getMessage(), Toast.LENGTH_LONG).show();
+            return true;
+        }
+    }
+
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new NewEpisodesListAdapter(activity.get(), itemAccess, new DefaultActionButtonCallback(activity.get()));
+            listAdapter = new AllEpisodesListAdapter(activity.get(), itemAccess,
+                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
             listView.setAdapter(listAdapter);
             listView.setEmptyView(txtvEmpty);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
@@ -336,12 +395,12 @@ public class AllEpisodesFragment extends Fragment {
         }
     };
 
-    private NewEpisodesListAdapter.ItemAccess itemAccess = new NewEpisodesListAdapter.ItemAccess() {
+    private AllEpisodesListAdapter.ItemAccess itemAccess = new AllEpisodesListAdapter.ItemAccess() {
 
         @Override
         public int getCount() {
             if (itemsLoaded) {
-                return (showOnlyNewEpisodes) ? unreadItems.size() : recentItems.size();
+                return episodes.size();
             }
             return 0;
         }
@@ -349,7 +408,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public FeedItem getItem(int position) {
             if (itemsLoaded) {
-                return (showOnlyNewEpisodes) ? unreadItems.get(position) : recentItems.get(position);
+                return episodes.get(position);
             }
             return null;
         }
@@ -370,7 +429,17 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public boolean isInQueue(FeedItem item) {
             if (itemsLoaded) {
-                return queueAccess.contains(item.getId());
+                return queuedItemsIds.contains(item.getId());
+            } else {
+                return false;
+            }
+        }
+
+        @Override
+        public boolean isNew(FeedItem item) {
+            if (itemsLoaded) {
+                // should actually never be called in NewEpisodesFragment, but better safe than sorry
+                return showOnlyNewEpisodes || newItemsIds.contains(item.getId());
             } else {
                 return false;
             }
@@ -402,7 +471,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private ItemLoader itemLoader;
 
-    private void startItemLoader() {
+    protected void startItemLoader() {
         if (itemLoader != null) {
             itemLoader.cancel(true);
         }
@@ -432,9 +501,19 @@ public class AllEpisodesFragment extends Fragment {
         protected Object[] doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return new Object[]{DBReader.getUnreadItemsList(context),
-                        DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                if(showOnlyNewEpisodes) {
+                    return new Object[] {
+                            DBReader.getNewItemsList(context),
+                            DBReader.getQueueIDList(context),
+                            null // see ItemAccess.isNew
+                    };
+                } else {
+                    return new Object[]{
+                            DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
+                            DBReader.getQueueIDList(context),
+                            DBReader.getNewItemIds(context)
+                    };
+                }
             } else {
                 return null;
             }
@@ -447,9 +526,9 @@ public class AllEpisodesFragment extends Fragment {
             progLoading.setVisibility(View.GONE);
 
             if (lists != null) {
-                unreadItems = (List<FeedItem>) lists[0];
-                recentItems = (List<FeedItem>) lists[1];
-                queueAccess = (QueueAccess) lists[2];
+                episodes = (List<FeedItem>) lists[0];
+                queuedItemsIds = (LongList) lists[1];
+                newItemsIds = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

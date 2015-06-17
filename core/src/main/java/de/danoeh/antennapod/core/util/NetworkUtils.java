@@ -6,11 +6,12 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.Arrays;
 import java.util.List;
+
+import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class NetworkUtils {
 	private static final String TAG = "NetworkUtils";
@@ -66,4 +67,18 @@ public class NetworkUtils {
         NetworkInfo info = cm.getActiveNetworkInfo();
         return info != null && info.isConnected();
     }
+
+	public static boolean isDownloadAllowed(Context context) {
+		return UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi(context);
+	}
+
+	public static boolean connectedToWifi(Context context) {
+		ConnectivityManager connManager = (ConnectivityManager) context
+				.getSystemService(Context.CONNECTIVITY_SERVICE);
+		NetworkInfo mWifi = connManager
+				.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+
+		return mWifi.isConnected();
+	}
+
 }

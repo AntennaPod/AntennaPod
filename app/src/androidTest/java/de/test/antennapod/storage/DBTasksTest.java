@@ -3,7 +3,16 @@ package de.test.antennapod.storage;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
+import android.test.FlakyTest;
 import android.test.InstrumentationTestCase;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Date;
+import java.util.List;
+
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
@@ -13,28 +22,23 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.List;
-
-import static de.test.antennapod.storage.DBTestUtils.*;
+import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
 /**
  * Test class for DBTasks
  */
 public class DBTasksTest extends InstrumentationTestCase {
-    private static final String TEST_FOLDER = "testDBTasks";
+
+    private static final String TAG = "DBTasksTest";
     private static final int EPISODE_CACHE_SIZE = 5;
 
+    private Context context;
+    
     private File destFolder;
 
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        final Context context = getInstrumentation().getTargetContext();
         assertTrue(PodDBAdapter.deleteDatabase(context));
 
         for (File f : destFolder.listFiles()) {
@@ -47,23 +51,24 @@ public class DBTasksTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        destFolder = getInstrumentation().getTargetContext().getExternalFilesDir(TEST_FOLDER);
+        context = getInstrumentation().getTargetContext();
+        destFolder = context.getExternalCacheDir();
         assertNotNull(destFolder);
         assertTrue(destFolder.exists());
         assertTrue(destFolder.canWrite());
 
-        final Context context = getInstrumentation().getTargetContext();
         context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
         // make sure database is created
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.close();
 
-        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(getInstrumentation().getTargetContext().getApplicationContext()).edit();
+        SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.commit();
     }
 
+    @FlakyTest(tolerance = 3)
     public void testPerformAutoCleanupShouldDelete() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -81,7 +86,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.close();
@@ -91,7 +96,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
         }
-        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        DBTasks.performAutoCleanup(context);
         for (int i = 0; i < files.size(); i++) {
             if (i < EPISODE_CACHE_SIZE) {
                 assertTrue(files.get(i).exists());
@@ -101,6 +106,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
+    @FlakyTest(tolerance = 3)
     public void testPerformAutoCleanupShouldNotDeleteBecauseUnread() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -119,7 +125,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.close();
@@ -129,12 +135,13 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
         }
-        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        DBTasks.performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
         }
     }
 
+    @FlakyTest(tolerance = 3)
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue() throws IOException {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
@@ -153,7 +160,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+        PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.setQueue(items);
@@ -164,7 +171,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
             assertTrue(item.getMedia().getId() != 0);
         }
-        DBTasks.performAutoCleanup(getInstrumentation().getTargetContext());
+        DBTasks.performAutoCleanup(context);
         for (File file : files) {
             assertTrue(file.exists());
         }
@@ -175,13 +182,13 @@ public class DBTasksTest extends InstrumentationTestCase {
      * call to DBWriter.deleteFeedMediaOfItem instead of the ID of the FeedMedia. This would cause the wrong item to be deleted.
      * @throws IOException
      */
+    @FlakyTest(tolerance = 3)
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
-        final Context context = getInstrumentation().getTargetContext();
         // add feed with no enclosures so that item ID != media ID
         saveFeedlist(context, 1, 10, false);
 
         // add candidate for performAutoCleanup
-        List<Feed> feeds = saveFeedlist(getInstrumentation().getTargetContext(), 1, 1, true);
+        List<Feed> feeds = saveFeedlist(context, 1, 1, true);
         FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
         m.setDownloaded(true);
         m.setFile_url("file");
@@ -193,8 +200,8 @@ public class DBTasksTest extends InstrumentationTestCase {
         testPerformAutoCleanupShouldNotDeleteBecauseInQueue();
     }
 
+    @FlakyTest(tolerance = 3)
     public void testUpdateFeedNewFeed() {
-        final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
 
         Feed feed = new Feed("url", new Date(), "title");
@@ -214,7 +221,6 @@ public class DBTasksTest extends InstrumentationTestCase {
 
     /** Two feeds with the same title, but different download URLs should be treated as different feeds. */
     public void testUpdateFeedSameTitle() {
-        final Context context = getInstrumentation().getTargetContext();
 
         Feed feed1 = new Feed("url1", new Date(), "title");
         Feed feed2 = new Feed("url2", new Date(), "title");
@@ -229,7 +235,6 @@ public class DBTasksTest extends InstrumentationTestCase {
     }
 
     public void testUpdateFeedUpdatedFeed() {
-        final Context context = getInstrumentation().getTargetContext();
         final int NUM_ITEMS_OLD = 10;
         final int NUM_ITEMS_NEW = 10;
 
@@ -269,6 +274,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
     }
 
+    @FlakyTest(tolerance = 3)
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
         assertTrue(newFeed.getId() == feedID);
         assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
@@ -292,11 +298,11 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
+    @FlakyTest(tolerance = 3)
     private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
-        final Context context = getInstrumentation().getTargetContext();
         UserPreferences.setUpdateInterval(context, expirationTime);
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null, false);
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -314,11 +320,13 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
+    @FlakyTest(tolerance = 3)
     public void testGetExpiredFeedsTestShouldReturn() {
         final long expirationTime = 1000 * 60 * 60;
         expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime - 1, expirationTime, true);
     }
 
+    @FlakyTest(tolerance = 3)
     public void testGetExpiredFeedsTestShouldNotReturn() {
         final long expirationTime = 1000 * 60 * 60;
         expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime / 2, expirationTime, false);

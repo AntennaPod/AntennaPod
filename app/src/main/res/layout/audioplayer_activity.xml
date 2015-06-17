@@ -95,6 +95,18 @@
                     tools:src="@drawable/ic_fast_rewind_white_36dp"
                     tools:background="@android:color/holo_blue_dark" />
 
+                <TextView
+                    android:id="@+id/txtvRev"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignTop="@id/butRev"
+                    android:layout_alignLeft="@id/butRev"
+                    android:layout_alignRight="@id/butRev"
+                    android:gravity="center"
+                    android:text="30"
+                    android:textSize="8dp"
+                    android:clickable="false"/>
+
                 <ImageButton
                     android:id="@+id/butFF"
                     android:layout_width="@dimen/audioplayer_playercontrols_length"
@@ -105,6 +117,18 @@
                     android:src="?attr/av_ff_big"
                     tools:src="@drawable/ic_fast_forward_white_36dp"
                     tools:background="@android:color/holo_blue_dark" />
+
+                <TextView
+                    android:id="@+id/txtvFF"
+                    android:layout_width="wrap_content"
+                    android:layout_height="32dp"
+                    android:layout_alignTop="@id/butFF"
+                    android:layout_alignLeft="@id/butFF"
+                    android:layout_alignRight="@id/butFF"
+                    android:gravity="center"
+                    android:text="30"
+                    android:textSize="8dp"
+                    android:clickable="false"/>
 
                 <Button
                     android:id="@+id/butPlaybackSpeed"

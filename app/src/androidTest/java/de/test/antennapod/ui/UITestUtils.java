@@ -25,7 +25,9 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.greenrobot.event.EventBus;
 import de.test.antennapod.util.service.download.HTTPBin;
 import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 
@@ -139,11 +141,12 @@ public class UITestUtils {
             // create items
             List<FeedItem> items = new ArrayList<FeedItem>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
-                FeedItem item = new FeedItem(0, "item" + j, "item" + j, "http://example.com/feed" + i + "/item/" + j, new Date(), true, feed);
+                FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
+                        "http://example.com/feed" + i + "/item/" + j, new Date(), false, feed);
                 items.add(item);
 
                 File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");
-                item.setMedia(new FeedMedia(0, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0));
+                item.setMedia(new FeedMedia(j, item, 0, 0, mediaFile.length(), "audio/mp3", null, hostFile(mediaFile), false, null, 0));
 
             }
             feed.setItems(items);
@@ -167,7 +170,9 @@ public class UITestUtils {
      * @param downloadEpisodes true if episodes should also be marked as downloaded.
      */
     public void addLocalFeedData(boolean downloadEpisodes) throws Exception {
-        if (localFeedDataAdded) throw new IllegalStateException("addLocalFeedData was called twice on the same instance");
+        if (localFeedDataAdded) {
+            throw new IllegalStateException("addLocalFeedData was called twice on the same instance");
+        }
         if (!feedDataHosted) {
             addHostedFeedData();
         }
@@ -202,6 +207,6 @@ public class UITestUtils {
         adapter.setQueue(queue);
         adapter.close();
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-        EventDistributor.getInstance().sendQueueUpdateBroadcast();
+        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
     }
 }

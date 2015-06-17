@@ -1,24 +1,44 @@
+import org.apache.tools.ant.filters.ReplaceTokens
+
 apply plugin: 'com.android.application'
 
 repositories {
     mavenCentral()
 }
+
 dependencies {
     compile 'com.android.support:support-v4:21.0.3'
     compile 'com.android.support:appcompat-v7:21.0.3'
+    compile 'com.android.support:gridlayout-v7:21.0.3'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
     }
     compile 'commons-io:commons-io:2.4'
-    compile 'com.jayway.android.robotium:robotium-solo:5.2.1'
     compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.4.0'
-    compile 'com.squareup.okhttp:okhttp:2.2.0'
-    compile 'com.squareup.okhttp:okhttp-urlconnection:2.2.0'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.squareup.okhttp:okhttp:2.3.0'
+    compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     compile 'com.squareup.okio:okio:1.2.0'
+    compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'com.joanzapata.android:android-iconify:1.0.9'
+    
     compile project(':core')
     compile project(':library:drag-sort-listview')
+}
+
+def getMyVersionName() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse('app/src/main/AndroidManifest.xml')
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionName'
+}
+
+def getMyVersionCode() {
+    def parsedManifestXml = (new XmlSlurper())
+            .parse('app/src/main/AndroidManifest.xml')
+            .declareNamespace(android:"http://schemas.android.com/apk/res/android")
+    return parsedManifestXml.'@android:versionCode'.toInteger()
 }
 
 android {
@@ -28,6 +48,8 @@ android {
     defaultConfig {
         minSdkVersion 10
         targetSdkVersion 21
+        versionCode getMyVersionCode()
+        versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
         testInstrumentationRunner "de.test.antennapod.AntennaPodTestRunner"
     }
@@ -87,3 +109,20 @@ android {
         abortOnError false
     }
 }
+
+// about.html is templatized so that we can automatically insert
+// our version string in to it at build time.
+task filterAbout {
+    inputs.files files(['src/main/templates/about.html',
+                        'src/main/AndroidManifest.xml'])
+    outputs.file 'src/main/assets/about.html'
+} << {
+    copy {
+        from 'src/main/templates/about.html'
+        into 'src/main/assets'
+        filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
+                                       versioncode: android.defaultConfig.versionCode.toString()])
+    }
+}
+
+preBuild.dependsOn filterAbout

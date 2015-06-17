@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.ClipData;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,15 +11,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
@@ -44,9 +48,31 @@ public class FeedInfoActivity extends ActionBarActivity {
     private TextView txtvDescription;
     private TextView txtvLanguage;
     private TextView txtvAuthor;
+    private TextView txtvUrl;
     private EditText etxtUsername;
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
+
+    private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            if(feed != null && feed.getDownload_url() != null) {
+                String url = feed.getDownload_url();
+                if (android.os.Build.VERSION.SDK_INT >= 11) {
+                    ClipData clipData = ClipData.newPlainText(url, url);
+                    android.content.ClipboardManager cm = (android.content.ClipboardManager) FeedInfoActivity.this
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setPrimaryClip(clipData);
+                } else {
+                    android.text.ClipboardManager cm = (android.text.ClipboardManager) FeedInfoActivity.this
+                            .getSystemService(Context.CLIPBOARD_SERVICE);
+                    cm.setText(url);
+                }
+                Toast t = Toast.makeText(FeedInfoActivity.this, R.string.copied_url_msg, Toast.LENGTH_SHORT);
+                t.show();
+            }
+        }
+    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -61,9 +87,12 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvDescription = (TextView) findViewById(R.id.txtvDescription);
         txtvLanguage = (TextView) findViewById(R.id.txtvLanguage);
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
+        txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
+
+        txtvUrl.setOnClickListener(copyUrlToClipboard);
 
         AsyncTask<Long, Void, Feed> loadTask = new AsyncTask<Long, Void, Feed>() {
 
@@ -76,10 +105,9 @@ public class FeedInfoActivity extends ActionBarActivity {
             protected void onPostExecute(Feed result) {
                 if (result != null) {
                     feed = result;
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Language is " + feed.getLanguage());
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Author is " + feed.getAuthor());
+                    Log.d(TAG, "Language is " + feed.getLanguage());
+                    Log.d(TAG, "Author is " + feed.getAuthor());
+                    Log.d(TAG, "URL is " + feed.getDownload_url());
                     imgvCover.post(new Runnable() {
 
                         @Override
@@ -92,7 +120,8 @@ public class FeedInfoActivity extends ActionBarActivity {
                     });
 
                     txtvTitle.setText(feed.getTitle());
-                    txtvDescription.setText(feed.getDescription());
+                    String description = feed.getDescription();
+                    txtvDescription.setText((description != null) ? description.trim() : "");
                     if (feed.getAuthor() != null) {
                         txtvAuthor.setText(feed.getAuthor());
                     }
@@ -100,6 +129,8 @@ public class FeedInfoActivity extends ActionBarActivity {
                         txtvLanguage.setText(LangUtils
                                 .getLanguageString(feed.getLanguage()));
                     }
+                    txtvUrl.setText(feed.getDownload_url() + " {fa-paperclip}");
+                            Iconify.addIcons(txtvUrl);
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
                     cbxAutoDownload.setChecked(feed.getPreferences().getAutoDownload());

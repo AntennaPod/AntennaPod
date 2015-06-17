@@ -5,9 +5,11 @@ import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.TextView;
@@ -21,9 +23,9 @@ import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetTag;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 public class TagListFragment extends ListFragment {
+
     private static final String TAG = "TagListFragment";
     private static final int COUNT = 50;
 
@@ -36,27 +38,27 @@ public class TagListFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
-            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-            sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    Activity activity = getActivity();
-                    if (activity != null) {
-                        sv.clearFocus();
-                        ((MainActivity) activity).loadChildFragment(SearchListFragment.newInstance(s));
-                    }
-                    return true;
+        inflater.inflate(R.menu.gpodder_podcasts, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                Activity activity = getActivity();
+                if (activity != null) {
+                    sv.clearFocus();
+                    ((MainActivity) activity).loadChildFragment(SearchListFragment.newInstance(s));
                 }
+                return true;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-        }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override

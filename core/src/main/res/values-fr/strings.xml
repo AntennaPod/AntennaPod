@@ -64,7 +64,7 @@
   <string name="etxtFeedurlHint">URL ou flux ou site web</string>
   <string name="txtvfeedurl_label">Ajouter un podcast par son URL</string>
   <string name="podcastdirectories_label">Trouver le podcast dans la bibliothèque</string>
-  <string name="podcastdirectories_descr">Vous pouvez chercher de nouveaux podcasts en filtrant par nom, catégorie ou popularité dans la bibliothèque gpodder.net</string>
+  <string name="podcastdirectories_descr">Vous pouvez chercher de nouveaux podcasts en filtrant par nom, catégorie ou popularité dans la bibliothèque gpodder.net, ou sur l\'iTunes Store.</string>
   <string name="browse_gpoddernet_label">Chercher sur gpodder.net</string>
   <!--Actions on feeds-->
   <string name="mark_all_read_label">Tous marquer comme lus</string>
@@ -112,7 +112,7 @@
   <string name="download_error_unknown_host">Hôte inconnu</string>
   <string name="download_error_unauthorized">Erreur d\'authentification</string>
   <string name="cancel_all_downloads_label">Annuler tous les téléchargements</string>
-  <string name="download_cancelled_msg">Téléchargement annulé</string>
+  <string name="download_canceled_msg">Téléchargement annulé</string>
   <string name="download_report_title">Téléchargements terminés</string>
   <string name="download_error_malformed_url">URL incorrecte</string>
   <string name="download_error_io_error">Erreur d\'E/S</string>
@@ -146,7 +146,7 @@
   <string name="clear_queue_label">Effacer la liste</string>
   <string name="undo">Annuler</string>
   <string name="removed_from_queue">Élément retiré</string>
-  <string name="move_to_top_label">Déplacer vers le haut de haut de la liste</string>
+  <string name="move_to_top_label">Déplacer vers le haut de la liste</string>
   <string name="move_to_bottom_label">Déplacer vers le bas de la liste</string>
   <string name="sort">Trier</string>
   <string name="alpha">Ordre alphabétique</string>
@@ -246,8 +246,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Modifier les information de connexion pour votre compte gpodder.net</string>
   <string name="pref_playback_speed_title">Vitesses de lecture</string>
   <string name="pref_playback_speed_sum">Modifier la liste des vitesses disponibles pour la lecture audio</string>
-  <string name="pref_seek_delta_title">Chercher un moment spécifique</string>
-  <string name="pref_seek_delta_sum">Bouger d\'autant de secondes en rembobinant ou en faisant une avance rapide </string>
   <string name="pref_gpodnet_sethostname_title">Choisir un nom de domaine</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utiliser le nom de domaine par défaut</string>
   <string name="pref_expandNotify_title">Etendre la notification</string>

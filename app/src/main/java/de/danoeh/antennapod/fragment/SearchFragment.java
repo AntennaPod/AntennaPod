@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ListView;
 
+import java.util.Collections;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -23,11 +24,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
-import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedSearcher;
-import de.danoeh.antennapod.core.util.QueueAccess;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 
 /**
  * Performs a search operation on all feeds or one specific feed and displays the search result.
@@ -43,8 +40,6 @@ public class SearchFragment extends ListFragment {
 
     private boolean viewCreated = false;
     private boolean itemsLoaded = false;
-
-    private QueueAccess queue;
 
     /**
      * Create a new SearchFragment that searches all feeds.
@@ -125,7 +120,7 @@ public class SearchFragment extends ListFragment {
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
-            ((MainActivity) getActivity()).loadFeedFragment(comp.getId());
+            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId());
         } else {
             if (comp.getClass() == FeedItem.class) {
                 FeedItem item = (FeedItem) comp;
@@ -137,7 +132,7 @@ public class SearchFragment extends ListFragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             MenuItem item = menu.add(Menu.NONE, R.id.search_item, Menu.NONE, R.string.search_label);
             MenuItemCompat.setShowAsAction(item, MenuItemCompat.SHOW_AS_ACTION_IF_ROOM);
             final SearchView sv = new SearchView(getActivity());
@@ -165,8 +160,7 @@ public class SearchFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & (EventDistributor.UNREAD_ITEMS_UPDATE
-                    | EventDistributor.DOWNLOAD_HANDLED
-                    | EventDistributor.QUEUE_UPDATE)) != 0) {
+                    | EventDistributor.DOWNLOAD_HANDLED)) != 0) {
                 startSearchTask();
             }
         }
@@ -209,17 +203,16 @@ public class SearchFragment extends ListFragment {
         }
     }
 
-    private class SearchTask extends AsyncTask<Bundle, Void, Object[]> {
+    private class SearchTask extends AsyncTask<Bundle, Void, List<SearchResult>> {
         @Override
-        protected Object[] doInBackground(Bundle... params) {
+        protected List<SearchResult> doInBackground(Bundle... params) {
             String query = params[0].getString(ARG_QUERY);
             long feed = params[0].getLong(ARG_FEED);
             Context context = getActivity();
             if (context != null) {
-                return new Object[]{FeedSearcher.performSearch(context, query, feed),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                return FeedSearcher.performSearch(context, query, feed);
             } else {
-                return null;
+                return Collections.emptyList();
             }
         }
 
@@ -232,12 +225,11 @@ public class SearchFragment extends ListFragment {
         }
 
         @Override
-        protected void onPostExecute(Object[] results) {
+        protected void onPostExecute(List<SearchResult> results) {
             super.onPostExecute(results);
             if (results != null) {
                 itemsLoaded = true;
-                searchResults = (List<SearchResult>) results[0];
-                queue = (QueueAccess) results[1];
+                searchResults = results;
                 if (viewCreated) {
                     onFragmentLoaded();
                 }

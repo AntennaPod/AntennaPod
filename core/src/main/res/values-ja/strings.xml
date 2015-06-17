@@ -26,6 +26,7 @@
   <!--Main activity-->
   <string name="drawer_open">メニューを開く</string>
   <string name="drawer_close">メニューを閉じる</string>
+  <string name="drawer_preferences">ドロワー設定</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">ブラウザーで開く</string>
   <string name="copy_url_label">URLをコピー</string>
@@ -39,6 +40,7 @@
   <string name="cancel_label">キャンセル</string>
   <string name="author_label">作者</string>
   <string name="language_label">言語</string>
+  <string name="url_label">URL</string>
   <string name="podcast_settings_label">設定</string>
   <string name="cover_label">映像</string>
   <string name="error_label">エラー</string>
@@ -67,10 +69,10 @@
   <string name="podcastdirectories_descr">名前、カテゴリや人気で、gpodder.netディレクトリ内の新しいポッドキャストを検索することができます。</string>
   <string name="browse_gpoddernet_label">gpodder.netを参照</string>
   <!--Actions on feeds-->
-  <string name="mark_all_read_label">既読としてマーク</string>
-  <string name="mark_all_read_msg">すべてのエピソードを既読にしました</string>
-  <string name="mark_all_read_confirmation_msg">既読としてマークするすべてのエピソードを確認してください。</string>
-  <string name="mark_all_read_feed_confirmation_msg">既読としてマークするこのフィードのすべてのエピソードを確認してください。</string>
+  <string name="mark_all_read_label">すべて再生済としてマーク</string>
+  <string name="mark_all_read_msg">すべてのエピソードを再生済にしました</string>
+  <string name="mark_all_read_confirmation_msg">再生済としてマークするすべてのエピソードを確認してください。</string>
+  <string name="mark_all_read_feed_confirmation_msg">再生済としてマークするこのフィードのすべてのエピソードを確認してください。</string>
   <string name="show_info_label">情報を表示</string>
   <string name="remove_feed_label">ポッドキャストを削除</string>
   <string name="share_link_label">Webサイトのリンクを共有</string>
@@ -78,6 +80,16 @@
   <string name="feed_delete_confirmation_msg">このフィードと、このフィードのダウンロードしたすべてのエピソードを削除することを確認してください。</string>
   <string name="feed_remover_msg">フィードの削除中</string>
   <string name="load_complete_feed">フィードをすべて更新</string>
+  <string name="hide_episodes_title">エピソードを非表示にする</string>
+  <string name="hide_unplayed_episodes_label">未再生</string>
+  <string name="hide_paused_episodes_label">一時停止しました</string>
+  <string name="hide_played_episodes_label">再生しました</string>
+  <string name="hide_queued_episodes_label">キューに入れました</string>
+  <string name="hide_not_queued_episodes_label">キューに入っていません</string>
+  <string name="hide_downloaded_episodes_label">ダウンロードしました</string>
+  <string name="hide_not_downloaded_episodes_label">ダウンロードしていません</string>
+  <string name="filtered_label">フィルターしました</string>
+  <string name="refresh_failed_msg">{fa-exclamation-circle} 前回更新に失敗しました</string>
   <!--actions on feeditems-->
   <string name="download_label">ダウンロード</string>
   <string name="play_label">再生</string>
@@ -86,16 +98,20 @@
   <string name="stream_label">ストリーム</string>
   <string name="remove_label">削除</string>
   <string name="remove_episode_lable">エピソードを削除</string>
-  <string name="mark_read_label">既読にする</string>
-  <string name="mark_unread_label">未読にする</string>
-  <string name="marked_as_read_label">既読</string>
+  <string name="mark_read_label">再生済としてマーク</string>
+  <string name="mark_unread_label">未再生としてマーク</string>
+  <string name="marked_as_read_label">再生済としてマークしました</string>
   <string name="add_to_queue_label">キューに追加</string>
+  <string name="added_to_queue_label">キューに追加しました</string>
   <string name="remove_from_queue_label">キューから削除</string>
   <string name="visit_website_label">Webサイトを訪問</string>
   <string name="support_label">これをFlattr</string>
   <string name="enqueue_all_new">すべてキューに入れる</string>
   <string name="download_all">すべてダウンロード</string>
   <string name="skip_episode_label">エピソードをスキップ</string>
+  <string name="activate_auto_download">自動ダウンロードを有効にする</string>
+  <string name="deactivate_auto_download">自動ダウンロードを無効にする</string>
+  <string name="reset_position">再生位置をリセット</string>
   <!--Download messages and labels-->
   <string name="download_successful">完成</string>
   <string name="download_failed">失敗</string>
@@ -112,8 +128,10 @@
   <string name="download_error_unknown_host">ホスト不明</string>
   <string name="download_error_unauthorized">認証エラー</string>
   <string name="cancel_all_downloads_label">すべてのダウンロードをキャンセル</string>
-  <string name="download_cancelled_msg">ダウンロードをキャンセルしました</string>
-  <string name="download_report_title">ダウンロードが完了しました</string>
+  <string name="download_canceled_msg">ダウンロードをキャンセルしました</string>
+  <string name="download_canceled_autodownload_enabled_msg">ダウンロードをキャンセルしました\nこのアイテムの <i>自動ダウンロード</i> を無効にしました</string>
+  <string name="download_report_title">ダウンロードがエラーで完了しました</string>
+  <string name="download_report_content_title">ダウンロード レポート</string>
   <string name="download_error_malformed_url">不正な形式のURL</string>
   <string name="download_error_io_error">IOエラー</string>
   <string name="download_error_request_error">リクエストエラー</string>
@@ -129,6 +147,11 @@
   <string name="download_request_error_dialog_message_prefix">ファイルのダウンロード中にエラーが発生しました:\u0020</string>
   <string name="authentication_notification_title">認証が必要です</string>
   <string name="authentication_notification_msg">リクエストしたリソースは、ユーザー名とパスワードが必要です</string>
+  <string name="confirm_mobile_download_dialog_title">モバイルダウンロードの確認</string>
+  <string name="confirm_mobile_download_dialog_message_not_in_queue">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にするか、またはキューに追加するだけにしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
+  <string name="confirm_mobile_download_dialog_message">モバイルデータ接続でのダウンロードは設定で無効になっています。\n\n一時的に有効にしますか?\n\n<small>選択は 10 分間記憶されます。</small></string>
+  <string name="confirm_mobile_download_dialog_only_add_to_queue">キューに追加するだけ</string>
+  <string name="confirm_mobile_download_dialog_enable_temporarily">一時的に有効にする</string>
   <!--Mediaplayer messages-->
   <string name="player_error_msg">エラー!</string>
   <string name="player_stopped_msg">再生するメディアがありません</string>
@@ -143,6 +166,8 @@
   <string name="playbackservice_notification_title">ポッドキャストを再生中</string>
   <string name="unknown_media_key">AntennaPod - 不明なメディアキー: %1$d</string>
   <!--Queue operations-->
+  <string name="lock_queue">キューをロック</string>
+  <string name="unlock_queue">キューのロックを解除</string>
   <string name="clear_queue_label">キューをクリア</string>
   <string name="undo">元に戻す</string>
   <string name="removed_from_queue">アイテムを削除しました</string>
@@ -200,6 +225,8 @@
   <string name="pref_followQueue_sum">再生が完了した時に次のキューのアイテムに移動します</string>
   <string name="pref_auto_delete_sum">再生が完了した時にエピソードを削除します</string>
   <string name="pref_auto_delete_title">自動削除</string>
+  <string name="pref_smart_mark_as_played_sum">一定の秒数未満の再生時間がまだ残っている場合でも、エピソードを再生済としてマークします</string>
+  <string name="pref_smart_mark_as_played_title">再生済としてスマートマーク</string>
   <string name="playback_pref">再生</string>
   <string name="network_pref">ネットワーク</string>
   <string name="pref_autoUpdateIntervall_title">更新間隔</string>
@@ -223,6 +250,8 @@
   <string name="pref_auto_flattr_sum">自動Flattrを構成</string>
   <string name="user_interface_label">インターフェース</string>
   <string name="pref_set_theme_title">テーマを選択</string>
+  <string name="pref_nav_drawer_items_title">ナビゲーションドロワーを変更</string>
+  <string name="pref_nav_drawer_items_sum">ナビゲーションドロワーに表示するアイテムを変更します。</string>
   <string name="pref_set_theme_sum">AntennaPodの外観を変更します。</string>
   <string name="pref_automatic_download_title">自動ダウンロード</string>
   <string name="pref_automatic_download_sum">エピソードの自動ダウンロードを構成します。</string>
@@ -246,8 +275,8 @@
   <string name="pref_gpodnet_setlogin_information_sum">gpodder.netアカウントのログイン情報を変更します。</string>
   <string name="pref_playback_speed_title">再生速度</string>
   <string name="pref_playback_speed_sum">可変速度音声再生に使用可能な速度をカスタマイズします</string>
-  <string name="pref_seek_delta_title">シーク時間</string>
-  <string name="pref_seek_delta_sum">巻き戻しまたは早送り時にこの秒数でシークします</string>
+  <string name="pref_fast_forward">早送り時間</string>
+  <string name="pref_rewind">巻き戻し時間</string>
   <string name="pref_gpodnet_sethostname_title">ホスト名をセット</string>
   <string name="pref_gpodnet_sethostname_use_default_host">デフォルトホストを使用</string>
   <string name="pref_expandNotify_title">拡張通知</string>
@@ -257,6 +286,7 @@
   <string name="pref_expand_notify_unsupport_toast">Androidバージョン4.1以前では、拡張通知をサポートしていません。</string>
   <string name="pref_queueAddToFront_sum">新しいエピソードをキューの先頭に追加します。</string>
   <string name="pref_queueAddToFront_title">キューの先頭に入れる</string>
+  <string name="pref_smart_mark_as_played_disabled">無効</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">自動Flattrを有効にする</string>
   <string name="auto_flattr_after_percent">%d ％再生したらエピソードをFlattr </string>
@@ -341,6 +371,8 @@
   <string name="set_to_default_folder">デフォルトのフォルダーを選択</string>
   <string name="pref_pausePlaybackForFocusLoss_sum">他のアプリがサウンドを再生したい時に、音量を下げる代わりに再生の一時停止します</string>
   <string name="pref_pausePlaybackForFocusLoss_title">割り込み時に一時停止</string>
+  <string name="pref_resumeAfterCall_sum">着信が完了した後に再生を再開します</string>
+  <string name="pref_resumeAfterCall_title">着信後に再開</string>
   <!--Online feed view-->
   <string name="subscribe_label">購読</string>
   <string name="subscribed_label">購読しました</string>

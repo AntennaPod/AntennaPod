@@ -1,7 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,23 +11,48 @@ import com.mobeta.android.dslv.DragSortListView;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
+import de.greenrobot.event.EventBus;
+
 
 /**
  * Like 'EpisodesFragment' except that it only shows new episodes and
  * supports swiping to mark as read.
  */
+
 public class NewEpisodesFragment extends AllEpisodesFragment {
 
-    private static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "NewEpisodesFragment";
+
     private static final String PREF_NAME = "PrefNewEpisodesFragment";
 
     private UndoBarController undoBarController;
 
     public NewEpisodesFragment() {
         super(true, PREF_NAME);
+    }
+
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        EventBus.getDefault().unregister(this);
     }
 
     @Override
@@ -55,18 +80,30 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             }
         });
 
-        undoBarController = new UndoBarController(root.findViewById(R.id.undobar), new UndoBarController.UndoListener() {
+        undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
+
+            private final Context context = getActivity();
+
             @Override
-            public void onUndo(Parcelable token) {
-                // Perform the undo
-                FeedItemUndoToken undoToken = (FeedItemUndoToken) token;
+            public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
-                    long itemId = undoToken.getFeedItemId();
-                    int position = undoToken.getPosition();
-                    DBWriter.markItemRead(getActivity(), itemId, false);
+                    long itemId = token.getFeedItemId();
+                    DBWriter.markItemRead(context, itemId, false);
+                }
+            }
+            @Override
+            public void onHide(FeedItemUndoToken token) {
+                if (token != null && context != null) {
+                    long itemId = token.getFeedItemId();
+                    FeedItem item = DBReader.getFeedItem(context, itemId);
+                    FeedMedia media = item.getMedia();
+                    if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
+                    }
                 }
             }
         });
         return root;
     }
+
 }

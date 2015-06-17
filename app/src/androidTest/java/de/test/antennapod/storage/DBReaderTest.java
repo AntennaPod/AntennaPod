@@ -14,6 +14,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.FeedItemStatistics;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
@@ -44,7 +45,7 @@ public class DBReaderTest extends InstrumentationTestCase {
     private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
         final Context context = getInstrumentation().getTargetContext();
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null);
+                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null, false);
         feed.setItems(new ArrayList<FeedItem>());
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -194,7 +195,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         final Context context = getInstrumentation().getTargetContext();
         final int numItems = 10;
         List<FeedItem> queue = saveQueue(numItems);
-        List<Long> ids = DBReader.getQueueIDList(context);
+        LongList ids = DBReader.getQueueIDList(context);
         assertNotNull(ids);
         assertTrue(queue.size() == ids.size());
         for (int i = 0; i < queue.size(); i++) {
@@ -300,7 +301,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         }
     }
 
-    public void testGetUnreadItemIds() {
+    public void testGetNewItemIds() {
         final Context context = getInstrumentation().getTargetContext();
         final int numItems = 10;
 
@@ -309,10 +310,11 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < unread.size(); i++) {
             unreadIds[i] = unread.get(i).getId();
         }
-        long[] unreadSaved = DBReader.getUnreadItemIds(context);
+        LongList unreadSaved = DBReader.getNewItemIds(context);
         assertNotNull(unreadSaved);
-        assertTrue(unread.size() == unreadSaved.length);
-        for (long savedId : unreadSaved) {
+        assertTrue(unread.size() == unreadSaved.size());
+        for(int i=0; i < unreadSaved.size(); i++) {
+            long savedId = unreadSaved.get(i);
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
@@ -374,7 +376,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(0, navDrawerData.numUnreadItems);
+        assertEquals(0, navDrawerData.numNewItems);
         assertEquals(0, navDrawerData.queueSize);
     }
 
@@ -403,7 +405,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_UNREAD, navDrawerData.numUnreadItems);
+        assertEquals(NUM_UNREAD, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }
 

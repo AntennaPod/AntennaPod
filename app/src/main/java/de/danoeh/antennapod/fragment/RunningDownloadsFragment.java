@@ -5,14 +5,20 @@ import android.os.Handler;
 import android.support.v4.app.ListFragment;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.Toast;
+
+import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.DownloadlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.DownloadRequest;
 import de.danoeh.antennapod.core.service.download.Downloader;
+import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-
-import java.util.List;
 
 /**
  * Displays all running downloads and provides actions to cancel them
@@ -73,7 +79,17 @@ public class RunningDownloadsFragment extends ListFragment {
 
         @Override
         public void onSecondaryActionClick(Downloader downloader) {
-            DownloadRequester.getInstance().cancelDownload(getActivity(), downloader.getDownloadRequest().getSource());
+            DownloadRequest downloadRequest = downloader.getDownloadRequest();
+            DownloadRequester.getInstance().cancelDownload(getActivity(), downloadRequest.getSource());
+
+            if(downloadRequest.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA &&
+                    UserPreferences.isEnableAutodownload()) {
+                FeedMedia media = DBReader.getFeedMedia(getActivity(), downloadRequest.getFeedfileId());
+                DBWriter.setFeedItemAutoDownload(getActivity(), media.getItem(), false);
+                Toast.makeText(getActivity(), R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(getActivity(), R.string.download_canceled_msg, Toast.LENGTH_SHORT).show();
+            }
         }
     };
 }

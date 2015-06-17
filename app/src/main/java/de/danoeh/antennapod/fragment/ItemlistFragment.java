@@ -9,27 +9,33 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.support.v4.view.MenuItemCompat;
+
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.IconTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.Validate;
 
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.FeedInfoActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -42,19 +48,23 @@ import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
+import de.greenrobot.event.EventBus;
 
 /**
  * Displays a list of FeedItems.
@@ -65,7 +75,6 @@ public class ItemlistFragment extends ListFragment {
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED
             | EventDistributor.DOWNLOAD_QUEUED
-            | EventDistributor.QUEUE_UPDATE
             | EventDistributor.UNREAD_ITEMS_UPDATE
             | EventDistributor.PLAYER_STATUS_UPDATE;
 
@@ -73,10 +82,13 @@ public class ItemlistFragment extends ListFragment {
     public static final String ARGUMENT_FEED_ID = "argument.de.danoeh.antennapod.feed_id";
 
     protected FeedItemlistAdapter adapter;
+    private ContextMenu contextMenu;
 
     private long feedID;
     private Feed feed;
-    protected QueueAccess queue;
+    private LongList queuedItemsIds;
+    private LongList newItemsIds;
+
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -87,6 +99,10 @@ public class ItemlistFragment extends ListFragment {
     private MoreContentListFooterUtil listFooter;
 
     private boolean isUpdatingFeed;
+    
+    private IconTextView txtvFailure;
+
+    private TextView txtvInformation;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -118,6 +134,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
+        EventBus.getDefault().register(this);
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -131,6 +148,7 @@ public class ItemlistFragment extends ListFragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
+        EventBus.getDefault().unregister(this);
         stopItemLoader();
     }
 
@@ -177,11 +195,12 @@ public class ItemlistFragment extends ListFragment {
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
 
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             FeedMenuHandler.onCreateOptionsMenu(inflater, menu);
 
-            final SearchView sv = new SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
+            MenuItem searchItem = menu.findItem(R.id.action_search);
+            final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+            MenuItemUtils.adjustTextColor(getActivity(), sv);
             sv.setQueryHint(getString(R.string.search_hint));
             sv.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
                 @Override
@@ -204,7 +223,7 @@ public class ItemlistFragment extends ListFragment {
 
     @Override
     public void onPrepareOptionsMenu(Menu menu) {
-        if (itemsLoaded && !MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
+        if (itemsLoaded) {
             FeedMenuHandler.onPrepareOptionsMenu(menu, feed);
         }
     }
@@ -221,7 +240,7 @@ public class ItemlistFragment extends ListFragment {
                                 @Override
                                 protected void onPostExecute(Void result) {
                                     super.onPostExecute(result);
-                                    ((MainActivity) getActivity()).loadNavFragment(MainActivity.POS_NEW, null);
+                                    ((MainActivity) getActivity()).loadFragment(NewEpisodesFragment.TAG, null);
                                 }
                             };
                             ConfirmationDialog conDialog = new ConfirmationDialog(getActivity(),
@@ -252,8 +271,59 @@ public class ItemlistFragment extends ListFragment {
         } else {
             return true;
         }
-
     }
+
+    private final FeedItemMenuHandler.MenuInterface contextMenuInterface = new FeedItemMenuHandler.MenuInterface() {
+        @Override
+        public void setItemVisibility(int id, boolean visible) {
+            if(contextMenu == null) {
+                return;
+            }
+            MenuItem item = contextMenu.findItem(id);
+            if (item != null) {
+                item.setVisible(visible);
+            }
+        }
+    };
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem item = itemAccess.getItem(adapterInfo.position-1);
+
+        MenuInflater inflater = getActivity().getMenuInflater();
+        inflater.inflate(R.menu.feeditemlist_context, menu);
+
+        if (item != null) {
+            menu.setHeaderTitle(item.getTitle());
+        }
+
+        contextMenu = menu;
+        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        // because of addHeaderView(), positions are increased by 1!
+        FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
+
+        if (selectedItem == null) {
+            Log.i(TAG, "Selected item at position " + menuInfo.position + " was null, ignoring selection");
+            return super.onContextItemSelected(item);
+        }
+
+        try {
+            return FeedItemMenuHandler.onMenuItemClicked(getActivity(), item.getItemId(), selectedItem);
+        } catch (DownloadRequestException e) {
+            // context menu doesn't contain download functionality
+            return true;
+        }
+    }
+
 
     @Override
     public void setListAdapter(ListAdapter adapter) {
@@ -269,6 +339,8 @@ public class ItemlistFragment extends ListFragment {
         super.onViewCreated(view, savedInstanceState);
         ((ActionBarActivity) getActivity()).getSupportActionBar().setTitle("");
 
+        registerForContextMenu(getListView());
+
         viewsCreated = true;
         if (itemsLoaded) {
             onFragmentLoaded();
@@ -283,13 +355,24 @@ public class ItemlistFragment extends ListFragment {
         }
     }
 
+    public void onEvent(QueueEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        startItemLoader();
+    }
+
+    public void onEvent(FeedEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        if(event.feedId == feedID) {
+            startItemLoader();
+        }
+    }
+
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EVENTS & arg) != 0) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent. arg " + arg);
                 if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
                     updateProgressBarVisibility();
                 } else {
@@ -323,6 +406,7 @@ public class ItemlistFragment extends ListFragment {
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
+        refreshHeaderView();
         setListShown(true);
         adapter.notifyDataSetChanged();
 
@@ -335,6 +419,32 @@ public class ItemlistFragment extends ListFragment {
         insideOnFragmentLoaded = false;
 
     }
+
+    private void refreshHeaderView() {
+        if(feed.hasLastUpdateFailed()) {
+            txtvFailure.setVisibility(View.VISIBLE);
+        } else {
+            txtvFailure.setVisibility(View.GONE);
+        }
+        if(feed.getItemFilter() != null) {
+            FeedItemFilter filter = feed.getItemFilter();
+            if(filter.getValues().length > 0) {
+                if(feed.hasLastUpdateFailed()) {
+                    RelativeLayout.LayoutParams p = (RelativeLayout.LayoutParams) txtvInformation.getLayoutParams();
+                    p.addRule(RelativeLayout.BELOW, R.id.txtvFailure);
+                }
+                txtvInformation.setText("{fa-info-circle} " + this.getString(R.string.filtered_label));
+                Iconify.addIcons(txtvInformation);
+                txtvInformation.setVisibility(View.VISIBLE);
+            } else {
+                txtvInformation.setVisibility(View.GONE);
+            }
+        } else {
+
+            txtvInformation.setVisibility(View.GONE);
+        }
+    }
+
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
@@ -369,6 +479,8 @@ public class ItemlistFragment extends ListFragment {
         ImageView imgvBackground = (ImageView) header.findViewById(R.id.imgvBackground);
         ImageView imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         ImageButton butShowInfo = (ImageButton) header.findViewById(R.id.butShowInfo);
+        txtvInformation = (TextView) header.findViewById(R.id.txtvInformation);
+        txtvFailure = (IconTextView) header.findViewById(R.id.txtvFailure);
 
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
@@ -398,6 +510,7 @@ public class ItemlistFragment extends ListFragment {
             }
         });
     }
+
 
     private void setupFooterView() {
         if (getListView() == null || feed == null) {
@@ -431,17 +544,22 @@ public class ItemlistFragment extends ListFragment {
 
         @Override
         public FeedItem getItem(int position) {
-            return (feed != null) ? feed.getItemAtIndex(true, position) : null;
+            return (feed != null) ? feed.getItemAtIndex(position) : null;
         }
 
         @Override
         public int getCount() {
-            return (feed != null) ? feed.getNumOfItems(true) : 0;
+            return (feed != null) ? feed.getNumOfItems() : 0;
         }
 
         @Override
         public boolean isInQueue(FeedItem item) {
-            return (queue != null) && queue.contains(item.getId());
+            return (queuedItemsIds != null) && queuedItemsIds.contains(item.getId());
+        }
+
+        @Override
+        public boolean isNew(FeedItem item) {
+            return (newItemsIds != null) && newItemsIds.contains(item.getId());
         }
 
         @Override
@@ -480,8 +598,14 @@ public class ItemlistFragment extends ListFragment {
             long feedID = params[0];
             Context context = getActivity();
             if (context != null) {
-                return new Object[]{DBReader.getFeed(context, feedID),
-                        QueueAccess.IDListAccess(DBReader.getQueueIDList(context))};
+                Feed feed = DBReader.getFeed(context, feedID);
+                if(feed.getItemFilter() != null) {
+                    FeedItemFilter filter = feed.getItemFilter();
+                    feed.setItems(filter.filter(context, feed.getItems()));
+                }
+                LongList queuedItemsIds = DBReader.getQueueIDList(context);
+                LongList newItemsIds = DBReader.getNewItemIds(context);
+                return new Object[] { feed, queuedItemsIds, newItemsIds };
             } else {
                 return null;
             }
@@ -492,7 +616,8 @@ public class ItemlistFragment extends ListFragment {
             super.onPostExecute(res);
             if (res != null) {
                 feed = (Feed) res[0];
-                queue = (QueueAccess) res[1];
+                queuedItemsIds = (LongList) res[1];
+                newItemsIds = res[2] == null ? null : (LongList) res[2];
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

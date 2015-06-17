@@ -31,7 +31,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
  */
 public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
 
-    private static final String TAG = "OpmlImportFromPathActivity";
+    private static final String TAG = "OpmlImportFromPathAct";
 
     private static final int CHOOSE_OPML_FILE = 1;
 
@@ -172,8 +172,14 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK && requestCode == CHOOSE_OPML_FILE) {
-            String filename = data.getData().getPath();
-            startImport(new File(filename));
+            Uri uri = data.getData();
+
+            try {
+                Reader mReader = new InputStreamReader(getContentResolver().openInputStream(uri), LangUtils.UTF_8);
+                startImport(mReader);
+            } catch (FileNotFoundException e) {
+                Log.d(TAG, "File not found");
+            }
         }
     }
 

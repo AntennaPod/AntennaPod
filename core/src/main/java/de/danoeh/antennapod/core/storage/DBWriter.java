@@ -7,6 +7,7 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.preference.PreferenceManager;
 import android.util.Log;
+
 import org.shredzone.flattr4j.model.Flattr;
 
 import java.io.File;
@@ -28,19 +29,23 @@ import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedEvent;
 import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.util.QueueAccess;
+import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
+import de.greenrobot.event.EventBus;
 
 /**
  * Provides methods for writing data to AntennaPod's database.
@@ -120,10 +125,18 @@ public class DBWriter {
                                         PlaybackService.ACTION_SHUTDOWN_PLAYBACK_SERVICE));
                             }
                         }
+                        // Gpodder: queue delete action for synchronization
+                        if(GpodnetPreferences.loggedIn()) {
+                            FeedItem item = media.getItem();
+                            GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.DELETE)
+                                    .currentDeviceId()
+                                    .currentTimestamp()
+                                    .build();
+                            GpodnetPreferences.enqueueEpisodeAction(action);
+                        }
                     }
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Deleting File. Result: " + result);
-                    EventDistributor.getInstance().sendQueueUpdateBroadcast();
+                    Log.d(TAG, "Deleting File. Result: " + result);
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.DELETED_MEDIA, media.getItem()));
                     EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
                 }
             }
@@ -337,36 +350,20 @@ public class DBWriter {
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
+                final List<FeedItem> queue = DBReader.getQueue(context, adapter);
                 FeedItem item = null;
 
                 if (queue != null) {
-                    boolean queueModified = false;
-                    boolean unreadItemsModified = false;
-
                     if (!itemListContains(queue, itemId)) {
                         item = DBReader.getFeedItem(context, itemId);
                         if (item != null) {
                             queue.add(index, item);
-                            queueModified = true;
-                            if (!item.isRead()) {
-                                item.setRead(true);
-                                unreadItemsModified = true;
-                            }
+                            adapter.setQueue(queue);
+                            EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                         }
                     }
-                    if (queueModified) {
-                        adapter.setQueue(queue);
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
-                    }
-                    if (unreadItemsModified && item != null) {
-                        adapter.setSingleFeedItem(item);
-                        EventDistributor.getInstance()
-                                .sendUnreadItemsUpdateBroadcast();
-                    }
                 }
+
                 adapter.close();
                 if (performAutoDownload) {
                     DBTasks.autodownloadUndownloadedItems(context);
@@ -407,33 +404,21 @@ public class DBWriter {
 
                                 if (item != null) {
                                     // add item to either front ot back of queue
-                                    boolean addToFront = PreferenceManager.getDefaultSharedPreferences(context)
-                                            .getBoolean(UserPreferences.PREF_QUEUE_ADD_TO_FRONT, false);
+                                    boolean addToFront = UserPreferences.enqueueAtFront();
 
                                     if(addToFront){
                                         queue.add(0, item);
-                                    }else{
+                                    } else {
                                         queue.add(item);
                                     }
 
                                     queueModified = true;
-                                    if (!item.isRead()) {
-                                        item.setRead(true);
-                                        itemsToSave.add(item);
-                                        unreadItemsModified = true;
-                                    }
                                 }
                             }
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
-                            EventDistributor.getInstance()
-                                    .sendQueueUpdateBroadcast();
-                        }
-                        if (unreadItemsModified) {
-                            adapter.setFeedItemlist(itemsToSave);
-                            EventDistributor.getInstance()
-                                    .sendUnreadItemsUpdateBroadcast();
+                            EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
                         }
                     }
                     adapter.close();
@@ -459,7 +444,7 @@ public class DBWriter {
                 adapter.clearQueue();
                 adapter.close();
 
-                EventDistributor.getInstance().sendQueueUpdateBroadcast();
+                EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.CLEARED));
             }
         });
     }
@@ -468,34 +453,25 @@ public class DBWriter {
      * Removes a FeedItem object from the queue.
      *
      * @param context             A context that is used for opening a database connection.
-     * @param itemId              ID of the FeedItem that should be removed.
+     * @param item                FeedItem that should be removed.
      * @param performAutoDownload true if an auto-download process should be started after the operation.
      */
     public static Future<?> removeQueueItem(final Context context,
-                                            final long itemId, final boolean performAutoDownload) {
+                                            final FeedItem item, final boolean performAutoDownload) {
         return dbExec.submit(new Runnable() {
 
             @Override
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                final List<FeedItem> queue = DBReader
-                        .getQueue(context, adapter);
-                FeedItem item = null;
+                final List<FeedItem> queue = DBReader.getQueue(context, adapter);
 
                 if (queue != null) {
-                    boolean queueModified = false;
-                    QueueAccess queueAccess = QueueAccess.ItemListAccess(queue);
-                    if (queueAccess.contains(itemId)) {
-                        item = DBReader.getFeedItem(context, itemId);
-                        if (item != null) {
-                            queueModified = queueAccess.remove(itemId);
-                        }
-                    }
-                    if (queueModified) {
+                    int position = queue.indexOf(item);
+                    if(position >= 0) {
+                        queue.remove(position);
                         adapter.setQueue(queue);
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
                     } else {
                         Log.w(TAG, "Queue was not modified by call to removeQueueItem");
                     }
@@ -523,16 +499,13 @@ public class DBWriter {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
-                List<Long> queueIdList = DBReader.getQueueIDList(context);
-                int currentLocation = 0;
-                for (long id : queueIdList) {
-                    if (id == itemId) {
-                        moveQueueItemHelper(context, currentLocation, 0, broadcastUpdate);
-                        return;
-                    }
-                    currentLocation++;
+                LongList queueIdList = DBReader.getQueueIDList(context);
+                int index = queueIdList.indexOf(itemId);
+                if (index >=0) {
+                    moveQueueItemHelper(context, index, 0, broadcastUpdate);
+                } else {
+                    Log.e(TAG, "moveQueueItemToTop: item not found");
                 }
-                Log.e(TAG, "moveQueueItemToTop: item not found");
             }
         });
     }
@@ -550,17 +523,14 @@ public class DBWriter {
         return dbExec.submit(new Runnable() {
             @Override
             public void run() {
-                List<Long> queueIdList = DBReader.getQueueIDList(context);
-                int currentLocation = 0;
-                for (long id : queueIdList) {
-                    if (id == itemId) {
-                        moveQueueItemHelper(context, currentLocation, queueIdList.size() - 1,
-                                broadcastUpdate);
-                        return;
-                    }
-                    currentLocation++;
+                LongList queueIdList = DBReader.getQueueIDList(context);
+                int index = queueIdList.indexOf(itemId);
+                if(index >= 0) {
+                    moveQueueItemHelper(context, index, queueIdList.size() - 1,
+                            broadcastUpdate);
+                } else {
+                    Log.e(TAG, "moveQueueItemToBottom: item not found");
                 }
-                Log.e(TAG, "moveQueueItemToBottom: item not found");
             }
         });
     }
@@ -614,8 +584,7 @@ public class DBWriter {
 
                 adapter.setQueue(queue);
                 if (broadcastUpdate) {
-                    EventDistributor.getInstance()
-                            .sendQueueUpdateBroadcast();
+                    EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.MOVED, item, to));
                 }
 
             }
@@ -624,6 +593,19 @@ public class DBWriter {
         }
         adapter.close();
     }
+
+    /**
+     * Sets the 'read'-attribute of a FeedItem to the specified value.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param itemId  ID of the FeedItem
+     * @param read    New value of the 'read'-attribute
+     */
+    public static Future<?> markItemRead(final Context context, final long itemId,
+                                         final boolean read) {
+        return markItemRead(context, itemId, read, 0, false);
+    }
+
 
     /**
      * Sets the 'read'-attribute of a FeedItem to the specified value.
@@ -637,18 +619,6 @@ public class DBWriter {
     public static Future<?> markItemRead(Context context, FeedItem item, boolean read, boolean resetMediaPosition) {
         long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
         return markItemRead(context, item.getId(), read, mediaId, resetMediaPosition);
-    }
-
-    /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
-     *
-     * @param context A context that is used for opening a database connection.
-     * @param itemId  ID of the FeedItem
-     * @param read    New value of the 'read'-attribute
-     */
-    public static Future<?> markItemRead(final Context context, final long itemId,
-                                         final boolean read) {
-        return markItemRead(context, itemId, read, 0, false);
     }
 
     private static Future<?> markItemRead(final Context context, final long itemId,
@@ -942,6 +912,26 @@ public class DBWriter {
     }
 
     /**
+     * Saves if a feed's last update failed
+     *
+     * @param lastUpdateFailed true if last update failed
+     */
+    public static Future<?> setFeedLastUpdateFailed(final Context context,
+                                                 final long feedId,
+                                                 final boolean lastUpdateFailed) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedLastUpdateFailed(feedId, lastUpdateFailed);
+                adapter.close();
+            }
+        });
+    }
+
+    /**
      * format an url for querying the database
      * (postfix a / and apply percent-encoding)
      */
@@ -1036,8 +1026,7 @@ public class DBWriter {
                     Collections.sort(queue, comparator);
                     adapter.setQueue(queue);
                     if (broadcastUpdate) {
-                        EventDistributor.getInstance()
-                                .sendQueueUpdateBroadcast();
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.SORTED));
                     }
                 } else {
                     Log.e(TAG, "sortQueue: Could not load queue");
@@ -1046,4 +1035,52 @@ public class DBWriter {
             }
         });
     }
+
+    /**
+     * Sets the 'auto_download'-attribute of specific FeedItem.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedItem  FeedItem.
+     */
+    public static Future<?> setFeedItemAutoDownload(final Context context, final FeedItem feedItem,
+                                                    final boolean autoDownload) {
+        Log.d(TAG, "FeedItem[id=" + feedItem.getId() + "] SET auto_download " + autoDownload);
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemAutoDownload(feedItem, autoDownload);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+
+    }
+
+    /**
+     * Set filter of the feed
+     *
+     * @param context     Used for opening a database connection.
+     * @param feedId  The feed's ID
+     * @param filterValues Values that represent properties to filter by
+     */
+    public static Future<?> setFeedItemsFilter(final Context context, final long feedId,
+                                               final List<String> filterValues) {
+        Log.d(TAG, "setFeedFilter");
+
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemFilter(feedId, filterValues);
+                adapter.close();
+                EventBus.getDefault().post(new FeedEvent(FeedEvent.Action.FILTER_CHANGED, feedId));
+            }
+        });
+    }
+
 }

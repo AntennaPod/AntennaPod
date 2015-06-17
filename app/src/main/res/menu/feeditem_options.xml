@@ -3,40 +3,11 @@
       xmlns:custom="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/download_item"
-        android:icon="?attr/av_download"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/download_label">
-    </item>
-    <item
-        android:id="@+id/stream_item"
-        android:icon="?attr/action_stream"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/stream_label">
-    </item>
-    <item
-        android:id="@+id/play_item"
-        android:icon="?attr/av_play"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/play_label">
-    </item>
-    <item
-        android:id="@+id/remove_item"
-        android:icon="?attr/content_discard"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/remove_label">
-    </item>
-    <item
         android:id="@id/skip_episode_item"
         android:title="@string/skip_episode_label"
         custom:showAsAction="collapseActionView">
     </item>
-    <item
-        android:id="@+id/cancel_download_item"
-        android:icon="?attr/navigation_cancel"
-        custom:showAsAction="ifRoom|collapseActionView"
-        android:title="@string/cancel_download_label">
-    </item>
+
     <item
         android:id="@+id/mark_read_item"
         custom:showAsAction="collapseActionView"
@@ -47,6 +18,7 @@
         custom:showAsAction="collapseActionView"
         android:title="@string/mark_unread_label">
     </item>
+
     <item
         android:id="@+id/add_to_queue_item"
         custom:showAsAction="collapseActionView"
@@ -57,6 +29,24 @@
         custom:showAsAction="collapseActionView"
         android:title="@string/remove_from_queue_label">
     </item>
+
+    <item
+        android:id="@+id/reset_position"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/reset_position">
+    </item>
+
+    <item
+        android:id="@+id/activate_auto_download"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/activate_auto_download">
+    </item>
+    <item
+        android:id="@+id/deactivate_auto_download"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/deactivate_auto_download">
+    </item>
+
     <item
         android:id="@+id/share_link_item"
         custom:showAsAction="collapseActionView"
@@ -65,7 +55,7 @@
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
-        custom:showAsAction="collapseActionView"
+        custom:showAsAction="ifRoom|collapseActionView"
         android:title="@string/visit_website_label">
     </item>
     <item

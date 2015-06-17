@@ -32,6 +32,7 @@
     <!-- Main activity -->
     <string name="drawer_open">Open menu</string>
     <string name="drawer_close">Close menu</string>
+    <string name="drawer_preferences">Drawer Preferences</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in browser</string>
@@ -48,6 +49,7 @@
     <string name="cancel_label">Cancel</string>
     <string name="author_label">Author</string>
     <string name="language_label">Language</string>
+    <string name="url_label">URL</string>
     <string name="podcast_settings_label">Settings</string>
     <string name="cover_label">Picture</string>
     <string name="error_label">Error</string>
@@ -78,10 +80,10 @@
     <string name="browse_gpoddernet_label">Browse gpodder.net</string>
 
     <!-- Actions on feeds -->
-    <string name="mark_all_read_label">Mark all as read</string>
-    <string name="mark_all_read_msg">Marked all episodes as read</string>
-    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being read.</string>
-    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being read.</string>
+    <string name="mark_all_read_label">Mark all as played</string>
+    <string name="mark_all_read_msg">Marked all episodes as played</string>
+    <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
+    <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove podcast</string>
     <string name="share_link_label">Share website link</string>
@@ -89,6 +91,16 @@
     <string name="feed_delete_confirmation_msg">Please confirm that you want to delete this feed and ALL episodes of this feed that you have downloaded.</string>
     <string name="feed_remover_msg">Removing feed</string>
     <string name="load_complete_feed">Refresh complete feed</string>
+    <string name="hide_episodes_title">Hide episodes</string>
+    <string name="hide_unplayed_episodes_label">Unplayed</string>
+    <string name="hide_paused_episodes_label">Paused</string>
+    <string name="hide_played_episodes_label">Played</string>
+    <string name="hide_queued_episodes_label">Queued</string>
+    <string name="hide_not_queued_episodes_label">Not queued</string>
+    <string name="hide_downloaded_episodes_label">Downloaded</string>
+    <string name="hide_not_downloaded_episodes_label">Not downloaded</string>
+    <string name="filtered_label">Filtered</string>
+    <string name="refresh_failed_msg">{fa-exclamation-circle} Last refresh failed</string>
 
     <!-- actions on feeditems -->
     <string name="download_label">Download</string>
@@ -98,16 +110,20 @@
     <string name="stream_label">Stream</string>
     <string name="remove_label">Remove</string>
     <string name="remove_episode_lable">Remove episode</string>
-    <string name="mark_read_label">Mark as read</string>
-    <string name="mark_unread_label">Mark as unread</string>
-    <string name="marked_as_read_label">Marked as read</string>
+    <string name="mark_read_label">Mark as played</string>
+    <string name="mark_unread_label">Mark as unplayed</string>
+    <string name="marked_as_read_label">Marked as played</string>
     <string name="add_to_queue_label">Add to Queue</string>
+    <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
     <string name="visit_website_label">Visit Website</string>
     <string name="support_label">Flattr this</string>
     <string name="enqueue_all_new">Enqueue all</string>
     <string name="download_all">Download all</string>
     <string name="skip_episode_label">Skip episode</string>
+    <string name="activate_auto_download">Activate auto download</string>
+    <string name="deactivate_auto_download">Deactivate auto download</string>
+    <string name="reset_position">Reset playback position</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>
@@ -125,8 +141,10 @@
     <string name="download_error_unknown_host">Unknown host</string>
     <string name="download_error_unauthorized">Authentication error</string>
     <string name="cancel_all_downloads_label">Cancel all downloads</string>
-    <string name="download_cancelled_msg">Download cancelled</string>
-    <string name="download_report_title">Downloads completed</string>
+    <string name="download_canceled_msg">Download canceled</string>
+    <string name="download_canceled_autodownload_enabled_msg">Download canceled\nDisabled <i>Auto Download</i> for this item</string>
+    <string name="download_report_title">Downloads completed with error(s)</string>
+    <string name="download_report_content_title">Download report</string>
     <string name="download_error_malformed_url">Malformed URL</string>
     <string name="download_error_io_error">IO Error</string>
     <string name="download_error_request_error">Request error</string>
@@ -142,6 +160,11 @@
     <string name="download_request_error_dialog_message_prefix">An error occurred when trying to download the file:\u0020</string>
     <string name="authentication_notification_title">Authentication required</string>
     <string name="authentication_notification_msg">The resource you requested requires a username and a password</string>
+    <string name="confirm_mobile_download_dialog_title">Confirm Mobile Download</string>
+    <string name="confirm_mobile_download_dialog_message_not_in_queue">Downloading over mobile data connection is disabled in the settings.\n\nYou can choose to either only add the episode to the queue or you can allow downloading temporarily.\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_message">Downloading over mobile data connection is disabled in the settings.\n\nDo you want to allow downloading temporarily?\n\n<small>Your choice will be remembered for 10 minutes.</small></string>
+    <string name="confirm_mobile_download_dialog_only_add_to_queue">Enqueue</string>
+    <string name="confirm_mobile_download_dialog_enable_temporarily">Allow temporarily</string>
 
     <!-- Mediaplayer messages -->
     <string name="player_error_msg">Error!</string>
@@ -158,6 +181,8 @@
     <string name="unknown_media_key">AntennaPod - Unknown media key: %1$d</string>
 
     <!-- Queue operations -->
+    <string name="lock_queue">Lock queue</string>
+    <string name="unlock_queue">Unlock queue</string>
     <string name="clear_queue_label">Clear queue</string>
     <string name="undo">Undo</string>
     <string name="removed_from_queue">Item removed</string>
@@ -220,6 +245,8 @@
     <string name="pref_followQueue_sum">Jump to next queue item when playback completes</string>
     <string name="pref_auto_delete_sum">Delete episode when playback completes</string>
     <string name="pref_auto_delete_title">Auto Delete</string>
+    <string name="pref_smart_mark_as_played_sum">Mark episodes as played even if less than a certain amount of seconds of playing time is still left</string>
+    <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
     <string name="pref_autoUpdateIntervall_title">Update interval</string>
@@ -243,6 +270,8 @@
     <string name="pref_auto_flattr_sum">Configure automatic flattring</string>
     <string name="user_interface_label">User Interface</string>
     <string name="pref_set_theme_title">Select theme</string>
+    <string name="pref_nav_drawer_items_title">Change navigation drawer</string>
+    <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>
@@ -266,8 +295,8 @@
     <string name="pref_gpodnet_setlogin_information_sum">Change the login information for your gpodder.net account.</string>
     <string name="pref_playback_speed_title">Playback Speeds</string>
     <string name="pref_playback_speed_sum">Customize the speeds available for variable speed audio playback</string>
-    <string name="pref_seek_delta_title">Seek time</string>
-    <string name="pref_seek_delta_sum">Seek this many seconds when rewinding or fast-forwarding</string>
+    <string name="pref_fast_forward">Fast forward time</string>
+    <string name="pref_rewind">Rewind time</string>
     <string name="pref_gpodnet_sethostname_title">Set hostname</string>
     <string name="pref_gpodnet_sethostname_use_default_host">Use default host</string>
     <string name="pref_expandNotify_title">Expand Notification</string>
@@ -277,6 +306,8 @@
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
     <string name="pref_queueAddToFront_title">Enqueue at front.</string>
+    <string name="pref_smart_mark_as_played_disabled">Disabled</string>
+
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -368,6 +399,8 @@
     <string name="set_to_default_folder">Choose default folder</string>
     <string name="pref_pausePlaybackForFocusLoss_sum">Pause playback instead of lowering volume when another app wants to play sounds</string>
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for interruptions</string>
+    <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
+    <string name="pref_resumeAfterCall_title">Resume after call</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>

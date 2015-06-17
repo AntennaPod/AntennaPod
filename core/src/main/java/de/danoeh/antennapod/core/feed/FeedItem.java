@@ -2,6 +2,9 @@ package de.danoeh.antennapod.core.feed;
 
 import android.net.Uri;
 
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
+
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -60,6 +63,8 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private List<Chapter> chapters;
     private FeedImage image;
 
+    private boolean autoDownload = true;
+
     public FeedItem() {
         this.read = true;
         this.flattrStatus = new FlattrStatus();
@@ -71,7 +76,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
      * */
     public FeedItem(long id, String title, String link, Date pubDate, String paymentLink, long feedId,
                     FlattrStatus flattrStatus, boolean hasChapters, FeedImage image, boolean read,
-                    String itemIdentifier) {
+                    String itemIdentifier, boolean autoDownload) {
         this.id = id;
         this.title = title;
         this.link = link;
@@ -83,6 +88,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.image = image;
         this.read = read;
         this.itemIdentifier = itemIdentifier;
+        this.autoDownload = autoDownload;
     }
 
     /**
@@ -233,7 +239,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     public boolean isRead() {
-        return read || isInProgress();
+        return read;
     }
 
     public void setRead(boolean read) {
@@ -312,10 +318,10 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     @Override
     public Uri getImageUri() {
-        if (hasItemImageDownloaded()) {
-           return image.getImageUri();
-        } else if (hasMedia()) {
+        if(media != null && media.hasEmbeddedPicture()) {
             return media.getImageUri();
+        } else if (hasItemImageDownloaded()) {
+           return image.getImageUri();
         } else if (feed != null) {
             return feed.getImageUri();
         } else {
@@ -324,7 +330,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     }
 
     public enum State {
-        NEW, IN_PROGRESS, READ, PLAYING
+        UNREAD, IN_PROGRESS, READ, PLAYING
     }
 
     public State getState() {
@@ -336,7 +342,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
                 return State.IN_PROGRESS;
             }
         }
-        return (isRead() ? State.READ : State.NEW);
+        return (isRead() ? State.READ : State.UNREAD);
     }
 
     public long getFeedId() {
@@ -383,5 +389,25 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
 
     public boolean hasChapters() {
         return hasChapters;
+    }
+
+    public void setAutoDownload(boolean autoDownload) {
+        this.autoDownload = autoDownload;
+    }
+
+    public boolean getAutoDownload() {
+        return this.autoDownload;
+    }
+
+    public boolean isAutoDownloadable() {
+        return this.hasMedia() &&
+                false == this.getMedia().isPlaying() &&
+                false == this.getMedia().isDownloaded() &&
+                this.getAutoDownload();
+    }
+
+    @Override
+    public String toString() {
+        return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
 }

@@ -22,8 +22,10 @@
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_alignParentTop="true"
-            android:layout_margin="16dp"
-            tools:text="Status unread"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            tools:text="NEW"
             tools:background="@android:color/white" />
 
         <TextView
@@ -36,33 +38,8 @@
             android:layout_marginBottom="8dp"
             android:layout_marginTop="@dimen/listitem_threeline_verticalpadding"
             android:layout_toLeftOf="@id/statusUnread"
-            tools:text="Feed item name"
+            tools:text="Episode title"
             tools:background="@android:color/holo_green_dark" />
-
-
-        <ImageView
-            android:id="@+id/imgvInPlaylist"
-            android:layout_width="@dimen/enc_icons_size"
-            android:layout_height="@dimen/enc_icons_size"
-            android:layout_alignParentRight="true"
-            android:layout_below="@id/txtvItemname"
-            android:layout_marginRight="4dp"
-            android:contentDescription="@string/in_queue_label"
-            android:src="?attr/stat_playlist"
-            android:visibility="visible"
-            tools:src="@drawable/ic_list_white_24dp"
-            tools:background="@android:color/holo_red_light" />
-
-        <ImageView
-            android:id="@+id/imgvType"
-            android:layout_width="@dimen/enc_icons_size"
-            android:layout_height="@dimen/enc_icons_size"
-            android:layout_below="@id/txtvItemname"
-            android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@+id/imgvInPlaylist"
-            tools:ignore="ContentDescription"
-            tools:src="@drawable/ic_hearing_white_18dp"
-            tools:background="@android:color/holo_red_light" />
 
         <TextView
             android:id="@+id/txtvLenSize"
@@ -74,18 +51,29 @@
             tools:text="00:42:23"
             tools:background="@android:color/holo_green_dark" />
 
-        <ProgressBar
-            android:id="@+id/pbar_episode_progress"
-            style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
+        <ImageView
+            android:id="@+id/imgvInPlaylist"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_alignParentRight="true"
             android:layout_below="@id/txtvItemname"
-            android:layout_marginLeft="4dp"
-            android:layout_marginRight="4dp"
-            android:layout_toLeftOf="@id/imgvType"
-            android:layout_toRightOf="@id/txtvLenSize"
-            tools:background="@android:color/holo_blue_light" />
+            android:layout_marginRight="8dp"
+            android:contentDescription="@string/in_queue_label"
+            android:src="?attr/stat_playlist"
+            android:visibility="visible"
+            tools:src="@drawable/ic_list_white_24dp"
+            tools:background="@android:color/holo_red_light" />
 
+        <ImageView
+            android:id="@+id/imgvType"
+            android:layout_width="@dimen/enc_icons_size"
+            android:layout_height="@dimen/enc_icons_size"
+            android:layout_below="@id/txtvItemname"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/imgvInPlaylist"
+            tools:ignore="ContentDescription"
+            tools:src="@drawable/ic_hearing_white_18dp"
+            tools:background="@android:color/holo_red_light" />
 
         <TextView
             android:id="@+id/txtvPublished"
@@ -93,10 +81,30 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@id/txtvItemname"
-            android:layout_marginRight="4dp"
+            android:layout_marginRight="8dp"
             android:layout_toLeftOf="@id/imgvType"
             tools:text="Jan 23"
             tools:background="@android:color/holo_green_dark" />
+
+        <ProgressBar
+            android:id="@+id/pbar_episode_progress"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@id/txtvPublished"
+            android:layout_toRightOf="@id/txtvLenSize"
+            android:layout_alignTop="@id/txtvPublished"
+            android:layout_alignBottom="@id/txtvPublished"
+            tools:background="@android:color/holo_blue_light"
+            android:max="100"
+            android:progress="42"
+            android:indeterminate="false"
+            />
+
+
+
     </RelativeLayout>
 
     <include layout="@layout/vertical_list_divider"/>

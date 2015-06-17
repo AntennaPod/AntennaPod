@@ -14,9 +14,9 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 
@@ -31,6 +31,8 @@ public class QueueListAdapter extends BaseAdapter {
     private final ActionButtonCallback actionButtonCallback;
     private final ActionButtonUtils actionButtonUtils;
 
+    private boolean locked;
+
 
     public QueueListAdapter(Context context, ItemAccess itemAccess, ActionButtonCallback actionButtonCallback) {
         super();
@@ -38,6 +40,12 @@ public class QueueListAdapter extends BaseAdapter {
         this.itemAccess = itemAccess;
         this.actionButtonUtils = new ActionButtonUtils(context);
         this.actionButtonCallback = actionButtonCallback;
+        locked = UserPreferences.isQueueLocked();
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
+        notifyDataSetChanged();
     }
 
     @Override
@@ -67,6 +75,7 @@ public class QueueListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.queue_listitem,
                     parent, false);
+            holder.dragHandle = (ImageView) convertView.findViewById(R.id.drag_handle);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
@@ -81,6 +90,12 @@ public class QueueListAdapter extends BaseAdapter {
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
+        }
+
+        if(locked) {
+            holder.dragHandle.setVisibility(View.GONE);
+        } else {
+            holder.dragHandle.setVisibility(View.VISIBLE);
         }
 
         holder.title.setText(item.getTitle());
@@ -143,6 +158,7 @@ public class QueueListAdapter extends BaseAdapter {
 
 
     static class Holder {
+        ImageView dragHandle;
         ImageView imageView;
         TextView title;
         TextView pubDate;

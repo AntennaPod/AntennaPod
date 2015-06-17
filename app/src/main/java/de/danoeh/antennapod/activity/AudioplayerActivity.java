@@ -13,7 +13,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -29,7 +28,6 @@ import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
@@ -47,7 +45,6 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
-import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 
@@ -96,30 +93,25 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
 
         if (coverFragment != null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Removing cover fragment");
+            Log.d(TAG, "Removing cover fragment");
             fT.remove(coverFragment);
         }
         if (descriptionFragment != null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Removing description fragment");
+            Log.d(TAG, "Removing description fragment");
             fT.remove(descriptionFragment);
         }
         if (chapterFragment != null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Removing chapter fragment");
+            Log.d(TAG, "Removing chapter fragment");
             fT.remove(chapterFragment);
         }
         if (currentlyShownFragment != null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Removing currently shown fragment");
+            Log.d(TAG, "Removing currently shown fragment");
             fT.remove(currentlyShownFragment);
         }
         for (int i = 0; i < detachedFragments.length; i++) {
             Fragment f = detachedFragments[i];
             if (f != null) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Removing detached fragment");
+                Log.d(TAG, "Removing detached fragment");
                 fT.remove(f);
             }
         }
@@ -135,11 +127,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void onStop() {
         super.onStop();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "onStop");
+        Log.d(TAG, "onStop()");
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
-
     }
 
     @Override
@@ -154,8 +144,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     }
 
     private void savePreferences() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Saving preferences");
+        Log.d(TAG, "Saving preferences");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         SharedPreferences.Editor editor = prefs.edit();
         if (currentlyShownPosition >= 0 && controller != null
@@ -182,9 +171,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void onSaveInstanceState(Bundle outState) {
         // super.onSaveInstanceState(outState); would cause crash
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "onSaveInstanceState");
-
+        Log.d(TAG, "onSaveInstanceState");
     }
 
     @Override
@@ -207,8 +194,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
      * @return true if restoreFromPrefernces changed the activity's state
      */
     private boolean restoreFromPreferences() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Restoring instance state");
+        Log.d(TAG, "Restoring instance state");
         SharedPreferences prefs = getSharedPreferences(PREFS, MODE_PRIVATE);
         int savedPosition = prefs.getInt(PREF_KEY_SELECTED_FRAGMENT_POSITION,
                 -1);
@@ -222,15 +208,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             switchToFragment(savedPosition);
             return true;
         } else if (controller == null || controller.getMedia() == null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG,
-                        "Couldn't restore from preferences: controller or media was null");
+            Log.d(TAG, "Couldn't restore from preferences: controller or media was null");
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG,
-                        "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
-                                + savedPosition + ", id: " + playableId
-                );
+            Log.d(TAG, "Couldn't restore from preferences: savedPosition was -1 or saved identifier and playable identifier didn't match.\nsavedPosition: "
+                                + savedPosition + ", id: " + playableId);
 
         }
         return false;
@@ -241,9 +222,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         super.onResume();
         if (StringUtils.equals(getIntent().getAction(), Intent.ACTION_VIEW)) {
             Intent intent = getIntent();
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Received VIEW intent: "
-                        + intent.getData().getPath());
+            Log.d(TAG, "Received VIEW intent: " + intent.getData().getPath());
             ExternalMedia media = new ExternalMedia(intent.getData().getPath(),
                     MediaType.AUDIO);
             Intent launchIntent = new Intent(this, PlaybackService.class);
@@ -271,8 +250,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     @Override
     protected void onAwaitingVideoSurface() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
+        Log.d(TAG, "onAwaitingVideoSurface was called in audio player -> switching to video player");
         startActivity(new Intent(this, VideoplayerActivity.class));
     }
 
@@ -297,8 +275,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
      * @param pos Must be POS_COVER, POS_DESCR, or POS_CHAPTERS
      */
     private void switchToFragment(int pos) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Switching contentView to position " + pos);
+        Log.d(TAG, "Switching contentView to position " + pos);
         if (currentlyShownPosition != pos && controller != null) {
             Playable media = controller.getMedia();
             if (media != null) {
@@ -356,9 +333,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     lastShownPosition = currentlyShownPosition;
                     currentlyShownPosition = pos;
                     if (detachedFragments[pos] != null) {
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "Reattaching fragment at position "
-                                    + pos);
+                        Log.d(TAG, "Reattaching fragment at position " + pos);
                         ft.attach(detachedFragments[pos]);
                     } else {
                         ft.add(R.id.contentView, currentlyShownFragment);
@@ -436,25 +411,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         butShowCover = (ImageButton) findViewById(R.id.butCover);
         txtvTitle = (TextView) findViewById(R.id.txtvTitle);
 
-        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close) {
-            CharSequence currentTitle = getSupportActionBar().getTitle();
-
-            @Override
-            public void onDrawerOpened(View drawerView) {
-                super.onDrawerOpened(drawerView);
-                currentTitle = getSupportActionBar().getTitle();
-                getSupportActionBar().setTitle(R.string.app_name);
-                supportInvalidateOptionsMenu();
-            }
-
-            @Override
-            public void onDrawerClosed(View drawerView) {
-                super.onDrawerClosed(drawerView);
-                getSupportActionBar().setTitle(currentTitle);
-                supportInvalidateOptionsMenu();
-            }
-        };
-
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.drawer_open, R.string.drawer_close);
         drawerToggle.setDrawerIndicatorEnabled(false);
         drawerLayout.setDrawerListener(drawerToggle);
 
@@ -465,10 +422,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 int viewType = parent.getAdapter().getItemViewType(position);
                 if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-                    int relPos = (viewType == NavListAdapter.VIEW_TYPE_NAV) ? position : position - NavListAdapter.SUBSCRIPTION_OFFSET;
                     Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
                     intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, relPos);
+                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
                     startActivity(intent);
                 }
                 drawerLayout.closeDrawer(navDrawer);
@@ -632,9 +588,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     protected void onReloadNotification(int notificationCode) {
         if (notificationCode == PlaybackService.EXTRA_CODE_VIDEO) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG,
-                        "ReloadNotification received, switching to Videoplayer now");
+            Log.d(TAG, "ReloadNotification received, switching to Videoplayer now");
             finish();
             startActivity(new Intent(this, VideoplayerActivity.class));
 
@@ -659,24 +613,6 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     @Override
     public boolean isDrawerOpen() {
         return drawerLayout != null && navDrawer != null && drawerLayout.isDrawerOpen(navDrawer);
-    }
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onCreateOptionsMenu(menu);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        if (!MenuItemUtils.isActivityDrawerOpen(this)) {
-            return super.onPrepareOptionsMenu(menu);
-        } else {
-            return false;
-        }
     }
 
     public interface AudioplayerContentFragment {
@@ -731,8 +667,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((EventDistributor.FEED_LIST_UPDATE & arg) != 0) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Received contentUpdate Intent.");
+                Log.d(TAG, "Received contentUpdate Intent.");
                 loadData();
             }
         }
@@ -768,8 +703,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
 
         @Override
-        public int getNumberOfUnreadItems() {
-            return (navDrawerData != null) ? navDrawerData.numUnreadItems : 0;
+        public int getNumberOfNewItems() {
+            return (navDrawerData != null) ? navDrawerData.numNewItems : 0;
+        }
+
+        @Override
+        public int getNumberOfUnreadFeedItems(long feedId) {
+            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
         }
     };
 }

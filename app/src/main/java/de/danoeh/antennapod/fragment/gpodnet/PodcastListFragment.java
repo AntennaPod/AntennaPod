@@ -5,11 +5,23 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.view.MenuItemCompat;
+import android.support.v7.widget.SearchView;
 import android.util.Log;
-import android.view.*;
-import android.widget.*;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ProgressBar;
+import android.widget.TextView;
 
-import de.danoeh.antennapod.BuildConfig;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
@@ -19,14 +31,12 @@ import de.danoeh.antennapod.core.gpoddernet.GpodnetService;
 import de.danoeh.antennapod.core.gpoddernet.GpodnetServiceException;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
-import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
-
-import java.util.List;
 
 /**
  * Displays a list of GPodnetPodcast-Objects in a GridView
  */
 public abstract class PodcastListFragment extends Fragment {
+
     private static final String TAG = "PodcastListFragment";
 
     private GridView gridView;
@@ -43,24 +53,24 @@ public abstract class PodcastListFragment extends Fragment {
     @Override
     public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
         super.onCreateOptionsMenu(menu, inflater);
-        if (!MenuItemUtils.isActivityDrawerOpen((NavDrawerActivity) getActivity())) {
-            final android.support.v7.widget.SearchView sv = new android.support.v7.widget.SearchView(getActivity());
-            MenuItemUtils.addSearchItem(menu, sv);
-            sv.setQueryHint(getString(R.string.gpodnet_search_hint));
-            sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    sv.clearFocus();
-                    ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
-                    return true;
-                }
+        inflater.inflate(R.menu.gpodder_podcasts, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView sv = (SearchView) MenuItemCompat.getActionView(searchItem);
+        MenuItemUtils.adjustTextColor(getActivity(), sv);
+        sv.setQueryHint(getString(R.string.gpodnet_search_hint));
+        sv.setOnQueryTextListener(new android.support.v7.widget.SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                sv.clearFocus();
+                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                return true;
+            }
 
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    return false;
-                }
-            });
-        }
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
     }
 
     @Override
@@ -90,7 +100,7 @@ public abstract class PodcastListFragment extends Fragment {
     }
 
     protected void onPodcastSelected(GpodnetPodcast selection) {
-        if (BuildConfig.DEBUG) Log.d(TAG, "Selected podcast: " + selection.toString());
+        Log.d(TAG, "Selected podcast: " + selection.toString());
         Intent intent = new Intent(getActivity(), DefaultOnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
         intent.putExtra(DefaultOnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));

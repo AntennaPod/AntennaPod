@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.menuhandler;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -9,8 +10,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -34,10 +38,8 @@ public class FeedMenuHandler {
             return true;
         }
 
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Preparing options menu");
-        menu.findItem(R.id.mark_all_read_item).setVisible(
-                selectedFeed.hasNewItems(true));
+        Log.d(TAG, "Preparing options menu");
+        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
         if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable())
             menu.findItem(R.id.support_item).setVisible(true);
         else
@@ -61,6 +63,9 @@ public class FeedMenuHandler {
                 break;
             case R.id.refresh_complete_item:
                 DBTasks.refreshCompleteFeed(context, selectedFeed);
+                break;
+            case R.id.hide_items:
+                showHideDialog(context, selectedFeed);
                 break;
             case R.id.mark_all_read_item:
                 ConfirmationDialog conDialog = new ConfirmationDialog(context,
@@ -94,4 +99,43 @@ public class FeedMenuHandler {
         }
         return true;
     }
+
+    private static void showHideDialog(final Context context, final Feed feed) {
+
+        final String[] items = context.getResources().getStringArray(R.array.episode_hide_options);
+        final String[] values = context.getResources().getStringArray(R.array.episode_hide_values);
+        final boolean[] checkedItems = new boolean[items.length];
+
+        final List<String> hidden = new ArrayList<String>(Arrays.asList(feed.getItemFilter().getValues()));
+        for(int i=0; i < values.length; i++) {
+            String value = values[i];
+            if(hidden.contains(value)) {
+                checkedItems[i] = true;
+            }
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.hide_episodes_title);
+        builder.setMultiChoiceItems(items, checkedItems, new DialogInterface.OnMultiChoiceClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
+                if (isChecked) {
+                    hidden.add(values[which]);
+                } else {
+                    hidden.remove(values[which]);
+                }
+            }
+        });
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
+                DBWriter.setFeedItemsFilter(context, feed.getId(), hidden);
+            }
+        });
+        builder.setNegativeButton(R.string.cancel_label, null);
+        builder.create().show();
+
+    }
+
 }

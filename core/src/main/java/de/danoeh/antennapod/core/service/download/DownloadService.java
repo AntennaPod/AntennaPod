@@ -60,6 +60,9 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
+import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
+import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
@@ -517,9 +520,7 @@ public class DownloadService extends Service {
     /**
      * Creates a notification at the end of the service lifecycle to notify the
      * user about the number of completed downloads. A report will only be
-     * created if the number of successfully downloaded feeds is bigger than 1
-     * or if there is at least one failed download which is not an image or if
-     * there is at least one downloaded media file.
+     * created if there is at least one failed download excluding images
      */
     private void updateReport() {
         // check if report should be created
@@ -547,16 +548,16 @@ public class DownloadService extends Service {
                     .setTicker(
                             getString(R.string.download_report_title))
                     .setContentTitle(
-                            getString(R.string.download_report_title))
+                            getString(R.string.download_report_content_title))
                     .setContentText(
                             String.format(
                                     getString(R.string.download_report_content),
                                     successfulDownloads, failedDownloads)
                     )
-                    .setSmallIcon(R.drawable.stat_notify_sync)
+                    .setSmallIcon(R.drawable.stat_notify_sync_error)
                     .setLargeIcon(
                             BitmapFactory.decodeResource(getResources(),
-                                    R.drawable.stat_notify_sync)
+                                    R.drawable.stat_notify_sync_error)
                     )
                     .setContentIntent(
                             ClientConfig.downloadServiceCallbacks.getReportNotificationContentIntent(this)
@@ -800,6 +801,18 @@ public class DownloadService extends Service {
 
                             // queue new media files for automatic download
                             for (FeedItem item : savedFeed.getItems()) {
+                                if(item.getPubDate() == null) {
+                                    Log.d(TAG, item.toString());
+                                }
+                                if(item.getImage() != null && item.getImage().isDownloaded() == false) {
+                                    item.getImage().setOwner(item);
+                                    try {
+                                        requester.downloadImage(DownloadService.this,
+                                            item.getImage());
+                                    } catch (DownloadRequestException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
                                 if (!item.isRead() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
                                 }
@@ -924,6 +937,13 @@ public class DownloadService extends Service {
 
 
             if (successful) {
+                // we create a 'successful' download log if the feed's last refresh failed
+                List<DownloadStatus> log = DBReader.getFeedDownloadLog(DownloadService.this, feed);
+                if(log.size() > 0 && log.get(0).isSuccessful() == false) {
+                    saveDownloadStatus(new DownloadStatus(feed,
+                            feed.getHumanReadableIdentifier(), DownloadError.SUCCESS, successful,
+                            reasonDetailed));
+                }
                 return Pair.create(request, result);
             } else {
                 numberOfDownloads.decrementAndGet();
@@ -1040,9 +1060,11 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            if (request.isDeleteOnFailure()) {
+            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+                DBWriter.setFeedLastUpdateFailed(DownloadService.this, request.getFeedfileId(), true);
+            } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            } else {
+            } else  {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");
@@ -1165,6 +1187,15 @@ public class DownloadService extends Service {
 
             saveDownloadStatus(status);
             sendDownloadHandledIntent();
+
+            if(GpodnetPreferences.loggedIn()) {
+                FeedItem item = media.getItem();
+                GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
+                        .currentDeviceId()
+                        .currentTimestamp()
+                        .build();
+                GpodnetPreferences.enqueueEpisodeAction(action);
+            }
 
             numberOfDownloads.decrementAndGet();
             queryDownloadsAsync();

@@ -16,10 +16,10 @@
     <dimen name="thumbnail_length_downloaded_item">64dp</dimen>
     <dimen name="thumbnail_length_onlinefeedview">100dp</dimen>
     <dimen name="feeditemlist_header_height">132dp</dimen>
-    <dimen name="thumbnail_length_navlist">42dp</dimen>
+    <dimen name="thumbnail_length_navlist">40dp</dimen>
     <dimen name="listview_secondary_button_width">48dp</dimen>
     <dimen name="drawer_width">280dp</dimen>
-    <dimen name="listitem_iconwithtext_height">56dp</dimen>
+    <dimen name="listitem_iconwithtext_height">48dp</dimen>
     <dimen name="listitem_iconwithtext_textleftpadding">14dp</dimen>
     <dimen name="listitem_iconwithtext_textverticalpadding">16dp</dimen>
 
