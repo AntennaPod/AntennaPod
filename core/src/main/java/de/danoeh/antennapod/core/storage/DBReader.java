@@ -274,6 +274,18 @@ public final class DBReader {
             playbackCompletionDate = new Date(
                     playbackCompletionTime);
         }
+        Boolean hasEmbeddedPicture;
+        switch(cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
+            case 1:
+                hasEmbeddedPicture = Boolean.TRUE;
+                break;
+            case 0:
+                hasEmbeddedPicture = Boolean.FALSE;
+                break;
+            default:
+                hasEmbeddedPicture = null;
+                break;
+        }
 
         return new FeedMedia(
                 mediaId,
@@ -286,7 +298,8 @@ public final class DBReader {
                 cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
                 cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
                 playbackCompletionDate,
-                cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX));
+                cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX),
+                hasEmbeddedPicture);
     }
 
     private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,

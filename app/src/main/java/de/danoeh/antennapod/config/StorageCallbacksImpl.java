@@ -4,6 +4,7 @@ package de.danoeh.antennapod.config;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.StorageCallbacks;
@@ -13,11 +14,11 @@ public class StorageCallbacksImpl implements StorageCallbacks {
 
     @Override
     public int getDatabaseVersion() {
-        return 15;
+        return 16;
     }
 
     @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    public void onUpgrade(final SQLiteDatabase db, int oldVersion, int newVersion) {
         Log.w("DBAdapter", "Upgrading from version " + oldVersion + " to "
                 + newVersion + ".");
         if (oldVersion <= 1) {
@@ -125,7 +126,6 @@ public class StorageCallbacksImpl implements StorageCallbacks {
                     PodDBAdapter.KEY_CHAPTER_TYPE));
         }
         if(oldVersion <= 14) {
-
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
                     + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DOWNLOAD + " INTEGER");
             db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
@@ -137,7 +137,6 @@ public class StorageCallbacksImpl implements StorageCallbacks {
 
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_HIDE + " TEXT");
-
             
             db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
                     + " ADD COLUMN " + PodDBAdapter.KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0");
@@ -148,6 +147,39 @@ public class StorageCallbacksImpl implements StorageCallbacks {
             db.execSQL(PodDBAdapter.CREATE_INDEX_FEEDMEDIA_FEEDITEM);
             db.execSQL(PodDBAdapter.CREATE_INDEX_QUEUE_FEEDITEM);
             db.execSQL(PodDBAdapter.CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM);
+        }
+        if(oldVersion <= 15) {
+            db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                    + " ADD COLUMN " + PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE + " INTEGER DEFAULT -1");
+            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                    + " SET " + PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE + "=0"
+                    + " WHERE " + PodDBAdapter.KEY_DOWNLOADED + "=0");
+            Cursor c = db.rawQuery("SELECT " + PodDBAdapter.KEY_FILE_URL
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                    + " WHERE " + PodDBAdapter.KEY_DOWNLOADED + "=1 "
+                    + " AND " + PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE + "=-1", null);
+            if(c.moveToFirst()) {
+                MediaMetadataRetriever mmr = new MediaMetadataRetriever();
+                do {
+                    String fileUrl = c.getString(0);
+                    try {
+                        mmr.setDataSource(fileUrl);
+                        byte[] image = mmr.getEmbeddedPicture();
+                        if (image != null) {
+                            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                                    + " SET " + PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE + "=1"
+                                    + " WHERE " + PodDBAdapter.KEY_FILE_URL + "='"+ fileUrl + "'");
+                        } else {
+                            db.execSQL("UPDATE " + PodDBAdapter.TABLE_NAME_FEED_MEDIA
+                                    + " SET " + PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE + "=0"
+                                    + " WHERE " + PodDBAdapter.KEY_FILE_URL + "='"+ fileUrl + "'");
+                        }
+                    } catch(Exception e) {
+                        e.printStackTrace();
+                    }
+                } while(c.moveToNext());
+            }
+            c.close();
         }
     }
 }

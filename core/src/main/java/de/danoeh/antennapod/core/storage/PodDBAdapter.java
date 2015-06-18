@@ -19,6 +19,8 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.R;
+import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
@@ -29,6 +31,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.LongIntMap;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
+import de.greenrobot.event.EventBus;
 
 ;
 
@@ -155,6 +158,8 @@ public class PodDBAdapter {
     public static final String KEY_NEXT_PAGE_LINK = "next_page_link";
     public static final String KEY_HIDE = "hide";
     public static final String KEY_LAST_UPDATE_FAILED = "last_update_failed";
+    public static final String KEY_HAS_EMBEDDED_PICTURE = "has_embedded_picture";
+
 
     // Table names
     public static final String TABLE_NAME_FEEDS = "Feeds";
@@ -209,7 +214,7 @@ public class PodDBAdapter {
             + KEY_PLAYBACK_COMPLETION_DATE + " INTEGER,"
             + KEY_FEEDITEM + " INTEGER,"
             + KEY_PLAYED_DURATION + " INTEGER,"
-            + KEY_AUTO_DOWNLOAD + " INTEGER)";
+            + KEY_HAS_EMBEDDED_PICTURE + " INTEGER)";
 
     public static final String CREATE_TABLE_DOWNLOAD_LOG = "CREATE TABLE "
             + TABLE_NAME_DOWNLOAD_LOG + " (" + TABLE_PRIMARY_KEY + KEY_FEEDFILE
@@ -516,6 +521,7 @@ public class PodDBAdapter {
         values.put(KEY_DOWNLOAD_URL, media.getDownload_url());
         values.put(KEY_DOWNLOADED, media.isDownloaded());
         values.put(KEY_FILE_URL, media.getFile_url());
+        values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
 
         if (media.getPlaybackCompletionDate() != null) {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, media
@@ -1463,6 +1469,9 @@ public class PodDBAdapter {
      * Helper class for opening the Antennapod database.
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
+
+        private Context context;
+
         /**
          * Constructor.
          *
@@ -1474,6 +1483,7 @@ public class PodDBAdapter {
         public PodDBHelper(final Context context, final String name,
                            final CursorFactory factory, final int version) {
             super(context, name, factory, version);
+            this.context = context;
         }
 
         @Override
@@ -1497,7 +1507,9 @@ public class PodDBAdapter {
         @Override
         public void onUpgrade(final SQLiteDatabase db, final int oldVersion,
                               final int newVersion) {
+            EventBus.getDefault().post(ProgressEvent.start(context.getString(R.string.progress_upgrading_database)));
             ClientConfig.storageCallbacks.onUpgrade(db, oldVersion, newVersion);
+            EventBus.getDefault().post(ProgressEvent.end());
         }
     }
 }

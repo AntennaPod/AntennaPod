@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -31,6 +32,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
+import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.QueueEvent;
@@ -94,6 +96,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private CharSequence currentTitle;
     private String currentFragment;
+
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -470,6 +474,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
+        if(pd != null) {
+            pd.dismiss();
+        }
     }
 
     @Override
@@ -571,6 +578,24 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadData();
+    }
+
+    public void onEventMainThread(ProgressEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        switch(event.action) {
+            case START:
+                pd = new ProgressDialog(this);
+                pd.setMessage(event.message);
+                pd.setIndeterminate(true);
+                pd.setCancelable(false);
+                pd.show();
+                break;
+            case END:
+                if(pd != null) {
+                    pd.dismiss();
+                }
+                break;
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
