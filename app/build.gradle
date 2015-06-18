@@ -29,14 +29,14 @@ dependencies {
 
 def getMyVersionName() {
     def parsedManifestXml = (new XmlSlurper())
-            .parse('app/src/main/AndroidManifest.xml')
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
             .declareNamespace(android:"http://schemas.android.com/apk/res/android")
     return parsedManifestXml.'@android:versionName'
 }
 
 def getMyVersionCode() {
     def parsedManifestXml = (new XmlSlurper())
-            .parse('app/src/main/AndroidManifest.xml')
+            .parse("${projectDir}/src/main/AndroidManifest.xml")
             .declareNamespace(android:"http://schemas.android.com/apk/res/android")
     return parsedManifestXml.'@android:versionCode'.toInteger()
 }
