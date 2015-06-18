@@ -162,6 +162,14 @@ public class PicassoProvider {
             }
 
             if (bitmap == null) {
+                // this should never, happen, but sometimes it does, so fallback
+                // check for fallback Uri
+                String fallbackParam = data.uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
+                if (fallbackParam != null) {
+                    Uri fallback = Uri.parse(fallbackParam);
+                    bitmap = decodeStreamFromFile(data, fallback);
+                }
+
                 Log.wtf(TAG, "THIS SHOULD NEVER EVER HAPPEN!!");
             }
             return new Result(bitmap, Picasso.LoadedFrom.DISK);
