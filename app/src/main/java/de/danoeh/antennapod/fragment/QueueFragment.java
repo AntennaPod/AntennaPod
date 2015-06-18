@@ -329,7 +329,7 @@ public class QueueFragment extends Fragment {
         for(FeedItem queueItem : queue) {
             queueIds.add(queueItem.getId());
         }
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queueIds);
+        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queueIds);
     }
 
     @Override

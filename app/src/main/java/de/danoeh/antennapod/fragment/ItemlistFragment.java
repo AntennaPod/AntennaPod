@@ -302,7 +302,7 @@ public class ItemlistFragment extends ListFragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override

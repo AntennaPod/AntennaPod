@@ -341,7 +341,7 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
