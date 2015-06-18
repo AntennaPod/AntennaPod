@@ -35,7 +35,7 @@ public class FeedMedia extends FeedFile implements Playable {
     private String mime_type;
     private volatile FeedItem item;
     private Date playbackCompletionDate;
-    private boolean hasEmbeddedPicture;
+    private Boolean hasEmbeddedPicture;
 
     /* Used for loading item when restoring from parcel. */
     private long itemID;
@@ -52,7 +52,6 @@ public class FeedMedia extends FeedFile implements Playable {
                      long size, String mime_type, String file_url, String download_url,
                      boolean downloaded, Date playbackCompletionDate, int played_duration) {
         super(file_url, download_url, downloaded);
-        checkEmbeddedPicture();
         this.id = id;
         this.item = item;
         this.duration = duration;
@@ -230,7 +229,10 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        return this.hasEmbeddedPicture;
+        if(hasEmbeddedPicture == null) {
+            checkEmbeddedPicture();
+        }
+        return hasEmbeddedPicture;
     }
 
     @Override
@@ -409,7 +411,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public Uri getImageUri() {
-        if (hasEmbeddedPicture) {
+        if (hasEmbeddedPicture()) {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
             return builder.build();
@@ -432,7 +434,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     private void checkEmbeddedPicture() {
         if (!localFileAvailable()) {
-            hasEmbeddedPicture = false;
+            hasEmbeddedPicture = Boolean.FALSE;
             return;
         }
         MediaMetadataRetriever mmr = new MediaMetadataRetriever();
@@ -440,14 +442,13 @@ public class FeedMedia extends FeedFile implements Playable {
             mmr.setDataSource(getLocalMediaUrl());
             byte[] image = mmr.getEmbeddedPicture();
             if(image != null) {
-                hasEmbeddedPicture = true;
-            }
-            else {
-                hasEmbeddedPicture = false;
+                hasEmbeddedPicture = Boolean.TRUE;
+            } else {
+                hasEmbeddedPicture = Boolean.FALSE;
             }
         } catch (Exception e) {
             e.printStackTrace();
-            hasEmbeddedPicture = false;
+            hasEmbeddedPicture = Boolean.FALSE;
         }
     }
 }
