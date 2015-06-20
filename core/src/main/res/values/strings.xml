@@ -22,6 +22,7 @@
     <string name="downloads_log_label">Log</string>
     <string name="cancel_download_label">Cancel Download</string>
     <string name="playback_history_label">Playback history</string>
+    <string name="my_subscriptions">Subscriptions</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net login</string>
 

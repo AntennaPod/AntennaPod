@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
 
+import de.danoeh.antennapod.fragment.SubscriptionFragment;
 import org.apache.commons.lang3.ArrayUtils;
 
 import java.util.ArrayList;
@@ -101,6 +102,9 @@ public class NavListAdapter extends BaseAdapter
             case PlaybackHistoryFragment.TAG:
                 icon = R.attr.ic_history;
                 break;
+            case SubscriptionFragment.TAG:
+                icon = R.attr.ic_folder;
+                break;
             case AddFeedFragment.TAG:
                 icon = R.attr.content_new;
                 break;
@@ -120,7 +124,7 @@ public class NavListAdapter extends BaseAdapter
 
     @Override
     public int getCount() {
-        return getSubscriptionOffset() + itemAccess.getCount();
+        return getSubscriptionOffset() ;//+ itemAccess.getCount(); //Avoid feed
     }
 
     @Override
