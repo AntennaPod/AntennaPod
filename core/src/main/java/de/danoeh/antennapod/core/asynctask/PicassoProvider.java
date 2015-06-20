@@ -169,8 +169,6 @@ public class PicassoProvider {
                     Uri fallback = Uri.parse(fallbackParam);
                     bitmap = decodeStreamFromFile(data, fallback);
                 }
-
-                Log.wtf(TAG, "THIS SHOULD NEVER EVER HAPPEN!!");
             }
             return new Result(bitmap, Picasso.LoadedFrom.DISK);
 
