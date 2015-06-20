@@ -162,7 +162,13 @@ public class PicassoProvider {
             }
 
             if (bitmap == null) {
-                Log.wtf(TAG, "THIS SHOULD NEVER EVER HAPPEN!!");
+                // this should never, happen, but sometimes it does, so fallback
+                // check for fallback Uri
+                String fallbackParam = data.uri.getQueryParameter(PicassoImageResource.PARAM_FALLBACK);
+                if (fallbackParam != null) {
+                    Uri fallback = Uri.parse(fallbackParam);
+                    bitmap = decodeStreamFromFile(data, fallback);
+                }
             }
             return new Result(bitmap, Picasso.LoadedFrom.DISK);
 
@@ -266,6 +272,11 @@ public class PicassoProvider {
         @Override
         public Bitmap transform(Bitmap source) {
             Bitmap result =  fastblur(source, BLUR_RADIUS);
+            if (result == null) {
+                // just return the original
+                // for some reason we couldn't transform it.
+                return source;
+            }
             source.recycle();
             return result;
         }
@@ -305,8 +316,14 @@ public class PicassoProvider {
         // the following line:
         //
         // Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
+        Bitmap.Config config = sentBitmap.getConfig();
+        if (config == null) {
+            // Sometimes the config can be null, in those cases
+            // we don't do a transform.
+            return null;
+        }
 
-        Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
+        Bitmap bitmap = sentBitmap.copy(config, true);
 
         if (radius < 1) {
             return (null);
