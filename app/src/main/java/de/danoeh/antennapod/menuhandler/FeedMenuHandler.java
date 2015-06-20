@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
 /**
@@ -83,7 +85,13 @@ public class FeedMenuHandler {
                 break;
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(selectedFeed.getLink());
-                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if(IntentUtils.isCallable(context, intent)) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
+                            Toast.LENGTH_SHORT);
+                }
                 break;
             case R.id.support_item:
                 DBTasks.flattrFeedIfLoggedIn(context, selectedFeed);

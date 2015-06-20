@@ -2,6 +2,8 @@ package de.danoeh.antennapod.activity;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -30,6 +32,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 
@@ -205,7 +208,8 @@ public class FeedInfoActivity extends ActionBarActivity {
         menu.findItem(R.id.support_item).setVisible(
                 feed != null && feed.getPaymentLink() != null);
         menu.findItem(R.id.share_link_item).setVisible(feed != null && feed.getLink() != null);
-        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null);
+        menu.findItem(R.id.visit_website_item).setVisible(feed != null && feed.getLink() != null &&
+                IntentUtils.isCallable(this, new Intent(Intent.ACTION_VIEW, Uri.parse(feed.getLink()))));
         return true;
     }
 
