@@ -229,10 +229,12 @@ public class FeedMedia extends FeedFile implements Playable {
     }
 
     public boolean hasEmbeddedPicture() {
-        if(hasEmbeddedPicture == null) {
-            checkEmbeddedPicture();
-        }
-        return hasEmbeddedPicture;
+        return false;
+        // TODO: reenable!
+        //if(hasEmbeddedPicture == null) {
+        //    checkEmbeddedPicture();
+        //}
+        //return hasEmbeddedPicture;
     }
 
     @Override
@@ -421,7 +423,6 @@ public class FeedMedia extends FeedFile implements Playable {
                     builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
                 }
             }
-
             return builder.build();
         } else {
             return item.getImageUri();
@@ -431,13 +432,11 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
-        checkEmbeddedPicture();
     }
 
     @Override
     public void setFile_url(String file_url) {
         super.setFile_url(file_url);
-        checkEmbeddedPicture();
     }
 
     private void checkEmbeddedPicture() {
