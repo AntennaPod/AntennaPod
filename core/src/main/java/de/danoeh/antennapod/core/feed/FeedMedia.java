@@ -414,6 +414,14 @@ public class FeedMedia extends FeedFile implements Playable {
         if (hasEmbeddedPicture()) {
             Uri.Builder builder = new Uri.Builder();
             builder.scheme(SCHEME_MEDIA).encodedPath(getLocalMediaUrl());
+
+            if (item != null && item.getFeed() != null) {
+                final Uri feedImgUri = item.getFeed().getImageUri();
+                if (feedImgUri != null) {
+                    builder.appendQueryParameter(PARAM_FALLBACK, feedImgUri.toString());
+                }
+            }
+
             return builder.build();
         } else {
             return item.getImageUri();
