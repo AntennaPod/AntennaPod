@@ -9,9 +9,9 @@ import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
 
-import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
@@ -435,7 +435,7 @@ public class PodDBAdapter {
         values.put(KEY_IS_PAGED, feed.isPaged());
         values.put(KEY_NEXT_PAGE_LINK, feed.getNextPageLink());
         if(feed.getItemFilter() != null && feed.getItemFilter().getValues().length > 0) {
-            values.put(KEY_HIDE, StringUtils.join(feed.getItemFilter().getValues(), ","));
+            values.put(KEY_HIDE, TextUtils.join( ",", feed.getItemFilter().getValues()));
         } else {
             values.put(KEY_HIDE, "");
         }
@@ -465,8 +465,8 @@ public class PodDBAdapter {
 
     public void setFeedItemFilter(long feedId, List<String> filterValues) {
         ContentValues values = new ContentValues();
-        values.put(KEY_HIDE, StringUtils.join(filterValues, ","));
-        Log.d(TAG, StringUtils.join(filterValues, ","));
+        values.put(KEY_HIDE, TextUtils.join(",", filterValues));
+        Log.d(TAG, TextUtils.join(",", filterValues));
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(feedId)});
     }
 
@@ -843,7 +843,7 @@ public class PodDBAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, autoDownload);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?",
-                    new String[] { String.valueOf(feedItem.getId()) } );
+                new String[]{String.valueOf(feedItem.getId())});
     }
 
     public long getDownloadLogSize() {
@@ -1294,9 +1294,21 @@ public class PodDBAdapter {
     }
 
     public final LongIntMap getNumberOfUnreadFeedItems(long... feedIds) {
+        // work around TextUtils.join wanting only boxed items
+        // and StringUtils.join() causing NoSuchMethodErrors on MIUI
+        StringBuilder builder = new StringBuilder();
+        for (long id : feedIds) {
+            builder.append(id);
+            builder.append(',');
+        }
+        if (feedIds.length > 0) {
+            // there's an extra ',', get rid of it
+            builder.deleteCharAt(builder.length() - 1);
+        }
+
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " WHERE " + KEY_FEED + " IN (" + StringUtils.join(feedIds, ',') + ") "
+                + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
                 + " AND " + KEY_READ + " = 0"
                 + " GROUP BY " + KEY_FEED;
         Cursor c = db.rawQuery(query, null);
