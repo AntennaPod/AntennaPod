@@ -100,6 +100,7 @@ public class DBWriter {
                         }
                         media.setDownloaded(false);
                         media.setFile_url(null);
+                        media.setHasEmbeddedPicture(false);
                         PodDBAdapter adapter = new PodDBAdapter(context);
                         adapter.open();
                         adapter.setMedia(media);

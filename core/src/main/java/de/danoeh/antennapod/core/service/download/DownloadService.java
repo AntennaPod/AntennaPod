@@ -1143,6 +1143,7 @@ public class DownloadService extends Service {
             boolean chaptersRead = false;
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
+            media.setHasEmbeddedPicture(null);
 
             // Get duration
             MediaMetadataRetriever mmr = null;

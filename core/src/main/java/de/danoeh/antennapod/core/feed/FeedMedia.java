@@ -35,6 +35,8 @@ public class FeedMedia extends FeedFile implements Playable {
     private String mime_type;
     private volatile FeedItem item;
     private Date playbackCompletionDate;
+
+    // if null: unknown, will be checked
     private Boolean hasEmbeddedPicture;
 
     /* Used for loading item when restoring from parcel. */
@@ -61,6 +63,15 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
+    }
+
+    public FeedMedia(long id, FeedItem item, int duration, int position,
+                     long size, String mime_type, String file_url, String download_url,
+                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     Boolean hasEmbeddedPicture) {
+        this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
+                playbackCompletionDate, played_duration);
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
     @Override
@@ -427,6 +438,10 @@ public class FeedMedia extends FeedFile implements Playable {
         } else {
             return item.getImageUri();
         }
+    }
+
+    public void setHasEmbeddedPicture(Boolean hasEmbeddedPicture) {
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
     @Override
