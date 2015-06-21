@@ -307,6 +307,9 @@
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_showDownloadReport_title">Show Download Report</string>
+    <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
+
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
     <string name="pref_queueAddToFront_title">Enqueue at Front</string>

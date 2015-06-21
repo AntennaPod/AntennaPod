@@ -25,6 +25,12 @@
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefShowDownloadReport"
+            android:summary="@string/pref_showDownloadReport_sum"
+            android:title="@string/pref_showDownloadReport_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
