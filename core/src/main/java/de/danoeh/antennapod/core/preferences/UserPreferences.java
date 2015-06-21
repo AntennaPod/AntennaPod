@@ -44,6 +44,7 @@ public class UserPreferences implements
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
 
     // Queue
     public static final String PREF_QUEUE_ADD_TO_FRONT = "prefQueueAddToFront";
@@ -94,6 +95,7 @@ public class UserPreferences implements
     private List<String> hiddenDrawerItems;
     private int notifyPriority;
     private boolean persistNotify;
+    private boolean showDownloadReport;
 
     // Queue
     private boolean enqueueAtFront;
@@ -164,6 +166,7 @@ public class UserPreferences implements
         }
         hiddenDrawerItems = Arrays.asList(StringUtils.split(sp.getString(PREF_HIDDEN_DRAWER_ITEMS, ""), ','));
         persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
+        showDownloadReport = sp.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
 
         // Queue
         enqueueAtFront = sp.getBoolean(PREF_QUEUE_ADD_TO_FRONT, false);
@@ -305,6 +308,16 @@ public class UserPreferences implements
     public static boolean isPersistNotify() {
         instanceAvailable();
         return instance.persistNotify;
+    }
+
+    /**
+     * Returns true if download reports are shown
+     *
+     * @return {@code true} if download reports are shown, {@code false}  otherwise
+     */
+    public static boolean showDownloadReport() {
+        instanceAvailable();
+        return instance.showDownloadReport;
     }
 
     /**
@@ -462,6 +475,9 @@ public class UserPreferences implements
                 break;
             case PREF_PERSISTENT_NOTIFICATION:
                 persistNotify = sp.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
+                break;
+            case PREF_SHOW_DOWNLOAD_REPORT:
+                showDownloadReport = sp.getBoolean(PREF_SHOW_DOWNLOAD_REPORT, true);
                 break;
             // Queue
             case PREF_QUEUE_ADD_TO_FRONT:

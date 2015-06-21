@@ -309,7 +309,8 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service shutting down");
         isRunning = false;
 
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()) {
+        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport() &&
+                UserPreferences.showDownloadReport()) {
             updateReport();
         }
 
