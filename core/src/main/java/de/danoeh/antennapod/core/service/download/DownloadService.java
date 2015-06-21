@@ -1171,12 +1171,16 @@ public class DownloadService extends Service {
             }
 
             try {
-                if (chaptersRead) {
-                    DBWriter.setFeedItem(DownloadService.this, media.getItem()).get();
-                }
+                // we've received the media, we don't want to autodownload it again
+                FeedItem item = media.getItem();
+                item.setAutoDownload(false);
+
+                // update the db
+                DBWriter.setFeedItem(DownloadService.this, item).get();
+
                 DBWriter.setFeedMedia(DownloadService.this, media).get();
-                if (!DBTasks.isInQueue(DownloadService.this, media.getItem().getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, media.getItem().getId()).get();
+                if (!DBTasks.isInQueue(DownloadService.this, item.getId())) {
+                    DBWriter.addQueueItem(DownloadService.this, item.getId()).get();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
