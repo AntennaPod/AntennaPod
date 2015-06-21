@@ -231,7 +231,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 return pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss();
             }
         }, Timeout.getLargeTimeout());
-        solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
+        solo.clickOnText(solo.getString(R.string.pref_pausePlaybackForFocusLoss_title));
         solo.waitForCondition(new Condition() {
             @Override
             public boolean isSatisfied() {
