@@ -92,8 +92,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private ActionBarDrawerToggle drawerToggle;
 
-    private CharSequence drawerTitle;
     private CharSequence currentTitle;
+    private String currentFragment;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +107,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(3.0f);
 
-        drawerTitle = currentTitle = getTitle();
+        currentTitle = getTitle();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
@@ -173,6 +173,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     private void saveLastNavFragment(String tag) {
+        Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
         if(tag != null) {
@@ -180,12 +181,15 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         } else {
             edit.remove(PREF_LAST_FRAGMENT_TAG);
         }
+        currentFragment = tag;
         edit.commit();
     }
 
     private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        return prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
+        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
+        Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
+        return lastFragment;
     }
 
     private void checkFirstLaunch() {
@@ -251,6 +255,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
+        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args +")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
@@ -261,7 +266,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public void loadFragment(final String tag, Bundle args) {
-        Log.d(TAG, "loadFragment(\"" + tag + "\", " + args + ")");
+        Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
             case QueueFragment.TAG:
@@ -543,10 +548,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 navAdapter.notifyDataSetChanged();
 
                 String lastFragment = getLastNavFragment();
-                if(!ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+                if(currentFragment != lastFragment &&
+                        !ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                     long feedId = Long.valueOf(lastFragment);
                     loadFeedFragmentById(feedId);
-                    saveLastNavFragment(null);
                 }
 
                 if (handleIntent) {
