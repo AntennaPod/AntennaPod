@@ -20,7 +20,7 @@
         android:title="@string/share_link_label">
     </item>
     <item
-        android:id="@+id/share_source_item"
+        android:id="@+id/share_download_url_item"
         custom:showAsAction="collapseActionView"
         android:title="@string/share_source_label">
     </item>

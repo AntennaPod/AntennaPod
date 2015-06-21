@@ -85,8 +85,19 @@ public class FeedItemMenuHandler {
         if (!(!isInQueue && selectedItem.getMedia() != null)) {
             mi.setItemVisibility(R.id.add_to_queue_item, false);
         }
+
         if (!showExtendedMenu || selectedItem.getLink() == null) {
+            mi.setItemVisibility(R.id.visit_website_item, false);
             mi.setItemVisibility(R.id.share_link_item, false);
+            mi.setItemVisibility(R.id.share_link_with_position_item, false);
+        }
+        if (!showExtendedMenu || !hasMedia || selectedItem.getMedia().getDownload_url() == null) {
+            mi.setItemVisibility(R.id.share_download_url_item, false);
+            mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
+        }
+        if(false == hasMedia || selectedItem.getMedia().getPosition() <= 0) {
+            mi.setItemVisibility(R.id.share_link_with_position_item, false);
+            mi.setItemVisibility(R.id.share_download_url_with_position_item, false);
         }
 
         if (!(state == FeedItem.State.UNREAD || state == FeedItem.State.IN_PROGRESS)) {
@@ -107,12 +118,6 @@ public class FeedItemMenuHandler {
             mi.setItemVisibility(R.id.activate_auto_download, false);
         } else {
             mi.setItemVisibility(R.id.deactivate_auto_download, false);
-        }
-
-        if (!showExtendedMenu || selectedItem.getLink() == null ||
-                false == IntentUtils.isCallable(context, new Intent(Intent.ACTION_VIEW, Uri.parse(selectedItem.getLink()))))
-        {
-            mi.setItemVisibility(R.id.visit_website_item, false);
         }
 
         if (selectedItem.getPaymentLink() == null || !selectedItem.getFlattrStatus().flattrable()) {
@@ -212,6 +217,15 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.share_link_item:
                 ShareUtils.shareFeedItemLink(context, selectedItem);
+                break;
+            case R.id.share_download_url_item:
+                ShareUtils.shareFeedItemDownloadLink(context, selectedItem);
+                break;
+            case R.id.share_link_with_position_item:
+                ShareUtils.shareFeedItemLink(context, selectedItem, true);
+                break;
+            case R.id.share_download_url_with_position_item:
+                ShareUtils.shareFeedItemDownloadLink(context, selectedItem, true);
                 break;
             default:
                 Log.d(TAG, "Unknown menuItemId: " + menuItemId);

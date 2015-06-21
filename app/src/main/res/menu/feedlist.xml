@@ -36,6 +36,7 @@
         android:title="@string/mark_all_read_label"
         custom:showAsAction="collapseActionView">
     </item>
+
     <item
         android:id="@+id/support_item"
         android:menuCategory="container"
@@ -43,6 +44,28 @@
         android:visible="false"
         custom:showAsAction="collapseActionView">
     </item>
+
+    <item
+        android:id="@+id/visit_website_item"
+        android:icon="?attr/location_web_site"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/visit_website_label"
+        android:visible="true">
+    </item>
+    <item
+        android:id="@+id/share_link_item"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/share_link_label">
+    </item>
+    <item
+        android:id="@+id/share_download_url_item"
+        android:menuCategory="container"
+        custom:showAsAction="collapseActionView"
+        android:title="@string/share_feed_url_label">
+    </item>
+
     <item
         android:id="@+id/remove_item"
         android:icon="?attr/content_discard"

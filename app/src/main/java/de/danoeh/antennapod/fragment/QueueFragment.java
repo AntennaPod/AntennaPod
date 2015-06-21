@@ -72,6 +72,7 @@ public class QueueFragment extends Fragment {
     private ProgressBar progLoading;
 
     private ContextMenu contextMenu;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private UndoBarController<FeedItemUndoToken> undoBarController;
 
@@ -325,6 +326,7 @@ public class QueueFragment extends Fragment {
         }
 
         contextMenu = menu;
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
         LongList queueIds = new LongList(queue.size());
         for(FeedItem queueItem : queue) {
             queueIds.add(queueItem.getId());
@@ -335,6 +337,9 @@ public class QueueFragment extends Fragment {
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
         FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
 
         if (selectedItem == null) {
