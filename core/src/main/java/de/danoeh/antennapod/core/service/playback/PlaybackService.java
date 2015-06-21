@@ -634,7 +634,7 @@ public class PlaybackService extends Service {
 
         writePlaybackPreferencesNoMediaPlaying();
         if (nextMedia != null) {
-            stream = !playable.localFileAvailable();
+            stream = !nextMedia.localFileAvailable();
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
                     (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
