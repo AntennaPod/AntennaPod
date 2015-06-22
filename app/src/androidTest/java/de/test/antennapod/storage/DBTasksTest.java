@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -298,9 +299,8 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
     }
 
-    @FlakyTest(tolerance = 3)
     private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
-        UserPreferences.setUpdateInterval(context, expirationTime);
+        UserPreferences.setUpdateInterval(TimeUnit.MILLISECONDS.toHours(expirationTime));
         Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
                 null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null, false);
         feed.setItems(new ArrayList<FeedItem>());

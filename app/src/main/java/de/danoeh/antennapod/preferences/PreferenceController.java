@@ -24,6 +24,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -200,6 +201,19 @@ public class PreferenceController {
                     }
                 });
 
+        ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL)
+                .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object newValue) {
+                        if (newValue instanceof String) {
+                            int hours = Integer.valueOf((String)newValue);
+                            long millis = TimeUnit.HOURS.toMillis(hours);
+                            UserPreferences.restartUpdateAlarm(millis, millis);
+                        }
+                        return true;
+                    }
+                });
+
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL)
                 .setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
                     @Override
@@ -345,7 +359,7 @@ public class PreferenceController {
 
                             @Override
                             public void onConfirmed(boolean autoFlattrEnabled, float autoFlattrValue) {
-                                UserPreferences.setAutoFlattrSettings(activity, autoFlattrEnabled, autoFlattrValue);
+                                UserPreferences.setAutoFlattrSettings(autoFlattrEnabled, autoFlattrValue);
                                 checkItemVisibility();
                             }
                         });
@@ -389,8 +403,7 @@ public class PreferenceController {
         final Resources res = ui.getActivity().getResources();
 
         ListPreference pref = (ListPreference) ui.findPreference(UserPreferences.PREF_UPDATE_INTERVAL);
-        String[] values = res.getStringArray(
-                R.array.update_intervall_values);
+        String[] values = res.getStringArray(R.array.update_intervall_values);
         String[] entries = new String[values.length];
         for (int x = 0; x < values.length; x++) {
             Integer v = Integer.parseInt(values[x]);
@@ -529,9 +542,7 @@ public class PreferenceController {
                         }
 
                         UserPreferences.setAutodownloadSelectedNetworks(
-                                activity, prefValuesList
-                                        .toArray(new String[prefValuesList
-                                                .size()])
+                                prefValuesList.toArray(new String[prefValuesList.size()])
                         );
                         return true;
                     } else {
