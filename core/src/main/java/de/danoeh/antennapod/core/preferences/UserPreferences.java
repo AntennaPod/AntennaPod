@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.SystemClock;
 import android.preference.PreferenceManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -272,14 +273,12 @@ public class UserPreferences {
     }
 
     public static void setPrefFastForwardSecs(int secs) {
-        Log.d(TAG, "setPrefFastForwardSecs(" + secs +")");
-        SharedPreferences.Editor editor = prefs.edit();
-        editor.putInt(PREF_FAST_FORWARD_SECS, secs);
-        editor.commit();
+        prefs.edit()
+             .putInt(PREF_FAST_FORWARD_SECS, secs)
+             .apply();
     }
 
     public static void setPrefRewindSecs(int secs) {
-        Log.d(TAG, "setPrefRewindSecs(" + secs +")");
         prefs.edit()
              .putInt(PREF_REWIND_SECS, secs)
              .apply();
@@ -314,7 +313,7 @@ public class UserPreferences {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
              .apply();
-        restartUpdateAlarm(TimeUnit.HOURS.toMillis(hours), TimeUnit.HOURS.toMillis(hours));
+        restartUpdateAlarm();
     }
 
     /**
@@ -493,6 +492,11 @@ public class UserPreferences {
         }
     }
 
+    public static void restartUpdateAlarm() {
+        long hours = getUpdateInterval();
+        restartUpdateAlarm(TimeUnit.SECONDS.toMillis(10), hours);
+    }
+
     /**
      * Updates alarm registered with the AlarmManager service or deactivates it.
      */
@@ -502,10 +506,12 @@ public class UserPreferences {
         PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
                 new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
-        if (intervalMillis != 0) {
-            alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, triggerAtMillis, intervalMillis,
+        if (intervalMillis > 0) {
+            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+                    SystemClock.elapsedRealtime() + triggerAtMillis,
+                    intervalMillis,
                     updateIntent);
-            Log.d(TAG, "Changed alarm to new interval");
+            Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
         } else {
             Log.d(TAG, "Automatic update was deactivated");
         }

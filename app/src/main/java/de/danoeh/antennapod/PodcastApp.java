@@ -39,7 +39,7 @@ public class PodcastApp extends Application {
 
         PicassoProvider.setupPicassoInstance(this);
 		UserPreferences.init(this);
-		PlaybackPreferences.createInstance(this);
+		PlaybackPreferences.init(this);
 		EventDistributor.getInstance();
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
