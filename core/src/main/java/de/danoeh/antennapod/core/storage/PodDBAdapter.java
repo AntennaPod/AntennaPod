@@ -742,7 +742,13 @@ public class PodDBAdapter {
             setFeed(item.getFeed());
         }
         values.put(KEY_FEED, item.getFeed().getId());
-        values.put(KEY_READ, item.isRead());
+        if(item.isNew()) {
+            values.put(KEY_READ, FeedItem.NEW);
+        } else if(item.isPlayed()) {
+            values.put(KEY_READ, FeedItem.PLAYED);
+        } else {
+            values.put(KEY_READ, FeedItem.UNPLAYED);
+        }
         values.put(KEY_HAS_CHAPTERS, item.getChapters() != null || item.hasChapters());
         values.put(KEY_ITEM_IDENTIFIER, item.getItemIdentifier());
         values.put(KEY_FLATTR_STATUS, item.getFlattrStatus().toLong());
@@ -774,7 +780,7 @@ public class PodDBAdapter {
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_READ, read);
+        values.put(KEY_READ, read ? FeedItem.PLAYED : FeedItem.UNPLAYED);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
 
         if (resetMediaPosition) {
@@ -787,7 +793,7 @@ public class PodDBAdapter {
         db.endTransaction();
     }
 
-    public void setFeedItemRead(boolean read, long... itemIds) {
+    public void setFeedItemRead(int read, long... itemIds) {
         db.beginTransaction();
         ContentValues values = new ContentValues();
         for (long id : itemIds) {
@@ -873,18 +879,23 @@ public class PodDBAdapter {
 
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
+        long[] ids = new long[queue.size()];
         db.beginTransaction();
         db.delete(TABLE_NAME_QUEUE, null, null);
         for (int i = 0; i < queue.size(); i++) {
             FeedItem item = queue.get(i);
+            ids[i] = item.getId();
             values.put(KEY_ID, i);
             values.put(KEY_FEEDITEM, item.getId());
             values.put(KEY_FEED, item.getFeed().getId());
-            db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values,
-                    SQLiteDatabase.CONFLICT_REPLACE);
+            db.insertWithOnConflict(TABLE_NAME_QUEUE, null, values, SQLiteDatabase.CONFLICT_REPLACE);
         }
         db.setTransactionSuccessful();
         db.endTransaction();
+        db.execSQL("UPDATE " + TABLE_NAME_FEED_ITEMS
+                + " SET " + KEY_READ + "=" + FeedItem.UNPLAYED
+                + " WHERE " + KEY_ID + " IN(" + TextUtils.join(",", Arrays.asList(ids)) + ")"
+                + " AND " + KEY_READ + "=" + FeedItem.NEW);
     }
 
     public void clearQueue() {
@@ -1059,6 +1070,7 @@ public class PodDBAdapter {
     /**
      * Returns a cursor which contains all feed items in the queue. The returned
      * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
+     * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
         Object[] args = (Object[]) new String[]{
@@ -1090,24 +1102,14 @@ public class PodDBAdapter {
      */
     public final Cursor getUnreadItemsCursor() {
         Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL, KEY_READ
-                + "=0", null, null, null, KEY_PUBDATE + " DESC");
+                + "<" + FeedItem.PLAYED, null, null, null, KEY_PUBDATE + " DESC");
         return c;
     }
 
     public final Cursor getNewItemIdsCursor() {
-        final String query = "SELECT " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID
+        final String query = "SELECT " + KEY_ID
                 + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " LEFT OUTER JOIN " + TABLE_NAME_QUEUE + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                + " WHERE "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
-                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"; // not in queue
+                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
         return db.rawQuery(query, null);
     }
 
@@ -1116,18 +1118,9 @@ public class PodDBAdapter {
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getNewItemsCursor() {
-        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " LEFT OUTER JOIN " + TABLE_NAME_QUEUE + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                + " WHERE "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
-                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL"  // not in queue
+        final String query = "SELECT " + SEL_FI_SMALL_STR
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_READ + "=" + FeedItem.NEW
                 + " ORDER BY " + KEY_PUBDATE + " DESC";
         Cursor c = db.rawQuery(query, null);
         return c;
@@ -1139,11 +1132,11 @@ public class PodDBAdapter {
     }
 
     public Cursor getDownloadedItemsCursor() {
-        final String query = "SELECT " + SEL_FI_SMALL_STR + " FROM " + TABLE_NAME_FEED_ITEMS
-                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM + " WHERE "
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
+        final String query = "SELECT " + SEL_FI_SMALL_STR
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " INNER JOIN " + TABLE_NAME_FEED_MEDIA
+                + " ON " + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "=" + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
+                + " WHERE " + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + ">0";
         Cursor c = db.rawQuery(query, null);
         return c;
     }
@@ -1277,19 +1270,9 @@ public class PodDBAdapter {
     }
 
     public final int getNumberOfNewItems() {
-        final String query = "SELECT COUNT(" + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + ")"
-                +" FROM " + TABLE_NAME_FEED_ITEMS
-                + " LEFT JOIN " + TABLE_NAME_FEED_MEDIA + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_FEEDITEM
-                + " LEFT JOIN " + TABLE_NAME_QUEUE + " ON "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_ID + "="
-                + TABLE_NAME_QUEUE + "." + KEY_FEEDITEM
-                + " WHERE "
-                + TABLE_NAME_FEED_ITEMS + "." + KEY_READ + " = 0 AND " // unplayed
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_DOWNLOADED + " = 0 AND " // undownloaded
-                + TABLE_NAME_FEED_MEDIA + "." + KEY_POSITION + " = 0 AND " // not partially played
-                + TABLE_NAME_QUEUE + "." + KEY_ID + " IS NULL";  // not in queue
+        final String query = "SELECT COUNT(" + KEY_ID + ")"
+                + " FROM " + TABLE_NAME_FEED_ITEMS
+                + " WHERE " + KEY_READ + "=" + FeedItem.NEW;
         Cursor c = db.rawQuery(query, null);
         int result = 0;
         if (c.moveToFirst()) {
@@ -1315,7 +1298,8 @@ public class PodDBAdapter {
         final String query = "SELECT " + KEY_FEED + ", COUNT(" + KEY_ID + ") AS count "
                 + " FROM " + TABLE_NAME_FEED_ITEMS
                 + " WHERE " + KEY_FEED + " IN (" + builder.toString() + ") "
-                + " AND " + KEY_READ + " = 0"
+                + " AND (" + KEY_READ + "=" + FeedItem.NEW
+                + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")"
                 + " GROUP BY " + KEY_FEED;
         Cursor c = db.rawQuery(query, null);
         LongIntMap result = new LongIntMap(c.getCount());

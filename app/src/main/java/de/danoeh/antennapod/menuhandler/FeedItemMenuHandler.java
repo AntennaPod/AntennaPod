@@ -154,7 +154,7 @@ public class FeedItemMenuHandler {
                 DBWriter.deleteFeedMediaOfItem(context, selectedItem.getMedia().getId());
                 break;
             case R.id.mark_read_item:
-                selectedItem.setRead(true);
+                selectedItem.setPlayed(true);
                 DBWriter.markItemRead(context, selectedItem, true, false);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
@@ -172,7 +172,7 @@ public class FeedItemMenuHandler {
                 }
                 break;
             case R.id.mark_unread_item:
-                selectedItem.setRead(false);
+                selectedItem.setPlayed(false);
                 DBWriter.markItemRead(context, selectedItem, false, false);
                 if(GpodnetPreferences.loggedIn()) {
                     GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)

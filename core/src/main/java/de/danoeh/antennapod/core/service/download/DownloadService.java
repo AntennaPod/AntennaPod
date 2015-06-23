@@ -815,7 +815,7 @@ public class DownloadService extends Service {
                                         e.printStackTrace();
                                     }
                                 }
-                                if (!item.isRead() && item.hasMedia() && !item.getMedia().isDownloaded()) {
+                                if (!item.isPlayed() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
                                 }
                             }

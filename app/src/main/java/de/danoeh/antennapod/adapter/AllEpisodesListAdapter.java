@@ -91,7 +91,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
 
         holder.title.setText(item.getTitle());
         holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
-        if (showOnlyNewEpisodes || item.isRead() || false == itemAccess.isNew(item)) {
+        if (showOnlyNewEpisodes || false == item.isNew()) {
             holder.statusUnread.setVisibility(View.INVISIBLE);
         } else {
             holder.statusUnread.setVisibility(View.VISIBLE);
@@ -178,8 +178,6 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         int getItemDownloadProgressPercent(FeedItem item);
 
         boolean isInQueue(FeedItem item);
-
-        boolean isNew(FeedItem item);
 
     }
 }

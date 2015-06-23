@@ -142,7 +142,7 @@ public class UITestUtils {
             List<FeedItem> items = new ArrayList<FeedItem>();
             for (int j = 0; j < NUM_ITEMS_PER_FEED; j++) {
                 FeedItem item = new FeedItem(j, "Feed " + (i+1) + ": Item " + (j+1), "item" + j,
-                        "http://example.com/feed" + i + "/item/" + j, new Date(), false, feed);
+                        "http://example.com/feed" + i + "/item/" + j, new Date(), FeedItem.UNPLAYED, feed);
                 items.add(item);
 
                 File mediaFile = newMediaFile("feed-" + i + "-episode-" + j + ".mp3");

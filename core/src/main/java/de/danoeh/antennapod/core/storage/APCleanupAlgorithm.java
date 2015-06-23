@@ -28,7 +28,7 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
         List<FeedItem> delete;
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
-                    && !queue.contains(item.getId()) && item.isRead()) {
+                    && !queue.contains(item.getId()) && item.isPlayed()) {
                 candidates.add(item);
             }
 

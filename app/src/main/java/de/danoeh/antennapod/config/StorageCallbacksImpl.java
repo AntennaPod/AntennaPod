@@ -8,13 +8,14 @@ import android.media.MediaMetadataRetriever;
 import android.util.Log;
 
 import de.danoeh.antennapod.core.StorageCallbacks;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
 
 public class StorageCallbacksImpl implements StorageCallbacks {
 
     @Override
     public int getDatabaseVersion() {
-        return 16;
+        return 17;
     }
 
     @Override
@@ -180,6 +181,26 @@ public class StorageCallbacksImpl implements StorageCallbacks {
                 } while(c.moveToNext());
             }
             c.close();
+        }
+        if(oldVersion <= 17) {
+            String selectNew = "SELECT " + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID
+                    + " FROM " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " INNER JOIN " + PodDBAdapter.TABLE_NAME_FEED_MEDIA + " ON "
+                    + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID + "="
+                    + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_FEEDITEM
+                    + " LEFT OUTER JOIN " + PodDBAdapter.TABLE_NAME_QUEUE + " ON "
+                    + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_ID + "="
+                    + PodDBAdapter.TABLE_NAME_QUEUE + "." + PodDBAdapter.KEY_FEEDITEM
+                    + " WHERE "
+                    + PodDBAdapter.TABLE_NAME_FEED_ITEMS + "." + PodDBAdapter.KEY_READ + " = 0 AND " // unplayed
+                    + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_DOWNLOADED + " = 0 AND " // undownloaded
+                    + PodDBAdapter.TABLE_NAME_FEED_MEDIA + "." + PodDBAdapter.KEY_POSITION + " = 0 AND " // not partially played
+                    + PodDBAdapter.TABLE_NAME_QUEUE + "." + PodDBAdapter.KEY_ID + " IS NULL"; // not in queue
+            String sql =  "UPDATE " + PodDBAdapter.TABLE_NAME_FEED_ITEMS
+                    + " SET " + PodDBAdapter.KEY_READ + "=" + FeedItem.NEW
+                    + " WHERE " + PodDBAdapter.KEY_ID + " IN (" + selectNew + ")";
+            Log.d("Migration", "SQL: " + sql);
+            db.execSQL(sql);
         }
     }
 }

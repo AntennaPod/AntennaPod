@@ -95,7 +95,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                 }
             }
         } else {
-            if (!item.isRead()) {
+            if (!item.isPlayed()) {
                 DBWriter.markItemRead(context, item, true, true);
             }
         }

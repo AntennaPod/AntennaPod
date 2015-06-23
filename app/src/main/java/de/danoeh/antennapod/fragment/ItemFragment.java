@@ -355,7 +355,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.navigation_accept,
                     R.attr.location_web_site});
 
-            if (!item.isRead()) {
+            if (!item.isPlayed()) {
                 butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
                 butAction1.setText(getActivity().getString(R.string.mark_read_label));
                 butAction1.setVisibility(View.VISIBLE);

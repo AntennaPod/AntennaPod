@@ -186,6 +186,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
+        if(position > 0) {
+            this.item.setPlayed(false);
+        }
     }
 
     public long getSize() {
@@ -447,6 +450,9 @@ public class FeedMedia extends FeedFile implements Playable {
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
+        if(downloaded) {
+            item.setPlayed(false);
+        }
     }
 
     @Override

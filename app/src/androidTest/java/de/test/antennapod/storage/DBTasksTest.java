@@ -78,7 +78,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         feed.setItems(items);
         List<File> files = new ArrayList<File>();
         for (int i = 0; i < NUM_ITEMS; i++) {
-            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
 
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
@@ -116,7 +116,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         feed.setItems(items);
         List<File> files = new ArrayList<File>();
         for (int i = 0; i < NUM_ITEMS; i++) {
-            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), false, feed);
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.UNPLAYED, feed);
 
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
@@ -151,7 +151,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         feed.setItems(items);
         List<File> files = new ArrayList<File>();
         for (int i = 0; i < NUM_ITEMS; i++) {
-            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), true, feed);
+            FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
 
             File f = new File(destFolder, "file " + i);
             assertTrue(f.createNewFile());
@@ -208,14 +208,14 @@ public class DBTasksTest extends InstrumentationTestCase {
         Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
         for (int i = 0; i < NUM_ITEMS; i++) {
-            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), false, feed));
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
         }
         Feed newFeed = DBTasks.updateFeed(context, feed)[0];
 
         assertTrue(newFeed == feed);
         assertTrue(feed.getId() != 0);
         for (FeedItem item : feed.getItems()) {
-            assertFalse(item.isRead());
+            assertFalse(item.isPlayed());
             assertTrue(item.getId() != 0);
         }
     }
@@ -242,7 +242,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final Feed feed = new Feed("url", new Date(), "title");
         feed.setItems(new ArrayList<FeedItem>());
         for (int i = 0; i < NUM_ITEMS_OLD; i++) {
-            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+            feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
         }
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
@@ -261,7 +261,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
 
         for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
-            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), true, feed));
+            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
         }
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
@@ -285,7 +285,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             FeedItem item = newFeed.getItems().get(i);
             assertTrue(item.getFeed() == newFeed);
             assertTrue(item.getId() == itemIDs.get(i));
-            assertTrue(item.isRead());
+            assertTrue(item.isPlayed());
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }
@@ -293,7 +293,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             FeedItem item = newFeed.getItems().get(i);
             assertTrue(item.getFeed() == newFeed);
             assertTrue(item.getId() != 0);
-            assertFalse(item.isRead());
+            assertFalse(item.isPlayed());
             assertTrue(item.getPubDate().getTime() >= lastDate.getTime());
             lastDate = item.getPubDate();
         }

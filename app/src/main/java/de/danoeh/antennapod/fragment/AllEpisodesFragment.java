@@ -76,7 +76,6 @@ public class AllEpisodesFragment extends Fragment {
 
     private List<FeedItem> episodes;
     private LongList queuedItemsIds;
-    private LongList newItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -432,18 +431,6 @@ public class AllEpisodesFragment extends Fragment {
                 return false;
             }
         }
-
-        @Override
-        public boolean isNew(FeedItem item) {
-            if (itemsLoaded) {
-                // should actually never be called in NewEpisodesFragment, but better safe than sorry
-                return showOnlyNewEpisodes || newItemsIds.contains(item.getId());
-            } else {
-                return false;
-            }
-        }
-
-
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -508,8 +495,7 @@ public class AllEpisodesFragment extends Fragment {
                 } else {
                     return new Object[]{
                             DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                            DBReader.getQueueIDList(context),
-                            DBReader.getNewItemIds(context)
+                            DBReader.getQueueIDList(context)
                     };
                 }
             } else {
@@ -526,7 +512,6 @@ public class AllEpisodesFragment extends Fragment {
             if (lists != null) {
                 episodes = (List<FeedItem>) lists[0];
                 queuedItemsIds = (LongList) lists[1];
-                newItemsIds = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

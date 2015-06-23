@@ -92,8 +92,6 @@ public class ItemlistFragment extends ListFragment {
     private long feedID;
     private Feed feed;
     private LongList queuedItemsIds;
-    private LongList newItemsIds;
-
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -580,11 +578,6 @@ public class ItemlistFragment extends ListFragment {
         }
 
         @Override
-        public boolean isNew(FeedItem item) {
-            return (newItemsIds != null) && newItemsIds.contains(item.getId());
-        }
-
-        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
@@ -626,8 +619,7 @@ public class ItemlistFragment extends ListFragment {
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
                 LongList queuedItemsIds = DBReader.getQueueIDList(context);
-                LongList newItemsIds = DBReader.getNewItemIds(context);
-                return new Object[] { feed, queuedItemsIds, newItemsIds };
+                return new Object[] { feed, queuedItemsIds };
             } else {
                 return null;
             }
@@ -639,7 +631,6 @@ public class ItemlistFragment extends ListFragment {
             if (res != null) {
                 feed = (Feed) res[0];
                 queuedItemsIds = (LongList) res[1];
-                newItemsIds = res[2] == null ? null : (LongList) res[2];
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

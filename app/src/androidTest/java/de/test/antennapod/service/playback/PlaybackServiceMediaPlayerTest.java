@@ -3,15 +3,9 @@ package de.test.antennapod.service.playback;
 import android.content.Context;
 import android.media.RemoteControlClient;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
-import de.danoeh.antennapod.core.service.playback.PlayerStatus;
-import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.playback.Playable;
-import de.test.antennapod.util.service.download.HTTPBin;
+
 import junit.framework.AssertionFailedError;
+
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -22,6 +16,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
+import de.danoeh.antennapod.core.service.playback.PlayerStatus;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
+import de.danoeh.antennapod.core.util.playback.Playable;
+import de.test.antennapod.util.service.download.HTTPBin;
 
 /**
  * Test class for PlaybackServiceMediaPlayer
@@ -114,7 +117,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         f.setItems(new ArrayList<FeedItem>());
-        FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), false, f);
+        FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
         f.getItems().add(i);
         FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl, fileUrl != null, null, 0);
         i.setMedia(media);

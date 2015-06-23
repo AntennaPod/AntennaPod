@@ -277,7 +277,7 @@ public class DBReaderTest extends InstrumentationTestCase {
             int i = random.nextInt(numItems);
             if (!unread.contains(items.get(i))) {
                 FeedItem item = items.get(i);
-                item.setRead(false);
+                item.setPlayed(false);
                 unread.add(item);
             }
         }
@@ -297,7 +297,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         assertNotNull(unreadSaved);
         assertTrue(unread.size() == unreadSaved.size());
         for (FeedItem item : unreadSaved) {
-            assertFalse(item.isRead());
+            assertFalse(item.isPlayed());
         }
     }
 
@@ -391,7 +391,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         adapter.open();
         for (int i = 0; i < NUM_UNREAD; i++) {
             FeedItem item = feeds.get(0).getItems().get(i);
-            item.setRead(false);
+            item.setPlayed(false);
             adapter.setSingleFeedItem(item);
         }
         List<FeedItem> queue = new ArrayList<FeedItem>();

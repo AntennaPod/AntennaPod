@@ -561,7 +561,7 @@ public final class DBTasks {
                 // all new feeds will have the most recent item marked as unplayed
                 FeedItem mostRecent = newFeed.getMostRecentItem();
                 if (mostRecent != null) {
-                    mostRecent.setRead(false);
+                    mostRecent.setNew();
                 }
 
                 newFeedsList.add(newFeed);
@@ -572,16 +572,16 @@ public final class DBTasks {
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
 
-                final boolean markNewItemsAsUnread;
+                final boolean markNewItems;
                 if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                     if (savedFeed.compareWithOther(newFeed)) {
                         Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
                         savedFeed.updateFromOther(newFeed);
                     }
-                    markNewItemsAsUnread = true;
+                    markNewItems = true;
                 } else {
                     Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
-                    markNewItemsAsUnread = false;
+                    markNewItems = false;
                     savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
@@ -599,8 +599,8 @@ public final class DBTasks {
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
                         savedFeed.getItems().add(i, item);
-                        if (markNewItemsAsUnread) {
-                            item.setRead(false);
+                        if (markNewItems) {
+                            item.setNew();
                         }
                     } else {
                         oldItem.updateFromOther(item);

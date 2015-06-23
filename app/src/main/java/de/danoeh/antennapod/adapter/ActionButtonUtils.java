@@ -88,7 +88,7 @@ public class ActionButtonUtils {
                 butSecondary.setContentDescription(context.getString(labels[0]));
             }
         } else {
-            if (item.isRead()) {
+            if (item.isPlayed()) {
                 butSecondary.setVisibility(View.INVISIBLE);
             } else {
                 butSecondary.setVisibility(View.VISIBLE);

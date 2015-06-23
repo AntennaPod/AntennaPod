@@ -229,7 +229,7 @@ public final class DBReader {
                         new FlattrStatus(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)),
                         itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0,
                         image,
-                        (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0),
+                        itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ),
                         itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER),
                         itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD)) > 0
                         );
@@ -481,8 +481,7 @@ public final class DBReader {
      * Loads a list of FeedItems whose 'read'-attribute is set to false.
      *
      * @param context A context that is used for opening a database connection.
-     * @return A list of FeedItems whose 'read'-attribute it set to false. If the FeedItems in the list are not used,
-     * consider using {@link #getUnreadItemIds(android.content.Context)} instead.
+     * @return A list of FeedItems whose 'read'-attribute it set to false.
      */
     public static List<FeedItem> getUnreadItemsList(Context context) {
         if (BuildConfig.DEBUG)
@@ -1008,20 +1007,6 @@ public final class DBReader {
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
         final int result = adapter.getNumberOfNewItems();
-        adapter.close();
-        return result;
-    }
-
-    /**
-     * Returns a map containing the number of unread items per feed
-     *
-     * @param context A context that is used for opening a database connection.
-     * @return The number of unread items per feed.
-     */
-    public static LongIntMap getNumberOfUnreadFeedItems(final Context context, long... feedIds) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-        final LongIntMap result = adapter.getNumberOfUnreadFeedItems(feedIds);
         adapter.close();
         return result;
     }

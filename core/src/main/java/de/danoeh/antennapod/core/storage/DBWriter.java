@@ -16,7 +16,6 @@ import java.net.URLEncoder;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -352,7 +351,7 @@ public class DBWriter {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 final List<FeedItem> queue = DBReader.getQueue(context, adapter);
-                FeedItem item = null;
+                FeedItem item;
 
                 if (queue != null) {
                     if (!itemListContains(queue, itemId)) {
@@ -403,23 +402,18 @@ public class DBWriter {
 
                     if (queue != null) {
                         boolean queueModified = false;
-                        boolean unreadItemsModified = false;
-                        List<FeedItem> itemsToSave = new LinkedList<FeedItem>();
                         for (int i = 0; i < itemIds.length; i++) {
                             if (!itemListContains(queue, itemIds[i])) {
-                                final FeedItem item = DBReader.getFeedItem(
-                                        context, itemIds[i]);
+                                final FeedItem item = DBReader.getFeedItem(context, itemIds[i]);
 
                                 if (item != null) {
                                     // add item to either front ot back of queue
                                     boolean addToFront = UserPreferences.enqueueAtFront();
-
                                     if(addToFront){
                                         queue.add(0+i, item);
                                     } else {
                                         queue.add(item);
                                     }
-
                                     queueModified = true;
                                 }
                             }
@@ -677,7 +671,7 @@ public class DBWriter {
                     itemCursor.moveToNext();
                 }
                 itemCursor.close();
-                adapter.setFeedItemRead(true, itemIds);
+                adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
                 adapter.close();
 
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
@@ -706,7 +700,7 @@ public class DBWriter {
                     itemCursor.moveToNext();
                 }
                 itemCursor.close();
-                adapter.setFeedItemRead(true, itemIds);
+                adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
                 adapter.close();
 
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
