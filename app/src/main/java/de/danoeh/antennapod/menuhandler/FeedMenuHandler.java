@@ -17,7 +17,9 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
@@ -41,7 +43,9 @@ public class FeedMenuHandler {
         }
 
         Log.d(TAG, "Preparing options menu");
-        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
+        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasUnplayedItems());
+        menu.findItem(R.id.download_all_unplayed_item).setVisible(selectedFeed.hasUnplayedItems());
+        menu.findItem(R.id.enqueue_all_unplayed_item).setVisible(selectedFeed.hasUnplayedItems());
         if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) {
             menu.findItem(R.id.support_item).setVisible(true);
         } else {
@@ -60,6 +64,7 @@ public class FeedMenuHandler {
      */
     public static boolean onOptionsItemClicked(final Context context, final MenuItem item,
                                                final Feed selectedFeed) throws DownloadRequestException {
+        ConfirmationDialog conDialog;
         switch (item.getItemId()) {
             case R.id.refresh_item:
                 DBTasks.refreshFeed(context, selectedFeed);
@@ -71,15 +76,65 @@ public class FeedMenuHandler {
                 showHideDialog(context, selectedFeed);
                 break;
             case R.id.mark_all_read_item:
-                ConfirmationDialog conDialog = new ConfirmationDialog(context,
-                        R.string.mark_all_read_label,
+                conDialog = new ConfirmationDialog(context, R.string.mark_all_read_label,
                         R.string.mark_all_read_feed_confirmation_msg) {
 
                     @Override
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
                         dialog.dismiss();
-                        DBWriter.markFeedRead(context, selectedFeed.getId());
+                        DBWriter.markFeedRead(context, selectedFeed.getId(), true);
+                    }
+                };
+                conDialog.createNewDialog().show();
+                break;
+            case R.id.mark_all_unread_item:
+                conDialog = new ConfirmationDialog(context, R.string.mark_all_unread_label,
+                        R.string.mark_all_unread_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        DBWriter.markFeedRead(context, selectedFeed.getId(), false);
+                    }
+                };
+                conDialog.createNewDialog().show();
+                break;
+            case R.id.download_all_unplayed_item:
+                conDialog = new ConfirmationDialog(context, R.string.download_all_unplayed_label,
+                        R.string.download_all_unplayed_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        List<FeedItem> unplayedItems = selectedFeed.getUnplayedItems();
+                        try {
+                            DBTasks.downloadFeedItems(context, unplayedItems.toArray(
+                                    new FeedItem[unplayedItems.size()]));
+                        }  catch (DownloadRequestException e) {
+                            e.printStackTrace();
+                            DownloadRequestErrorDialogCreator.newRequestErrorDialog(context, e.getMessage());
+                        }
+                    }
+                };
+                conDialog.createNewDialog().show();
+                break;
+            case R.id.enqueue_all_unplayed_item:
+                conDialog = new ConfirmationDialog(context, R.string.enqueue_all_unplayed_label,
+                        R.string.enqueue_all_unplayed_confirmation_msg) {
+
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        List<FeedItem> unplayedItems = selectedFeed.getUnplayedItems();
+                        long[] ids = new long[unplayedItems.size()];
+                        for(int i=0; i < unplayedItems.size(); i++) {
+                            ids[i] = unplayedItems.get(i).getId();
+                        }
+                        DBWriter.addQueueItem(context, ids);
                     }
                 };
                 conDialog.createNewDialog().show();

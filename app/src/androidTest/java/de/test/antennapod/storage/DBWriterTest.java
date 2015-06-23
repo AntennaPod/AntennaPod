@@ -768,7 +768,7 @@ public class DBWriterTest extends InstrumentationTestCase {
             assertTrue(item.getId() != 0);
         }
 
-        DBWriter.markFeedRead(context, feed.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.markFeedRead(context, feed.getId(), true).get(TIMEOUT, TimeUnit.SECONDS);
         List<FeedItem> loadedItems = DBReader.getFeedItemList(context, feed);
         for (FeedItem item : loadedItems) {
             assertTrue(item.isRead());

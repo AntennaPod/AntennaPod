@@ -170,12 +170,27 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
         preferences = new FeedPreferences(0, true, username, password);
     }
 
+    /**
+     * Returns true if at least one item in the itemlist is unread.
+     *
+     */
+    public boolean hasPlayedItems() {
+        for (FeedItem item : items) {
+            if (item.getState() == FeedItem.State.READ) {
+                if (item.getMedia() != null) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
 
     /**
      * Returns true if at least one item in the itemlist is unread.
      *
      */
-    public boolean hasNewItems() {
+    public boolean hasUnplayedItems() {
         for (FeedItem item : items) {
             if (item.getState() == FeedItem.State.UNREAD) {
                 if (item.getMedia() != null) {
@@ -362,6 +377,16 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
 
     public List<FeedItem> getItems() {
         return items;
+    }
+
+    public List<FeedItem> getUnplayedItems() {
+        List<FeedItem> result = new ArrayList<FeedItem>();
+        for(FeedItem item : items) {
+            if(false == item.isRead()) {
+                result.add(item);
+            }
+        }
+        return result;
     }
 
     public void setItems(List<FeedItem> list) {

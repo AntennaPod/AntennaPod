@@ -646,7 +646,7 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param feedId  ID of the Feed.
      */
-    public static Future<?> markFeedRead(final Context context, final long feedId) {
+    public static Future<?> markFeedRead(final Context context, final long feedId, final boolean read) {
         return dbExec.submit(new Runnable() {
 
             @Override
@@ -661,7 +661,7 @@ public class DBWriter {
                     itemCursor.moveToNext();
                 }
                 itemCursor.close();
-                adapter.setFeedItemRead(true, itemIds);
+                adapter.setFeedItemRead(read, itemIds);
                 adapter.close();
 
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
