@@ -96,13 +96,10 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/update_intervall_values"
-            android:entryValues="@array/update_intervall_values"
+        <Preference
             android:key="prefAutoUpdateIntervall"
-            android:summary="@string/pref_autoUpdateIntervall_sum"
-            android:title="@string/pref_autoUpdateIntervall_title"/>
+            android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
+            android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"

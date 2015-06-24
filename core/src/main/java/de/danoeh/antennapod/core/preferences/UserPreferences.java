@@ -19,6 +19,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
@@ -206,7 +207,24 @@ public class UserPreferences {
     }
 
     public static long getUpdateInterval() {
-        return readUpdateInterval(prefs.getString(PREF_UPDATE_INTERVAL, "0"));
+        String updateInterval = prefs.getString(PREF_UPDATE_INTERVAL, "0");
+        if(false == updateInterval.contains(":")) {
+            return readUpdateInterval(updateInterval);
+        } else {
+            return 0;
+        }
+    }
+
+    public static int[] getUpdateTimeOfDay() {
+        String datetime = prefs.getString(PREF_UPDATE_INTERVAL, "");
+        if(datetime.length() >= 3 && datetime.contains(":")) {
+            String[] parts = datetime.split(":");
+            int hourOfDay = Integer.valueOf(parts[0]);
+            int minute = Integer.valueOf(parts[1]);
+            return new int[] { hourOfDay, minute };
+        } else {
+            return new int[0];
+        }
     }
 
     public static boolean isAllowMobileUpdate() {
@@ -312,6 +330,16 @@ public class UserPreferences {
     public static void setUpdateInterval(long hours) {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
+             .apply();
+        restartUpdateAlarm();
+    }
+
+    /**
+     * Sets the update interval value. Should only be used for testing purposes!
+     */
+    public static void setUpdateTimeOfDay(int hourOfDay, int minute) {
+        prefs.edit()
+             .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
         restartUpdateAlarm();
     }
@@ -493,14 +521,19 @@ public class UserPreferences {
     }
 
     public static void restartUpdateAlarm() {
-        long hours = getUpdateInterval();
-        restartUpdateAlarm(TimeUnit.SECONDS.toMillis(10), hours);
+        int[] timeOfDay = getUpdateTimeOfDay();
+        if (timeOfDay.length == 2) {
+            restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
+        } else {
+            long hours = getUpdateInterval();
+            restartUpdateIntervalAlarm(TimeUnit.SECONDS.toMillis(10), hours);
+        }
     }
 
     /**
-     * Updates alarm registered with the AlarmManager service or deactivates it.
+     * Sets the interval in which the feeds are refreshed automatically
      */
-    public static void restartUpdateAlarm(long triggerAtMillis, long intervalMillis) {
+    public static void restartUpdateIntervalAlarm(long triggerAtMillis, long intervalMillis) {
         Log.d(TAG, "Restarting update alarm.");
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
@@ -515,6 +548,31 @@ public class UserPreferences {
         } else {
             Log.d(TAG, "Automatic update was deactivated");
         }
+    }
+
+    /**
+     * Sets time of day the feeds are refreshed automatically
+     */
+    public static void restartUpdateTimeOfDayAlarm(int hoursOfDay, int minute) {
+        Log.d(TAG, "Restarting update alarm.");
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent updateIntent = PendingIntent.getBroadcast(context, 0,
+                new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
+        alarmManager.cancel(updateIntent);
+
+        Calendar now = Calendar.getInstance();
+        Calendar alarm = (Calendar)now.clone();
+        alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
+        alarm.set(Calendar.MINUTE, minute);
+        if(alarm.before(now)) {
+            alarm.add(Calendar.DATE, 1);
+        }
+
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+                alarm.getTimeInMillis(),
+                AlarmManager.INTERVAL_DAY,
+                updateIntent);
+        Log.d(TAG, "Changed alarm to new time of day " + hoursOfDay + ":" + minute);
     }
 
     /**
