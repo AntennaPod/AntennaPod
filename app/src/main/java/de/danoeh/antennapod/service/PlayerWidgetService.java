@@ -62,7 +62,7 @@ public class PlayerWidgetService extends Service {
 					DBWriter.markItemRead(this, item, true, false);
 					DBWriter.removeQueueItem(this, item, false);
 					DBWriter.addItemToPlaybackHistory(this, media);
-					if (UserPreferences.isAutoDelete()) {
+					if (item.getFeed().getPreferences().getCurrentAutoDelete(UserPreferences.isAutoDelete())) {
 						Log.d(TAG, "Delete " + media.toString());
 						DBWriter.deleteFeedMediaOfItem(this, media.getId());
 					}

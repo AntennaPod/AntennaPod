@@ -167,7 +167,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public Feed(String url, Date lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
     }
 
 

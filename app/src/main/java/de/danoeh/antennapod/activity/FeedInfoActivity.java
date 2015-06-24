@@ -14,11 +14,15 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AbsSpinner;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Spinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.Toast;
 
 import com.joanzapata.android.iconify.Iconify;
@@ -41,6 +45,7 @@ import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
  */
 public class FeedInfoActivity extends ActionBarActivity {
     private static final String TAG = "FeedInfoActivity";
+    private boolean autoDeleteChanged = false;
 
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 
@@ -55,6 +60,7 @@ public class FeedInfoActivity extends ActionBarActivity {
     private EditText etxtUsername;
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
+    private Spinner spnAutoDelete;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -92,6 +98,7 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvAuthor = (TextView) findViewById(R.id.txtvAuthor);
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
+        spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
 
@@ -111,6 +118,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                     Log.d(TAG, "Language is " + feed.getLanguage());
                     Log.d(TAG, "Author is " + feed.getAuthor());
                     Log.d(TAG, "URL is " + feed.getDownload_url());
+                    FeedPreferences prefs = feed.getPreferences();
                     imgvCover.post(new Runnable() {
 
                         @Override
@@ -136,7 +144,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                             Iconify.addIcons(txtvUrl);
 
                     cbxAutoDownload.setEnabled(UserPreferences.isEnableAutodownload());
-                    cbxAutoDownload.setChecked(feed.getPreferences().getAutoDownload());
+                    cbxAutoDownload.setChecked(prefs.getAutoDownload());
                     cbxAutoDownload.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
@@ -144,9 +152,38 @@ public class FeedInfoActivity extends ActionBarActivity {
                             feed.savePreferences(FeedInfoActivity.this);
                         }
                     });
+                    spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                            FeedPreferences.AutoDeleteAction auto_delete_action;
+                            switch (parent.getSelectedItemPosition()) {
+                                case 0:
+                                    auto_delete_action = FeedPreferences.AutoDeleteAction.GLOBAL;
+                                    break;
 
-                    etxtUsername.setText(feed.getPreferences().getUsername());
-                    etxtPassword.setText(feed.getPreferences().getPassword());
+                                case 1:
+                                    auto_delete_action = FeedPreferences.AutoDeleteAction.YES;
+                                    break;
+
+                                case 2:
+                                    auto_delete_action = FeedPreferences.AutoDeleteAction.NO;
+                                    break;
+
+                                default: // TODO - add exceptions here
+                                    return;
+                            }
+                            feed.getPreferences().setAutoDeleteAction(auto_delete_action);// p
+                            autoDeleteChanged = true;
+                        }
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            // Another interface callback
+                        }
+                    });
+                    spnAutoDelete.setSelection(prefs.getAutoDeleteAction().ordinal());
+
+                    etxtUsername.setText(prefs.getUsername());
+                    etxtPassword.setText(prefs.getPassword());
 
                     etxtUsername.addTextChangedListener(authTextWatcher);
                     etxtPassword.addTextChangedListener(authTextWatcher);
@@ -184,13 +221,18 @@ public class FeedInfoActivity extends ActionBarActivity {
     @Override
     protected void onPause() {
         super.onPause();
-        if (feed != null && authInfoChanged) {
-            Log.d(TAG, "Auth info changed, saving credentials");
+        if (feed != null) {
             FeedPreferences prefs = feed.getPreferences();
-            prefs.setUsername(etxtUsername.getText().toString());
-            prefs.setPassword(etxtPassword.getText().toString());
-            DBWriter.setFeedPreferences(this, prefs);
+            if (authInfoChanged) {
+                Log.d(TAG, "Auth info changed, saving credentials");
+                prefs.setUsername(etxtUsername.getText().toString());
+                prefs.setPassword(etxtPassword.getText().toString());
+            }
+            if (authInfoChanged || autoDeleteChanged) {
+                DBWriter.setFeedPreferences(this, prefs);
+            }
             authInfoChanged = false;
+            autoDeleteChanged = false;
         }
     }
 

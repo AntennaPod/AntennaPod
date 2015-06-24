@@ -75,6 +75,7 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
+    <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
 
     <!-- 'Add Feed' Activity labels -->
