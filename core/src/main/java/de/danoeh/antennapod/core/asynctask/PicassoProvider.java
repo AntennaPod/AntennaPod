@@ -170,6 +170,12 @@ public class PicassoProvider {
                     bitmap = decodeStreamFromFile(data, fallback);
                 }
             }
+
+            if (bitmap == null) {
+                Log.e(TAG, "Could not load media");
+                return null;
+            }
+
             return new Result(bitmap, Picasso.LoadedFrom.DISK);
 
         }
