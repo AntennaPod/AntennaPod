@@ -442,7 +442,7 @@ public class PlaybackService extends Service {
                     }
                     writePlayerStatusPlaybackPreferences();
 
-                    final Playable playable = mediaPlayer.getPSMPInfo().playable;
+                    final Playable playable = newInfo.playable;
 
                     // Gpodder: send play action
                     if(GpodnetPreferences.loggedIn() && playable instanceof FeedMedia) {
@@ -525,7 +525,7 @@ public class PlaybackService extends Service {
         public boolean onMediaPlayerError(Object inObj, int what, int extra) {
             final String TAG = "PlaybackService.onErrorListener";
             Log.w(TAG, "An error has occured: " + what + " " + extra);
-            if (mediaPlayer.getPSMPInfo().playerStatus == PlayerStatus.PLAYING) {
+            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 mediaPlayer.pause(true, false);
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
@@ -549,7 +549,7 @@ public class PlaybackService extends Service {
     private void endPlayback(boolean playNextEpisode) {
         Log.d(TAG, "Playback ended");
 
-        final Playable playable = mediaPlayer.getPSMPInfo().playable;
+        final Playable playable = mediaPlayer.getPlayable();
         if (playable == null) {
             Log.e(TAG, "Cannot end playback: media was null");
             return;
@@ -744,8 +744,7 @@ public class PlaybackService extends Service {
 
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
-        PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
+        int playerStatus = getCurrentPlayerStatusAsInt(mediaPlayer.getPlayerStatus());
 
         editor.putInt(
                 PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
@@ -819,7 +818,7 @@ public class PlaybackService extends Service {
                 if (mediaPlayer == null) {
                     return;
                 }
-                PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
+                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
                 if (!isCancelled() &&
@@ -865,7 +864,7 @@ public class PlaybackService extends Service {
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                        if (newInfo.playerStatus == PlayerStatus.PLAYING) {
+                        if (playerStatus == PlayerStatus.PLAYING) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
@@ -923,7 +922,7 @@ public class PlaybackService extends Service {
         int position = getCurrentPosition();
         int duration = getDuration();
         float playbackSpeed = getCurrentPlaybackSpeed();
-        final Playable playable = mediaPlayer.getPSMPInfo().playable;
+        final Playable playable = mediaPlayer.getPlayable();
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
             if (updatePlayedDuration && playable instanceof FeedMedia) {
@@ -1200,12 +1199,10 @@ public class PlaybackService extends Service {
     }
 
     public PlayerStatus getStatus() {
-        return mediaPlayer.getPSMPInfo().playerStatus;
+        return mediaPlayer.getPlayerStatus();
     }
 
-    public Playable getPlayable() {
-        return mediaPlayer.getPSMPInfo().playable;
-    }
+    public Playable getPlayable() { return mediaPlayer.getPlayable(); }
 
     public void setSpeed(float speed) {
         mediaPlayer.setSpeed(speed);
@@ -1231,7 +1228,7 @@ public class PlaybackService extends Service {
     public void seekTo(final int t) {
         if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING
                 && GpodnetPreferences.loggedIn()) {
-            final Playable playable = mediaPlayer.getPSMPInfo().playable;
+            final Playable playable = mediaPlayer.getPlayable();
             if (playable instanceof FeedMedia) {
                 FeedMedia media = (FeedMedia) playable;
                 FeedItem item = media.getItem();
