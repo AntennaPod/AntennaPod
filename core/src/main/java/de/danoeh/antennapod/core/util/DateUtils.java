@@ -16,6 +16,11 @@ public class DateUtils {
     
 	private static final String TAG = "DateUtils";
 
+    private static final SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
+    static {
+        parser.setLenient(false);
+    }
+
     public static Date parse(final String input) {
         if(input == null) {
             throw new IllegalArgumentException("Date most not be null");
@@ -61,8 +66,7 @@ public class DateUtils {
                 "yyyy-MM-ddZ",
                 "yyyy-MM-dd"
         };
-        SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
-        parser.setLenient(false);
+
         ParsePosition pos = new ParsePosition(0);
         for(String pattern : patterns) {
             parser.applyPattern(pattern);
