@@ -199,11 +199,8 @@ public final class DBTasks {
      */
     public static List<Feed> getExpiredFeeds(final Context context) {
         long millis = UserPreferences.getUpdateInterval();
-
         if (millis > 0) {
-
-            List<Feed> feedList = DBReader.getExpiredFeedsList(context,
-                    millis);
+            List<Feed> feedList = DBReader.getExpiredFeedsList(context, millis);
             if (feedList.size() > 0) {
                 refreshFeeds(context, feedList);
             }

@@ -39,7 +39,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         Timeout.setLargeTimeout(1000);
         context = getInstrumentation().getTargetContext();
         res = getActivity().getResources();
-        UserPreferences.createInstance(context);
+        UserPreferences.init(context);
     }
 
     @Override

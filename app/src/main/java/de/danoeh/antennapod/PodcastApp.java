@@ -38,8 +38,8 @@ public class PodcastApp extends Application {
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 
         PicassoProvider.setupPicassoInstance(this);
-		UserPreferences.createInstance(this);
-		PlaybackPreferences.createInstance(this);
+		UserPreferences.init(this);
+		PlaybackPreferences.init(this);
 		EventDistributor.getInstance();
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);

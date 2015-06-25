@@ -124,8 +124,7 @@ public final class DBReader {
      * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.core.feed.Feed)}.
      */
     public static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
+        Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
 
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
