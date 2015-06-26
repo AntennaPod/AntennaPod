@@ -241,9 +241,9 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testDisableUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_sum));
         solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.pref_update_interval_hours_manual));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Disable));
         solo.waitForCondition(new Condition() {
             @Override
             public boolean isSatisfied() {
@@ -253,7 +253,9 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testSetUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
         solo.waitForDialogToOpen();
         String search = "12 " + solo.getString(R.string.pref_update_interval_hours_plural);
         solo.clickOnText(search);
