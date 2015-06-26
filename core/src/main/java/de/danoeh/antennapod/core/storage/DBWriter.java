@@ -375,14 +375,21 @@ public class DBWriter {
 
     }
 
+    public static Future<?> addQueueItem(final Context context,
+                                         final long... itemIds) {
+        return addQueueItem(context, false, itemIds);
+    }
+
+
     /**
      * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
      * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
      *
      * @param context A context that is used for opening a database connection.
+     * @param performAutoDownload true if an auto-download process should be started after the operation.
      * @param itemIds IDs of the FeedItem objects that should be added to the queue.
      */
-    public static Future<?> addQueueItem(final Context context,
+    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
         return dbExec.submit(new Runnable() {
 
@@ -423,11 +430,12 @@ public class DBWriter {
                         }
                     }
                     adapter.close();
-                    DBTasks.autodownloadUndownloadedItems(context);
+                    if (performAutoDownload) {
+                        DBTasks.autodownloadUndownloadedItems(context);
+                    }
                 }
             }
         });
-
     }
 
     /**

@@ -4,13 +4,15 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -29,6 +31,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
@@ -61,6 +64,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -156,6 +160,7 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume()");
         updateProgressBarVisibility();
         startItemLoader();
     }
@@ -222,6 +227,13 @@ public class ItemlistFragment extends ListFragment {
                 menu.findItem(R.id.share_link_item).setVisible(false);
                 menu.findItem(R.id.visit_website_item).setVisible(false);
             }
+            int[] attrs = { android.R.attr.textColor };
+            TypedArray ta = getActivity().obtainStyledAttributes(attrs);
+            int textColor = ta.getColor(0, Color.GRAY);
+            ta.recycle();
+
+            menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
+                    Iconify.IconValue.fa_gears).color(textColor).actionBarSize());
 
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
@@ -240,6 +252,10 @@ public class ItemlistFragment extends ListFragment {
             try {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
+                        case R.id.episode_actions:
+                            Fragment fragment = new EpisodesApplyActionFragment(feed.getItems());
+                            ((MainActivity)getActivity()).loadChildFragment(fragment);
+                            return true;
                         case R.id.remove_item:
                             final FeedRemover remover = new FeedRemover(
                                     getActivity(), feed) {
@@ -406,6 +422,9 @@ public class ItemlistFragment extends ListFragment {
     private boolean insideOnFragmentLoaded = false;
 
     private void onFragmentLoaded() {
+        if(!isVisible()) {
+            return;
+        }
         insideOnFragmentLoaded = true;
         if (adapter == null) {
             setListAdapter(null);
