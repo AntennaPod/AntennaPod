@@ -8,7 +8,6 @@ import android.util.Log;
 
 import java.io.File;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
@@ -23,8 +22,7 @@ public class StorageUtils {
         if (dir != null) {
             return dir.exists() && dir.canRead() && dir.canWrite();
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Storage not available: data folder is null");
+            Log.d(TAG, "Storage not available: data folder is null");
             return false;
         }
     }

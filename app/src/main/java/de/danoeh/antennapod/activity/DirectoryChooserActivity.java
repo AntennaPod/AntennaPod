@@ -15,16 +15,23 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
+import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Let's the user choose a directory on the storage device. The selected folder
@@ -88,7 +95,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 							@Override
 							public void onClick(DialogInterface dialog,
-									int which) {
+												int which) {
 								dialog.dismiss();
 							}
 						});
@@ -97,7 +104,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 							@Override
 							public void onClick(DialogInterface dialog,
-									int which) {
+												int which) {
 								dialog.dismiss();
 								returnSelectedFolder();
 							}
@@ -119,7 +126,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 			@Override
 			public void onItemClick(AdapterView<?> adapter, View view,
-					int position, long id) {
+									int position, long id) {
 				if (BuildConfig.DEBUG)
 					Log.d(TAG, "Selected index: " + position);
 				if (filesInDir != null && position >= 0
@@ -145,7 +152,13 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 		listDirectoriesAdapter = new ArrayAdapter<String>(this,
 				android.R.layout.simple_list_item_1, filenames);
 		listDirectories.setAdapter(listDirectoriesAdapter);
-		changeDirectory(Environment.getExternalStorageDirectory());
+
+		File external = Environment.getExternalStorageDirectory();
+		if(external != null && external.exists() && external.canRead() && external.canWrite()) {
+			changeDirectory(external);
+		} else {
+			changeDirectory(getFilesDir());
+		}
 	}
 
 	/**

@@ -7,10 +7,11 @@ import android.content.IntentFilter;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 
 import org.apache.commons.lang3.StringUtils;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.util.StorageUtils;
@@ -25,6 +26,17 @@ public class StorageErrorActivity extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 
 		setContentView(R.layout.storage_error);
+
+		Button btnSetDataFolder = (Button) findViewById(R.id.btnSetDataFolder);
+		btnSetDataFolder.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+                StorageErrorActivity.this.startActivityForResult(
+                        new Intent(StorageErrorActivity.this, DirectoryChooserActivity.class),
+                        DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
+                );
+			}
+		});
 	}
 
 	@Override
@@ -43,8 +55,7 @@ public class StorageErrorActivity extends ActionBarActivity {
 		if (StorageUtils.storageAvailable(this)) {
 			leaveErrorState();
 		} else {
-			registerReceiver(mediaUpdate, new IntentFilter(
-					Intent.ACTION_MEDIA_MOUNTED));
+			registerReceiver(mediaUpdate, new IntentFilter(Intent.ACTION_MEDIA_MOUNTED));
 		}
 	}
 
@@ -53,19 +64,27 @@ public class StorageErrorActivity extends ActionBarActivity {
 		startActivity(new Intent(this, MainActivity.class));
 	}
 
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+            String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
+            Log.d(TAG, "Setting data folder");
+            UserPreferences.setDataFolder(dir);
+            if (StorageUtils.storageAvailable(this)) {
+                leaveErrorState();
+            }
+        }
+    }
+
 	private BroadcastReceiver mediaUpdate = new BroadcastReceiver() {
 
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (StringUtils.equals(intent.getAction(), Intent.ACTION_MEDIA_MOUNTED)) {
 				if (intent.getBooleanExtra("read-only", true)) {
-					if (BuildConfig.DEBUG)
-						Log.d(TAG, "Media was mounted; Finishing activity");
+					Log.d(TAG, "Media was mounted; Finishing activity");
 					leaveErrorState();
 				} else {
-					if (BuildConfig.DEBUG)
-						Log.d(TAG,
-								"Media seemed to have been mounted read only");
+					Log.d(TAG, "Media seemed to have been mounted read only");
 				}
 			}
 		}
