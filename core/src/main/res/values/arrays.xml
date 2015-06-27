@@ -20,18 +20,7 @@
         <item>60</item>
     </integer-array>
 
-    <string-array name="update_intervall_options">
-        <item>Manual</item>
-        <item>1 hour</item>
-        <item>2 hours</item>
-        <item>4 hours</item>
-        <item>8 hours</item>
-        <item>12 hours</item>
-        <item>24 hours</item>
-    </string-array>
-
     <string-array name="update_intervall_values">
-        <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>4</item>

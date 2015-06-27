@@ -253,8 +253,12 @@
     <string name="pref_smart_mark_as_played_title">Smart mark as played</string>
     <string name="playback_pref">Playback</string>
     <string name="network_pref">Network</string>
-    <string name="pref_autoUpdateIntervall_title">Update Interval</string>
-    <string name="pref_autoUpdateIntervall_sum">Specify an interval in which the feeds are refreshed automatically or disable it</string>
+    <string name="pref_autoUpdateIntervallOrTime_title">Update Interval or Time of Day</string>
+    <string name="pref_autoUpdateIntervallOrTime_sum">Specify an interval or a specific time of day to refresh the feeds automatically</string>
+    <string name="pref_autoUpdateIntervallOrTime_message">You can set an <i>interval</i> like \"every 2 hours\", set a specific <i>time of day</i> like \"7:00 AM\" or <i>disable</i> automatic updates altogether.\n\n<small>Please note: Update times are inexact. You may encounter a short delay.</small>"</string>
+    <string name="pref_autoUpdateIntervallOrTime_Disable">Disable</string>
+    <string name="pref_autoUpdateIntervallOrTime_Interval">Set Interval</string>
+    <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Set Time of Day</string>
     <string name="pref_downloadMediaOnWifiOnly_sum">Download media files only over WiFi</string>
     <string name="pref_followQueue_title">Continuous Playback</string>
     <string name="pref_downloadMediaOnWifiOnly_title">WiFi media download</string>
