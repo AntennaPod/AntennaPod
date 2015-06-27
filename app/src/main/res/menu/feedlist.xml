@@ -36,6 +36,24 @@
         android:title="@string/mark_all_read_label"
         custom:showAsAction="collapseActionView">
     </item>
+    <item
+        android:id="@+id/mark_all_unread_item"
+        android:menuCategory="container"
+        android:title="@string/mark_all_unread_label"
+        custom:showAsAction="collapseActionView">
+    </item>
+    <item
+        android:id="@+id/download_all_unplayed_item"
+        android:menuCategory="container"
+        android:title="@string/download_all_unplayed_label"
+        custom:showAsAction="collapseActionView">
+    </item>
+    <item
+        android:id="@+id/enqueue_all_unplayed_item"
+        android:menuCategory="container"
+        android:title="@string/enqueue_all_unplayed_label"
+        custom:showAsAction="collapseActionView">
+    </item>
 
     <item
         android:id="@+id/support_item"

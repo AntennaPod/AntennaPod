@@ -84,6 +84,12 @@
     <string name="mark_all_read_msg">Marked all Episodes as played</string>
     <string name="mark_all_read_confirmation_msg">Please confirm that you want to mark all episodes as being played.</string>
     <string name="mark_all_read_feed_confirmation_msg">Please confirm that you want to mark all episodes in this feed as being played.</string>
+    <string name="mark_all_unread_label">Mark all as unplayed</string>
+    <string name="mark_all_unread_confirmation_msg">Please confirm that you want to mark all episodes as being unplayed.</string>
+    <string name="download_all_unplayed_label">Download all unplayed</string>
+    <string name="download_all_unplayed_confirmation_msg">Please confirm that you want to download all unplayed episodes.</string>
+    <string name="enqueue_all_unplayed_label">Add all unplayed to Queue</string>
+    <string name="enqueue_all_unplayed_confirmation_msg">Please confirm that you want to add all unplayed episodes to the Queue.</string>
     <string name="show_info_label">Show information</string>
     <string name="remove_feed_label">Remove Podcast</string>
     <string name="share_label">Share...</string>
