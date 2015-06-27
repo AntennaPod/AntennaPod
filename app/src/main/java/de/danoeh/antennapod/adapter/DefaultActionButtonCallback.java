@@ -97,19 +97,6 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
         } else {
             if (!item.isRead()) {
                 DBWriter.markItemRead(context, item, true, true);
-
-                if(GpodnetPreferences.loggedIn()) {
-                    // gpodder: send played action
-                    FeedMedia media = item.getMedia();
-                    GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, GpodnetEpisodeAction.Action.PLAY)
-                            .currentDeviceId()
-                            .currentTimestamp()
-                            .started(media.getDuration() / 1000)
-                            .position(media.getDuration() / 1000)
-                            .total(media.getDuration() / 1000)
-                            .build();
-                    GpodnetPreferences.enqueueEpisodeAction(action);
-                }
             }
         }
     }

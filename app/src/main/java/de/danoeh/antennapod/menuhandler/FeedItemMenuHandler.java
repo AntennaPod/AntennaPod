@@ -158,14 +158,17 @@ public class FeedItemMenuHandler {
                 DBWriter.markItemRead(context, selectedItem, true, false);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
-                    GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, Action.PLAY)
-                            .currentDeviceId()
-                            .currentTimestamp()
-                            .started(media.getDuration() / 1000)
-                            .position(media.getDuration() / 1000)
-                            .total(media.getDuration() / 1000)
-                            .build();
-                    GpodnetPreferences.enqueueEpisodeAction(actionPlay);
+                    // not all items have media, Gpodder only cares about those that do
+                    if (media != null) {
+                        GpodnetEpisodeAction actionPlay = new GpodnetEpisodeAction.Builder(selectedItem, Action.PLAY)
+                                .currentDeviceId()
+                                .currentTimestamp()
+                                .started(media.getDuration() / 1000)
+                                .position(media.getDuration() / 1000)
+                                .total(media.getDuration() / 1000)
+                                .build();
+                        GpodnetPreferences.enqueueEpisodeAction(actionPlay);
+                    }
                 }
                 break;
             case R.id.mark_unread_item:
