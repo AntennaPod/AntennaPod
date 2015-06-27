@@ -88,6 +88,9 @@ public class DownloadObserver {
             }
             if (downloadService != null) {
                 callback.onContentChanged(downloadService.getDownloads());
+            } else {
+                // the service is gone, there are no more downloads.
+                callback.onContentChanged(new ArrayList<Downloader>());
             }
             startRefresher();
         }
