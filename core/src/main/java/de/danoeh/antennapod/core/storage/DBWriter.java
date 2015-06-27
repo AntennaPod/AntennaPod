@@ -603,16 +603,24 @@ public class DBWriter {
         adapter.close();
     }
 
-    /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
+    /*
+     * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param context A context that is used for opening a database connection.
-     * @param itemId  ID of the FeedItem
      * @param read    New value of the 'read'-attribute
+     * @param itemIds IDs of the FeedItems.
      */
-    public static Future<?> markItemRead(final Context context, final long itemId,
-                                         final boolean read) {
-        return markItemRead(context, itemId, read, 0, false);
+    public static Future<?> markItemRead(final Context context, final boolean read, final long... itemIds) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedItemRead(read, itemIds);
+                adapter.close();
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
     }
 
 

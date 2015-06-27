@@ -8,7 +8,6 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.ActionBarActivity;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -240,7 +239,6 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void sortByTitle(final boolean reverse) {
-        Log.d(TAG, "sortByTitle()");
         Collections.sort(episodes, new Comparator<FeedItem>() {
             @Override
             public int compare(FeedItem lhs, FeedItem rhs) {
@@ -293,8 +291,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void checkAll() {
-        for(int i=0; i < episodes.size(); i++) {
-            FeedItem episode = episodes.get(i);
+        for (FeedItem episode : episodes) {
             if(false == checkedIds.contains(episode.getId())) {
                 checkedIds.add(episode.getId());
             }
@@ -308,8 +305,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void checkPlayed(boolean isPlayed) {
-        for (int i = 0; i < episodes.size(); i++) {
-            FeedItem episode = episodes.get(i);
+        for (FeedItem episode : episodes) {
             if(episode.isRead() == isPlayed) {
                 if(!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
@@ -324,8 +320,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void checkDownloaded(boolean isDownloaded) {
-        for (int i = 0; i < episodes.size(); i++) {
-            FeedItem episode = episodes.get(i);
+        for (FeedItem episode : episodes) {
             if(episode.getMedia().isDownloaded() == isDownloaded) {
                 if(!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
@@ -357,32 +352,36 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void queueChecked() {
-        DBWriter.addQueueItem(getActivity(), false, checkedIds.toArray());
+        LongList orderedIds = new LongList();
+        for(FeedItem episode : episodes) {
+            if(checkedIds.contains(episode.getId())) {
+               orderedIds.add((episode.getId()));
+            }
+        }
+        DBWriter.addQueueItem(getActivity(), false, orderedIds.toArray());
         close();
     }
 
     private void markedCheckedPlayed() {
-        for(long id : checkedIds.toArray()) {
-            DBWriter.markItemRead(getActivity(), id, true);
-        }
+        DBWriter.markItemRead(getActivity(), true, checkedIds.toArray());
         close();
     }
 
     private void markedCheckedUnplayed() {
-        for(long id : checkedIds.toArray()) {
-            DBWriter.markItemRead(getActivity(), id, false);
-        }
+        DBWriter.markItemRead(getActivity(), false, checkedIds.toArray());
         close();
     }
 
     private void downloadChecked() {
-        FeedItem[] items = new FeedItem[checkedIds.size()];
-        for(int i=0; i < checkedIds.size(); i++) {
-            long id = checkedIds.get(i);
-            items[i] = findById(id);
+        // download the check episodes in the same order as they are currently displayed
+        List<FeedItem> toDownload = new ArrayList<FeedItem>(checkedIds.size());
+        for(FeedItem episode : episodes) {
+            if(checkedIds.contains(episode.getId())) {
+                toDownload.add(episode);
+            }
         }
         try {
-            DBTasks.downloadFeedItems(getActivity(), items);
+            DBTasks.downloadFeedItems(getActivity(), toDownload.toArray(new FeedItem[0]));
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DownloadRequestErrorDialogCreator.newRequestErrorDialog(getActivity(), e.getMessage());
