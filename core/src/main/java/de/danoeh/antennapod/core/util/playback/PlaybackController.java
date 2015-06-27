@@ -555,7 +555,7 @@ public abstract class PlaybackController {
      * Should be used by classes which implement the OnSeekBarChanged interface.
      */
     public void onSeekBarStopTrackingTouch(SeekBar seekBar, float prog) {
-        if (playbackService != null) {
+        if (playbackService != null && media != null) {
             playbackService.seekTo((int) (prog * media.getDuration()));
             setupPositionObserver();
         }
