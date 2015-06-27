@@ -55,7 +55,7 @@ public class ExternalPlayerFragment extends Fragment {
             public void onClick(View v) {
                 Log.d(TAG, "layoutInfo was clicked");
 
-                if (controller.getMedia() != null) {
+                if (controller != null && controller.getMedia() != null) {
                     startActivity(PlaybackService.getPlayerActivityIntent(
                             getActivity(), controller.getMedia()));
                 }
@@ -192,7 +192,7 @@ public class ExternalPlayerFragment extends Fragment {
 
     private boolean loadMediaInfo() {
         Log.d(TAG, "Loading media info");
-        if (controller.serviceAvailable()) {
+        if (controller != null && controller.serviceAvailable()) {
             Playable media = controller.getMedia();
             if (media != null) {
                 txtvTitle.setText(media.getEpisodeTitle());
