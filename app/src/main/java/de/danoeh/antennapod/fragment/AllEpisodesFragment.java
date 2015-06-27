@@ -385,14 +385,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (listAdapter != null) {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             AllEpisodesFragment.this.downloaderList = downloaderList;
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();

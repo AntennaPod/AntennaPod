@@ -531,14 +531,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private final DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
 
         @Override
-        public void onContentChanged() {
-            if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             ItemFragment.this.downloaderList = downloaderList;
             if (itemsLoaded && getActivity() != null) {
                 updateAppearance();

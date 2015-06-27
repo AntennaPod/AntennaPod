@@ -473,14 +473,7 @@ public class QueueFragment extends Fragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (listAdapter != null && !blockDownloadObserverUpdate) {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             QueueFragment.this.downloaderList = downloaderList;
             if (listAdapter != null && !blockDownloadObserverUpdate) {
                 listAdapter.notifyDataSetChanged();

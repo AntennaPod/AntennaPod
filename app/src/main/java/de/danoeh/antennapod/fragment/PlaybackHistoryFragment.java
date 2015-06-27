@@ -204,14 +204,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             PlaybackHistoryFragment.this.downloaderList = downloaderList;
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
