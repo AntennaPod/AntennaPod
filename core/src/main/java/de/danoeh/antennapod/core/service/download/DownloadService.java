@@ -243,7 +243,7 @@ public class DownloadService extends Service {
         handler = new Handler();
         newMediaFiles = Collections.synchronizedList(new ArrayList<Long>());
         reportQueue = Collections.synchronizedList(new ArrayList<DownloadStatus>());
-        downloads = new ArrayList<Downloader>();
+        downloads = Collections.synchronizedList(new ArrayList<Downloader>());
         numberOfDownloads = new AtomicInteger(0);
 
         IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
@@ -1246,7 +1246,10 @@ public class DownloadService extends Service {
     }
 
     public List<Downloader> getDownloads() {
-        return downloads;
+        // return a copy of downloads, but the copy doesn't need to be synchronized.
+        synchronized (downloads) {
+            return new ArrayList<Downloader>(downloads);
+        }
     }
 
 }
