@@ -435,6 +435,7 @@ public class DownloadService extends Service {
                 } else {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
+                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 
             } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
@@ -1246,6 +1247,12 @@ public class DownloadService extends Service {
     }
 
     public List<Downloader> getDownloads() {
+        if (downloads == null) {
+            // this is unusual, but it should be OK, we'll return
+            // an empty list to make it easy for people
+            return new ArrayList<Downloader>();
+        }
+
         // return a copy of downloads, but the copy doesn't need to be synchronized.
         synchronized (downloads) {
             return new ArrayList<Downloader>(downloads);
