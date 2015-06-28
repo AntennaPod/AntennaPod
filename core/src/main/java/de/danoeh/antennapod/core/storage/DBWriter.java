@@ -415,7 +415,7 @@ public class DBWriter {
                                     boolean addToFront = UserPreferences.enqueueAtFront();
 
                                     if(addToFront){
-                                        queue.add(0, item);
+                                        queue.add(0+i, item);
                                     } else {
                                         queue.add(item);
                                     }

@@ -1,6 +1,5 @@
 package de.danoeh.antennapod.dialog;
 
-import android.app.ProgressDialog;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,7 +25,9 @@ import com.joanzapata.android.iconify.Iconify;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -49,6 +50,7 @@ public class EpisodesApplyActionFragment extends Fragment {
     private Button btnDownload;
     private Button btnDelete;
 
+    private final Map<Long,FeedItem> idMap;
     private final List<FeedItem> episodes;
     private final List<String> titles = new ArrayList();
     private final LongList checkedIds = new LongList();
@@ -57,16 +59,17 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private int textColor;
 
-    private ProgressDialog pd;
-
     public EpisodesApplyActionFragment(List<FeedItem> episodes) {
         this.episodes = episodes;
+        this.idMap = new HashMap<>(episodes.size());
+        for(FeedItem episode : episodes) {
+            this.idMap.put(episode.getId(), episode);
+        }
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActionBar bar = ((ActionBarActivity)getActivity()).getSupportActionBar();
         setHasOptionsMenu(true);
     }
 
@@ -278,14 +281,21 @@ public class EpisodesApplyActionFragment extends Fragment {
         Collections.sort(episodes, new Comparator<FeedItem>() {
             @Override
             public int compare(FeedItem lhs, FeedItem rhs) {
-                int code = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
-                if (reverse) {
-                    return -1 * code;
+                int ordering;
+                if (false == lhs.hasMedia()) {
+                    ordering = 1;
+                } else if (false == rhs.hasMedia()) {
+                    ordering = -1;
                 } else {
-                    return code;
+                    ordering = lhs.getMedia().getDuration() - rhs.getMedia().getDuration();
                 }
+            if(reverse) {
+                return -1 * ordering;
+            } else {
+                return ordering;
             }
-        });
+        }
+    });
         refreshTitles();
         refreshCheckboxes();
     }
@@ -321,7 +331,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkDownloaded(boolean isDownloaded) {
         for (FeedItem episode : episodes) {
-            if(episode.getMedia().isDownloaded() == isDownloaded) {
+            if(episode.hasMedia() && episode.getMedia().isDownloaded() == isDownloaded) {
                 if(!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
                 }
@@ -391,24 +401,16 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void deleteChecked() {
         for(long id : checkedIds.toArray()) {
-            FeedItem episode = findById(id);
-            DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
+            FeedItem episode = idMap.get(id);
+            if(episode.hasMedia()) {
+                DBWriter.deleteFeedMediaOfItem(getActivity(), episode.getMedia().getId());
+            }
         }
         close();
     }
 
     private void close() {
         getActivity().getSupportFragmentManager().popBackStack();
-    }
-
-    private FeedItem findById(long id) {
-        for(int i=0; i < episodes.size(); i++) {
-            FeedItem episode = episodes.get(i);
-            if(episode.getId() == id) {
-                return episode;
-            }
-        }
-        return null;
     }
 
 }
