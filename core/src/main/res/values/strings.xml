@@ -96,6 +96,7 @@
     <string name="feed_remover_msg">Removing Feed</string>
     <string name="load_complete_feed">Refresh complete Feed</string>
     <string name="hide_episodes_title">Hide Episodes</string>
+    <string name="episode_actions">Apply actions</string>
     <string name="hide_unplayed_episodes_label">Unplayed</string>
     <string name="hide_paused_episodes_label">Paused</string>
     <string name="hide_played_episodes_label">Played</string>
@@ -115,8 +116,8 @@
     <string name="remove_label">Remove</string>
     <string name="remove_episode_lable">Remove Episode</string>
     <string name="mark_read_label">Mark as played</string>
-    <string name="mark_unread_label">Mark as unplayed</string>
     <string name="marked_as_read_label">Marked as played</string>
+    <string name="mark_unread_label">Mark as unplayed</string>
     <string name="add_to_queue_label">Add to Queue</string>
     <string name="added_to_queue_label">Added to Queue</string>
     <string name="remove_from_queue_label">Remove from Queue</string>
@@ -346,6 +347,7 @@
     <string name="opml_import_error_dir_empty">The import directory is empty.</string>
     <string name="select_all_label">Select all</string>
     <string name="deselect_all_label">Deselect all</string>
+    <string name="select_options_label">Select ...</string>
     <string name="choose_file_from_filesystem">From local filesystem</string>
     <string name="choose_file_from_external_application">Use external application</string>
     <string name="opml_export_label">OPML export</string>
@@ -450,4 +452,25 @@
 
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
     <string name="search_itunes_label">Search iTunes</string>
+
+    <string name="select_label"><b>Select ...</b></string>
+    <string name="all_label">All</string>
+    <string name="selected_all_label">Selected all Episodes</string>
+    <string name="none_label">None</string>
+    <string name="deselected_all_label">Deselected all Episodes</string>
+    <string name="played_label">Played</string>
+    <string name="selected_played_label">Selected played Episodes</string>
+    <string name="unplayed_label">Unplayed</string>
+    <string name="selected_unplayed_label">Selected unplayed Episodes</string>
+    <string name="downloaded_label">Downloaded</string>
+    <string name="selected_downloaded_label">Selected downloaded Episodes</string>
+    <string name="not_downloaded_label">Not downloaded</string>
+    <string name="selected_not_downloaded_label">Selected not downloaded Episodes</string>
+    <string name="sort_title"><b>Sort by ...</b></string>
+    <string name="sort_title_a_z">Title (A \u2192 Z)</string>
+    <string name="sort_title_z_a">Title (Z \u2192 A)</string>
+    <string name="sort_date_new_old">Date (New \u2192 Old)</string>
+    <string name="sort_date_old_new">Date (Old \u2192 New)</string>
+    <string name="sort_duration_short_long">Duration (Short \u2192 Long)</string>
+    <string name="sort_duration_long_short">Duration (Long \u2192 Short)</string>
 </resources>

@@ -41,7 +41,6 @@ public class FeedMenuHandler {
         }
 
         Log.d(TAG, "Preparing options menu");
-        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
         if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) {
             menu.findItem(R.id.support_item).setVisible(true);
         } else {
