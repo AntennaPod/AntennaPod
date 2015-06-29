@@ -205,11 +205,6 @@
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
         <Preference
-            android:key="prefFlattrThisApp"
-            android:summary="@string/pref_flattr_this_app_sum"
-            android:title="@string/pref_flattr_this_app_title">
-        </Preference>
-        <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference

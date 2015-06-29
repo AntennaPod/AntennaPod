@@ -42,8 +42,6 @@ public class FlattrUtils {
 
     private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
-    // Flattr URL for this app.
-    public static final String APP_URL = "http://antennapod.com";
     // Human-readable flattr-page.
     public static final String APP_LINK = "https://flattr.com/thing/745609/";
     public static final String APP_THING_ID = "745609";
