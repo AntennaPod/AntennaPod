@@ -20,6 +20,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -32,12 +34,15 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
+import de.danoeh.antennapod.core.asynctask.FeedRemover;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
@@ -140,6 +145,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
+        registerForContextMenu(navList);
 
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -493,6 +499,64 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v.getId() != R.id.nav_list) {
+            return;
+        }
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        int position = adapterInfo.position;
+        if(position < navAdapter.getSubscriptionOffset()) {
+            return;
+        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        menu.setHeaderTitle(feed.getTitle());
+        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo.targetView.getParent() instanceof ListView == false
+                || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
+            return false;
+        }
+        int position = menuInfo.position;
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        switch(item.getItemId()) {
+            case R.id.mark_all_seen_item:
+                DBWriter.markFeedSeen(this, feed.getId());
+                return true;
+            case R.id.mark_all_read_item:
+                DBWriter.markFeedRead(this, feed.getId());
+                return true;
+            case R.id.remove_item:
+                final FeedRemover remover = new FeedRemover(this, feed) {
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        super.onPostExecute(result);
+                    }
+                };
+                ConfirmationDialog conDialog = new ConfirmationDialog(this,
+                        R.string.remove_feed_label,
+                        R.string.feed_delete_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        remover.executeAsync();
+                    }
+                };
+                conDialog.createNewDialog().show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
     private int selectedNavListIndex = 0;
@@ -532,8 +596,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
 
         @Override
-        public int getNumberOfUnreadFeedItems(long feedId) {
-            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
+        public int getFeedCounter(long feedId) {
+            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
 
     };

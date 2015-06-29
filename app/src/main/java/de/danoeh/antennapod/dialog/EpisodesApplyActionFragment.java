@@ -5,8 +5,6 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.ActionBar;
-import android.support.v7.app.ActionBarActivity;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -316,7 +314,7 @@ public class EpisodesApplyActionFragment extends Fragment {
 
     private void checkPlayed(boolean isPlayed) {
         for (FeedItem episode : episodes) {
-            if(episode.isRead() == isPlayed) {
+            if(episode.isPlayed() == isPlayed) {
                 if(!checkedIds.contains(episode.getId())) {
                     checkedIds.add(episode.getId());
                 }

@@ -409,8 +409,8 @@ public class DBWriter {
                                 if (item != null) {
                                     // add item to either front ot back of queue
                                     boolean addToFront = UserPreferences.enqueueAtFront();
-                                    if(addToFront){
-                                        queue.add(0+i, item);
+                                    if (addToFront) {
+                                        queue.add(0 + i, item);
                                     } else {
                                         queue.add(item);
                                     }
@@ -610,7 +610,8 @@ public class DBWriter {
             public void run() {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
-                adapter.setFeedItemRead(read, itemIds);
+                int played = read ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+                adapter.setFeedItemRead(played, itemIds);
                 adapter.close();
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
@@ -656,6 +657,35 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param feedId  ID of the Feed.
      */
+    public static Future<?> markFeedSeen(final Context context, final long feedId) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                Cursor itemCursor = adapter.getNewItemsIdsCursor(feedId);
+                long[] ids = new long[itemCursor.getCount()];
+                itemCursor.moveToFirst();
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = itemCursor.getLong(0);
+                    itemCursor.moveToNext();
+                }
+                itemCursor.close();
+                adapter.setFeedItemRead(FeedItem.UNPLAYED, ids);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+    }
+
+    /**
+     * Sets the 'read'-attribute of all FeedItems of a specific Feed to true.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedId  ID of the Feed.
+     */
     public static Future<?> markFeedRead(final Context context, final long feedId) {
         return dbExec.submit(new Runnable() {
 
@@ -677,7 +707,6 @@ public class DBWriter {
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
-
     }
 
     /**

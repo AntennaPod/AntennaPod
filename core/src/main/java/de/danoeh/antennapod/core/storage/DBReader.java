@@ -22,6 +22,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -1139,27 +1140,42 @@ public final class DBReader {
         for(int i=0; i < feeds.size(); i++) {
             feedIds[i] = feeds.get(i).getId();
         }
-        final LongIntMap numUnreadFeedItems = adapter.getNumberOfUnreadFeedItems(feedIds);
-        Collections.sort(feeds, new Comparator<Feed>() {
-            @Override
-            public int compare(Feed lhs, Feed rhs) {
-                long numUnreadLhs = numUnreadFeedItems.get(lhs.getId());
-                Log.d(TAG, "feed with id " + lhs.getId() + " has " + numUnreadLhs + " unread items");
-                long numUnreadRhs = numUnreadFeedItems.get(rhs.getId());
-                Log.d(TAG, "feed with id " + rhs.getId() + " has " + numUnreadRhs + " unread items");
-                if(numUnreadLhs > numUnreadRhs) {
-                    // reverse natural order: podcast with most unplayed episodes first
-                    return -1;
-                } else if(numUnreadLhs == numUnreadRhs) {
-                    return lhs.getTitle().compareTo(rhs.getTitle());
-                } else {
-                    return 1;
+        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
+
+        Comparator<Feed> comparator;
+        int feedOrder = UserPreferences.getFeedOrder();
+        if(feedOrder == UserPreferences.ORDER_UNPLAYED_EPISODES) {
+            comparator = new Comparator<Feed>() {
+                @Override
+                public int compare(Feed lhs, Feed rhs) {
+                    long counterLhs = feedCounters.get(lhs.getId());
+                    long counterRhs = feedCounters.get(rhs.getId());
+                    if(counterLhs > counterRhs) {
+                        // reverse natural order: podcast with most unplayed episodes first
+                        return -1;
+                    } else if(counterLhs == counterRhs) {
+                        return lhs.getTitle().compareTo(rhs.getTitle());
+                    } else {
+                        return 1;
+                    }
                 }
-            }
-        });
+            };
+        } else {
+            comparator = new Comparator<Feed>() {
+                @Override
+                public int compare(Feed lhs, Feed rhs) {
+                    if(lhs.getTitle() == null) {
+                        return 1;
+                    }
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            };
+        }
+
+        Collections.sort(feeds, comparator);
         int queueSize = adapter.getQueueSize();
         int numNewItems = adapter.getNumberOfNewItems();
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numUnreadFeedItems);
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, feedCounters);
         adapter.close();
         return result;
     }
@@ -1168,14 +1184,16 @@ public final class DBReader {
         public List<Feed> feeds;
         public int queueSize;
         public int numNewItems;
-        public LongIntMap numUnreadFeedItems;
+        public LongIntMap feedCounters;
 
-        public NavDrawerData(List<Feed> feeds, int queueSize, int numNewItems,
-                             LongIntMap numUnreadFeedItems) {
+        public NavDrawerData(List<Feed> feeds,
+                             int queueSize,
+                             int numNewItems,
+                             LongIntMap feedIndicatorValues) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
-            this.numUnreadFeedItems = numUnreadFeedItems;
+            this.feedCounters = feedIndicatorValues;
         }
     }
 }

@@ -177,10 +177,21 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public boolean hasNewItems() {
         for (FeedItem item : items) {
-            if (item.getState() == FeedItem.State.UNREAD) {
-                if (item.getMedia() != null) {
-                    return true;
-                }
+            if (item.isNew()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if at least one item in the itemlist is unread.
+     *
+     */
+    public boolean hasUnplayedItems() {
+        for (FeedItem item : items) {
+            if (false == item.isNew() && false == item.isPlayed()) {
+                return true;
             }
         }
         return false;
