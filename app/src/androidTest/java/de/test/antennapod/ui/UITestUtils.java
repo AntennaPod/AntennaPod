@@ -111,6 +111,9 @@ public class UITestUtils {
 
     private File newMediaFile(String name) throws IOException {
         File mediaFile = new File(hostedMediaDir, name);
+        if(mediaFile.exists()) {
+            mediaFile.delete();
+        }
         Assert.assertFalse(mediaFile.exists());
 
         InputStream in = context.getAssets().open("testfile.mp3");

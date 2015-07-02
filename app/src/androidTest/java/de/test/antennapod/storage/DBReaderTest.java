@@ -310,11 +310,11 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < unread.size(); i++) {
             unreadIds[i] = unread.get(i).getId();
         }
-        LongList unreadSaved = DBReader.getNewItemIds(context);
+        List<FeedItem> unreadSaved = DBReader.getUnreadItemsList(context);
         assertNotNull(unreadSaved);
         assertTrue(unread.size() == unreadSaved.size());
         for(int i=0; i < unreadSaved.size(); i++) {
-            long savedId = unreadSaved.get(i);
+            long savedId = unreadSaved.get(i).getId();
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
@@ -385,13 +385,13 @@ public class DBReaderTest extends InstrumentationTestCase {
         final int NUM_FEEDS = 10;
         final int NUM_ITEMS = 10;
         final int NUM_QUEUE = 1;
-        final int NUM_UNREAD = 2;
+        final int NUM_NEW = 2;
         List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        for (int i = 0; i < NUM_UNREAD; i++) {
+        for (int i = 0; i < NUM_NEW; i++) {
             FeedItem item = feeds.get(0).getItems().get(i);
-            item.setPlayed(false);
+            item.setNew();
             adapter.setSingleFeedItem(item);
         }
         List<FeedItem> queue = new ArrayList<FeedItem>();
@@ -405,7 +405,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_UNREAD, navDrawerData.numNewItems);
+        assertEquals(NUM_NEW, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }
 

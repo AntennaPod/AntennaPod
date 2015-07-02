@@ -113,7 +113,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     /**
      * This constructor should be used for creating test objects involving chapter marks.
      */
-    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int read, Feed feed, boolean hasChapters) {
+    public FeedItem(long id, String title, String itemIdentifier, String link, Date pubDate, int state, Feed feed, boolean hasChapters) {
         this.id = id;
         this.title = title;
         this.itemIdentifier = itemIdentifier;
