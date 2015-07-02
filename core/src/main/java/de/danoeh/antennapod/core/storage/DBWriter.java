@@ -361,8 +361,7 @@ public class DBWriter {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                             if(item.isNew()) {
-                                adapter.setFeedItemRead(FeedItem.UNPLAYED, item.getId());
-                                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                                DBWriter.markItemRead(context, false, item.getId());
                             }
                         }
                     }
@@ -427,10 +426,8 @@ public class DBWriter {
                         if (queueModified) {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
-                            Log.d(TAG, "# mark as unplayed: " + markAsUnplayedIds.size());
                             if(markAsUnplayedIds.size() > 0) {
-                                adapter.setFeedItemRead(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
-                                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                                    DBWriter.markItemRead(context, false, markAsUnplayedIds.toArray());
                             }
                         }
                     }

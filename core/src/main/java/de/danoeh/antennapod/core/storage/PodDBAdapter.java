@@ -890,10 +890,6 @@ public class PodDBAdapter {
         }
         db.setTransactionSuccessful();
         db.endTransaction();
-        db.execSQL("UPDATE " + TABLE_NAME_FEED_ITEMS
-                + " SET " + KEY_READ + "=" + FeedItem.UNPLAYED
-                + " WHERE " + KEY_ID + " IN(" + TextUtils.join(",", Arrays.asList(ids)) + ")"
-                + " AND " + KEY_READ + "=" + FeedItem.NEW);
     }
 
     public void clearQueue() {
