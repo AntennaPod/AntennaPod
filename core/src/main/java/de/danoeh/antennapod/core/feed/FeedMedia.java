@@ -368,14 +368,16 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
-        setPosition(newPosition);
         DBWriter.setFeedMediaPlaybackInformation(ClientConfig.applicationCallbacks.getApplicationInstance(), this);
+        if(item.isNew()) {
+            DBWriter.markItemRead(ClientConfig.applicationCallbacks.getApplicationInstance(), false, item.getId());
+        }
+        setPosition(newPosition);
     }
 
     @Override
     public void onPlaybackStart() {
     }
-
     @Override
     public void onPlaybackCompleted() {
 

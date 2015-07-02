@@ -135,13 +135,13 @@
         <item>1</item>
     </string-array>
 
-    <string-array name="nav_drawer_feed_indicator_options">
-        <item>@string/drawer_feed_indicator_new_unplayed</item>
-        <item>@string/drawer_feed_indicator_new</item>
-        <item>@string/drawer_feed_indicator_unplayed</item>
-        <item>@string/drawer_feed_indicator_none</item>
+    <string-array name="nav_drawer_feed_counter_options">
+        <item>@string/drawer_feed_counter_new_unplayed</item>
+        <item>@string/drawer_feed_counter_new</item>
+        <item>@string/drawer_feed_counter_unplayed</item>
+        <item>@string/drawer_feed_counter_none</item>
     </string-array>
-    <string-array name="nav_drawer_feed_indicator_values">
+    <string-array name="nav_drawer_feed_counter_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>

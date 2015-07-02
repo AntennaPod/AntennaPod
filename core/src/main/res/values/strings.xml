@@ -35,10 +35,10 @@
     <string name="drawer_preferences">Drawer Preferences</string>
     <string name="drawer_feed_order_unplayed_episodes">Sort by counter</string>
     <string name="drawer_feed_order_alphabetical">Sort alphabetically</string>
-    <string name="drawer_feed_indicator_new_unplayed">Number of new and unplayed episodes</string>
-    <string name="drawer_feed_indicator_new">Number of new episodes</string>
-    <string name="drawer_feed_indicator_unplayed">Number of unplayed episodes</string>
-    <string name="drawer_feed_indicator_none">None</string>
+    <string name="drawer_feed_counter_new_unplayed">Number of new and unplayed episodes</string>
+    <string name="drawer_feed_counter_new">Number of new episodes</string>
+    <string name="drawer_feed_counter_unplayed">Number of unplayed episodes</string>
+    <string name="drawer_feed_counter_none">None</string>
 
     <!-- Webview actions -->
     <string name="open_in_browser_label">Open in Browser</string>
@@ -292,8 +292,8 @@
     <string name="pref_nav_drawer_items_sum">Change which items appear in the navigation drawer.</string>
     <string name="pref_nav_drawer_feed_order_title">Set Subscription Order</string>
     <string name="pref_nav_drawer_feed_order_sum">Change the order of your subscriptions</string>
-    <string name="pref_nav_drawer_feed_indicator_title">Set Subscription Counter</string>
-    <string name="pref_nav_drawer_feed_indicator_sum">Change the information displayed by the subscription counter</string>
+    <string name="pref_nav_drawer_feed_counter_title">Set Subscription Counter</string>
+    <string name="pref_nav_drawer_feed_counter_sum">Change the information displayed by the subscription counter</string>
     <string name="pref_set_theme_sum">Change the appearance of AntennaPod.</string>
     <string name="pref_automatic_download_title">Automatic Download</string>
     <string name="pref_automatic_download_sum">Configure the automatic download of episodes.</string>

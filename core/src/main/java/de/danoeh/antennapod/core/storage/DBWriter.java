@@ -360,6 +360,10 @@ public class DBWriter {
                             queue.add(index, item);
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
+                            if(item.isNew()) {
+                                adapter.setFeedItemRead(FeedItem.UNPLAYED, item.getId());
+                                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                            }
                         }
                     }
                 }
@@ -379,7 +383,6 @@ public class DBWriter {
         return addQueueItem(context, false, itemIds);
     }
 
-
     /**
      * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
      * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
@@ -397,11 +400,11 @@ public class DBWriter {
                 if (itemIds.length > 0) {
                     final PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();
-                    final List<FeedItem> queue = DBReader.getQueue(context,
-                            adapter);
+                    final List<FeedItem> queue = DBReader.getQueue(context, adapter);
 
                     if (queue != null) {
                         boolean queueModified = false;
+                        LongList markAsUnplayedIds = new LongList();
                         for (int i = 0; i < itemIds.length; i++) {
                             if (!itemListContains(queue, itemIds[i])) {
                                 final FeedItem item = DBReader.getFeedItem(context, itemIds[i]);
@@ -415,12 +418,20 @@ public class DBWriter {
                                         queue.add(item);
                                     }
                                     queueModified = true;
+                                    if(item.isNew()) {
+                                        markAsUnplayedIds.add(item.getId());
+                                    }
                                 }
                             }
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+                            Log.d(TAG, "# mark as unplayed: " + markAsUnplayedIds.size());
+                            if(markAsUnplayedIds.size() > 0) {
+                                adapter.setFeedItemRead(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+                            }
                         }
                     }
                     adapter.close();

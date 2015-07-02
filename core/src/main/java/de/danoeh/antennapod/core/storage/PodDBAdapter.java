@@ -1295,14 +1295,14 @@ public class PodDBAdapter {
     }
 
     public final LongIntMap getFeedCounters(long... feedIds) {
-        int indicator = UserPreferences.getFeedIndicator();
+        int counter = UserPreferences.getFeedCounter();
         String whereRead;
-        if(indicator == UserPreferences.SHOW_NEW_UNPLAYED_SUM) {
+        if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
             whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                     + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
-        } else if(indicator == UserPreferences.SHOW_NEW) {
+        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW) {
             whereRead = KEY_READ + "=" + FeedItem.NEW;
-        } else if(indicator == UserPreferences.SHOW_UNPLAYED) {
+        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
             whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
         } else {
             return new LongIntMap(0);
