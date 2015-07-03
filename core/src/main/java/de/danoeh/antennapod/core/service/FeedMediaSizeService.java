@@ -30,13 +30,20 @@ public class FeedMediaSizeService extends IntentService {
         }
         List<FeedMedia> list = DBReader.getFeedMediaUnknownSize(this);
         for (FeedMedia media : list) {
-            long size = -1;
+            if(false == NetworkUtils.networkAvailable(this)) {
+                return;
+            }
+            long size = Integer.MIN_VALUE;
+            Log.d(TAG, media.getDownload_url());
             try {
                 URL url = new URL(media.getDownload_url());
                 HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn.setRequestProperty( "Accept-Encoding", "" );
+                conn.setRequestMethod("HEAD");
                 size = conn.getContentLength();
                 conn.disconnect();
             } catch (IOException e) {
+                Log.d(TAG, media.getDownload_url());
                 e.printStackTrace();
             }
             media.setSize(size);

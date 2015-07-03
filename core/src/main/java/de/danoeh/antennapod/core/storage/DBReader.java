@@ -551,11 +551,11 @@ public final class DBReader {
     }
 
     /**
-     * Loads the IDs of the FeedItems whose 'read'-attribute is set to false.
+     * Loads FeedMedia whose file size is unknown
      *
      * @param context A context that is used for opening a database connection.
-     * @return A list of IDs of the FeedItems whose 'read'-attribute is set to false. This method should be preferred
-     * over {@link #getUnreadItemsList(android.content.Context)} if the FeedItems in the UnreadItems list are not used.
+     * @return A list of FeedMedia items whose size is 0 (unknown and never tried to
+     * determine the correct size)
      */
     public static List<FeedMedia> getFeedMediaUnknownSize(Context context) {
         PodDBAdapter adapter = new PodDBAdapter(context);
