@@ -550,6 +550,28 @@ public final class DBReader {
         return itemIds;
     }
 
+    /**
+     * Loads the IDs of the FeedItems whose 'read'-attribute is set to false.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of IDs of the FeedItems whose 'read'-attribute is set to false. This method should be preferred
+     * over {@link #getUnreadItemsList(android.content.Context)} if the FeedItems in the UnreadItems list are not used.
+     */
+    public static List<FeedMedia> getFeedMediaUnknownSize(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getFeedMediaUnknownSizeCursor();
+        List<FeedMedia> result = new ArrayList<>(cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                FeedMedia media = extractFeedMediaFromCursorRow(cursor);
+                result.add(media);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return result;
+    }
+
 
     /**
      * Loads a list of FeedItems sorted by pubDate in descending order.

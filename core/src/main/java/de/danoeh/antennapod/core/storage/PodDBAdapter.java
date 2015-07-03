@@ -1105,6 +1105,13 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
+    public final Cursor getFeedMediaUnknownSizeCursor() {
+        final String query = "SELECT * "
+                + " FROM " + TABLE_NAME_FEED_MEDIA
+                + " WHERE " + KEY_SIZE + "=0";
+        return db.rawQuery(query, null);
+    }
+
     /**
      * Returns a cursor which contains all items of a feed that are considered new.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.

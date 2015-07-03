@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +32,7 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.FeedMediaSizeService;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -595,15 +599,15 @@ public final class DBTasks {
                             item.getIdentifyingValue());
                     if (oldItem == null) {
                         // item is new
-                        final int i = idx;
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-                        savedFeed.getItems().add(i, item);
+                        savedFeed.getItems().add(item);
                         if (markNewItems) {
                             item.setNew();
                         }
                     } else {
                         oldItem.updateFromOther(item);
+                        savedFeed.getItems().add(oldItem);
                     }
                 }
                 // update attributes
@@ -628,6 +632,8 @@ public final class DBTasks {
         }
 
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
+
+        context.startService(new Intent(context, FeedMediaSizeService.class));
 
         return resultFeeds;
     }
