@@ -13,6 +13,7 @@ import org.shredzone.flattr4j.model.Flattr;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -184,13 +185,15 @@ public class DBWriter {
                     }
                     // delete stored media files and mark them as read
                     List<FeedItem> queue = DBReader.getQueue(context);
-                    boolean queueWasModified = false;
+                    List<FeedItem> removed = new ArrayList<>();
                     if (feed.getItems() == null) {
                         DBReader.getFeedItemList(context, feed);
                     }
 
                     for (FeedItem item : feed.getItems()) {
-                        queueWasModified |= queue.remove(item);
+                        if(queue.remove(item)) {
+                            removed.add(item);
+                        }
                         if (item.getMedia() != null
                                 && item.getMedia().isDownloaded()) {
                             File mediaFile = new File(item.getMedia()
@@ -213,8 +216,10 @@ public class DBWriter {
                     }
                     PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();
-                    if (queueWasModified) {
+                    if (removed.size() > 0) {
                         adapter.setQueue(queue);
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.IRREVERSIBLE_REMOVED,
+                                removed));
                     }
                     adapter.removeFeed(feed);
                     adapter.close();
