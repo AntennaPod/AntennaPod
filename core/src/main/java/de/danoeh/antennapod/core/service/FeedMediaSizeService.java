@@ -9,10 +9,12 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
+import de.danoeh.antennapod.core.event.FeedMediaEvent;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
+import de.greenrobot.event.EventBus;
 
 public class FeedMediaSizeService extends IntentService {
 
@@ -48,6 +50,7 @@ public class FeedMediaSizeService extends IntentService {
             }
             media.setSize(size);
             DBWriter.setFeedMedia(this, media);
+            EventBus.getDefault().post(FeedMediaEvent.update(media));
         }
     }
 
