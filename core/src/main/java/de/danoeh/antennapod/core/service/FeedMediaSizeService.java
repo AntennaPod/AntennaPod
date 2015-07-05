@@ -36,10 +36,10 @@ public class FeedMediaSizeService extends IntentService {
                 return;
             }
             long size = Integer.MIN_VALUE;
-            Log.d(TAG, media.getDownload_url());
+            HttpURLConnection conn = null;
             try {
                 URL url = new URL(media.getDownload_url());
-                HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+                conn = (HttpURLConnection) url.openConnection();
                 conn.setRequestProperty( "Accept-Encoding", "" );
                 conn.setRequestMethod("HEAD");
                 size = conn.getContentLength();
@@ -47,6 +47,10 @@ public class FeedMediaSizeService extends IntentService {
             } catch (IOException e) {
                 Log.d(TAG, media.getDownload_url());
                 e.printStackTrace();
+            } finally {
+                if(conn != null) {
+                    conn.disconnect();
+                }
             }
             media.setSize(size);
             DBWriter.setFeedMedia(this, media);
