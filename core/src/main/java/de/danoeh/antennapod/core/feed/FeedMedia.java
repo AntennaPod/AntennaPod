@@ -186,7 +186,7 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
-        if(position > 0) {
+        if(position > 0 && item.isNew()) {
             this.item.setPlayed(false);
         }
     }

@@ -877,12 +877,10 @@ public class PodDBAdapter {
 
     public void setQueue(List<FeedItem> queue) {
         ContentValues values = new ContentValues();
-        long[] ids = new long[queue.size()];
         db.beginTransaction();
         db.delete(TABLE_NAME_QUEUE, null, null);
         for (int i = 0; i < queue.size(); i++) {
             FeedItem item = queue.get(i);
-            ids[i] = item.getId();
             values.put(KEY_ID, i);
             values.put(KEY_FEEDITEM, item.getId());
             values.put(KEY_FEED, item.getFeed().getId());
