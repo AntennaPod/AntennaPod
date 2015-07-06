@@ -322,7 +322,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
     private void onFragmentLoaded() {
-        progbarLoading.setVisibility(View.GONE);
+        progbarLoading.setVisibility(View.INVISIBLE);
         if (webviewData != null) {
             webvDescription.loadDataWithBaseURL(null, webviewData, "text/html",
                     "utf-8", "about:blank");
@@ -339,7 +339,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         Picasso.with(getActivity()).load(item.getImageUri())
                 .fit()
                 .into(imgvCover);
-        progbarDownload.setVisibility(View.GONE);
+        progbarDownload.setVisibility(View.INVISIBLE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
                 if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
