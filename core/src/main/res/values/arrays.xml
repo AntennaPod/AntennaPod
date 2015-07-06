@@ -2,9 +2,9 @@
 <resources>
 
     <string-array name="spnAutoDeleteItems">
-        <item>Global</item>
-        <item>Always</item>
-        <item>Never</item>
+        <item>@string/feed_auto_download_global</item>
+        <item>@string/feed_auto_download_always</item>
+        <item>@string/feed_auto_download_never</item>
     </string-array>
 
     <string-array name="smart_mark_as_played_values">

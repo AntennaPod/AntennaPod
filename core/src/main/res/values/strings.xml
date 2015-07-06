@@ -77,6 +77,9 @@
     <string name="auto_download_label">Include in auto downloads</string>
     <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
+    <string name="feed_auto_download_global">Global</string>
+    <string name="feed_auto_download_always">Always</string>
+    <string name="feed_auto_download_never">Never</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
