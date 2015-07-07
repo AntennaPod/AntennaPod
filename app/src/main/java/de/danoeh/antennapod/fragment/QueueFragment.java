@@ -431,7 +431,7 @@ public class QueueFragment extends Fragment {
                     long itemId = token.getFeedItemId();
                     FeedItem item = DBReader.getFeedItem(context, itemId);
                     FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete(UserPreferences.isAutoDelete())) {
+                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
                         DBWriter.deleteFeedMediaOfItem(context, media.getId());
                     }
                 }

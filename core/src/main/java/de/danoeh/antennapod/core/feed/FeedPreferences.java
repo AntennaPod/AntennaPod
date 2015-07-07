@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import org.apache.commons.lang3.StringUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Contains preferences for a single feed.
@@ -82,10 +83,10 @@ public class FeedPreferences {
         this.auto_delete_action = auto_delete_action;
     }
 
-    public boolean getCurrentAutoDelete(boolean isAutoDelete) {
+    public boolean getCurrentAutoDelete() {
         switch (auto_delete_action) {
             case GLOBAL:
-                return isAutoDelete;
+                return UserPreferences.isAutoDelete();
 
             case YES:
                 return true;
