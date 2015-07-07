@@ -276,10 +276,10 @@ public class NavListAdapter extends BaseAdapter
             p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
             holder.failure.setVisibility(View.GONE);
         }
-        int feedUnreadItems = itemAccess.getNumberOfUnreadFeedItems(feed.getId());
-        if(feedUnreadItems > 0) {
+        int counter = itemAccess.getFeedCounter(feed.getId());
+        if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(feedUnreadItems));
+            holder.count.setText(String.valueOf(counter));
             holder.count.setTypeface(holder.title.getTypeface());
         } else {
             holder.count.setVisibility(View.GONE);
@@ -306,7 +306,7 @@ public class NavListAdapter extends BaseAdapter
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfNewItems();
-        int getNumberOfUnreadFeedItems(long feedId);
+        int getFeedCounter(long feedId);
     }
 
 }

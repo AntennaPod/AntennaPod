@@ -43,6 +43,8 @@ public class UserPreferences {
     // User Interface
     public static final String PREF_THEME = "prefTheme";
     public static final String PREF_HIDDEN_DRAWER_ITEMS = "prefHiddenDrawerItems";
+    public static final String PREF_DRAWER_FEED_ORDER = "prefDrawerFeedOrder";
+    public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedCounter";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
@@ -85,6 +87,12 @@ public class UserPreferences {
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
+    public static int FEED_ORDER_UNPLAYED_EPISODES = 0;
+    public static int FEED_ORDER_ALPHABETICAL = 1;
+    public static int FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM = 0;
+    public static int FEED_COUNTER_SHOW_NEW = 1;
+    public static int FEED_COUNTER_SHOW_UNPLAYED = 2;
+    public static int FEED_COUNTER_SHOW_NONE = 3;
 
     private static Context context;
     private static SharedPreferences prefs;
@@ -126,6 +134,16 @@ public class UserPreferences {
     public static List<String> getHiddenDrawerItems() {
         String hiddenItems = prefs.getString(PREF_HIDDEN_DRAWER_ITEMS, "");
         return new ArrayList<String>(Arrays.asList(StringUtils.split(hiddenItems, ',')));
+    }
+
+    public static int getFeedOrder() {
+        String value = prefs.getString(PREF_DRAWER_FEED_ORDER, "0");
+        return Integer.valueOf(value);
+    }
+
+    public static int getFeedCounter() {
+        String value = prefs.getString(PREF_DRAWER_FEED_COUNTER, "0");
+        return Integer.valueOf(value);
     }
 
     /**

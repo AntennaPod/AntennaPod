@@ -51,7 +51,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         Feed f = new Feed(0, new Date(), "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
         f.setItems(new ArrayList<FeedItem>());
         for (int i = 0; i < NUM_ITEMS; i++) {
-            f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), true, f));
+            f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), FeedItem.PLAYED, f));
         }
         PodDBAdapter adapter = new PodDBAdapter(c);
         adapter.open();

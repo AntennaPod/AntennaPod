@@ -112,12 +112,12 @@ public class FeedItemlistAdapter extends BaseAdapter {
             }
             holder.title.setText(buffer.toString());
 
-            if(false == item.isRead() && itemAccess.isNew(item)) {
+            if(item.isNew()) {
                 holder.statusUnread.setVisibility(View.VISIBLE);
             } else {
                 holder.statusUnread.setVisibility(View.INVISIBLE);
             }
-            if(item.isRead()) {
+            if(item.isPlayed()) {
                 ViewHelper.setAlpha(convertView, 0.5f);
             } else {
                 ViewHelper.setAlpha(convertView, 1.0f);
@@ -220,8 +220,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         int getCount();
 
         FeedItem getItem(int position);
-
-        boolean isNew(FeedItem item);
 
     }
 
