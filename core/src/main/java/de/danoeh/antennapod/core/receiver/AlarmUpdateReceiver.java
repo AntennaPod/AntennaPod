@@ -25,7 +25,7 @@ public class AlarmUpdateReceiver extends BroadcastReceiver {
 		}
         PlaybackPreferences.init(context);
         UserPreferences.init(context);
-        UserPreferences.restartUpdateAlarm();
+        UserPreferences.restartUpdateAlarm(false);
 	}
 
 }

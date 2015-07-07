@@ -343,23 +343,25 @@ public class UserPreferences {
     }
 
     /**
-     * Sets the update interval value. Should only be used for testing purposes!
+     * Sets the update interval value.
      */
     public static void setUpdateInterval(long hours) {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, String.valueOf(hours))
              .apply();
-        restartUpdateAlarm();
+        // when updating with an interval, we assume the user wants
+        // to update *now* and then every 'hours' interval thereafter.
+        restartUpdateAlarm(true);
     }
 
     /**
-     * Sets the update interval value. Should only be used for testing purposes!
+     * Sets the update interval value.
      */
     public static void setUpdateTimeOfDay(int hourOfDay, int minute) {
         prefs.edit()
              .putString(PREF_UPDATE_INTERVAL, hourOfDay + ":" + minute)
              .apply();
-        restartUpdateAlarm();
+        restartUpdateAlarm(false);
     }
 
     /**
@@ -538,13 +540,18 @@ public class UserPreferences {
         }
     }
 
-    public static void restartUpdateAlarm() {
+    public static void restartUpdateAlarm(boolean now) {
         int[] timeOfDay = getUpdateTimeOfDay();
+        Log.d(TAG, "timeOfDay: " + Arrays.toString(timeOfDay));
         if (timeOfDay.length == 2) {
             restartUpdateTimeOfDayAlarm(timeOfDay[0], timeOfDay[1]);
         } else {
             long hours = getUpdateInterval();
-            restartUpdateIntervalAlarm(TimeUnit.SECONDS.toMillis(10), hours);
+            long startTrigger = hours;
+            if (now) {
+                startTrigger = TimeUnit.SECONDS.toMillis(10);
+            }
+            restartUpdateIntervalAlarm(startTrigger, hours);
         }
     }
 
@@ -558,9 +565,8 @@ public class UserPreferences {
                 new Intent(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedUpdateReceiver.class), 0);
         alarmManager.cancel(updateIntent);
         if (intervalMillis > 0) {
-            alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP,
+            alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP,
                     SystemClock.elapsedRealtime() + triggerAtMillis,
-                    intervalMillis,
                     updateIntent);
             Log.d(TAG, "Changed alarm to new interval " + TimeUnit.MILLISECONDS.toHours(intervalMillis) + " h");
         } else {
@@ -585,10 +591,9 @@ public class UserPreferences {
         if(alarm.before(now)) {
             alarm.add(Calendar.DATE, 1);
         }
-
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP,
+        Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
+        alarmManager.set(AlarmManager.RTC_WAKEUP,
                 alarm.getTimeInMillis(),
-                AlarmManager.INTERVAL_DAY,
                 updateIntent);
         Log.d(TAG, "Changed alarm to new time of day " + hoursOfDay + ":" + minute);
     }
