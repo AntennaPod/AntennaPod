@@ -189,7 +189,7 @@
                     android:spinnerMode="dropdown"
                     app:layout_gravity="center"
                     android:dropDownWidth="wrap_content"
-                    android:clickable="false" />
+                    android:clickable="true" />
             </android.support.v7.widget.GridLayout>
 
             <TextView
