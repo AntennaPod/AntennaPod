@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
@@ -20,8 +21,9 @@ import de.danoeh.antennapod.utils.TimeUtils;
 public class SubscriptionViewItem extends RelativeLayout {
 
     private ImageView mImageView;
-    private TextView mTitle;
+    private TextView mTextTime;
     private TextView mUnreadCountText;
+    private TextView mFeedTitle;
     private Context mContext;
 
     public SubscriptionViewItem(Context context) {
@@ -49,15 +51,28 @@ public class SubscriptionViewItem extends RelativeLayout {
         LayoutInflater mLayoutInflater =
                 (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View view = mLayoutInflater.inflate(R.layout.subscription_view, this);
-        mTitle = (TextView) view.findViewById(R.id.txtvTitle);
+        mTextTime = (TextView) view.findViewById(R.id.txtvTime);
+        mFeedTitle = (TextView) view.findViewById(R.id.txtvTitle);
         mImageView = (ImageView) view.findViewById(R.id.imgvCover);
         mUnreadCountText = (TextView) view.findViewById(R.id.unread_count_text);
     }
 
-    public void setFeed(Feed feed, int unreadCount) {
-        Picasso.with(mContext).load(feed.getImageUri()).centerCrop().fit().into(mImageView);
+    public void setFeed(final Feed feed, int unreadCount) {
+        mFeedTitle.setVisibility(VISIBLE);
+        mFeedTitle.setText(feed.getTitle());
+
+        Picasso.with(mContext).load(feed.getImageUri()).centerCrop().fit().into(mImageView, new Callback() {
+            @Override
+            public void onSuccess() {
+                mFeedTitle.setVisibility(GONE);
+            }
+
+            @Override
+            public void onError() {
+            }
+        });
         mUnreadCountText.setText(unreadCount + "");
-        mTitle.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
+        mTextTime.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
     }
 
 }
