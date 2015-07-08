@@ -13,7 +13,6 @@ import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.utils.TimeUtils;
 
 /**
  * Custom view for handling feed item.
@@ -72,7 +71,9 @@ public class SubscriptionViewItem extends RelativeLayout {
             }
         });
         mUnreadCountText.setText(unreadCount + "");
-        mTextTime.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
+        // Removing the updated time. It could be the latest podcast updated time in the future.
+        //mTextTime.setText(TimeUtils.getTimeAgo(feed.getLastUpdate().getTime(), mContext));
+        mTextTime.setVisibility(GONE);
     }
 
 }

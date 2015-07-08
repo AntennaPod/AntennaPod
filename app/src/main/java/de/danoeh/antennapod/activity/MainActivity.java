@@ -550,7 +550,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 String lastFragment = getLastNavFragment();
                 if(!ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                     long feedId = Long.valueOf(lastFragment);
-                    //loadFeedFragmentById(feedId);
+                    loadFeedFragmentById(feedId);
                     saveLastNavFragment(null);
                 }
 
