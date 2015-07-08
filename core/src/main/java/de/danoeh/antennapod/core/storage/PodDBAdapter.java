@@ -1477,7 +1477,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 17;
+        private final static int VERSION = 18;
 
         private Context context;
 
@@ -1697,6 +1697,10 @@ public class PodDBAdapter {
                         + " WHERE " + KEY_ID + " IN (" + selectNew + ")";
                 Log.d("Migration", "SQL: " + sql);
                 db.execSQL(sql);
+            }
+            if(oldVersion <= 17) {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0");
             }
             EventBus.getDefault().post(ProgressEvent.end());
         }
