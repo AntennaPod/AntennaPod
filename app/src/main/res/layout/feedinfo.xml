@@ -204,7 +204,10 @@
                     android:layout_height="wrap_content"
                     app:layout_row="0"
                     app:layout_column="1"
-                    android:hint="@string/username_label"/>
+                    android:hint="@string/username_label"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:cursorVisible="true"/>
 
                 <TextView
                     android:id="@+id/txtvPassword"
@@ -215,7 +218,10 @@
                     app:layout_row="1"
                     app:layout_column="0"
                     android:text="@string/password_label"
-                    android:textColor="?android:attr/textColorPrimary"/>
+                    android:textColor="?android:attr/textColorPrimary"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:cursorVisible="true"/>
 
                 <EditText
                     android:id="@+id/etxtPassword"

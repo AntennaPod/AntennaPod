@@ -15,7 +15,10 @@
             android:layout_height="0dp"
             android:layout_weight="1"
             android:layout_margin="16dp"
-            android:hint="@string/username_label"/>
+            android:hint="@string/username_label"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="true"/>
 
         <EditText
             android:id="@+id/etxtPassword"
@@ -24,7 +27,10 @@
             android:layout_weight="1"
             android:layout_margin="16dp"
             android:inputType="textPassword"
-            android:hint="@string/password_label"/>
+            android:hint="@string/password_label"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="true"/>
 
         <CheckBox
             android:id="@+id/chkSaveUsernamePassword"
