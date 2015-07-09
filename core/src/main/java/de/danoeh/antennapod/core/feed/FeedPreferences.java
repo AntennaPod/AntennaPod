@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.feed;
 import android.content.Context;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import org.apache.commons.lang3.StringUtils;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Contains preferences for a single feed.
@@ -11,19 +12,26 @@ public class FeedPreferences {
 
     private long feedID;
     private boolean autoDownload;
+    public enum AutoDeleteAction {
+        GLOBAL,
+        YES,
+        NO
+    }
+    private AutoDeleteAction auto_delete_action;
     private String username;
     private String password;
 
-    public FeedPreferences(long feedID, boolean autoDownload, String username, String password) {
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
+        this.auto_delete_action = auto_delete_action;
         this.username = username;
         this.password = password;
     }
 
 
     /**
-     * Compare another FeedPreferences with this one. The feedID and autoDownload attribute are excluded from the
+     * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the
      * comparison.
      *
      * @return True if the two objects are different.
@@ -41,7 +49,7 @@ public class FeedPreferences {
     }
 
     /**
-     * Update this FeedPreferences object from another one. The feedID and autoDownload attributes are excluded
+     * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
      * from the update.
      */
     public void updateFromOther(FeedPreferences other) {
@@ -65,6 +73,28 @@ public class FeedPreferences {
 
     public void setAutoDownload(boolean autoDownload) {
         this.autoDownload = autoDownload;
+    }
+
+    public AutoDeleteAction getAutoDeleteAction() {
+        return auto_delete_action;
+    }
+
+    public void setAutoDeleteAction(AutoDeleteAction auto_delete_action) {
+        this.auto_delete_action = auto_delete_action;
+    }
+
+    public boolean getCurrentAutoDelete() {
+        switch (auto_delete_action) {
+            case GLOBAL:
+                return UserPreferences.isAutoDelete();
+
+            case YES:
+                return true;
+
+            case NO:
+                return false;
+        }
+        return false; // TODO - add exceptions here
     }
 
     public void save(Context context) {

@@ -584,7 +584,7 @@ public class PlaybackService extends Service {
             }
 
             // Delete episode if enabled
-            if(UserPreferences.isAutoDelete()) {
+            if(item.getFeed().getPreferences().getCurrentAutoDelete()) {
                 DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                 Log.d(TAG, "Episode Deleted");
             }

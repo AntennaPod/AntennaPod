@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <string-array name="spnAutoDeleteItems">
+        <item>@string/feed_auto_download_global</item>
+        <item>@string/feed_auto_download_always</item>
+        <item>@string/feed_auto_download_never</item>
+    </string-array>
+
     <string-array name="smart_mark_as_played_values">
         <item>0</item>
         <item>15</item>

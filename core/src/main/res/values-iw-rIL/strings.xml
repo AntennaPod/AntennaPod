@@ -58,7 +58,11 @@
   <string name="close_label">סגור</string>
   <string name="retry_label">נסה שוב</string>
   <string name="auto_download_label">כלול בהורדות אוטומטיות</string>
+  <string name="auto_delete_label">מחק לאחר ההשמעה\n(גובר על ההגדרה הגלובלית)</string>
   <string name="parallel_downloads_suffix">\u0020הורדות במקביל</string>
+  <string name="feed_auto_download_global">לפי הגדרה גלובלית</string>
+  <string name="feed_auto_download_always">תמיד</string>
+  <string name="feed_auto_download_never">אף פעם</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">כתובת הזנה</string>
   <string name="etxtFeedurlHint">כתובת של הזנה או אתר אינטרנט</string>

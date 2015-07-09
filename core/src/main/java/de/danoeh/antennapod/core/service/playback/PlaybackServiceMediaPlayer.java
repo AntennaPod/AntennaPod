@@ -196,7 +196,7 @@ public class PlaybackServiceMediaPlayer {
                         DBWriter.markItemRead(context, item, true, false);
                         DBWriter.removeQueueItem(context, item, false);
                         DBWriter.addItemToPlaybackHistory(context, oldMedia);
-                        if (UserPreferences.isAutoDelete()) {
+                        if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
                             Log.d(TAG, "Delete " + oldMedia.toString());
                             DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
                         }

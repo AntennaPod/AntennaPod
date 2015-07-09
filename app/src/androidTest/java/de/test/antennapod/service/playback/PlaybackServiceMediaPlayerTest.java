@@ -20,6 +20,7 @@ import java.util.concurrent.TimeUnit;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackServiceMediaPlayer;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -116,6 +117,8 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     private Playable writeTestPlayable(String downloadUrl, String fileUrl) {
         final Context c = getInstrumentation().getTargetContext();
         Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
+        FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
+        f.setPreferences(prefs);
         f.setItems(new ArrayList<FeedItem>());
         FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
         f.getItems().add(i);

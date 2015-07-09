@@ -338,9 +338,9 @@ public final class DBReader {
         if (image != null) {
             image.setOwner(feed);
         }
-
         FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0,
+                FeedPreferences.AutoDeleteAction.values()[cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DELETE_ACTION)],
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_USERNAME),
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_PASSWORD));
 
