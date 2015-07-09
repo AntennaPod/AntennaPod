@@ -121,7 +121,8 @@ task filterAbout {
         from 'src/main/templates/about.html'
         into 'src/main/assets'
         filter(ReplaceTokens, tokens: [versionname: android.defaultConfig.versionName,
-                                       versioncode: android.defaultConfig.versionCode.toString()])
+                                       versioncode: android.defaultConfig.versionCode.toString(),
+                                       commit: "git rev-parse HEAD".execute().text[0..6]])
     }
 }
 
