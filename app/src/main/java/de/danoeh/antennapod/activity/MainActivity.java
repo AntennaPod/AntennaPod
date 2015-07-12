@@ -514,7 +514,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
             return false;
         }
-        int position = menuInfo.position;
+        final int position = menuInfo.position;
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
@@ -528,6 +528,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                     @Override
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
+                        if(getSelectedNavListIndex() == position) {
+                            loadFragment(NewEpisodesFragment.TAG, null);
+                        }
                     }
                 };
                 ConfirmationDialog conDialog = new ConfirmationDialog(this,
