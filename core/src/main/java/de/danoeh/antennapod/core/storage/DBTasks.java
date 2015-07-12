@@ -601,13 +601,12 @@ public final class DBTasks {
                         // item is new
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-                        savedFeed.getItems().add(item);
+                        savedFeed.getItems().add(idx, item);
                         if (markNewItems) {
                             item.setNew();
                         }
                     } else {
                         oldItem.updateFromOther(item);
-                        savedFeed.getItems().add(oldItem);
                     }
                 }
                 // update attributes

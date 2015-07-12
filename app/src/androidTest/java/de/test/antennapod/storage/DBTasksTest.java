@@ -67,6 +67,8 @@ public class DBTasksTest extends InstrumentationTestCase {
         SharedPreferences.Editor prefEdit = PreferenceManager.getDefaultSharedPreferences(context.getApplicationContext()).edit();
         prefEdit.putString(UserPreferences.PREF_EPISODE_CACHE_SIZE, Integer.toString(EPISODE_CACHE_SIZE));
         prefEdit.commit();
+
+        UserPreferences.init(context);
     }
 
     @FlakyTest(tolerance = 3)
@@ -261,7 +263,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         }
 
         for (int i = NUM_ITEMS_OLD; i < NUM_ITEMS_NEW + NUM_ITEMS_OLD; i++) {
-            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
+            feed.getItems().add(0, new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.UNPLAYED, feed));
         }
 
         final Feed newFeed = DBTasks.updateFeed(context, feed)[0];
@@ -275,7 +277,6 @@ public class DBTasksTest extends InstrumentationTestCase {
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
     }
 
-    @FlakyTest(tolerance = 3)
     private void updatedFeedTest(final Feed newFeed, long feedID, List<Long> itemIDs, final int NUM_ITEMS_OLD, final int NUM_ITEMS_NEW) {
         assertTrue(newFeed.getId() == feedID);
         assertTrue(newFeed.getItems().size() == NUM_ITEMS_NEW + NUM_ITEMS_OLD);
