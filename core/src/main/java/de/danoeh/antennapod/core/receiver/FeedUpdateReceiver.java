@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
@@ -23,6 +24,7 @@ public class FeedUpdateReceiver extends BroadcastReceiver {
         } else {
             Log.d(TAG, "Blocking automatic update: no wifi available / no mobile updates allowed");
         }
+        UserPreferences.restartUpdateAlarm(false);
     }
 
 }
