@@ -4,6 +4,7 @@ import android.app.IntentService;
 import android.content.Intent;
 import android.util.Log;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -36,20 +37,27 @@ public class FeedMediaSizeService extends IntentService {
                 return;
             }
             long size = Integer.MIN_VALUE;
-            HttpURLConnection conn = null;
-            try {
-                URL url = new URL(media.getDownload_url());
-                conn = (HttpURLConnection) url.openConnection();
-                conn.setRequestProperty( "Accept-Encoding", "" );
-                conn.setRequestMethod("HEAD");
-                size = conn.getContentLength();
-                conn.disconnect();
-            } catch (IOException e) {
-                Log.d(TAG, media.getDownload_url());
-                e.printStackTrace();
-            } finally {
-                if(conn != null) {
+            if(media.isDownloaded()) {
+                File mediaFile = new File(media.getLocalMediaUrl());
+                if(mediaFile.exists()) {
+                    size = mediaFile.length();
+                }
+            } else {
+                HttpURLConnection conn = null;
+                try {
+                    URL url = new URL(media.getDownload_url());
+                    conn = (HttpURLConnection) url.openConnection();
+                    conn.setRequestProperty("Accept-Encoding", "");
+                    conn.setRequestMethod("HEAD");
+                    size = conn.getContentLength();
                     conn.disconnect();
+                } catch (IOException e) {
+                    Log.d(TAG, media.getDownload_url());
+                    e.printStackTrace();
+                } finally {
+                    if (conn != null) {
+                        conn.disconnect();
+                    }
                 }
             }
             media.setSize(size);
