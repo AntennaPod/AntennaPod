@@ -100,7 +100,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private ActionBarDrawerToggle drawerToggle;
 
     private CharSequence currentTitle;
-    private String currentFragment;
 
     private ProgressDialog pd;
 
@@ -171,9 +170,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             String lastFragment = getLastNavFragment();
             if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
+            } else {
+                loadFeedFragmentById(Integer.valueOf(lastFragment), null);
             }
-            // else: lastFragment contains feed id - drawer data is not loaded yet,
-            //       so loading is postponed until then
         }
         externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment);
@@ -191,7 +190,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         } else {
             edit.remove(PREF_LAST_FRAGMENT_TAG);
         }
-        currentFragment = tag;
         edit.commit();
     }
 
@@ -312,30 +310,18 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return;
         }
         Feed feed = itemAccess.getItem(relPos);
-        long feedId = feed.getId();
+        loadFeedFragmentById(feed.getId(), args);
+    }
+
+    public void loadFeedFragmentById(long feedId, Bundle args) {
         Fragment fragment = ItemlistFragment.newInstance(feedId);
         if(args != null) {
             fragment.setArguments(args);
         }
-        saveLastNavFragment(String.valueOf(feed.getId()));
+        saveLastNavFragment(String.valueOf(feedId));
         currentTitle = "";
         getSupportActionBar().setTitle(currentTitle);
         loadFragment(fragment);
-    }
-
-    public void loadFeedFragmentById(long feedId) {
-        if (navDrawerData != null) {
-            int relPos = -1;
-            List<Feed> feeds = navDrawerData.feeds;
-            for (int i = 0; relPos < 0 && i < feeds.size(); i++) {
-                if (feeds.get(i).getId() == feedId) {
-                    relPos = i;
-                }
-            }
-            if(relPos >= 0) {
-                loadFeedFragmentByPosition(relPos, null);
-            }
-        }
     }
 
     private void loadFragment(Fragment fragment) {
@@ -377,15 +363,19 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     private int getSelectedNavListIndex() {
-        String lastFragment = getLastNavFragment();
-        int tagIndex = navAdapter.getTags().indexOf(lastFragment);
+        String currentFragment = getLastNavFragment();
+        if(currentFragment == null) {
+            // should not happen, but better safe than sorry
+            return -1;
+        }
+        int tagIndex = navAdapter.getTags().indexOf(currentFragment);
         if(tagIndex >= 0) {
             return tagIndex;
-        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, currentFragment)) {
             // the fragment was just hidden
             return -1;
         } else { // last fragment was not a list, but a feed
-            long feedId = Long.parseLong(lastFragment);
+            long feedId = Long.parseLong(currentFragment);
             if (navDrawerData != null) {
                 List<Feed> feeds = navDrawerData.feeds;
                 for (int i = 0; i < feeds.size(); i++) {
@@ -524,7 +514,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
             return false;
         }
-        int position = menuInfo.position;
+        final int position = menuInfo.position;
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
@@ -538,6 +528,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                     @Override
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
+                        if(getSelectedNavListIndex() == position) {
+                            loadFragment(NewEpisodesFragment.TAG, null);
+                        }
                     }
                 };
                 ConfirmationDialog conDialog = new ConfirmationDialog(this,
@@ -617,13 +610,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
                 navDrawerData = result;
                 navAdapter.notifyDataSetChanged();
-
-                String lastFragment = getLastNavFragment();
-                if(currentFragment != lastFragment &&
-                        !ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
-                    long feedId = Long.valueOf(lastFragment);
-                    loadFeedFragmentById(feedId);
-                }
 
                 if (handleIntent) {
                     handleNavIntent();

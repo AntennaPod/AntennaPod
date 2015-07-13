@@ -614,7 +614,7 @@ public class ItemlistFragment extends ListFragment {
             Context context = getActivity();
             if (context != null) {
                 Feed feed = DBReader.getFeed(context, feedID);
-                if(feed.getItemFilter() != null) {
+                if(feed != null && feed.getItemFilter() != null) {
                     FeedItemFilter filter = feed.getItemFilter();
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
