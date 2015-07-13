@@ -129,7 +129,11 @@ public class QueueListAdapter extends BaseAdapter {
                     holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                 }
             } else {
-                holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                if(media.getSize() > 0) {
+                    holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                } else {
+                    holder.progressLeft.setText("");
+                }
                 holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                 holder.progress.setVisibility(View.GONE);
             }
