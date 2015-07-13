@@ -192,7 +192,10 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private void onFragmentLoaded() {
         if (adapter == null) {
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
+            // played items shoudln't be transparent for this fragment since, *all* items
+            // in this fragment will, by definition, be played. So it serves no purpose and can make
+            // it harder to read.
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true, false);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();

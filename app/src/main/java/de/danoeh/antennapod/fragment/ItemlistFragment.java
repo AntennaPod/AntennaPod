@@ -428,7 +428,7 @@ public class ItemlistFragment extends ListFragment {
             setListAdapter(null);
             setupHeaderView();
             setupFooterView();
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false, true);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
