@@ -11,10 +11,10 @@ You can use the [AntennaPod Google Group](https://groups.google.com/forum/#!foru
 Bug reports and feature requests can be submitted [here](https://github.com/danieloeh/AntennaPod/issues/new) (please read the [instructions](https://github.com/danieloeh/AntennaPod/blob/master/CONTRIBUTING.md) on how to report a bug and how to submit a feature request first!).
 
 ## Beta Testing
-You can participate in beta testing by joining the Google Plus [AntennaPod Beta](https://plus.google.com/communities/105484485757508984859) community.
+You can participate in beta testing by joining the Google Plus [AntennaPod Beta](https://plus.google.com/communities/105484485757508984859) community and then going to [this url](https://play.google.com/apps/testing/de.danoeh.antennapod)
 
 ## Alpha Testing
-You can participate in alpha testing by joining the Google Plus [AntennaPod Alpha](https://plus.google.com/communities/117446128636140585144) community.
+You can participate in alpha testing by joining the Google Plus [AntennaPod Alpha](https://plus.google.com/communities/117446128636140585144) community and then going to [this url](https://play.google.com/apps/testing/de.danoeh.antennapod)
 
 ## Nightly Builds
 
