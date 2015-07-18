@@ -66,6 +66,7 @@ public class QueueFragment extends Fragment {
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
+    private TextView statusBar;
     private DragSortListView listView;
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
@@ -363,6 +364,7 @@ public class QueueFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
+        statusBar = (TextView) root.findViewById(R.id.status_bar);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
@@ -469,6 +471,27 @@ public class QueueFragment extends Fragment {
         // we need to refresh the options menu because it sometimes
         // needs data that may have just been loaded.
         getActivity().supportInvalidateOptionsMenu();
+
+        // refresh status bar
+        if(queue.size() > 0) {
+            int durationSec = 0;
+            for(FeedItem item : queue) {
+                if(item.getMedia() != null) {
+                    durationSec += item.getMedia().getDuration() / 1000;
+                }
+            }
+            String duration = "";
+            if(durationSec > 3600) {
+                duration += durationSec / 3600 + " " + getString(R.string.time_unit_hours) + " "
+                        + (durationSec % 3600) / 60 + " " + getString(R.string.time_unit_minutes);
+            } else {
+                duration = durationSec / 60 + " " + getString(R.string.time_unit_minutes);
+            }
+            statusBar.setText(queue.size() + getString(R.string.episodes_suffix) + " \u2022 " + duration);
+        } else {
+            statusBar.setText("0" + getString(R.string.episodes_suffix));
+        }
+
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
