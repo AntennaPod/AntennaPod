@@ -66,7 +66,7 @@ public class QueueFragment extends Fragment {
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.PLAYER_STATUS_UPDATE;
 
-    private TextView statusBar;
+    private TextView infoBar;
     private DragSortListView listView;
     private QueueListAdapter listAdapter;
     private TextView txtvEmpty;
@@ -364,7 +364,7 @@ public class QueueFragment extends Fragment {
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.queue_label);
 
         View root = inflater.inflate(R.layout.queue_fragment, container, false);
-        statusBar = (TextView) root.findViewById(R.id.status_bar);
+        infoBar = (TextView) root.findViewById(R.id.info_bar);
         listView = (DragSortListView) root.findViewById(android.R.id.list);
         txtvEmpty = (TextView) root.findViewById(android.R.id.empty);
         progLoading = (ProgressBar) root.findViewById(R.id.progLoading);
@@ -472,7 +472,8 @@ public class QueueFragment extends Fragment {
         // needs data that may have just been loaded.
         getActivity().supportInvalidateOptionsMenu();
 
-        // refresh status bar
+        // refresh information bar
+        String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
             int durationSec = 0;
             for(FeedItem item : queue) {
@@ -480,18 +481,15 @@ public class QueueFragment extends Fragment {
                     durationSec += item.getMedia().getDuration() / 1000;
                 }
             }
-            String duration = "";
-            if(durationSec > 3600) {
-                duration += durationSec / 3600 + " " + getString(R.string.time_unit_hours) + " "
-                        + (durationSec % 3600) / 60 + " " + getString(R.string.time_unit_minutes);
-            } else {
-                duration = durationSec / 60 + " " + getString(R.string.time_unit_minutes);
+            int hours = durationSec / 3600;
+            int minutes = (durationSec % 3600) / 60;
+            info += " \u2022 ";
+            if (hours > 0) {
+                info += hours + " " + getString(R.string.time_unit_hours) + " ";
             }
-            statusBar.setText(queue.size() + getString(R.string.episodes_suffix) + " \u2022 " + duration);
-        } else {
-            statusBar.setText("0" + getString(R.string.episodes_suffix));
+            info += minutes + " " + getString(R.string.time_unit_minutes);
         }
-
+        infoBar.setText(info);
     }
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
