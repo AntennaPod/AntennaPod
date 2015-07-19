@@ -47,6 +47,7 @@ import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
+import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.QueueSorter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
@@ -475,19 +476,14 @@ public class QueueFragment extends Fragment {
         // refresh information bar
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
-            int durationSec = 0;
+            int duration = 0;
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
-                    durationSec += item.getMedia().getDuration() / 1000;
+                    duration += item.getMedia().getDuration();
                 }
             }
-            int hours = durationSec / 3600;
-            int minutes = (durationSec % 3600) / 60;
             info += " \u2022 ";
-            if (hours > 0) {
-                info += hours + " " + getString(R.string.time_unit_hours) + " ";
-            }
-            info += minutes + " " + getString(R.string.time_unit_minutes);
+            info += Converter.getDurationStringLocalized(getActivity(), duration);
         }
         infoBar.setText(info);
     }

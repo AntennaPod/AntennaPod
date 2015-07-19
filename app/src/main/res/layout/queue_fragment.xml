@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:gravity="center"
+        android:textSize="12sp"
         android:text="42 episodes \u2022 5 hours 17 minutes"/>
 
     <View
