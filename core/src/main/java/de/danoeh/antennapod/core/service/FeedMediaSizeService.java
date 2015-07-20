@@ -28,21 +28,23 @@ public class FeedMediaSizeService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "onHandleIntent()");
-        if(false == NetworkUtils.networkAvailable(this)) {
+        if(false == NetworkUtils.isDownloadAllowed(this)) {
             return;
         }
         List<FeedMedia> list = DBReader.getFeedMediaUnknownSize(this);
         for (FeedMedia media : list) {
-            if(false == NetworkUtils.networkAvailable(this)) {
+            Log.d(TAG, "Getting size currently " + media.getSize() + " for " + media.getDownload_url());
+            if(false == NetworkUtils.isDownloadAllowed(this)) {
                 return;
             }
             long size = Integer.MIN_VALUE;
-            if(media.isDownloaded()) {
+            if (media.isDownloaded()) {
                 File mediaFile = new File(media.getLocalMediaUrl());
                 if(mediaFile.exists()) {
                     size = mediaFile.length();
                 }
-            } else {
+            } else if (false == media.checkedOnSize()) {
+                // only query the network if we haven't already checked
                 HttpURLConnection conn = null;
                 try {
                     URL url = new URL(media.getDownload_url());
@@ -50,7 +52,6 @@ public class FeedMediaSizeService extends IntentService {
                     conn.setRequestProperty("Accept-Encoding", "");
                     conn.setRequestMethod("HEAD");
                     size = conn.getContentLength();
-                    conn.disconnect();
                 } catch (IOException e) {
                     Log.d(TAG, media.getDownload_url());
                     e.printStackTrace();
@@ -60,7 +61,12 @@ public class FeedMediaSizeService extends IntentService {
                     }
                 }
             }
+            if (size <= 0) {
+                // they didn't tell us the size, but we don't want to keep querying on it
+                media.setCheckedOnSize();
+            }
             media.setSize(size);
+            Log.d(TAG, "Size now: " + media.getSize());
             DBWriter.setFeedMedia(this, media);
             EventBus.getDefault().post(FeedMediaEvent.update(media));
         }
