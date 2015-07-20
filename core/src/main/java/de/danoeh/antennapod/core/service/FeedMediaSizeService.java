@@ -64,8 +64,9 @@ public class FeedMediaSizeService extends IntentService {
             if (size <= 0) {
                 // they didn't tell us the size, but we don't want to keep querying on it
                 media.setCheckedOnSize();
+            } else {
+                media.setSize(size);
             }
-            media.setSize(size);
             Log.d(TAG, "Size now: " + media.getSize());
             DBWriter.setFeedMedia(this, media);
             EventBus.getDefault().post(FeedMediaEvent.update(media));
