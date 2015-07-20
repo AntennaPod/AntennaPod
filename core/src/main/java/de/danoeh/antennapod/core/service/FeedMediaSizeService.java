@@ -43,7 +43,7 @@ public class FeedMediaSizeService extends IntentService {
                 if(mediaFile.exists()) {
                     size = mediaFile.length();
                 }
-            } else if (false == media.checkedOnSize()) {
+            } else if (false == media.checkedOnSizeButUnknown()) {
                 // only query the network if we haven't already checked
                 HttpURLConnection conn = null;
                 try {
@@ -63,7 +63,7 @@ public class FeedMediaSizeService extends IntentService {
             }
             if (size <= 0) {
                 // they didn't tell us the size, but we don't want to keep querying on it
-                media.setCheckedOnSize();
+                media.setCheckedOnSizeButUnknown();
             } else {
                 media.setSize(size);
             }

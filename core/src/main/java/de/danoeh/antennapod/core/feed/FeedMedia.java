@@ -35,7 +35,7 @@ public class FeedMedia extends FeedFile implements Playable {
      * 2) By default all FeedMedia have a size of 0 if we don't know it,
      *    so this won't conflict with existing practice.
      */
-    private static final int CHECKED_ON_SIZE = Integer.MIN_VALUE;
+    private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
 
     private int duration;
     private int position; // Current position in file
@@ -212,12 +212,12 @@ public class FeedMedia extends FeedFile implements Playable {
      * Indicates we asked the service what the size was, but didn't
      * get a valid answer and we shoudln't check using the network again.
      */
-    public void setCheckedOnSize() {
-        this.size = CHECKED_ON_SIZE;
+    public void setCheckedOnSizeButUnknown() {
+        this.size = CHECKED_ON_SIZE_BUT_UNKNOWN;
     }
 
-    public boolean checkedOnSize() {
-        return (CHECKED_ON_SIZE == this.size);
+    public boolean checkedOnSizeButUnknown() {
+        return (CHECKED_ON_SIZE_BUT_UNKNOWN == this.size);
     }
 
     public String getMime_type() {
