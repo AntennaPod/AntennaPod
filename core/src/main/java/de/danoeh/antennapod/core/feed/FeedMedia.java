@@ -28,6 +28,15 @@ public class FeedMedia extends FeedFile implements Playable {
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
     public static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
+    /**
+     * Indicates we've checked on the size of the item via the network
+     * and got an invalid response. Using Integer.MIN_VALUE because
+     * 1) we'll still check on it in case it gets downloaded (it's <= 0)
+     * 2) By default all FeedMedia have a size of 0 if we don't know it,
+     *    so this won't conflict with existing practice.
+     */
+    private static final int CHECKED_ON_SIZE = Integer.MIN_VALUE;
+
     private int duration;
     private int position; // Current position in file
     private int played_duration; // How many ms of this file have been played (for autoflattring)
@@ -197,6 +206,18 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    /**
+     * Indicates we asked the service what the size was, but didn't
+     * get a valid answer and we shoudln't check using the network again.
+     */
+    public void setCheckedOnSize() {
+        this.size = CHECKED_ON_SIZE;
+    }
+
+    public boolean checkedOnSize() {
+        return (CHECKED_ON_SIZE == this.size);
     }
 
     public String getMime_type() {

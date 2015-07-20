@@ -1113,7 +1113,7 @@ public class PodDBAdapter {
     public final Cursor getFeedMediaUnknownSizeCursor() {
         final String query = "SELECT * "
                 + " FROM " + TABLE_NAME_FEED_MEDIA
-                + " WHERE " + KEY_SIZE + ">" + Integer.MIN_VALUE;
+                + " WHERE " + KEY_SIZE + "<= 0";
         return db.rawQuery(query, null);
     }
 
