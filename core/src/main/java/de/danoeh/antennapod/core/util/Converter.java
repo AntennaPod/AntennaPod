@@ -1,6 +1,9 @@
 package de.danoeh.antennapod.core.util;
 
+import android.content.Context;
 import android.util.Log;
+
+import de.danoeh.antennapod.core.R;
 
 /** Provides methods for converting various units. */
 public final class Converter {
@@ -98,6 +101,22 @@ public final class Converter {
         }
         return Integer.valueOf(parts[0]) * 3600 * 1000 +
                 Integer.valueOf(parts[1]) * 1000 * 60;
+    }
+
+    /** Converts milliseconds to a localized string containing hours and minutes */
+    public static String getDurationStringLocalized(Context context, int duration) {
+        int h = duration / HOURS_MIL;
+        int rest = duration - h * HOURS_MIL;
+        int m = rest / MINUTES_MIL;
+
+        String result = "";
+        if(h > 0) {
+            String hours = context.getString(R.string.time_unit_hours);
+            result += h + " " + hours + " ";
+        }
+        String minutes = context.getString(R.string.time_unit_minutes);
+        result += m + " " + minutes;
+        return result;
     }
     
 }
