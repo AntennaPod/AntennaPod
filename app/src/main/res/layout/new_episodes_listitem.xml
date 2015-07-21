@@ -81,13 +81,24 @@
                 tools:src="@drawable/ic_list_grey600_24dp"
                 tools:background="@android:color/black" />
 
+            <ImageView
+                android:id="@+id/imgvType"
+                android:layout_width="@dimen/enc_icons_size"
+                android:layout_height="@dimen/enc_icons_size"
+                android:layout_alignParentTop="true"
+                android:layout_marginLeft="8dp"
+                android:layout_toLeftOf="@id/imgvInPlaylist"
+                tools:ignore="ContentDescription"
+                tools:src="@drawable/ic_hearing_white_18dp"
+                tools:background="@android:color/holo_red_light" />
+
             <TextView
                 android:id="@+id/txtvPublished"
                 style="@style/AntennaPod.TextView.ListItemSecondaryTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
-                android:layout_toLeftOf="@id/imgvInPlaylist"
+                android:layout_toLeftOf="@id/imgvType"
                 android:ellipsize="end"
                 tools:text="Jan 23"
                 tools:background="@android:color/holo_green_dark" />

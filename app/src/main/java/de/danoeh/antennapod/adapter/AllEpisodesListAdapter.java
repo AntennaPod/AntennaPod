@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import com.squareup.picasso.Picasso;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
 
@@ -80,6 +82,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                     .findViewById(R.id.butSecondaryAction);
             holder.queueStatus = (ImageView) convertView
                     .findViewById(R.id.imgvInPlaylist);
+            holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
             holder.progress = (ProgressBar) convertView
                     .findViewById(R.id.pbar_progress);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
@@ -125,6 +128,22 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 holder.progress.setVisibility(View.GONE);
             }
 
+            TypedArray typeDrawables = context.obtainStyledAttributes(
+                    new int[]{R.attr.type_audio, R.attr.type_video});
+            final int[] labels = new int[]{R.string.media_type_audio_label, R.string.media_type_video_label};
+            MediaType mediaType = item.getMedia().getMediaType();
+            if (mediaType == MediaType.AUDIO) {
+                holder.type.setImageDrawable(typeDrawables.getDrawable(0));
+                holder.type.setContentDescription(context.getString(labels[0]));
+                holder.type.setVisibility(View.VISIBLE);
+            } else if (mediaType == MediaType.VIDEO) {
+                holder.type.setImageDrawable(typeDrawables.getDrawable(1));
+                holder.type.setContentDescription(context.getString(labels[1]));
+                holder.type.setVisibility(View.VISIBLE);
+            } else {
+                holder.type.setImageBitmap(null);
+                holder.type.setVisibility(View.GONE);
+            }
         } else {
             holder.progress.setVisibility(View.GONE);
             holder.txtvDuration.setVisibility(View.GONE);
@@ -163,6 +182,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         TextView pubDate;
         View statusUnread;
         ImageView queueStatus;
+        ImageView type;
         ImageView imageView;
         ProgressBar progress;
         TextView txtvDuration;
