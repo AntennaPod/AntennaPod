@@ -15,7 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -259,9 +260,13 @@ public class NavListAdapter extends BaseAdapter
             holder = (FeedHolder) convertView.getTag();
         }
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(feed.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());

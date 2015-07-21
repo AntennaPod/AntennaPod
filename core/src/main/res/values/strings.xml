@@ -331,12 +331,12 @@
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
-
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>
     <string name="pref_queueAddToFront_sum">Add new episodes to the front of the queue.</string>
     <string name="pref_queueAddToFront_title">Enqueue at Front</string>
     <string name="pref_smart_mark_as_played_disabled">Disabled</string>
-
+    <string name="pref_image_cache_size_title">Image Cache Size</string>
+    <string name="pref_image_cache_size_sum">Size of the disk cache for images.</string>
 
     <!-- Auto-Flattr dialog -->
     <string name="auto_flattr_enable">Enable automatic flattring</string>
@@ -431,6 +431,7 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
+    <string name="pref_restart_required">AnntennaPod has to be restarted for this change to take effect.</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
@@ -464,6 +465,7 @@
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
+    <string name="progress_clearing_image_cache">Clearing old image cache</string>
 
     <!-- AntennaPodSP -->
 

@@ -174,4 +174,20 @@
         <item>not_downloaded</item>
     </string-array>
 
+    <string-array name="image_cache_size_options">
+        <item>20 MiB</item>
+        <item>50 MiB</item>
+        <item>100 MiB</item>
+        <item>250 MiB</item>
+        <item>500 MiB</item>
+    </string-array>
+
+    <string-array name="image_cache_size_values">
+        <item>20</item>
+        <item>50</item>
+        <item>100</item>
+        <item>250</item>
+        <item>500</item>
+    </string-array>
+
 </resources>

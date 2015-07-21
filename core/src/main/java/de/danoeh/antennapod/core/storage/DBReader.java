@@ -871,7 +871,11 @@ public final class DBReader {
             if (cursor.moveToFirst()) {
                 String username = cursor.getString(0);
                 String password = cursor.getString(1);
-                return username + ":" + password;
+                if(username != null && password != null) {
+                    return username + ":" + password;
+                } else {
+                    return "";
+                }
             }
             return "";
         } finally {

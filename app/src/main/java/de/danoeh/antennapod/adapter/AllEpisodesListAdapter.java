@@ -11,7 +11,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
+import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -72,6 +78,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = inflater.inflate(R.layout.new_episodes_listitem,
                     parent, false);
+            holder.feed = (TextView) convertView.findViewById(R.id.txtvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView
                     .findViewById(R.id.txtvPublished);
@@ -89,6 +96,8 @@ public class AllEpisodesListAdapter extends BaseAdapter {
             holder = (Holder) convertView.getTag();
         }
 
+        holder.feed.setVisibility(View.VISIBLE);
+        holder.feed.setText(item.getFeed().getTitle());
         holder.title.setText(item.getTitle());
         holder.pubDate.setText(DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
         if (showOnlyNewEpisodes || false == item.isNew()) {
@@ -141,12 +150,33 @@ public class AllEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(item.getImageUri())
-                .fit()
-                .into(holder.imageView);
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
+                .into(new CustomTarget(holder.feed, holder.imageView));
 
         return convertView;
+    }
+
+    private class CustomTarget extends GlideDrawableImageViewTarget {
+
+        private final WeakReference<TextView> mPlaceholder;
+
+        public CustomTarget(TextView placeholder, ImageView imageView) {
+            super(imageView);
+            mPlaceholder = new WeakReference<TextView>(placeholder);
+        }
+
+        @Override
+        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+            super.onResourceReady(drawable, anim);
+            TextView txtvPlaceholder = mPlaceholder.get();
+            if(txtvPlaceholder != null) {
+                txtvPlaceholder.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
@@ -159,6 +189,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
 
 
     static class Holder {
+        TextView feed;
         TextView title;
         TextView pubDate;
         View statusUnread;

@@ -7,7 +7,7 @@ import android.util.Log;
 
 import java.util.List;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
@@ -18,7 +18,7 @@ import de.danoeh.antennapod.core.util.ShownotesProvider;
  * Interface for objects that can be played by the PlaybackService.
  */
 public interface Playable extends Parcelable,
-        ShownotesProvider, PicassoImageResource {
+        ShownotesProvider, ImageResource {
 
     /**
      * Save information about the playable in a preference so that it can be

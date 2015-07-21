@@ -10,7 +10,7 @@ import java.util.List;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.ClientConfig;
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
@@ -21,7 +21,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  *
  * @author daniel
  */
-public class FeedItem extends FeedComponent implements ShownotesProvider, FlattrThing, PicassoImageResource {
+public class FeedItem extends FeedComponent implements ShownotesProvider, FlattrThing, ImageResource {
 
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
@@ -337,7 +337,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public Uri getImageUri() {
         if(media != null && media.hasEmbeddedPicture()) {
             return media.getImageUri();
-        } else if (hasItemImageDownloaded()) {
+        } else if (image != null) {
            return image.getImageUri();
         } else if (feed != null) {
             return feed.getImageUri();

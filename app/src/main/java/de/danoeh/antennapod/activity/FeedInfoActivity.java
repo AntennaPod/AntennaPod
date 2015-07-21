@@ -14,19 +14,19 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsSpinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Spinner;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.android.iconify.Iconify;
-import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
@@ -123,9 +123,13 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            Picasso.with(FeedInfoActivity.this)
+                            Glide.with(FeedInfoActivity.this)
                                     .load(feed.getImageUri())
-                                    .fit()
+                                    .placeholder(R.color.light_gray)
+                                    .error(R.color.light_gray)
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .fitCenter()
+                                    .dontAnimate()
                                     .into(imgvCover);
                         }
                     });

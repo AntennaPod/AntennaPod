@@ -284,24 +284,6 @@ public final class DBTasks {
     }
 
     /**
-     * Notifies the database about a missing FeedImage file. This method will attempt to re-download the file.
-     *
-     * @param context Used for requesting the download.
-     * @param image   The FeedImage object.
-     */
-    public static void notifyInvalidImageFile(final Context context,
-                                              final FeedImage image) {
-        Log.i(TAG,
-                "The DB was notified about an invalid image download. It will now try to re-download the image file");
-        try {
-            DownloadRequester.getInstance().downloadImage(context, image);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Log.w(TAG, "Failed to download invalid feed image");
-        }
-    }
-
-    /**
      * Notifies the database about a missing FeedMedia file. This method will correct the FeedMedia object's values in the
      * DB and send a FeedUpdateBroadcast.
      */

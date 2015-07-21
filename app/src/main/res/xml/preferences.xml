@@ -204,6 +204,13 @@
         <Preference
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
+        <ListPreference
+            android:entryValues="@array/image_cache_size_values"
+            android:entries="@array/image_cache_size_options"
+            android:title="@string/pref_image_cache_size_title"
+            android:key="prefImageCacheSize"
+            android:summary="@string/pref_image_cache_size_sum"
+            android:defaultValue="0"/>
         <Preference
             android:key="prefFlattrThisApp"
             android:summary="@string/pref_flattr_this_app_sum"
@@ -215,7 +222,6 @@
         <Preference
             android:key="prefAbout"
             android:title="@string/about_pref"/>
-
 
     </PreferenceCategory>
 

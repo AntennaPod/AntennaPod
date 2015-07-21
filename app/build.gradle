@@ -16,7 +16,7 @@ dependencies {
     }
     compile 'commons-io:commons-io:2.4'
     compile 'org.jsoup:jsoup:1.7.3'
-    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.github.bumptech.glide:glide:3.6.1'
     compile 'com.squareup.okhttp:okhttp:2.3.0'
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.3.0'
     compile 'com.squareup.okio:okio:1.2.0'

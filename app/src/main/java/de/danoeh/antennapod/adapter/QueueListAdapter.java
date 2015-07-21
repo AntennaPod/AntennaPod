@@ -11,7 +11,13 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
+import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -76,6 +82,7 @@ public class QueueListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.queue_listitem,
                     parent, false);
             holder.dragHandle = (ImageView) convertView.findViewById(R.id.drag_handle);
+            holder.feed = (TextView) convertView.findViewById(R.id.txtvImage);
             holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
@@ -98,9 +105,10 @@ public class QueueListAdapter extends BaseAdapter {
             holder.dragHandle.setVisibility(View.VISIBLE);
         }
 
+        holder.feed.setText(item.getFeed().getTitle());
+
         holder.title.setText(item.getTitle());
         FeedMedia media = item.getMedia();
-
 
         holder.title.setText(item.getTitle());
         String pubDate = DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL);
@@ -144,12 +152,33 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(item.getImageUri())
-                .fit()
-                .into(holder.imageView);
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
+                .into(new CustomTarget(holder.feed, holder.imageView));
 
         return convertView;
+    }
+
+    private class CustomTarget extends GlideDrawableImageViewTarget {
+
+        private final WeakReference<TextView> mPlaceholder;
+
+        public CustomTarget(TextView placeholder, ImageView imageView) {
+            super(imageView);
+            mPlaceholder = new WeakReference<TextView>(placeholder);
+        }
+
+        @Override
+        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+            super.onResourceReady(drawable, anim);
+            TextView txtvPlaceholder = mPlaceholder.get();
+            if(txtvPlaceholder != null) {
+                txtvPlaceholder.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
@@ -164,6 +193,7 @@ public class QueueListAdapter extends BaseAdapter {
     static class Holder {
         ImageView dragHandle;
         ImageView imageView;
+        TextView feed;
         TextView title;
         TextView pubDate;
         TextView progressLeft;

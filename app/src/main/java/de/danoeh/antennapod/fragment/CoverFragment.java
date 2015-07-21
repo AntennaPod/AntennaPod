@@ -10,7 +10,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
@@ -80,8 +81,12 @@ public class CoverFragment extends Fragment implements
                 public void run() {
                     Context c = getActivity();
                     if (c != null) {
-                        Picasso.with(c)
+                        Glide.with(c)
                                 .load(media.getImageUri())
+                                .placeholder(R.color.light_gray)
+                                .error(R.color.light_gray)
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .dontAnimate()
                                 .into(imgvCover);
                     }
                 }

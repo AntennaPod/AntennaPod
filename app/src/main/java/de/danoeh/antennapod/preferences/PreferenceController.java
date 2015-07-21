@@ -364,6 +364,26 @@ public class PreferenceController {
                 return true;
             }
         });
+        ui.findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE)
+                .setOnPreferenceChangeListener(
+                        new Preference.OnPreferenceChangeListener() {
+                            @Override
+                            public boolean onPreferenceChange(Preference preference, Object o) {
+                                if (o instanceof String) {
+                                    int newValue = Integer.valueOf((String) o) * 1024 * 1024;
+                                    if(newValue != UserPreferences.getImageCacheSize()) {
+                                        AlertDialog.Builder dialog = new AlertDialog.Builder(ui.getActivity());
+                                        dialog.setTitle(android.R.string.dialog_alert_title);
+                                        dialog.setMessage(R.string.pref_restart_required);
+                                        dialog.setPositiveButton(android.R.string.ok, null);
+                                        dialog.show();
+                                    }
+                                    return true;
+                                }
+                                return false;
+                            }
+                        }
+                );
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences

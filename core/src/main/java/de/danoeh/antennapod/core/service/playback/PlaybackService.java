@@ -29,7 +29,10 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -791,16 +794,18 @@ public class PlaybackService extends Service {
                 Log.d(TAG, "Starting background work");
                 if (android.os.Build.VERSION.SDK_INT >= 11) {
                     if (info.playable != null) {
-                        try {
-                            int iconSize = getResources().getDimensionPixelSize(
-                                    android.R.dimen.notification_large_icon_width);
-                            icon = Picasso.with(PlaybackService.this)
-                                    .load(info.playable.getImageUri())
-                                    .resize(iconSize, iconSize)
-                                    .get();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
+                        int iconSize = getResources().getDimensionPixelSize(
+                                android.R.dimen.notification_large_icon_width);
+                        Glide.with(PlaybackService.this)
+                                .load(info.playable.getImageUri())
+                                .asBitmap()
+                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .into(new SimpleTarget<Bitmap>(iconSize, iconSize) {
+                                    @Override
+                                    public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
+                                        icon = bitmap;
+                                    }
+                                });
                     }
 
                 }
