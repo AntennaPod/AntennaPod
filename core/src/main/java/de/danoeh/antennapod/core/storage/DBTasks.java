@@ -184,50 +184,13 @@ public final class DBTasks {
                     if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                         GpodnetSyncService.sendSyncIntent(context);
                     }
+                    Log.d(TAG, "refreshAllFeeds autodownload");
                     autodownloadUndownloadedItems(context);
                 }
             }.start();
         } else {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
-    }
-
-    /**
-     * Used by refreshExpiredFeeds to determine which feeds should be refreshed.
-     * This method will use the value specified in the UserPreferences as the
-     * expiration time.
-     *
-     * @param context Used for DB access.
-     * @return A list of expired feeds. An empty list will be returned if there
-     * are no expired feeds.
-     */
-    public static List<Feed> getExpiredFeeds(final Context context) {
-        long millis = UserPreferences.getUpdateInterval();
-        if (millis > 0) {
-            List<Feed> feedList = DBReader.getExpiredFeedsList(context, millis);
-            if (feedList.size() > 0) {
-                refreshFeeds(context, feedList);
-            }
-            return feedList;
-        } else {
-            return new ArrayList<Feed>();
-        }
-    }
-
-    /**
-     * Refreshes expired Feeds in the list returned by the getExpiredFeedsList(Context, long) method in DBReader.
-     * The expiration date parameter is determined by the update interval specified in {@link UserPreferences}.
-     *
-     * @param context Used for DB access.
-     */
-    public static void refreshExpiredFeeds(final Context context) {
-        Log.d(TAG, "Refreshing expired feeds");
-
-        new Thread() {
-            public void run() {
-                refreshFeeds(context, getExpiredFeeds(context));
-            }
-        }.start();
     }
 
     private static void refreshFeeds(final Context context,
@@ -440,6 +403,7 @@ public final class DBTasks {
      * @return A Future that can be used for waiting for the methods completion.
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context, final long... mediaIds) {
+        Log.d(TAG, "autodownloadUndownloadedItems");
         return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
                 .autoDownloadUndownloadedItems(context, mediaIds));
 
