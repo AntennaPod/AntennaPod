@@ -588,7 +588,7 @@ public class UserPreferences {
         Calendar alarm = (Calendar)now.clone();
         alarm.set(Calendar.HOUR_OF_DAY, hoursOfDay);
         alarm.set(Calendar.MINUTE, minute);
-        if(alarm.before(now)) {
+        if (alarm.before(now) || alarm.equals(now)) {
             alarm.add(Calendar.DATE, 1);
         }
         Log.d(TAG, "Alarm set for: " + alarm.toString() + " : " + alarm.getTimeInMillis());
