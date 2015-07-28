@@ -981,13 +981,6 @@ public class PodDBAdapter {
         return db.query(TABLE_NAME_FEEDS, new String[]{KEY_ID, KEY_DOWNLOAD_URL}, null, null, null, null, null);
     }
 
-    public final Cursor getExpiredFeedsCursor(long expirationTime) {
-        Cursor c = db.query(TABLE_NAME_FEEDS, FEED_SEL_STD, KEY_LASTUPDATE + " < " + String.valueOf(System.currentTimeMillis() - expirationTime),
-                null, null, null,
-                null);
-        return c;
-    }
-
     /**
      * Returns a cursor with all FeedItems of a Feed. Uses FEEDITEM_SEL_FI_SMALL
      *

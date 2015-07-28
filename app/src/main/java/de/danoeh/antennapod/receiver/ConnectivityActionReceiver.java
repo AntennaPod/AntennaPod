@@ -15,7 +15,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 
 public class ConnectivityActionReceiver extends BroadcastReceiver {
-	private static final String TAG = "ConnectivityActionReceiver";
+	private static final String TAG = "ConnectivityActionRecvr";
 
 	@Override
 	public void onReceive(final Context context, Intent intent) {

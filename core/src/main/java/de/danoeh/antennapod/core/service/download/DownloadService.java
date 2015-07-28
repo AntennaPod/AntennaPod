@@ -326,6 +326,7 @@ public class DownloadService extends Service {
         unregisterReceiver(cancelDownloadReceiver);
 
         if (!newMediaFiles.isEmpty()) {
+            Log.d(TAG, "newMediaFiles exist, autodownload them");
             DBTasks.autodownloadUndownloadedItems(getApplicationContext(),
                     ArrayUtils.toPrimitive(newMediaFiles.toArray(new Long[newMediaFiles.size()])));
         }

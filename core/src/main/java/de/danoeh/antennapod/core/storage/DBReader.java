@@ -115,35 +115,6 @@ public final class DBReader {
     }
 
     /**
-     * Returns a list of 'expired Feeds', i.e. Feeds that have not been updated for a certain amount of time.
-     *
-     * @param context        A context that is used for opening a database connection.
-     * @param expirationTime Time that is used for determining whether a feed is outdated or not.
-     *                       A Feed is considered expired if 'lastUpdate < (currentTime - expirationTime)' evaluates to true.
-     * @return A list of Feeds, sorted alphabetically by their title. A Feed-object
-     * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
-     * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.core.feed.Feed)}.
-     */
-    public static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
-        Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
-
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-
-        Cursor feedlistCursor = adapter.getExpiredFeedsCursor(expirationTime);
-        List<Feed> feeds = new ArrayList<Feed>(feedlistCursor.getCount());
-
-        if (feedlistCursor.moveToFirst()) {
-            do {
-                Feed feed = extractFeedFromCursorRow(adapter, feedlistCursor);
-                feeds.add(feed);
-            } while (feedlistCursor.moveToNext());
-        }
-        feedlistCursor.close();
-        return feeds;
-    }
-
-    /**
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
      * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
      * not find the correct feed of an item.
