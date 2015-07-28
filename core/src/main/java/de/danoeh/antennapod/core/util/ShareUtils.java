@@ -21,11 +21,11 @@ public class ShareUtils {
 	}
 
 	public static void shareFeedlink(Context context, Feed feed) {
-		shareLink(context, feed.getLink());
+		shareLink(context, feed.getTitle() + ": " + feed.getLink());
 	}
 	
 	public static void shareFeedDownloadLink(Context context, Feed feed) {
-		shareLink(context, feed.getDownload_url());
+		shareLink(context, feed.getTitle() + ": " + feed.getDownload_url());
 	}
 
 	public static void shareFeedItemLink(Context context, FeedItem item) {
@@ -36,24 +36,24 @@ public class ShareUtils {
 		shareFeedItemDownloadLink(context, item, false);
 	}
 
+	private static String getItemShareText(FeedItem item) {
+		return item.getFeed().getTitle() + ": " + item.getTitle();
+	}
+
 	public static void shareFeedItemLink(Context context, FeedItem item, boolean withPosition) {
-		String text;
+		String text = getItemShareText(item) + " " + item.getLink();
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
 			text = item.getLink() + " [" + Converter.getDurationStringLong(pos) + "]";
-		} else {
-			text = item.getLink();
 		}
 		shareLink(context, text);
 	}
 
 	public static void shareFeedItemDownloadLink(Context context, FeedItem item, boolean withPosition) {
-		String text;
+		String text = getItemShareText(item) + " " + item.getMedia().getDownload_url();
 		if(withPosition) {
 			int pos = item.getMedia().getPosition();
-			text = item.getMedia().getDownload_url() + " [" + Converter.getDurationStringLong(pos) + "]";
-		} else {
-			text = item.getMedia().getDownload_url();
+			text += " [" + Converter.getDurationStringLong(pos) + "]";
 		}
 		shareLink(context, text);
 	}
