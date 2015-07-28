@@ -426,30 +426,4 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
             }
         }, Timeout.getLargeTimeout());
     }
-
-    @FlakyTest(tolerance = 3)
-    public void testAbout() throws IOException {
-        int numViews = 0, numLinks = 0;
-        InputStream input = getActivity().getResources().getAssets().open("about.html");
-        List<String> lines = IOUtils.readLines(input);
-        input.close();
-        for(String line : lines) {
-            if(line.contains("(View)")) {
-                numViews++;
-            } else if(line.contains("(Link)")) {
-                numLinks++;
-            }
-        }
-        for(int i=0; i < numViews; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(View)", i);
-            solo.goBack();
-        }
-        for(int i=0; i < numLinks; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(Link)", i);
-            solo.goBack();
-        }
-    }
-
 }
