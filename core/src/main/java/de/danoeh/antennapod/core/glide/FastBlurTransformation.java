@@ -2,6 +2,7 @@ package de.danoeh.antennapod.core.glide;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.media.ThumbnailUtils;
 import android.util.Log;
 
 import com.bumptech.glide.load.engine.bitmap_recycle.BitmapPool;
@@ -9,33 +10,35 @@ import com.bumptech.glide.load.resource.bitmap.BitmapTransformation;
 
 public class FastBlurTransformation extends BitmapTransformation {
 
-    private static final String TAG = "BlurTransformation";
+    private static final String TAG = FastBlurTransformation.class.getSimpleName();
 
-    private static final int RADIUS = 1;
-    private static final int IMAGE_SIZE = 192;
+    private static final int STACK_BLUR_RADIUS = 1;
+    private static final int BLUR_IMAGE_WIDTH = 150;
 
     public FastBlurTransformation(Context context) {
         super(context);
     }
 
     @Override
-    protected Bitmap transform(BitmapPool pool, Bitmap toTransform,
+    protected Bitmap transform(BitmapPool pool, Bitmap source,
                                int outWidth, int outHeight) {
-        Bitmap resizedBitmap = Bitmap.createScaledBitmap(toTransform, IMAGE_SIZE, IMAGE_SIZE, true);
-        Bitmap transformed = fastBlur(resizedBitmap, RADIUS);
-        if (transformed == null) {
-            Log.w(TAG, "transformed was null");
-            return toTransform;
+        int targetWidth = BLUR_IMAGE_WIDTH;
+        int targetHeight = (int) (1.0 * outHeight * targetWidth / outWidth);
+        Bitmap resized = ThumbnailUtils.extractThumbnail(source, targetWidth, targetHeight);
+        Bitmap result = fastBlur(resized, STACK_BLUR_RADIUS);
+        if (result == null) {
+            Log.w(TAG, "result was null");
+            return source;
         }
-        return transformed;
+        return result;
     }
 
     @Override
     public String getId() {
-        return "FastBlurTransformation-" + IMAGE_SIZE + "x" + IMAGE_SIZE + "-" + RADIUS;
+        return "FastBlurTransformation[width=" + BLUR_IMAGE_WIDTH + "px,radius=" + STACK_BLUR_RADIUS +"]";
     }
 
-    private static Bitmap fastBlur(Bitmap original, int radius) {
+    private static Bitmap fastBlur(Bitmap bitmap, int radius) {
 
         // Stack Blur v1.0 from
         // http://www.quasimondo.com/StackBlurForCanvas/StackBlurDemo.html
@@ -65,15 +68,6 @@ public class FastBlurTransformation extends BitmapTransformation {
         //
         // Stack Blur Algorithm by Mario Klingemann <mario@quasimondo.com>
 
-        Bitmap.Config config = original.getConfig();
-        if (config == null) {
-            // Sometimes the config can be null, in those cases
-            // we don't do a transform.
-            return null;
-        }
-
-        Bitmap bitmap = original.copy(config, true);
-
         if (radius < 1) {
             return null;
         }
@@ -82,7 +76,6 @@ public class FastBlurTransformation extends BitmapTransformation {
         int h = bitmap.getHeight();
 
         int[] pix = new int[w * h];
-        Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.getPixels(pix, 0, w, 0, 0, w, h);
 
         int wm = w - 1;
@@ -267,10 +260,7 @@ public class FastBlurTransformation extends BitmapTransformation {
                 yi += w;
             }
         }
-
-        Log.e("pix", w + " " + h + " " + pix.length);
         bitmap.setPixels(pix, 0, w, 0, 0, w, h);
-
         return bitmap;
     }
 

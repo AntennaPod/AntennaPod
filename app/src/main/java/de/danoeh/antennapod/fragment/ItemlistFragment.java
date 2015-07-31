@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -506,6 +507,10 @@ public class ItemlistFragment extends ListFragment {
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
 
+
+        // https://github.com/bumptech/glide/issues/529
+        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+
         Glide.with(getActivity())
                 .load(feed.getImageUri())
                 .placeholder(R.color.image_readability_tint)
@@ -514,9 +519,6 @@ public class ItemlistFragment extends ListFragment {
                 .transform(new FastBlurTransformation(getActivity()))
                 .dontAnimate()
                 .into(imgvBackground);
-
-        // https://github.com/bumptech/glide/issues/529
-        imgvBackground.setColorFilter(R.color.image_readability_tint);
 
         Glide.with(getActivity())
                 .load(feed.getImageUri())

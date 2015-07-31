@@ -61,21 +61,25 @@ public class UpdateManager {
 
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
         if(oldVersionCode < 1030000) {
-            List<Feed> feeds = DBReader.getFeedList(context);
-            for(Feed podcast: feeds) {
-                List<FeedItem> episodes = DBReader.getFeedItemList(context, podcast);
-                for(FeedItem episode : episodes) {
-                    FeedImage image = episode.getImage();
-                    if(image != null && image.isDownloaded() && image.getFile_url() != null) {
-                        File imageFile = new File(image.getFile_url());
-                        if(imageFile.exists()) {
-                            imageFile.delete();
+            new Thread() {
+                public void run() {
+                    List<Feed> feeds = DBReader.getFeedList(context);
+                    for (Feed podcast : feeds) {
+                        List<FeedItem> episodes = DBReader.getFeedItemList(context, podcast);
+                        for (FeedItem episode : episodes) {
+                            FeedImage image = episode.getImage();
+                            if (image != null && image.isDownloaded() && image.getFile_url() != null) {
+                                File imageFile = new File(image.getFile_url());
+                                if (imageFile.exists()) {
+                                    imageFile.delete();
+                                }
+                                image.setFile_url(null); // calls setDownloaded(false)
+                                DBWriter.setFeedImage(context, image);
+                            }
                         }
-                        image.setFile_url(null); // calls setDownloaded(false)
-                        DBWriter.setFeedImage(context, image);
                     }
                 }
-            }
+            }.start();
         }
     }
 

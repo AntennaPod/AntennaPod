@@ -465,7 +465,6 @@
 
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
-    <string name="progress_clearing_image_cache">Clearing old image cache</string>
 
     <!-- AntennaPodSP -->
 
