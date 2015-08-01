@@ -287,6 +287,8 @@ public class FeedInfoActivity extends ActionBarActivity {
                     R.string.auto_download_apply_to_items_message);
             this.feed = feed;
             this.autoDownload = autoDownload;
+            setPositiveText(R.string.yes);
+            setNegativeText(R.string.no);
         }
 
         @Override

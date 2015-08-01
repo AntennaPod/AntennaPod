@@ -19,6 +19,9 @@ public abstract class ConfirmationDialog {
 	int titleId;
 	int messageId;
 
+    int positiveText;
+    int negativeText;
+
 	public ConfirmationDialog(Context context, int titleId, int messageId) {
 		this.context = context;
 		this.titleId = titleId;
@@ -30,13 +33,22 @@ public abstract class ConfirmationDialog {
 		dialog.dismiss();
 	}
 
+    public void setPositiveText(int id) {
+        this.positiveText = id;
+    }
+
+    public void setNegativeText(int id) {
+        this.negativeText = id;
+    }
+
+
 	public abstract void onConfirmButtonPressed(DialogInterface dialog);
 
 	public final AlertDialog createNewDialog() {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(titleId);
 		builder.setMessage(messageId);
-		builder.setPositiveButton(R.string.confirm_label,
+		builder.setPositiveButton(positiveText != 0 ? positiveText : R.string.confirm_label,
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -44,7 +56,7 @@ public abstract class ConfirmationDialog {
 						onConfirmButtonPressed(dialog);
 					}
 				});
-		builder.setNegativeButton(R.string.cancel_label,
+		builder.setNegativeButton(negativeText != 0 ? negativeText : R.string.cancel_label,
 				new DialogInterface.OnClickListener() {
 
 					@Override
