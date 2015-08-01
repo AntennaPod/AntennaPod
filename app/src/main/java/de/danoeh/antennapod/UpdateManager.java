@@ -16,6 +16,9 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 
+/*
+ * This class's job is do perform maintenance tasks whenever the app has been updated
+ */
 public class UpdateManager {
 
     public static final String TAG = UpdateManager.class.getSimpleName();
@@ -38,6 +41,7 @@ public class UpdateManager {
         } catch (PackageManager.NameNotFoundException e) {
             Log.e(TAG, "Failed to obtain package info for package name: " + context.getPackageName(), e);
             currentVersionCode = 0;
+            return;
         }
         final int oldVersionCode = getStoredVersionCode();
         Log.d(TAG, "old: " + oldVersionCode + ", current: " + currentVersionCode);
@@ -45,10 +49,6 @@ public class UpdateManager {
             onUpgrade(oldVersionCode, currentVersionCode);
             setCurrentVersionCode();
         }
-    }
-
-    public static int getCurrentVersionCode() {
-        return currentVersionCode;
     }
 
     public static int getStoredVersionCode() {
@@ -60,7 +60,9 @@ public class UpdateManager {
     }
 
     private static void onUpgrade(final int oldVersionCode, final int newVersionCode) {
-        if(oldVersionCode < 1030000) {
+        if(oldVersionCode < 1030099) {
+            // delete the now obsolete image cache
+            // from now on, Glide will handle caching images
             new Thread() {
                 public void run() {
                     List<Feed> feeds = DBReader.getFeedList(context);

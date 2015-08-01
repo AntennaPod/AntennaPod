@@ -38,7 +38,6 @@ public class PodcastApp extends Application {
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 
-        // PicassoProvider.setupPicassoInstance(this);
 		UpdateManager.init(this);
 		UserPreferences.init(this);
 		PlaybackPreferences.init(this);
