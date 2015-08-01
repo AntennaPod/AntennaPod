@@ -2,6 +2,7 @@ package de.danoeh.antennapod.activity;
 
 import android.content.ClipData;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
@@ -14,21 +15,21 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AbsSpinner;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Spinner;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.joanzapata.android.iconify.Iconify;
 import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
@@ -150,6 +151,9 @@ public class FeedInfoActivity extends ActionBarActivity {
                         public void onCheckedChanged(CompoundButton compoundButton, boolean checked) {
                             feed.getPreferences().setAutoDownload(checked);
                             feed.savePreferences(FeedInfoActivity.this);
+                            ApplyToEpisodesDialog dialog = new ApplyToEpisodesDialog(FeedInfoActivity.this,
+                                    feed, checked);
+                            dialog.createNewDialog().show();
                         }
                     });
                     spnAutoDelete.setOnItemSelectedListener(new OnItemSelectedListener() {
@@ -272,4 +276,23 @@ public class FeedInfoActivity extends ActionBarActivity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    private class ApplyToEpisodesDialog extends ConfirmationDialog {
+
+        private final Feed feed;
+        private final boolean autoDownload;
+
+        public ApplyToEpisodesDialog(Context context, Feed feed, boolean autoDownload) {
+            super(context, R.string.auto_download_apply_to_items_title,
+                    R.string.auto_download_apply_to_items_message);
+            this.feed = feed;
+            this.autoDownload = autoDownload;
+        }
+
+        @Override
+        public  void onConfirmButtonPressed(DialogInterface dialog) {
+            DBWriter.setFeedsItemsAutoDownload(context, feed, autoDownload);
+        }
+    }
+
 }

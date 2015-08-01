@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
+
 import de.danoeh.antennapod.core.R;
 
 /**
@@ -12,9 +12,10 @@ import de.danoeh.antennapod.core.R;
  * classes can handle events like confirmation or cancellation.
  */
 public abstract class ConfirmationDialog {
-	private static final String TAG = "ConfirmationDialog";
 
-	Context context;
+	private static final String TAG = ConfirmationDialog.class.getSimpleName();
+
+	protected Context context;
 	int titleId;
 	int messageId;
 
@@ -25,8 +26,7 @@ public abstract class ConfirmationDialog {
 	}
 
 	public void onCancelButtonPressed(DialogInterface dialog) {
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Dialog was cancelled");
+		Log.d(TAG, "Dialog was cancelled");
 		dialog.dismiss();
 	}
 

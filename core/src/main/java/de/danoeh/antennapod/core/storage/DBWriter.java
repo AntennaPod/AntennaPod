@@ -1110,8 +1110,33 @@ public class DBWriter {
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
-
     }
+
+    /**
+     * Sets the 'auto_download'-attribute of specific FeedItem.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feed This feed's episodes will be processed.
+     * @param autoDownload If true, auto download will be enabled for the feed's episodes. Else,
+     *                     it will be disabled.
+     */
+    public static Future<?> setFeedsItemsAutoDownload(final Context context, final Feed feed,
+                                                    final boolean autoDownload) {
+        Log.d(TAG, (autoDownload ? "Enabling" : "Disabling") + " auto download for items of feed " + feed.getId());
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedsItemsAutoDownload(feed, autoDownload);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+    }
+
 
     /**
      * Set filter of the feed
