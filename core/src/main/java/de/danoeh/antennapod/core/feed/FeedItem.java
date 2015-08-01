@@ -274,11 +274,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     public void setContentEncoded(String contentEncoded) {
         this.contentEncoded = contentEncoded;
     }
-
-    public void setFlattrStatus(FlattrStatus status) {
-        this.flattrStatus = status;
-    }
-
+    
     public FlattrStatus getFlattrStatus() {
         return flattrStatus;
     }

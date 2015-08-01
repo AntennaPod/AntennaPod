@@ -42,12 +42,6 @@ public class FlattrUtils {
 
     private static final String PREF_ACCESS_TOKEN = "de.danoeh.antennapod.preference.flattrAccessToken";
 
-    // Flattr URL for this app.
-    public static final String APP_URL = "http://antennapod.com";
-    // Human-readable flattr-page.
-    public static final String APP_LINK = "https://flattr.com/thing/745609/";
-    public static final String APP_THING_ID = "745609";
-
     private static volatile AccessToken cachedToken;
 
     private static AndroidAuthenticator createAuthenticator() {
@@ -108,18 +102,6 @@ public class FlattrUtils {
     public static void deleteToken() {
         Log.d(TAG, "Deleting flattr token");
         storeToken(null);
-    }
-
-    public static Thing getAppThing(Context context) {
-        FlattrService fs = FlattrServiceCreator.getService(retrieveToken());
-        try {
-            Thing thing = fs.getThing(Thing.withId(APP_THING_ID));
-            return thing;
-        } catch (FlattrException e) {
-            e.printStackTrace();
-            showErrorDialog(context, e.getMessage());
-            return null;
-        }
     }
 
     public static void clickUrl(Context context, String url)
@@ -243,37 +225,6 @@ public class FlattrUtils {
             Uri uri = Uri.parse(url);
             context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
         }
-    }
-
-    public static void showForbiddenDialog(final Context context,
-                                           final String url) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.action_forbidden_title);
-        builder.setMessage(R.string.action_forbidden_msg);
-        builder.setPositiveButton(R.string.authenticate_now_label,
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        context.startActivity(
-                                ClientConfig.flattrCallbacks.getFlattrAuthenticationActivityIntent(context));
-                    }
-
-                }
-        );
-        builder.setNegativeButton(R.string.visit_website_label,
-                new OnClickListener() {
-
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        Uri uri = Uri.parse(url);
-                        context.startActivity(new Intent(Intent.ACTION_VIEW,
-                                uri));
-                    }
-
-                }
-        );
-        builder.create().show();
     }
 
     public static void showErrorDialog(final Context context, final String msg) {

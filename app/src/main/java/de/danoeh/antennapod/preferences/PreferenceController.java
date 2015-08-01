@@ -52,7 +52,6 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
  */
 public class PreferenceController {
     private static final String TAG = "PreferenceController";
-    public static final String PREF_FLATTR_THIS_APP = "prefFlattrThisApp";
     public static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     public static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     public static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
@@ -107,23 +106,6 @@ public class PreferenceController {
                     }
             );
         }
-
-        ui.findPreference(PreferenceController.PREF_FLATTR_THIS_APP).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        new FlattrClickWorker(activity,
-                                new SimpleFlattrThing(activity.getString(R.string.app_name),
-                                        FlattrUtils.APP_URL,
-                                        new FlattrStatus(FlattrStatus.STATUS_QUEUE)
-                                )
-                        ).executeAsync();
-
-                        return true;
-                    }
-                }
-        );
 
         ui.findPreference(PreferenceController.PREF_FLATTR_REVOKE).setOnPreferenceClickListener(
                 new Preference.OnPreferenceClickListener() {
