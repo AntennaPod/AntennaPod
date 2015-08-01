@@ -861,6 +861,13 @@ public class PodDBAdapter {
                 new String[]{String.valueOf(feedItem.getId())});
     }
 
+    public void setFeedsItemsAutoDownload(Feed feed, boolean autoDownload) {
+        final String sql = "UPDATE " + TABLE_NAME_FEED_ITEMS
+                + " SET " + KEY_AUTO_DOWNLOAD + "="+ (autoDownload ? "1" : "0")
+                + " WHERE " + KEY_FEED + "=" + feed.getId();
+        db.execSQL(sql);
+    }
+
     public long getDownloadLogSize() {
         final String query = String.format("SELECT COUNT(%s) FROM %s", KEY_ID, TABLE_NAME_DOWNLOAD_LOG);
         Cursor result = db.rawQuery(query, null);
