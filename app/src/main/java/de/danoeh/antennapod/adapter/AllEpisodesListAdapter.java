@@ -177,13 +177,16 @@ public class AllEpisodesListAdapter extends BaseAdapter {
 
         @Override
         public void onLoadFailed(Exception e, Drawable errorDrawable) {
-            if(fallback.get() != null && placeholder.get() != null && cover.get() != null) {
+            Uri fallbackUri = fallback.get();
+            TextView txtvPlaceholder = placeholder.get();
+            ImageView imgvCover = cover.get();
+            if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
                 Glide.with(context)
-                        .load(fallback.get())
+                        .load(fallbackUri)
                         .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                         .fitCenter()
                         .dontAnimate()
-                        .into(new CoverTarget(null, placeholder.get(), cover.get()));
+                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
             }
         }
 
