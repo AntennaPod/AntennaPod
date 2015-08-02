@@ -176,8 +176,9 @@ public class DownloadService extends Service {
         @Override
         public void run() {
             Log.d(TAG, "downloadCompletionThread was started");
-            while (!isInterrupted()) {
-                try {
+
+            try {
+                while (!isInterrupted()) {
                     Downloader downloader = downloadExecutor.take().get();
                     Log.d(TAG, "Received 'Download Complete' - message.");
                     removeDownload(downloader);
@@ -214,12 +215,12 @@ public class DownloadService extends Service {
                         sendDownloadHandledIntent();
                         queryDownloadsAsync();
                     }
-                } catch (InterruptedException e) {
-                    Log.d(TAG, "DownloadCompletionThread was interrupted");
-                } catch (ExecutionException e) {
-                    e.printStackTrace();
-                    numberOfDownloads.decrementAndGet();
                 }
+            } catch (InterruptedException e) {
+                Log.d(TAG, "DownloadCompletionThread was interrupted");
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+                numberOfDownloads.decrementAndGet();
             }
             Log.d(TAG, "End of downloadCompletionThread");
         }
@@ -463,7 +464,7 @@ public class DownloadService extends Service {
         if (downloader != null) {
             numberOfDownloads.incrementAndGet();
             // smaller rss feeds before bigger media files
-            if(request.getFeedfileId() == Feed.FEEDFILETYPE_FEED) {
+            if (request.getFeedfileId() == Feed.FEEDFILETYPE_FEED) {
                 downloads.add(0, downloader);
             } else {
                 downloads.add(downloader);
@@ -804,14 +805,14 @@ public class DownloadService extends Service {
 
                             // queue new media files for automatic download
                             for (FeedItem item : savedFeed.getItems()) {
-                                if(item.getPubDate() == null) {
+                                if (item.getPubDate() == null) {
                                     Log.d(TAG, item.toString());
                                 }
-                                if(item.getImage() != null && item.getImage().isDownloaded() == false) {
+                                if (item.getImage() != null && item.getImage().isDownloaded() == false) {
                                     item.getImage().setOwner(item);
                                     try {
                                         requester.downloadImage(DownloadService.this,
-                                            item.getImage());
+                                                item.getImage());
                                     } catch (DownloadRequestException e) {
                                         e.printStackTrace();
                                     }
@@ -942,7 +943,7 @@ public class DownloadService extends Service {
             if (successful) {
                 // we create a 'successful' download log if the feed's last refresh failed
                 List<DownloadStatus> log = DBReader.getFeedDownloadLog(DownloadService.this, feed);
-                if(log.size() > 0 && log.get(0).isSuccessful() == false) {
+                if (log.size() > 0 && log.get(0).isSuccessful() == false) {
                     saveDownloadStatus(new DownloadStatus(feed,
                             feed.getHumanReadableIdentifier(), DownloadError.SUCCESS, successful,
                             reasonDetailed));
@@ -1063,11 +1064,11 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
+            if (request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
                 DBWriter.setFeedLastUpdateFailed(DownloadService.this, request.getFeedfileId(), true);
             } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
-            } else  {
+            } else {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");
@@ -1196,7 +1197,7 @@ public class DownloadService extends Service {
             saveDownloadStatus(status);
             sendDownloadHandledIntent();
 
-            if(GpodnetPreferences.loggedIn()) {
+            if (GpodnetPreferences.loggedIn()) {
                 FeedItem item = media.getItem();
                 GpodnetEpisodeAction action = new GpodnetEpisodeAction.Builder(item, Action.DOWNLOAD)
                         .currentDeviceId()
