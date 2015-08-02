@@ -28,13 +28,13 @@ public class FeedMediaSizeService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         Log.d(TAG, "onHandleIntent()");
-        if(false == NetworkUtils.isDownloadAllowed(this)) {
+        if(false == NetworkUtils.isDownloadAllowed()) {
             return;
         }
         List<FeedMedia> list = DBReader.getFeedMediaUnknownSize(this);
         for (FeedMedia media : list) {
             Log.d(TAG, "Getting size currently " + media.getSize() + " for " + media.getDownload_url());
-            if(false == NetworkUtils.isDownloadAllowed(this)) {
+            if(false == NetworkUtils.isDownloadAllowed()) {
                 return;
             }
             long size = Integer.MIN_VALUE;
