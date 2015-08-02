@@ -444,7 +444,7 @@
     <string name="pref_pausePlaybackForFocusLoss_title">Pause for Interruptions</string>
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
-    <string name="pref_restart_required">AnntennaPod has to be restarted for this change to take effect.</string>
+    <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>
