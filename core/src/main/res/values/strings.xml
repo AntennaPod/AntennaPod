@@ -384,6 +384,9 @@
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_left_label">Time left:\u0020</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
+    <string name="time_unit_seconds">seconds</string>
+    <string name="time_unit_minutes">minutes</string>
+    <string name="time_unit_hours">hours</string>
     <plurals name="time_unit_seconds">
         <item quantity="one">1 second</item>
         <item quantity="other">%d seconds</item>
