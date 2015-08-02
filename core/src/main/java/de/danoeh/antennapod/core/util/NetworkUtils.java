@@ -10,14 +10,16 @@ import android.util.Log;
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class NetworkUtils {
-	private static final String TAG = "NetworkUtils";
 
-	private NetworkUtils() {
+	private static final String TAG = NetworkUtils.class.getSimpleName();
 
+	private static Context context;
+
+	public static void init(Context context) {
+		NetworkUtils.context = context;
 	}
 
 	/**
@@ -26,18 +28,16 @@ public class NetworkUtils {
 	 * network that is on the 'selected networks' list of the Wi-Fi filter for
 	 * automatic downloads and false otherwise.
 	 * */
-	public static boolean autodownloadNetworkAvailable(Context context) {
+	public static boolean autodownloadNetworkAvailable() {
 		ConnectivityManager cm = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo networkInfo = cm.getActiveNetworkInfo();
 		if (networkInfo != null) {
 			if (networkInfo.getType() == ConnectivityManager.TYPE_WIFI) {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Device is connected to Wi-Fi");
+				Log.d(TAG, "Device is connected to Wi-Fi");
 				if (networkInfo.isConnected()) {
 					if (!UserPreferences.isEnableAutodownloadWifiFilter()) {
-						if (BuildConfig.DEBUG)
-							Log.d(TAG, "Auto-dl filter is disabled");
+						Log.d(TAG, "Auto-dl filter is disabled");
 						return true;
 					} else {
 						WifiManager wm = (WifiManager) context
@@ -48,31 +48,28 @@ public class NetworkUtils {
 										.getAutodownloadSelectedNetworks());
 						if (selectedNetworks.contains(Integer.toString(wifiInfo
 								.getNetworkId()))) {
-							if (BuildConfig.DEBUG)
-								Log.d(TAG,
-										"Current network is on the selected networks list");
+							Log.d(TAG, "Current network is on the selected networks list");
 							return true;
 						}
 					}
 				}
 			}
 		}
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Network for auto-dl is not available");
+		Log.d(TAG, "Network for auto-dl is not available");
 		return false;
 	}
 
-    public static boolean networkAvailable(Context context) {
+    public static boolean networkAvailable() {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo info = cm.getActiveNetworkInfo();
         return info != null && info.isConnected();
     }
 
-	public static boolean isDownloadAllowed(Context context) {
-		return UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi(context);
+	public static boolean isDownloadAllowed() {
+		return UserPreferences.isAllowMobileUpdate() || NetworkUtils.connectedToWifi();
 	}
 
-	public static boolean connectedToWifi(Context context) {
+	public static boolean connectedToWifi() {
 		ConnectivityManager connManager = (ConnectivityManager) context
 				.getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo mWifi = connManager

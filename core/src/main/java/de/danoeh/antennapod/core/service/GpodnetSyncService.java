@@ -108,7 +108,7 @@ public class GpodnetSyncService extends Service {
 
 
     private synchronized void sync() {
-        if (GpodnetPreferences.loggedIn() == false || NetworkUtils.networkAvailable(this) == false) {
+        if (GpodnetPreferences.loggedIn() == false || NetworkUtils.networkAvailable() == false) {
             stopSelf();
             return;
         }

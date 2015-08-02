@@ -17,7 +17,8 @@ import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringUtils;
 import org.jsoup.Jsoup;
@@ -124,9 +125,13 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
         subscribeButton = (Button) header.findViewById(R.id.butSubscribe);
 
         if (feed.getImage() != null && StringUtils.isNotBlank(feed.getImage().getDownload_url())) {
-            Picasso.with(this)
+            Glide.with(this)
                     .load(feed.getImage().getDownload_url())
-                    .fit()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
+                    .dontAnimate()
                     .into(cover);
         }
 

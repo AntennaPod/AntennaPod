@@ -40,7 +40,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             public void run() {
 
                 // true if we should auto download based on network status
-                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable(context)
+                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable()
                         && UserPreferences.isEnableAutodownload();
 
                 // true if we should auto download based on power status

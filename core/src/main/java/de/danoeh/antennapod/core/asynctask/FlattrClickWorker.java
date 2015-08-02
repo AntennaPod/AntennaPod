@@ -90,7 +90,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             return ExitCode.NO_TOKEN;
         }
 
-        if (!NetworkUtils.networkAvailable(context)) {
+        if (!NetworkUtils.networkAvailable()) {
             return ExitCode.NO_NETWORK;
         }
 

@@ -78,6 +78,7 @@ public class UserPreferences {
 
     // Other
     public static final String PREF_DATA_FOLDER = "prefDataFolder";
+    public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
 
     // Mediaplayer
     public static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
@@ -213,7 +214,6 @@ public class UserPreferences {
 
     public static String getPlaybackSpeed() {
         return prefs.getString(PREF_PLAYBACK_SPEED, "1.0");
-
     }
 
     public static String[] getPlaybackSpeedArray() {
@@ -276,6 +276,12 @@ public class UserPreferences {
 
     public static boolean isEnableAutodownloadWifiFilter() {
         return prefs.getBoolean(PREF_ENABLE_AUTODL_WIFI_FILTER, false);
+    }
+
+    public static int getImageCacheSize() {
+        String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, "100");
+        int cacheSize = Integer.valueOf(cacheSizeString) * 1024 * 1024;
+        return cacheSize;
     }
 
     public static int getFastFowardSecs() {

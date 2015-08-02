@@ -10,7 +10,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -88,9 +89,13 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(item.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
                 .into(holder.imageView);
 
         return convertView;

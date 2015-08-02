@@ -18,7 +18,6 @@ import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedFile;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadRequest;
@@ -186,15 +185,6 @@ public class DownloadRequester {
         downloadFeed(context, feed, false);
     }
 
-    public synchronized void downloadImage(Context context, FeedImage image)
-            throws DownloadRequestException {
-        if (feedFileValid(image)) {
-            FeedFile container = (image.getOwner() instanceof FeedFile) ? (FeedFile) image.getOwner() : null;
-            download(context, image, container, new File(getImagefilePath(context),
-                    getImagefileName(image)), false, null, null, 0, false, null);
-        }
-    }
-
     public synchronized void downloadMedia(Context context, FeedMedia feedmedia)
             throws DownloadRequestException {
         if (feedFileValid(feedmedia)) {
@@ -330,20 +320,6 @@ public class DownloadRequester {
             filename = feed.getTitle();
         }
         return "feed-" + FileNameGenerator.generateFileName(filename);
-    }
-
-    public synchronized String getImagefilePath(Context context)
-            throws DownloadRequestException {
-        return getExternalFilesDirOrThrowException(context, IMAGE_DOWNLOADPATH)
-                .toString() + "/";
-    }
-
-    public synchronized String getImagefileName(FeedImage image) {
-        String filename = image.getDownload_url();
-        if (image.getOwner() != null && image.getOwner().getHumanReadableIdentifier() != null) {
-            filename = image.getOwner().getHumanReadableIdentifier();
-        }
-        return "image-" + FileNameGenerator.generateFileName(filename);
     }
 
     public synchronized String getMediafilePath(Context context, FeedMedia media)

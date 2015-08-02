@@ -35,7 +35,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -336,9 +337,15 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         txtvTitle.setText(item.getTitle());
         txtvPublished.setText(DateUtils.formatDateTime(getActivity(), item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
 
-        Picasso.with(getActivity()).load(item.getImageUri())
-                .fit()
+        Glide.with(getActivity())
+                .load(item.getImageUri())
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
                 .into(imgvCover);
+
         progbarDownload.setVisibility(View.INVISIBLE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {

@@ -476,7 +476,7 @@ public class QueueFragment extends Fragment {
         // refresh information bar
         String info = queue.size() + getString(R.string.episodes_suffix);
         if(queue.size() > 0) {
-            int duration = 0;
+            long duration = 0;
             for(FeedItem item : queue) {
                 if(item.getMedia() != null) {
                     duration += item.getMedia().getDuration();

@@ -25,8 +25,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.android.iconify.Iconify;
-import com.squareup.picasso.Picasso;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -124,9 +125,13 @@ public class FeedInfoActivity extends ActionBarActivity {
 
                         @Override
                         public void run() {
-                            Picasso.with(FeedInfoActivity.this)
+                            Glide.with(FeedInfoActivity.this)
                                     .load(feed.getImageUri())
-                                    .fit()
+                                    .placeholder(R.color.light_gray)
+                                    .error(R.color.light_gray)
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .fitCenter()
+                                    .dontAnimate()
                                     .into(imgvCover);
                         }
                     });

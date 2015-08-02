@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
@@ -20,7 +20,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements FlattrThing, PicassoImageResource {
+public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_RSS091 = "rss";

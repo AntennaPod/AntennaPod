@@ -12,11 +12,8 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
-import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
-import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
@@ -61,7 +58,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             if (!isDownloading && !media.isDownloaded()) {
                 LongList queueIds = DBReader.getQueueIDList(context);
-                if (NetworkUtils.isDownloadAllowed(context) || userAllowedMobileDownloads()) {
+                if (NetworkUtils.isDownloadAllowed() || userAllowedMobileDownloads()) {
                     try {
                         DBTasks.downloadFeedItems(context, item);
                         Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();

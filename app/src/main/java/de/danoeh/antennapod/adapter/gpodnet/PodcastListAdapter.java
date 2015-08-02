@@ -8,7 +8,8 @@ import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -49,9 +50,13 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
         }
 
         if (StringUtils.isNotBlank(podcast.getLogoUrl())) {
-            Picasso.with(convertView.getContext())
+            Glide.with(convertView.getContext())
                     .load(podcast.getLogoUrl())
-                    .fit()
+                    .placeholder(R.color.light_gray)
+                    .error(R.color.light_gray)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .fitCenter()
+                    .dontAnimate()
                     .into(holder.image);
         }
 

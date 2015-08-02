@@ -4,11 +4,11 @@ import android.app.Application;
 import android.content.Intent;
 import android.content.res.Configuration;
 
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.FeedMediaSizeService;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.spa.SPAUtil;
 
 /** Main application class. */
@@ -39,9 +39,10 @@ public class PodcastApp extends Application {
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 
-        PicassoProvider.setupPicassoInstance(this);
+		UpdateManager.init(this);
 		UserPreferences.init(this);
 		PlaybackPreferences.init(this);
+		NetworkUtils.init(this);
 		EventDistributor.getInstance();
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);

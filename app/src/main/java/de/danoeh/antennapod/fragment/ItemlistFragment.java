@@ -6,6 +6,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -31,9 +32,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.Validate;
 
@@ -46,7 +48,6 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -56,6 +57,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -505,17 +507,26 @@ public class ItemlistFragment extends ListFragment {
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
 
-        Picasso.with(getActivity())
+
+        // https://github.com/bumptech/glide/issues/529
+        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+
+        Glide.with(getActivity())
                 .load(feed.getImageUri())
                 .placeholder(R.color.image_readability_tint)
                 .error(R.color.image_readability_tint)
-                .transform(PicassoProvider.blurTransformation)
-                .resize(PicassoProvider.BLUR_IMAGE_SIZE, PicassoProvider.BLUR_IMAGE_SIZE)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .transform(new FastBlurTransformation(getActivity()))
+                .dontAnimate()
                 .into(imgvBackground);
 
-        Picasso.with(getActivity())
+        Glide.with(getActivity())
                 .load(feed.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .fitCenter()
+                .dontAnimate()
                 .into(imgvCover);
 
         butShowInfo.setOnClickListener(new View.OnClickListener() {

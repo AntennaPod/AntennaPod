@@ -8,6 +8,7 @@ import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 /**
  * Parses several date formats.
@@ -17,50 +18,66 @@ public class DateUtils {
 	private static final String TAG = "DateUtils";
 
     private static final SimpleDateFormat parser = new SimpleDateFormat("", Locale.US);
+    private static final TimeZone defaultTimezone = TimeZone.getTimeZone("GMT");
+
     static {
         parser.setLenient(false);
+        parser.setTimeZone(defaultTimezone);
     }
 
     public static Date parse(final String input) {
         if(input == null) {
-            throw new IllegalArgumentException("Date most not be null");
+            throw new IllegalArgumentException("Date must not be null");
         }
-        String date = input.replace('/', '-');
+        String date = input.trim().replace('/', '-').replaceAll("( ){2,}+", " ");
+
+        // if datetime is more precise than seconds, make sure the value is in ms
         if(date.contains(".")) {
             int start = date.indexOf('.');
             int current = start+1;
             while(current < date.length() && Character.isDigit(date.charAt(current))) {
                 current++;
             }
+            // even more precise than microseconds: discard further decimal places
             if(current - start > 4) {
                 if(current < date.length()-1) {
                     date = date.substring(0, start + 4) + date.substring(current);
                 } else {
                     date = date.substring(0, start + 4);
                 }
+            // less than 4 decimal places: pad to have a consistent format for the parser
             } else if(current - start < 4) {
                 if(current < date.length()-1) {
                     date = date.substring(0, current) + StringUtils.repeat("0", 4-(current-start)) + date.substring(current);
                 } else {
                     date = date.substring(0, current) + StringUtils.repeat("0", 4-(current-start));
                 }
-
             }
         }
         String[] patterns = {
                 "dd MMM yy HH:mm:ss Z",
                 "dd MMM yy HH:mm Z",
                 "EEE, dd MMM yyyy HH:mm:ss Z",
+                "EEE, dd MMM yyyy HH:mm:ss",
                 "EEE, dd MMMM yyyy HH:mm:ss Z",
+                "EEE, dd MMMM yyyy HH:mm:ss",
+                "EEEE, dd MMM yyyy HH:mm:ss Z",
                 "EEEE, dd MMM yy HH:mm:ss Z",
+                "EEEE, dd MMM yyyy HH:mm:ss",
+                "EEEE, dd MMM yy HH:mm:ss",
                 "EEE MMM d HH:mm:ss yyyy",
                 "EEE, dd MMM yyyy HH:mm Z",
+                "EEE, dd MMM yyyy HH:mm",
                 "EEE, dd MMMM yyyy HH:mm Z",
+                "EEE, dd MMMM yyyy HH:mm",
+                "EEEE, dd MMM yyyy HH:mm Z",
                 "EEEE, dd MMM yy HH:mm Z",
+                "EEEE, dd MMM yyyy HH:mm",
+                "EEEE, dd MMM yy HH:mm",
                 "EEE MMM d HH:mm yyyy",
                 "yyyy-MM-dd'T'HH:mm:ss",
-                "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ss.SSS Z",
+                "yyyy-MM-dd'T'HH:mm:ss.SSS",
                 "yyyy-MM-dd'T'HH:mm:ssZ",
                 "yyyy-MM-dd'T'HH:mm:ss'Z'",
                 "yyyy-MM-ddZ",
@@ -77,7 +94,7 @@ public class DateUtils {
             }
         }
 
-        Log.d(TAG, "Could not parse date string \"" + input + "\"");
+        Log.d(TAG, "Could not parse date string \"" + input + "\" [" + date + "]");
         return null;
     }
 
@@ -117,6 +134,7 @@ public class DateUtils {
 
     public static String formatRFC3339UTC(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
+        format.setTimeZone(defaultTimezone);
         return format.format(date);
     }
 }

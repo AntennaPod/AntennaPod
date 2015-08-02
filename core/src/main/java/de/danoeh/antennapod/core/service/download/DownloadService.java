@@ -777,44 +777,11 @@ public class DownloadService extends Service {
 
                         for (int i = 0; i < savedFeeds.length; i++) {
                             Feed savedFeed = savedFeeds[i];
-                            // Download Feed Image if provided and not downloaded
-                            if (savedFeed.getImage() != null
-                                    && savedFeed.getImage().isDownloaded() == false) {
-                                Log.d(TAG, "Feed has image; Downloading....");
-                                savedFeed.getImage().setOwner(savedFeed);
-                                final Feed savedFeedRef = savedFeed;
-                                try {
-                                    requester.downloadImage(DownloadService.this,
-                                            savedFeedRef.getImage());
-                                } catch (DownloadRequestException e) {
-                                    e.printStackTrace();
-                                    DBWriter.addDownloadStatus(
-                                            DownloadService.this,
-                                            new DownloadStatus(
-                                                    savedFeedRef.getImage(),
-                                                    savedFeedRef
-                                                            .getImage()
-                                                            .getHumanReadableIdentifier(),
-                                                    DownloadError.ERROR_REQUEST_ERROR,
-                                                    false, e.getMessage()
-                                            )
-                                    );
-                                }
-                            }
 
                             // queue new media files for automatic download
                             for (FeedItem item : savedFeed.getItems()) {
                                 if(item.getPubDate() == null) {
                                     Log.d(TAG, item.toString());
-                                }
-                                if(item.getImage() != null && item.getImage().isDownloaded() == false) {
-                                    item.getImage().setOwner(item);
-                                    try {
-                                        requester.downloadImage(DownloadService.this,
-                                            item.getImage());
-                                    } catch (DownloadRequestException e) {
-                                        e.printStackTrace();
-                                    }
                                 }
                                 if (!item.isPlayed() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
@@ -822,7 +789,6 @@ public class DownloadService extends Service {
                             }
 
                             // If loadAllPages=true, check if another page is available and queue it for download
-
                             final boolean loadAllPages = results.get(i).first.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
                             final Feed feed = results.get(i).second.feed;
                             if (loadAllPages && feed.getNextPageLink() != null) {

@@ -4,10 +4,10 @@ import android.net.Uri;
 
 import java.io.File;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 
 
-public class FeedImage extends FeedFile implements PicassoImageResource {
+public class FeedImage extends FeedFile implements ImageResource {
 	public static final int FEEDFILETYPE_FEEDIMAGE = 1;
 
 	protected String title;

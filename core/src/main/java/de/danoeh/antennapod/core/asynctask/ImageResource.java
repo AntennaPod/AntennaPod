@@ -6,7 +6,7 @@ import android.net.Uri;
  * Classes that implement this interface provide access to an image resource that can
  * be loaded by the Picasso library.
  */
-public interface PicassoImageResource {
+public interface ImageResource {
 
     /**
      * This scheme should be used by PicassoImageResources to
