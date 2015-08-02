@@ -170,7 +170,7 @@ public class DownloadRequester {
         if (feedFileValid(feed)) {
             String username = (feed.getPreferences() != null) ? feed.getPreferences().getUsername() : null;
             String password = (feed.getPreferences() != null) ? feed.getPreferences().getPassword() : null;
-            long ifModifiedSince = feed.getLastUpdate().getTime();
+            long ifModifiedSince = feed.isPaged() ? 0 : feed.getLastUpdate().getTime();
 
             Bundle args = new Bundle();
             args.putInt(REQUEST_ARG_PAGE_NR, feed.getPageNr());
