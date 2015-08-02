@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +34,7 @@ import de.danoeh.antennapod.core.util.Converter;
  */
 public class QueueListAdapter extends BaseAdapter {
 
+    private static final String TAG = QueueListAdapter.class.getSimpleName();
 
     private final Context context;
     private final ItemAccess itemAccess;
@@ -82,8 +86,8 @@ public class QueueListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.queue_listitem,
                     parent, false);
             holder.dragHandle = (ImageView) convertView.findViewById(R.id.drag_handle);
-            holder.feed = (TextView) convertView.findViewById(R.id.txtvImage);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
+            holder.placeholder = (TextView) convertView.findViewById(R.id.txtvPlaceholder);
+            holder.cover = (ImageView) convertView.findViewById(R.id.imgvCover);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
             holder.progressLeft = (TextView) convertView.findViewById(R.id.txtvProgressLeft);
@@ -93,7 +97,6 @@ public class QueueListAdapter extends BaseAdapter {
                     .findViewById(R.id.butSecondaryAction);
             holder.progress = (ProgressBar) convertView
                     .findViewById(R.id.progressBar);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -105,7 +108,7 @@ public class QueueListAdapter extends BaseAdapter {
             holder.dragHandle.setVisibility(View.VISIBLE);
         }
 
-        holder.feed.setText(item.getFeed().getTitle());
+        holder.placeholder.setText(item.getFeed().getTitle());
 
         holder.title.setText(item.getTitle());
         FeedMedia media = item.getMedia();
@@ -152,29 +155,47 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
+        Log.d(TAG, item.getFeed().getImageUri().toString());
+
         Glide.with(context)
                 .load(item.getImageUri())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CustomTarget(holder.feed, holder.imageView));
+                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
 
         return convertView;
     }
 
-    private class CustomTarget extends GlideDrawableImageViewTarget {
+    private class CoverTarget extends GlideDrawableImageViewTarget {
 
-        private final WeakReference<TextView> mPlaceholder;
+        private final WeakReference<Uri> fallback;
+        private final WeakReference<TextView> placeholder;
+        private final WeakReference<ImageView> cover;
 
-        public CustomTarget(TextView placeholder, ImageView imageView) {
-            super(imageView);
-            mPlaceholder = new WeakReference<TextView>(placeholder);
+        public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover) {
+            super(imgvCover);
+            fallback = new WeakReference<>(fallbackUri);
+            placeholder = new WeakReference<>(txtvPlaceholder);
+            cover = new WeakReference<>(imgvCover);
+        }
+
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            if(fallback.get() != null && placeholder.get() != null && cover.get() != null) {
+                Glide.with(context)
+                        .load(fallback.get())
+                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .fitCenter()
+                        .dontAnimate()
+                        .into(new CoverTarget(null, placeholder.get(), cover.get()));
+            }
         }
 
         @Override
         public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
             super.onResourceReady(drawable, anim);
-            TextView txtvPlaceholder = mPlaceholder.get();
+            TextView txtvPlaceholder = placeholder.get();
             if(txtvPlaceholder != null) {
                 txtvPlaceholder.setVisibility(View.INVISIBLE);
             }
@@ -189,11 +210,10 @@ public class QueueListAdapter extends BaseAdapter {
         }
     };
 
-
     static class Holder {
         ImageView dragHandle;
-        ImageView imageView;
-        TextView feed;
+        ImageView cover;
+        TextView placeholder;
         TextView title;
         TextView pubDate;
         TextView progressLeft;

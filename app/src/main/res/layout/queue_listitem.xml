@@ -25,7 +25,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content">
         <TextView
-            android:id="@+id/txtvImage"
+            android:id="@+id/txtvPlaceholder"
             android:layout_width="@dimen/thumbnail_length_queue_item"
             android:layout_height="@dimen/thumbnail_length_queue_item"
             android:layout_marginBottom="@dimen/listitem_threeline_verticalpadding"
@@ -36,13 +36,13 @@
             android:maxLines="3"
             android:ellipsize="end"/>
         <ImageView
-            android:id="@+id/imgvImage"
+            android:id="@+id/imgvCover"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/txtvImage"
-            android:layout_alignTop="@+id/txtvImage"
-            android:layout_alignRight="@+id/txtvImage"
-            android:layout_alignBottom="@+id/txtvImage"
+            android:layout_alignLeft="@id/txtvPlaceholder"
+            android:layout_alignTop="@id/txtvPlaceholder"
+            android:layout_alignRight="@id/txtvPlaceholder"
+            android:layout_alignBottom="@id/txtvPlaceholder"
             android:contentDescription="@string/cover_label"
             tools:src="@drawable/ic_stat_antenna_default"
             tools:background="@android:color/holo_green_dark"/>
