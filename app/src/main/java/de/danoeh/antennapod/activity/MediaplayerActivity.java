@@ -480,7 +480,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                             checked = i;
                         }
                         choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_unit_seconds);
+                                + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
@@ -528,7 +528,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                             checked = i;
                         }
                         choices[i] = String.valueOf(values[i]) + " "
-                                + getString(R.string.time_unit_seconds);
+                                + getString(R.string.time_seconds);
                     }
                     choice = values[checked];
                     AlertDialog.Builder builder = new AlertDialog.Builder(MediaplayerActivity.this);
