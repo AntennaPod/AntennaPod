@@ -21,18 +21,20 @@ import java.net.HttpURLConnection;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 
 /**
  * @see com.bumptech.glide.integration.okhttp.OkHttpUrlLoader
  */
 public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
 
-    private static final String TAG = "ApOkHttpUrlLoader";
+    private static final String TAG = ApOkHttpUrlLoader.class.getSimpleName();
 
     /**
      * The default factory for {@link ApOkHttpUrlLoader}s.
      */
     public static class Factory implements ModelLoaderFactory<GlideUrl, InputStream> {
+
         private static volatile OkHttpClient internalClient;
         private OkHttpClient client;
 
@@ -41,6 +43,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
                         internalClient = new OkHttpClient();
+                        internalClient.interceptors().add(new NetworkAllowanceInterceptor());
                         internalClient.interceptors().add(new BasicAuthenticationInterceptor());
                     }
                 }
@@ -82,6 +85,19 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
     @Override
     public DataFetcher<InputStream> getResourceFetcher(GlideUrl model, int width, int height) {
         return new OkHttpStreamFetcher(client, model);
+    }
+
+    private static class NetworkAllowanceInterceptor implements Interceptor {
+
+        @Override
+        public Response intercept(Chain chain) throws IOException {
+            if (NetworkUtils.isDownloadAllowed()) {
+                return chain.proceed(chain.request());
+            } else {
+                return null;
+            }
+        }
+
     }
 
     private static class BasicAuthenticationInterceptor implements Interceptor {
