@@ -449,7 +449,7 @@ public class PreferenceController {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
                 Integer v = Integer.parseInt(values[x]);
-                entries[x] = v + " " + res.getString(R.string.time_unit_seconds);
+                entries[x] = res.getQuantityString(R.plurals.time_unit_seconds, v);
             }
         }
         pref.setEntries(entries);
