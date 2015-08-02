@@ -38,6 +38,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -772,7 +773,7 @@ public class PlaybackService extends Service {
     /**
      * Used by setupNotification to load notification data in another thread.
      */
-    private AsyncTask<Void, Void, Void> notificationSetupTask;
+    private Thread notificationSetupThread;
 
     /**
      * Prepares notification and starts the service in the foreground.
@@ -783,52 +784,47 @@ public class PlaybackService extends Service {
                 PlaybackService.getPlayerActivityIntent(this),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (notificationSetupTask != null) {
-            notificationSetupTask.cancel(true);
+        if (notificationSetupThread != null) {
+            notificationSetupThread.interrupt();
         }
-        notificationSetupTask = new AsyncTask<Void, Void, Void>() {
+        Runnable notificationSetupTask = new Runnable() {
             Bitmap icon = null;
 
             @Override
-            protected Void doInBackground(Void... params) {
+            public void run() {
                 Log.d(TAG, "Starting background work");
                 if (android.os.Build.VERSION.SDK_INT >= 11) {
                     if (info.playable != null) {
                         int iconSize = getResources().getDimensionPixelSize(
                                 android.R.dimen.notification_large_icon_width);
-                        Glide.with(PlaybackService.this)
-                                .load(info.playable.getImageUri())
-                                .asBitmap()
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
-                                .into(new SimpleTarget<Bitmap>(iconSize, iconSize) {
-                                    @Override
-                                    public void onResourceReady(Bitmap bitmap, GlideAnimation anim) {
-                                        icon = bitmap;
-                                    }
-                                });
+                        try {
+                            icon = Glide.with(PlaybackService.this)
+                                    .load(info.playable.getImageUri())
+                                    .asBitmap()
+                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .into(-1, -1) // this resizing would not be exact, so we have
+                                                  // scale the bitmap ourselves
+                                    .get();
+                            icon = Bitmap.createScaledBitmap(icon, iconSize, iconSize, true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
+                            e.printStackTrace();
+                        }
                     }
-
                 }
                 if (icon == null) {
                     icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                             ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
                 }
 
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
                 if (mediaPlayer == null) {
                     return;
                 }
                 PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
-                if (!isCancelled() &&
-                        started &&
-                        info.playable != null) {
+                if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
@@ -906,15 +902,9 @@ public class PlaybackService extends Service {
                     Log.d(TAG, "Notification set up");
                 }
             }
-
         };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            notificationSetupTask
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            notificationSetupTask.execute();
-        }
-
+        notificationSetupThread = new Thread(notificationSetupTask);
+        notificationSetupThread.start();
     }
 
     /**
