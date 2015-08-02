@@ -3,6 +3,7 @@ package de.danoeh.antennapod.core.storage;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Log;
 import android.webkit.URLUtil;
 
@@ -213,7 +214,7 @@ public class DownloadRequester {
             if (feedmedia.getFile_url() != null) {
                 dest = new File(feedmedia.getFile_url());
             } else {
-                dest = new File(getMediafilePath(context, feedmedia),
+                dest = new File(getMediafilePath(feedmedia),
                         getMediafilename(feedmedia));
             }
             download(context, feedmedia, feed,
@@ -346,14 +347,12 @@ public class DownloadRequester {
         return "image-" + FileNameGenerator.generateFileName(filename);
     }
 
-    public synchronized String getMediafilePath(Context context, FeedMedia media)
-            throws DownloadRequestException {
-        File externalStorage = getExternalFilesDirOrThrowException(
-                context,
-                MEDIA_DOWNLOADPATH
-                        + FileNameGenerator.generateFileName(media.getItem()
-                        .getFeed().getTitle()) + "/"
-        );
+    public synchronized String getMediafilePath(FeedMedia media)
+          throws DownloadRequestException {
+        File externalStorage = getExternalPublicPodcastDir(
+            FileNameGenerator.generateFileName(media.getItem()
+              .getFeed().getTitle()) + "/"
+            );
         return externalStorage.toString();
     }
 
@@ -365,6 +364,10 @@ public class DownloadRequester {
                     "Failed to access external storage");
         }
         return result;
+    }
+
+    private File getExternalPublicPodcastDir(final String type) throws DownloadRequestException {
+        return new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PODCASTS), type);
     }
 
     private String getMediafilename(FeedMedia media) {
