@@ -85,6 +85,8 @@ public class UserPreferences {
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
     private static final String PREF_REWIND_SECS = "prefRewindSecs";
     public static final String PREF_QUEUE_LOCKED = "prefQueueLocked";
+    public static final String IMAGE_CACHE_DEFAULT_VALUE = "100";
+    public static final int IMAGE_CACHE_SIZE_MINIMUM = 20;
 
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
@@ -279,9 +281,16 @@ public class UserPreferences {
     }
 
     public static int getImageCacheSize() {
-        String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, "100");
-        int cacheSize = Integer.valueOf(cacheSizeString) * 1024 * 1024;
-        return cacheSize;
+        String cacheSizeString = prefs.getString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE);
+        int cacheSizeInt = Integer.valueOf(cacheSizeString);
+        // if the cache size is too small the user won't get any images at all
+        // that's bad, force it back to the default.
+        if (cacheSizeInt < IMAGE_CACHE_SIZE_MINIMUM) {
+            prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).commit();
+            cacheSizeInt = Integer.valueOf(IMAGE_CACHE_DEFAULT_VALUE);
+        }
+        int cacheSizeMB = cacheSizeInt * 1024 * 1024;
+        return cacheSizeMB;
     }
 
     public static int getFastFowardSecs() {

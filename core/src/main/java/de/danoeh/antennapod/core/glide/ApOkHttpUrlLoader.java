@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.HttpURLConnection;
 
 import de.danoeh.antennapod.core.ClientConfig;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
 import de.danoeh.antennapod.core.service.download.HttpDownloader;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.NetworkUtils;
@@ -42,7 +43,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
             if (internalClient == null) {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
-                        internalClient = new OkHttpClient();
+                        internalClient = AntennapodHttpClient.getHttpClient();
                         internalClient.interceptors().add(new NetworkAllowanceInterceptor());
                         internalClient.interceptors().add(new BasicAuthenticationInterceptor());
                     }
