@@ -286,7 +286,7 @@ public class UserPreferences {
         // if the cache size is too small the user won't get any images at all
         // that's bad, force it back to the default.
         if (cacheSizeInt < IMAGE_CACHE_SIZE_MINIMUM) {
-            prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).commit();
+            prefs.edit().putString(PREF_IMAGE_CACHE_SIZE, IMAGE_CACHE_DEFAULT_VALUE).apply();
             cacheSizeInt = Integer.valueOf(IMAGE_CACHE_DEFAULT_VALUE);
         }
         int cacheSizeMB = cacheSizeInt * 1024 * 1024;
