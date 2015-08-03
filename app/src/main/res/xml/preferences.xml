@@ -210,7 +210,7 @@
             android:title="@string/pref_image_cache_size_title"
             android:key="prefImageCacheSize"
             android:summary="@string/pref_image_cache_size_sum"
-            android:defaultValue="0"/>
+            android:defaultValue="100"/>
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
