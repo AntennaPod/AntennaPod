@@ -111,10 +111,10 @@ public final class Converter {
 
         String result = "";
         if(h > 0) {
-            String hours = context.getResources().getQuantityString(R.plurals.time_unit_hours, h, h);
+            String hours = context.getResources().getQuantityString(R.plurals.time_hours_quantified, h, h);
             result += hours + " ";
         }
-        String minutes = context.getResources().getQuantityString(R.plurals.time_unit_minutes, m, m);
+        String minutes = context.getResources().getQuantityString(R.plurals.time_minutes_quantified, m, m);
         result += minutes;
         return result;
     }

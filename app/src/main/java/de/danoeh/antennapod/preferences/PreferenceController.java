@@ -36,12 +36,9 @@ import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.PreferenceActivity;
 import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
-import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
-import de.danoeh.antennapod.core.util.flattr.SimpleFlattrThing;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
 import de.danoeh.antennapod.dialog.GpodnetSetHostnameDialog;
@@ -431,7 +428,7 @@ public class PreferenceController {
                 entries[x] = res.getString(R.string.pref_smart_mark_as_played_disabled);
             } else {
                 Integer v = Integer.parseInt(values[x]);
-                entries[x] = res.getQuantityString(R.plurals.time_unit_seconds, v);
+                entries[x] = res.getQuantityString(R.plurals.time_seconds_quantified, v);
             }
         }
         pref.setEntries(entries);
