@@ -155,14 +155,19 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Log.d(TAG, item.getFeed().getImageUri().toString());
+        Uri feedImageUri = item.getFeed().getImageUri();
+        if (feedImageUri != null) {
+            Log.d(TAG, item.getFeed().getImageUri().toString());
+        } else {
+            Log.d(TAG, "Feed has null image uri");
+        }
 
         Glide.with(context)
                 .load(item.getImageUri())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .fitCenter()
                 .dontAnimate()
-                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
+                .into(new CoverTarget(feedImageUri, holder.placeholder, holder.cover));
 
         return convertView;
     }
