@@ -155,8 +155,6 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Log.d(TAG, item.getFeed().getImageUri().toString());
-
         Glide.with(context)
                 .load(item.getImageUri())
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
