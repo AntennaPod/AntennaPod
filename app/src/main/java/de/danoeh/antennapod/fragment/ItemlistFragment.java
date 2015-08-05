@@ -450,6 +450,10 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
+        if (getListView() == null || feed == null) {
+            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            return;
+        }
         if(feed.hasLastUpdateFailed()) {
             txtvFailure.setVisibility(View.VISIBLE);
         } else {
