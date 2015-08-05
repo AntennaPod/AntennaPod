@@ -325,6 +325,11 @@ public class DownloadService extends Service {
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
 
+        // TODO: I'm not sure this is actually needed.
+        // We could just invoke the autodownloadUndownloadeditems method
+        // and it would get everything it's supposed to.  By sending it the
+        // items in newMediaFiles we're overriding the download algorithm,
+        // which is not something we should probably do.
         if (!newMediaFiles.isEmpty()) {
             Log.d(TAG, "newMediaFiles exist, autodownload them");
             DBTasks.autodownloadUndownloadedItems(getApplicationContext(),
@@ -783,7 +788,7 @@ public class DownloadService extends Service {
                                 if(item.getPubDate() == null) {
                                     Log.d(TAG, item.toString());
                                 }
-                                if (!item.isPlayed() && item.hasMedia() && !item.getMedia().isDownloaded()) {
+                                if (item.isNew() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
                                 }
                             }
