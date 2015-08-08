@@ -73,7 +73,6 @@
   <string name="show_info_label">Informazioni</string>
   <string name="remove_feed_label">Rimuovi un podcast</string>
   <string name="share_link_label">Condividi il link al sito</string>
-  <string name="share_source_label">Condividi il link al feed</string>
   <string name="feed_delete_confirmation_msg">Per favore conferma la cancellazione di questo feed e di TUTTI gli episodi collegati che sono stati precedentemente scaricati.</string>
   <string name="feed_remover_msg">Rimozione feed</string>
   <string name="load_complete_feed">Ricarica il feed completo</string>
@@ -96,8 +95,8 @@
   <string name="remove_label">Rimuovi</string>
   <string name="remove_episode_lable">Rimuovi l\'episodio</string>
   <string name="mark_read_label">Segna come riprodotto</string>
-  <string name="mark_unread_label">Segna come non riprodotto</string>
   <string name="marked_as_read_label">Segnato come riprodotto</string>
+  <string name="mark_unread_label">Segna come non riprodotto</string>
   <string name="add_to_queue_label">Aggiungi alla coda</string>
   <string name="added_to_queue_label">Aggiunto alla coda</string>
   <string name="remove_from_queue_label">Rimuovi dalla coda</string>
@@ -220,8 +219,6 @@
   <string name="pref_auto_delete_title">Elimina automaticamente</string>
   <string name="playback_pref">Riproduzione</string>
   <string name="network_pref">Rete</string>
-  <string name="pref_autoUpdateIntervall_title">Intervallo di update</string>
-  <string name="pref_autoUpdateIntervall_sum">Specifica un intervallo per l\'aggiornamento automatico dei feed o disabilitalo</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Abilita il download dei media solo tramite WiFi</string>
   <string name="pref_followQueue_title">Playback continuo</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download dei media su WiFi</string>
@@ -308,9 +305,6 @@
   <string name="sleep_timer_label">Timer di spegnimento</string>
   <string name="time_left_label">Tempo residuo:\u0020</string>
   <string name="time_dialog_invalid_input">Input non valido, il campo deve essere un numero intero.</string>
-  <string name="time_unit_seconds">secondi</string>
-  <string name="time_unit_minutes">minuti</string>
-  <string name="time_unit_hours">ore</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCAST</string>
@@ -380,6 +374,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticazione</string>
   <string name="authentication_descr">Cambia il tuo nome utente e la tua password per questo podcast e i suoi episodi.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importazione di sottoscrizioni da applicazioni monouso in corso...</string>
   <string name="search_itunes_label">Cerca su iTunes</string>

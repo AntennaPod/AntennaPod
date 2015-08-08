@@ -76,7 +76,6 @@
   <string name="show_info_label">정보 표시</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
-  <string name="share_source_label">피드 링크 공유</string>
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
@@ -99,8 +98,8 @@
   <string name="remove_label">제거</string>
   <string name="remove_episode_lable">에피소드 제거</string>
   <string name="mark_read_label">재생했다고 표시</string>
-  <string name="mark_unread_label">재생하지 않음으로 표시</string>
   <string name="marked_as_read_label">재생했다고 표시함</string>
+  <string name="mark_unread_label">재생하지 않음으로 표시</string>
   <string name="add_to_queue_label">대기열에 추가</string>
   <string name="added_to_queue_label">대기열에 추가함</string>
   <string name="remove_from_queue_label">대기열에서 제거</string>
@@ -229,8 +228,6 @@
   <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
-  <string name="pref_autoUpdateIntervall_title">업데이트 주기</string>
-  <string name="pref_autoUpdateIntervall_sum">피드를 새로 고칠 주기를 지정하거나 새로 고침을 하지 않음</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Wi-Fi를 통해서만 미디어 파일 다운로드</string>
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
@@ -326,9 +323,6 @@
   <string name="sleep_timer_label">취침 타이머</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간으로 숫자를 입력해야 합니다.</string>
-  <string name="time_unit_seconds">초</string>
-  <string name="time_unit_minutes">분</string>
-  <string name="time_unit_hours">시간</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">분류</string>
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
@@ -399,6 +393,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <string name="search_itunes_label">iTunes 검색</string>

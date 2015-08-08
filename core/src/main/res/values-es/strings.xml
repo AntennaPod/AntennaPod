@@ -27,6 +27,12 @@
   <string name="drawer_open">Abrir menú</string>
   <string name="drawer_close">Cerrar menú</string>
   <string name="drawer_preferences">Preferencias del cajón</string>
+  <string name="drawer_feed_order_unplayed_episodes">Ordenar por cuenta</string>
+  <string name="drawer_feed_order_alphabetical">Ordenar alfabéticamente</string>
+  <string name="drawer_feed_counter_new_unplayed">Cantidad de episodios nuevos y no escuchados</string>
+  <string name="drawer_feed_counter_new">Cantidad de episodios nuevos</string>
+  <string name="drawer_feed_counter_unplayed">Cantidad de episodios no escuchados</string>
+  <string name="drawer_feed_counter_none">Ninguno</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Abrir en el navegador</string>
   <string name="copy_url_label">Copiar URL</string>
@@ -38,6 +44,8 @@
   <!--Other-->
   <string name="confirm_label">Confirmar</string>
   <string name="cancel_label">Cancelar</string>
+  <string name="yes">Sí</string>
+  <string name="no">No</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Idioma</string>
   <string name="url_label">URL</string>
@@ -60,7 +68,13 @@
   <string name="close_label">Cerrar</string>
   <string name="retry_label">Reintentar</string>
   <string name="auto_download_label">Incluir en descargas automáticas</string>
+  <string name="auto_download_apply_to_items_title">Aplicar a episodios anteriores</string>
+  <string name="auto_download_apply_to_items_message">La nueva opción <i>Auto Descarga</i> se aplicará automáticamente a episodios nuevos.\n¿También desea aplicarlo a episodios anteriores?</string>
+  <string name="auto_delete_label">Auto borrar episodio\n(Ignorando los ajustes globales)</string>
   <string name="parallel_downloads_suffix">\u0020descargas paralelas</string>
+  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_always">Siempre</string>
+  <string name="feed_auto_download_never">Nunca</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL del canal</string>
   <string name="etxtFeedurlHint">URL del canal o del sitio web</string>
@@ -73,14 +87,20 @@
   <string name="mark_all_read_msg">Se marcaron todos los episodios como escuchados</string>
   <string name="mark_all_read_confirmation_msg">Por favor, confirme que desea marcar todos los episodios como escuchados.</string>
   <string name="mark_all_read_feed_confirmation_msg">Por favor, confirme que desea marcar todos los episodios de este feed como escuchados.</string>
+  <string name="mark_all_seen_label">Marcar todos como vistos</string>
   <string name="show_info_label">Información del programa</string>
   <string name="remove_feed_label">Eliminar podcast</string>
+  <string name="share_label">Compartir...</string>
   <string name="share_link_label">Compartir el enlace de la web</string>
-  <string name="share_source_label">Compartir el enlace del canal</string>
+  <string name="share_link_with_position_label">Compartir enlace con posición</string>
+  <string name="share_feed_url_label">Compartir URL del canal</string>
+  <string name="share_item_url_label">Compartir URL del episodio</string>
+  <string name="share_item_url_with_position_label">Compartir URL del episodio con posición</string>
   <string name="feed_delete_confirmation_msg">Confirme que quiere eliminar este canal y TODOS los episodios descargados del mismo.</string>
   <string name="feed_remover_msg">Quitando el canal</string>
   <string name="load_complete_feed">Actualizar el canal completo</string>
   <string name="hide_episodes_title">Ocultar episodios</string>
+  <string name="episode_actions">Aplicar acciones</string>
   <string name="hide_unplayed_episodes_label">No escuchados</string>
   <string name="hide_paused_episodes_label">Pausados</string>
   <string name="hide_played_episodes_label">Escuchados</string>
@@ -99,8 +119,8 @@
   <string name="remove_label">Quitar</string>
   <string name="remove_episode_lable">Quitar episodio</string>
   <string name="mark_read_label">Marcar como escuchado</string>
-  <string name="mark_unread_label">Marcar como no escuchado</string>
   <string name="marked_as_read_label">Marcado como escuchado</string>
+  <string name="mark_unread_label">Marcar como no escuchado</string>
   <string name="add_to_queue_label">Añadir a la cola</string>
   <string name="added_to_queue_label">Añadido a la cola</string>
   <string name="remove_from_queue_label">Quitar de la cola</string>
@@ -229,8 +249,12 @@
   <string name="pref_smart_mark_as_played_title">Marcar como escuchado inteligente</string>
   <string name="playback_pref">Reproducción</string>
   <string name="network_pref">Red</string>
-  <string name="pref_autoUpdateIntervall_title">Intervalo de actualización</string>
-  <string name="pref_autoUpdateIntervall_sum">Especificar el intervalo en que se actualizarán automáticamente los canales, o desactivarlo</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Intervalo de actualización u hora del día</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Especificar el intervalo o la hora del día en que se actualizarán automáticamente los canales</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Se puede ajustar un <i>intervalo</i> como \"cada 2 horas\", especificar una <i>hora del día</i> como \"7:00 AM\" o <i>deshabilitar</i> las actualizaciones automáticas.\n\n<small>Nota: Las horas de actualización no son exactas. Puede haber un ligero retraso.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Deshabilitar</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Ajustar intervalo</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Ajustar hora del día</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Solo descargar los contenidos por WiFi</string>
   <string name="pref_followQueue_title">Reproducción continua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descarga de contenidos por WiFi</string>
@@ -250,8 +274,14 @@
   <string name="pref_auto_flattr_sum">Configurar flattr automático</string>
   <string name="user_interface_label">Interfaz de usuario</string>
   <string name="pref_set_theme_title">Elegir un tema</string>
+  <string name="pref_nav_drawer_title">Personalizar el cajón de navegación</string>
+  <string name="pref_nav_drawer_sum">Personalizar la apariencia del cajón de navegación</string>
   <string name="pref_nav_drawer_items_title">Cambiar el cajón de navegación</string>
   <string name="pref_nav_drawer_items_sum">Cambiar los ítems que aparecen en el cajón de navegación</string>
+  <string name="pref_nav_drawer_feed_order_title">Ajustar orden de suscripción</string>
+  <string name="pref_nav_drawer_feed_order_sum">Cambiar el orden de las suscripciones</string>
+  <string name="pref_nav_drawer_feed_counter_title">Ajustar contador de suscripción</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Cambiar la información mostrada en el contador de suscripción</string>
   <string name="pref_set_theme_sum">Cambiar la apariencia de AntennaPod.</string>
   <string name="pref_automatic_download_title">Descarga automática</string>
   <string name="pref_automatic_download_sum">Configurar la descarga automática de episodios.</string>
@@ -283,10 +313,14 @@
   <string name="pref_expandNotify_sum">Expandir siempre la notificación para mostrar los botones de reproducción</string>
   <string name="pref_persistNotify_title">Controles de reproducción persistentes</string>
   <string name="pref_persistNotify_sum">Mantener la notificación y controles en pantalla de bloqueo cuando se pausa.</string>
+  <string name="pref_showDownloadReport_title">Mostrar informe de descarga</string>
+  <string name="pref_showDownloadReport_sum">Si la descarga falla, generar un informe con los detalles del fallo</string>
   <string name="pref_expand_notify_unsupport_toast">Las versiones de Android anteriores a la 4.1 no soportan notificaciones expandidas</string>
   <string name="pref_queueAddToFront_sum">Agregar nuevos episodios al principio de la cola.</string>
   <string name="pref_queueAddToFront_title">Poner al principio de la cola.</string>
   <string name="pref_smart_mark_as_played_disabled">Deshabilitado</string>
+  <string name="pref_image_cache_size_title">Tamaño de la caché de imágenes</string>
+  <string name="pref_image_cache_size_sum">Tamaño de la caché en disco para imágenes.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Habilitar Flattr automático</string>
   <string name="auto_flattr_after_percent">Hacer Flattr del episodio en cuanto se haya reproducido el %d por ciento</string>
@@ -312,6 +346,7 @@
   <string name="opml_import_error_dir_empty">El directorio de importación está vacío.</string>
   <string name="select_all_label">Seleccionar todo</string>
   <string name="deselect_all_label">Deseleccionar todo</string>
+  <string name="select_options_label">Seleccionar...</string>
   <string name="choose_file_from_filesystem">Desde el sistema de ficheros local</string>
   <string name="choose_file_from_external_application">Usar aplicación externa</string>
   <string name="opml_export_label">Exportar a OPML</string>
@@ -326,9 +361,21 @@
   <string name="sleep_timer_label">Temporizador</string>
   <string name="time_left_label">Tiempo restante:\u0020</string>
   <string name="time_dialog_invalid_input">Entrada no válida, el tiempo debe ser un entero</string>
-  <string name="time_unit_seconds">segundos</string>
-  <string name="time_unit_minutes">minutos</string>
-  <string name="time_unit_hours">horas</string>
+  <string name="time_seconds">segundos</string>
+  <string name="time_minutes">minutos</string>
+  <string name="time_hours">horas</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 segundo</item>
+    <item quantity="other">%d segundos</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 minuto</item>
+    <item quantity="other">%d minutos</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 hora</item>
+    <item quantity="other">%d horas</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORÍAS</string>
   <string name="gpodnet_toplist_header">MEJORES PODCASTS</string>
@@ -373,6 +420,7 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Pausar durante las interrupciones</string>
   <string name="pref_resumeAfterCall_sum">Reanudar reproducción tras una llamada</string>
   <string name="pref_resumeAfterCall_title">Reanudar tras una llamada</string>
+  <string name="pref_restart_required">Es necesario reiniciar AntennaPod para aplicar los cambios.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Suscribirse</string>
   <string name="subscribed_label">Suscrito</string>
@@ -399,7 +447,29 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticación</string>
   <string name="authentication_descr">Cambiar nombre y contraseña de este podcast y sus episodios</string>
+  <!--Progress information-->
+  <string name="progress_upgrading_database">Actualizando la base de datos</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importando subscripciones de aplicaciones de uso específico...</string>
   <string name="search_itunes_label">Buscar en iTunes</string>
+  <string name="select_label"><b>Seleccionar...</b></string>
+  <string name="all_label">Todo</string>
+  <string name="selected_all_label">Seleccionados todos los episodios</string>
+  <string name="none_label">Ninguno</string>
+  <string name="deselected_all_label">Deseleccionados todos los episodios</string>
+  <string name="played_label">Reproducido</string>
+  <string name="selected_played_label">Seleccionados episodios reproducidos</string>
+  <string name="unplayed_label">No reproducidos</string>
+  <string name="selected_unplayed_label">Seleccionados episodios no reproducidos</string>
+  <string name="downloaded_label">Descargado</string>
+  <string name="selected_downloaded_label">Seleccionados episodios descargados</string>
+  <string name="not_downloaded_label">No descargado</string>
+  <string name="selected_not_downloaded_label">Seleccionados episodios no descargados</string>
+  <string name="sort_title"><b>Ordenar por...</b></string>
+  <string name="sort_title_a_z">Título (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Título (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Fecha (Nuevo \u2192 Antiguo)</string>
+  <string name="sort_date_old_new">Fecha (Antiguo \u2192 Nuevo)</string>
+  <string name="sort_duration_short_long">Duración (Corto \u2192 Largo)</string>
+  <string name="sort_duration_long_short">Duración (Largo \u2192 Corto)</string>
 </resources>

@@ -46,7 +46,6 @@
   <string name="mark_all_read_label">Hamısını oxunmuş kimi işarələ</string>
   <string name="show_info_label">Məlumatı göstər</string>
   <string name="share_link_label">Web-səhifəyi paylaş</string>
-  <string name="share_source_label">Kanalı paylaş</string>
   <string name="feed_delete_confirmation_msg">Bütün kanallar və epizodlar silinəçək.</string>
   <!--actions on feeditems-->
   <string name="download_label">Yüklə</string>
@@ -134,8 +133,6 @@
   <string name="pref_followQueue_sum">Oynatma başa çatanda növbədə irəlidəki epizodu oynat</string>
   <string name="playback_pref">Oynatma</string>
   <string name="network_pref">Şəbəkə</string>
-  <string name="pref_autoUpdateIntervall_title">Təzələmə intervalı</string>
-  <string name="pref_autoUpdateIntervall_sum">Kanalın avtomatik təzələməsinin intervalını seç ya da keçir onu</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Təkçə Wi-Fi vasitəsiilə yüklə</string>
   <string name="pref_followQueue_title">Fasiləsiz oynatma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi vasitəsiilə yükləmə</string>
@@ -210,5 +207,6 @@
   <string name="downloading_label">Yükləmə...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
 </resources>

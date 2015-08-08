@@ -74,7 +74,6 @@
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить подкаст</string>
   <string name="share_link_label">Поделиться ссылкой на сайт</string>
-  <string name="share_source_label">Ссылка на канал</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и всех выпусков, загруженных с этого канала.</string>
   <string name="feed_remover_msg">Удаление канала</string>
   <string name="load_complete_feed">Обновить весь канал</string>
@@ -87,8 +86,8 @@
   <string name="remove_label">Удалить</string>
   <string name="remove_episode_lable">Удалить</string>
   <string name="mark_read_label">Отметить как прочитанное</string>
-  <string name="mark_unread_label">Отметить как непрочитанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
+  <string name="mark_unread_label">Отметить как непрочитанное</string>
   <string name="add_to_queue_label">Добавить в очередь</string>
   <string name="remove_from_queue_label">Удалить из очереди</string>
   <string name="visit_website_label">Посетить сайт</string>
@@ -202,8 +201,6 @@
   <string name="pref_auto_delete_title">Автоматическое удаление</string>
   <string name="playback_pref">Воспроизведение</string>
   <string name="network_pref">Сеть</string>
-  <string name="pref_autoUpdateIntervall_title">Интервал обновлений</string>
-  <string name="pref_autoUpdateIntervall_sum">Укажите интервал через который каналы обновляются автоматически, или отключите его</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Загружать файлы только через Wi-Fi</string>
   <string name="pref_followQueue_title">Непрерывное воспроизведение</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Загрузка по Wi-Fi</string>
@@ -294,9 +291,6 @@
   <string name="sleep_timer_label">Таймер сна</string>
   <string name="time_left_label">Осталось времени:\u0020</string>
   <string name="time_dialog_invalid_input">Неправильный ввод, время должно быть в виде числа</string>
-  <string name="time_unit_seconds">с</string>
-  <string name="time_unit_minutes">м</string>
-  <string name="time_unit_hours">ч</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">Категории</string>
   <string name="gpodnet_toplist_header">Лучшее</string>
@@ -365,6 +359,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">Авторизация</string>
   <string name="authentication_descr">Изменить имя пользователя и пароль для этого подкаста и его выпусков.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Импорт подписок из одноцелевых приложений…</string>
   <string name="search_itunes_label">Поиск в iTunes</string>

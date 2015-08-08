@@ -76,7 +76,6 @@
   <string name="show_info_label">Інформація</string>
   <string name="remove_feed_label">Видалити подкаст</string>
   <string name="share_link_label">Поділитися URL сайту</string>
-  <string name="share_source_label">Поділитися URL каналу</string>
   <string name="feed_delete_confirmation_msg">Ви впенені що хочете видаліти канал та всі завантажені епізоди</string>
   <string name="feed_remover_msg">Удаляю канал</string>
   <string name="load_complete_feed">Оновити канал цілком</string>
@@ -99,8 +98,8 @@
   <string name="remove_label">Видалити</string>
   <string name="remove_episode_lable">Видалити епізод</string>
   <string name="mark_read_label">Позначити як граний</string>
-  <string name="mark_unread_label">Позначити як не граний</string>
   <string name="marked_as_read_label">Позначено як граний</string>
+  <string name="mark_unread_label">Позначити як не граний</string>
   <string name="add_to_queue_label">Додати до черги</string>
   <string name="added_to_queue_label">Додано до черги</string>
   <string name="remove_from_queue_label">Видалити з черги</string>
@@ -229,8 +228,6 @@
   <string name="pref_smart_mark_as_played_title">Розумне позначення граних епізодів</string>
   <string name="playback_pref">Відтворення</string>
   <string name="network_pref">Мережа</string>
-  <string name="pref_autoUpdateIntervall_title">Частота оновлень</string>
-  <string name="pref_autoUpdateIntervall_sum">Визначити інтервал часу для автооновлювання або відключити автооновлення</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Завантажувати тільки через Wifi</string>
   <string name="pref_followQueue_title">Грати безперервно</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Завантаження через Wifi</string>
@@ -326,9 +323,6 @@
   <string name="sleep_timer_label">Таймер сну</string>
   <string name="time_left_label">Залишилось:\u0020</string>
   <string name="time_dialog_invalid_input">Помилка вводу, час повинен бути цілим</string>
-  <string name="time_unit_seconds">секунд</string>
-  <string name="time_unit_minutes">хвилин</string>
-  <string name="time_unit_hours">годин</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">КАТЕГОРІЇ</string>
   <string name="gpodnet_toplist_header">ТОП ПОДКАСТІВ</string>
@@ -399,6 +393,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">Автентикація</string>
   <string name="authentication_descr">Змінити ваші логін та пароль для подкаста та епізодів</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Імпорт подкастів з інших програм...</string>
   <string name="search_itunes_label">Пошук в iTunes</string>
