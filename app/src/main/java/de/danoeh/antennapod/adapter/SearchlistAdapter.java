@@ -16,6 +16,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedComponent;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.SearchResult;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 
 /**
  * List adapter for search activity.
@@ -78,7 +79,7 @@ public class SearchlistAdapter extends BaseAdapter {
                     .load(feed.getImageUri())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate()
                     .into(holder.cover);
@@ -95,7 +96,7 @@ public class SearchlistAdapter extends BaseAdapter {
                     .load(item.getFeed().getImageUri())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate()
                     .into(holder.cover);

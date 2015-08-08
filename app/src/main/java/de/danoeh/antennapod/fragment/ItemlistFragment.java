@@ -57,6 +57,7 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
@@ -519,7 +520,7 @@ public class ItemlistFragment extends ListFragment {
                 .load(feed.getImageUri())
                 .placeholder(R.color.image_readability_tint)
                 .error(R.color.image_readability_tint)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .transform(new FastBlurTransformation(getActivity()))
                 .dontAnimate()
                 .into(imgvBackground);
@@ -528,7 +529,7 @@ public class ItemlistFragment extends ListFragment {
                 .load(feed.getImageUri())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
                 .into(imgvCover);

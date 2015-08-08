@@ -37,6 +37,7 @@ import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
@@ -129,7 +130,7 @@ public class DefaultOnlineFeedViewActivity extends OnlineFeedViewActivity {
                     .load(feed.getImage().getDownload_url())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate()
                     .into(cover);

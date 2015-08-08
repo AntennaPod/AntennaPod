@@ -17,6 +17,7 @@ import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -85,7 +86,7 @@ public class CoverFragment extends Fragment implements
                                 .load(media.getImageUri())
                                 .placeholder(R.color.light_gray)
                                 .error(R.color.light_gray)
-                                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                 .dontAnimate()
                                 .into(imgvCover);
                     }

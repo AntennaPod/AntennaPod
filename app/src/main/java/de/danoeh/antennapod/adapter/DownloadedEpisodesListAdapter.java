@@ -15,6 +15,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.Converter;
 
 /**
@@ -93,7 +94,7 @@ public class DownloadedEpisodesListAdapter extends BaseAdapter {
                 .load(item.getImageUri())
                 .placeholder(R.color.light_gray)
                 .error(R.color.light_gray)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
                 .into(holder.imageView);
