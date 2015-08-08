@@ -46,6 +46,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -801,7 +802,7 @@ public class PlaybackService extends Service {
                             icon = Glide.with(PlaybackService.this)
                                     .load(info.playable.getImageUri())
                                     .asBitmap()
-                                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                                     .into(-1, -1) // this resizing would not be exact, so we have
                                                   // scale the bitmap ourselves
                                     .get();

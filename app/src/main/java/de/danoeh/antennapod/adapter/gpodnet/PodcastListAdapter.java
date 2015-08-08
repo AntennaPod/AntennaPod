@@ -16,6 +16,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetPodcast;
 
 /**
@@ -54,7 +55,7 @@ public class PodcastListAdapter extends ArrayAdapter<GpodnetPodcast> {
                     .load(podcast.getLogoUrl())
                     .placeholder(R.color.light_gray)
                     .error(R.color.light_gray)
-                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                     .fitCenter()
                     .dontAnimate()
                     .into(holder.image);

@@ -25,6 +25,7 @@ import java.lang.ref.WeakReference;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
@@ -157,7 +158,7 @@ public class QueueListAdapter extends BaseAdapter {
 
         Glide.with(context)
                 .load(item.getImageUri())
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                 .fitCenter()
                 .dontAnimate()
                 .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
@@ -186,7 +187,7 @@ public class QueueListAdapter extends BaseAdapter {
             if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
                 Glide.with(context)
                         .load(fallbackUri)
-                        .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
                         .fitCenter()
                         .dontAnimate()
                         .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
