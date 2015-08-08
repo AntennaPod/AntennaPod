@@ -50,7 +50,6 @@
   <string name="mark_all_read_label">Marchează toate ca citite</string>
   <string name="show_info_label">Arată informații</string>
   <string name="share_link_label">Împarte adresă website</string>
-  <string name="share_source_label">Împarte adresă feed</string>
   <string name="feed_delete_confirmation_msg">Confirmați ștergerea feedului și a TUTUROR episoadelor pe care le-ați descărcat.</string>
   <!--actions on feeditems-->
   <string name="download_label">Descarcă</string>
@@ -140,8 +139,6 @@
   <string name="pref_followQueue_sum">Sari la următorul element din coadă cand se termină ascultarea</string>
   <string name="playback_pref">Ascultare</string>
   <string name="network_pref">Rețea</string>
-  <string name="pref_autoUpdateIntervall_title">Interval actualizare</string>
-  <string name="pref_autoUpdateIntervall_sum">Specifică un interval în care feedurile sunt actualizate automat sau oprește funcția</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Descarcă fișiere media doar pe WiFi</string>
   <string name="pref_followQueue_title">Ascultare continuă</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Descărcare media pe WiFi</string>
@@ -237,5 +234,6 @@
   <string name="downloading_label">Se descarcă...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
 </resources>
