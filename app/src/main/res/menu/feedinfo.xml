@@ -22,7 +22,7 @@
     <item
         android:id="@+id/share_download_url_item"
         custom:showAsAction="collapseActionView"
-        android:title="@string/share_source_label">
+        android:title="@string/share_feed_url_label">
     </item>
 
 </menu>
