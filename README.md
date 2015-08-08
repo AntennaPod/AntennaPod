@@ -34,13 +34,3 @@ If you want to translate AntennaPod into another language, you can visit the [Tr
 
 Information on how to build AntennaPod can be found in the [Wiki](https://github.com/danieloeh/AntennaPod/wiki/Building-AntennaPod).
 
-## Donate
-  
-[![Flattr Button](http://api.flattr.com/button/button-static-50x60.png "Flattr This!")](https://flattr.com/thing/745609/Antennapod "AntennaPod")
-
-![Donate Bitcoin](https://en.bitcoin.it/w/images/en/7/74/BC_Rnd_64px.png)  
-Bitcoin address: `1DzvtuvdW8VhDsq9GUytMyALmsHeaHEKbg`
-
-[![Bountysource](https://www.bountysource.com/badge/tracker?tracker_id=370084)](https://www.bountysource.com/trackers/370084-antennapod?utm_source=370084&utm_medium=shield&utm_campaign=TRACKER_BADGE)
-
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/danieloeh/)
