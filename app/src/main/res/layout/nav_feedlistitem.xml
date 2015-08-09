@@ -37,7 +37,7 @@
         tools:text="23"
         tools:background="@android:color/holo_green_dark"/>
 
-    <IconTextView
+    <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/itxtvFailure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

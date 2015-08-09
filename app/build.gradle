@@ -22,8 +22,8 @@ dependencies {
     compile 'com.squareup.okhttp:okhttp-urlconnection:2.4.0'
     compile 'com.squareup.okio:okio:1.2.0'
     compile 'de.greenrobot:eventbus:2.4.0'
-    compile 'com.joanzapata.android:android-iconify:1.0.9'
     compile 'io.reactivex:rxandroid:1.0.1'
+    compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.0.3'
     
     compile project(':core')
     compile project(':library:drag-sort-listview')
