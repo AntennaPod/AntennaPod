@@ -52,14 +52,12 @@
             <CheckBox android:id="@+id/cbShakeToReset"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="@string/shake_to_reset_label"
-                      android:checked="true" />
+                      android:text="@string/shake_to_reset_label"/>
 
             <CheckBox android:id="@+id/cbVibrate"
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
-                      android:text="@string/timer_vibration_label"
-                      android:checked="true" />
+                      android:text="@string/timer_vibration_label"/>
 
         </LinearLayout>
 
