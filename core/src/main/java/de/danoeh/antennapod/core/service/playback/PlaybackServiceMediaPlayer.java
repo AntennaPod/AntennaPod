@@ -619,6 +619,32 @@ public class PlaybackServiceMediaPlayer {
         return retVal;
     }
 
+    /**
+     * Sets the playback speed.
+     * This method is executed on an internal executor service.
+     */
+    public void setVolume(final float volume) {
+        executor.submit(new Runnable() {
+            @Override
+            public void run() {
+                setVolumeSync(volume);
+            }
+        });
+    }
+
+    /**
+     * Sets the playback speed.
+     * This method is executed on the caller's thread.
+     */
+    private void setVolumeSync(float volume) {
+        playerLock.lock();
+        if (media != null && media.getMediaType() == MediaType.AUDIO) {
+            mediaPlayer.setVolume(volume, volume);
+            Log.d(TAG, "Media player volume was set to " + volume);
+        }
+        playerLock.unlock();
+    }
+
     public MediaType getCurrentMediaType() {
         return mediaType;
     }

@@ -405,11 +405,20 @@ public class PlaybackService extends Service {
         }
 
         @Override
+        public void onSleepTimerAlmostExpired() {
+            mediaPlayer.setVolume(0.5f);
+        }
+
+        @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
+        @Override
+        public void onSleepTimerReset() {
+            mediaPlayer.setVolume(1.0f);
+        }
 
         @Override
         public void onWidgetUpdaterTick() {
@@ -652,10 +661,9 @@ public class PlaybackService extends Service {
         }
     }
 
-    public void setSleepTimer(long waitingTime) {
-        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime)
-                    + " milliseconds");
-        taskManager.setSleepTimer(waitingTime);
+    public void setSleepTimer(long waitingTime, boolean shakeToReset, boolean vibrate) {
+        Log.d(TAG, "Setting sleep timer to " + Long.toString(waitingTime) + " milliseconds");
+        taskManager.setSleepTimer(waitingTime, shakeToReset, vibrate);
         sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
     }
 
