@@ -350,8 +350,6 @@ public class PlaybackServiceTaskManager {
                     waitingTime -= now - lastTick;
                     lastTick = now;
 
-                    Log.d(TAG, "time left: " + waitingTime);
-
                     if(waitingTime < NOTIFICATION_THRESHOLD && !notifiedAlmostExpired) {
                         Log.d(TAG, "Sleep timer is about to expire");
                         if(vibrate) {

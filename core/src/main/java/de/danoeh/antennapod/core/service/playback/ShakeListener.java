@@ -24,6 +24,8 @@ public class ShakeListener implements SensorEventListener
     }
 
     public void resume() {
+        // only a precaution, the user should actually not be able to activate shake to reset
+        // when the accelerometer is not available
         mSensorMgr = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         if (mSensorMgr == null) {
             throw new UnsupportedOperationException("Sensors not supported");

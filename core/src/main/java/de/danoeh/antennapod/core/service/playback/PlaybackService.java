@@ -19,7 +19,6 @@ import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
 import android.media.RemoteControlClient.MetadataEditor;
-import android.os.AsyncTask;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -33,12 +32,9 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.bumptech.glide.request.animation.GlideAnimation;
-import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
 
@@ -406,7 +402,7 @@ public class PlaybackService extends Service {
 
         @Override
         public void onSleepTimerAlmostExpired() {
-            mediaPlayer.setVolume(0.5f);
+            mediaPlayer.setVolume(0.1f);
         }
 
         @Override
