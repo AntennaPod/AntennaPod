@@ -385,6 +385,9 @@
     <string name="sleep_timer_label">Sleep timer</string>
     <string name="time_left_label">Time left:\u0020</string>
     <string name="time_dialog_invalid_input">Invalid input, time has to be an integer</string>
+    <string name="timer_about_to_expire_label"><b>When timer is about to expire:</b></string>
+    <string name="shake_to_reset_label">Shake to reset timer</string>
+    <string name="timer_vibration_label">Vibrate</string>
     <string name="time_seconds">seconds</string>
     <string name="time_minutes">minutes</string>
     <string name="time_hours">hours</string>

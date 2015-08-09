@@ -31,7 +31,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.playback.MediaPlayerError;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.TimeDialog;
+import de.danoeh.antennapod.dialog.SleepTimerDialog;
 
 /**
  * Provides general features which are both needed for playing audio and video
@@ -323,13 +323,10 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                     break;
                 case R.id.set_sleeptimer_item:
                     if (controller.serviceAvailable()) {
-                        TimeDialog td = new TimeDialog(this,
-                                R.string.set_sleeptimer_label,
-                                R.string.set_sleeptimer_label) {
-
+                        SleepTimerDialog td = new SleepTimerDialog(this, 0, 0) {
                             @Override
-                            public void onTimeEntered(long millis) {
-                                controller.setSleepTimer(millis);
+                            public void onTimerSet(long millis, boolean shakeToReset, boolean vibrate) {
+                                controller.setSleepTimer(millis, shakeToReset, vibrate);
                             }
                         };
                         td.show();

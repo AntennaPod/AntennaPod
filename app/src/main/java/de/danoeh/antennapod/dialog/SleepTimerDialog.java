@@ -9,13 +9,19 @@ import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.*;
-import de.danoeh.antennapod.core.BuildConfig;
-import de.danoeh.antennapod.R;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import java.util.concurrent.TimeUnit;
 
-public abstract class TimeDialog extends Dialog {
+import de.danoeh.antennapod.R;
+
+public abstract class SleepTimerDialog extends Dialog {
+    
     private static final String TAG = "TimeDialog";
 
     private static final int DEFAULT_SPINNER_POSITION = 1;
@@ -24,13 +30,14 @@ public abstract class TimeDialog extends Dialog {
 
     private EditText etxtTime;
     private Spinner spTimeUnit;
+    private CheckBox cbShakeToReset;
+    private CheckBox cbVibrate;
     private Button butConfirm;
     private Button butCancel;
 
-    private TimeUnit[] units = {TimeUnit.SECONDS, TimeUnit.MINUTES,
-            TimeUnit.HOURS};
+    private TimeUnit[] units = { TimeUnit.SECONDS, TimeUnit.MINUTES, TimeUnit.HOURS };
 
-    public TimeDialog(Context context, int titleTextId, int leftButtonTextId) {
+    public SleepTimerDialog(Context context, int titleTextId, int leftButtonTextId) {
         super(context);
         this.context = context;
     }
@@ -46,13 +53,15 @@ public abstract class TimeDialog extends Dialog {
         setContentView(R.layout.time_dialog);
         etxtTime = (EditText) findViewById(R.id.etxtTime);
         spTimeUnit = (Spinner) findViewById(R.id.spTimeUnit);
+        cbShakeToReset = (CheckBox) findViewById(R.id.cbShakeToReset);
+        cbVibrate = (CheckBox) findViewById(R.id.cbVibrate);
         butConfirm = (Button) findViewById(R.id.butConfirm);
         butCancel = (Button) findViewById(R.id.butCancel);
 
         butConfirm.setText(R.string.set_sleeptimer_label);
         butCancel.setText(R.string.cancel_label);
         setTitle(R.string.set_sleeptimer_label);
-        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> spinnerAdapter = new ArrayAdapter<>(
                 this.getContext(), android.R.layout.simple_spinner_item,
                 spinnerContent);
         spinnerAdapter
@@ -72,7 +81,7 @@ public abstract class TimeDialog extends Dialog {
             public void onClick(View v) {
                 try {
                     long input = readTimeMillis();
-                    onTimeEntered(input);
+                    onTimerSet(input, cbShakeToReset.isChecked(), cbVibrate.isChecked());
                     dismiss();
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -117,17 +126,15 @@ public abstract class TimeDialog extends Dialog {
 
     private void checkInputLength(int length) {
         if (length > 0) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Length is larger than 0, enabling confirm button");
+            Log.d(TAG, "Length is larger than 0, enabling confirm button");
             butConfirm.setEnabled(true);
         } else {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Length is smaller than 0, disabling confirm button");
+            Log.d(TAG, "Length is smaller than 0, disabling confirm button");
             butConfirm.setEnabled(false);
         }
     }
 
-    public abstract void onTimeEntered(long millis);
+    public abstract void onTimerSet(long millis, boolean shakeToReset, boolean vibrate);
 
     private long readTimeMillis() {
         TimeUnit selectedUnit = units[spTimeUnit.getSelectedItemPosition()];
