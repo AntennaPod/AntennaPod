@@ -37,8 +37,7 @@
         android:label="@string/app_name"
         android:backupAgent=".core.backup.OpmlBackupAgent"
         android:restoreAnyVersion="true"
-        android:logo="@drawable/ic_launcher"
-        android:theme="@style/Theme.AntennaPod.Light">
+        android:logo="@drawable/ic_launcher">
         <meta-data
             android:name="com.google.android.backup.api_key"
             android:value="AEdPqrEAAAAI3a05VToCTlqBymJrbFGaKQMvF-bBAuLsOdavBA"/>
