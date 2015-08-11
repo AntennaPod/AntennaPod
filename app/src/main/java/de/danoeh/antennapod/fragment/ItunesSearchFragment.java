@@ -22,6 +22,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,7 +33,7 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 
-import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.*;
+import static de.danoeh.antennapod.adapter.itunes.ItunesAdapter.Podcast;
 
 //Searches iTunes store for given string and displays results in a list
 public class ItunesSearchFragment extends Fragment {
@@ -160,8 +162,18 @@ public class ItunesSearchFragment extends Fragment {
          *
          * @param query Search string
          */
-        public SearchTask(String query){
-            this.query = query;
+        public SearchTask(String query) {
+            String encodedQuery = null;
+            try {
+                encodedQuery = URLEncoder.encode(query, "UTF-8");
+            } catch(UnsupportedEncodingException e) {
+                // this won't ever be thrown
+            }
+            if(encodedQuery != null) {
+                this.query = encodedQuery;
+            } else {
+                this.query = query; // failsafe
+            }
         }
 
         //Get the podcast data
