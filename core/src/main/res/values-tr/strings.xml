@@ -76,7 +76,6 @@
   <string name="show_info_label">Bilgiyi göster</string>
   <string name="remove_feed_label">Cep yayını kaldır</string>
   <string name="share_link_label">Web sayfası bağlantısı paylaş</string>
-  <string name="share_source_label">Besleme bağlantısını paylaş</string>
   <string name="feed_delete_confirmation_msg">Lütfen bu beslemeyi ve bu beslemeye ait indirilmiş BÜTÜN bölümleri silme isteğinizi onaylayın.</string>
   <string name="feed_remover_msg">Besleme kaldırılıyor</string>
   <string name="load_complete_feed">Tüm beslemeyi yenile</string>
@@ -99,8 +98,8 @@
   <string name="remove_label">Kaldır</string>
   <string name="remove_episode_lable">Bölümü kaldır</string>
   <string name="mark_read_label">Oynatıldı olarak işaretle</string>
-  <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
   <string name="marked_as_read_label">Oynatıldı olarak işaretlendi</string>
+  <string name="mark_unread_label">Oynatılmadı olarak işaretle</string>
   <string name="add_to_queue_label">Kuyruğa Ekle</string>
   <string name="added_to_queue_label">Kuyruğa Eklendi</string>
   <string name="remove_from_queue_label">Kuyruktan Kaldır</string>
@@ -227,8 +226,6 @@
   <string name="pref_auto_delete_title">Otomatik Silme</string>
   <string name="playback_pref">Çalma</string>
   <string name="network_pref">Ağ</string>
-  <string name="pref_autoUpdateIntervall_title">Güncelleme aralığı</string>
-  <string name="pref_autoUpdateIntervall_sum">Beslemeleri yenilemek için bir aralık belirtin veya devre dışı bırakın.</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Medya dosyalarını sadece kablosuz bağlantı üzerinden indir</string>
   <string name="pref_followQueue_title">Devamlı çalma</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Kablosuz medya indirmesi</string>
@@ -322,9 +319,6 @@
   <string name="sleep_timer_label">Zamanlayıcı</string>
   <string name="time_left_label">Kalan süre:\u0020</string>
   <string name="time_dialog_invalid_input">Geçersiz giriş, zaman bir tam sayı olmalıdır</string>
-  <string name="time_unit_seconds">saniye</string>
-  <string name="time_unit_minutes">dakika</string>
-  <string name="time_unit_hours">saat</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORİLER</string>
   <string name="gpodnet_toplist_header">POPÜLER CEP YAYINLARI</string>
@@ -395,6 +389,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">Yetkilendirme</string>
   <string name="authentication_descr">Bu cep yayını ve içerdiği bölümler için kullanıcı adı şifreyi değiştir.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Üyelikler tek-amaçlı uygulamalardan içe aktarılıyor...</string>
   <string name="search_itunes_label">iTunes\'da Arama</string>

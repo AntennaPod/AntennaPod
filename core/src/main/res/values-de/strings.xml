@@ -251,6 +251,7 @@
   <string name="network_pref">Netzwerk</string>
   <string name="pref_autoUpdateIntervallOrTime_title">Aktualisierungsintervall oder -tageszeit</string>
   <string name="pref_autoUpdateIntervallOrTime_sum">Lege ein Intervall oder eine Tageszeit zur automatischen Aktualisierung der Podcasts fest</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Du kannst ein festes <i>Intervall</i> wie \"alle 2 Stunden\", eine bestimmte <i>Tageszeit</i> wie \"7 Uhr morgens\" festlegen oder die automatische Aktualisierung komplett <i>deaktivieren</i>.\n\n<small>Bitte beachte: Der Zeitpunkt der Aktualisierung ist ungenau. Du wirst vielleicht eine kurze Verzögerung bemerken.</small></string>
   <string name="pref_autoUpdateIntervallOrTime_Disable">Deaktivieren</string>
   <string name="pref_autoUpdateIntervallOrTime_Interval">Intervall einstellen</string>
   <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Tageszeit festlegen</string>
@@ -360,6 +361,21 @@
   <string name="sleep_timer_label">Schlummerfunktion</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
+  <string name="time_seconds">Sekunden</string>
+  <string name="time_minutes">Minuten</string>
+  <string name="time_hours">Stunden</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 Sekunde</item>
+    <item quantity="other">%d Sekunden</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 Minute</item>
+    <item quantity="other">%d Minuten</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 Stunde</item>
+    <item quantity="other">%d Stunden</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIEN</string>
   <string name="gpodnet_toplist_header">BESTE PODCASTS</string>

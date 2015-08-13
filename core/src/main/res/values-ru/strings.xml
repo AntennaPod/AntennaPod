@@ -17,7 +17,7 @@
   <string name="downloads_completed_label">Завершено</string>
   <string name="downloads_log_label">Журнал</string>
   <string name="cancel_download_label">Отменить загрузку</string>
-  <string name="playback_history_label">История воспроизведения</string>
+  <string name="playback_history_label">Журнал</string>
   <string name="gpodnet_main_label">gpodder.net</string>
   <string name="gpodnet_auth_label">Войти на gpodder.net</string>
   <!--New episodes fragment-->
@@ -26,6 +26,12 @@
   <!--Main activity-->
   <string name="drawer_open">Открыть меню</string>
   <string name="drawer_close">Закрыть меню</string>
+  <string name="drawer_feed_order_unplayed_episodes">Сортировать по количеству</string>
+  <string name="drawer_feed_order_alphabetical">Сортировать по алфавиту</string>
+  <string name="drawer_feed_counter_new_unplayed">Количество новых и непрослушанных выпусков</string>
+  <string name="drawer_feed_counter_new">Количество новых выпусков</string>
+  <string name="drawer_feed_counter_unplayed">Количество непрослушанных выпусков</string>
+  <string name="drawer_feed_counter_none">Ничего</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Открыть в браузере</string>
   <string name="copy_url_label">Скопировать ссылку</string>
@@ -37,8 +43,11 @@
   <!--Other-->
   <string name="confirm_label">Подтвердить</string>
   <string name="cancel_label">Отмена</string>
+  <string name="yes">Да</string>
+  <string name="no">Нет</string>
   <string name="author_label">Автор</string>
   <string name="language_label">Язык</string>
+  <string name="url_label">Адрес</string>
   <string name="podcast_settings_label">Настройки</string>
   <string name="cover_label">Обложка</string>
   <string name="error_label">Ошибка</string>
@@ -58,6 +67,7 @@
   <string name="close_label">Закрыть</string>
   <string name="retry_label">Повторить</string>
   <string name="auto_download_label">Добавить в автозагрузки</string>
+  <string name="auto_download_apply_to_items_title">Применить к предыдущим выпускам</string>
   <string name="parallel_downloads_suffix">\u0020одновременных загрузок</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL канала</string>
@@ -73,7 +83,8 @@
   <string name="mark_all_read_feed_confirmation_msg">Подтвердите, что хотите пометить все эпизоды в этом канале как прослушанные.</string>
   <string name="show_info_label">Показать информацию</string>
   <string name="remove_feed_label">Удалить подкаст</string>
-  <string name="share_link_label">Поделиться ссылкой на сайт</string>
+  <string name="share_label">Поделиться...</string>
+  <string name="share_link_label">Поделиться ссылкой</string>
   <string name="feed_delete_confirmation_msg">Подтвердите удаление канала и всех выпусков, загруженных с этого канала.</string>
   <string name="feed_remover_msg">Удаление канала</string>
   <string name="load_complete_feed">Обновить весь канал</string>
@@ -84,11 +95,12 @@
   <string name="stop_label">Остановить</string>
   <string name="stream_label">Воспроизвести из сети</string>
   <string name="remove_label">Удалить</string>
-  <string name="remove_episode_lable">Удалить</string>
-  <string name="mark_read_label">Отметить как прочитанное</string>
+  <string name="remove_episode_lable">Удалить выпуск</string>
+  <string name="mark_read_label">Отметить как прослушанное</string>
   <string name="marked_as_read_label">Помечено как прослушанное</string>
-  <string name="mark_unread_label">Отметить как непрочитанное</string>
+  <string name="mark_unread_label">Отметить как непрослушанное</string>
   <string name="add_to_queue_label">Добавить в очередь</string>
+  <string name="added_to_queue_label">Добавлено в очередь</string>
   <string name="remove_from_queue_label">Удалить из очереди</string>
   <string name="visit_website_label">Посетить сайт</string>
   <string name="support_label">Поддержать через Flattr</string>
@@ -267,7 +279,7 @@
   <!--OPML import and export-->
   <string name="opml_import_txtv_button_lable">OPML файлы позволяют перемещать ваши подкасты из одного менеджера подкастов в другой.</string>
   <string name="opml_import_explanation_1">Укажите путь к файлу на устройстве</string>
-  <string name="opml_import_explanation_2">Откройте OPML-файл с помощью внешних приложений: Dropbox, Google Drive или любой файловый менеджер.</string>
+  <string name="opml_import_explanation_2">Откройте OPML-файл с помощью внешних приложений: Dropbox, Google Drive или любого файлового менеджера.</string>
   <string name="opml_import_explanation_3">Множество приложений умеют <i>открывать</i> OPML-файлы <i>в</i> AntennaPod, например: Google Mail, Dropbox, Google Drive и большинство файловых менеджеров.</string>
   <string name="start_import_label">Начать импорт</string>
   <string name="opml_import_label">Импорт OPML</string>
