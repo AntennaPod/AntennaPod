@@ -27,6 +27,12 @@
   <string name="drawer_open">메뉴 열기</string>
   <string name="drawer_close">메뉴 닫기</string>
   <string name="drawer_preferences">드로어 기본 설정</string>
+  <string name="drawer_feed_order_unplayed_episodes">카운터로 정렬</string>
+  <string name="drawer_feed_order_alphabetical">사전 순서로 정렬</string>
+  <string name="drawer_feed_counter_new_unplayed">새로운 에피소드와 재생하지 않은 에피소드 수</string>
+  <string name="drawer_feed_counter_new">새로운 에피소드 수</string>
+  <string name="drawer_feed_counter_unplayed">재생하지 않은 에피소드 수</string>
+  <string name="drawer_feed_counter_none">없음</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">브라우저에서 열기</string>
   <string name="copy_url_label">URL 복사</string>
@@ -38,6 +44,8 @@
   <!--Other-->
   <string name="confirm_label">확인</string>
   <string name="cancel_label">취소</string>
+  <string name="yes">예</string>
+  <string name="no">아니요</string>
   <string name="author_label">저자</string>
   <string name="language_label">언어</string>
   <string name="url_label">URL</string>
@@ -60,7 +68,13 @@
   <string name="close_label">닫기</string>
   <string name="retry_label">다시 시도</string>
   <string name="auto_download_label">자동 다운로드에 포함</string>
+  <string name="auto_download_apply_to_items_title">예전 에피소드에 적용</string>
+  <string name="auto_download_apply_to_items_message">새로운 &lt;i&gt;자동 다운로드&lt;/I&gt; 설정은 자동으로 새로운 에피소드에 적용됩니다. 예전 에피소드에도 적용하시겠습니까?</string>
+  <string name="auto_delete_label">에피소드 자동 삭제\n(전체 설정보다 우선)</string>
   <string name="parallel_downloads_suffix">\u0020동시 다운로드</string>
+  <string name="feed_auto_download_global">전체 설정</string>
+  <string name="feed_auto_download_always">항상</string>
+  <string name="feed_auto_download_never">안 함</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">피드 URL</string>
   <string name="etxtFeedurlHint">피드의 URL 또는 홈페이지</string>
@@ -73,13 +87,20 @@
   <string name="mark_all_read_msg">모든 에피소드를 재생했다고 표시했습니다</string>
   <string name="mark_all_read_confirmation_msg">모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
   <string name="mark_all_read_feed_confirmation_msg">이 피드에 들어 있는 모든 에피소드를 재생했다고 표시할지 확인하십시오.</string>
+  <string name="mark_all_seen_label">모두 봤다고 표시</string>
   <string name="show_info_label">정보 표시</string>
   <string name="remove_feed_label">팟캐스트 제거</string>
+  <string name="share_label">공유...</string>
   <string name="share_link_label">홈페이지 링크 공유</string>
+  <string name="share_link_with_position_label">위치와 같이 링크 공유</string>
+  <string name="share_feed_url_label">피드 URL 공유</string>
+  <string name="share_item_url_label">에피소드 URL 공유</string>
+  <string name="share_item_url_with_position_label">위치와 같이 에피소드 URL 공유</string>
   <string name="feed_delete_confirmation_msg">이 피드와 이 피드에서 다운로드한 모든 에피소드를 삭제하시려면 확인을 누르십시오.</string>
   <string name="feed_remover_msg">피드 삭제하는 중</string>
   <string name="load_complete_feed">전체 피드 새로고침</string>
   <string name="hide_episodes_title">에피소드 감추기</string>
+  <string name="episode_actions">동작 적용</string>
   <string name="hide_unplayed_episodes_label">재생 안 함</string>
   <string name="hide_paused_episodes_label">일시 중지</string>
   <string name="hide_played_episodes_label">재생함</string>
@@ -228,6 +249,12 @@
   <string name="pref_smart_mark_as_played_title">똑똑하게 재생한 것으로 표시</string>
   <string name="playback_pref">재생</string>
   <string name="network_pref">네트워크</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">업데이트 주기 또는 하루 중 시각</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">피드를 자동으로 새로 고칠 주기 또는 하루 중 특정 시각을 지정하십시오</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">\"매 2시간\"과 같이 <i>주기</i>를 지정할 수도 있고, \"오전 7:00\"와 같이 <i>하루 중 시각</i>을 지정할 수도 있고, 자동 업데이트를 모두 <i>사용 안 할</i> 수도 있습니다.\n\n<small>안내: 업데이트 시간은 정확하지 않습니다. 약간 늦게 업데이트할 수 있습니다.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">사용 안 함</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">주기 지정</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">하루 중 시각 지정</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Wi-Fi를 통해서만 미디어 파일 다운로드</string>
   <string name="pref_followQueue_title">연속 재생</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Wi-Fi 미디어 다운로드</string>
@@ -247,8 +274,14 @@
   <string name="pref_auto_flattr_sum">자동 flattr 설정</string>
   <string name="user_interface_label">사용자 인터페이스</string>
   <string name="pref_set_theme_title">테마 선택</string>
+  <string name="pref_nav_drawer_title">네비게이션 드로어 사용자 설정</string>
+  <string name="pref_nav_drawer_sum">네비게이션 드로어의 모양을 사용자 설정합니다.</string>
   <string name="pref_nav_drawer_items_title">네비게이션 드로어 바꾸기</string>
   <string name="pref_nav_drawer_items_sum">네비게이션 드로어에 어떤 항목을 표시할지 바꿉니다.</string>
+  <string name="pref_nav_drawer_feed_order_title">구독 순서 설정</string>
+  <string name="pref_nav_drawer_feed_order_sum">구독 순서를 바꿉니다</string>
+  <string name="pref_nav_drawer_feed_counter_title">구독 카운터 설정</string>
+  <string name="pref_nav_drawer_feed_counter_sum">구독 카운터에 따라 표시되는 정보를 바꿉니다</string>
   <string name="pref_set_theme_sum">안테나팟의 겉모양을 바꿉니다.</string>
   <string name="pref_automatic_download_title">자동 다운로드</string>
   <string name="pref_automatic_download_sum">에피소드 자동 다운로드를 설정합니다.</string>
@@ -280,10 +313,14 @@
   <string name="pref_expandNotify_sum">항상 알림에서 재생 버튼이 표시되도록 확장</string>
   <string name="pref_persistNotify_title">재생 조작 고정</string>
   <string name="pref_persistNotify_sum">재생이 일시 중지했을 때에도 알림과 잠금 화면의 조작 기능 유지</string>
+  <string name="pref_showDownloadReport_title">다운로드 보고서 보기</string>
+  <string name="pref_showDownloadReport_sum">다운로드가 실패하면, 실패를 자세히 표시하는 보고서를 만듭니다.</string>
   <string name="pref_expand_notify_unsupport_toast">안드로이드 4.1 전 버전에서는 알림 확장을 지원하지 않습니다.</string>
   <string name="pref_queueAddToFront_sum">새 에피소드를 대기열 앞에 추가합니다.</string>
   <string name="pref_queueAddToFront_title">대기열 앞에 추가</string>
   <string name="pref_smart_mark_as_played_disabled">사용 안 함</string>
+  <string name="pref_image_cache_size_title">이미지 캐시 크기</string>
+  <string name="pref_image_cache_size_sum">이미지에 사용할 디스크 캐시 크기</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">자동 flattr 사용</string>
   <string name="auto_flattr_after_percent">%d 퍼센트를 재생하면 에피소드에 flattr합니다</string>
@@ -309,6 +346,7 @@
   <string name="opml_import_error_dir_empty">가져오기 디렉터리가 비어 있습니다.</string>
   <string name="select_all_label">모두 선택</string>
   <string name="deselect_all_label">모두 선택 해제</string>
+  <string name="select_options_label">선택...</string>
   <string name="choose_file_from_filesystem">로컬 파일시스템에서</string>
   <string name="choose_file_from_external_application">외부 앱 사용</string>
   <string name="opml_export_label">OPML 내보내기</string>
@@ -323,6 +361,18 @@
   <string name="sleep_timer_label">취침 타이머</string>
   <string name="time_left_label">남은 시간:\u0020</string>
   <string name="time_dialog_invalid_input">입력이 잘못되었습니다. 시간으로 숫자를 입력해야 합니다.</string>
+  <string name="time_seconds">초</string>
+  <string name="time_minutes">분</string>
+  <string name="time_hours">시간</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="other">%d초</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="other">%d분</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="other">%d시간</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">분류</string>
   <string name="gpodnet_toplist_header">상위 팟캐스트</string>
@@ -367,6 +417,7 @@
   <string name="pref_pausePlaybackForFocusLoss_title">끼어들면 일시 중지</string>
   <string name="pref_resumeAfterCall_sum">전화 통화가 끝난 후에 재생 다시 시작</string>
   <string name="pref_resumeAfterCall_title">통화 후에 다시 시작</string>
+  <string name="pref_restart_required">이 변경 사항을 적용하려면 안테나팟을 다시 시작해야 합니다.</string>
   <!--Online feed view-->
   <string name="subscribe_label">구독</string>
   <string name="subscribed_label">구독함</string>
@@ -394,7 +445,28 @@
   <string name="authentication_label">인증</string>
   <string name="authentication_descr">이 팟캐스트와 에피소드에 대한 사용자 이름과 비밀번호를 바꿉니다.</string>
   <!--Progress information-->
+  <string name="progress_upgrading_database">데이터베이스 업그레이드 중</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">단일 용도 앱에서 구독 정보를 가져옵니다...</string>
   <string name="search_itunes_label">iTunes 검색</string>
+  <string name="select_label"><b>선택 ...</b></string>
+  <string name="all_label">모두</string>
+  <string name="selected_all_label">모든 에피소드 선택</string>
+  <string name="none_label">없음</string>
+  <string name="deselected_all_label">모든 에피소드 선택 해제</string>
+  <string name="played_label">재생함</string>
+  <string name="selected_played_label">재생 에피소드 선택</string>
+  <string name="unplayed_label">재생 안 함</string>
+  <string name="selected_unplayed_label">재생 안 한 에피소드 선택</string>
+  <string name="downloaded_label">다운로드함</string>
+  <string name="selected_downloaded_label">다운로드한 에피소드 선택</string>
+  <string name="not_downloaded_label">다운로드 안 함</string>
+  <string name="selected_not_downloaded_label">다운로드 안 한 에피소드 선택</string>
+  <string name="sort_title"><b>정렬 ...</b></string>
+  <string name="sort_title_a_z">제목 (A \u2192 Z)</string>
+  <string name="sort_title_z_a">제목 (Z \u2192 A)</string>
+  <string name="sort_date_new_old">시각 (최근 \u2192 과거)</string>
+  <string name="sort_date_old_new">시각 (과거 \u2192 최근)</string>
+  <string name="sort_duration_short_long">길이 (짧은 \u2192 긴)</string>
+  <string name="sort_duration_long_short">길이 (긴 \u2192 짧은)</string>
 </resources>

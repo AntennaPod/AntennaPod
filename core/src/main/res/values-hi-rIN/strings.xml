@@ -57,7 +57,6 @@
   <string name="remove_feed_label">पॉडकास्ट हटाएँ
 </string>
   <string name="share_link_label">शेयर वेबसाइट लिंक</string>
-  <string name="share_source_label">शेयर फ़ीड लिंक</string>
   <string name="feed_delete_confirmation_msg">इसकी पुष्टि करें कि आप इस फ़ीड और इस फ़ीड के सभी प्रकरणों को हटाना चाहते हैं जिन्हें आपने डाउनलोड किया है.</string>
   <string name="feed_remover_msg">फ़ीड निकाल रहा है</string>
   <!--actions on feeditems-->
@@ -158,8 +157,6 @@
   <string name="pref_followQueue_sum">प्लेबैक के पूरा होने पर अगली पंक्ति आइटम के लिए जाएँ</string>
   <string name="playback_pref">प्लेबैक</string>
   <string name="network_pref">संजाल</string>
-  <string name="pref_autoUpdateIntervall_title">अंतराल अद्यतन</string>
-  <string name="pref_autoUpdateIntervall_sum">फ़ीड स्वचालित रूप से ताजा कर रहे हैं जिसमें एक अंतराल निर्दिष्ट करें या उसे निष्क्रिय करें </string>
   <string name="pref_downloadMediaOnWifiOnly_sum">केवल वाईफ़ाई पर मीडिया फ़ाइलें डाउनलोड करें</string>
   <string name="pref_followQueue_title">सतत प्लेबैक</string>
   <string name="pref_downloadMediaOnWifiOnly_title">वाईफाई मीडिया डाउनलोड करें</string>
@@ -274,5 +271,6 @@
   <string name="downloading_label">डाउनलोड कर रहा है ...</string>
   <!--Content descriptions for image buttons-->
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
 </resources>
