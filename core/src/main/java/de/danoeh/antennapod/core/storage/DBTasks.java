@@ -578,7 +578,7 @@ public final class DBTasks {
 
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
 
-        context.startService(new Intent(context, FeedMediaSizeService.class));
+        // context.startService(new Intent(context, FeedMediaSizeService.class));
 
         return resultFeeds;
     }

@@ -1,13 +1,11 @@
 package de.danoeh.antennapod;
 
 import android.app.Application;
-import android.content.Intent;
 import android.content.res.Configuration;
 
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.FeedMediaSizeService;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.spa.SPAUtil;
 
@@ -47,7 +45,7 @@ public class PodcastApp extends Application {
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
 
-		startService(new Intent(this, FeedMediaSizeService.class));
+		// startService(new Intent(this, FeedMediaSizeService.class));
 	}
 
 	public static float getLogicalDensity() {
