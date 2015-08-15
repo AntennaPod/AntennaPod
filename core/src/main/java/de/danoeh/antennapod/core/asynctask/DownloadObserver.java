@@ -12,6 +12,7 @@ import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -85,15 +86,18 @@ public class DownloadObserver {
             if (downloadService == null) {
                 connectToDownloadService();
             }
-            callback.onContentChanged();
+            if (downloadService != null) {
+                callback.onContentChanged(downloadService.getDownloads());
+            } else {
+                // the service is gone, there are no more downloads.
+                callback.onContentChanged(new ArrayList<Downloader>());
+            }
             startRefresher();
         }
     };
 
     public interface Callback {
-        void onContentChanged();
-
-        void onDownloadDataAvailable(List<Downloader> downloaderList);
+        void onContentChanged(List<Downloader> downloaderList);
     }
 
     private void connectToDownloadService() {
@@ -116,7 +120,7 @@ public class DownloadObserver {
                 Log.d(TAG, "Connection to service established");
             List<Downloader> downloaderList = downloadService.getDownloads();
             if (downloaderList != null && !downloaderList.isEmpty()) {
-                callback.onDownloadDataAvailable(downloaderList);
+                callback.onContentChanged(downloaderList);
                 startRefresher();
             }
         }
@@ -156,12 +160,14 @@ public class DownloadObserver {
             handler.post(new Runnable() {
                 @Override
                 public void run() {
-                    callback.onContentChanged();
                     if (downloadService != null) {
                         List<Downloader> downloaderList = downloadService.getDownloads();
+                        callback.onContentChanged(downloaderList);
                         if (downloaderList == null || downloaderList.isEmpty()) {
                             Thread.currentThread().interrupt();
                         }
+                    } else {
+                        callback.onContentChanged(new ArrayList<Downloader>());
                     }
                 }
             });

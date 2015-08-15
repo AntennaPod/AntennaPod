@@ -2,15 +2,9 @@ package de.test.antennapod.handler;
 
 import android.content.Context;
 import android.test.InstrumentationTestCase;
-import de.danoeh.antennapod.core.feed.*;
-import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
-import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
-import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
-import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
-import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
+
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -18,6 +12,19 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import javax.xml.parsers.ParserConfigurationException;
+
+import de.danoeh.antennapod.core.feed.Chapter;
+import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.feed.FeedImage;
+import de.danoeh.antennapod.core.feed.FeedItem;
+import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.syndication.handler.FeedHandler;
+import de.danoeh.antennapod.core.syndication.handler.UnsupportedFeedtypeException;
+import de.test.antennapod.util.syndication.feedgenerator.AtomGenerator;
+import de.test.antennapod.util.syndication.feedgenerator.FeedGenerator;
+import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
 
 /**
  * Tests for FeedHandler
@@ -162,10 +169,10 @@ public class FeedHandlerTest extends InstrumentationTestCase {
 
         for (int i = 0; i < numItems; i++) {
             FeedItem item = new FeedItem(0, "item-" + i, "http://example.com/item-" + i,
-                    "http://example.com/items/" + i, new Date(i*60000), false, feed);
+                    "http://example.com/items/" + i, new Date(i*60000), FeedItem.UNPLAYED, feed);
             feed.getItems().add(item);
             if (withFeedMedia) {
-                item.setMedia(new FeedMedia(0, item, 4711, 0, 100, "audio/mp3", null, "http://example.com/media-" + i,
+                item.setMedia(new FeedMedia(0, item, 4711, 0, 1024*1024, "audio/mp3", null, "http://example.com/media-" + i,
                         false, null, 0));
             }
         }

@@ -39,7 +39,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
         Timeout.setLargeTimeout(1000);
         context = getInstrumentation().getTargetContext();
         res = getActivity().getResources();
-        UserPreferences.createInstance(context);
+        UserPreferences.init(context);
     }
 
     @Override
@@ -231,7 +231,7 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
                 return pauseForFocusLoss != UserPreferences.shouldPauseForFocusLoss();
             }
         }, Timeout.getLargeTimeout());
-        solo.clickOnText(solo.getString(R.string.pref_auto_delete_title));
+        solo.clickOnText(solo.getString(R.string.pref_pausePlaybackForFocusLoss_title));
         solo.waitForCondition(new Condition() {
             @Override
             public boolean isSatisfied() {
@@ -241,9 +241,9 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testDisableUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_sum));
         solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.pref_update_interval_hours_manual));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Disable));
         solo.waitForCondition(new Condition() {
             @Override
             public boolean isSatisfied() {
@@ -253,7 +253,9 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
     }
 
     public void testSetUpdateInterval() {
-        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervall_title));
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_title));
+        solo.waitForDialogToOpen();
+        solo.clickOnText(solo.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
         solo.waitForDialogToOpen();
         String search = "12 " + solo.getString(R.string.pref_update_interval_hours_plural);
         solo.clickOnText(search);
@@ -424,30 +426,4 @@ public class PreferencesTest extends ActivityInstrumentationTestCase2<Preference
             }
         }, Timeout.getLargeTimeout());
     }
-
-    @FlakyTest(tolerance = 3)
-    public void testAbout() throws IOException {
-        int numViews = 0, numLinks = 0;
-        InputStream input = getActivity().getResources().getAssets().open("about.html");
-        List<String> lines = IOUtils.readLines(input);
-        input.close();
-        for(String line : lines) {
-            if(line.contains("(View)")) {
-                numViews++;
-            } else if(line.contains("(Link)")) {
-                numLinks++;
-            }
-        }
-        for(int i=0; i < numViews; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(View)", i);
-            solo.goBack();
-        }
-        for(int i=0; i < numLinks; i++) {
-            solo.clickOnText(solo.getString(R.string.about_pref));
-            solo.clickOnText("(Link)", i);
-            solo.goBack();
-        }
-    }
-
 }

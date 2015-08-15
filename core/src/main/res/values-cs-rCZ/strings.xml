@@ -27,6 +27,12 @@
   <string name="drawer_open">Otevřít menu</string>
   <string name="drawer_close">Zavřít menu</string>
   <string name="drawer_preferences">Nastavení panelu</string>
+  <string name="drawer_feed_order_unplayed_episodes">Řadit dle počtu</string>
+  <string name="drawer_feed_order_alphabetical">Řadit abecedně</string>
+  <string name="drawer_feed_counter_new_unplayed">Počet nových a nepřehraných epizod</string>
+  <string name="drawer_feed_counter_new">Počet nových epizod</string>
+  <string name="drawer_feed_counter_unplayed">Počet nepřehraných epizod</string>
+  <string name="drawer_feed_counter_none">Žádné</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Otevřít v prohlížeči</string>
   <string name="copy_url_label">Kopírovat URL</string>
@@ -38,6 +44,9 @@
   <!--Other-->
   <string name="confirm_label">Potvrdit</string>
   <string name="cancel_label">Zrušit</string>
+  <string name="yes">Ano</string>
+  <string name="no">Ne
+</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Jazyk</string>
   <string name="url_label">URL</string>
@@ -60,7 +69,13 @@
   <string name="close_label">Zavřít</string>
   <string name="retry_label">Zkusit znovu</string>
   <string name="auto_download_label">Zahrnout do automaticky stahovaných</string>
+  <string name="auto_download_apply_to_items_title">Použít na předchozí epizody</string>
+  <string name="auto_download_apply_to_items_message">Nová funkce <i>auto stahování</i> bude automaticky použita na nové epizody.\nChcete ji také použít na předchozí epizody?</string>
+  <string name="auto_delete_label">Automaticky smazat epizodu\n(přeskočit globální nastavení)</string>
   <string name="parallel_downloads_suffix">\u0020paralelních stahování</string>
+  <string name="feed_auto_download_global">Globální</string>
+  <string name="feed_auto_download_always">Vždy</string>
+  <string name="feed_auto_download_never">Nikdy</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">URL kanálu</string>
   <string name="etxtFeedurlHint">URL nebo webová stránka kanálu</string>
@@ -73,14 +88,20 @@
   <string name="mark_all_read_msg">Všechny epizody označeny jako poslechnuté</string>
   <string name="mark_all_read_confirmation_msg">Prosím potvrďte, že chcete označit všechny vybrané epizody jako poslechnuté.</string>
   <string name="mark_all_read_feed_confirmation_msg">Prosím potvrďte, že chcete označit všechny epizody z tohoto zdroje jako poslechnuté.</string>
+  <string name="mark_all_seen_label">Označit vše jako zobrazené</string>
   <string name="show_info_label">Informace o zdroji</string>
   <string name="remove_feed_label">Odstranit podcast</string>
+  <string name="share_label">Sdílet...</string>
   <string name="share_link_label">Sdílet odkaz</string>
-  <string name="share_source_label">Sdílet adresu kanálu</string>
+  <string name="share_link_with_position_label">Sdílet odkaz s pozicí</string>
+  <string name="share_feed_url_label">Sdílet URL kanálu</string>
+  <string name="share_item_url_label">Sdílet URL epizody</string>
+  <string name="share_item_url_with_position_label">Sdílet URL epizody s pozicí</string>
   <string name="feed_delete_confirmation_msg">Prosím potvrďte, že chcete smazat tento kanál včetně všech stažených epizod.</string>
   <string name="feed_remover_msg">Odstranit kanál</string>
   <string name="load_complete_feed">Obnovit kompletní kanál</string>
   <string name="hide_episodes_title">Skrýt epizody</string>
+  <string name="episode_actions">Provést akce</string>
   <string name="hide_unplayed_episodes_label">Neposlechnuté</string>
   <string name="hide_paused_episodes_label">Pozastavené</string>
   <string name="hide_played_episodes_label">Poslechnuté</string>
@@ -99,8 +120,8 @@
   <string name="remove_label">Odstranit</string>
   <string name="remove_episode_lable">Odstranit epizodu</string>
   <string name="mark_read_label">Označit jako poslechnuté</string>
-  <string name="mark_unread_label">Označit jako neposlechnuté</string>
   <string name="marked_as_read_label">Označeno jako poslechnuté</string>
+  <string name="mark_unread_label">Označit jako neposlechnuté</string>
   <string name="add_to_queue_label">Přidat do fronty</string>
   <string name="added_to_queue_label">Přidáno do fronty</string>
   <string name="remove_from_queue_label">Odebrat z fronty</string>
@@ -229,8 +250,12 @@
   <string name="pref_smart_mark_as_played_title">Chytré označování jako poslechnuté</string>
   <string name="playback_pref">Přehrávání</string>
   <string name="network_pref">Síť</string>
-  <string name="pref_autoUpdateIntervall_title">Interval aktualizace zdrojů</string>
-  <string name="pref_autoUpdateIntervall_sum">Udává interval, ve kterém se kanály automaticky aktualizují nebo tuto funkci deaktivuje</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Aktualizovat interval nebo čas v průběhu dne</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Udat interval nebo přesný čas v průběhu dne pro automatickou aktualizaci kanálů</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Můžete nastavit <i>interval</i> jako třeba \"každé 2 hodiny\", nastavit specifický <i>čas v průběhu dne</i> jako \"7:00\" nebo úplně <i>vypnout</i> automatické aktualizace.\n\n<small>Mějte na paměti: Časy aktualizací nejsou přesné. Možná zaznamenáte krátká zpoždění.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Vypnout</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Nastavit interval</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Nastavit čas v průběhu dne</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Stahovat soubory pouze pomocí WiFi</string>
   <string name="pref_followQueue_title">Kontinuální přehrávání</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi stahování</string>
@@ -250,8 +275,14 @@
   <string name="pref_auto_flattr_sum">Nastavit automatické flattrování</string>
   <string name="user_interface_label">Uživatelské rozhraní</string>
   <string name="pref_set_theme_title">Vybrat motiv</string>
+  <string name="pref_nav_drawer_title">Upravit navigační panel</string>
+  <string name="pref_nav_drawer_sum">Upravit vzhled navigačního panelu.</string>
   <string name="pref_nav_drawer_items_title">Změnit navigační panel</string>
   <string name="pref_nav_drawer_items_sum">Upravit zobrazení položek v navigačním panelu.</string>
+  <string name="pref_nav_drawer_feed_order_title">Nastavit pořadí sbírek</string>
+  <string name="pref_nav_drawer_feed_order_sum">Upravit pořadí vašich sbírek</string>
+  <string name="pref_nav_drawer_feed_counter_title">Nastavit počítadlo sbírek</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Upravit informaci zobrazovanou počítadlem sbírek</string>
   <string name="pref_set_theme_sum">Změnit vzhled AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatické stahování</string>
   <string name="pref_automatic_download_sum">Nastavení automatického stahování epizod.</string>
@@ -283,10 +314,14 @@
   <string name="pref_expandNotify_sum">Vždy zobrazovat tlačítka pro přehrávání v upozornění.</string>
   <string name="pref_persistNotify_title">Pevné ovládání přehrávání</string>
   <string name="pref_persistNotify_sum">Zachovat upozornění a ovládání na obrazovce uzamčení i při pozastaveném přehrávání.</string>
+  <string name="pref_showDownloadReport_title">Zobrazit report stahování</string>
+  <string name="pref_showDownloadReport_sum">Pokud selže stahování, vygenerovat report zobrazující detaily o chybě.</string>
   <string name="pref_expand_notify_unsupport_toast">Verze Androidu nižší než 4.1 nepodporují rozšířená upozornění.</string>
   <string name="pref_queueAddToFront_sum">Přidávat nové epizody na začátek fronty.</string>
   <string name="pref_queueAddToFront_title">Přidat na začátek.</string>
   <string name="pref_smart_mark_as_played_disabled">Vypnuto</string>
+  <string name="pref_image_cache_size_title">Velikost odkládací paměti obrázků</string>
+  <string name="pref_image_cache_size_sum">Velikost diskové paměti pro obrázky.</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Povolit automatické flattrování</string>
   <string name="auto_flattr_after_percent">Flattrovat díl jakmile bude odehráno %d procent</string>
@@ -312,6 +347,7 @@
   <string name="opml_import_error_dir_empty">Adresář importu je prázdný.</string>
   <string name="select_all_label">Označit vše</string>
   <string name="deselect_all_label">Zrušit výběr</string>
+  <string name="select_options_label">Vybrat ...</string>
   <string name="choose_file_from_filesystem">Z místního souborového systému</string>
   <string name="choose_file_from_external_application">Použít externí aplikaci</string>
   <string name="opml_export_label">OPML export</string>
@@ -326,9 +362,24 @@
   <string name="sleep_timer_label">Časovač vypnutí</string>
   <string name="time_left_label">Zbývající čas:\u0020</string>
   <string name="time_dialog_invalid_input">Neplatný vstup, musí být zadáno celé číslo</string>
-  <string name="time_unit_seconds">sekund</string>
-  <string name="time_unit_minutes">minut</string>
-  <string name="time_unit_hours">hodin</string>
+  <string name="time_seconds">sekund</string>
+  <string name="time_minutes">minut</string>
+  <string name="time_hours">hodin</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 sekunda</item>
+    <item quantity="few">%d sekundy</item>
+    <item quantity="other">%d sekund</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 minuta</item>
+    <item quantity="few">%d minuty</item>
+    <item quantity="other">%d minut</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 hodina</item>
+    <item quantity="few">%d hodiny</item>
+    <item quantity="other">%d hodin</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIE</string>
   <string name="gpodnet_toplist_header">TOP PODCASTY</string>
@@ -373,6 +424,7 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Automatické pozastavení přehrávání</string>
   <string name="pref_resumeAfterCall_sum">Pokračovat v přehrávání po ukončení telefonního hovoru</string>
   <string name="pref_resumeAfterCall_title">Pokračovat po telefonátu</string>
+  <string name="pref_restart_required">Pro aktivování změn nastavení bylo třeba restartovat aplikaci AntennaPod.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Odebírat</string>
   <string name="subscribed_label">Odebíráno</string>
@@ -399,7 +451,29 @@
   <!--Feed information screen-->
   <string name="authentication_label">Ověření</string>
   <string name="authentication_descr">Změnit uživatelské jméno a heslo pro tento podcast a jeho epizody.</string>
+  <!--Progress information-->
+  <string name="progress_upgrading_database">Probíhá aktualizace databáze</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importuji odběry z jednoúčelových aplikací...</string>
   <string name="search_itunes_label">Prohledat iTunes</string>
+  <string name="select_label"><b>Vybrat ...</b></string>
+  <string name="all_label">Vše</string>
+  <string name="selected_all_label">Vybrány všechny epizody</string>
+  <string name="none_label">Žádné</string>
+  <string name="deselected_all_label">Odebrány všechny epizody</string>
+  <string name="played_label">Přehrány</string>
+  <string name="selected_played_label">Vybrány přehrané epizody</string>
+  <string name="unplayed_label">Nepřehrány</string>
+  <string name="selected_unplayed_label">Odebrány nepřehrané epizody</string>
+  <string name="downloaded_label">Stažené</string>
+  <string name="selected_downloaded_label">Vybrány stažené epizody</string>
+  <string name="not_downloaded_label">Nestažené</string>
+  <string name="selected_not_downloaded_label">Vybrány nestažené epizody</string>
+  <string name="sort_title"><b>Řadit podle ...</b></string>
+  <string name="sort_title_a_z">Názvu (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Názvu (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Data (Nové \u2192 Staré)</string>
+  <string name="sort_date_old_new">Data (Staré \u2192 Nové)</string>
+  <string name="sort_duration_short_long">Délka (Krátké \u2192 Dlouhé)</string>
+  <string name="sort_duration_long_short">Délka (Dlouhé \u2192 Krátké)</string>
 </resources>

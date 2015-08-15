@@ -43,7 +43,7 @@ public class HttpDownloaderTest extends InstrumentationTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        UserPreferences.createInstance(getInstrumentation().getTargetContext());
+        UserPreferences.init(getInstrumentation().getTargetContext());
         destDir = getInstrumentation().getTargetContext().getExternalFilesDir(DOWNLOAD_DIR);
         assertNotNull(destDir);
         assertTrue(destDir.exists());

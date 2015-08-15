@@ -54,7 +54,6 @@
   <string name="mark_all_read_label">Marcar todos como lido</string>
   <string name="show_info_label">Mostrar informação</string>
   <string name="share_link_label">Compartilhar link do site</string>
-  <string name="share_source_label">Compartilhar link do feed</string>
   <string name="feed_delete_confirmation_msg">Por favor confirme que você deseja apagar este feed e TODOS os episódios que você fez download deste feed.</string>
   <string name="feed_remover_msg">Removendo feed</string>
   <!--actions on feeditems-->
@@ -148,8 +147,6 @@
   <string name="pref_followQueue_sum">Pular para próximo item da fila quando a reprodução terminar</string>
   <string name="playback_pref">Reprodução</string>
   <string name="network_pref">Rede</string>
-  <string name="pref_autoUpdateIntervall_title">Intervalo de atualização</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifica o intervalo com que os feeds serão atualizados automaticamente ou desabilita esta funcionalidade</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Fazer download dos arquivos apenas via rede WiFi</string>
   <string name="pref_followQueue_title">Reprodução contínua</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Download de mídia via WiFi</string>
@@ -271,5 +268,6 @@
   <string name="in_queue_label">Episódio está na fila</string>
   <string name="new_episodes_count_label">Numero de novos episódios</string>
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
 </resources>

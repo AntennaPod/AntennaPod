@@ -15,7 +15,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -27,6 +28,7 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.core.feed.Feed;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
@@ -259,9 +261,13 @@ public class NavListAdapter extends BaseAdapter
             holder = (FeedHolder) convertView.getTag();
         }
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(feed.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
                 .into(holder.image);
 
         holder.title.setText(feed.getTitle());
@@ -276,10 +282,10 @@ public class NavListAdapter extends BaseAdapter
             p.addRule(RelativeLayout.LEFT_OF, R.id.txtvCount);
             holder.failure.setVisibility(View.GONE);
         }
-        int feedUnreadItems = itemAccess.getNumberOfUnreadFeedItems(feed.getId());
-        if(feedUnreadItems > 0) {
+        int counter = itemAccess.getFeedCounter(feed.getId());
+        if(counter > 0) {
             holder.count.setVisibility(View.VISIBLE);
-            holder.count.setText(String.valueOf(feedUnreadItems));
+            holder.count.setText(String.valueOf(counter));
             holder.count.setTypeface(holder.title.getTypeface());
         } else {
             holder.count.setVisibility(View.GONE);
@@ -306,7 +312,7 @@ public class NavListAdapter extends BaseAdapter
         int getSelectedItemIndex();
         int getQueueSize();
         int getNumberOfNewItems();
-        int getNumberOfUnreadFeedItems(long feedId);
+        int getFeedCounter(long feedId);
     }
 
 }

@@ -1,0 +1,120 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <LinearLayout
+        android:id="@+id/bottomBar"
+        android:layout_width="wrap_content"
+        android:layout_height="68dp"
+        android:layout_alignParentBottom="true"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:padding="4dp">
+
+        <Button
+            android:id="@+id/btnAddToQueue"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="?attr/content_new"
+            android:text="@string/add_to_queue_label"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"/>
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:layout_margin="4dp"
+              android:background="?android:attr/listDivider"
+              tools:background="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnMarkAsPlayed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="?attr/navigation_accept"
+            android:text="@string/mark_read_label"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"/>
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:layout_margin="4dp"
+              android:background="?android:attr/listDivider"
+              tools:background="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnMarkAsUnplayed"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="?attr/navigation_cancel"
+            android:text="@string/mark_unread_label"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"/>
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:layout_margin="4dp"
+              android:background="?android:attr/listDivider"
+              tools:background="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnDownload"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="?attr/av_download"
+            android:text="@string/download_label"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"/>
+
+        <View xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
+              android:layout_width="1dp"
+              android:layout_height="match_parent"
+              android:layout_margin="4dp"
+              android:background="?android:attr/listDivider"
+              tools:background="@android:color/holo_red_dark" />
+
+        <Button
+            android:id="@+id/btnDelete"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:drawableTop="?attr/content_discard"
+            android:text="@string/remove_episode_lable"
+            android:textSize="10sp"
+            android:background="@android:color/transparent"/>
+
+    </LinearLayout>
+
+    <View
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:id="@+id/divider"
+          android:layout_width="match_parent"
+          android:layout_height="1dp"
+          android:background="?android:attr/listDivider"
+          android:paddingBottom="4dp"
+          android:layout_above="@id/bottomBar"
+          tools:background="@android:color/holo_red_dark" />
+
+    <ListView
+        android:id="@android:id/list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/divider">
+
+    </ListView>
+
+
+</RelativeLayout>

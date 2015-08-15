@@ -263,7 +263,9 @@
 
     <style name="BigBlurryBackground">
         <item name="android:scaleType">centerCrop</item>
-        <item name="android:tint">@color/image_readability_tint</item>
+        <!-- <item name="android:tint">@color/image_readability_tint</item> -->
+        <!-- Reactivate when Glide's tinting has been fixed for Android 5.x
+             Remove color filter from ItemlistFragment -->
 
     </style>
 

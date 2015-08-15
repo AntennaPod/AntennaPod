@@ -4,13 +4,16 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.res.TypedArray;
+import android.graphics.Color;
+import android.graphics.LightingColorFilter;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
 import android.support.v4.view.MenuItemCompat;
-
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -29,8 +32,10 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.joanzapata.android.iconify.IconDrawable;
 import com.joanzapata.android.iconify.Iconify;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.Validate;
 
@@ -43,7 +48,6 @@ import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.FeedItemlistAdapter;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.asynctask.FeedRemover;
-import de.danoeh.antennapod.core.asynctask.PicassoProvider;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.dialog.DownloadRequestErrorDialogCreator;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -53,6 +57,8 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedItemFilter;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
+import de.danoeh.antennapod.core.glide.FastBlurTransformation;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -61,6 +67,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.MoreContentListFooterUtil;
+import de.danoeh.antennapod.dialog.EpisodesApplyActionFragment;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
@@ -83,12 +90,11 @@ public class ItemlistFragment extends ListFragment {
 
     protected FeedItemlistAdapter adapter;
     private ContextMenu contextMenu;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private long feedID;
     private Feed feed;
     private LongList queuedItemsIds;
-    private LongList newItemsIds;
-
 
     private boolean itemsLoaded = false;
     private boolean viewsCreated = false;
@@ -155,6 +161,7 @@ public class ItemlistFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
+        Log.d(TAG, "onResume()");
         updateProgressBarVisibility();
         startItemLoader();
     }
@@ -217,6 +224,18 @@ public class ItemlistFragment extends ListFragment {
                     return false;
                 }
             });
+            if(feed == null || feed.getLink() == null) {
+                menu.findItem(R.id.share_link_item).setVisible(false);
+                menu.findItem(R.id.visit_website_item).setVisible(false);
+            }
+            int[] attrs = { android.R.attr.textColor };
+            TypedArray ta = getActivity().obtainStyledAttributes(attrs);
+            int textColor = ta.getColor(0, Color.GRAY);
+            ta.recycle();
+
+            menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
+                    Iconify.IconValue.fa_gears).color(textColor).actionBarSize());
+
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
     }
@@ -234,6 +253,10 @@ public class ItemlistFragment extends ListFragment {
             try {
                 if (!FeedMenuHandler.onOptionsItemClicked(getActivity(), item, feed)) {
                     switch (item.getItemId()) {
+                        case R.id.episode_actions:
+                            Fragment fragment = new EpisodesApplyActionFragment(feed.getItems());
+                            ((MainActivity)getActivity()).loadChildFragment(fragment);
+                            return true;
                         case R.id.remove_item:
                             final FeedRemover remover = new FeedRemover(
                                     getActivity(), feed) {
@@ -302,12 +325,16 @@ public class ItemlistFragment extends ListFragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
         // because of addHeaderView(), positions are increased by 1!
         FeedItem selectedItem = itemAccess.getItem(menuInfo.position-1);
 
@@ -396,12 +423,15 @@ public class ItemlistFragment extends ListFragment {
     private boolean insideOnFragmentLoaded = false;
 
     private void onFragmentLoaded() {
+        if(!isVisible()) {
+            return;
+        }
         insideOnFragmentLoaded = true;
         if (adapter == null) {
             setListAdapter(null);
             setupHeaderView();
             setupFooterView();
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false);
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(getActivity()), false, true);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(getActivity(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
@@ -421,6 +451,10 @@ public class ItemlistFragment extends ListFragment {
     }
 
     private void refreshHeaderView() {
+        if (getListView() == null || feed == null) {
+            Log.e(TAG, "Unable to setup listview: listView = null or feed = null");
+            return;
+        }
         if(feed.hasLastUpdateFailed()) {
             txtvFailure.setVisibility(View.VISIBLE);
         } else {
@@ -448,14 +482,7 @@ public class ItemlistFragment extends ListFragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             ItemlistFragment.this.downloaderList = downloaderList;
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
@@ -485,17 +512,26 @@ public class ItemlistFragment extends ListFragment {
         txtvTitle.setText(feed.getTitle());
         txtvAuthor.setText(feed.getAuthor());
 
-        Picasso.with(getActivity())
+
+        // https://github.com/bumptech/glide/issues/529
+        imgvBackground.setColorFilter(new LightingColorFilter(0xff828282, 0x000000));
+
+        Glide.with(getActivity())
                 .load(feed.getImageUri())
                 .placeholder(R.color.image_readability_tint)
                 .error(R.color.image_readability_tint)
-                .transform(PicassoProvider.blurTransformation)
-                .resize(PicassoProvider.BLUR_IMAGE_SIZE, PicassoProvider.BLUR_IMAGE_SIZE)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .transform(new FastBlurTransformation(getActivity()))
+                .dontAnimate()
                 .into(imgvBackground);
 
-        Picasso.with(getActivity())
+        Glide.with(getActivity())
                 .load(feed.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
                 .into(imgvCover);
 
         butShowInfo.setOnClickListener(new View.OnClickListener() {
@@ -558,11 +594,6 @@ public class ItemlistFragment extends ListFragment {
         }
 
         @Override
-        public boolean isNew(FeedItem item) {
-            return (newItemsIds != null) && newItemsIds.contains(item.getId());
-        }
-
-        @Override
         public int getItemDownloadProgressPercent(FeedItem item) {
             if (downloaderList != null) {
                 for (Downloader downloader : downloaderList) {
@@ -599,13 +630,12 @@ public class ItemlistFragment extends ListFragment {
             Context context = getActivity();
             if (context != null) {
                 Feed feed = DBReader.getFeed(context, feedID);
-                if(feed.getItemFilter() != null) {
+                if(feed != null && feed.getItemFilter() != null) {
                     FeedItemFilter filter = feed.getItemFilter();
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
                 LongList queuedItemsIds = DBReader.getQueueIDList(context);
-                LongList newItemsIds = DBReader.getNewItemIds(context);
-                return new Object[] { feed, queuedItemsIds, newItemsIds };
+                return new Object[] { feed, queuedItemsIds };
             } else {
                 return null;
             }
@@ -617,7 +647,6 @@ public class ItemlistFragment extends ListFragment {
             if (res != null) {
                 feed = (Feed) res[0];
                 queuedItemsIds = (LongList) res[1];
-                newItemsIds = res[2] == null ? null : (LongList) res[2];
                 itemsLoaded = true;
                 if (viewsCreated) {
                     onFragmentLoaded();

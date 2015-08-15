@@ -8,7 +8,7 @@ import java.util.List;
 public class QueueEvent {
 
     public enum Action {
-        ADDED, ADDED_ITEMS, REMOVED, CLEARED, DELETED_MEDIA, SORTED, MOVED
+        ADDED, ADDED_ITEMS, REMOVED, IRREVERSIBLE_REMOVED, CLEARED, DELETED_MEDIA, SORTED, MOVED
     }
 
     public final Action action;

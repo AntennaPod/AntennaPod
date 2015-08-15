@@ -9,10 +9,29 @@
             android:key="prefTheme"
             android:summary="@string/pref_set_theme_sum"
             android:defaultValue="0"/>
-        <Preference
-            android:key="prefHiddenDrawerItems"
-            android:summary="@string/pref_nav_drawer_items_sum"
-            android:title="@string/pref_nav_drawer_items_title" />
+        <PreferenceScreen
+            android:key="prefDrawerSettings"
+            android:summary="@string/pref_nav_drawer_sum"
+            android:title="@string/pref_nav_drawer_title">
+            <Preference
+                android:key="prefHiddenDrawerItems"
+                android:summary="@string/pref_nav_drawer_items_sum"
+                android:title="@string/pref_nav_drawer_items_title" />
+            <ListPreference
+                android:entryValues="@array/nav_drawer_feed_order_values"
+                android:entries="@array/nav_drawer_feed_order_options"
+                android:title="@string/pref_nav_drawer_feed_order_title"
+                android:key="prefDrawerFeedOrder"
+                android:summary="@string/pref_nav_drawer_feed_order_sum"
+                android:defaultValue="0"/>
+            <ListPreference
+                android:entryValues="@array/nav_drawer_feed_counter_values"
+                android:entries="@array/nav_drawer_feed_counter_options"
+                android:title="@string/pref_nav_drawer_feed_counter_title"
+                android:key="prefDrawerFeedIndicator"
+                android:summary="@string/pref_nav_drawer_feed_counter_sum"
+                android:defaultValue="0"/>
+        </PreferenceScreen>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -25,6 +44,12 @@
             android:key="prefPersistNotify"
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
+            android:key="prefShowDownloadReport"
+            android:summary="@string/pref_showDownloadReport_sum"
+            android:title="@string/pref_showDownloadReport_title"/>
     </PreferenceCategory>
 
     <PreferenceCategory android:title="@string/queue_label">
@@ -90,13 +115,10 @@
 
     </PreferenceCategory>
     <PreferenceCategory android:title="@string/network_pref">
-        <ListPreference
-            android:defaultValue="0"
-            android:entries="@array/update_intervall_values"
-            android:entryValues="@array/update_intervall_values"
+        <Preference
             android:key="prefAutoUpdateIntervall"
-            android:summary="@string/pref_autoUpdateIntervall_sum"
-            android:title="@string/pref_autoUpdateIntervall_title"/>
+            android:summary="@string/pref_autoUpdateIntervallOrTime_sum"
+            android:title="@string/pref_autoUpdateIntervallOrTime_title"/>
         <CheckBoxPreference
             android:defaultValue="false"
             android:enabled="true"
@@ -182,18 +204,19 @@
         <Preference
             android:title="@string/choose_data_directory"
             android:key="prefChooseDataDir"/>
-        <Preference
-            android:key="prefFlattrThisApp"
-            android:summary="@string/pref_flattr_this_app_sum"
-            android:title="@string/pref_flattr_this_app_title">
-        </Preference>
+        <ListPreference
+            android:entryValues="@array/image_cache_size_values"
+            android:entries="@array/image_cache_size_options"
+            android:title="@string/pref_image_cache_size_title"
+            android:key="prefImageCacheSize"
+            android:summary="@string/pref_image_cache_size_sum"
+            android:defaultValue="100"/>
         <Preference
             android:key="prefOpmlExport"
             android:title="@string/opml_export_label"/>
         <Preference
             android:key="prefAbout"
             android:title="@string/about_pref"/>
-
 
     </PreferenceCategory>
 

@@ -72,7 +72,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 Log.d(TAG, "remove(" + which + ")");
                 stopItemLoader();
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.markItemRead(getActivity(), item.getId(), true);
+                DBWriter.markItemRead(getActivity(), true, item.getId());
                 undoBarController.showUndoBar(false,
                         getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
                                 which)
@@ -88,7 +88,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    DBWriter.markItemRead(context, itemId, false);
+                    DBWriter.markItemRead(context, false, itemId);
                 }
             }
             @Override
@@ -97,7 +97,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                     long itemId = token.getFeedItemId();
                     FeedItem item = DBReader.getFeedItem(context, itemId);
                     FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && UserPreferences.isAutoDelete()) {
+                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
                         DBWriter.deleteFeedMediaOfItem(context, media.getId());
                     }
                 }

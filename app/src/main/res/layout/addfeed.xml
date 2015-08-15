@@ -15,39 +15,9 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/txtvFeedurl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            style="@style/AntennaPod.TextView.Heading"
-            android:text="@string/txtvfeedurl_label"/>
-
-        <EditText
-            android:id="@+id/etxtFeedurl"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:hint="@string/etxtFeedurlHint"
-            android:inputType="textUri"/>
-
-        <Button
-            android:id="@+id/butConfirm"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            android:text="@string/confirm_label"/>
-
-        <View
-            android:id="@+id/divider1"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:layout_margin="16dp"
-            android:background="?android:attr/listDivider"/>
-
-        <TextView
             android:id="@+id/txtvPodcastDirectories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/divider1"
             style="@style/AntennaPod.TextView.Heading"
             android:text="@string/podcastdirectories_label"/>
 
@@ -60,18 +30,51 @@
             android:layout_marginTop="4dp"/>
 
         <Button
+            android:id="@+id/butSearchItunes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="@string/search_itunes_label"/>
+
+        <Button
             android:id="@+id/butBrowseGpoddernet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="@string/browse_gpoddernet_label"/>
 
+        <View
+            android:id="@+id/divider1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_margin="16dp"
+            android:background="?android:attr/listDivider"/>
+
+        <TextView
+            android:id="@+id/txtvFeedurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/divider1"
+            style="@style/AntennaPod.TextView.Heading"
+            android:text="@string/txtvfeedurl_label"/>
+
+        <EditText
+            android:id="@+id/etxtFeedurl"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:hint="@string/etxtFeedurlHint"
+            android:inputType="textUri"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:cursorVisible="true"/>
+
         <Button
-            android:id="@+id/butSearchItunes"
+            android:id="@+id/butConfirm"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
-            android:text="@string/search_itunes_label"/>
+            android:text="@string/confirm_label"/>
 
         <View
             android:id="@+id/divider2"

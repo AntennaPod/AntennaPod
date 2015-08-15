@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -20,6 +21,7 @@ import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 
 /**
@@ -39,11 +41,11 @@ public class FeedMenuHandler {
         }
 
         Log.d(TAG, "Preparing options menu");
-        menu.findItem(R.id.mark_all_read_item).setVisible(selectedFeed.hasNewItems());
-        if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable())
+        if (selectedFeed.getPaymentLink() != null && selectedFeed.getFlattrStatus().flattrable()) {
             menu.findItem(R.id.support_item).setVisible(true);
-        else
+        } else {
             menu.findItem(R.id.support_item).setVisible(false);
+        }
 
         menu.findItem(R.id.refresh_complete_item).setVisible(selectedFeed.isPaged());
 
@@ -83,7 +85,13 @@ public class FeedMenuHandler {
                 break;
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(selectedFeed.getLink());
-                context.startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if(IntentUtils.isCallable(context, intent)) {
+                    context.startActivity(intent);
+                } else {
+                    Toast.makeText(context, context.getString(R.string.download_error_malformed_url),
+                            Toast.LENGTH_SHORT);
+                }
                 break;
             case R.id.support_item:
                 DBTasks.flattrFeedIfLoggedIn(context, selectedFeed);
@@ -91,7 +99,7 @@ public class FeedMenuHandler {
             case R.id.share_link_item:
                 ShareUtils.shareFeedlink(context, selectedFeed);
                 break;
-            case R.id.share_source_item:
+            case R.id.share_download_url_item:
                 ShareUtils.shareFeedDownloadLink(context, selectedFeed);
                 break;
             default:

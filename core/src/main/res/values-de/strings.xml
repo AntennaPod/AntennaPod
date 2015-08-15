@@ -27,6 +27,12 @@
   <string name="drawer_open">Menü öffnen</string>
   <string name="drawer_close">Menü schließen</string>
   <string name="drawer_preferences">Seitenleisten-Einstellungen</string>
+  <string name="drawer_feed_order_unplayed_episodes">Sortieren nach Zähler</string>
+  <string name="drawer_feed_order_alphabetical">Alphabetisch sortieren</string>
+  <string name="drawer_feed_counter_new_unplayed">Anzahl neuer und ungespielter Episoden</string>
+  <string name="drawer_feed_counter_new">Anzahl neuer Episoden</string>
+  <string name="drawer_feed_counter_unplayed">Anzahl ungespielter Episoden</string>
+  <string name="drawer_feed_counter_none">Keine</string>
   <!--Webview actions-->
   <string name="open_in_browser_label">Im Browser öffnen</string>
   <string name="copy_url_label">URL kopieren</string>
@@ -38,6 +44,8 @@
   <!--Other-->
   <string name="confirm_label">Bestätigen</string>
   <string name="cancel_label">Abbrechen</string>
+  <string name="yes">Ja</string>
+  <string name="no">Nein</string>
   <string name="author_label">Autor</string>
   <string name="language_label">Sprache</string>
   <string name="url_label">URL</string>
@@ -60,7 +68,13 @@
   <string name="close_label">Schließen</string>
   <string name="retry_label">Erneut versuchen</string>
   <string name="auto_download_label">Automatisch herunterladen</string>
+  <string name="auto_download_apply_to_items_title">Auf bisherige Episoden anwenden</string>
+  <string name="auto_download_apply_to_items_message">Die neue Einstellung zum <i>Automatischen Download</i> wird automatisch auf neue Episoden angewandt.\nMöchtest du sie auch auf die bisherige Episoden anwenden?</string>
+  <string name="auto_delete_label">Episoden automatisch löschen\n(überschreibt globale Vorgabe)</string>
   <string name="parallel_downloads_suffix">\u0020gleichzeitige Downloads</string>
+  <string name="feed_auto_download_global">Global</string>
+  <string name="feed_auto_download_always">Immer</string>
+  <string name="feed_auto_download_never">Nie</string>
   <!--'Add Feed' Activity labels-->
   <string name="feedurl_label">Feed URL</string>
   <string name="etxtFeedurlHint">URL des Feeds oder der Webseite</string>
@@ -73,14 +87,20 @@
   <string name="mark_all_read_msg">Alle Episoden als gespielt markieren</string>
   <string name="mark_all_read_confirmation_msg">Bitte bestätige, dass alle Episoden als gespielt markiert werden sollen.</string>
   <string name="mark_all_read_feed_confirmation_msg">Bitte bestätige, dass alle Episoden in diesem Feed als gespielt markiert werden sollen.</string>
+  <string name="mark_all_seen_label">Alle als gesehen markieren</string>
   <string name="show_info_label">Informationen anzeigen</string>
   <string name="remove_feed_label">Podcast entfernen</string>
+  <string name="share_label">Teile...</string>
   <string name="share_link_label">Webseiten-Link teilen</string>
-  <string name="share_source_label">Feed-Link teilen</string>
+  <string name="share_link_with_position_label">Teile Link mit Zeitmarke</string>
+  <string name="share_feed_url_label">Teile URL des Podcasts</string>
+  <string name="share_item_url_label">Teile URL der Episode</string>
+  <string name="share_item_url_with_position_label">Teile URL der Episode mit Zeitmarke</string>
   <string name="feed_delete_confirmation_msg">Bitte bestätige, dass du diesen Feed und ALLE heruntergeladenen Episoden dieses Feeds entfernen möchtest.</string>
   <string name="feed_remover_msg">Entferne Feed</string>
   <string name="load_complete_feed">Kompletten Feed aktualisieren</string>
   <string name="hide_episodes_title">Episoden verbergen</string>
+  <string name="episode_actions">Aktionen anwenden</string>
   <string name="hide_unplayed_episodes_label">Ungespielt</string>
   <string name="hide_paused_episodes_label">Pausiert</string>
   <string name="hide_played_episodes_label">Gespielt</string>
@@ -99,8 +119,8 @@
   <string name="remove_label">Entfernen</string>
   <string name="remove_episode_lable">Episode entfernen</string>
   <string name="mark_read_label">Als gespielt markieren</string>
-  <string name="mark_unread_label">Als ungespielt markieren</string>
   <string name="marked_as_read_label">Als gespielt markiert</string>
+  <string name="mark_unread_label">Als ungespielt markieren</string>
   <string name="add_to_queue_label">Zur Abspielliste hinzufügen</string>
   <string name="added_to_queue_label">Zur Abspielliste hinzugefügt</string>
   <string name="remove_from_queue_label">Aus der Abspielliste entfernen</string>
@@ -229,8 +249,12 @@
   <string name="pref_smart_mark_as_played_title">Schlaues als gespielt markieren</string>
   <string name="playback_pref">Wiedergabe</string>
   <string name="network_pref">Netzwerk</string>
-  <string name="pref_autoUpdateIntervall_title">Aktualisierungsintervall</string>
-  <string name="pref_autoUpdateIntervall_sum">Lege ein Intervall fest, in dem Feeds automatisch aktualisiert werden oder deaktiviere es</string>
+  <string name="pref_autoUpdateIntervallOrTime_title">Aktualisierungsintervall oder -tageszeit</string>
+  <string name="pref_autoUpdateIntervallOrTime_sum">Lege ein Intervall oder eine Tageszeit zur automatischen Aktualisierung der Podcasts fest</string>
+  <string name="pref_autoUpdateIntervallOrTime_message">Du kannst ein festes <i>Intervall</i> wie \"alle 2 Stunden\", eine bestimmte <i>Tageszeit</i> wie \"7 Uhr morgens\" festlegen oder die automatische Aktualisierung komplett <i>deaktivieren</i>.\n\n<small>Bitte beachte: Der Zeitpunkt der Aktualisierung ist ungenau. Du wirst vielleicht eine kurze Verzögerung bemerken.</small></string>
+  <string name="pref_autoUpdateIntervallOrTime_Disable">Deaktivieren</string>
+  <string name="pref_autoUpdateIntervallOrTime_Interval">Intervall einstellen</string>
+  <string name="pref_autoUpdateIntervallOrTime_TimeOfDay">Tageszeit festlegen</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Lade Mediendateien nur über WiFi</string>
   <string name="pref_followQueue_title">Durchgehendes Abspielen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi Medien-Download</string>
@@ -250,8 +274,14 @@
   <string name="pref_auto_flattr_sum">Automatisches Flattrn konfigurieren</string>
   <string name="user_interface_label">Benutzeroberfläche</string>
   <string name="pref_set_theme_title">Theme auswählen</string>
+  <string name="pref_nav_drawer_title">Seitenleiste anpassen</string>
+  <string name="pref_nav_drawer_sum">Passe das Aussehen der Seitenleiste an.</string>
   <string name="pref_nav_drawer_items_title">Seitenleiste ändern</string>
   <string name="pref_nav_drawer_items_sum">Ändere, welche Listen in der Seitenleiste erscheinen</string>
+  <string name="pref_nav_drawer_feed_order_title">Reihenfolge der Abonnements einstellen</string>
+  <string name="pref_nav_drawer_feed_order_sum">Ändere die Reihenfolge deiner Abonnements</string>
+  <string name="pref_nav_drawer_feed_counter_title">Abonnement-Zähler einstellen</string>
+  <string name="pref_nav_drawer_feed_counter_sum">Ändere, welche Information der Abonnement-Zähler anzeigt</string>
   <string name="pref_set_theme_sum">Ändere das Aussehen von AntennaPod.</string>
   <string name="pref_automatic_download_title">Automatisches Herunterladen</string>
   <string name="pref_automatic_download_sum">Konfiguriere das automatische Herunterladen von Episoden.</string>
@@ -283,10 +313,14 @@
   <string name="pref_expandNotify_sum">Erweiterte Wiedergabebenachrichtigung mit Abspiel-, Pause- und Stop-Knöpfen anzeigen.</string>
   <string name="pref_persistNotify_title">Persistente Wiedergabesteurung</string>
   <string name="pref_persistNotify_sum">Zeige Wiedergabebedienelemente in der Benachrichtigung und im Lockscreen an, während die Wiedergabe pausiert ist.</string>
+  <string name="pref_showDownloadReport_title">Zeige Download-Bericht</string>
+  <string name="pref_showDownloadReport_sum">Wenn Downloads fehlschlagen, erstelle einen Bericht, der die Details des Fehlschlages beschreibt.</string>
   <string name="pref_expand_notify_unsupport_toast">Android-Versionen vor 4.1 unterstützen keine erweiterten Benachrichtigungen.</string>
   <string name="pref_queueAddToFront_sum">Fügen Sie neue Folgen auf den Anfang der Warteschlange.</string>
   <string name="pref_queueAddToFront_title">Vorne in Abspielliste einreihen</string>
   <string name="pref_smart_mark_as_played_disabled">Deaktiviert</string>
+  <string name="pref_image_cache_size_title">Größe des Bilder-Zwischenspeichers</string>
+  <string name="pref_image_cache_size_sum">Größe des Zwischenspeichers für Bilder</string>
   <!--Auto-Flattr dialog-->
   <string name="auto_flattr_enable">Automatisches Flattrn aktivieren</string>
   <string name="auto_flattr_after_percent">Flattr eine Episode, sobald %d Prozent gespielt worden sind</string>
@@ -312,6 +346,7 @@
   <string name="opml_import_error_dir_empty">Der Import-Ordner ist leer.</string>
   <string name="select_all_label">Alle auswählen</string>
   <string name="deselect_all_label">Auswahl zurücksetzen</string>
+  <string name="select_options_label">Wähle aus ...</string>
   <string name="choose_file_from_filesystem">Vom lokalen Dateisystem</string>
   <string name="choose_file_from_external_application">Verwende externe Anwendung</string>
   <string name="opml_export_label">OPML Export</string>
@@ -326,9 +361,21 @@
   <string name="sleep_timer_label">Schlummerfunktion</string>
   <string name="time_left_label">Zeit übrig:\u0020</string>
   <string name="time_dialog_invalid_input">Ungültige Eingabe, Zeit muss eine Ganzzahl sein</string>
-  <string name="time_unit_seconds">Sekunden</string>
-  <string name="time_unit_minutes">Minuten</string>
-  <string name="time_unit_hours">Stunden</string>
+  <string name="time_seconds">Sekunden</string>
+  <string name="time_minutes">Minuten</string>
+  <string name="time_hours">Stunden</string>
+  <plurals name="time_seconds_quantified">
+    <item quantity="one">1 Sekunde</item>
+    <item quantity="other">%d Sekunden</item>
+  </plurals>
+  <plurals name="time_minutes_quantified">
+    <item quantity="one">1 Minute</item>
+    <item quantity="other">%d Minuten</item>
+  </plurals>
+  <plurals name="time_hours_quantified">
+    <item quantity="one">1 Stunde</item>
+    <item quantity="other">%d Stunden</item>
+  </plurals>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">KATEGORIEN</string>
   <string name="gpodnet_toplist_header">BESTE PODCASTS</string>
@@ -373,6 +420,7 @@
   <string name="pref_pausePlaybackForFocusLoss_title">Bei Unterbrechungen pausieren</string>
   <string name="pref_resumeAfterCall_sum">Wiedergabe fortsetzen, wenn Anruf beendet ist</string>
   <string name="pref_resumeAfterCall_title">Nach Anruf fortsetzen</string>
+  <string name="pref_restart_required">AntennaPod muss neu gestartet werden, damit die Änderungen wirksam werden.</string>
   <!--Online feed view-->
   <string name="subscribe_label">Abonnieren</string>
   <string name="subscribed_label">Abonniert</string>
@@ -399,7 +447,29 @@
   <!--Feed information screen-->
   <string name="authentication_label">Authentifizierung</string>
   <string name="authentication_descr">Ändere den Benutzernamen und das Passwort für diesen Podcast und dessen Episoden.</string>
+  <!--Progress information-->
+  <string name="progress_upgrading_database">Datenbank wird aktualisiert</string>
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Importiere Abonnements aus Single-Purpose Apps</string>
   <string name="search_itunes_label">iTunes durchsuchen</string>
+  <string name="select_label"><b>Wähle aus ...</b></string>
+  <string name="all_label">Alle</string>
+  <string name="selected_all_label">Alle Episoden ausgewählt</string>
+  <string name="none_label">Keine</string>
+  <string name="deselected_all_label">Alle Episoden abgewählt</string>
+  <string name="played_label">Gespielt</string>
+  <string name="selected_played_label">Gespielte Episoden ausgewählt</string>
+  <string name="unplayed_label">Ungespielt</string>
+  <string name="selected_unplayed_label">Ungespielte Episoden ausgewählt</string>
+  <string name="downloaded_label">Heruntergeladen</string>
+  <string name="selected_downloaded_label">Heruntergeladene Episoden ausgewählt</string>
+  <string name="not_downloaded_label">Nicht heruntergeladen</string>
+  <string name="selected_not_downloaded_label">Nicht heruntergeladene Episoden ausgewählt</string>
+  <string name="sort_title"><b>Sortieren nach ...</b></string>
+  <string name="sort_title_a_z">Titel (A \u2192 Z)</string>
+  <string name="sort_title_z_a">Titel (Z \u2192 A)</string>
+  <string name="sort_date_new_old">Datum (neu \u2192 alt)</string>
+  <string name="sort_date_old_new">Datum (alt \u2192 neu)</string>
+  <string name="sort_duration_short_long">Dauer (kurz \u2192 lang)</string>
+  <string name="sort_duration_long_short">Dauer (lang \u2192 kurz)</string>
 </resources>

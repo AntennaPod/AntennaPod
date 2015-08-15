@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,6 +20,8 @@ import android.support.v7.app.ActionBarActivity;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
@@ -31,11 +34,15 @@ import java.util.List;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.NavListAdapter;
+import de.danoeh.antennapod.core.asynctask.FeedRemover;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
+import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
@@ -92,8 +99,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private ActionBarDrawerToggle drawerToggle;
 
-    private CharSequence drawerTitle;
     private CharSequence currentTitle;
+
+    private ProgressDialog pd;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,7 +115,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         setSupportActionBar(toolbar);
         getSupportActionBar().setElevation(3.0f);
 
-        drawerTitle = currentTitle = getTitle();
+        currentTitle = getTitle();
 
         drawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
         navList = (ListView) findViewById(R.id.nav_list);
@@ -136,6 +144,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         navList.setAdapter(navAdapter);
         navList.setOnItemClickListener(navListClickListener);
         navList.setOnItemLongClickListener(newListLongClickListener);
+        registerForContextMenu(navList);
 
         navAdapter.registerDataSetObserver(new DataSetObserver() {
             @Override
@@ -161,9 +170,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             String lastFragment = getLastNavFragment();
             if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
+            } else {
+                loadFeedFragmentById(Integer.valueOf(lastFragment), null);
             }
-            // else: lastFragment contains feed id - drawer data is not loaded yet,
-            //       so loading is postponed until then
         }
         externalPlayerFragment = new ExternalPlayerFragment();
         transaction.replace(R.id.playerFragment, externalPlayerFragment);
@@ -173,6 +182,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     private void saveLastNavFragment(String tag) {
+        Log.d(TAG, "saveLastNavFragment(tag: " + tag +")");
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
         SharedPreferences.Editor edit = prefs.edit();
         if(tag != null) {
@@ -185,7 +195,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     private String getLastNavFragment() {
         SharedPreferences prefs = getSharedPreferences(PREF_NAME, MODE_PRIVATE);
-        return prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
+        String lastFragment = prefs.getString(PREF_LAST_FRAGMENT_TAG, QueueFragment.TAG);
+        Log.d(TAG, "getLastNavFragment() -> " + lastFragment);
+        return lastFragment;
     }
 
     private void checkFirstLaunch() {
@@ -251,6 +263,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public void loadFragment(int index, Bundle args) {
+        Log.d(TAG, "loadFragment(index: " + index + ", args: " + args +")");
         if (index < navAdapter.getSubscriptionOffset()) {
             String tag = navAdapter.getTags().get(index);
             loadFragment(tag, args);
@@ -261,7 +274,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     public void loadFragment(final String tag, Bundle args) {
-        Log.d(TAG, "loadFragment(\"" + tag + "\", " + args + ")");
+        Log.d(TAG, "loadFragment(tag: " + tag + ", args: " + args + ")");
         Fragment fragment = null;
         switch (tag) {
             case QueueFragment.TAG:
@@ -297,30 +310,18 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return;
         }
         Feed feed = itemAccess.getItem(relPos);
-        long feedId = feed.getId();
+        loadFeedFragmentById(feed.getId(), args);
+    }
+
+    public void loadFeedFragmentById(long feedId, Bundle args) {
         Fragment fragment = ItemlistFragment.newInstance(feedId);
         if(args != null) {
             fragment.setArguments(args);
         }
-        saveLastNavFragment(String.valueOf(feed.getId()));
+        saveLastNavFragment(String.valueOf(feedId));
         currentTitle = "";
         getSupportActionBar().setTitle(currentTitle);
         loadFragment(fragment);
-    }
-
-    public void loadFeedFragmentById(long feedId) {
-        if (navDrawerData != null) {
-            int relPos = -1;
-            List<Feed> feeds = navDrawerData.feeds;
-            for (int i = 0; relPos < 0 && i < feeds.size(); i++) {
-                if (feeds.get(i).getId() == feedId) {
-                    relPos = i;
-                }
-            }
-            if(relPos >= 0) {
-                loadFeedFragmentByPosition(relPos, null);
-            }
-        }
     }
 
     private void loadFragment(Fragment fragment) {
@@ -362,15 +363,19 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     }
 
     private int getSelectedNavListIndex() {
-        String lastFragment = getLastNavFragment();
-        int tagIndex = navAdapter.getTags().indexOf(lastFragment);
+        String currentFragment = getLastNavFragment();
+        if(currentFragment == null) {
+            // should not happen, but better safe than sorry
+            return -1;
+        }
+        int tagIndex = navAdapter.getTags().indexOf(currentFragment);
         if(tagIndex >= 0) {
             return tagIndex;
-        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+        } else if(ArrayUtils.contains(NAV_DRAWER_TAGS, currentFragment)) {
             // the fragment was just hidden
             return -1;
         } else { // last fragment was not a list, but a feed
-            long feedId = Long.parseLong(lastFragment);
+            long feedId = Long.parseLong(currentFragment);
             if (navDrawerData != null) {
                 List<Feed> feeds = navDrawerData.feeds;
                 for (int i = 0; i < feeds.size(); i++) {
@@ -465,6 +470,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
+        if(pd != null) {
+            pd.dismiss();
+        }
     }
 
     @Override
@@ -478,6 +486,67 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             return true;
         } else {
             return super.onOptionsItemSelected(item);
+        }
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v.getId() != R.id.nav_list) {
+            return;
+        }
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        int position = adapterInfo.position;
+        if(position < navAdapter.getSubscriptionOffset()) {
+            return;
+        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        menu.setHeaderTitle(feed.getTitle());
+        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo.targetView.getParent() instanceof ListView == false
+                || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
+            return false;
+        }
+        final int position = menuInfo.position;
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        switch(item.getItemId()) {
+            case R.id.mark_all_seen_item:
+                DBWriter.markFeedSeen(this, feed.getId());
+                return true;
+            case R.id.mark_all_read_item:
+                DBWriter.markFeedRead(this, feed.getId());
+                return true;
+            case R.id.remove_item:
+                final FeedRemover remover = new FeedRemover(this, feed) {
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        super.onPostExecute(result);
+                        if(getSelectedNavListIndex() == position) {
+                            loadFragment(NewEpisodesFragment.TAG, null);
+                        }
+                    }
+                };
+                ConfirmationDialog conDialog = new ConfirmationDialog(this,
+                        R.string.remove_feed_label,
+                        R.string.feed_delete_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        remover.executeAsync();
+                    }
+                };
+                conDialog.createNewDialog().show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
         }
     }
 
@@ -520,8 +589,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         }
 
         @Override
-        public int getNumberOfUnreadFeedItems(long feedId) {
-            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
+        public int getFeedCounter(long feedId) {
+            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
 
     };
@@ -542,13 +611,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 navDrawerData = result;
                 navAdapter.notifyDataSetChanged();
 
-                String lastFragment = getLastNavFragment();
-                if(!ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
-                    long feedId = Long.valueOf(lastFragment);
-                    loadFeedFragmentById(feedId);
-                    saveLastNavFragment(null);
-                }
-
                 if (handleIntent) {
                     handleNavIntent();
                 }
@@ -566,6 +628,24 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadData();
+    }
+
+    public void onEventMainThread(ProgressEvent event) {
+        Log.d(TAG, "onEvent(" + event + ")");
+        switch(event.action) {
+            case START:
+                pd = new ProgressDialog(this);
+                pd.setMessage(event.message);
+                pd.setIndeterminate(true);
+                pd.setCancelable(false);
+                pd.show();
+                break;
+            case END:
+                if(pd != null) {
+                    pd.dismiss();
+                }
+                break;
+        }
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {

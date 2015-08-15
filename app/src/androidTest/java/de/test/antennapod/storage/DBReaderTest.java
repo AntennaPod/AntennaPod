@@ -42,38 +42,6 @@ public class DBReaderTest extends InstrumentationTestCase {
         adapter.close();
     }
 
-    private void expiredFeedListTestHelper(long lastUpdate, long expirationTime, boolean shouldReturn) {
-        final Context context = getInstrumentation().getTargetContext();
-        Feed feed = new Feed(0, new Date(lastUpdate), "feed", "link", "descr", null,
-                null, null, null, "feed", null, null, "url", false, new FlattrStatus(), false, null, null, false);
-        feed.setItems(new ArrayList<FeedItem>());
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-        adapter.setCompleteFeed(feed);
-        adapter.close();
-
-        assertTrue(feed.getId() != 0);
-        List<Feed> expiredFeeds = DBReader.getExpiredFeedsList(context, expirationTime);
-        assertNotNull(expiredFeeds);
-        if (shouldReturn) {
-            assertTrue(expiredFeeds.size() == 1);
-            assertTrue(expiredFeeds.get(0).getId() == feed.getId());
-        } else {
-            assertTrue(expiredFeeds.isEmpty());
-        }
-    }
-
-    public void testGetExpiredFeedsListShouldReturnFeed() {
-        final long expirationTime = 1000 * 60 * 60; // 1 hour
-        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime - 1, expirationTime, true);
-    }
-
-    public void testGetExpiredFeedsListShouldNotReturnFeed() {
-        final long expirationTime = 1000 * 60 * 60; // 1 hour
-        expiredFeedListTestHelper(System.currentTimeMillis() - expirationTime / 2, expirationTime, false);
-    }
-
-
     public void testGetFeedList() {
         final Context context = getInstrumentation().getTargetContext();
         List<Feed> feeds = saveFeedlist(context, 10, 0, false);
@@ -277,7 +245,7 @@ public class DBReaderTest extends InstrumentationTestCase {
             int i = random.nextInt(numItems);
             if (!unread.contains(items.get(i))) {
                 FeedItem item = items.get(i);
-                item.setRead(false);
+                item.setPlayed(false);
                 unread.add(item);
             }
         }
@@ -297,7 +265,7 @@ public class DBReaderTest extends InstrumentationTestCase {
         assertNotNull(unreadSaved);
         assertTrue(unread.size() == unreadSaved.size());
         for (FeedItem item : unreadSaved) {
-            assertFalse(item.isRead());
+            assertFalse(item.isPlayed());
         }
     }
 
@@ -310,11 +278,11 @@ public class DBReaderTest extends InstrumentationTestCase {
         for (int i = 0; i < unread.size(); i++) {
             unreadIds[i] = unread.get(i).getId();
         }
-        LongList unreadSaved = DBReader.getNewItemIds(context);
+        List<FeedItem> unreadSaved = DBReader.getUnreadItemsList(context);
         assertNotNull(unreadSaved);
         assertTrue(unread.size() == unreadSaved.size());
         for(int i=0; i < unreadSaved.size(); i++) {
-            long savedId = unreadSaved.get(i);
+            long savedId = unreadSaved.get(i).getId();
             boolean found = false;
             for (long id : unreadIds) {
                 if (id == savedId) {
@@ -385,13 +353,13 @@ public class DBReaderTest extends InstrumentationTestCase {
         final int NUM_FEEDS = 10;
         final int NUM_ITEMS = 10;
         final int NUM_QUEUE = 1;
-        final int NUM_UNREAD = 2;
+        final int NUM_NEW = 2;
         List<Feed> feeds = DBTestUtils.saveFeedlist(context, NUM_FEEDS, NUM_ITEMS, true);
         PodDBAdapter adapter = new PodDBAdapter(context);
         adapter.open();
-        for (int i = 0; i < NUM_UNREAD; i++) {
+        for (int i = 0; i < NUM_NEW; i++) {
             FeedItem item = feeds.get(0).getItems().get(i);
-            item.setRead(false);
+            item.setNew();
             adapter.setSingleFeedItem(item);
         }
         List<FeedItem> queue = new ArrayList<FeedItem>();
@@ -405,7 +373,7 @@ public class DBReaderTest extends InstrumentationTestCase {
 
         DBReader.NavDrawerData navDrawerData = DBReader.getNavDrawerData(context);
         assertEquals(NUM_FEEDS, navDrawerData.feeds.size());
-        assertEquals(NUM_UNREAD, navDrawerData.numNewItems);
+        assertEquals(NUM_NEW, navDrawerData.numNewItems);
         assertEquals(NUM_QUEUE, navDrawerData.queueSize);
     }
 

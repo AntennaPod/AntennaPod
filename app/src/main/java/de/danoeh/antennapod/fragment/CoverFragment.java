@@ -10,12 +10,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AudioplayerActivity;
 import de.danoeh.antennapod.activity.AudioplayerActivity.AudioplayerContentFragment;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.util.playback.Playable;
 
 /**
@@ -80,8 +82,12 @@ public class CoverFragment extends Fragment implements
                 public void run() {
                     Context c = getActivity();
                     if (c != null) {
-                        Picasso.with(c)
+                        Glide.with(c)
                                 .load(media.getImageUri())
+                                .placeholder(R.color.light_gray)
+                                .error(R.color.light_gray)
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .dontAnimate()
                                 .into(imgvCover);
                     }
                 }

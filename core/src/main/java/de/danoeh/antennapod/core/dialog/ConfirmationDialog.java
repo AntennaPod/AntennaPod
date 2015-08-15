@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.util.Log;
-import de.danoeh.antennapod.core.BuildConfig;
+
 import de.danoeh.antennapod.core.R;
 
 /**
@@ -12,11 +12,15 @@ import de.danoeh.antennapod.core.R;
  * classes can handle events like confirmation or cancellation.
  */
 public abstract class ConfirmationDialog {
-	private static final String TAG = "ConfirmationDialog";
 
-	Context context;
+	private static final String TAG = ConfirmationDialog.class.getSimpleName();
+
+	protected Context context;
 	int titleId;
 	int messageId;
+
+    int positiveText;
+    int negativeText;
 
 	public ConfirmationDialog(Context context, int titleId, int messageId) {
 		this.context = context;
@@ -25,10 +29,18 @@ public abstract class ConfirmationDialog {
 	}
 
 	public void onCancelButtonPressed(DialogInterface dialog) {
-		if (BuildConfig.DEBUG)
-			Log.d(TAG, "Dialog was cancelled");
+		Log.d(TAG, "Dialog was cancelled");
 		dialog.dismiss();
 	}
+
+    public void setPositiveText(int id) {
+        this.positiveText = id;
+    }
+
+    public void setNegativeText(int id) {
+        this.negativeText = id;
+    }
+
 
 	public abstract void onConfirmButtonPressed(DialogInterface dialog);
 
@@ -36,7 +48,7 @@ public abstract class ConfirmationDialog {
 		AlertDialog.Builder builder = new AlertDialog.Builder(context);
 		builder.setTitle(titleId);
 		builder.setMessage(messageId);
-		builder.setPositiveButton(R.string.confirm_label,
+		builder.setPositiveButton(positiveText != 0 ? positiveText : R.string.confirm_label,
 				new DialogInterface.OnClickListener() {
 
 					@Override
@@ -44,7 +56,7 @@ public abstract class ConfirmationDialog {
 						onConfirmButtonPressed(dialog);
 					}
 				});
-		builder.setNegativeButton(R.string.cancel_label,
+		builder.setNegativeButton(negativeText != 0 ? negativeText : R.string.cancel_label,
 				new DialogInterface.OnClickListener() {
 
 					@Override

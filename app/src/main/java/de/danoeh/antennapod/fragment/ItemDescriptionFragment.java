@@ -25,12 +25,12 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 import android.widget.Toast;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -104,8 +104,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Creating view");
+        Log.d(TAG, "Creating view");
         webvDescription = new WebView(getActivity());
         if (UserPreferences.getTheme() == R.style.Theme_AntennaPod_Dark) {
             if (Build.VERSION.SDK_INT >= 11
@@ -141,8 +140,7 @@ public class ItemDescriptionFragment extends Fragment {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Page finished");
+                Log.d(TAG, "Page finished");
                 // Restoring the scroll position might not always work
                 view.postDelayed(new Runnable() {
 
@@ -163,15 +161,13 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Fragment attached");
+        Log.d(TAG, "Fragment attached");
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Fragment detached");
+        Log.d(TAG, "Fragment detached");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
         }
@@ -180,8 +176,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Fragment destroyed");
+        Log.d(TAG, "Fragment destroyed");
         if (webViewLoader != null) {
             webViewLoader.cancel(true);
         }
@@ -195,8 +190,7 @@ public class ItemDescriptionFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Creating fragment");
+        Log.d(TAG, "Creating fragment");
         Bundle args = getArguments();
         saveState = args.getBoolean(ARG_SAVE_STATE, false);
         highlightTimecodes = args.getBoolean(ARG_HIGHLIGHT_TIMECODES, false);
@@ -258,11 +252,7 @@ public class ItemDescriptionFragment extends Fragment {
             WebView.HitTestResult r = webvDescription.getHitTestResult();
             if (r != null
                     && r.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG,
-                            "Link of webview was long-pressed. Extra: "
-                                    + r.getExtra()
-                    );
+                Log.d(TAG, "Link of webview was long-pressed. Extra: " + r.getExtra());
                 selectedURL = r.getExtra();
                 webvDescription.showContextMenu();
                 return true;
@@ -281,8 +271,10 @@ public class ItemDescriptionFragment extends Fragment {
             switch (item.getItemId()) {
                 case R.id.open_in_browser_item:
                     Uri uri = Uri.parse(selectedURL);
-                    getActivity()
-                            .startActivity(new Intent(Intent.ACTION_VIEW, uri));
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    if(IntentUtils.isCallable(getActivity(), intent)) {
+                        getActivity().startActivity(intent);
+                    }
                     break;
                 case R.id.share_url_item:
                     ShareUtils.shareLink(getActivity(), selectedURL);
@@ -331,8 +323,12 @@ public class ItemDescriptionFragment extends Fragment {
                         R.string.go_to_position_label);
                 menu.setHeaderTitle(Converter.getDurationStringLong(Timeline.getTimecodeLinkTime(selectedURL)));
             } else {
-                menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
-                        R.string.open_in_browser_label);
+                Uri uri = Uri.parse(selectedURL);
+                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if(IntentUtils.isCallable(getActivity(), intent)) {
+                    menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
+                            R.string.open_in_browser_label);
+                }
                 menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
                         R.string.copy_url_label);
                 menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
@@ -358,8 +354,7 @@ public class ItemDescriptionFragment extends Fragment {
                 // /webvDescription.loadData(url, "text/html", "utf-8");
                 webvDescription.loadDataWithBaseURL(null, data, "text/html",
                         "utf-8", "about:blank");
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Webview loaded");
+                Log.d(TAG, "Webview loaded");
                 webViewLoader = null;
             }
 
@@ -370,8 +365,7 @@ public class ItemDescriptionFragment extends Fragment {
 
             @Override
             protected Void doInBackground(Void... params) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG, "Loading Webview");
+                Log.d(TAG, "Loading Webview");
                 try {
                     Activity activity = getActivity();
                     if (activity != null) {
@@ -397,24 +391,17 @@ public class ItemDescriptionFragment extends Fragment {
 
     private void savePreference() {
         if (saveState) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Saving preferences");
+            Log.d(TAG, "Saving preferences");
             SharedPreferences prefs = getActivity().getSharedPreferences(PREF,
                     Activity.MODE_PRIVATE);
             SharedPreferences.Editor editor = prefs.edit();
             if (media != null && webvDescription != null) {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG,
-                            "Saving scroll position: "
-                                    + webvDescription.getScrollY()
-                    );
+                Log.d(TAG, "Saving scroll position: " + webvDescription.getScrollY());
                 editor.putInt(PREF_SCROLL_Y, webvDescription.getScrollY());
                 editor.putString(PREF_PLAYABLE_ID, media.getIdentifier()
                         .toString());
             } else {
-                if (BuildConfig.DEBUG)
-                    Log.d(TAG,
-                            "savePreferences was called while media or webview was null");
+                Log.d(TAG, "savePreferences was called while media or webview was null");
                 editor.putInt(PREF_SCROLL_Y, -1);
                 editor.putString(PREF_PLAYABLE_ID, "");
             }
@@ -424,8 +411,7 @@ public class ItemDescriptionFragment extends Fragment {
 
     private boolean restoreFromPreference() {
         if (saveState) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Restoring from preferences");
+            Log.d(TAG, "Restoring from preferences");
             Activity activity = getActivity();
             if (activity != null) {
                 SharedPreferences prefs = activity.getSharedPreferences(
@@ -435,8 +421,7 @@ public class ItemDescriptionFragment extends Fragment {
                 if (scrollY != -1 && media != null
                         && id.equals(media.getIdentifier().toString())
                         && webvDescription != null) {
-                    if (BuildConfig.DEBUG)
-                        Log.d(TAG, "Restored scroll Position: " + scrollY);
+                    Log.d(TAG, "Restored scroll Position: " + scrollY);
                     webvDescription.scrollTo(webvDescription.getScrollX(),
                             scrollY);
                     return true;

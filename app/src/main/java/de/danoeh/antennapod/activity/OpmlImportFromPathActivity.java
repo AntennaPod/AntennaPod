@@ -2,7 +2,6 @@ package de.danoeh.antennapod.activity;
 
 import android.content.ActivityNotFoundException;
 import android.content.Intent;
-import android.content.pm.ResolveInfo;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,11 +17,10 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.io.Reader;
-import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LangUtils;
 import de.danoeh.antennapod.core.util.StorageUtils;
 
@@ -72,38 +70,33 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
                 int nextOption = 1;
         intentPickAction = new Intent(Intent.ACTION_PICK);
         intentPickAction.setData(Uri.parse("file://"));
-        List<ResolveInfo> intentActivities = getPackageManager()
-                        .queryIntentActivities(intentPickAction, CHOOSE_OPML_FILE);
-        if(intentActivities.size() == 0) {
-                intentPickAction.setData(null);
-                intentActivities = getPackageManager()
-                                .queryIntentActivities(intentPickAction, CHOOSE_OPML_FILE);
-                if(intentActivities.size() == 0) {
-                        txtvHeaderExplanation1.setVisibility(View.GONE);
-                        txtvExplanation1.setVisibility(View.GONE);
-                        findViewById(R.id.divider1).setVisibility(View.GONE);
-                        butChooseFilesystem.setVisibility(View.GONE);
-                    }
+
+        if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+            intentPickAction.setData(null);
+            if(false == IntentUtils.isCallable(getApplicationContext(), intentPickAction)) {
+                txtvHeaderExplanation1.setVisibility(View.GONE);
+                txtvExplanation1.setVisibility(View.GONE);
+                findViewById(R.id.divider1).setVisibility(View.GONE);
+                butChooseFilesystem.setVisibility(View.GONE);
             }
+        }
         if(txtvExplanation1.getVisibility() == View.VISIBLE) {
-                txtvHeaderExplanation1.setText("Option " + nextOption);
-                nextOption++;
-            }
+            txtvHeaderExplanation1.setText("Option " + nextOption);
+            nextOption++;
+        }
 
         intentGetContentAction = new Intent(Intent.ACTION_GET_CONTENT);
         intentGetContentAction.addCategory(Intent.CATEGORY_OPENABLE);
         intentGetContentAction.setType("*/*");
-        intentActivities = getPackageManager()
-                        .queryIntentActivities(intentGetContentAction, CHOOSE_OPML_FILE);
-        if(intentActivities.size() == 0) {
-                txtvHeaderExplanation2.setVisibility(View.GONE);
-                txtvExplanation2.setVisibility(View.GONE);
-                findViewById(R.id.divider2).setVisibility(View.GONE);
-                butChooseExternal.setVisibility(View.GONE);
-            } else {
-                txtvHeaderExplanation2.setText("Option " + nextOption);
-                nextOption++;
-            }
+        if(false == IntentUtils.isCallable(getApplicationContext(), intentGetContentAction)) {
+            txtvHeaderExplanation2.setVisibility(View.GONE);
+            txtvExplanation2.setVisibility(View.GONE);
+            findViewById(R.id.divider2).setVisibility(View.GONE);
+            butChooseExternal.setVisibility(View.GONE);
+        } else {
+            txtvHeaderExplanation2.setText("Option " + nextOption);
+            nextOption++;
+        }
 
         txtvHeaderExplanation3.setText("Option " + nextOption);
     }
@@ -137,7 +130,7 @@ public class OpmlImportFromPathActivity extends OpmlImportBaseActivity {
         try {
             mReader = new InputStreamReader(new FileInputStream(file),
                 LangUtils.UTF_8);
-            if (BuildConfig.DEBUG) Log.d(TAG, "Parsing " + file.toString());
+            Log.d(TAG, "Parsing " + file.toString());
             startImport(mReader);
         } catch (FileNotFoundException e) {
             Log.d(TAG, "File not found which really should be there");

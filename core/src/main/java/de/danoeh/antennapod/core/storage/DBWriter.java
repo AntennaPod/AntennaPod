@@ -13,10 +13,10 @@ import org.shredzone.flattr4j.model.Flattr;
 import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutorService;
@@ -100,6 +100,7 @@ public class DBWriter {
                         }
                         media.setDownloaded(false);
                         media.setFile_url(null);
+                        media.setHasEmbeddedPicture(false);
                         PodDBAdapter adapter = new PodDBAdapter(context);
                         adapter.open();
                         adapter.setMedia(media);
@@ -184,13 +185,15 @@ public class DBWriter {
                     }
                     // delete stored media files and mark them as read
                     List<FeedItem> queue = DBReader.getQueue(context);
-                    boolean queueWasModified = false;
+                    List<FeedItem> removed = new ArrayList<>();
                     if (feed.getItems() == null) {
                         DBReader.getFeedItemList(context, feed);
                     }
 
                     for (FeedItem item : feed.getItems()) {
-                        queueWasModified |= queue.remove(item);
+                        if(queue.remove(item)) {
+                            removed.add(item);
+                        }
                         if (item.getMedia() != null
                                 && item.getMedia().isDownloaded()) {
                             File mediaFile = new File(item.getMedia()
@@ -213,8 +216,10 @@ public class DBWriter {
                     }
                     PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();
-                    if (queueWasModified) {
+                    if (removed.size() > 0) {
                         adapter.setQueue(queue);
+                        EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.IRREVERSIBLE_REMOVED,
+                                removed));
                     }
                     adapter.removeFeed(feed);
                     adapter.close();
@@ -351,7 +356,7 @@ public class DBWriter {
                 final PodDBAdapter adapter = new PodDBAdapter(context);
                 adapter.open();
                 final List<FeedItem> queue = DBReader.getQueue(context, adapter);
-                FeedItem item = null;
+                FeedItem item;
 
                 if (queue != null) {
                     if (!itemListContains(queue, itemId)) {
@@ -360,6 +365,9 @@ public class DBWriter {
                             queue.add(index, item);
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
+                            if(item.isNew()) {
+                                DBWriter.markItemRead(context, false, item.getId());
+                            }
                         }
                     }
                 }
@@ -374,14 +382,20 @@ public class DBWriter {
 
     }
 
+    public static Future<?> addQueueItem(final Context context,
+                                         final long... itemIds) {
+        return addQueueItem(context, false, itemIds);
+    }
+
     /**
      * Appends FeedItem objects to the end of the queue. The 'read'-attribute of all items will be set to true.
      * If a FeedItem is already in the queue, the FeedItem will not change its position in the queue.
      *
      * @param context A context that is used for opening a database connection.
+     * @param performAutoDownload true if an auto-download process should be started after the operation.
      * @param itemIds IDs of the FeedItem objects that should be added to the queue.
      */
-    public static Future<?> addQueueItem(final Context context,
+    public static Future<?> addQueueItem(final Context context, final boolean performAutoDownload,
                                          final long... itemIds) {
         return dbExec.submit(new Runnable() {
 
@@ -390,43 +404,45 @@ public class DBWriter {
                 if (itemIds.length > 0) {
                     final PodDBAdapter adapter = new PodDBAdapter(context);
                     adapter.open();
-                    final List<FeedItem> queue = DBReader.getQueue(context,
-                            adapter);
+                    final List<FeedItem> queue = DBReader.getQueue(context, adapter);
 
                     if (queue != null) {
                         boolean queueModified = false;
-                        boolean unreadItemsModified = false;
-                        List<FeedItem> itemsToSave = new LinkedList<FeedItem>();
+                        LongList markAsUnplayedIds = new LongList();
                         for (int i = 0; i < itemIds.length; i++) {
                             if (!itemListContains(queue, itemIds[i])) {
-                                final FeedItem item = DBReader.getFeedItem(
-                                        context, itemIds[i]);
+                                final FeedItem item = DBReader.getFeedItem(context, itemIds[i]);
 
                                 if (item != null) {
                                     // add item to either front ot back of queue
                                     boolean addToFront = UserPreferences.enqueueAtFront();
-
-                                    if(addToFront){
-                                        queue.add(0, item);
+                                    if (addToFront) {
+                                        queue.add(0 + i, item);
                                     } else {
                                         queue.add(item);
                                     }
-
                                     queueModified = true;
+                                    if(item.isNew()) {
+                                        markAsUnplayedIds.add(item.getId());
+                                    }
                                 }
                             }
                         }
                         if (queueModified) {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
+                            if(markAsUnplayedIds.size() > 0) {
+                                    DBWriter.markItemRead(context, false, markAsUnplayedIds.toArray());
+                            }
                         }
                     }
                     adapter.close();
-                    DBTasks.autodownloadUndownloadedItems(context);
+                    if (performAutoDownload) {
+                        DBTasks.autodownloadUndownloadedItems(context);
+                    }
                 }
             }
         });
-
     }
 
     /**
@@ -594,16 +610,25 @@ public class DBWriter {
         adapter.close();
     }
 
-    /**
-     * Sets the 'read'-attribute of a FeedItem to the specified value.
+    /*
+     * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param context A context that is used for opening a database connection.
-     * @param itemId  ID of the FeedItem
      * @param read    New value of the 'read'-attribute
+     * @param itemIds IDs of the FeedItems.
      */
-    public static Future<?> markItemRead(final Context context, final long itemId,
-                                         final boolean read) {
-        return markItemRead(context, itemId, read, 0, false);
+    public static Future<?> markItemRead(final Context context, final boolean read, final long... itemIds) {
+        return dbExec.submit(new Runnable() {
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                int played = read ? FeedItem.PLAYED : FeedItem.UNPLAYED;
+                adapter.setFeedItemRead(played, itemIds);
+                adapter.close();
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
     }
 
 
@@ -645,6 +670,35 @@ public class DBWriter {
      * @param context A context that is used for opening a database connection.
      * @param feedId  ID of the Feed.
      */
+    public static Future<?> markFeedSeen(final Context context, final long feedId) {
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                Cursor itemCursor = adapter.getNewItemsIdsCursor(feedId);
+                long[] ids = new long[itemCursor.getCount()];
+                itemCursor.moveToFirst();
+                for (int i = 0; i < ids.length; i++) {
+                    ids[i] = itemCursor.getLong(0);
+                    itemCursor.moveToNext();
+                }
+                itemCursor.close();
+                adapter.setFeedItemRead(FeedItem.UNPLAYED, ids);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+    }
+
+    /**
+     * Sets the 'read'-attribute of all FeedItems of a specific Feed to true.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feedId  ID of the Feed.
+     */
     public static Future<?> markFeedRead(final Context context, final long feedId) {
         return dbExec.submit(new Runnable() {
 
@@ -660,13 +714,12 @@ public class DBWriter {
                     itemCursor.moveToNext();
                 }
                 itemCursor.close();
-                adapter.setFeedItemRead(true, itemIds);
+                adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
                 adapter.close();
 
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
-
     }
 
     /**
@@ -689,7 +742,7 @@ public class DBWriter {
                     itemCursor.moveToNext();
                 }
                 itemCursor.close();
-                adapter.setFeedItemRead(true, itemIds);
+                adapter.setFeedItemRead(FeedItem.PLAYED, itemIds);
                 adapter.close();
 
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
@@ -1057,8 +1110,33 @@ public class DBWriter {
                 EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
             }
         });
-
     }
+
+    /**
+     * Sets the 'auto_download'-attribute of specific FeedItem.
+     *
+     * @param context A context that is used for opening a database connection.
+     * @param feed This feed's episodes will be processed.
+     * @param autoDownload If true, auto download will be enabled for the feed's episodes. Else,
+     *                     it will be disabled.
+     */
+    public static Future<?> setFeedsItemsAutoDownload(final Context context, final Feed feed,
+                                                    final boolean autoDownload) {
+        Log.d(TAG, (autoDownload ? "Enabling" : "Disabling") + " auto download for items of feed " + feed.getId());
+        return dbExec.submit(new Runnable() {
+
+            @Override
+            public void run() {
+                final PodDBAdapter adapter = new PodDBAdapter(context);
+                adapter.open();
+                adapter.setFeedsItemsAutoDownload(feed, autoDownload);
+                adapter.close();
+
+                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
+            }
+        });
+    }
+
 
     /**
      * Set filter of the feed
