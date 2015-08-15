@@ -61,9 +61,9 @@ public class FeedItemFilter {
         }
         List<FeedItem> result = new ArrayList<FeedItem>();
         for(FeedItem item : items) {
-            if(hideUnplayed && false == item.isRead()) continue;
+            if(hideUnplayed && false == item.isPlayed()) continue;
             if(hidePaused && item.getState() == FeedItem.State.IN_PROGRESS) continue;
-            if(hidePlayed && item.isRead()) continue;
+            if(hidePlayed && item.isPlayed()) continue;
             boolean isQueued = DBReader.getQueueIDList(context).contains(item.getId());
             if(hideQueued && isQueued) continue;
             if(hideNotQueued && false == isQueued) continue;

@@ -22,7 +22,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
     private final APCleanupAlgorithm cleanupAlgorithm = new APCleanupAlgorithm();
 
     /**
-     * Looks for undownloaded episodes in the queue or list of unread items and request a download if
+     * Looks for undownloaded episodes in the queue or list of new items and request a download if
      * 1. Network is available
      * 2. The device is charging or the user allows auto download on battery
      * 3. There is free space in the episode cache
@@ -40,7 +40,7 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
             public void run() {
 
                 // true if we should auto download based on network status
-                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable(context)
+                boolean networkShouldAutoDl = NetworkUtils.autodownloadNetworkAvailable()
                         && UserPreferences.isEnableAutodownload();
 
                 // true if we should auto download based on power status
@@ -57,12 +57,12 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                         candidates = DBReader.getFeedItems(context, mediaIds);
                     } else {
                         final List<FeedItem> queue = DBReader.getQueue(context);
-                        final List<FeedItem> unreadItems = DBReader.getUnreadItemsList(context);
-                        candidates = new ArrayList<FeedItem>(queue.size() + unreadItems.size());
+                        final List<FeedItem> newItems = DBReader.getNewItemsList(context);
+                        candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
                         candidates.addAll(queue);
-                        for(FeedItem unreadItem : unreadItems) {
-                            if(candidates.contains(unreadItem) == false) {
-                                candidates.add(unreadItem);
+                        for(FeedItem newItem : newItems) {
+                            if(candidates.contains(newItem) == false) {
+                                candidates.add(newItem);
                             }
                         }
                     }

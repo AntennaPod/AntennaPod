@@ -31,7 +31,10 @@
         android:layout_margin="16dp"
         android:id="@+id/etxtUsername"
         android:hint="@string/username_label"
-        android:layout_below="@id/txtvDescription"/>
+        android:layout_below="@id/txtvDescription"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:cursorVisible="true"/>
 
     <EditText
         android:layout_width="match_parent"
@@ -40,7 +43,10 @@
         android:id="@+id/etxtPassword"
         android:hint="@string/password_label"
         android:inputType="textPassword"
-        android:layout_below="@id/etxtUsername"/>
+        android:layout_below="@id/etxtUsername"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:cursorVisible="true"/>
 
     <RelativeLayout
         android:id="@+id/footer"

@@ -71,7 +71,6 @@
   <string name="show_info_label">Mostra informació</string>
   <string name="remove_feed_label">Esborra podcast</string>
   <string name="share_link_label">Comparteix l\'enllaç de la plana</string>
-  <string name="share_source_label">Comparteix l\'enllaç del canal</string>
   <string name="feed_delete_confirmation_msg">Confirmeu que, efectivament, voleu suprimir aquest canal i tots els episodis que us n\'heu baixat.</string>
   <string name="feed_remover_msg">S\'està esborrant el canal</string>
   <string name="load_complete_feed">S\'ha actualitzat el canal</string>
@@ -197,8 +196,6 @@
   <string name="pref_auto_delete_title">Esborrat automàtic</string>
   <string name="playback_pref">Reproducció</string>
   <string name="network_pref">Xarxa</string>
-  <string name="pref_autoUpdateIntervall_title">Interval d\'actualització</string>
-  <string name="pref_autoUpdateIntervall_sum">Especifiqueu l\'interval en què els canals s\'actualitzen de forma automàtica, o deshabiliteu la funcionalitat.</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Només baixa fitxers a través d\'una xarxa sense fils</string>
   <string name="pref_followQueue_title">Reproducció continuada</string>
   <string name="pref_downloadMediaOnWifiOnly_title">Baixa a través de xarxes sense fils</string>
@@ -240,8 +237,6 @@
   <string name="pref_gpodnet_setlogin_information_sum">Canvia les dades d\'inici de sessió del vostre compte de gpodder.net</string>
   <string name="pref_playback_speed_title">Velocitats de reproducció</string>
   <string name="pref_playback_speed_sum">Personalitzeu les velocitats disponibles per a una velocitat de reproducció d\'àudio variable</string>
-  <string name="pref_seek_delta_title">Salta a l\'instant</string>
-  <string name="pref_seek_delta_sum">Salta aquesta quantitat de segons en rebobinar o en avançar ràpidament</string>
   <string name="pref_gpodnet_sethostname_title">Definex nom del servidor</string>
   <string name="pref_gpodnet_sethostname_use_default_host">Utilitza el servidor per defecte</string>
   <string name="pref_expandNotify_title">Amplia la notificació</string>
@@ -283,9 +278,6 @@
   <string name="sleep_timer_label">Temporitzador</string>
   <string name="time_left_label">Temps restant:\u0020</string>
   <string name="time_dialog_invalid_input">L\'entrada no és vàlida, ja que el temps ha de ser un nombre i no ho és</string>
-  <string name="time_unit_seconds">segons</string>
-  <string name="time_unit_minutes">minuts</string>
-  <string name="time_unit_hours">hores</string>
   <!--gpodder.net-->
   <string name="gpodnet_taglist_header">CATEGORIES</string>
   <string name="gpodnet_toplist_header">TOP PODCASTS</string>
@@ -354,6 +346,7 @@
   <!--Feed information screen-->
   <string name="authentication_label">Autenticació</string>
   <string name="authentication_descr">Canvieu el nom d\'usuari i contrasenya per a aquest podcast i els seus episodis.</string>
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">S\'estan important les subscripcions des de les apps de propòsit únic...</string>
 </resources>

@@ -196,7 +196,7 @@ public class PlaybackServiceMediaPlayer {
                         DBWriter.markItemRead(context, item, true, false);
                         DBWriter.removeQueueItem(context, item, false);
                         DBWriter.addItemToPlaybackHistory(context, oldMedia);
-                        if (UserPreferences.isAutoDelete()) {
+                        if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
                             Log.d(TAG, "Delete " + oldMedia.toString());
                             DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());
                         }
@@ -623,10 +623,6 @@ public class PlaybackServiceMediaPlayer {
         return mediaType;
     }
 
-    public PlayerStatus getPlayerStatus() {
-        return playerStatus;
-    }
-
     public boolean isStreaming() {
         return stream;
     }
@@ -703,6 +699,26 @@ public class PlaybackServiceMediaPlayer {
      */
     public synchronized PSMPInfo getPSMPInfo() {
         return new PSMPInfo(playerStatus, media);
+    }
+
+    /**
+     * Returns the current status, if you need the media and the player status together, you should
+     * use getPSMPInfo() to make sure they're properly synchronized. Otherwise a race condition
+     * could result in nonsensical results (like a status of PLAYING, but a null playable)
+     * @return the current player status
+     */
+    public PlayerStatus getPlayerStatus() {
+        return playerStatus;
+    }
+
+    /**
+     * Returns the current media, if you need the media and the player status together, you should
+     * use getPSMPInfo() to make sure they're properly synchronized. Otherwise a race condition
+     * could result in nonsensical results (like a status of PLAYING, but a null playable)
+     * @return the current media. May be null
+     */
+    public Playable getPlayable() {
+        return media;
     }
 
     /**

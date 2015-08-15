@@ -28,6 +28,15 @@ public class FeedMedia extends FeedFile implements Playable {
     public static final String PREF_MEDIA_ID = "FeedMedia.PrefMediaId";
     public static final String PREF_FEED_ID = "FeedMedia.PrefFeedId";
 
+    /**
+     * Indicates we've checked on the size of the item via the network
+     * and got an invalid response. Using Integer.MIN_VALUE because
+     * 1) we'll still check on it in case it gets downloaded (it's <= 0)
+     * 2) By default all FeedMedia have a size of 0 if we don't know it,
+     *    so this won't conflict with existing practice.
+     */
+    private static final int CHECKED_ON_SIZE_BUT_UNKNOWN = Integer.MIN_VALUE;
+
     private int duration;
     private int position; // Current position in file
     private int played_duration; // How many ms of this file have been played (for autoflattring)
@@ -35,6 +44,8 @@ public class FeedMedia extends FeedFile implements Playable {
     private String mime_type;
     private volatile FeedItem item;
     private Date playbackCompletionDate;
+
+    // if null: unknown, will be checked
     private Boolean hasEmbeddedPicture;
 
     /* Used for loading item when restoring from parcel. */
@@ -61,6 +72,15 @@ public class FeedMedia extends FeedFile implements Playable {
         this.mime_type = mime_type;
         this.playbackCompletionDate = playbackCompletionDate == null
                 ? null : (Date) playbackCompletionDate.clone();
+    }
+
+    public FeedMedia(long id, FeedItem item, int duration, int position,
+                     long size, String mime_type, String file_url, String download_url,
+                     boolean downloaded, Date playbackCompletionDate, int played_duration,
+                     Boolean hasEmbeddedPicture) {
+        this(id, item, duration, position, size, mime_type, file_url, download_url, downloaded,
+                playbackCompletionDate, played_duration);
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
     }
 
     @Override
@@ -175,6 +195,9 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setPosition(int position) {
         this.position = position;
+        if(position > 0 && item.isNew()) {
+            this.item.setPlayed(false);
+        }
     }
 
     public long getSize() {
@@ -183,6 +206,18 @@ public class FeedMedia extends FeedFile implements Playable {
 
     public void setSize(long size) {
         this.size = size;
+    }
+
+    /**
+     * Indicates we asked the service what the size was, but didn't
+     * get a valid answer and we shoudln't check using the network again.
+     */
+    public void setCheckedOnSizeButUnknown() {
+        this.size = CHECKED_ON_SIZE_BUT_UNKNOWN;
+    }
+
+    public boolean checkedOnSizeButUnknown() {
+        return (CHECKED_ON_SIZE_BUT_UNKNOWN == this.size);
     }
 
     public String getMime_type() {
@@ -354,14 +389,16 @@ public class FeedMedia extends FeedFile implements Playable {
 
     @Override
     public void saveCurrentPosition(SharedPreferences pref, int newPosition) {
-        setPosition(newPosition);
         DBWriter.setFeedMediaPlaybackInformation(ClientConfig.applicationCallbacks.getApplicationInstance(), this);
+        if(item.isNew()) {
+            DBWriter.markItemRead(ClientConfig.applicationCallbacks.getApplicationInstance(), false, item.getId());
+        }
+        setPosition(newPosition);
     }
 
     @Override
     public void onPlaybackStart() {
     }
-
     @Override
     public void onPlaybackCompleted() {
 
@@ -429,9 +466,16 @@ public class FeedMedia extends FeedFile implements Playable {
         }
     }
 
+    public void setHasEmbeddedPicture(Boolean hasEmbeddedPicture) {
+        this.hasEmbeddedPicture = hasEmbeddedPicture;
+    }
+
     @Override
     public void setDownloaded(boolean downloaded) {
         super.setDownloaded(downloaded);
+        if(downloaded) {
+            item.setPlayed(false);
+        }
     }
 
     @Override

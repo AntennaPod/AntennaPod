@@ -22,6 +22,7 @@ import de.danoeh.antennapod.core.feed.FeedPreferences;
 import de.danoeh.antennapod.core.feed.ID3Chapter;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
 import de.danoeh.antennapod.core.feed.VorbisCommentChapter;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.util.DownloadError;
 import de.danoeh.antennapod.core.util.LongIntMap;
@@ -114,36 +115,6 @@ public final class DBReader {
     }
 
     /**
-     * Returns a list of 'expired Feeds', i.e. Feeds that have not been updated for a certain amount of time.
-     *
-     * @param context        A context that is used for opening a database connection.
-     * @param expirationTime Time that is used for determining whether a feed is outdated or not.
-     *                       A Feed is considered expired if 'lastUpdate < (currentTime - expirationTime)' evaluates to true.
-     * @return A list of Feeds, sorted alphabetically by their title. A Feed-object
-     * of the returned list does NOT have its list of FeedItems yet. The FeedItem-list
-     * can be loaded separately with {@link #getFeedItemList(android.content.Context, de.danoeh.antennapod.core.feed.Feed)}.
-     */
-    public static List<Feed> getExpiredFeedsList(final Context context, final long expirationTime) {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, String.format("getExpiredFeedsList(%d)", expirationTime));
-
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-
-        Cursor feedlistCursor = adapter.getExpiredFeedsCursor(expirationTime);
-        List<Feed> feeds = new ArrayList<Feed>(feedlistCursor.getCount());
-
-        if (feedlistCursor.moveToFirst()) {
-            do {
-                Feed feed = extractFeedFromCursorRow(adapter, feedlistCursor);
-                feeds.add(feed);
-            } while (feedlistCursor.moveToNext());
-        }
-        feedlistCursor.close();
-        return feeds;
-    }
-
-    /**
      * Takes a list of FeedItems and loads their corresponding Feed-objects from the database.
      * The feedID-attribute of a FeedItem must be set to the ID of its feed or the method will
      * not find the correct feed of an item.
@@ -230,7 +201,7 @@ public final class DBReader {
                         new FlattrStatus(itemlistCursor.getLong(PodDBAdapter.IDX_FI_SMALL_FLATTR_STATUS)),
                         itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_HAS_CHAPTERS) > 0,
                         image,
-                        (itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ) > 0),
+                        itemlistCursor.getInt(PodDBAdapter.IDX_FI_SMALL_READ),
                         itemlistCursor.getString(PodDBAdapter.IDX_FI_SMALL_ITEM_IDENTIFIER),
                         itemlistCursor.getInt(itemlistCursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD)) > 0
                         );
@@ -274,6 +245,18 @@ public final class DBReader {
             playbackCompletionDate = new Date(
                     playbackCompletionTime);
         }
+        Boolean hasEmbeddedPicture;
+        switch(cursor.getInt(cursor.getColumnIndex(PodDBAdapter.KEY_HAS_EMBEDDED_PICTURE))) {
+            case 1:
+                hasEmbeddedPicture = Boolean.TRUE;
+                break;
+            case 0:
+                hasEmbeddedPicture = Boolean.FALSE;
+                break;
+            default:
+                hasEmbeddedPicture = null;
+                break;
+        }
 
         return new FeedMedia(
                 mediaId,
@@ -286,7 +269,8 @@ public final class DBReader {
                 cursor.getString(PodDBAdapter.KEY_DOWNLOAD_URL_INDEX),
                 cursor.getInt(PodDBAdapter.KEY_DOWNLOADED_INDEX) > 0,
                 playbackCompletionDate,
-                cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX));
+                cursor.getInt(PodDBAdapter.KEY_PLAYED_DURATION_INDEX),
+                hasEmbeddedPicture);
     }
 
     private static Feed extractFeedFromCursorRow(PodDBAdapter adapter,
@@ -325,9 +309,9 @@ public final class DBReader {
         if (image != null) {
             image.setOwner(feed);
         }
-
         FeedPreferences preferences = new FeedPreferences(cursor.getLong(PodDBAdapter.IDX_FEED_SEL_STD_ID),
                 cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD) > 0,
+                FeedPreferences.AutoDeleteAction.values()[cursor.getInt(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_AUTO_DELETE_ACTION)],
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_USERNAME),
                 cursor.getString(PodDBAdapter.IDX_FEED_SEL_PREFERENCES_PASSWORD));
 
@@ -469,8 +453,7 @@ public final class DBReader {
      * Loads a list of FeedItems whose 'read'-attribute is set to false.
      *
      * @param context A context that is used for opening a database connection.
-     * @return A list of FeedItems whose 'read'-attribute it set to false. If the FeedItems in the list are not used,
-     * consider using {@link #getUnreadItemIds(android.content.Context)} instead.
+     * @return A list of FeedItems whose 'read'-attribute it set to false.
      */
     public static List<FeedItem> getUnreadItemsList(Context context) {
         if (BuildConfig.DEBUG)
@@ -536,6 +519,28 @@ public final class DBReader {
         }
         cursor.close();
         return itemIds;
+    }
+
+    /**
+     * Loads FeedMedia whose file size is unknown
+     *
+     * @param context A context that is used for opening a database connection.
+     * @return A list of FeedMedia items whose size is 0 (unknown and never tried to
+     * determine the correct size)
+     */
+    public static List<FeedMedia> getFeedMediaUnknownSize(Context context) {
+        PodDBAdapter adapter = new PodDBAdapter(context);
+        adapter.open();
+        Cursor cursor = adapter.getFeedMediaUnknownSizeCursor();
+        List<FeedMedia> result = new ArrayList<>(cursor.getCount());
+        if (cursor.moveToFirst()) {
+            do {
+                FeedMedia media = extractFeedMediaFromCursorRow(cursor);
+                result.add(media);
+            } while (cursor.moveToNext());
+        }
+        cursor.close();
+        return result;
     }
 
 
@@ -866,7 +871,11 @@ public final class DBReader {
             if (cursor.moveToFirst()) {
                 String username = cursor.getString(0);
                 String password = cursor.getString(1);
-                return username + ":" + password;
+                if(username != null && password != null) {
+                    return username + ":" + password;
+                } else {
+                    return "";
+                }
             }
             return "";
         } finally {
@@ -1001,20 +1010,6 @@ public final class DBReader {
     }
 
     /**
-     * Returns a map containing the number of unread items per feed
-     *
-     * @param context A context that is used for opening a database connection.
-     * @return The number of unread items per feed.
-     */
-    public static LongIntMap getNumberOfUnreadFeedItems(final Context context, long... feedIds) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-        final LongIntMap result = adapter.getNumberOfUnreadFeedItems(feedIds);
-        adapter.close();
-        return result;
-    }
-
-    /**
      * Searches the DB for a FeedImage of the given id.
      *
      * @param context A context that is used for opening a database connection.
@@ -1142,27 +1137,42 @@ public final class DBReader {
         for(int i=0; i < feeds.size(); i++) {
             feedIds[i] = feeds.get(i).getId();
         }
-        final LongIntMap numUnreadFeedItems = adapter.getNumberOfUnreadFeedItems(feedIds);
-        Collections.sort(feeds, new Comparator<Feed>() {
-            @Override
-            public int compare(Feed lhs, Feed rhs) {
-                long numUnreadLhs = numUnreadFeedItems.get(lhs.getId());
-                Log.d(TAG, "feed with id " + lhs.getId() + " has " + numUnreadLhs + " unread items");
-                long numUnreadRhs = numUnreadFeedItems.get(rhs.getId());
-                Log.d(TAG, "feed with id " + rhs.getId() + " has " + numUnreadRhs + " unread items");
-                if(numUnreadLhs > numUnreadRhs) {
-                    // reverse natural order: podcast with most unplayed episodes first
-                    return -1;
-                } else if(numUnreadLhs == numUnreadRhs) {
-                    return lhs.getTitle().compareTo(rhs.getTitle());
-                } else {
-                    return 1;
+        final LongIntMap feedCounters = adapter.getFeedCounters(feedIds);
+
+        Comparator<Feed> comparator;
+        int feedOrder = UserPreferences.getFeedOrder();
+        if(feedOrder == UserPreferences.FEED_ORDER_UNPLAYED_EPISODES) {
+            comparator = new Comparator<Feed>() {
+                @Override
+                public int compare(Feed lhs, Feed rhs) {
+                    long counterLhs = feedCounters.get(lhs.getId());
+                    long counterRhs = feedCounters.get(rhs.getId());
+                    if(counterLhs > counterRhs) {
+                        // reverse natural order: podcast with most unplayed episodes first
+                        return -1;
+                    } else if(counterLhs == counterRhs) {
+                        return lhs.getTitle().compareTo(rhs.getTitle());
+                    } else {
+                        return 1;
+                    }
                 }
-            }
-        });
+            };
+        } else {
+            comparator = new Comparator<Feed>() {
+                @Override
+                public int compare(Feed lhs, Feed rhs) {
+                    if(lhs.getTitle() == null) {
+                        return 1;
+                    }
+                    return lhs.getTitle().compareTo(rhs.getTitle());
+                }
+            };
+        }
+
+        Collections.sort(feeds, comparator);
         int queueSize = adapter.getQueueSize();
         int numNewItems = adapter.getNumberOfNewItems();
-        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, numUnreadFeedItems);
+        NavDrawerData result = new NavDrawerData(feeds, queueSize, numNewItems, feedCounters);
         adapter.close();
         return result;
     }
@@ -1171,14 +1181,16 @@ public final class DBReader {
         public List<Feed> feeds;
         public int queueSize;
         public int numNewItems;
-        public LongIntMap numUnreadFeedItems;
+        public LongIntMap feedCounters;
 
-        public NavDrawerData(List<Feed> feeds, int queueSize, int numNewItems,
-                             LongIntMap numUnreadFeedItems) {
+        public NavDrawerData(List<Feed> feeds,
+                             int queueSize,
+                             int numNewItems,
+                             LongIntMap feedIndicatorValues) {
             this.feeds = feeds;
             this.queueSize = queueSize;
             this.numNewItems = numNewItems;
-            this.numUnreadFeedItems = numUnreadFeedItems;
+            this.feedCounters = feedIndicatorValues;
         }
     }
 }

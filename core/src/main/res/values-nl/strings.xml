@@ -54,7 +54,6 @@
   <string name="mark_all_read_label">Alles als gelezen markeren</string>
   <string name="show_info_label">Toon informatie</string>
   <string name="share_link_label">Website link delen</string>
-  <string name="share_source_label">Feed link delen</string>
   <string name="feed_delete_confirmation_msg">Bevestig dat u deze feed en ALLE afleveringen van deze feed die u hebt gedownload wilt verwijderen.</string>
   <string name="feed_remover_msg">Feed verwijderen</string>
   <!--actions on feeditems-->
@@ -162,8 +161,6 @@
   <string name="pref_followQueue_sum">Volgende wachtrij item afspelen als de episode voltooid is</string>
   <string name="playback_pref">Afspelen</string>
   <string name="network_pref">Netwerk</string>
-  <string name="pref_autoUpdateIntervall_title">Update interval</string>
-  <string name="pref_autoUpdateIntervall_sum">Voer een tijdsinterval in waarin de feeds automatisch worden vernieuwd, of schakel het uit</string>
   <string name="pref_downloadMediaOnWifiOnly_sum">Download mediabestanden alleen via WiFi</string>
   <string name="pref_followQueue_title">Continu afspelen</string>
   <string name="pref_downloadMediaOnWifiOnly_title">WiFi download van media</string>
@@ -295,6 +292,7 @@
   <string name="new_episodes_count_label">Aantal nieuwe afleveringen</string>
   <string name="in_progress_episodes_count_label">Aantal afleveringen dat begonnen te luisteren zijn</string>
   <!--Feed information screen-->
+  <!--Progress information-->
   <!--AntennaPodSP-->
   <string name="sp_apps_importing_feeds_msg">Abonnementen aan het importeren vanuit single-purpose apps...</string>
 </resources>

@@ -33,13 +33,17 @@ public class FeedItemlistAdapter extends BaseAdapter {
     private final Context context;
     private boolean showFeedtitle;
     private int selectedItemIndex;
+    /** true if played items should be made partially transparent */
+    private boolean makePlayedItemsTransparent;
     private final ActionButtonUtils actionButtonUtils;
 
     public static final int SELECTION_NONE = -1;
 
     public FeedItemlistAdapter(Context context,
                                ItemAccess itemAccess,
-                               ActionButtonCallback callback, boolean showFeedtitle) {
+                               ActionButtonCallback callback,
+                               boolean showFeedtitle,
+                               boolean makePlayedItemsTransparent) {
         super();
         this.callback = callback;
         this.context = context;
@@ -47,6 +51,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         this.showFeedtitle = showFeedtitle;
         this.selectedItemIndex = SELECTION_NONE;
         this.actionButtonUtils = new ActionButtonUtils(context);
+        this.makePlayedItemsTransparent = makePlayedItemsTransparent;
     }
 
     @Override
@@ -106,18 +111,18 @@ public class FeedItemlistAdapter extends BaseAdapter {
 
             StringBuilder buffer = new StringBuilder(item.getTitle());
             if (showFeedtitle) {
-                buffer.append("(");
+                buffer.append(" (");
                 buffer.append(item.getFeed().getTitle());
                 buffer.append(")");
             }
             holder.title.setText(buffer.toString());
 
-            if(false == item.isRead() && itemAccess.isNew(item)) {
+            if(item.isNew()) {
                 holder.statusUnread.setVisibility(View.VISIBLE);
             } else {
                 holder.statusUnread.setVisibility(View.INVISIBLE);
             }
-            if(item.isRead()) {
+            if(item.isPlayed() && makePlayedItemsTransparent) {
                 ViewHelper.setAlpha(convertView, 0.5f);
             } else {
                 ViewHelper.setAlpha(convertView, 1.0f);
@@ -180,7 +185,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
             convertView.setVisibility(View.GONE);
         }
         return convertView;
-
     }
 
     private final OnClickListener butActionListener = new OnClickListener() {
@@ -220,8 +224,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         int getCount();
 
         FeedItem getItem(int position);
-
-        boolean isNew(FeedItem item);
 
     }
 

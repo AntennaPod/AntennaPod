@@ -78,7 +78,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickOnText(solo.getString(R.string.add_feed_label));
         solo.enterText(0, feed.getDownload_url());
-        solo.clickOnButton(0);
+        solo.clickOnButton(solo.getString(R.string.confirm_label));
         solo.waitForActivity(DefaultOnlineFeedViewActivity.class);
         solo.waitForView(R.id.butSubscribe);
         assertEquals(solo.getString(R.string.subscribe_label), solo.getButton(0).getText().toString());

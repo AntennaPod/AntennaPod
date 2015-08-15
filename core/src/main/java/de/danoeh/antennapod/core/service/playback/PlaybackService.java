@@ -29,12 +29,16 @@ import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.SimpleTarget;
 
 import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.R;
@@ -42,6 +46,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction.Action;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
@@ -442,7 +447,7 @@ public class PlaybackService extends Service {
                     }
                     writePlayerStatusPlaybackPreferences();
 
-                    final Playable playable = mediaPlayer.getPSMPInfo().playable;
+                    final Playable playable = newInfo.playable;
 
                     // Gpodder: send play action
                     if(GpodnetPreferences.loggedIn() && playable instanceof FeedMedia) {
@@ -525,7 +530,7 @@ public class PlaybackService extends Service {
         public boolean onMediaPlayerError(Object inObj, int what, int extra) {
             final String TAG = "PlaybackService.onErrorListener";
             Log.w(TAG, "An error has occured: " + what + " " + extra);
-            if (mediaPlayer.getPSMPInfo().playerStatus == PlayerStatus.PLAYING) {
+            if (mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING) {
                 mediaPlayer.pause(true, false);
             }
             sendNotificationBroadcast(NOTIFICATION_TYPE_ERROR, what);
@@ -549,7 +554,7 @@ public class PlaybackService extends Service {
     private void endPlayback(boolean playNextEpisode) {
         Log.d(TAG, "Playback ended");
 
-        final Playable playable = mediaPlayer.getPSMPInfo().playable;
+        final Playable playable = mediaPlayer.getPlayable();
         if (playable == null) {
             Log.e(TAG, "Cannot end playback: media was null");
             return;
@@ -584,7 +589,7 @@ public class PlaybackService extends Service {
             }
 
             // Delete episode if enabled
-            if(UserPreferences.isAutoDelete()) {
+            if(item.getFeed().getPreferences().getCurrentAutoDelete()) {
                 DBWriter.deleteFeedMediaOfItem(PlaybackService.this, media.getId());
                 Log.d(TAG, "Episode Deleted");
             }
@@ -634,7 +639,7 @@ public class PlaybackService extends Service {
 
         writePlaybackPreferencesNoMediaPlaying();
         if (nextMedia != null) {
-            stream = !playable.localFileAvailable();
+            stream = !nextMedia.localFileAvailable();
             mediaPlayer.playMediaObject(nextMedia, stream, startWhenPrepared, prepareImmediately);
             sendNotificationBroadcast(NOTIFICATION_TYPE_RELOAD,
                     (nextMedia.getMediaType() == MediaType.VIDEO) ? EXTRA_CODE_VIDEO : EXTRA_CODE_AUDIO);
@@ -744,8 +749,7 @@ public class PlaybackService extends Service {
 
         SharedPreferences.Editor editor = PreferenceManager
                 .getDefaultSharedPreferences(getApplicationContext()).edit();
-        PlaybackServiceMediaPlayer.PSMPInfo info = mediaPlayer.getPSMPInfo();
-        int playerStatus = getCurrentPlayerStatusAsInt(info.playerStatus);
+        int playerStatus = getCurrentPlayerStatusAsInt(mediaPlayer.getPlayerStatus());
 
         editor.putInt(
                 PlaybackPreferences.PREF_CURRENT_PLAYER_STATUS, playerStatus);
@@ -770,7 +774,7 @@ public class PlaybackService extends Service {
     /**
      * Used by setupNotification to load notification data in another thread.
      */
-    private AsyncTask<Void, Void, Void> notificationSetupTask;
+    private Thread notificationSetupThread;
 
     /**
      * Prepares notification and starts the service in the foreground.
@@ -781,50 +785,47 @@ public class PlaybackService extends Service {
                 PlaybackService.getPlayerActivityIntent(this),
                 PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (notificationSetupTask != null) {
-            notificationSetupTask.cancel(true);
+        if (notificationSetupThread != null) {
+            notificationSetupThread.interrupt();
         }
-        notificationSetupTask = new AsyncTask<Void, Void, Void>() {
+        Runnable notificationSetupTask = new Runnable() {
             Bitmap icon = null;
 
             @Override
-            protected Void doInBackground(Void... params) {
+            public void run() {
                 Log.d(TAG, "Starting background work");
                 if (android.os.Build.VERSION.SDK_INT >= 11) {
                     if (info.playable != null) {
+                        int iconSize = getResources().getDimensionPixelSize(
+                                android.R.dimen.notification_large_icon_width);
                         try {
-                            int iconSize = getResources().getDimensionPixelSize(
-                                    android.R.dimen.notification_large_icon_width);
-                            icon = Picasso.with(PlaybackService.this)
+                            icon = Glide.with(PlaybackService.this)
                                     .load(info.playable.getImageUri())
-                                    .resize(iconSize, iconSize)
+                                    .asBitmap()
+                                    .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                    .into(-1, -1) // this resizing would not be exact, so we have
+                                                  // scale the bitmap ourselves
                                     .get();
-                        } catch (IOException e) {
+                            icon = Bitmap.createScaledBitmap(icon, iconSize, iconSize, true);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (ExecutionException e) {
                             e.printStackTrace();
                         }
                     }
-
                 }
                 if (icon == null) {
                     icon = BitmapFactory.decodeResource(getApplicationContext().getResources(),
                             ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext()));
                 }
 
-                return null;
-            }
-
-            @Override
-            protected void onPostExecute(Void result) {
-                super.onPostExecute(result);
                 if (mediaPlayer == null) {
                     return;
                 }
-                PlaybackServiceMediaPlayer.PSMPInfo newInfo = mediaPlayer.getPSMPInfo();
+                PlayerStatus playerStatus = mediaPlayer.getPlayerStatus();
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
-                if (!isCancelled() &&
-                        started &&
-                        info.playable != null) {
+                if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
                     String contentText = info.playable.getFeedTitle();
                     String contentTitle = info.playable.getEpisodeTitle();
                     Notification notification = null;
@@ -865,7 +866,7 @@ public class PlaybackService extends Service {
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
-                        if (newInfo.playerStatus == PlayerStatus.PLAYING) {
+                        if (playerStatus == PlayerStatus.PLAYING) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
@@ -902,15 +903,9 @@ public class PlaybackService extends Service {
                     Log.d(TAG, "Notification set up");
                 }
             }
-
         };
-        if (android.os.Build.VERSION.SDK_INT > android.os.Build.VERSION_CODES.GINGERBREAD_MR1) {
-            notificationSetupTask
-                    .executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
-        } else {
-            notificationSetupTask.execute();
-        }
-
+        notificationSetupThread = new Thread(notificationSetupTask);
+        notificationSetupThread.start();
     }
 
     /**
@@ -923,7 +918,7 @@ public class PlaybackService extends Service {
         int position = getCurrentPosition();
         int duration = getDuration();
         float playbackSpeed = getCurrentPlaybackSpeed();
-        final Playable playable = mediaPlayer.getPSMPInfo().playable;
+        final Playable playable = mediaPlayer.getPlayable();
         if (position != INVALID_TIME && duration != INVALID_TIME && playable != null) {
             Log.d(TAG, "Saving current position to " + position);
             if (updatePlayedDuration && playable instanceof FeedMedia) {
@@ -1200,12 +1195,10 @@ public class PlaybackService extends Service {
     }
 
     public PlayerStatus getStatus() {
-        return mediaPlayer.getPSMPInfo().playerStatus;
+        return mediaPlayer.getPlayerStatus();
     }
 
-    public Playable getPlayable() {
-        return mediaPlayer.getPSMPInfo().playable;
-    }
+    public Playable getPlayable() { return mediaPlayer.getPlayable(); }
 
     public void setSpeed(float speed) {
         mediaPlayer.setSpeed(speed);
@@ -1231,7 +1224,7 @@ public class PlaybackService extends Service {
     public void seekTo(final int t) {
         if(mediaPlayer.getPlayerStatus() == PlayerStatus.PLAYING
                 && GpodnetPreferences.loggedIn()) {
-            final Playable playable = mediaPlayer.getPSMPInfo().playable;
+            final Playable playable = mediaPlayer.getPlayable();
             if (playable instanceof FeedMedia) {
                 FeedMedia media = (FeedMedia) playable;
                 FeedItem item = media.getItem();

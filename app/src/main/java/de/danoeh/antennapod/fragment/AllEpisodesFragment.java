@@ -30,8 +30,8 @@ import java.util.concurrent.atomic.AtomicReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.MainActivity;
-import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.adapter.AllEpisodesListAdapter;
+import de.danoeh.antennapod.adapter.DefaultActionButtonCallback;
 import de.danoeh.antennapod.core.asynctask.DownloadObserver;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.EventDistributor;
@@ -72,10 +72,10 @@ public class AllEpisodesFragment extends Fragment {
     private TextView txtvEmpty;
     private ProgressBar progLoading;
     private ContextMenu contextMenu;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private List<FeedItem> episodes;
     private LongList queuedItemsIds;
-    private LongList newItemsIds;
     private List<Downloader> downloaderList;
 
     private boolean itemsLoaded = false;
@@ -341,12 +341,16 @@ public class AllEpisodesFragment extends Fragment {
         }
 
         contextMenu = menu;
-        FeedItemMenuHandler.onPrepareMenu(contextMenuInterface, item, true, queuedItemsIds);
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        FeedItemMenuHandler.onPrepareMenu(getActivity(), contextMenuInterface, item, true, queuedItemsIds);
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
         FeedItem selectedItem = itemAccess.getItem(menuInfo.position);
 
         if (selectedItem == null) {
@@ -380,14 +384,7 @@ public class AllEpisodesFragment extends Fragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (listAdapter != null) {
-                listAdapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             AllEpisodesFragment.this.downloaderList = downloaderList;
             if (listAdapter != null) {
                 listAdapter.notifyDataSetChanged();
@@ -434,18 +431,6 @@ public class AllEpisodesFragment extends Fragment {
                 return false;
             }
         }
-
-        @Override
-        public boolean isNew(FeedItem item) {
-            if (itemsLoaded) {
-                // should actually never be called in NewEpisodesFragment, but better safe than sorry
-                return showOnlyNewEpisodes || newItemsIds.contains(item.getId());
-            } else {
-                return false;
-            }
-        }
-
-
     };
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -510,8 +495,7 @@ public class AllEpisodesFragment extends Fragment {
                 } else {
                     return new Object[]{
                             DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                            DBReader.getQueueIDList(context),
-                            DBReader.getNewItemIds(context)
+                            DBReader.getQueueIDList(context)
                     };
                 }
             } else {
@@ -528,7 +512,6 @@ public class AllEpisodesFragment extends Fragment {
             if (lists != null) {
                 episodes = (List<FeedItem>) lists[0];
                 queuedItemsIds = (LongList) lists[1];
-                newItemsIds = (LongList) lists[2];
                 itemsLoaded = true;
                 if (viewsCreated && activity.get() != null) {
                     onFragmentLoaded();

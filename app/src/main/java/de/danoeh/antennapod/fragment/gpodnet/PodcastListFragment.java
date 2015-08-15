@@ -62,7 +62,10 @@ public abstract class PodcastListFragment extends Fragment {
             @Override
             public boolean onQueryTextSubmit(String s) {
                 sv.clearFocus();
-                ((MainActivity) getActivity()).loadChildFragment(SearchListFragment.newInstance(s));
+                MainActivity activity = (MainActivity)getActivity();
+                if (activity != null) {
+                    activity.loadChildFragment(SearchListFragment.newInstance(s));
+                }
                 return true;
             }
 

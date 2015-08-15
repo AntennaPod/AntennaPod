@@ -192,7 +192,10 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private void onFragmentLoaded() {
         if (adapter == null) {
-            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true);
+            // played items shoudln't be transparent for this fragment since, *all* items
+            // in this fragment will, by definition, be played. So it serves no purpose and can make
+            // it harder to read.
+            adapter = new FeedItemlistAdapter(getActivity(), itemAccess, new DefaultActionButtonCallback(activity.get()), true, false);
             setListAdapter(adapter);
             downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
@@ -204,14 +207,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     private DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
         @Override
-        public void onContentChanged() {
-            if (adapter != null) {
-                adapter.notifyDataSetChanged();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             PlaybackHistoryFragment.this.downloaderList = downloaderList;
             if (adapter != null) {
                 adapter.notifyDataSetChanged();
@@ -223,11 +219,6 @@ public class PlaybackHistoryFragment extends ListFragment {
         @Override
         public boolean isInQueue(FeedItem item) {
             return (queue != null) ? queue.contains(item.getId()) : false;
-        }
-
-        @Override
-        public boolean isNew(FeedItem item) {
-            return false;
         }
 
         @Override

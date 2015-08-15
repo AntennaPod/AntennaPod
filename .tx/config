@@ -18,6 +18,7 @@ trans.it_IT = core/src/main/res/values-it-rIT/strings.xml
 trans.ja = core/src/main/res/values-ja/strings.xml
 trans.ko = core/src/main/res/values-ko/strings.xml
 trans.nl = core/src/main/res/values-nl/strings.xml
+#trans.no = core/src/main/res/values-no/strings.xml
 trans.pl_PL = core/src/main/res/values-pl-rPL/strings.xml
 trans.pt = core/src/main/res/values-pt/strings.xml
 trans.pt_BR = core/src/main/res/values-pt-rBR/strings.xml

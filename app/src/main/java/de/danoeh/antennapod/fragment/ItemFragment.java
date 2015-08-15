@@ -1,7 +1,8 @@
 package de.danoeh.antennapod.fragment;
 
 import android.annotation.TargetApi;
-import android.content.ActivityNotFoundException;
+import android.content.ClipData;
+import android.content.Context;
 import android.content.Intent;
 import android.content.res.TypedArray;
 import android.net.Uri;
@@ -18,7 +19,9 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.text.format.DateUtils;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +35,8 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -45,6 +49,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -53,7 +58,9 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.storage.DownloadRequestException;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.IntentUtils;
 import de.danoeh.antennapod.core.util.LongList;
+import de.danoeh.antennapod.core.util.ShareUtils;
 import de.danoeh.antennapod.core.util.playback.Timeline;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.greenrobot.event.EventBus;
@@ -106,6 +113,11 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private Button butAction2;
     private ImageButton butMore;
     private PopupMenu popupMenu;
+
+    /**
+     * URL that was selected via long-press.
+     */
+    private String selectedURL;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -194,20 +206,19 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         webvDescription.getSettings().setLayoutAlgorithm(
                 WebSettings.LayoutAlgorithm.NARROW_COLUMNS);
         webvDescription.getSettings().setLoadWithOverviewMode(true);
+        webvDescription.setOnLongClickListener(webViewLongClickListener);
         webvDescription.setWebViewClient(new WebViewClient() {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-                try {
+                if(IntentUtils.isCallable(getActivity(), intent)) {
                     startActivity(intent);
-                } catch (ActivityNotFoundException e) {
-                    e.printStackTrace();
-                    return true;
                 }
                 return true;
             }
         });
+        registerForContextMenu(webvDescription);
 
         imgvCover = (ImageView) header.findViewById(R.id.imgvCover);
         progbarDownload = (ProgressBar) header.findViewById(R.id.progbarDownload);
@@ -272,10 +283,10 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
                                            popupMenu.getMenu().clear();
                                            popupMenu.inflate(R.menu.feeditem_options);
                                            if (item.hasMedia()) {
-                                               FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue);
+                                               FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue);
                                            } else {
                                                // these are already available via button1 and button2
-                                               FeedItemMenuHandler.onPrepareMenu(popupMenuInterface, item, true, queue,
+                                               FeedItemMenuHandler.onPrepareMenu(getActivity(), popupMenuInterface, item, true, queue,
                                                        R.id.mark_read_item, R.id.visit_website_item);
                                            }
                                            popupMenu.show();
@@ -313,7 +324,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
 
 
     private void onFragmentLoaded() {
-        progbarLoading.setVisibility(View.GONE);
+        progbarLoading.setVisibility(View.INVISIBLE);
         if (webviewData != null) {
             webvDescription.loadDataWithBaseURL(null, webviewData, "text/html",
                     "utf-8", "about:blank");
@@ -327,10 +338,16 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         txtvTitle.setText(item.getTitle());
         txtvPublished.setText(DateUtils.formatDateTime(getActivity(), item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL));
 
-        Picasso.with(getActivity()).load(item.getImageUri())
-                .fit()
+        Glide.with(getActivity())
+                .load(item.getImageUri())
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
                 .into(imgvCover);
-        progbarDownload.setVisibility(View.GONE);
+
+        progbarDownload.setVisibility(View.INVISIBLE);
         if (item.hasMedia() && downloaderList != null) {
             for (Downloader downloader : downloaderList) {
                 if (downloader.getDownloadRequest().getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA
@@ -346,7 +363,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
             TypedArray drawables = getActivity().obtainStyledAttributes(new int[]{R.attr.navigation_accept,
                     R.attr.location_web_site});
 
-            if (!item.isRead()) {
+            if (!item.isPlayed()) {
                 butAction1.setCompoundDrawablesWithIntrinsicBounds(drawables.getDrawable(0), null, null, null);
                 butAction1.setText(getActivity().getString(R.string.mark_read_label));
                 butAction1.setVisibility(View.VISIBLE);
@@ -398,6 +415,83 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         getLoaderManager().restartLoader(0, null, ItemFragment.this);
     }
 
+    private View.OnLongClickListener webViewLongClickListener = new View.OnLongClickListener() {
+
+        @Override
+        public boolean onLongClick(View v) {
+            WebView.HitTestResult r = webvDescription.getHitTestResult();
+            if (r != null
+                    && r.getType() == WebView.HitTestResult.SRC_ANCHOR_TYPE) {
+                Log.d(TAG, "Link of webview was long-pressed. Extra: " + r.getExtra());
+                selectedURL = r.getExtra();
+                webvDescription.showContextMenu();
+                return true;
+            }
+            selectedURL = null;
+            return false;
+        }
+    };
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        boolean handled = selectedURL != null;
+        if (selectedURL != null) {
+            switch (item.getItemId()) {
+                case R.id.open_in_browser_item:
+                    Uri uri = Uri.parse(selectedURL);
+                    final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                    if(IntentUtils.isCallable(getActivity(), intent)) {
+                        getActivity().startActivity(intent);
+                    }
+                    break;
+                case R.id.share_url_item:
+                    ShareUtils.shareLink(getActivity(), selectedURL);
+                    break;
+                case R.id.copy_url_item:
+                    if (android.os.Build.VERSION.SDK_INT >= 11) {
+                        ClipData clipData = ClipData.newPlainText(selectedURL,
+                                selectedURL);
+                        android.content.ClipboardManager cm = (android.content.ClipboardManager) getActivity()
+                                .getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setPrimaryClip(clipData);
+                    } else {
+                        android.text.ClipboardManager cm = (android.text.ClipboardManager) getActivity()
+                                .getSystemService(Context.CLIPBOARD_SERVICE);
+                        cm.setText(selectedURL);
+                    }
+                    Toast t = Toast.makeText(getActivity(),
+                            R.string.copied_url_msg, Toast.LENGTH_SHORT);
+                    t.show();
+                    break;
+                default:
+                    handled = false;
+                    break;
+
+            }
+            selectedURL = null;
+        }
+        return handled;
+    }
+
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v,
+                                    ContextMenu.ContextMenuInfo menuInfo) {
+        if (selectedURL != null) {
+            super.onCreateContextMenu(menu, v, menuInfo);
+                Uri uri = Uri.parse(selectedURL);
+                final Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+                if(IntentUtils.isCallable(getActivity(), intent)) {
+                    menu.add(Menu.NONE, R.id.open_in_browser_item, Menu.NONE,
+                            R.string.open_in_browser_label);
+                }
+                menu.add(Menu.NONE, R.id.copy_url_item, Menu.NONE,
+                        R.string.copy_url_label);
+                menu.add(Menu.NONE, R.id.share_url_item, Menu.NONE,
+                        R.string.share_url_label);
+                menu.setHeaderTitle(selectedURL);
+        }
+    }
+
     @Override
     public Loader<Pair<FeedItem,LongList>> onCreateLoader(int id, Bundle args) {
         return new DBTaskLoader<Pair<FeedItem,LongList>>(getActivity()) {
@@ -445,14 +539,7 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
     private final DownloadObserver.Callback downloadObserverCallback = new DownloadObserver.Callback() {
 
         @Override
-        public void onContentChanged() {
-            if (itemsLoaded && getActivity() != null) {
-                updateAppearance();
-            }
-        }
-
-        @Override
-        public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+        public void onContentChanged(List<Downloader> downloaderList) {
             ItemFragment.this.downloaderList = downloaderList;
             if (itemsLoaded && getActivity() != null) {
                 updateAppearance();

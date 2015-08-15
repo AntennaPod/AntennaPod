@@ -57,6 +57,10 @@ public class NSRSS20 extends Namespace {
 				long size = 0;
 				try {
 					size = Long.parseLong(attributes.getValue(ENC_LEN));
+					if(size < 16384) {
+						// less than 16kb is suspicious, check manually
+						size = 0;
+					}
 				} catch (NumberFormatException e) {
 					if (BuildConfig.DEBUG)
 						Log.d(TAG, "Length attribute could not be parsed.");

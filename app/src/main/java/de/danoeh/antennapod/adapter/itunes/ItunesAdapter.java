@@ -1,23 +1,18 @@
 package de.danoeh.antennapod.adapter.itunes;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.os.AsyncTask;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.DefaultHttpClient;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.io.IOException;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
@@ -46,55 +41,6 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         this.context = context;
     }
 
-    /**
-     * Updates the given ImageView with the image in the given Podcast's imageUrl
-     */
-    class FetchImageTask extends  AsyncTask<Void,Void,Bitmap>{
-        /**
-         * Current podcast
-         */
-        private final Podcast podcast;
-
-        /**
-         * ImageView to be updated
-         */
-        private final ImageView imageView;
-
-        /**
-         * Constructor
-         *
-         * @param podcast Podcast that has the image
-         * @param imageView UI image to be updated
-         */
-        FetchImageTask(Podcast podcast, ImageView imageView){
-            this.podcast = podcast;
-            this.imageView = imageView;
-        }
-
-        //Get the image from the url
-        @Override
-        protected Bitmap doInBackground(Void... params) {
-            HttpClient client = new DefaultHttpClient();
-            HttpGet get = new HttpGet(podcast.imageUrl);
-            try {
-                HttpResponse response = client.execute(get);
-                return BitmapFactory.decodeStream(response.getEntity().getContent());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-            return null;
-        }
-
-        //Set the background image for the podcast
-        @Override
-        protected void onPostExecute(Bitmap img) {
-            super.onPostExecute(img);
-            if(img!=null) {
-                imageView.setImageBitmap(img);
-            }
-        }
-    }
-
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         //Current podcast
@@ -121,7 +67,13 @@ public class ItunesAdapter extends ArrayAdapter<ItunesAdapter.Podcast> {
         viewHolder.titleView.setText(podcast.title);
 
         //Update the empty imageView with the image from the feed
-        new FetchImageTask(podcast,viewHolder.coverView).execute();
+        Glide.with(context)
+                .load(podcast.imageUrl)
+                .placeholder(R.color.light_gray)
+                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                .fitCenter()
+                .dontAnimate()
+                .into(viewHolder.coverView);
 
         //Feed the grid view
         return view;

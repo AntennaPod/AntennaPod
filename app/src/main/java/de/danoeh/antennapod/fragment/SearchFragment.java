@@ -120,7 +120,7 @@ public class SearchFragment extends ListFragment {
         SearchResult result = (SearchResult) l.getAdapter().getItem(position);
         FeedComponent comp = result.getComponent();
         if (comp.getClass() == Feed.class) {
-            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId());
+            ((MainActivity) getActivity()).loadFeedFragmentById(comp.getId(), null);
         } else {
             if (comp.getClass() == FeedItem.class) {
                 FeedItem item = (FeedItem) comp;

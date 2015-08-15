@@ -93,7 +93,12 @@ public class GpodnetEpisodeAction {
         if(StringUtils.isEmpty(podcast) || StringUtils.isEmpty(episode) || StringUtils.isEmpty(actionString)) {
             return null;
         }
-        GpodnetEpisodeAction.Action action = GpodnetEpisodeAction.Action.valueOf(actionString.toUpperCase());
+        GpodnetEpisodeAction.Action action;
+        try {
+            action = GpodnetEpisodeAction.Action.valueOf(actionString.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
         String deviceId = object.optString("device", "");
         GpodnetEpisodeAction.Builder builder = new GpodnetEpisodeAction.Builder(podcast, episode, action)
                 .deviceId(deviceId);

@@ -5,6 +5,9 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -29,6 +32,7 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.FeedMediaSizeService;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -180,53 +184,13 @@ public final class DBTasks {
                     if (ClientConfig.gpodnetCallbacks.gpodnetEnabled()) {
                         GpodnetSyncService.sendSyncIntent(context);
                     }
+                    Log.d(TAG, "refreshAllFeeds autodownload");
                     autodownloadUndownloadedItems(context);
                 }
             }.start();
         } else {
             Log.d(TAG, "Ignoring request to refresh all feeds: Refresh lock is locked");
         }
-    }
-
-    /**
-     * Used by refreshExpiredFeeds to determine which feeds should be refreshed.
-     * This method will use the value specified in the UserPreferences as the
-     * expiration time.
-     *
-     * @param context Used for DB access.
-     * @return A list of expired feeds. An empty list will be returned if there
-     * are no expired feeds.
-     */
-    public static List<Feed> getExpiredFeeds(final Context context) {
-        long millis = UserPreferences.getUpdateInterval();
-
-        if (millis > 0) {
-
-            List<Feed> feedList = DBReader.getExpiredFeedsList(context,
-                    millis);
-            if (feedList.size() > 0) {
-                refreshFeeds(context, feedList);
-            }
-            return feedList;
-        } else {
-            return new ArrayList<Feed>();
-        }
-    }
-
-    /**
-     * Refreshes expired Feeds in the list returned by the getExpiredFeedsList(Context, long) method in DBReader.
-     * The expiration date parameter is determined by the update interval specified in {@link UserPreferences}.
-     *
-     * @param context Used for DB access.
-     */
-    public static void refreshExpiredFeeds(final Context context) {
-        Log.d(TAG, "Refreshing expired feeds");
-
-        new Thread() {
-            public void run() {
-                refreshFeeds(context, getExpiredFeeds(context));
-            }
-        }.start();
     }
 
     private static void refreshFeeds(final Context context,
@@ -317,24 +281,6 @@ public final class DBTasks {
         }
         f.setId(feed.getId());
         DownloadRequester.getInstance().downloadFeed(context, f, loadAllPages);
-    }
-
-    /**
-     * Notifies the database about a missing FeedImage file. This method will attempt to re-download the file.
-     *
-     * @param context Used for requesting the download.
-     * @param image   The FeedImage object.
-     */
-    public static void notifyInvalidImageFile(final Context context,
-                                              final FeedImage image) {
-        Log.i(TAG,
-                "The DB was notified about an invalid image download. It will now try to re-download the image file");
-        try {
-            DownloadRequester.getInstance().downloadImage(context, image);
-        } catch (DownloadRequestException e) {
-            e.printStackTrace();
-            Log.w(TAG, "Failed to download invalid feed image");
-        }
     }
 
     /**
@@ -439,6 +385,7 @@ public final class DBTasks {
      * @return A Future that can be used for waiting for the methods completion.
      */
     public static Future<?> autodownloadUndownloadedItems(final Context context, final long... mediaIds) {
+        Log.d(TAG, "autodownloadUndownloadedItems");
         return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
                 .autoDownloadUndownloadedItems(context, mediaIds));
 
@@ -564,7 +511,7 @@ public final class DBTasks {
                 // all new feeds will have the most recent item marked as unplayed
                 FeedItem mostRecent = newFeed.getMostRecentItem();
                 if (mostRecent != null) {
-                    mostRecent.setRead(false);
+                    mostRecent.setNew();
                 }
 
                 newFeedsList.add(newFeed);
@@ -575,16 +522,16 @@ public final class DBTasks {
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
 
-                final boolean markNewItemsAsUnread;
+                final boolean markNewItems;
                 if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                     if (savedFeed.compareWithOther(newFeed)) {
                         Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
                         savedFeed.updateFromOther(newFeed);
                     }
-                    markNewItemsAsUnread = true;
+                    markNewItems = true;
                 } else {
                     Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
-                    markNewItemsAsUnread = false;
+                    markNewItems = false;
                     savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
@@ -598,12 +545,11 @@ public final class DBTasks {
                             item.getIdentifyingValue());
                     if (oldItem == null) {
                         // item is new
-                        final int i = idx;
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
-                        savedFeed.getItems().add(i, item);
-                        if (markNewItemsAsUnread) {
-                            item.setRead(false);
+                        savedFeed.getItems().add(idx, item);
+                        if (markNewItems) {
+                            item.setNew();
                         }
                     } else {
                         oldItem.updateFromOther(item);
@@ -631,6 +577,8 @@ public final class DBTasks {
         }
 
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
+
+        context.startService(new Intent(context, FeedMediaSizeService.class));
 
         return resultFeeds;
     }

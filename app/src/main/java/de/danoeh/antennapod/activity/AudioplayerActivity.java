@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.activity;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
@@ -13,6 +14,8 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -24,21 +27,26 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.adapter.ChapterListAdapter;
 import de.danoeh.antennapod.adapter.NavListAdapter;
+import de.danoeh.antennapod.core.asynctask.FeedRemover;
+import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
 import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.feed.SimpleChapter;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
@@ -430,6 +438,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                 drawerLayout.closeDrawer(navDrawer);
             }
         });
+        registerForContextMenu(navList);
         drawerToggle.syncState();
 
         findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
@@ -549,9 +558,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
         txtvTitle.setText(media.getEpisodeTitle());
         getSupportActionBar().setTitle("");
-        Picasso.with(this)
+        Glide.with(this)
                 .load(media.getImageUri())
-                .fit()
+                .placeholder(R.color.light_gray)
+                .error(R.color.light_gray)
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
                 .into(butShowCover);
 
         setNavButtonVisibility();
@@ -634,6 +647,65 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
     }
 
+    @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        if(v.getId() != R.id.nav_list) {
+            return;
+        }
+        AdapterView.AdapterContextMenuInfo adapterInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
+        int position = adapterInfo.position;
+        if(position < navAdapter.getSubscriptionOffset()) {
+            return;
+        }
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.nav_feed_context, menu);
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        menu.setHeaderTitle(feed.getTitle());
+        // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+        if(menuInfo.targetView.getParent() instanceof ListView == false
+                || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
+            return false;
+        }
+        int position = menuInfo.position;
+        Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
+        switch(item.getItemId()) {
+            case R.id.mark_all_seen_item:
+                DBWriter.markFeedSeen(this, feed.getId());
+                return true;
+            case R.id.mark_all_read_item:
+                DBWriter.markFeedRead(this, feed.getId());
+                return true;
+            case R.id.remove_item:
+                final FeedRemover remover = new FeedRemover(this, feed) {
+                    @Override
+                    protected void onPostExecute(Void result) {
+                        super.onPostExecute(result);
+                    }
+                };
+                ConfirmationDialog conDialog = new ConfirmationDialog(this,
+                        R.string.remove_feed_label,
+                        R.string.feed_delete_confirmation_msg) {
+                    @Override
+                    public void onConfirmButtonPressed(
+                            DialogInterface dialog) {
+                        dialog.dismiss();
+                        remover.executeAsync();
+                    }
+                };
+                conDialog.createNewDialog().show();
+                return true;
+            default:
+                return super.onContextItemSelected(item);
+        }
+    }
+
+
     private DBReader.NavDrawerData navDrawerData;
     private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
 
@@ -708,8 +780,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         }
 
         @Override
-        public int getNumberOfUnreadFeedItems(long feedId) {
-            return (navDrawerData != null) ? navDrawerData.numUnreadFeedItems.get(feedId) : 0;
+        public int getFeedCounter(long feedId) {
+            return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
     };
 }

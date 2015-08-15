@@ -13,11 +13,14 @@
         custom:showAsAction="collapseActionView"
         android:title="@string/set_sleeptimer_label">
     </item>
+
     <item
-        android:id="@+id/share_link_item"
+        android:id="@+id/skip_episode_item"
         custom:showAsAction="collapseActionView"
-        android:title="@string/share_link_label">
+        android:title="@string/skip_episode_label"
+        android:visible="true">
     </item>
+
     <item
         android:id="@+id/visit_website_item"
         android:icon="?attr/location_web_site"
@@ -26,15 +29,33 @@
         android:visible="false">
     </item>
     <item
+        android:id="@+id/share_item"
+        android:menuCategory="container"
+        android:title="@string/share_label">
+        <menu>
+            <item
+                android:id="@+id/share_link_item"
+                android:menuCategory="container"
+                android:title="@string/share_link_label" />
+            <item
+                android:id="@+id/share_link_with_position_item"
+                android:menuCategory="container"
+                android:title="@string/share_link_with_position_label" />
+            <item
+                android:id="@+id/share_download_url_item"
+                android:menuCategory="container"
+                android:title="@string/share_item_url_label" />
+            <item
+                android:id="@+id/share_download_url_with_position_item"
+                android:menuCategory="container"
+                android:title="@string/share_item_url_with_position_label" />
+        </menu>
+    </item>
+    <item
         android:id="@+id/support_item"
         custom:showAsAction="collapseActionView"
         android:title="@string/support_label"
         android:visible="false">
     </item>
-    <item
-        android:id="@id/skip_episode_item"
-        custom:showAsAction="collapseActionView"
-        android:title="@string/skip_episode_label"
-        android:visible="true"/>
 
 </menu>

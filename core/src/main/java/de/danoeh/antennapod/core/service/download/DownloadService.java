@@ -243,7 +243,7 @@ public class DownloadService extends Service {
         handler = new Handler();
         newMediaFiles = Collections.synchronizedList(new ArrayList<Long>());
         reportQueue = Collections.synchronizedList(new ArrayList<DownloadStatus>());
-        downloads = new ArrayList<Downloader>();
+        downloads = Collections.synchronizedList(new ArrayList<Downloader>());
         numberOfDownloads = new AtomicInteger(0);
 
         IntentFilter cancelDownloadReceiverFilter = new IntentFilter();
@@ -309,7 +309,8 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service shutting down");
         isRunning = false;
 
-        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport()) {
+        if (ClientConfig.downloadServiceCallbacks.shouldCreateReport() &&
+                UserPreferences.showDownloadReport()) {
             updateReport();
         }
 
@@ -324,7 +325,13 @@ public class DownloadService extends Service {
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
 
+        // TODO: I'm not sure this is actually needed.
+        // We could just invoke the autodownloadUndownloadeditems method
+        // and it would get everything it's supposed to.  By sending it the
+        // items in newMediaFiles we're overriding the download algorithm,
+        // which is not something we should probably do.
         if (!newMediaFiles.isEmpty()) {
+            Log.d(TAG, "newMediaFiles exist, autodownload them");
             DBTasks.autodownloadUndownloadedItems(getApplicationContext(),
                     ArrayUtils.toPrimitive(newMediaFiles.toArray(new Long[newMediaFiles.size()])));
         }
@@ -434,6 +441,7 @@ public class DownloadService extends Service {
                 } else {
                     Log.e(TAG, "Could not cancel download with url " + url);
                 }
+                sendBroadcast(new Intent(ACTION_DOWNLOADS_CONTENT_CHANGED));
 
             } else if (StringUtils.equals(intent.getAction(), ACTION_CANCEL_ALL_DOWNLOADS)) {
                 for (Downloader d : downloads) {
@@ -774,52 +782,18 @@ public class DownloadService extends Service {
 
                         for (int i = 0; i < savedFeeds.length; i++) {
                             Feed savedFeed = savedFeeds[i];
-                            // Download Feed Image if provided and not downloaded
-                            if (savedFeed.getImage() != null
-                                    && savedFeed.getImage().isDownloaded() == false) {
-                                Log.d(TAG, "Feed has image; Downloading....");
-                                savedFeed.getImage().setOwner(savedFeed);
-                                final Feed savedFeedRef = savedFeed;
-                                try {
-                                    requester.downloadImage(DownloadService.this,
-                                            savedFeedRef.getImage());
-                                } catch (DownloadRequestException e) {
-                                    e.printStackTrace();
-                                    DBWriter.addDownloadStatus(
-                                            DownloadService.this,
-                                            new DownloadStatus(
-                                                    savedFeedRef.getImage(),
-                                                    savedFeedRef
-                                                            .getImage()
-                                                            .getHumanReadableIdentifier(),
-                                                    DownloadError.ERROR_REQUEST_ERROR,
-                                                    false, e.getMessage()
-                                            )
-                                    );
-                                }
-                            }
 
                             // queue new media files for automatic download
                             for (FeedItem item : savedFeed.getItems()) {
                                 if(item.getPubDate() == null) {
                                     Log.d(TAG, item.toString());
                                 }
-                                if(item.getImage() != null && item.getImage().isDownloaded() == false) {
-                                    item.getImage().setOwner(item);
-                                    try {
-                                        requester.downloadImage(DownloadService.this,
-                                            item.getImage());
-                                    } catch (DownloadRequestException e) {
-                                        e.printStackTrace();
-                                    }
-                                }
-                                if (!item.isRead() && item.hasMedia() && !item.getMedia().isDownloaded()) {
+                                if (item.isNew() && item.hasMedia() && !item.getMedia().isDownloaded()) {
                                     newMediaFiles.add(item.getMedia().getId());
                                 }
                             }
 
                             // If loadAllPages=true, check if another page is available and queue it for download
-
                             final boolean loadAllPages = results.get(i).first.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
                             final Feed feed = results.get(i).second.feed;
                             if (loadAllPages && feed.getNextPageLink() != null) {
@@ -889,7 +863,7 @@ public class DownloadService extends Service {
             feed.setFile_url(request.getDestination());
             feed.setId(request.getFeedfileId());
             feed.setDownloaded(true);
-            feed.setPreferences(new FeedPreferences(0, true,
+            feed.setPreferences(new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL,
                     request.getUsername(), request.getPassword()));
             feed.setPageNr(request.getArguments().getInt(DownloadRequester.REQUEST_ARG_PAGE_NR, 0));
 
@@ -1143,6 +1117,7 @@ public class DownloadService extends Service {
             boolean chaptersRead = false;
             media.setDownloaded(true);
             media.setFile_url(request.getDestination());
+            media.setHasEmbeddedPicture(null);
 
             // Get duration
             MediaMetadataRetriever mmr = null;
@@ -1170,12 +1145,16 @@ public class DownloadService extends Service {
             }
 
             try {
-                if (chaptersRead) {
-                    DBWriter.setFeedItem(DownloadService.this, media.getItem()).get();
-                }
+                // we've received the media, we don't want to autodownload it again
+                FeedItem item = media.getItem();
+                item.setAutoDownload(false);
+
+                // update the db
+                DBWriter.setFeedItem(DownloadService.this, item).get();
+
                 DBWriter.setFeedMedia(DownloadService.this, media).get();
-                if (!DBTasks.isInQueue(DownloadService.this, media.getItem().getId())) {
-                    DBWriter.addQueueItem(DownloadService.this, media.getItem().getId()).get();
+                if (!DBTasks.isInQueue(DownloadService.this, item.getId())) {
+                    DBWriter.addQueueItem(DownloadService.this, item.getId()).get();
                 }
             } catch (ExecutionException e) {
                 e.printStackTrace();
@@ -1240,7 +1219,16 @@ public class DownloadService extends Service {
     }
 
     public List<Downloader> getDownloads() {
-        return downloads;
+        if (downloads == null) {
+            // this is unusual, but it should be OK, we'll return
+            // an empty list to make it easy for people
+            return new ArrayList<Downloader>();
+        }
+
+        // return a copy of downloads, but the copy doesn't need to be synchronized.
+        synchronized (downloads) {
+            return new ArrayList<Downloader>(downloads);
+        }
     }
 
 }

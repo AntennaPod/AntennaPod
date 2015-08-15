@@ -3,6 +3,7 @@ package de.danoeh.antennapod.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
+import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -24,7 +25,7 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
  * Displays all running downloads and provides actions to cancel them
  */
 public class RunningDownloadsFragment extends ListFragment {
-    private static final String TAG = "RunningDownloadsFragment";
+    private static final String TAG = "RunningDownloadsFrag";
 
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
@@ -53,12 +54,8 @@ public class RunningDownloadsFragment extends ListFragment {
 
         downloadObserver = new DownloadObserver(getActivity(), new Handler(), new DownloadObserver.Callback() {
             @Override
-            public void onContentChanged() {
-                downloadlistAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onDownloadDataAvailable(List<Downloader> downloaderList) {
+            public void onContentChanged(List<Downloader> downloaderList) {
+                Log.d(TAG, "onContentChanged: downloaderList.size() == " + downloaderList.size());
                 RunningDownloadsFragment.this.downloaderList = downloaderList;
                 downloadlistAdapter.notifyDataSetChanged();
             }

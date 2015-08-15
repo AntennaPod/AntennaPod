@@ -31,7 +31,7 @@ public class TimelineTest extends InstrumentationTestCase {
     }
 
     private Playable newTestPlayable(List<Chapter> chapters, String shownotes) {
-        FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), true, null);
+        FeedItem item = new FeedItem(0, "Item", "item-id", "http://example.com/item", new Date(), FeedItem.PLAYED, null);
         item.setChapters(chapters);
         item.setContentEncoded(shownotes);
         FeedMedia media = new FeedMedia(item, "http://example.com/episode", 100, "audio/mp3");

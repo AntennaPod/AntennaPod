@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import de.danoeh.antennapod.core.asynctask.PicassoImageResource;
+import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
@@ -20,7 +20,7 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  *
  * @author daniel
  */
-public class Feed extends FeedFile implements FlattrThing, PicassoImageResource {
+public class Feed extends FeedFile implements FlattrThing, ImageResource {
     public static final int FEEDFILETYPE_FEED = 0;
     public static final String TYPE_RSS2 = "rss";
     public static final String TYPE_RSS091 = "rss";
@@ -167,7 +167,7 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public Feed(String url, Date lastUpdate, String title, String username, String password) {
         this(url, lastUpdate, title);
-        preferences = new FeedPreferences(0, true, username, password);
+        preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
     }
 
 
@@ -177,10 +177,21 @@ public class Feed extends FeedFile implements FlattrThing, PicassoImageResource 
      */
     public boolean hasNewItems() {
         for (FeedItem item : items) {
-            if (item.getState() == FeedItem.State.UNREAD) {
-                if (item.getMedia() != null) {
-                    return true;
-                }
+            if (item.isNew()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Returns true if at least one item in the itemlist is unread.
+     *
+     */
+    public boolean hasUnplayedItems() {
+        for (FeedItem item : items) {
+            if (false == item.isNew() && false == item.isPlayed()) {
+                return true;
             }
         }
         return false;

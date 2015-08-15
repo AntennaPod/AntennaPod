@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.adapter;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.text.format.DateUtils;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +14,18 @@ import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
-import com.squareup.picasso.Picasso;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.engine.DiskCacheStrategy;
+import com.bumptech.glide.load.resource.drawable.GlideDrawable;
+import com.bumptech.glide.request.animation.GlideAnimation;
+import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+
+import java.lang.ref.WeakReference;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
@@ -25,6 +35,7 @@ import de.danoeh.antennapod.core.util.Converter;
  */
 public class QueueListAdapter extends BaseAdapter {
 
+    private static final String TAG = QueueListAdapter.class.getSimpleName();
 
     private final Context context;
     private final ItemAccess itemAccess;
@@ -76,7 +87,8 @@ public class QueueListAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.queue_listitem,
                     parent, false);
             holder.dragHandle = (ImageView) convertView.findViewById(R.id.drag_handle);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
+            holder.placeholder = (TextView) convertView.findViewById(R.id.txtvPlaceholder);
+            holder.cover = (ImageView) convertView.findViewById(R.id.imgvCover);
             holder.title = (TextView) convertView.findViewById(R.id.txtvTitle);
             holder.pubDate = (TextView) convertView.findViewById(R.id.txtvPubDate);
             holder.progressLeft = (TextView) convertView.findViewById(R.id.txtvProgressLeft);
@@ -86,7 +98,6 @@ public class QueueListAdapter extends BaseAdapter {
                     .findViewById(R.id.butSecondaryAction);
             holder.progress = (ProgressBar) convertView
                     .findViewById(R.id.progressBar);
-            holder.imageView = (ImageView) convertView.findViewById(R.id.imgvImage);
             convertView.setTag(holder);
         } else {
             holder = (Holder) convertView.getTag();
@@ -98,9 +109,10 @@ public class QueueListAdapter extends BaseAdapter {
             holder.dragHandle.setVisibility(View.VISIBLE);
         }
 
+        holder.placeholder.setText(item.getFeed().getTitle());
+
         holder.title.setText(item.getTitle());
         FeedMedia media = item.getMedia();
-
 
         holder.title.setText(item.getTitle());
         String pubDate = DateUtils.formatDateTime(context, item.getPubDate().getTime(), DateUtils.FORMAT_ABBREV_ALL);
@@ -129,7 +141,11 @@ public class QueueListAdapter extends BaseAdapter {
                     holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                 }
             } else {
-                holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                if(media.getSize() > 0) {
+                    holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                } else {
+                    holder.progressLeft.setText("");
+                }
                 holder.progressRight.setText(Converter.getDurationStringLong(media.getDuration()));
                 holder.progress.setVisibility(View.GONE);
             }
@@ -140,12 +156,52 @@ public class QueueListAdapter extends BaseAdapter {
         holder.butSecondary.setTag(item);
         holder.butSecondary.setOnClickListener(secondaryActionListener);
 
-        Picasso.with(context)
+        Glide.with(context)
                 .load(item.getImageUri())
-                .fit()
-                .into(holder.imageView);
+                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                .fitCenter()
+                .dontAnimate()
+                .into(new CoverTarget(item.getFeed().getImageUri(), holder.placeholder, holder.cover));
 
         return convertView;
+    }
+
+    private class CoverTarget extends GlideDrawableImageViewTarget {
+
+        private final WeakReference<Uri> fallback;
+        private final WeakReference<TextView> placeholder;
+        private final WeakReference<ImageView> cover;
+
+        public CoverTarget(Uri fallbackUri, TextView txtvPlaceholder, ImageView imgvCover) {
+            super(imgvCover);
+            fallback = new WeakReference<>(fallbackUri);
+            placeholder = new WeakReference<>(txtvPlaceholder);
+            cover = new WeakReference<>(imgvCover);
+        }
+
+        @Override
+        public void onLoadFailed(Exception e, Drawable errorDrawable) {
+            Uri fallbackUri = fallback.get();
+            TextView txtvPlaceholder = placeholder.get();
+            ImageView imgvCover = cover.get();
+            if(fallbackUri != null && txtvPlaceholder != null && imgvCover != null) {
+                Glide.with(context)
+                        .load(fallbackUri)
+                        .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                        .fitCenter()
+                        .dontAnimate()
+                        .into(new CoverTarget(null, txtvPlaceholder, imgvCover));
+            }
+        }
+
+        @Override
+        public void onResourceReady(GlideDrawable drawable, GlideAnimation anim) {
+            super.onResourceReady(drawable, anim);
+            TextView txtvPlaceholder = placeholder.get();
+            if(txtvPlaceholder != null) {
+                txtvPlaceholder.setVisibility(View.INVISIBLE);
+            }
+        }
     }
 
     private View.OnClickListener secondaryActionListener = new View.OnClickListener() {
@@ -156,10 +212,10 @@ public class QueueListAdapter extends BaseAdapter {
         }
     };
 
-
     static class Holder {
         ImageView dragHandle;
-        ImageView imageView;
+        ImageView cover;
+        TextView placeholder;
         TextView title;
         TextView pubDate;
         TextView progressLeft;

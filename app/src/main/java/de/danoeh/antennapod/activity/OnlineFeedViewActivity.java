@@ -180,7 +180,7 @@ public abstract class OnlineFeedViewActivity extends ActionBarActivity {
         url = URLChecker.prepareURL(url);
         feed = new Feed(url, new Date(0));
         if (username != null && password != null) {
-            feed.setPreferences(new FeedPreferences(0, false, username, password));
+            feed.setPreferences(new FeedPreferences(0, false, FeedPreferences.AutoDeleteAction.GLOBAL, username, password));
         }
         String fileUrl = new File(getExternalCacheDir(),
                 FileNameGenerator.generateFileName(feed.getDownload_url())).toString();

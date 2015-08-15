@@ -36,18 +36,19 @@ public class AdapterUtils {
                 || state == FeedItem.State.IN_PROGRESS) {
             if (media.getDuration() > 0) {
                 episodeProgress.setVisibility(View.VISIBLE);
-                episodeProgress
-                        .setProgress((int) (((double) media
+                episodeProgress.setProgress((int) (((double) media
                                 .getPosition()) / media.getDuration() * 100));
-                txtvPos.setText(Converter
-                        .getDurationStringLong(media.getDuration()
+                txtvPos.setText(Converter.getDurationStringLong(media.getDuration()
                                 - media.getPosition()));
             }
         } else if (!media.isDownloaded()) {
-            txtvPos.setText(Converter.byteToString(media.getSize()));
+            if(media.getSize() > 0) {
+                txtvPos.setText(Converter.byteToString(media.getSize()));
+            } else {
+                txtvPos.setText("");
+            }
         } else {
-            txtvPos.setText(Converter.getDurationStringLong(media
-                    .getDuration()));
+            txtvPos.setText(Converter.getDurationStringLong(media.getDuration()));
         }
     }
 }

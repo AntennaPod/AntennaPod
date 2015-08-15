@@ -124,11 +124,15 @@ public class DownloadLogAdapter extends BaseAdapter {
 			ButtonHolder holder = (ButtonHolder) v.getTag();
 			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
 				Feed feed = DBReader.getFeed(context, holder.id);
-				feed.setLastUpdate(new Date(0)); // force refresh
-				try {
-					DBTasks.refreshFeed(context, feed);
-				} catch (DownloadRequestException e) {
-					e.printStackTrace();
+				if (feed != null) {
+					feed.setLastUpdate(new Date(0)); // force refresh
+					try {
+						DBTasks.refreshFeed(context, feed);
+					} catch (DownloadRequestException e) {
+						e.printStackTrace();
+					}
+				} else {
+					Log.wtf(TAG, "Could not find feed for feed id: " + holder.id);
 				}
 			} else if(holder.typeId == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
 				FeedMedia media = DBReader.getFeedMedia(context, holder.id);
