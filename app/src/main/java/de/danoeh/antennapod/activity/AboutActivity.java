@@ -7,6 +7,7 @@ import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 /**
  * Displays the 'about' screen
@@ -18,6 +19,7 @@ public class AboutActivity extends ActionBarActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
         getSupportActionBar().hide();
         setContentView(R.layout.about);
