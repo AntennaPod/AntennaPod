@@ -87,6 +87,9 @@ public class Timeline {
             return "";
         }
 
+        // ASCII line breaks to HTML line breaks
+        shownotes = shownotes.replace("\n", "<br />");
+
         Document document = Jsoup.parse(shownotes);
 
         // apply style
@@ -100,7 +103,7 @@ public class Timeline {
             if (BuildConfig.DEBUG)
                 Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
             for (Element element : elementsWithTimeCodes) {
-                Matcher matcherLong = TIMECODE_REGEX.matcher(element.text());
+                Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
                 StringBuffer buffer = new StringBuffer();
                 while (matcherLong.find()) {
                     String h = matcherLong.group(1);
