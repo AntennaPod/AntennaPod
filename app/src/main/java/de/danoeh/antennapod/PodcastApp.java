@@ -1,11 +1,13 @@
 package de.danoeh.antennapod;
 
 import android.app.Application;
+import android.content.Intent;
 import android.content.res.Configuration;
 
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.FeedMediaSizeService;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.spa.SPAUtil;
 
