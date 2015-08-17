@@ -1301,16 +1301,16 @@ public class PodDBAdapter {
     }
 
     public final LongIntMap getFeedCounters(long... feedIds) {
-        int counter = UserPreferences.getFeedCounter();
+        int setting = UserPreferences.getFeedCounterSetting();
         String whereRead;
-        if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
+        if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
             whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                     + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
-        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW) {
+        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW) {
             whereRead = KEY_READ + "=" + FeedItem.NEW;
-        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
+        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
             whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
-        } else {
+        } else { // NONE
             return new LongIntMap(0);
         }
 
