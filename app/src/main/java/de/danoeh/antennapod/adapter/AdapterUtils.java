@@ -48,7 +48,7 @@ public class AdapterUtils {
         } else if (!media.isDownloaded()) {
             if (media.getSize() > 0) {
                 txtvPos.setText(Converter.byteToString(media.getSize()));
-            } else if(media.getSize() > Integer.MIN_VALUE) {
+            } else if(false == media.checkedOnSizeButUnknown()) {
                 txtvPos.setText("{fa-spinner}");
                 Iconify.addIcons(txtvPos);
                 NetworkUtils.getFeedMediaSizeObservable(media)

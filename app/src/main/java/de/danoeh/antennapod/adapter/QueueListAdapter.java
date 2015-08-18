@@ -143,7 +143,7 @@ public class QueueListAdapter extends BaseAdapter {
             } else {
                 if(media.getSize() > 0) {
                     holder.progressLeft.setText(Converter.byteToString(media.getSize()));
-                } else if(media.getSize() > Integer.MIN_VALUE) {
+                } else if(false == media.checkedOnSizeButUnknown()) {
                     holder.progressLeft.setText("{fa-spinner}");
                     Iconify.addIcons(holder.progressLeft);
                     NetworkUtils.getFeedMediaSizeObservable(media)

@@ -120,7 +120,7 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
-            } else if(media.getSize() > Integer.MIN_VALUE) {
+            } else if(false == media.checkedOnSizeButUnknown()) {
                 holder.txtvDuration.setText("{fa-spinner}");
                 Iconify.addIcons(holder.txtvDuration);
                 NetworkUtils.getFeedMediaSizeObservable(media)
