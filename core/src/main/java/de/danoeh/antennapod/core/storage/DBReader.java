@@ -1141,7 +1141,7 @@ public final class DBReader {
 
         Comparator<Feed> comparator;
         int feedOrder = UserPreferences.getFeedOrder();
-        if(feedOrder == UserPreferences.FEED_ORDER_UNPLAYED_EPISODES) {
+        if(feedOrder == UserPreferences.FEED_ORDER_COUNTER) {
             comparator = new Comparator<Feed>() {
                 @Override
                 public int compare(Feed lhs, Feed rhs) {
