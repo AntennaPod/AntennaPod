@@ -4,7 +4,6 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.text.format.DateUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.joanzapata.android.iconify.Iconify;
 
 import java.lang.ref.WeakReference;
 
@@ -29,6 +28,7 @@ import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 
 /**
  * List adapter for the queue.
@@ -143,6 +143,17 @@ public class QueueListAdapter extends BaseAdapter {
             } else {
                 if(media.getSize() > 0) {
                     holder.progressLeft.setText(Converter.byteToString(media.getSize()));
+                } else if(media.getSize() > Integer.MIN_VALUE) {
+                    holder.progressLeft.setText("{fa-spinner}");
+                    Iconify.addIcons(holder.progressLeft);
+                    NetworkUtils.getFeedMediaSizeObservable(media)
+                            .subscribe(size -> {
+                                        if (size > 0) {
+                                            holder.progressLeft.setText(Converter.byteToString(size));
+                                        } else {
+                                            holder.progressLeft.setText("");
+                                        }
+                            });
                 } else {
                     holder.progressLeft.setText("");
                 }

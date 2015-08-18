@@ -44,8 +44,6 @@ public class PodcastApp extends Application {
 		EventDistributor.getInstance();
 
         SPAUtil.sendSPAppsQueryFeedsIntent(this);
-
-		// startService(new Intent(this, FeedMediaSizeService.class));
 	}
 
 	public static float getLogicalDensity() {

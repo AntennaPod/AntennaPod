@@ -7,10 +7,23 @@ import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
 import android.util.Log;
 
+import com.squareup.okhttp.OkHttpClient;
+import com.squareup.okhttp.Request;
+import com.squareup.okhttp.Response;
+
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
+import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.service.download.AntennapodHttpClient;
+import de.danoeh.antennapod.core.storage.DBWriter;
+import rx.Observable;
+import rx.Subscriber;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class NetworkUtils {
 
@@ -77,5 +90,60 @@ public class NetworkUtils {
 
 		return mWifi.isConnected();
 	}
+
+	public static Observable<Long> getFeedMediaSizeObservable(FeedMedia media) {
+        return Observable.create(new Observable.OnSubscribe<Long>() {
+            @Override
+            public void call(Subscriber<? super Long> subscriber) {
+                if (false == NetworkUtils.isDownloadAllowed()) {
+                    subscriber.onNext(0L);
+                    subscriber.onCompleted();
+                    return;
+                }
+                long size = Integer.MIN_VALUE;
+                if (media.isDownloaded()) {
+                    File mediaFile = new File(media.getLocalMediaUrl());
+                    if (mediaFile.exists()) {
+                        size = mediaFile.length();
+                    }
+                } else if (false == media.checkedOnSizeButUnknown()) {
+                    // only query the network if we haven't already checked
+                    OkHttpClient client = AntennapodHttpClient.getHttpClient();
+                    Request.Builder httpReq = new Request.Builder()
+                            .url(media.getDownload_url())
+                            .header("Accept-Encoding", "identity")
+                            .head();
+                    try {
+                        Response response = client.newCall(httpReq.build()).execute();
+                        if (response.isSuccessful()) {
+                            String contentLength = response.header("Content-Length");
+                            try {
+                                size = Integer.parseInt(contentLength);
+                            } catch (NumberFormatException e) {
+                                Log.e(TAG, Log.getStackTraceString(e));
+                            }
+                        }
+                    } catch (IOException e) {
+                        subscriber.onNext(0L);
+                        subscriber.onCompleted();
+                        Log.e(TAG, Log.getStackTraceString(e));
+                        return; // better luck next time
+                    }
+                }
+                Log.d(TAG, "new size: " + size);
+                if (size <= 0) {
+                    // they didn't tell us the size, but we don't want to keep querying on it
+                    media.setCheckedOnSizeButUnknown();
+                } else {
+                    media.setSize(size);
+                }
+                subscriber.onNext(size);
+                subscriber.onCompleted();
+                DBWriter.setFeedMedia(context, media);
+            }
+        })
+                .subscribeOn(Schedulers.newThread())
+				.observeOn(AndroidSchedulers.mainThread());
+    }
 
 }

@@ -14,10 +14,10 @@ import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
+import com.joanzapata.android.iconify.Iconify;
 
 import java.lang.ref.WeakReference;
 
@@ -27,11 +27,14 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.NetworkUtils;
 
 /**
  * List adapter for the list of new episodes
  */
 public class AllEpisodesListAdapter extends BaseAdapter {
+
+    private static final String TAG = AllEpisodesListAdapter.class.getSimpleName();
 
     private final Context context;
     private final ItemAccess itemAccess;
@@ -117,6 +120,17 @@ public class AllEpisodesListAdapter extends BaseAdapter {
                 holder.txtvDuration.setText(Converter.getDurationStringLong(media.getDuration()));
             } else if (media.getSize() > 0) {
                 holder.txtvDuration.setText(Converter.byteToString(media.getSize()));
+            } else if(media.getSize() > Integer.MIN_VALUE) {
+                holder.txtvDuration.setText("{fa-spinner}");
+                Iconify.addIcons(holder.txtvDuration);
+                NetworkUtils.getFeedMediaSizeObservable(media)
+                        .subscribe(size -> {
+                                    if (size > 0) {
+                                        holder.txtvDuration.setText(Converter.byteToString(size));
+                                    } else {
+                                        holder.txtvDuration.setText("");
+                                    }
+                        });
             } else {
                 holder.txtvDuration.setText("");
             }
