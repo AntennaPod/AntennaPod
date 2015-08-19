@@ -5,9 +5,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.util.Log;
 
-import java.io.IOException;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -28,11 +25,8 @@ import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
 import de.danoeh.antennapod.core.asynctask.FlattrStatusFetcher;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
-import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.service.FeedMediaSizeService;
 import de.danoeh.antennapod.core.service.GpodnetSyncService;
 import de.danoeh.antennapod.core.service.download.DownloadStatus;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
@@ -577,8 +571,6 @@ public final class DBTasks {
         }
 
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
-
-        // context.startService(new Intent(context, FeedMediaSizeService.class));
 
         return resultFeeds;
     }

@@ -522,29 +522,6 @@ public final class DBReader {
     }
 
     /**
-     * Loads FeedMedia whose file size is unknown
-     *
-     * @param context A context that is used for opening a database connection.
-     * @return A list of FeedMedia items whose size is 0 (unknown and never tried to
-     * determine the correct size)
-     */
-    public static List<FeedMedia> getFeedMediaUnknownSize(Context context) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
-        Cursor cursor = adapter.getFeedMediaUnknownSizeCursor();
-        List<FeedMedia> result = new ArrayList<>(cursor.getCount());
-        if (cursor.moveToFirst()) {
-            do {
-                FeedMedia media = extractFeedMediaFromCursorRow(cursor);
-                result.add(media);
-            } while (cursor.moveToNext());
-        }
-        cursor.close();
-        return result;
-    }
-
-
-    /**
      * Loads a list of FeedItems sorted by pubDate in descending order.
      *
      * @param context A context that is used for opening a database connection.

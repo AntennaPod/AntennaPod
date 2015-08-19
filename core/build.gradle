@@ -1,4 +1,5 @@
 apply plugin: 'com.android.library'
+apply plugin: 'me.tatarka.retrolambda'
 
 android {
     compileSdkVersion 21
@@ -25,8 +26,8 @@ android {
     }
 
     compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 
 }
@@ -49,4 +50,5 @@ dependencies {
     compile 'com.squareup.okio:okio:1.2.0'
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'de.greenrobot:eventbus:2.4.0'
+    compile 'io.reactivex:rxandroid:1.0.1'
 }

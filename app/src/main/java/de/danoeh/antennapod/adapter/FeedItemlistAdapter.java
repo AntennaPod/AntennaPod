@@ -91,7 +91,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
             holder.inPlaylist = (ImageView) convertView
                     .findViewById(R.id.imgvInPlaylist);
             holder.type = (ImageView) convertView.findViewById(R.id.imgvType);
-            holder.statusUnread = (View) convertView
+            holder.statusUnread = convertView
                     .findViewById(R.id.statusUnread);
             holder.episodeProgress = (ProgressBar) convertView
                     .findViewById(R.id.pbar_episode_progress);
@@ -100,6 +100,7 @@ public class FeedItemlistAdapter extends BaseAdapter {
         } else {
             holder = (Holder) convertView.getTag();
         }
+
         if (!(getItemViewType(position) == Adapter.IGNORE_ITEM_VIEW_TYPE)) {
             convertView.setVisibility(View.VISIBLE);
             if (position == selectedItemIndex) {
@@ -139,18 +140,17 @@ public class FeedItemlistAdapter extends BaseAdapter {
                 holder.lenSize.setVisibility(View.INVISIBLE);
             } else {
 
-                AdapterUtils.updateEpisodePlaybackProgress(item, context.getResources(), holder.lenSize, holder.episodeProgress);
+                AdapterUtils.updateEpisodePlaybackProgress(item, holder.lenSize, holder.episodeProgress);
 
-                if (((ItemAccess) itemAccess).isInQueue(item)) {
+                if (itemAccess.isInQueue(item)) {
                     holder.inPlaylist.setVisibility(View.VISIBLE);
                 } else {
                     holder.inPlaylist.setVisibility(View.INVISIBLE);
                 }
 
-                if (DownloadRequester.getInstance().isDownloadingFile(
-                        item.getMedia())) {
+                if (DownloadRequester.getInstance().isDownloadingFile(item.getMedia())) {
                     holder.episodeProgress.setVisibility(View.VISIBLE);
-                    holder.episodeProgress.setProgress(((ItemAccess) itemAccess).getItemDownloadProgressPercent(item));
+                    holder.episodeProgress.setProgress(itemAccess.getItemDownloadProgressPercent(item));
                 } else {
                     if(media.getPosition() == 0) {
                         holder.episodeProgress.setVisibility(View.GONE);
@@ -204,15 +204,6 @@ public class FeedItemlistAdapter extends BaseAdapter {
         ImageButton butAction;
         View statusUnread;
         ProgressBar episodeProgress;
-    }
-
-    public int getSelectedItemIndex() {
-        return selectedItemIndex;
-    }
-
-    public void setSelectedItemIndex(int selectedItemIndex) {
-        this.selectedItemIndex = selectedItemIndex;
-        notifyDataSetChanged();
     }
 
     public interface ItemAccess {

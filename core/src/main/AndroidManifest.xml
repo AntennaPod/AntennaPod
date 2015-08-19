@@ -23,9 +23,6 @@
         <service
             android:name=".service.GpodnetSyncService"
             android:enabled="true" />
-        <service
-            android:name=".service.FeedMediaSizeService"
-            android:enabled="true" />
 
         <receiver
             android:name=".receiver.MediaButtonReceiver"
