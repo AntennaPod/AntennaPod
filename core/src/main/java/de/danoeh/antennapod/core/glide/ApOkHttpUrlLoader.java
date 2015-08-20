@@ -43,7 +43,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
             if (internalClient == null) {
                 synchronized (Factory.class) {
                     if (internalClient == null) {
-                        internalClient = AntennapodHttpClient.getHttpClient();
+                        internalClient = AntennapodHttpClient.newHttpClient();
                         internalClient.interceptors().add(new NetworkAllowanceInterceptor());
                         internalClient.interceptors().add(new BasicAuthenticationInterceptor());
                     }
