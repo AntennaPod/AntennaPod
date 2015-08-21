@@ -14,7 +14,6 @@ import org.jsoup.select.Elements;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.util.Converter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 
@@ -59,6 +58,8 @@ public class Timeline {
     private static final Pattern TIMECODE_LINK_REGEX = Pattern.compile("antennapod://timecode/((\\d+))");
     private static final String TIMECODE_LINK = "<a class=\"timecode\" href=\"antennapod://timecode/%d\">%s</a>";
     private static final Pattern TIMECODE_REGEX = Pattern.compile("\\b(?:(?:(([0-9][0-9])):))?(([0-9][0-9])):(([0-9][0-9]))\\b");
+    private static final Pattern LINE_BREAK_REGEX = Pattern.compile("<br *\\/?>");
+
 
     /**
      * Applies an app-specific CSS stylesheet and adds timecode links (optional).
@@ -82,9 +83,13 @@ public class Timeline {
             return null;
         }
         if (shownotes == null) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "shownotesProvider contained no shownotes. Returning empty string");
+            Log.d(TAG, "shownotesProvider contained no shownotes. Returning empty string");
             return "";
+        }
+
+        // replace ASCII line breaks with HTML ones if shownotes don't contain HTML line breaks already
+        if(!LINE_BREAK_REGEX.matcher(shownotes).find()) {
+            shownotes = shownotes.replace("\n", "<br />");
         }
 
         Document document = Jsoup.parse(shownotes);
@@ -97,10 +102,9 @@ public class Timeline {
         // apply timecode links
         if (addTimecodes) {
             Elements elementsWithTimeCodes = document.body().getElementsMatchingOwnText(TIMECODE_REGEX);
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
+            Log.d(TAG, "Recognized " + elementsWithTimeCodes.size() + " timecodes");
             for (Element element : elementsWithTimeCodes) {
-                Matcher matcherLong = TIMECODE_REGEX.matcher(element.text());
+                Matcher matcherLong = TIMECODE_REGEX.matcher(element.html());
                 StringBuffer buffer = new StringBuffer();
                 while (matcherLong.find()) {
                     String h = matcherLong.group(1);
