@@ -1,8 +1,5 @@
 package de.danoeh.antennapod.core.gpoddernet;
 
-import android.os.Build;
-import android.util.Log;
-
 import com.squareup.okhttp.Credentials;
 import com.squareup.okhttp.MediaType;
 import com.squareup.okhttp.OkHttpClient;
@@ -25,23 +22,10 @@ import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
-import java.security.KeyStore;
-import java.security.Principal;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Map;
-
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSocketFactory;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.TrustManagerFactory;
-import javax.net.ssl.X509TrustManager;
-import javax.security.auth.x500.X500Principal;
 
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetDevice;
@@ -562,7 +546,8 @@ public class GpodnetService {
             e.printStackTrace();
             throw new GpodnetServiceException(e);
         }
-        Request.Builder request = new Request.Builder().url(url).post(null);
+        RequestBody body = RequestBody.create(TEXT, "");
+        Request.Builder request = new Request.Builder().url(url).post(body);
         executeRequestWithAuthentication(request, username, password);
     }
 
