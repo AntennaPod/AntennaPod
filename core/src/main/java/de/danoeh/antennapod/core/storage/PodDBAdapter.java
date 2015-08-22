@@ -1110,13 +1110,6 @@ public class PodDBAdapter {
         return db.rawQuery(query, null);
     }
 
-    public final Cursor getFeedMediaUnknownSizeCursor() {
-        final String query = "SELECT * "
-                + " FROM " + TABLE_NAME_FEED_MEDIA
-                + " WHERE " + KEY_SIZE + "<= 0";
-        return db.rawQuery(query, null);
-    }
-
     /**
      * Returns a cursor which contains all items of a feed that are considered new.
      * The returned cursor uses the FEEDITEM_SEL_FI_SMALL selection.
@@ -1301,16 +1294,16 @@ public class PodDBAdapter {
     }
 
     public final LongIntMap getFeedCounters(long... feedIds) {
-        int counter = UserPreferences.getFeedCounter();
+        int setting = UserPreferences.getFeedCounterSetting();
         String whereRead;
-        if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
+        if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW_UNPLAYED_SUM) {
             whereRead = "(" + KEY_READ + "=" + FeedItem.NEW
                     + " OR " + KEY_READ  + "=" + FeedItem.UNPLAYED + ")";
-        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_NEW) {
+        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_NEW) {
             whereRead = KEY_READ + "=" + FeedItem.NEW;
-        } else if(counter == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
+        } else if(setting == UserPreferences.FEED_COUNTER_SHOW_UNPLAYED) {
             whereRead = KEY_READ + "=" + FeedItem.UNPLAYED;
-        } else {
+        } else { // NONE
             return new LongIntMap(0);
         }
 

@@ -230,7 +230,7 @@ public class GpodnetSyncService extends Service {
         for(GpodnetEpisodeAction action : localActions) {
             Pair key = new Pair(action.getPodcast(), action.getEpisode());
             GpodnetEpisodeAction mostRecent = localMostRecentPlayAction.get(key);
-            if (mostRecent == null) {
+            if (mostRecent == null || mostRecent.getTimestamp() == null) {
                 localMostRecentPlayAction.put(key, action);
             } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
                 localMostRecentPlayAction.put(key, action);
@@ -255,9 +255,10 @@ public class GpodnetSyncService extends Service {
                     Pair key = new Pair(action.getPodcast(), action.getEpisode());
                     GpodnetEpisodeAction localMostRecent = localMostRecentPlayAction.get(key);
                     if(localMostRecent == null ||
+                            localMostRecent.getTimestamp() == null ||
                             localMostRecent.getTimestamp().before(action.getTimestamp())) {
                         GpodnetEpisodeAction mostRecent = mostRecentPlayAction.get(key);
-                        if (mostRecent == null) {
+                        if (mostRecent == null || mostRecent.getTimestamp() == null) {
                             mostRecentPlayAction.put(key, action);
                         } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
                             mostRecentPlayAction.put(key, action);
