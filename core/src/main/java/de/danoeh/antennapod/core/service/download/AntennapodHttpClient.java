@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.service.download;
 
+import android.support.annotation.NonNull;
 import android.os.Build;
 import android.util.Log;
 
@@ -39,33 +40,44 @@ public class AntennapodHttpClient {
     public static synchronized OkHttpClient getHttpClient() {
         if (httpClient == null) {
 
-            if (BuildConfig.DEBUG) Log.d(TAG, "Creating new instance of HTTP client");
-
-            System.setProperty("http.maxConnections", String.valueOf(MAX_CONNECTIONS));
-
-            OkHttpClient client = new OkHttpClient();
-
-            // set cookie handler
-            CookieManager cm = new CookieManager();
-            cm.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
-            client.setCookieHandler(cm);
-
-            // set timeouts
-            client.setConnectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
-            client.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
-            client.setWriteTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
-
-            // configure redirects
-            client.setFollowRedirects(true);
-            client.setFollowSslRedirects(true);
-
-            if(16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
-                client.setSslSocketFactory(new CustomSslSocketFactory());
-            }
-
-            httpClient = client;
+            httpClient = newHttpClient();
         }
         return httpClient;
+    }
+
+    /**
+     * Creates a new HTTP client.  Most users should just use
+     * getHttpClient() to get the standard AntennaPod client,
+     * but sometimes it's necessary for others to have their own
+     * copy so that the clients don't share state.
+     * @return http client
+     */
+    @NonNull
+    public static OkHttpClient newHttpClient() {
+        Log.d(TAG, "Creating new instance of HTTP client");
+
+        System.setProperty("http.maxConnections", String.valueOf(MAX_CONNECTIONS));
+
+        OkHttpClient client = new OkHttpClient();
+
+        // set cookie handler
+        CookieManager cm = new CookieManager();
+        cm.setCookiePolicy(CookiePolicy.ACCEPT_ORIGINAL_SERVER);
+        client.setCookieHandler(cm);
+
+        // set timeouts
+        client.setConnectTimeout(CONNECTION_TIMEOUT, TimeUnit.MILLISECONDS);
+        client.setReadTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+        client.setWriteTimeout(READ_TIMEOUT, TimeUnit.MILLISECONDS);
+
+        // configure redirects
+        client.setFollowRedirects(true);
+        client.setFollowSslRedirects(true);
+
+        if(16 <= Build.VERSION.SDK_INT && Build.VERSION.SDK_INT < 21) {
+            client.setSslSocketFactory(new CustomSslSocketFactory());
+        }
+        return client;
     }
 
     /**
