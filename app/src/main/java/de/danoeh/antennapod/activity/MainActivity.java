@@ -96,6 +96,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private View navDrawer;
     private ListView navList;
     private NavListAdapter navAdapter;
+    private AdapterView.AdapterContextMenuInfo lastMenuInfo = null;
 
     private ActionBarDrawerToggle drawerToggle;
 
@@ -505,11 +506,19 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         menu.setHeaderTitle(feed.getTitle());
         // episodes are not loaded, so we cannot check if the podcast has new or unplayed ones!
+
+        // we may need to reference this elsewhere...
+        lastMenuInfo = (AdapterView.AdapterContextMenuInfo) menuInfo;
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
         AdapterView.AdapterContextMenuInfo menuInfo = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
+
+        if(menuInfo == null) {
+            menuInfo = lastMenuInfo;
+        }
+
         if(menuInfo.targetView.getParent() instanceof ListView == false
                 || ((ListView)menuInfo.targetView.getParent()).getId() != R.id.nav_list) {
             return false;
