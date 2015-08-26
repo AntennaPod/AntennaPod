@@ -256,7 +256,7 @@ public abstract class MediaplayerActivity extends ActionBarActivity
                         ((FeedMedia) media).getItem().getFlattrStatus().flattrable()
         );
 
-        boolean hasWebsiteLink = media.getWebsiteLink() != null;
+        boolean hasWebsiteLink = media != null && media.getWebsiteLink() != null;
         menu.findItem(R.id.visit_website_item).setVisible(hasWebsiteLink);
 
         boolean isItemAndHasLink = media != null && (media instanceof FeedMedia) && ((FeedMedia) media).getItem().getLink() != null;
