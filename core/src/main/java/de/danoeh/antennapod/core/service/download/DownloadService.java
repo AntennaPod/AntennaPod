@@ -114,11 +114,6 @@ public class DownloadService extends Service {
     public static final String EXTRA_REQUEST = "request";
 
     /**
-     * Stores new media files that will be queued for auto-download if possible.
-     */
-    private List<Long> newMediaFiles;
-
-    /**
      * Contains all completed downloads that have not been included in the report yet.
      */
     private List<DownloadStatus> reportQueue;
@@ -171,7 +166,7 @@ public class DownloadService extends Service {
     }
 
     private Thread downloadCompletionThread = new Thread() {
-        private static final String TAG = "downloadCompletionThread";
+        private static final String TAG = "downloadCompletionThd";
 
         @Override
         public void run() {
@@ -241,7 +236,6 @@ public class DownloadService extends Service {
         Log.d(TAG, "Service started");
         isRunning = true;
         handler = new Handler();
-        newMediaFiles = Collections.synchronizedList(new ArrayList<Long>());
         reportQueue = Collections.synchronizedList(new ArrayList<DownloadStatus>());
         downloads = Collections.synchronizedList(new ArrayList<Downloader>());
         numberOfDownloads = new AtomicInteger(0);
@@ -325,16 +319,8 @@ public class DownloadService extends Service {
         cancelNotificationUpdater();
         unregisterReceiver(cancelDownloadReceiver);
 
-        // TODO: I'm not sure this is actually needed.
-        // We could just invoke the autodownloadUndownloadeditems method
-        // and it would get everything it's supposed to.  By sending it the
-        // items in newMediaFiles we're overriding the download algorithm,
-        // which is not something we should probably do.
-        if (!newMediaFiles.isEmpty()) {
-            Log.d(TAG, "newMediaFiles exist, autodownload them");
-            DBTasks.autodownloadUndownloadedItems(getApplicationContext(),
-                    ArrayUtils.toPrimitive(newMediaFiles.toArray(new Long[newMediaFiles.size()])));
-        }
+        // start auto download in case anything new has shown up
+        DBTasks.autodownloadUndownloadedItems(getApplicationContext());
     }
 
     @SuppressLint("NewApi")
@@ -782,16 +768,6 @@ public class DownloadService extends Service {
 
                         for (int i = 0; i < savedFeeds.length; i++) {
                             Feed savedFeed = savedFeeds[i];
-
-                            // queue new media files for automatic download
-                            for (FeedItem item : savedFeed.getItems()) {
-                                if(item.getPubDate() == null) {
-                                    Log.d(TAG, item.toString());
-                                }
-                                if (item.isNew() && item.hasMedia() && !item.getMedia().isDownloaded()) {
-                                    newMediaFiles.add(item.getMedia().getId());
-                                }
-                            }
 
                             // If loadAllPages=true, check if another page is available and queue it for download
                             final boolean loadAllPages = results.get(i).first.getArguments().getBoolean(DownloadRequester.REQUEST_ARG_LOAD_ALL_PAGES);
