@@ -358,6 +358,7 @@
 
     <!-- OPML import and export -->
     <string name="opml_import_txtv_button_lable">OPML files allow you to move your podcasts from one podcatcher to another.</string>
+    <string name="opml_import_option">Option %1$d</string>
     <string name="opml_import_explanation_1">Choose a specific file path from the local filesystem.</string>
     <string name="opml_import_explanation_2">Use an external applications like Dropbox, Google Drive or your favourite file manager to open an OPML file.</string>
     <string name="opml_import_explanation_3">Many applications like Google Mail, Dropbox, Google Drive and most file managers can <i>open</i> OPML files <i>with</i> AntennaPod.</string>    <string name="start_import_label">Start import</string>
