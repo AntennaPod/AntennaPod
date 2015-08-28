@@ -45,9 +45,12 @@ public class PreferenceActivity extends ActionBarActivity {
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        // This must be the FIRST thing we do, otherwise other code may not have the
+        // reference it needs
+        instance = this;
+        
         setTheme(UserPreferences.getTheme());
         super.onCreate(savedInstanceState);
-        instance = this;
 
         ActionBar ab = getSupportActionBar();
         if (ab != null) {
