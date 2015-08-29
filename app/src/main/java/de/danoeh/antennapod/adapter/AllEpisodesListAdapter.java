@@ -17,7 +17,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.GlideDrawable;
 import com.bumptech.glide.request.animation.GlideAnimation;
 import com.bumptech.glide.request.target.GlideDrawableImageViewTarget;
-import com.joanzapata.android.iconify.Iconify;
+import com.joanzapata.iconify.Iconify;
 
 import java.lang.ref.WeakReference;
 

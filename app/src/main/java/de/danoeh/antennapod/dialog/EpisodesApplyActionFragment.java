@@ -17,8 +17,9 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.joanzapata.android.iconify.IconDrawable;
-import com.joanzapata.android.iconify.Iconify;
+import com.joanzapata.iconify.Icon;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -149,7 +150,7 @@ public class EpisodesApplyActionFragment extends Fragment {
         ta.recycle();
 
         menu.findItem(R.id.sort).setIcon(new IconDrawable(getActivity(),
-                Iconify.IconValue.fa_sort).color(textColor).actionBarSize());
+                FontAwesomeIcons.fa_sort).color(textColor).actionBarSize());
 
         mSelectToggle = menu.findItem(R.id.select_toggle);
         mSelectToggle.setOnMenuItemClickListener(new MenuItem.OnMenuItemClickListener() {
@@ -165,20 +166,20 @@ public class EpisodesApplyActionFragment extends Fragment {
         });
 
         menu.findItem(R.id.select_options).setIcon(new IconDrawable(getActivity(),
-                Iconify.IconValue.fa_caret_down).color(textColor).actionBarSize());
+                FontAwesomeIcons.fa_caret_down).color(textColor).actionBarSize());
     }
 
     @Override
     public void onPrepareOptionsMenu (Menu menu) {
-        Iconify.IconValue iVal;
+        Icon icon;
         if(checkedIds.size() == episodes.size()) {
-            iVal = Iconify.IconValue.fa_check_square_o;
+            icon = FontAwesomeIcons.fa_check_square_o;
         } else if(checkedIds.size() == 0) {
-            iVal = Iconify.IconValue.fa_square_o;
+            icon = FontAwesomeIcons.fa_square_o;
         } else {
-            iVal = Iconify.IconValue.fa_minus_square_o;
+            icon = FontAwesomeIcons.fa_minus_square_o;
         }
-        mSelectToggle.setIcon(new IconDrawable(getActivity(), iVal).color(textColor).actionBarSize());
+        mSelectToggle.setIcon(new IconDrawable(getActivity(), icon).color(textColor).actionBarSize());
 
     }
 

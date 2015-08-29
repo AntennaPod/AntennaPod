@@ -78,7 +78,7 @@
         tools:text="Podcast author"
         tools:background="@android:color/holo_green_dark" />
 
-    <IconTextView
+    <com.joanzapata.iconify.widget.IconTextView
         android:id="@+id/txtvFailure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

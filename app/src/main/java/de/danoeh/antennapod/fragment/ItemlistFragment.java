@@ -24,7 +24,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.IconTextView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListAdapter;
@@ -34,8 +33,10 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
-import com.joanzapata.android.iconify.IconDrawable;
-import com.joanzapata.android.iconify.Iconify;
+import com.joanzapata.iconify.IconDrawable;
+import com.joanzapata.iconify.Iconify;
+import com.joanzapata.iconify.fonts.FontAwesomeIcons;
+import com.joanzapata.iconify.widget.IconTextView;
 
 import org.apache.commons.lang3.Validate;
 
@@ -234,7 +235,7 @@ public class ItemlistFragment extends ListFragment {
             ta.recycle();
 
             menu.findItem(R.id.episode_actions).setIcon(new IconDrawable(getActivity(),
-                    Iconify.IconValue.fa_gears).color(textColor).actionBarSize());
+                    FontAwesomeIcons.fa_gears).color(textColor).actionBarSize());
 
             isUpdatingFeed = MenuItemUtils.updateRefreshMenuItem(menu, R.id.refresh_item, updateRefreshMenuItemChecker);
         }
