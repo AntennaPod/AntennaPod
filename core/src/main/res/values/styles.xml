@@ -4,6 +4,7 @@
     <style name="Theme.AntennaPod.Light" parent="@style/Theme.AppCompat.Light">
         <item name="colorPrimary">@color/primary_light</item>
         <item name="colorAccent">@color/color_accent</item>
+        <item name="attr/action_bar_icon_color">@color/grey600</item>
         <item name="attr/action_about">@drawable/ic_info_grey600_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_grey600_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_grey600_24dp</item>
@@ -49,6 +50,7 @@
 
     <style name="Theme.AntennaPod.Dark" parent="@style/Theme.AppCompat">
         <item name="colorAccent">@color/color_accent</item>
+        <item name="attr/action_bar_icon_color">@color/white</item>
         <item name="attr/action_about">@drawable/ic_info_white_24dp</item>
         <item name="attr/action_search">@drawable/ic_search_white_24dp</item>
         <item name="attr/action_stream">@drawable/ic_settings_input_antenna_white_24dp</item>
