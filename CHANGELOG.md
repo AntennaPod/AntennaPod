@@ -1,5 +1,11 @@
 Change Log
 ==========
+
+Version 1.4
+-----------
+
+* BLUETOOTH PERMISSION: Needed to be able to resume playback when a Bluetooth device reconnects with your phone
+
 Version 1.3
 -----------
 * Bulk actions on feed episodes (download, queue, delete)

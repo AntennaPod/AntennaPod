@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.bluetooth.BluetoothA2dp;
+import android.bluetooth.BluetoothHeadset;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
@@ -230,7 +232,7 @@ public class PlaybackService extends Service {
         registerReceiver(shutdownReceiver, new IntentFilter(
                 ACTION_SHUTDOWN_PLAYBACK_SERVICE));
         registerReceiver(bluetoothStateUpdated, new IntentFilter(
-                AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED));
+                BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED));
         registerReceiver(audioBecomingNoisy, new IntentFilter(
                 AudioManager.ACTION_AUDIO_BECOMING_NOISY));
         registerReceiver(skipCurrentEpisodeReceiver, new IntentFilter(
@@ -1082,10 +1084,9 @@ public class PlaybackService extends Service {
     private BroadcastReceiver bluetoothStateUpdated = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            if (StringUtils.equals(intent.getAction(), AudioManager.ACTION_SCO_AUDIO_STATE_UPDATED)) {
-                int state = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_STATE, -1);
-                int prevState = intent.getIntExtra(AudioManager.EXTRA_SCO_AUDIO_PREVIOUS_STATE, -1);
-                if (state == AudioManager.SCO_AUDIO_STATE_CONNECTED) {
+            if (StringUtils.equals(intent.getAction(), BluetoothA2dp.ACTION_CONNECTION_STATE_CHANGED)) {
+                int state = intent.getIntExtra(BluetoothA2dp.EXTRA_STATE, -1);
+                if (state == BluetoothA2dp.STATE_CONNECTED) {
                     Log.d(TAG, "Received bluetooth connection intent");
                     unpauseIfPauseOnDisconnect();
                 }
