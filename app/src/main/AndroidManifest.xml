@@ -203,7 +203,7 @@
             android:value="de.danoeh.antennapod.activity.PreferenceActivity"/>
 
         <activity
-            android:name=".activity.DefaultOnlineFeedViewActivity"
+            android:name=".activity.OnlineFeedViewActivity"
             android:configChanges="orientation"
             android:label="@string/add_feed_label">
             <meta-data
