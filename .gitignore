@@ -34,6 +34,7 @@ out
 #transifex downloads
 changelog
 description
+contributers.py
 
 # other
 *.odg#
