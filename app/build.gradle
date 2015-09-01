@@ -8,9 +8,9 @@ repositories {
 }
 
 dependencies {
-    compile 'com.android.support:support-v4:21.0.3'
-    compile 'com.android.support:appcompat-v7:21.0.3'
-    compile 'com.android.support:gridlayout-v7:21.0.3'
+    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile 'com.android.support:gridlayout-v7:22.2.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
@@ -44,12 +44,12 @@ def getMyVersionCode() {
 }
 
 android {
-    compileSdkVersion 21
-    buildToolsVersion "21.1.2"
+    compileSdkVersion 22
+    buildToolsVersion "22.0.1"
 
     defaultConfig {
         minSdkVersion 10
-        targetSdkVersion 21
+        targetSdkVersion 22
         versionCode getMyVersionCode()
         versionName "${getMyVersionName()}"
         testApplicationId "de.test.antennapod"
