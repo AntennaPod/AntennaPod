@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.adapter;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -52,13 +53,16 @@ public class AdapterUtils {
                 txtvPos.setText("{fa-spinner}");
                 Iconify.addIcons(txtvPos);
                 NetworkUtils.getFeedMediaSizeObservable(media)
-                        .subscribe(size -> {
+                        .subscribe(
+                                size -> {
                                     if (size > 0) {
                                         txtvPos.setText(Converter.byteToString(size));
                                     } else {
                                         txtvPos.setText("");
                                     }
-                        });
+                                }, error -> {
+                                    Log.e(TAG, Log.getStackTraceString(error));
+                                });
             } else {
                 txtvPos.setText("");
             }

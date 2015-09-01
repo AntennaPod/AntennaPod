@@ -5,6 +5,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.wifi.WifiInfo;
 import android.net.wifi.WifiManager;
+import android.text.TextUtils;
 import android.util.Log;
 
 import com.squareup.okhttp.OkHttpClient;
@@ -108,9 +109,17 @@ public class NetworkUtils {
                     }
                 } else if (false == media.checkedOnSizeButUnknown()) {
                     // only query the network if we haven't already checked
+
+                    String url = media.getDownload_url();
+                    if(TextUtils.isEmpty(url)) {
+                        subscriber.onNext(0L);
+                        subscriber.onCompleted();
+                        return;
+                    }
+
                     OkHttpClient client = AntennapodHttpClient.getHttpClient();
                     Request.Builder httpReq = new Request.Builder()
-                            .url(media.getDownload_url())
+                            .url(url)
                             .header("Accept-Encoding", "identity")
                             .head();
                     try {
