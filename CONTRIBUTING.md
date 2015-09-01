@@ -15,6 +15,7 @@ How to submit a feature request
 - If an issue has already been opened, see if you can add anything useful to it.
 - Otherwise, create a new issue on the "issues" page  
 - Give a brief explanation about the problem that currently exists and why your requested feature solves this problem.
+- Try do be as specific as possible. Please not only explain *what* the feature does, but also *how*. When your request is about changing or extending the UI, describe what the UI would look like and how the user would interact with it.
 
 Translating AntennaPod
 ----------------------
