@@ -503,8 +503,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             SeekBar sbSelectSpeed = (SeekBar) popupView.findViewById(R.id.sbSelectSpeed);
 
             txtvSelectedSpeed.setText(currentSpeed);
-            sbSelectSpeed.setMax(availableSpeeds.length - 1);
-            sbSelectSpeed.setProgress(ArrayUtils.indexOf(availableSpeeds, currentSpeed));
+            int progress = ArrayUtils.indexOf(availableSpeeds, currentSpeed);
+            int max = Math.max(progress, ArrayUtils.indexOf(availableSpeeds, "2.50"));
+            sbSelectSpeed.setMax(max);
+            sbSelectSpeed.setProgress(progress);
             sbSelectSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
                 @Override
                 public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
