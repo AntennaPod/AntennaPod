@@ -260,8 +260,10 @@ public class GpodnetSyncService extends Service {
                         GpodnetEpisodeAction mostRecent = mostRecentPlayAction.get(key);
                         if (mostRecent == null || mostRecent.getTimestamp() == null) {
                             mostRecentPlayAction.put(key, action);
-                        } else if (mostRecent.getTimestamp().before(action.getTimestamp())) {
+                        } else if (action.getTimestamp() != null && mostRecent.getTimestamp().before(action.getTimestamp())) {
                             mostRecentPlayAction.put(key, action);
+                        } else {
+                            Log.d(TAG, "No date information in action, skipping it");
                         }
                     }
                     break;
