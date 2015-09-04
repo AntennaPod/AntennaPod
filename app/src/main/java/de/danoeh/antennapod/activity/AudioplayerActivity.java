@@ -22,6 +22,8 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -521,6 +523,13 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                     if (popupWindow != null && popupWindow.isShowing()) {
                         popupWindow.dismiss();
                     }
+                    ScaleAnimation anim = new ScaleAnimation(1.0f, 1.33f, 1.0f, 1.33f,
+                            butPlaybackSpeed.getWidth()/2, butPlaybackSpeed.getHeight()/2);
+                    anim.setDuration(150);
+                    anim.setRepeatMode(ScaleAnimation.REVERSE);
+                    anim.setRepeatCount(1);
+                    anim.setInterpolator(new LinearInterpolator());
+                    butPlaybackSpeed.startAnimation(anim);
                 }
             });
             popupWindow = new PopupWindow(popupView,
