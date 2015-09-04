@@ -28,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.itunes.ItunesAdapter;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
@@ -96,13 +95,13 @@ public class ItunesSearchFragment extends Fragment {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(getActivity(),
-                        DefaultOnlineFeedViewActivity.class);
+                        OnlineFeedViewActivity.class);
 
                 //Tell the OnlineFeedViewActivity where to go
                 String url = searchResults.get(position).feedUrl;
                 intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, url);
 
-                intent.putExtra(DefaultOnlineFeedViewActivity.ARG_TITLE, "iTunes");
+                intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, "iTunes");
                 startActivity(intent);
             }
         });

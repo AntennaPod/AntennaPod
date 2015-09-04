@@ -23,7 +23,6 @@ import android.widget.TextView;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
 import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.adapter.gpodnet.PodcastListAdapter;
@@ -104,9 +103,9 @@ public abstract class PodcastListFragment extends Fragment {
 
     protected void onPodcastSelected(GpodnetPodcast selection) {
         Log.d(TAG, "Selected podcast: " + selection.toString());
-        Intent intent = new Intent(getActivity(), DefaultOnlineFeedViewActivity.class);
+        Intent intent = new Intent(getActivity(), OnlineFeedViewActivity.class);
         intent.putExtra(OnlineFeedViewActivity.ARG_FEEDURL, selection.getUrl());
-        intent.putExtra(DefaultOnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));
+        intent.putExtra(OnlineFeedViewActivity.ARG_TITLE, getString(R.string.gpodnet_main_label));
         startActivity(intent);
     }
 

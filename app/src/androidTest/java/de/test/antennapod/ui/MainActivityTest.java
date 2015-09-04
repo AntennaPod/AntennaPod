@@ -13,8 +13,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.activity.DefaultOnlineFeedViewActivity;
 import de.danoeh.antennapod.activity.MainActivity;
+import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
@@ -79,7 +79,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.add_feed_label));
         solo.enterText(0, feed.getDownload_url());
         solo.clickOnButton(solo.getString(R.string.confirm_label));
-        solo.waitForActivity(DefaultOnlineFeedViewActivity.class);
+        solo.waitForActivity(OnlineFeedViewActivity.class);
         solo.waitForView(R.id.butSubscribe);
         assertEquals(solo.getString(R.string.subscribe_label), solo.getButton(0).getText().toString());
         solo.clickOnButton(0);
