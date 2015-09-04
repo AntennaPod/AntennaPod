@@ -77,7 +77,7 @@
     <string name="close_label">Close</string>
     <string name="retry_label">Retry</string>
     <string name="auto_download_label">Include in auto downloads</string>
-    <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
+    <string name="auto_download_apply_to_items_title">Apply to Existing Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previous episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
