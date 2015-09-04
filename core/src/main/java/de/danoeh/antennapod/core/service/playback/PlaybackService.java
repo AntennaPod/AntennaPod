@@ -408,6 +408,7 @@ public class PlaybackService extends Service {
         @Override
         public void onSleepTimerExpired() {
             mediaPlayer.pause(true, true);
+            mediaPlayer.setVolume(1.0f);
             sendNotificationBroadcast(NOTIFICATION_TYPE_SLEEPTIMER_UPDATE, 0);
         }
 
