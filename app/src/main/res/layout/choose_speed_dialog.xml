@@ -14,7 +14,7 @@
         card_view:cardElevation="12dp"
         card_view:cardCornerRadius="4dp"
         card_view:cardUseCompatPadding="true"
-        card_view:cardBackgroundColor="@color/white">
+        card_view:cardBackgroundColor="?attr/overlay_background">
 
         <LinearLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
