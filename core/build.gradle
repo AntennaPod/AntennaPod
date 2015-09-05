@@ -36,7 +36,7 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
-    compile 'com.android.support:support-v4:22.2.1'
+    compile 'com.android.support:design:22.2.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile ('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
