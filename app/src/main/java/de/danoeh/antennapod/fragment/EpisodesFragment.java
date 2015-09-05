@@ -33,6 +33,7 @@ public class EpisodesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
+        setHasOptionsMenu(true);
         ((MainActivity) getActivity()).getSupportActionBar().setTitle(R.string.episodes_label);
 
         View rootView = inflater.inflate(R.layout.episodes_fragment, container, false);
