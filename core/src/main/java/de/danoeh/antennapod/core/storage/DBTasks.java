@@ -374,14 +374,12 @@ public final class DBTasks {
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
-     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
-     *                 its media ID is in the mediaIds list.
      * @return A Future that can be used for waiting for the methods completion.
      */
-    public static Future<?> autodownloadUndownloadedItems(final Context context, final long... mediaIds) {
+    public static Future<?> autodownloadUndownloadedItems(final Context context) {
         Log.d(TAG, "autodownloadUndownloadedItems");
         return autodownloadExec.submit(ClientConfig.dbTasksCallbacks.getAutomaticDownloadAlgorithm()
-                .autoDownloadUndownloadedItems(context, mediaIds));
+                .autoDownloadUndownloadedItems(context));
 
     }
 
