@@ -11,6 +11,7 @@ dependencies {
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:gridlayout-v7:22.2.1'
+    compile 'com.android.support:cardview-v7:22.2.1'
     compile 'org.apache.commons:commons-lang3:3.3.2'
     compile('org.shredzone.flattr4j:flattr4j-core:2.12') {
         exclude group: 'org.json', module: 'json'
@@ -24,7 +25,7 @@ dependencies {
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'io.reactivex:rxandroid:1.0.1'
     compile 'com.joanzapata.iconify:android-iconify-fontawesome:2.0.3'
-    
+
     compile project(':core')
     compile project(':library:drag-sort-listview')
 }

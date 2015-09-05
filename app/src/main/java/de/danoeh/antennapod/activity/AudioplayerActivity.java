@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,21 +16,26 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.ContextMenu;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnLongClickListener;
+import android.view.ViewGroup;
+import android.view.animation.LinearInterpolator;
+import android.view.animation.ScaleAnimation;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ListView;
+import android.widget.PopupWindow;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 
 import de.danoeh.antennapod.R;
@@ -50,7 +56,6 @@ import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.ExternalMedia;
 import de.danoeh.antennapod.core.util.playback.Playable;
 import de.danoeh.antennapod.core.util.playback.PlaybackController;
-import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -61,6 +66,7 @@ import de.danoeh.antennapod.preferences.PreferenceController;
  */
 public class AudioplayerActivity extends MediaplayerActivity implements ItemDescriptionFragment.ItemDescriptionFragmentCallback,
         NavDrawerActivity {
+
     private static final int POS_COVER = 0;
     private static final int POS_DESCR = 1;
     private static final int POS_CHAPTERS = 2;
@@ -97,6 +103,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private Button butPlaybackSpeed;
     private ImageButton butNavChaptersShownotes;
     private ImageButton butShowCover;
+
+    private PopupWindow popupWindow;
 
     private void resetFragmentView() {
         FragmentTransaction fT = getSupportFragmentManager().beginTransaction();
@@ -325,14 +333,11 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
                             };
                             chapterFragment.setListAdapter(new ChapterListAdapter(
                                     AudioplayerActivity.this, 0, media
-                                    .getChapters(), media, new ChapterListAdapter.Callback() {
-                                @Override
-                                public void onPlayChapterButtonClicked(int position) {
-                                    Chapter chapter = (Chapter)
-                                            chapterFragment.getListAdapter().getItem(position);
-                                    controller.seekToChapter(chapter);
-                                }
-                            }
+                                    .getChapters(), media, position -> {
+                                        Chapter chapter = (Chapter)
+                                                chapterFragment.getListAdapter().getItem(position);
+                                        controller.seekToChapter(chapter);
+                                    }
                             ));
                         }
                         currentlyShownFragment = chapterFragment;
@@ -426,91 +431,117 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
         navAdapter = new NavListAdapter(itemAccess, this);
         navList.setAdapter(navAdapter);
-        navList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                int viewType = parent.getAdapter().getItemViewType(position);
-                if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
-                    Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
-                    intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
-                    intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
-                    startActivity(intent);
-                }
-                drawerLayout.closeDrawer(navDrawer);
+        navList.setOnItemClickListener((parent, view, position, id) -> {
+            int viewType = parent.getAdapter().getItemViewType(position);
+            if (viewType != NavListAdapter.VIEW_TYPE_SECTION_DIVIDER) {
+                Intent intent = new Intent(AudioplayerActivity.this, MainActivity.class);
+                intent.putExtra(MainActivity.EXTRA_NAV_TYPE, viewType);
+                intent.putExtra(MainActivity.EXTRA_NAV_INDEX, position);
+                startActivity(intent);
             }
+            drawerLayout.closeDrawer(navDrawer);
         });
         registerForContextMenu(navList);
         drawerToggle.syncState();
 
-        findViewById(R.id.nav_settings).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                drawerLayout.closeDrawer(navDrawer);
-                startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
+        findViewById(R.id.nav_settings).setOnClickListener(v -> {
+            drawerLayout.closeDrawer(navDrawer);
+            startActivity(new Intent(AudioplayerActivity.this, PreferenceController.getPreferenceActivity()));
+        });
+
+        butNavChaptersShownotes.setOnClickListener(v -> {
+            if (currentlyShownPosition == POS_CHAPTERS) {
+                switchToFragment(POS_DESCR);
+            } else if (currentlyShownPosition == POS_DESCR) {
+                switchToFragment(POS_CHAPTERS);
+            } else if (currentlyShownPosition == POS_COVER) {
+                switchToLastFragment();
             }
         });
 
-        butNavChaptersShownotes.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (currentlyShownPosition == POS_CHAPTERS) {
-                    switchToFragment(POS_DESCR);
-                } else if (currentlyShownPosition == POS_DESCR) {
-                    switchToFragment(POS_CHAPTERS);
-                } else if (currentlyShownPosition == POS_COVER) {
-                    switchToLastFragment();
+        butShowCover.setOnClickListener(v -> switchToFragment(POS_COVER));
+
+        butPlaybackSpeed.setOnClickListener(v -> {
+            if (controller != null && controller.canSetPlaybackSpeed()) {
+                String[] availableSpeeds = UserPreferences
+                        .getPlaybackSpeedArray();
+                String currentSpeed = UserPreferences.getPlaybackSpeed();
+
+                // Provide initial value in case the speed list has changed
+                // out from under us
+                // and our current speed isn't in the new list
+                String newSpeed;
+                if (availableSpeeds.length > 0) {
+                    newSpeed = availableSpeeds[0];
+                } else {
+                    newSpeed = "1.0";
                 }
-            }
-        });
 
-        butShowCover.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                switchToFragment(POS_COVER);
-            }
-        });
-
-        butPlaybackSpeed.setOnClickListener(new OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-                if (controller != null && controller.canSetPlaybackSpeed()) {
-                    String[] availableSpeeds = UserPreferences
-                            .getPlaybackSpeedArray();
-                    String currentSpeed = UserPreferences.getPlaybackSpeed();
-
-                    // Provide initial value in case the speed list has changed
-                    // out from under us
-                    // and our current speed isn't in the new list
-                    String newSpeed;
-                    if (availableSpeeds.length > 0) {
-                        newSpeed = availableSpeeds[0];
-                    } else {
-                        newSpeed = "1.0";
-                    }
-
-                    for (int i = 0; i < availableSpeeds.length; i++) {
-                        if (availableSpeeds[i].equals(currentSpeed)) {
-                            if (i == availableSpeeds.length - 1) {
-                                newSpeed = availableSpeeds[0];
-                            } else {
-                                newSpeed = availableSpeeds[i + 1];
-                            }
-                            break;
+                for (int i = 0; i < availableSpeeds.length; i++) {
+                    if (availableSpeeds[i].equals(currentSpeed)) {
+                        if (i == availableSpeeds.length - 1) {
+                            newSpeed = availableSpeeds[0];
+                        } else {
+                            newSpeed = availableSpeeds[i + 1];
                         }
+                        break;
                     }
-                    UserPreferences.setPlaybackSpeed(newSpeed);
-                    controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
                 }
+                UserPreferences.setPlaybackSpeed(newSpeed);
+                controller.setPlaybackSpeed(Float.parseFloat(newSpeed));
             }
         });
 
-        butPlaybackSpeed.setOnLongClickListener(new OnLongClickListener() {
-            @Override
-            public boolean onLongClick(View v) {
-                VariableSpeedDialog.showDialog(AudioplayerActivity.this);
-                return true;
-            }
+        butPlaybackSpeed.setOnLongClickListener(v -> {
+
+            String[] availableSpeeds = getResources().getStringArray(R.array.playback_speed_values);
+            String currentSpeed = UserPreferences.getPlaybackSpeed();
+
+            LayoutInflater inflater = getLayoutInflater();
+            View popupView = inflater.inflate(R.layout.choose_speed_dialog, null);
+            TextView txtvSelectedSpeed = (TextView) popupView.findViewById(R.id.txtvSelectedSpeed);
+            SeekBar sbSelectSpeed = (SeekBar) popupView.findViewById(R.id.sbSelectSpeed);
+
+            txtvSelectedSpeed.setText(currentSpeed);
+            int progress = ArrayUtils.indexOf(availableSpeeds, currentSpeed);
+            int max = Math.max(progress, ArrayUtils.indexOf(availableSpeeds, "2.50"));
+            sbSelectSpeed.setMax(max);
+            sbSelectSpeed.setProgress(progress);
+            sbSelectSpeed.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+                @Override
+                public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                    txtvSelectedSpeed.setText(availableSpeeds[progress]);
+                }
+
+                @Override
+                public void onStartTrackingTouch(SeekBar seekBar) {
+                }
+
+                @Override
+                public void onStopTrackingTouch(SeekBar seekBar) {
+                    String selectedSpeed = availableSpeeds[sbSelectSpeed.getProgress()];
+                    UserPreferences.setPlaybackSpeed(selectedSpeed);
+                    controller.setPlaybackSpeed(Float.parseFloat(selectedSpeed));
+                    if (popupWindow != null && popupWindow.isShowing()) {
+                        popupWindow.dismiss();
+                    }
+                    ScaleAnimation anim = new ScaleAnimation(1.0f, 1.33f, 1.0f, 1.33f,
+                            butPlaybackSpeed.getWidth()/2, butPlaybackSpeed.getHeight()/2);
+                    anim.setDuration(150);
+                    anim.setRepeatMode(ScaleAnimation.REVERSE);
+                    anim.setRepeatCount(1);
+                    anim.setInterpolator(new LinearInterpolator());
+                    butPlaybackSpeed.startAnimation(anim);
+                }
+            });
+            popupWindow = new PopupWindow(popupView,
+                    ViewGroup.LayoutParams.MATCH_PARENT,
+                    ViewGroup.LayoutParams.WRAP_CONTENT,
+                    true);
+            popupWindow.setBackgroundDrawable(new BitmapDrawable());
+            popupWindow.setOutsideTouchable(true);
+            popupWindow.showAtLocation(popupView, Gravity.CENTER, 0, 0);
+            return true;
         });
     }
 
@@ -630,7 +661,7 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     }
 
     public interface AudioplayerContentFragment {
-        public void onDataSetChanged(Playable media);
+        void onDataSetChanged(Playable media);
     }
 
     @Override
@@ -793,4 +824,5 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
             return navDrawerData != null ? navDrawerData.feedCounters.get(feedId) : 0;
         }
     };
+
 }
