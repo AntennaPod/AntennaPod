@@ -120,6 +120,7 @@
 
     <string-array name="nav_drawer_titles">
         <item>@string/queue_label</item>
+        <item>@string/episodes_label</item>
         <item>@string/new_episodes_label</item>
         <item>@string/all_episodes_label</item>
         <item>@string/downloads_label</item>

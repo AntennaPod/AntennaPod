@@ -47,6 +47,7 @@ import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
@@ -82,6 +83,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
+            EpisodesFragment.TAG,
             NewEpisodesFragment.TAG,
             AllEpisodesFragment.TAG,
             DownloadsFragment.TAG,
@@ -280,6 +282,9 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         switch (tag) {
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
+                break;
+            case EpisodesFragment.TAG:
+                fragment = new EpisodesFragment();
                 break;
             case NewEpisodesFragment.TAG:
                 fragment = new NewEpisodesFragment();
