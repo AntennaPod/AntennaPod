@@ -86,7 +86,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
     private void startLocalPlayback() {
         openNavDrawer();
-
+        solo.clickOnText(solo.getString(R.string.episodes_label));
         solo.clickOnText(solo.getString(R.string.all_episodes_label));
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(context, 10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
