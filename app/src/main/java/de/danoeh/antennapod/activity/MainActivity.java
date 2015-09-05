@@ -167,10 +167,17 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             transaction.replace(R.id.main_view, mainFragment);
         } else {
             String lastFragment = getLastNavFragment();
-            if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+            if (ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
             } else {
-                loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                try {
+                    loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                } catch (NumberFormatException e) {
+                    // it's not a number, this happens if we removed
+                    // a label from the NAV_DRAWER_TAGS
+                    // give them a nice default...
+                    loadFragment(QueueFragment.TAG, null);
+                }
             }
         }
         externalPlayerFragment = new ExternalPlayerFragment();
