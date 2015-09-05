@@ -1,9 +1,10 @@
 package de.danoeh.antennapod.core.service.playback;
 
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.media.AudioManager;
-import android.media.RemoteControlClient;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
 import android.support.v4.media.MediaMetadataCompat;
@@ -12,6 +13,7 @@ import android.support.v4.media.session.PlaybackStateCompat;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.util.Pair;
+import android.view.KeyEvent;
 import android.view.SurfaceHolder;
 
 import org.apache.commons.lang3.Validate;
@@ -29,7 +31,6 @@ import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
-import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
 import de.danoeh.antennapod.core.util.playback.IPlayer;
@@ -98,9 +99,16 @@ public class PlaybackServiceMediaPlayer {
                 }
         );
 
-        mediaSession = new MediaSessionCompat(context, TAG);
+        MediaButtonIntentReceiver.setMediaPlayer(this);
+        ComponentName eventReceiver = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
+        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
+        mediaButtonIntent.setComponent(eventReceiver);
+        PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(context, 0, mediaButtonIntent, 0);
+
+        mediaSession = new MediaSessionCompat(context, TAG, eventReceiver, buttonReceiverIntent);
         mediaSession.setCallback(sessionCallback);
-        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSession.setFlags(MediaSessionCompat.FLAG_HANDLES_MEDIA_BUTTONS | MediaSessionCompat.FLAG_HANDLES_TRANSPORT_CONTROLS);
+        mediaSession.setActive(true);
 
         mediaPlayer = null;
         statusBeforeSeeking = null;
@@ -249,7 +257,9 @@ public class PlaybackServiceMediaPlayer {
 
     private MediaMetadataCompat getMediaSessionMetadata(Playable p) {
         MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
         builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
         builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
         return builder.build();
     }
@@ -287,16 +297,6 @@ public class PlaybackServiceMediaPlayer {
 
                 setPlayerStatus(PlayerStatus.PLAYING, media);
                 pausedBecauseOfTransientAudiofocusLoss = false;
-                if (android.os.Build.VERSION.SDK_INT >= 14) {
-                    RemoteControlClient remoteControlClient = callback.getRemoteControlClient();
-                    if (remoteControlClient != null) {
-                        audioManager
-                                .registerRemoteControlClient(remoteControlClient);
-                    }
-                }
-                audioManager
-                        .registerMediaButtonEventReceiver(new ComponentName(context.getPackageName(),
-                                MediaButtonReceiver.class.getName()));
                 media.onPlaybackStart();
 
             } else {
@@ -975,8 +975,6 @@ public class PlaybackServiceMediaPlayer {
         public boolean onMediaPlayerError(Object inObj, int what, int extra);
 
         public boolean endPlayback(boolean playNextEpisode);
-
-        public RemoteControlClient getRemoteControlClient();
     }
 
     private IPlayer setMediaPlayerListeners(IPlayer mp) {
@@ -1154,5 +1152,76 @@ public class PlaybackServiceMediaPlayer {
             super.onSeekTo(pos);
             seekTo((int) pos);
         }
+
+        @Override
+        public boolean onMediaButtonEvent(final Intent mediaButton) {
+            Log.d(TAG, "GOT MediaButton EVENT");
+            if (mediaButton != null) {
+                KeyEvent keyEvent = (KeyEvent) mediaButton.getExtras().get(Intent.EXTRA_KEY_EVENT);
+                handleMediaKey(keyEvent);
+            }
+            return super.onMediaButtonEvent(mediaButton);
+        }
     };
+
+        public boolean handleMediaKey(KeyEvent event) {
+            if (event != null
+                    && event.getAction() == KeyEvent.ACTION_DOWN
+                    && event.getRepeatCount() == 0) {
+                switch (event.getKeyCode()) {
+                    case KeyEvent.KEYCODE_MEDIA_PLAY_PAUSE:
+                    case KeyEvent.KEYCODE_HEADSETHOOK:
+                    {
+                        Log.d(TAG, "Received Play/Pause event from RemoteControlClient");
+                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                            resume();
+                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                            setStartWhenPrepared(true);
+                            prepare();
+                        } else if (playerStatus == PlayerStatus.PLAYING) {
+                            pause(false, true);
+                            if (UserPreferences.isPersistNotify()) {
+                                pause(false, true);
+                            } else {
+                                pause(true, true);
+                            }
+                        }
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_MEDIA_PLAY:
+                    {
+                        Log.d(TAG, "Received Play event from RemoteControlClient");
+                        if (playerStatus == PlayerStatus.PAUSED || playerStatus == PlayerStatus.PREPARED) {
+                            resume();
+                        } else if (playerStatus == PlayerStatus.INITIALIZED) {
+                            setStartWhenPrepared(true);
+                            prepare();
+                        }
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_MEDIA_PAUSE:
+                    {
+                        Log.d(TAG, "Received Pause event from RemoteControlClient");
+                        if (playerStatus == PlayerStatus.PLAYING) {
+                            pause(false, true);
+                        }
+                        if (UserPreferences.isPersistNotify()) {
+                            pause(false, true);
+                        } else {
+                            pause(true, true);
+                        }
+                        return true;
+                    }
+                    case KeyEvent.KEYCODE_MEDIA_STOP:
+                    {
+                        Log.d(TAG, "Received Stop event from RemoteControlClient");
+                        stop();
+                        return true;
+                    }
+                    default:
+                        break;
+                }
+            }
+            return false;
+        }
 }

@@ -188,10 +188,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -259,11 +255,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -336,11 +327,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -416,10 +402,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, null);
@@ -487,10 +469,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
                 return false;
             }
 
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -557,11 +535,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -632,11 +605,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -711,11 +679,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
             }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         Playable p = writeTestPlayable(PLAYABLE_FILE_URL, PLAYABLE_LOCAL_URL);
@@ -763,11 +726,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         @Override
         public boolean endPlayback(boolean playNextEpisode) {
             return false;
-        }
-
-        @Override
-        public RemoteControlClient getRemoteControlClient() {
-            return null;
         }
     };
 
@@ -840,11 +798,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -952,11 +905,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
             }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
-            }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
         if (initialState == PlayerStatus.PREPARED || initialState == PlayerStatus.PLAYING || initialState == PlayerStatus.PAUSED) {
@@ -1037,11 +985,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);
@@ -1136,11 +1079,6 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
             @Override
             public boolean endPlayback(boolean playNextEpisode) {
                 return false;
-            }
-
-            @Override
-            public RemoteControlClient getRemoteControlClient() {
-                return null;
             }
         };
         PlaybackServiceMediaPlayer psmp = new PlaybackServiceMediaPlayer(c, callback);

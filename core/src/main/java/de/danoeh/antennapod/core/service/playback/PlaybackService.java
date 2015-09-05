@@ -237,7 +237,6 @@ public class PlaybackService extends Service {
                 ACTION_PAUSE_PLAY_CURRENT_EPISODE));
         registerReceiver(pauseResumeCurrentEpisodeReceiver, new IntentFilter(
                 ACTION_RESUME_PLAY_CURRENT_EPISODE));
-        remoteControlClient = setupRemoteControlClient();
         taskManager = new PlaybackServiceTaskManager(this, taskManagerCallback);
         mediaPlayer = new PlaybackServiceMediaPlayer(this, mediaPlayerCallback);
 
@@ -499,7 +498,6 @@ public class PlaybackService extends Service {
             // statusUpdate.putExtra(EXTRA_NEW_PLAYER_STATUS, newInfo.playerStatus.ordinal());
             sendBroadcast(statusUpdate);
             updateWidget();
-            refreshRemoteControlClientState(newInfo);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_PLAYER_STATUS_CHANGED);
             bluetoothNotifyChange(newInfo, AVRCP_ACTION_META_CHANGED);
         }
@@ -551,11 +549,6 @@ public class PlaybackService extends Service {
         public boolean endPlayback(boolean playNextEpisode) {
             PlaybackService.this.endPlayback(true);
             return true;
-        }
-
-        @Override
-        public RemoteControlClient getRemoteControlClient() {
-            return remoteControlClient;
         }
     };
 
@@ -963,74 +956,6 @@ public class PlaybackService extends Service {
 
     public long getSleepTimerTimeLeft() {
         return taskManager.getSleepTimerTimeLeft();
-    }
-
-    @SuppressLint("NewApi")
-    private RemoteControlClient setupRemoteControlClient() {
-        if (Build.VERSION.SDK_INT < 14) {
-            return null;
-        }
-
-        Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
-        mediaButtonIntent.setComponent(new ComponentName(getPackageName(),
-                MediaButtonReceiver.class.getName()));
-        PendingIntent mediaPendingIntent = PendingIntent.getBroadcast(
-                getApplicationContext(), 0, mediaButtonIntent, 0);
-        remoteControlClient = new RemoteControlClient(mediaPendingIntent);
-        int controlFlags;
-        if (android.os.Build.VERSION.SDK_INT < 16) {
-            controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE
-                    | RemoteControlClient.FLAG_KEY_MEDIA_NEXT;
-        } else {
-            controlFlags = RemoteControlClient.FLAG_KEY_MEDIA_PLAY_PAUSE;
-        }
-        remoteControlClient.setTransportControlFlags(controlFlags);
-        return remoteControlClient;
-    }
-
-    /**
-     * Refresh player status and metadata.
-     */
-    @SuppressLint("NewApi")
-    private void refreshRemoteControlClientState(PlaybackServiceMediaPlayer.PSMPInfo info) {
-        if (android.os.Build.VERSION.SDK_INT >= 14) {
-            if (remoteControlClient != null) {
-                switch (info.playerStatus) {
-                    case PLAYING:
-                        remoteControlClient
-                                .setPlaybackState(RemoteControlClient.PLAYSTATE_PLAYING);
-                        break;
-                    case PAUSED:
-                    case INITIALIZED:
-                        remoteControlClient
-                                .setPlaybackState(RemoteControlClient.PLAYSTATE_PAUSED);
-                        break;
-                    case STOPPED:
-                        remoteControlClient
-                                .setPlaybackState(RemoteControlClient.PLAYSTATE_STOPPED);
-                        break;
-                    case ERROR:
-                        remoteControlClient
-                                .setPlaybackState(RemoteControlClient.PLAYSTATE_ERROR);
-                        break;
-                    default:
-                        remoteControlClient
-                                .setPlaybackState(RemoteControlClient.PLAYSTATE_BUFFERING);
-                }
-                if (info.playable != null) {
-                    MetadataEditor editor = remoteControlClient
-                            .editMetadata(false);
-                    editor.putString(MediaMetadataRetriever.METADATA_KEY_TITLE,
-                            info.playable.getEpisodeTitle());
-
-                    editor.putString(MediaMetadataRetriever.METADATA_KEY_ALBUM,
-                            info.playable.getFeedTitle());
-
-                    editor.apply();
-                }
-                Log.d(TAG, "RemoteControlClient state was refreshed");
-            }
-        }
     }
 
     private void bluetoothNotifyChange(PlaybackServiceMediaPlayer.PSMPInfo info, String whatChanged) {
