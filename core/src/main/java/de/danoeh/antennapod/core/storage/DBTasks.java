@@ -514,22 +514,27 @@ public final class DBTasks {
 
                 Collections.sort(newFeed.getItems(), new FeedItemPubdateComparator());
 
-                final boolean markNewItems;
                 if (newFeed.getPageNr() == savedFeed.getPageNr()) {
                     if (savedFeed.compareWithOther(newFeed)) {
                         Log.d(TAG, "Feed has updated attribute values. Updating old feed's attributes");
                         savedFeed.updateFromOther(newFeed);
                     }
-                    markNewItems = true;
                 } else {
-                    Log.d(TAG, "New feed has a higher page number. Merging without marking as unread");
-                    markNewItems = false;
+                    Log.d(TAG, "New feed has a higher page number.");
                     savedFeed.setNextPageLink(newFeed.getNextPageLink());
                 }
                 if (savedFeed.getPreferences().compareWithOther(newFeed.getPreferences())) {
                     Log.d(TAG, "Feed has updated preferences. Updating old feed's preferences");
                     savedFeed.getPreferences().updateFromOther(newFeed.getPreferences());
                 }
+
+                // get the most recent date now, before we start changing the list
+                FeedItem priorMostRecent = savedFeed.getMostRecentItem();
+                Date priorMostRecentDate = null;
+                if (priorMostRecent != null) {
+                    priorMostRecentDate = priorMostRecent.getPubDate();
+                }
+
                 // Look for new or updated Items
                 for (int idx = 0; idx < newFeed.getItems().size(); idx++) {
                     final FeedItem item = newFeed.getItems().get(idx);
@@ -540,7 +545,15 @@ public final class DBTasks {
                         item.setFeed(savedFeed);
                         item.setAutoDownload(savedFeed.getPreferences().getAutoDownload());
                         savedFeed.getItems().add(idx, item);
-                        if (markNewItems) {
+
+                        // only mark the item new if it actually occurs
+                        // before the most recent item (before we started adding things)
+                        // (if the most recent date is null then we can assume there are no items
+                        // and this is the first, hence 'new')
+                        if (priorMostRecentDate == null ||
+                                priorMostRecentDate.before(item.getPubDate())) {
+                            Log.d(TAG, "Marking item published on " + item.getPubDate() +
+                                    " new, prior most recent date = " + priorMostRecentDate);
                             item.setNew();
                         }
                     } else {
