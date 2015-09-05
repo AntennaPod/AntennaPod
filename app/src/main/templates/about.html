@@ -4,16 +4,22 @@
     <meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
     <style type="text/css">
 
-        * {
-        font-family: Helvetica
+        @font-face {
+        font-family: 'Roboto-Light';
+        src: url('file:///android_asset/Roboto-Light.ttf');
         }
+
+        * {
+        color: %s;
+        font-family: roboto-Light;
+        font-size: 12pt;
+        }
+
         header {
         display: block;
         margin-left: auto;
         margin-right: auto;
         padding-bottom: 500px;
-
-
         }
 
         versiontag {
@@ -39,7 +45,7 @@
 </head>
 <body>
 <div id="header" align="center">
-    <img src="logo.png" alt="Logo" width="100px" height="100px"/>
+    <img src="file:///android_asset/logo.png" alt="Logo" width="100px" height="100px"/>
 
     <p>AntennaPod, Version @versionname@</p>
     <p>Commit: @commit@</p>
