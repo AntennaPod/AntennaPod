@@ -122,7 +122,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -170,7 +180,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
+
+            }
+
+            @Override
+            public void onSleepTimerReset() {
 
             }
 
@@ -221,7 +241,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
         pstm.startWidgetUpdater();
         pstm.startPositionSaver();
-        pstm.setSleepTimer(100000);
+        pstm.setSleepTimer(100000, false, false);
         pstm.cancelAllTasks();
         assertFalse(pstm.isPositionSaverActive());
         assertFalse(pstm.isWidgetUpdaterActive());
@@ -241,11 +261,21 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
                 if (countDownLatch.getCount() == 0) {
                     fail();
                 }
                 countDownLatch.countDown();
+            }
+
+            @Override
+            public void onSleepTimerReset() {
+
             }
 
             @Override
@@ -258,7 +288,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             }
         });
-        pstm.setSleepTimer(TIME);
+        pstm.setSleepTimer(TIME, false, false);
         countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS);
         pstm.shutdown();
     }
@@ -275,8 +305,18 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
             }
 
             @Override
+            public void onSleepTimerAlmostExpired() {
+
+            }
+
+            @Override
             public void onSleepTimerExpired() {
                 fail("Sleeptimer expired");
+            }
+
+            @Override
+            public void onSleepTimerReset() {
+
             }
 
             @Override
@@ -289,7 +329,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
 
             }
         });
-        pstm.setSleepTimer(TIME);
+        pstm.setSleepTimer(TIME, false, false);
         pstm.disableSleepTimer();
         assertFalse(countDownLatch.await(TIMEOUT, TimeUnit.MILLISECONDS));
         pstm.shutdown();
@@ -298,7 +338,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     public void testIsSleepTimerActivePositive() {
         final Context c = getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
+        pstm.setSleepTimer(10000, false, false);
         assertTrue(pstm.isSleepTimerActive());
         pstm.shutdown();
     }
@@ -306,7 +346,7 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     public void testIsSleepTimerActiveNegative() {
         final Context c = getInstrumentation().getTargetContext();
         PlaybackServiceTaskManager pstm = new PlaybackServiceTaskManager(c, defaultPSTM);
-        pstm.setSleepTimer(10000);
+        pstm.setSleepTimer(10000, false, false);
         pstm.disableSleepTimer();
         assertFalse(pstm.isSleepTimerActive());
         pstm.shutdown();
@@ -319,7 +359,17 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         }
 
         @Override
+        public void onSleepTimerAlmostExpired() {
+
+        }
+
+        @Override
         public void onSleepTimerExpired() {
+
+        }
+
+        @Override
+        public void onSleepTimerReset() {
 
         }
 

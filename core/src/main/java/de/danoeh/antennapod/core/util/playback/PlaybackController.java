@@ -652,9 +652,9 @@ public abstract class PlaybackController {
         }
     }
 
-    public void setSleepTimer(long time) {
+    public void setSleepTimer(long time, boolean shakeToReset, boolean vibrate) {
         if (playbackService != null) {
-            playbackService.setSleepTimer(time);
+            playbackService.setSleepTimer(time, shakeToReset, vibrate);
         }
     }
 
