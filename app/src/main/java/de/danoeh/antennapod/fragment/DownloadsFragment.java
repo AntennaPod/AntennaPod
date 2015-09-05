@@ -2,6 +2,7 @@ package de.danoeh.antennapod.fragment;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -11,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.adapter.EpisodesPagerAdapter;
 
 /**
  * Shows the CompletedDownloadsFragment and the RunningDownloadsFragment
@@ -31,9 +33,15 @@ public class DownloadsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
-        pager = (ViewPager) root.findViewById(R.id.pager);
+
+        pager = (ViewPager)root.findViewById(R.id.viewpager);
         DownloadsPagerAdapter pagerAdapter = new DownloadsPagerAdapter(getChildFragmentManager(), getResources());
         pager.setAdapter(pagerAdapter);
+
+        // Give the TabLayout the ViewPager
+        TabLayout tabLayout = (TabLayout) root.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(pager);
+
         return root;
     }
 
