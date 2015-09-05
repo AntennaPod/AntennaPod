@@ -14,7 +14,8 @@ public class EpisodesPagerAdapter extends FragmentPagerAdapter {
 
     private final Context context;
 
-    private String tabTags[] = new String[] {AllEpisodesFragment.TAG, NewEpisodesFragment.TAG};
+    // this determines the order the tabs appear in
+    private String tabTags[] = new String[] {NewEpisodesFragment.TAG, AllEpisodesFragment.TAG};
     private String tabTitles[] = new String[tabTags.length];
 
     public EpisodesPagerAdapter(FragmentManager fm, Context context) {

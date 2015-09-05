@@ -45,12 +45,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
 import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -84,8 +82,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
             EpisodesFragment.TAG,
-            NewEpisodesFragment.TAG,
-            AllEpisodesFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG
@@ -286,12 +282,6 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             case EpisodesFragment.TAG:
                 fragment = new EpisodesFragment();
                 break;
-            case NewEpisodesFragment.TAG:
-                fragment = new NewEpisodesFragment();
-                break;
-            case AllEpisodesFragment.TAG:
-                fragment = new AllEpisodesFragment();
-                break;
             case DownloadsFragment.TAG:
                 fragment = new DownloadsFragment();
                 break;
@@ -300,6 +290,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            default:
+                // default to the queue
+                fragment = new QueueFragment();
                 break;
         }
         currentTitle = navAdapter.getLabel(tag);
@@ -543,7 +537,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
                         if(getSelectedNavListIndex() == position) {
-                            loadFragment(NewEpisodesFragment.TAG, null);
+                            loadFragment(EpisodesFragment.TAG, null);
                         }
                     }
                 };

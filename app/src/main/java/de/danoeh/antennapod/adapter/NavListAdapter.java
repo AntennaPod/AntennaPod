@@ -216,7 +216,7 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
-        } else if (tags.get(position).equals(NewEpisodesFragment.TAG)) {
+        } else if (tags.get(position).equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setVisibility(View.VISIBLE);
