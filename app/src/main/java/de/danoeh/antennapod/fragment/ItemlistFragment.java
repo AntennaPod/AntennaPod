@@ -32,7 +32,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.iconify.IconDrawable;
 import com.joanzapata.iconify.Iconify;
 import com.joanzapata.iconify.fonts.FontAwesomeIcons;
@@ -60,6 +59,7 @@ import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.glide.FastBlurTransformation;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -229,8 +229,8 @@ public class ItemlistFragment extends ListFragment {
                 menu.findItem(R.id.share_link_item).setVisible(false);
                 menu.findItem(R.id.visit_website_item).setVisible(false);
             }
-            int[] attrs = { android.R.attr.textColor };
-            TypedArray ta = getActivity().obtainStyledAttributes(attrs);
+            int[] attrs = { R.attr.action_bar_icon_color };
+            TypedArray ta = getActivity().obtainStyledAttributes(UserPreferences.getTheme(), attrs);
             int textColor = ta.getColor(0, Color.GRAY);
             ta.recycle();
 
