@@ -12,7 +12,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.adapter.EpisodesPagerAdapter;
 
 /**
  * Shows the CompletedDownloadsFragment and the RunningDownloadsFragment
