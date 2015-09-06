@@ -155,7 +155,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
-                DBWriter.markItemRead(context, selectedItem, true, false);
+                DBWriter.markItemPlayed(context, selectedItem, FeedItem.PLAYED, false);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do
@@ -173,7 +173,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_unread_item:
                 selectedItem.setPlayed(false);
-                DBWriter.markItemRead(context, selectedItem, false, false);
+                DBWriter.markItemPlayed(context, selectedItem, FeedItem.UNPLAYED, false);
                 if(GpodnetPreferences.loggedIn()) {
                     GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
                             .currentDeviceId()
@@ -195,7 +195,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.reset_position:
                 selectedItem.getMedia().setPosition(0);
-                DBWriter.markItemRead(context, selectedItem, false, true);
+                DBWriter.markItemPlayed(context, selectedItem, FeedItem.UNPLAYED, true);
                 break;
             case R.id.activate_auto_download:
                 selectedItem.setAutoDownload(true);

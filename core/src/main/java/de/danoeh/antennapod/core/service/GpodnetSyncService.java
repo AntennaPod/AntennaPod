@@ -244,7 +244,7 @@ public class GpodnetSyncService extends Service {
                 case NEW:
                     FeedItem newItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
                     if(newItem != null) {
-                        DBWriter.markItemRead(this, newItem, false, true);
+                        DBWriter.markItemPlayed(this, newItem, FeedItem.UNPLAYED, true);
                     } else {
                         Log.i(TAG, "Unknown feed item: " + action);
                     }
@@ -279,7 +279,7 @@ public class GpodnetSyncService extends Service {
                 media.setPosition(action.getPosition() * 1000);
                 DBWriter.setFeedMedia(this, media);
                 if(playItem.getMedia().hasAlmostEnded()) {
-                    DBWriter.markItemRead(this, playItem, true, true);
+                    DBWriter.markItemPlayed(this, playItem, FeedItem.PLAYED, true);
                     DBWriter.addItemToPlaybackHistory(this, playItem.getMedia());
                 }
             }

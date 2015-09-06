@@ -372,12 +372,12 @@ public class EpisodesApplyActionFragment extends Fragment {
     }
 
     private void markedCheckedPlayed() {
-        DBWriter.markItemRead(getActivity(), true, checkedIds.toArray());
+        DBWriter.markItemPlayed(getActivity(), FeedItem.PLAYED, checkedIds.toArray());
         close();
     }
 
     private void markedCheckedUnplayed() {
-        DBWriter.markItemRead(getActivity(), false, checkedIds.toArray());
+        DBWriter.markItemPlayed(getActivity(), FeedItem.UNPLAYED, checkedIds.toArray());
         close();
     }
 

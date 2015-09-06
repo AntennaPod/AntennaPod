@@ -16,7 +16,6 @@ import android.widget.RemoteViews;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.service.playback.PlaybackService;
 import de.danoeh.antennapod.core.service.playback.PlayerStatus;
@@ -59,7 +58,7 @@ public class PlayerWidgetService extends Service {
 				if (media.hasAlmostEnded()) {
 					Log.d(TAG, "smart mark as read");
 					FeedItem item = media.getItem();
-					DBWriter.markItemRead(this, item, true, false);
+					DBWriter.markItemPlayed(this, item, FeedItem.PLAYED, false);
 					DBWriter.removeQueueItem(this, item, false);
 					DBWriter.addItemToPlaybackHistory(this, media);
 					if (item.getFeed().getPreferences().getCurrentAutoDelete()) {

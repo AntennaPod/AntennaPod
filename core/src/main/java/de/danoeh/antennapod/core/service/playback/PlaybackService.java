@@ -5,9 +5,7 @@ import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothA2dp;
-import android.bluetooth.BluetoothHeadset;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -15,10 +13,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.media.AudioManager;
-import android.media.MediaMetadataRetriever;
 import android.media.MediaPlayer;
 import android.media.RemoteControlClient;
-import android.media.RemoteControlClient.MetadataEditor;
 import android.os.Binder;
 import android.os.Build;
 import android.os.IBinder;
@@ -31,7 +27,6 @@ import android.view.SurfaceHolder;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -569,7 +564,7 @@ public class PlaybackService extends Service {
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
-            DBWriter.markItemRead(PlaybackService.this, item, true, true);
+            DBWriter.markItemPlayed(PlaybackService.this, item, FeedItem.PLAYED, true);
 
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
