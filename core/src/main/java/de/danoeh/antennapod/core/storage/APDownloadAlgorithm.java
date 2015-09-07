@@ -29,12 +29,10 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
-     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
-     *                 its media ID is in the mediaIds list.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
     @Override
-    public Runnable autoDownloadUndownloadedItems(final Context context, final long... mediaIds) {
+    public Runnable autoDownloadUndownloadedItems(final Context context) {
         return new Runnable() {
             @Override
             public void run() {
@@ -53,17 +51,13 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
                     List<FeedItem> candidates;
-                    if(mediaIds.length > 0) {
-                        candidates = DBReader.getFeedItems(context, mediaIds);
-                    } else {
-                        final List<FeedItem> queue = DBReader.getQueue(context);
-                        final List<FeedItem> newItems = DBReader.getNewItemsList(context);
-                        candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
-                        candidates.addAll(queue);
-                        for(FeedItem newItem : newItems) {
-                            if(candidates.contains(newItem) == false) {
-                                candidates.add(newItem);
-                            }
+                    final List<FeedItem> queue = DBReader.getQueue(context);
+                    final List<FeedItem> newItems = DBReader.getNewItemsList(context);
+                    candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
+                    candidates.addAll(queue);
+                    for(FeedItem newItem : newItems) {
+                        if(candidates.contains(newItem) == false) {
+                            candidates.add(newItem);
                         }
                     }
 

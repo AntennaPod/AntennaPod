@@ -12,9 +12,7 @@ public interface AutomaticDownloadAlgorithm {
      * This method is executed on an internal single thread executor.
      *
      * @param context  Used for accessing the DB.
-     * @param mediaIds If this list is not empty, the method will only download a candidate for automatic downloading if
-     *                 its media ID is in the mediaIds list.
      * @return A Runnable that will be submitted to an ExecutorService.
      */
-    public Runnable autoDownloadUndownloadedItems(Context context, long... mediaIds);
+    public Runnable autoDownloadUndownloadedItems(Context context);
 }
