@@ -93,7 +93,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             }
         } else {
             if (!item.isPlayed()) {
-                DBWriter.markItemRead(context, item, true, true);
+                DBWriter.markItemPlayed(context, item, FeedItem.PLAYED, true);
             }
         }
     }

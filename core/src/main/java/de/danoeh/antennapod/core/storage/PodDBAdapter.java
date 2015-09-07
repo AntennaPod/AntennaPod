@@ -778,12 +778,12 @@ public class PodDBAdapter {
         return item.getId();
     }
 
-    public void setFeedItemRead(boolean read, long itemId, long mediaId,
+    public void setFeedItemRead(int played, long itemId, long mediaId,
                                 boolean resetMediaPosition) {
         db.beginTransaction();
         ContentValues values = new ContentValues();
 
-        values.put(KEY_READ, read ? FeedItem.PLAYED : FeedItem.UNPLAYED);
+        values.put(KEY_READ, played);
         db.update(TABLE_NAME_FEED_ITEMS, values, KEY_ID + "=?", new String[]{String.valueOf(itemId)});
 
         if (resetMediaPosition) {
@@ -796,6 +796,11 @@ public class PodDBAdapter {
         db.endTransaction();
     }
 
+    /**
+     * Sets the 'read' attribute of the item.
+     * @param read must be one of FeedItem.PLAYED, FeedItem.NEW, FeedItem.UNPLAYED
+     * @param itemIds items to change the value of
+     */
     public void setFeedItemRead(int read, long... itemIds) {
         db.beginTransaction();
         ContentValues values = new ContentValues();

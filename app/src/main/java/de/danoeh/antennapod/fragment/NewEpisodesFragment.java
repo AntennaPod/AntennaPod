@@ -13,7 +13,6 @@ import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.QueueEvent;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
@@ -72,7 +71,9 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 Log.d(TAG, "remove(" + which + ")");
                 stopItemLoader();
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                DBWriter.markItemRead(getActivity(), true, item.getId());
+                // we're marking it as unplayed since the user didn't actually play it
+                // but they don't want it considered 'NEW' anymore
+                DBWriter.markItemPlayed(getActivity(), FeedItem.UNPLAYED, item.getId());
                 undoBarController.showUndoBar(false,
                         getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
                                 which)
@@ -88,7 +89,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    DBWriter.markItemRead(context, false, itemId);
+                    DBWriter.markItemPlayed(context, FeedItem.NEW, itemId);
                 }
             }
             @Override

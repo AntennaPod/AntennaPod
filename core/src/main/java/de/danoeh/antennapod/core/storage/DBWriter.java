@@ -366,7 +366,7 @@ public class DBWriter {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                             if(item.isNew()) {
-                                DBWriter.markItemRead(context, false, item.getId());
+                                DBWriter.markItemPlayed(context, FeedItem.UNPLAYED, item.getId());
                             }
                         }
                     }
@@ -432,7 +432,7 @@ public class DBWriter {
                             adapter.setQueue(queue);
                             EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
                             if(markAsUnplayedIds.size() > 0) {
-                                    DBWriter.markItemRead(context, false, markAsUnplayedIds.toArray());
+                                    DBWriter.markItemPlayed(context, FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                             }
                         }
                     }
@@ -614,20 +614,17 @@ public class DBWriter {
      * Sets the 'read'-attribute of all specified FeedItems
      *
      * @param context A context that is used for opening a database connection.
-     * @param read    New value of the 'read'-attribute
+     * @param played  New value of the 'read'-attribute, one of FeedItem.PLAYED, FeedItem.NEW,
+     *                FeedItem.UNPLAYED
      * @param itemIds IDs of the FeedItems.
      */
-    public static Future<?> markItemRead(final Context context, final boolean read, final long... itemIds) {
-        return dbExec.submit(new Runnable() {
-            @Override
-            public void run() {
-                final PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                int played = read ? FeedItem.PLAYED : FeedItem.UNPLAYED;
-                adapter.setFeedItemRead(played, itemIds);
-                adapter.close();
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
-            }
+    public static Future<?> markItemPlayed(final Context context, final int played, final long... itemIds) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = new PodDBAdapter(context);
+            adapter.open();
+            adapter.setFeedItemRead(played, itemIds);
+            adapter.close();
+            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         });
     }
 
@@ -637,30 +634,27 @@ public class DBWriter {
      *
      * @param context            A context that is used for opening a database connection.
      * @param item               The FeedItem object
-     * @param read               New value of the 'read'-attribute
+     * @param played             New value of the 'read'-attribute one of FeedItem.PLAYED,
+     *                           FeedItem.NEW, FeedItem.UNPLAYED
      * @param resetMediaPosition true if this method should also reset the position of the FeedItem's FeedMedia object.
      *                           If the FeedItem has no FeedMedia object, this parameter will be ignored.
      */
-    public static Future<?> markItemRead(Context context, FeedItem item, boolean read, boolean resetMediaPosition) {
+    public static Future<?> markItemPlayed(Context context, FeedItem item, int played, boolean resetMediaPosition) {
         long mediaId = (item.hasMedia()) ? item.getMedia().getId() : 0;
-        return markItemRead(context, item.getId(), read, mediaId, resetMediaPosition);
+        return markItemPlayed(context, item.getId(), played, mediaId, resetMediaPosition);
     }
 
-    private static Future<?> markItemRead(final Context context, final long itemId,
-                                          final boolean read, final long mediaId,
-                                          final boolean resetMediaPosition) {
-        return dbExec.submit(new Runnable() {
+    private static Future<?> markItemPlayed(final Context context, final long itemId,
+                                            final int played, final long mediaId,
+                                            final boolean resetMediaPosition) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = new PodDBAdapter(context);
+            adapter.open();
+            adapter.setFeedItemRead(played, itemId, mediaId,
+                    resetMediaPosition);
+            adapter.close();
 
-            @Override
-            public void run() {
-                final PodDBAdapter adapter = new PodDBAdapter(context);
-                adapter.open();
-                adapter.setFeedItemRead(read, itemId, mediaId,
-                        resetMediaPosition);
-                adapter.close();
-
-                EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
-            }
+            EventDistributor.getInstance().sendUnreadItemsUpdateBroadcast();
         });
     }
 
