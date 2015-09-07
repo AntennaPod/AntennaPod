@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -76,26 +78,24 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         progDialog.dismiss();
-        AlertDialog.Builder alert = new AlertDialog.Builder(context)
-                .setNeutralButton(android.R.string.ok,
-                        new DialogInterface.OnClickListener() {
-
-                            @Override
-                            public void onClick(DialogInterface dialog,
-                                                int which) {
-                                dialog.dismiss();
-                            }
-                        });
         if (exception != null) {
+            AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                    .setNeutralButton(android.R.string.ok,
+                            (dialog, which) -> {
+                                dialog.dismiss();
+                            });
             alert.setTitle(R.string.export_error_label);
             alert.setMessage(exception.getMessage());
-        } else {
-            alert.setTitle(R.string.opml_export_success_title);
-            alert.setMessage(context
-                    .getString(R.string.opml_export_success_sum)
-                    + output.toString());
+            alert.create().show();
+            return;
         }
-        alert.create().show();
+
+        Uri outputUri = Uri.fromFile(output);
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OPML Export");
+        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+        sendIntent.setType("text/plain");
+        context.startActivity(Intent.createChooser(sendIntent, context.getResources().getText(R.string.share_label)));
     }
 
     @Override
