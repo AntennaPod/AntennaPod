@@ -96,15 +96,14 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
             alert.setMessage(context
                     .getString(R.string.opml_export_success_sum)
                     + output.toString())
-                    .setPositiveButton(R.string.share_label, new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int which) {Uri outputUri = Uri.fromFile(output);
-                            Intent sendIntent = new Intent(Intent.ACTION_SEND);
-                            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OPML Export");
-                            sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
-                            sendIntent.setType("text/plain");
-                            context.startActivity(Intent.createChooser(sendIntent, context.getResources().getText(R.string.share_label)));
-                        }
+                    .setPositiveButton(R.string.share_label, (dialog, which) -> {
+                        Uri outputUri = Uri.fromFile(output);
+                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OPML Export");
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        sendIntent.setType("text/plain");
+                        context.startActivity(Intent.createChooser(sendIntent,
+                                context.getResources().getText(R.string.share_label)));
                     });
         }
         alert.create().show();
