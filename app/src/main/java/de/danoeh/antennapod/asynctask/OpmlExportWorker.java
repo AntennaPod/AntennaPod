@@ -78,24 +78,36 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
     @Override
     protected void onPostExecute(Void result) {
         progDialog.dismiss();
-        if (exception != null) {
-            AlertDialog.Builder alert = new AlertDialog.Builder(context)
-                    .setNeutralButton(android.R.string.ok,
-                            (dialog, which) -> {
+        AlertDialog.Builder alert = new AlertDialog.Builder(context)
+                .setNeutralButton(android.R.string.ok,
+                        new DialogInterface.OnClickListener() {
+
+                            @Override
+                            public void onClick(DialogInterface dialog,
+                                                int which) {
                                 dialog.dismiss();
-                            });
+                            }
+                        });
+        if (exception != null) {
             alert.setTitle(R.string.export_error_label);
             alert.setMessage(exception.getMessage());
-            alert.create().show();
-            return;
+        } else {
+            alert.setTitle(R.string.opml_export_success_title);
+            alert.setMessage(context
+                    .getString(R.string.opml_export_success_sum)
+                    + output.toString())
+                    .setPositiveButton(R.string.share_label, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {Uri outputUri = Uri.fromFile(output);
+                            Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                            sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OPML Export");
+                            sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                            sendIntent.setType("text/plain");
+                            context.startActivity(Intent.createChooser(sendIntent, context.getResources().getText(R.string.share_label)));
+                        }
+                    });
         }
-
-        Uri outputUri = Uri.fromFile(output);
-        Intent sendIntent = new Intent(Intent.ACTION_SEND);
-        sendIntent.putExtra(Intent.EXTRA_SUBJECT, "OPML Export");
-        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
-        sendIntent.setType("text/plain");
-        context.startActivity(Intent.createChooser(sendIntent, context.getResources().getText(R.string.share_label)));
+        alert.create().show();
     }
 
     @Override
