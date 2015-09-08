@@ -104,9 +104,9 @@ public class EpisodesFragment extends Fragment {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case POS_ALL_EPISODES:
-                    return resources.getString(R.string.all_episodes_label);
+                    return resources.getString(R.string.all_episodes_short_label);
                 case POS_NEW_EPISODES:
-                    return resources.getString(R.string.new_episodes_label);
+                    return resources.getString(R.string.new_episodes_short_label);
                 default:
                     return super.getPageTitle(position);
             }
