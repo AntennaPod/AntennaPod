@@ -95,6 +95,7 @@ public class PodDBAdapter {
     public static final String KEY_PLAYBACK_COMPLETION_DATE = "playback_completion_date";
     public static final String KEY_AUTO_DOWNLOAD = "auto_download";
     public static final String KEY_AUTO_DELETE_ACTION = "auto_delete_action";
+    public static final String KEY_PLAYBACK_SPEED = "playback_speed";
     public static final String KEY_PLAYED_DURATION = "played_duration";
     public static final String KEY_USERNAME = "username";
     public static final String KEY_PASSWORD = "password";
@@ -134,7 +135,8 @@ public class PodDBAdapter {
             + KEY_NEXT_PAGE_LINK + " TEXT,"
             + KEY_HIDE + " TEXT,"
             + KEY_LAST_UPDATE_FAILED + " INTEGER DEFAULT 0,"
-            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0)";
+            + KEY_AUTO_DELETE_ACTION + " INTEGER DEFAULT 0,"
+            + KEY_PLAYBACK_SPEED + " TEXT)";
 
     public static final String CREATE_TABLE_FEED_ITEMS = "CREATE TABLE "
             + TABLE_NAME_FEED_ITEMS + " (" + TABLE_PRIMARY_KEY + KEY_TITLE
@@ -230,8 +232,9 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_HIDE,
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
+            TABLE_NAME_FEEDS + "." + KEY_PLAYBACK_SPEED,
     };
-    
+	
     /**
      * Select all columns from the feeditems-table except description and
      * content-encoded.
@@ -378,6 +381,7 @@ public class PodDBAdapter {
         ContentValues values = new ContentValues();
         values.put(KEY_AUTO_DOWNLOAD, prefs.getAutoDownload());
         values.put(KEY_AUTO_DELETE_ACTION,prefs.getAutoDeleteAction().ordinal());
+        values.put(KEY_PLAYBACK_SPEED,prefs.getPlaybackSpeed());
         values.put(KEY_USERNAME, prefs.getUsername());
         values.put(KEY_PASSWORD, prefs.getPassword());
         db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(prefs.getFeedID())});
@@ -1439,7 +1443,7 @@ public class PodDBAdapter {
      */
     private static class PodDBHelper extends SQLiteOpenHelper {
 
-        private final static int VERSION = 1040001;
+        private final static int VERSION = 1040002;
 
         private Context context;
 
@@ -1672,6 +1676,10 @@ public class PodDBAdapter {
             }
             if(oldVersion < 1040001) {
                 db.execSQL(CREATE_TABLE_FAVORITES);
+			}
+            if(oldVersion < 1040002) {
+                db.execSQL("ALTER TABLE " + PodDBAdapter.TABLE_NAME_FEEDS
+                        + " ADD COLUMN " + PodDBAdapter.KEY_PLAYBACK_SPEED + " INTEGER DEFAULT 0");
             }
             EventBus.getDefault().post(ProgressEvent.end());
         }

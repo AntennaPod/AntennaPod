@@ -82,6 +82,8 @@
     <string name="auto_download_apply_to_items_title">Apply to Previous Episodes</string>
     <string name="auto_download_apply_to_items_message">The new <i>Auto Download</i> setting will automatically be applied to new episodes.\nDo you also want to apply it to previously published episodes?</string>
     <string name="auto_delete_label">Auto Delete Episode\n(override global default)</string>
+    <string name="auto_playback_speed_label">Playback Speed\n(override global default)</string>
+    <string name="feed_playback_speed_default">Default</string>
     <string name="parallel_downloads_suffix">\u0020parallel downloads</string>
     <string name="feed_auto_download_global">Global</string>
     <string name="feed_auto_download_always">Always</string>

@@ -576,6 +576,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
     private void updateButPlaybackSpeed() {
         if (controller != null && controller.canSetPlaybackSpeed()) {
+            //Feed feed = <must somehow get feed here!!>
+            //butPlaybackSpeed.setText(feed.getPreferences().getCurrentPlaybackSpeed());
             butPlaybackSpeed.setText(UserPreferences.getPlaybackSpeed());
         }
     }

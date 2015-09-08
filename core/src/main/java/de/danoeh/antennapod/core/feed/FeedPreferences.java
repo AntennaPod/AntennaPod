@@ -22,13 +22,15 @@ public class FeedPreferences {
         NO
     }
     private AutoDeleteAction auto_delete_action;
+    private String playback_speed;
     private String username;
     private String password;
 
-    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String username, String password) {
+    public FeedPreferences(long feedID, boolean autoDownload, AutoDeleteAction auto_delete_action, String playback_speed, String username, String password) {
         this.feedID = feedID;
         this.autoDownload = autoDownload;
         this.auto_delete_action = auto_delete_action;
+        this.playback_speed = playback_speed;
         this.username = username;
         this.password = password;
     }
@@ -39,6 +41,7 @@ public class FeedPreferences {
         int indexAutoDeleteAction = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DELETE_ACTION);
         int indexUsername = cursor.getColumnIndex(PodDBAdapter.KEY_USERNAME);
         int indexPassword = cursor.getColumnIndex(PodDBAdapter.KEY_PASSWORD);
+        int indexPlaybackSpeed = cursor.getColumnIndex(PodDBAdapter.KEY_PLAYBACK_SPEED);
 
         long feedId = cursor.getLong(indexId);
         boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
@@ -46,13 +49,14 @@ public class FeedPreferences {
         AutoDeleteAction autoDeleteAction = AutoDeleteAction.values()[autoDeleteActionIndex];
         String username = cursor.getString(indexUsername);
         String password = cursor.getString(indexPassword);
-        return new FeedPreferences(feedId, autoDownload, autoDeleteAction, username, password);
+        String playbackSpeed = cursor.getString(indexPlaybackSpeed);
+        return new FeedPreferences(feedId, autoDownload, autoDeleteAction, playbackSpeed, username, password);
     }
 
 
 
     /**
-     * Compare another FeedPreferences with this one. The feedID, autoDownload and AutoDeleteAction attribute are excluded from the
+     * Compare another FeedPreferences with this one. The feedID, autoDownload, AutoDeleteAction and PlaybackSpeed attribute are excluded from the
      * comparison.
      *
      * @return True if the two objects are different.
@@ -70,7 +74,7 @@ public class FeedPreferences {
     }
 
     /**
-     * Update this FeedPreferences object from another one. The feedID, autoDownload and AutoDeleteAction attributes are excluded
+     * Update this FeedPreferences object from another one. The feedID, autoDownload, AutoDeleteAction and PlaybackSpeed attributes are excluded
      * from the update.
      */
     public void updateFromOther(FeedPreferences other) {
@@ -116,6 +120,21 @@ public class FeedPreferences {
                 return false;
         }
         return false; // TODO - add exceptions here
+    }
+
+    public String getPlaybackSpeed() {
+        return playback_speed;
+    }
+
+    public void setPlaybackSpeed(String playback_speed) {
+        this.playback_speed = playback_speed;
+    }
+
+    public String getCurrentPlaybackSpeed() {
+        if (playback_speed.equals("GLOBAL")) {
+            return UserPreferences.getPlaybackSpeed();
+        }
+        return playback_speed;
     }
 
     public void save(Context context) {

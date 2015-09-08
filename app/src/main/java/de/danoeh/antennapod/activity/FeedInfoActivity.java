@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -27,6 +28,8 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.joanzapata.iconify.Iconify;
+
+import java.util.Arrays;
 
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.dialog.ConfirmationDialog;
@@ -48,6 +51,7 @@ import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 public class FeedInfoActivity extends ActionBarActivity {
     private static final String TAG = "FeedInfoActivity";
     private boolean autoDeleteChanged = false;
+    private boolean PlaybackSpeedChanged = false;
 
     public static final String EXTRA_FEED_ID = "de.danoeh.antennapod.extra.feedId";
 
@@ -63,6 +67,8 @@ public class FeedInfoActivity extends ActionBarActivity {
     private EditText etxtPassword;
     private CheckBox cbxAutoDownload;
     private Spinner spnAutoDelete;
+    private Spinner spnPlaybackSpeed;
+    private String[] newPlaybackSpeedArray;
 
     private final View.OnClickListener copyUrlToClipboard = new View.OnClickListener() {
         @Override
@@ -101,8 +107,18 @@ public class FeedInfoActivity extends ActionBarActivity {
         txtvUrl = (TextView) findViewById(R.id.txtvUrl);
         cbxAutoDownload = (CheckBox) findViewById(R.id.cbxAutoDownload);
         spnAutoDelete = (Spinner) findViewById(R.id.spnAutoDelete);
+        spnPlaybackSpeed = (Spinner) findViewById(R.id.spnPlaybackSpeed);
         etxtUsername = (EditText) findViewById(R.id.etxtUsername);
         etxtPassword = (EditText) findViewById(R.id.etxtPassword);
+
+        // Use existing playback speed list but prepend it with a 'Default' entry
+        String[] playbackSpeedArray = getResources().getStringArray(R.array.playback_speed_values);
+        newPlaybackSpeedArray = new String[playbackSpeedArray.length+1];
+        newPlaybackSpeedArray[0] = getResources().getString(R.string.feed_playback_speed_default);
+        System.arraycopy(playbackSpeedArray, 0, newPlaybackSpeedArray, 1, playbackSpeedArray.length);
+        ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, newPlaybackSpeedArray);
+        spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item); // The drop down view
+        spnPlaybackSpeed.setAdapter(spinnerArrayAdapter);
 
         txtvUrl.setOnClickListener(copyUrlToClipboard);
 
@@ -191,6 +207,22 @@ public class FeedInfoActivity extends ActionBarActivity {
                     });
                     spnAutoDelete.setSelection(prefs.getAutoDeleteAction().ordinal());
 
+                    spnPlaybackSpeed.setOnItemSelectedListener(new OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+                            String playback_speed = parent.getSelectedItem().toString();
+                            int playback_speed_index = parent.getSelectedItemPosition();
+                            feed.getPreferences().setPlaybackSpeed(playback_speed);// p
+                            PlaybackSpeedChanged = true;
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> parent) {
+                            // Another interface callback
+                        }
+                    });
+                    spnPlaybackSpeed.setSelection(Arrays.asList(newPlaybackSpeedArray).indexOf(prefs.getPlaybackSpeed()));
+
                     etxtUsername.setText(prefs.getUsername());
                     etxtPassword.setText(prefs.getPassword());
 
@@ -237,11 +269,12 @@ public class FeedInfoActivity extends ActionBarActivity {
                 prefs.setUsername(etxtUsername.getText().toString());
                 prefs.setPassword(etxtPassword.getText().toString());
             }
-            if (authInfoChanged || autoDeleteChanged) {
+            if (authInfoChanged || autoDeleteChanged || PlaybackSpeedChanged) {
                 DBWriter.setFeedPreferences(prefs);
             }
             authInfoChanged = false;
             autoDeleteChanged = false;
+            PlaybackSpeedChanged = false;
         }
     }
 
