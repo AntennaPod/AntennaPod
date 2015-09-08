@@ -12,7 +12,6 @@
     <string name="episodes_label">Episodes</string>
     <string name="new_episodes_label">New Episodes</string>
     <string name="all_episodes_label">All Episodes</string>
-    <string name="new_episodes_short_label">New</string>
     <string name="all_episodes_short_label">All</string>
     <string name="new_label">New</string>
     <string name="waiting_list_label">Waiting List</string>

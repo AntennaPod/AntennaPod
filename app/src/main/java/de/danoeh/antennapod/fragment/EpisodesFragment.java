@@ -106,7 +106,7 @@ public class EpisodesFragment extends Fragment {
                 case POS_ALL_EPISODES:
                     return resources.getString(R.string.all_episodes_short_label);
                 case POS_NEW_EPISODES:
-                    return resources.getString(R.string.new_episodes_short_label);
+                    return resources.getString(R.string.new_label);
                 default:
                     return super.getPageTitle(position);
             }
