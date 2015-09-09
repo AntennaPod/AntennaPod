@@ -63,7 +63,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
-                R.layout.new_episodes_fragment, R.string.new_episodes_label);
+                R.layout.new_episodes_fragment);
 
         listView.setRemoveListener(new DragSortListView.RemoveListener() {
             @Override

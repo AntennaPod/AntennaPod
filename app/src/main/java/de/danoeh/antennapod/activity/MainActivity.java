@@ -45,11 +45,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.ExternalPlayerFragment;
 import de.danoeh.antennapod.fragment.ItemlistFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
@@ -82,8 +81,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
 
     public static final String[] NAV_DRAWER_TAGS = {
             QueueFragment.TAG,
-            NewEpisodesFragment.TAG,
-            AllEpisodesFragment.TAG,
+            EpisodesFragment.TAG,
             DownloadsFragment.TAG,
             PlaybackHistoryFragment.TAG,
             AddFeedFragment.TAG
@@ -169,10 +167,17 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             transaction.replace(R.id.main_view, mainFragment);
         } else {
             String lastFragment = getLastNavFragment();
-            if(ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
+            if (ArrayUtils.contains(NAV_DRAWER_TAGS, lastFragment)) {
                 loadFragment(lastFragment, null);
             } else {
-                loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                try {
+                    loadFeedFragmentById(Integer.valueOf(lastFragment), null);
+                } catch (NumberFormatException e) {
+                    // it's not a number, this happens if we removed
+                    // a label from the NAV_DRAWER_TAGS
+                    // give them a nice default...
+                    loadFragment(QueueFragment.TAG, null);
+                }
             }
         }
         externalPlayerFragment = new ExternalPlayerFragment();
@@ -281,11 +286,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
             case QueueFragment.TAG:
                 fragment = new QueueFragment();
                 break;
-            case NewEpisodesFragment.TAG:
-                fragment = new NewEpisodesFragment();
-                break;
-            case AllEpisodesFragment.TAG:
-                fragment = new AllEpisodesFragment();
+            case EpisodesFragment.TAG:
+                fragment = new EpisodesFragment();
                 break;
             case DownloadsFragment.TAG:
                 fragment = new DownloadsFragment();
@@ -295,6 +297,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                 break;
             case AddFeedFragment.TAG:
                 fragment = new AddFeedFragment();
+                break;
+            default:
+                // default to the queue
+                fragment = new QueueFragment();
                 break;
         }
         currentTitle = navAdapter.getLabel(tag);
@@ -538,7 +544,7 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
                     protected void onPostExecute(Void result) {
                         super.onPostExecute(result);
                         if(getSelectedNavListIndex() == position) {
-                            loadFragment(NewEpisodesFragment.TAG, null);
+                            loadFragment(EpisodesFragment.TAG, null);
                         }
                     }
                 };

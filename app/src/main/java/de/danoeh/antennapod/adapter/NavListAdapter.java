@@ -33,6 +33,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.fragment.AddFeedFragment;
 import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.NewEpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
@@ -93,6 +94,9 @@ public class NavListAdapter extends BaseAdapter
                 break;
             case NewEpisodesFragment.TAG:
                 icon = R.attr.ic_new;
+                break;
+            case EpisodesFragment.TAG:
+                icon = R.attr.feed;
                 break;
             case AllEpisodesFragment.TAG:
                 icon = R.attr.feed;
@@ -212,7 +216,7 @@ public class NavListAdapter extends BaseAdapter
             } else {
                 holder.count.setVisibility(View.GONE);
             }
-        } else if (tags.get(position).equals(NewEpisodesFragment.TAG)) {
+        } else if (tags.get(position).equals(EpisodesFragment.TAG)) {
             int unreadItems = itemAccess.getNumberOfNewItems();
             if (unreadItems > 0) {
                 holder.count.setVisibility(View.VISIBLE);

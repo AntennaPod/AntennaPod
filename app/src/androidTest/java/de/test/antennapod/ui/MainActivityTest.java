@@ -18,9 +18,8 @@ import de.danoeh.antennapod.activity.OnlineFeedViewActivity;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.fragment.AllEpisodesFragment;
 import de.danoeh.antennapod.fragment.DownloadsFragment;
-import de.danoeh.antennapod.fragment.NewEpisodesFragment;
+import de.danoeh.antennapod.fragment.EpisodesFragment;
 import de.danoeh.antennapod.fragment.PlaybackHistoryFragment;
 import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.preferences.PreferenceController;
@@ -98,17 +97,11 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.waitForView(android.R.id.list);
         assertEquals(solo.getString(R.string.queue_label), getActionbarTitle());
 
-        // new episodes
+        // episodes
         openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.new_episodes_label));
+        solo.clickOnText(solo.getString(R.string.episodes_label));
         solo.waitForView(android.R.id.list);
-        assertEquals(solo.getString(R.string.new_episodes_label), getActionbarTitle());
-
-        // all episodes
-        openNavDrawer();
-        solo.clickOnText(solo.getString(R.string.all_episodes_label));
-        solo.waitForView(android.R.id.list);
-        assertEquals(solo.getString(R.string.all_episodes_label), getActionbarTitle());
+        assertEquals(solo.getString(R.string.episodes_label), getActionbarTitle());
 
         // downloads
         openNavDrawer();
@@ -156,18 +149,18 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         openNavDrawer();
         solo.clickLongOnText(solo.getString(R.string.queue_label));
         solo.waitForDialogToOpen();
-        solo.clickOnText(solo.getString(R.string.all_episodes_label));
+        solo.clickOnText(solo.getString(R.string.episodes_label));
         solo.clickOnText(solo.getString(R.string.playback_history_label));
         solo.clickOnText(solo.getString(R.string.confirm_label));
         solo.waitForDialogToClose();
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(2, hidden.size());
-        assertTrue(hidden.contains(AllEpisodesFragment.TAG));
+        assertTrue(hidden.contains(EpisodesFragment.TAG));
         assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
     }
 
     public void testDrawerPreferencesUnhideSomeElements() {
-        List<String> hidden = Arrays.asList(NewEpisodesFragment.TAG, DownloadsFragment.TAG);
+        List<String> hidden = Arrays.asList(PlaybackHistoryFragment.TAG, DownloadsFragment.TAG);
         UserPreferences.setHiddenDrawerItems(getInstrumentation().getTargetContext(), hidden);
         openNavDrawer();
         solo.clickLongOnText(solo.getString(R.string.queue_label));
@@ -179,7 +172,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         hidden = UserPreferences.getHiddenDrawerItems();
         assertEquals(2, hidden.size());
         assertTrue(hidden.contains(QueueFragment.TAG));
-        assertTrue(hidden.contains(NewEpisodesFragment.TAG));
+        assertTrue(hidden.contains(PlaybackHistoryFragment.TAG));
     }
 
     public void testDrawerPreferencesHideAllElements() {
@@ -195,7 +188,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo.clickOnText(solo.getString(R.string.confirm_label));
         solo.waitForDialogToClose();
         List<String> hidden = UserPreferences.getHiddenDrawerItems();
-        assertEquals(6, hidden.size());
+        assertEquals(titles.length, hidden.size());
         for(String tag : MainActivity.NAV_DRAWER_TAGS) {
             assertTrue(hidden.contains(tag));
         }

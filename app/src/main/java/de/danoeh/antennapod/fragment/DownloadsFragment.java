@@ -1,7 +1,10 @@
 package de.danoeh.antennapod.fragment;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -25,15 +28,24 @@ public class DownloadsFragment extends Fragment {
     public static final int POS_COMPLETED = 1;
     public static final int POS_LOG = 2;
 
-    private ViewPager pager;
+    private static final String PREF_LAST_TAB_POSITION = "tab_position";
+
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         super.onCreateView(inflater, container, savedInstanceState);
         View root = inflater.inflate(R.layout.pager_fragment, container, false);
-        pager = (ViewPager) root.findViewById(R.id.pager);
+
+        viewPager = (ViewPager)root.findViewById(R.id.viewpager);
         DownloadsPagerAdapter pagerAdapter = new DownloadsPagerAdapter(getChildFragmentManager(), getResources());
-        pager.setAdapter(pagerAdapter);
+        viewPager.setAdapter(pagerAdapter);
+
+        // Give the TabLayout the ViewPager
+        tabLayout = (TabLayout) root.findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(viewPager);
+
         return root;
     }
 
@@ -42,8 +54,28 @@ public class DownloadsFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
         if (getArguments() != null) {
             int tab = getArguments().getInt(ARG_SELECTED_TAB);
-            pager.setCurrentItem(tab, false);
+            viewPager.setCurrentItem(tab, false);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        // save our tab selection
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt(PREF_LAST_TAB_POSITION, tabLayout.getSelectedTabPosition());
+        editor.apply();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+
+        // restore our last position
+        SharedPreferences prefs = getActivity().getSharedPreferences(TAG, Context.MODE_PRIVATE);
+        int lastPosition = prefs.getInt(PREF_LAST_TAB_POSITION, 0);
+        viewPager.setCurrentItem(lastPosition);
     }
 
     public class DownloadsPagerAdapter extends FragmentPagerAdapter {
