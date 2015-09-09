@@ -84,6 +84,7 @@
     <string name="feed_auto_download_global">Global</string>
     <string name="feed_auto_download_always">Always</string>
     <string name="feed_auto_download_never">Never</string>
+    <string name="send_label">Send...</string>
 
     <!-- 'Add Feed' Activity labels -->
     <string name="feedurl_label">Feed URL</string>
