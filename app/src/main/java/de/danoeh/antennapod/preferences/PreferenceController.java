@@ -20,8 +20,9 @@ import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
 import android.widget.EditText;
-import android.widget.TimePicker;
 import android.widget.Toast;
+
+import com.afollestad.materialdialogs.MaterialDialog;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -586,17 +587,15 @@ public class PreferenceController {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(context);
         builder.setTitle(R.string.drawer_preferences);
-        builder.setMultiChoiceItems(navTitles, checked, new DialogInterface.OnMultiChoiceClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which, boolean isChecked) {
-                if (isChecked) {
-                    hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
-                } else {
-                    hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
-                }
+        builder.setMultiChoiceItems(navTitles, checked, (dialog, which, isChecked) -> {
+            if (isChecked) {
+                hiddenDrawerItems.remove(NAV_DRAWER_TAGS[which]);
+            } else {
+                hiddenDrawerItems.add(NAV_DRAWER_TAGS[which]);
             }
         });
-        builder.setPositiveButton(R.string.confirm_label, new DialogInterface.OnClickListener() {
+        builder.setPositiveButton(R.string.confirm_label, new DialogInterface
+                .OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 UserPreferences.setHiddenDrawerItems(context, hiddenDrawerItems);
@@ -609,69 +608,64 @@ public class PreferenceController {
     private void showUpdateIntervalTimePreferencesDialog() {
         final Context context = ui.getActivity();
 
-        AlertDialog.Builder builder = new AlertDialog.Builder(context);
-        builder.setTitle(R.string.pref_autoUpdateIntervallOrTime_title);
-        builder.setMessage(R.string.pref_autoUpdateIntervallOrTime_message);
-        builder.setNegativeButton(R.string.pref_autoUpdateIntervallOrTime_Disable, new DialogInterface.OnClickListener() {
+        MaterialDialog.Builder builder = new MaterialDialog.Builder(context);
+        builder.title(R.string.pref_autoUpdateIntervallOrTime_title);
+        builder.content(R.string.pref_autoUpdateIntervallOrTime_message);
+        builder.positiveText(R.string.pref_autoUpdateIntervallOrTime_Interval);
+        builder.negativeText(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay);
+        builder.neutralText(R.string.pref_autoUpdateIntervallOrTime_Disable);
+        builder.callback(new MaterialDialog.ButtonCallback() {
             @Override
-            public void onClick(DialogInterface dialog, int which) {
-                UserPreferences.setUpdateInterval(0);
-            }
-        });
-        builder.setNeutralButton(R.string.pref_autoUpdateIntervallOrTime_Interval, new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
+            public void onPositive(MaterialDialog dialog) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(context);
                 builder.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_Interval));
                 final String[] values = context.getResources().getStringArray(R.array.update_intervall_values);
                 final String[] entries = getUpdateIntervalEntries(values);
-                builder.setSingleChoiceItems(entries, -1, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int hours = Integer.valueOf(values[which]);
-                        UserPreferences.setUpdateInterval(hours);
-                        dialog.dismiss();
-                    }
+                builder.setSingleChoiceItems(entries, -1, (dialog1, which) -> {
+                    int hours = Integer.valueOf(values[which]);
+                    UserPreferences.setUpdateInterval(hours);
+                    dialog1.dismiss();
                 });
                 builder.setNegativeButton(context.getString(R.string.cancel_label), null);
                 builder.show();
             }
-        });
-        builder.setPositiveButton(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int which) {
-                        int hourOfDay = 7, minute = 0;
-                        int[] updateTime = UserPreferences.getUpdateTimeOfDay();
-                        if (updateTime.length == 2) {
-                            hourOfDay = updateTime[0];
-                            minute = updateTime[1];
-                        }
-                        TimePickerDialog timePickerDialog = new TimePickerDialog(context, new TimePickerDialog.OnTimeSetListener() {
-                            @Override
-                            public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                if (view.getTag() == null) { // onTimeSet() may get called twice!
-                                    view.setTag("TAGGED");
-                                    UserPreferences.setUpdateTimeOfDay(hourOfDay, minute);
-                                }
+
+            @Override
+            public void onNegative(MaterialDialog dialog) {
+                int hourOfDay = 7, minute = 0;
+                int[] updateTime = UserPreferences.getUpdateTimeOfDay();
+                if (updateTime.length == 2) {
+                    hourOfDay = updateTime[0];
+                    minute = updateTime[1];
+                }
+                TimePickerDialog timePickerDialog = new TimePickerDialog(context,
+                        (view, selectedHourOfDay, selectedMinute) -> {
+                            if (view.getTag() == null) { // onTimeSet() may get called twice!
+                                view.setTag("TAGGED");
+                                UserPreferences.setUpdateTimeOfDay(selectedHourOfDay, selectedMinute);
                             }
                         }, hourOfDay, minute, DateFormat.is24HourFormat(context));
-                        timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
-                        timePickerDialog.show();
-                    }
-                }
+                timePickerDialog.setTitle(context.getString(R.string.pref_autoUpdateIntervallOrTime_TimeOfDay));
+                timePickerDialog.show();
+            }
 
-        );
+            @Override
+            public void onNeutral(MaterialDialog dialog) {
+                UserPreferences.setUpdateInterval(0);
+            }
+        });
+        builder.forceStacking(true);
         builder.show();
     }
 
 
-    public static interface PreferenceUI {
+    public interface PreferenceUI {
 
         /**
          * Finds a preference based on its key.
          */
-        public Preference findPreference(CharSequence key);
+        Preference findPreference(CharSequence key);
 
-        public Activity getActivity();
+        Activity getActivity();
     }
 }
