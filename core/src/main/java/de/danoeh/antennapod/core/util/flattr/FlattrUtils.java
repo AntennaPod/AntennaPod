@@ -167,7 +167,7 @@ public class FlattrUtils {
         deleteToken();
         FlattrServiceCreator.deleteFlattrService();
         showRevokeDialog(context);
-        DBWriter.clearAllFlattrStatus(context);
+        DBWriter.clearAllFlattrStatus();
     }
 
     // ------------------------------------------------ DIALOGS

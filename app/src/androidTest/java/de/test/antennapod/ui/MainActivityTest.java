@@ -44,8 +44,10 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         solo = new Solo(getInstrumentation(), getActivity());
         uiTestUtils = new UITestUtils(getInstrumentation().getTargetContext());
         uiTestUtils.setup();
-        // create database
-        PodDBAdapter adapter = new PodDBAdapter(getInstrumentation().getTargetContext());
+
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
@@ -59,7 +61,7 @@ public class MainActivityTest extends ActivityInstrumentationTestCase2<MainActiv
         uiTestUtils.tearDown();
         solo.finishOpenedActivities();
 
-        PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+        PodDBAdapter.deleteDatabase();
 
         // reset preferences
         prefs.edit().clear().commit();

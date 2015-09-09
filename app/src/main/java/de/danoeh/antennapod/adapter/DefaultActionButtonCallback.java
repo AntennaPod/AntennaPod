@@ -57,7 +57,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             final FeedMedia media = item.getMedia();
             boolean isDownloading = DownloadRequester.getInstance().isDownloadingFile(media);
             if (!isDownloading && !media.isDownloaded()) {
-                LongList queueIds = DBReader.getQueueIDList(context);
+                LongList queueIds = DBReader.getQueueIDList();
                 if (NetworkUtils.isDownloadAllowed() || userAllowedMobileDownloads()) {
                     try {
                         DBTasks.downloadFeedItems(context, item);
@@ -75,7 +75,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             } else if (isDownloading) {
                 DownloadRequester.getInstance().cancelDownload(context, media);
                 if(UserPreferences.isEnableAutodownload()) {
-                    DBWriter.setFeedItemAutoDownload(context, media.getItem(), false);
+                    DBWriter.setFeedItemAutoDownload(media.getItem(), false);
                     Toast.makeText(context, R.string.download_canceled_autodownload_enabled_msg, Toast.LENGTH_LONG).show();
                 } else {
                     Toast.makeText(context, R.string.download_canceled_msg, Toast.LENGTH_LONG).show();
@@ -93,7 +93,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
             }
         } else {
             if (!item.isPlayed()) {
-                DBWriter.markItemPlayed(context, item, FeedItem.PLAYED, true);
+                DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
             }
         }
     }
@@ -117,7 +117,7 @@ public class DefaultActionButtonCallback implements ActionButtonCallback {
                                 }
                             }
                         });
-        LongList queueIds = DBReader.getQueueIDList(context);
+        LongList queueIds = DBReader.getQueueIDList();
         if(!queueIds.contains(item.getId())) {
             builder.setNeutralButton(context.getText(R.string.confirm_mobile_download_dialog_only_add_to_queue),
                     new DialogInterface.OnClickListener() {

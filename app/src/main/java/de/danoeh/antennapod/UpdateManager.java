@@ -65,9 +65,9 @@ public class UpdateManager {
             // from now on, Glide will handle caching images
             new Thread() {
                 public void run() {
-                    List<Feed> feeds = DBReader.getFeedList(context);
+                    List<Feed> feeds = DBReader.getFeedList();
                     for (Feed podcast : feeds) {
-                        List<FeedItem> episodes = DBReader.getFeedItemList(context, podcast);
+                        List<FeedItem> episodes = DBReader.getFeedItemList(podcast);
                         for (FeedItem episode : episodes) {
                             FeedImage image = episode.getImage();
                             if (image != null && image.isDownloaded() && image.getFile_url() != null) {
@@ -76,7 +76,7 @@ public class UpdateManager {
                                     imageFile.delete();
                                 }
                                 image.setFile_url(null); // calls setDownloaded(false)
-                                DBWriter.setFeedImage(context, image);
+                                DBWriter.setFeedImage(image);
                             }
                         }
                     }

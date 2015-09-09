@@ -1,7 +1,6 @@
 package de.test.antennapod.service.playback;
 
 import android.content.Context;
-import android.media.RemoteControlClient;
 import android.test.InstrumentationTestCase;
 
 import junit.framework.AssertionFailedError;
@@ -45,7 +44,7 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext());
+        PodDBAdapter.deleteDatabase();
         httpServer.stop();
     }
 
@@ -54,16 +53,16 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         super.setUp();
         assertionError = null;
 
-        final Context context = getInstrumentation().getTargetContext();
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        // make sure database is created
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
         httpServer = new HTTPBin();
         httpServer.start();
 
+        final Context context = getInstrumentation().getTargetContext();
         File cacheDir = context.getExternalFilesDir("testFiles");
         if (cacheDir == null)
             cacheDir = context.getExternalFilesDir("testFiles");
@@ -119,12 +118,12 @@ public class PlaybackServiceMediaPlayerTest extends InstrumentationTestCase {
         Feed f = new Feed(0, new Date(), "f", "l", "d", null, null, null, null, "i", null, null, "l", false);
         FeedPreferences prefs = new FeedPreferences(f.getId(), false, FeedPreferences.AutoDeleteAction.NO, null, null);
         f.setPreferences(prefs);
-        f.setItems(new ArrayList<FeedItem>());
+        f.setItems(new ArrayList<>());
         FeedItem i = new FeedItem(0, "t", "i", "l", new Date(), FeedItem.UNPLAYED, f);
         f.getItems().add(i);
         FeedMedia media = new FeedMedia(0, i, 0, 0, 0, "audio/wav", fileUrl, downloadUrl, fileUrl != null, null, 0);
         i.setMedia(media);
-        PodDBAdapter adapter = new PodDBAdapter(c);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(f);
         assertTrue(media.getId() != 0);

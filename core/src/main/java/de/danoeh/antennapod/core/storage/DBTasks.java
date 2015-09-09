@@ -68,7 +68,7 @@ public final class DBTasks {
      * @param downloadUrl URL of the feed.
      */
     public static void removeFeedWithDownloadUrl(Context context, String downloadUrl) {
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         Cursor cursor = adapter.getFeedCursorDownloadUrls();
         long feedID = 0;
@@ -163,7 +163,7 @@ public final class DBTasks {
                     if (feeds != null) {
                         refreshFeeds(context, feeds);
                     } else {
-                        refreshFeeds(context, DBReader.getFeedList(context));
+                        refreshFeeds(context, DBReader.getFeedList());
                     }
                     isRefreshing.set(false);
 
@@ -196,7 +196,6 @@ public final class DBTasks {
             } catch (DownloadRequestException e) {
                 e.printStackTrace();
                 DBWriter.addDownloadStatus(
-                        context,
                         new DownloadStatus(feed, feed
                                 .getHumanReadableIdentifier(),
                                 DownloadError.ERROR_REQUEST_ERROR, false, e
@@ -220,7 +219,6 @@ public final class DBTasks {
         } catch (DownloadRequestException e) {
             e.printStackTrace();
             DBWriter.addDownloadStatus(
-                    context,
                     new DownloadStatus(feed, feed
                             .getHumanReadableIdentifier(),
                             DownloadError.ERROR_REQUEST_ERROR, false, e
@@ -287,7 +285,7 @@ public final class DBTasks {
                 "The feedmanager was notified about a missing episode. It will update its database now.");
         media.setDownloaded(false);
         media.setFile_url(null);
-        DBWriter.setFeedMedia(context, media);
+        DBWriter.setFeedMedia(media);
         EventDistributor.getInstance().sendFeedUpdateBroadcast();
     }
 
@@ -299,7 +297,7 @@ public final class DBTasks {
     public static void downloadAllItemsInQueue(final Context context) {
         new Thread() {
             public void run() {
-                List<FeedItem> queue = DBReader.getQueue(context);
+                List<FeedItem> queue = DBReader.getQueue();
                 if (!queue.isEmpty()) {
                     try {
                         downloadFeedItems(context,
@@ -336,7 +334,7 @@ public final class DBTasks {
                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
                             .performCleanup(context,
                                     ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm()
-                                            .getPerformCleanupParameter(context, Arrays.asList(items)));
+                                            .getPerformCleanupParameter(Arrays.asList(items)));
                 }
 
             }.start();
@@ -350,7 +348,7 @@ public final class DBTasks {
                         requester.downloadMedia(context, item.getMedia());
                     } catch (DownloadRequestException e) {
                         e.printStackTrace();
-                        DBWriter.addDownloadStatus(context,
+                        DBWriter.addDownloadStatus(
                                 new DownloadStatus(item.getMedia(), item
                                         .getMedia()
                                         .getHumanReadableIdentifier(),
@@ -393,7 +391,7 @@ public final class DBTasks {
      */
     public static void performAutoCleanup(final Context context) {
         ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().performCleanup(context,
-                ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().getDefaultCleanupParameter(context));
+                ClientConfig.dbTasksCallbacks.getEpisodeCacheCleanupAlgorithm().getDefaultCleanupParameter());
     }
 
     /**
@@ -409,7 +407,7 @@ public final class DBTasks {
                                                    final long itemId, List<FeedItem> queue) {
         FeedItem result = null;
         if (queue == null) {
-            queue = DBReader.getQueue(context);
+            queue = DBReader.getQueue();
         }
         if (queue != null) {
             Iterator<FeedItem> iterator = queue.iterator();
@@ -434,19 +432,19 @@ public final class DBTasks {
      * @param feedItemId ID of the FeedItem
      */
     public static boolean isInQueue(Context context, final long feedItemId) {
-        LongList queue = DBReader.getQueueIDList(context);
+        LongList queue = DBReader.getQueueIDList();
         return queue.contains(feedItemId);
     }
 
     private static Feed searchFeedByIdentifyingValueOrID(Context context, PodDBAdapter adapter,
                                                          Feed feed) {
         if (feed.getId() != 0) {
-            return DBReader.getFeed(context, feed.getId(), adapter);
+            return DBReader.getFeed(feed.getId(), adapter);
         } else {
-            List<Feed> feeds = DBReader.getFeedList(context);
+            List<Feed> feeds = DBReader.getFeedList();
             for (Feed f : feeds) {
                 if (f.getIdentifyingValue().equals(feed.getIdentifyingValue())) {
-                    f.setItems(DBReader.getFeedItemList(context, f));
+                    f.setItems(DBReader.getFeedItemList(f));
                     return f;
                 }
             }
@@ -485,7 +483,7 @@ public final class DBTasks {
         List<Feed> newFeedsList = new ArrayList<Feed>();
         List<Feed> updatedFeedsList = new ArrayList<Feed>();
         Feed[] resultFeeds = new Feed[newFeeds.length];
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
 
         for (int feedIdx = 0; feedIdx < newFeeds.length; feedIdx++) {
@@ -574,7 +572,7 @@ public final class DBTasks {
 
         try {
             DBWriter.addNewFeed(context, newFeedsList.toArray(new Feed[newFeedsList.size()])).get();
-            DBWriter.setCompleteFeed(context, updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
+            DBWriter.setCompleteFeed(updatedFeedsList.toArray(new Feed[updatedFeedsList.size()])).get();
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (ExecutionException e) {
@@ -602,8 +600,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemTitles(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadFeedDataOfFeedItemlist(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -626,8 +624,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemDescriptions(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadFeedDataOfFeedItemlist(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -650,8 +648,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemContentEncoded(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadFeedDataOfFeedItemlist(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -673,8 +671,8 @@ public final class DBTasks {
             public void execute(PodDBAdapter adapter) {
                 Cursor searchResult = adapter.searchItemChapters(feedID,
                         query);
-                List<FeedItem> items = DBReader.extractItemlistFromCursor(context, searchResult);
-                DBReader.loadFeedDataOfFeedItemlist(context, items);
+                List<FeedItem> items = DBReader.extractItemlistFromCursor(searchResult);
+                DBReader.loadFeedDataOfFeedItemlist(items);
                 setResult(items);
                 searchResult.close();
             }
@@ -697,7 +695,7 @@ public final class DBTasks {
 
         @Override
         public T call() throws Exception {
-            PodDBAdapter adapter = new PodDBAdapter(context);
+            PodDBAdapter adapter = PodDBAdapter.getInstance();
             adapter.open();
             execute(adapter);
             adapter.close();

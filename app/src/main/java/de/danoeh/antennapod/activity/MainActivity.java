@@ -58,6 +58,10 @@ import de.danoeh.antennapod.fragment.QueueFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * The activity that is shown when the user launches the app.
@@ -105,6 +109,8 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     private CharSequence currentTitle;
 
     private ProgressDialog pd;
+
+    private Subscription subscription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -478,9 +484,11 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     @Override
     protected void onStop() {
         super.onStop();
-        cancelLoadTask();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
         if(pd != null) {
             pd.dismiss();
         }
@@ -551,10 +559,10 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(this, feed.getId());
+                DBWriter.markFeedSeen(feed.getId());
                 return true;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(this, feed.getId());
+                DBWriter.markFeedRead(feed.getId());
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(this, feed) {
@@ -629,33 +637,21 @@ public class MainActivity extends ActionBarActivity implements NavDrawerActivity
     };
 
     private void loadData() {
-        cancelLoadTask();
-        loadTask = new AsyncTask<Void, Void, DBReader.NavDrawerData>() {
-            @Override
-            protected DBReader.NavDrawerData doInBackground(Void... params) {
-                return DBReader.getNavDrawerData(MainActivity.this);
-            }
+        subscription = Observable.defer(() -> Observable.just(DBReader.getNavDrawerData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    boolean handleIntent = (navDrawerData == null);
 
-            @Override
-            protected void onPostExecute(DBReader.NavDrawerData result) {
-                super.onPostExecute(navDrawerData);
-                boolean handleIntent = (navDrawerData == null);
+                    navDrawerData = result;
+                    navAdapter.notifyDataSetChanged();
 
-                navDrawerData = result;
-                navAdapter.notifyDataSetChanged();
-
-                if (handleIntent) {
-                    handleNavIntent();
-                }
-            }
-        };
-        loadTask.execute();
-    }
-
-    private void cancelLoadTask() {
-        if (loadTask != null) {
-            loadTask.cancel(true);
-        }
+                    if (handleIntent) {
+                        handleNavIntent();
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
     public void onEvent(QueueEvent event) {

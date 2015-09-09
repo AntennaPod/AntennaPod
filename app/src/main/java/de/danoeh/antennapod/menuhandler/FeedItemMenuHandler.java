@@ -155,7 +155,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_read_item:
                 selectedItem.setPlayed(true);
-                DBWriter.markItemPlayed(context, selectedItem, FeedItem.PLAYED, false);
+                DBWriter.markItemPlayed(selectedItem, FeedItem.PLAYED, false);
                 if(GpodnetPreferences.loggedIn()) {
                     FeedMedia media = selectedItem.getMedia();
                     // not all items have media, Gpodder only cares about those that do
@@ -173,7 +173,7 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.mark_unread_item:
                 selectedItem.setPlayed(false);
-                DBWriter.markItemPlayed(context, selectedItem, FeedItem.UNPLAYED, false);
+                DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, false);
                 if(GpodnetPreferences.loggedIn()) {
                     GpodnetEpisodeAction actionNew = new GpodnetEpisodeAction.Builder(selectedItem, Action.NEW)
                             .currentDeviceId()
@@ -183,10 +183,10 @@ public class FeedItemMenuHandler {
                 }
                 break;
             case R.id.move_to_top_item:
-                DBWriter.moveQueueItemToTop(context, selectedItem.getId(), true);
+                DBWriter.moveQueueItemToTop(selectedItem.getId(), true);
                 return true;
             case R.id.move_to_bottom_item:
-                DBWriter.moveQueueItemToBottom(context, selectedItem.getId(), true);
+                DBWriter.moveQueueItemToBottom(selectedItem.getId(), true);
             case R.id.add_to_queue_item:
                 DBWriter.addQueueItem(context, selectedItem.getId());
                 break;
@@ -195,15 +195,15 @@ public class FeedItemMenuHandler {
                 break;
             case R.id.reset_position:
                 selectedItem.getMedia().setPosition(0);
-                DBWriter.markItemPlayed(context, selectedItem, FeedItem.UNPLAYED, true);
+                DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);
                 break;
             case R.id.activate_auto_download:
                 selectedItem.setAutoDownload(true);
-                DBWriter.setFeedItemAutoDownload(context, selectedItem, true);
+                DBWriter.setFeedItemAutoDownload(selectedItem, true);
                 break;
             case R.id.deactivate_auto_download:
                 selectedItem.setAutoDownload(false);
-                DBWriter.setFeedItemAutoDownload(context, selectedItem, false);
+                DBWriter.setFeedItemAutoDownload(selectedItem, false);
                 break;
             case R.id.visit_website_item:
                 Uri uri = Uri.parse(selectedItem.getLink());

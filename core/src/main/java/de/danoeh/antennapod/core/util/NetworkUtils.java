@@ -148,7 +148,7 @@ public class NetworkUtils {
                 }
                 subscriber.onNext(size);
                 subscriber.onCompleted();
-                DBWriter.setFeedMedia(context, media);
+                DBWriter.setFeedMedia(media);
             }
         })
                 .subscribeOn(Schedulers.newThread())

@@ -26,7 +26,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.joanzapata.iconify.Iconify;
 
 import de.danoeh.antennapod.R;
@@ -111,7 +110,7 @@ public class FeedInfoActivity extends ActionBarActivity {
 
             @Override
             protected Feed doInBackground(Long... params) {
-                return DBReader.getFeed(FeedInfoActivity.this, params[0]);
+                return DBReader.getFeed(params[0]);
             }
 
             @Override
@@ -239,7 +238,7 @@ public class FeedInfoActivity extends ActionBarActivity {
                 prefs.setPassword(etxtPassword.getText().toString());
             }
             if (authInfoChanged || autoDeleteChanged) {
-                DBWriter.setFeedPreferences(this, prefs);
+                DBWriter.setFeedPreferences(prefs);
             }
             authInfoChanged = false;
             autoDeleteChanged = false;
@@ -299,7 +298,7 @@ public class FeedInfoActivity extends ActionBarActivity {
 
         @Override
         public  void onConfirmButtonPressed(DialogInterface dialog) {
-            DBWriter.setFeedsItemsAutoDownload(context, feed, autoDownload);
+            DBWriter.setFeedsItemsAutoDownload(feed, autoDownload);
         }
     }
 

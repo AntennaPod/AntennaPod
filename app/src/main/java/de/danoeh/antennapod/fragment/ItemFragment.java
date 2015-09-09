@@ -36,7 +36,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.bumptech.glide.load.engine.DiskCacheStrategy;
 
 import java.util.List;
 
@@ -497,12 +496,12 @@ public class ItemFragment extends Fragment implements LoaderManager.LoaderCallba
         return new DBTaskLoader<Pair<FeedItem,LongList>>(getActivity()) {
             @Override
             public Pair<FeedItem,LongList> loadInBackground() {
-                FeedItem data1 = DBReader.getFeedItem(getContext(), itemID);
+                FeedItem data1 = DBReader.getFeedItem(itemID);
                 if (data1 != null) {
                     Timeline t = new Timeline(getActivity(), data1);
                     webviewData = t.processShownotes(false);
                 }
-                LongList data2 = DBReader.getQueueIDList(getContext());
+                LongList data2 = DBReader.getQueueIDList();
                 return Pair.create(data1, data2);
             }
         };

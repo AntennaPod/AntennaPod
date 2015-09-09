@@ -269,7 +269,7 @@ public class QueueFragment extends Fragment {
                         public void onConfirmButtonPressed(
                                 DialogInterface dialog) {
                             dialog.dismiss();
-                            DBWriter.clearQueue(getActivity());
+                            DBWriter.clearQueue();
                         }
                     };
                     conDialog.createNewDialog().show();
@@ -402,7 +402,7 @@ public class QueueFragment extends Fragment {
                 final FeedItem item = queue.remove(from);
                 queue.add(to, item);
                 listAdapter.notifyDataSetChanged();
-                DBWriter.moveQueueItem(getActivity(), from, to, true);
+                DBWriter.moveQueueItem(from, to, true);
             }
 
             @Override
@@ -432,10 +432,12 @@ public class QueueFragment extends Fragment {
             public void onHide(FeedItemUndoToken token) {
                 if (token != null && context != null) {
                     long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(context, itemId);
-                    FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
+                    FeedItem item = DBReader.getFeedItem(itemId);
+                    if(item != null) {
+                        FeedMedia media = item.getMedia();
+                        if (media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
+                            DBWriter.deleteFeedMediaOfItem(context, media.getId());
+                        }
                     }
                 }
             }
@@ -608,7 +610,7 @@ public class QueueFragment extends Fragment {
         protected List<FeedItem> doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                return DBReader.getQueue(context);
+                return DBReader.getQueue();
             }
             return null;
         }

@@ -56,7 +56,7 @@ public abstract class PlaybackController {
     private final Activity activity;
 
     private PlaybackService playbackService;
-    private Playable media;
+    protected Playable media;
     private PlayerStatus status;
 
     private ScheduledThreadPoolExecutor schedExecutor;
@@ -479,8 +479,10 @@ public abstract class PlaybackController {
 
     private void updatePlayButtonAppearance(int resource, CharSequence contentDescription) {
         ImageButton butPlay = getPlayButton();
-        butPlay.setImageResource(resource);
-        butPlay.setContentDescription(contentDescription);
+        if(butPlay != null) {
+            butPlay.setImageResource(resource);
+            butPlay.setContentDescription(contentDescription);
+        }
     }
 
     public abstract ImageButton getPlayButton();

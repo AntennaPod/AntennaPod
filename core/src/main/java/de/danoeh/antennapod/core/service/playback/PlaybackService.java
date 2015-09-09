@@ -564,7 +564,7 @@ public class PlaybackService extends Service {
         if (playable instanceof FeedMedia) {
             FeedMedia media = (FeedMedia) playable;
             FeedItem item = media.getItem();
-            DBWriter.markItemPlayed(PlaybackService.this, item, FeedItem.PLAYED, true);
+            DBWriter.markItemPlayed(item, FeedItem.PLAYED, true);
 
             try {
                 final List<FeedItem> queue = taskManager.getQueue();
@@ -577,7 +577,7 @@ public class PlaybackService extends Service {
             if (isInQueue) {
                 DBWriter.removeQueueItem(PlaybackService.this, item, true);
             }
-            DBWriter.addItemToPlaybackHistory(PlaybackService.this, media);
+            DBWriter.addItemToPlaybackHistory(media);
 
             // auto-flattr if enabled
             if (isAutoFlattrable(media) && UserPreferences.getAutoFlattrPlayedDurationThreshold() == 1.0f) {

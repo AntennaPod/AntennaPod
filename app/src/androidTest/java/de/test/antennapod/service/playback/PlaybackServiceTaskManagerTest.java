@@ -26,16 +26,16 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        assertTrue(PodDBAdapter.deleteDatabase(getInstrumentation().getTargetContext()));
+        PodDBAdapter.deleteDatabase();
     }
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        final Context context = getInstrumentation().getTargetContext();
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        // make sure database is created
-        PodDBAdapter adapter = new PodDBAdapter(context);
+
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
     }
@@ -49,11 +49,11 @@ public class PlaybackServiceTaskManagerTest extends InstrumentationTestCase {
         final Context c = getInstrumentation().getTargetContext();
         final int NUM_ITEMS = 10;
         Feed f = new Feed(0, new Date(), "title", "link", "d", null, null, null, null, "id", null, "null", "url", false);
-        f.setItems(new ArrayList<FeedItem>());
+        f.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             f.getItems().add(new FeedItem(0, pref + i, pref + i, "link", new Date(), FeedItem.PLAYED, f));
         }
-        PodDBAdapter adapter = new PodDBAdapter(c);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(f);
         adapter.setQueue(f.getItems());

@@ -9,6 +9,7 @@ import com.joanzapata.iconify.fonts.FontAwesomeModule;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.NetworkUtils;
 import de.danoeh.antennapod.spa.SPAUtil;
 
@@ -40,6 +41,7 @@ public class PodcastApp extends Application {
 		singleton = this;
 		LOGICAL_DENSITY = getResources().getDisplayMetrics().density;
 
+		PodDBAdapter.init(this);
 		UpdateManager.init(this);
 		UserPreferences.init(this);
 		PlaybackPreferences.init(this);

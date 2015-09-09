@@ -164,7 +164,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
-                    DBWriter.clearPlaybackHistory(getActivity());
+                    DBWriter.clearPlaybackHistory();
                     return true;
                 default:
                     return false;
@@ -267,9 +267,9 @@ public class PlaybackHistoryFragment extends ListFragment {
         protected Pair<List<FeedItem>,LongList> doInBackground(Void... params) {
             Context context = activity.get();
             if (context != null) {
-                List<FeedItem> history = DBReader.getPlaybackHistory(context);
-                LongList queue = DBReader.getQueueIDList(context);
-                DBReader.loadFeedDataOfFeedItemlist(context, history);
+                List<FeedItem> history = DBReader.getPlaybackHistory();
+                LongList queue = DBReader.getQueueIDList();
+                DBReader.loadFeedDataOfFeedItemlist(history);
                 return Pair.create(history, queue);
             } else {
                 return null;

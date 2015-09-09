@@ -5,7 +5,6 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.concurrent.ExecutionException;
@@ -18,13 +17,14 @@ import de.danoeh.antennapod.core.util.LongList;
  * Implementation of the EpisodeCleanupAlgorithm interface used by AntennaPod.
  */
 public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
+
     private static final String TAG = "APCleanupAlgorithm";
 
     @Override
     public int performCleanup(Context context, Integer episodeNumber) {
-        List<FeedItem> candidates = new ArrayList<FeedItem>();
-        List<FeedItem> downloadedItems = DBReader.getDownloadedItems(context);
-        LongList queue = DBReader.getQueueIDList(context);
+        List<FeedItem> candidates = new ArrayList<>();
+        List<FeedItem> downloadedItems = DBReader.getDownloadedItems();
+        LongList queue = DBReader.getQueueIDList();
         List<FeedItem> delete;
         for (FeedItem item : downloadedItems) {
             if (item.hasMedia() && item.getMedia().isDownloaded()
@@ -34,20 +34,17 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
 
         }
 
-        Collections.sort(candidates, new Comparator<FeedItem>() {
-            @Override
-            public int compare(FeedItem lhs, FeedItem rhs) {
-                Date l = lhs.getMedia().getPlaybackCompletionDate();
-                Date r = rhs.getMedia().getPlaybackCompletionDate();
+        Collections.sort(candidates, (lhs, rhs) -> {
+            Date l = lhs.getMedia().getPlaybackCompletionDate();
+            Date r = rhs.getMedia().getPlaybackCompletionDate();
 
-                if (l == null) {
-                    l = new Date();
-                }
-                if (r == null) {
-                    r = new Date();
-                }
-                return l.compareTo(r);
+            if (l == null) {
+                l = new Date();
             }
+            if (r == null) {
+                r = new Date();
+            }
+            return l.compareTo(r);
         });
 
         if (candidates.size() > episodeNumber) {
@@ -75,22 +72,21 @@ public class APCleanupAlgorithm implements EpisodeCleanupAlgorithm<Integer> {
     }
 
     @Override
-    public Integer getDefaultCleanupParameter(Context context) {
-        return getPerformAutoCleanupArgs(context, 0);
+    public Integer getDefaultCleanupParameter() {
+        return getPerformAutoCleanupArgs(0);
     }
 
     @Override
-    public Integer getPerformCleanupParameter(Context context, List<FeedItem> items) {
-        return getPerformAutoCleanupArgs(context, items.size());
+    public Integer getPerformCleanupParameter(List<FeedItem> items) {
+        return getPerformAutoCleanupArgs(items.size());
     }
 
-    static int getPerformAutoCleanupArgs(Context context,
-                                         final int episodeNumber) {
+    static int getPerformAutoCleanupArgs(final int episodeNumber) {
         if (episodeNumber >= 0
                 && UserPreferences.getEpisodeCacheSize() != UserPreferences
                 .getEpisodeCacheSizeUnlimited()) {
             int downloadedEpisodes = DBReader
-                    .getNumberOfDownloadedEpisodes(context);
+                    .getNumberOfDownloadedEpisodes();
             if (downloadedEpisodes + episodeNumber >= UserPreferences
                     .getEpisodeCacheSize()) {
 

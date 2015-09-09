@@ -109,7 +109,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EventDistributor.FEED_LIST_UPDATE) != 0) {
-                updater = Observable.defer(() -> Observable.just(DBReader.getFeedList(OnlineFeedViewActivity.this)))
+                updater = Observable.defer(() -> Observable.just(DBReader.getFeedList()))
                         .subscribeOn(Schedulers.newThread())
                         .observeOn(AndroidSchedulers.mainThread())
                         .subscribe(feeds -> {
@@ -263,7 +263,7 @@ public class OnlineFeedViewActivity extends ActionBarActivity {
         download = Observable.create(new Observable.OnSubscribe<DownloadStatus>() {
                     @Override
                     public void call(Subscriber<? super DownloadStatus> subscriber) {
-                        feeds = DBReader.getFeedList(OnlineFeedViewActivity.this);
+                        feeds = DBReader.getFeedList();
                         downloader = new HttpDownloader(request);
                         downloader.call();
                         Log.d(TAG, "Download was completed");

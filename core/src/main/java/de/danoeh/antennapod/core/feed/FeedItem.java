@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.core.feed;
 
+import android.database.Cursor;
 import android.net.Uri;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -9,9 +10,9 @@ import java.util.Date;
 import java.util.List;
 import java.util.concurrent.Callable;
 
-import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.ShownotesProvider;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
@@ -123,6 +124,37 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
         this.feed = feed;
         this.flattrStatus = new FlattrStatus();
         this.hasChapters = hasChapters;
+    }
+
+    public static FeedItem fromCursor(Cursor cursor) {
+        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
+        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
+        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
+        int indexPubDate = cursor.getColumnIndex(PodDBAdapter.KEY_PUBDATE);
+        int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
+        int indexFeedId = cursor.getColumnIndex(PodDBAdapter.KEY_FEED);
+        int indexFlattrStatus = cursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS);
+        int indexHasChapters = cursor.getColumnIndex(PodDBAdapter.KEY_HAS_CHAPTERS);
+        int indexRead = cursor.getColumnIndex(PodDBAdapter.KEY_READ);
+        int indexItemIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_ITEM_IDENTIFIER);
+        int indexAutoDownload = cursor.getColumnIndex(PodDBAdapter.KEY_AUTO_DOWNLOAD);
+
+        long id = cursor.getInt(indexId);
+        assert(id > 0);
+        String title = cursor.getString(indexTitle);
+        String link = cursor.getString(indexLink);
+        Date pubDate = new Date(cursor.getLong(indexPubDate));
+        String paymentLink = cursor.getString(indexPaymentLink);
+        long feedId = cursor.getLong(indexFeedId);
+        boolean hasChapters = cursor.getInt(indexHasChapters) > 0;
+        FlattrStatus flattrStatus = new FlattrStatus(cursor.getLong(indexFlattrStatus));
+        int state = cursor.getInt(indexRead);
+        String itemIdentifier = cursor.getString(indexItemIdentifier);
+        boolean autoDownload = cursor.getInt(indexAutoDownload) > 0;
+
+        FeedItem item = new FeedItem(id, title, link, pubDate, paymentLink, feedId, flattrStatus,
+                hasChapters, null, state, itemIdentifier, autoDownload);
+        return item;
     }
 
     public void updateFromOther(FeedItem other) {
@@ -321,7 +353,7 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
             public String call() throws Exception {
 
                 if (contentEncoded == null || description == null) {
-                    DBReader.loadExtraInformationOfFeedItem(ClientConfig.applicationCallbacks.getApplicationInstance(), FeedItem.this);
+                    DBReader.loadExtraInformationOfFeedItem(FeedItem.this);
 
                 }
                 return (contentEncoded != null) ? contentEncoded : description;

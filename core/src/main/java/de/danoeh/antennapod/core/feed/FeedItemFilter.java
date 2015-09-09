@@ -64,7 +64,7 @@ public class FeedItemFilter {
             if(hideUnplayed && false == item.isPlayed()) continue;
             if(hidePaused && item.getState() == FeedItem.State.IN_PROGRESS) continue;
             if(hidePlayed && item.isPlayed()) continue;
-            boolean isQueued = DBReader.getQueueIDList(context).contains(item.getId());
+            boolean isQueued = DBReader.getQueueIDList().contains(item.getId());
             if(hideQueued && isQueued) continue;
             if(hideNotQueued && false == isQueued) continue;
             boolean isDownloaded = item.getMedia() != null && item.getMedia().isDownloaded();

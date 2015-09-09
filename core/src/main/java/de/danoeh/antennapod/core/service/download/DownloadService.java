@@ -20,7 +20,6 @@ import android.util.Log;
 import android.webkit.URLUtil;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.http.HttpStatus;
@@ -504,7 +503,7 @@ public class DownloadService extends Service {
      */
     private void saveDownloadStatus(DownloadStatus status) {
         reportQueue.add(status);
-        DBWriter.addDownloadStatus(this, status);
+        DBWriter.addDownloadStatus(status);
     }
 
     private void sendDownloadHandledIntent() {
@@ -888,7 +887,7 @@ public class DownloadService extends Service {
 
             if (successful) {
                 // we create a 'successful' download log if the feed's last refresh failed
-                List<DownloadStatus> log = DBReader.getFeedDownloadLog(DownloadService.this, feed);
+                List<DownloadStatus> log = DBReader.getFeedDownloadLog(feed);
                 if(log.size() > 0 && log.get(0).isSuccessful() == false) {
                     saveDownloadStatus(new DownloadStatus(feed,
                             feed.getHumanReadableIdentifier(), DownloadError.SUCCESS, successful,
@@ -1011,17 +1010,17 @@ public class DownloadService extends Service {
         @Override
         public void run() {
             if(request.getFeedfileType() == Feed.FEEDFILETYPE_FEED) {
-                DBWriter.setFeedLastUpdateFailed(DownloadService.this, request.getFeedfileId(), true);
+                DBWriter.setFeedLastUpdateFailed(request.getFeedfileId(), true);
             } else if (request.isDeleteOnFailure()) {
                 Log.d(TAG, "Ignoring failed download, deleteOnFailure=true");
             } else  {
                 File dest = new File(request.getDestination());
                 if (dest.exists() && request.getFeedfileType() == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
                     Log.d(TAG, "File has been partially downloaded. Writing file url");
-                    FeedMedia media = DBReader.getFeedMedia(DownloadService.this, request.getFeedfileId());
+                    FeedMedia media = DBReader.getFeedMedia(request.getFeedfileId());
                     media.setFile_url(request.getDestination());
                     try {
-                        DBWriter.setFeedMedia(DownloadService.this, media).get();
+                        DBWriter.setFeedMedia(media).get();
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (ExecutionException e) {
@@ -1050,7 +1049,7 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            FeedImage image = DBReader.getFeedImage(DownloadService.this, request.getFeedfileId());
+            FeedImage image = DBReader.getFeedImage(request.getFeedfileId());
             if (image == null) {
                 throw new IllegalStateException("Could not find downloaded image in database");
             }
@@ -1060,7 +1059,7 @@ public class DownloadService extends Service {
 
             saveDownloadStatus(status);
             sendDownloadHandledIntent();
-            DBWriter.setFeedImage(DownloadService.this, image);
+            DBWriter.setFeedImage(image);
             numberOfDownloads.decrementAndGet();
             queryDownloadsAsync();
         }
@@ -1084,7 +1083,7 @@ public class DownloadService extends Service {
 
         @Override
         public void run() {
-            FeedMedia media = DBReader.getFeedMedia(DownloadService.this,
+            FeedMedia media = DBReader.getFeedMedia(
                     request.getFeedfileId());
             if (media == null) {
                 throw new IllegalStateException(
@@ -1126,9 +1125,9 @@ public class DownloadService extends Service {
                 item.setAutoDownload(false);
 
                 // update the db
-                DBWriter.setFeedItem(DownloadService.this, item).get();
+                DBWriter.setFeedItem(item).get();
 
-                DBWriter.setFeedMedia(DownloadService.this, media).get();
+                DBWriter.setFeedMedia(media).get();
                 if (!DBTasks.isInQueue(DownloadService.this, item.getId())) {
                     DBWriter.addQueueItem(DownloadService.this, item.getId()).get();
                 }

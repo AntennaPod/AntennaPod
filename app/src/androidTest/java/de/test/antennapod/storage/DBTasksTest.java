@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.concurrent.TimeUnit;
 
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
@@ -21,7 +20,6 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.PodDBAdapter;
-import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 
 import static de.test.antennapod.storage.DBTestUtils.saveFeedlist;
 
@@ -40,7 +38,8 @@ public class DBTasksTest extends InstrumentationTestCase {
     @Override
     protected void tearDown() throws Exception {
         super.tearDown();
-        assertTrue(PodDBAdapter.deleteDatabase(context));
+
+        assertTrue(PodDBAdapter.deleteDatabase());
 
         for (File f : destFolder.listFiles()) {
             assertTrue(f.delete());
@@ -58,9 +57,9 @@ public class DBTasksTest extends InstrumentationTestCase {
         assertTrue(destFolder.exists());
         assertTrue(destFolder.canWrite());
 
-        context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
-        // make sure database is created
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        // create new database
+        PodDBAdapter.deleteDatabase();
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.close();
 
@@ -76,9 +75,9 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", new Date(), "title");
-        List<FeedItem> items = new ArrayList<FeedItem>();
+        List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
 
@@ -89,7 +88,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.close();
@@ -128,7 +127,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.close();
@@ -149,9 +148,9 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS = EPISODE_CACHE_SIZE * 2;
 
         Feed feed = new Feed("url", new Date(), "title");
-        List<FeedItem> items = new ArrayList<FeedItem>();
+        List<FeedItem> items = new ArrayList<>();
         feed.setItems(items);
-        List<File> files = new ArrayList<File>();
+        List<File> files = new ArrayList<>();
         for (int i = 0; i < NUM_ITEMS; i++) {
             FeedItem item = new FeedItem(0, "title", "id", "link", new Date(), FeedItem.PLAYED, feed);
 
@@ -163,7 +162,7 @@ public class DBTasksTest extends InstrumentationTestCase {
             items.add(item);
         }
 
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.setQueue(items);
@@ -188,14 +187,14 @@ public class DBTasksTest extends InstrumentationTestCase {
     @FlakyTest(tolerance = 3)
     public void testPerformAutoCleanupShouldNotDeleteBecauseInQueue_withFeedsWithNoMedia() throws IOException {
         // add feed with no enclosures so that item ID != media ID
-        saveFeedlist(context, 1, 10, false);
+        saveFeedlist(1, 10, false);
 
         // add candidate for performAutoCleanup
-        List<Feed> feeds = saveFeedlist(context, 1, 1, true);
+        List<Feed> feeds = saveFeedlist(1, 1, true);
         FeedMedia m = feeds.get(0).getItems().get(0).getMedia();
         m.setDownloaded(true);
         m.setFile_url("file");
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setMedia(m);
         adapter.close();
@@ -208,7 +207,7 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS = 10;
 
         Feed feed = new Feed("url", new Date(), "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(), FeedItem.UNPLAYED, feed));
         }
@@ -228,8 +227,8 @@ public class DBTasksTest extends InstrumentationTestCase {
         Feed feed1 = new Feed("url1", new Date(), "title");
         Feed feed2 = new Feed("url2", new Date(), "title");
 
-        feed1.setItems(new ArrayList<FeedItem>());
-        feed2.setItems(new ArrayList<FeedItem>());
+        feed1.setItems(new ArrayList<>());
+        feed2.setItems(new ArrayList<>());
 
         Feed savedFeed1 = DBTasks.updateFeed(context, feed1)[0];
         Feed savedFeed2 = DBTasks.updateFeed(context, feed2)[0];
@@ -242,11 +241,11 @@ public class DBTasksTest extends InstrumentationTestCase {
         final int NUM_ITEMS_NEW = 10;
 
         final Feed feed = new Feed("url", new Date(), "title");
-        feed.setItems(new ArrayList<FeedItem>());
+        feed.setItems(new ArrayList<>());
         for (int i = 0; i < NUM_ITEMS_OLD; i++) {
             feed.getItems().add(new FeedItem(0, "item " + i, "id " + i, "link " + i, new Date(i), FeedItem.PLAYED, feed));
         }
-        PodDBAdapter adapter = new PodDBAdapter(context);
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
         adapter.open();
         adapter.setCompleteFeed(feed);
         adapter.close();
@@ -271,7 +270,7 @@ public class DBTasksTest extends InstrumentationTestCase {
 
         updatedFeedTest(newFeed, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);
 
-        final Feed feedFromDB = DBReader.getFeed(context, newFeed.getId());
+        final Feed feedFromDB = DBReader.getFeed(newFeed.getId());
         assertNotNull(feedFromDB);
         assertTrue(feedFromDB.getId() == newFeed.getId());
         updatedFeedTest(feedFromDB, feedID, itemIDs, NUM_ITEMS_OLD, NUM_ITEMS_NEW);

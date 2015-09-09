@@ -179,7 +179,7 @@ public class CompletedDownloadsFragment extends ListFragment {
         protected List<FeedItem> doInBackground(Void... params) {
             Context context = getActivity();
             if (context != null) {
-                return DBReader.getDownloadedItems(context);
+                return DBReader.getDownloadedItems();
             }
             return Collections.emptyList();
         }

@@ -164,7 +164,7 @@ public interface Playable extends Parcelable,
                 case FeedMedia.PLAYABLE_TYPE_FEEDMEDIA:
                     long mediaId = pref.getLong(FeedMedia.PREF_MEDIA_ID, -1);
                     if (mediaId != -1) {
-                        return DBReader.getFeedMedia(context, mediaId);
+                        return DBReader.getFeedMedia(mediaId);
                     }
                     break;
                 case ExternalMedia.PLAYABLE_TYPE_EXTERNAL_MEDIA:

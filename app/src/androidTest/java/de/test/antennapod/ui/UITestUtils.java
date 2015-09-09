@@ -4,6 +4,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.util.Log;
 
 import junit.framework.Assert;
 
@@ -37,6 +38,8 @@ import de.test.antennapod.util.syndication.feedgenerator.RSS2Generator;
  */
 @TargetApi(Build.VERSION_CODES.HONEYCOMB)
 public class UITestUtils {
+
+    private static final String TAG = UITestUtils.class.getSimpleName();
 
     private static final String DATA_FOLDER = "test/UITestUtils";
 
@@ -79,7 +82,7 @@ public class UITestUtils {
         server.stop();
 
         if (localFeedDataAdded) {
-            PodDBAdapter.deleteDatabase(context);
+            PodDBAdapter.deleteDatabase();
         }
     }
 
@@ -174,16 +177,15 @@ public class UITestUtils {
      */
     public void addLocalFeedData(boolean downloadEpisodes) throws Exception {
         if (localFeedDataAdded) {
-            throw new IllegalStateException("addLocalFeedData was called twice on the same instance");
+            Log.w(TAG, "addLocalFeedData was called twice on the same instance");
+            // might be a flaky test, this is actually not that severe
+            return;
         }
         if (!feedDataHosted) {
             addHostedFeedData();
         }
 
-        List<FeedItem> queue = new ArrayList<FeedItem>();
-
-        PodDBAdapter adapter = new PodDBAdapter(context);
-        adapter.open();
+        List<FeedItem> queue = new ArrayList<>();
         for (Feed feed : hostedFeeds) {
             feed.setDownloaded(true);
             if (feed.getImage() != null) {
@@ -206,6 +208,10 @@ public class UITestUtils {
             queue.add(feed.getItems().get(0));
             feed.getItems().get(1).getMedia().setPlaybackCompletionDate(new Date());
         }
+        localFeedDataAdded = true;
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
         adapter.setCompleteFeed(hostedFeeds.toArray(new Feed[hostedFeeds.size()]));
         adapter.setQueue(queue);
         adapter.close();
