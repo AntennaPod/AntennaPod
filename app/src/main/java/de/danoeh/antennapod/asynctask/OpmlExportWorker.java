@@ -5,6 +5,8 @@ import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.util.Log;
 
@@ -93,7 +95,17 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
             alert.setTitle(R.string.opml_export_success_title);
             alert.setMessage(context
                     .getString(R.string.opml_export_success_sum)
-                    + output.toString());
+                    + output.toString())
+                    .setPositiveButton(R.string.send_label, (dialog, which) -> {
+                        Uri outputUri = Uri.fromFile(output);
+                        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+                        sendIntent.putExtra(Intent.EXTRA_SUBJECT,
+                                context.getResources().getText(R.string.opml_export_label));
+                        sendIntent.putExtra(Intent.EXTRA_STREAM, outputUri);
+                        sendIntent.setType("text/plain");
+                        context.startActivity(Intent.createChooser(sendIntent,
+                                context.getResources().getText(R.string.send_label)));
+                    });
         }
         alert.create().show();
     }
