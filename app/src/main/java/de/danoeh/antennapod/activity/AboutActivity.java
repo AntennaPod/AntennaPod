@@ -34,6 +34,7 @@ public class AboutActivity extends ActionBarActivity {
 
     private WebView webview;
     private LinearLayout webviewContainer;
+    private boolean showingLicense = false;
 
     private Subscription subscription;
 
@@ -56,11 +57,16 @@ public class AboutActivity extends ActionBarActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                view.loadUrl(url);
-                return false;
+                url = url.replace("file:///android_asset/", "");
+                loadAsset(url);
+                return true;
             }
 
         });
+        loadAsset("about.html");
+    }
+
+    private void loadAsset(String filename) {
         subscription = Observable.create(new Observable.OnSubscribe<String>() {
                     @Override
                     public void call(Subscriber<? super String> subscriber) {
@@ -71,8 +77,33 @@ public class AboutActivity extends ActionBarActivity {
                             int colorResource = res.getColor(0, 0);
                             String colorString = String.format("#%06X", 0xFFFFFF & colorResource);
                             res.recycle();
-                            input = getAssets().open("about.html");
+                            input = getAssets().open(filename);
                             String webViewData = IOUtils.toString(input, Charset.defaultCharset());
+                            if(false == webViewData.startsWith("<!DOCTYPE html>")) {
+                                //webViewData = webViewData.replace("\n\n", "</p><p>");
+                                webViewData = webViewData.replace("%", "&#37;");
+                                webViewData =
+                                        "<!DOCTYPE html>" +
+                                        "<html>" +
+                                        "<head>" +
+                                        "    <meta http-equiv=\"Content-Type\" content=\"text/html;charset=UTF-8\">" +
+                                        "    <style type=\"text/css\">" +
+                                        "        @font-face {" +
+                                        "        font-family: 'Roboto-Light';" +
+                                        "           src: url('file:///android_asset/Roboto-Light.ttf');" +
+                                        "        }" +
+                                        "        * {" +
+                                        "           color: %s;" +
+                                        "           font-family: roboto-Light;" +
+                                        "           font-size: 8pt;" +
+                                        "        }" +
+                                        "    </style>" +
+                                        "</head><body><p>" + webViewData + "</p></body></html>";
+                                webViewData = webViewData.replace("\n", "<br/>");
+                                showingLicense = true;
+                            } else {
+                                showingLicense = false;
+                            }
                             webViewData = String.format(webViewData, colorString);
                             subscriber.onNext(webViewData);
                         } catch (IOException e) {
@@ -86,10 +117,20 @@ public class AboutActivity extends ActionBarActivity {
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(webviewData -> {
-                    webview.loadDataWithBaseURL(null, webviewData, "text/html", "utf-8", "about:blank");
+                    webview.loadDataWithBaseURL("file:///android_asset/", webviewData, "text/html",
+                            "utf-8", "about:blank");
                 }, error -> {
                     Log.e(TAG, Log.getStackTraceString(error));
                 });
+    }
+
+    @Override
+    public void onBackPressed() {
+        if(showingLicense) {
+            loadAsset("about.html");
+        } else {
+            super.onBackPressed();
+        }
     }
 
     @Override
