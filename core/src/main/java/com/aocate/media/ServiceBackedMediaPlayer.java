@@ -20,8 +20,6 @@
 
 package com.aocate.media;
 
-import java.io.IOException;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +28,8 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.os.RemoteException;
 import android.os.PowerManager.WakeLock;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.aocate.media.MediaPlayer.State;
@@ -45,6 +43,8 @@ import com.aocate.presto.service.IOnPreparedListenerCallback_0_8;
 import com.aocate.presto.service.IOnSeekCompleteListenerCallback_0_8;
 import com.aocate.presto.service.IOnSpeedAdjustmentAvailableChangedListenerCallback_0_8;
 import com.aocate.presto.service.IPlayMedia_0_8;
+
+import java.io.IOException;
 
 import de.danoeh.antennapod.core.BuildConfig;
 
@@ -60,7 +60,7 @@ import de.danoeh.antennapod.core.BuildConfig;
 public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 	static final String INTENT_NAME = "com.aocate.intent.PLAY_AUDIO_ADJUST_SPEED_0_8";
 	
-	private static final String SBMP_TAG = "AocateServiceBackedMediaPlayer";
+	private static final String SBMP_TAG = "ServiceBackedMediaPlaye";
 
 	private ServiceConnection mPlayMediaServiceConnection = null;
 	protected IPlayMedia_0_8 pmInterface = null;
@@ -874,19 +874,24 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 	// the client app's responsibility to request that permission
 	public void setWakeMode(Context context, int mode) {
 		Log.d(SBMP_TAG, "setWakeMode(context, " + mode + ")");
-		if ((this.mWakeLock != null)
-			&& (this.mWakeLock.isHeld())) {
-			this.mWakeLock.release();
+		boolean wasHeld = false;
+		if (mWakeLock != null) {
+			if(mWakeLock.isHeld()) {
+				wasHeld = true;
+				Log.d(SBMP_TAG, "Releasing wakelock");
+				mWakeLock.release();
+			}
+			mWakeLock = null;
 		}
 		if (mode != 0) {
-			if (this.mWakeLock == null) {
-				PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
-				// Since mode can't be changed on the fly, we have to allocate a new one
-				this.mWakeLock = pm.newWakeLock(mode, this.getClass().getName());
-                this.mWakeLock.setReferenceCounted(false);
-			}
+			PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+			mWakeLock = pm.newWakeLock(mode, this.getClass().getName());
+			mWakeLock.setReferenceCounted(false);
 
-			this.mWakeLock.acquire();
+			if(wasHeld) {
+				Log.d(SBMP_TAG, "Acquiring wakelock");
+				mWakeLock.acquire();
+			}
 		}
 	}
 
@@ -898,9 +903,11 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
         if (BuildConfig.DEBUG) Log.d(SBMP_TAG, "stayAwake(" + awake + ")");
         if (mWakeLock != null) {
             if (awake && !mWakeLock.isHeld()) {
-                mWakeLock.acquire();
+				Log.d(SBMP_TAG, "Acquiring wakelock");
+				mWakeLock.acquire();
             } else if (!awake && mWakeLock.isHeld()) {
-                mWakeLock.release();
+				Log.d(SBMP_TAG, "Releasing wakelock");
+				mWakeLock.release();
             }
         }
     }
