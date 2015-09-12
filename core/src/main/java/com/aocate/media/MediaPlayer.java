@@ -22,10 +22,9 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.media.AudioManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
-import android.os.Handler.Callback;
 import android.os.IBinder;
-import android.os.Message;
 import android.util.Log;
 
 import java.io.IOException;
@@ -33,9 +32,11 @@ import java.util.List;
 import java.util.concurrent.locks.ReentrantLock;
 
 import de.danoeh.antennapod.core.BuildConfig;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class MediaPlayer {
-    public static final String TAG = "com.aocate.media.MediaPlayer";
+
+    public static final String TAG = "MediaPlayer";
 
     public interface OnBufferingUpdateListener {
         public abstract void onBufferingUpdate(MediaPlayer arg0, int percent);
@@ -83,8 +84,7 @@ public class MediaPlayer {
         IDLE, INITIALIZED, PREPARED, STARTED, PAUSED, STOPPED, PREPARING, PLAYBACK_COMPLETED, END, ERROR
     }
 
-    private static Uri SPEED_ADJUSTMENT_MARKET_URI = Uri
-            .parse("market://details?id=com.aocate.presto");
+    private static Uri SPEED_ADJUSTMENT_MARKET_URI = Uri.parse("market://details?id=com.aocate.presto");
 
     private static Intent prestoMarketIntent = null;
 
@@ -159,8 +159,7 @@ public class MediaPlayer {
      */
     public static Intent getPrestoMarketIntent() {
         if (prestoMarketIntent == null) {
-            prestoMarketIntent = new Intent(Intent.ACTION_VIEW,
-                    SPEED_ADJUSTMENT_MARKET_URI);
+            prestoMarketIntent = new Intent(Intent.ACTION_VIEW, SPEED_ADJUSTMENT_MARKET_URI);
         }
         return prestoMarketIntent;
     }
@@ -174,11 +173,14 @@ public class MediaPlayer {
         context.startActivity(getPrestoMarketIntent());
     }
 
-    private static final String MP_TAG = "AocateReplacementMediaPlayer";
+    private static final String MP_TAG = "ReplacementMediaPlayer";
 
     private static final double PITCH_STEP_CONSTANT = 1.0594630943593;
 
     private AndroidMediaPlayer amp = null;
+    private ServiceBackedMediaPlayer sbmp = null;
+    private SonicMediaPlayer smp = null;
+
     // This is whether speed adjustment should be enabled (by the Service)
     // To avoid the Service entirely, set useService to false
     protected boolean enableSpeedAdjustment = true;
@@ -195,9 +197,8 @@ public class MediaPlayer {
     private float mRightVolume = 1f;
     private float mSpeedMultiplier = 1f;
     private int mWakeMode = 0;
-    MediaPlayerImpl mpi = null;
+    AbstractMediaPlayer mpi = null;
     protected boolean pitchAdjustmentAvailable = false;
-    private ServiceBackedMediaPlayer sbmp = null;
     protected boolean speedAdjustmentAvailable = false;
 
     private Handler mServiceDisconnectedHandler = null;
@@ -229,10 +230,7 @@ public class MediaPlayer {
                                                       boolean pitchAdjustmentAvailable) {
             lock.lock();
             try {
-                Log
-                        .d(
-                                MP_TAG,
-                                "onPitchAdjustmentAvailableChangedListener.onPitchAdjustmentAvailableChanged being called");
+                Log.d(MP_TAG, "onPitchAdjustmentAvailableChangedListener.onPitchAdjustmentAvailableChanged being called");
                 if (MediaPlayer.this.pitchAdjustmentAvailable != pitchAdjustmentAvailable) {
                     Log.d(MP_TAG, "Pitch adjustment state has changed from "
                             + MediaPlayer.this.pitchAdjustmentAvailable
@@ -240,8 +238,7 @@ public class MediaPlayer {
                     MediaPlayer.this.pitchAdjustmentAvailable = pitchAdjustmentAvailable;
                     if (MediaPlayer.this.pitchAdjustmentAvailableChangedListener != null) {
                         MediaPlayer.this.pitchAdjustmentAvailableChangedListener
-                                .onPitchAdjustmentAvailableChanged(arg0,
-                                        pitchAdjustmentAvailable);
+                                .onPitchAdjustmentAvailableChanged(arg0, pitchAdjustmentAvailable);
                     }
                 }
             } finally {
@@ -274,10 +271,7 @@ public class MediaPlayer {
                                                       boolean speedAdjustmentAvailable) {
             lock.lock();
             try {
-                Log
-                        .d(
-                                MP_TAG,
-                                "onSpeedAdjustmentAvailableChangedListener.onSpeedAdjustmentAvailableChanged being called");
+                Log.d(MP_TAG, "onSpeedAdjustmentAvailableChangedListener.onSpeedAdjustmentAvailableChanged being called");
                 if (MediaPlayer.this.speedAdjustmentAvailable != speedAdjustmentAvailable) {
                     Log.d(MP_TAG, "Speed adjustment state has changed from "
                             + MediaPlayer.this.speedAdjustmentAvailable
@@ -285,8 +279,7 @@ public class MediaPlayer {
                     MediaPlayer.this.speedAdjustmentAvailable = speedAdjustmentAvailable;
                     if (MediaPlayer.this.speedAdjustmentAvailableChangedListener != null) {
                         MediaPlayer.this.speedAdjustmentAvailableChangedListener
-                                .onSpeedAdjustmentAvailableChanged(arg0,
-                                        speedAdjustmentAvailable);
+                                .onSpeedAdjustmentAvailableChanged(arg0, speedAdjustmentAvailable);
                     }
                 }
             } finally {
@@ -295,8 +288,6 @@ public class MediaPlayer {
         }
     };
     OnSpeedAdjustmentAvailableChangedListener speedAdjustmentAvailableChangedListener = null;
-
-    private int speedAdjustmentAlgorithm = SpeedAdjustmentAlgorithm.SONIC;
 
     public MediaPlayer(final Context context) {
         this(context, true);
@@ -311,6 +302,9 @@ public class MediaPlayer {
         // so start with an android.media.MediaPlayer, and when
         // the service is connected, use that from then on
         this.mpi = this.amp = new AndroidMediaPlayer(this, context);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+            this.smp = new SonicMediaPlayer(this, context);
+        }
 
         // setupMpi will go get the Service, if it can, then bring that
         // implementation into sync
@@ -319,29 +313,34 @@ public class MediaPlayer {
     }
 
     private boolean invalidServiceConnectionConfiguration() {
+        if(smp != null) {
+            boolean usingSonic = mpi instanceof SonicMediaPlayer;
+            return (usingSonic && !UserPreferences.useSonic())
+                    || (!usingSonic && UserPreferences.useSonic());
+        }
         if (!(this.mpi instanceof ServiceBackedMediaPlayer)) {
             if (this.useService && isPrestoLibraryInstalled()) {
                 // In this case, the Presto library has been installed
                 // or something while playing sound
                 // We could be using the service, but we're not
-                Log.d(MP_TAG, "We could be using the service, but we're not 316");
+                Log.d(MP_TAG, "We could be using the service, but we're not");
                 return true;
             }
             // If useService is false, then we shouldn't be using the SBMP
             // If the Presto library isn't installed, ditto
-            Log.d(MP_TAG, "this.mpi is not a ServiceBackedMediaPlayer, but we couldn't use it anyway 321");
+            Log.d(MP_TAG, "this.mpi is not a ServiceBackedMediaPlayer, but we couldn't use it anyway");
             return false;
         } else {
             if (BuildConfig.DEBUG && !(this.mpi instanceof ServiceBackedMediaPlayer))
                 throw new AssertionError();
             if (this.useService && isPrestoLibraryInstalled()) {
                 // We should be using the service, and we are. Great!
-                Log.d(MP_TAG, "We could be using a ServiceBackedMediaPlayer and we are 327");
+                Log.d(MP_TAG, "We could be using a ServiceBackedMediaPlayer and we are");
                 return false;
             }
             // We're trying to use the service when we shouldn't,
             // that's an invalid configuration
-            Log.d(MP_TAG, "We're trying to use a ServiceBackedMediaPlayer but we shouldn't be 332");
+            Log.d(MP_TAG, "We're trying to use a ServiceBackedMediaPlayer but we shouldn't be");
             return true;
         }
     }
@@ -349,45 +348,44 @@ public class MediaPlayer {
     private void setupMpi(final Context context) {
         lock.lock();
         try {
-            Log.d(MP_TAG, "setupMpi 336");
+            Log.d(MP_TAG, "setupMpi");
             // Check if the client wants to use the service at all,
             // then if we're already using the right kind of media player
-            if (this.useService && isPrestoLibraryInstalled()) {
-                if ((this.mpi != null)
-                        && (this.mpi instanceof ServiceBackedMediaPlayer)) {
+            if(this.smp != null && UserPreferences.useSonic()) {
+                if(mpi != null && mpi instanceof SonicMediaPlayer) {
+                    Log.d(MP_TAG, "Already using SonicMediaPlayer");
+                    return;
+                } else {
+                    Log.d(MP_TAG, "Switching to SonicMediaPlayer");
+                    switchMediaPlayerImpl(mpi, smp);
+                    return;
+                }
+            } else if (this.useService && isPrestoLibraryInstalled()) {
+                if (mpi != null && mpi instanceof ServiceBackedMediaPlayer) {
                     Log.d(MP_TAG, "Already using ServiceBackedMediaPlayer");
                     return;
                 }
                 if (this.sbmp == null) {
-                    Log.d(MP_TAG, "Instantiating new ServiceBackedMediaPlayer 346");
+                    Log.d(MP_TAG, "Instantiating new ServiceBackedMediaPlayer");
                     this.sbmp = new ServiceBackedMediaPlayer(this, context,
                             new ServiceConnection() {
-                                public void onServiceConnected(
-                                        ComponentName className,
-                                        final IBinder service) {
-                                    Thread t = new Thread(new Runnable() {
-                                        public void run() {
-                                            // This lock probably isn't granular
-                                            // enough
-                                            MediaPlayer.this.lock.lock();
-                                            Log.d(MP_TAG,
-                                                    "onServiceConnected 257");
-                                            try {
-                                                MediaPlayer.this
-                                                        .switchMediaPlayerImpl(
-                                                                MediaPlayer.this.amp,
-                                                                MediaPlayer.this.sbmp);
-                                                Log.d(MP_TAG, "End onServiceConnected 362");
-                                            } finally {
-                                                MediaPlayer.this.lock.unlock();
-                                            }
+                                public void onServiceConnected(ComponentName className, final IBinder service) {
+                                    Thread t = new Thread(() -> {
+                                        // This lock probably isn't granular
+                                        // enough
+                                        MediaPlayer.this.lock.lock();
+                                        Log.d(MP_TAG, "onServiceConnected");
+                                        try {
+                                            switchMediaPlayerImpl(mpi, sbmp);
+                                            Log.d(MP_TAG, "End onServiceConnected");
+                                        } finally {
+                                            MediaPlayer.this.lock.unlock();
                                         }
                                     });
                                     t.start();
                                 }
 
-                                public void onServiceDisconnected(
-                                        ComponentName className) {
+                                public void onServiceDisconnected(ComponentName className) {
                                     MediaPlayer.this.lock.lock();
                                     try {
                                         // Can't get any more useful information
@@ -401,27 +399,23 @@ public class MediaPlayer {
                                         MediaPlayer.this.sbmp = null;
 
                                         if (mServiceDisconnectedHandler == null) {
-                                            mServiceDisconnectedHandler = new Handler(new Callback() {
-                                                public boolean handleMessage(Message msg) {
-                                                    // switchMediaPlayerImpl won't try to
-                                                    // clone anything from null
-                                                    lock.lock();
-                                                    try {
-                                                        if (MediaPlayer.this.amp == null) {
-                                                            // This should never be in this state
-                                                            MediaPlayer.this.amp = new AndroidMediaPlayer(
-                                                                    MediaPlayer.this,
-                                                                    MediaPlayer.this.mContext);
-                                                        }
-                                                        // Use sbmp instead of null in case by some miracle it's
-                                                        // been restored in the meantime
-                                                        MediaPlayer.this.switchMediaPlayerImpl(
-                                                                MediaPlayer.this.sbmp,
-                                                                MediaPlayer.this.amp);
-                                                        return true;
-                                                    } finally {
-                                                        lock.unlock();
+                                            mServiceDisconnectedHandler = new Handler(msg -> {
+                                                // switchMediaPlayerImpl won't try to
+                                                // clone anything from null
+                                                lock.lock();
+                                                try {
+                                                    if (MediaPlayer.this.amp == null) {
+                                                        // This should never be in this state
+                                                        MediaPlayer.this.amp = new AndroidMediaPlayer(
+                                                                MediaPlayer.this,
+                                                                MediaPlayer.this.mContext);
                                                     }
+                                                    // Use sbmp instead of null in case by some miracle it's
+                                                    // been restored in the meantime
+                                                    switchMediaPlayerImpl(mpi, amp);
+                                                    return true;
+                                                } finally {
+                                                    lock.unlock();
                                                 }
                                             });
                                         }
@@ -429,10 +423,8 @@ public class MediaPlayer {
                                         // This code needs to execute on the
                                         // original thread to instantiate
                                         // the new object in the right place
-                                        mServiceDisconnectedHandler
-                                                .sendMessage(
-                                                        mServiceDisconnectedHandler
-                                                                .obtainMessage());
+                                        mServiceDisconnectedHandler.sendMessage(
+                                                mServiceDisconnectedHandler.obtainMessage());
                                         // Note that we do NOT want to set
                                         // useService. useService is about
                                         // what the user wants, not what they
@@ -444,10 +436,10 @@ public class MediaPlayer {
                             }
                     );
                 }
-                switchMediaPlayerImpl(this.amp, this.sbmp);
+                Log.d(MP_TAG, "Switching to ServiceBackedMediaPlayer");
+                switchMediaPlayerImpl(mpi, sbmp);
             } else {
-                if ((this.mpi != null)
-                        && (this.mpi instanceof AndroidMediaPlayer)) {
+                if (this.mpi != null && this.mpi instanceof AndroidMediaPlayer) {
                     Log.d(MP_TAG, "Already using AndroidMediaPlayer");
                     return;
                 }
@@ -455,24 +447,25 @@ public class MediaPlayer {
                     Log.d(MP_TAG, "Instantiating new AndroidMediaPlayer (this should be impossible)");
                     this.amp = new AndroidMediaPlayer(this, context);
                 }
-                switchMediaPlayerImpl(this.sbmp, this.amp);
+                switchMediaPlayerImpl(mpi, this.amp);
             }
         } finally {
             lock.unlock();
         }
     }
 
-    private void switchMediaPlayerImpl(MediaPlayerImpl from, MediaPlayerImpl to) {
+    private void switchMediaPlayerImpl(AbstractMediaPlayer from, AbstractMediaPlayer to) {
         lock.lock();
         try {
             Log.d(MP_TAG, "switchMediaPlayerImpl");
-            if ((from == to)
+            if (from == to
                     // Same object, nothing to synchronize
-                    || (to == null)
+                    || to == null
                     // Nothing to copy to (maybe this should throw an error?)
-                    || ((to instanceof ServiceBackedMediaPlayer) && !((ServiceBackedMediaPlayer) to).isConnected())
+                    || (to instanceof ServiceBackedMediaPlayer && !((ServiceBackedMediaPlayer) to).isConnected())
                     // ServiceBackedMediaPlayer hasn't yet connected, onServiceConnected will take care of the transition
-                    || (MediaPlayer.this.state == State.END)) {
+                    || (MediaPlayer.this.state == State.END)
+                    || from instanceof SonicMediaPlayer) {
                 // State.END is after a release(), no further functions should
                 // be called on this class and from is likely to have problems
                 // retrieving state that won't be used anyway
@@ -481,8 +474,7 @@ public class MediaPlayer {
             // Extract all that we can from the existing implementation
             // and copy it to the new implementation
 
-            Log.d(MP_TAG, "switchMediaPlayerImpl(), current state is "
-                    + this.state.toString());
+            Log.d(MP_TAG, "switchMediaPlayerImpl(), current state is " + this.state.toString());
 
             to.reset();
 
@@ -493,7 +485,6 @@ public class MediaPlayer {
             // This is a reasonable place to set all of these,
             // none of them require prepare() or the like first
             to.setAudioStreamType(this.mAudioStreamType);
-            to.setSpeedAdjustmentAlgorithm(this.speedAdjustmentAlgorithm);
             to.setLooping(this.mIsLooping);
             to.setPitchStepsAdjustment(this.mPitchStepsAdjustment);
             Log.d(MP_TAG, "Setting playback speed to " + this.mSpeedMultiplier);
@@ -509,30 +500,15 @@ public class MediaPlayer {
                 Log.d(MP_TAG, "switchMediaPlayerImpl(): uriDataSource != null");
                 try {
                     to.setDataSource(this.mContext, uriDataSource);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
                 } catch (IOException e) {
-                    // TODO Auto-generated catch block
                     e.printStackTrace();
                 }
             }
             if (stringDataSource != null) {
-                Log.d(MP_TAG,
-                        "switchMediaPlayerImpl(): stringDataSource != null");
+                Log.d(MP_TAG, "switchMediaPlayerImpl(): stringDataSource != null");
                 try {
                     to.setDataSource(stringDataSource);
-                } catch (IllegalArgumentException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             }
@@ -548,11 +524,7 @@ public class MediaPlayer {
                 try {
                     to.muteNextOnPrepare();
                     to.prepare();
-                } catch (IllegalStateException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
 
@@ -611,7 +583,7 @@ public class MediaPlayer {
                         .onSpeedAdjustmentAvailableChanged(this, to
                                 .canSetSpeed());
             }
-            Log.d(MP_TAG, "switchMediaPlayerImpl() 625 " + this.state.toString());
+            Log.d(MP_TAG, "switchMediaPlayerImpl() " + this.state.toString());
         } finally {
             lock.unlock();
         }
@@ -648,7 +620,7 @@ public class MediaPlayer {
     protected void finalize() throws Throwable {
         lock.lock();
         try {
-            Log.d(MP_TAG, "finalize() 626");
+            Log.d(MP_TAG, "finalize()");
             this.release();
         } finally {
             lock.unlock();
@@ -855,7 +827,7 @@ public class MediaPlayer {
     public void prepare() throws IllegalStateException, IOException {
         lock.lock();
         try {
-            Log.d(MP_TAG, "prepare() 746 using " + ((this.mpi == null) ? "null (this shouldn't happen)" : this.mpi.getClass().toString()) + " state " + this.state.toString());
+            Log.d(MP_TAG, "prepare() using " + ((this.mpi == null) ? "null (this shouldn't happen)" : this.mpi.getClass().toString()) + " state " + this.state.toString());
             Log.d(MP_TAG, "onPreparedListener is: " + ((this.onPreparedListener == null) ? "null" : "non-null"));
             Log.d(MP_TAG, "preparedListener is: " + ((this.preparedListener == null) ? "null" : "non-null"));
             if (invalidServiceConnectionConfiguration()) {
@@ -863,7 +835,7 @@ public class MediaPlayer {
             }
             this.mpi.prepare();
             this.state = State.PREPARED;
-            Log.d(MP_TAG, "prepare() finished 778");
+            Log.d(MP_TAG, "prepare() finished");
         } finally {
             lock.unlock();
         }
@@ -876,7 +848,7 @@ public class MediaPlayer {
     public void prepareAsync() {
         lock.lock();
         try {
-            Log.d(MP_TAG, "prepareAsync() 779");
+            Log.d(MP_TAG, "prepareAsync()");
             if (invalidServiceConnectionConfiguration()) {
                 setupMpi(this.mpi.mContext);
             }
@@ -894,7 +866,7 @@ public class MediaPlayer {
     public void release() {
         lock.lock();
         try {
-            Log.d(MP_TAG, "Releasing MediaPlayer 791");
+            Log.d(MP_TAG, "Releasing MediaPlayer");
 
             this.state = State.END;
             if (this.amp != null) {
@@ -1053,24 +1025,6 @@ public class MediaPlayer {
         }
     }
 
-    /**
-     * Set the algorithm to use for changing the speed and pitch of audio
-     * See SpeedAdjustmentAlgorithm constants for more details
-     *
-     * @param algorithm The algorithm to use.
-     */
-    public void setSpeedAdjustmentAlgorithm(int algorithm) {
-        lock.lock();
-        try {
-            this.speedAdjustmentAlgorithm = algorithm;
-            if (this.mpi != null) {
-                this.mpi.setSpeedAdjustmentAlgorithm(algorithm);
-            }
-        } finally {
-            lock.unlock();
-        }
-    }
-
     private static float getPitchStepsAdjustment(float pitch) {
         return (float) (Math.log(pitch) / (2 * Math.log(PITCH_STEP_CONSTANT)));
     }
@@ -1080,7 +1034,7 @@ public class MediaPlayer {
      * than zero, pitch is shifted up. When less than zero, pitch is shifted
      * down
      *
-     * @param f The percentage to shift pitch
+     * @param pitch The percentage to shift pitch
      */
     public void setPlaybackPitch(float pitch) {
         lock.lock();
@@ -1103,22 +1057,6 @@ public class MediaPlayer {
         try {
             this.mSpeedMultiplier = f;
             this.mpi.setPlaybackSpeed(f);
-        } finally {
-            lock.unlock();
-        }
-    }
-
-    /**
-     * Sets whether to use speed adjustment or not. Speed adjustment on is more
-     * computation-intensive than with it off.
-     *
-     * @param enableSpeedAdjustment Whether speed adjustment should be supported.
-     */
-    public void setUseService(boolean useService) {
-        lock.lock();
-        try {
-            this.useService = useService;
-            setupMpi(this.mpi.mContext);
         } finally {
             lock.unlock();
         }
@@ -1279,12 +1217,11 @@ public class MediaPlayer {
     public void start() {
         lock.lock();
         try {
-            Log.d(MP_TAG, "start() 1149");
+            Log.d(MP_TAG, "start()");
             if (invalidServiceConnectionConfiguration()) {
                 setupMpi(this.mpi.mContext);
             }
             this.state = State.STARTED;
-            Log.d(MP_TAG, "start() 1154");
             this.mpi.start();
         } finally {
             lock.unlock();
@@ -1307,4 +1244,5 @@ public class MediaPlayer {
             lock.unlock();
         }
     }
+
 }

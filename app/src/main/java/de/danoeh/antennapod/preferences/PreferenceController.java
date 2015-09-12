@@ -344,30 +344,44 @@ public class PreferenceController {
                 return true;
             }
         });
-        ui.findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE)
-                .setOnPreferenceChangeListener(
-                        new Preference.OnPreferenceChangeListener() {
-                            @Override
-                            public boolean onPreferenceChange(Preference preference, Object o) {
-                                if (o instanceof String) {
-                                    int newValue = Integer.valueOf((String) o) * 1024 * 1024;
-                                    if(newValue != UserPreferences.getImageCacheSize()) {
-                                        AlertDialog.Builder dialog = new AlertDialog.Builder(ui.getActivity());
-                                        dialog.setTitle(android.R.string.dialog_alert_title);
-                                        dialog.setMessage(R.string.pref_restart_required);
-                                        dialog.setPositiveButton(android.R.string.ok, null);
-                                        dialog.show();
-                                    }
-                                    return true;
-                                }
-                                return false;
+        ui.findPreference(UserPreferences.PREF_IMAGE_CACHE_SIZE).setOnPreferenceChangeListener(
+                new Preference.OnPreferenceChangeListener() {
+                    @Override
+                    public boolean onPreferenceChange(Preference preference, Object o) {
+                        if (o instanceof String) {
+                            int newValue = Integer.valueOf((String) o) * 1024 * 1024;
+                            if (newValue != UserPreferences.getImageCacheSize()) {
+                                AlertDialog.Builder dialog = new AlertDialog.Builder(ui.getActivity());
+                                dialog.setTitle(android.R.string.dialog_alert_title);
+                                dialog.setMessage(R.string.pref_restart_required);
+                                dialog.setPositiveButton(android.R.string.ok, null);
+                                dialog.show();
                             }
+                            return true;
                         }
-                );
+                        return false;
+                    }
+                }
+        );
+        ui.findPreference(UserPreferences.PREF_SONIC).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+            @Override
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                if (newValue instanceof Boolean) {
+                    boolean useSonic = ((Boolean) newValue).booleanValue();
+                    CheckBoxPreference normalizer = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_NORMALIZER);
+                    normalizer.setEnabled(useSonic);
+                    if(!useSonic) {
+                        UserPreferences.useNormalizer(false);
+                        normalizer.setChecked(false);
+                    }
+                }
+                return true;
+            }
+        });
+
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
-        setSelectedNetworksEnabled(UserPreferences
-                .isEnableAutodownloadWifiFilter());
+        setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
     }
 
     public void onResume() {
@@ -460,6 +474,13 @@ public class PreferenceController {
 
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
                 .setEnabled(UserPreferences.isEnableAutodownload());
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
+            if(UserPreferences.useSonic()) {
+                ui.findPreference(UserPreferences.PREF_NORMALIZER).setEnabled(true);
+            }
+        }
     }
 
     private void setParallelDownloadsText(int downloads) {
@@ -514,14 +535,10 @@ public class PreferenceController {
                     if (preference instanceof CheckBoxPreference) {
                         String key = preference.getKey();
                         ArrayList<String> prefValuesList = new ArrayList<String>(
-                                Arrays.asList(UserPreferences
-                                        .getAutodownloadSelectedNetworks())
+                                Arrays.asList(UserPreferences.getAutodownloadSelectedNetworks())
                         );
-                        boolean newValue = ((CheckBoxPreference) preference)
-                                .isChecked();
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "Selected network " + key
-                                    + ". New state: " + newValue);
+                        boolean newValue = ((CheckBoxPreference) preference).isChecked();
+                        Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
 
                         int index = prefValuesList.indexOf(key);
                         if (index >= 0 && newValue == false) {

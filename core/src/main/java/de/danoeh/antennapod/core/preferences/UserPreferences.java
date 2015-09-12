@@ -80,6 +80,10 @@ public class UserPreferences {
     public static final String PREF_DATA_FOLDER = "prefDataFolder";
     public static final String PREF_IMAGE_CACHE_SIZE = "prefImageCacheSize";
 
+    // Experimental
+    public static final String PREF_SONIC = "prefSonic";
+    public static final String PREF_NORMALIZER = "prefNormalizer";
+
     // Mediaplayer
     public static final String PREF_PLAYBACK_SPEED = "prefPlaybackSpeed";
     private static final String PREF_FAST_FORWARD_SECS = "prefFastForwardSecs";
@@ -291,6 +295,18 @@ public class UserPreferences {
         }
         int cacheSizeMB = cacheSizeInt * 1024 * 1024;
         return cacheSizeMB;
+    }
+
+    public static boolean useSonic() {
+        return prefs.getBoolean(PREF_SONIC, false);
+    }
+
+    public static boolean useNormalizer() {
+        return prefs.getBoolean(PREF_NORMALIZER, false);
+    }
+
+    public static void useNormalizer(boolean use) {
+        prefs.edit().putBoolean(PREF_NORMALIZER, use).apply();
     }
 
     public static int getFastFowardSecs() {
