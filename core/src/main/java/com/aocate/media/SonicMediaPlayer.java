@@ -42,39 +42,6 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
 
     private static final String TAG = SonicMediaPlayer.class.getSimpleName();
 
-    public interface OnBufferingUpdateListener {
-        void onBufferingUpdate(int percent);
-    }
-
-    public interface OnCompletionListener {
-        void onCompletion();
-    }
-
-    public interface OnErrorListener {
-        boolean onError(int extra);
-    }
-
-    public interface OnInfoListener {
-        boolean onInfo(int extra);
-    }
-
-    public interface OnPitchAdjustmentAvailableChangedListener {
-        /**
-         * @param arg0                     The owning media player
-         * @param pitchAdjustmentAvailable True if pitch adjustment is available, false if not
-         */
-        public abstract void onPitchAdjustmentAvailableChanged(
-                MediaPlayer arg0, boolean pitchAdjustmentAvailable);
-    }
-
-    public interface OnPreparedListener {
-        void onPrepared();
-    }
-
-    public interface OnSeekCompleteListener {
-        void onSeekComplete();
-    }
-
     protected final MediaPlayer mMediaPlayer;
     private AudioTrack mTrack;
     private Sonic mSonic;
@@ -108,10 +75,6 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
     private final static int STATE_END = 8;
     private final static int STATE_ERROR = 9;
 
-    // Not available in API 16 :(
-    private final static int MEDIA_ERROR_MALFORMED = 0xfffffc11;
-    private final static int MEDIA_ERROR_IO = 0xfffffc14;
-
     public SonicMediaPlayer(MediaPlayer owningMediaPlayer, Context context) {
         super(owningMediaPlayer, context);
         mMediaPlayer = owningMediaPlayer;
@@ -126,7 +89,6 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
         mLock = new ReentrantLock();
         mDecoderLock = new Object();
     }
-
 
     @Override
     public boolean canSetPitch() {
@@ -438,10 +400,12 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
         }
     }
 
-    public void setVolume(float left, float right) {
+    @SuppressWarnings("deprecation")
+    @Override
+    public void setVolume(float leftVolume, float rightVolume) {
         // Pass call directly to AudioTrack if available.
         if (null != mTrack) {
-            mTrack.setStereoVolume(left, right);
+            mTrack.setStereoVolume(leftVolume, rightVolume);
         }
     }
 
@@ -531,10 +495,10 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
         mLock.unlock();
     }
 
+    @SuppressWarnings("deprecation")
     public void decode() {
         mDecoderThread = new Thread(() -> {
-            float fAGC = 1;
-            short lastSample = 0;
+            float gain = 1.0f;
             mIsDecoding = true;
             mCodec.start();
 
@@ -579,8 +543,7 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
                             0,
                             sampleSize,
                             presentationTimeUs,
-                            sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM
-                                    : 0);
+                            sawInputEOS ? MediaCodec.BUFFER_FLAG_END_OF_STREAM : 0);
                     if (!sawInputEOS) {
                         mExtractor.advance();
                     }
@@ -614,26 +577,25 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
                                 ByteBuffer bf = ByteBuffer.wrap(modifiedSamples);
                                 bf.order(ByteOrder.LITTLE_ENDIAN);
                                 ShortBuffer s = bf.asShortBuffer();
-                                final int length = modifiedSamples.length / 2;
+                                final int length = modifiedSamples.length/2;
 
-                                int max = 0;
+                                short peak = 0;
                                 for (int i = 0; i < length; i++) {
-                                    max = Math.max(max, Math.abs(s.get(i)));
+                                    peak = (short)Math.max(peak, Math.abs(s.get(i)));
                                 }
 
-                                final int maxTarget = (int) (max * fAGC);
-                                if (maxTarget > 30720) {
-                                    fAGC = 1.0f * 32768 / max;
+                                int maxTarget = (int)(peak * gain);
+                                float oldGain = gain;
+                                if (maxTarget >= 25800) {
+                                    gain = 1.0f * 25800 / peak;
                                 } else if (maxTarget < 12288) {
-                                    fAGC *= 1.005;
-                                } else if (maxTarget >= 24576) {
-                                    fAGC *= 0.833f;
+                                    gain *= 1.005;
                                 }
 
+                                float gainStep = (gain - oldGain)/length;
                                 for(int i = 0; i<length; i++) {
-                                    short tmp = s.get(i);
-                                    s.put(i, (short) ((tmp + lastSample) * fAGC/2));
-                                    lastSample = tmp;
+                                    short target = (short)(s.get(i) * (gain + i * gainStep));
+                                    s.put(i, target);
                                 }
                             }
                             mTrack.write(modifiedSamples, 0, available);
@@ -652,8 +614,7 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
                         mLock.lock();
                         mTrack.release();
                         final MediaFormat oformat = mCodec.getOutputFormat();
-                        Log.d("PCM", "Output format has changed to"
-                                + oformat);
+                        Log.d("PCM", "Output format has changed to" + oformat);
                         initDevice(
                                 oformat.getInteger(MediaFormat.KEY_SAMPLE_RATE),
                                 oformat.getInteger(MediaFormat.KEY_CHANNEL_COUNT));
@@ -692,5 +653,84 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
         });
         mDecoderThread.setDaemon(true);
         mDecoderThread.start();
+    }
+
+    float fAGC = 1;
+
+    private static final short GAIN_TARGET = 25000; // target level
+
+    private static final short GAIN_MAX = 32; /* The maximum amount to amplify by */
+    private static final short GAIN_SHIFT = 10;        /* How fine-grained the gain is */
+    private static final short GAIN_SMOOTH = 8;        /* How much inertia ramping has */
+    private static final short BUCKETS = 400;     /* How long of a history to store */
+
+    public void compress(byte[] samples) {
+        ByteBuffer bf = ByteBuffer.wrap(samples);
+        bf.order(ByteOrder.LITTLE_ENDIAN);
+        ShortBuffer s = bf.asShortBuffer();
+        final int length = samples.length/2;
+
+        short peak = 0;
+        long squaredSum = 0;
+        for (int i = 0; i < length; i++) {
+            peak = (short) Math.max(peak, Math.abs(s.get(i)));
+            squaredSum += s.get(i) * s.get(i);
+        }
+        double rms = Math.sqrt(1.0 * squaredSum/length);
+
+
+        double gain = 1.0 * GAIN_TARGET / peak;
+
+        int maxTarget = (int)(peak * fAGC);
+        if (maxTarget >= 25800) {
+            fAGC = 1.0f * 25800 / peak;
+        } else if (maxTarget < 12288) {
+            fAGC *= 1.005;
+        }
+
+        for(int i = 0; i<length; i++) {
+            short target = (short)(s.get(i) * fAGC);
+            s.put(i, target);
+        }
+    }
+
+    private class CircularShortBuffer {
+
+        private final short[] buffer;
+        private short next = 0;
+        private short max = -1;
+
+        public CircularShortBuffer() {
+            buffer = new short[BUCKETS];
+        }
+
+        public void add(short value) {
+            if(buffer[next] == max) {
+                max = -1;
+            }
+            buffer[next] = value;
+            if(value > max) {
+                max = value;
+            }
+            next++;
+            if(next == BUCKETS) {
+                next = 0;
+            }
+        }
+
+        public short max() {
+            if(max < 0) {
+                for(int i=0; i < buffer.length; i++) {
+                    short value = buffer[i];
+                    if(value > max) {
+                        max = value;
+                    } else if(value == 0) {
+                        break;
+                    }
+                }
+            }
+            return max;
+        }
+
     }
 }
