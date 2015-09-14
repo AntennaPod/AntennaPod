@@ -163,9 +163,11 @@ public class ChapterListAdapter extends ArrayAdapter<Chapter> {
 	public int getCount() {
 		// ignore invalid chapters
 		int counter = 0;
-		for (Chapter chapter : chapters) {
-			if (!ignoreChapter(chapter)) {
-				counter++;
+		if (chapters != null) {
+			for (Chapter chapter : chapters) {
+				if (!ignoreChapter(chapter)) {
+					counter++;
+				}
 			}
 		}
 		return counter;
