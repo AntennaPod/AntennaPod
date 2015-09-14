@@ -4,11 +4,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
-import android.view.KeyEvent;
 
 public class MediaButtonIntentReceiver extends BroadcastReceiver {
 
-    private static final String TAG = "MediaButtonIntentReceiver";
+    private static final String TAG = "MediaButtonIntentRcver";
 
     private static PlaybackServiceMediaPlayer mMediaPlayer;
 
@@ -20,7 +19,7 @@ public class MediaButtonIntentReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
         Log.d(TAG, "onReceive(Context, " + intent.toString() +")");
         if (mMediaPlayer != null && Intent.ACTION_MEDIA_BUTTON.equals(intent.getAction())) {
-            mMediaPlayer.handleMediaKey((KeyEvent)intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT));
+            mMediaPlayer.handleMediaKey(intent.getParcelableExtra(Intent.EXTRA_KEY_EVENT));
         }
     }
 

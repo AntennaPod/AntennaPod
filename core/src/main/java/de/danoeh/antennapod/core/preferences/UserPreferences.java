@@ -47,6 +47,7 @@ public class UserPreferences {
     public static final String PREF_DRAWER_FEED_COUNTER = "prefDrawerFeedIndicator";
     public static final String PREF_EXPANDED_NOTIFICATION = "prefExpandNotify";
     public static final String PREF_PERSISTENT_NOTIFICATION = "prefPersistNotify";
+    public static final String PREF_LOCKSCREEN_BACKGROUND = "prefLockscreenBackground";
     public static final String PREF_SHOW_DOWNLOAD_REPORT = "prefShowDownloadReport";
 
     // Queue
@@ -169,6 +170,15 @@ public class UserPreferences {
      */
     public static boolean isPersistNotify() {
         return prefs.getBoolean(PREF_PERSISTENT_NOTIFICATION, false);
+    }
+
+    /**
+     * Returns true if notifications are persistent
+     *
+     * @return {@code true} if notifications are persistent, {@code false}  otherwise
+     */
+    public static boolean setLockscreenBackground() {
+        return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, false);
     }
 
     /**
