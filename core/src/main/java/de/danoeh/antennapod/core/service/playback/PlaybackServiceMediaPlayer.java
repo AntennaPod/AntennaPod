@@ -273,6 +273,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     private void updateMediaSessionMetadata() {
+        if(this.media == null) {
+            return;
+        }
         executor.execute(() -> {
             Playable p = this.media;
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();

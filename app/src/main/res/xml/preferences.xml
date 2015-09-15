@@ -45,7 +45,7 @@
             android:summary="@string/pref_persistNotify_sum"
             android:title="@string/pref_persistNotify_title"/>
         <CheckBoxPreference
-            android:defaultValue="false"
+            android:defaultValue="true"
             android:enabled="true"
             android:key="prefLockscreenBackground"
             android:summary="@string/pref_lockscreen_background_sum"
