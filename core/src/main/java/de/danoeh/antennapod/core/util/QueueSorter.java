@@ -83,7 +83,7 @@ public class QueueSorter {
         }
 
         if (comparator != null) {
-            DBWriter.sortQueue(context, comparator, broadcastUpdate);
+            DBWriter.sortQueue(comparator, broadcastUpdate);
         }
     }
 }

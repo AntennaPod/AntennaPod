@@ -108,7 +108,7 @@ public class ApOkHttpUrlLoader implements ModelLoader<GlideUrl, InputStream> {
             com.squareup.okhttp.Request request = chain.request();
             String url = request.urlString();
             Context context = ClientConfig.applicationCallbacks.getApplicationInstance();
-            String authentication = DBReader.getImageAuthentication(context, url);
+            String authentication = DBReader.getImageAuthentication(url);
 
             if(TextUtils.isEmpty(authentication)) {
                 Log.d(TAG, "no credentials for '" + url + "'");

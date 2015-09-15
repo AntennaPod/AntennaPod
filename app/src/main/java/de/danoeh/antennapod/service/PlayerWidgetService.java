@@ -58,9 +58,9 @@ public class PlayerWidgetService extends Service {
 				if (media.hasAlmostEnded()) {
 					Log.d(TAG, "smart mark as read");
 					FeedItem item = media.getItem();
-					DBWriter.markItemPlayed(this, item, FeedItem.PLAYED, false);
+					DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
 					DBWriter.removeQueueItem(this, item, false);
-					DBWriter.addItemToPlaybackHistory(this, media);
+					DBWriter.addItemToPlaybackHistory(media);
 					if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
 						Log.d(TAG, "Delete " + media.toString());
 						DBWriter.deleteFeedMediaOfItem(this, media.getId());

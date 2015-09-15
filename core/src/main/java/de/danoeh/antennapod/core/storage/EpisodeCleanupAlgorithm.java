@@ -24,7 +24,7 @@ public interface EpisodeCleanupAlgorithm<T> {
      * space to free to satisfy the episode cache conditions. If the conditions are already satisfied, this
      * method should not have any effects.
      */
-    public T getDefaultCleanupParameter(Context context);
+    public T getDefaultCleanupParameter();
 
     /**
      * Returns a parameter for performCleanup.
@@ -32,5 +32,5 @@ public interface EpisodeCleanupAlgorithm<T> {
      * @param items A list of FeedItems that are about to be downloaded. The implementation of this interface
      *              should decide how much space to free to satisfy the episode cache conditions.
      */
-    public T getPerformCleanupParameter(Context context, List<FeedItem> items);
+    public T getPerformCleanupParameter(List<FeedItem> items);
 }

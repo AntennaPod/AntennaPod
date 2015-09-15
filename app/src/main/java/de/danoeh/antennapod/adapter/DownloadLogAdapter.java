@@ -123,7 +123,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 		public void onClick(View v) {
 			ButtonHolder holder = (ButtonHolder) v.getTag();
 			if(holder.typeId == Feed.FEEDFILETYPE_FEED) {
-				Feed feed = DBReader.getFeed(context, holder.id);
+				Feed feed = DBReader.getFeed(holder.id);
 				if (feed != null) {
 					feed.setLastUpdate(new Date(0)); // force refresh
 					try {
@@ -135,7 +135,7 @@ public class DownloadLogAdapter extends BaseAdapter {
 					Log.wtf(TAG, "Could not find feed for feed id: " + holder.id);
 				}
 			} else if(holder.typeId == FeedMedia.FEEDFILETYPE_FEEDMEDIA) {
-				FeedMedia media = DBReader.getFeedMedia(context, holder.id);
+				FeedMedia media = DBReader.getFeedMedia(holder.id);
 				try {
 					DBTasks.downloadFeedItems(context, media.getItem());
 					Toast.makeText(context, R.string.status_downloading_label, Toast.LENGTH_SHORT).show();

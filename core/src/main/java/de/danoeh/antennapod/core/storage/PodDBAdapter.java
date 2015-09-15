@@ -17,8 +17,8 @@ import org.apache.commons.lang3.Validate;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.R;
 import de.danoeh.antennapod.core.event.ProgressEvent;
 import de.danoeh.antennapod.core.feed.Chapter;
@@ -40,6 +40,7 @@ import de.greenrobot.event.EventBus;
  * Implements methods for accessing the database
  */
 public class PodDBAdapter {
+    
     private static final String TAG = "PodDBAdapter";
     public static final String DATABASE_NAME = "Antennapod.db";
 
@@ -52,63 +53,6 @@ public class PodDBAdapter {
      * Maximum number of entries per search request.
      */
     public static final int SEARCH_LIMIT = 30;
-
-    // ----------- Column indices
-    // ----------- General indices
-    public static final int KEY_ID_INDEX = 0;
-    public static final int KEY_TITLE_INDEX = 1;
-    public static final int KEY_FILE_URL_INDEX = 2;
-    public static final int KEY_DOWNLOAD_URL_INDEX = 3;
-    public static final int KEY_DOWNLOADED_INDEX = 4;
-    public static final int KEY_LINK_INDEX = 5;
-    public static final int KEY_DESCRIPTION_INDEX = 6;
-    public static final int KEY_PAYMENT_LINK_INDEX = 7;
-    // ----------- Feed indices
-    public static final int KEY_LAST_UPDATE_INDEX = 8;
-    public static final int KEY_LANGUAGE_INDEX = 9;
-    public static final int KEY_AUTHOR_INDEX = 10;
-    public static final int KEY_IMAGE_INDEX = 11;
-    public static final int KEY_TYPE_INDEX = 12;
-    public static final int KEY_FEED_IDENTIFIER_INDEX = 13;
-    public static final int KEY_FEED_FLATTR_STATUS_INDEX = 14;
-    public static final int KEY_FEED_USERNAME_INDEX = 15;
-    public static final int KEY_FEED_PASSWORD_INDEX = 16;
-    public static final int KEY_IS_PAGED_INDEX = 17;
-    public static final int KEY_LOAD_ALL_PAGES_INDEX = 18;
-    public static final int KEY_NEXT_PAGE_LINK_INDEX = 19;
-    // ----------- FeedItem indices
-    public static final int KEY_CONTENT_ENCODED_INDEX = 2;
-    public static final int KEY_PUBDATE_INDEX = 3;
-    public static final int KEY_READ_INDEX = 4;
-    public static final int KEY_MEDIA_INDEX = 8;
-    public static final int KEY_FEED_INDEX = 9;
-    public static final int KEY_HAS_SIMPLECHAPTERS_INDEX = 10;
-    public static final int KEY_ITEM_IDENTIFIER_INDEX = 11;
-    public static final int KEY_ITEM_FLATTR_STATUS_INDEX = 12;
-    // ---------- FeedMedia indices
-    public static final int KEY_DURATION_INDEX = 1;
-    public static final int KEY_POSITION_INDEX = 5;
-    public static final int KEY_SIZE_INDEX = 6;
-    public static final int KEY_MIME_TYPE_INDEX = 7;
-    public static final int KEY_PLAYBACK_COMPLETION_DATE_INDEX = 8;
-    public static final int KEY_MEDIA_FEEDITEM_INDEX = 9;
-    public static final int KEY_PLAYED_DURATION_INDEX = 10;
-    // --------- Download log indices
-    public static final int KEY_FEEDFILE_INDEX = 1;
-    public static final int KEY_FEEDFILETYPE_INDEX = 2;
-    public static final int KEY_REASON_INDEX = 3;
-    public static final int KEY_SUCCESSFUL_INDEX = 4;
-    public static final int KEY_COMPLETION_DATE_INDEX = 5;
-    public static final int KEY_REASON_DETAILED_INDEX = 6;
-    public static final int KEY_DOWNLOADSTATUS_TITLE_INDEX = 7;
-    // --------- Queue indices
-    public static final int KEY_FEEDITEM_INDEX = 1;
-    public static final int KEY_QUEUE_FEED_INDEX = 2;
-    // --------- Chapters indices
-    public static final int KEY_CHAPTER_START_INDEX = 2;
-    public static final int KEY_CHAPTER_FEEDITEM_INDEX = 3;
-    public static final int KEY_CHAPTER_LINK_INDEX = 4;
-    public static final int KEY_CHAPTER_TYPE_INDEX = 5;
 
     // Key-constants
     public static final String KEY_ID = "id";
@@ -253,12 +197,7 @@ public class PodDBAdapter {
     public static final String CREATE_INDEX_SIMPLECHAPTERS_FEEDITEM = "CREATE INDEX "
             + TABLE_NAME_SIMPLECHAPTERS + "_" + KEY_FEEDITEM + " ON " + TABLE_NAME_SIMPLECHAPTERS + " ("
             + KEY_FEEDITEM + ")";
-
-
-    private SQLiteDatabase db;
-    private final Context context;
-    private PodDBHelper helper;
-
+    
     /**
      * Select all columns from the feed-table
      */
@@ -287,30 +226,7 @@ public class PodDBAdapter {
             TABLE_NAME_FEEDS + "." + KEY_LAST_UPDATE_FAILED,
             TABLE_NAME_FEEDS + "." + KEY_AUTO_DELETE_ACTION,
     };
-
-    // column indices for FEED_SEL_STD
-    public static final int IDX_FEED_SEL_STD_ID = 0;
-    public static final int IDX_FEED_SEL_STD_TITLE = 1;
-    public static final int IDX_FEED_SEL_STD_FILE_URL = 2;
-    public static final int IDX_FEED_SEL_STD_DOWNLOAD_URL = 3;
-    public static final int IDX_FEED_SEL_STD_DOWNLOADED = 4;
-    public static final int IDX_FEED_SEL_STD_LINK = 5;
-    public static final int IDX_FEED_SEL_STD_DESCRIPTION = 6;
-    public static final int IDX_FEED_SEL_STD_PAYMENT_LINK = 7;
-    public static final int IDX_FEED_SEL_STD_LASTUPDATE = 8;
-    public static final int IDX_FEED_SEL_STD_LANGUAGE = 9;
-    public static final int IDX_FEED_SEL_STD_AUTHOR = 10;
-    public static final int IDX_FEED_SEL_STD_IMAGE = 11;
-    public static final int IDX_FEED_SEL_STD_TYPE = 12;
-    public static final int IDX_FEED_SEL_STD_FEED_IDENTIFIER = 13;
-    public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DOWNLOAD = 14;
-    public static final int IDX_FEED_SEL_STD_FLATTR_STATUS = 15;
-    public static final int IDX_FEED_SEL_STD_IS_PAGED = 16;
-    public static final int IDX_FEED_SEL_STD_NEXT_PAGE_LINK = 17;
-    public static final int IDX_FEED_SEL_PREFERENCES_USERNAME = 18;
-    public static final int IDX_FEED_SEL_PREFERENCES_PASSWORD = 19;
-    public static final int IDX_FEED_SEL_PREFERENCES_AUTO_DELETE_ACTION = 22;
-
+    
     /**
      * Select all columns from the feeditems-table except description and
      * content-encoded.
@@ -321,7 +237,8 @@ public class PodDBAdapter {
             TABLE_NAME_FEED_ITEMS + "." + KEY_PUBDATE,
             TABLE_NAME_FEED_ITEMS + "." + KEY_READ,
             TABLE_NAME_FEED_ITEMS + "." + KEY_LINK,
-            TABLE_NAME_FEED_ITEMS + "." + KEY_PAYMENT_LINK, KEY_MEDIA,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_PAYMENT_LINK,
+            TABLE_NAME_FEED_ITEMS + "." + KEY_MEDIA,
             TABLE_NAME_FEED_ITEMS + "." + KEY_FEED,
             TABLE_NAME_FEED_ITEMS + "." + KEY_HAS_CHAPTERS,
             TABLE_NAME_FEED_ITEMS + "." + KEY_ITEM_IDENTIFIER,
@@ -340,73 +257,59 @@ public class PodDBAdapter {
         SEL_FI_SMALL_STR = selFiSmall.substring(1, selFiSmall.length() - 1);
     }
 
-    // column indices for FEEDITEM_SEL_FI_SMALL
-
-    public static final int IDX_FI_SMALL_ID = 0;
-    public static final int IDX_FI_SMALL_TITLE = 1;
-    public static final int IDX_FI_SMALL_PUBDATE = 2;
-    public static final int IDX_FI_SMALL_READ = 3;
-    public static final int IDX_FI_SMALL_LINK = 4;
-    public static final int IDX_FI_SMALL_PAYMENT_LINK = 5;
-    public static final int IDX_FI_SMALL_MEDIA = 6;
-    public static final int IDX_FI_SMALL_FEED = 7;
-    public static final int IDX_FI_SMALL_HAS_CHAPTERS = 8;
-    public static final int IDX_FI_SMALL_ITEM_IDENTIFIER = 9;
-    public static final int IDX_FI_SMALL_FLATTR_STATUS = 10;
-    public static final int IDX_FI_SMALL_IMAGE = 11;
-
     /**
      * Select id, description and content-encoded column from feeditems.
      */
     private static final String[] SEL_FI_EXTRA = {KEY_ID, KEY_DESCRIPTION,
             KEY_CONTENT_ENCODED, KEY_FEED};
 
-    // column indices for SEL_FI_EXTRA
 
-    public static final int IDX_FI_EXTRA_ID = 0;
-    public static final int IDX_FI_EXTRA_DESCRIPTION = 1;
-    public static final int IDX_FI_EXTRA_CONTENT_ENCODED = 2;
-    public static final int IDX_FI_EXTRA_FEED = 3;
+    private SQLiteDatabase db;
+    private static Context context;
+    private static PodDBHelper dbHelper;
+    private static AtomicInteger counter = new AtomicInteger(0);
 
-    static PodDBHelper dbHelperSingleton;
+    public static void init(Context context) {
+        PodDBAdapter.context = context.getApplicationContext();
+    }
 
-    private static synchronized PodDBHelper getDbHelperSingleton(Context appContext) {
-        if (dbHelperSingleton == null) {
-            dbHelperSingleton = new PodDBHelper(appContext, DATABASE_NAME, null);
+    public static synchronized PodDBAdapter getInstance() {
+        if(dbHelper == null) {
+            dbHelper = new PodDBHelper(PodDBAdapter.context, DATABASE_NAME, null);
         }
-        return dbHelperSingleton;
+        return new PodDBAdapter();
     }
 
-    public PodDBAdapter(Context c) {
-        this.context = c;
-        helper = getDbHelperSingleton(c.getApplicationContext());
-    }
+    private PodDBAdapter() {}
 
     public PodDBAdapter open() {
+        counter.incrementAndGet();
         if (db == null || !db.isOpen() || db.isReadOnly()) {
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Opening DB");
+            Log.v(TAG, "Opening DB");
             try {
-                db = helper.getWritableDatabase();
+                db = dbHelper.getWritableDatabase();
             } catch (SQLException ex) {
-                ex.printStackTrace();
-                db = helper.getReadableDatabase();
+                Log.e(TAG, Log.getStackTraceString(ex));
+                db = dbHelper.getReadableDatabase();
             }
         }
         return this;
     }
 
     public void close() {
-        if (BuildConfig.DEBUG)
-            Log.d(TAG, "Closing DB");
-        //db.close();
+        if(counter.decrementAndGet() == 0) {
+            Log.v(TAG, "Closing DB");
+            db.close();
+        }
+        db = null;
     }
 
-    public static boolean deleteDatabase(Context context) {
-        Log.w(TAG, "Deleting database");
-        dbHelperSingleton.close();
-        dbHelperSingleton = null;
-        return context.deleteDatabase(DATABASE_NAME);
+    public static boolean deleteDatabase() {
+        if(dbHelper != null) {
+            dbHelper.close();
+            dbHelper = null;
+        }
+        return context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
     }
 
     /**
@@ -484,7 +387,12 @@ public class PodDBAdapter {
      * @return the id of the entry
      */
     public long setImage(FeedImage image) {
-        db.beginTransaction();
+        boolean startedTransaction = false;
+        if(false == db.inTransaction()) {
+            db.beginTransaction();
+            startedTransaction = true;
+        }
+
         ContentValues values = new ContentValues();
         values.put(KEY_TITLE, image.getTitle());
         values.put(KEY_DOWNLOAD_URL, image.getDownload_url());
@@ -505,8 +413,10 @@ public class PodDBAdapter {
                 db.update(TABLE_NAME_FEEDS, values, KEY_ID + "=?", new String[]{String.valueOf(image.getOwner().getId())});
             }
         }
-        db.setTransactionSuccessful();
-        db.endTransaction();
+        if(startedTransaction) {
+            db.setTransactionSuccessful();
+            db.endTransaction();
+        }
         return image.getId();
     }
 
@@ -527,8 +437,7 @@ public class PodDBAdapter {
         values.put(KEY_HAS_EMBEDDED_PICTURE, media.hasEmbeddedPicture());
 
         if (media.getPlaybackCompletionDate() != null) {
-            values.put(KEY_PLAYBACK_COMPLETION_DATE, media
-                    .getPlaybackCompletionDate().getTime());
+            values.put(KEY_PLAYBACK_COMPLETION_DATE, media.getPlaybackCompletionDate().getTime());
         } else {
             values.put(KEY_PLAYBACK_COMPLETION_DATE, 0);
         }
@@ -822,8 +731,7 @@ public class PodDBAdapter {
             values.put(KEY_LINK, chapter.getLink());
             values.put(KEY_CHAPTER_TYPE, chapter.getChapterType());
             if (chapter.getId() == 0) {
-                chapter.setId(db
-                        .insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
+                chapter.setId(db.insert(TABLE_NAME_SIMPLECHAPTERS, null, values));
             } else {
                 db.update(TABLE_NAME_SIMPLECHAPTERS, values, KEY_ID + "=?",
                         new String[]{String.valueOf(chapter.getId())});
@@ -882,14 +790,6 @@ public class PodDBAdapter {
         }
         result.close();
         return count;
-    }
-
-    public void removeDownloadLogItems(long count) {
-        if (count > 0) {
-            final String sql = String.format("DELETE FROM %s WHERE %s in (SELECT %s from %s ORDER BY %s ASC LIMIT %d)",
-                    TABLE_NAME_DOWNLOAD_LOG, KEY_ID, KEY_ID, TABLE_NAME_DOWNLOAD_LOG, KEY_COMPLETION_DATE, count);
-            db.execSQL(sql, null);
-        }
     }
 
     public void setQueue(List<FeedItem> queue) {
@@ -961,11 +861,6 @@ public class PodDBAdapter {
                 new String[]{String.valueOf(feed.getId())});
         db.setTransactionSuccessful();
         db.endTransaction();
-    }
-
-    public void removeDownloadStatus(DownloadStatus remove) {
-        db.delete(TABLE_NAME_DOWNLOAD_LOG, KEY_ID + "=?",
-                new String[]{String.valueOf(remove.getId())});
     }
 
     public void clearPlaybackHistory() {
@@ -1075,21 +970,14 @@ public class PodDBAdapter {
      * cursor uses the FEEDITEM_SEL_FI_SMALL selection.
      */
     public final Cursor getQueueCursor() {
-        Object[] args = (Object[]) new String[]{
-                SEL_FI_SMALL_STR + "," + TABLE_NAME_QUEUE + "." + KEY_ID,
+        Object[] args = new String[] {
+                SEL_FI_SMALL_STR,
                 TABLE_NAME_FEED_ITEMS, TABLE_NAME_QUEUE,
                 TABLE_NAME_FEED_ITEMS + "." + KEY_ID,
                 TABLE_NAME_QUEUE + "." + KEY_FEEDITEM,
-                TABLE_NAME_QUEUE + "." + KEY_ID};
-        String query = String.format(
-                "SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
+                TABLE_NAME_QUEUE + "." + KEY_ID };
+        String query = String.format("SELECT %s FROM %s INNER JOIN %s ON %s=%s ORDER BY %s", args);
         Cursor c = db.rawQuery(query, null);
-        /*
-         * Cursor c = db.query(TABLE_NAME_FEED_ITEMS, FEEDITEM_SEL_FI_SMALL,
-		 * "INNER JOIN ? ON ?=?", new String[] { TABLE_NAME_QUEUE,
-		 * TABLE_NAME_FEED_ITEMS + "." + KEY_ID, TABLE_NAME_QUEUE + "." +
-		 * KEY_FEEDITEM }, null, null, TABLE_NAME_QUEUE + "." + KEY_FEEDITEM);
-		 */
         return c;
     }
 

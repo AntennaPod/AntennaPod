@@ -142,7 +142,7 @@ public class DownloadLogFragment extends ListFragment {
         if (!super.onOptionsItemSelected(item)) {
             switch (item.getItemId()) {
                 case R.id.clear_history_item:
-                    DBWriter.clearDownloadLog(getActivity());
+                    DBWriter.clearDownloadLog();
                     return true;
                 default:
                     return false;
@@ -170,7 +170,7 @@ public class DownloadLogFragment extends ListFragment {
         protected List<DownloadStatus> doInBackground(Void... params) {
             Context context = getActivity();
             if (context != null) {
-                return DBReader.getDownloadLog(context);
+                return DBReader.getDownloadLog();
             }
             return null;
         }

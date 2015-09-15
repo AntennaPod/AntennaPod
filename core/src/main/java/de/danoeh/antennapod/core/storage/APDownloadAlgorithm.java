@@ -51,8 +51,8 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     Log.d(TAG, "Performing auto-dl of undownloaded episodes");
 
                     List<FeedItem> candidates;
-                    final List<FeedItem> queue = DBReader.getQueue(context);
-                    final List<FeedItem> newItems = DBReader.getNewItemsList(context);
+                    final List<FeedItem> queue = DBReader.getQueue();
+                    final List<FeedItem> newItems = DBReader.getNewItemsList();
                     candidates = new ArrayList<FeedItem>(queue.size() + newItems.size());
                     candidates.addAll(queue);
                     for(FeedItem newItem : newItems) {
@@ -71,9 +71,9 @@ public class APDownloadAlgorithm implements AutomaticDownloadAlgorithm {
                     }
 
                     int autoDownloadableEpisodes = candidates.size();
-                    int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes(context);
+                    int downloadedEpisodes = DBReader.getNumberOfDownloadedEpisodes();
                     int deletedEpisodes = cleanupAlgorithm.performCleanup(context,
-                            APCleanupAlgorithm.getPerformAutoCleanupArgs(context, autoDownloadableEpisodes));
+                            APCleanupAlgorithm.getPerformAutoCleanupArgs(autoDownloadableEpisodes));
                     boolean cacheIsUnlimited = UserPreferences.getEpisodeCacheSize() == UserPreferences
                             .getEpisodeCacheSizeUnlimited();
                     int episodeCacheSize = UserPreferences.getEpisodeCacheSize();

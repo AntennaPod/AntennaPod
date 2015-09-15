@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.core.feed;
 
 import android.content.Context;
+import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.Nullable;
 
@@ -12,6 +13,7 @@ import java.util.List;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.storage.PodDBAdapter;
 import de.danoeh.antennapod.core.util.flattr.FlattrStatus;
 import de.danoeh.antennapod.core.util.flattr.FlattrThing;
 
@@ -170,11 +172,60 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
         preferences = new FeedPreferences(0, true, FeedPreferences.AutoDeleteAction.GLOBAL, username, password);
     }
 
+    public static Feed fromCursor(Cursor cursor) {
+        int indexId = cursor.getColumnIndex(PodDBAdapter.KEY_ID);
+        int indexLastUpdate = cursor.getColumnIndex(PodDBAdapter.KEY_LASTUPDATE);
+        int indexTitle = cursor.getColumnIndex(PodDBAdapter.KEY_TITLE);
+        int indexLink = cursor.getColumnIndex(PodDBAdapter.KEY_LINK);
+        int indexDescription = cursor.getColumnIndex(PodDBAdapter.KEY_DESCRIPTION);
+        int indexPaymentLink = cursor.getColumnIndex(PodDBAdapter.KEY_PAYMENT_LINK);
+        int indexAuthor = cursor.getColumnIndex(PodDBAdapter.KEY_AUTHOR);
+        int indexLanguage = cursor.getColumnIndex(PodDBAdapter.KEY_LANGUAGE);
+        int indexType = cursor.getColumnIndex(PodDBAdapter.KEY_TYPE);
+        int indexFeedIdentifier = cursor.getColumnIndex(PodDBAdapter.KEY_FEED_IDENTIFIER);
+        int indexFileUrl = cursor.getColumnIndex(PodDBAdapter.KEY_FILE_URL);
+        int indexDownloadUrl = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOAD_URL);
+        int indexDownloaded = cursor.getColumnIndex(PodDBAdapter.KEY_DOWNLOADED);
+        int indexFlattrStatus = cursor.getColumnIndex(PodDBAdapter.KEY_FLATTR_STATUS);
+        int indexIsPaged = cursor.getColumnIndex(PodDBAdapter.KEY_IS_PAGED);
+        int indexNextPageLink = cursor.getColumnIndex(PodDBAdapter.KEY_NEXT_PAGE_LINK);
+        int indexHide = cursor.getColumnIndex(PodDBAdapter.KEY_HIDE);
+        int indexLastUpdateFailed = cursor.getColumnIndex(PodDBAdapter.KEY_LAST_UPDATE_FAILED);
 
-    /**
-     * Returns true if at least one item in the itemlist is unread.
-     *
-     */
+        Date lastUpdate = new Date(cursor.getLong(indexLastUpdate));
+
+        Feed feed = new Feed(
+                cursor.getLong(indexId),
+                lastUpdate,
+                cursor.getString(indexTitle),
+                cursor.getString(indexLink),
+                cursor.getString(indexDescription),
+                cursor.getString(indexPaymentLink),
+                cursor.getString(indexAuthor),
+                cursor.getString(indexLanguage),
+                cursor.getString(indexType),
+                cursor.getString(indexFeedIdentifier),
+                null,
+                cursor.getString(indexFileUrl),
+                cursor.getString(indexDownloadUrl),
+                cursor.getInt(indexDownloaded) > 0,
+                new FlattrStatus(cursor.getLong(indexFlattrStatus)),
+                cursor.getInt(indexIsPaged) > 0,
+                cursor.getString(indexNextPageLink),
+                cursor.getString(indexHide),
+                cursor.getInt(indexLastUpdateFailed) > 0
+        );
+
+        FeedPreferences preferences = FeedPreferences.fromCursor(cursor);
+        feed.setPreferences(preferences);
+        return feed;
+    }
+
+
+        /**
+         * Returns true if at least one item in the itemlist is unread.
+         *
+         */
     public boolean hasNewItems() {
         for (FeedItem item : items) {
             if (item.isNew()) {
@@ -444,7 +495,7 @@ public class Feed extends FeedFile implements FlattrThing, ImageResource {
     }
 
     public void savePreferences(Context context) {
-        DBWriter.setFeedPreferences(context, preferences);
+        DBWriter.setFeedPreferences(preferences);
     }
 
     @Override

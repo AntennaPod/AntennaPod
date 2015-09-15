@@ -100,7 +100,7 @@ public class PlaybackServiceTaskManager {
             queueFuture = schedExecutor.submit(new Callable<List<FeedItem>>() {
                 @Override
                 public List<FeedItem> call() throws Exception {
-                    return DBReader.getQueue(context);
+                    return DBReader.getQueue();
                 }
             });
         }

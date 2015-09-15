@@ -59,7 +59,7 @@ public class OpmlExportWorker extends AsyncTask<Void, Void, Void> {
         OutputStreamWriter writer = null;
         try {
             writer = new OutputStreamWriter(new FileOutputStream(output), LangUtils.UTF_8);
-            opmlWriter.writeDocument(DBReader.getFeedList(context), writer);
+            opmlWriter.writeDocument(DBReader.getFeedList(), writer);
         } catch (IOException e) {
             e.printStackTrace();
             exception = e;

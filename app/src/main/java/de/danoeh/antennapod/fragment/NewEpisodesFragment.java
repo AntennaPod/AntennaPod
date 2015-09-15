@@ -73,7 +73,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
                 // we're marking it as unplayed since the user didn't actually play it
                 // but they don't want it considered 'NEW' anymore
-                DBWriter.markItemPlayed(getActivity(), FeedItem.UNPLAYED, item.getId());
+                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
                 undoBarController.showUndoBar(false,
                         getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
                                 which)
@@ -89,14 +89,14 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    DBWriter.markItemPlayed(context, FeedItem.NEW, itemId);
+                    DBWriter.markItemPlayed(FeedItem.NEW, itemId);
                 }
             }
             @Override
             public void onHide(FeedItemUndoToken token) {
                 if (token != null && context != null) {
                     long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(context, itemId);
+                    FeedItem item = DBReader.getFeedItem(itemId);
                     FeedMedia media = item.getMedia();
                     if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
                         DBWriter.deleteFeedMediaOfItem(context, media.getId());

@@ -2,6 +2,7 @@ package de.test.antennapod;
 
 import android.test.InstrumentationTestRunner;
 import android.test.suitebuilder.TestSuiteBuilder;
+
 import junit.framework.TestSuite;
 
 public class AntennaPodTestRunner extends InstrumentationTestRunner {
@@ -13,4 +14,5 @@ public class AntennaPodTestRunner extends InstrumentationTestRunner {
                 .excludePackages("de.test.antennapod.gpodnet")
                 .build();
     }
+
 }

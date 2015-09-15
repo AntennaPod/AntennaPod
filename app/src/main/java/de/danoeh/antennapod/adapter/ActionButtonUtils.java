@@ -64,7 +64,7 @@ public class ActionButtonUtils {
                     butSecondary.setContentDescription(context.getString(labels[1]));
                 } else {
                     // item is not downloaded and not being downloaded
-                    LongList queueIds = DBReader.getQueueIDList(context);
+                    LongList queueIds = DBReader.getQueueIDList();
                     if(DefaultActionButtonCallback.userAllowedMobileDownloads() ||
                             !DefaultActionButtonCallback.userChoseAddToQueue() || queueIds.contains(item.getId())) {
                         butSecondary.setVisibility(View.VISIBLE);

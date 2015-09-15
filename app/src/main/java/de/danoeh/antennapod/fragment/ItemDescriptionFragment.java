@@ -210,7 +210,7 @@ public class ItemDescriptionFragment extends Fragment {
 
                 @Override
                 protected FeedItem doInBackground(Void... voids) {
-                    return DBReader.getFeedItem(getActivity(), getArguments().getLong(ARG_FEEDITEM_ID));
+                    return DBReader.getFeedItem(getArguments().getLong(ARG_FEEDITEM_ID));
                 }
 
                 @Override

@@ -126,7 +126,7 @@ public class GpodnetSyncService extends Service {
     private synchronized void syncSubscriptionChanges() {
         final long timestamp = GpodnetPreferences.getLastSubscriptionSyncTimestamp();
         try {
-            final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls(this);
+            final List<String> localSubscriptions = DBReader.getFeedListDownloadUrls();
             Collection<String> localAdded = GpodnetPreferences.getAddedFeedsCopy();
             Collection<String> localRemoved = GpodnetPreferences.getRemovedFeedsCopy();
             GpodnetService service = tryLogin();
@@ -242,9 +242,9 @@ public class GpodnetSyncService extends Service {
         for (GpodnetEpisodeAction action : remoteActions) {
             switch (action.getAction()) {
                 case NEW:
-                    FeedItem newItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
+                    FeedItem newItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
                     if(newItem != null) {
-                        DBWriter.markItemPlayed(this, newItem, FeedItem.UNPLAYED, true);
+                        DBWriter.markItemPlayed(newItem, FeedItem.UNPLAYED, true);
                     } else {
                         Log.i(TAG, "Unknown feed item: " + action);
                     }
@@ -273,14 +273,14 @@ public class GpodnetSyncService extends Service {
             }
         }
         for (GpodnetEpisodeAction action : mostRecentPlayAction.values()) {
-            FeedItem playItem = DBReader.getFeedItem(this, action.getPodcast(), action.getEpisode());
+            FeedItem playItem = DBReader.getFeedItem(action.getPodcast(), action.getEpisode());
             if (playItem != null) {
                 FeedMedia media = playItem.getMedia();
                 media.setPosition(action.getPosition() * 1000);
-                DBWriter.setFeedMedia(this, media);
+                DBWriter.setFeedMedia(media);
                 if(playItem.getMedia().hasAlmostEnded()) {
-                    DBWriter.markItemPlayed(this, playItem, FeedItem.PLAYED, true);
-                    DBWriter.addItemToPlaybackHistory(this, playItem.getMedia());
+                    DBWriter.markItemPlayed(playItem, FeedItem.PLAYED, true);
+                    DBWriter.addItemToPlaybackHistory(playItem.getMedia());
                 }
             }
         }

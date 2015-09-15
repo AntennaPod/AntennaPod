@@ -94,7 +94,7 @@ public class FlattrClickWorker extends AsyncTask<Void, Integer, FlattrClickWorke
             return ExitCode.NO_NETWORK;
         }
 
-        final List<FlattrThing> flattrQueue = DBReader.getFlattrQueue(context);
+        final List<FlattrThing> flattrQueue = DBReader.getFlattrQueue();
         if (extraFlattrThing != null) {
             flattrQueue.add(extraFlattrThing);
         } else if (flattrQueue.size() == 1) {

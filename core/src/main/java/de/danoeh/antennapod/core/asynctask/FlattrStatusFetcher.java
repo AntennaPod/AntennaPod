@@ -32,7 +32,7 @@ public class FlattrStatusFetcher extends Thread {
 
         try {
             List<Flattr> flattredThings = FlattrUtils.retrieveFlattredThings();
-            DBWriter.setFlattredStatus(context, flattredThings).get();
+            DBWriter.setFlattredStatus(flattredThings).get();
         } catch (FlattrException e) {
             e.printStackTrace();
             Log.d(TAG, "flattrQueue exception retrieving list with flattred items " + e.getMessage());

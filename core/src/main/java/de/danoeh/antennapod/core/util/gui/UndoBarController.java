@@ -89,7 +89,9 @@ public class UndoBarController<T> {
 
     public void close() {
         hideUndoBar(true);
-        mUndoListener.onHide(mUndoToken);
+        if(mUndoListener != null) {
+            mUndoListener.onHide(mUndoToken);
+        }
     }
 
     public void hideUndoBar(boolean immediate) {

@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.drawable.BitmapDrawable;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -60,6 +59,10 @@ import de.danoeh.antennapod.fragment.CoverFragment;
 import de.danoeh.antennapod.fragment.ItemDescriptionFragment;
 import de.danoeh.antennapod.menuhandler.NavDrawerActivity;
 import de.danoeh.antennapod.preferences.PreferenceController;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Activity for playing audio files.
@@ -104,6 +107,8 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     private ImageButton butNavChaptersShownotes;
     private ImageButton butShowCover;
 
+    private Subscription subscription;
+
     private PopupWindow popupWindow;
 
     private void resetFragmentView() {
@@ -145,7 +150,9 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
     protected void onStop() {
         super.onStop();
         Log.d(TAG, "onStop()");
-        cancelLoadTask();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
         EventDistributor.getInstance().unregister(contentUpdate);
     }
 
@@ -716,10 +723,10 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
         Feed feed = navDrawerData.feeds.get(position - navAdapter.getSubscriptionOffset());
         switch(item.getItemId()) {
             case R.id.mark_all_seen_item:
-                DBWriter.markFeedSeen(this, feed.getId());
+                DBWriter.markFeedSeen(feed.getId());
                 return true;
             case R.id.mark_all_read_item:
-                DBWriter.markFeedRead(this, feed.getId());
+                DBWriter.markFeedRead(feed.getId());
                 return true;
             case R.id.remove_item:
                 final FeedRemover remover = new FeedRemover(this, feed) {
@@ -747,32 +754,22 @@ public class AudioplayerActivity extends MediaplayerActivity implements ItemDesc
 
 
     private DBReader.NavDrawerData navDrawerData;
-    private AsyncTask<Void, Void, DBReader.NavDrawerData> loadTask;
 
     private void loadData() {
-        loadTask = new AsyncTask<Void, Void, DBReader.NavDrawerData>() {
-            @Override
-            protected DBReader.NavDrawerData doInBackground(Void... params) {
-                return DBReader.getNavDrawerData(AudioplayerActivity.this);
-            }
-
-            @Override
-            protected void onPostExecute(DBReader.NavDrawerData result) {
-                super.onPostExecute(result);
-                navDrawerData = result;
-                if (navAdapter != null) {
-                    navAdapter.notifyDataSetChanged();
-                }
-            }
-        };
-        loadTask.execute();
+        subscription = Observable.defer(() -> Observable.just(DBReader.getNavDrawerData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    navDrawerData = result;
+                    if (navAdapter != null) {
+                        navAdapter.notifyDataSetChanged();
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void cancelLoadTask() {
-        if (loadTask != null) {
-            loadTask.cancel(true);
-        }
-    }
+
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
 

@@ -78,7 +78,7 @@ public class FeedMenuHandler {
                     public void onConfirmButtonPressed(
                             DialogInterface dialog) {
                         dialog.dismiss();
-                        DBWriter.markFeedRead(context, selectedFeed.getId());
+                        DBWriter.markFeedRead(selectedFeed.getId());
                     }
                 };
                 conDialog.createNewDialog().show();
@@ -138,7 +138,7 @@ public class FeedMenuHandler {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 feed.setHiddenItemProperties(hidden.toArray(new String[hidden.size()]));
-                DBWriter.setFeedItemsFilter(context, feed.getId(), hidden);
+                DBWriter.setFeedItemsFilter(feed.getId(), hidden);
             }
         });
         builder.setNegativeButton(R.string.cancel_label, null);

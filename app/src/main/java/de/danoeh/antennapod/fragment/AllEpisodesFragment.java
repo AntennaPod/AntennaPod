@@ -38,6 +38,7 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
+import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -57,6 +58,7 @@ public class AllEpisodesFragment extends Fragment {
     public static final String TAG = "AllEpisodesFragment";
 
     private static final int EVENTS = EventDistributor.DOWNLOAD_HANDLED |
+            EventDistributor.FEED_LIST_UPDATE |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.UNREAD_ITEMS_UPDATE |
             EventDistributor.PLAYER_STATUS_UPDATE;
@@ -251,7 +253,7 @@ public class AllEpisodesFragment extends Fragment {
                         public void onConfirmButtonPressed(
                                 DialogInterface dialog) {
                             dialog.dismiss();
-                            DBWriter.markAllItemsRead(getActivity());
+                            DBWriter.markAllItemsRead();
                             Toast.makeText(getActivity(), R.string.mark_all_read_msg, Toast.LENGTH_SHORT).show();
                         }
                     };
@@ -485,14 +487,14 @@ public class AllEpisodesFragment extends Fragment {
             if (context != null) {
                 if(showOnlyNewEpisodes) {
                     return new Object[] {
-                            DBReader.getNewItemsList(context),
-                            DBReader.getQueueIDList(context),
+                            DBReader.getNewItemsList(),
+                            DBReader.getQueueIDList(),
                             null // see ItemAccess.isNew
                     };
                 } else {
                     return new Object[]{
-                            DBReader.getRecentlyPublishedEpisodes(context, RECENT_EPISODES_LIMIT),
-                            DBReader.getQueueIDList(context)
+                            DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT),
+                            DBReader.getQueueIDList()
                     };
                 }
             } else {

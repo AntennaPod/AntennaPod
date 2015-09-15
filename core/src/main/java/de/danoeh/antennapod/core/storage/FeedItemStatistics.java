@@ -1,5 +1,7 @@
 package de.danoeh.antennapod.core.storage;
 
+import android.database.Cursor;
+
 import java.util.Date;
 
 /**
@@ -34,6 +36,15 @@ public class FeedItemStatistics {
         } else {
             this.lastUpdate = UNKNOWN_DATE;
         }
+    }
+
+    public static FeedItemStatistics fromCursor(Cursor cursor) {
+        return new FeedItemStatistics(
+                cursor.getLong(0),
+                cursor.getInt(1),
+                cursor.getInt(2),
+                cursor.getInt(4),
+                new Date(cursor.getLong(3)));
     }
 
     public long getFeedID() {

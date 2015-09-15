@@ -201,9 +201,9 @@ public class PlaybackServiceMediaPlayer {
                     if(oldMedia.hasAlmostEnded()) {
                         Log.d(TAG, "smart mark as read");
                         FeedItem item = oldMedia.getItem();
-                        DBWriter.markItemPlayed(context, item, FeedItem.PLAYED, false);
+                        DBWriter.markItemPlayed(item, FeedItem.PLAYED, false);
                         DBWriter.removeQueueItem(context, item, false);
-                        DBWriter.addItemToPlaybackHistory(context, oldMedia);
+                        DBWriter.addItemToPlaybackHistory(oldMedia);
                         if (item.getFeed().getPreferences().getCurrentAutoDelete()) {
                             Log.d(TAG, "Delete " + oldMedia.toString());
                             DBWriter.deleteFeedMediaOfItem(context, oldMedia.getId());

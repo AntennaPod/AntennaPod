@@ -630,12 +630,12 @@ public class ItemlistFragment extends ListFragment {
             long feedID = params[0];
             Context context = getActivity();
             if (context != null) {
-                Feed feed = DBReader.getFeed(context, feedID);
+                Feed feed = DBReader.getFeed(feedID);
                 if(feed != null && feed.getItemFilter() != null) {
                     FeedItemFilter filter = feed.getItemFilter();
                     feed.setItems(filter.filter(context, feed.getItems()));
                 }
-                LongList queuedItemsIds = DBReader.getQueueIDList(context);
+                LongList queuedItemsIds = DBReader.getQueueIDList();
                 return new Object[] { feed, queuedItemsIds };
             } else {
                 return null;
