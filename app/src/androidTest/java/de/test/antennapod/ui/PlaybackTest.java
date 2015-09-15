@@ -7,7 +7,9 @@ import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 import android.test.ActivityInstrumentationTestCase2;
 import android.test.FlakyTest;
+import android.view.View;
 import android.widget.ImageButton;
+import android.widget.ListView;
 
 import com.robotium.solo.Solo;
 import com.robotium.solo.Timeout;
@@ -33,6 +35,8 @@ import de.danoeh.antennapod.core.util.playback.PlaybackController;
 public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity> {
 
     private static final String TAG = PlaybackTest.class.getSimpleName();
+    public static final int EPISODES_DRAWER_LIST_INDEX = 1;
+    public static final int QUEUE_DRAWER_LIST_INDEX = 0;
 
     private Solo solo;
     private UITestUtils uiTestUtils;
@@ -141,19 +145,7 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
 
         PodDBAdapter.deleteDatabase();
 
-        controller = createController(getActivity());
-        controller.init();
-
-        solo = new Solo(getInstrumentation(), getActivity());
-
         context = getInstrumentation().getTargetContext();
-        uiTestUtils = new UITestUtils(context);
-        uiTestUtils.setup();
-
-        // create database
-        PodDBAdapter adapter = PodDBAdapter.getInstance();
-        adapter.open();
-        adapter.close();
 
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
         prefs.edit()
@@ -161,6 +153,19 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
                 .putBoolean(UserPreferences.PREF_UNPAUSE_ON_HEADSET_RECONNECT, false)
                 .putBoolean(UserPreferences.PREF_PAUSE_ON_HEADSET_DISCONNECT, false)
                 .commit();
+
+        controller = createController(getActivity());
+        controller.init();
+
+        solo = new Solo(getInstrumentation(), getActivity());
+
+        uiTestUtils = new UITestUtils(context);
+        uiTestUtils.setup();
+
+        // create database
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+        adapter.close();
     }
 
     @Override
@@ -191,12 +196,18 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     }
 
     private void startLocalPlayback() {
-        String allEpisodesLabel = solo.getString(R.string.all_episodes_label);
-        if(!getActivity().getSupportActionBar().getTitle().equals(allEpisodesLabel)) {
-            openNavDrawer();
-            solo.clickOnText(solo.getString(R.string.episodes_label));
-            solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
-        }
+        openNavDrawer();
+        // if we try to just click on plain old text then
+        // we might wind up clicking on the fragment title and not
+        // the drawer element like we want.
+        ListView drawerView = (ListView)solo.getView(R.id.nav_list);
+        // this should be 'Episodes'
+        View targetView = drawerView.getChildAt(EPISODES_DRAWER_LIST_INDEX);
+        solo.waitForView(targetView);
+        solo.clickOnView(targetView);
+        solo.waitForText(solo.getString(R.string.all_episodes_short_label));
+        solo.clickOnText(solo.getString(R.string.all_episodes_short_label));
+
         final List<FeedItem> episodes = DBReader.getRecentlyPublishedEpisodes(10);
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
 
@@ -215,7 +226,14 @@ public class PlaybackTest extends ActivityInstrumentationTestCase2<MainActivity>
     private void startLocalPlaybackFromQueue() {
         openNavDrawer();
 
-        solo.clickOnText(solo.getString(R.string.queue_label));
+        // if we try to just click on plain old text then
+        // we might wind up clicking on the fragment title and not
+        // the drawer element like we want.
+        ListView drawerView = (ListView)solo.getView(R.id.nav_list);
+        // this should be 'Queue'
+        View targetView = drawerView.getChildAt(QUEUE_DRAWER_LIST_INDEX);
+        solo.waitForView(targetView);
+        solo.clickOnView(targetView);
 
         assertTrue(solo.waitForView(solo.getView(R.id.butSecondaryAction)));
         final List<FeedItem> queue = DBReader.getQueue();
