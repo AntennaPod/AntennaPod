@@ -484,9 +484,12 @@ public class PreferenceController {
 
         if (Build.VERSION.SDK_INT >= 16) {
             ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
-            if(UserPreferences.useSonic()) {
-                ui.findPreference(UserPreferences.PREF_NORMALIZER).setEnabled(true);
-            }
+            ui.findPreference(UserPreferences.PREF_NORMALIZER).setEnabled(UserPreferences.useSonic());
+        } else {
+            Preference prefSonic = ui.findPreference(UserPreferences.PREF_SONIC);
+            prefSonic.setSummary("[Android 4.1+]\n" + prefSonic.getSummary());
+            Preference prefNormalizer = ui.findPreference(UserPreferences.PREF_NORMALIZER);
+            prefNormalizer.setSummary("[Android 4.1+]\n" + prefNormalizer.getSummary());
         }
     }
 

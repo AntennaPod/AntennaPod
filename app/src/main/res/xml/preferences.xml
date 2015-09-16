@@ -227,6 +227,7 @@
             android:summary="@string/pref_sonic_message"
             android:title="@string/pref_sonic_title"/>
         <ListPreference
+            android:enabled="false"
             android:entryValues="@array/normalizer_values"
             android:entries="@array/normalizer_options"
             android:title="@string/pref_normalizer_title"
