@@ -21,7 +21,8 @@ import android.util.Log;
 
 import java.io.IOException;
 
-public class AndroidMediaPlayer extends MediaPlayerImpl {
+public class AndroidMediaPlayer extends AbstractMediaPlayer {
+
 	private final static String AMP_TAG = "AocateAndroidMediaPlayer";
 
 	// private static final long TIMEOUT_DURATION_MS = 500;
@@ -87,7 +88,7 @@ public class AndroidMediaPlayer extends MediaPlayerImpl {
 				owningMediaPlayer.lock.lock();
 				try {
 					if ((owningMediaPlayer.onInfoListener != null)
-						&& (owningMediaPlayer.mpi == AndroidMediaPlayer.this)) { 
+						&& (owningMediaPlayer.mpi == AndroidMediaPlayer.this)) {
 						return owningMediaPlayer.onInfoListener.onInfo(owningMediaPlayer, what, extra);
 					}
 				}
@@ -414,12 +415,6 @@ public class AndroidMediaPlayer extends MediaPlayerImpl {
 	public void setPlaybackSpeed(float f) {
 		// Can't!
 		Log.d(AMP_TAG, "setPlaybackSpeed(" + f + ")");
-	}
-
-	@Override
-	public void setSpeedAdjustmentAlgorithm(int algorithm) {
-		// Can't!
-		Log.d(AMP_TAG, "setSpeedAdjustmentAlgorithm(" + algorithm + ")");
 	}
 
 	@Override

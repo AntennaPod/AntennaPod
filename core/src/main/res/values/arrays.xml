@@ -184,4 +184,20 @@
         <item>500</item>
     </string-array>
 
+    <string-array name="normalizer_options">
+        <item>@string/pref_normalizer_none</item>
+        <item>@string/pref_normalizer_simple</item>
+        <item>@string/pref_normalizer_xmms2</item>
+        <item>@string/pref_normalizer_mplayer1</item>
+        <item>@string/pref_normalizer_mplayer2</item>
+    </string-array>
+
+    <string-array name="normalizer_values">
+        <item>none</item>
+        <item>simple</item>
+        <item>xmms2</item>
+        <item>mplayer1</item>
+        <item>mplayer2</item>
+    </string-array>
+
 </resources>

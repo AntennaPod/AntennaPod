@@ -14,21 +14,22 @@
 
 package com.aocate.media;
 
-import java.io.IOException;
-import java.util.concurrent.locks.ReentrantLock;
-
 import android.content.Context;
 import android.net.Uri;
 import android.util.Log;
 
-public abstract class MediaPlayerImpl {
-	private static final String MPI_TAG = "AocateMediaPlayerImpl";
+import java.io.IOException;
+import java.util.concurrent.locks.ReentrantLock;
+
+public abstract class AbstractMediaPlayer {
+
+	private static final String MPI_TAG = "AbstractMediaPlayer";
 	protected final MediaPlayer owningMediaPlayer;
 	protected final Context mContext;
 	protected int muteOnPreparedCount = 0;
 	protected int muteOnSeekCount = 0;
 
-	public MediaPlayerImpl(MediaPlayer owningMediaPlayer, Context context) {
+	public AbstractMediaPlayer(MediaPlayer owningMediaPlayer, Context context) {
 		this.owningMediaPlayer = owningMediaPlayer;
 
 		this.mContext = context;
@@ -81,9 +82,7 @@ public abstract class MediaPlayerImpl {
 	public abstract void setPlaybackPitch(float f);
 	
 	public abstract void setPlaybackSpeed(float f);
-	
-	public abstract void setSpeedAdjustmentAlgorithm(int algorithm);
-	
+
 	public abstract void setVolume(float leftVolume, float rightVolume);
 	
 	public abstract void setWakeMode(Context context, int mode);

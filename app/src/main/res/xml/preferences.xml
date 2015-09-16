@@ -217,7 +217,23 @@
         <Preference
             android:key="prefAbout"
             android:title="@string/about_pref"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/experimental_pref">
+        <CheckBoxPreference
+            android:defaultValue="false"
+            android:enabled="false"
+            android:key="prefSonic"
+            android:summary="@string/pref_sonic_message"
+            android:title="@string/pref_sonic_title"/>
+        <ListPreference
+            android:enabled="false"
+            android:entryValues="@array/normalizer_values"
+            android:entries="@array/normalizer_options"
+            android:title="@string/pref_normalizer_title"
+            android:key="prefNormalizer"
+            android:summary="@string/pref_normalizer_sum"
+            android:defaultValue="None"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

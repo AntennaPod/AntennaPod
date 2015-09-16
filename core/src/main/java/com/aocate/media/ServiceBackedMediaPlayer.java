@@ -20,8 +20,6 @@
 
 package com.aocate.media;
 
-import java.io.IOException;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -30,8 +28,8 @@ import android.media.AudioManager;
 import android.net.Uri;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.os.RemoteException;
 import android.os.PowerManager.WakeLock;
+import android.os.RemoteException;
 import android.util.Log;
 
 import com.aocate.media.MediaPlayer.State;
@@ -46,6 +44,8 @@ import com.aocate.presto.service.IOnSeekCompleteListenerCallback_0_8;
 import com.aocate.presto.service.IOnSpeedAdjustmentAvailableChangedListenerCallback_0_8;
 import com.aocate.presto.service.IPlayMedia_0_8;
 
+import java.io.IOException;
+
 import de.danoeh.antennapod.core.BuildConfig;
 
 /**
@@ -57,10 +57,11 @@ import de.danoeh.antennapod.core.BuildConfig;
  * @author aocate
  *
  */
-public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
+public class ServiceBackedMediaPlayer extends AbstractMediaPlayer {
+
 	static final String INTENT_NAME = "com.aocate.intent.PLAY_AUDIO_ADJUST_SPEED_0_8";
 	
-	private static final String SBMP_TAG = "AocateServiceBackedMediaPlayer";
+	private static final String SBMP_TAG = "ServiceBackedMediaPlaye";
 
 	private ServiceConnection mPlayMediaServiceConnection = null;
 	protected IPlayMedia_0_8 pmInterface = null;
@@ -358,7 +359,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			// Can't set speed if the Service isn't connected
 			try {
 				return pmInterface.getMaxSpeedMultiplier(
-					ServiceBackedMediaPlayer.this.sessionId);
+						ServiceBackedMediaPlayer.this.sessionId);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
@@ -491,7 +492,7 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 		}
         stayAwake(false);
 	}
-	
+
 	/**
 	 * Functions identically to android.media.MediaPlayer.prepare()
 	 * Prepares the track.  This or prepareAsync must be called before start()
@@ -630,8 +631,8 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 		}
 		try {
 			pmInterface.setAudioStreamType(
-				ServiceBackedMediaPlayer.this.sessionId,
-				this.mAudioStreamType);
+					ServiceBackedMediaPlayer.this.sessionId,
+					this.mAudioStreamType);
 		} catch (RemoteException e) {
 			e.printStackTrace();
 			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
@@ -761,8 +762,8 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			// Can't set speed if the Service isn't connected
 			try {
 				pmInterface.setPitchStepsAdjustment(
-					ServiceBackedMediaPlayer.this.sessionId,
-					pitchSteps);
+						ServiceBackedMediaPlayer.this.sessionId,
+						pitchSteps);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
@@ -788,8 +789,8 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 			// Can't set speed if the Service isn't connected
 			try {
 				pmInterface.setPlaybackPitch(
-					ServiceBackedMediaPlayer.this.sessionId,
-					f);
+						ServiceBackedMediaPlayer.this.sessionId,
+						f);
 			} catch (RemoteException e) {
 				e.printStackTrace();
 				ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
@@ -820,23 +821,6 @@ public class ServiceBackedMediaPlayer extends MediaPlayerImpl {
 				e.printStackTrace();
 				ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 			}
-		}
-	}
-	
-	@Override
-	public void setSpeedAdjustmentAlgorithm(int algorithm) {
-		if (pmInterface == null) {
-			if (!ConnectPlayMediaService()) {
-				ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
-			}
-		}
-		try {
-			pmInterface.setSpeedAdjustmentAlgorithm(
-				ServiceBackedMediaPlayer.this.sessionId,
-				algorithm);
-		} catch (RemoteException e) {
-			e.printStackTrace();
-			ServiceBackedMediaPlayer.this.error(MediaPlayer.MEDIA_ERROR_UNKNOWN, 0);
 		}
 	}
 
