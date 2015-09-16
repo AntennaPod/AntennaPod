@@ -25,6 +25,7 @@ import android.media.MediaFormat;
 import android.net.Uri;
 import android.os.Build;
 import android.os.PowerManager;
+import android.support.annotation.Nullable;
 import android.util.Log;
 
 import org.vinuxproject.sonic.Sonic;
@@ -498,7 +499,6 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
     @SuppressWarnings("deprecation")
     public void decode() {
         mDecoderThread = new Thread(() -> {
-            float gain = 1.0f;
             mIsDecoding = true;
             mCodec.start();
 
@@ -572,31 +572,10 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
                                 modifiedSamples = new byte[available];
                             }
                             mSonic.readBytesFromStream(modifiedSamples, available);
-                            // AGC
-                            if(UserPreferences.useNormalizer()) {
-                                ByteBuffer bf = ByteBuffer.wrap(modifiedSamples);
-                                bf.order(ByteOrder.LITTLE_ENDIAN);
-                                ShortBuffer s = bf.asShortBuffer();
-                                final int length = modifiedSamples.length/2;
 
-                                short peak = 0;
-                                for (int i = 0; i < length; i++) {
-                                    peak = (short)Math.max(peak, Math.abs(s.get(i)));
-                                }
-
-                                int maxTarget = (int)(peak * gain);
-                                float oldGain = gain;
-                                if (maxTarget >= 25800) {
-                                    gain = 1.0f * 25800 / peak;
-                                } else if (maxTarget < 12288) {
-                                    gain *= 1.005;
-                                }
-
-                                float gainStep = (gain - oldGain)/length;
-                                for(int i = 0; i<length; i++) {
-                                    short target = (short)(s.get(i) * (gain + i * gainStep));
-                                    s.put(i, target);
-                                }
+                            checkNormalizerSetting();
+                            if(normalizer != null) {
+                                normalizer.normalize(modifiedSamples);
                             }
                             mTrack.write(modifiedSamples, 0, available);
                         }
@@ -655,67 +634,174 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
         mDecoderThread.start();
     }
 
-    float fAGC = 1;
+    private Normalizer normalizer;
 
-    private static final short GAIN_TARGET = 25000; // target level
-
-    private static final short GAIN_MAX = 32; /* The maximum amount to amplify by */
-    private static final short GAIN_SHIFT = 10;        /* How fine-grained the gain is */
-    private static final short GAIN_SMOOTH = 8;        /* How much inertia ramping has */
-    private static final short BUCKETS = 400;     /* How long of a history to store */
-
-    public void compress(byte[] samples) {
-        ByteBuffer bf = ByteBuffer.wrap(samples);
-        bf.order(ByteOrder.LITTLE_ENDIAN);
-        ShortBuffer s = bf.asShortBuffer();
-        final int length = samples.length/2;
-
-        short peak = 0;
-        long squaredSum = 0;
-        for (int i = 0; i < length; i++) {
-            peak = (short) Math.max(peak, Math.abs(s.get(i)));
-            squaredSum += s.get(i) * s.get(i);
-        }
-        double rms = Math.sqrt(1.0 * squaredSum/length);
-
-
-        double gain = 1.0 * GAIN_TARGET / peak;
-
-        int maxTarget = (int)(peak * fAGC);
-        if (maxTarget >= 25800) {
-            fAGC = 1.0f * 25800 / peak;
-        } else if (maxTarget < 12288) {
-            fAGC *= 1.005;
-        }
-
-        for(int i = 0; i<length; i++) {
-            short target = (short)(s.get(i) * fAGC);
-            s.put(i, target);
+    @Nullable
+    private void checkNormalizerSetting() {
+        String setting = UserPreferences.getNormalizer();
+        if(setting == null || setting.equals("none")) {
+            normalizer = null;
+        } else if(setting.equals("simple")) {
+            if(!(normalizer instanceof Simple)) {
+                normalizer = new Simple();
+            }
+        } else if(setting.equals("xmms2")) {
+            if(!(normalizer instanceof Xmms2)) {
+                normalizer = new Xmms2();
+            }
+        } else if(setting.equals("mplayer1")) {
+            if(!(normalizer instanceof MPlayer1)) {
+                normalizer = new MPlayer1();
+            }
+        } else if(setting.equals("mplayer2")) {
+            if(!(normalizer instanceof MPlayer2)) {
+                normalizer = new MPlayer2();
+            }
+        } else {
+            Log.wtf(TAG, "Unknown normalizer: " + setting);
+            UserPreferences.setNormalizer(null);
         }
     }
 
-    private class CircularShortBuffer {
+    interface Normalizer {
+        void normalize(byte[] samples);
+    }
+
+    ////////////////
+    // XMMS2 adapted from:
+    // http://git.xmms2.org/xmms2/xmms2-devel/tree/src/plugins/normalize/compress.c
+
+    /*  AudioCompress
+     *  Copyright (C) 2002-2003 trikuare studios (http://trikuare.cx)
+     *
+     *  This library is free software; you can redistribute it and/or
+     *  modify it under the terms of the GNU Lesser General Public
+     *  License as published by the Free Software Foundation; either
+     *  version 2.1 of the License, or (at your option) any later version.
+     *
+     *  This library is distributed in the hope that it will be useful,
+     *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+     *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+     *  Lesser General Public License for more details.
+     */
+
+    private class Xmms2 implements Normalizer {
+
+        private static final short GAIN_TARGET = 25000; // target level
+
+        private static final short GAIN_MAX = 32; /* The maximum amount to amplify by */
+        private static final short GAIN_SHIFT = 10;        /* How fine-grained the gain is */
+        private static final short GAIN_SMOOTH = 8;        /* How much inertia ramping has */
+        private static final short BUCKETS = 400;     /* How long of a history to store */
+
+        private XmmsPeaks peaks = new XmmsPeaks(BUCKETS);
+        int gainCurrent = 1 << GAIN_SHIFT;
+        int gainTarget = 1 << GAIN_SHIFT;
+
+        public void normalize(byte[] data) {
+            ByteBuffer bf = ByteBuffer.wrap(data);
+            bf.order(ByteOrder.LITTLE_ENDIAN);
+            ShortBuffer s = bf.asShortBuffer();
+            final int len = s.limit();
+
+            short peak = 0;
+            for (int i = 0; i < len; i++) {
+                peak = (short) Math.max(peak, Math.abs(s.get(i)));
+            }
+
+            peaks.add(peak);
+
+            if (peaks.max() > peak) {
+                peak = peaks.max();
+            }
+            if(peak == 0) {
+                return;
+            }
+
+            int gain = (1 << GAIN_SHIFT) * GAIN_TARGET / peak;
+
+            if (gain < (1 << GAIN_SHIFT)) {
+                gain = 1 << GAIN_SHIFT;
+            }
+
+            gainTarget = (gainTarget * ((1 << GAIN_SMOOTH) - 1) + gain) >> GAIN_SMOOTH;
+
+            // Give it an extra insignifigant nudge to counteract possible rounding error
+
+            if (gain < gainTarget) {
+                gainTarget--;
+            } else if (gain > gainTarget) {
+                gainTarget++;
+            }
+
+            if (gainTarget > GAIN_MAX << GAIN_SHIFT) {
+                gainTarget = GAIN_MAX << GAIN_SHIFT;
+            }
+
+            // See if a peak is going to clip
+            gain = (1 << GAIN_SHIFT) * Short.MAX_VALUE / peak;
+
+            int pos;
+            if (gain < gainTarget) {
+                gainTarget = gain;
+                pos = 1;
+            } else {
+                // We're ramping up, so draw it out over the whole frame
+                pos = len;
+            }
+
+            int gr = ((gainTarget - gainCurrent) << 16) / pos;
+
+            /* Do the shiznit */
+            int gf = gainCurrent << 16;
+
+            for (int i = 0; i < len; i++) {
+
+                /* Interpolate the gain */
+                gainCurrent = gf >> 16;
+                if (i < pos) {
+                    gf += gr;
+                } else if (i == pos) {
+                    gf = gainTarget << 16;
+                }
+
+                /* Amplify */
+                int sample = s.get(i) * gainCurrent >> GAIN_SHIFT;
+                if (sample < Short.MIN_VALUE) {
+                    sample = Short.MIN_VALUE;
+                } else if (sample > Short.MAX_VALUE) {
+                    sample = Short.MAX_VALUE;
+                }
+                s.put(i, (short) sample);
+            }
+        }
+    }
+
+    private class XmmsPeaks {
+
+        private int index = 0;
+        private short max = -1;
+        private boolean full = false;
 
         private final short[] buffer;
-        private short next = 0;
-        private short max = -1;
 
-        public CircularShortBuffer() {
-            buffer = new short[BUCKETS];
+        public XmmsPeaks(int capacity) {
+            buffer = new short[capacity];
         }
 
         public void add(short value) {
-            if(buffer[next] == max) {
+            if(buffer[index] == max) {
                 max = -1;
             }
-            buffer[next] = value;
+            buffer[index] = value;
             if(value > max) {
                 max = value;
             }
-            next++;
-            if(next == BUCKETS) {
-                next = 0;
-            }
+            index++;
+            if(index == buffer.length) {
+                full = true;
+                index = 0;
+            };
         }
 
         public short max() {
@@ -732,5 +818,233 @@ public class SonicMediaPlayer extends AbstractMediaPlayer {
             return max;
         }
 
+        public int getFillingLevel() {
+            return full ? buffer.length : index;
+        }
+
     }
+
+    private class Simple implements Normalizer {
+
+        private float gain = 1.0f;
+
+        public void normalize(byte[] data) {
+            ByteBuffer bf = ByteBuffer.wrap(data);
+            bf.order(ByteOrder.LITTLE_ENDIAN);
+            ShortBuffer s = bf.asShortBuffer();
+            final int length = data.length/2;
+
+            short peak = 0;
+            for (int i = 0; i < length; i++) {
+                peak = (short) Math.max(peak, Math.abs(s.get(i)));
+            }
+
+            int maxTarget = (int)(peak * gain);
+            float oldGain = gain;
+            if (maxTarget >= 25800) {
+                gain = 1.0f * 25800 / peak;
+            } else if (maxTarget < 12288) {
+                gain *= 1.005;
+            }
+
+            float gainStep = (gain - oldGain)/length;
+            for(int i = 0; i<length; i++) {
+                short target = (short)(s.get(i) * (gain + i * gainStep));
+                s.put(i, target);
+            }
+        }
+    }
+
+    // MPlayer algorithms adapted from:
+    // svn://svn.mplayerhq.hu/mplayer/trunk
+    // libaf/af_volnorm.c
+
+    /*
+     * Copyright (C) 2004 Alex Beregszaszi & Pierre Lombard
+     *
+     * This file is part of MPlayer.
+     *
+     * MPlayer is free software; you can redistribute it and/or modify
+     * it under the terms of the GNU General Public License as published by
+     * the Free Software Foundation; either version 2 of the License, or
+     * (at your option) any later version.
+     *
+     * MPlayer is distributed in the hope that it will be useful,
+     * but WITHOUT ANY WARRANTY; without even the implied warranty of
+     * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+     * GNU General Public License for more details.
+     *
+     * You should have received a copy of the GNU General Public License along
+     * with MPlayer; if not, write to the Free Software Foundation, Inc.,
+     * 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+     */
+
+    //////////////
+    // MPlayer #1
+    // uses a 1 value memory and coefficients new=a*old+b*cur (with a+b=1)
+    private class MPlayer1 implements Normalizer {
+
+        private final float DEFAULT_TARGET = 0.25f;
+        private final float SIL_S16 = Short.MAX_VALUE * 0.01f; // silence level
+        private final float MID_S16 = Short.MAX_VALUE * DEFAULT_TARGET; // ideal level
+
+        private final float MUL_INIT = 1.0f;
+        private final float MUL_MIN = 0.1f;
+        private final float MUL_MAX = 5.0f;
+
+        private final float SMOOTH_MUL = 0.06f;
+
+        private float mul = MUL_INIT;
+
+        @Override
+        public void normalize(byte[] samples) {
+            ByteBuffer bf = ByteBuffer.wrap(samples);
+            bf.order(ByteOrder.LITTLE_ENDIAN);
+            ShortBuffer data = bf.asShortBuffer();
+            final int len = samples.length / 2;
+
+            float curAvg = 0.0f;
+            short tmp;
+
+            for (int i = 0; i < len; i++) {
+                tmp = data.get(i);
+                curAvg += tmp * tmp;
+            }
+            curAvg = (float) Math.sqrt(curAvg / len);
+
+            if (curAvg > SIL_S16) {
+                float neededMul = MID_S16 / (curAvg * mul);
+                mul = (1.0f - SMOOTH_MUL) * mul + SMOOTH_MUL * neededMul;
+
+                // clamp the mul coefficient
+                clip(mul, MUL_MIN, MUL_MAX);
+            }
+
+            // Scale & clamp the samples
+
+            for (int i = 0; i < len; i++) {
+                float prod = mul * data.get(i);
+                short value = clip(prod, Short.MIN_VALUE, Short.MAX_VALUE);
+                data.put(i, value);
+            }
+        }
+    }
+
+    //////////////
+    // MPlayer #2
+    // uses several samples to smooth the variations (standard weighted mean on past samples)
+    private class MPlayer2 implements Normalizer {
+
+        private final int NSAMPLES = 128;
+        private final int MIN_SAMPLE_SIZE = 32000;
+
+        private final float DEFAULT_TARGET = 0.25f;
+        private final float SIL_S16 = Short.MAX_VALUE * 0.01f; // silence level
+        private final float MID_S16 = Short.MAX_VALUE * DEFAULT_TARGET; // ideal level
+
+        private final float MUL_INIT = 1.0f;
+        private final float MUL_MIN = 0.1f;
+        private final float MUL_MAX = 5.0f;
+
+        private float mul = MUL_INIT;
+        private CircularMemoryBuffer mem = new CircularMemoryBuffer(NSAMPLES);
+
+        @Override
+        public void normalize(byte[] data) {
+            ByteBuffer bf = ByteBuffer.wrap(data);
+            bf.order(ByteOrder.LITTLE_ENDIAN);
+            ShortBuffer samples = bf.asShortBuffer();
+            final int len = samples.limit();
+
+            float curAvg = 0.0f;
+            for (int i = 0; i < len; i++) {
+                short tmp = samples.get(i);
+                curAvg += tmp * tmp;
+            }
+            curAvg = (float) Math.sqrt(curAvg/len);
+
+            // Evaluate an adequate 'mul' coefficient based on previous state, current
+            // samples level, etc
+            float avg = 0.0f;
+            int totalSamples = 0;
+            for (int i = 0; i < mem.getFillingLevel(); i++) {
+                avg += mem.getAvg(i) * mem.getSamples(i);
+                totalSamples += mem.getSamples(i);
+            }
+
+            if (totalSamples > MIN_SAMPLE_SIZE) {
+                avg /= totalSamples;
+                if (avg >= SIL_S16) {
+                    mul = clip(MID_S16 / avg, MUL_MIN, MUL_MAX);
+                }
+            }
+
+            // Scale & clamp the samples
+            for (int i = 0; i < len; i++) {
+                samples.put(i, clip(mul * samples.get(i), Short.MIN_VALUE, Short.MAX_VALUE));
+            }
+
+            // Stores average for future smoothing
+            float newAvg = mul * curAvg;
+            mem.add(len, newAvg);
+        }
+    }
+
+    private class CircularMemoryBuffer {
+
+        private int index;
+        private boolean full = false;
+
+        final int[] samples;
+        final float[] avg;
+
+        public CircularMemoryBuffer(int capacity) {
+            this.samples = new int[capacity];
+            this.avg = new float[capacity];
+        }
+
+        public void add(int samples, float avg) {
+            this.samples[index] = samples;
+            this.avg[index] = avg;
+            index++;
+            if(index == this.samples.length) {
+                full = true;
+                index = 0;
+            }
+        }
+
+        public int getSamples(int index) {
+            return this.samples[index];
+        }
+
+        public float getAvg(int index) {
+            return this.avg[index];
+        }
+
+        public int getFillingLevel() {
+            return full ? this.samples.length : index;
+        }
+
+    }
+
+    private static float clip(float value, float min, float max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return value;
+        }
+    }
+
+    private static short clip(float value, short min, short max) {
+        if (value < min) {
+            return min;
+        } else if (value > max) {
+            return max;
+        } else {
+            return (short) value;
+        }
+    }
+
 }
