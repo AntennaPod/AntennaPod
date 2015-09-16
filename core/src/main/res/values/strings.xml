@@ -347,7 +347,8 @@
     <string name="pref_sonic_title">Sonic media player</string>
     <string name="pref_sonic_message">Use built-in sonic media player as a replacement for Prestissimo</string>
     <string name="pref_normalizer_title">Normalizer</string>
-    <string name="pref_normalizer_message">Normalize the volume of audio streams</string>
+    <string name="pref_normalizer_sum">Normalize the volume of audio streams</string>
+    <string name="pref_current_value">Current value: %1$s</string>
 
 
     <!-- Auto-Flattr dialog -->
@@ -494,8 +495,14 @@
     <!-- Progress information -->
     <string name="progress_upgrading_database">Upgrading the database</string>
 
-    <!-- AntennaPodSP -->
+    <!-- Normalizer -->
+    <string name="pref_normalizer_none">None</string>
+    <string name="pref_normalizer_simple">Simple</string>
+    <string name="pref_normalizer_xmms2">XMMS2</string>
+    <string name="pref_normalizer_mplayer1">MPlayer #1</string>
+    <string name="pref_normalizer_mplayer2">MPlayer #2</string>
 
+    <!-- AntennaPodSP -->
     <string name="sp_apps_importing_feeds_msg">Importing subscriptions from single-purpose apps&#8230;</string>
     <string name="search_itunes_label">Search iTunes</string>
 

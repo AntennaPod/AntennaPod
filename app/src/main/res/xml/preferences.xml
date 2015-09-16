@@ -226,12 +226,13 @@
             android:key="prefSonic"
             android:summary="@string/pref_sonic_message"
             android:title="@string/pref_sonic_title"/>
-        <CheckBoxPreference
-            android:defaultValue="false"
-            android:enabled="false"
+        <ListPreference
+            android:entryValues="@array/normalizer_values"
+            android:entries="@array/normalizer_options"
+            android:title="@string/pref_normalizer_title"
             android:key="prefNormalizer"
-            android:summary="@string/pref_normalizer_message"
-            android:title="@string/pref_normalizer_title"/>
+            android:summary="@string/pref_normalizer_sum"
+            android:defaultValue="None"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

@@ -301,12 +301,12 @@ public class UserPreferences {
         return prefs.getBoolean(PREF_SONIC, false);
     }
 
-    public static boolean useNormalizer() {
-        return prefs.getBoolean(PREF_NORMALIZER, false);
+    public static String getNormalizer() {
+        return prefs.getString(PREF_NORMALIZER, null);
     }
 
-    public static void useNormalizer(boolean use) {
-        prefs.edit().putBoolean(PREF_NORMALIZER, use).apply();
+    public static void setNormalizer(String normalizer) {
+        prefs.edit().putString(PREF_NORMALIZER, normalizer).apply();
     }
 
     public static int getFastFowardSecs() {

@@ -24,6 +24,8 @@ import android.widget.Toast;
 
 import com.afollestad.materialdialogs.MaterialDialog;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -244,14 +246,16 @@ public class PreferenceController {
         final EditText ev = ((EditTextPreference)ui.findPreference(UserPreferences.PREF_PARALLEL_DOWNLOADS)).getEditText();
         ev.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
 
             @Override
             public void afterTextChanged(Editable s) {
-                if(s.length() > 0) {
+                if (s.length() > 0) {
                     try {
                         int value = Integer.valueOf(s.toString());
                         if (value <= 0) {
@@ -259,7 +263,7 @@ public class PreferenceController {
                         } else if (value > 50) {
                             ev.setText("50");
                         }
-                    } catch(NumberFormatException e) {
+                    } catch (NumberFormatException e) {
                         ev.setText("6");
                     }
                     ev.setSelection(ev.getText().length());
@@ -363,25 +367,27 @@ public class PreferenceController {
                     }
                 }
         );
-        ui.findPreference(UserPreferences.PREF_SONIC).setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-            @Override
-            public boolean onPreferenceChange(Preference preference, Object newValue) {
-                if (newValue instanceof Boolean) {
-                    boolean useSonic = ((Boolean) newValue).booleanValue();
-                    CheckBoxPreference normalizer = (CheckBoxPreference) ui.findPreference(UserPreferences.PREF_NORMALIZER);
-                    normalizer.setEnabled(useSonic);
-                    if(!useSonic) {
-                        UserPreferences.useNormalizer(false);
-                        normalizer.setChecked(false);
-                    }
-                }
-                return true;
+        ui.findPreference(UserPreferences.PREF_SONIC).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof Boolean) {
+                Boolean useSonic = (Boolean) newValue;
+                Preference normalizer = ui.findPreference(UserPreferences.PREF_NORMALIZER);
+                normalizer.setEnabled(useSonic);
             }
+            return true;
+        });
+        ui.findPreference(UserPreferences.PREF_NORMALIZER).setOnPreferenceChangeListener((preference, newValue) -> {
+            if (newValue instanceof String) {
+                setNormalizerText((String) newValue);
+            }
+            return true;
         });
 
         buildSmartMarkAsPlayedPreference();
         buildAutodownloadSelectedNetworsPreference();
         setSelectedNetworksEnabled(UserPreferences.isEnableAutodownloadWifiFilter());
+        if(!UserPreferences.useSonic()) {
+            ui.findPreference(UserPreferences.PREF_NORMALIZER).setEnabled(false);
+        }
     }
 
     public void onResume() {
@@ -389,6 +395,7 @@ public class PreferenceController {
         setParallelDownloadsText(UserPreferences.getParallelDownloads());
         setEpisodeCacheSizeText(UserPreferences.getEpisodeCacheSize());
         setDataFolderText();
+        setNormalizerText(UserPreferences.getNormalizer());
         updateGpodnetPreferenceScreen();
     }
 
@@ -510,6 +517,21 @@ public class PreferenceController {
         if (f != null) {
             ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR)
                     .setSummary(f.getAbsolutePath());
+        }
+    }
+
+    private void setNormalizerText(String normalizer) {
+        Context context = ui.getActivity().getApplicationContext();
+        String[] normalizers = context.getResources().getStringArray(R.array.normalizer_options);
+        String[] normalizerValues = context.getResources().getStringArray(R.array.normalizer_values);
+        int index = ArrayUtils.indexOf(normalizerValues, normalizer);
+        if(index >= 0) {
+            String summary = context.getString(R.string.pref_normalizer_sum);
+            summary += "\n" + String.format(context.getString(R.string.pref_current_value), normalizers[index]);
+            ui.findPreference(UserPreferences.PREF_NORMALIZER).setSummary(summary);
+        } else {
+            Log.d(TAG, "Resetting invalid normalizer: " + normalizer);
+            UserPreferences.setNormalizer(null);
         }
     }
 
