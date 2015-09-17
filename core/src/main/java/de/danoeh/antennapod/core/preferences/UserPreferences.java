@@ -178,7 +178,7 @@ public class UserPreferences {
      * @return {@code true} if notifications are persistent, {@code false}  otherwise
      */
     public static boolean setLockscreenBackground() {
-        return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, false);
+        return prefs.getBoolean(PREF_LOCKSCREEN_BACKGROUND, true);
     }
 
     /**
