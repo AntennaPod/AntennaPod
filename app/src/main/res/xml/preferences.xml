@@ -47,6 +47,12 @@
         <CheckBoxPreference
             android:defaultValue="true"
             android:enabled="true"
+            android:key="prefLockscreenBackground"
+            android:summary="@string/pref_lockscreen_background_sum"
+            android:title="@string/pref_lockscreen_background_title"/>
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:enabled="true"
             android:key="prefShowDownloadReport"
             android:summary="@string/pref_showDownloadReport_sum"
             android:title="@string/pref_showDownloadReport_title"/>

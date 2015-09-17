@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources
     xmlns:tools="http://schemas.android.com/tools"
-    tools:ignore="MissingTranslation"
-    >
+    tools:ignore="MissingTranslation">
 
     <!-- Activitiy and fragment titles -->
     <string name="app_name">AntennaPod</string>
@@ -335,6 +334,8 @@
     <string name="pref_expandNotify_sum">Always expand the notification to show playback buttons.</string>
     <string name="pref_persistNotify_title">Persistent Playback Controls</string>
     <string name="pref_persistNotify_sum">Keep notification and lockscreen controls when playback is paused.</string>
+    <string name="pref_lockscreen_background_title">Set Lockscreen Background</string>
+    <string name="pref_lockscreen_background_sum">Set the lockscreen background to the current episode\'s image. As a side effect, this will also show the image in third party apps.</string>
     <string name="pref_showDownloadReport_title">Show Download Report</string>
     <string name="pref_showDownloadReport_sum">If downloads fail, generate a report that shows the details of the failure.</string>
     <string name="pref_expand_notify_unsupport_toast">Android versions before 4.1 do not support expanded notifications.</string>

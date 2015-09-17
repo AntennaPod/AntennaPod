@@ -4,9 +4,12 @@ import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.media.AudioManager;
 import android.net.wifi.WifiManager;
 import android.os.PowerManager;
+import android.preference.PreferenceManager;
 import android.support.v4.media.MediaMetadataCompat;
 import android.support.v4.media.session.MediaSessionCompat;
 import android.support.v4.media.session.PlaybackStateCompat;
@@ -15,6 +18,9 @@ import android.util.Log;
 import android.util.Pair;
 import android.view.KeyEvent;
 import android.view.SurfaceHolder;
+
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.Target;
 
 import org.apache.commons.lang3.Validate;
 
@@ -30,6 +36,7 @@ import de.danoeh.antennapod.core.feed.Chapter;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.MediaType;
+import de.danoeh.antennapod.core.glide.ApGlideSettings;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.playback.AudioPlayer;
@@ -40,7 +47,7 @@ import de.danoeh.antennapod.core.util.playback.VideoPlayer;
 /**
  * Manages the MediaPlayer object of the PlaybackService.
  */
-public class PlaybackServiceMediaPlayer {
+public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPreferenceChangeListener {
     public static final String TAG = "PlaybackSvcMediaPlayer";
 
     /**
@@ -103,7 +110,7 @@ public class PlaybackServiceMediaPlayer {
         ComponentName eventReceiver = new ComponentName(context.getPackageName(), MediaButtonIntentReceiver.class.getName());
         Intent mediaButtonIntent = new Intent(Intent.ACTION_MEDIA_BUTTON);
         mediaButtonIntent.setComponent(eventReceiver);
-        PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(context, 0, mediaButtonIntent, 0);
+        PendingIntent buttonReceiverIntent = PendingIntent.getBroadcast(context, 0, mediaButtonIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         mediaSession = new MediaSessionCompat(context, TAG, eventReceiver, buttonReceiverIntent);
         mediaSession.setCallback(sessionCallback);
@@ -116,6 +123,16 @@ public class PlaybackServiceMediaPlayer {
         mediaType = MediaType.UNKNOWN;
         playerStatus = PlayerStatus.STOPPED;
         videoSize = null;
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(context);
+        prefs.registerOnSharedPreferenceChangeListener(this);
+    }
+
+    @Override
+    public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+        if(key.equals(UserPreferences.PREF_LOCKSCREEN_BACKGROUND)) {
+            updateMediaSessionMetadata();
+        }
     }
 
     /**
@@ -224,7 +241,7 @@ public class PlaybackServiceMediaPlayer {
         setPlayerStatus(PlayerStatus.INITIALIZING, media);
         try {
             media.loadMetadata();
-            mediaSession.setMetadata(getMediaSessionMetadata(media));
+            updateMediaSessionMetadata();
             if (stream) {
                 mediaPlayer.setDataSource(media.getStreamUrl());
             } else {
@@ -255,13 +272,36 @@ public class PlaybackServiceMediaPlayer {
         }
     }
 
-    private MediaMetadataCompat getMediaSessionMetadata(Playable p) {
-        MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
-        builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
-        builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
-        return builder.build();
+    private void updateMediaSessionMetadata() {
+        executor.execute(() -> {
+            final Playable p = this.media;
+            if(p == null) {
+                return;
+            }
+            MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
+            builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
+            builder.putLong(MediaMetadataCompat.METADATA_KEY_DURATION, p.getDuration());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_DISPLAY_TITLE, p.getEpisodeTitle());
+            builder.putString(MediaMetadataCompat.METADATA_KEY_ALBUM, p.getFeedTitle());
+            if (p.getImageUri() != null) {
+                if (UserPreferences.setLockscreenBackground()) {
+                    builder.putString(MediaMetadataCompat.METADATA_KEY_ART_URI, p.getImageUri().toString());
+                    try {
+                        Bitmap art = Glide.with(context)
+                                .load(p.getImageUri())
+                                .asBitmap()
+                                .diskCacheStrategy(ApGlideSettings.AP_DISK_CACHE_STRATEGY)
+                                .into(Target.SIZE_ORIGINAL, Target.SIZE_ORIGINAL)
+                                .get();
+                        builder.putBitmap(MediaMetadataCompat.METADATA_KEY_ART, art);
+                    } catch (Exception e) {
+                        Log.e(TAG, Log.getStackTraceString(e));
+                    }
+                }
+            }
+            mediaSession.setMetadata(builder.build());
+        });
     }
 
 
@@ -812,7 +852,12 @@ public class PlaybackServiceMediaPlayer {
         } else {
             state = PlaybackStateCompat.STATE_NONE;
         }
-        sessionState.setState(state, PlaybackStateCompat.PLAYBACK_POSITION_UNKNOWN, getPlaybackSpeed());
+        sessionState.setState(state, getPosition(), getPlaybackSpeed());
+        sessionState.setActions(PlaybackStateCompat.ACTION_PLAY_PAUSE
+                | PlaybackStateCompat.ACTION_REWIND
+                | PlaybackStateCompat.ACTION_FAST_FORWARD
+                | PlaybackStateCompat.ACTION_SKIP_TO_NEXT);
+        mediaSession.setPlaybackState(sessionState.build());
 
         callback.statusChanged(new PSMPInfo(playerStatus, media));
     }
@@ -1218,7 +1263,14 @@ public class PlaybackServiceMediaPlayer {
                         stop();
                         return true;
                     }
+                    case KeyEvent.KEYCODE_MEDIA_NEXT:
+                    {
+                        Log.d(TAG, "Received next event from RemoteControlClient");
+                        endPlayback();
+                        return true;
+                    }
                     default:
+                        Log.d(TAG, "Unhandled key code: " + event.getKeyCode());
                         break;
                 }
             }
