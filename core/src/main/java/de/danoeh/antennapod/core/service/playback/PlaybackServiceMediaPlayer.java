@@ -273,11 +273,11 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
     }
 
     private void updateMediaSessionMetadata() {
-        if(this.media == null) {
-            return;
-        }
         executor.execute(() -> {
-            Playable p = this.media;
+            final Playable p = this.media;
+            if(p == null) {
+                return;
+            }
             MediaMetadataCompat.Builder builder = new MediaMetadataCompat.Builder();
             builder.putString(MediaMetadataCompat.METADATA_KEY_ARTIST, p.getFeedTitle());
             builder.putString(MediaMetadataCompat.METADATA_KEY_TITLE, p.getEpisodeTitle());
