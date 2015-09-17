@@ -565,7 +565,7 @@ public class UserPreferences {
     }
 
     public static void setDataFolder(String dir) {
-        Log.d(TAG, "Result from DirectoryChooser: " + dir);
+        Log.d(TAG, "setDataFolder(dir: " + dir + ")");
         prefs.edit()
              .putString(PREF_DATA_FOLDER, dir)
              .apply();

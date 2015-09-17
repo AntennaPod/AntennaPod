@@ -25,6 +25,7 @@
     <string name="playback_history_label">Playback History</string>
     <string name="gpodnet_main_label">gpodder.net</string>
     <string name="gpodnet_auth_label">gpodder.net Login</string>
+    <string name="free_space_label">"%1$s free</string>
 
     <!-- New episodes fragment -->
     <string name="recently_published_episodes_label">Recently published</string>
@@ -464,11 +465,15 @@
     <string name="selected_folder_label">Selected folder:</string>
     <string name="create_folder_label">Create folder</string>
     <string name="choose_data_directory">Choose Data Folder</string>
+    <string name="choose_data_directory_message">Please choose the base of your data folder. AntennaPod will create the appropriate sub-directories.</string>
     <string name="create_folder_msg">Create new folder with name "%1$s"?</string>
     <string name="create_folder_success">Created new folder</string>
     <string name="create_folder_error_no_write_access">Cannot write to this folder</string>
     <string name="create_folder_error_already_exists">Folder already exists</string>
     <string name="create_folder_error">Could not create folder</string>
+    <string name="folder_does_not_exist_error">"%1$s" does not exist</string>
+    <string name="folder_not_readable_error">"%1$s" is not readable</string>
+    <string name="folder_not_writable_error">"%1$s" is not writable</string>
     <string name="folder_not_empty_dialog_title">Folder is not empty</string>
     <string name="folder_not_empty_dialog_msg">The folder you have selected is not empty. Media downloads and other files will be placed directly in this folder. Continue anyway?</string>
     <string name="set_to_default_folder">Choose default folder</string>
@@ -477,6 +482,7 @@
     <string name="pref_resumeAfterCall_sum">Resume playback after a phone call completes</string>
     <string name="pref_resumeAfterCall_title">Resume after Call</string>
     <string name="pref_restart_required">AntennaPod has to be restarted for this change to take effect.</string>
+
 
     <!-- Online feed view -->
     <string name="subscribe_label">Subscribe</string>

@@ -1,5 +1,6 @@
 package de.danoeh.antennapod.preferences;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -16,8 +17,10 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.text.Editable;
+import android.text.Html;
 import android.text.TextWatcher;
 import android.text.format.DateFormat;
 import android.util.Log;
@@ -31,7 +34,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import de.danoeh.antennapod.BuildConfig;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.activity.AboutActivity;
 import de.danoeh.antennapod.activity.DirectoryChooserActivity;
@@ -41,6 +43,8 @@ import de.danoeh.antennapod.activity.PreferenceActivityGingerbread;
 import de.danoeh.antennapod.asynctask.OpmlExportWorker;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.UserPreferences;
+import de.danoeh.antennapod.core.util.Converter;
+import de.danoeh.antennapod.core.util.StorageUtils;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.dialog.AuthenticationDialog;
 import de.danoeh.antennapod.dialog.AutoFlattrPreferenceDialog;
@@ -50,9 +54,11 @@ import de.danoeh.antennapod.dialog.VariableSpeedDialog;
 /**
  * Sets up a preference UI that lets the user change user preferences.
  */
+
 public class PreferenceController implements SharedPreferences.OnSharedPreferenceChangeListener {
 
     private static final String TAG = "PreferenceController";
+
     public static final String PREF_FLATTR_SETTINGS = "prefFlattrSettings";
     public static final String PREF_FLATTR_AUTH = "pref_flattr_authenticate";
     public static final String PREF_FLATTR_REVOKE = "prefRevokeAccess";
@@ -158,21 +164,22 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                     }
                 }
         );
-
-        ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR).setOnPreferenceClickListener(
-                new Preference.OnPreferenceClickListener() {
-
-                    @Override
-                    public boolean onPreferenceClick(Preference preference) {
-                        activity.startActivityForResult(
-                                new Intent(activity,
-                                        DirectoryChooserActivity.class),
-                                DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED
-                        );
-                        return true;
-                    }
-                }
-        );
+        ui.findPreference(PreferenceController.PREF_CHOOSE_DATA_DIR)
+                .setOnPreferenceClickListener(
+                        new Preference.OnPreferenceClickListener() {
+                            @Override
+                            public boolean onPreferenceClick(Preference preference) {
+                                if(Build.VERSION.SDK_INT >= 19) {
+                                    showChooseDataFolderDialog();
+                                } else {
+                                    Intent intent = new Intent(activity, DirectoryChooserActivity.class);
+                                    activity.startActivityForResult(intent,
+                                            DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED);
+                                }
+                                return true;
+                            }
+                        }
+                );
         ui.findPreference(UserPreferences.PREF_THEME)
                 .setOnPreferenceChangeListener(
                         new Preference.OnPreferenceChangeListener() {
@@ -394,15 +401,36 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         updateGpodnetPreferenceScreen();
     }
 
+    @SuppressLint("NewApi")
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
-            String dir = data
-                    .getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
-            if (BuildConfig.DEBUG)
-                Log.d(TAG, "Setting data folder");
-            UserPreferences.setDataFolder(dir);
+        if (resultCode == Activity.RESULT_OK &&
+                requestCode == DirectoryChooserActivity.RESULT_CODE_DIR_SELECTED) {
+            String dir = data.getStringExtra(DirectoryChooserActivity.RESULT_SELECTED_DIR);
+
+            File path = new File(dir);
+            String message = null;
+            final Context context= ui.getActivity().getApplicationContext();
+            if(!path.exists()) {
+                message = String.format(context.getString(R.string.folder_does_not_exist_error), dir);
+            } else if(!path.canRead()) {
+                message = String.format(context.getString(R.string.folder_not_readable_error), dir);
+            } else if(!path.canWrite()) {
+                message = String.format(context.getString(R.string.folder_not_writable_error), dir);
+            }
+
+            if(message == null) {
+                Log.d(TAG, "Setting data folder: " + dir);
+                UserPreferences.setDataFolder(dir);
+                setDataFolderText();
+            } else {
+                AlertDialog.Builder ab = new AlertDialog.Builder(ui.getActivity());
+                ab.setMessage(message);
+                ab.setPositiveButton(android.R.string.ok, null);
+                ab.show();
+            }
         }
     }
+
 
     private void updateGpodnetPreferenceScreen() {
         final boolean loggedIn = GpodnetPreferences.loggedIn();
@@ -564,9 +592,7 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
                         );
                         boolean newValue = ((CheckBoxPreference) preference)
                                 .isChecked();
-                        if (BuildConfig.DEBUG)
-                            Log.d(TAG, "Selected network " + key
-                                    + ". New state: " + newValue);
+                        Log.d(TAG, "Selected network " + key + ". New state: " + newValue);
 
                         int index = prefValuesList.indexOf(key);
                         if (index >= 0 && newValue == false) {
@@ -647,6 +673,47 @@ public class PreferenceController implements SharedPreferences.OnSharedPreferenc
         });
         builder.setNegativeButton(R.string.cancel_label, null);
         builder.create().show();
+    }
+
+    private void showChooseDataFolderDialog() {
+        Context context = ui.getActivity();
+        String dataFolder = UserPreferences.getDataFolder(context, null).getAbsolutePath();
+        int selectedIndex = -1;
+        File[] mediaDirs = ContextCompat.getExternalFilesDirs(context, null);
+        String[] folders = new String[mediaDirs.length];
+        CharSequence[] choices = new CharSequence[mediaDirs.length];
+        for(int i=0; i < mediaDirs.length; i++) {
+            String path = folders[i] = mediaDirs[i].getAbsolutePath();
+            if(dataFolder.equals(path)) {
+                selectedIndex = i;
+            }
+            int index = path.indexOf("Android");
+            if(index >= 0) {
+                choices[i] = path.substring(0, index);
+            } else {
+                choices[i] = path;
+            }
+            long bytes = StorageUtils.getFreeSpaceAvailable();
+            String freeSpace = String.format(context.getString(R.string.free_space_label),
+                    Converter.byteToString(bytes));
+            choices[i] = Html.fromHtml("<html><small>" + choices[i]
+                    + " [" + freeSpace + "]" + "</small></html>");
+        }
+        MaterialDialog dialog = new MaterialDialog.Builder(ui.getActivity())
+                .title(R.string.choose_data_directory)
+                .content(R.string.choose_data_directory_message)
+                .items(choices)
+                .itemsCallbackSingleChoice(selectedIndex, (dialog1, itemView, which, text) -> {
+                    String folder = folders[which];
+                    Log.d(TAG, "data folder: " + folder);
+                    UserPreferences.setDataFolder(folder);
+                    setDataFolderText();
+                    return true;
+                })
+                .negativeText(R.string.cancel_label)
+                .cancelable(true)
+                .build();
+        dialog.show();
     }
 
     private void showUpdateIntervalTimePreferencesDialog() {

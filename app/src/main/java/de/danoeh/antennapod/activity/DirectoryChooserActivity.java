@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.activity;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Environment;
@@ -15,23 +14,28 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.*;
-import android.widget.AdapterView.OnItemClickListener;
-import de.danoeh.antennapod.BuildConfig;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 
+import de.danoeh.antennapod.BuildConfig;
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
+
 /**
  * Let's the user choose a directory on the storage device. The selected folder
  * will be sent back to the starting activity as an activity result.
  */
 public class DirectoryChooserActivity extends ActionBarActivity {
-	private static final String TAG = "DirectoryChooserActivity";
+	private static final String TAG = "DirectoryChooserActivit";
 
 	private static final String CREATE_DIRECTORY_NAME = "AntennaPod";
 
@@ -103,7 +107,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 		listDirectories.setOnItemClickListener((adapter, view, position, id) -> {
             Log.d(TAG, "Selected index: " + position);
-            if (filesInDir != null && position >= 0
+			if (filesInDir != null && position >= 0
                     && position < filesInDir.length) {
                 changeDirectory(filesInDir[position]);
             }
@@ -137,7 +141,7 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 			resultData.putExtra(RESULT_SELECTED_DIR,
 					selectedDir.getAbsolutePath());
 		}
-		setResult(RESULT_CODE_DIR_SELECTED, resultData);
+		setResult(Activity.RESULT_OK, resultData);
 		finish();
 	}
 
@@ -155,6 +159,13 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 		if (fileObserver != null) {
 			fileObserver.startWatching();
 		}
+	}
+
+	@Override
+	public void onStop() {
+		super.onStop();
+		listDirectoriesAdapter = null;
+		fileObserver = null;
 	}
 
 	/**
@@ -191,20 +202,15 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 				listDirectoriesAdapter.notifyDataSetChanged();
 				fileObserver = createFileObserver(dir.getAbsolutePath());
 				fileObserver.startWatching();
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Changed directory to " + dir.getAbsolutePath());
+				Log.d(TAG, "Changed directory to " + dir.getAbsolutePath());
 			} else {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG,
-							"Could not change folder: contents of dir were null");
+				Log.d(TAG, "Could not change folder: contents of dir were null");
 			}
 		} else {
 			if (dir == null) {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Could not change folder: dir was null");
+				Log.d(TAG, "Could not change folder: dir was null");
 			} else {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "Could not change folder: dir is no directory");
+				Log.d(TAG, "Could not change folder: dir is no directory");
 			}
 		}
 		refreshButtonState();
@@ -235,15 +241,8 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 			@Override
 			public void onEvent(int event, String path) {
-				if (BuildConfig.DEBUG)
-					Log.d(TAG, "FileObserver received event " + event);
-				runOnUiThread(new Runnable() {
-
-					@Override
-					public void run() {
-						refreshDirectory();
-					}
-				});
+				Log.d(TAG, "FileObserver received event " + event);
+				runOnUiThread(() -> refreshDirectory());
 			}
 		};
 	}
@@ -292,25 +291,17 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 		builder.setMessage(String.format(getString(R.string.create_folder_msg),
 				CREATE_DIRECTORY_NAME));
 		builder.setNegativeButton(R.string.cancel_label,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-					}
-				});
+				(dialog, which) -> {
+                    dialog.dismiss();
+                });
 		builder.setPositiveButton(R.string.confirm_label,
-				new DialogInterface.OnClickListener() {
-
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						dialog.dismiss();
-						int msg = createFolder();
-						Toast t = Toast.makeText(DirectoryChooserActivity.this,
-								msg, Toast.LENGTH_SHORT);
-						t.show();
-					}
-				});
+				(dialog, which) -> {
+                    dialog.dismiss();
+                    int msg = createFolder();
+                    Toast t = Toast.makeText(DirectoryChooserActivity.this,
+                            msg, Toast.LENGTH_SHORT);
+                    t.show();
+                });
 		builder.create().show();
 	}
 
@@ -340,7 +331,6 @@ public class DirectoryChooserActivity extends ActionBarActivity {
 
 	/** Returns true if the selected file or directory would be valid selection. */
 	private boolean isValidFile(File file) {
-		return (file != null && file.isDirectory() && file.canRead() && file
-				.canWrite());
+		return file != null && file.isDirectory() && file.canRead() && file.canWrite();
 	}
 }
