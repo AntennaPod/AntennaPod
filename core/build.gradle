@@ -32,8 +32,12 @@ android {
 
 }
 
+repositories {
+    maven { url "https://jitpack.io" }
+    mavenCentral()
+}
+
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
     compile 'com.android.support:support-v4:22.2.1'
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile 'com.android.support:design:22.2.1'
@@ -52,4 +56,6 @@ dependencies {
     compile 'com.nineoldandroids:library:2.4.0'
     compile 'de.greenrobot:eventbus:2.4.0'
     compile 'io.reactivex:rxandroid:1.0.1'
+
+    compile 'com.github.AntennaPod:AntennaPod-AudioPlayer:v1.0'
 }

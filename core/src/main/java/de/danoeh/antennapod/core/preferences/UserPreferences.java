@@ -89,6 +89,10 @@ public class UserPreferences {
     public static final String IMAGE_CACHE_DEFAULT_VALUE = "100";
     public static final int IMAGE_CACHE_SIZE_MINIMUM = 20;
 
+    // Experimental
+    public static final String PREF_SONIC = "prefSonic";
+    public static final String PREF_NORMALIZER = "prefNormalizer";
+
     // Constants
     private static int EPISODE_CACHE_SIZE_UNLIMITED = -1;
     public static int FEED_ORDER_COUNTER = 0;
@@ -469,6 +473,9 @@ public class UserPreferences {
         return selectedSpeeds;
     }
 
+    public static boolean useSonic() {
+        return prefs.getBoolean(PREF_SONIC, false);
+    }
 
     /**
      * Return the folder where the app stores all of its data. This method will

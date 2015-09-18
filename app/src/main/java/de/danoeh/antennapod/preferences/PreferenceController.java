@@ -460,6 +460,13 @@ public class PreferenceController {
 
         ui.findPreference(UserPreferences.PREF_ENABLE_AUTODL_ON_BATTERY)
                 .setEnabled(UserPreferences.isEnableAutodownload());
+
+        if (Build.VERSION.SDK_INT >= 16) {
+            ui.findPreference(UserPreferences.PREF_SONIC).setEnabled(true);
+        } else {
+            Preference prefSonic = ui.findPreference(UserPreferences.PREF_SONIC);
+            prefSonic.setSummary("[Android 4.1+]\n" + prefSonic.getSummary());
+        }
     }
 
     private void setParallelDownloadsText(int downloads) {
