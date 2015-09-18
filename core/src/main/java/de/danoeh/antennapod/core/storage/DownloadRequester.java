@@ -351,7 +351,7 @@ public class DownloadRequester {
         if (media.getItem() != null && media.getItem().getTitle() != null) {
             String title = media.getItem().getTitle();
             // Delete reserved characters
-            titleBaseFilename = title.replaceAll("[\\\\/%\\?\\*:|<>\"\\p{Cntrl}]", "");
+            titleBaseFilename = title.replaceAll("[^a-zA-Z0-9 ._()-]", "");
             titleBaseFilename = titleBaseFilename.trim();
         }
 
