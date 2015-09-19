@@ -55,7 +55,7 @@ public class FeedItemFilter {
         }
     }
 
-    public List<FeedItem> filter(Context context, List<FeedItem> items) {
+    public List<FeedItem> filter(List<FeedItem> items) {
         if(properties.length == 0) {
             return items;
         }

@@ -4,10 +4,10 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.widget.SearchView;
 import android.util.Log;
@@ -38,7 +38,6 @@ import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
 import de.danoeh.antennapod.core.service.download.DownloadService;
 import de.danoeh.antennapod.core.service.download.Downloader;
 import de.danoeh.antennapod.core.storage.DBReader;
@@ -49,6 +48,10 @@ import de.danoeh.antennapod.core.storage.DownloadRequester;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Shows unread or recently published episodes
@@ -90,6 +93,8 @@ public class AllEpisodesFragment extends Fragment {
 
     private boolean isUpdatingFeeds;
 
+    protected Subscription subscription;
+
     public AllEpisodesFragment() {
         // by default we show all the episodes
         this(false, DEFAULT_PREF_NAME);
@@ -113,7 +118,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startItemLoader();
+        loadItems();
     }
 
     @Override
@@ -140,7 +145,9 @@ public class AllEpisodesFragment extends Fragment {
     public void onStop() {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -436,7 +443,7 @@ public class AllEpisodesFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                startItemLoader();
+                loadItems();
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
@@ -453,69 +460,43 @@ public class AllEpisodesFragment extends Fragment {
         }
     }
 
-    private ItemLoader itemLoader;
-
-    protected void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    protected void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
+        if (viewsCreated && !itemsLoaded) {
+            listView.setVisibility(View.GONE);
+            txtvEmpty.setVisibility(View.GONE);
+            progLoading.setVisibility(View.VISIBLE);
+        }
+        subscription = Observable.defer(() -> Observable.just(loadData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(data -> {
+                    listView.setVisibility(View.VISIBLE);
+                    progLoading.setVisibility(View.GONE);
+                    if (data != null) {
+                        episodes = data.first;
+                        queuedItemsIds = data.second;
+                        itemsLoaded = true;
+                        if (viewsCreated && activity.get() != null) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    protected void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private Pair<List<FeedItem>,LongList> loadData() {
+        List<FeedItem> items;
+        if(showOnlyNewEpisodes) {
+            items = DBReader.getNewItemsList();
+        } else {
+            items = DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT);
         }
+        LongList queuedIds = DBReader.getQueueIDList();
+        return Pair.create(items, queuedIds);
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, Object[]> {
-
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (viewsCreated && !itemsLoaded) {
-                listView.setVisibility(View.GONE);
-                txtvEmpty.setVisibility(View.GONE);
-                progLoading.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        protected Object[] doInBackground(Void... params) {
-            Context context = activity.get();
-            if (context != null) {
-                if(showOnlyNewEpisodes) {
-                    return new Object[] {
-                            DBReader.getNewItemsList(),
-                            DBReader.getQueueIDList(),
-                            null // see ItemAccess.isNew
-                    };
-                } else {
-                    return new Object[]{
-                            DBReader.getRecentlyPublishedEpisodes(RECENT_EPISODES_LIMIT),
-                            DBReader.getQueueIDList()
-                    };
-                }
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Object[] lists) {
-            super.onPostExecute(lists);
-            listView.setVisibility(View.VISIBLE);
-            progLoading.setVisibility(View.GONE);
-
-            if (lists != null) {
-                episodes = (List<FeedItem>) lists[0];
-                queuedItemsIds = (LongList) lists[1];
-                itemsLoaded = true;
-                if (viewsCreated && activity.get() != null) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-    }
 }

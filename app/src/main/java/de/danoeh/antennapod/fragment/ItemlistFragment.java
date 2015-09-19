@@ -7,12 +7,12 @@ import android.content.Intent;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.LightingColorFilter;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.ListFragment;
+import android.support.v4.util.Pair;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBarActivity;
 import android.support.v7.widget.SearchView;
@@ -73,6 +73,10 @@ import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.FeedMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Displays a list of FeedItems.
@@ -110,6 +114,8 @@ public class ItemlistFragment extends ListFragment {
     private IconTextView txtvFailure;
 
     private TextView txtvInformation;
+
+    private Subscription subscription;
 
     /**
      * Creates new ItemlistFragment which shows the Feeditems of a specific
@@ -156,7 +162,9 @@ public class ItemlistFragment extends ListFragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -164,13 +172,15 @@ public class ItemlistFragment extends ListFragment {
         super.onResume();
         Log.d(TAG, "onResume()");
         updateProgressBarVisibility();
-        startItemLoader();
+        loadItems();
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
@@ -385,13 +395,13 @@ public class ItemlistFragment extends ListFragment {
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        startItemLoader();
+        loadItems();
     }
 
     public void onEvent(FeedEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         if(event.feedId == feedID) {
-            startItemLoader();
+            loadItems();
         }
     }
 
@@ -404,7 +414,7 @@ public class ItemlistFragment extends ListFragment {
                 if ((EventDistributor.DOWNLOAD_QUEUED & arg) != 0) {
                     updateProgressBarVisibility();
                 } else {
-                    startItemLoader();
+                    loadItems();
                     updateProgressBarVisibility();
                 }
             }
@@ -608,51 +618,37 @@ public class ItemlistFragment extends ListFragment {
         }
     };
 
-    private ItemLoader itemLoader;
 
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        itemLoader = new ItemLoader();
-        itemLoader.execute(feedID);
+
+        subscription = Observable.defer(() -> Observable.just(loadData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        feed = result.first;
+                        queuedItemsIds = result.second;
+                        itemsLoaded = true;
+                        if (viewsCreated) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private Pair<Feed, LongList> loadData() {
+        Feed feed = DBReader.getFeed(feedID);
+        if(feed != null && feed.getItemFilter() != null) {
+            FeedItemFilter filter = feed.getItemFilter();
+            feed.setItems(filter.filter(feed.getItems()));
         }
+        LongList queuedItemsIds = DBReader.getQueueIDList();
+        return Pair.create(feed, queuedItemsIds);
     }
 
-    private class ItemLoader extends AsyncTask<Long, Void, Object[]> {
-        @Override
-        protected Object[] doInBackground(Long... params) {
-            long feedID = params[0];
-            Context context = getActivity();
-            if (context != null) {
-                Feed feed = DBReader.getFeed(feedID);
-                if(feed != null && feed.getItemFilter() != null) {
-                    FeedItemFilter filter = feed.getItemFilter();
-                    feed.setItems(filter.filter(context, feed.getItems()));
-                }
-                LongList queuedItemsIds = DBReader.getQueueIDList();
-                return new Object[] { feed, queuedItemsIds };
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Object[] res) {
-            super.onPostExecute(res);
-            if (res != null) {
-                feed = (Feed) res[0];
-                queuedItemsIds = (LongList) res[1];
-                itemsLoaded = true;
-                if (viewsCreated) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-    }
 }
