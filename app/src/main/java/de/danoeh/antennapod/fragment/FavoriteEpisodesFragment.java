@@ -1,6 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -21,25 +22,25 @@ import de.greenrobot.event.EventBus;
 
 
 /**
- * Like 'EpisodesFragment' except that it only shows new episodes and
- * supports swiping to mark as read.
+ * Like 'EpisodesFragment' except that it only shows favorite episodes and
+ * supports swiping to remove from favorites.
  */
 
-public class NewEpisodesFragment extends AllEpisodesFragment {
+public class FavoriteEpisodesFragment extends AllEpisodesFragment {
 
-    public static final String TAG = "NewEpisodesFragment";
+    public static final String TAG = "FavoriteEpisodesFrag";
 
-    private static final String PREF_NAME = "PrefNewEpisodesFragment";
+    private static final String PREF_NAME = "PrefFavoriteEpisodesFragment";
 
     private UndoBarController undoBarController;
 
-    public NewEpisodesFragment() {
-        super(true, PREF_NAME);
+    public FavoriteEpisodesFragment() {
+        super(false, PREF_NAME);
     }
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        loadItems();
+        startItemLoader();
     }
 
     @Override
@@ -65,22 +66,19 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         View root = super.onCreateViewHelper(inflater, container, savedInstanceState,
                 R.layout.episodes_fragment_with_undo);
 
-        listView.setRemoveListener(new DragSortListView.RemoveListener() {
-            @Override
-            public void remove(int which) {
-                Log.d(TAG, "remove(" + which + ")");
-                if(subscription != null) {
-                    subscription.unsubscribe();
-                }
-                FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
-                // we're marking it as unplayed since the user didn't actually play it
-                // but they don't want it considered 'NEW' anymore
-                DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
-                undoBarController.showUndoBar(false,
-                        getString(R.string.marked_as_read_label), new FeedItemUndoToken(item,
-                                which)
-                );
-            }
+        listView.setRemoveListener(which -> {
+            Log.d(TAG, "remove(" + which + ")");
+            stopItemLoader();
+            FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
+
+            // TODO: actually remove the item from favorites
+
+            undoBarController.showUndoBar(false,
+                    getString(R.string.removed_from_favorites), new FeedItemUndoToken(item,
+                            which)
+            );
+
+            throw new RuntimeException("can't remove yet");
         });
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
@@ -91,19 +89,14 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    DBWriter.markItemPlayed(FeedItem.NEW, itemId);
+                    // TODO: put it back DBWriter.markItemPlayed(FeedItem.NEW, itemId);
+                    throw new RuntimeException("can't undo remove yet");
                 }
             }
+
             @Override
             public void onHide(FeedItemUndoToken token) {
-                if (token != null && context != null) {
-                    long itemId = token.getFeedItemId();
-                    FeedItem item = DBReader.getFeedItem(itemId);
-                    FeedMedia media = item.getMedia();
-                    if(media != null && media.hasAlmostEnded() && item.getFeed().getPreferences().getCurrentAutoDelete()) {
-                        DBWriter.deleteFeedMediaOfItem(context, media.getId());
-                    }
-                }
+                // nothing to do
             }
         });
         return root;
@@ -114,20 +107,19 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
         if (itemLoader != null) {
             itemLoader.cancel(true);
         }
-        itemLoader = new NewItemLoader();
+        itemLoader = new FavItemLoader();
         itemLoader.execute();
     }
 
-    private class NewItemLoader extends AllEpisodesFragment.ItemLoader {
+    private class FavItemLoader extends AllEpisodesFragment.ItemLoader {
 
         @Override
         protected Object[] doInBackground(Void... params) {
             Context context = mainActivity.get();
             if (context != null) {
-                return new Object[] {
-                        DBReader.getNewItemsList(),
-                        DBReader.getQueueIDList(),
-                        null // see ItemAccess.isNew
+                return new Object[]{
+                        DBReader.getFavoriteItemsList(),
+                        DBReader.getQueueIDList()
                 };
             } else {
                 return null;

@@ -371,7 +371,7 @@ public class DBWriter {
                                     queue.add(item);
                                 }
                                 queueModified = true;
-                                if(item.isNew()) {
+                                if (item.isNew()) {
                                     markAsUnplayedIds.add(item.getId());
                                 }
                             }
@@ -380,8 +380,8 @@ public class DBWriter {
                     if (queueModified) {
                         adapter.setQueue(queue);
                         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED_ITEMS, queue));
-                        if(markAsUnplayedIds.size() > 0) {
-                                DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
+                        if (markAsUnplayedIds.size() > 0) {
+                            DBWriter.markItemPlayed(FeedItem.UNPLAYED, markAsUnplayedIds.toArray());
                         }
                     }
                 }
@@ -424,7 +424,7 @@ public class DBWriter {
 
             if (queue != null) {
                 int position = queue.indexOf(item);
-                if(position >= 0) {
+                if (position >= 0) {
                     queue.remove(position);
                     adapter.setQueue(queue);
                     EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
@@ -440,6 +440,24 @@ public class DBWriter {
             }
         });
 
+    }
+
+    public static Future<?> addFavoriteItem(final FeedItem item) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.addFavoriteItem(item);
+            adapter.close();
+            EventDistributor.getInstance().sendFavoriteUpdateBroadcast();
+        });
+    }
+
+    public static Future<?> removeFavoriteItem(final FeedItem item) {
+        return dbExec.submit(() -> {
+            final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
+            adapter.removeFavoriteItem(item);
+            adapter.close();
+            EventDistributor.getInstance().sendFavoriteUpdateBroadcast();
+        });
     }
 
     /**

@@ -302,6 +302,22 @@ public final class DBReader {
     }
 
     /**
+     * Loads a list of FeedItems in Favorites
+     * @return
+     */
+    public static List<FeedItem> getFavorites() {
+        Log.d(TAG, "getFavorites");
+
+        try (PodDBAdapter adapter = PodDBAdapter.getInstance().open()) {
+            try (Cursor itemListCursor = adapter.getQueueCursor()) {
+                List<FeedItem> items = extractItemlistFromCursor(adapter, itemListCursor);
+                loadFeedDataOfFeedItemlist(items);
+                return items;
+            }
+        }
+    }
+
+    /**
      * Loads a list of FeedItems whose episode has been downloaded.
      *
      * @return A list of FeedItems whose episdoe has been downloaded.
@@ -357,6 +373,23 @@ public final class DBReader {
         adapter.open();
 
         Cursor itemlistCursor = adapter.getNewItemsCursor();
+        List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
+        itemlistCursor.close();
+
+        loadFeedDataOfFeedItemlist(items);
+
+        adapter.close();
+
+        return items;
+    }
+
+    public static List<FeedItem> getFavoriteItemsList() {
+        Log.d(TAG, "getFavoriteItemsList()");
+
+        PodDBAdapter adapter = PodDBAdapter.getInstance();
+        adapter.open();
+
+        Cursor itemlistCursor = adapter.getFavoritesCursor();
         List<FeedItem> items = extractItemlistFromCursor(adapter, itemlistCursor);
         itemlistCursor.close();
 

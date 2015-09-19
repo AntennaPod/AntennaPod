@@ -193,6 +193,12 @@ public class FeedItemMenuHandler {
             case R.id.remove_from_queue_item:
                 DBWriter.removeQueueItem(context, selectedItem, true);
                 break;
+            case R.id.add_to_favorites_item:
+                DBWriter.addFavoriteItem(selectedItem);
+                break;
+            case R.id.remove_from_favorites_item:
+                DBWriter.removeFavoriteItem(selectedItem);
+                break;
             case R.id.reset_position:
                 selectedItem.getMedia().setPosition(0);
                 DBWriter.markItemPlayed(selectedItem, FeedItem.UNPLAYED, true);

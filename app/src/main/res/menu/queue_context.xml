@@ -28,6 +28,14 @@
         android:title="@string/remove_from_queue_label" />
 
     <item
+        android:id="@+id/add_to_favorites_item"
+        android:menuCategory="container"
+        android:title="@string/add_to_favorite_label" />
+    <item
+        android:id="@+id/remove_from_favorites_item"
+        android:menuCategory="container"
+        android:title="@string/remove_from_favorite_label" />
+    <item
         android:id="@+id/reset_position"
         android:menuCategory="container"
         android:title="@string/reset_position" />

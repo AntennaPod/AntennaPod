@@ -64,7 +64,8 @@ public class AllEpisodesFragment extends Fragment {
             EventDistributor.FEED_LIST_UPDATE |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.UNREAD_ITEMS_UPDATE |
-            EventDistributor.PLAYER_STATUS_UPDATE;
+            EventDistributor.PLAYER_STATUS_UPDATE |
+            EventDistributor.FAVORITE_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
@@ -87,7 +88,7 @@ public class AllEpisodesFragment extends Fragment {
     private boolean viewsCreated = false;
     private final boolean showOnlyNewEpisodes;
 
-    private AtomicReference<MainActivity> activity = new AtomicReference<MainActivity>();
+    protected AtomicReference<MainActivity> mainActivity = new AtomicReference<MainActivity>();
 
     private DownloadObserver downloadObserver = null;
 
@@ -125,7 +126,7 @@ public class AllEpisodesFragment extends Fragment {
     public void onStart() {
         super.onStart();
         EventDistributor.getInstance().register(contentUpdate);
-        this.activity.set((MainActivity) getActivity());
+        this.mainActivity.set((MainActivity) getActivity());
         if (downloadObserver != null) {
             downloadObserver.setActivity(getActivity());
             downloadObserver.onResume();
@@ -153,7 +154,7 @@ public class AllEpisodesFragment extends Fragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        this.activity.set((MainActivity) getActivity());
+        this.mainActivity.set((MainActivity) getActivity());
     }
 
     @Override
@@ -188,7 +189,7 @@ public class AllEpisodesFragment extends Fragment {
 
     protected void resetViewState() {
         listAdapter = null;
-        activity.set(null);
+        mainActivity.set(null);
         viewsCreated = false;
         if (downloadObserver != null) {
             downloadObserver.onPause();
@@ -313,7 +314,7 @@ public class AllEpisodesFragment extends Fragment {
 
         viewsCreated = true;
 
-        if (itemsLoaded && activity.get() != null) {
+        if (itemsLoaded && mainActivity.get() != null) {
             onFragmentLoaded();
         }
 
@@ -375,11 +376,11 @@ public class AllEpisodesFragment extends Fragment {
 
     private void onFragmentLoaded() {
         if (listAdapter == null) {
-            listAdapter = new AllEpisodesListAdapter(activity.get(), itemAccess,
-                    new DefaultActionButtonCallback(activity.get()), showOnlyNewEpisodes);
+            listAdapter = new AllEpisodesListAdapter(mainActivity.get(), itemAccess,
+                    new DefaultActionButtonCallback(mainActivity.get()), showOnlyNewEpisodes);
             listView.setAdapter(listAdapter);
             listView.setEmptyView(txtvEmpty);
-            downloadObserver = new DownloadObserver(activity.get(), new Handler(), downloadObserverCallback);
+            downloadObserver = new DownloadObserver(mainActivity.get(), new Handler(), downloadObserverCallback);
             downloadObserver.onResume();
         }
         listAdapter.notifyDataSetChanged();
@@ -452,12 +453,7 @@ public class AllEpisodesFragment extends Fragment {
     };
 
     private void updateShowOnlyEpisodesListViewState() {
-        if (showOnlyNewEpisodes) {
-            listView.setEmptyView(null);
-            txtvEmpty.setVisibility(View.GONE);
-        } else {
-            listView.setEmptyView(txtvEmpty);
-        }
+        listView.setEmptyView(txtvEmpty);
     }
 
     protected void loadItems() {
@@ -479,7 +475,7 @@ public class AllEpisodesFragment extends Fragment {
                         episodes = data.first;
                         queuedItemsIds = data.second;
                         itemsLoaded = true;
-                        if (viewsCreated && activity.get() != null) {
+                        if (viewsCreated && mainActivity.get() != null) {
                             onFragmentLoaded();
                         }
                     }
