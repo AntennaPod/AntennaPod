@@ -48,6 +48,7 @@ import de.danoeh.antennapod.core.preferences.UserPreferences;
 import de.danoeh.antennapod.core.receiver.MediaButtonReceiver;
 import de.danoeh.antennapod.core.storage.DBTasks;
 import de.danoeh.antennapod.core.storage.DBWriter;
+import de.danoeh.antennapod.core.util.IntList;
 import de.danoeh.antennapod.core.util.QueueAccess;
 import de.danoeh.antennapod.core.util.flattr.FlattrUtils;
 import de.danoeh.antennapod.core.util.playback.Playable;
@@ -342,6 +343,8 @@ public class PlaybackService extends Service {
 
                 break;
             case KeyEvent.KEYCODE_MEDIA_NEXT:
+                endPlayback(true);
+                break;
             case KeyEvent.KEYCODE_MEDIA_FAST_FORWARD:
                 mediaPlayer.seekDelta(UserPreferences.getFastFowardSecs() * 1000);
                 break;
@@ -852,6 +855,15 @@ public class PlaybackService extends Service {
                                 .getService(PlaybackService.this, 2,
                                         stopButtonIntent,
                                         PendingIntent.FLAG_UPDATE_CURRENT);
+                        Intent skipButtonIntent = new Intent(
+                                PlaybackService.this, PlaybackService.class);
+                        skipButtonIntent.putExtra(
+                                MediaButtonReceiver.EXTRA_KEYCODE,
+                                KeyEvent.KEYCODE_MEDIA_NEXT);
+                        PendingIntent skipButtonPendingIntent = PendingIntent
+                                .getService(PlaybackService.this, 3,
+                                        skipButtonIntent,
+                                        PendingIntent.FLAG_UPDATE_CURRENT);
                         Notification.Builder notificationBuilder = new Notification.Builder(
                                 PlaybackService.this)
                                 .setContentTitle(contentTitle)
@@ -861,25 +873,36 @@ public class PlaybackService extends Service {
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
+                        IntList actionList = new IntList();
+                        int actionIndex = 0;
                         if (playerStatus == PlayerStatus.PLAYING) {
                             notificationBuilder.addAction(android.R.drawable.ic_media_pause, //pause action
                                     getString(R.string.pause_label),
                                     pauseButtonPendingIntent);
+                            actionList.add(actionIndex++);
                         } else {
                             notificationBuilder.addAction(android.R.drawable.ic_media_play, //play action
                                     getString(R.string.play_label),
                                     playButtonPendingIntent);
+                            actionList.add(actionIndex++);
+                        }
+                        if (UserPreferences.isFollowQueue()) {
+                            notificationBuilder.addAction(android.R.drawable.ic_media_next,
+                                    getString(R.string.skip_episode_label),
+                                    skipButtonPendingIntent);
+                            actionList.add(actionIndex++);
                         }
                         if (UserPreferences.isPersistNotify()) {
                             notificationBuilder.addAction(android.R.drawable.ic_menu_close_clear_cancel, // stop action
                                     getString(R.string.stop_label),
                                     stopButtonPendingIntent);
+                            actionList.add(actionIndex++);
                         }
 
                         if (Build.VERSION.SDK_INT >= 21) {
                             notificationBuilder.setStyle(new Notification.MediaStyle()
                                     .setMediaSession((android.media.session.MediaSession.Token) mediaPlayer.getSessionToken().getToken())
-                                    .setShowActionsInCompactView(0))
+                                    .setShowActionsInCompactView(actionList.toArray()))
                                     .setVisibility(Notification.VISIBILITY_PUBLIC)
                                     .setColor(Notification.COLOR_DEFAULT);
                         }
