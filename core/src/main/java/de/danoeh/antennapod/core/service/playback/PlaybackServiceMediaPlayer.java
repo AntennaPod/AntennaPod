@@ -1047,9 +1047,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return mp;
     }
 
-    private final com.aocate.media.MediaPlayer.OnCompletionListener audioCompletionListener = new com.aocate.media.MediaPlayer.OnCompletionListener() {
+    private final org.antennapod.audio.MediaPlayer.OnCompletionListener audioCompletionListener = new org.antennapod.audio.MediaPlayer.OnCompletionListener() {
         @Override
-        public void onCompletion(com.aocate.media.MediaPlayer mp) {
+        public void onCompletion(org.antennapod.audio.MediaPlayer mp) {
             genericOnCompletion();
         }
     };
@@ -1065,9 +1065,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         endPlayback();
     }
 
-    private final com.aocate.media.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new com.aocate.media.MediaPlayer.OnBufferingUpdateListener() {
+    private final org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener audioBufferingUpdateListener = new org.antennapod.audio.MediaPlayer.OnBufferingUpdateListener() {
         @Override
-        public void onBufferingUpdate(com.aocate.media.MediaPlayer mp,
+        public void onBufferingUpdate(org.antennapod.audio.MediaPlayer mp,
                                       int percent) {
             genericOnBufferingUpdate(percent);
         }
@@ -1084,9 +1084,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         callback.onBufferingUpdate(percent);
     }
 
-    private final com.aocate.media.MediaPlayer.OnInfoListener audioInfoListener = new com.aocate.media.MediaPlayer.OnInfoListener() {
+    private final org.antennapod.audio.MediaPlayer.OnInfoListener audioInfoListener = new org.antennapod.audio.MediaPlayer.OnInfoListener() {
         @Override
-        public boolean onInfo(com.aocate.media.MediaPlayer mp, int what,
+        public boolean onInfo(org.antennapod.audio.MediaPlayer mp, int what,
                               int extra) {
             return genericInfoListener(what);
         }
@@ -1103,9 +1103,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return callback.onMediaPlayerInfo(what);
     }
 
-    private final com.aocate.media.MediaPlayer.OnErrorListener audioErrorListener = new com.aocate.media.MediaPlayer.OnErrorListener() {
+    private final org.antennapod.audio.MediaPlayer.OnErrorListener audioErrorListener = new org.antennapod.audio.MediaPlayer.OnErrorListener() {
         @Override
-        public boolean onError(com.aocate.media.MediaPlayer mp, int what,
+        public boolean onError(org.antennapod.audio.MediaPlayer mp, int what,
                                int extra) {
             return genericOnError(mp, what, extra);
         }
@@ -1122,9 +1122,9 @@ public class PlaybackServiceMediaPlayer implements SharedPreferences.OnSharedPre
         return callback.onMediaPlayerError(inObj, what, extra);
     }
 
-    private final com.aocate.media.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener = new com.aocate.media.MediaPlayer.OnSeekCompleteListener() {
+    private final org.antennapod.audio.MediaPlayer.OnSeekCompleteListener audioSeekCompleteListener = new org.antennapod.audio.MediaPlayer.OnSeekCompleteListener() {
         @Override
-        public void onSeekComplete(com.aocate.media.MediaPlayer mp) {
+        public void onSeekComplete(org.antennapod.audio.MediaPlayer mp) {
             genericSeekCompleteListener();
         }
     };

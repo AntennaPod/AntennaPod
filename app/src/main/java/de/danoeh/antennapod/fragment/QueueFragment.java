@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -55,6 +54,10 @@ import de.danoeh.antennapod.core.util.gui.UndoBarController;
 import de.danoeh.antennapod.menuhandler.FeedItemMenuHandler;
 import de.danoeh.antennapod.menuhandler.MenuItemUtils;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 /**
  * Shows all items in the queue
@@ -98,6 +101,8 @@ public class QueueFragment extends Fragment {
      */
     private boolean blockDownloadObserverUpdate = false;
 
+    private Subscription subscription;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -109,7 +114,7 @@ public class QueueFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        startItemLoader();
+        loadItems();
     }
 
     @Override
@@ -138,7 +143,9 @@ public class QueueFragment extends Fragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
         if(undoBarController.isShowing()) {
             undoBarController.close();
         }
@@ -156,7 +163,7 @@ public class QueueFragment extends Fragment {
             undoBarController.showUndoBar(false, getString(R.string.removed_from_queue),
                     new FeedItemUndoToken(event.item, event.position));
         }
-        startItemLoader();
+        loadItems();
     }
 
     private void saveScrollPosition() {
@@ -398,7 +405,9 @@ public class QueueFragment extends Fragment {
             public void drop(int from, int to) {
                 Log.d(TAG, "drop");
                 blockDownloadObserverUpdate = false;
-                stopItemLoader();
+                if(subscription != null) {
+                    subscription.unsubscribe();
+                }
                 final FeedItem item = queue.remove(from);
                 queue.add(to, item);
                 listAdapter.notifyDataSetChanged();
@@ -408,7 +417,9 @@ public class QueueFragment extends Fragment {
             @Override
             public void remove(int which) {
                 Log.d(TAG, "remove(" + which + ")");
-                stopItemLoader();
+                if(subscription != null) {
+                    subscription.unsubscribe();
+                }
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
                 DBWriter.removeQueueItem(getActivity(), item, true);
             }
@@ -556,7 +567,7 @@ public class QueueFragment extends Fragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                startItemLoader();
+                loadItems();
                 if (isUpdatingFeeds != updateRefreshMenuItemChecker.isRefreshing()) {
                     getActivity().supportInvalidateOptionsMenu();
                 }
@@ -564,55 +575,31 @@ public class QueueFragment extends Fragment {
         }
     };
 
-    private ItemLoader itemLoader;
-
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
+        if (viewsCreated && !itemsLoaded) {
+            listView.setVisibility(View.GONE);
+            txtvEmpty.setVisibility(View.GONE);
+            progLoading.setVisibility(View.VISIBLE);
+        }
+        subscription = Observable.defer(() -> Observable.just(DBReader.getQueue()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    listView.setVisibility(View.VISIBLE);
+                    progLoading.setVisibility(View.GONE);
+                    if(result != null) {
+                        queue = result;
+                        itemsLoaded = true;
+                        if (viewsCreated && activity.get() != null) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
-    }
-
-    private class ItemLoader extends AsyncTask<Void, Void, List<FeedItem>> {
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-            if (viewsCreated && !itemsLoaded) {
-                listView.setVisibility(View.GONE);
-                txtvEmpty.setVisibility(View.GONE);
-                progLoading.setVisibility(View.VISIBLE);
-            }
-        }
-
-        @Override
-        protected void onPostExecute(List<FeedItem> feedItems) {
-            super.onPostExecute(feedItems);
-            listView.setVisibility(View.VISIBLE);
-            progLoading.setVisibility(View.GONE);
-
-            if (feedItems != null) {
-                queue = feedItems;
-                itemsLoaded = true;
-                if (viewsCreated && activity.get() != null) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-
-        @Override
-        protected List<FeedItem> doInBackground(Void... params) {
-            Context context = activity.get();
-            if (context != null) {
-                return DBReader.getQueue();
-            }
-            return null;
-        }
-    }
 }

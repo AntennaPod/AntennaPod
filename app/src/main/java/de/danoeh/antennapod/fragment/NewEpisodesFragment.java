@@ -39,7 +39,7 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        startItemLoader();
+        loadItems();
     }
 
     @Override
@@ -69,7 +69,9 @@ public class NewEpisodesFragment extends AllEpisodesFragment {
             @Override
             public void remove(int which) {
                 Log.d(TAG, "remove(" + which + ")");
-                stopItemLoader();
+                if(subscription != null) {
+                    subscription.unsubscribe();
+                }
                 FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
                 // we're marking it as unplayed since the user didn't actually play it
                 // but they don't want it considered 'NEW' anymore

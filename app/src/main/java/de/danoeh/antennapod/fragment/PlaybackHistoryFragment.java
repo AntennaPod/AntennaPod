@@ -1,9 +1,7 @@
 package de.danoeh.antennapod.fragment;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.res.TypedArray;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.ListFragment;
@@ -33,6 +31,10 @@ import de.danoeh.antennapod.core.storage.DBReader;
 import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.greenrobot.event.EventBus;
+import rx.Observable;
+import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
 
 public class PlaybackHistoryFragment extends ListFragment {
 
@@ -53,6 +55,8 @@ public class PlaybackHistoryFragment extends ListFragment {
     private DownloadObserver downloadObserver;
     private List<Downloader> downloaderList;
 
+    private Subscription subscription;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -63,7 +67,7 @@ public class PlaybackHistoryFragment extends ListFragment {
     @Override
     public void onResume() {
         super.onResume();
-        startItemLoader();
+        loadItems();
     }
 
     @Override
@@ -78,13 +82,17 @@ public class PlaybackHistoryFragment extends ListFragment {
         super.onStop();
         EventDistributor.getInstance().unregister(contentUpdate);
         EventBus.getDefault().unregister(this);
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        stopItemLoader();
+        if(subscription != null) {
+            subscription.unsubscribe();
+        }
         activity.set(null);
     }
 
@@ -176,7 +184,7 @@ public class PlaybackHistoryFragment extends ListFragment {
 
     public void onEvent(QueueEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
-        startItemLoader();
+        loadItems();
     }
 
     private EventDistributor.EventListener contentUpdate = new EventDistributor.EventListener() {
@@ -184,7 +192,7 @@ public class PlaybackHistoryFragment extends ListFragment {
         @Override
         public void update(EventDistributor eventDistributor, Integer arg) {
             if ((arg & EVENTS) != 0) {
-                startItemLoader();
+                loadItems();
                 getActivity().supportInvalidateOptionsMenu();
             }
         }
@@ -245,48 +253,32 @@ public class PlaybackHistoryFragment extends ListFragment {
         }
     };
 
-    private ItemLoader itemLoader;
-
-    private void startItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
+    private void loadItems() {
+        if(subscription != null) {
+            subscription.unsubscribe();
         }
-        itemLoader = new ItemLoader();
-        itemLoader.execute();
+        subscription = Observable.defer(() -> Observable.just(loadData()))
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(result -> {
+                    if (result != null) {
+                        playbackHistory = result.first;
+                        queue = result.second;
+                        itemsLoaded = true;
+                        if (viewsCreated) {
+                            onFragmentLoaded();
+                        }
+                    }
+                }, error -> {
+                    Log.e(TAG, Log.getStackTraceString(error));
+                });
     }
 
-    private void stopItemLoader() {
-        if (itemLoader != null) {
-            itemLoader.cancel(true);
-        }
+    private Pair<List<FeedItem>, LongList> loadData() {
+        List<FeedItem> history = DBReader.getPlaybackHistory();
+        LongList queue = DBReader.getQueueIDList();
+        DBReader.loadFeedDataOfFeedItemlist(history);
+        return Pair.create(history, queue);
     }
 
-    private class ItemLoader extends AsyncTask<Void, Void, Pair<List<FeedItem>,LongList>> {
-
-        @Override
-        protected Pair<List<FeedItem>,LongList> doInBackground(Void... params) {
-            Context context = activity.get();
-            if (context != null) {
-                List<FeedItem> history = DBReader.getPlaybackHistory();
-                LongList queue = DBReader.getQueueIDList();
-                DBReader.loadFeedDataOfFeedItemlist(history);
-                return Pair.create(history, queue);
-            } else {
-                return null;
-            }
-        }
-
-        @Override
-        protected void onPostExecute(Pair<List<FeedItem>,LongList> res) {
-            super.onPostExecute(res);
-            if (res != null) {
-                playbackHistory = res.first;
-                queue = res.second;
-                itemsLoaded = true;
-                if (viewsCreated) {
-                    onFragmentLoaded();
-                }
-            }
-        }
-    }
 }

@@ -57,9 +57,13 @@ public class AboutActivity extends ActionBarActivity {
 
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                url = url.replace("file:///android_asset/", "");
-                loadAsset(url);
-                return true;
+                if(url.startsWith("http")) {
+                    return false;
+                } else {
+                    url = url.replace("file:///android_asset/", "");
+                    loadAsset(url);
+                    return true;
+                }
             }
 
         });
@@ -126,8 +130,10 @@ public class AboutActivity extends ActionBarActivity {
 
     @Override
     public void onBackPressed() {
-        if(showingLicense) {
+        if(showingLicense || webview.canGoBack()) {
             loadAsset("about.html");
+        } else if(webview.canGoBack()) {
+            webview.goBack();
         } else {
             super.onBackPressed();
         }

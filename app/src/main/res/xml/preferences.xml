@@ -223,7 +223,15 @@
         <Preference
             android:key="prefAbout"
             android:title="@string/about_pref"/>
+    </PreferenceCategory>
 
+    <PreferenceCategory android:title="@string/experimental_pref">
+    <CheckBoxPreference
+        android:defaultValue="false"
+        android:enabled="false"
+        android:key="prefSonic"
+        android:summary="@string/pref_sonic_message"
+        android:title="@string/pref_sonic_title"/>
     </PreferenceCategory>
 
 </PreferenceScreen>

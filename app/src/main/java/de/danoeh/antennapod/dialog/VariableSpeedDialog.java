@@ -6,18 +6,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
-import de.danoeh.antennapod.R;
-import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 import java.util.Arrays;
 import java.util.List;
+
+import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.preferences.UserPreferences;
 
 public class VariableSpeedDialog {
 	private VariableSpeedDialog() {
 	}
 
 	public static void showDialog(final Context context) {
-		if (com.aocate.media.MediaPlayer.isPrestoLibraryInstalled(context)) {
+		if (org.antennapod.audio.MediaPlayer.isPrestoLibraryInstalled(context)) {
 			showSpeedSelectorDialog(context);
 		} else {
 			showGetPluginDialog(context);

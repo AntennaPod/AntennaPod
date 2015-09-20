@@ -309,7 +309,11 @@ public class PodDBAdapter {
             dbHelper.close();
             dbHelper = null;
         }
-        return context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
+        if(context != null) { // may not have been initialized
+            return context.deleteDatabase(PodDBAdapter.DATABASE_NAME);
+        } else {
+            return false;
+        }
     }
 
     /**
