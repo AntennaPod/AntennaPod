@@ -148,7 +148,7 @@
     <string name="activate_auto_download">Activate Auto Download</string>
     <string name="deactivate_auto_download">Deactivate Auto Download</string>
     <string name="reset_position">Reset Playback Position</string>
-    <string name="removed_from_favorites">Removed from favorites</string>
+    <string name="removed_item">Item removed</string>
 
     <!-- Download messages and labels -->
     <string name="download_successful">successful</string>

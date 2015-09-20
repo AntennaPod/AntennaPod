@@ -13,8 +13,8 @@ import java.util.List;
 import de.danoeh.antennapod.R;
 import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
+import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
@@ -73,14 +73,12 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
             }
             FeedItem item = (FeedItem) listView.getAdapter().getItem(which);
 
-            // TODO: actually remove the item from favorites
+            DBWriter.removeFavoriteItem(item);
 
             undoBarController.showUndoBar(false,
-                    getString(R.string.removed_from_favorites), new FeedItemUndoToken(item,
+                    getString(R.string.removed_item), new FeedItemUndoToken(item,
                             which)
             );
-
-            throw new RuntimeException("can't remove yet");
         });
 
         undoBarController = new UndoBarController<FeedItemUndoToken>(root.findViewById(R.id.undobar), new UndoBarController.UndoListener<FeedItemUndoToken>() {
@@ -91,8 +89,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
             public void onUndo(FeedItemUndoToken token) {
                 if (token != null) {
                     long itemId = token.getFeedItemId();
-                    // TODO: put it back DBWriter.markItemPlayed(FeedItem.NEW, itemId);
-                    throw new RuntimeException("can't undo remove yet");
+                    DBWriter.addFavoriteItemById(itemId);
                 }
             }
 

@@ -461,6 +461,10 @@ public class DBWriter {
         });
     }
 
+    public static Future<?> addFavoriteItemById(final long itemId) {
+        return addFavoriteItem(DBReader.getFeedItem(itemId));
+    }
+
     public static Future<?> removeFavoriteItem(final FeedItem item) {
         return dbExec.submit(() -> {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
