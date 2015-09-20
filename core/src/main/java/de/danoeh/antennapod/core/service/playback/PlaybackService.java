@@ -824,8 +824,8 @@ public class PlaybackService extends Service {
                 final int smallIcon = ClientConfig.playbackServiceCallbacks.getNotificationIconResource(getApplicationContext());
 
                 if (!Thread.currentThread().isInterrupted() && started && info.playable != null) {
-                    String contentText = info.playable.getFeedTitle();
-                    String contentTitle = info.playable.getEpisodeTitle();
+                    String contentText = info.playable.getEpisodeTitle();
+                    String contentTitle = info.playable.getFeedTitle();
                     Notification notification = null;
                     if (android.os.Build.VERSION.SDK_INT >= 16) {
                         Intent pauseButtonIntent = new Intent( // pause button intent
@@ -872,6 +872,7 @@ public class PlaybackService extends Service {
                                 .setContentIntent(pIntent)
                                 .setLargeIcon(icon)
                                 .setSmallIcon(smallIcon)
+                                .setWhen(0) // we don't need the time
                                 .setPriority(UserPreferences.getNotifyPriority()); // set notification priority
                         IntList actionList = new IntList();
                         int actionIndex = 0;
