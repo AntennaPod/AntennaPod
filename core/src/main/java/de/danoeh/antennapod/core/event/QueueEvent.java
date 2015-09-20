@@ -1,9 +1,11 @@
-package de.danoeh.antennapod.core.feed;
+package de.danoeh.antennapod.core.event;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.List;
+
+import de.danoeh.antennapod.core.feed.FeedItem;
 
 public class QueueEvent {
 

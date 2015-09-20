@@ -7,7 +7,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.Callable;
 
 import de.danoeh.antennapod.core.asynctask.ImageResource;
@@ -23,6 +25,11 @@ import de.danoeh.antennapod.core.util.flattr.FlattrThing;
  * @author daniel
  */
 public class FeedItem extends FeedComponent implements ShownotesProvider, FlattrThing, ImageResource {
+
+    /** tag that indicates this item is in the queue */
+    public static final String TAG_QUEUE = "Queue";
+    /** tag that indicates this item is in favorites */
+    public static final String TAG_FAVORITE = "Favorite";
 
     /**
      * The id/guid that can be found in the rss/atom feed. Might not be set.
@@ -69,6 +76,11 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
     private FeedImage image;
 
     private boolean autoDownload = true;
+
+    /**
+     * Any tags assigned to this item
+     */
+    private Set<String> tags = new HashSet<>();
 
     public FeedItem() {
         this.state = UNPLAYED;
@@ -450,6 +462,21 @@ public class FeedItem extends FeedComponent implements ShownotesProvider, Flattr
                 false == this.getMedia().isDownloaded() &&
                 this.getAutoDownload();
     }
+
+    /**
+     * @return true if the item has this tag
+     */
+    public boolean isTagged(String tag) { return tags.contains(tag); }
+
+    /**
+     * @param tag adds this tag to the item. NOTE: does NOT persist to the database
+     */
+    public void addTag(String tag) { tags.add(tag); }
+
+    /**
+     * @param tag the to remove
+     */
+    public void removeTag(String tag) { tags.remove(tag); }
 
     @Override
     public String toString() {

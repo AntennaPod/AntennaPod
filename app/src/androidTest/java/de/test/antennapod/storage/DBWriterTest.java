@@ -556,7 +556,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         }
         List<Future<?>> futures = new ArrayList<Future<?>>();
         for (FeedItem item : feed.getItems()) {
-            futures.add(DBWriter.addQueueItem(context, item.getId()));
+            futures.add(DBWriter.addQueueItem(context, item));
         }
         for (Future<?> f : futures) {
             f.get(TIMEOUT, TimeUnit.SECONDS);
@@ -577,7 +577,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(item.getId() != 0);
-        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.addQueueItem(context, item).get(TIMEOUT, TimeUnit.SECONDS);
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -601,7 +601,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         adapter.close();
 
         assertTrue(item.getId() != 0);
-        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.addQueueItem(context, item).get(TIMEOUT, TimeUnit.SECONDS);
 
         adapter = PodDBAdapter.getInstance();
         adapter.open();
@@ -611,7 +611,7 @@ public class DBWriterTest extends InstrumentationTestCase {
         cursor.close();
         adapter.close();
 
-        DBWriter.addQueueItem(context, item.getId()).get(TIMEOUT, TimeUnit.SECONDS);
+        DBWriter.addQueueItem(context, item).get(TIMEOUT, TimeUnit.SECONDS);
         adapter = PodDBAdapter.getInstance();
         adapter.open();
         cursor = adapter.getQueueIDCursor();

@@ -26,6 +26,7 @@ import java.util.concurrent.Future;
 import de.danoeh.antennapod.core.BuildConfig;
 import de.danoeh.antennapod.core.ClientConfig;
 import de.danoeh.antennapod.core.asynctask.FlattrClickWorker;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.EventDistributor;
 import de.danoeh.antennapod.core.feed.Feed;
 import de.danoeh.antennapod.core.feed.FeedEvent;
@@ -33,7 +34,7 @@ import de.danoeh.antennapod.core.feed.FeedImage;
 import de.danoeh.antennapod.core.feed.FeedItem;
 import de.danoeh.antennapod.core.feed.FeedMedia;
 import de.danoeh.antennapod.core.feed.FeedPreferences;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.gpoddernet.model.GpodnetEpisodeAction;
 import de.danoeh.antennapod.core.preferences.GpodnetPreferences;
 import de.danoeh.antennapod.core.preferences.PlaybackPreferences;
@@ -317,6 +318,8 @@ public class DBWriter {
                     if (item != null) {
                         queue.add(index, item);
                         adapter.setQueue(queue);
+                        // no need to tag the item here, since we got it right out of the database
+                        // and no one is ever going to see it...
                         EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.ADDED, item, index));
                         if (item.isNew()) {
                             DBWriter.markItemPlayed(FeedItem.UNPLAYED, item.getId());
@@ -335,8 +338,13 @@ public class DBWriter {
     }
 
     public static Future<?> addQueueItem(final Context context,
-                                         final long... itemIds) {
-        return addQueueItem(context, false, itemIds);
+                                         final FeedItem... items) {
+        LongList itemIds = new LongList(items.length);
+        for (FeedItem item : items) {
+            itemIds.add(item.getId());
+            item.addTag(FeedItem.TAG_QUEUE);
+        }
+        return addQueueItem(context, false, itemIds.toArray());
     }
 
     /**
@@ -427,6 +435,7 @@ public class DBWriter {
                 if (position >= 0) {
                     queue.remove(position);
                     adapter.setQueue(queue);
+                    item.removeTag(FeedItem.TAG_QUEUE);
                     EventBus.getDefault().post(new QueueEvent(QueueEvent.Action.REMOVED, item, position));
                 } else {
                     Log.w(TAG, "Queue was not modified by call to removeQueueItem");
@@ -447,7 +456,8 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.addFavoriteItem(item);
             adapter.close();
-            EventDistributor.getInstance().sendFavoriteUpdateBroadcast();
+            item.addTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.added(item));
         });
     }
 
@@ -456,7 +466,8 @@ public class DBWriter {
             final PodDBAdapter adapter = PodDBAdapter.getInstance().open();
             adapter.removeFavoriteItem(item);
             adapter.close();
-            EventDistributor.getInstance().sendFavoriteUpdateBroadcast();
+            item.removeTag(FeedItem.TAG_FAVORITE);
+            EventBus.getDefault().post(FavoritesEvent.removed(item));
         });
     }
 

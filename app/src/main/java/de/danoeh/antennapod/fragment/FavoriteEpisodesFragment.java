@@ -1,7 +1,6 @@
 package de.danoeh.antennapod.fragment;
 
 import android.content.Context;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.util.Pair;
 import android.util.Log;
@@ -9,16 +8,13 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.mobeta.android.dslv.DragSortListView;
-
 import java.util.List;
 
 import de.danoeh.antennapod.R;
+import de.danoeh.antennapod.core.event.FavoritesEvent;
 import de.danoeh.antennapod.core.feed.FeedItem;
-import de.danoeh.antennapod.core.feed.FeedMedia;
-import de.danoeh.antennapod.core.feed.QueueEvent;
+import de.danoeh.antennapod.core.event.QueueEvent;
 import de.danoeh.antennapod.core.storage.DBReader;
-import de.danoeh.antennapod.core.storage.DBWriter;
 import de.danoeh.antennapod.core.util.LongList;
 import de.danoeh.antennapod.core.util.gui.FeedItemUndoToken;
 import de.danoeh.antennapod.core.util.gui.UndoBarController;
@@ -42,7 +38,7 @@ public class FavoriteEpisodesFragment extends AllEpisodesFragment {
         super(false, PREF_NAME);
     }
 
-    public void onEvent(QueueEvent event) {
+    public void onEvent(FavoritesEvent event) {
         Log.d(TAG, "onEvent(" + event + ")");
         loadItems();
     }

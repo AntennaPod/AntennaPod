@@ -64,8 +64,7 @@ public class AllEpisodesFragment extends Fragment {
             EventDistributor.FEED_LIST_UPDATE |
             EventDistributor.DOWNLOAD_QUEUED |
             EventDistributor.UNREAD_ITEMS_UPDATE |
-            EventDistributor.PLAYER_STATUS_UPDATE |
-            EventDistributor.FAVORITE_UPDATE;
+            EventDistributor.PLAYER_STATUS_UPDATE;
 
     private static final int RECENT_EPISODES_LIMIT = 150;
     private static final String DEFAULT_PREF_NAME = "PrefAllEpisodesFragment";
